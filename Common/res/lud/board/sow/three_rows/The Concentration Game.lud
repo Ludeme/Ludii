@@ -118,17 +118,17 @@
 //------------------------------------------------------------------------------
 
 (option "Num Initial Seed To Capture" <ToCapture> args:{ <num> }
-  {
-  (item "2"   <2>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*   
-  (item "3"   <3>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")   
-  (item "4"   <4>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")   
-  (item "5"   <5>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
+    {
+    (item "2"   <2>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*   
+    (item "3"   <3>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")   
+    (item "4"   <4>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")   
+    (item "5"   <5>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
 })
 
 (option "Num Initial Capture" <Sequence> args:{ <length> }
-{
-(item "3"   <1>  "The number of initial captures before the sequence is 3.")   
-(item "7"   <5>  "The number of initial captures before the sequence is 7.")*   
+    {
+    (item "3"   <1>  "The number of initial captures before the sequence is 3.")   
+    (item "7"   <5>  "The number of initial captures before the sequence is 7.")*   
 })
 
 //------------------------------------------------------------------------------
@@ -136,19 +136,19 @@
 (rulesets { 
     
     (ruleset "Ruleset/Two Counters (Described)" {
-    	"Num Initial Seed To Capture/2" "Num Initial Capture/7"
+        "Num Initial Seed To Capture/2" "Num Initial Capture/7"
     })*
     
     (ruleset "Ruleset/Three Counters (Described)" {
-    	"Num Initial Seed To Capture/3" "Num Initial Capture/3"
+        "Num Initial Seed To Capture/3" "Num Initial Capture/3"
     })
     
     (ruleset "Ruleset/Four Counters (Described)" {
-    	"Num Initial Seed To Capture/4" "Num Initial Capture/3"
+        "Num Initial Seed To Capture/4" "Num Initial Capture/3"
     })
-	
+    
     (ruleset "Ruleset/Five Counters (Described)" {
-    	"Num Initial Seed To Capture/5" "Num Initial Capture/3"
+        "Num Initial Seed To Capture/5" "Num Initial Capture/3"
     })
     
 })
