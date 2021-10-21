@@ -11,7 +11,7 @@
     (if (is Mover P1)
         (and
             (forget Value "NumToCaptureP1" All)
-            (if (is In 2 ("NumToCapture")) 
+            (if (is In <ToCapture:num> ("NumToCapture")) 
                 (remember Value "NumToCaptureP1" 1)
                 (if (is In 1 ("NumToCapture")) 
                     (remember Value "NumToCaptureP1" 3)
@@ -24,7 +24,7 @@
         )
         (and
             (forget Value "NumToCaptureP2" All)
-            (if (is In 2 ("NumToCapture")) 
+            (if (is In <ToCapture:num> ("NumToCapture")) 
                 (remember Value "NumToCaptureP2" 1)
                 (if (is In 1 ("NumToCapture")) 
                     (remember Value "NumToCaptureP2" 3)
@@ -39,8 +39,8 @@
 )
 
 (define "NumCountersToCapture"
-    (if (is In 2 ("NumToCapture")) 
-        3
+    (if (is In <ToCapture:num> ("NumToCapture")) 
+        (+ 1 <ToCapture:num>)
         (if (is In 1 ("NumToCapture")) 
             2
             (if (is In 3 ("NumToCapture")) 
@@ -72,8 +72,8 @@
         
         (start {
             (set Count 10 to:(sites Board) )
-            (set RememberValue "NumToCaptureP1" 2)
-            (set RememberValue "NumToCaptureP2" 2)
+            (set RememberValue "NumToCaptureP1" <ToCapture:num>)
+            (set RememberValue "NumToCaptureP2" <ToCapture:num>)
             (set RememberValue "NumCaptureTwoP1" 0)
             (set RememberValue "NumCaptureTwoP2" 0)
         })
@@ -93,7 +93,7 @@
                                 (to (mapEntry (mover))) 
                                 count:(count at:(to))
                             )
-                            (if	(< (value Player Mover) 5) 
+                            (if	(< (value Player Mover) <Sequence:length>) 
                                 ("UpdateNumCaptureTwo")
                                 ("UpdateNumToCapture")
                             )
@@ -117,25 +117,43 @@
 
 //------------------------------------------------------------------------------
 
+(option "Num Initial Seed To Capture" <ToCapture> args:{ <num> }
+  {
+  (item "2"   <2>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*   
+  (item "3"   <3>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")   
+  (item "4"   <4>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")   
+  (item "5"   <5>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
+})
+
+(option "Num Initial Capture" <Sequence> args:{ <length> }
+{
+(item "3"   <1>  "The number of initial captures before the sequence is 3.")   
+(item "7"   <5>  "The number of initial captures before the sequence is 7.")*   
+})
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
-    (ruleset "Ruleset/Five Counters (Described)" {
-        
+    (ruleset "Ruleset/Two Counters (Described)" {
+    	"Num Initial Seed To Capture/2" "Num Initial Capture/7"
+    })*
+    
+    (ruleset "Ruleset/Three Counters (Described)" {
+    	"Num Initial Seed To Capture/3" "Num Initial Capture/3"
     })
     
     (ruleset "Ruleset/Four Counters (Described)" {
-        
+    	"Num Initial Seed To Capture/4" "Num Initial Capture/3"
     })
-    
-    (ruleset "Ruleset/Three Counters (Described)" {
-        
+	
+    (ruleset "Ruleset/Five Counters (Described)" {
+    	"Num Initial Seed To Capture/5" "Num Initial Capture/3"
     })
-    
-    (ruleset "Ruleset/Two Counters (Described)" {
-        
-    })*
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     (info
