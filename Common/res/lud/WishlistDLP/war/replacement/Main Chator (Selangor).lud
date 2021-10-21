@@ -22,7 +22,7 @@
 )
 
 (define "HasNeverMoved"
-    (= (state at:(mapEntry #1 (mover))) 1) 
+    (= (state at:#1) 1) 
 )
 
 (define "PieceHasMoved"
@@ -38,6 +38,12 @@
     ) 
 )
 
+(define "SetEnPassantLocation"
+	    (then 
+	        (set Pending (ahead (last To) Backward))
+	    )
+	)
+
 (define "DoubleStep"
     (move
         Slide 
@@ -47,6 +53,31 @@
         "SetEnPassantLocation"
     )
 )
+
+(define "InLocationEnPassant"
+	    (and 
+	        (is Pending) 
+	        (= (to) (value Pending)) 
+	    )
+	)
+
+(define "EnPassant"
+	    (move
+	        Step 
+	        (directions {FR FL}) 
+	        (to 
+	        	if:(and 
+	        			("InLocationEnPassant")
+	        			(= (id "Pawn" Next) (what at:(ahead (from) Forward)))
+	        		)
+	        ) 
+	        (then 
+	            (remove 
+	                (ahead (last To) Backward)
+	            )
+	        )
+	    )
+	)
 
 //------------------------------------------------------------------------------
 
@@ -62,6 +93,22 @@
                 )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
+                "EnPassant"
+        	    (move
+        		        Step 
+        		        (directions {FR FL}) 
+        		        (to 
+        		        	if:(and
+        		        			("InLocationEnPassant")
+        		        			(= (id "Pawn" Next) (what at:(ahead (from) Forward)))
+        		        		)
+        		        ) 
+        		        (then 
+        		            (remove 
+        		                (ahead (last From) (if (is Mover P1) N S))
+        		            )
+        		        )
+        		    )
                 }
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
@@ -80,14 +127,27 @@
                 ) 
             )
         )
-        (piece "King_noCross" Each // Need to add knight move if never move and never check.
-            (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece" 
-                )
-            )
+        (piece "King_noCross" Each 
+                (or
+                        (move
+                            Step 
+                            (to 
+                                if:(not (is Friend (who at:(to)))) 
+                                "CaptureToPiece" 
+                            )
+                        )
+                        (if (and ("HasNeverMoved" (from)) (!= (value Player Mover) (mover)))
+                            (move
+                                Leap 
+                                "KnightWalk" 
+                                (to 
+                                    if:(is Empty (to))
+                                )
+                                (then (set Value Mover (mover)))
+                            )
+                        )
+                        "RememberPieceHasMoved"
+                    )
         )
         (piece "Elephant" Each 
             (move
@@ -125,14 +185,24 @@
         (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
-            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "King_noCross1" coord:"D1") (place "Ferz_noCross1" coord:"E1") 
-            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "King_noCross2" coord:"E8") (place "Ferz_noCross2" coord:"D8") 
+            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "King_noCross1" coord:"D1" state:1) (place "Ferz_noCross1" coord:"E1") 
+            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "King_noCross2" coord:"E8" state:1) (place "Ferz_noCross2" coord:"D8") 
         })
         
         (play 
             (if "SameTurn"
                 (move Promote (last To) (piece "Ferz_noCross") Mover)
-                (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                (do 
+                	(forEach Piece) 
+                	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+                        (then
+                                (if (!= (next) (value Player Next))
+                                    (if ("IsInCheck" "King_noCross" Next)
+                                        (set Value Next (next))
+                                    )
+                                )
+                            )		
+                )
             )
         )
         
