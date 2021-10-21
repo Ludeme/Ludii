@@ -521,13 +521,16 @@ public class NaiveFeatureSet extends BaseFeatureSet
 								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
 								final List<FeatureInstance>[] instanceLists = reactiveFeatures.get(reactiveKey);
 								
-								for (int f = 0; f < instanceLists.length; ++f)
+								if (instanceLists != null)
 								{
-									for (final FeatureInstance instance : instanceLists[f])
+									for (int f = 0; f < instanceLists.length; ++f)
 									{
-										if (instance.matches(state))
+										for (final FeatureInstance instance : instanceLists[f])
 										{
-											activeInstances.add(instance);
+											if (instance.matches(state))
+											{
+												activeInstances.add(instance);
+											}
 										}
 									}
 								}
@@ -813,7 +816,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 	 * @param featureWeights
 	 * @return New Feature Set with one extra feature, or null if cannot be expanded
 	 */
-	public LegacyFeatureSet createExpandedFeatureSet
+	public NaiveFeatureSet createExpandedFeatureSet
 	(
 		final List<FeatureInstance> activeFeatureInstances,
 		final boolean combineMaxWeightedFeatures,
@@ -884,7 +887,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 		while (!allPairs.isEmpty())
 		{
 			final FeatureInstancePair pair = allPairs.remove(allPairs.size() - 1);
-			final LegacyFeatureSet newFeatureSet = createExpandedFeatureSet
+			final NaiveFeatureSet newFeatureSet = createExpandedFeatureSet
 					(
 						game.get(), 
 						SpatialFeature.combineFeatures
@@ -906,7 +909,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 	}
 	
 	@Override
-	public LegacyFeatureSet createExpandedFeatureSet
+	public NaiveFeatureSet createExpandedFeatureSet
 	(
 		final Game targetGame,
 		final SpatialFeature newFeature
@@ -957,7 +960,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 			// and our new feature
 			newFeatureList.add(newFeature);
 			
-			return new LegacyFeatureSet(Arrays.asList(aspatialFeatures), newFeatureList);
+			return new NaiveFeatureSet(Arrays.asList(aspatialFeatures), newFeatureList);
 		}
 		
 		return null;
