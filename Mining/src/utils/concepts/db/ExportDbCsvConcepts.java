@@ -740,11 +740,7 @@ public class ExportDbCsvConcepts
 	 */
 	private static void getTrials(final Game game)
 	{
-		
-//		System.out.println("Folder in entry is " + trialsFolder);
 		File currentFolder = new File(".");
-//		System.out.println("current folder is " + currentFolder.getAbsolutePath());
-		
 		File folder = new File(currentFolder.getAbsolutePath() + folderTrials);
 		final String gameName = game.name();
 		final String rulesetName = game.getRuleset() == null ? "" : game.getRuleset().heading();
