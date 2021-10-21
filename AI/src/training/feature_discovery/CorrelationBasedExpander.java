@@ -134,7 +134,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		// and automatically ignore entries that would be 0 (they won't
 		// be created if such pairs are never observed activating together)
 
-		System.out.println("-------------------------------------------------------------------");
+//		System.out.println("-------------------------------------------------------------------");
 		int numCases = 0;	// we'll increment  this as we go
 
 		// this is our C_f matrix

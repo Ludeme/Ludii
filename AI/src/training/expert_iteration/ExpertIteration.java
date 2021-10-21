@@ -1063,6 +1063,9 @@ public class ExpertIteration
 
 				for (final TIntArrayList featureVector : sparseFeatureVectors)
 				{
+					if (featureVector.isEmpty())
+						continue;		// Probably a pass/swap/other special move, don't want these affecting our active ratios
+					
 					// Following code expects the indices in the sparse feature vector to be sorted
 					featureVector.sort();
 
