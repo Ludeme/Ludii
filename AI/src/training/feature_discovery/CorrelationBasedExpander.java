@@ -134,6 +134,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		// and automatically ignore entries that would be 0 (they won't
 		// be created if such pairs are never observed activating together)
 
+//		System.out.println("-------------------------------------------------------------------");
 		int numCases = 0;	// we'll increment  this as we go
 
 		// this is our C_f matrix
@@ -399,6 +400,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				final List<CombinableFeatureInstancePair> instancesToKeepCombinedSelfs = 
 						new ArrayList<CombinableFeatureInstancePair>();
 
+//				int numRelevantConstituents = 0;
 				for (int i = 0; i < activeInstances.size(); /**/)
 				{
 					final FeatureInstance instance = activeInstances.get(i);
@@ -414,15 +416,15 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 //						}
 						instancesToKeepCombinedSelfs.add(combinedSelf);
 						instancesToKeep.add(instance);
-						activeInstances.remove(i);
+						ListUtils.removeSwap(activeInstances, i);
 					}
 					else if (discardedInstances.contains(anchorInvariantInstance))
 					{
-						activeInstances.remove(i);
+						ListUtils.removeSwap(activeInstances, i);
 					}
 					else if (featureActiveRatios.getQuick(instance.feature().spatialFeatureSetIndex()) == 1.0)
 					{
-						activeInstances.remove(i);
+						ListUtils.removeSwap(activeInstances, i);
 					}
 					else
 					{
@@ -544,12 +546,75 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 
 					// increment entries on ''main diagonals''
 					final CombinableFeatureInstancePair combinedSelf = instancesToKeepCombinedSelfs.get(i);
+					
+//					boolean relevantConstituent = false;
+//					if (!combinedSelf.combinedFeature.isReactive())
+//					{
+//						if (combinedSelf.combinedFeature.pattern().featureElements().length == 1)
+//						{
+//							relevantConstituent = true;
+//							final FeatureElement element = combinedSelf.combinedFeature.pattern().featureElements()[0];
+//							if 
+//							(
+//								element.not() 
+//								|| 
+//								element.type() != ElementType.Friend
+//								||
+//								((RelativeFeatureElement)element).walk().steps().size() != 2
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 0.f))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, -1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 0.f))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 0.f))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 0.f))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/3, 1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(0.f, -1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, -1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/6, 1.f/3))
+//								||
+//								((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, -1.f/3))
+//							)
+//							{
+//								relevantConstituent = false;
+//							}
+//						}
+//					}
+//					if (relevantConstituent)
+//					{
+//						System.out.println("relevant constituent " + i + ": " + instanceI);
+//						++numRelevantConstituents;
+//					}
 
 					if (observedCasePairs.add(combinedSelf))
 					{
 						featurePairActivations.adjustOrPutValue(combinedSelf, 1, 1);
 						errorSums.adjustOrPutValue(combinedSelf, error, error);
+						
+//						if (relevantConstituent)
+//							System.out.println("incremented for constituent " + i);
 					}
+//					else if (relevantConstituent)
+//					{
+//						System.out.println("Already observed for this action, so no increment for constituent " + i); 
+//					}
 
 					for (int j = i + 1; j < numActiveInstances; ++j)
 					{
@@ -558,6 +623,67 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						// increment off-diagonal entries
 						final CombinableFeatureInstancePair combined = 
 								new CombinableFeatureInstancePair(game, instanceI, instanceJ);
+						
+//						boolean relevantCombined = false;
+//						if (!combined.combinedFeature.isReactive() && combined.combinedFeature.pattern().featureElements().length == 2)
+//						{
+//							boolean onlyFriendElements = true;
+//							for (final FeatureElement element : combined.combinedFeature.pattern().featureElements())
+//							{
+//								if 
+//								(
+//									element.not() 
+//									|| 
+//									element.type() != ElementType.Friend
+//									||
+//									((RelativeFeatureElement)element).walk().steps().size() != 2
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 0.f))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, -1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 0.f))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 0.f))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 0.f))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/3, 1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(0.f, -1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, -1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/6, 1.f/3))
+//									||
+//									((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, -1.f/3))
+//								)
+//								{
+//									onlyFriendElements = false;
+//									break;
+//								}
+//							}
+//							
+//							if (onlyFriendElements)
+//								relevantCombined = true;
+//						}
+//						
+//						if (relevantCombined)
+//						{
+//							System.out.println("relevant combined feature: " + combined.combinedFeature);
+//							System.out.println("from constituent " + i + " = " + instanceI);
+//							System.out.println("from constituent " + j + " = " + instanceJ);
+//						}
 
 						if (!existingFeatures.contains(combined.combinedFeature))
 						{
@@ -565,10 +691,24 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 							{
 								featurePairActivations.adjustOrPutValue(combined, 1, 1);
 								errorSums.adjustOrPutValue(combined, error, error);
+								
+//								if (relevantCombined)
+//									System.out.println("incremented for combined");
 							}
+//							else if (relevantCombined)
+//							{
+//								System.out.println("didn't add combined because already observed for this action ");
+//							}
 						}
+//						else if (relevantCombined)
+//						{
+//							System.out.println("didn't add combined because feature already exists");
+//						}
 					}
 				}
+				
+//				if (numRelevantConstituents == 1)
+//					System.out.println("origActiveInstances = " + origActiveInstances);
 			}
 		}
 
@@ -602,8 +742,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		final PriorityQueue<ScoredFeatureInstancePair> proactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 		final PriorityQueue<ScoredFeatureInstancePair> reactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 		
-		// Randomly pick a minimum required sample size in [3, 10]
-		final int requiredSampleSize = 3 + ThreadLocalRandom.current().nextInt(8);
+		// Randomly pick a minimum required sample size in [3, 5]
+		final int requiredSampleSize = 3 + ThreadLocalRandom.current().nextInt(3);
 
 		for (final CombinableFeatureInstancePair pair : featurePairActivations.keySet())
 		{
@@ -614,14 +754,88 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 //					++numFriendElements;
 //			}
 //			final boolean couldBeWinFeature = (numFriendElements >= 3);
+//			final boolean couldBeLossFeature = (numFriendElements == 2);
 			
 			if (!pair.a.equals(pair.b))	// Only interested in combinations of different instances
 			{
+//				if (pair.combinedFeature.toString().equals("rel:to=<{}>:pat=<els=[f{-1/6,1/6}, f{0,-1/6}]>"))
+//				{
+//					final int pairActs = featurePairActivations.get(pair);
+//					final int actsI = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.a, pair.a));
+//					final int actsJ = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.b, pair.b));
+//					
+//					if (pairActs != actsI || pairActs != actsJ || actsI != actsJ)
+//					{
+//						System.out.println("pairActs = " + pairActs);
+//						System.out.println("actsI = " + actsI);
+//						System.out.println("actsJ = " + actsJ);
+//						System.out.println("already contains = " + existingFeatures.contains(pair.combinedFeature));
+//						System.out.println("pair = " + pair);
+//						System.out.println("errorSumsI = " + errorSums.get(new CombinableFeatureInstancePair(game, pair.a, pair.a)));
+//						System.out.println("errorSumsJ = " + errorSums.get(new CombinableFeatureInstancePair(game, pair.b, pair.b)));
+//						for (final CombinableFeatureInstancePair key : featurePairActivations.keySet())
+//						{
+//							if (featurePairActivations.get(key) <= actsI && !key.combinedFeature.isReactive())
+//							{
+//								boolean onlyFriendElements = true;
+//								for (final FeatureElement element : key.combinedFeature.pattern().featureElements())
+//								{
+//									if 
+//									(
+//										element.not() 
+//										|| 
+//										element.type() != ElementType.Friend
+//										||
+//										((RelativeFeatureElement)element).walk().steps().size() != 2
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 0.f))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, -1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 0.f))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 0.f))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 0.f))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/3, 1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, -1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, -1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/6, 1.f/3))
+//										||
+//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, -1.f/3))
+//									)
+//									{
+//										onlyFriendElements = false;
+//										break;
+//									}
+//								}
+//								
+//								if (onlyFriendElements)
+//									System.out.println("Num activations for " + key + " = " + featurePairActivations.get(key));
+//							}
+//						}
+//					}
+//				}
+				
 				final int pairActs = featurePairActivations.get(pair);
 				if (pairActs == numCases || numCases < 4)
 				{
 					// Perfect correlation, so we should just skip this one
-//					if (couldBeWinFeature)
+//					if (couldBeWinFeature || couldBeLossFeature)
 //						System.out.println("Skipping because of correlation: " + pair);
 					continue;
 				}
@@ -629,7 +843,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				if (pairActs < requiredSampleSize)
 				{
 					// Need a bigger sample size
-//					if (couldBeWinFeature)
+//					if (couldBeWinFeature || couldBeLossFeature)
 //						System.out.println("Skipping because of sample size (" + pairActs + " < " + requiredSampleSize + "): " + pair);
 					continue;	
 				}
@@ -640,7 +854,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				if (actsI == numCases || actsJ == numCases || pairActs == actsI || pairActs == actsJ)
 				{
 					// Perfect correlation, so we should just skip this one
-//					if (couldBeWinFeature)
+//					if (couldBeWinFeature || couldBeLossFeature)
 //						System.out.println("Skipping because of perfect correlation: " + pair);
 					continue;
 				}
@@ -719,6 +933,20 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 //				if (couldBeWinFeature)
 //				{
 //					System.out.println("Might be win feature: " + pair);
+//					System.out.println("errorCorr = " + errorCorr);
+//					System.out.println("lbErrorCorr = " + lbErrorCorr);
+//					System.out.println("ubErrorCorr = " + ubErrorCorr);
+//					System.out.println("numCases = " + numCases);
+//					System.out.println("pairActs = " + pairActs);
+//					System.out.println("actsI = " + actsI);
+//					System.out.println("actsJ = " + actsJ);
+//					System.out.println("featureCorrI = " + featureCorrI);
+//					System.out.println("featureCorrJ = " + featureCorrJ);
+//					System.out.println("score = " + score);
+//				}
+//				else if (couldBeLossFeature)
+//				{
+//					System.out.println("Might be loss feature: " + pair);
 //					System.out.println("errorCorr = " + errorCorr);
 //					System.out.println("lbErrorCorr = " + lbErrorCorr);
 //					System.out.println("ubErrorCorr = " + ubErrorCorr);
@@ -931,6 +1159,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				experiment.logLine(logWriter, "observed first constituent " + actsI + " times");
 				experiment.logLine(logWriter, "observed second constituent " + actsJ + " times");
 
+//				System.out.println("BEST SCORE: " + bestPair.score);
 				currFeatureSet = newFeatureSet;
 				break;
 			}
