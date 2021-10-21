@@ -52,7 +52,7 @@ public class ButtonCycleAI extends ToolButton
 		final Font font = new Font("Arial", flags, fontSize);
 		g2d.setFont(font);
 		g2d.setColor(Color.white);
-		g2d.drawString("a", cx - 3, cy + 6);
+		g2d.drawString("c", cx - 3, cy + 6);
 		g2d.setFont(oldFont);
 	}
 
