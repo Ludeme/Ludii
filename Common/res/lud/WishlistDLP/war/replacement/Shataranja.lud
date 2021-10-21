@@ -1,0 +1,113 @@
+(define "CaptureToPiece"
+    (apply 
+        (remove 
+            (to) 
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shataranja"
+    (players 2)  
+    (equipment { 
+        (board (square 10)) 
+//        (piece "Pawn" Each 
+//                (or 
+//                    "StepForwardToEmpty" 
+//                    "CaptureForwardDiagonal"
+//                    (then
+//                        (if (is In (last To) (sites Mover "Promotion")) 
+//                            (moveAgain)
+//                        )
+//                    )
+//                )
+//            )
+//            (piece "Rook" Each 
+//                (move
+//                    Slide 
+//                    Orthogonal 
+//                    (to 
+//                        if:(is Enemy (who at:(to))) 
+//                        "CaptureToPiece"
+//                    ) 
+//                )
+//            )
+//            (piece "King_noCross" Each 
+//                (move
+//                    Step 
+//                    (to 
+//                        if:(not (is Friend (who at:(to)))) 
+//                        "CaptureToPiece" 
+//                    )
+//                )
+//            )
+//            (piece "Elephant" Each <Elephant>) 
+//            (piece "Knight" Each 
+//                (move
+//                    Leap 
+//                    "KnightWalk" 
+//                    (to 
+//                        if:(not (is Friend (who at:(to)))) 
+//                        "CaptureToPiece"
+//                    ) 
+//                )
+//            )
+//            (piece "Ferz_noCross" Each 
+//                (move
+//                    Step 
+//                    Diagonal
+//                    (to 
+//                        if:(not (is Friend (who at:(to)))) 
+//                        "CaptureToPiece" 
+//                    )
+//                )
+//            )
+//            (regions "Promotion" P1 (sites Top) )
+//            (regions "Promotion" P2 (sites Bottom) )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chaturanga is a replacement capture game played in India. This version is described in the nineteenth century, and was played on a 10x10 board.
+            
+        ")
+        (rules "10x10 board.")
+        (source "DLP evidence.")
+        (version "1.2.11")
+        (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
