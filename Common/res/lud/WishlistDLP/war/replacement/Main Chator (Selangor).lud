@@ -1,11 +1,151 @@
+(define "CaptureToPiece"
+    (apply 
+        (remove 
+            (to) 
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+(define "HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1) 
+)
+
+(define "PieceHasMoved"
+    (set State at:#1 0) 
+)
+
+(define "RememberPieceHasMoved"
+    (then 
+        (if 
+            (= (state at:(last To)) 1) 
+            ("PieceHasMoved" (last To))
+        ) 
+    ) 
+)
+
+(define "DoubleStep"
+    (move
+        Slide 
+        Forward 
+        (between (exact 2) if:(is Empty (between))) 
+        (to if:(is Empty (to))) 
+        "SetEnPassantLocation"
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Main Chator (Selangor)"
-    (players 2)  
+    (players {(player N) (player S)})  
     (equipment { 
-        (board (square 8)) 		
+        (board (square 8)) 
+        
+        (piece "Pawn" Each 
+            (or {
+                (if (is In (from) (sites Start (piece (what at:(from)))))
+                    "DoubleStep"
+                )
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                }
+                (then
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        (piece "Rook" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "King_noCross" Each // Need to add knight move if never move and never check.
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (piece "Elephant" Each 
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        ) 
+        (piece "Knight" Each 
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Ferz_noCross" Each 
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
     })
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (start { 
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "King_noCross1" coord:"D1") (place "Ferz_noCross1" coord:"E1") 
+            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "King_noCross2" coord:"E8") (place "Ferz_noCross2" coord:"D8") 
+        })
+        
+        (play 
+            (if "SameTurn"
+                (move Promote (last To) (piece "Ferz_noCross") Mover)
+                (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+            )
+        )
+        
+        (end {
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (no Moves Mover) (result Mover Win)) 
+            (if (= (count Pieces Next) 1) (result Mover Win) ) 
+        })
     )
 )
 
