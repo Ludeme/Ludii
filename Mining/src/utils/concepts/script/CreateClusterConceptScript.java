@@ -31,7 +31,7 @@ public class CreateClusterConceptScript
 		final int thinkingTime = 1;
 		final String agentName = "UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
-		final String folder = "/Trials/TrialsRandom";
+		final String folder = "/../Trials/TrialsRandom";
 		final String mainScriptName = "StateConcepts.sh";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
 		{
@@ -97,7 +97,7 @@ public class CreateClusterConceptScript
 						writer.println("unset JAVA_TOOL_OPTIONS");
 						writer.println(
 								"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
-										+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " " + "\"" + folder + "\"" + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"");
+										+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " "  + "\"" + agentName + "\"" + " " + "\"" + folder  + "\"" + " " + "\"" + gameName.substring(1) + "\"");
 						mainWriter.println("sbatch " + scriptName);
 					}
 				}
@@ -122,7 +122,7 @@ public class CreateClusterConceptScript
 							writer.println("unset JAVA_TOOL_OPTIONS");
 							writer.println(
 									"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
-											+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " " + "\"" + folder + "\"" + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
+											+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " " + "\"" + agentName + "\"" + " " + "\"" + folder  + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
 							mainWriter.println("sbatch " + scriptName);
 						}
 					}
