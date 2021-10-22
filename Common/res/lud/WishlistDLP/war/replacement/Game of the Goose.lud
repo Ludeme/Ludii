@@ -60,7 +60,8 @@
     
     (graphics {
        // (piece Scale "Goose" 0.5)
-        (stackType Ground)
+        (stackType Ground) 
+        (show Symbol "disc" Vertex (sites Board) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.75)
     })
     
 )
