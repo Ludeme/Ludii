@@ -47,7 +47,7 @@ public class Timeouts extends Metric
 		// Count number of timeouts.
 		double timeouts = 0.0;
 		for (final Trial trial : trials)
-			if (trial.status().winner() == 0 && trial.numTurns() > game.getMaxTurnLimit())
+			if (trial.status().winner() == 0 && (trial.numTurns() > game.getMaxTurnLimit() || trial.numberRealMoves() > game.getMaxMoveLimit()))
 				timeouts++;
 
 		return timeouts / trials.length;

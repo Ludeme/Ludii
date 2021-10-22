@@ -47,7 +47,7 @@ public class Drawishness extends Metric
 		// Count number of draws
 		double naturalDraws = 0.0;
 		for (final Trial trial : trials)
-			if (trial.status().winner() == 0 && trial.numTurns() <= game.getMaxTurnLimit())
+			if (trial.status().winner() == 0 && trial.numTurns() <= game.getMaxTurnLimit() && trial.numberRealMoves() <= game.getMaxMoveLimit())
 				naturalDraws++;
 
 		return naturalDraws / trials.length;
