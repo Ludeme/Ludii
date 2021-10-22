@@ -115,8 +115,8 @@ public class CreateClusterTrialsScript
 							writer.println("#!/usr/local_rwth/bin/zsh");
 							writer.println("#SBATCH -J GenTrials" + agentName + fileName);
 							writer.println("#!/usr/local_rwth/bin/zsh");
-							writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "Gentrials_%J.out");
-							writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "Gentrials_%J.err");
+							writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + agentName + fileName + "Gentrials_%J.out");
+							writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + agentName + fileName + "Gentrials_%J.err");
 							writer.println("#SBATCH -t 6000");
 							writer.println("#SBATCH --mem-per-cpu="+(int)(allocatedMemoryJava*1.25));
 							writer.println("#SBATCH -A um_dke");
