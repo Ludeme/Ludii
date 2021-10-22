@@ -75,7 +75,6 @@ public class CompareAllDistanceMetrics
 				allGamesToCompare.add(gameName);
 		final String[] gamesToCompare = allGamesToCompare.toArray(new String[0]);
 		
-
 		for (int i = 0; i < gamesToCompare.length; i++)
 		{
 			System.out.println(gamesToCompare[i]);
@@ -130,12 +129,6 @@ public class CompareAllDistanceMetrics
 				e.printStackTrace();
 			}
 		}
-		
-		
-//		for (int i = 0; i < gamesToCompare.length; i++)
-//			for (int j = 0; j < gamesToCompare.length; j++)
-//				if (i < j)
-//					compareTwoGames(GameLoader.loadGameFromName(gamesToCompare[i]), GameLoader.loadGameFromName(gamesToCompare[j]));
 	}
 	
 	//---------------------------------------------------------------------
