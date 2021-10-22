@@ -315,7 +315,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 
 		// Set of feature instances that we have already chosen to discard once (and hence must continue to discard)
 		final Set<CombinableFeatureInstancePair> discardedInstances = new HashSet<CombinableFeatureInstancePair>();
-
+		
 		// Loop through all samples in batch
 		for (int bi = 0; bi < batchIndices.size(); ++bi)
 		{
@@ -441,7 +441,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						(
 							Math.min
 							(
-								50,
+								60,
 								featureDiscoveryMaxNumFeatureInstances - preservedInstances.size()
 							),
 							activeInstances.size()
