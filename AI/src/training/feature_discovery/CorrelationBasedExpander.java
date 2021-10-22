@@ -512,6 +512,22 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						preservedInstances.add(combinedSelf);				// Remember to preserve this one forever now
 						distr.updateSoftmaxInvalidate(sampledIdx);			// Don't want to pick the same index again
 						--numInstancesAllowedThisAction;
+						
+						// Maybe now have to auto-pick several other instances if they lead to equal combinedSelf
+						for (int i = 0; i < distr.dim(); ++i)
+						{
+							if (distr.get(0) != 0.f)
+							{
+								if (combinedSelf.equals(activeInstancesCombinedSelfs.get(i)))
+								{
+									//System.out.println("auto-picking " + activeInstances.get(i) + " after " + keepInstance);
+									instancesToKeep.add(activeInstances.get(i));
+									instancesToKeepCombinedSelfs.add(activeInstancesCombinedSelfs.get(i));
+									distr.updateSoftmaxInvalidate(i);			// Don't want to pick the same index again
+									--numInstancesAllowedThisAction;
+								}
+							}
+						}
 					}
 				}
 
