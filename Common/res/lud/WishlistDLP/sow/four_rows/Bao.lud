@@ -59,6 +59,14 @@
     )
 )
 
+(define "AllHolesEmptyExceptLeftMost"
+	(all Sites (difference (sites Mover "Inner") (mapEntry "LeftMostInner" Mover)) if:(is Empty (site)))
+)
+
+(define "AllHolesEmptyExceptRightMost"
+	(all Sites (difference (sites Mover "Inner") (mapEntry "RightMostInner" Mover)) if:(is Empty (site)))
+)
+
 //------------------------------------------------------------------------------
 
 (game "Bao"  
@@ -128,13 +136,27 @@
                     
                     // Continue to sow.
                     (or
-                        (if (or (= (var "Direction") 1) (= (var "Direction") 3))
+                        (if 
+                        	(and
+                        		(if (!= (var "Replay") (mapEntry "RightMostInner" Mover))
+                        			True
+                        			("AllHolesEmptyExceptRightMost")
+                        		)
+                        		(or (= (var "Direction") 1) (= (var "Direction") 3))
+                        	)
                             (move Select
                                 (from (var "Replay"))
                                 (then ("Sowing" "TrackCW" 1))
                             )
                         )
-                        (if (or (= (var "Direction") 2) (= (var "Direction") 3))
+                        (if 
+                        	(and
+                        			(if (!= (var "Replay") (mapEntry "LeftMostInner" Mover))
+                            			True
+                            			("AllHolesEmptyExceptLeftMost")
+                            		)
+                        		(or (= (var "Direction") 2) (= (var "Direction") 3))
+                        	)
                             (move Select
                                 (from (var "Replay"))
                                 (then ("Sowing" "TrackCCW" 2))
