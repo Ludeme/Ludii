@@ -60,11 +60,11 @@
 )
 
 (define "AllHolesEmptyExceptLeftMost"
-	(all Sites (difference (sites Mover "Inner") (mapEntry "LeftMostInner" Mover)) if:(is Empty (site)))
+    (all Sites (difference (sites Mover "Inner") (mapEntry "LeftMostInner" Mover)) if:(is Empty (site)))
 )
 
 (define "AllHolesEmptyExceptRightMost"
-	(all Sites (difference (sites Mover "Inner") (mapEntry "RightMostInner" Mover)) if:(is Empty (site)))
+    (all Sites (difference (sites Mover "Inner") (mapEntry "RightMostInner" Mover)) if:(is Empty (site)))
 )
 
 //------------------------------------------------------------------------------
@@ -137,26 +137,26 @@
                     // Continue to sow.
                     (or
                         (if 
-                        	(and
-                        		(if (!= (var "Replay") (mapEntry "RightMostInner" Mover))
-                        			True
-                        			("AllHolesEmptyExceptRightMost")
-                        		)
-                        		(or (= (var "Direction") 1) (= (var "Direction") 3))
-                        	)
+                            (and
+                                (if (!= (var "Replay") (mapEntry "RightMostInner" Mover))
+                                    True
+                                    ("AllHolesEmptyExceptRightMost")
+                                )
+                                (or (= (var "Direction") 1) (= (var "Direction") 3))
+                            )
                             (move Select
                                 (from (var "Replay"))
                                 (then ("Sowing" "TrackCW" 1))
                             )
                         )
                         (if 
-                        	(and
-                        			(if (!= (var "Replay") (mapEntry "LeftMostInner" Mover))
-                            			True
-                            			("AllHolesEmptyExceptLeftMost")
-                            		)
-                        		(or (= (var "Direction") 2) (= (var "Direction") 3))
-                        	)
+                            (and
+                                (if (!= (var "Replay") (mapEntry "LeftMostInner" Mover))
+                                    True
+                                    ("AllHolesEmptyExceptLeftMost")
+                                )
+                                (or (= (var "Direction") 2) (= (var "Direction") 3))
+                            )
                             (move Select
                                 (from (var "Replay"))
                                 (then ("Sowing" "TrackCCW" 2))
@@ -214,7 +214,7 @@
                         (if (!= (value Player Mover) 1)
                             (move // If not possible just place then sow in any direction from the square hole.
                                 (from (handSite Mover))
-                                (to (sites "SquaresHoles") if:(is Occupied (to)))
+                                (to (intersection (sites "SquaresHoles") (sites Mover "Inner")) if:(is Occupied (to)))
                                 count:1
                                 (then
                                     (and {
@@ -232,7 +232,8 @@
                             (move Select
                                 (from 
                                     (sites Mover)
-                                    if:(and (is Occupied (from))
+                                    if:(and
+                                        (or (< 1 (count at:(from))) (> 16 (count at:(from))))
                                         (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                                     )
                                 )
@@ -281,7 +282,8 @@
                             (move Select
                                 (from 
                                     (sites Mover)
-                                    if:(and (is Occupied (from))
+                                    if:(and 
+                                        (or (< 1 (count at:(from))) (> 16 (count at:(from))))
                                         (is Occupied ("OppositePit" ("NextHole" (from) "TrackCCW" (count at:(from)))))
                                     )
                                 )
@@ -335,7 +337,7 @@
                                         (sites Mover)
                                         (difference (sites Mover) (sites "SquaresHoles"))
                                     )
-                                    if:(is Occupied (from))
+                                    if:(or (< 1 (count at:(from))) (> 16 (count at:(from))))
                                 )
                                 (then
                                     (sow
@@ -385,7 +387,7 @@
                                         (sites Mover)
                                         (difference (sites Mover) (sites "SquaresHoles"))
                                     )
-                                    if:(is Occupied (from))
+                                    if:(or (< 1 (count at:(from))) (> 16 (count at:(from))))
                                 )
                                 (then
                                     (sow
@@ -436,8 +438,8 @@
         )
         
         (end {
-            (if ("NoPiecesInInner" P1) (result P2 Win))
-            (if ("NoPiecesInInner" P2) (result P1 Win))
+            (if (no Moves P1) (result P2 Win))
+            (if (no Moves P2) (result P1 Win))
         })
     )
 )
