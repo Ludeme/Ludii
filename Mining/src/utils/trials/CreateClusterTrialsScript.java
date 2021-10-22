@@ -28,7 +28,7 @@ public class CreateClusterTrialsScript
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
 		final String mainScriptName = "GenTrials.sh";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
@@ -88,16 +88,16 @@ public class CreateClusterTrialsScript
 					try (final PrintWriter writer = new UnixPrintWriter(new File(scriptName), "UTF-8"))
 					{
 						writer.println("#!/usr/local_rwth/bin/zsh");
-						writer.println("#SBATCH -J GenTrials" + fileName);
+						writer.println("#SBATCH -J GenTrials" + agentName + fileName);
 						writer.println("#!/usr/local_rwth/bin/zsh");
-						writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "Gentrials_%J.out");
-						writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "Gentrials_%J.err");
+						writer.println("#SBATCH -o /work/" + clusterLogin + "/result/Out" + agentName + fileName + "Gentrials_%J.out");
+						writer.println("#SBATCH -e /work/" + clusterLogin + "/result/Err" + agentName + fileName + "Gentrials_%J.err");
 						writer.println("#SBATCH -t 6000");
 						writer.println("#SBATCH --mem-per-cpu="+(int)(allocatedMemoryJava*1.25));
 						writer.println("#SBATCH -A um_dke");
 						writer.println("unset JAVA_TOOL_OPTIONS");
 						writer.println(
-								"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/Trials"+ agentName +"/ludii.jar\" --generate-trials "
+								"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/Trials/Trials"+ agentName +"/ludii.jar\" --generate-trials "
 										+ maxMove + " " + thinkingTime + " " + numPlayout  + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"");
 						mainWriter.println("sbatch " + scriptName);
 					}
@@ -113,7 +113,7 @@ public class CreateClusterTrialsScript
 						try (final PrintWriter writer = new UnixPrintWriter(new File(scriptName), "UTF-8"))
 						{
 							writer.println("#!/usr/local_rwth/bin/zsh");
-							writer.println("#SBATCH -J GenTrials" + fileName);
+							writer.println("#SBATCH -J GenTrials" + agentName + fileName);
 							writer.println("#!/usr/local_rwth/bin/zsh");
 							writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "Gentrials_%J.out");
 							writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "Gentrials_%J.err");
@@ -122,7 +122,7 @@ public class CreateClusterTrialsScript
 							writer.println("#SBATCH -A um_dke");
 							writer.println("unset JAVA_TOOL_OPTIONS");
 							writer.println(
-									"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/Trials"+ agentName +"/ludii.jar\" --generate-trials "
+									"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/Trials//Trials"+ agentName +"/ludii.jar\" --generate-trials "
 											+ maxMove + " " + thinkingTime + " " + numPlayout + " "  + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
 							mainWriter.println("sbatch " + scriptName);
 						}
