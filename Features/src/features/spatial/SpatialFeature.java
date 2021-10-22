@@ -19,8 +19,8 @@ import game.util.graph.GraphElement;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
+import gnu.trove.map.TFloatIntMap;
+import gnu.trove.map.hash.TFloatIntHashMap;
 import other.state.container.ContainerState;
 import other.topology.Topology;
 import other.topology.TopologyElement;
@@ -1359,7 +1359,7 @@ public abstract class SpatialFeature extends Feature
 			// with length > 0
 			float mostCommonTurn = Float.MAX_VALUE;
 			int numOccurrences = 0;
-			final TObjectIntMap<Float> occurrencesMap = new TObjectIntHashMap<Float>();
+			final TFloatIntMap occurrencesMap = new TFloatIntHashMap();
 
 			for (final FeatureElement featureElement : pattern.featureElements())
 			{
@@ -1371,7 +1371,7 @@ public abstract class SpatialFeature extends Feature
 					if (walk.steps().size() > 0)
 					{
 						final float turn = walk.steps().getQuick(0);
-						final int newOccurrences = occurrencesMap.adjustOrPutValue(Float.valueOf(turn), 1, 1);
+						final int newOccurrences = occurrencesMap.adjustOrPutValue(turn, 1, 1);
 
 						if (newOccurrences > numOccurrences)
 						{
@@ -1403,7 +1403,7 @@ public abstract class SpatialFeature extends Feature
 					if (walk != null && walk.steps().size() > 0)
 					{
 						final float turn = walk.steps().getQuick(0);
-						final int newOccurrences = occurrencesMap.adjustOrPutValue(Float.valueOf(turn), 1, 1);
+						final int newOccurrences = occurrencesMap.adjustOrPutValue(turn, 1, 1);
 
 						if (newOccurrences > numOccurrences)
 						{
