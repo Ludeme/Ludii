@@ -1351,7 +1351,12 @@ public abstract class SpatialFeature extends Feature
 			}
 		}
 
-		if (allowedRotations == null || Arrays.equals(allowedRotations.toArray(), allGameRotations))
+		if 
+		(
+			allowedRotations == null || Arrays.equals(allowedRotations.toArray(), allGameRotations)
+			&&
+			this instanceof RelativeFeature
+		)
 		{
 			// All rotations are allowed
 
@@ -1363,26 +1368,23 @@ public abstract class SpatialFeature extends Feature
 
 			for (final FeatureElement featureElement : pattern.featureElements())
 			{
-				if (featureElement instanceof RelativeFeatureElement)
+				final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
+				final Walk walk = rel.walk();
+
+				if (walk.steps().size() > 0)
 				{
-					final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-					final Walk walk = rel.walk();
+					final float turn = walk.steps().getQuick(0);
+					final int newOccurrences = occurrencesMap.adjustOrPutValue(turn, 1, 1);
 
-					if (walk.steps().size() > 0)
+					if (newOccurrences > numOccurrences)
 					{
-						final float turn = walk.steps().getQuick(0);
-						final int newOccurrences = occurrencesMap.adjustOrPutValue(turn, 1, 1);
-
-						if (newOccurrences > numOccurrences)
-						{
-							numOccurrences = newOccurrences;
-							mostCommonTurn = turn;
-						}
-						else if (newOccurrences == numOccurrences)
-						{
-							// Prioritise small turns in case of tie
-							mostCommonTurn = Math.min(mostCommonTurn, turn);
-						}
+						numOccurrences = newOccurrences;
+						mostCommonTurn = turn;
+					}
+					else if (newOccurrences == numOccurrences)
+					{
+						// Prioritise small turns in case of tie
+						mostCommonTurn = Math.min(mostCommonTurn, turn);
 					}
 				}
 			}
@@ -1423,37 +1425,31 @@ public abstract class SpatialFeature extends Feature
 			// every walk
 			for (final FeatureElement featureElement : pattern.featureElements())
 			{
-				if (featureElement instanceof RelativeFeatureElement)
-				{
-					final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-					final Walk walk = rel.walk();
+				final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
+				final Walk walk = rel.walk();
 
-					if (walk.steps().size() > 0)
-					{
-						walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
-					}
+				if (walk.steps().size() > 0)
+				{
+					walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
 				}
 			}
 
 			// and also subtract in action specifier Walks
-			if (this instanceof RelativeFeature)
+			final RelativeFeature relFeature = (RelativeFeature) this;
+			for 
+			(
+				final Walk walk : new Walk[]
+				{ 
+					relFeature.fromPosition, 
+					relFeature.toPosition, 
+					relFeature.lastFromPosition,
+					relFeature.lastToPosition 
+				}
+			)
 			{
-				final RelativeFeature relFeature = (RelativeFeature) this;
-				for 
-				(
-					final Walk walk : new Walk[]
-							{ 
-								relFeature.fromPosition, 
-								relFeature.toPosition, 
-								relFeature.lastFromPosition,
-								relFeature.lastToPosition 
-							}
-				)
+				if (walk != null && walk.steps().size() > 0)
 				{
-					if (walk != null && walk.steps().size() > 0)
-					{
-						walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
-					}
+					walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
 				}
 			}
 		}
