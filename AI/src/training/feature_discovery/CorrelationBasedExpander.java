@@ -349,6 +349,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				sortedActionIndices.add(i);
 			}
 			
+//			if (antiDefeatingMoves.cardinality() > 0)
+//				System.out.println("Winning -- Losing -- AntiDefeating : " + winningMoves.cardinality() + " -- " + losingMoves.cardinality() + " -- " + antiDefeatingMoves.cardinality());
+			
 			final TIntArrayList unsortedActionIndices = new TIntArrayList();
 			for (int a = 0; a < moves.size(); ++a)
 			{

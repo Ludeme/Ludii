@@ -190,6 +190,7 @@ public class End extends BaseLudeme implements Rule
 					if (onlyOneActive != 0)
 					{
 						context.trial().ranking()[onlyOneActive] = rank + 1.0;
+						context.addLoser(onlyOneActive);
 						for (int player = 1; player < context.trial().ranking().length; player++)
 						{
 							if (context.trial().ranking()[player] == 1)

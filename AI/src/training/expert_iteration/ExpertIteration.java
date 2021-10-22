@@ -1178,6 +1178,9 @@ public class ExpertIteration
 					else
 						antiDefeatingMoves.set(i);
 				}
+				
+//				if (maxNumDefeatingResponses != 0)
+//					System.out.println("numDefeatingResponses = " + Arrays.toString(numDefeatingResponses));
 
 				experience.setWinningMoves(winningMoves);
 				experience.setLosingMoves(losingMoves);
