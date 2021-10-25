@@ -753,6 +753,9 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.addTextToStatusPanel(Grammar.grammar().toString());
 			System.out.print(Grammar.grammar());
+			
+			System.out.println("Aliases in grammar:\n" + Grammar.grammar().aliases());
+			
 			try
 			{
 				Grammar.grammar().export("ludii-grammar-" + Constants.LUDEME_VERSION + ".txt");
