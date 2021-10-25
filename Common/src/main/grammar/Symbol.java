@@ -159,7 +159,7 @@ public class Symbol
 		this.ludemeType = type;
 		this.path = new String(path);
 		this.cls  = cls;
-		this.hasAlias = (alias != "");
+		this.hasAlias = (alias != null && alias != "");
 		
 		extractPackagePath();
 		extractName();
@@ -195,7 +195,7 @@ public class Symbol
 		this.notionalLocation = new String(notionalLocation);
 		this.cls = cls;
 
-		this.hasAlias = (alias != "");
+		this.hasAlias = (alias != null && alias != "");
 		
 		extractName();
 		deriveKeyword(alias);

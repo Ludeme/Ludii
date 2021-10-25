@@ -344,7 +344,6 @@ public class Grammar
 			for (final LudemeInfo li : ludemesUsed)
 				System.out.println(li.symbol().token() + " (" + li.symbol().name() + ") : " + li.symbol().cls().getName());
 		}
-
 	}
 
 	//-------------------------------------------------------------------------
@@ -2974,6 +2973,19 @@ public class Grammar
 	public String[][] getFunctions() 
 	{
 		return Functions;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	public String aliases()
+	{
+		final StringBuilder sb = new StringBuilder();
+		
+		for (final Symbol symbol : symbols)
+			if (symbol.hasAlias())
+				sb.append(symbol.name() + " (" + symbol.path() + ") has alias: " + symbol.token() + "\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------
