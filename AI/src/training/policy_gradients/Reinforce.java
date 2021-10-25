@@ -262,7 +262,7 @@ public class Reinforce
 				optimisers[p].maximiseObjective(policy.linearFunction(p).trainableParams().allWeights(), grads);
 			}
 
-			if (!featureDiscoveryParams.noGrowFeatureSet && epoch % 2 == 0)
+			if (!featureDiscoveryParams.noGrowFeatureSet && (epoch + 1) % 5 == 0)
 			{
 				// Now we want to try growing our feature set
 				final BaseFeatureSet[] expandedFeatureSets = new BaseFeatureSet[numPlayers + 1];

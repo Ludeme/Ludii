@@ -2544,7 +2544,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--pg-gamma")
 				.help("Discount factor gamma for policy gradients (excluding TSPG).")
-				.withDefault(Double.valueOf(0.99))
+				.withDefault(Double.valueOf(0.9))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
 		
