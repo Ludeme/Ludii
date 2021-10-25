@@ -53,6 +53,9 @@ public final class GameLoader
 	 */
 	public static Game loadGameFromName(final String name, final String rulesetName)
 	{
+		if (rulesetName.length() == 0)
+			return loadGameFromName(name);
+		
 		final Game tempGame = GameLoader.loadGameFromName(name);
 		final List<Ruleset> rulesets = tempGame.description().rulesets();
 		if (rulesets != null && !rulesets.isEmpty())
