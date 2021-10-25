@@ -41,9 +41,9 @@ public class CompareAllDistanceMetrics
 	final static Dataset booleanConceptDataset = new BooleanConceptDataset();
 	final static Dataset moveConceptDataset = new MoveConceptDataset();
 	
-//	static Map<String, Double> fullLudemeVocabulary;
-//	static Map<String, Double> fullBooleanConceptVocabulary;
-//	static Map<String, Double> fullMoveConceptVocabulary;
+	static Map<String, Double> fullLudemeVocabulary;
+	static Map<String, Double> fullBooleanConceptVocabulary;
+	static Map<String, Double> fullMoveConceptVocabulary;
 	
 	final static int nGramLength = 4;
 	
@@ -51,25 +51,22 @@ public class CompareAllDistanceMetrics
 	
 	public static void main(final String[] args)
 	{
-//		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset);
-//		System.out.println("ludemeVocabulary stored");
-//		
-//		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset);
-//		System.out.println("booleanConceptVocabulary stored");
-//		
-//		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset);
-//		System.out.println("moveConceptVocabulary stored");
+		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset");
+		System.out.println("ludemeVocabulary stored");
 		
+		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset");
+		System.out.println("booleanConceptVocabulary stored");
 		
+		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset");
+		System.out.println("moveConceptVocabulary stored");
 		
-		
+		// Specific games/rulesets to compare.
 		final String[] gamesToCompare = 
 			{
 				"/lud/board/race/escape/Royal Game of Ur.lud",
 				"/lud/board/race/escape/Royal Game of Ur.lud",
 				"/lud/board/war/replacement/checkmate/chess/Chess.lud"
 			};
-
 		final String[] rulesetsToCompare = 
 			{
 				"Ruleset/Finkel (Scholarly)",
@@ -77,8 +74,7 @@ public class CompareAllDistanceMetrics
 				""
 			};
 		
-		
-		
+		// Compare all games/rulesets.
 //		final String[] choices = FileHandling.listGames();
 //		final List<String> gamesToCompareList = new ArrayList<>();
 //		final List<String> rulesetsToCompareList = new ArrayList<>();
@@ -110,12 +106,11 @@ public class CompareAllDistanceMetrics
 //		}
 //		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
 //		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);
-		
-		
-		
-		
+
+		// Record distances for each game/ruleset comparison.
 		for (int i = 0; i < gamesToCompare.length; i++)
 		{
+			// Create output file.
 			System.out.println(gamesToCompare[i]);
 			final File outputFile = new File
 					(outputPath + 
@@ -132,6 +127,7 @@ public class CompareAllDistanceMetrics
 				e1.printStackTrace();
 			} 
 
+			// Store distances in output file.
 			try (FileWriter myWriter = new FileWriter(outputFile))
 			{
 				final Map<String, Map<String, Double>> allGameDistances = new HashMap<>();
@@ -204,7 +200,6 @@ public class CompareAllDistanceMetrics
 		// JensenShannonDivergence
 		
 		final DistanceMetric jensenShannonDivergenceMetric = new JensenShannonDivergence();
-		//System.out.println("JensenShannonDivergence");
 		
 		allDistances.put("JSD_ludeme", jensenShannonDivergenceMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 		allDistances.put("JSD_booleanConcept", jensenShannonDivergenceMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
@@ -213,15 +208,14 @@ public class CompareAllDistanceMetrics
 		allDistances.put("JSD_ludeme_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
 		allDistances.put("JSD_moveCooncept_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
-//		allDistances.put("JSD_ludeme_TFIDF", jensenShannonDivergenceMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
-//		allDistances.put("JSD_booleanConcept_TFIDF", jensenShannonDivergenceMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-//		allDistances.put("JSD_moveConcept_TFIDF", jensenShannonDivergenceMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+		allDistances.put("JSD_ludeme_TFIDF", jensenShannonDivergenceMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
+		allDistances.put("JSD_booleanConcept_TFIDF", jensenShannonDivergenceMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
+		allDistances.put("JSD_moveConcept_TFIDF", jensenShannonDivergenceMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Cosine
 		
 		final DistanceMetric cosineMetric = new Cosine();
-		//System.out.println("Cosine");
 		
 		allDistances.put("Cosine_ludeme", cosineMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 		allDistances.put("Cosine_booleanConcept", cosineMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
@@ -230,15 +224,14 @@ public class CompareAllDistanceMetrics
 		allDistances.put("Cosine_ludeme_ngram", cosineMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
 		allDistances.put("Cosine_moveCooncept_ngram", cosineMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
-//		allDistances.put("Cosine_ludeme_TFIDF", cosineMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
-//		allDistances.put("Cosine_booleanConcept_TFIDF", cosineMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-//		allDistances.put("Cosine_moveConcept_TFIDF", cosineMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+		allDistances.put("Cosine_ludeme_TFIDF", cosineMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
+		allDistances.put("Cosine_booleanConcept_TFIDF", cosineMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
+		allDistances.put("Cosine_moveConcept_TFIDF", cosineMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Jaccard
 		
 		final DistanceMetric jaccardMetric = new Jaccard();
-		//System.out.println("Jaccard");
 		
 		allDistances.put("Jaccard_ludeme", jaccardMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 		allDistances.put("Jaccard_booleanConcept", jaccardMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
@@ -247,15 +240,14 @@ public class CompareAllDistanceMetrics
 		allDistances.put("Jaccard_ludeme_ngram", jaccardMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
 		allDistances.put("Jaccard_moveCooncept_ngram", jaccardMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
-//		allDistances.put("Jaccard_ludeme_TFIDF", jaccardMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
-//		allDistances.put("Jaccard_booleanConcept_TFIDF", jaccardMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-//		allDistances.put("Jaccard_moveConcept_TFIDF", jaccardMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+		allDistances.put("Jaccard_ludeme_TFIDF", jaccardMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
+		allDistances.put("Jaccard_booleanConcept_TFIDF", jaccardMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
+		allDistances.put("Jaccard_moveConcept_TFIDF", jaccardMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Levenshtein
 		
 		final DistanceMetric levenshteinMetric = new Levenshtein();
-		//System.out.println("Levenshtein");
 		
 		allDistances.put("Levenshtein_ludeme", levenshteinMetric.distance(ludemeDataset, null, gameA, gameB));
 		allDistances.put("Levenshtein_moveConcept", levenshteinMetric.distance(moveConceptDataset, null, gameA, gameB));
@@ -264,7 +256,6 @@ public class CompareAllDistanceMetrics
 		// Local Alignment
 		
 		final DistanceMetric localAlignmentMetric = new LocalAlignment();
-		//System.out.println("LocalAlignment");
 		
 		allDistances.put("LocalAlignment_ludeme", localAlignmentMetric.distance(ludemeDataset, null, gameA, gameB));
 		allDistances.put("LocalAlignment_moveConcept", localAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
@@ -273,7 +264,6 @@ public class CompareAllDistanceMetrics
 		// Repeated Local Alignment
 		
 		final DistanceMetric repeatedLocalAlignmentMetric = new RepeatedLocalAlignment();
-		//System.out.println("RepeatedLocalAlignment");
 		
 		allDistances.put("RepeatedLocalAlignment_ludeme", repeatedLocalAlignmentMetric.distance(ludemeDataset, null, gameA, gameB));
 		allDistances.put("RepeatedLocalAlignment_moveConcept", repeatedLocalAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
@@ -282,7 +272,6 @@ public class CompareAllDistanceMetrics
 		// Global Alignment
 		
 		final DistanceMetric globalAlignmentMetric = new GlobalAlignment();
-		//System.out.println("GlobalAlignment");
 		
 		allDistances.put("GlobalAlignment_ludeme", globalAlignmentMetric.distance(ludemeDataset, null, gameA, gameB));
 		allDistances.put("GlobalAlignment_moveConcept", globalAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
@@ -291,7 +280,6 @@ public class CompareAllDistanceMetrics
 		// Zhang Shasha
 		
 		final DistanceMetric zhangShashaMetric = new ZhangShasha();
-		//System.out.println("ZhangShasha");
 		
 		allDistances.put("ZhangShasha_ludeme", zhangShashaMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 		

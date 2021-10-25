@@ -1,5 +1,11 @@
 package gameDistance;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +29,39 @@ public class DistanceUtils
 	public final static int MISS_VALUE = -5;		// Should be negative
 	public final static int GAP_PENALTY = -1;		// Should be negative
 	
+	// vocabulary store paths.
+	private final static String vocabularyStorePath = "res/gameDistance/vocabulary/";
+	
 	//-----------------------------------------------------------------------------
 	
-	public static Map<String, Double> fullVocabulary(final Dataset dataset)
+	public static Map<String, Double> fullVocabulary(final Dataset dataset, final String datasetName)
 	{
+		final File vocabularyFile = new File(vocabularyStorePath + datasetName + ".txt");
+		
+		// Recover vocabulary from previously stored txt file.
+		if (vocabularyFile.exists())
+		{
+			try (final FileInputStream fileInput = new FileInputStream(vocabularyFile))
+			{
+				try (final ObjectInputStream objectInput = new ObjectInputStream(fileInput))
+				{
+					@SuppressWarnings("unchecked")
+					final Map<String, Double> vocabulary = (HashMap<String, Double>)objectInput.readObject();
+			        objectInput.close();
+			        fileInput.close();
+			        return vocabulary;
+				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}	
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}	
+		}
+		
 		double numGames = 0.0;
 		final Map<String, Double> vocabulary = new HashMap<>();
 		final String[] choices = FileHandling.listGames();
@@ -73,6 +108,36 @@ public class DistanceUtils
 		
 		for (final Map.Entry<String, Double> entry : vocabulary.entrySet())
 			entry.setValue(Double.valueOf(Math.log(numGames / entry.getValue().doubleValue())));
+		
+		// Store vocabulary to txt file.
+		if (!vocabularyFile.exists())
+		{
+			try
+			{
+				vocabularyFile.createNewFile();
+			}
+			catch (final IOException e1)
+			{
+				e1.printStackTrace();
+			}
+			try (final FileOutputStream myFileOutStream = new FileOutputStream(vocabularyFile))
+			{
+				try (final ObjectOutputStream myObjectOutStream = new ObjectOutputStream(myFileOutStream))
+				{
+			        myObjectOutStream.writeObject(vocabulary);
+			        myObjectOutStream.close();
+			        myFileOutStream.close();
+				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}	
+		}
 		
 		return vocabulary;
 	}
