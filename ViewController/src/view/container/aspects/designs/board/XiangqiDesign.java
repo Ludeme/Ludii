@@ -56,7 +56,7 @@ public class XiangqiDesign extends BoardDesign
 
 		fillCells(bridge, g2d, context);
 		drawInnerCellEdges(g2d, context);
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 		drawXiangqiSymbols(g2d);
 		drawOuterCellEdges(bridge, g2d, context);
 

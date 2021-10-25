@@ -129,7 +129,7 @@ public class GraphDesign extends PuzzleDesign
 		
 		drawVertices(bridge, g2d, context, ((GraphStyle)boardStyle).baseVertexRadius());
 		
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 		
 		if (context.game().isDeductionPuzzle() && context.game().metadata().graphics().showRegionOwner())
 			drawRegions(g2d, context, colorSymbol(), strokeThick, hintRegions);

@@ -93,7 +93,7 @@ public class GoDesign extends BoardDesign
 			symbols.add(new MetadataImageInfo(i, SiteType.Vertex, "dot", (float)0.3));
 		}
 		
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 
 		return g2d.getSVGDocument();
 	}

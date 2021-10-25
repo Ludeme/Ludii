@@ -9,4 +9,7 @@ public enum ShowSiteDataType
 {
 	/** To indicate whether the sites of the board should be represented as holes. */
 	AsHoles,
+	
+	/** Indicates whether the sites of the board should have their index displayed/ */
+	SiteIndex
 }

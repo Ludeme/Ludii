@@ -51,7 +51,7 @@ public class ChessDesign extends BoardDesign
 
 		fillCells(bridge, g2d, context);
 		
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 		
 		drawGround(g2d, context, false);
 
