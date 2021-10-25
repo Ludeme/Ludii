@@ -18,8 +18,6 @@ import other.trial.Trial;
  */
 public class DatasetUtils
 {
-
-	//private final static Map<String, List<Trial>> gameTrials = new HashMap<>();
 	
 	//-------------------------------------------------------------------------
 	
@@ -28,7 +26,7 @@ public class DatasetUtils
 	 * @param candidateGameName
 	 * @param rulesetStrings
 	 */
-	private static List<Trial> loadSavedTrials(final Game game, final String keyName)
+	public static List<Trial> getSavedTrials(final Game game)
 	{
 		final List<Trial> gameTrials = new ArrayList<>();
 		final String folderTrials = "/../Trials/TrialsRandom/";
@@ -67,20 +65,6 @@ public class DatasetUtils
 		}
 		
 		return gameTrials;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	public static List<Trial> getSavedTrials(final Game game)
-	{
-		final String gamePath = GameLoader.getFilePath(game.name());
-		final List<String> rulesetOptions = game.getOptions();
-		final String keyName = gamePath + rulesetOptions.toString();
-		
-//		if (!gameTrials.containsKey(keyName))
-//			loadSavedTrials(game, keyName);
-		
-		return loadSavedTrials(game, keyName);
 	}
 	
 	//-------------------------------------------------------------------------

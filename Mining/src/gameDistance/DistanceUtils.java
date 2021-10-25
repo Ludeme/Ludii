@@ -38,6 +38,7 @@ public class DistanceUtils
 				gameName = gameName.split("\\/")[gameName.split("\\/").length-1];
 				final Game tempGame = GameLoader.loadGameFromName(gameName);
 				final List<Ruleset> rulesets = tempGame.description().rulesets();
+				
 				if (rulesets != null && !rulesets.isEmpty())
 				{
 					for (int rs = 0; rs < rulesets.size(); rs++)

@@ -23,7 +23,6 @@ import gameDistance.metrics.sequence.Levenshtein;
 import gameDistance.metrics.sequence.LocalAlignment;
 import gameDistance.metrics.sequence.RepeatedLocalAlignment;
 import gameDistance.metrics.treeEdit.ZhangShasha;
-import main.FileHandling;
 import other.GameLoader;
 
 /**
@@ -42,9 +41,9 @@ public class CompareAllDistanceMetrics
 	final static Dataset booleanConceptDataset = new BooleanConceptDataset();
 	final static Dataset moveConceptDataset = new MoveConceptDataset();
 	
-	static Map<String, Double> fullLudemeVocabulary;
-	static Map<String, Double> fullBooleanConceptVocabulary;
-	static Map<String, Double> fullMoveConceptVocabulary;
+//	static Map<String, Double> fullLudemeVocabulary;
+//	static Map<String, Double> fullBooleanConceptVocabulary;
+//	static Map<String, Double> fullMoveConceptVocabulary;
 	
 	final static int nGramLength = 4;
 	
@@ -52,40 +51,82 @@ public class CompareAllDistanceMetrics
 	
 	public static void main(final String[] args)
 	{
-		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset);
-		System.out.println("ludemeVocabulary stored");
+//		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset);
+//		System.out.println("ludemeVocabulary stored");
+//		
+//		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset);
+//		System.out.println("booleanConceptVocabulary stored");
+//		
+//		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset);
+//		System.out.println("moveConceptVocabulary stored");
 		
-		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset);
-		System.out.println("booleanConceptVocabulary stored");
 		
-		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset);
-		System.out.println("moveConceptVocabulary stored");
 		
-//		final String[] gamesToCompare = 
+		
+		final String[] gamesToCompare = 
+			{
+				"/lud/board/race/escape/Royal Game of Ur.lud",
+				"/lud/board/race/escape/Royal Game of Ur.lud",
+			};
+
+		final String[] rulesetsToCompare = 
+			{
+				"Ruleset/Finkel (Scholarly)",
+				"Ruleset/Murray (Suggested)",
+			};
+		
+		
+		
+//		final String[] choices = FileHandling.listGames();
+//		final List<String> gamesToCompareList = new ArrayList<>();
+//		final List<String> rulesetsToCompareList = new ArrayList<>();
+//		for (String gameName : choices)
+//		{
+//			if (!FileHandling.shouldIgnoreLudAnalysis(gameName))
 //			{
-//				"/lud/board/hunt/Adugo.lud",
-//				"/lud/board/war/replacement/checkmate/chess/Half Chess.lud",
-//				"/lud/board/war/replacement/checkmate/chess/Chess.lud"
-//			};
+//				gameName = gameName.split("\\/")[gameName.split("\\/").length-1];
+//				final Game tempGame = GameLoader.loadGameFromName(gameName);
+//				final List<Ruleset> rulesets = tempGame.description().rulesets();
+//				
+//				if (rulesets != null && !rulesets.isEmpty())
+//				{
+//					for (int rs = 0; rs < rulesets.size(); rs++)
+//					{
+//						if (!rulesets.get(rs).optionSettings().isEmpty())
+//						{
+//							gamesToCompareList.add(gameName);
+//							rulesetsToCompareList.add(rulesets.get(rs).heading());
+//						}
+//					}
+//				}
+//				else
+//				{
+//					gamesToCompareList.add(gameName);
+//					rulesetsToCompareList.add("");
+//				}
+//			}
+//		}
+//		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
+//		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);
 		
-		final String[] allGames = FileHandling.listGames();
-		final List<String> allGamesToCompare = new ArrayList<>();
-		for (final String gameName : allGames)
-			if (!FileHandling.shouldIgnoreLudAnalysis(gameName))
-				allGamesToCompare.add(gameName);
-		final String[] gamesToCompare = allGamesToCompare.toArray(new String[0]);
+		
+		
 		
 		for (int i = 0; i < gamesToCompare.length; i++)
 		{
 			System.out.println(gamesToCompare[i]);
-			final File outputFile = new File(outputPath + gamesToCompare[i].replaceAll("[^a-zA-Z0-9]", "_") + ".csv");
+			final File outputFile = new File
+					(outputPath + 
+							gamesToCompare[i].split("\\/")[gamesToCompare[i].split("\\/").length-1] + 
+							"_" + 
+							rulesetsToCompare[i].split("\\/")[rulesetsToCompare[i].split("\\/").length-1] + 
+							".csv");
 			try
 			{
 				outputFile.createNewFile();
 			}
 			catch (final IOException e1)
 			{
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} 
 
@@ -94,7 +135,13 @@ public class CompareAllDistanceMetrics
 				final Map<String, Map<String, Double>> allGameDistances = new HashMap<>();
 				
 				for (int j = 0; j < gamesToCompare.length; j++)
-					allGameDistances.put(gamesToCompare[j], compareTwoGames(GameLoader.loadGameFromName(gamesToCompare[i]), GameLoader.loadGameFromName(gamesToCompare[j])));
+				{
+					allGameDistances.put
+					(
+						gamesToCompare[j] + "_" + rulesetsToCompare[j], 
+						compareTwoGames(GameLoader.loadGameFromName(gamesToCompare[i], rulesetsToCompare[i]), GameLoader.loadGameFromName(gamesToCompare[j], rulesetsToCompare[j]))
+					);
+				}
 				
 				// Write the top row of the csv
 				String topRow = "GameName";
@@ -164,9 +211,9 @@ public class CompareAllDistanceMetrics
 		allDistances.put("JSD_ludeme_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
 		allDistances.put("JSD_moveCooncept_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
-		allDistances.put("JSD_ludeme_TFIDF", jensenShannonDivergenceMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
-		allDistances.put("JSD_booleanConcept_TFIDF", jensenShannonDivergenceMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("JSD_moveConcept_TFIDF", jensenShannonDivergenceMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+//		allDistances.put("JSD_ludeme_TFIDF", jensenShannonDivergenceMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
+//		allDistances.put("JSD_booleanConcept_TFIDF", jensenShannonDivergenceMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
+//		allDistances.put("JSD_moveConcept_TFIDF", jensenShannonDivergenceMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Cosine
@@ -181,9 +228,9 @@ public class CompareAllDistanceMetrics
 		allDistances.put("Cosine_ludeme_ngram", cosineMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
 		allDistances.put("Cosine_moveCooncept_ngram", cosineMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
-		allDistances.put("Cosine_ludeme_TFIDF", cosineMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
-		allDistances.put("Cosine_booleanConcept_TFIDF", cosineMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("Cosine_moveConcept_TFIDF", cosineMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+//		allDistances.put("Cosine_ludeme_TFIDF", cosineMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
+//		allDistances.put("Cosine_booleanConcept_TFIDF", cosineMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
+//		allDistances.put("Cosine_moveConcept_TFIDF", cosineMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Jaccard
@@ -198,9 +245,9 @@ public class CompareAllDistanceMetrics
 		allDistances.put("Jaccard_ludeme_ngram", jaccardMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
 		allDistances.put("Jaccard_moveCooncept_ngram", jaccardMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
-		allDistances.put("Jaccard_ludeme_TFIDF", jaccardMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
-		allDistances.put("Jaccard_booleanConcept_TFIDF", jaccardMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("Jaccard_moveConcept_TFIDF", jaccardMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+//		allDistances.put("Jaccard_ludeme_TFIDF", jaccardMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
+//		allDistances.put("Jaccard_booleanConcept_TFIDF", jaccardMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
+//		allDistances.put("Jaccard_moveConcept_TFIDF", jaccardMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Levenshtein
