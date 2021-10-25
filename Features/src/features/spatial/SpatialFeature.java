@@ -1198,6 +1198,7 @@ public abstract class SpatialFeature extends Feature
 					);
 			newFeature.graphElementType = featureA.graphElementType;
 
+			newFeature.pattern().removeRedundancies();
 			//System.out.println("pre-normalise = " + newFeature);
 			newFeature.normalise(game);
 			//System.out.println("post-normalise = " + newFeature);

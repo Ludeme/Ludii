@@ -543,6 +543,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				}
 
 				final int numActiveInstances = instancesToKeep.size();
+				//System.out.println("numActiveInstances = " + numActiveInstances);
 
 				float error = errors.get(a);
 				if (winningMoves.get(a))
