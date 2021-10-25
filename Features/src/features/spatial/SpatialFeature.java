@@ -1298,66 +1298,49 @@ public abstract class SpatialFeature extends Feature
 			}
 		}
 		
-		// make sure we don't have any steps outside of [-1.0, 1.0]
-		for (final FeatureElement featureElement : pattern.featureElements())
-		{
-			if (featureElement instanceof RelativeFeatureElement)
-			{
-				final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-				final Walk walk = rel.walk();
-				
-				for (int i = 0; i < walk.steps().size(); ++i)
-				{
-					float turn = walk.steps().getQuick(i);
-					
-					while (turn < -1.f)
-						turn += 1.f;
-					
-					while (turn > 1.f)
-						turn -= 1.f;
-					
-					walk.steps().setQuick(i, turn);
-				}
-			}
-		}
-
-		// also consider Walks in action specifiers
+		// Collect all the lists of steps we want to look at / modify (can handle them all as a single big batch)
+		final List<TFloatArrayList> stepsLists = new ArrayList<TFloatArrayList>(pattern.featureElements().length + 4);
+		
 		if (this instanceof RelativeFeature)
 		{
+			for (final FeatureElement featureElement : pattern.featureElements())
+			{
+				stepsLists.add(((RelativeFeatureElement) featureElement).walk().steps);
+			}
+			
 			final RelativeFeature relFeature = (RelativeFeature) this;
 			for 
 			(
 				final Walk walk : new Walk[]
-						{ 
-							relFeature.fromPosition, relFeature.toPosition, 
-							relFeature.lastFromPosition, relFeature.lastToPosition 
-						}
+				{ 
+					relFeature.fromPosition, relFeature.toPosition, 
+					relFeature.lastFromPosition, relFeature.lastToPosition 
+				}
 			)
 			{
 				if (walk != null)
-				{
-					for (int i = 0; i < walk.steps().size(); ++i)
-					{
-						float turn = walk.steps().getQuick(i);
-						
-						while (turn < -1.f)
-							turn += 1.f;
-						
-						while (turn > 1.f)
-							turn -= 1.f;
-						
-						walk.steps().setQuick(i, turn);
-					}
-				}
+					stepsLists.add(walk.steps);
+			}
+		}
+		
+		// Make sure we don't have any steps outside of [-1.0, 1.0]
+		for (final TFloatArrayList steps : stepsLists)
+		{
+			for (int i = 0; i < steps.size(); ++i)
+			{
+				float turn = steps.getQuick(i);
+
+				while (turn < -1.f)
+					turn += 1.f;
+
+				while (turn > 1.f)
+					turn -= 1.f;
+
+				steps.setQuick(i, turn);
 			}
 		}
 
-		if 
-		(
-			allowedRotations == null || Arrays.equals(allowedRotations.toArray(), allGameRotations)
-			&&
-			this instanceof RelativeFeature
-		)
+		if (allowedRotations == null || Arrays.equals(allowedRotations.toArray(), allGameRotations))
 		{
 			// All rotations are allowed
 
@@ -1366,15 +1349,12 @@ public abstract class SpatialFeature extends Feature
 			float mostCommonTurn = Float.MAX_VALUE;
 			int numOccurrences = 0;
 			final TFloatIntMap occurrencesMap = new TFloatIntHashMap();
-
-			for (final FeatureElement featureElement : pattern.featureElements())
+			
+			for (final TFloatArrayList steps : stepsLists)
 			{
-				final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-				final Walk walk = rel.walk();
-
-				if (walk.steps().size() > 0)
+				if (steps.size() > 0)
 				{
-					final float turn = walk.steps().getQuick(0);
+					final float turn = steps.getQuick(0);
 					final int newOccurrences = occurrencesMap.adjustOrPutValue(turn, 1, 1);
 
 					if (newOccurrences > numOccurrences)
@@ -1389,184 +1369,59 @@ public abstract class SpatialFeature extends Feature
 					}
 				}
 			}
-
-			// also consider Walks in action specifiers
-			if (this instanceof RelativeFeature)
+			
+			if (mostCommonTurn != 0.f)
 			{
-				final RelativeFeature relFeature = (RelativeFeature) this;
-				for 
-				(
-					final Walk walk : new Walk[]
-					{ 
-						relFeature.fromPosition, relFeature.toPosition, 
-						relFeature.lastFromPosition, relFeature.lastToPosition 
-					}
-				)
+				// Now subtract that most common turn from the first step of
+				// every walk
+				for (final TFloatArrayList steps : stepsLists)
 				{
-					if (walk != null && walk.steps().size() > 0)
+					if (steps.size() > 0)
 					{
-						final float turn = walk.steps().getQuick(0);
-						final int newOccurrences = occurrencesMap.adjustOrPutValue(turn, 1, 1);
-
-						if (newOccurrences > numOccurrences)
-						{
-							numOccurrences = newOccurrences;
-							mostCommonTurn = turn;
-						}
-						else if (newOccurrences == numOccurrences)
-						{
-							// prioritise small turns in case of tie
-							mostCommonTurn = Math.min(mostCommonTurn, turn);
-						}
-					}
-				}
-			}
-
-			// now subtract that most common turn from the first step of
-			// every walk
-			for (final FeatureElement featureElement : pattern.featureElements())
-			{
-				final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-				final Walk walk = rel.walk();
-
-				if (walk.steps().size() > 0)
-				{
-					walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
-				}
-			}
-
-			// and also subtract in action specifier Walks
-			final RelativeFeature relFeature = (RelativeFeature) this;
-			for 
-			(
-				final Walk walk : new Walk[]
-				{ 
-					relFeature.fromPosition, 
-					relFeature.toPosition, 
-					relFeature.lastFromPosition,
-					relFeature.lastToPosition 
-				}
-			)
-			{
-				if (walk != null && walk.steps().size() > 0)
-				{
-					walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
-				}
-			}
-		}
-
-		// prefer small turns in opposite direction over large turns
-		for (final FeatureElement featureElement : pattern.featureElements())
-		{
-			if (featureElement instanceof RelativeFeatureElement)
-			{
-				final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-				final TFloatArrayList steps = rel.walk().steps();
-
-				for (int i = 0; i < steps.size(); ++i)
-				{
-					final float step = steps.getQuick(i);
-					if (step > 0.5f)
-					{
-						steps.setQuick(i, step - 1.f);
-					}
-					else if (step < -0.5f)
-					{
-						steps.setQuick(i, step + 1.f);
+						steps.setQuick(0, steps.getQuick(0) - mostCommonTurn);
 					}
 				}
 			}
 		}
 
-		// same preference in Walks in action specifiers
-		if (this instanceof RelativeFeature)
+		// Prefer small turns in opposite direction over large turns
+		for (final TFloatArrayList steps : stepsLists)
 		{
-			final RelativeFeature relFeature = (RelativeFeature) this;
-			for 
-			(
-				final Walk walk : new Walk[]
-						{
-							relFeature.fromPosition, 
-							relFeature.toPosition, 
-							relFeature.lastFromPosition, 
-							relFeature.lastToPosition 
-						}
-			)
+			for (int i = 0; i < steps.size(); ++i)
 			{
-				if (walk != null)
+				final float step = steps.getQuick(i);
+				if (step > 0.5f)
 				{
-					final TFloatArrayList steps = walk.steps();
-					for (int i = 0; i < steps.size(); ++i)
-					{
-						final float step = steps.getQuick(i);
-						if (step > 0.5f)
-						{
-							steps.setQuick(i, step - 1.f);
-						}
-						else if (step < -0.5f)
-						{
-							steps.setQuick(i, step + 1.f);
-						}
-					}
+					steps.setQuick(i, step - 1.f);
+				}
+				else if (step < -0.5f)
+				{
+					steps.setQuick(i, step + 1.f);
 				}
 			}
 		}
 
 		if (pattern.allowsReflection())
 		{
-			// reflection is allowed
+			// Reflection is allowed
 
 			// first figure out if we have any positive turns
 			boolean havePositiveTurns = false;
-
-			for (final FeatureElement featureElement : pattern.featureElements())
+			
+			for (final TFloatArrayList steps : stepsLists)
 			{
-				if (featureElement instanceof RelativeFeatureElement)
+				for (int i = 0; i < steps.size(); ++i)
 				{
-					final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-					final TFloatArrayList steps = rel.walk().steps();
-
-					for (int i = 0; i < steps.size(); ++i)
+					if (steps.getQuick(i) > 0.f)
 					{
-						if (steps.getQuick(i) > 0.f)
-						{
-							havePositiveTurns = true;
-							break;
-						}
+						havePositiveTurns = true;
+						break;
 					}
 				}
-
+				
 				if (havePositiveTurns)
 				{
 					break;
-				}
-			}
-
-			// also check in Walks in action specifiers
-			if (!havePositiveTurns && this instanceof RelativeFeature)
-			{
-				final RelativeFeature relFeature = (RelativeFeature) this;
-				for 
-				(
-					final Walk walk : new Walk[]
-							{ 
-								relFeature.fromPosition, relFeature.toPosition, 
-								relFeature.lastFromPosition, relFeature.lastToPosition 
-							}
-				)
-				{
-					if (walk != null)
-					{
-						final TFloatArrayList steps = walk.steps();
-						for (int i = 0; i < steps.size(); ++i)
-						{
-							if (steps.getQuick(i) > 0.f)
-							{
-								havePositiveTurns = true;
-								break;
-							}
-						}
-					}
 				}
 			}
 
@@ -1574,132 +1429,50 @@ public abstract class SpatialFeature extends Feature
 			// by -1 (and reflection can later turn this back for us)
 			if (!havePositiveTurns)
 			{
-				for (final FeatureElement featureElement : pattern.featureElements())
+				for (final TFloatArrayList steps : stepsLists)
 				{
-					if (featureElement instanceof RelativeFeatureElement)
+					for (int i = 0; i < steps.size(); ++i)
 					{
-						final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-						final TFloatArrayList steps = rel.walk().steps();
-
-						for (int i = 0; i < steps.size(); ++i)
-						{
-							steps.setQuick(i, steps.getQuick(i) * -1.f);
-						}
-					}
-				}
-
-				// also adjust the Walks in action specifiers
-				if (this instanceof RelativeFeature)
-				{
-					final RelativeFeature relFeature = (RelativeFeature) this;
-					for 
-					(
-						final Walk walk : new Walk[]
-								{ 
-									relFeature.fromPosition, relFeature.toPosition, 
-									relFeature.lastFromPosition, relFeature.lastToPosition 
-								}
-					)
-					{
-						if (walk != null)
-						{
-							final TFloatArrayList steps = walk.steps();
-							for (int i = 0; i < steps.size(); ++i)
-							{
-								steps.setQuick(i, steps.getQuick(i) * -1.f);
-							}
-						}
+						steps.setQuick(i, steps.getQuick(i) * -1.f);
 					}
 				}
 			}
 		}
 
-		// make sure floating point math didn't mess anything up with the turn
+		// Make sure floating point math didn't mess anything up with the turn
 		// values if possible, we prefer them to PRECISELY match the perfect
 		// fractions given by the game's possible rotations, because the
 		// floating point numbers are used in hashCode() and equals() methods
 		//
 		// here, we'll also set any turns of -0.f to 0.f (don't like negative 0)
-		for (final FeatureElement featureElement : pattern.featureElements())
+		for (final TFloatArrayList steps : stepsLists)
 		{
-			if (featureElement instanceof RelativeFeatureElement)
+			for (int i = 0; i < steps.size(); ++i)
 			{
-				final RelativeFeatureElement rel = (RelativeFeatureElement) featureElement;
-				final TFloatArrayList steps = rel.walk().steps();
+				final float turn = steps.getQuick(i);
 
-				for (int i = 0; i < steps.size(); ++i)
+				if (turn == -0.f)
 				{
-					final float turn = steps.getQuick(i);
-					
-					if (turn == -0.f)
-					{
-						steps.setQuick(i, 0.f);
-					}
-					else
-					{
-						for (int j = 0; j < allGameRotations.length; ++j)
-						{
-							if (Math.abs(turn - allGameRotations[j]) < turnEqualTolerance)
-							{
-								// this can only be close to 0.f if turn is positive,
-								// or if both are already approx. equal to 0.f
-								steps.setQuick(i, allGameRotations[j]);
-								break;
-							}
-							else if (Math.abs(allGameRotations[j] + turn) < turnEqualTolerance)
-							{
-								// this can only be close to 0.f if turn is negative,
-								// or if both are already approx. equal to 0.f
-								steps.setQuick(i, -allGameRotations[j]);
-								break;
-							}
-						}
-					}
+					steps.setQuick(i, 0.f);
 				}
-			}
-		}
-
-		// same for Walks in action specifiers
-		if (this instanceof RelativeFeature)
-		{
-			final RelativeFeature relFeature = (RelativeFeature) this;
-			for 
-			(
-				final Walk walk : new Walk[]
-				{ relFeature.fromPosition, relFeature.toPosition, relFeature.lastFromPosition, relFeature.lastToPosition }
-			)
-			{
-				if (walk != null)
+				else
 				{
-					final TFloatArrayList steps = walk.steps();
-					for (int i = 0; i < steps.size(); ++i)
+					for (int j = 0; j < allGameRotations.length; ++j)
 					{
-						float turn = steps.getQuick(i);
-						
-						for (int j = 0; j < allGameRotations.length; ++j)
+						if (Math.abs(turn - allGameRotations[j]) < turnEqualTolerance)
 						{
-							if (Math.abs(turn - allGameRotations[j]) < turnEqualTolerance)
-							{
-								// this can only be close to 0.f if turn is positive,
-								// or if both are already approx. equal to 0.f
-								turn = allGameRotations[j];
-								break;
-							}
-							else if (Math.abs(allGameRotations[j] + turn) < turnEqualTolerance)
-							{
-								// this can only be close to 0.f if turn is negative,
-								// or if both are already approx. equal to 0.f
-								turn = -allGameRotations[j];
-								break;
-							}
+							// this can only be close to 0.f if turn is positive,
+							// or if both are already approx. equal to 0.f
+							steps.setQuick(i, allGameRotations[j]);
+							break;
 						}
-						
-						if (turn == -0.f)
-							turn = 0.f;
-						else if (turn == -0.5f)
-							turn = 0.5f;
-						
-						steps.setQuick(i, turn);
+						else if (Math.abs(allGameRotations[j] + turn) < turnEqualTolerance)
+						{
+							// this can only be close to 0.f if turn is negative,
+							// or if both are already approx. equal to 0.f
+							steps.setQuick(i, -allGameRotations[j]);
+							break;
+						}
 					}
 				}
 			}
