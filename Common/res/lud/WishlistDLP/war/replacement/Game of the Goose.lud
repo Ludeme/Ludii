@@ -63,7 +63,7 @@
         (stackType Ground) 
         (show Symbol "disc" Vertex (difference (sites Board) 62) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.9)
         (show Symbol "rectangle" Vertex 62 fillColour:(colour Grey) edgeColour:(colour Black) scaleX:5 scaleY:3)
-        // Need to add the numbers on each vertex
+        (show SiteIndex Vertex 1)
     })
     
 )
