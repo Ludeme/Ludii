@@ -83,7 +83,7 @@ public class Reinforce
 			if (experiment.wantsInterrupt())
 				break;
 			
-			//System.out.println("Starting Policy Gradient epoch: " + epoch);
+			System.out.println("Starting Policy Gradient epoch: " + epoch);
 			
 			// Collect all experience (per player) for this epoch here
 			final List<PGExperience>[] epochExperiences = new List[numPlayers + 1];
@@ -209,57 +209,66 @@ public class Reinforce
 					(
 						() ->
 						{
-							// We'll sample a batch from our experiences, and grow feature set
-							final int batchSize = trainingParams.batchSize;
-							final List<PGExperience> batch = new ArrayList<PGExperience>(batchSize);
-							while (batch.size() < batchSize && !epochExperiences[p].isEmpty())
+							try
 							{
-								final int r = ThreadLocalRandom.current().nextInt(epochExperiences[p].size());
-								batch.add(epochExperiences[p].get(r));
-								ListUtils.removeSwap(epochExperiences[p], r);
-							}
-
-							if (batch.size() > 0)
-							{
-								final long startTime = System.currentTimeMillis();
-								final BaseFeatureSet expandedFeatureSet = 
-										featureSetExpander.expandFeatureSet
-										(
-											batch,
-											featureSetP,
-											policy,
-											game,
-											featureDiscoveryParams.combiningFeatureInstanceThreshold,
-											objectiveParams, 
-											featureDiscoveryParams,
-											null,
-											logWriter,
-											experiment
-										);
-
-								if (expandedFeatureSet != null)
+								// We'll sample a batch from our experiences, and grow feature set
+								final int batchSize = trainingParams.batchSize;
+								final List<PGExperience> batch = new ArrayList<PGExperience>(batchSize);
+								while (batch.size() < batchSize && !epochExperiences[p].isEmpty())
 								{
-									expandedFeatureSets[p] = expandedFeatureSet;
-									expandedFeatureSet.init(game, new int[]{p}, null);
+									final int r = ThreadLocalRandom.current().nextInt(epochExperiences[p].size());
+									batch.add(epochExperiences[p].get(r));
+									ListUtils.removeSwap(epochExperiences[p], r);
+								}
+	
+								if (batch.size() > 0)
+								{
+									final long startTime = System.currentTimeMillis();
+									final BaseFeatureSet expandedFeatureSet = 
+											featureSetExpander.expandFeatureSet
+											(
+												batch,
+												featureSetP,
+												policy,
+												game,
+												featureDiscoveryParams.combiningFeatureInstanceThreshold,
+												objectiveParams, 
+												featureDiscoveryParams,
+												null,
+												logWriter,
+												experiment
+											);
+	
+									if (expandedFeatureSet != null)
+									{
+										expandedFeatureSets[p] = expandedFeatureSet;
+										expandedFeatureSet.init(game, new int[]{p}, null);
+									}
+									else
+									{
+										expandedFeatureSets[p] = featureSetP;
+									}
+									
+									experiment.logLine
+									(
+										logWriter,
+										"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
+									);
+									System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 								}
 								else
 								{
 									expandedFeatureSets[p] = featureSetP;
 								}
-								
-								experiment.logLine
-								(
-									logWriter,
-									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
-								);
-								System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 							}
-							else
+							catch (final Exception e)
 							{
-								expandedFeatureSets[p] = featureSetP;
+								e.printStackTrace();
 							}
-							
-							latch.countDown();
+							finally
+							{
+								latch.countDown();
+							}
 						}
 					);
 							
