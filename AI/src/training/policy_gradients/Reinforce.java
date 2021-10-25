@@ -12,7 +12,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
+import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.list.array.TLongArrayList;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.collections.ListUtils;
@@ -78,6 +80,23 @@ public class Reinforce
 			avgGameDurations[p] = new ExponentialMovingAverage();
 		}
 		
+		final TLongArrayList[] featureLifetimes = new TLongArrayList[featureSets.length];
+		final TDoubleArrayList[] featureActiveRatios = new TDoubleArrayList[featureSets.length];
+		
+		for (int i = 0; i < featureSets.length; ++i)
+		{
+			if (featureSets[i] != null)
+			{
+				final TLongArrayList featureLifetimesList = new TLongArrayList();
+				featureLifetimesList.fill(0, featureSets[i].getNumSpatialFeatures(), 0L);
+				featureLifetimes[i] = featureLifetimesList;
+				
+				final TDoubleArrayList featureActiveRatiosList = new TDoubleArrayList();
+				featureActiveRatiosList.fill(0, featureSets[i].getNumSpatialFeatures(), 0.0);
+				featureActiveRatios[i] = featureActiveRatiosList;
+			}
+		}
+		
 		for (int epoch = 0; epoch < trainingParams.numPolicyGradientEpochs; ++epoch)
 		{
 			if (experiment.wantsInterrupt())
@@ -141,6 +160,49 @@ public class Reinforce
 					playedMoveIndices[mover].add(moveIdx);
 					
 					game.apply(context, move);
+					
+					// Update feature activity data
+					for (final FeatureVector featureVector : featureVectors)
+					{
+						final TIntArrayList sparse = featureVector.activeSpatialFeatureIndices();
+						
+						if (sparse.isEmpty())
+							continue;		// Probably a pass/swap/other special move, don't want these affecting our active ratios
+						
+						// Following code expects the indices in the sparse feature vector to be sorted
+						sparse.sort();
+
+						// Increase lifetime of all features by 1
+						featureLifetimes[mover].transformValues((final long l) -> {return l + 1L;});
+
+						// Incrementally update all average feature values
+						final TDoubleArrayList list = featureActiveRatios[mover];
+						int vectorIdx = 0;
+						for (int i = 0; i < list.size(); ++i)
+						{
+							final double oldMean = list.getQuick(i);
+
+							if (vectorIdx < sparse.size() && sparse.getQuick(vectorIdx) == i)
+							{
+								// ith feature is active
+								list.setQuick(i, oldMean + ((1.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
+								++vectorIdx;
+							}
+							else
+							{
+								// ith feature is not active
+								list.setQuick(i, oldMean + ((0.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
+							}
+						}
+
+						if (vectorIdx != sparse.size())
+						{
+							System.err.println("ERROR: expected vectorIdx == sparse.size()!");
+							System.err.println("vectorIdx = " + vectorIdx);
+							System.err.println("sparse.size() = " + sparse.size());
+							System.err.println("sparse = " + sparse);
+						}
+					}
 				}
 				
 				final double[] utilities = RankUtils.agentUtilities(context);
@@ -234,7 +296,7 @@ public class Reinforce
 												featureDiscoveryParams.combiningFeatureInstanceThreshold,
 												objectiveParams, 
 												featureDiscoveryParams,
-												null,
+												featureActiveRatios[p],
 												logWriter,
 												experiment
 											);
@@ -243,6 +305,12 @@ public class Reinforce
 									{
 										expandedFeatureSets[p] = expandedFeatureSet;
 										expandedFeatureSet.init(game, new int[]{p}, null);
+										
+										while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+										{
+											featureLifetimes[p].add(0L);
+											featureActiveRatios[p].add(0.0);
+										}
 									}
 									else
 									{
