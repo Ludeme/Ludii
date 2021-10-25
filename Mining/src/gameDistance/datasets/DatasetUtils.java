@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import game.Game;
 import manager.utils.game_logs.MatchRecord;
@@ -21,7 +19,7 @@ import other.trial.Trial;
 public class DatasetUtils
 {
 
-	private final static Map<String, List<Trial>> gameTrials = new HashMap<>();
+	//private final static Map<String, List<Trial>> gameTrials = new HashMap<>();
 	
 	//-------------------------------------------------------------------------
 	
@@ -30,8 +28,9 @@ public class DatasetUtils
 	 * @param candidateGameName
 	 * @param rulesetStrings
 	 */
-	private static void loadSavedTrials(final Game game, final String keyName)
+	private static List<Trial> loadSavedTrials(final Game game, final String keyName)
 	{
+		final List<Trial> gameTrials = new ArrayList<>();
 		final String folderTrials = "/../Trials/TrialsRandom/";
 		final File currentFolder = new File(".");
 
@@ -47,8 +46,6 @@ public class DatasetUtils
 		
 		if(!trialFolder.exists())
 			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
-
-		gameTrials.put(keyName, new ArrayList<>());
 		
 		for(final File trialFile : trialFolder.listFiles())
 		{
@@ -57,7 +54,7 @@ public class DatasetUtils
 			{
 				loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
 				final Trial loadedTrial = loadedRecord.trial();
-				gameTrials.get(keyName).add(new Trial(loadedTrial));
+				gameTrials.add(new Trial(loadedTrial));
 			}
 			catch (final FileNotFoundException e)
 			{
@@ -68,20 +65,22 @@ public class DatasetUtils
 				e.printStackTrace();
 			}
 		}
+		
+		return gameTrials;
 	}
 	
 	//-------------------------------------------------------------------------
 	
-	public static List<Trial> getSavedTrials(Game game)
+	public static List<Trial> getSavedTrials(final Game game)
 	{
 		final String gamePath = GameLoader.getFilePath(game.name());
 		final List<String> rulesetOptions = game.getOptions();
 		final String keyName = gamePath + rulesetOptions.toString();
 		
-		if (!gameTrials.containsKey(keyName))
-			loadSavedTrials(game, keyName);
+//		if (!gameTrials.containsKey(keyName))
+//			loadSavedTrials(game, keyName);
 		
-		return gameTrials.get(keyName);
+		return loadSavedTrials(game, keyName);
 	}
 	
 	//-------------------------------------------------------------------------
