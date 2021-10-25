@@ -1062,6 +1062,9 @@ public class AlphaBetaSearch extends ExpertPolicy
 		if (game.hiddenInformation())
 			return false;
 		
+		if (game.hasSubgames())		// Cant properly init most heuristics
+			return false;
+		
 		return game.isAlternatingMoveGame();
 	}
 	
