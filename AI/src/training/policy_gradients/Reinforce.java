@@ -216,6 +216,8 @@ public class Reinforce
 					final List<FeatureVector[]> featureVectorsList = featureVectorArrays[p];
 					final TIntArrayList moveIndicesList = playedMoveIndices[p];
 					
+					double discountMultiplier = 1.0;
+					
 					for (int i = 0; i < featureVectorsList.size(); ++i)
 					{
 						epochExperiences[p].add
@@ -227,9 +229,12 @@ public class Reinforce
 								legalMovesList.get(i),
 								featureVectorsList.get(i), 
 								moveIndicesList.getQuick(i), 
-								(float)utilities[p]
+								(float)utilities[p],
+								discountMultiplier
 							)
 						);
+						
+						discountMultiplier *= trainingParams.pgGamma;
 					}
 				}
 				
@@ -434,7 +439,7 @@ public class Reinforce
 
 		// Now we have the gradients of the log-probability of the action we played
 		// We want to weight these by the returns of the episode
-		gradLogPi.mult(exp.returns());		// TODO subtract per-player expected score as baseline
+		gradLogPi.mult((float)(exp.discountMultiplier() * exp.returns()));		// TODO subtract per-player expected score as baseline
 		
 		return gradLogPi;
 	}
@@ -470,6 +475,9 @@ public class Reinforce
 		/** Returns we got at the end of the trial that this experience was a part of */
 		protected final float returns;
 		
+		/** Multiplier we should use due to discounting */
+		protected final double discountMultiplier;
+		
 		/**
 		 * Constructor
 		 * @param state
@@ -478,6 +486,7 @@ public class Reinforce
 		 * @param featureVectors
 		 * @param movePlayedIdx
 		 * @param returns
+		 * @param discountMultiplier
 		 */
 		public PGExperience
 		(
@@ -486,7 +495,8 @@ public class Reinforce
 			final FastArrayList<Move> legalMoves,
 			final FeatureVector[] featureVectors, 
 			final int movePlayedIdx, 
-			final float returns
+			final float returns,
+			final double discountMultiplier
 		)
 		{
 			this.state = state;
@@ -495,6 +505,7 @@ public class Reinforce
 			this.featureVectors = featureVectors;
 			this.movePlayedIdx = movePlayedIdx;
 			this.returns = returns;
+			this.discountMultiplier = discountMultiplier;
 		}
 		
 		/**
@@ -521,6 +532,14 @@ public class Reinforce
 			return returns;
 		}
 		
+		/**
+		 * @return Discount multiplier for this sample of experience
+		 */
+		public double discountMultiplier()
+		{
+			return discountMultiplier;
+		}
+		
 		@Override
 		public FeatureVector[] generateFeatureVectors(final BaseFeatureSet featureSet)
 		{
@@ -531,11 +550,11 @@ public class Reinforce
 		public FVector expertDistribution()
 		{
 			// As an estimation of a good expert distribution, we'll use the
-			// returns as logit for the played action, with logits of 0
+			// discounted returns as logit for the played action, with logits of 0
 			// everywhere else, and then use a softmax to turn it into
 			// a distribution
 			final FVector distribution = new FVector(featureVectors.length);
-			distribution.set(movePlayedIdx, returns);
+			distribution.set(movePlayedIdx, (float) (returns * discountMultiplier));
 			distribution.softmax();
 			return distribution;
 		}

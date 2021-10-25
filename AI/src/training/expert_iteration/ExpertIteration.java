@@ -2541,6 +2541,12 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(100))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--pg-gamma")
+				.help("Discount factor gamma for policy gradients (excluding TSPG).")
+				.withDefault(Double.valueOf(0.99))
+				.withNumVals(1)
+				.withType(OptionTypes.Double));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--add-feature-every")
@@ -2711,6 +2717,7 @@ public class ExpertIteration
 		exIt.trainingParams.initValueFuncDir = argParse.getValueString("--init-value-func-dir");
 		exIt.trainingParams.numPolicyGradientEpochs = argParse.getValueInt("--num-policy-gradient-epochs");
 		exIt.trainingParams.numTrialsPerPolicyGradientEpoch = argParse.getValueInt("--num-trials-per-policy-gradient-epoch");
+		exIt.trainingParams.pgGamma = argParse.getValueDouble("--pg-gamma");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");

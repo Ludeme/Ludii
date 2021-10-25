@@ -34,6 +34,9 @@ public class TrainingParams
 	/** Number of trials to run per epoch for policy gradients */
 	public int numTrialsPerPolicyGradientEpoch;
 	
+	/** Discount factor gamma for policy gradients */
+	public double pgGamma;
+	
 	//-------------------------------------------------------------------------
 
 }
