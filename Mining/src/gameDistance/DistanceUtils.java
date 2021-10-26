@@ -34,12 +34,12 @@ public class DistanceUtils
 	
 	//-----------------------------------------------------------------------------
 	
-	public static Map<String, Double> fullVocabulary(final Dataset dataset, final String datasetName)
+	public static Map<String, Double> fullVocabulary(final Dataset dataset, final String datasetName, final boolean overrideStoredVocabularies)
 	{
 		final File vocabularyFile = new File(vocabularyStorePath + datasetName + ".txt");
 		
 		// Recover vocabulary from previously stored txt file.
-		if (vocabularyFile.exists())
+		if (vocabularyFile.exists() && !overrideStoredVocabularies)
 		{
 			try (final FileInputStream fileInput = new FileInputStream(vocabularyFile))
 			{

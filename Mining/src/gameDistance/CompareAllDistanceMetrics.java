@@ -49,6 +49,8 @@ public class CompareAllDistanceMetrics
 	
 	final static int nGramLength = 4;
 	
+	final static boolean overrideStoredVocabularies = false;
+	
 	//---------------------------------------------------------------------
 	
 	public static void main(final String[] args)
@@ -143,13 +145,13 @@ public class CompareAllDistanceMetrics
 	 */
 	private static void calculateVocabularies()
 	{
-		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset");
+		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset", overrideStoredVocabularies);
 		System.out.println("ludemeVocabulary recorded");
 		
-		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset");
+		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset", overrideStoredVocabularies);
 		System.out.println("booleanConceptVocabulary recorded");
 		
-		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset");
+		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset", overrideStoredVocabularies);
 		System.out.println("moveConceptVocabulary recorded");
 	}
 	
@@ -163,50 +165,50 @@ public class CompareAllDistanceMetrics
 	private static List<String[]> getSpecificGamesToCompare()
 	{
 		
-//		final String[] gamesToCompare = 
-//			{
-//				"/lud/board/race/escape/Royal Game of Ur.lud",
-//				"/lud/board/race/escape/Royal Game of Ur.lud",
-//				"/lud/board/war/replacement/checkmate/chess/Chess.lud"
-//			};
-//		final String[] rulesetsToCompare = 
-//			{
-//				"Ruleset/Finkel (Scholarly)",
-//				"Ruleset/Murray (Suggested)",
-//				""
-//			};
-		
 		final String[] gamesToCompare = 
 			{
-				"/lud/board/hunt/Haretavl.lud",
-				"/lud/board/hunt/Jeu Militaire.lud",
-				"/lud/board/hunt/Jeu Militaire.lud",
-				"/lud/board/hunt/Hund efter Hare (Thy).lud",
-				"/lud/board/hunt/Hund efter Hare (Vendsyssel).lud",
-				"/lud/board/hunt/Hyvn aetter Hare.lud",
-				"/lud/board/hunt/Janes Soppi.lud",
-				"/lud/board/space/blocking/Janes Soppi (Symmetrical).lud",
-				"/lud/board/hunt/Gioco dell'Orso.lud",
-				"/lud/board/hunt/La Liebre Perseguida.lud",
-				"/lud/board/hunt/Neg Tugal Tuux.lud",
-				"/lud/board/hunt/Uxrijn Ever.lud",
+				"/lud/board/race/escape/Royal Game of Ur.lud",
+				"/lud/board/race/escape/Royal Game of Ur.lud",
+				"/lud/board/war/replacement/checkmate/chess/Chess.lud"
 			};
-
 		final String[] rulesetsToCompare = 
 			{
-				"",
-				"Ruleset/Lucas (Described)",
-				"Ruleset/Gardner (Suggested)",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
+				"Ruleset/Finkel (Scholarly)",
+				"Ruleset/Murray (Suggested)",
+				""
 			};
+		
+//		final String[] gamesToCompare = 
+//			{
+//				"/lud/board/hunt/Haretavl.lud",
+//				"/lud/board/hunt/Jeu Militaire.lud",
+//				"/lud/board/hunt/Jeu Militaire.lud",
+//				"/lud/board/hunt/Hund efter Hare (Thy).lud",
+//				"/lud/board/hunt/Hund efter Hare (Vendsyssel).lud",
+//				"/lud/board/hunt/Hyvn aetter Hare.lud",
+//				"/lud/board/hunt/Janes Soppi.lud",
+//				"/lud/board/space/blocking/Janes Soppi (Symmetrical).lud",
+//				"/lud/board/hunt/Gioco dell'Orso.lud",
+//				"/lud/board/hunt/La Liebre Perseguida.lud",
+//				"/lud/board/hunt/Neg Tugal Tuux.lud",
+//				"/lud/board/hunt/Uxrijn Ever.lud",
+//			};
+//
+//		final String[] rulesetsToCompare = 
+//			{
+//				"",
+//				"Ruleset/Lucas (Described)",
+//				"Ruleset/Gardner (Suggested)",
+//				"",
+//				"",
+//				"",
+//				"",
+//				"",
+//				"",
+//				"",
+//				"",
+//				"",
+//			};
 		
 		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
 		gamesAndRulesetsToCompare.add(gamesToCompare);
