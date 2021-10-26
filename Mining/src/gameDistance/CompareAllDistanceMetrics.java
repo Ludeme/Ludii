@@ -23,6 +23,8 @@ import gameDistance.metrics.sequence.Levenshtein;
 import gameDistance.metrics.sequence.LocalAlignment;
 import gameDistance.metrics.sequence.RepeatedLocalAlignment;
 import gameDistance.metrics.treeEdit.ZhangShasha;
+import main.FileHandling;
+import main.options.Ruleset;
 import other.GameLoader;
 
 /**
@@ -51,95 +53,21 @@ public class CompareAllDistanceMetrics
 	
 	public static void main(final String[] args)
 	{
-		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset");
-		System.out.println("ludemeVocabulary stored");
+		calculateVocabularies();
 		
-		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset");
-		System.out.println("booleanConceptVocabulary stored");
+		final List<String[]> gamesAndRulesetsToCompare = getSpecificGamesToCompare();
+		//List<String[]> gamesAndRulesetsToCompare = getAllGamesToCompare();
 		
-		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset");
-		System.out.println("moveConceptVocabulary stored");
-		
-		// Specific games/rulesets to compare.
-//		final String[] gamesToCompare = 
-//			{
-//				"/lud/board/race/escape/Royal Game of Ur.lud",
-//				"/lud/board/race/escape/Royal Game of Ur.lud",
-//				"/lud/board/war/replacement/checkmate/chess/Chess.lud"
-//			};
-//		final String[] rulesetsToCompare = 
-//			{
-//				"Ruleset/Finkel (Scholarly)",
-//				"Ruleset/Murray (Suggested)",
-//				""
-//			};
-		
-		final String[] gamesToCompare = 
-			{
-				"/lud/board/hunt/Haretavl.lud",
-				"/lud/board/hunt/Jeu Militaire.lud",
-				"/lud/board/hunt/Jeu Militaire.lud",
-				"/lud/board/hunt/Hund efter Hare (Thy).lud",
-				"/lud/board/hunt/Hund efter Hare (Vendsyssel).lud",
-				"/lud/board/hunt/Hyvn aetter Hare.lud",
-				"/lud/board/hunt/Janes Soppi.lud",
-				"/lud/board/space/blocking/Janes Soppi (Symmetrical).lud",
-				"/lud/board/hunt/Gioco dell'Orso.lud",
-				"/lud/board/hunt/La Liebre Perseguida.lud",
-				"/lud/board/hunt/Neg Tugal Tuux.lud",
-				"/lud/board/hunt/Uxrijn Ever.lud",
-			};
-
-		final String[] rulesetsToCompare = 
-			{
-				"",
-				"Ruleset/Lucas (Described)",
-				"Ruleset/Gardner (Suggested)",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-			};
-		
-		// Compare all games/rulesets.
-//		final String[] choices = FileHandling.listGames();
-//		final List<String> gamesToCompareList = new ArrayList<>();
-//		final List<String> rulesetsToCompareList = new ArrayList<>();
-//		for (String gameName : choices)
-//		{
-//			if (!FileHandling.shouldIgnoreLudAnalysis(gameName))
-//			{
-//				gameName = gameName.split("\\/")[gameName.split("\\/").length-1];
-//				final Game tempGame = GameLoader.loadGameFromName(gameName);
-//				final List<Ruleset> rulesets = tempGame.description().rulesets();
-//				
-//				if (rulesets != null && !rulesets.isEmpty())
-//				{
-//					for (int rs = 0; rs < rulesets.size(); rs++)
-//					{
-//						if (!rulesets.get(rs).optionSettings().isEmpty())
-//						{
-//							gamesToCompareList.add(gameName);
-//							rulesetsToCompareList.add(rulesets.get(rs).heading());
-//						}
-//					}
-//				}
-//				else
-//				{
-//					gamesToCompareList.add(gameName);
-//					rulesetsToCompareList.add("");
-//				}
-//			}
-//		}
-//		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
-//		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);
-
-		// Record distances for each game/ruleset comparison.
+		recordAllComparisonDistances(gamesAndRulesetsToCompare.get(0), gamesAndRulesetsToCompare.get(1));
+	}
+	
+	//---------------------------------------------------------------------
+	
+	/**
+	 * Record distances for each game/ruleset comparison.
+	 */
+	private static void recordAllComparisonDistances(final String[] gamesToCompare, final String[] rulesetsToCompare)
+	{
 		for (int i = 0; i < gamesToCompare.length; i++)
 		{
 			// Create output file.
@@ -206,6 +134,126 @@ public class CompareAllDistanceMetrics
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	//---------------------------------------------------------------------
+	
+	private static void calculateVocabularies()
+	{
+		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset");
+		System.out.println("ludemeVocabulary stored");
+		
+		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset");
+		System.out.println("booleanConceptVocabulary stored");
+		
+		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset");
+		System.out.println("moveConceptVocabulary stored");
+	}
+	
+	//---------------------------------------------------------------------
+	
+	/**
+	 * Specific games/rulesets to compare.
+	 * @return List of two String arrays, for all game and ruleset names to compare.
+	 */
+	private static List<String[]> getSpecificGamesToCompare()
+	{
+		
+//		final String[] gamesToCompare = 
+//			{
+//				"/lud/board/race/escape/Royal Game of Ur.lud",
+//				"/lud/board/race/escape/Royal Game of Ur.lud",
+//				"/lud/board/war/replacement/checkmate/chess/Chess.lud"
+//			};
+//		final String[] rulesetsToCompare = 
+//			{
+//				"Ruleset/Finkel (Scholarly)",
+//				"Ruleset/Murray (Suggested)",
+//				""
+//			};
+		
+		final String[] gamesToCompare = 
+			{
+				"/lud/board/hunt/Haretavl.lud",
+				"/lud/board/hunt/Jeu Militaire.lud",
+				"/lud/board/hunt/Jeu Militaire.lud",
+				"/lud/board/hunt/Hund efter Hare (Thy).lud",
+				"/lud/board/hunt/Hund efter Hare (Vendsyssel).lud",
+				"/lud/board/hunt/Hyvn aetter Hare.lud",
+				"/lud/board/hunt/Janes Soppi.lud",
+				"/lud/board/space/blocking/Janes Soppi (Symmetrical).lud",
+				"/lud/board/hunt/Gioco dell'Orso.lud",
+				"/lud/board/hunt/La Liebre Perseguida.lud",
+				"/lud/board/hunt/Neg Tugal Tuux.lud",
+				"/lud/board/hunt/Uxrijn Ever.lud",
+			};
+
+		final String[] rulesetsToCompare = 
+			{
+				"",
+				"Ruleset/Lucas (Described)",
+				"Ruleset/Gardner (Suggested)",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+			};
+		
+		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
+		gamesAndRulesetsToCompare.add(gamesToCompare);
+		gamesAndRulesetsToCompare.add(rulesetsToCompare);
+		return gamesAndRulesetsToCompare;
+	}
+	
+	//---------------------------------------------------------------------
+	
+	/**
+	 * All games/rulesets in Ludii to compare.
+	 * @return List of two String arrays, for all game and ruleset names to compare.
+	 */
+	private static List<String[]> getAllGamesToCompare()
+	{
+		final String[] choices = FileHandling.listGames();
+		final List<String> gamesToCompareList = new ArrayList<>();
+		final List<String> rulesetsToCompareList = new ArrayList<>();
+		for (String gameName : choices)
+		{
+			if (!FileHandling.shouldIgnoreLudAnalysis(gameName))
+			{
+				gameName = gameName.split("\\/")[gameName.split("\\/").length-1];
+				final Game tempGame = GameLoader.loadGameFromName(gameName);
+				final List<Ruleset> rulesets = tempGame.description().rulesets();
+				
+				if (rulesets != null && !rulesets.isEmpty())
+				{
+					for (int rs = 0; rs < rulesets.size(); rs++)
+					{
+						if (!rulesets.get(rs).optionSettings().isEmpty())
+						{
+							gamesToCompareList.add(gameName);
+							rulesetsToCompareList.add(rulesets.get(rs).heading());
+						}
+					}
+				}
+				else
+				{
+					gamesToCompareList.add(gameName);
+					rulesetsToCompareList.add("");
+				}
+			}
+		}
+		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
+		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);
+		
+		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
+		gamesAndRulesetsToCompare.add(gamesToCompare);
+		gamesAndRulesetsToCompare.add(rulesetsToCompare);
+		return gamesAndRulesetsToCompare;
 	}
 	
 	//---------------------------------------------------------------------
