@@ -138,16 +138,19 @@ public class CompareAllDistanceMetrics
 	
 	//---------------------------------------------------------------------
 	
+	/**
+	 * Calculate dataset vocabularies for TFIDF measures.
+	 */
 	private static void calculateVocabularies()
 	{
 		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset");
-		System.out.println("ludemeVocabulary stored");
+		System.out.println("ludemeVocabulary recorded");
 		
 		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset");
-		System.out.println("booleanConceptVocabulary stored");
+		System.out.println("booleanConceptVocabulary recorded");
 		
 		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset");
-		System.out.println("moveConceptVocabulary stored");
+		System.out.println("moveConceptVocabulary recorded");
 	}
 	
 	//---------------------------------------------------------------------
@@ -260,6 +263,12 @@ public class CompareAllDistanceMetrics
 	
 	//---------------------------------------------------------------------
 	
+	/**
+	 * Compares gameA and gameB across all distance measures
+	 * @param gameA
+	 * @param gameB
+	 * @return Map of distance metric names and values.
+	 */
 	public static Map<String, Double> compareTwoGames(final Game gameA, final Game gameB)
 	{
 		final Map<String, Double> allDistances = new HashMap<>();
