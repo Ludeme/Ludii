@@ -40,7 +40,7 @@ public class DistanceUtils
 	{
 		final File vocabularyFile = new File(vocabularyStorePath + datasetName + ".txt");
 		
-		// Recover vocabulary from previously stored txt file.
+		// Recover vocabulary from previously stored txt file if available.
 		if (vocabularyFile.exists() && !overrideStoredVocabularies)
 		{
 			try (final FileInputStream fileInput = new FileInputStream(vocabularyFile))
@@ -64,10 +64,10 @@ public class DistanceUtils
 			}	
 		}
 		
+		// Calculate full Ludii game vocabulary.
 		double numGames = 0.0;
 		final Map<String, Double> vocabulary = new HashMap<>();
 		final String[] choices = FileHandling.listGames();
-		
 		for (String gameName : choices)
 		{
 			if (!FileHandling.shouldIgnoreLudAnalysis(gameName))
@@ -107,7 +107,6 @@ public class DistanceUtils
 				}
 			}
 		}
-		
 		for (final Map.Entry<String, Double> entry : vocabulary.entrySet())
 			entry.setValue(Double.valueOf(Math.log(numGames / entry.getValue().doubleValue())));
 		
