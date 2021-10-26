@@ -738,25 +738,33 @@ public class ExpertIteration
 										
 										// Renormalise the expert policy
 										expertPolicy.normalise();
+										
+//										System.out.println("---------------------------------------------------");
+//										for (final Entry<FeatureVector, TIntArrayList> entry : movesPerFeatureVector.entrySet())
+//										{
+//											if (entry.getValue().size() > 1)
+//											{
+//												final FVector origErrors = cePolicy.computeDistributionErrors(apprenticePolicy, sample.expertDistribution());
+//												final FVector modifiedErrors = cePolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
+//												System.out.print("Orig errors for repeated feature vector:     ");
+//												for (int moveIdx = 0; moveIdx < entry.getValue().size(); ++moveIdx)
+//												{
+//													System.out.print(origErrors.get(entry.getValue().getQuick(moveIdx)) + ", ");
+//												}
+//												System.out.println();
+//												System.out.print("Modified errors for repeated feature vector: ");
+//												for (int moveIdx = 0; moveIdx < entry.getValue().size(); ++moveIdx)
+//												{
+//													System.out.print(modifiedErrors.get(entry.getValue().getQuick(moveIdx)) + ", ");
+//												}
+//												System.out.println();
+//											}
+//										}
+//										System.out.println("---------------------------------------------------");
 									}
 									
 									// First gradients for Cross-Entropy
 									final FVector errors = cePolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
-									
-//									System.out.println("---------------------------------------------------");
-//									for (final Entry<TIntArrayList, TIntArrayList> entry : movesPerFeatureVector.entrySet())
-//									{
-//										if (entry.getValue().size() > 1)
-//										{
-//											System.out.print("Errors for repeated feature vector: ");
-//											for (int moveIdx = 0; moveIdx < entry.getValue().size(); ++moveIdx)
-//											{
-//												System.out.print(errors.get(moveIdx) + ", ");
-//											}
-//											System.out.println();
-//										}
-//									}
-//									System.out.println("---------------------------------------------------");
 									
 									final FVector ceGradients = cePolicy.computeParamGradients
 										(
