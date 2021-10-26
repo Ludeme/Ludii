@@ -35,6 +35,9 @@ import other.GameLoader;
 public class CompareAllDistanceMetrics
 {
 	
+	/** Set this variable to true, if the stored vocabularies should be overwritten on the next comparison. */
+	final static boolean overrideStoredVocabularies = false;
+	
 	//---------------------------------------------------------------------
 
 	final static String outputPath = "res/gameDistance/";
@@ -46,11 +49,7 @@ public class CompareAllDistanceMetrics
 	static Map<String, Double> fullLudemeVocabulary;
 	static Map<String, Double> fullBooleanConceptVocabulary;
 	static Map<String, Double> fullMoveConceptVocabulary;
-	
-	final static int nGramLength = 4;
-	
-	final static boolean overrideStoredVocabularies = false;
-	
+
 	//---------------------------------------------------------------------
 	
 	public static void main(final String[] args)
@@ -282,12 +281,12 @@ public class CompareAllDistanceMetrics
 		// Store the default vocabularies for each dataset.
 		
 		final Map<String, Double> defaultLudemeVocabulary = DistanceUtils.defaultVocabulary(ludemeDataset, gameA, gameB);
-		final Map<String, Double> defaultLudemeNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(ludemeDataset, nGramLength), gameA, gameB);
+		final Map<String, Double> defaultLudemeNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), gameA, gameB);
 		
 		final Map<String, Double> defaultBooleanConceptVocabulary = DistanceUtils.defaultVocabulary(booleanConceptDataset, gameA, gameB);
 		
 		final Map<String, Double> defaultMoveConceptVocabulary = DistanceUtils.defaultVocabulary(moveConceptDataset, gameA, gameB);
-		final Map<String, Double> defaultMoveConceptNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(moveConceptDataset, nGramLength), gameA, gameB);
+		final Map<String, Double> defaultMoveConceptNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), gameA, gameB);
 		
 		//---------------------------------------------------------------------
 		// JensenShannonDivergence
@@ -298,8 +297,8 @@ public class CompareAllDistanceMetrics
 		allDistances.put("JSD_booleanConcept", jensenShannonDivergenceMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
 		allDistances.put("JSD_moveConcept", jensenShannonDivergenceMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
 		
-		allDistances.put("JSD_ludeme_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		allDistances.put("JSD_moveCooncept_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+		allDistances.put("JSD_ludeme_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
+		allDistances.put("JSD_moveCooncept_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
 		allDistances.put("JSD_ludeme_TFIDF", jensenShannonDivergenceMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
 		allDistances.put("JSD_booleanConcept_TFIDF", jensenShannonDivergenceMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
@@ -314,8 +313,8 @@ public class CompareAllDistanceMetrics
 		allDistances.put("Cosine_booleanConcept", cosineMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
 		allDistances.put("Cosine_moveConcept", cosineMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
 		
-		allDistances.put("Cosine_ludeme_ngram", cosineMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		allDistances.put("Cosine_moveCooncept_ngram", cosineMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+		allDistances.put("Cosine_ludeme_ngram", cosineMetric.distance(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
+		allDistances.put("Cosine_moveCooncept_ngram", cosineMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
 		allDistances.put("Cosine_ludeme_TFIDF", cosineMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
 		allDistances.put("Cosine_booleanConcept_TFIDF", cosineMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
@@ -330,8 +329,8 @@ public class CompareAllDistanceMetrics
 		allDistances.put("Jaccard_booleanConcept", jaccardMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
 		allDistances.put("Jaccard_moveConcept", jaccardMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
 		
-		allDistances.put("Jaccard_ludeme_ngram", jaccardMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		allDistances.put("Jaccard_moveCooncept_ngram", jaccardMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+		allDistances.put("Jaccard_ludeme_ngram", jaccardMetric.distance(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
+		allDistances.put("Jaccard_moveCooncept_ngram", jaccardMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
 		allDistances.put("Jaccard_ludeme_TFIDF", jaccardMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
 		allDistances.put("Jaccard_booleanConcept_TFIDF", jaccardMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));

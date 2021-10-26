@@ -29,6 +29,8 @@ public class DistanceUtils
 	public final static int MISS_VALUE = -5;		// Should be negative
 	public final static int GAP_PENALTY = -1;		// Should be negative
 	
+	final static int nGramLength = 4;
+	
 	// vocabulary store paths.
 	private final static String vocabularyStorePath = "res/gameDistance/vocabulary/";
 	
