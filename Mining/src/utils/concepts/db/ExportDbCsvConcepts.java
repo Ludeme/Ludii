@@ -725,12 +725,7 @@ public class ExportDbCsvConcepts
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
 		{
 			for(int i = 0 ; i < edgesUsage.size(); i++)
-			{
-				final Edge edge = game.board().topology().edges().get(i);
-				final int vFrom =edge.vertices().get(0).index();
-				final int vTo = edge.vertices().get(1).index();
-				writer.println(i+"," + "(" + vFrom + "-" + vTo + ")" + ","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)) + "," + edgesUsage.get(i));
-			}
+				writer.println(i+","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
 		}
 		catch (FileNotFoundException e)
 		{
