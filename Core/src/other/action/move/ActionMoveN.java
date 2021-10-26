@@ -317,7 +317,7 @@ public final class ActionMoveN extends BaseAction
 		if (csFrom.count(from, typeFrom) == 0)
 		{
 			csFrom.setSite(context.state(), from, who, what, count, previousStateFrom, previousRotationFrom,
-					previousValueFrom, typeTo);
+					previousValueFrom, typeFrom);
 		}
 		else if (csFrom.what(from, typeFrom) == what)
 		{
