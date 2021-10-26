@@ -477,7 +477,7 @@ public class MainMenu extends JMenuBar
 				submenuAgent.add(submenuAgentCla);
 				submenuHeuristic.add(submenuHeuristicCla);
 				
-				final File file = new File("../../LudiiPhhrivate/DataMiningScripts/Sklearn/res/trainedModels");
+				final File file = new File("../../LudiiPrivate/DataMiningScripts/Sklearn/res/trainedModels");
 				final String[] directories = file.list(new FilenameFilter() {
 					  @Override
 					  public boolean accept(final File current, final String name) {
