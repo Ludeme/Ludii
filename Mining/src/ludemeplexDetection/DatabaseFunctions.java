@@ -37,15 +37,7 @@ public class DatabaseFunctions
 	private static String defineRulesetludemeplexOutputFilePath = "./res/ludemeplexDetection/output/rulesetDefineLudemeplexes.csv";
 	private static String ludemeplexesLudemeOutputFilePath = "./res/ludemeplexDetection/output/ludemeplexLudemes.csv";
 	private static String rulesetludemesOutputFilePath = "./res/ludemeplexDetection/output/rulesetLudemes.csv";
-	
-	@SuppressWarnings("unused")  // DO NOT KILL: May be needed.
-	private static String tokensOutputFilePath = "./res/ludemeplexDetection/output/tokens.csv";
-	
-	@SuppressWarnings("unused")  // DO NOT KILL: May be needed.
-	private static String rulesetTokensOutputFilePath = "./res/ludemeplexDetection/output/rulesetTokens.csv";
-	
-	//-------------------------------------------------------------------------
-	// OUTPUT
+
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -447,7 +439,7 @@ public class DatabaseFunctions
 		for (final LudemeInfo ludeme : allValidLudemes)
 			if (!allLudemesfound.contains(ludeme))
 				notFoundLudemesString += ludeme.getDBString() + "\n";
-		try (final BufferedWriter writer = new BufferedWriter(new FileWriter("NOTFOUNDLUDEMES.csv", false)))
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter("/res/ludemeplexDetection/output/NOTFOUNDLUDEMES.csv", false)))
 		{
 			writer.write(notFoundLudemesString);
 			writer.close();

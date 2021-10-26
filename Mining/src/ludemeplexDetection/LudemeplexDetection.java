@@ -38,7 +38,6 @@ public class LudemeplexDetection
 	private static String[] recordLudemeplexesAcrossAllGames() 
 	{
 		final String[] choices = FileHandling.listGames();
-		//final String[] choices = IntStream.range(0, 500).mapToObj(i -> FileHandling.listGames()[i]).toArray(String[]::new);
 		//final String[] choices = {"Chess.lud"};
 		
 		for (final String s : choices)
@@ -146,20 +145,19 @@ public class LudemeplexDetection
 		// Store relevant details in output csv files for uploading to DB
 		DatabaseFunctions.storeLudemeInfo();
 		System.out.println("Ludemes Recorded");
-//		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
-//		System.out.println("Ludemeplexes Recorded");
-//		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
-//		System.out.println("Ludemes in Ludemeplexes Recorded");
-//		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
-//		System.out.println("Ruleset Ludemeplexes Recorded");
-//		
-//		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
-//		System.out.println("Define Ludemeplexes Recorded");
-//		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
-//		System.out.println("Define Ruleset Ludemeplexes Recorded");
+		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
+		System.out.println("Ludemeplexes Recorded");
+		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
+		System.out.println("Ludemes in Ludemeplexes Recorded");
+		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
+		System.out.println("Ruleset Ludemeplexes Recorded");
+		
+		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
+		System.out.println("Define Ludemeplexes Recorded");
+		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
+		System.out.println("Define Ruleset Ludemeplexes Recorded");
 		
 		DatabaseFunctions.storeLudemesInGames(GetLudemeInfo.getLudemeInfo(), chosenGameNames);
-//		DatabaseFunctions.storeTokensInGames(chosenGameNames);
 		
 		System.out.println("//-------------------------------------------------------------------------");
 	}
