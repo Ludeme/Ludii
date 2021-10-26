@@ -287,7 +287,33 @@ public class MCTS extends ExpertPolicy
 					new RobustChild()
 				);
 		
-		mcts.setQInit(QInit.DRAW);
+		mcts.setQInit(QInit.WIN);
+		mcts.setLearnedSelectionPolicy(softmax);
+		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
+		
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Biased MCTS agent using given collection of features
+	 * 
+	 * @param features
+	 * @param epsilon Epsilon for epsilon-greedy feature-based playouts. 1 for uniform, 0 for always softmax
+	 * @return Biased MCTS agent
+	 */
+	public static MCTS createBiasedMCTS(final Features features, final double epsilon)
+	{
+		final SoftmaxPolicy softmax = new SoftmaxPolicy(features, epsilon);
+		final MCTS mcts = 
+				new MCTS
+				(
+					new AG0Selection(), 
+					epsilon < 1.0 ? softmax : new RandomPlayout(200),
+					new MonteCarloBackprop(),
+					new RobustChild()
+				);
+		
+		mcts.setQInit(QInit.WIN);
 		mcts.setLearnedSelectionPolicy(softmax);
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
@@ -333,31 +359,6 @@ public class MCTS extends ExpertPolicy
 		mcts.setWantsMetadataHeuristics(true);
 		mcts.setPlayoutValueWeight(0.0);
 		mcts.friendlyName = "Bandit Tree Search (Avg)";
-		return mcts;
-	}
-	
-	/**
-	 * Creates a Biased MCTS agent using given collection of features
-	 * 
-	 * @param features
-	 * @param epsilon Epsilon for epsilon-greedy feature-based playouts. 1 for uniform, 0 for always softmax
-	 * @return Biased MCTS agent
-	 */
-	public static MCTS createBiasedMCTS(final Features features, final double epsilon)
-	{
-		final SoftmaxPolicy softmax = new SoftmaxPolicy(features, epsilon);
-		final MCTS mcts = 
-				new MCTS
-				(
-					new AG0Selection(), 
-					epsilon < 1.0 ? softmax : new RandomPlayout(200),
-					new MonteCarloBackprop(),
-					new RobustChild()
-				);
-		
-		mcts.setLearnedSelectionPolicy(softmax);
-		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
-		
 		return mcts;
 	}
 	

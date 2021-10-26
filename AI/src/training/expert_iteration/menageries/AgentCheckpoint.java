@@ -11,7 +11,6 @@ import metadata.ai.misc.BestAgent;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import search.mcts.backpropagation.AlphaGoBackprop;
-import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
@@ -156,20 +155,8 @@ public class AgentCheckpoint
 		}
 		else if (agentName.equals("Biased MCTS"))
 		{
-			final SoftmaxPolicy policy = new SoftmaxPolicy(featuresMetadata, agentsParams.playoutFeaturesEpsilon);
-			
-			final MCTS mcts = 
-					new MCTS
-					(
-						new AG0Selection(), 
-						policy,
-						new MonteCarloBackprop(),
-						new RobustChild()
-					);
-
-			mcts.setLearnedSelectionPolicy(policy);
-			mcts.setFriendlyName("Biased MCTS");
-			ai = mcts;
+			ai = MCTS.createBiasedMCTS(featuresMetadata, agentsParams.playoutFeaturesEpsilon);
+			ai.setFriendlyName("Biased MCTS");
 		}
 		else if (agentName.equals("PVTS"))
 		{
