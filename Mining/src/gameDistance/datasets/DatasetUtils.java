@@ -8,7 +8,6 @@ import java.util.List;
 
 import game.Game;
 import manager.utils.game_logs.MatchRecord;
-import other.GameLoader;
 import other.trial.Trial;
 
 /**
