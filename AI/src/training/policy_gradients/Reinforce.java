@@ -74,10 +74,14 @@ public class Reinforce
 	{
 		BaseFeatureSet[] featureSets = inFeatureSets;
 		final int numPlayers = game.players().count();
+		
+		// TODO actually use these?
 		final ExponentialMovingAverage[] avgGameDurations = new ExponentialMovingAverage[numPlayers + 1];
+		final ExponentialMovingAverage[] avgPlayerOutcomeTrackers = new ExponentialMovingAverage[numPlayers + 1];
 		for (int p = 1; p <= numPlayers; ++p)
 		{
 			avgGameDurations[p] = new ExponentialMovingAverage();
+			avgPlayerOutcomeTrackers[p] = new ExponentialMovingAverage();
 		}
 		
 		final TLongArrayList[] featureLifetimes = new TLongArrayList[featureSets.length];
@@ -216,6 +220,11 @@ public class Reinforce
 					final List<FeatureVector[]> featureVectorsList = featureVectorArrays[p];
 					final TIntArrayList moveIndicesList = playedMoveIndices[p];
 					
+					// Note: not really game duration! Just from perspective of one player!
+					final int gameDuration = gameStatesList.size();
+					avgGameDurations[p].observe(gameDuration);
+					avgPlayerOutcomeTrackers[p].observe(utilities[p]);
+					
 					double discountMultiplier = 1.0;
 					
 					for (int i = 0; i < featureVectorsList.size(); ++i)
@@ -246,11 +255,12 @@ public class Reinforce
 				final List<PGExperience> experiences = epochExperiences[p];
 				final int numExperiences = experiences.size();
 				final FVector grads = new FVector(policy.linearFunction(p).trainableParams().allWeights().dim());
+				final double baseline = avgPlayerOutcomeTrackers[p].movingAvg();
 				
 				for (int i = 0; i < numExperiences; ++i)
 				{
 					final PGExperience exp = experiences.get(i);
-					final FVector policyGradients = computePolicyGradients(exp, grads.dim());
+					final FVector policyGradients = computePolicyGradients(exp, grads.dim(), baseline);
 					
 					// Now just need to divide gradients by the number of experiences we have and then we can
 					// add them to the average gradients (averaged over all experiences)
@@ -374,9 +384,10 @@ public class Reinforce
 	/**
 	 * @param exp
 	 * @param dim Dimensionality we want for output vector
+	 * @param valueBaseline
 	 * @return Computes vector of policy gradients for given sample of experience
 	 */
-	public static FVector computePolicyGradients(final PGExperience exp, final int dim)
+	public static FVector computePolicyGradients(final PGExperience exp, final int dim, final double valueBaseline)
 	{
 		// Policy gradient giving the direction in which we should update parameters theta
 		// can be estimated as:
@@ -439,7 +450,7 @@ public class Reinforce
 
 		// Now we have the gradients of the log-probability of the action we played
 		// We want to weight these by the returns of the episode
-		gradLogPi.mult((float)(exp.discountMultiplier() * exp.returns()));		// TODO subtract per-player expected score as baseline
+		gradLogPi.mult((float)(exp.discountMultiplier() * (exp.returns() - valueBaseline)));
 		
 		return gradLogPi;
 	}
