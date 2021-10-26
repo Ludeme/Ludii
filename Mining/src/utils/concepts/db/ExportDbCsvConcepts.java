@@ -49,6 +49,7 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
+import other.topology.Edge;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
@@ -621,9 +622,9 @@ public class ExportDbCsvConcepts
 		// We run the playouts needed for the computation.
 		
 		// FOR THE MUSEUM GAME
-//		final TIntArrayList edgesUsage = new TIntArrayList();	
-//		for(int i = 0; i < game.board().topology().edges().size(); i++)
-//			edgesUsage.add(0);
+		final TIntArrayList edgesUsage = new TIntArrayList();	
+		for(int i = 0; i < game.board().topology().edges().size(); i++)
+			edgesUsage.add(0);
 		
 		if(folderTrials.isEmpty())
 		{
@@ -652,17 +653,17 @@ public class ExportDbCsvConcepts
 					
 					// FOR THE MUSEUM GAME
 					// To count the frequency/usage of each edge on the board. 
-	//				final Move lastMove = trial.lastMove();
-	//				final int vertexFrom = lastMove.fromNonDecision();
-	//				final int vertexTo = lastMove.toNonDecision();
-	//
-	//				for(int i = 0; i < game.board().topology().edges().size(); i++)
-	//				{
-	//					final Edge edge = game.board().topology().edges().get(i);
-	//					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
-	//							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
-	//						edgesUsage.set(i, edgesUsage.get(i)+1);
-	//				}
+					final Move lastMove = trial.lastMove();
+					final int vertexFrom = lastMove.fromNonDecision();
+					final int vertexTo = lastMove.toNonDecision();
+	
+					for(int i = 0; i < game.board().topology().edges().size(); i++)
+					{
+						final Edge edge = game.board().topology().edges().get(i);
+						if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
+								(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
+							edgesUsage.set(i, edgesUsage.get(i)+1);
+					}
 					
 					// TO PRINT THE NUMBER OF PIECES PER TRIAL
 	//				int countPieces = 0;
@@ -707,18 +708,40 @@ public class ExportDbCsvConcepts
 		}
 		
 		// FOR THE MUSEUM GAME
-//		int totalEdgesUsage = 0;
-//		for(int i = 0 ; i < edgesUsage.size(); i++)
-//			totalEdgesUsage += edgesUsage.get(i);
-//		
-//		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
-//		for(int i = 0 ; i < edgesUsage.size(); i++)
-//		{
-//			final Edge edge = game.board().topology().edges().get(i);
-//			final int vFrom =edge.vertices().get(0).index();
-//			final int vTo = edge.vertices().get(1).index();
-//			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
-//		}
+		int totalEdgesUsage = 0;
+		for(int i = 0 ; i < edgesUsage.size(); i++)
+			totalEdgesUsage += edgesUsage.get(i);
+		
+		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
+		for(int i = 0 ; i < edgesUsage.size(); i++)
+		{
+			final Edge edge = game.board().topology().edges().get(i);
+			final int vFrom =edge.vertices().get(0).index();
+			final int vTo = edge.vertices().get(1).index();
+			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
+		}
+		
+		final String outputEdgesResults =  "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8)+".csv";
+		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
+		{
+			for(int i = 0 ; i < edgesUsage.size(); i++)
+			{
+				final Edge edge = game.board().topology().edges().get(i);
+				final int vFrom =edge.vertices().get(0).index();
+				final int vTo = edge.vertices().get(1).index();
+				writer.println(i+"," + "(" + vFrom + "-" + vTo + ")" + ","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)) + "," + edgesUsage.get(i));
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game));
