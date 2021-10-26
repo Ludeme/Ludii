@@ -44,6 +44,15 @@ public final class ActionPromote extends BaseAction
 	
 	/** The previous index of the piece before to be removed. */
 	private int previousWhat;
+	
+	/** The previous state value of the piece before to be removed. */
+	private int previousState;
+
+	/** The previous rotation value of the piece before to be removed. */
+	private int previousRotation;
+
+	/** The previous value of the piece before to be removed. */
+	private int previousValue;
 
 	//-------------------------------------------------------------------------
 	
@@ -103,6 +112,9 @@ public final class ActionPromote extends BaseAction
 		if(!alreadyApplied)
 		{
 			previousWhat = oldWhat;
+			previousState = cs.state(to, type);
+			previousRotation = cs.rotation(to, type);
+			previousValue = cs.value(to, type);
 			alreadyApplied = true;
 		}
 		
@@ -209,8 +221,8 @@ public final class ActionPromote extends BaseAction
 			cs.remove(context.state(), to, type);
 
 			final int who = (oldWhat < 1) ? 0 : context.components()[previousWhat].owner();
-			cs.setSite(context.state(), to, who, previousWhat, 1, Constants.UNDEFINED, Constants.UNDEFINED,
-					Constants.UNDEFINED, type);
+			cs.setSite(context.state(), to, who, previousWhat, 1, previousState, previousRotation,
+					previousValue, type);
 
 			// to keep the site of the item in cache for each player
 			if (previousWhat != 0)
