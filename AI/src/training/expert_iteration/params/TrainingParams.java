@@ -37,6 +37,9 @@ public class TrainingParams
 	/** Discount factor gamma for policy gradients */
 	public double pgGamma;
 	
+	/** Weight for entropy regularisation */
+	public double entropyRegWeight;
+	
 	//-------------------------------------------------------------------------
 
 }

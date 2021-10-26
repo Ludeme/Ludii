@@ -260,7 +260,15 @@ public class Reinforce
 				for (int i = 0; i < numExperiences; ++i)
 				{
 					final PGExperience exp = experiences.get(i);
-					final FVector policyGradients = computePolicyGradients(exp, grads.dim(), baseline);
+					final FVector distribution = policy.computeDistribution(exp.featureVectors, p);
+					
+					final FVector policyGradients = 
+							computePolicyGradients
+							(
+								exp, grads.dim(), baseline, 
+								trainingParams.entropyRegWeight, 
+								distribution.get(exp.movePlayedIdx())
+							);
 					
 					// Now just need to divide gradients by the number of experiences we have and then we can
 					// add them to the average gradients (averaged over all experiences)
@@ -385,9 +393,18 @@ public class Reinforce
 	 * @param exp
 	 * @param dim Dimensionality we want for output vector
 	 * @param valueBaseline
+	 * @param entropyRegWeight Weight for entropy regularisation term
+	 * @param playedMoveProb Probably with which our policy picks the move that we ended up picking
 	 * @return Computes vector of policy gradients for given sample of experience
 	 */
-	public static FVector computePolicyGradients(final PGExperience exp, final int dim, final double valueBaseline)
+	public static FVector computePolicyGradients
+	(
+		final PGExperience exp, 
+		final int dim, 
+		final double valueBaseline,
+		final double entropyRegWeight,
+		final float playedMoveProb
+	)
 	{
 		// Policy gradient giving the direction in which we should update parameters theta
 		// can be estimated as:
@@ -450,7 +467,7 @@ public class Reinforce
 
 		// Now we have the gradients of the log-probability of the action we played
 		// We want to weight these by the returns of the episode
-		gradLogPi.mult((float)(exp.discountMultiplier() * (exp.returns() - valueBaseline)));
+		gradLogPi.mult((float)(exp.discountMultiplier() * (exp.returns() - valueBaseline) - entropyRegWeight * Math.log(playedMoveProb)));
 		
 		return gradLogPi;
 	}

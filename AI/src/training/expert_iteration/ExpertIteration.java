@@ -2531,8 +2531,8 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--num-policy-gradient-epochs")
 				.help("Number of epochs to run with policy gradients.")
-				.withDefault(Integer.valueOf(100))
-				//.withDefault(Integer.valueOf(0))
+				//.withDefault(Integer.valueOf(100))
+				.withDefault(Integer.valueOf(0))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2545,6 +2545,12 @@ public class ExpertIteration
 				.withNames("--pg-gamma")
 				.help("Discount factor gamma for policy gradients (excluding TSPG).")
 				.withDefault(Double.valueOf(0.9))
+				.withNumVals(1)
+				.withType(OptionTypes.Double));
+		argParse.addOption(new ArgOption()
+				.withNames("--entropy-reg-weight")
+				.help("Weight for entropy regularization in policy gradients.")
+				.withDefault(Double.valueOf(0.1))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
 		
@@ -2718,6 +2724,7 @@ public class ExpertIteration
 		exIt.trainingParams.numPolicyGradientEpochs = argParse.getValueInt("--num-policy-gradient-epochs");
 		exIt.trainingParams.numTrialsPerPolicyGradientEpoch = argParse.getValueInt("--num-trials-per-policy-gradient-epoch");
 		exIt.trainingParams.pgGamma = argParse.getValueDouble("--pg-gamma");
+		exIt.trainingParams.entropyRegWeight = argParse.getValueDouble("--entropy-reg-weight");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
