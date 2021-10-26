@@ -15,6 +15,10 @@ import utils.DBGameInfo;
 
 /**
  * Detects all ludemeplexes within all games in Ludii.
+ * 
+ * Run “LudemeplexDetection.java”
+ * Ouput csv files are stored in Ludii/Mining/res/ludemeplexDetection/output/
+ * These files should be uploaded to the Ludii database.
  *
  * @author matthew.stephenson
  */
