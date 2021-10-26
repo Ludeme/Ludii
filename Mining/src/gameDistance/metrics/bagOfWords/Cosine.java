@@ -7,6 +7,7 @@ import game.Game;
 import gameDistance.DistanceUtils;
 import gameDistance.datasets.Dataset;
 import gameDistance.metrics.DistanceMetric;
+import main.Constants;
 
 //-----------------------------------------------------------------------------
 
@@ -43,6 +44,10 @@ public class Cosine implements DistanceMetric
 		}
 		final double denominator = Math.sqrt(denominatorA)*Math.sqrt(denominatorB);
 		final double finalVal = 1-(nominator/denominator);
+		
+		// Handle floating point imprecision
+		if (finalVal < Constants.EPSILON)
+			return 0;
 
 		return finalVal;
 	}
