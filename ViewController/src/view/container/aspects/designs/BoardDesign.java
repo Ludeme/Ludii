@@ -791,14 +791,15 @@ public class BoardDesign extends ContainerDesign
 		// Draw indices on sites if specified.
 		for (final TopologyElement e : boardStyle.topology().getAllGraphElements())
 		{
-			if (context.game().metadata().graphics().showSiteIndex(context.game(), e) != null)
+			final Integer additionalValue = context.game().metadata().graphics().showSiteIndex(context.game(), e);
+			if (additionalValue != null)
 			{
 				final Point drawPosn = boardStyle.screenPosn(e.centroid());
 				g2d.setColor(Color.WHITE);
 				final int fontSize = (int) (0.85 * boardStyle.cellRadius() * boardStyle.placement().width + 0.5);
 				final Font font = new Font("Arial", Font.PLAIN, fontSize);
 				g2d.setFont(font);
-				StringUtil.drawStringAtPoint(g2d, String.valueOf(e.index()), e, drawPosn, true);
+				StringUtil.drawStringAtPoint(g2d, String.valueOf(e.index() + additionalValue.intValue()), e, drawPosn, true);
 			}
 		}
 	}
