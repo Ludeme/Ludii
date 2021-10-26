@@ -224,6 +224,9 @@ public class ExpertIteration
 			/** Filenames corresponding to our current experience buffers */
 			protected String[] currentExperienceBufferFilenames;
 			
+			/** Filenames corresponding to our current experience buffers for special moves */
+			protected String[] currentSpecialMoveExperienceBufferFilenames;
+			
 			/** Filenames corresponding to our current experience buffers for final states */
 			protected String[] currentFinalStatesExperienceBufferFilenames;
 			
@@ -255,6 +258,7 @@ public class ExpertIteration
 				currentPolicyWeightsCEEFilenames = new String[numPlayers + 1];
 				currentValueFunctionFilename = null;
 				currentExperienceBufferFilenames = new String[numPlayers + 1];
+				currentSpecialMoveExperienceBufferFilenames = new String[numPlayers + 1];
 				currentFinalStatesExperienceBufferFilenames = new String[numPlayers + 1];
 				currentGameDurationTrackerFilenames = new String[numPlayers + 1];
 				currentOptimiserCEFilenames = new String[numPlayers + 1];
@@ -371,13 +375,14 @@ public class ExpertIteration
 				final Trial trial = new Trial(game);
 				final Context context = new Context(game, trial);
 				
-				// prepare our replay buffers (we use one per player)
+				// Prepare our replay buffers (we use one per player)
 				final ExperienceBuffer[] experienceBuffers = prepareExperienceBuffers(trainingParams.prioritizedExperienceReplay);
+				final ExperienceBuffer[] specialMoveExperienceBuffers = prepareSpecialMoveExperienceBuffers();
 				
-				// keep track of average game duration (separate per player) 
+				// Keep track of average game duration (separate per player) 
 				final ExponentialMovingAverage[] avgGameDurations = prepareGameDurationTrackers();
 				
-				// our big game-playing loop
+				// Our big game-playing loop
 				long actionCounter = 0L;
 				long weightsUpdateCounter = (outParams.checkpointType == CheckpointTypes.WeightUpdate) ? lastCheckpoint : 0L;
 
@@ -446,6 +451,7 @@ public class ExpertIteration
 						tspgFunctions,
 						valueFunction,
 						experienceBuffers,
+						specialMoveExperienceBuffers,
 						ceOptimisers,
 						tspgOptimisers,
 						valueFunctionOptimiser,
@@ -969,6 +975,18 @@ public class ExpertIteration
 								experience.setEpisodeDuration(gameDuration);
 								experience.setPlayerOutcomes(playerOutcomes);
 								experienceBuffers[p].add(experience);
+								
+								if 
+								(
+									!experience.winningMoves().isEmpty() 
+									|| 
+									!experience.losingMoves().isEmpty() 
+									|| 
+									!experience.antiDefeatingMoves().isEmpty()
+								)
+								{
+									specialMoveExperienceBuffers[p].add(experience);
+								}
 							}
 						}
 					}
@@ -997,6 +1015,7 @@ public class ExpertIteration
 					tspgFunctions,
 					valueFunction,
 					experienceBuffers,
+					specialMoveExperienceBuffers,
 					ceOptimisers,
 					tspgOptimisers,
 					valueFunctionOptimiser,
@@ -1470,6 +1489,50 @@ public class ExpertIteration
 								: UniformExperienceBuffer.fromFile(game, outParams.outDir.getAbsolutePath() + File.separator + currentExperienceBufferFilenames[p]);
 						
 						logLine(logWriter, "continuing with experience buffer loaded from " + currentExperienceBufferFilenames[p]);
+					}
+					
+					experienceBuffers[p] = experienceBuffer;
+				}
+				
+				return experienceBuffers;
+			}
+			
+			/**
+			 * Creates (or loads) experience buffers (one per player) for special moves
+			 * (winning, losing, and anti-defeating moves)
+			 * 
+			 * @return
+			 */
+			private ExperienceBuffer[] prepareSpecialMoveExperienceBuffers()
+			{
+				final ExperienceBuffer[] experienceBuffers = new ExperienceBuffer[numPlayers + 1];
+				
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					final ExperienceBuffer experienceBuffer;
+					
+					currentSpecialMoveExperienceBufferFilenames[p] = getFilenameLastCheckpoint("SpecialMoveExperienceBuffer_P" + p, "buf");
+					lastCheckpoint = 
+							Math.min
+							(
+								lastCheckpoint,
+								extractCheckpointFromFilename(currentSpecialMoveExperienceBufferFilenames[p], "SpecialMoveExperienceBuffer_P" + p, "buf")
+							);
+					//System.out.println("Buffers set lastCheckpoint = " + lastCheckpoint);
+					
+					if (currentSpecialMoveExperienceBufferFilenames[p] == null)
+					{
+						// create new Experience Buffer
+						experienceBuffer = new UniformExperienceBuffer(trainingParams.experienceBufferSize);
+						logLine(logWriter, "starting with empty experience buffer for special moves");
+					}
+					else
+					{
+						// load experience buffer from file
+						experienceBuffer = 
+								UniformExperienceBuffer.fromFile(game, outParams.outDir.getAbsolutePath() + File.separator + currentSpecialMoveExperienceBufferFilenames[p]);
+						
+						logLine(logWriter, "continuing with experience buffer for special moves loaded from " + currentSpecialMoveExperienceBufferFilenames[p]);
 					}
 					
 					experienceBuffers[p] = experienceBuffer;
@@ -2254,6 +2317,7 @@ public class ExpertIteration
 			 * @param crossEntropyFunctions
 			 * @param tspgFunctions
 			 * @param experienceBuffers
+			 * @param specialMoveExperienceBuffers
 			 * @param ceOptimisers
 			 * @param tspgOptimisers
 			 * @param valueFunctionOptimiser
@@ -2269,6 +2333,7 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions,
 				final Heuristics valueFunction,
 				final ExperienceBuffer[] experienceBuffers,
+				final ExperienceBuffer[] specialMoveExperienceBuffers,
 				final Optimiser[] ceOptimisers,
 				final Optimiser[] tspgOptimisers,
 				final Optimiser valueFunctionOptimiser,
@@ -2330,6 +2395,9 @@ public class ExpertIteration
 						// In this case, we'll also store experience buffers
 						final String experienceBufferFilename = createCheckpointFilename("ExperienceBuffer_P" + p, nextCheckpoint, "buf");
 						experienceBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + experienceBufferFilename);
+						
+						final String specialMoveExperienceBufferFilename = createCheckpointFilename("SpecialMoveExperienceBuffer_P" + p, nextCheckpoint, "buf");
+						specialMoveExperienceBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + specialMoveExperienceBufferFilename);
 											
 						// and optimisers
 						final String ceOptimiserFilename = createCheckpointFilename("OptimiserCE_P" + p, nextCheckpoint, "opt");

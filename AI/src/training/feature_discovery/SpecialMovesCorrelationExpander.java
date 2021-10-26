@@ -33,12 +33,12 @@ import training.expert_iteration.params.ObjectiveParams;
 import utils.experiments.InterruptableExperiment;
 
 /**
- * Feature Set Expander based on correlation with targets (i.e., expert policies),
- * irrespective of our current predictions / errors.
+ * Feature Set Expander that simply likes correlations with special moves
+ * (winning moves, losing moves, anti-defeating moves).
  *
  * @author Dennis Soemers
  */
-public class TargetCorrelationBasedExpander implements FeatureSetExpander
+public class SpecialMovesCorrelationExpander implements FeatureSetExpander
 {
 
 	@Override
@@ -163,7 +163,6 @@ public class TargetCorrelationBasedExpander implements FeatureSetExpander
 		}
 
 		// For every sample in batch, first compute apprentice policies, errors, and sum of absolute errors
-		final FVector[] apprenticePolicies = new FVector[batch.size()];
 		final FVector[] errorVectors = new FVector[batch.size()];
 		final float[] absErrorSums = new float[batch.size()];
 		
@@ -181,14 +180,21 @@ public class TargetCorrelationBasedExpander implements FeatureSetExpander
 			final ExperienceSample sample = batch.get(i);
 
 			final FeatureVector[] featureVectors = sample.generateFeatureVectors(featureSet);
-
-			final FVector apprenticePolicy = 
-					policy.computeDistribution(featureVectors, sample.gameState().mover());
-			final FVector errors = apprenticePolicy.copy();
+			final FVector errors = new FVector(featureVectors.length);
 			
 			for (int a = 0; a < featureVectors.length; ++a)
 			{
-				final float actionError = errors.get(a);
+				final float actionError;
+				if (sample.winningMoves().get(a) || sample.losingMoves().get(a) || sample.antiDefeatingMoves().get(a))
+				{
+					actionError = 1.f;
+				}
+				else
+				{
+					actionError = 0.f;
+				}
+				errors.set(a, actionError);
+				
 				final TIntArrayList sparseFeatureVector = featureVectors[a].activeSpatialFeatureIndices();
 				sparseFeatureVector.sort();
 				int sparseIdx = 0;
@@ -217,7 +223,6 @@ public class TargetCorrelationBasedExpander implements FeatureSetExpander
 			final FVector absErrors = errors.copy();
 			absErrors.abs();
 
-			apprenticePolicies[i] = apprenticePolicy;
 			errorVectors[i] = errors;
 			absErrorSums[i] = absErrors.sum();
 		}
