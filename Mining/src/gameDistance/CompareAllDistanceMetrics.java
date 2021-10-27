@@ -221,35 +221,6 @@ public class CompareAllDistanceMetrics
 	
 	//---------------------------------------------------------------------
 	
-//	/**
-//	 * All games/rulesets in Ludii to compare.
-//	 * @return List of two String arrays, for all game and ruleset names to compare.
-//	 */
-//	@SuppressWarnings("unused")
-//	private static List<String[]> getAllGameRulesetNamesToCompare()
-//	{
-//		final List<String> gamesToCompareList = new ArrayList<>();
-//		final List<String> rulesetsToCompareList = new ArrayList<>();
-//		for (final String[] gameRulesetNames : GameLoader.allAnalysisGames())
-//		{
-//			gamesToCompareList.add(GameLoader.getFilePath(game.name()));
-//			
-//			if (game.getRuleset() != null)
-//				rulesetsToCompareList.add(game.getRuleset().heading());
-//			else
-//				rulesetsToCompareList.add("");
-//		}
-//		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
-//		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);
-//		
-//		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
-//		gamesAndRulesetsToCompare.add(gamesToCompare);
-//		gamesAndRulesetsToCompare.add(rulesetsToCompare);
-//		return gamesAndRulesetsToCompare;
-//	}
-	
-	//---------------------------------------------------------------------
-	
 	/**
 	 * Compares gameA and gameB across all distance measures
 	 * @param gameA
