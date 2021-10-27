@@ -427,5 +427,37 @@ public final class GameLoader
 			instanceObjectOptions.setOptionCategories(optionsAvailable);
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	public static Game[] allAnalysisGames()
+	{
+		final List<Game> allGames = new ArrayList<>();
+		final String[] choices = FileHandling.listGames();
+		
+		for (final String s : choices)
+		{
+			if (!FileHandling.shouldIgnoreLudAnalysis(s))
+			{
+				final String gameName = s.split("\\/")[s.split("\\/").length-1];
+				final Game tempGame = GameLoader.loadGameFromName(gameName);
+				final List<Ruleset> rulesets = tempGame.description().rulesets();
+				if (rulesets != null && !rulesets.isEmpty())
+				{
+					for (int rs = 0; rs < rulesets.size(); rs++)
+						if (!rulesets.get(rs).optionSettings().isEmpty())
+							allGames.add(GameLoader.loadGameFromName(gameName, rulesets.get(rs).optionSettings()));
+				}
+				else
+				{
+					allGames.add(tempGame);
+				}
+			}
+		}
+		
+		return (Game[]) allGames.toArray();
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
