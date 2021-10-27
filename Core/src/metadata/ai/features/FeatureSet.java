@@ -207,6 +207,21 @@ public class FeatureSet implements AIItem
 		return tspgWeights;
 	}
 	
+	/**
+	 * @return Array of weights for Playout
+	 */
+	public float[] playoutWeights()
+	{
+		if (playoutWeights != null)
+			return playoutWeights;
+		
+		// We'll use selection or TSPG weights as fallback if no selection weights
+		if (selectionWeights != null)
+			return selectionWeights;
+		
+		return tspgWeights;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override

@@ -137,38 +137,60 @@ public class SoftmaxPolicy extends Policy
 	
 	/**
 	 * Constructs a softmax policy from a given set of features as created
-	 * by the compiler.
+	 * by the compiler, using the Selection weights.
 	 * 
 	 * @param features
+	 * @param epsilon Epsilon for epsilon-greedy playouts (should be irrelevant for Selection policy)
 	 */
-	public SoftmaxPolicy(final Features features)
+	public static SoftmaxPolicy constructSelectionPolicy(final Features features, final double epsilon)
 	{
-		this(features, 0.0);
-	}
-	
-	/**
-	 * Constructs a softmax policy from a given set of features as created
-	 * by the compiler.
-	 * 
-	 * @param features
-	 * @param epsilon Epsilon for epsilon-greedy playouts
-	 */
-	public SoftmaxPolicy(final Features features, final double epsilon)
-	{
+		final SoftmaxPolicy softmax = new SoftmaxPolicy();
+		
 		final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
 		final List<LinearFunction> linFuncs = new ArrayList<LinearFunction>();
 				
 		for (final metadata.ai.features.FeatureSet featureSet : features.featureSets())
 		{
 			if (featureSet.role() == RoleType.Shared || featureSet.role() == RoleType.Neutral)
-				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.featureWeights(), featureSetsList, linFuncs);
+				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 			else
-				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.featureWeights(), featureSetsList, linFuncs);
+				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 		}
 		
-		this.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
-		this.linearFunctions = linFuncs.toArray(new LinearFunction[linFuncs.size()]);
-		this.epsilon = epsilon;
+		softmax.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
+		softmax.linearFunctions = linFuncs.toArray(new LinearFunction[linFuncs.size()]);
+		softmax.epsilon = epsilon;
+		
+		return softmax;
+	}
+	
+	/**
+	 * Constructs a softmax policy from a given set of features as created
+	 * by the compiler, using the Playout weights.
+	 * 
+	 * @param features
+	 * @param epsilon Epsilon for epsilon-greedy playouts
+	 */
+	public static SoftmaxPolicy constructPlayoutPolicy(final Features features, final double epsilon)
+	{
+		final SoftmaxPolicy softmax = new SoftmaxPolicy();
+		
+		final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
+		final List<LinearFunction> linFuncs = new ArrayList<LinearFunction>();
+				
+		for (final metadata.ai.features.FeatureSet featureSet : features.featureSets())
+		{
+			if (featureSet.role() == RoleType.Shared || featureSet.role() == RoleType.Neutral)
+				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
+			else
+				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
+		}
+		
+		softmax.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
+		softmax.linearFunctions = linFuncs.toArray(new LinearFunction[linFuncs.size()]);
+		softmax.epsilon = epsilon;
+		
+		return softmax;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -712,7 +734,7 @@ public class SoftmaxPolicy extends Policy
 		{
 			if (line.equalsIgnoreCase("features=from_metadata"))
 			{
-				policy = new SoftmaxFromMetadata(0.0);
+				policy = new SoftmaxFromMetadataSelection(0.0);
 				break;
 			}
 		}

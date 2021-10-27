@@ -434,27 +434,32 @@ public class AIUtils
 	 * @param playoutPolicy
 	 * @return
 	 */
-	public metadata.ai.features.Features generateFeaturesMetadata(final SoftmaxPolicy selectionPolicy, final SoftmaxPolicy playoutPolicy)
+	public static metadata.ai.features.Features generateFeaturesMetadata
+	(
+		final SoftmaxPolicy selectionPolicy, final SoftmaxPolicy playoutPolicy
+	)
 	{
 		final Features features;
 		
 		Pair[][] selectionPairs = null;
 		Pair[][] playoutPairs = null;
 		Pair[][] tspgPairs = null;
-		
-		metadata.ai.features.FeatureSet[] metadataFeatureSets = null;
-		
+		int numRoles = 0;
+				
 		if (selectionPolicy != null)
 		{
 			final BaseFeatureSet[] featureSets = selectionPolicy.featureSets();
 			final LinearFunction[] linearFunctions = selectionPolicy.linearFunctions();
 			
-			if (metadataFeatureSets == null)
-				metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
-			
+			selectionPairs = new Pair[featureSets.length][];
+			playoutPairs = new Pair[featureSets.length][];
+			tspgPairs = new Pair[featureSets.length][];
+
 			if (featureSets.length == 1)
 			{
 				// Just a single featureset for all players
+				assert (numRoles == 1 || numRoles == 0);
+				numRoles = 1;
 				final BaseFeatureSet featureSet = featureSets[0];
 				final LinearFunction linFunc = linearFunctions[0];
 				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
@@ -470,12 +475,13 @@ public class AIUtils
 						System.err.println("WARNING: writing infinity weight");
 				}
 				
-				metadataFeatureSets[0] = new metadata.ai.features.FeatureSet(RoleType.Shared, pairs);
+				selectionPairs[0] = pairs;
 			}
 			else
 			{
 				// One featureset per player
-				metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
+				assert (numRoles == featureSets.length || numRoles == 0);
+				numRoles = featureSets.length;
 				
 				for (int p = 0; p < featureSets.length; ++p)
 				{
@@ -497,29 +503,30 @@ public class AIUtils
 							System.err.println("WARNING: writing infinity weight");
 					}
 					
-					metadataFeatureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
+					selectionPairs[p] = pairs;
 				}
-				
-				features = new Features(metadataFeatureSets);
 			}
 		}
 		
-		if (metadataFeatureSets.length == 1)
+		if (playoutPolicy != null)
 		{
-			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, selectionPairs, playoutPairs, tspgPairs));
-		}
-		else
-		{
-			// One featureset per player
-			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
+			final BaseFeatureSet[] featureSets = playoutPolicy.featureSets();
+			final LinearFunction[] linearFunctions = playoutPolicy.linearFunctions();
 			
-			for (int p = 0; p < featureSets.length; ++p)
+			if (playoutPairs == null)
 			{
-				final BaseFeatureSet featureSet = featureSets[p];
-				if (featureSet == null)
-					continue;
-				
-				final LinearFunction linFunc = linearFunctions[p];
+				selectionPairs = new Pair[featureSets.length][];
+				playoutPairs = new Pair[featureSets.length][];
+				tspgPairs = new Pair[featureSets.length][];
+			}
+
+			if (featureSets.length == 1)
+			{
+				// Just a single featureset for all players
+				assert (numRoles == 1 || numRoles == 0);
+				numRoles = 1;
+				final BaseFeatureSet featureSet = featureSets[0];
+				final LinearFunction linFunc = linearFunctions[0];
 				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
 				
 				for (int i = 0; i < pairs.length; ++i)
@@ -533,13 +540,61 @@ public class AIUtils
 						System.err.println("WARNING: writing infinity weight");
 				}
 				
-				metadataFeatureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
+				selectionPairs[0] = pairs;
+			}
+			else
+			{
+				// One featureset per player
+				assert (numRoles == featureSets.length || numRoles == 0);
+				numRoles = featureSets.length;
+				
+				for (int p = 0; p < featureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet = featureSets[p];
+					if (featureSet == null)
+						continue;
+					
+					final LinearFunction linFunc = linearFunctions[p];
+					final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+					
+					for (int i = 0; i < pairs.length; ++i)
+					{
+						final float weight = linFunc.effectiveParams().allWeights().get(i);
+						pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+						
+						if (Float.isNaN(weight))
+							System.err.println("WARNING: writing NaN weight");
+						else if (Float.isInfinite(weight))
+							System.err.println("WARNING: writing infinity weight");
+					}
+					
+					selectionPairs[p] = pairs;
+				}
+			}
+		}
+		
+		if (numRoles == 1)
+		{
+			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, selectionPairs[0], playoutPairs[0], tspgPairs[0]));
+		}
+		else
+		{
+			// One featureset per player
+			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[numRoles - 1];
+			
+			for (int p = 1; p < numRoles; ++p)
+			{
+				if (selectionPairs[p] == null && playoutPairs[p] == null && tspgPairs[p] == null)
+					continue;
+				
+				metadataFeatureSets[p - 1] = 
+						new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), selectionPairs[p], playoutPairs[p], tspgPairs[p]);
 			}
 			
 			features = new Features(metadataFeatureSets);
 		}
 		
-		return new Features(metadataFeatureSets);
+		return features;
 	}
 	
 	//-------------------------------------------------------------------------

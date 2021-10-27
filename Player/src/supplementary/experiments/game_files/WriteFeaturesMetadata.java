@@ -52,15 +52,15 @@ public class WriteFeaturesMetadata
 
 		final String agentStr = StringRoutines.join
 				(
-						";", 
-						"algorithm=MCTS",
-						"selection=ag0selection",
-						playoutSb.toString(),
-						"final_move=robustchild",
-						"tree_reuse=true",
-						"learned_selection_policy=playout",
-						"friendly_name=BiasedMCTS"
-						);
+					";", 
+					"algorithm=MCTS",
+					"selection=ag0selection",
+					playoutSb.toString(),
+					"final_move=robustchild",
+					"tree_reuse=true",
+					"learned_selection_policy=playout",
+					"friendly_name=BiasedMCTS"
+				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
 		final SoftmaxPolicy softmax = (SoftmaxPolicy) mcts.playoutStrategy();

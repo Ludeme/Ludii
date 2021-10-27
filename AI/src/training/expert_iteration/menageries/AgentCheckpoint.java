@@ -160,8 +160,6 @@ public class AgentCheckpoint
 		}
 		else if (agentName.equals("PVTS"))
 		{
-			final SoftmaxPolicy policy = new SoftmaxPolicy(featuresMetadata, 0.0);
-			
 			final MCTS mcts = 
 					new MCTS
 					(
@@ -171,7 +169,7 @@ public class AgentCheckpoint
 						new RobustChild()
 					);
 
-			mcts.setLearnedSelectionPolicy(policy);
+			mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(featuresMetadata, 0.0));
 			mcts.setPlayoutValueWeight(0.0);
 			mcts.setWantsMetadataHeuristics(false);
 			mcts.setHeuristics(heuristicsMetadata);

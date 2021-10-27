@@ -71,6 +71,7 @@ import training.expert_iteration.params.TrainingParams;
 import training.feature_discovery.CorrelationBasedExpander;
 import training.feature_discovery.FeatureSetExpander;
 import training.policy_gradients.Reinforce;
+import utils.AIUtils;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -350,7 +351,7 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions = prepareTSPGFunctions(featureSets, selectionFunctions);
 				
 				// create our policies
-				final SoftmaxPolicy cePolicy = 
+				final SoftmaxPolicy selectionPolicy = 
 						new SoftmaxPolicy
 						(
 							selectionFunctions, 
@@ -386,7 +387,12 @@ public class ExpertIteration
 				final Optimiser valueFunctionOptimiser = prepareValueFunctionOptimiser();
 				
 				// Initialise menagerie's population
-				menagerie.initialisePopulation(game, agentsParams, cePolicy.generateFeaturesMetadata(), Heuristics.copy(valueFunction));
+				menagerie.initialisePopulation
+				(
+					game, agentsParams, 
+					AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy), 
+					Heuristics.copy(valueFunction)
+				);
 				
 				// instantiate trial / context
 				final Trial trial = new Trial(game);
@@ -416,7 +422,7 @@ public class ExpertIteration
 					featureSets = Reinforce.runSelfPlayPG
 					(
 						game, 
-						cePolicy, 
+						selectionPolicy, 
 						featureSets, 
 						featureSetExpander, 
 						instantiateCrossEntropyOptimisers(), 
@@ -511,7 +517,7 @@ public class ExpertIteration
 													(
 														batch,
 														featureSetP,
-														cePolicy,
+														selectionPolicy,
 														game,
 														featureDiscoveryParams.combiningFeatureInstanceThreshold,
 														objectiveParams, 
@@ -577,8 +583,8 @@ public class ExpertIteration
 						}
 						threadPool.shutdown();
 
-						cePolicy.updateFeatureSets(expandedFeatureSets);
-						menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
+						selectionPolicy.updateFeatureSets(expandedFeatureSets);
+						menagerie.updateDevFeatures(AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy));
 						
 						if (objectiveParams.trainTSPG)
 							tspgPolicy.updateFeatureSets(expandedFeatureSets);
@@ -714,7 +720,7 @@ public class ExpertIteration
 									
 									// Note: NOT using sample.state().state().mover(), but p here, important to update
 									// shared weights correctly!
-									final FVector apprenticePolicy = cePolicy.computeDistribution(featureVectors, p);
+									final FVector apprenticePolicy = selectionPolicy.computeDistribution(featureVectors, p);
 									FVector expertPolicy = sample.expertDistribution();
 									
 									if (objectiveParams.handleAliasing)
@@ -788,9 +794,9 @@ public class ExpertIteration
 									}
 									
 									// First gradients for Cross-Entropy
-									final FVector errors = cePolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
+									final FVector errors = selectionPolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
 									
-									final FVector ceGradients = cePolicy.computeParamGradients
+									final FVector ceGradients = selectionPolicy.computeParamGradients
 										(
 											errors,
 											featureVectors,
@@ -943,7 +949,7 @@ public class ExpertIteration
 								if (p > 0)	// No weight decay for shared params
 									selectionFunctions[p].trainableParams().allWeights().subtract(weightDecayVector);
 								
-								menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
+								menagerie.updateDevFeatures(AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy));
 								
 								if (meanGradientsValue != null && valueFunction != null)
 								{

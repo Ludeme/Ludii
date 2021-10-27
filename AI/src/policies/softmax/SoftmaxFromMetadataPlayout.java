@@ -11,20 +11,20 @@ import metadata.ai.features.Features;
 
 /**
  * A Softmax Policy that can automatically initialise itself by
- * using the features embedded in a game's metadata.
+ * using the Playout features embedded in a game's metadata.
  * 
  * @author Dennis Soemers
  */
-public class SoftmaxFromMetadata extends SoftmaxPolicy
+public class SoftmaxFromMetadataPlayout extends SoftmaxPolicy
 {
 	
 	/**
 	 * Constructor
 	 * @param epsilon Epsilon for epsilon-greedy feature-based playouts. 1 for uniform, 0 for always softmax
 	 */
-	public SoftmaxFromMetadata(final double epsilon)
+	public SoftmaxFromMetadataPlayout(final double epsilon)
 	{
-		friendlyName = "Softmax Policy (features from Game metadata)";
+		friendlyName = "Softmax Policy (Playout features from Game metadata)";
 		this.epsilon = epsilon;
 	}
 
@@ -39,9 +39,9 @@ public class SoftmaxFromMetadata extends SoftmaxPolicy
 		for (final metadata.ai.features.FeatureSet featureSet : featuresMetadata.featureSets())
 		{
 			if (featureSet.role() == RoleType.Shared)
-				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.featureWeights(), featureSetsList, linFuncs);
+				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
 			else
-				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.featureWeights(), featureSetsList, linFuncs);
+				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
 		}
 		
 		this.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
