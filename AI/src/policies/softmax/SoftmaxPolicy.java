@@ -28,7 +28,6 @@ import main.Constants;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import metadata.ai.features.Features;
-import metadata.ai.misc.Pair;
 import other.context.Context;
 import other.move.Move;
 import other.playout.PlayoutMoveSelector;
@@ -641,63 +640,63 @@ public class SoftmaxPolicy extends Policy
 	/**
 	 * @return A metadata Features item describing the features + weights for this policy
 	 */
-	public metadata.ai.features.Features generateFeaturesMetadata()
-	{
-		final Features features;
-		
-		if (featureSets.length == 1)
-		{
-			// Just a single featureset for all players
-			final BaseFeatureSet featureSet = featureSets[0];
-			final LinearFunction linFunc = linearFunctions[0];
-			final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
-			
-			for (int i = 0; i < pairs.length; ++i)
-			{
-				final float weight = linFunc.effectiveParams().allWeights().get(i);
-				pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
-				
-				if (Float.isNaN(weight))
-					System.err.println("WARNING: writing NaN weight");
-				else if (Float.isInfinite(weight))
-					System.err.println("WARNING: writing infinity weight");
-			}
-			
-			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, pairs));
-		}
-		else
-		{
-			// One featureset per player
-			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
-			
-			for (int p = 0; p < featureSets.length; ++p)
-			{
-				final BaseFeatureSet featureSet = featureSets[p];
-				if (featureSet == null)
-					continue;
-				
-				final LinearFunction linFunc = linearFunctions[p];
-				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
-				
-				for (int i = 0; i < pairs.length; ++i)
-				{
-					final float weight = linFunc.effectiveParams().allWeights().get(i);
-					pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
-					
-					if (Float.isNaN(weight))
-						System.err.println("WARNING: writing NaN weight");
-					else if (Float.isInfinite(weight))
-						System.err.println("WARNING: writing infinity weight");
-				}
-				
-				metadataFeatureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
-			}
-			
-			features = new Features(metadataFeatureSets);
-		}
-		
-		return features;
-	}
+//	public metadata.ai.features.Features generateFeaturesMetadata()
+//	{
+//		final Features features;
+//		
+//		if (featureSets.length == 1)
+//		{
+//			// Just a single featureset for all players
+//			final BaseFeatureSet featureSet = featureSets[0];
+//			final LinearFunction linFunc = linearFunctions[0];
+//			final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+//			
+//			for (int i = 0; i < pairs.length; ++i)
+//			{
+//				final float weight = linFunc.effectiveParams().allWeights().get(i);
+//				pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+//				
+//				if (Float.isNaN(weight))
+//					System.err.println("WARNING: writing NaN weight");
+//				else if (Float.isInfinite(weight))
+//					System.err.println("WARNING: writing infinity weight");
+//			}
+//			
+//			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, pairs));
+//		}
+//		else
+//		{
+//			// One featureset per player
+//			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
+//			
+//			for (int p = 0; p < featureSets.length; ++p)
+//			{
+//				final BaseFeatureSet featureSet = featureSets[p];
+//				if (featureSet == null)
+//					continue;
+//				
+//				final LinearFunction linFunc = linearFunctions[p];
+//				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+//				
+//				for (int i = 0; i < pairs.length; ++i)
+//				{
+//					final float weight = linFunc.effectiveParams().allWeights().get(i);
+//					pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+//					
+//					if (Float.isNaN(weight))
+//						System.err.println("WARNING: writing NaN weight");
+//					else if (Float.isInfinite(weight))
+//						System.err.println("WARNING: writing infinity weight");
+//				}
+//				
+//				metadataFeatureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
+//			}
+//			
+//			features = new Features(metadataFeatureSets);
+//		}
+//		
+//		return features;
+//	}
 	
 	//-------------------------------------------------------------------------
 	
