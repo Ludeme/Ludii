@@ -2,6 +2,7 @@ package ludemeplexDetection;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -104,10 +105,10 @@ public class LudemeplexDetection
 	public static void main(final String[] args)
 	{		
 		// Record the ludemeplexes across all lud files.
-		final Game[] chosenGames = GameLoader.allAnalysisGames();
-		
-		for (final Game game : chosenGames)
-			recordLudemeplexesInGame(game);
+		final List<String[]> chosenGames = GameLoader.allAnalysisGameRulesetNames();
+		for (final String[] gameRulesetName : chosenGames)
+			recordLudemeplexesInGame(GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]));
+			
 		
 		System.out.println("//-------------------------------------------------------------------------");
 	

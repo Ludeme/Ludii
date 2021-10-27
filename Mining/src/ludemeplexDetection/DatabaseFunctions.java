@@ -14,6 +14,7 @@ import game.Game;
 import main.grammar.Call;
 import main.grammar.LudemeInfo;
 import main.grammar.Report;
+import other.GameLoader;
 import utils.DBGameInfo;
 
 /**
@@ -353,15 +354,16 @@ public class DatabaseFunctions
 	
 	//-------------------------------------------------------------------------
 	
-	public static void storeLudemesInGames(final List<LudemeInfo> allValidLudemes, final Game[] games)
+	public static void storeLudemesInGames(final List<LudemeInfo> allValidLudemes, final List<String[]> gameRulesetNames)
 	{
 		int IdCounter = 1;
 		final Set<LudemeInfo> allLudemesfound = new HashSet<LudemeInfo>();
 		
 		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(rulesetludemesOutputFilePath, false)))
 		{			
-			for (final Game game : games)
+			for (final String[] gameRulesetName : gameRulesetNames)
 			{
+				final Game game = GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]);
 				final List<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
 				final String name = DBGameInfo.getUniqueName(game);
 				

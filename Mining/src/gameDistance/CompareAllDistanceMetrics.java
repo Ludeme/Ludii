@@ -40,7 +40,7 @@ public class CompareAllDistanceMetrics
 {
 	
 	/** Set this variable to true, if the stored vocabularies should be overwritten on the next comparison. */
-	final static boolean overrideStoredVocabularies = false;
+	final static boolean overrideStoredVocabularies = true;
 	
 	//---------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ public class CompareAllDistanceMetrics
 		calculateVocabularies();
 		
 		final List<String[]> gamesAndRulesetsToCompare = getSpecificGamesToCompare();
-		//List<String[]> gamesAndRulesetsToCompare = getAllGameRulesetNamesToCompare(allGames);
+		//final List<String[]> gamesAndRulesetsToCompare = GameLoader.allAnalysisGameRulesetNames();
 		
 		recordAllComparisonDistances(gamesAndRulesetsToCompare.get(0), gamesAndRulesetsToCompare.get(1));
 	}
@@ -221,32 +221,32 @@ public class CompareAllDistanceMetrics
 	
 	//---------------------------------------------------------------------
 	
-	/**
-	 * All games/rulesets in Ludii to compare.
-	 * @return List of two String arrays, for all game and ruleset names to compare.
-	 */
-	@SuppressWarnings("unused")
-	private static List<String[]> getAllGameRulesetNamesToCompare()
-	{
-		final List<String> gamesToCompareList = new ArrayList<>();
-		final List<String> rulesetsToCompareList = new ArrayList<>();
-		for (final Game game : GameLoader.allAnalysisGames())
-		{
-			gamesToCompareList.add(GameLoader.getFilePath(game.name()));
-			
-			if (game.getRuleset() != null)
-				rulesetsToCompareList.add(game.getRuleset().heading());
-			else
-				rulesetsToCompareList.add("");
-		}
-		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
-		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);
-		
-		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
-		gamesAndRulesetsToCompare.add(gamesToCompare);
-		gamesAndRulesetsToCompare.add(rulesetsToCompare);
-		return gamesAndRulesetsToCompare;
-	}
+//	/**
+//	 * All games/rulesets in Ludii to compare.
+//	 * @return List of two String arrays, for all game and ruleset names to compare.
+//	 */
+//	@SuppressWarnings("unused")
+//	private static List<String[]> getAllGameRulesetNamesToCompare()
+//	{
+//		final List<String> gamesToCompareList = new ArrayList<>();
+//		final List<String> rulesetsToCompareList = new ArrayList<>();
+//		for (final String[] gameRulesetNames : GameLoader.allAnalysisGames())
+//		{
+//			gamesToCompareList.add(GameLoader.getFilePath(game.name()));
+//			
+//			if (game.getRuleset() != null)
+//				rulesetsToCompareList.add(game.getRuleset().heading());
+//			else
+//				rulesetsToCompareList.add("");
+//		}
+//		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
+//		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);
+//		
+//		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
+//		gamesAndRulesetsToCompare.add(gamesToCompare);
+//		gamesAndRulesetsToCompare.add(rulesetsToCompare);
+//		return gamesAndRulesetsToCompare;
+//	}
 	
 	//---------------------------------------------------------------------
 	

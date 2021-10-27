@@ -430,9 +430,9 @@ public final class GameLoader
 	
 	//-------------------------------------------------------------------------
 	
-	public static Game[] allAnalysisGames()
+	public static List<String[]> allAnalysisGameRulesetNames()
 	{
-		final List<Game> allGames = new ArrayList<>();
+		final List<String[]> allGameRulesetNames = new ArrayList<>();
 		final String[] choices = FileHandling.listGames();
 		
 		for (final String s : choices)
@@ -446,16 +446,16 @@ public final class GameLoader
 				{
 					for (int rs = 0; rs < rulesets.size(); rs++)
 						if (!rulesets.get(rs).optionSettings().isEmpty())
-							allGames.add(GameLoader.loadGameFromName(gameName, rulesets.get(rs).optionSettings()));
+							allGameRulesetNames.add(new String[] {getFilePath(gameName), rulesets.get(rs).heading()});
 				}
 				else
 				{
-					allGames.add(tempGame);
+					allGameRulesetNames.add(new String[] {getFilePath(gameName), ""});
 				}
 			}
 		}
 		
-		return (Game[]) allGames.toArray();
+		return allGameRulesetNames;
 	}
 	
 	//-------------------------------------------------------------------------
