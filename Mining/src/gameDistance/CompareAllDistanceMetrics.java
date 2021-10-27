@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class CompareAllDistanceMetrics
 {
 	
 	/** Set this variable to true, if the stored vocabularies should be overwritten on the next comparison. */
-	final static boolean overrideStoredVocabularies = true;
+	final static boolean overrideStoredVocabularies = false;
 	
 	//---------------------------------------------------------------------
 
@@ -59,14 +58,10 @@ public class CompareAllDistanceMetrics
 	
 	public static void main(final String[] args)
 	{
-		final Game[] allGames = GameLoader.allAnalysisGames();
-		
-		calculateVocabularies(allGames);
+		calculateVocabularies();
 		
 		final List<String[]> gamesAndRulesetsToCompare = getSpecificGamesToCompare();
 		//List<String[]> gamesAndRulesetsToCompare = getAllGameRulesetNamesToCompare(allGames);
-		
-		Arrays.fill(allGames, null);	// Do this to free up memory.
 		
 		recordAllComparisonDistances(gamesAndRulesetsToCompare.get(0), gamesAndRulesetsToCompare.get(1));
 	}
@@ -151,15 +146,15 @@ public class CompareAllDistanceMetrics
 	/**
 	 * Calculate dataset vocabularies for TFIDF measures.
 	 */
-	private static void calculateVocabularies(final Game[] allGames)
+	private static void calculateVocabularies()
 	{
-		fullLudemeVocabulary = DistanceUtils.fullVocabulary(allGames, ludemeDataset, "ludemeDataset", overrideStoredVocabularies);
+		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset", overrideStoredVocabularies);
 		System.out.println("ludemeVocabulary recorded");
 		
-		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(allGames, booleanConceptDataset, "booleanConceptDataset", overrideStoredVocabularies);
+		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset", overrideStoredVocabularies);
 		System.out.println("booleanConceptVocabulary recorded");
 		
-		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(allGames, moveConceptDataset, "moveConceptDataset", overrideStoredVocabularies);
+		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset", overrideStoredVocabularies);
 		System.out.println("moveConceptVocabulary recorded");
 	}
 	
@@ -231,11 +226,11 @@ public class CompareAllDistanceMetrics
 	 * @return List of two String arrays, for all game and ruleset names to compare.
 	 */
 	@SuppressWarnings("unused")
-	private static List<String[]> getAllGameRulesetNamesToCompare(final Game[] allGames)
+	private static List<String[]> getAllGameRulesetNamesToCompare()
 	{
 		final List<String> gamesToCompareList = new ArrayList<>();
 		final List<String> rulesetsToCompareList = new ArrayList<>();
-		for (final Game game : allGames)
+		for (final Game game : GameLoader.allAnalysisGames())
 		{
 			gamesToCompareList.add(GameLoader.getFilePath(game.name()));
 			

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import game.Game;
 import gameDistance.datasets.Dataset;
+import other.GameLoader;
 
 /**
  * Game distance utility functions.
@@ -32,7 +33,7 @@ public class DistanceUtils
 	
 	//-----------------------------------------------------------------------------
 	
-	public static Map<String, Double> fullVocabulary(final Game[] games, final Dataset dataset, final String datasetName, final boolean overrideStoredVocabularies)
+	public static Map<String, Double> fullVocabulary(final Dataset dataset, final String datasetName, final boolean overrideStoredVocabularies)
 	{
 		final File vocabularyFile = new File(vocabularyStorePath + datasetName + ".txt");
 		
@@ -59,11 +60,11 @@ public class DistanceUtils
 				e.printStackTrace();
 			}	
 		}
-		
+
 		// Calculate full Ludii game vocabulary.
 		final double numGames = 0.0;
 		final Map<String, Double> vocabulary = new HashMap<>();
-		for (final Game game : games)
+		for (final Game game : GameLoader.allAnalysisGames())
 		{
 			for (final String s : dataset.getBagOfWords(game).keySet())
 			{
