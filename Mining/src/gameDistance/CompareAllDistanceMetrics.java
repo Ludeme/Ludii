@@ -23,8 +23,6 @@ import gameDistance.metrics.sequence.Levenshtein;
 import gameDistance.metrics.sequence.LocalAlignment;
 import gameDistance.metrics.sequence.RepeatedLocalAlignment;
 import gameDistance.metrics.treeEdit.ZhangShasha;
-import main.FileHandling;
-import main.options.Ruleset;
 import other.GameLoader;
 
 /**
@@ -230,34 +228,16 @@ public class CompareAllDistanceMetrics
 	@SuppressWarnings("unused")
 	private static List<String[]> getAllGamesToCompare()
 	{
-		final String[] choices = FileHandling.listGames();
 		final List<String> gamesToCompareList = new ArrayList<>();
 		final List<String> rulesetsToCompareList = new ArrayList<>();
-		for (String gameName : choices)
+		for (final Game game : GameLoader.allAnalysisGames())
 		{
-			if (!FileHandling.shouldIgnoreLudAnalysis(gameName))
-			{
-				gameName = gameName.split("\\/")[gameName.split("\\/").length-1];
-				final Game tempGame = GameLoader.loadGameFromName(gameName);
-				final List<Ruleset> rulesets = tempGame.description().rulesets();
-				
-				if (rulesets != null && !rulesets.isEmpty())
-				{
-					for (int rs = 0; rs < rulesets.size(); rs++)
-					{
-						if (!rulesets.get(rs).optionSettings().isEmpty())
-						{
-							gamesToCompareList.add(gameName);
-							rulesetsToCompareList.add(rulesets.get(rs).heading());
-						}
-					}
-				}
-				else
-				{
-					gamesToCompareList.add(gameName);
-					rulesetsToCompareList.add("");
-				}
-			}
+			gamesToCompareList.add(game.name());
+			
+			if (game.getRuleset() != null)
+				rulesetsToCompareList.add(game.getRuleset().heading());
+			else
+				rulesetsToCompareList.add("");
 		}
 		final String[] gamesToCompare = gamesToCompareList.toArray(new String[0]);
 		final String[] rulesetsToCompare = rulesetsToCompareList.toArray(new String[0]);

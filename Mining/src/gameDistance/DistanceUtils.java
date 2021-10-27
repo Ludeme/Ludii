@@ -7,13 +7,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import game.Game;
 import gameDistance.datasets.Dataset;
-import main.FileHandling;
-import main.options.Ruleset;
 import other.GameLoader;
 
 /**
@@ -65,46 +62,16 @@ public class DistanceUtils
 		}
 		
 		// Calculate full Ludii game vocabulary.
-		double numGames = 0.0;
+		final double numGames = 0.0;
 		final Map<String, Double> vocabulary = new HashMap<>();
-		final String[] choices = FileHandling.listGames();
-		for (String gameName : choices)
+		for (final Game game : GameLoader.allAnalysisGames())
 		{
-			if (!FileHandling.shouldIgnoreLudAnalysis(gameName))
+			for (final String s : dataset.getBagOfWords(game).keySet())
 			{
-				gameName = gameName.split("\\/")[gameName.split("\\/").length-1];
-				final Game tempGame = GameLoader.loadGameFromName(gameName);
-				final List<Ruleset> rulesets = tempGame.description().rulesets();
-				
-				if (rulesets != null && !rulesets.isEmpty())
-				{
-					for (int rs = 0; rs < rulesets.size(); rs++)
-						if (!rulesets.get(rs).optionSettings().isEmpty())
-						{
-							final Game rulesetGame = GameLoader.loadGameFromName(gameName, rulesets.get(rs).optionSettings());
-							for (final String s : dataset.getBagOfWords(rulesetGame).keySet())
-							{
-								if (vocabulary.containsKey(s))
-									vocabulary.put(s, Double.valueOf(vocabulary.get(s).doubleValue() + 1.0));
-								else
-									vocabulary.put(s, Double.valueOf(1.0));
-							}
-							
-							numGames++;
-						}
-				}
+				if (vocabulary.containsKey(s))
+					vocabulary.put(s, Double.valueOf(vocabulary.get(s).doubleValue() + 1.0));
 				else
-				{
-					for (final String s : dataset.getBagOfWords(tempGame).keySet())
-					{
-						if (vocabulary.containsKey(s))
-							vocabulary.put(s, Double.valueOf(vocabulary.get(s).doubleValue() + 1.0));
-						else
-							vocabulary.put(s, Double.valueOf(1.0));
-					}
-					
-					numGames++;
-				}
+					vocabulary.put(s, Double.valueOf(1.0));
 			}
 		}
 		for (final Map.Entry<String, Double> entry : vocabulary.entrySet())
