@@ -743,11 +743,11 @@ public class ExpertIteration
 											p
 										);
 									final FVector playoutGradients = selectionPolicy.computeParamGradients
-											(
-												selectionErrors,
-												featureVectors,
-												p
-											);
+										(
+											playoutErrors,
+											featureVectors,
+											p
+										);
 									
 									final FVector valueGradients = Gradients.computeValueGradients(valueFunction, p, sample);
 
