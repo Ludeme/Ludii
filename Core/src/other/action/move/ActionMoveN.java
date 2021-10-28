@@ -325,7 +325,7 @@ public final class ActionMoveN extends BaseAction
 					csFrom.count(from, typeFrom) + count,
 					previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
 		}
-
+		
 //		Component piece = null;
 		// to keep the site of the item in cache for each player
 		if (what != 0 && who !=0)
