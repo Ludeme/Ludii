@@ -726,12 +726,12 @@ public class ExpertIteration
 									final FVector selectionErrors = 
 											Gradients.computeCrossEntropyErrors
 											(
-												selectionPolicy, expertDistribution, featureVectors, p, objectiveParams.handleAliasing
+												selectionPolicy, expertPolicy, featureVectors, p, objectiveParams.handleAliasing
 											);
 									final FVector playoutErrors = 
 											Gradients.computeCrossEntropyErrors
 											(
-												playoutPolicy, expertDistribution, featureVectors, p, false
+												playoutPolicy, expertPolicy, featureVectors, p, false
 											);
 
 									final FVector selectionGradients = selectionPolicy.computeParamGradients
