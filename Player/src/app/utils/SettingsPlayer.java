@@ -756,7 +756,7 @@ public class SettingsPlayer
 		return showPhaseInTitle;
 	}
 
-	public void setShowPhaseInTitle(boolean showPhaseInTitle) 
+	public void setShowPhaseInTitle(final boolean showPhaseInTitle) 
 	{
 		this.showPhaseInTitle = showPhaseInTitle;
 	}
@@ -766,7 +766,7 @@ public class SettingsPlayer
 		return editorParseText;
 	}
 
-	public void setEditorParseText(boolean editorParseText) 
+	public void setEditorParseText(final boolean editorParseText) 
 	{
 		this.editorParseText = editorParseText;
 	}

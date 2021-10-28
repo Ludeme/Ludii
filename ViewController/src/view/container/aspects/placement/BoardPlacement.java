@@ -17,14 +17,14 @@ public class BoardPlacement extends ContainerPlacement
 	//-------------------------------------------------------------------------
 
 	/** Scale of the board relative to the original placement size (10% margins either side). */
-	protected static final double DEFAULT_BOARD_SCALE = 0.8;
+	protected static double defaultBoardScale = 0.8;
 	
 	//-------------------------------------------------------------------------
 	
 	public BoardPlacement(final Bridge bridge, final BoardStyle containerStyle) 
 	{
 		super(bridge, containerStyle);
-		containerScale = DEFAULT_BOARD_SCALE;
+		containerScale = defaultBoardScale;
 		boardStyle = containerStyle;
 	}
 	
@@ -78,9 +78,9 @@ public class BoardPlacement extends ContainerPlacement
 		final Point2D.Double boardCenter = new Point2D.Double(0.5, 0.5);
 		
 		if (context.board().defaultSite() == SiteType.Vertex)
-			containerScale = DEFAULT_BOARD_SCALE - cellRadius();
+			containerScale = defaultBoardScale - cellRadius();
 		else
-			containerScale = DEFAULT_BOARD_SCALE;
+			containerScale = defaultBoardScale;
 		
 		if (context.game().metadata().graphics().boardPlacement() != null)
 		{
@@ -102,6 +102,12 @@ public class BoardPlacement extends ContainerPlacement
 	public void resetPlacement(final Context context)
 	{
 		setPlacement(context, unscaledPlacement());
+	}
+	//-------------------------------------------------------------------------
+	
+	public void setDefaultBoardScale(final double scale)
+	{
+		defaultBoardScale = scale;
 	}
 
 	//-------------------------------------------------------------------------

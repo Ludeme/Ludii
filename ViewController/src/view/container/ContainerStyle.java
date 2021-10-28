@@ -40,6 +40,8 @@ public interface ContainerStyle
 	 */
 	void setPlacement(final Context context, final Rectangle rectangle);
 	
+	void setDefaultBoardScale(final double scale);
+	
 	//-------------------------------------------------------------------------
 	
 	/**
