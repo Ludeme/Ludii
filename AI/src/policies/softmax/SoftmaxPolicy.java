@@ -265,23 +265,6 @@ public class SoftmaxPolicy extends Policy
 	}
 	
 	/**
-	 * @param estimatedDistribution
-	 * @param targetDistribution
-	 * @return Vector of errors for estimated distribution in comparison to 
-	 * target distribution (simply estimated - target)
-	 */
-	public FVector computeDistributionErrors
-	(
-		final FVector estimatedDistribution, 
-		final FVector targetDistribution
-	)
-	{
-		final FVector errors = estimatedDistribution.copy();
-		errors.subtract(targetDistribution);
-		return errors;
-	}
-	
-	/**
 	 * @param errors Vector of errors in distributions
 	 * @param featureVectors One feature vector for every element 
 	 * (action) in the distributions.

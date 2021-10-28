@@ -24,6 +24,7 @@ import main.collections.FastArrayList;
 import other.move.Move;
 import policies.softmax.SoftmaxPolicy;
 import training.ExperienceSample;
+import training.expert_iteration.gradients.Gradients;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
 import utils.experiments.InterruptableExperiment;
@@ -142,7 +143,7 @@ public class VarianceReductionExpander implements FeatureSetExpander
 			final FVector apprenticePolicy = 
 					policy.computeDistribution(featureVectors, sample.gameState().mover());
 			final FVector errors = 
-					policy.computeDistributionErrors
+					Gradients.computeDistributionErrors
 					(
 						apprenticePolicy,
 						sample.expertDistribution()

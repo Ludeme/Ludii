@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -718,88 +716,20 @@ public class ExpertIteration
 												sample.moves(), 
 												false
 											);
+
+									FVector expertPolicy = sample.expertDistribution();
 									
 									// Note: NOT using sample.state().state().mover(), but p here, important to update
 									// shared weights correctly!
-									final FVector apprenticePolicy = selectionPolicy.computeDistribution(featureVectors, p);
-									FVector expertPolicy = sample.expertDistribution();
-									
-									if (objectiveParams.handleAliasing)
-									{
-										// Need to handle aliased moves
-										final Map<FeatureVector, TIntArrayList> movesPerFeatureVector = 
-											new HashMap<FeatureVector, TIntArrayList>();
-										for (int moveIdx = 0; moveIdx < featureVectors.length; ++moveIdx)
-										{
-											final FeatureVector featureVector = featureVectors[moveIdx];
-											if (!movesPerFeatureVector.containsKey(featureVector))
-												movesPerFeatureVector.put(featureVector, new TIntArrayList());
-											
-											movesPerFeatureVector.get(featureVector).add(moveIdx);
-										}
-										
-										expertPolicy = expertPolicy.copy();		// don't want to permanently modify the original
-										
-										final boolean[] alreadyUpdatedValue = new boolean[expertPolicy.dim()];
-										for (int moveIdx = 0; moveIdx < expertPolicy.dim(); ++moveIdx)
-										{
-											if (alreadyUpdatedValue[moveIdx])
-												continue;
-											
-											final TIntArrayList aliasedMoves = movesPerFeatureVector.get(featureVectors[moveIdx]);
-											if (aliasedMoves.size() > 1)
-											{
-												//System.out.println(aliasedMoves.size() + " aliased moves");
-												float maxVal = 0.f;
-												for (int i = 0; i < aliasedMoves.size(); ++i)
-												{
-													final float val = expertPolicy.get(aliasedMoves.getQuick(i));
-													if (val > maxVal)
-														maxVal = val;
-												}
-												
-												// Set all aliased moves to the max probability
-												for (int i = 0; i < aliasedMoves.size(); ++i)
-												{
-													expertPolicy.set(aliasedMoves.getQuick(i), maxVal);
-													alreadyUpdatedValue[aliasedMoves.getQuick(i)] = true;
-												}
-											}
-										}
-										
-										// Renormalise the expert policy
-										expertPolicy.normalise();
-										
-//										System.out.println("---------------------------------------------------");
-//										for (final Entry<FeatureVector, TIntArrayList> entry : movesPerFeatureVector.entrySet())
-//										{
-//											if (entry.getValue().size() > 1)
-//											{
-//												final FVector origErrors = cePolicy.computeDistributionErrors(apprenticePolicy, sample.expertDistribution());
-//												final FVector modifiedErrors = cePolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
-//												System.out.print("Orig errors for repeated feature vector:     ");
-//												for (int moveIdx = 0; moveIdx < entry.getValue().size(); ++moveIdx)
-//												{
-//													System.out.print(origErrors.get(entry.getValue().getQuick(moveIdx)) + ", ");
-//												}
-//												System.out.println();
-//												System.out.print("Modified errors for repeated feature vector: ");
-//												for (int moveIdx = 0; moveIdx < entry.getValue().size(); ++moveIdx)
-//												{
-//													System.out.print(modifiedErrors.get(entry.getValue().getQuick(moveIdx)) + ", ");
-//												}
-//												System.out.println();
-//											}
-//										}
-//										System.out.println("---------------------------------------------------");
-									}
-									
-									// First gradients for Cross-Entropy
-									final FVector errors = selectionPolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
-									
-									final FVector ceGradients = selectionPolicy.computeParamGradients
+									final FVector selectionErrors = 
+											Gradients.computeCrossEntropyErrors
+											(
+												selectionPolicy, expertDistribution, featureVectors, p, objectiveParams.handleAliasing
+											);
+
+									final FVector selectionGradients = selectionPolicy.computeParamGradients
 										(
-											errors,
+											selectionErrors,
 											featureVectors,
 											p
 										);
@@ -814,7 +744,7 @@ public class ExpertIteration
 									
 									if (trainingParams.prioritizedExperienceReplay)
 									{
-										final FVector absErrors = errors.copy();
+										final FVector absErrors = selectionErrors.copy();
 										absErrors.abs();
 										
 										// Minimum priority of 0.05 to avoid crashes with 0-error samples
@@ -824,8 +754,8 @@ public class ExpertIteration
 									}
 									
 									sumImportanceSamplingWeights += importanceSamplingWeight;
-									ceGradients.mult((float) (importanceSamplingWeight * nonImportanceSamplingWeight));
-									gradientsSelection.add(ceGradients);
+									selectionGradients.mult((float) (importanceSamplingWeight * nonImportanceSamplingWeight));
+									gradientsSelection.add(selectionGradients);
 									
 									if (valueGradients != null)
 									{
