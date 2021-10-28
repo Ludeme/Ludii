@@ -28,7 +28,6 @@ import app.display.views.OverlayView;
 import app.display.views.tabs.TabView;
 import app.loading.FileLoading;
 import app.move.MouseHandler;
-import app.move.MoveHandler;
 import app.utils.GUIUtil;
 import app.utils.MVCSetup;
 import app.utils.sandbox.SandboxValueType;
@@ -37,11 +36,9 @@ import app.views.View;
 import app.views.players.PlayerView;
 import app.views.tools.ToolView;
 import game.equipment.container.Container;
-import game.rules.play.moves.Moves;
 import main.Constants;
 import other.context.Context;
 import other.location.Location;
-import other.move.Move;
 import other.topology.Cell;
 import other.topology.Edge;
 import other.topology.Vertex;
@@ -255,34 +252,10 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	 */
 	private boolean checkPointOverlapsButton(final MouseEvent e, final boolean pressButton)
 	{
-		// Need to check if the legal moves contains a player select move.
-		boolean playerSelectMoveLegal = false;
-		final Context context = app.contextSnapshot().getContext(app);
-		final Moves legal = context.moves(context);
-		for (final Move m : legal.moves())
-		{
-			if (m.playerSelected() != Constants.UNDEFINED)
-			{
-				playerSelectMoveLegal = true;
-				break;
-			}
-		}
-		
 		if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerSwatchList))
 		{
-			if (playerSelectMoveLegal)
-			{
-				for (int i = 0; i < playerSwatchList.length; i++)
-				{
-					final Rectangle r = playerSwatchList[i];
-					if (GUIUtil.pointOverlapsRectangle(e.getPoint(), r))
-						MoveHandler.tryGameMove(app, null, null, false, i);
-				}
-			}
-			else if (pressButton)
-			{
+			if (pressButton)
 				SettingsDialog.createAndShowGUI(app);
-			}
 			return true;
 		}
 		else if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerNameList))
