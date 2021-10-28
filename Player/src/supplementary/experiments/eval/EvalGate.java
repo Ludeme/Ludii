@@ -128,7 +128,7 @@ public class EvalGate
 					(
 						";", 
 						"algorithm=MCTS",
-						"selection=ag0selection",
+						"selection=noisyag0selection",
 						playoutSb.toString(),
 						"final_move=robustchild",
 						"tree_reuse=true",
@@ -152,7 +152,7 @@ public class EvalGate
 					(
 						";", 
 						"algorithm=MCTS",
-						"selection=ag0selection",
+						"selection=noisyag0selection",
 						"playout=random",
 						"final_move=robustchild",
 						"tree_reuse=true",
@@ -530,7 +530,7 @@ public class EvalGate
 								(
 									";", 
 									"algorithm=MCTS",
-									"selection=ag0selection",
+									"selection=noisyag0selection",
 									playoutSb.toString(),
 									"final_move=robustchild",
 									"tree_reuse=true",

@@ -13,7 +13,7 @@ import search.mcts.MCTS;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.RandomPlayout;
-import search.mcts.selection.AG0Selection;
+import search.mcts.selection.NoisyAG0Selection;
 import search.minimax.AlphaBetaSearch;
 import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.params.AgentsParams;
@@ -163,7 +163,7 @@ public class AgentCheckpoint
 			final MCTS mcts = 
 					new MCTS
 					(
-						new AG0Selection(), 
+						new NoisyAG0Selection(), 
 						new RandomPlayout(0),
 						new AlphaGoBackprop(),
 						new RobustChild()

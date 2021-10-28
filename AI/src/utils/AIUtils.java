@@ -540,7 +540,7 @@ public class AIUtils
 						System.err.println("WARNING: writing infinity weight");
 				}
 				
-				selectionPairs[0] = pairs;
+				playoutPairs[0] = pairs;
 			}
 			else
 			{
@@ -568,7 +568,7 @@ public class AIUtils
 							System.err.println("WARNING: writing infinity weight");
 					}
 					
-					selectionPairs[p] = pairs;
+					playoutPairs[p] = pairs;
 				}
 			}
 		}
