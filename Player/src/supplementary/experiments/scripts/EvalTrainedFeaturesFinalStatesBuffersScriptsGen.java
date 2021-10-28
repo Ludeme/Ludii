@@ -128,7 +128,7 @@ public class EvalTrainedFeaturesFinalStatesBuffersScriptsGen
 							(
 								";", 
 								"algorithm=MCTS",
-								"selection=ag0selection",
+								"selection=noisyag0selection",
 								StringRoutines.join
 								(
 									",", 
@@ -148,7 +148,7 @@ public class EvalTrainedFeaturesFinalStatesBuffersScriptsGen
 							(
 								";", 
 								"algorithm=MCTS",
-								"selection=ag0selection",
+								"selection=noisyag0selection",
 								StringRoutines.join
 								(
 									",", 

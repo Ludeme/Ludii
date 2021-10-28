@@ -66,7 +66,7 @@ public class WriteFeaturesMetadata
 				(
 					";", 
 					"algorithm=MCTS",
-					"selection=ag0selection",
+					"selection=noisyag0selection",
 					playoutSb.toString(),
 					"final_move=robustchild",
 					"tree_reuse=true",

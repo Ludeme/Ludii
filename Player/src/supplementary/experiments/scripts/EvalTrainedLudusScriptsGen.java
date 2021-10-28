@@ -108,7 +108,7 @@ public class EvalTrainedLudusScriptsGen
 					(
 						";", 
 						"algorithm=MCTS",
-						"selection=ag0selection",
+						"selection=noisyag0selection",
 						"playout=random,playoutturnlimit=0",
 						"tree_reuse=true",
 						StringRoutines.join

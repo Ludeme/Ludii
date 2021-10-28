@@ -47,6 +47,7 @@ import search.mcts.playout.HeuristicSampingPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
+import search.mcts.selection.NoisyAG0Selection;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
 import training.expert_iteration.ExItExperience;
@@ -281,7 +282,7 @@ public class MCTS extends ExpertPolicy
 		final MCTS mcts = 
 				new MCTS
 				(
-					new AG0Selection(), 
+					new NoisyAG0Selection(), 
 					epsilon < 1.0 ? new SoftmaxFromMetadataPlayout(epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
@@ -306,7 +307,7 @@ public class MCTS extends ExpertPolicy
 		final MCTS mcts = 
 				new MCTS
 				(
-					new AG0Selection(), 
+					new NoisyAG0Selection(), 
 					epsilon < 1.0 ? new SoftmaxFromMetadataPlayout(epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
@@ -374,7 +375,7 @@ public class MCTS extends ExpertPolicy
 		final MCTS mcts = 
 				new MCTS
 				(
-					new AG0Selection(), 
+					new NoisyAG0Selection(), 
 					new RandomPlayout(0),
 					new AlphaGoBackprop(),
 					new RobustChild()
@@ -1304,6 +1305,15 @@ public class MCTS extends ExpertPolicy
 				)
 				{
 					selection = new AG0Selection();
+					selection.customise(lineParts);
+				}
+				else if 
+				(
+					lineParts[0].toLowerCase().endsWith("noisyag0selection") || 
+					lineParts[0].toLowerCase().endsWith("noisyalphago0selection")
+				)
+				{
+					selection = new NoisyAG0Selection();
 					selection.customise(lineParts);
 				}
 				else
