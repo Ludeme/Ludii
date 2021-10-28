@@ -185,9 +185,17 @@ public class SpecialMovesCorrelationExpander implements FeatureSetExpander
 			for (int a = 0; a < featureVectors.length; ++a)
 			{
 				final float actionError;
-				if (sample.winningMoves().get(a) || sample.losingMoves().get(a) || sample.antiDefeatingMoves().get(a))
+				if (sample.winningMoves().get(a))
+				{
+					actionError = -1.f;
+				}
+				else if (sample.losingMoves().get(a))
 				{
 					actionError = 1.f;
+				}
+				else if (sample.antiDefeatingMoves().get(a))
+				{
+					actionError = 0.75f;	// TODO can we do better by explicitly tracking win-corr, loss-corr, and antidefeat-corr?
 				}
 				else
 				{
@@ -321,8 +329,6 @@ public class SpecialMovesCorrelationExpander implements FeatureSetExpander
 			final int batchIndex = batchIndices.get(bi).intValue();
 			final ExperienceSample sample = batch.get(batchIndex);
 			final FVector errors = errorVectors[batchIndex];
-			final float minError = errors.min();
-			final float maxError = errors.max();
 			final FastArrayList<Move> moves = sample.moves();
 			
 			final TIntArrayList sortedActionIndices = new TIntArrayList();
@@ -545,18 +551,6 @@ public class SpecialMovesCorrelationExpander implements FeatureSetExpander
 				//System.out.println("numActiveInstances = " + numActiveInstances);
 
 				float error = errors.get(a);
-				if (winningMoves.get(a))
-				{
-					error = minError;	// Reward correlation with winning moves
-				}
-				else if (losingMoves.get(a))
-				{
-					error = maxError;	// Reward correlation with losing moves
-				}
-				else if (antiDefeatingMoves.get(a))
-				{
-					error = Math.min(error, minError + 0.1f);	// Reward correlation with anti-defeating moves	
-				}
 
 				sumErrors += error;
 				sumSquaredErrors += error * error;
