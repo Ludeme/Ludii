@@ -2457,7 +2457,7 @@ public class ExpertIteration
 					// Save Playout weights
 					final String playoutWeightsFilename = createCheckpointFilename("PolicyWeightsPlayout_P" + p, nextCheckpoint, "txt");
 					playoutFunctions[p].writeToFile(
-							outParams.outDir.getAbsolutePath() + File.separator + selectionWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
+							outParams.outDir.getAbsolutePath() + File.separator + playoutWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
 					currentPolicyWeightsPlayoutFilenames[p] = playoutWeightsFilename;
 					
 					// Save TSPG weights
