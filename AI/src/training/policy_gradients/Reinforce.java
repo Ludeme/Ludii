@@ -47,7 +47,7 @@ public class Reinforce
 	 * Runs self-play with Policy Gradient training of features
 	 * 
 	 * @param game
-	 * @param policy
+	 * @param selectionPolicy
 	 * @param inFeatureSets
 	 * @param featureSetExpander
 	 * @param optimisers
@@ -61,7 +61,8 @@ public class Reinforce
 	public static BaseFeatureSet[] runSelfPlayPG
 	(
 		final Game game,
-		final SoftmaxPolicy policy,
+		final SoftmaxPolicy selectionPolicy,
+		final SoftmaxPolicy playoutPolicy,
 		final BaseFeatureSet[] inFeatureSets,
 		final FeatureSetExpander featureSetExpander,
 		final Optimiser[] optimisers,
@@ -140,7 +141,7 @@ public class Reinforce
 				//
 				// Since our object will play as all players at once, we pass -1 for the player ID
 				// This is fine since SoftmaxPolicy doesn't actually care about that argument
-				policy.initAI(game, -1);
+				playoutPolicy.initAI(game, -1);
 				
 				// TODO when adding parallelisation, will probably want a separate SoftmaxPolicy object per thread...
 				
@@ -152,9 +153,9 @@ public class Reinforce
 					final BaseFeatureSet featureSet = featureSets[mover];
 
 					final FeatureVector[] featureVectors = featureSet.computeFeatureVectors(context, moves, false);
-					final FVector distribution = policy.computeDistribution(featureVectors, mover);
+					final FVector distribution = playoutPolicy.computeDistribution(featureVectors, mover);
 					
-					final int moveIdx = policy.selectActionFromDistribution(distribution);
+					final int moveIdx = playoutPolicy.selectActionFromDistribution(distribution);
 					final Move move = moves.get(moveIdx);
 					
 					encounteredGameStates[mover].add(new Context(context).state());
@@ -247,20 +248,20 @@ public class Reinforce
 					}
 				}
 				
-				policy.closeAI();
+				playoutPolicy.closeAI();
 			}
 			
 			for (int p = 1; p <= numPlayers; ++p)
 			{
 				final List<PGExperience> experiences = epochExperiences[p];
 				final int numExperiences = experiences.size();
-				final FVector grads = new FVector(policy.linearFunction(p).trainableParams().allWeights().dim());
+				final FVector grads = new FVector(playoutPolicy.linearFunction(p).trainableParams().allWeights().dim());
 				final double baseline = avgPlayerOutcomeTrackers[p].movingAvg();
 				
 				for (int i = 0; i < numExperiences; ++i)
 				{
 					final PGExperience exp = experiences.get(i);
-					final FVector distribution = policy.computeDistribution(exp.featureVectors, p);
+					final FVector distribution = playoutPolicy.computeDistribution(exp.featureVectors, p);
 					
 					final FVector policyGradients = 
 							computePolicyGradients
@@ -277,7 +278,7 @@ public class Reinforce
 				}
 
 				// Take gradient step
-				optimisers[p].maximiseObjective(policy.linearFunction(p).trainableParams().allWeights(), grads);
+				optimisers[p].maximiseObjective(playoutPolicy.linearFunction(p).trainableParams().allWeights(), grads);
 			}
 
 			if (!featureDiscoveryParams.noGrowFeatureSet && (epoch + 1) % 5 == 0)
@@ -314,7 +315,7 @@ public class Reinforce
 											(
 												batch,
 												featureSetP,
-												policy,
+												playoutPolicy,
 												game,
 												featureDiscoveryParams.combiningFeatureInstanceThreshold,
 												objectiveParams, 
@@ -375,7 +376,8 @@ public class Reinforce
 				}
 				threadPool.shutdown();
 
-				policy.updateFeatureSets(expandedFeatureSets);
+				selectionPolicy.updateFeatureSets(expandedFeatureSets);
+				playoutPolicy.updateFeatureSets(expandedFeatureSets);
 				
 				featureSets = expandedFeatureSets;
 			}

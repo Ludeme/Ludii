@@ -422,7 +422,8 @@ public class ExpertIteration
 					featureSets = Reinforce.runSelfPlayPG
 					(
 						game, 
-						selectionPolicy, 
+						selectionPolicy,
+						playoutPolicy, 
 						featureSets, 
 						featureSetExpander, 
 						instantiateCrossEntropyOptimisers(), 
@@ -584,6 +585,7 @@ public class ExpertIteration
 						threadPool.shutdown();
 
 						selectionPolicy.updateFeatureSets(expandedFeatureSets);
+						playoutPolicy.updateFeatureSets(expandedFeatureSets);
 						menagerie.updateDevFeatures(AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy));
 						
 						if (objectiveParams.trainTSPG)
