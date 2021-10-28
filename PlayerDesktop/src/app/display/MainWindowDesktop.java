@@ -18,8 +18,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import org.json.JSONObject;
-
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.SettingsDialog;
@@ -39,7 +37,6 @@ import app.views.players.PlayerView;
 import app.views.tools.ToolView;
 import game.equipment.container.Container;
 import main.Constants;
-import manager.ai.AIDetails;
 import other.context.Context;
 import other.location.Location;
 import other.topology.Cell;
@@ -257,32 +254,8 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	{
 		if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerSwatchList))
 		{
-			if (app.settingsPlayer().isWebApp())
-			{
-				for (int i = 0; i < playerSwatchList.length; i++)
-				{
-					final Rectangle r = playerSwatchList[i];
-					if (GUIUtil.pointOverlapsRectangle(e.getPoint(), r))
-					{
-						// If previously human, set to AI
-						if (app.manager().aiSelected()[i].ai() == null)		
-						{
-							final JSONObject json = new JSONObject().put("AI", new JSONObject().put("algorithm", "Ludii AI"));
-							app.manager().aiSelected()[i] = new AIDetails(app.manager(), json, i, "Ludii AI");
-						}
-						// If previously AI, set to Human
-						else		
-						{
-							final JSONObject json = new JSONObject().put("AI", new JSONObject().put("algorithm", "Human"));
-							app.manager().aiSelected()[i] = new AIDetails(app.manager(), json, i, "Human");
-						}
-					}
-				}
-			}
-			else if (pressButton)
-			{
+			if (pressButton)
 				SettingsDialog.createAndShowGUI(app);
-			}
 			return true;
 		}
 		else if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerNameList))
