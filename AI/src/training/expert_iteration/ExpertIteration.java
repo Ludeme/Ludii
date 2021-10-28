@@ -56,6 +56,7 @@ import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
+import training.expert_iteration.gradients.Gradients;
 import training.expert_iteration.menageries.Menagerie;
 import training.expert_iteration.menageries.Menagerie.DrawnAgentsData;
 import training.expert_iteration.menageries.NaiveSelfPlay;
@@ -694,7 +695,7 @@ public class ExpertIteration
 								if (batch.size() == 0)
 									continue;
 								
-								final List<FVector> gradientsCE = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsSelection = new ArrayList<FVector>(batch.size());
 								final List<FVector> gradientsTSPG = new ArrayList<FVector>(batch.size());
 								final List<FVector> gradientsCEExplore = new ArrayList<FVector>(batch.size());
 								final List<FVector> gradientsValueFunction = new ArrayList<FVector>(batch.size());
@@ -803,33 +804,7 @@ public class ExpertIteration
 											p
 										);
 									
-									FVector valueGradients = null;
-									if (valueFunction != null && p > 0)
-									{
-										// Compute gradients for value function
-										final FVector valueFunctionParams = valueFunction.paramsVector();
-										final float predictedValue = (float) Math.tanh(valueFunctionParams.dot(sample.stateFeatureVector()));
-										final float gameOutcome = (float) sample.playerOutcomes()[sample.state().state().mover()];
-										
-										final float valueError = predictedValue - gameOutcome;
-										valueGradients = new FVector(valueFunctionParams.dim());
-										
-										// Need to multiply this by feature value to compute gradient per feature
-										final float gradDivFeature = 2.f * valueError * (1.f - predictedValue*predictedValue);
-										
-										for (int i = 0; i < valueGradients.dim(); ++i)
-										{
-											valueGradients.set(i, gradDivFeature * sample.stateFeatureVector().get(i));
-										}
-										
-//										System.out.println();
-//										System.out.println("State Features = " + sample.stateFeatureVector());
-//										System.out.println("pred. value = " + predictedValue);
-//										System.out.println("observed outcome = " + gameOutcome);
-//										System.out.println("value error = " + valueError);
-//										System.out.println("value grads = " + valueGradients);
-//										System.out.println();
-									}
+									final FVector valueGradients = Gradients.computeValueGradients(valueFunction, p, sample);
 
 									double importanceSamplingWeight = sample.weightVisitCount();
 									double nonImportanceSamplingWeight = 1.0;	// Also used to scale gradients, but doesn't count as IS
@@ -850,7 +825,7 @@ public class ExpertIteration
 									
 									sumImportanceSamplingWeights += importanceSamplingWeight;
 									ceGradients.mult((float) (importanceSamplingWeight * nonImportanceSamplingWeight));
-									gradientsCE.add(ceGradients);
+									gradientsSelection.add(ceGradients);
 									
 									if (valueGradients != null)
 									{
@@ -912,10 +887,10 @@ public class ExpertIteration
 								if (objectiveParams.weightedImportanceSampling)
 								{
 									// for WIS, we don't divide by number of vectors, but by sum of IS weights
-									meanGradientsCE = gradientsCE.get(0).copy();
-									for (int i = 1; i < gradientsCE.size(); ++i)
+									meanGradientsCE = gradientsSelection.get(0).copy();
+									for (int i = 1; i < gradientsSelection.size(); ++i)
 									{
-										meanGradientsCE.add(gradientsCE.get(i));
+										meanGradientsCE.add(gradientsSelection.get(i));
 									}
 									
 									if (sumImportanceSamplingWeights > 0.0)
@@ -935,7 +910,7 @@ public class ExpertIteration
 								}
 								else
 								{
-									meanGradientsCE = FVector.mean(gradientsCE);
+									meanGradientsCE = FVector.mean(gradientsSelection);
 									
 									if (!gradientsValueFunction.isEmpty())
 										meanGradientsValue = FVector.mean(gradientsValueFunction);

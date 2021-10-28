@@ -1288,7 +1288,7 @@ public class MCTS extends ExpertPolicy
 			final String[] lineParts = line.split(",");
 
 			//-----------------------------------------------------------------
-			// main parts
+			// Main parts
 			//-----------------------------------------------------------------
 			if (lineParts[0].toLowerCase().startsWith("selection="))
 			{
@@ -1342,7 +1342,7 @@ public class MCTS extends ExpertPolicy
 				}
 			}
 			//-----------------------------------------------------------------
-			// extras
+			// Extras
 			//-----------------------------------------------------------------
 			else if (lineParts[0].toLowerCase().startsWith("tree_reuse="))
 			{
