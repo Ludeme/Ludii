@@ -269,6 +269,7 @@ public class ExpertIteration
 				currentFinalStatesExperienceBufferFilenames = new String[numPlayers + 1];
 				currentGameDurationTrackerFilenames = new String[numPlayers + 1];
 				currentOptimiserSelectionFilenames = new String[numPlayers + 1];
+				currentOptimiserPlayoutFilenames = new String[numPlayers + 1];
 				currentOptimiserTSPGFilenames = new String[numPlayers + 1];
 				currentOptimiserCEEFilenames = new String[numPlayers + 1];
 				currentOptimiserValueFilename = null;
