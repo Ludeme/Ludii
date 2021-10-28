@@ -76,6 +76,9 @@ public class SettingsPlayer
 	
 	/** If this is the web player application. Used to disable various unsupported features.*/
 	private boolean webApp = false;
+	private boolean webGameResultValid = true;
+	private final boolean[] agentArray = {true,true,true,true,true,true,true,true,true,true,
+										  true,true,true,true,true,true,true,true,true,true};
 	
 	//-------------------------------------------------------------------------
 	// User settings
@@ -769,6 +772,26 @@ public class SettingsPlayer
 	public void setEditorParseText(final boolean editorParseText) 
 	{
 		this.editorParseText = editorParseText;
+	}
+
+	public boolean[] agentArray()
+	{
+		return agentArray;
+	}
+
+	public void setAgentArray(final int i, final boolean b)
+	{
+		agentArray[i] = b;
+	}
+
+	public boolean isWebGameResultValid()
+	{
+		return webGameResultValid;
+	}
+
+	public void setWebGameResultValid(final boolean webGameResultValid)
+	{
+		this.webGameResultValid = webGameResultValid;
 	}
 			
 	//-------------------------------------------------------------------------

@@ -93,6 +93,14 @@ public class DatabaseFunctionsPublic
 		// Do nothing.
 	}
 	
+	/**
+	 * Stores a website trail in the database.
+	 */
+	public void storeWebTrialInDatabase(final String gameName, final List<String> gameOptions, final boolean[] agents, final double thinkingTime, final int maxTurns, final int gameHash, final Trial trial, final RandomProviderDefaultState RNG)
+	{
+		// Do nothing.
+	}
+	
 	//-------------------------------------------------------------------------
 	// Remote
 	

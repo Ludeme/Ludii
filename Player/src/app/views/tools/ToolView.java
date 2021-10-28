@@ -58,16 +58,24 @@ public class ToolView extends View
 	/**
 	 * Constructor.
 	 */
-	public ToolView(final PlayerApp app)
+	public ToolView(final PlayerApp app, final boolean portraitMode)
 	{
 		super(app);
 
 		final int toolHeight = 40;
-		final int boardSize = app.height();
 		
-		final int startX = boardSize;
-		final int startY = app.height() - toolHeight;
-		final int width = app.width() - boardSize - toolHeight;
+		int boardSize = app.height();
+		int startX = boardSize;
+		int startY = app.height() - toolHeight;
+		int width = app.width() - boardSize - toolHeight;
+		
+		if (portraitMode)
+		{
+			boardSize = app.width();
+			startX = 0;
+			startY = boardSize + 8;
+			width = app.width() - toolHeight;
+		}
 		
 		placement.setBounds(startX, startY, width, toolHeight);
 		drawButtons();
@@ -173,6 +181,7 @@ public class ToolView extends View
 	public static void jumpToMove(final PlayerApp app, final int moveToJumpTo)
 	{
 		app.manager().settingsManager().setAgentsPaused(app.manager(), true);
+		app.settingsPlayer().setWebGameResultValid(false);
 		
 		final Context context = app.manager().ref().context();
 

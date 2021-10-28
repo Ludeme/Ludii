@@ -34,21 +34,30 @@ public class PlayerView extends View
 	/**
 	 * Constructor.
 	 */
-	public PlayerView(final PlayerApp app)
+	public PlayerView(final PlayerApp app, final boolean portraitMode)
 	{
 		super(app);
 		playerSections.clear();
 		final Game game = app.contextSnapshot().getContext(app).game();
-		final int boardSize = app.height();
 		final int numPlayers = game.players().count();
 		
 		final int maxHandHeight = 100;					// Maximum height of a player's hand.
 		final double maxPanelPercentageHeight = 0.7;	// Maximum height of the entire panel (as percentage of app height).			
 		
-		final int startX = boardSize;
-		final int startY = 8;
-		final int width = app.width() - boardSize;
-		final int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
+		int boardSize = app.height();
+		int startX = boardSize + 8;
+		int startY = 8;
+		int width = app.width() - boardSize;
+		int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
+		
+		if (portraitMode)
+		{
+			boardSize = app.width();
+			startX = 8;
+			startY = boardSize + 48;	// +40 for the height of the toolView
+			width = boardSize - 8;
+			height = Math.min(maxHandHeight, (int)((app.height() - boardSize)*maxPanelPercentageHeight/numPlayers));
+		}
 		
 		// create a specific user page for each player.
 		for (int pid = 1; pid <= numPlayers; pid++)
@@ -71,7 +80,7 @@ public class PlayerView extends View
 		}
 		
 		final int playerPanelWidth = app.width() - boardSize;
-		final int playerPanelHeight = startY + numPlayers * height + 16;
+		final int playerPanelHeight = numPlayers * height + 24;
 		
 		placement.setBounds(boardSize, 0, playerPanelWidth, playerPanelHeight);
 	}

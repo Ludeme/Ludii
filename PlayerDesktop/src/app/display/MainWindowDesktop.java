@@ -120,27 +120,28 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	 */
 	public void createPanels()
 	{
-		MVCSetup.setMVC(app);
-		
+		MVCSetup.setMVC(app);	
 		panels.clear();
 		removeAll();
+		
+		final boolean portraitMode = width < height;
 		
 		// Create board panel
 		boardPanel = new BoardView(app);
 		panels.add(boardPanel);
 		
 		// create the player panel
-		playerPanel = new PlayerView(app);
+		playerPanel = new PlayerView(app, portraitMode);
 		panels.add(playerPanel);
 
 		// Create tool panel
-		toolPanel = new ToolView(app);
+		toolPanel = new ToolView(app, portraitMode);
 		panels.add(toolPanel);
 
 		// Create tab panel
 		if (!app.settingsPlayer().isPerformingTutorialVisualisation())
 		{
-			tabPanel = new TabView(app);
+			tabPanel = new TabView(app, portraitMode);
 			panels.add(tabPanel);
 		}
 		
