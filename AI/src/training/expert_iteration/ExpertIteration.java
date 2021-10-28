@@ -694,6 +694,7 @@ public class ExpertIteration
 									continue;
 								
 								final List<FVector> gradientsSelection = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsPlayout = new ArrayList<FVector>(batch.size());
 								final List<FVector> gradientsTSPG = new ArrayList<FVector>(batch.size());
 								final List<FVector> gradientsCEExplore = new ArrayList<FVector>(batch.size());
 								final List<FVector> gradientsValueFunction = new ArrayList<FVector>(batch.size());
@@ -717,7 +718,7 @@ public class ExpertIteration
 												false
 											);
 
-									FVector expertPolicy = sample.expertDistribution();
+									final FVector expertPolicy = sample.expertDistribution();
 									
 									// Note: NOT using sample.state().state().mover(), but p here, important to update
 									// shared weights correctly!
@@ -726,6 +727,11 @@ public class ExpertIteration
 											(
 												selectionPolicy, expertDistribution, featureVectors, p, objectiveParams.handleAliasing
 											);
+									final FVector playoutErrors = 
+											Gradients.computeCrossEntropyErrors
+											(
+												playoutPolicy, expertDistribution, featureVectors, p, false
+											);
 
 									final FVector selectionGradients = selectionPolicy.computeParamGradients
 										(
@@ -733,6 +739,12 @@ public class ExpertIteration
 											featureVectors,
 											p
 										);
+									final FVector playoutGradients = selectionPolicy.computeParamGradients
+											(
+												selectionErrors,
+												featureVectors,
+												p
+											);
 									
 									final FVector valueGradients = Gradients.computeValueGradients(valueFunction, p, sample);
 
@@ -755,7 +767,10 @@ public class ExpertIteration
 									
 									sumImportanceSamplingWeights += importanceSamplingWeight;
 									selectionGradients.mult((float) (importanceSamplingWeight * nonImportanceSamplingWeight));
+									playoutGradients.mult((float) (importanceSamplingWeight * nonImportanceSamplingWeight));
+									
 									gradientsSelection.add(selectionGradients);
+									gradientsPlayout.add(playoutGradients);
 									
 									if (valueGradients != null)
 									{
@@ -807,68 +822,74 @@ public class ExpertIteration
 											}
 										}
 
+										grads.mult((float) (importanceSamplingWeight * nonImportanceSamplingWeight));
 										gradientsTSPG.add(grads);
 									}
 								}
 								
-								final FVector meanGradientsCE;
-								FVector meanGradientsValue = null;
+								final FVector meanGradientsSelection;
+								final FVector meanGradientsPlayout;
+								final FVector meanGradientsValue;
+								final FVector meanGradientsTSPG;
 								
 								if (objectiveParams.weightedImportanceSampling)
 								{
-									// for WIS, we don't divide by number of vectors, but by sum of IS weights
-									meanGradientsCE = gradientsSelection.get(0).copy();
-									for (int i = 1; i < gradientsSelection.size(); ++i)
-									{
-										meanGradientsCE.add(gradientsSelection.get(i));
-									}
-									
-									if (sumImportanceSamplingWeights > 0.0)
-										meanGradientsCE.div((float)sumImportanceSamplingWeights);
-									
-									if (!gradientsValueFunction.isEmpty())
-									{
-										meanGradientsValue = gradientsValueFunction.get(0).copy();
-										for (int i = 1; i < gradientsValueFunction.size(); ++i)
-										{
-											meanGradientsValue.add(gradientsValueFunction.get(i));
-										}
-										
-										if (sumImportanceSamplingWeights > 0.0)
-											meanGradientsValue.div((float)sumImportanceSamplingWeights);
-									}
+									// For WIS, we don't divide by number of vectors, but by sum of IS weights
+									meanGradientsSelection = Gradients.wisGradients(gradientsSelection, (float)sumImportanceSamplingWeights);
+									meanGradientsPlayout = Gradients.wisGradients(gradientsPlayout, (float)sumImportanceSamplingWeights);
+									meanGradientsValue = Gradients.wisGradients(gradientsValueFunction, (float)sumImportanceSamplingWeights);
+									meanGradientsTSPG = Gradients.wisGradients(gradientsTSPG, (float)sumImportanceSamplingWeights);
 								}
 								else
 								{
-									meanGradientsCE = FVector.mean(gradientsSelection);
-									
-									if (!gradientsValueFunction.isEmpty())
-										meanGradientsValue = FVector.mean(gradientsValueFunction);
+									meanGradientsSelection = Gradients.meanGradients(gradientsSelection);
+									meanGradientsPlayout = Gradients.meanGradients(gradientsPlayout);
+									meanGradientsValue = Gradients.meanGradients(gradientsValueFunction);
+									meanGradientsTSPG = Gradients.meanGradients(gradientsTSPG);
 								}
 								
-								final FVector weightDecayVector = new FVector(selectionFunctions[p].trainableParams().allWeights());
-								weightDecayVector.mult((float) objectiveParams.weightDecayLambda);
-								
-								selectionOptimisers[p].minimiseObjective(selectionFunctions[p].trainableParams().allWeights(), meanGradientsCE);
-								
-								if (p > 0)	// No weight decay for shared params
-									selectionFunctions[p].trainableParams().allWeights().subtract(weightDecayVector);
+								Gradients.minimise
+								(
+									selectionOptimisers[p], 
+									selectionFunctions[p].trainableParams().allWeights(), 
+									meanGradientsSelection, 
+									(float)objectiveParams.weightDecayLambda
+								);
+								Gradients.minimise
+								(
+									playoutOptimisers[p], 
+									playoutFunctions[p].trainableParams().allWeights(), 
+									meanGradientsPlayout, 
+									(float)objectiveParams.weightDecayLambda
+								);
 								
 								menagerie.updateDevFeatures(AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy));
 								
 								if (meanGradientsValue != null && valueFunction != null)
 								{
 									final FVector valueFunctionParams = valueFunction.paramsVector();
-									valueFunctionOptimiser.minimiseObjective(valueFunctionParams, meanGradientsValue);
-									valueFunction.updateParams(game, valueFunctionParams, 0);
+									Gradients.minimise
+									(
+										valueFunctionOptimiser, 	// TODO dont we need separate one per player??????
+										valueFunctionParams, 
+										meanGradientsValue, 
+										(float)objectiveParams.weightDecayLambda
+									);
 									
+									valueFunction.updateParams(game, valueFunctionParams, 0);
 									menagerie.updateDevHeuristics(Heuristics.copy(valueFunction));
 								}
 								
 								if (objectiveParams.trainTSPG && p > 0)
 								{
-									final FVector meanGradientsTSPG = FVector.mean(gradientsTSPG);
-									tspgOptimisers[p].maximiseObjective(tspgFunctions[p].trainableParams().allWeights(), meanGradientsTSPG);
+									// NOTE: maximise here instead of minimise!
+									Gradients.maximise
+									(
+										tspgOptimisers[p], 
+										tspgFunctions[p].trainableParams().allWeights(), 
+										meanGradientsTSPG, 
+										(float)objectiveParams.weightDecayLambda
+									);
 								}
 								
 								// update PER priorities

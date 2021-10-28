@@ -1,12 +1,14 @@
 package training.expert_iteration.gradients;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import features.FeatureVector;
 import gnu.trove.list.array.TIntArrayList;
 import main.collections.FVector;
 import metadata.ai.heuristics.Heuristics;
+import optimisers.Optimiser;
 import policies.softmax.SoftmaxPolicy;
 import training.expert_iteration.ExItExperience;
 
@@ -173,6 +175,95 @@ public class Gradients
 		}
 		
 		return null;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param gradientVectors
+	 * @return Mean vector of gradients, or null if there are no vectors of gradients.
+	 */
+	public static FVector meanGradients(final List<FVector> gradientVectors)
+	{
+		if (!gradientVectors.isEmpty())
+			return FVector.mean(gradientVectors);
+		
+		return null;
+	}
+	
+	/**
+	 * @param gradientVectors
+	 * @param sumImportanceSamplingWeights
+	 * @return A single vector of gradients computed using Weighted Importance Sampling, rather
+	 * 	than by taking directly the mean of the given list of vectors, or null if there are no
+	 * 	vectors of gradients.
+	 */
+	public static FVector wisGradients
+	(
+		final List<FVector> gradientVectors, final float sumImportanceSamplingWeights
+	)
+	{
+		if (gradientVectors.isEmpty())
+			return null;
+		
+		final FVector wisGradients = gradientVectors.get(0).copy();
+		for (int i = 1; i < gradientVectors.size(); ++i)
+		{
+			wisGradients.add(gradientVectors.get(i));
+		}
+		
+		if (sumImportanceSamplingWeights > 0.0)
+			wisGradients.div(sumImportanceSamplingWeights);
+		
+		return wisGradients;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Runs a gradient descent step + weight decay to minimise some loss for
+	 * which the gradients are provided.
+	 * 
+	 * @param optimiser
+	 * @param params
+	 * @param gradients
+	 * @param weightDecayLambda
+	 */
+	public static void minimise
+	(
+		final Optimiser optimiser, 
+		final FVector params, 
+		final FVector gradients, 
+		final float weightDecayLambda
+	)
+	{
+		final FVector weightDecayVector = new FVector(params);
+		weightDecayVector.mult(weightDecayLambda);
+		optimiser.minimiseObjective(params, gradients);
+		params.subtract(weightDecayVector);
+	}
+	
+	/**
+	 * Runs a gradient ascent step + weight decay to maximise some objective for
+	 * which the gradients are provided.
+	 * 
+	 * @param optimiser
+	 * @param params
+	 * @param gradients
+	 * @param weightDecayLambda
+	 */
+	public static void maximise
+	(
+		final Optimiser optimiser, 
+		final FVector params, 
+		final FVector gradients, 
+		final float weightDecayLambda
+	)
+	{
+		final FVector weightDecayVector = new FVector(params);
+		weightDecayVector.mult(weightDecayLambda);
+		optimiser.maximiseObjective(params, gradients);
+		params.subtract(weightDecayVector);
 	}
 	
 	//-------------------------------------------------------------------------
