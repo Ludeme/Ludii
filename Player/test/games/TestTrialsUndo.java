@@ -105,13 +105,13 @@ public class TestTrialsUndo
 		
 		boolean gameReached = false;
 		final String gameToReached = "";
-		final String gameToSkip = "Block";
+		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains("Chess"))
+			if (fileEntry.getPath().contains("Choro (Acholi)"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
