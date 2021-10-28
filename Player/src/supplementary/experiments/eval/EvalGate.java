@@ -32,6 +32,7 @@ import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
 import utils.AIFactory;
+import utils.AIUtils;
 import utils.experiments.InterruptableExperiment;
 import utils.experiments.ResultsSummary;
 
@@ -538,10 +539,10 @@ public class EvalGate
 								);
 						
 						final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-						final SoftmaxPolicy softmax = (SoftmaxPolicy) mcts.playoutStrategy();
 						
 						// Generate our features metadata and write it
-						final Features features = softmax.generateFeaturesMetadata();
+						final Features features = 
+								AIUtils.generateFeaturesMetadata(mcts.learnedSelectionPolicy(), (SoftmaxPolicy) mcts.playoutStrategy());
 						
 						try (final PrintWriter writer = new PrintWriter(bestFeaturesFile))
 						{

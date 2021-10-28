@@ -29,7 +29,8 @@ import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
-import policies.softmax.SoftmaxFromMetadata;
+import policies.softmax.SoftmaxFromMetadataPlayout;
+import policies.softmax.SoftmaxFromMetadataSelection;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.BackpropagationStrategy;
@@ -277,18 +278,17 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS createBiasedMCTS(final double epsilon)
 	{
-		final SoftmaxPolicy softmax = new SoftmaxFromMetadata(epsilon);
 		final MCTS mcts = 
 				new MCTS
 				(
 					new AG0Selection(), 
-					epsilon < 1.0 ? softmax : new RandomPlayout(200),
+					epsilon < 1.0 ? new SoftmaxFromMetadataPlayout(epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
 		mcts.setQInit(QInit.WIN);
-		mcts.setLearnedSelectionPolicy(softmax);
+		mcts.setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(epsilon));
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
 		return mcts;
@@ -303,18 +303,17 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS createBiasedMCTS(final Features features, final double epsilon)
 	{
-		final SoftmaxPolicy softmax = new SoftmaxPolicy(features, epsilon);
 		final MCTS mcts = 
 				new MCTS
 				(
 					new AG0Selection(), 
-					epsilon < 1.0 ? softmax : new RandomPlayout(200),
+					epsilon < 1.0 ? new SoftmaxFromMetadataPlayout(epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
 		mcts.setQInit(QInit.WIN);
-		mcts.setLearnedSelectionPolicy(softmax);
+		mcts.setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(epsilon));
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
 		return mcts;
@@ -372,7 +371,6 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS createPVTS(final Features features, final Heuristics heuristics)
 	{
-		final SoftmaxPolicy softmax = new SoftmaxPolicy(features, 0.0);
 		final MCTS mcts = 
 				new MCTS
 				(
@@ -382,7 +380,7 @@ public class MCTS extends ExpertPolicy
 					new RobustChild()
 				);
 		
-		mcts.setLearnedSelectionPolicy(softmax);
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, 0.0));
 		mcts.setPlayoutValueWeight(0.0);
 		mcts.setWantsMetadataHeuristics(false);
 		mcts.setHeuristics(heuristics);

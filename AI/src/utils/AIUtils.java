@@ -1,15 +1,16 @@
 package utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.rng.core.RandomProviderDefaultState;
-
+import features.feature_sets.BaseFeatureSet;
+import function_approx.LinearFunction;
 import game.Game;
+import game.types.play.RoleType;
 import main.collections.FastArrayList;
 import main.collections.StringPair;
+import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
 import metadata.ai.heuristics.terms.ComponentValues;
@@ -25,11 +26,12 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
+import metadata.ai.misc.Pair;
 import other.AI;
 import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
-import other.trial.Trial;
+import policies.softmax.SoftmaxPolicy;
 import search.minimax.AlphaBetaSearch;
 
 /**
@@ -427,306 +429,172 @@ public class AIUtils
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Saves a CSV file with heuristic scores of all the states encountered in
-	 * the given trial.
-	 * 
-	 * @param origTrial
-	 * @param origContext
-	 * @param gameStartRNGState
-	 * @param file
+	 * Generates features metadata from given Selection and Playout policies
+	 * @param selectionPolicy
+	 * @param playoutPolicy
+	 * @return
 	 */
-	public static void saveHeuristicScores
+	public static metadata.ai.features.Features generateFeaturesMetadata
 	(
-		final Trial origTrial,
-		final Context origContext,
-		final RandomProviderDefaultState gameStartRNGState,
-		final File file
+		final SoftmaxPolicy selectionPolicy, final SoftmaxPolicy playoutPolicy
 	)
 	{
-		System.err.println("saveHeuristicScores() currently not implemented");
-//		final Game game = origContext.activeGame();
-//		
-//		// Collect all the interesting, applicable heuristics for this game
-//		final int numPlayers = game.players().count();
-//		final List<Component> components = game.equipment().components();
-//		final int numComponents = components.size() - 1;
-//		final List<Regions> regions = game.equipment().regions();
-//		final List<StateHeuristicValue> heuristics = new ArrayList<StateHeuristicValue>();
-//		
-//		final List<String> heuristicNames = new ArrayList<String>();
-//		
-//		HeuristicEnsemble ensemble = HeuristicEnsemble.fromMetadata(game, game.metadata());
-//		if (ensemble == null)
-//			ensemble = HeuristicEnsemble.constructDefaultHeuristics(game);
-//		
-//		heuristics.add(ensemble);
-//		heuristicNames.add("DefaultHeuristic");
-//
-//		if (CentreProximity.isApplicableToGame(game))
-//		{
-//			for (int e = 1; e <= numComponents; ++e)
-//			{
-//				final FVector pieceWeights = new FVector(components.size());
-//				pieceWeights.set(e, 1.f);
-//				heuristics.add(new CentreProximity(game, pieceWeights));
-//				heuristicNames.add("CentreProximity_" + e);
-//			}
-//		}
-//
-//		if (CornerProximity.isApplicableToGame(game))
-//		{
-//			for (int e = 1; e <= numComponents; ++e)
-//			{
-//				final FVector pieceWeights = new FVector(components.size());
-//				pieceWeights.set(e, 1.f);
-//				heuristics.add(new CornerProximity(game, pieceWeights));
-//				heuristicNames.add("CornerProximity_" + e);
-//			}
-//		}
-//
-//		if (CurrentMoverHeuristic.isApplicableToGame(game))
-//		{
-//			heuristics.add(new CurrentMoverHeuristic());
-//			heuristicNames.add("CurrentMoverHeuristic");
-//		}
-//
-//		if (LineCompletionHeuristic.isApplicableToGame(game))
-//		{
-//			heuristics.add(new LineCompletionHeuristic(game));
-//			heuristicNames.add("LineCompletionHeuristic");
-//		}
-//
-//		if (Material.isApplicableToGame(game))
-//		{
-//			for (int e = 1; e <= numComponents; ++e)
-//			{
-//				final FVector pieceWeights = new FVector(components.size());
-//				pieceWeights.set(e, 1.f);
-//				heuristics.add(new Material(game, pieceWeights));
-//				heuristicNames.add("Material_" + e);
-//			}
-//		}
-//
-//		if (MobilitySimple.isApplicableToGame(game))
-//		{
-//			heuristics.add(new MobilitySimple());
-//			heuristicNames.add("MobilitySimple");
-//		}
-//		
-//		if (OpponentPieceProximity.isApplicableToGame(game))
-//		{
-//			heuristics.add(new OpponentPieceProximity(game));
-//			heuristicNames.add("OpponentPieceProximity");
-//		}
-//
-//		if (OwnRegionsCount.isApplicableToGame(game))
-//		{
-//			heuristics.add(new OwnRegionsCount(game));
-//			heuristicNames.add("OwnRegionsCount");
-//		}
-//
-//		if (PlayerRegionsProximity.isApplicableToGame(game))
-//		{
-//			for (int p = 1; p <= numPlayers; ++p)
-//			{
-//				for (int e = 1; e <= numComponents; ++e)
-//				{
-//					final FVector pieceWeights = new FVector(components.size());
-//					pieceWeights.set(e, 1.f);
-//					heuristics.add(new PlayerRegionsProximity(game, pieceWeights, p));
-//					heuristicNames.add("PlayerRegionsProximity_C" + e + "_P" + p);
-//				}
-//			}
-//		}
-//
-//		if (PlayerSiteMapCount.isApplicableToGame(game))
-//		{
-//			heuristics.add(new PlayerSiteMapCount());
-//			heuristicNames.add("PlayerSiteMapCount");
-//		}
-//
-//		if (RegionProximity.isApplicableToGame(game))
-//		{
-//			for (int i = 0; i < regions.size(); ++i)
-//			{
-//				for (int e = 1; e <= numComponents; ++e)
-//				{
-//					final FVector pieceWeights = new FVector(components.size());
-//					pieceWeights.set(e, 1.f);
-//					heuristics.add(new RegionProximity(game, pieceWeights, i));
-//					heuristicNames.add("RegionProximity_C" + e + "_R" + i);
-//				}
-//			}
-//		}
-//
-//		if (Score.isApplicableToGame(game))
-//		{
-//			heuristics.add(new Score());
-//			heuristicNames.add("Score");
-//		}
-//
-//		if (SidesProximity.isApplicableToGame(game))
-//		{
-//			for (int e = 1; e <= numComponents; ++e)
-//			{
-//				final FVector pieceWeights = new FVector(components.size());
-//				pieceWeights.set(e, 1.f);
-//				heuristics.add(new SidesProximity(game, pieceWeights));
-//				heuristicNames.add("SidesProximity_" + e);
-//			}
-//		}
-//		
-//		// Here we'll store all our heuristic scores
-//		final float[][][] scoresMatrix = 
-//				new float[1 + origTrial.numMoves() - origTrial.numInitPlace()][numPlayers + 1][heuristics.size()];
-//		
-//		// Re-play our trial
-//		final Trial replayTrial = new Trial(game);
-//		final Context replayContext = new Context(game, replayTrial);
-//		replayContext.rng().restoreState(gameStartRNGState);
-//		game.start(replayContext);
-//		
-//		// Evaluate our first state
-//		for (int i = 0; i < heuristics.size(); ++i)
-//		{
-//			for (int p = 1; p <= numPlayers; ++p)
-//			{
-//				scoresMatrix[0][p][i] = heuristics.get(i).computeValue(replayContext, p, -1.f);
-//			}
-//		}
-//		
-//		int moveIdx = 0;
-//					
-//		while (moveIdx < replayTrial.numInitPlace())
-//		{
-//			++moveIdx;
-//		}
-//
-//		while (moveIdx < origTrial.numMoves())
-//		{
-//			while (moveIdx < replayTrial.numMoves())
-//			{
-//				// looks like some actions were auto-applied (e.g. in ByScore End condition)
-//				// so we just increment index without doing anything
-//				++moveIdx;
-//			}
-//
-//			if (moveIdx == origTrial.numMoves())
-//				break;
-//
-//			final Moves legalMoves = game.moves(replayContext);
-//			final List<List<Action>> legalMovesAllActions = new ArrayList<List<Action>>();
-//			for (final Move legalMove : legalMoves.moves())
-//			{
-//				legalMovesAllActions.add(legalMove.getAllActions(replayContext));
-//			}
-//
-//			if (game.mode().mode() == ModeType.Alternating)
-//			{
-//				Move matchingMove = null;
-//				for (int i = 0; i < legalMovesAllActions.size(); ++i)
-//				{
-//					if (legalMovesAllActions.get(i).equals(origTrial.moves().get(moveIdx).getAllActions(replayContext)))
-//					{
-//						matchingMove = legalMoves.moves().get(i);
-//						break;
-//					}
-//				}
-//
-//				if (matchingMove == null)
-//				{
-//					if (origTrial.moves().get(moveIdx).isPass() && legalMoves.moves().isEmpty())
-//						matchingMove = origTrial.moves().get(moveIdx);
-//				}
-//
-//				game.apply(replayContext, matchingMove);
-//			}
-//			else
-//			{
-//				// simultaneous-move game
-//				// we expect the loaded move to consist of multiple moves,
-//				// each of which should match one legal move
-//				final List<Action> matchingSubActions = new ArrayList<Action>();
-//
-//				for (final Action subAction : origTrial.moves().get(moveIdx).actions())
-//				{
-//					final Move subMove = (Move) subAction;
-//
-//					Move matchingMove = null;
-//					for (int i = 0; i < legalMovesAllActions.size(); ++i)
-//					{
-//						if (legalMovesAllActions.get(i).equals(subMove.actions()))
-//						{
-//							matchingMove = legalMoves.moves().get(i);
-//							break;
-//						}
-//					}
-//
-//					if (matchingMove == null)
-//					{
-//						if (subMove.isPass() && legalMoves.moves().isEmpty())
-//							matchingMove = origTrial.moves().get(moveIdx);
-//					}
-//
-//					matchingSubActions.add(matchingMove);
-//				}
-//
-//				final Move combinedMove = new Move(matchingSubActions);
-//				combinedMove.setMover(game.players().count() + 1);
-//				game.apply(replayContext, combinedMove);
-//			}
-//			
-//			// Evaluate the state we just reached
-//			for (int i = 0; i < heuristics.size(); ++i)
-//			{
-//				for (int p = 1; p <= numPlayers; ++p)
-//				{
-//					scoresMatrix[1 + moveIdx - replayTrial.numInitPlace()][p][i] = 
-//							heuristics.get(i).computeValue(replayContext, p, -1.f);
-//				}
-//			}
-//
-//			++moveIdx;
-//		}
-//		
-//		// Finally, write our CSV file
-//		try (final PrintWriter writer = new PrintWriter(file))
-//		{
-//			// First write our header
-//			for (int p = 1; p <= numPlayers; ++p)
-//			{
-//				for (int i = 0; i < heuristicNames.size(); ++i)
-//				{
-//					if (i > 0 || p > 1)
-//						writer.print(",");
-//					
-//					writer.print("P" + p + "_" + heuristicNames.get(i));
-//				}
-//			}
-//			
-//			writer.println();
-//			
-//			// Now write all our rows of scores
-//			for (int s = 0; s < scoresMatrix.length; ++s)
-//			{
-//				for (int p = 1; p <= numPlayers; ++p)
-//				{
-//					for (int i = 0; i < scoresMatrix[s][p].length; ++i)
-//					{
-//						if (i > 0 || p > 1)
-//							writer.print(",");
-//						
-//						writer.print(scoresMatrix[s][p][i]);
-//					}
-//				}
-//				
-//				writer.println();
-//			}
-//		} 
-//		catch (final FileNotFoundException e)
-//		{
-//			e.printStackTrace();
-//		}
+		final Features features;
+		
+		Pair[][] selectionPairs = null;
+		Pair[][] playoutPairs = null;
+		Pair[][] tspgPairs = null;
+		int numRoles = 0;
+				
+		if (selectionPolicy != null)
+		{
+			final BaseFeatureSet[] featureSets = selectionPolicy.featureSets();
+			final LinearFunction[] linearFunctions = selectionPolicy.linearFunctions();
+			
+			selectionPairs = new Pair[featureSets.length][];
+			playoutPairs = new Pair[featureSets.length][];
+			tspgPairs = new Pair[featureSets.length][];
+
+			if (featureSets.length == 1)
+			{
+				// Just a single featureset for all players
+				assert (numRoles == 1 || numRoles == 0);
+				numRoles = 1;
+				final BaseFeatureSet featureSet = featureSets[0];
+				final LinearFunction linFunc = linearFunctions[0];
+				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+				
+				for (int i = 0; i < pairs.length; ++i)
+				{
+					final float weight = linFunc.effectiveParams().allWeights().get(i);
+					pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+					
+					if (Float.isNaN(weight))
+						System.err.println("WARNING: writing NaN weight");
+					else if (Float.isInfinite(weight))
+						System.err.println("WARNING: writing infinity weight");
+				}
+				
+				selectionPairs[0] = pairs;
+			}
+			else
+			{
+				// One featureset per player
+				assert (numRoles == featureSets.length || numRoles == 0);
+				numRoles = featureSets.length;
+				
+				for (int p = 0; p < featureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet = featureSets[p];
+					if (featureSet == null)
+						continue;
+					
+					final LinearFunction linFunc = linearFunctions[p];
+					final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+					
+					for (int i = 0; i < pairs.length; ++i)
+					{
+						final float weight = linFunc.effectiveParams().allWeights().get(i);
+						pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+						
+						if (Float.isNaN(weight))
+							System.err.println("WARNING: writing NaN weight");
+						else if (Float.isInfinite(weight))
+							System.err.println("WARNING: writing infinity weight");
+					}
+					
+					selectionPairs[p] = pairs;
+				}
+			}
+		}
+		
+		if (playoutPolicy != null)
+		{
+			final BaseFeatureSet[] featureSets = playoutPolicy.featureSets();
+			final LinearFunction[] linearFunctions = playoutPolicy.linearFunctions();
+			
+			if (playoutPairs == null)
+			{
+				selectionPairs = new Pair[featureSets.length][];
+				playoutPairs = new Pair[featureSets.length][];
+				tspgPairs = new Pair[featureSets.length][];
+			}
+
+			if (featureSets.length == 1)
+			{
+				// Just a single featureset for all players
+				assert (numRoles == 1 || numRoles == 0);
+				numRoles = 1;
+				final BaseFeatureSet featureSet = featureSets[0];
+				final LinearFunction linFunc = linearFunctions[0];
+				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+				
+				for (int i = 0; i < pairs.length; ++i)
+				{
+					final float weight = linFunc.effectiveParams().allWeights().get(i);
+					pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+					
+					if (Float.isNaN(weight))
+						System.err.println("WARNING: writing NaN weight");
+					else if (Float.isInfinite(weight))
+						System.err.println("WARNING: writing infinity weight");
+				}
+				
+				selectionPairs[0] = pairs;
+			}
+			else
+			{
+				// One featureset per player
+				assert (numRoles == featureSets.length || numRoles == 0);
+				numRoles = featureSets.length;
+				
+				for (int p = 0; p < featureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet = featureSets[p];
+					if (featureSet == null)
+						continue;
+					
+					final LinearFunction linFunc = linearFunctions[p];
+					final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+					
+					for (int i = 0; i < pairs.length; ++i)
+					{
+						final float weight = linFunc.effectiveParams().allWeights().get(i);
+						pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+						
+						if (Float.isNaN(weight))
+							System.err.println("WARNING: writing NaN weight");
+						else if (Float.isInfinite(weight))
+							System.err.println("WARNING: writing infinity weight");
+					}
+					
+					selectionPairs[p] = pairs;
+				}
+			}
+		}
+		
+		if (numRoles == 1)
+		{
+			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, selectionPairs[0], playoutPairs[0], tspgPairs[0]));
+		}
+		else
+		{
+			// One featureset per player
+			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[numRoles - 1];
+			
+			for (int p = 1; p < numRoles; ++p)
+			{
+				if (selectionPairs[p] == null && playoutPairs[p] == null && tspgPairs[p] == null)
+					continue;
+				
+				metadataFeatureSets[p - 1] = 
+						new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), selectionPairs[p], playoutPairs[p], tspgPairs[p]);
+			}
+			
+			features = new Features(metadataFeatureSets);
+		}
+		
+		return features;
 	}
 	
 	//-------------------------------------------------------------------------

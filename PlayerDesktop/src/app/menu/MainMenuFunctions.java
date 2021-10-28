@@ -1052,7 +1052,7 @@ public class MainMenuFunctions extends JMenuBar
 							"metadata.ai.features.Features",
 							new Report()
 						);
-				final SoftmaxPolicy softmax = new SoftmaxPolicy(features);
+				final SoftmaxPolicy softmax = SoftmaxPolicy.constructSelectionPolicy(features, 0.0);
 				softmax.initAI(game, context.state().mover());
 				
 				final BaseFeatureSet[] featureSets = softmax.featureSets();

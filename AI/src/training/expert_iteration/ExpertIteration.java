@@ -71,6 +71,7 @@ import training.expert_iteration.params.TrainingParams;
 import training.feature_discovery.CorrelationBasedExpander;
 import training.feature_discovery.FeatureSetExpander;
 import training.policy_gradients.Reinforce;
+import utils.AIUtils;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -209,8 +210,11 @@ public class ExpertIteration
 			/** Filenames corresponding to our current Feature Sets */
 			protected String[] currentFeatureSetFilenames;
 			
-			/** Filenames corresponding to our current policy weights optimised for CE */
-			protected String[] currentPolicyWeightsCEFilenames;
+			/** Filenames corresponding to our current policy weights optimised for Selection */
+			protected String[] currentPolicyWeightsSelectionFilenames;
+			
+			/** Filenames corresponding to our current policy weights optimised for Playouts */
+			protected String[] currentPolicyWeightsPlayoutFilenames;
 			
 			/** Filenames corresponding to our current policy weights optimised for TSPG */
 			protected String[] currentPolicyWeightsTSPGFilenames;
@@ -233,8 +237,11 @@ public class ExpertIteration
 			/** Filenames corresponding to our current moving average trackers of game durations */
 			protected String[] currentGameDurationTrackerFilenames;
 			
-			/** Filenames corresponding to our current optimisers for CE */
-			protected String[] currentOptimiserCEFilenames;
+			/** Filenames corresponding to our current optimisers for Selection policy */
+			protected String[] currentOptimiserSelectionFilenames;
+			
+			/** Filenames corresponding to our current optimisers for Playout policy */
+			protected String[] currentOptimiserPlayoutFilenames;
 			
 			/** Filenames corresponding to our current optimisers for TSPG */
 			protected String[] currentOptimiserTSPGFilenames;
@@ -253,7 +260,8 @@ public class ExpertIteration
 			{
 				lastCheckpoint = Long.MAX_VALUE;
 				currentFeatureSetFilenames = new String[numPlayers + 1];
-				currentPolicyWeightsCEFilenames = new String[numPlayers + 1];
+				currentPolicyWeightsSelectionFilenames = new String[numPlayers + 1];
+				currentPolicyWeightsPlayoutFilenames = new String[numPlayers + 1];
 				currentPolicyWeightsTSPGFilenames = new String[numPlayers + 1];
 				currentPolicyWeightsCEEFilenames = new String[numPlayers + 1];
 				currentValueFunctionFilename = null;
@@ -261,7 +269,7 @@ public class ExpertIteration
 				currentSpecialMoveExperienceBufferFilenames = new String[numPlayers + 1];
 				currentFinalStatesExperienceBufferFilenames = new String[numPlayers + 1];
 				currentGameDurationTrackerFilenames = new String[numPlayers + 1];
-				currentOptimiserCEFilenames = new String[numPlayers + 1];
+				currentOptimiserSelectionFilenames = new String[numPlayers + 1];
 				currentOptimiserTSPGFilenames = new String[numPlayers + 1];
 				currentOptimiserCEEFilenames = new String[numPlayers + 1];
 				currentOptimiserValueFilename = null;
@@ -338,14 +346,23 @@ public class ExpertIteration
 				}
 				
 				// prepare our linear functions
-				final LinearFunction[] crossEntropyFunctions = prepareCrossEntropyFunctions(featureSets);
-				final LinearFunction[] tspgFunctions = prepareTSPGFunctions(featureSets, crossEntropyFunctions);
+				final LinearFunction[] selectionFunctions = prepareSelectionFunctions(featureSets);
+				final LinearFunction[] playoutFunctions = preparePlayoutFunctions(featureSets);
+				final LinearFunction[] tspgFunctions = prepareTSPGFunctions(featureSets, selectionFunctions);
 				
 				// create our policies
-				final SoftmaxPolicy cePolicy = 
+				final SoftmaxPolicy selectionPolicy = 
 						new SoftmaxPolicy
 						(
-							crossEntropyFunctions, 
+							selectionFunctions, 
+							featureSets,
+							agentsParams.maxNumBiasedPlayoutActions
+						);
+				
+				final SoftmaxPolicy playoutPolicy = 
+						new SoftmaxPolicy
+						(
+							playoutFunctions, 
 							featureSets,
 							agentsParams.maxNumBiasedPlayoutActions
 						);
@@ -364,12 +381,18 @@ public class ExpertIteration
 				final Heuristics valueFunction = prepareValueFunction();
 				
 				// construct optimisers
-				final Optimiser[] ceOptimisers = prepareCrossEntropyOptimisers();
+				final Optimiser[] selectionOptimisers = prepareSelectionOptimisers();
+				final Optimiser[] playoutOptimisers = preparePlayoutOptimisers();
 				final Optimiser[] tspgOptimisers = prepareTSPGOptimisers();
 				final Optimiser valueFunctionOptimiser = prepareValueFunctionOptimiser();
 				
 				// Initialise menagerie's population
-				menagerie.initialisePopulation(game, agentsParams, cePolicy.generateFeaturesMetadata(), Heuristics.copy(valueFunction));
+				menagerie.initialisePopulation
+				(
+					game, agentsParams, 
+					AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy), 
+					Heuristics.copy(valueFunction)
+				);
 				
 				// instantiate trial / context
 				final Trial trial = new Trial(game);
@@ -399,7 +422,7 @@ public class ExpertIteration
 					featureSets = Reinforce.runSelfPlayPG
 					(
 						game, 
-						cePolicy, 
+						selectionPolicy, 
 						featureSets, 
 						featureSetExpander, 
 						instantiateCrossEntropyOptimisers(), 
@@ -447,12 +470,13 @@ public class ExpertIteration
 						gameCounter, 
 						weightsUpdateCounter, 
 						featureSets, 
-						crossEntropyFunctions, 
+						selectionFunctions, 
+						playoutFunctions,
 						tspgFunctions,
 						valueFunction,
 						experienceBuffers,
 						specialMoveExperienceBuffers,
-						ceOptimisers,
+						selectionOptimisers,
 						tspgOptimisers,
 						valueFunctionOptimiser,
 						avgGameDurations,
@@ -493,7 +517,7 @@ public class ExpertIteration
 													(
 														batch,
 														featureSetP,
-														cePolicy,
+														selectionPolicy,
 														game,
 														featureDiscoveryParams.combiningFeatureInstanceThreshold,
 														objectiveParams, 
@@ -559,8 +583,8 @@ public class ExpertIteration
 						}
 						threadPool.shutdown();
 
-						cePolicy.updateFeatureSets(expandedFeatureSets);
-						menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
+						selectionPolicy.updateFeatureSets(expandedFeatureSets);
+						menagerie.updateDevFeatures(AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy));
 						
 						if (objectiveParams.trainTSPG)
 							tspgPolicy.updateFeatureSets(expandedFeatureSets);
@@ -696,7 +720,7 @@ public class ExpertIteration
 									
 									// Note: NOT using sample.state().state().mover(), but p here, important to update
 									// shared weights correctly!
-									final FVector apprenticePolicy = cePolicy.computeDistribution(featureVectors, p);
+									final FVector apprenticePolicy = selectionPolicy.computeDistribution(featureVectors, p);
 									FVector expertPolicy = sample.expertDistribution();
 									
 									if (objectiveParams.handleAliasing)
@@ -770,9 +794,9 @@ public class ExpertIteration
 									}
 									
 									// First gradients for Cross-Entropy
-									final FVector errors = cePolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
+									final FVector errors = selectionPolicy.computeDistributionErrors(apprenticePolicy, expertPolicy);
 									
-									final FVector ceGradients = cePolicy.computeParamGradients
+									final FVector ceGradients = selectionPolicy.computeParamGradients
 										(
 											errors,
 											featureVectors,
@@ -917,15 +941,15 @@ public class ExpertIteration
 										meanGradientsValue = FVector.mean(gradientsValueFunction);
 								}
 								
-								final FVector weightDecayVector = new FVector(crossEntropyFunctions[p].trainableParams().allWeights());
+								final FVector weightDecayVector = new FVector(selectionFunctions[p].trainableParams().allWeights());
 								weightDecayVector.mult((float) objectiveParams.weightDecayLambda);
 								
-								ceOptimisers[p].minimiseObjective(crossEntropyFunctions[p].trainableParams().allWeights(), meanGradientsCE);
+								selectionOptimisers[p].minimiseObjective(selectionFunctions[p].trainableParams().allWeights(), meanGradientsCE);
 								
 								if (p > 0)	// No weight decay for shared params
-									crossEntropyFunctions[p].trainableParams().allWeights().subtract(weightDecayVector);
+									selectionFunctions[p].trainableParams().allWeights().subtract(weightDecayVector);
 								
-								menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
+								menagerie.updateDevFeatures(AIUtils.generateFeaturesMetadata(selectionPolicy, playoutPolicy));
 								
 								if (meanGradientsValue != null && valueFunction != null)
 								{
@@ -1011,12 +1035,13 @@ public class ExpertIteration
 					gameCounter + 1, 
 					weightsUpdateCounter, 
 					featureSets, 
-					crossEntropyFunctions, 
+					selectionFunctions, 
+					playoutFunctions,
 					tspgFunctions,
 					valueFunction,
 					experienceBuffers,
 					specialMoveExperienceBuffers,
-					ceOptimisers,
+					selectionOptimisers,
 					tspgOptimisers,
 					valueFunctionOptimiser,
 					avgGameDurations,
@@ -1215,11 +1240,11 @@ public class ExpertIteration
 			}
 			
 			/**
-			 * Creates (or loads) optimisers for CE (one per player)
+			 * Creates (or loads) optimisers for Selection (one per player)
 			 * 
 			 * @return
 			 */
-			private Optimiser[] prepareCrossEntropyOptimisers()
+			private Optimiser[] prepareSelectionOptimisers()
 			{
 				final Optimiser[] optimisers = new Optimiser[numPlayers + 1];
 				
@@ -1227,20 +1252,20 @@ public class ExpertIteration
 				{
 					Optimiser optimiser = null;
 					
-					currentOptimiserCEFilenames[p] = getFilenameLastCheckpoint("OptimiserCE_P" + p, "opt");
+					currentOptimiserSelectionFilenames[p] = getFilenameLastCheckpoint("OptimiserSelection_P" + p, "opt");
 					lastCheckpoint = 
 							Math.min
 							(
 								lastCheckpoint,
-								extractCheckpointFromFilename(currentOptimiserCEFilenames[p], "OptimiserCE_P" + p, "opt")
+								extractCheckpointFromFilename(currentOptimiserSelectionFilenames[p], "OptimiserSelection_P" + p, "opt")
 							);
 					//System.out.println("CE opt set lastCheckpoint = " + lastCheckpoint);
 					
-					if (currentOptimiserCEFilenames[p] == null)
+					if (currentOptimiserSelectionFilenames[p] == null)
 					{
 						// create new optimiser
-						optimiser = OptimiserFactory.createOptimiser(optimisersParams.crossEntropyOptimiserConfig);
-						logLine(logWriter, "starting with new optimiser for Cross-Entropy");
+						optimiser = OptimiserFactory.createOptimiser(optimisersParams.selectionOptimiserConfig);
+						logLine(logWriter, "starting with new optimiser for Selection phase");
 					}
 					else
 					{
@@ -1249,7 +1274,7 @@ public class ExpertIteration
 						(
 							final ObjectInputStream reader = 
 								new ObjectInputStream(new BufferedInputStream(new FileInputStream(
-										outParams.outDir.getAbsolutePath() + File.separator + currentOptimiserCEFilenames[p]
+										outParams.outDir.getAbsolutePath() + File.separator + currentOptimiserSelectionFilenames[p]
 								)))
 						)
 						{
@@ -1260,7 +1285,62 @@ public class ExpertIteration
 							e.printStackTrace();
 						}
 						
-						logLine(logWriter, "continuing with CE optimiser loaded from " + currentOptimiserCEFilenames[p]);
+						logLine(logWriter, "continuing with Selection optimiser loaded from " + currentOptimiserSelectionFilenames[p]);
+					}
+					
+					optimisers[p] = optimiser;
+				}
+				
+				return optimisers;
+			}
+			
+			/**
+			 * Creates (or loads) optimisers for Playout (one per player)
+			 * 
+			 * @return
+			 */
+			private Optimiser[] preparePlayoutOptimisers()
+			{
+				final Optimiser[] optimisers = new Optimiser[numPlayers + 1];
+				
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					Optimiser optimiser = null;
+					
+					currentOptimiserPlayoutFilenames[p] = getFilenameLastCheckpoint("OptimiserPlayout_P" + p, "opt");
+					lastCheckpoint = 
+							Math.min
+							(
+								lastCheckpoint,
+								extractCheckpointFromFilename(currentOptimiserPlayoutFilenames[p], "OptimiserPlayout_P" + p, "opt")
+							);
+					//System.out.println("CE opt set lastCheckpoint = " + lastCheckpoint);
+					
+					if (currentOptimiserPlayoutFilenames[p] == null)
+					{
+						// create new optimiser
+						optimiser = OptimiserFactory.createOptimiser(optimisersParams.playoutOptimiserConfig);
+						logLine(logWriter, "starting with new optimiser for Playout phase");
+					}
+					else
+					{
+						// load optimiser from file
+						try 
+						(
+							final ObjectInputStream reader = 
+								new ObjectInputStream(new BufferedInputStream(new FileInputStream(
+										outParams.outDir.getAbsolutePath() + File.separator + currentOptimiserPlayoutFilenames[p]
+								)))
+						)
+						{
+							optimiser = (Optimiser) reader.readObject();
+						}
+						catch (final IOException | ClassNotFoundException e)
+						{
+							e.printStackTrace();
+						}
+						
+						logLine(logWriter, "continuing with Playout optimiser loaded from " + currentOptimiserPlayoutFilenames[p]);
 					}
 					
 					optimisers[p] = optimiser;
@@ -1280,7 +1360,7 @@ public class ExpertIteration
 				
 				for (int p = 1; p <= numPlayers; ++p)
 				{
-					optimisers[p] = OptimiserFactory.createOptimiser(optimisersParams.crossEntropyOptimiserConfig);
+					optimisers[p] = OptimiserFactory.createOptimiser(optimisersParams.playoutOptimiserConfig);
 				}
 				
 				return optimisers;
@@ -1368,7 +1448,7 @@ public class ExpertIteration
 					
 					if (currentOptimiserCEEFilenames[p] == null)
 					{
-						// create new optimiser		TODO allow different one from CE here
+						// create new optimiser
 						optimiser = OptimiserFactory.createOptimiser(optimisersParams.ceExploreOptimiserConfig);
 						logLine(logWriter, "starting with new optimiser for CEE");
 					}
@@ -1640,11 +1720,11 @@ public class ExpertIteration
 			}
 			
 			/**
-			 * Creates (or loads) linear functions (one per player)
+			 * Creates (or loads) linear functions (one per player) for Selection phase
 			 * @param featureSets
 			 * @return
 			 */
-			private LinearFunction[] prepareCrossEntropyFunctions(final BaseFeatureSet[] featureSets)
+			private LinearFunction[] prepareSelectionFunctions(final BaseFeatureSet[] featureSets)
 			{
 				final LinearFunction[] linearFunctions = new LinearFunction[numPlayers + 1];
 				
@@ -1652,33 +1732,33 @@ public class ExpertIteration
 				{
 					final LinearFunction linearFunction;
 					
-					currentPolicyWeightsCEFilenames[p] = getFilenameLastCheckpoint("PolicyWeightsCE_P" + p, "txt");
+					currentPolicyWeightsSelectionFilenames[p] = getFilenameLastCheckpoint("PolicyWeightsSelection_P" + p, "txt");
 					lastCheckpoint = 
 							Math.min
 							(
 								lastCheckpoint,
-								extractCheckpointFromFilename(currentPolicyWeightsCEFilenames[p], "PolicyWeightsCE_P" + p, "txt")
+								extractCheckpointFromFilename(currentPolicyWeightsSelectionFilenames[p], "PolicyWeightsSelection_P" + p, "txt")
 							);
 					//System.out.println("CE funcs set lastCheckpoint = " + lastCheckpoint);
 					
-					if (currentPolicyWeightsCEFilenames[p] == null)
+					if (currentPolicyWeightsSelectionFilenames[p] == null)
 					{
 						// Create new linear function
 						linearFunction = new LinearFunction(new WeightVector(new FVector(featureSets[p].getNumFeatures())));
-						logLine(logWriter, "starting with new 0-weights linear function for Cross-Entropy");
+						logLine(logWriter, "starting with new 0-weights linear function for Selection phase");
 					}
 					else
 					{
 						// Load weights from file
 						linearFunction = 
-								LinearFunction.fromFile(outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsCEFilenames[p]);
-						logLine(logWriter, "continuing with Selection policy weights loaded from " + currentPolicyWeightsCEFilenames[p]);
+								LinearFunction.fromFile(outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsSelectionFilenames[p]);
+						logLine(logWriter, "continuing with Selection policy weights loaded from " + currentPolicyWeightsSelectionFilenames[p]);
 						
 						try 
 						{
 							// make sure we're combining correct function with feature set
 							String featureSetFilepath = 
-									new File(outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsCEFilenames[p]).getParent();
+									new File(outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsSelectionFilenames[p]).getParent();
 							featureSetFilepath += File.separator + linearFunction.featureSetFile();
 							
 							if 
@@ -1691,7 +1771,76 @@ public class ExpertIteration
 							{
 								System.err.println
 								(
-									"Warning: policy weights were saved for feature set " + featureSetFilepath 
+									"Warning: selection policy weights were saved for feature set " + featureSetFilepath 
+									+ ", but we are now using " + currentFeatureSetFilenames[p]
+								);
+							}
+						}
+						catch (final IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+					
+					linearFunctions[p] = linearFunction;
+				}
+				
+				return linearFunctions;
+			}
+			
+			/**
+			 * Creates (or loads) linear functions (one per player) for Playout phase
+			 * @param featureSets
+			 * @return
+			 */
+			private LinearFunction[] preparePlayoutFunctions(final BaseFeatureSet[] featureSets)
+			{
+				final LinearFunction[] linearFunctions = new LinearFunction[numPlayers + 1];
+				
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					final LinearFunction linearFunction;
+					
+					currentPolicyWeightsPlayoutFilenames[p] = getFilenameLastCheckpoint("PolicyWeightsPlayout_P" + p, "txt");
+					lastCheckpoint = 
+							Math.min
+							(
+								lastCheckpoint,
+								extractCheckpointFromFilename(currentPolicyWeightsPlayoutFilenames[p], "PolicyWeightsPlayout_P" + p, "txt")
+							);
+					//System.out.println("CE funcs set lastCheckpoint = " + lastCheckpoint);
+					
+					if (currentPolicyWeightsSelectionFilenames[p] == null)
+					{
+						// Create new linear function
+						linearFunction = new LinearFunction(new WeightVector(new FVector(featureSets[p].getNumFeatures())));
+						logLine(logWriter, "starting with new 0-weights linear function for Playout phase");
+					}
+					else
+					{
+						// Load weights from file
+						linearFunction = 
+								LinearFunction.fromFile(outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsPlayoutFilenames[p]);
+						logLine(logWriter, "continuing with Playout policy weights loaded from " + currentPolicyWeightsPlayoutFilenames[p]);
+						
+						try 
+						{
+							// make sure we're combining correct function with feature set
+							String featureSetFilepath = 
+									new File(outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsPlayoutFilenames[p]).getParent();
+							featureSetFilepath += File.separator + linearFunction.featureSetFile();
+							
+							if 
+							(
+								!new File(featureSetFilepath).getCanonicalPath().equals
+								(
+									new File(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[p]).getCanonicalPath()
+								)
+							)
+							{
+								System.err.println
+								(
+									"Warning: playout policy weights were saved for feature set " + featureSetFilepath 
 									+ ", but we are now using " + currentFeatureSetFilenames[p]
 								);
 							}
@@ -2314,7 +2463,8 @@ public class ExpertIteration
 			 * @param gameCounter
 			 * @param weightsUpdateCounter
 			 * @param featureSets
-			 * @param crossEntropyFunctions
+			 * @param selectionFunctions
+			 * @param playoutFunctions
 			 * @param tspgFunctions
 			 * @param experienceBuffers
 			 * @param specialMoveExperienceBuffers
@@ -2329,7 +2479,8 @@ public class ExpertIteration
 				final int gameCounter, 
 				final long weightsUpdateCounter,
 				final BaseFeatureSet[] featureSets, 
-				final LinearFunction[] crossEntropyFunctions,
+				final LinearFunction[] selectionFunctions,
+				final LinearFunction[] playoutFunctions,
 				final LinearFunction[] tspgFunctions,
 				final Heuristics valueFunction,
 				final ExperienceBuffer[] experienceBuffers,
@@ -2368,11 +2519,17 @@ public class ExpertIteration
 					featureSets[p].toFile(outParams.outDir.getAbsolutePath() + File.separator + featureSetFilename);
 					currentFeatureSetFilenames[p] = featureSetFilename;
 					
-					// Save CE weights
-					final String ceWeightsFilename = createCheckpointFilename("PolicyWeightsCE_P" + p, nextCheckpoint, "txt");
-					crossEntropyFunctions[p].writeToFile(
-							outParams.outDir.getAbsolutePath() + File.separator + ceWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
-					currentPolicyWeightsCEFilenames[p] = ceWeightsFilename;
+					// Save Selection weights
+					final String selectionWeightsFilename = createCheckpointFilename("PolicyWeightsSelection_P" + p, nextCheckpoint, "txt");
+					selectionFunctions[p].writeToFile(
+							outParams.outDir.getAbsolutePath() + File.separator + selectionWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
+					currentPolicyWeightsSelectionFilenames[p] = selectionWeightsFilename;
+					
+					// Save Playout weights
+					final String playoutWeightsFilename = createCheckpointFilename("PolicyWeightsPlayout_P" + p, nextCheckpoint, "txt");
+					playoutFunctions[p].writeToFile(
+							outParams.outDir.getAbsolutePath() + File.separator + selectionWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
+					currentPolicyWeightsPlayoutFilenames[p] = playoutWeightsFilename;
 					
 					// Save TSPG weights
 					if (objectiveParams.trainTSPG)
@@ -2402,7 +2559,7 @@ public class ExpertIteration
 						// and optimisers
 						final String ceOptimiserFilename = createCheckpointFilename("OptimiserCE_P" + p, nextCheckpoint, "opt");
 						ceOptimisers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + ceOptimiserFilename);
-						currentOptimiserCEFilenames[p] = ceOptimiserFilename;
+						currentOptimiserSelectionFilenames[p] = ceOptimiserFilename;
 						
 						if (objectiveParams.trainTSPG)
 						{
@@ -2706,8 +2863,14 @@ public class ExpertIteration
 				.withType(OptionTypes.Double));
 		
 		argParse.addOption(new ArgOption()
-				.withNames("--ce-optimiser", "--cross-entropy-optimiser")
-				.help("Optimiser to use for policy trained on Cross-Entropy loss.")
+				.withNames("--selection-optimiser")
+				.help("Optimiser to use for policy trained for Selection phase.")
+				.withDefault("RMSProp")
+				.withNumVals(1)
+				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--playout-optimiser")
+				.help("Optimiser to use for policy trained for Playouts.")
 				.withDefault("RMSProp")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -2818,7 +2981,8 @@ public class ExpertIteration
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");
 		exIt.objectiveParams.weightDecayLambda = argParse.getValueDouble("--weight-decay-lambda");
 		
-		exIt.optimisersParams.crossEntropyOptimiserConfig = argParse.getValueString("--ce-optimiser");
+		exIt.optimisersParams.selectionOptimiserConfig = argParse.getValueString("--selection-optimiser");
+		exIt.optimisersParams.playoutOptimiserConfig = argParse.getValueString("--playout-optimiser");
 		exIt.optimisersParams.ceExploreOptimiserConfig = argParse.getValueString("--cee-optimiser");
 		exIt.optimisersParams.tspgOptimiserConfig = argParse.getValueString("--tspg-optimiser");
 		exIt.optimisersParams.valueOptimiserConfig = argParse.getValueString("--value-optimiser");

@@ -67,4 +67,42 @@ public class Pair implements MetadataItem
 	
 	//-------------------------------------------------------------------------
 
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(floatVal);
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+			return true;
+
+		if (!(obj instanceof Pair))
+			return false;
+		
+		final Pair other = (Pair) obj;
+		if (floatVal != other.floatVal)
+			return false;
+		
+		if (key == null)
+		{
+			if (other.key != null)
+				return false;
+		}
+		else if (!key.equals(other.key))
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	//-------------------------------------------------------------------------
+
 }

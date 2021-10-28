@@ -10,7 +10,7 @@ import app.move.animation.AnimationParameters;
 import app.move.animation.MoveAnimation;
 import game.equipment.component.Component;
 import other.move.Move;
-import policies.softmax.SoftmaxFromMetadata;
+import policies.softmax.SoftmaxFromMetadataSelection;
 
 /**
  * Settings for the current player.
@@ -109,7 +109,7 @@ public class SettingsPlayer
 	private boolean printMoveFeatureInstances = false;
 	
 	/** Object we can use to compute active features for printing purposes */
-	private final SoftmaxFromMetadata featurePrintingSoftmax = new SoftmaxFromMetadata(0.0);
+	private final SoftmaxFromMetadataSelection featurePrintingSoftmax = new SoftmaxFromMetadataSelection(0.0);
 	
 	private boolean devMode = false;
 	
@@ -513,7 +513,7 @@ public class SettingsPlayer
 	/**
 	 * @return The softmax object we can use for computing features to print
 	 */
-	public SoftmaxFromMetadata featurePrintingSoftmax()
+	public SoftmaxFromMetadataSelection featurePrintingSoftmax()
 	{
 		return featurePrintingSoftmax;
 	}

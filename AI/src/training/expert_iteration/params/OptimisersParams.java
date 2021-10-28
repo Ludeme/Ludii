@@ -10,8 +10,11 @@ public class OptimisersParams
 	
 	//-------------------------------------------------------------------------
 	
-	/** Optimiser to use when optimising policy on Cross-Entropy loss */
-	public String crossEntropyOptimiserConfig;
+	/** Optimiser to use when optimising policy for Selection phase */
+	public String selectionOptimiserConfig;
+	
+	/** Optimiser to use when optimising policy for Playout phase */
+	public String playoutOptimiserConfig;
 	
 	/** Optimiser to use when optimising the Cross-Entropy Exploration policy */
 	public String ceExploreOptimiserConfig;
