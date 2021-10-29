@@ -240,7 +240,7 @@ public final class ActionMove extends BaseAction
 				previousStateFrom = currentStateFrom;
 				previousRotationFrom = currentRotationFrom;
 				previousValueFrom = currentValueFrom;
-				previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
+				previousStateTo = csTo.state(to, typeTo);
 				previousRotationTo = csTo.rotation(to, typeTo);
 				previousValueTo = csTo.value(to, typeTo);
 				previousWhoTo = csTo.who(to, typeTo);
@@ -800,6 +800,12 @@ public final class ActionMove extends BaseAction
 							}
 						}
 					}
+				}
+				else
+				{
+					if(previousStateTo > 0 || previousRotationTo > 0 || previousValueTo > 0)
+						csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, 1, previousStateTo, previousRotationTo,
+								(context.game().hasDominoes() ? 1 : previousValueTo), typeTo);
 				}
 			}
 			else

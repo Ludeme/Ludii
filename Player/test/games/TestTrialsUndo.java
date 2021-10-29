@@ -111,7 +111,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Kisolo"))
+			if (fileEntry.getPath().contains("Misoro Tsoro (Additional Capture)"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
