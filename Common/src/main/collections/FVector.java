@@ -518,7 +518,8 @@ public final class FVector implements Serializable
 	}
 	
 	/**
-	 * Normalises this vector such that it sums up to 1
+	 * Normalises this vector such that it sums up to 1, by
+	 * dividing all entries by the sum of entries.
 	 */
 	public void normalise()
 	{

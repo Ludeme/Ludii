@@ -43,6 +43,9 @@ public class TrainingParams
 	/** Number of threads to use for parallel trials for policy gradients */
 	public int numPolicyGradientThreads;
 	
+	/** After running policy gradients, scale obtained weights by this value */
+	public double postPGWeightScalar;
+	
 	//-------------------------------------------------------------------------
 
 }

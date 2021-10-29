@@ -436,6 +436,20 @@ public class ExpertIteration
 						this
 					);
 					
+					// Scale down all the policy weights obtained from PG
+					for (int i = 0; i < playoutPolicy.linearFunctions().length; ++i)
+					{
+						final LinearFunction linFunc = playoutPolicy.linearFunctions()[i];
+						if (linFunc == null)
+							continue;
+						
+						final FVector weights = linFunc.trainableParams().allWeights();
+						weights.mult((float) trainingParams.postPGWeightScalar);
+						
+						// Also copy the weights over into selection policy
+						selectionPolicy.linearFunctions()[i].trainableParams().allWeights().copyFrom(weights, 0, 0, weights.dim());
+					}
+					
 					for (int p = 1; p <= numPlayers; ++p)
 					{
 						// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
@@ -2781,6 +2795,12 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(1))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--post-pg-weight-scalar")
+				.help("After running policy gradients, scale weights by this value.")
+				.withDefault(Double.valueOf(0.01))
+				.withNumVals(1)
+				.withType(OptionTypes.Double));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--add-feature-every")
@@ -2960,6 +2980,7 @@ public class ExpertIteration
 		exIt.trainingParams.pgGamma = argParse.getValueDouble("--pg-gamma");
 		exIt.trainingParams.entropyRegWeight = argParse.getValueDouble("--entropy-reg-weight");
 		exIt.trainingParams.numPolicyGradientThreads = argParse.getValueInt("--num-policy-gradient-threads");
+		exIt.trainingParams.postPGWeightScalar = argParse.getValueDouble("--post-pg-weight-scalar");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
