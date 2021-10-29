@@ -59,7 +59,7 @@
                                         (fromTo
                                             (from (to))
                                             (to (handSite Mover))
-                                            count:(+ 1 (count at:(to)))
+                                            count:(count at:(to))
                                         )
                                     )
                                     apply:(if (or { 
@@ -97,7 +97,7 @@
                                             (fromTo
                                                 (from (to))
                                                 (to (handSite Mover))
-                                                count:(+ 2 (count at:(to)))
+                                                count:(count at:(to))
                                             )
                                         )
                                         apply:(if (or { 
@@ -135,7 +135,7 @@
                                             (fromTo
                                                 (from (to))
                                                 (to (handSite Mover))
-                                                count:(+ 3 (count at:(to)))
+                                                count:(count at:(to))
                                             )
                                         )
                                         apply:(if (or { 
@@ -173,7 +173,7 @@
                                             (fromTo
                                                 (from (to))
                                                 (to (handSite Mover))
-                                                count:(+ 4 (count at:(to)))
+                                                count:(count at:(to))
                                             )
                                         )
                                         apply:(if (or { 
