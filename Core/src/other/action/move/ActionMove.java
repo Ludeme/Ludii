@@ -714,7 +714,8 @@ public final class ActionMove extends BaseAction
 		
 		if (!requiresStack)
 		{
-			if(from == to && state == Constants.UNDEFINED && rotation == Constants.UNDEFINED && value == Constants.UNDEFINED ) 
+			// Nothing to do if no modification.
+			if(from == to && state == Constants.UNDEFINED && rotation == Constants.UNDEFINED && value == Constants.UNDEFINED) 
 				return this;
 			
 			// System.out.println("loc is " + loc);

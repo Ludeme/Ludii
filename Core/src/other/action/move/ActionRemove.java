@@ -45,6 +45,9 @@ public final class ActionRemove extends BaseAction
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
+	/** The level removed (for stacking game). */
+	private int levelRemoved;
+	
 	/** The previous index of the piece before to be removed. */
 	private int previousWhat;
 	
@@ -222,13 +225,13 @@ public final class ActionRemove extends BaseAction
 		
 		if (context.game().isStacking())
 		{
-			final int levelToRemove = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+			levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
 				final int owner = piece.owner();
 				context.state().owned().remove(owner, pieceIdx, to,
-						levelToRemove, type);
+						levelRemoved, type);
 			}
 
 			if (cs.sizeStack(to, type) == 0)
@@ -284,7 +287,26 @@ public final class ActionRemove extends BaseAction
 		
 		if (context.game().isStacking())
 		{
-			// ERIC: TODO remove in a stack.
+			Component piece = null;
+			if (previousState != Constants.UNDEFINED || previousRotation != Constants.UNDEFINED || previousValue != Constants.UNDEFINED)
+			{
+				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
+						(previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue,
+						context.game(), type);
+			}
+			else
+			{
+				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, context.game(), type);
+			}
+
+			cs.removeFromEmpty(to, type);
+
+			if (previousWhat != 0)
+			{
+				piece = context.components()[previousWhat];
+				final int owner = piece.owner();
+				context.state().owned().add(owner, previousWhat, to, levelRemoved, type);
+			}
 		}
 		else
 		{

@@ -20,7 +20,6 @@ import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
-import other.state.stacking.BaseContainerStateStacking;
 import other.state.track.OnTrackIndices;
 import other.topology.Topology;
 import other.topology.TopologyElement;
@@ -70,6 +69,9 @@ public final class ActionCopy extends BaseAction
 
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
+	
+	/** The level in which this is copied in case of stacking game. */
+	private int levelCopyIn;
 	
 	/** The previous state value of the piece before to be removed. */
 	private int previousState;
@@ -181,10 +183,10 @@ public final class ActionCopy extends BaseAction
 		{
 			if (game.isStacking())
 			{
-				final int levelAdded = (levelTo == Constants.UNDEFINED) ? csB.sizeStack(to, typeTo) : levelTo;
-				previousState = csB.state(to, levelAdded, typeTo);
-				previousRotation = csB.rotation(to, levelAdded, typeTo);
-				previousValue = csB.value(to, levelAdded, typeTo);
+				levelCopyIn = (levelTo == Constants.UNDEFINED) ? csB.sizeStack(to, typeTo) : levelTo;
+				previousState = csB.state(to, levelCopyIn, typeTo);
+				previousRotation = csB.rotation(to, levelCopyIn, typeTo);
+				previousValue = csB.value(to, levelCopyIn, typeTo);
 			}
 			else
 			{
@@ -246,19 +248,16 @@ public final class ActionCopy extends BaseAction
 		int pieceIdx = 0;
 		if (context.game().isStacking())
 		{
-			pieceIdx = (levelTo == Constants.UNDEFINED) ? cs.remove(context.state(), site, typeTo)
-					: cs.remove(context.state(), site, levelTo, typeTo);
-			final BaseContainerStateStacking csStack = (BaseContainerStateStacking) cs;
+			pieceIdx = cs.remove(context.state(), site, levelCopyIn, typeTo);
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
 				final int owner = piece.owner();
-				context.state().owned().remove(owner, pieceIdx, site,
-						(levelTo == Constants.UNDEFINED) ? csStack.sizeStack(site, typeTo) : levelTo, typeTo);
+				context.state().owned().remove(owner, pieceIdx, site, levelCopyIn, typeTo);
 			}
 
-			if (csStack.sizeStack(site, typeTo) == 0)
-				csStack.addToEmpty(site, typeTo);
+			if (cs.sizeStack(site, typeTo) == 0)
+				cs.addToEmpty(site, typeTo);
 		}
 		else
 		{
