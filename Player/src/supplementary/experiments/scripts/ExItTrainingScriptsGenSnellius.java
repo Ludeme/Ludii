@@ -42,7 +42,7 @@ public class ExItTrainingScriptsGenSnellius
 	private static final int MAX_SELFPLAY_TRIALS = 200;
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 1440;
+	private static final int MAX_WALL_TIME = 2880;
 	
 	/** Number of cores per node (this is for Thin nodes on Snellius) */
 	private static final int CORES_PER_NODE = 128;
@@ -232,7 +232,7 @@ public class ExItTrainingScriptsGenSnellius
 								"--wis",
 								"--handle-aliasing",
 								"--playout-features-epsilon 0.5",
-								" --no-value-learning",
+								"--no-value-learning",
 								"--train-tspg",
 								"--checkpoint-freq 5",
 								"--num-agent-threads",
