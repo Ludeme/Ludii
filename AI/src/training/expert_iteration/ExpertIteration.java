@@ -565,7 +565,7 @@ public class ExpertIteration
 												logWriter,
 												"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
 											);
-											System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
+											//System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 										}
 										else
 										{
@@ -991,29 +991,29 @@ public class ExpertIteration
 				if (menagerieLog != null)
 					logLine(logWriter, menagerie.generateLog());
 				
-				for (int p = 1; p < winningMovesFeatures.length; ++p)
-				{
-					System.out.println();
-					System.out.println("Player " + p);
-					System.out.println("Winning features: ");
-					for (int i = winningMovesFeatures[p].nextSetBit(0); i >= 0; i = winningMovesFeatures[p].nextSetBit(i + 1))
-					{
-						if (featureOccurrences[p].getQuick(i) > 0L)
-							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-					}
-					System.out.println("Losing features: ");
-					for (int i = losingMovesFeatures[p].nextSetBit(0); i >= 0; i = losingMovesFeatures[p].nextSetBit(i + 1))
-					{
-						if (featureOccurrences[p].getQuick(i) > 0L)
-							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-					}
-					System.out.println("Anti-defeating features: ");
-					for (int i = antiDefeatingMovesFeatures[p].nextSetBit(0); i >= 0; i = antiDefeatingMovesFeatures[p].nextSetBit(i + 1))
-					{
-						if (featureOccurrences[p].getQuick(i) > 0L)
-							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-					}
-				}
+//				for (int p = 1; p < winningMovesFeatures.length; ++p)
+//				{
+//					System.out.println();
+//					System.out.println("Player " + p);
+//					System.out.println("Winning features: ");
+//					for (int i = winningMovesFeatures[p].nextSetBit(0); i >= 0; i = winningMovesFeatures[p].nextSetBit(i + 1))
+//					{
+//						if (featureOccurrences[p].getQuick(i) > 0L)
+//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
+//					}
+//					System.out.println("Losing features: ");
+//					for (int i = losingMovesFeatures[p].nextSetBit(0); i >= 0; i = losingMovesFeatures[p].nextSetBit(i + 1))
+//					{
+//						if (featureOccurrences[p].getQuick(i) > 0L)
+//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
+//					}
+//					System.out.println("Anti-defeating features: ");
+//					for (int i = antiDefeatingMovesFeatures[p].nextSetBit(0); i >= 0; i = antiDefeatingMovesFeatures[p].nextSetBit(i + 1))
+//					{
+//						if (featureOccurrences[p].getQuick(i) > 0L)
+//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
+//					}
+//				}
 			}
 			
 			//-----------------------------------------------------------------
