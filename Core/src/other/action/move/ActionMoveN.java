@@ -226,9 +226,10 @@ public final class ActionMoveN extends BaseAction
 		}
 		else if (csTo.what(to, typeTo) == what)
 		{
-			csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-					csTo.count(to, typeTo) + count,
-					Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
+			if((csTo.count(to, typeTo) + count) <= context.game().maxCount())
+				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
+						csTo.count(to, typeTo) + count,
+						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
 		}
 
 //		Component piece = null;

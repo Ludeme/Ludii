@@ -19,8 +19,7 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start {
@@ -54,7 +53,7 @@
                         (then 
                             (sow
                                 if:(> (count at:(to)) 1)
-                                apply:(if (is Odd (count at:(to)))
+                                apply:(if (and (> (count at:(to)) 1) (is Odd (count at:(to))))
                                     (moveAgain)
                                     (and
                                         (if (> (count at:("OppositePit" (to))) 0)
@@ -71,7 +70,7 @@
                                         ) 
                                     )
                                 )
-                                backtracking:(and (!= (count at:(to)) 0) (is Even (count at:(to))))
+                                backtracking:(and (> (count at:(to)) 1) (is Even (count at:(to))))
                             )
                         )
                     )
@@ -79,10 +78,12 @@
                         (then 
                             (and
                                 (forEach Site (sites Next)
-                                    (fromTo 
-                                        (from (site))
-                                        (to (handSite Next))
-                                        count:(count at:(site))
+                                	(if (is Occupied (site))
+	                                    (fromTo 
+	                                        (from (site))
+	                                        (to (handSite Next))
+	                                        count:(count at:(site))
+	                                    )
                                     )
                                 )
                                 (if (< ("PiecesOwnedBy" P1) ("PiecesOwnedBy" P2))
@@ -104,10 +105,12 @@
                     (then
                         (if ("HandEmpty" Mover)
                             (forEach Site (sites Mover)
-                                (fromTo 
-                                    (from (handSite Next))
-                                    (to ("OppositePit" (site)))
-                                    count:(count at:(site))
+                                (if (is Occupied (site))
+	                                (fromTo 
+	                                    (from Cell (handSite Next))
+	                                    (to ("OppositePit" (site)))
+	                                    count:(count at:(site))
+	                                )
                                 )
                             )
                             (moveAgain)
