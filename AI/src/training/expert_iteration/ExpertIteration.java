@@ -2375,6 +2375,8 @@ public class ExpertIteration
 			{
 				if (lastCheckpoint < 0L)
 					return 0L;
+				else if (lastCheckpoint < 10)
+					return lastCheckpoint + 1;
 				else
 					return lastCheckpoint + outParams.checkpointFrequency;
 			}
