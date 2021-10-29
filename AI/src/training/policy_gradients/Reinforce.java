@@ -65,6 +65,7 @@ public class Reinforce
 		final Game game,
 		final SoftmaxPolicy selectionPolicy,
 		final SoftmaxPolicy playoutPolicy,
+		final SoftmaxPolicy tspgPolicy,
 		final BaseFeatureSet[] inFeatureSets,
 		final FeatureSetExpander featureSetExpander,
 		final Optimiser[] optimisers,
@@ -347,6 +348,7 @@ public class Reinforce
 
 				selectionPolicy.updateFeatureSets(expandedFeatureSets);
 				playoutPolicy.updateFeatureSets(expandedFeatureSets);
+				tspgPolicy.updateFeatureSets(expandedFeatureSets);
 				
 				featureSets = expandedFeatureSets;
 			}

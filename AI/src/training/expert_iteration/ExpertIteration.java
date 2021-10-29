@@ -426,6 +426,7 @@ public class ExpertIteration
 						game, 
 						selectionPolicy,
 						playoutPolicy, 
+						tspgPolicy,
 						featureSets, 
 						featureSetExpander, 
 						instantiateCrossEntropyOptimisers(), 
