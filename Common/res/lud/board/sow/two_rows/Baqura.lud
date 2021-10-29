@@ -70,7 +70,7 @@
                                         ) 
                                     )
                                 )
-                                backtracking:(and (> (count at:(to)) 1) (is Even (count at:(to))))
+                                backtracking:(and { (is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
                             )
                         )
                     )
