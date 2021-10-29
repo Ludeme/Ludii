@@ -52,8 +52,10 @@ public final class TakeDomino extends Effect
 		final Moves moves = new BaseMoves(super.then());
 
 		final TIntArrayList remainingDominoes = context.state().remainingDominoes();
+		
 		if (remainingDominoes.isEmpty())
 			return moves;
+		
 		int site = Constants.OFF;
 		for (final Container container: context.containers())
 		{
@@ -79,15 +81,10 @@ public final class TakeDomino extends Effect
 		if (site == Constants.OFF)
 			return moves;
 		
-		final TIntArrayList available = new TIntArrayList();
-		for (int i = 0; i < remainingDominoes.size(); i++)
-			available.add(i);
-
-		final int index = context.rng().nextInt(available.size());
+		final int index = context.rng().nextInt(remainingDominoes.size());
 		final int what = remainingDominoes.getQuick(index);
 		final ActionAdd actionAdd = new ActionAdd(SiteType.Cell, site, what, 1, 0, Constants.UNDEFINED,
-				Constants.UNDEFINED,
-				null);
+				Constants.UNDEFINED, null);
 		final Move move = new Move(actionAdd);
 		moves.moves().add(move);
 
