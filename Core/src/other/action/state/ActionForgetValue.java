@@ -85,7 +85,7 @@ public class ActionForgetValue extends BaseAction
 	{
 		if (name == null)
 		{
-			context.state().rememberingValues().add(value);
+			context.state().rememberingValues().insert(0,value);
 		}
 		else
 		{
@@ -96,7 +96,7 @@ public class ActionForgetValue extends BaseAction
 				context.state().mapRememberingValues().put(name, rememberingValues);
 			}
 			
-			rememberingValues.add(value);
+			rememberingValues.insert(0,value);
 		}
 		
 		return this;
