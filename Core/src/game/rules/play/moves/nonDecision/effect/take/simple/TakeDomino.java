@@ -83,8 +83,7 @@ public final class TakeDomino extends Effect
 		
 		final int index = context.rng().nextInt(remainingDominoes.size());
 		final int what = remainingDominoes.getQuick(index);
-		final ActionAdd actionAdd = new ActionAdd(SiteType.Cell, site, what, 1, 0, Constants.UNDEFINED,
-				Constants.UNDEFINED, null);
+		final ActionAdd actionAdd = new ActionAdd(SiteType.Cell, site, what, 1, 0, Constants.UNDEFINED, Constants.UNDEFINED, null);
 		final Move move = new Move(actionAdd);
 		moves.moves().add(move);
 

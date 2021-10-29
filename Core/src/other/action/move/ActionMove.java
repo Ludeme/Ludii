@@ -714,7 +714,7 @@ public final class ActionMove extends BaseAction
 		
 		if (!requiresStack)
 		{
-			if(from == to) // Eric: To check if no problem with modification of other date such as state, value or rotation here.
+			if(from == to && state == Constants.UNDEFINED && rotation == Constants.UNDEFINED && value == Constants.UNDEFINED ) 
 				return this;
 			
 			// System.out.println("loc is " + loc);
