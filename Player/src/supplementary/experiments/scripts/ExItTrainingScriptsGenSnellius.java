@@ -38,6 +38,9 @@ public class ExItTrainingScriptsGenSnellius
 	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
 	private static final int MEM_PER_NODE = 256;
 	
+	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
+	private static final int MAX_REQUEST_MEM = 234;
+	
 	/** Max number of self-play trials */
 	private static final int MAX_SELFPLAY_TRIALS = 200;
 	
@@ -175,9 +178,9 @@ public class ExItTrainingScriptsGenSnellius
 				final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
 				final int jobMemRequestGB;
 				if (exclusive)
-					jobMemRequestGB = MEM_PER_NODE;		// We're requesting full node anyway, might as well take all the memory
+					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
 				else
-					jobMemRequestGB = numProcessesThisJob * MEM_PER_PROCESS;
+					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
 				
 				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
