@@ -541,13 +541,22 @@ public class ExpertIteration
 										final List<ExItExperience> specialMovesBatch = 
 												specialMoveExperienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
 										
-										final BaseFeatureSet specialMovesExpandedFeatureSet = 
-												expandFeatureSet
-												(
-													specialMovesBatch, specialMovesExpander, toExpand, p, selectionPolicy, 
-													featureActiveRatios[p], featureLifetimes[p], featureOccurrences[p],
-													winningMovesFeatures[p], losingMovesFeatures[p], antiDefeatingMovesFeatures[p]
-												);
+										final BaseFeatureSet specialMovesExpandedFeatureSet;
+										
+										if (featureDiscoveryParams.useSpecialMovesExpander)
+										{
+											specialMovesExpandedFeatureSet = 
+													expandFeatureSet
+													(
+														specialMovesBatch, specialMovesExpander, toExpand, p, selectionPolicy, 
+														featureActiveRatios[p], featureLifetimes[p], featureOccurrences[p],
+														winningMovesFeatures[p], losingMovesFeatures[p], antiDefeatingMovesFeatures[p]
+													);
+										}
+										else
+										{
+											specialMovesExpandedFeatureSet = null;
+										}
 										
 										final BaseFeatureSet newFeatureSet;
 										if (specialMovesExpandedFeatureSet != null)
@@ -2852,6 +2861,10 @@ public class ExpertIteration
 				.withDefault(Double.valueOf(0.00))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
+		argParse.addOption(new ArgOption()
+				.withNames("--special-moves-expander")
+				.help("If true, we'll use a special-moves feature expander in addition to the normal one.")
+				.withType(OptionTypes.Boolean));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--train-tspg")
@@ -2993,6 +3006,7 @@ public class ExpertIteration
 		exIt.featureDiscoveryParams.maxNumPruningSeconds = argParse.getValueInt("--max-pruning-seconds");
 		exIt.featureDiscoveryParams.numFeatureDiscoveryThreads = argParse.getValueInt("--num-feature-discovery-threads");
 		exIt.featureDiscoveryParams.criticalValueCorrConf = argParse.getValueDouble("--critical-value-corr-conf");
+		exIt.featureDiscoveryParams.useSpecialMovesExpander = argParse.getValueBool("--special-moves-expander");
 		
 		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
 		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");
