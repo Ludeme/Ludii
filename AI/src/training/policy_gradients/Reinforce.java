@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
@@ -15,6 +16,7 @@ import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
+import main.DaemonThreadFactory;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.collections.ListUtils;
@@ -102,6 +104,9 @@ public class Reinforce
 			}
 		}
 		
+		// Thread pool for running trials in parallel
+		final ExecutorService trialsThreadPool = Executors.newFixedThreadPool(trainingParams.numPolicyGradientThreads, DaemonThreadFactory.INSTANCE);
+		
 		for (int epoch = 0; epoch < trainingParams.numPolicyGradientEpochs; ++epoch)
 		{
 			if (experiment.wantsInterrupt())
@@ -116,140 +121,104 @@ public class Reinforce
 				epochExperiences[p] = new ArrayList<PGExperience>();
 			}
 			
-			for (int epochTrial = 0; epochTrial < trainingParams.numTrialsPerPolicyGradientEpoch; ++epochTrial)
+			// Softmax should be thread-safe except for its initAI() and closeAI() methods
+			// It's not perfect, but it works fine in the specific case of SoftmaxPolicy to only
+			// init and close it before and after an entire batch of trials, rather than before
+			// and after every trial. So, we'll just do that for the sake of thread-safety.
+			//
+			// Since our object will play as all players at once, we pass -1 for the player ID
+			// This is fine since SoftmaxPolicy doesn't actually care about that argument
+			playoutPolicy.initAI(game, -1);
+			
+			final CountDownLatch trialsLatch = new CountDownLatch(trainingParams.numPolicyGradientThreads);
+			final AtomicInteger epochTrialsCount = new AtomicInteger(0);
+			final BaseFeatureSet[] epochFeatureSets = featureSets;
+			
+			for (int th = 0; th < trainingParams.numPolicyGradientThreads; ++th)
 			{
-				final List<State>[] encounteredGameStates = new List[numPlayers + 1];
-				final List<Move>[] lastDecisionMoves = new List[numPlayers + 1];
-				final List<FastArrayList<Move>>[] legalMovesLists = new List[numPlayers + 1];
-				final List<FeatureVector[]>[] featureVectorArrays = new List[numPlayers + 1];
-				final TIntArrayList[] playedMoveIndices = new TIntArrayList[numPlayers + 1];
-				
-				for (int p = 1; p <= numPlayers; ++p)
-				{
-					encounteredGameStates[p] = new ArrayList<State>();
-					lastDecisionMoves[p] = new ArrayList<Move>();
-					legalMovesLists[p] = new ArrayList<FastArrayList<Move>>();
-					featureVectorArrays[p] = new ArrayList<FeatureVector[]>();
-					playedMoveIndices[p] = new TIntArrayList();
-				}
-				
-				final Trial trial = new Trial(game);
-				final Context context = new Context(game, trial);
-				
-				// We can make a single SoftmaxPolicy object control all players at the same time as a
-				// single AI object, but do still need to init and close it once per trial
-				//
-				// Since our object will play as all players at once, we pass -1 for the player ID
-				// This is fine since SoftmaxPolicy doesn't actually care about that argument
-				playoutPolicy.initAI(game, -1);
-				
-				// TODO when adding parallelisation, will probably want a separate SoftmaxPolicy object per thread...
-				
-				// Play trial
-				while (!trial.over())
-				{
-					final int mover = context.state().mover();
-					final FastArrayList<Move> moves = game.moves(context).moves();
-					final BaseFeatureSet featureSet = featureSets[mover];
-
-					final FeatureVector[] featureVectors = featureSet.computeFeatureVectors(context, moves, false);
-					final FVector distribution = playoutPolicy.computeDistribution(featureVectors, mover);
-					
-					final int moveIdx = playoutPolicy.selectActionFromDistribution(distribution);
-					final Move move = moves.get(moveIdx);
-					
-					encounteredGameStates[mover].add(new Context(context).state());
-					lastDecisionMoves[mover].add(context.trial().lastMove());
-					legalMovesLists[mover].add(new FastArrayList<Move>(moves));
-					featureVectorArrays[mover].add(featureVectors);
-					playedMoveIndices[mover].add(moveIdx);
-					
-					game.apply(context, move);
-					
-					// Update feature activity data
-					for (final FeatureVector featureVector : featureVectors)
+				trialsThreadPool.submit
+				(
+					() ->
 					{
-						final TIntArrayList sparse = featureVector.activeSpatialFeatureIndices();
-						
-						if (sparse.isEmpty())
-							continue;		// Probably a pass/swap/other special move, don't want these affecting our active ratios
-						
-						// Following code expects the indices in the sparse feature vector to be sorted
-						sparse.sort();
-
-						// Increase lifetime of all features by 1
-						featureLifetimes[mover].transformValues((final long l) -> {return l + 1L;});
-
-						// Incrementally update all average feature values
-						final TDoubleArrayList list = featureActiveRatios[mover];
-						int vectorIdx = 0;
-						for (int i = 0; i < list.size(); ++i)
+						try
 						{
-							final double oldMean = list.getQuick(i);
-
-							if (vectorIdx < sparse.size() && sparse.getQuick(vectorIdx) == i)
+							while (epochTrialsCount.getAndIncrement() < trainingParams.numTrialsPerPolicyGradientEpoch)
 							{
-								// ith feature is active
-								list.setQuick(i, oldMean + ((1.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
-								++vectorIdx;
-							}
-							else
-							{
-								// ith feature is not active
-								list.setQuick(i, oldMean + ((0.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
+								final List<State>[] encounteredGameStates = new List[numPlayers + 1];
+								final List<Move>[] lastDecisionMoves = new List[numPlayers + 1];
+								final List<FastArrayList<Move>>[] legalMovesLists = new List[numPlayers + 1];
+								final List<FeatureVector[]>[] featureVectorArrays = new List[numPlayers + 1];
+								final TIntArrayList[] playedMoveIndices = new TIntArrayList[numPlayers + 1];
+								
+								for (int p = 1; p <= numPlayers; ++p)
+								{
+									encounteredGameStates[p] = new ArrayList<State>();
+									lastDecisionMoves[p] = new ArrayList<Move>();
+									legalMovesLists[p] = new ArrayList<FastArrayList<Move>>();
+									featureVectorArrays[p] = new ArrayList<FeatureVector[]>();
+									playedMoveIndices[p] = new TIntArrayList();
+								}
+								
+								final Trial trial = new Trial(game);
+								final Context context = new Context(game, trial);
+								
+								// Play trial
+								while (!trial.over())
+								{
+									final int mover = context.state().mover();
+									final FastArrayList<Move> moves = game.moves(context).moves();
+									final BaseFeatureSet featureSet = epochFeatureSets[mover];
+				
+									final FeatureVector[] featureVectors = featureSet.computeFeatureVectors(context, moves, false);
+									final FVector distribution = playoutPolicy.computeDistribution(featureVectors, mover);
+									
+									final int moveIdx = playoutPolicy.selectActionFromDistribution(distribution);
+									final Move move = moves.get(moveIdx);
+									
+									encounteredGameStates[mover].add(new Context(context).state());
+									lastDecisionMoves[mover].add(context.trial().lastMove());
+									legalMovesLists[mover].add(new FastArrayList<Move>(moves));
+									featureVectorArrays[mover].add(featureVectors);
+									playedMoveIndices[mover].add(moveIdx);
+									
+									game.apply(context, move);
+									
+									updateFeatureActivityData(featureVectors, featureLifetimes, featureActiveRatios, mover);
+								}
+								
+								final double[] utilities = RankUtils.agentUtilities(context);
+								
+								// Store all experiences
+								addTrialData
+								(
+									epochExperiences, numPlayers, encounteredGameStates, lastDecisionMoves, 
+									legalMovesLists, featureVectorArrays, playedMoveIndices, utilities,
+									avgGameDurations, avgPlayerOutcomeTrackers, trainingParams
+								);
 							}
 						}
-
-						if (vectorIdx != sparse.size())
+						catch (final Exception e)
 						{
-							System.err.println("ERROR: expected vectorIdx == sparse.size()!");
-							System.err.println("vectorIdx = " + vectorIdx);
-							System.err.println("sparse.size() = " + sparse.size());
-							System.err.println("sparse = " + sparse);
+							e.printStackTrace();	// Need to do this here since we don't retrieve runnable's Future result
+						}
+						finally
+						{
+							trialsLatch.countDown();
 						}
 					}
-				}
-				
-				final double[] utilities = RankUtils.agentUtilities(context);
-				
-				// Store all experiences
-				for (int p = 1; p <= numPlayers; ++p)
-				{
-					final List<State> gameStatesList = encounteredGameStates[p];
-					final List<Move> lastDecisionMovesList = lastDecisionMoves[p];
-					final List<FastArrayList<Move>> legalMovesList = legalMovesLists[p];
-					final List<FeatureVector[]> featureVectorsList = featureVectorArrays[p];
-					final TIntArrayList moveIndicesList = playedMoveIndices[p];
-					
-					// Note: not really game duration! Just from perspective of one player!
-					final int gameDuration = gameStatesList.size();
-					avgGameDurations[p].observe(gameDuration);
-					avgPlayerOutcomeTrackers[p].observe(utilities[p]);
-					
-					double discountMultiplier = 1.0;
-					
-					for (int i = 0; i < featureVectorsList.size(); ++i)
-					{
-						epochExperiences[p].add
-						(
-							new PGExperience
-							(
-								gameStatesList.get(i),
-								lastDecisionMovesList.get(i),
-								legalMovesList.get(i),
-								featureVectorsList.get(i), 
-								moveIndicesList.getQuick(i), 
-								(float)utilities[p],
-								discountMultiplier
-							)
-						);
-						
-						discountMultiplier *= trainingParams.pgGamma;
-					}
-				}
-				
-				playoutPolicy.closeAI();
+				);
 			}
+			
+			try
+			{
+				trialsLatch.await();
+			}
+			catch (final InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			
+			playoutPolicy.closeAI();
 			
 			for (int p = 1; p <= numPlayers; ++p)
 			{
@@ -386,6 +355,8 @@ public class Reinforce
 			// TODO save checkpoints
 		}
 		
+		trialsThreadPool.shutdownNow();
+		
 		return featureSets;
 	}
 	
@@ -399,7 +370,7 @@ public class Reinforce
 	 * @param playedMoveProb Probably with which our policy picks the move that we ended up picking
 	 * @return Computes vector of policy gradients for given sample of experience
 	 */
-	public static FVector computePolicyGradients
+	private static FVector computePolicyGradients
 	(
 		final PGExperience exp, 
 		final int dim, 
@@ -472,6 +443,135 @@ public class Reinforce
 		gradLogPi.mult((float)(exp.discountMultiplier() * (exp.returns() - valueBaseline) - entropyRegWeight * Math.log(playedMoveProb)));
 		
 		return gradLogPi;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Update feature activity data. Unfortunately this needs to be synchronized,
+	 * trial threads should only update this one-by-one
+	 * @param featureVectors
+	 * @param featureLifetimes
+	 * @param featureActiveRatios
+	 * @param mover
+	 */
+	private static synchronized void updateFeatureActivityData
+	(
+		final FeatureVector[] featureVectors,
+		final TLongArrayList[] featureLifetimes,
+		final TDoubleArrayList[] featureActiveRatios,
+		final int mover
+	)
+	{
+		// Update feature activity data
+		for (final FeatureVector featureVector : featureVectors)
+		{
+			final TIntArrayList sparse = featureVector.activeSpatialFeatureIndices();
+			
+			if (sparse.isEmpty())
+				continue;		// Probably a pass/swap/other special move, don't want these affecting our active ratios
+			
+			// Following code expects the indices in the sparse feature vector to be sorted
+			sparse.sort();
+
+			// Increase lifetime of all features by 1
+			featureLifetimes[mover].transformValues((final long l) -> {return l + 1L;});
+
+			// Incrementally update all average feature values
+			final TDoubleArrayList list = featureActiveRatios[mover];
+			int vectorIdx = 0;
+			for (int i = 0; i < list.size(); ++i)
+			{
+				final double oldMean = list.getQuick(i);
+
+				if (vectorIdx < sparse.size() && sparse.getQuick(vectorIdx) == i)
+				{
+					// ith feature is active
+					list.setQuick(i, oldMean + ((1.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
+					++vectorIdx;
+				}
+				else
+				{
+					// ith feature is not active
+					list.setQuick(i, oldMean + ((0.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
+				}
+			}
+
+			if (vectorIdx != sparse.size())
+			{
+				System.err.println("ERROR: expected vectorIdx == sparse.size()!");
+				System.err.println("vectorIdx = " + vectorIdx);
+				System.err.println("sparse.size() = " + sparse.size());
+				System.err.println("sparse = " + sparse);
+			}
+		}
+	}
+	
+	/**
+	 * Record data collected from a trial. Needs to be synchronized, parallel trials
+	 * have to do this one-by-one.
+	 * 
+	 * @param epochExperiences
+	 * @param numPlayers
+	 * @param encounteredGameStates
+	 * @param lastDecisionMoves
+	 * @param legalMovesLists
+	 * @param featureVectorArrays
+	 * @param playedMoveIndices
+	 * @param utilities
+	 * @param avgGameDurations
+	 * @param avgPlayerOutcomeTrackers
+	 * @param trainingParams
+	 */
+	private static synchronized void addTrialData
+	(
+		final List<PGExperience>[] epochExperiences,
+		final int numPlayers,
+		final List<State>[] encounteredGameStates,
+		final List<Move>[] lastDecisionMoves,
+		final List<FastArrayList<Move>>[] legalMovesLists,
+		final List<FeatureVector[]>[] featureVectorArrays,
+		final TIntArrayList[] playedMoveIndices,
+		final double[] utilities,
+		final ExponentialMovingAverage[] avgGameDurations,
+		final ExponentialMovingAverage[] avgPlayerOutcomeTrackers,
+		final TrainingParams trainingParams
+	)
+	{
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			final List<State> gameStatesList = encounteredGameStates[p];
+			final List<Move> lastDecisionMovesList = lastDecisionMoves[p];
+			final List<FastArrayList<Move>> legalMovesList = legalMovesLists[p];
+			final List<FeatureVector[]> featureVectorsList = featureVectorArrays[p];
+			final TIntArrayList moveIndicesList = playedMoveIndices[p];
+			
+			// Note: not really game duration! Just from perspective of one player!
+			final int gameDuration = gameStatesList.size();
+			avgGameDurations[p].observe(gameDuration);
+			avgPlayerOutcomeTrackers[p].observe(utilities[p]);
+			
+			double discountMultiplier = 1.0;
+			
+			for (int i = 0; i < featureVectorsList.size(); ++i)
+			{
+				epochExperiences[p].add
+				(
+					new PGExperience
+					(
+						gameStatesList.get(i),
+						lastDecisionMovesList.get(i),
+						legalMovesList.get(i),
+						featureVectorsList.get(i), 
+						moveIndicesList.getQuick(i), 
+						(float)utilities[p],
+						discountMultiplier
+					)
+				);
+				
+				discountMultiplier *= trainingParams.pgGamma;
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------

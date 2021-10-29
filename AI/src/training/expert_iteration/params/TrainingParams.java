@@ -40,6 +40,9 @@ public class TrainingParams
 	/** Weight for entropy regularisation */
 	public double entropyRegWeight;
 	
+	/** Number of threads to use for parallel trials for policy gradients */
+	public int numPolicyGradientThreads;
+	
 	//-------------------------------------------------------------------------
 
 }

@@ -2775,6 +2775,12 @@ public class ExpertIteration
 				.withDefault(Double.valueOf(0.1))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-policy-gradient-threads")
+				.help("Number of threads to use for parallel trials for policy gradients.")
+				.withDefault(Integer.valueOf(1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--add-feature-every")
@@ -2953,6 +2959,7 @@ public class ExpertIteration
 		exIt.trainingParams.numTrialsPerPolicyGradientEpoch = argParse.getValueInt("--num-trials-per-policy-gradient-epoch");
 		exIt.trainingParams.pgGamma = argParse.getValueDouble("--pg-gamma");
 		exIt.trainingParams.entropyRegWeight = argParse.getValueDouble("--entropy-reg-weight");
+		exIt.trainingParams.numPolicyGradientThreads = argParse.getValueInt("--num-policy-gradient-threads");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
