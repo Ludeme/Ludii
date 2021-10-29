@@ -3057,6 +3057,8 @@ public class Game extends BaseLudeme implements API, Serializable
 		final int prev = undoData == null ? 1 : undoData.prev();
 		final int mover = undoData == null ? 1 : undoData.mover();
 		final int next = undoData == null ? 1 : undoData.next();
+		final int numTurn = undoData == null ? 0 : undoData.numTurn();
+		final int numTurnSamePlayer = undoData == null ? 0 : undoData.numTurnSamePlayer();
 		
 		int active = 0;
 		if(undoData != null)
@@ -3130,6 +3132,8 @@ public class Game extends BaseLudeme implements API, Serializable
 		state.setPrev(prev);
 		state.setMover(mover);
 		state.setNext(next);
+		state.setNumTurn(numTurn);
+		state.seturnSamePlayer(numTurnSamePlayer);
 		
 		// Step 5: To update the sum of the dice container.
 		if (hasHandDice())

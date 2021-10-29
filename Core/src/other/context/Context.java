@@ -1710,7 +1710,9 @@ public class Context
 				trial.previousState(),
 				state.prev(),
 				state.mover(),
-				state.next()
+				state.next(),
+				state.numTurn(),
+				state.numTurnSamePlayer()
 		);
 		
 		trial.addEndData(endData);

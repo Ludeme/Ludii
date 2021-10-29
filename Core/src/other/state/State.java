@@ -1784,6 +1784,14 @@ public class State implements Serializable
 		numTurnSamePlayer = 0;
 		++numTurn;
 	}
+	
+	/**
+	 * @param numTurnSamePlayer The number of moves of the same player so far in the turn.
+	 */
+	public void seturnSamePlayer(final int numTurnSamePlayer)
+	{
+		this.numTurnSamePlayer = numTurnSamePlayer;
+	}
 
 	/**
 	 * to increment the number of turn played by the same player
@@ -1799,6 +1807,14 @@ public class State implements Serializable
 	public int numTurn()
 	{
 		return numTurn;
+	}
+	
+	/**
+	 * @param numTurn The number of turns.
+	 */
+	public void setNumTurn(final int numTurn)
+	{
+		this.numTurn = numTurn;
 	}
 
 	//-------------------------------------------------------------------------

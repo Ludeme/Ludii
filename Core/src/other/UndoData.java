@@ -75,6 +75,12 @@ public class UndoData
 
 	/** The index of the next player. */
 	private final int next;
+	
+	/** The number of times the mover has been switched to a different player. */
+	private final int numTurn;
+	
+	/** The number of turns played successively by the same player. */
+	private final int numTurnSamePlayer;
 
 	//-------------------------------------------------------------------------
 	
@@ -96,6 +102,8 @@ public class UndoData
 	 * @param prev		 	           The index of the previous player.
 	 * @param mover		 	           The index of the mover.
 	 * @param next		 	           The index of the next player.
+	 * @param numTurn		 	       The number of turns.
+	 * @param numTurnSamePlayer		   The number of moves played so far in the same turn.
 	 */
 	public UndoData
 	(
@@ -115,7 +123,9 @@ public class UndoData
 		final TLongArrayList previousState,
 		final int prev,
 		final int mover,
-		final int next
+		final int next,
+		final int numTurn,
+		final int numTurnSamePlayer
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -135,6 +145,8 @@ public class UndoData
 		this.prev = prev;
 		this.mover = mover;
 		this.next = next;
+		this.numTurn = numTurn;
+		this.numTurnSamePlayer = numTurnSamePlayer;
 	}
 
 	//-------------------------------------------------------------------------
@@ -273,5 +285,21 @@ public class UndoData
 	public int next()
 	{
 		return next;
+	}
+	
+	/**
+	 * @return The number of times the mover has been switched to a different player.
+	 */
+	public int numTurn()
+	{
+		return numTurn;
+	}
+	
+	/**
+	 * @return The number of turns played successively by the same player.
+	 */
+	public int numTurnSamePlayer()
+	{
+		return numTurnSamePlayer;
 	}
 }
