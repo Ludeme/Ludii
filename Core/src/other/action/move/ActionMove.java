@@ -804,7 +804,7 @@ public final class ActionMove extends BaseAction
 				else
 				{
 					if(previousStateTo > 0 || previousRotationTo > 0 || previousValueTo > 0)
-						csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, 1, previousStateTo, previousRotationTo,
+						csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, 0, previousStateTo, previousRotationTo,
 								(context.game().hasDominoes() ? 1 : previousValueTo), typeTo);
 				}
 			}
