@@ -1712,7 +1712,9 @@ public class Context
 				state.mover(),
 				state.next(),
 				state.numTurn(),
-				state.numTurnSamePlayer()
+				state.numTurnSamePlayer(),
+				state.numConsecutivesPasses(),
+				state.remainingDominoes()
 		);
 		
 		trial.addEndData(endData);

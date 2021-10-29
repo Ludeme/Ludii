@@ -1328,6 +1328,23 @@ public class State implements Serializable
 	}
 	
 	/**
+	 * @return Number of consecutive pass moves.
+	 */
+	public int numConsecutivesPasses()
+	{
+		return this.numConsecutivePasses;
+	}
+	
+	/**
+	 * To set the number of consecutive pass moves.
+	 * @param numConsecutivesPasses Number of consecutive pass moves.
+	 */
+	public void setNumConsecutivesPasses(final int numConsecutivesPasses)
+	{
+		this.numConsecutivePasses = numConsecutivesPasses;
+	}
+	
+	/**
 	 * @return Counter.
 	 */
 	public int counter()
@@ -1788,7 +1805,7 @@ public class State implements Serializable
 	/**
 	 * @param numTurnSamePlayer The number of moves of the same player so far in the turn.
 	 */
-	public void seturnSamePlayer(final int numTurnSamePlayer)
+	public void setTurnSamePlayer(final int numTurnSamePlayer)
 	{
 		this.numTurnSamePlayer = numTurnSamePlayer;
 	}
@@ -1972,7 +1989,7 @@ public class State implements Serializable
 	/**
 	 * @return The remaining dominoes
 	 */
-	public TIntArrayList remainingDominoes()
+	public FastTIntArrayList remainingDominoes()
 	{
 		return remainingDominoes;
 	}

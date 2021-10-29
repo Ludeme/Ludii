@@ -85,6 +85,7 @@ import main.ReflectionUtils;
 import main.Status;
 import main.Status.EndType;
 import main.collections.FastArrayList;
+import main.collections.FastTIntArrayList;
 import main.grammar.Description;
 import main.options.Ruleset;
 import metadata.Metadata;
@@ -3059,6 +3060,8 @@ public class Game extends BaseLudeme implements API, Serializable
 		final int next = undoData == null ? 1 : undoData.next();
 		final int numTurn = undoData == null ? 0 : undoData.numTurn();
 		final int numTurnSamePlayer = undoData == null ? 0 : undoData.numTurnSamePlayer();
+		final int numConsecutivePasses = undoData == null ? 0 : undoData.numConsecutivePasses();
+		final FastTIntArrayList remainingDominoes = undoData == null ? null : undoData.remainingDominoes();
 		
 		int active = 0;
 		if(undoData != null)
@@ -3124,6 +3127,12 @@ public class Game extends BaseLudeme implements API, Serializable
 			for(int i = 0; i < previousState.size(); i++)
 				trial.previousStateWithinATurn().add(previousState.get(i));
 		}
+		if(remainingDominoes != null)
+		{
+			state.remainingDominoes().clear();
+			for(int i = 0; i < remainingDominoes.size(); i++)
+				state.remainingDominoes().add(remainingDominoes.get(i));
+		}
 		final Move move = context.trial().removeLastMove();
 		
 		// Step 4: Undo the last move played.
@@ -3133,7 +3142,8 @@ public class Game extends BaseLudeme implements API, Serializable
 		state.setMover(mover);
 		state.setNext(next);
 		state.setNumTurn(numTurn);
-		state.seturnSamePlayer(numTurnSamePlayer);
+		state.setTurnSamePlayer(numTurnSamePlayer);
+		state.setNumConsecutivesPasses(numConsecutivePasses);
 		
 		// Step 5: To update the sum of the dice container.
 		if (hasHandDice())

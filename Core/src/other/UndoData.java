@@ -6,6 +6,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
+import main.collections.FastTIntArrayList;
 
 /**
  * Undo Data necessary to be able to undo a move.
@@ -81,6 +82,12 @@ public class UndoData
 	
 	/** The number of turns played successively by the same player. */
 	private final int numTurnSamePlayer;
+	
+	/** Number of consecutive pass moves. */
+	private int numConsecutivePasses = 0;
+	
+	/** All the remaining dominoes. */
+	private FastTIntArrayList remainingDominoes;
 
 	//-------------------------------------------------------------------------
 	
@@ -104,6 +111,8 @@ public class UndoData
 	 * @param next		 	           The index of the next player.
 	 * @param numTurn		 	       The number of turns.
 	 * @param numTurnSamePlayer		   The number of moves played so far in the same turn.
+	 * @param numConsecutivePasses	   Number of consecutive pass moves.
+	 * @param remainingDominoes		   All the remainingDominoes.
 	 */
 	public UndoData
 	(
@@ -125,7 +134,9 @@ public class UndoData
 		final int mover,
 		final int next,
 		final int numTurn,
-		final int numTurnSamePlayer
+		final int numTurnSamePlayer,
+		final int numConsecutivePasses,
+		final FastTIntArrayList remainingDominoes
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -147,6 +158,8 @@ public class UndoData
 		this.next = next;
 		this.numTurn = numTurn;
 		this.numTurnSamePlayer = numTurnSamePlayer;
+		this.numConsecutivePasses = numConsecutivePasses;
+		this.remainingDominoes = remainingDominoes == null ? null : new FastTIntArrayList(remainingDominoes);
 	}
 
 	//-------------------------------------------------------------------------
@@ -301,5 +314,21 @@ public class UndoData
 	public int numTurnSamePlayer()
 	{
 		return numTurnSamePlayer;
+	}
+	
+	/**
+	 * @return Number of consecutive pass moves.
+	 */
+	public int numConsecutivePasses()
+	{
+		return numConsecutivePasses;
+	}
+	
+	/**
+	 * @return All the remaining dominoes.
+	 */
+	public FastTIntArrayList remainingDominoes()
+	{
+		return remainingDominoes;
 	}
 }
