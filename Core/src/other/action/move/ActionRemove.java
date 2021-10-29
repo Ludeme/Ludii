@@ -45,9 +45,6 @@ public final class ActionRemove extends BaseAction
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
-	/** The level removed (for stacking game). */
-	private int levelRemoved;
-	
 	/** The previous index of the piece before to be removed. */
 	private int previousWhat;
 	
@@ -158,7 +155,7 @@ public final class ActionRemove extends BaseAction
 		{
 			if (context.game().isStacking())
 			{
-				final int levelToRemove = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+				final int levelToRemove = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) -1 : level;
 				
 				previousWhat = cs.what(to, levelToRemove, type);
 				previousWho = cs.who(to, levelToRemove, type);
@@ -225,7 +222,7 @@ public final class ActionRemove extends BaseAction
 		
 		if (context.game().isStacking())
 		{
-			levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+			final int levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
@@ -282,12 +279,13 @@ public final class ActionRemove extends BaseAction
 			context.state().removeSitesToRemove(to);
 			return this;
 		}
-
+		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
 		if (context.game().isStacking())
 		{
-			Component piece = null;
+			final int levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+			
 			if (previousState != Constants.UNDEFINED || previousRotation != Constants.UNDEFINED || previousValue != Constants.UNDEFINED)
 			{
 				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
@@ -302,11 +300,7 @@ public final class ActionRemove extends BaseAction
 			cs.removeFromEmpty(to, type);
 
 			if (previousWhat != 0)
-			{
-				piece = context.components()[previousWhat];
-				final int owner = piece.owner();
-				context.state().owned().add(owner, previousWhat, to, levelRemoved, type);
-			}
+				context.state().owned().add(previousWho, previousWhat, to, levelRemoved, type);
 		}
 		else
 		{
