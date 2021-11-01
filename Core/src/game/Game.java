@@ -3034,144 +3034,153 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move undo(final Context context)
 	{
-		final Trial trial = context.trial();
-		final State state = context.state();
-		final Game game = context.game();
-
-		// Step 1: restore previous RNG.
-		trial.removeLastRNGStates();
-		final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
-		context.rng().restoreState(previousRNGState);
+		context.getLock().lock();
 		
-		// Step 2: Restore the data modified by the last end rules or nextPhase.
-		// Get the previous end data.
-		final UndoData undoData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
-		final double[] ranking = undoData == null ? new double[game.players().size()] : undoData.ranking();
-		final int[] phases = undoData == null ? new int[game.players().size()] : undoData.phases();
-		final Status status = undoData == null ? null : undoData.status();
-		final TIntArrayList winners = undoData == null ? new TIntArrayList(game.players().count()) : undoData.winners();
-		final TIntArrayList losers = undoData == null ? new TIntArrayList(game.players().count()) : undoData.losers();
-		final TIntHashSet pendingValues = undoData == null ? new TIntHashSet() : undoData.pendingValues();
-		final int previousCounter = undoData == null ? Constants.UNDEFINED : undoData.counter();
-		final TLongArrayList previousStateWithinATurn = undoData == null ? null : undoData.previousStateWithinATurn();
-		final TLongArrayList previousState = undoData == null ? null : undoData.previousState();
-		final int prev = undoData == null ? 1 : undoData.prev();
-		final int mover = undoData == null ? 1 : undoData.mover();
-		final int next = undoData == null ? 1 : undoData.next();
-		final int numTurn = undoData == null ? 0 : undoData.numTurn();
-		final int numTurnSamePlayer = undoData == null ? 0 : undoData.numTurnSamePlayer();
-		final int numConsecutivePasses = undoData == null ? 0 : undoData.numConsecutivePasses();
-		final FastTIntArrayList remainingDominoes = undoData == null ? null : undoData.remainingDominoes();
-		
-		int active = 0;
-		if(undoData != null)
-			active = undoData.active();
-		else
+		try
 		{
-			for (int p = 1; p <= game.players().count(); ++p)
+			final Trial trial = context.trial();
+			final State state = context.state();
+			final Game game = context.game();
+	
+			// Step 1: restore previous RNG.
+			trial.removeLastRNGStates();
+			final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
+			context.rng().restoreState(previousRNGState);
+			
+			// Step 2: Restore the data modified by the last end rules or nextPhase.
+			// Get the previous end data.
+			final UndoData undoData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
+			final double[] ranking = undoData == null ? new double[game.players().size()] : undoData.ranking();
+			final int[] phases = undoData == null ? new int[game.players().size()] : undoData.phases();
+			final Status status = undoData == null ? null : undoData.status();
+			final TIntArrayList winners = undoData == null ? new TIntArrayList(game.players().count()) : undoData.winners();
+			final TIntArrayList losers = undoData == null ? new TIntArrayList(game.players().count()) : undoData.losers();
+			final TIntHashSet pendingValues = undoData == null ? new TIntHashSet() : undoData.pendingValues();
+			final int previousCounter = undoData == null ? Constants.UNDEFINED : undoData.counter();
+			final TLongArrayList previousStateWithinATurn = undoData == null ? null : undoData.previousStateWithinATurn();
+			final TLongArrayList previousState = undoData == null ? null : undoData.previousState();
+			final int prev = undoData == null ? 1 : undoData.prev();
+			final int mover = undoData == null ? 1 : undoData.mover();
+			final int next = undoData == null ? 1 : undoData.next();
+			final int numTurn = undoData == null ? 0 : undoData.numTurn();
+			final int numTurnSamePlayer = undoData == null ? 0 : undoData.numTurnSamePlayer();
+			final int numConsecutivePasses = undoData == null ? 0 : undoData.numConsecutivePasses();
+			final FastTIntArrayList remainingDominoes = undoData == null ? null : undoData.remainingDominoes();
+			
+			int active = 0;
+			if(undoData != null)
+				active = undoData.active();
+			else
 			{
-				final int whoBit = (1 << (p - 1));
-				active |= whoBit;
-			}
-		}
-		
-		final int[] scores = undoData == null ? new int[game.players().size()] : undoData.scores();
-		final double[] payoffs = undoData == null ? new double[game.players().size()] : undoData.payoffs();
-		final int numLossesDecided = undoData == null ? 0: undoData.numLossesDecided();
-		final int numWinsDecided = undoData == null ? 0: undoData.numWinsDecided();
-		
-		// Restore the previous end data.
-		for(int i = 0; i < ranking.length; i++)
-			trial.ranking()[i] = ranking[i];
-		trial.setStatus(status);
-		if(winners != null)
-		{
-			context.winners().clear();
-			for(int i = 0; i < winners.size(); i++)
-				context.winners().add(winners.get(i));
-		}
-		
-		if(losers != null)
-		{
-			context.losers().clear();
-			for(int i = 0; i < losers.size(); i++)
-				context.losers().add(losers.get(i));
-		}
-		context.setActive(active);
-		
-		if(context.scores() != null)
-			for(int i = 0; i < context.scores().length; i++)
-				context.scores()[i] = scores[i];
-		
-		if(context.payoffs() != null)
-			for(int i = 0; i < context.payoffs().length; i++)
-				context.payoffs()[i] = payoffs[i];
-		
-		context.setNumLossesDecided(numLossesDecided);
-		context.setNumWinsDecided(numWinsDecided);
-
-		for(int pid = 1; pid < phases.length; pid++)
-			context.state().setPhase(pid, phases[pid]);
-		trial.removeLastEndData();
-		
-		// Step 3: update the state data.
-		if(previousStateWithinATurn != null)
-		{
-			trial.previousStateWithinATurn().clear();
-			for(int i = 0; i < previousStateWithinATurn.size(); i++)
-				trial.previousStateWithinATurn().add(previousStateWithinATurn.get(i));
-		}
-		if(previousState != null)
-		{
-			trial.previousState().clear();
-			for(int i = 0; i < previousState.size(); i++)
-				trial.previousStateWithinATurn().add(previousState.get(i));
-		}
-		if(remainingDominoes != null)
-		{
-			state.remainingDominoes().clear();
-			for(int i = 0; i < remainingDominoes.size(); i++)
-				state.remainingDominoes().add(remainingDominoes.get(i));
-		}
-		final Move move = context.trial().removeLastMove();
-		
-		// Step 4: Undo the last move played.
-		move.undo(context);
-
-		state.setPrev(prev);
-		state.setMover(mover);
-		state.setNext(next);
-		state.setNumTurn(numTurn);
-		state.setTurnSamePlayer(numTurnSamePlayer);
-		state.setNumConsecutivesPasses(numConsecutivePasses);
-		
-		// Step 5: To update the sum of the dice container.
-		if (hasHandDice())
-		{
-			for (int i = 0; i < handDice().size(); i++)
-			{
-				final Dice dice = handDice().get(i);
-				final ContainerState cs = context.containerState(dice.index());
-
-				final int siteFrom = context.sitesFrom()[dice.index()];
-				final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
-				int sum = 0;
-				for (int site = siteFrom; site < siteTo; site++)
+				for (int p = 1; p <= game.players().count(); ++p)
 				{
-					sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
-					// context.state().currentDice()[i][site - siteFrom] =
-					// context.components().get(cs.what(site))
-					// .getFaces()[cs.state(site)];
+					final int whoBit = (1 << (p - 1));
+					active |= whoBit;
 				}
-				state.sumDice()[i] = sum;
 			}
+			
+			final int[] scores = undoData == null ? new int[game.players().size()] : undoData.scores();
+			final double[] payoffs = undoData == null ? new double[game.players().size()] : undoData.payoffs();
+			final int numLossesDecided = undoData == null ? 0: undoData.numLossesDecided();
+			final int numWinsDecided = undoData == null ? 0: undoData.numWinsDecided();
+			
+			// Restore the previous end data.
+			for(int i = 0; i < ranking.length; i++)
+				trial.ranking()[i] = ranking[i];
+			trial.setStatus(status);
+			if(winners != null)
+			{
+				context.winners().clear();
+				for(int i = 0; i < winners.size(); i++)
+					context.winners().add(winners.get(i));
+			}
+			
+			if(losers != null)
+			{
+				context.losers().clear();
+				for(int i = 0; i < losers.size(); i++)
+					context.losers().add(losers.get(i));
+			}
+			context.setActive(active);
+			
+			if(context.scores() != null)
+				for(int i = 0; i < context.scores().length; i++)
+					context.scores()[i] = scores[i];
+			
+			if(context.payoffs() != null)
+				for(int i = 0; i < context.payoffs().length; i++)
+					context.payoffs()[i] = payoffs[i];
+			
+			context.setNumLossesDecided(numLossesDecided);
+			context.setNumWinsDecided(numWinsDecided);
+	
+			for(int pid = 1; pid < phases.length; pid++)
+				context.state().setPhase(pid, phases[pid]);
+			trial.removeLastEndData();
+			
+			// Step 3: update the state data.
+			if(previousStateWithinATurn != null)
+			{
+				trial.previousStateWithinATurn().clear();
+				for(int i = 0; i < previousStateWithinATurn.size(); i++)
+					trial.previousStateWithinATurn().add(previousStateWithinATurn.get(i));
+			}
+			if(previousState != null)
+			{
+				trial.previousState().clear();
+				for(int i = 0; i < previousState.size(); i++)
+					trial.previousStateWithinATurn().add(previousState.get(i));
+			}
+			if(remainingDominoes != null)
+			{
+				state.remainingDominoes().clear();
+				for(int i = 0; i < remainingDominoes.size(); i++)
+					state.remainingDominoes().add(remainingDominoes.get(i));
+			}
+			final Move move = context.trial().removeLastMove();
+			
+			// Step 4: Undo the last move played.
+			move.undo(context);
+	
+			state.setPrev(prev);
+			state.setMover(mover);
+			state.setNext(next);
+			state.setNumTurn(numTurn);
+			state.setTurnSamePlayer(numTurnSamePlayer);
+			state.setNumConsecutivesPasses(numConsecutivePasses);
+			
+			// Step 5: To update the sum of the dice container.
+			if (hasHandDice())
+			{
+				for (int i = 0; i < handDice().size(); i++)
+				{
+					final Dice dice = handDice().get(i);
+					final ContainerState cs = context.containerState(dice.index());
+	
+					final int siteFrom = context.sitesFrom()[dice.index()];
+					final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+					int sum = 0;
+					for (int site = siteFrom; site < siteTo; site++)
+					{
+						sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
+						// context.state().currentDice()[i][site - siteFrom] =
+						// context.components().get(cs.what(site))
+						// .getFaces()[cs.state(site)];
+					}
+					state.sumDice()[i] = sum;
+				}
+			}
+			
+			// Step 6: restore some data in the state.
+			state.restorePending(pendingValues);
+			state.setCounter(previousCounter);
+			trial.clearLegalMoves();
+			return move;
 		}
-		
-		// Step 6: restore some data in the state.
-		state.restorePending(pendingValues);
-		state.setCounter(previousCounter);
-		trial.clearLegalMoves();
-		return move;
+		finally
+		{
+			context.getLock().unlock();
+		}
 	}
 	
 	/**
