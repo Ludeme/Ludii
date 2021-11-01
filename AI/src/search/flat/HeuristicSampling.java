@@ -196,7 +196,7 @@ public class HeuristicSampling extends AI
 			if (continuation && contextCopy.state().mover() == mover && depth <= 10)
 			{
 				//System.out.println("Recursing...");
-				return new MoveScore(move, evaluateMoves(game, contextCopy, depth + 1).score());
+				score = evaluateMoves(game, contextCopy, depth + 1).score();
 			}
 			else
 			{
