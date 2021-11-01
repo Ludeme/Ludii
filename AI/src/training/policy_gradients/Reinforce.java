@@ -563,7 +563,7 @@ public class Reinforce
 			
 			double discountMultiplier = 1.0;
 			
-			for (int i = featureVectorsList.size(); i >= 0; --i)
+			for (int i = featureVectorsList.size() - 1; i >= 0; --i)
 			{
 				epochExperiences[p].add
 				(

@@ -111,7 +111,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Block"))
+			if (fileEntry.getPath().contains(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -211,7 +211,7 @@ public class TestTrialsUndo
 							
 							if(!legalMoveFound)
 							{
-								System.err.println("BUG ?");
+								System.err.println("BUG no legal moves found");
 								fail();
 							}
 						}
