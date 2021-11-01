@@ -294,7 +294,7 @@ public class Tree
 		return treeSize;
 	}
 	
-	private int size(Node parent)
+	private int size(final Node parent)
 	{
 		int treeSize = 1;
 		for (final Node child : parent.children)
@@ -303,5 +303,24 @@ public class Tree
 			treeSize += size(child);
 		}
 		return treeSize;
+	}
+	
+	//---------------------------------------------------------------------
+	
+	public String bracketNotation()
+	{
+		final StringBuilder sb = new StringBuilder();
+		bracketNotation(root, sb);
+		return sb.toString();
+	}
+	
+	private static void bracketNotation(final Node node, final StringBuilder sb)
+	{
+		sb.append("{" + node.label);
+		for (final Node child : node.children)
+		{
+			bracketNotation(child, sb);
+		}
+		sb.append("}");
 	}
 }
