@@ -46,6 +46,11 @@ public class Reinforce
 	
 	//-------------------------------------------------------------------------
 	
+	/** We don't store experiences for which the discount factor drops below this threshold */
+	private static final double EXPERIENCE_DISCOUNT_THRESHOLD = 0.001;
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Runs self-play with Policy Gradient training of features
 	 * 
@@ -556,7 +561,7 @@ public class Reinforce
 			
 			double discountMultiplier = 1.0;
 			
-			for (int i = 0; i < featureVectorsList.size(); ++i)
+			for (int i = featureVectorsList.size(); i >= 0; --i)
 			{
 				epochExperiences[p].add
 				(
@@ -573,6 +578,9 @@ public class Reinforce
 				);
 				
 				discountMultiplier *= trainingParams.pgGamma;
+				
+				if (discountMultiplier < EXPERIENCE_DISCOUNT_THRESHOLD)
+					break;
 			}
 		}
 	}
