@@ -19,7 +19,7 @@ import utils.data_structures.support.zhang_shasha.Tree;
  * 
  * @author matthew.stephenson
  */
-public class AptedDistance implements DistanceMetric
+public class Apted implements DistanceMetric
 {
 	
 	//---------------------------------------------------------------------
