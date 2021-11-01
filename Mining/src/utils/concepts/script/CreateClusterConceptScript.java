@@ -24,14 +24,15 @@ public class CreateClusterConceptScript
 {
 	public static void main(final String[] args)
 	{
+		final int maxTimeMinutesCluster = 600;
 		final int numPlayout = 100;
 		final int maxTime = 175000;
-		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
+		final int maxMove = 250; //5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
 		final String agentName = "UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
-		final String folder = "/../Trials/TrialsRandom";
+		final String folder = ""; //"/../Trials/TrialsRandom";
 		final String mainScriptName = "StateConcepts.sh";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
 		{
@@ -91,7 +92,7 @@ public class CreateClusterConceptScript
 						writer.println("#!/usr/local_rwth/bin/zsh");
 						writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "_%J.out");
 						writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "_%J.err");
-						writer.println("#SBATCH -t 6000");
+						writer.println("#SBATCH -t " + maxTimeMinutesCluster);
 						writer.println("#SBATCH --mem-per-cpu="+(int)(allocatedMemoryJava*1.25));
 						writer.println("#SBATCH -A um_dke");
 						writer.println("unset JAVA_TOOL_OPTIONS");
@@ -116,7 +117,7 @@ public class CreateClusterConceptScript
 							writer.println("#!/usr/local_rwth/bin/zsh");
 							writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "_%J.out");
 							writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "_%J.err");
-							writer.println("#SBATCH -t 6000");
+							writer.println("#SBATCH -t " + maxTimeMinutesCluster);
 							writer.println("#SBATCH --mem-per-cpu="+(int)(allocatedMemoryJava*1.25));
 							writer.println("#SBATCH -A um_dke");
 							writer.println("unset JAVA_TOOL_OPTIONS");
