@@ -169,6 +169,8 @@ public class Reinforce
 								final Trial trial = new Trial(game);
 								final Context context = new Context(game, trial);
 								
+								game.start(context);
+								
 								// Play trial
 								while (!trial.over())
 								{
