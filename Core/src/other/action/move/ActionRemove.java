@@ -155,7 +155,7 @@ public final class ActionRemove extends BaseAction
 		{
 			if (context.game().isStacking())
 			{
-				final int levelToRemove = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) -1 : level;
+				final int levelToRemove = (level == Constants.UNDEFINED) ? ((cs.sizeStack(to, type) == 0) ? 0 : cs.sizeStack(to, type) -1) : level;
 				
 				previousWhat = cs.what(to, levelToRemove, type);
 				previousWho = cs.who(to, levelToRemove, type);
