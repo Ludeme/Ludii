@@ -308,13 +308,13 @@ public class MCTS extends ExpertPolicy
 				new MCTS
 				(
 					new NoisyAG0Selection(), 
-					epsilon < 1.0 ? new SoftmaxFromMetadataPlayout(epsilon) : new RandomPlayout(200),
+					epsilon < 1.0 ? SoftmaxPolicy.constructPlayoutPolicy(features, epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
 		mcts.setQInit(QInit.WIN);
-		mcts.setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(epsilon));
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, epsilon));
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
 		return mcts;
