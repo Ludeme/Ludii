@@ -187,6 +187,8 @@ public class ExItTrainingScriptsGenSnellius
 				
 				if (exclusive)
 					writer.println("#SBATCH --exclusive");
+				else
+					writer.println("#SBATCH --exclusive");	// Just making always exclusive for now because otherwise taskset doesn't work
 				
 				// load Java modules
 				writer.println("module load 2021");
