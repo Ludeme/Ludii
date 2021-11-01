@@ -16,6 +16,9 @@ import gnu.trove.list.array.TIntArrayList;
  */
 public class Tree 
 {
+	
+	//---------------------------------------------------------------------
+	
 	Node root = new Node();
 
 	// function l() which gives the leftmost child
@@ -26,6 +29,8 @@ public class Tree
 	
 	/** List of the labels of the nodes used for node comparison */
 	ArrayList<String> labels = new ArrayList<String>();
+	
+	//---------------------------------------------------------------------
 
 	/**
 	 * Constructor for tree described in preorder notation, e.g. f(a b(c))
@@ -57,6 +62,8 @@ public class Tree
 	{
 		this.root = root;
 	}
+	
+	//---------------------------------------------------------------------
 
 	private static Node parseString(final Node node, final StreamTokenizer tokenizer) throws IOException 
 	{
@@ -170,6 +177,30 @@ public class Tree
 		}
 	}
 
+	public int size()
+	{
+		int treeSize = 1;
+		for (final Node n : root.children)
+		{
+			treeSize += 1;
+			treeSize += size(n);
+		}
+		return treeSize;
+	}
+	
+	private int size(final Node parent)
+	{
+		int treeSize = 1;
+		for (final Node child : parent.children)
+		{
+			treeSize += 1;
+			treeSize += size(child);
+		}
+		return treeSize;
+	}
+	
+	//---------------------------------------------------------------------
+	
 	public static int ZhangShasha(final Tree tree1, final Tree tree2) 
 	{
 		tree1.index();
@@ -261,6 +292,8 @@ public class Tree
 		return forestdist[i][j];
 	}
 	
+	//---------------------------------------------------------------------
+	
 	@Override
 	public String toString()
 	{
@@ -283,28 +316,6 @@ public class Tree
 		}
 	}
 	
-	public int size()
-	{
-		int treeSize = 1;
-		for (final Node n : root.children)
-		{
-			treeSize += 1;
-			treeSize += size(n);
-		}
-		return treeSize;
-	}
-	
-	private int size(final Node parent)
-	{
-		int treeSize = 1;
-		for (final Node child : parent.children)
-		{
-			treeSize += 1;
-			treeSize += size(child);
-		}
-		return treeSize;
-	}
-	
 	//---------------------------------------------------------------------
 	
 	public String bracketNotation()
@@ -323,4 +334,6 @@ public class Tree
 		}
 		sb.append("}");
 	}
+	
+	//---------------------------------------------------------------------
 }
