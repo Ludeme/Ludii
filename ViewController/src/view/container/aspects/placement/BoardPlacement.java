@@ -17,7 +17,7 @@ public class BoardPlacement extends ContainerPlacement
 	//-------------------------------------------------------------------------
 
 	/** Scale of the board relative to the original placement size (10% margins either side). */
-	protected static double defaultBoardScale = 0.8;
+	protected double defaultBoardScale = 0.8;
 	
 	//-------------------------------------------------------------------------
 	
