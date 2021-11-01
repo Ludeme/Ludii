@@ -5,6 +5,7 @@ import java.util.BitSet;
 
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
+import features.spatial.FeatureUtils;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import other.context.Context;
@@ -316,9 +317,15 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	}
 	
 	@Override
-	public Move lastDecisionMove()
+	public int lastFromPos()
 	{
-		return state.lastDecisionMove();
+		return FeatureUtils.fromPos(state.lastDecisionMove());
+	}
+	
+	@Override
+	public int lastToPos()
+	{
+		return FeatureUtils.toPos(state.lastDecisionMove());
 	}
 	
 	@Override

@@ -42,9 +42,14 @@ public abstract class ExperienceSample
 	public abstract State gameState();
 	
 	/**
-	 * @return Last decision move (which lead to game state stored in this sample)
+	 * @return From-position, for features, from last decision move.
 	 */
-	public abstract Move lastDecisionMove();
+	public abstract int lastFromPos();
+	
+	/**
+	 * @return To-position, for features, from last decision move.
+	 */
+	public abstract int lastToPos();
 	
 	/**
 	 * @return List of legal moves
