@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import game.Game;
-import gameDistance.DistanceUtils;
 import gameDistance.datasets.Dataset;
 import gameDistance.metrics.DistanceMetric;
+import gameDistance.utils.DistanceUtils;
 
 //-----------------------------------------------------------------------------
 
