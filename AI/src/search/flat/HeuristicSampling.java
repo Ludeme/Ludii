@@ -244,7 +244,7 @@ public class HeuristicSampling extends AI
 		if (depth >= 3)
 			scalar = 1.0 / (fraction * Math.pow(2.0, depth - 2));
 	
-		final int target = (int) Math.max(minMoves, (playerMoves.size() + 1) * scalar);
+		final int target = Math.max(minMoves, (int) ((playerMoves.size() + 1) * scalar));
 		
 		//System.out.println("selecting " + target + " out of " + playerMoves.size() + " moves at depth " + depth + " --- " + context.trial().over());
 		
