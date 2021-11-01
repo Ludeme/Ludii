@@ -3,6 +3,7 @@ package other.action.move;
 import java.util.BitSet;
 import java.util.List;
 
+import game.Game;
 import game.equipment.component.Component;
 import game.equipment.container.board.Track;
 import game.rules.play.moves.Moves;
@@ -709,6 +710,7 @@ public final class ActionMove extends BaseAction
 		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 		final int contIdTo = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
+		final Game game = context.game();
 		
 		final boolean requiresStack = context.game().isStacking();
 		
@@ -759,14 +761,15 @@ public final class ActionMove extends BaseAction
 					{
 						csTo.addToEmpty(locs.getQuick(i), SiteType.Cell);
 						csTo.setCount(context.state(), locs.getQuick(i), 0);
+						csTo.remove(context.state(), locs.getQuick(i), SiteType.Cell);
 					}
-					if (largePiece.isDomino() && context.containerId()[from] == 0)
+					if (largePiece.isDomino() && context.containerId()[to] == 0)
 					{
 						for (int i = 0; i < 4; i++)
-							csTo.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue());
+							csTo.setValueCell(context.state(), locs.getQuick(i), 0);
 
 						for (int i = 4; i < 8; i++)
-							csTo.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue2());
+							csTo.setValueCell(context.state(), locs.getQuick(i), 0);
 					}
 				}
 				
@@ -811,8 +814,44 @@ public final class ActionMove extends BaseAction
 			}
 			else
 			{
-				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, countTo - 1, Constants.UNDEFINED,
-						Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : Constants.OFF), typeTo);
+				if(game.hasDominoes()) // Special case for dominoes because the count is used for the value of each part of the domino too....
+				{
+					csTo.remove(context.state(), to, typeTo);
+					
+					// to keep the site of the item in cache for each player
+					if (what != 0)
+					{
+						piece = context.components()[what];
+						final int owner = piece.owner();
+						context.state().owned().remove(owner, what, to, typeTo);
+					}
+					
+					// In case of LargePiece we update the empty chunkSet
+					if (piece != null && piece.isLargePiece())
+					{
+						final Component largePiece = piece;
+						final TIntArrayList locs = largePiece.locs(context, to, currentStateTo, context.topology());
+						for (int i = 0; i < locs.size(); i++)
+						{
+							csTo.addToEmpty(locs.getQuick(i), SiteType.Cell);
+							csTo.setCount(context.state(), locs.getQuick(i), 0);
+							csTo.remove(context.state(), locs.getQuick(i), SiteType.Cell);
+						}
+						if (largePiece.isDomino() && context.containerId()[to] == 0)
+						{
+							for (int i = 0; i < 4; i++)
+								csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+
+							for (int i = 4; i < 8; i++)
+								csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+						}
+					}
+				}
+				else
+				{
+					csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, countTo - 1, Constants.UNDEFINED,
+							Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : Constants.OFF), typeTo);
+				}
 			}
 
 			// update the local state of the site From
@@ -883,29 +922,26 @@ public final class ActionMove extends BaseAction
 							(context.game().usesLineOfPlay() ? piece.index() : 1));
 				}
 
-				if (context.game().usesLineOfPlay() && context.containerId()[from] == 0)
+				if (context.game().usesLineOfPlay() && context.containerId()[to] == 0)
 				{
 					for (int i = 0; i < 4; i++)
-					{
-						csFrom.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue());
-					}
+						csTo.setValueCell(context.state(), locs.getQuick(i), 0);
 
 					for (int i = 4; i < 8; i++)
-					{
-						csFrom.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue2());
-					}
+						csTo.setValueCell(context.state(), locs.getQuick(i), 0);
 
 					// We update the line of play for dominoes
 					for (int i = 0; i < context.containers()[0].numSites(); i++)
-						csFrom.setPlayable(context.state(), i, false);
+						csTo.setPlayable(context.state(), i, false);
 
 					for (int i = 0; i < context.containers()[0].numSites(); i++)
 					{
-						if (csFrom.what(i, typeFrom) != 0)
+						if (csTo.what(i, typeTo) != 0)
 						{
-							final Component currentComponent = context.components()[csFrom.what(i, typeFrom)];
-							final int currentState = csFrom.state(i, typeFrom);
-							final TIntArrayList locsToUpdate = largePiece.locs(context, i, currentState, context.topology());
+							final Component currentComponent = context.components()[csTo.what(i, typeTo)];
+							final int currentState = csTo.state(i, typeTo);
+							final TIntArrayList locsToUpdate = largePiece.locs(context, i, currentState,
+									context.topology());
 
 							lineOfPlayDominoes(context, locsToUpdate.getQuick(0), locsToUpdate.getQuick(1),
 									getDirnDomino(0, currentState), false, true);
