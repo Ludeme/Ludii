@@ -34,14 +34,22 @@ public class SoftmaxFromMetadataSelection extends SoftmaxPolicy
 		final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
 		final List<LinearFunction> linFuncs = new ArrayList<LinearFunction>();
 		
-		final Features featuresMetadata = game.metadata().ai().features();
-		
-		for (final metadata.ai.features.FeatureSet featureSet : featuresMetadata.featureSets())
+		try
 		{
-			if (featureSet.role() == RoleType.Shared)
-				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
-			else
-				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+			final Features featuresMetadata = game.metadata().ai().features();
+			
+			for (final metadata.ai.features.FeatureSet featureSet : featuresMetadata.featureSets())
+			{
+				if (featureSet.role() == RoleType.Shared)
+					addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+				else
+					addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
+			}
+		}
+		catch (final Exception e)
+		{
+			System.err.println("Game = " + game.name());
+			e.printStackTrace();
 		}
 		
 		this.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);

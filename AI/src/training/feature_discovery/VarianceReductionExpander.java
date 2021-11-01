@@ -281,8 +281,8 @@ public class VarianceReductionExpander implements FeatureSetExpander
 						featureSet.getActiveSpatialFeatureInstances
 						(
 							sample.gameState(), 
-							FeatureUtils.fromPos(sample.lastDecisionMove()), 
-							FeatureUtils.toPos(sample.lastDecisionMove()), 
+							sample.lastFromPos(), 
+							sample.lastToPos(),  
 							FeatureUtils.fromPos(moves.get(a)), 
 							FeatureUtils.toPos(moves.get(a)),
 							moves.get(a).mover()
