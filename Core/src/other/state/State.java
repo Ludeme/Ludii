@@ -1133,7 +1133,9 @@ public class State implements Serializable
 	 */
 	public int amount(final int player)
 	{
-		return amount[player];
+		if(amount != null)
+			return amount[player];
+		return 0;
 	}
 
 	/**
