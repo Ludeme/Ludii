@@ -3175,6 +3175,12 @@ public class Game extends BaseLudeme implements API, Serializable
 			state.restorePending(pendingValues);
 			state.setCounter(previousCounter);
 			trial.clearLegalMoves();
+			
+			// Make sure our "real" context's RNG actually gets used and progresses
+			// For temporary copies of context, we need not do this
+			if (!(context instanceof TempContext) && !trial.over() && context.game().isStochasticGame())
+				context.game().moves(context);
+			
 			return move;
 		}
 		finally
