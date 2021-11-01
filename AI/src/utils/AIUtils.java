@@ -573,6 +573,9 @@ public class AIUtils
 			}
 		}
 		
+		if (selectionPairs == null || playoutPairs == null || tspgPairs == null)
+			return null;
+		
 		if (numRoles == 1)
 		{
 			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, selectionPairs[0], playoutPairs[0], tspgPairs[0]));
