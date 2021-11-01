@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
+import features.spatial.FeatureUtils;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
@@ -592,8 +593,11 @@ public class Reinforce
 		/** Game state */
 		protected final State state;
 		
-		/** Last move (which transitioned us into the stored game state) */
-		protected final Move lastDecisionMove;
+		/** From-position of last decision move */
+		protected final int lastFromPos;
+		
+		/** To-position of last decision move */
+		protected final int lastToPos;
 		
 		/** List of legal moves */
 		protected final FastArrayList<Move> legalMoves;
@@ -632,7 +636,8 @@ public class Reinforce
 		)
 		{
 			this.state = state;
-			this.lastDecisionMove = lastDecisionMove;
+			this.lastFromPos = FeatureUtils.fromPos(lastDecisionMove);
+			this.lastToPos = FeatureUtils.toPos(lastDecisionMove);
 			this.legalMoves = legalMoves;
 			this.featureVectors = featureVectors;
 			this.movePlayedIdx = movePlayedIdx;
@@ -698,9 +703,15 @@ public class Reinforce
 		}
 		
 		@Override
-		public Move lastDecisionMove()
+		public int lastFromPos()
 		{
-			return lastDecisionMove;
+			return lastFromPos;
+		}
+		
+		@Override
+		public int lastToPos()
+		{
+			return lastToPos;
 		}
 		
 		@Override
