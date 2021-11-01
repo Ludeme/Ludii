@@ -185,12 +185,46 @@ public class TestTrialsUndo
 						++moveIdx;
 					
 					// Apply all the trial.
-					while (!trial.over())
+					
+					if(game.isStochasticGame())
 					{
-						final Move loadedMove = loadedMoves.get(moveIdx);
-						game.apply(context, loadedMove);
-						if(!trial.over())
-							++moveIdx;
+						while (!trial.over())
+						{
+							final Move loadedMove = loadedMoves.get(moveIdx);
+							final List<Action> loadedMoveAllActions = loadedMove.getActionsWithConsequences(context);
+							final Moves legalMoves = context.game().moves(context);
+							boolean legalMoveFound = false;
+							for(Move move : legalMoves.moves())
+							{
+								if (move.from() == loadedMove.from() && move.to() == loadedMove.to())
+								{
+									if (move.getActionsWithConsequences(context).equals(loadedMoveAllActions))
+									{
+										game.apply(context, move);
+										if(!trial.over())
+											++moveIdx;
+										legalMoveFound= true;
+										break;
+									}
+								}
+							}
+							
+							if(!legalMoveFound)
+							{
+								System.err.println("BUG ?");
+								fail();
+							}
+						}
+					}
+					else 
+					{
+						while (!trial.over())
+						{
+							final Move loadedMove = loadedMoves.get(moveIdx);
+							game.apply(context, loadedMove);
+							if(!trial.over())
+								++moveIdx;
+						}
 					}
 					
 					// -------------------------------------------TEST Undo all the trial. ---------------------------------------------------------------------------------------
