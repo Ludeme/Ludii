@@ -73,7 +73,7 @@ public class GameLoading
 			{
 				app.settingsPlayer().setLoadedFromMemory(false);
 				desc = FileHandling.loadTextContentsFromFile(filePath);
-				GameSetup.compileAndShowGame(app, desc, filePath, false);
+				GameSetup.compileAndShowGame(app, desc, false);
 			}
 			catch (final FileNotFoundException ex)
 			{
@@ -147,7 +147,7 @@ public class GameLoading
 			}
 			
 			app.settingsPlayer().setLoadedFromMemory(true);
-			GameSetup.compileAndShowGame(app, sb.toString(), path, debug);
+			GameSetup.compileAndShowGame(app, sb.toString(), debug);
 		}
 	}
 	
@@ -168,7 +168,7 @@ public class GameLoading
 			app.settingsPlayer().setLoadedFromMemory(true);
 			app.manager().settingsManager().userSelections().setRuleset(Constants.UNDEFINED);
 			app.manager().settingsManager().userSelections().setSelectOptionStrings(options);
-			GameSetup.compileAndShowGame(app, gameDescriptionString, name, false);
+			GameSetup.compileAndShowGame(app, gameDescriptionString, false);
 		}
 		catch (final Exception e)
 		{

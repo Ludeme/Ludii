@@ -52,6 +52,7 @@ import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
 import app.views.tools.ToolView;
+import approaches.random.Generator;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -886,7 +887,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().startsWith("Recompile Current Game"))
 		{
-			GameSetup.compileAndShowGame(app, context.game().description().raw(), context.game().description().filePath(), false);
+			GameSetup.compileAndShowGame(app, context.game().description().raw(), false);
 		}
 		else if (source.getText().startsWith("Show Call Tree"))
 		{
@@ -1240,44 +1241,34 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			DeveloperDialog.showDialog(app);
 		}
-//		else if (source.getText().equals("Generate Random Game"))
-//		{
-//			boolean validGameFound = false;
-//			while (!validGameFound)
-//			{
-//				final String gameDescription = Generator.testGames(1, true, true, false, true);
-//				if (gameDescription != null)
-//				{
-//					GameRestart.compileAndShowGame(app, gameDescription, false, false);
-//					validGameFound = true;
-//				}
-//			}
-//		}
-//		else if (source.getText().equals("Generate 1000 Random Games"))
-//		{
-////			Generator.testGames(1000, true, true, false, true);
-//
-////			final int numGames      = 1000;
-////			final boolean random    = true;
-////			final boolean valid     = true;
-////			final boolean boardless = false;
-////			final boolean save      = true;
-//
-//			Generator.testGames
-//			(
-//				1000,   // num games 
-//				true,   // random
-//				true,   // valid
-//				false,  // boardless
-//				true    // save
-//			);
-//	
-////			Generator.testGames(numGames, random, valid, boardless, save);
-//		}
-//		else if (source.getText().equals("Generate 1 Game with Restrictions (dev)"))
-//		{
-//			Generator.testGamesEric(1, true, false);
-//		}
+		else if (source.getText().equals("Generate Random Game"))
+		{
+			boolean validGameFound = false;
+			while (!validGameFound)
+			{
+				final String gameDescription = Generator.testGames(1, true, true, false, true);
+				if (gameDescription != null)
+				{
+					GameSetup.compileAndShowGame(app, gameDescription, false);
+					validGameFound = true;
+				}
+			}
+		}
+		else if (source.getText().equals("Generate 1000 Random Games"))
+		{
+			Generator.testGames
+			(
+				1000,   // num games 
+				true,   // random
+				true,   // valid
+				false,  // boardless
+				true    // save
+			);
+		}
+		else if (source.getText().equals("Generate 1 Game with Restrictions (dev)"))
+		{
+			Generator.testGamesEric(1, true, false);
+		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
 			// Check if a recent game has been selected
@@ -1593,7 +1584,7 @@ public class MainMenuFunctions extends JMenuBar
 								
 								try
 								{
-									GameSetup.compileAndShowGame(app, game.description().raw(), game.description().filePath(), false);
+									GameSetup.compileAndShowGame(app, game.description().raw(), false);
 								}
 								catch (final Exception exception)
 								{
