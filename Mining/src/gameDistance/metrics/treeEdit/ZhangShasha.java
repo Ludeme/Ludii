@@ -18,13 +18,15 @@ public class ZhangShasha implements DistanceMetric
 	//---------------------------------------------------------------------
 	
 	@Override
-	public double distance(Dataset dataset, Map<String, Double> vocabulary, Game gameA, Game gameB)
+	public double distance(final Dataset dataset, final Map<String, Double> vocabulary, final Game gameA, final Game gameB)
 	{
 		final Tree treeA = dataset.getTree(gameA);
 		final Tree treeB = dataset.getTree(gameB);
 		
 		final int edits = Tree.ZhangShasha(treeA, treeB);
+		
 		final int maxTreeSize = Math.max(treeA.size(), treeB.size()); 
+		
 		return (double) edits / maxTreeSize;
 	}
 	

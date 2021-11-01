@@ -37,21 +37,13 @@ public class Apted implements DistanceMetric
 	    final Node<StringNodeData> t1 = parser.fromString(treeABracketNotation);
 	    final Node<StringNodeData> t2 = parser.fromString(treeBBracketNotation);
 	    
-	    // Initialise APTED.
 	    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(new StringUnitCostModel());
-	    
-	    // Although we don't need TED value yet, TED must be computed before the
-	    // mapping. This cast is safe due to unit cost.
 	    apted.computeEditDistance(t1, t2);
-	    
-	    // Get TED value corresponding to the computed mapping.
 	    final List<int[]> mapping = apted.computeEditMapping();
-	    
-	    // This cast is safe due to unit cost.
-	    final int result = (int)apted.mappingCost(mapping);
-	    
+
 		final int maxTreeSize = Math.max(treeA.size(), treeB.size()); 
-		return (double) result / maxTreeSize;
+		
+		return (double) apted.mappingCost(mapping) / maxTreeSize;
 	}
 	
 	//---------------------------------------------------------------------
