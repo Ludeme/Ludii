@@ -23,6 +23,7 @@ import gameDistance.metrics.sequence.Levenshtein;
 import gameDistance.metrics.sequence.LocalAlignment;
 import gameDistance.metrics.sequence.RepeatedLocalAlignment;
 import gameDistance.metrics.treeEdit.ZhangShasha;
+import gameDistance.utils.DistanceUtils;
 import other.GameLoader;
 
 /**
