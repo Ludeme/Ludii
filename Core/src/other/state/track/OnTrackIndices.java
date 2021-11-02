@@ -22,8 +22,6 @@ public class OnTrackIndices
 
 	/**
 	 * The map between the index of the tracks and the corresponding sites.
-	 * 
-	 * TODO this is a game-wide constant, should move it into Game
 	 */
 	protected final TIntObjectMap<FastTIntArrayList>[] locToIndex;
 
@@ -249,6 +247,32 @@ public class OnTrackIndices
 		return indicesToReturn;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof OnTrackIndices))
+			return false;
+
+		final OnTrackIndices other = (OnTrackIndices) obj;
+		
+		if(locToIndex.length != other.locToIndex.length)
+			return false;
+		
+		if(onTrackIndices.length != other.onTrackIndices.length)
+			return false;
+		
+		for(int i = 0; i < locToIndex.length; i++)
+			if(!locToIndex[i].equals(other.locToIndex[i]))
+				return false;
+		
+		for(int i = 0; i < onTrackIndices.length; i++)
+			if(!onTrackIndices[i].equals(other.onTrackIndices[i]))
+				return false;
+		
+		return true;
+		
+	}
+	
 	//------------------------------------------------------------------------
 
 	@Override
@@ -275,6 +299,12 @@ public class OnTrackIndices
 		}
 
 		return str;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return super.hashCode();
 	}
 
 }

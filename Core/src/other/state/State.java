@@ -288,7 +288,7 @@ public class State implements Serializable
 				numConsecutivePassesHashes[0][numConsecutivePasses] :
 				numConsecutivePassesHashes[1][numConsecutivePasses % numConsecutivePassesHashCap];
 	}
-
+	
 	/** @return full hash value containing all fields */ 
 	public long fullHash() 
 	{
@@ -1198,6 +1198,14 @@ public class State implements Serializable
 		
 		return valueMap.get(key);
 	}
+	
+	/**  
+	 * @return To get the value map.
+	 */
+	public TObjectIntMap<String> getValueMap()
+	{
+		return valueMap;
+	}
 
 	/**
 	 * To add a note to the list of note.
@@ -1236,6 +1244,14 @@ public class State implements Serializable
 			return null;
 
 		return notes.get(move).get(player);
+	}
+	
+	/** 
+	 * @return the notes.
+	 */
+	public TIntObjectMap<TIntObjectMap<String>> getNotes()
+	{
+		return notes;
 	}
 	
 	/**
@@ -1697,6 +1713,15 @@ public class State implements Serializable
 	{
 		if(visited.internalState().size() > site && site >= 0)
 			visited.set(this, site, true);
+	}
+	
+	
+	/**
+	 * @return visited sites.
+	 */
+	public HashedBitSet visited()
+	{
+		return visited;
 	}
 
 	/**
