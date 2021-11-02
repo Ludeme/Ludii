@@ -1234,15 +1234,18 @@ public class ExpertIteration
 					{
 						expandedFeatureSet.init(game, new int[]{p}, null);
 						
-						// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
-						winningMovesFeatures.set(featureActiveRatios.size(), expandedFeatureSet.getNumSpatialFeatures());
-						losingMovesFeatures.set(featureActiveRatios.size(), expandedFeatureSet.getNumSpatialFeatures());
-						antiDefeatingMovesFeatures.set(featureActiveRatios.size(), expandedFeatureSet.getNumSpatialFeatures());
-						while (featureActiveRatios.size() < expandedFeatureSet.getNumSpatialFeatures())
+						if (featureActiveRatios.size() < expandedFeatureSet.getNumSpatialFeatures())
 						{
-							featureActiveRatios.add(0.0);
-							featureLifetimes.add(0L);
-							featureOccurrences.add(0L);
+							// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
+							winningMovesFeatures.set(featureActiveRatios.size(), expandedFeatureSet.getNumSpatialFeatures());
+							losingMovesFeatures.set(featureActiveRatios.size(), expandedFeatureSet.getNumSpatialFeatures());
+							antiDefeatingMovesFeatures.set(featureActiveRatios.size(), expandedFeatureSet.getNumSpatialFeatures());
+							while (featureActiveRatios.size() < expandedFeatureSet.getNumSpatialFeatures())
+							{
+								featureActiveRatios.add(0.0);
+								featureLifetimes.add(0L);
+								featureOccurrences.add(0L);
+							}
 						}
 					}
 
