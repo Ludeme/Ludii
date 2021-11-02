@@ -646,11 +646,15 @@ public class TestTrialsUndo
 								}
 							}
 							
-//							if(!state.owned().equals(stateToCompare.owned())) // CODE TO DO FOR OWNED !
-//							{
-//								System.out.println("!= onTrackIndices");
-//								fail();
-//							}
+							// Check the owned structure.
+							for(int pid = 0; pid <= game.players().size(); pid++)
+								if(!state.owned().sites(pid).equals(stateToCompare.owned().sites(pid)))
+								{
+									System.out.println("IN MOVE " + trial.numberRealMoves() + "!= owned for pid = " + pid);
+									System.out.println("correct one is " + stateToCompare.owned().sites(pid));
+									System.out.println("undo one is " + state.owned().sites(pid));
+									fail();
+								}
 						}
 						
 						
