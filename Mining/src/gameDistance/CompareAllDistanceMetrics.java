@@ -174,12 +174,16 @@ public class CompareAllDistanceMetrics
 			{
 				"/lud/board/race/escape/Royal Game of Ur.lud",
 				"/lud/board/race/escape/Royal Game of Ur.lud",
-				"/lud/board/war/replacement/checkmate/chess/Chess.lud"
+				"/lud/board/war/replacement/checkmate/chess/Chess.lud",
+				"/lud/board/war/replacement/checkmate/shogi/Shogi.lud",
+				"/lud/board/war/replacement/checkmate/xiangqi/Xiangqi.lud"
 			};
 		final String[] rulesetsToCompare = 
 			{
 				"Ruleset/Finkel (Scholarly)",
 				"Ruleset/Murray (Suggested)",
+				"",
+				"",
 				""
 			};
 		
