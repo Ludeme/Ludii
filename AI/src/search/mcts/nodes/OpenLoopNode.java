@@ -221,12 +221,14 @@ public final class OpenLoopNode extends BaseNode
 	@Override
 	public void updateContextRef()
 	{
-		// we take the same reference as our parent node
 		if (parent != null)
+		{
+			// We take the same reference as our parent node
 			currentItContext.set(parent.contextRef());
-		
-		// and update some computations based on legal moves
-		updateLegalMoveDependencies(false);
+			
+			// and update some computations based on legal moves
+			updateLegalMoveDependencies(false);
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -238,7 +240,6 @@ public final class OpenLoopNode extends BaseNode
 	 */
 	private void updateLegalMoveDependencies(final boolean root)
 	{
-		// TODO a bunch of the ThreadLocal .get() calls should only be done once and cached in local variables
 		final Context context = root ? deterministicContext : currentItContext.get();
 		final FastArrayList<Move> legalMoves;
 		
