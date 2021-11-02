@@ -17,6 +17,7 @@ import game.Game;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
+import gnu.trove.list.array.TIntArrayList;
 import main.FileHandling;
 import main.grammar.Description;
 import manager.utils.game_logs.MatchRecord;
@@ -648,13 +649,28 @@ public class TestTrialsUndo
 							
 							// Check the owned structure.
 							for(int pid = 0; pid <= game.players().size(); pid++)
-								if(!state.owned().sites(pid).equals(stateToCompare.owned().sites(pid)))
+							{
+								final TIntArrayList ownedUndo = state.owned().sites(pid);
+								final TIntArrayList ownedToCompare = stateToCompare.owned().sites(pid);
+								if(ownedToCompare.size() != ownedUndo.size())
 								{
-									System.out.println("IN MOVE " + trial.numberRealMoves() + "!= owned for pid = " + pid);
+									System.out.println("IN MOVE " + trial.numberRealMoves() + " != owned for pid = " + pid);
 									System.out.println("correct one is " + stateToCompare.owned().sites(pid));
 									System.out.println("undo one is " + state.owned().sites(pid));
 									fail();
 								}
+								else
+								{
+									for(int i = 0 ; i < ownedUndo.size() ; i++)
+									{
+										final int site = ownedUndo.get(i);
+										if(!ownedToCompare.contains(site))
+										{
+											System.out.println("IN MOVE " + trial.numberRealMoves() + " site " + site + " should not be owned by " + pid);
+										}
+									}
+								}
+							}
 						}
 						
 						

@@ -70,9 +70,6 @@ public final class ActionCopy extends BaseAction
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
-	/** The level in which this is copied in case of stacking game. */
-	private int levelCopyIn;
-	
 	/** The previous state value of the piece before to be removed. */
 	private int previousState;
 
@@ -183,7 +180,7 @@ public final class ActionCopy extends BaseAction
 		{
 			if (game.isStacking())
 			{
-				levelCopyIn = (levelTo == Constants.UNDEFINED) ? csB.sizeStack(to, typeTo) : levelTo;
+				final int levelCopyIn = (levelTo == Constants.UNDEFINED) ? csB.sizeStack(to, typeTo) : levelTo;
 				previousState = csB.state(to, levelCopyIn, typeTo);
 				previousRotation = csB.rotation(to, levelCopyIn, typeTo);
 				previousValue = csB.value(to, levelCopyIn, typeTo);
@@ -248,6 +245,7 @@ public final class ActionCopy extends BaseAction
 		int pieceIdx = 0;
 		if (context.game().isStacking())
 		{
+			final int levelCopyIn = (levelTo == Constants.UNDEFINED) ? cs.sizeStack(to, typeTo) - 1 : levelTo;
 			pieceIdx = cs.remove(context.state(), site, levelCopyIn, typeTo);
 			if (pieceIdx > 0)
 			{
