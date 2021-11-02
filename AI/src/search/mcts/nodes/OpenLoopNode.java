@@ -236,7 +236,6 @@ public final class OpenLoopNode extends BaseNode
 	{
 		currentItContext.remove();
 		currentLegalMoves.remove();
-		currentLegalMoves.remove();
 		learnedSelectionPolicy.remove();
 		moveIdxToNode.remove();
 		logit.remove();

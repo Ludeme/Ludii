@@ -148,7 +148,10 @@ public class MCTS extends ExpertPolicy
 	private ExecutorService threadPool = null;
 	
 	/** Number of threads this MCTS should use for parallel iterations */
-	private int numThreads = 1;
+	private int numThreads = 3;
+	
+	/** Lets us track whether all threads in our thread pool have completely finished */
+	private AtomicInteger numThreadsBusy = new AtomicInteger(0);
 	
 	//-------------------------------------------------------------------------
 	
@@ -450,6 +453,14 @@ public class MCTS extends ExpertPolicy
 		final long startTime = System.currentTimeMillis();
 		long stopTime = (maxSeconds > 0.0) ? startTime + (long) (maxSeconds * 1000) : Long.MAX_VALUE;
 		final int maxIts = (maxIterations >= 0) ? maxIterations : Integer.MAX_VALUE;
+		
+		while (numThreadsBusy.get() > 0 && System.currentTimeMillis() < Math.min(stopTime, startTime + 1000L))
+		{
+			// Give threads in thread pool some more time to clean up after themselves from previous iteration
+		}
+		
+		// We'll assume all threads are really done now and just reset to 0
+		numThreadsBusy.set(0);
 				
 		final AtomicInteger numIterations = new AtomicInteger();
 		
@@ -563,6 +574,8 @@ public class MCTS extends ExpertPolicy
 				{
 					try
 					{
+						numThreadsBusy.incrementAndGet();
+						
 						// Search until we have to stop
 						while (numIterations.get() < maxIts && System.currentTimeMillis() < finalStopTime && !wantsInterrupt)
 						{
@@ -658,6 +671,7 @@ public class MCTS extends ExpertPolicy
 					}
 					finally
 					{
+						numThreadsBusy.decrementAndGet();
 						latch.countDown();
 					}
 				}
