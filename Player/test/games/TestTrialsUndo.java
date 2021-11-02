@@ -15,6 +15,7 @@ import org.junit.Test;
 import compiler.Compiler;
 import game.Game;
 import game.rules.play.moves.Moves;
+import game.types.board.SiteType;
 import game.types.play.ModeType;
 import main.FileHandling;
 import main.grammar.Description;
@@ -22,7 +23,9 @@ import manager.utils.game_logs.MatchRecord;
 import other.action.Action;
 import other.context.Context;
 import other.move.Move;
+import other.state.container.ContainerState;
 import other.trial.Trial;
+import other.state.State;
 
 /**
  * A Unit Test to load Trials from the TravisTrials repository, and check if they
@@ -41,6 +44,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
+		final boolean stateComparaison = true;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -111,7 +115,8 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains(""))
+			//if (fileEntry.getPath().contains("Tic-Tac-Toe")) // Ex Nihilo
+			if (fileEntry.getName().equals("Tic-Tac-Toe.lud")) // Ex Nihilo
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -185,7 +190,6 @@ public class TestTrialsUndo
 						++moveIdx;
 					
 					// Apply all the trial.
-					
 					if(game.isStochasticGame())
 					{
 						while (!trial.over())
@@ -232,6 +236,262 @@ public class TestTrialsUndo
 					while (moveIdx > trial.numInitialPlacementMoves() && moveIdx > 0)
 					{
 						game.undo(context);
+						
+						// Apply the trial from the initial state to the specific state we want to compare.
+						if(stateComparaison)
+						{
+							final Context contextToCompare = new Context(game, new Trial(game));
+							contextToCompare.rng().restoreState(loadedRecord.rngState());
+							final Trial trialToCompare = contextToCompare.trial();
+							final State stateToCompare = contextToCompare.state();
+							final State state = context.state();
+							game.start(contextToCompare);
+							
+							int indexTrialToCompare = 0;
+							while (indexTrialToCompare < trialToCompare.numInitialPlacementMoves())
+								++indexTrialToCompare;
+							if(game.isStochasticGame())
+							{
+								while(indexTrialToCompare < moveIdx)
+								{
+									final Move loadedMove = loadedMoves.get(indexTrialToCompare);
+									final List<Action> loadedMoveAllActions = loadedMove.getActionsWithConsequences(contextToCompare);
+									final Moves legalMoves = context.game().moves(contextToCompare);
+									boolean legalMoveFound = false;
+									for(Move move : legalMoves.moves())
+									{
+										if (move.from() == loadedMove.from() && move.to() == loadedMove.to())
+										{
+											if (move.getActionsWithConsequences(contextToCompare).equals(loadedMoveAllActions))
+											{
+												game.apply(contextToCompare, move);
+												legalMoveFound= true;
+												if(!trialToCompare.over())
+													++indexTrialToCompare;
+												break;
+											}
+										}
+									}
+									
+									if(!legalMoveFound)
+									{
+										System.err.println("STATE COMPARAISON BUG no legal moves found");
+										fail();
+									}
+								}
+							}
+							else 
+							{
+								while (indexTrialToCompare < moveIdx)
+								{
+									final Move loadedMove = loadedMoves.get(indexTrialToCompare);
+									game.apply(contextToCompare, loadedMove);
+									if(!trialToCompare.over())
+										++indexTrialToCompare;
+								}
+							}
+
+							// Check the container states.
+							for(int cid = 0; cid < context.state().containerStates().length; cid++)
+							{
+								final ContainerState cs = context.containerState(cid);
+								final ContainerState csToCompare = contextToCompare.containerState(cid);
+								for(SiteType type : SiteType.values())
+								{
+									if(cid == 0 || (cid != 0 && type.equals(SiteType.Cell)))
+									{
+										for(int index = 0; index < game.board().topology().getGraphElements(type).size(); index++)
+										{
+											if(cs.sizeStack(index, type) != csToCompare.sizeStack(index, type))
+											{
+												System.out.println("!= stack size for " + type + " " + index);
+												fail();
+											}
+											
+											for(int level = 0; level < cs.sizeStack(index, type); level++)
+											{
+												if(cs.what(index, level, type) != csToCompare.what(index, level, type))
+												{
+													System.out.println(type + " != What at  " + index + " level " + level);
+													fail();
+												}
+												
+												if(cs.who(index, level, type) != csToCompare.who(index, level, type))
+												{
+													System.out.println(type + " != Who at  " + index + " level " + level);
+													fail();
+												}
+												
+												if(cs.state(index, level, type) != csToCompare.state(index, level, type))
+												{
+													System.out.println(type + " != State at  " + index + " level " + level);
+													fail();
+												}
+												
+												if(cs.rotation(index, level, type) != csToCompare.rotation(index, level, type))
+												{
+													System.out.println(type + " != Rotation at  " + index + " level " + level);
+													fail();
+												}
+												
+												if(cs.value(index, level, type) != csToCompare.value(index, level, type))
+												{
+													System.out.println(type + " != Value at  " + index + " level " + level);
+													fail();
+												}
+												
+												for(int pid = 1; pid < game.players().size() ; pid++)
+												{
+													if(cs.isHidden(pid, index, level, type) != csToCompare.isHidden(pid, index, level, type))
+													{
+														System.out.println(type + " != isHidden at  " + index + " level " + level + " player " + pid);
+														fail();
+													}
+													
+													if(cs.isHiddenWhat(pid, index, level, type) != csToCompare.isHiddenWhat(pid, index, level, type))
+													{
+														System.out.println(type + " != isHiddenWhat at  " + index + " level " + level + " player " + pid);
+														fail();
+													}
+													
+													if(cs.isHiddenWho(pid, index, level, type) != csToCompare.isHiddenWho(pid, index, level, type))
+													{
+														System.out.println(type + " != isHiddenWho at  " + index + " level " + level + " player " + pid);
+														fail();
+													}
+													
+													if(cs.isHiddenValue(pid, index, level, type) != csToCompare.isHiddenValue(pid, index, level, type))
+													{
+														System.out.println(type + " != isHiddenValue at  " + index + " level " + level + " player " + pid);
+														fail();
+													}
+													
+													if(cs.isHiddenState(pid, index, level, type) != csToCompare.isHiddenState(pid, index, level, type))
+													{
+														System.out.println(type + " != isHiddenState at  " + index + " level " + level + " player " + pid);
+														fail();
+													}
+													
+													if(cs.isHiddenRotation(pid, index, level, type) != csToCompare.isHiddenRotation(pid, index, level, type))
+													{
+														System.out.println(type + " != isHiddenRotation at  " + index + " level " + level + " player " + pid);
+														fail();
+													}
+													
+													if(cs.isHiddenCount(pid, index, level, type) != csToCompare.isHiddenCount(pid, index, level, type))
+													{
+														System.out.println(type + " != isHiddenCount at  " + index + " level " + level + " player " + pid);
+														fail();
+													}
+												}
+											}
+											
+											if(!game.isStochasticGame())
+											{
+												if(cs.count(index, type) != csToCompare.count(index, type))
+												{
+													System.out.println(type + " != Count at  " + index);
+													fail();
+												}
+											}
+											
+											if(cs.isEmpty(index, type) != csToCompare.isEmpty(index, type))
+											{
+												System.out.println(type + " != Empty at  " + index);
+												fail();
+											}
+											
+											if(type == game.board().defaultSite())
+												if(cs.isPlayable(index) != csToCompare.isPlayable(index))
+												{
+													System.out.println(type + " != Playable at  " + index);
+													fail();
+												}
+										}
+									}
+								}
+							}
+							
+							// Check the trial data.
+							if(trial.numTurns() != trialToCompare.numTurns())
+							{
+								System.out.println("!= num of turns");
+								fail();
+							}
+							if(trial.numForcedPasses() != trialToCompare.numForcedPasses())
+							{
+								System.out.println("!= num forced passes");
+								fail();
+							}
+							if(trial.numLogicalDecisions(game) != trialToCompare.numLogicalDecisions(game))
+							{
+								System.out.println("!= num logical decision");
+								fail();
+							}
+							if(!trial.previousState().equals(trialToCompare.previousState()))
+							{
+								System.out.println("!= previous states");
+								fail();
+							}
+							if(!trial.previousStateWithinATurn().equals(trialToCompare.previousStateWithinATurn()))
+							{
+								System.out.println("!= previous states within turn");
+								fail();
+							}
+							
+							// Check the state data.
+							if(state.mover() != stateToCompare.mover())
+							{
+								System.out.println("!= mover");
+								fail();
+							}
+							if(state.prev() != stateToCompare.prev())
+							{
+								System.out.println("!= prev");
+								fail();
+							}
+							if(state.next() != stateToCompare.next())
+							{
+								System.out.println("!= next");
+								fail();
+							}
+							if(state.counter() != stateToCompare.counter())
+							{
+								System.out.println("!= counter");
+								fail();
+							}
+							if(state.temp() != stateToCompare.temp())
+							{
+								System.out.println("!= tempValue");
+								fail();
+							}
+							if(state.temp() != stateToCompare.temp())
+							{
+								System.out.println("!= tempValue");
+								fail();
+							}
+							if(state.pendingValues() != null)
+								if(state.pendingValues().equals(stateToCompare.pendingValues()))
+								{
+									System.out.println("!= pendingValues");
+									fail();
+								}
+							for(int pid = 0; pid < game.players().size(); pid++)
+								if(state.amount(pid) !=  stateToCompare.amount(pid))
+								{
+									System.out.println("!= amount for player " + pid);
+									fail();
+								}
+							if(state.pot() != stateToCompare.pot())
+							{
+								System.out.println("!= money pot");
+								fail();
+							}
+							
+							// TO FINISH
+							
+						}
+						
 						
 						// When undo, never has to be over.
 						if (trial.over())

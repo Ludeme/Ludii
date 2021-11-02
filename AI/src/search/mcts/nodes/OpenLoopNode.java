@@ -31,22 +31,22 @@ public final class OpenLoopNode extends BaseNode
 	protected Context deterministicContext = null;
 	
 	/** Current list of legal moves */
-	protected FastArrayList<Move> currentLegalMoves = null;
+	protected ThreadLocal<FastArrayList<Move>> currentLegalMoves = ThreadLocal.withInitial(() -> {return null;});
 	
 	/** 
 	 * Distribution over legal moves in current iteration in this node,
 	 * as computed by learned Selection policy
 	 */
-	protected FVector learnedSelectionPolicy = null;
+	protected ThreadLocal<FVector> learnedSelectionPolicy = ThreadLocal.withInitial(() -> {return null;});
 	
 	/** 
 	 * Array in which we store, for every potential index of a currently-legal move, 
 	 * the corresponding child node (or null if not yet expanded).
 	 */
-	protected OpenLoopNode[] moveIdxToNode = null;
+	protected ThreadLocal<OpenLoopNode[]> moveIdxToNode = ThreadLocal.withInitial(() -> {return null;});
 	
 	/** Cached logit computed according to learned selection policy */
-	protected float logit = Float.NaN;
+	protected ThreadLocal<Float> logit = ThreadLocal.withInitial(() -> {return Float.valueOf(Float.NaN);});
 	
 	//-------------------------------------------------------------------------
 	
@@ -87,7 +87,7 @@ public final class OpenLoopNode extends BaseNode
 	@Override
     public OpenLoopNode childForNthLegalMove(final int n)
     {
-		return moveIdxToNode[n];
+		return moveIdxToNode.get()[n];
     }
 	
 	@Override
@@ -122,13 +122,13 @@ public final class OpenLoopNode extends BaseNode
     @Override
     public FVector learnedSelectionPolicy()
     {
-    	return learnedSelectionPolicy;
+    	return learnedSelectionPolicy.get();
     }
     
     @Override
     public FastArrayList<Move> movesFromNode()
     {
-    	return currentLegalMoves;
+    	return currentLegalMoves.get();
     }
     
     @Override
@@ -140,13 +140,13 @@ public final class OpenLoopNode extends BaseNode
     @Override
     public Move nthLegalMove(final int n)
     {
-    	return currentLegalMoves.get(n);
+    	return currentLegalMoves.get().get(n);
     }
 	
 	@Override
 	public int numLegalMoves()
 	{
-		return currentLegalMoves.size();
+		return currentLegalMoves.get().size();
 	}
 	
 	@Override
@@ -196,7 +196,7 @@ public final class OpenLoopNode extends BaseNode
     {
     	// No need to copy current context, just modify it
 		final Context context = currentItContext.get();
-		context.game().apply(context, currentLegalMoves.get(moveIdx));
+		context.game().apply(context, currentLegalMoves.get().get(moveIdx));
     	return context;
     }
 	
@@ -220,8 +220,9 @@ public final class OpenLoopNode extends BaseNode
 	 */
 	private void updateLegalMoveDependencies(final boolean root)
 	{
+		// TODO a bunch of the ThreadLocal .get() calls should only be done once and cached in local variables
 		final Context context = root ? deterministicContext : currentItContext.get();
-		currentLegalMoves = new FastArrayList<Move>(context.game().moves(context).moves());
+		currentLegalMoves.set(new FastArrayList<Move>(context.game().moves(context).moves()));
 		
 		if (root)
 		{
@@ -229,7 +230,7 @@ public final class OpenLoopNode extends BaseNode
 			// children with moves that are not legal
 			for (int i = 0; i < children.size(); /**/)
 			{
-				if (currentLegalMoves.contains(children.get(i).parentMoveWithoutConseq))
+				if (currentLegalMoves.get().contains(children.get(i).parentMoveWithoutConseq))
 					++i;
 				else
 					children.remove(i);
@@ -237,17 +238,17 @@ public final class OpenLoopNode extends BaseNode
 		}
 		
 		// update mapping from legal move index to child node
-		moveIdxToNode = new OpenLoopNode[currentLegalMoves.size()];
+		moveIdxToNode.set(new OpenLoopNode[currentLegalMoves.get().size()]);
 		
-		for (int i = 0; i < moveIdxToNode.length; ++i)
+		for (int i = 0; i < moveIdxToNode.get().length; ++i)
 		{
-			final Move move = currentLegalMoves.get(i);
+			final Move move = currentLegalMoves.get().get(i);
 			
 			for (int j = 0; j < children.size(); ++j)
 			{
 				if (move.equals(children.get(j).parentMoveWithoutConseq))
 				{
-					moveIdxToNode[i] = children.get(j);
+					moveIdxToNode.get()[i] = children.get(j);
 					break;
 				}
 			}
@@ -256,28 +257,27 @@ public final class OpenLoopNode extends BaseNode
 		// update learned policy distribution
 		if (mcts.learnedSelectionPolicy() != null)
 		{
-			final float[] logits = new float[moveIdxToNode.length];
+			final float[] logits = new float[moveIdxToNode.get().length];
 			
 			for (int i = 0; i < logits.length; ++i)
 			{
-				if (moveIdxToNode[i] != null && !Float.isNaN(moveIdxToNode[i].logit))
+				if (moveIdxToNode.get()[i] != null && !Float.isNaN(moveIdxToNode.get()[i].logit.get().floatValue()))
 				{
-					logits[i] = moveIdxToNode[i].logit;
+					logits[i] = moveIdxToNode.get()[i].logit.get().floatValue();
 				}
 				else
 				{
-					logits[i] = mcts.learnedSelectionPolicy().computeLogit(
-							context, currentLegalMoves.get(i));
+					logits[i] = mcts.learnedSelectionPolicy().computeLogit(context, currentLegalMoves.get().get(i));
 					
-					if (moveIdxToNode[i] != null)
+					if (moveIdxToNode.get()[i] != null)
 					{
-						moveIdxToNode[i].logit = logits[i];
+						moveIdxToNode.get()[i].logit.set(Float.valueOf(logits[i]));
 					}
 				}
 			}
 			
-			learnedSelectionPolicy = FVector.wrap(logits);
-			learnedSelectionPolicy.softmax();
+			learnedSelectionPolicy.set(FVector.wrap(logits));
+			learnedSelectionPolicy.get().softmax();
 		}
 	}
 	
