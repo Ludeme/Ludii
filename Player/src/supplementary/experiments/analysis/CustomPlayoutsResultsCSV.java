@@ -191,12 +191,64 @@ public class CustomPlayoutsResultsCSV
 					
 					final double ratio = customResult / noCustomResult;
 					
+					// Third result of row is moves per second
+					final double customMovesPerSec = Double.parseDouble(customRowSplit[2]);
+					final double noCustomMovesPerSec = Double.parseDouble(noCustomRowSplit[2]);
+					
+					final double movesPerPlayoutRatio = (customMovesPerSec / customResult) / (noCustomMovesPerSec / noCustomResult);
+					final double deltaMovesPerEpisode = (customMovesPerSec / customResult) - (noCustomMovesPerSec / noCustomResult);
+					
 					if (gameUsesPlayoutType(game, PlayoutAddToEmpty.class))
-						rows.add(StringRoutines.join(",", "Add-To-Empty", String.valueOf(ratio), String.valueOf(noCustomResult), String.valueOf(customResult), filepathsGameName + filepathsRulesetName));
+					{
+						rows.add
+						(
+							StringRoutines.join
+							(
+								",", 
+								"Add-To-Empty", 
+								String.valueOf(ratio), 
+								String.valueOf(noCustomResult), 
+								String.valueOf(customResult), 
+								String.valueOf(movesPerPlayoutRatio),
+								String.valueOf(deltaMovesPerEpisode),
+								filepathsGameName + filepathsRulesetName
+							)
+						);
+					}
 					if (gameUsesPlayoutType(game, PlayoutFilter.class))
-						rows.add(StringRoutines.join(",", "Filter", String.valueOf(ratio), String.valueOf(noCustomResult), String.valueOf(customResult), filepathsGameName + filepathsRulesetName));
+					{
+						rows.add
+						(
+							StringRoutines.join
+							(
+								",", 
+								"Filter", 
+								String.valueOf(ratio), 
+								String.valueOf(noCustomResult), 
+								String.valueOf(customResult),  
+								String.valueOf(movesPerPlayoutRatio),
+								String.valueOf(deltaMovesPerEpisode),
+								filepathsGameName + filepathsRulesetName
+							)
+						);
+					}
 					if (gameUsesPlayoutType(game, PlayoutNoRepetition.class))
-						rows.add(StringRoutines.join(",", "No-Repetition", String.valueOf(ratio), String.valueOf(noCustomResult), String.valueOf(customResult), filepathsGameName + filepathsRulesetName));
+					{
+						rows.add
+						(
+							StringRoutines.join
+							(
+								",", 
+								"No-Repetition", 
+								String.valueOf(ratio), 
+								String.valueOf(noCustomResult), 
+								String.valueOf(customResult),  
+								String.valueOf(movesPerPlayoutRatio),
+								String.valueOf(deltaMovesPerEpisode),
+								filepathsGameName + filepathsRulesetName
+							)
+						);
+					}
 				}
 				else if (customResultFile.exists() || noCustomResultFile.exists())
 				{
@@ -213,7 +265,20 @@ public class CustomPlayoutsResultsCSV
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outFile), "UTF-8"))
 		{
 			// Write header
-			writer.println(StringRoutines.join(",", "Playout", "Speedup", "BaselinePlayoutsPerSec", "CustomPlayoutsPerSec", "GameRuleset"));
+			writer.println
+			(
+				StringRoutines.join
+				(
+					",", 
+					"Playout", 
+					"Speedup", 
+					"BaselinePlayoutsPerSec", 
+					"CustomPlayoutsPerSec", 
+					"MovesPerEpisodeRatio",
+					"DeltaMovesPerEpisode",
+					"GameRuleset"
+				)
+			);
 			
 			// Write rows
 			for (final String row : rows)
