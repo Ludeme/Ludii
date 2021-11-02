@@ -42,6 +42,9 @@ public final class OpenLoopNode extends BaseNode
 	 */
 	protected ThreadLocal<FVector> learnedSelectionPolicy = ThreadLocal.withInitial(() -> {return null;});
 	
+	/** Learned selection policy for root node, where we no longer need it to be thread-local */
+	protected FVector rootLearnedSelectionPolicy = null;
+	
 	/** 
 	 * Array in which we store, for every potential index of a currently-legal move, 
 	 * the corresponding child node (or null if not yet expanded).
@@ -131,6 +134,9 @@ public final class OpenLoopNode extends BaseNode
     @Override
     public FVector learnedSelectionPolicy()
     {
+    	if (rootLearnedSelectionPolicy != null)
+    		return rootLearnedSelectionPolicy;
+    	
     	return learnedSelectionPolicy.get();
     }
     
@@ -307,8 +313,18 @@ public final class OpenLoopNode extends BaseNode
 				}
 			}
 			
-			learnedSelectionPolicy.set(FVector.wrap(logits));
-			learnedSelectionPolicy.get().softmax();
+			final FVector dist = FVector.wrap(logits);
+			dist.softmax();
+			
+			if (root)
+			{
+				rootLearnedSelectionPolicy = dist;
+				learnedSelectionPolicy.set(null);
+			}
+			else
+			{
+				learnedSelectionPolicy.set(dist);
+			}
 		}
 	}
 	
