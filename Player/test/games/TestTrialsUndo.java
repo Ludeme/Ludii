@@ -471,25 +471,186 @@ public class TestTrialsUndo
 								fail();
 							}
 							if(state.pendingValues() != null)
+							{
 								if(state.pendingValues().equals(stateToCompare.pendingValues()))
 								{
 									System.out.println("!= pendingValues");
 									fail();
 								}
+							}
 							for(int pid = 0; pid < game.players().size(); pid++)
+							{
 								if(state.amount(pid) !=  stateToCompare.amount(pid))
 								{
 									System.out.println("!= amount for player " + pid);
 									fail();
 								}
+							}
 							if(state.pot() != stateToCompare.pot())
 							{
 								System.out.println("!= money pot");
 								fail();
 							}
+							for(int pid = 0; pid < game.players().size(); pid++)
+								if(state.currentPhase(pid) !=  stateToCompare.currentPhase(pid))
+								{
+									System.out.println("!= phase for player " + pid);
+									fail();
+								}
+							if(state.sumDice() != null)
+							{
+								for(int indexHandDice = 0; indexHandDice < state.sumDice().length; indexHandDice++)
+									if(state.sumDice(indexHandDice) !=  stateToCompare.sumDice(indexHandDice))
+									{
+										System.out.println("!= sumDice for handDice " + indexHandDice);
+										fail();
+									}
+							}
+							if(state.currentDice() != null)
+							{
+								for(int indexHandDice = 0; indexHandDice < state.currentDice().length; indexHandDice++)
+									for(int indexDie = 0; indexDie < state.currentDice()[indexHandDice].length; indexDie++)
+									if(state.currentDice()[indexHandDice][indexDie] !=  stateToCompare.currentDice()[indexHandDice][indexDie])
+									{
+										System.out.println("!= currentdice for handDice " + indexHandDice + " die index " + indexDie);
+										fail();
+									}
+							}
+							if(state.getValueMap() != null)
+							{
+								if(!state.getValueMap().equals(stateToCompare.getValueMap()))
+								{
+									System.out.println("!= value Map");
+									fail();
+								}
+							}
+							if(state.isDiceAllEqual() != stateToCompare.isDiceAllEqual())
+							{
+								System.out.println("!= diceAllEqual");
+								fail();
+							}
+							if(state.numTurnSamePlayer() != stateToCompare.numTurnSamePlayer())
+							{
+								System.out.println("!= numTurnSamePlayer");
+								fail();
+							}
+							if(state.numTurn() != stateToCompare.numTurn())
+							{
+								System.out.println("!= numTurn");
+								fail();
+							}
+							if(state.trumpSuit() != stateToCompare.trumpSuit())
+							{
+								System.out.println("!= trumpSuit");
+								fail();
+							}
+							if(state.propositions() != null)
+							{
+								if(!state.propositions().equals(stateToCompare.propositions()))
+								{
+									System.out.println("!= propositions");
+									fail();
+								}
+							}
+							if(state.votes() != null)
+							{
+								if(!state.votes().equals(stateToCompare.votes()))
+								{
+									System.out.println("!= votes");
+									fail();
+								}
+							}
+							for(int pid = 1; pid < game.players().size(); pid++)
+								if(state.getValue(pid) !=  stateToCompare.getValue(pid))
+								{
+									System.out.println("!= value player " + pid);
+									fail();
+								}
+							if(state.isDecided() != stateToCompare.isDecided())
+							{
+								System.out.println("!= isDecided");
+								fail();
+							}
+							if(state.rememberingValues() != null)
+							{
+								if(!state.rememberingValues().equals(stateToCompare.rememberingValues()))
+								{
+									System.out.println("!= rememberingValues");
+									fail();
+								}
+							}
+							if(state.mapRememberingValues() != null)
+							{
+								if(!state.mapRememberingValues().equals(stateToCompare.mapRememberingValues()))
+								{
+									System.out.println("!= mapRememberingValues");
+									fail();
+								}
+							}
+							if(state.getNotes() != null)
+							{
+								if(!state.getNotes().equals(stateToCompare.getNotes()))
+								{
+									System.out.println("!= notes");
+									fail();
+								}
+							}
 							
-							// TO FINISH
+							if(state.visited() != null)
+							{
+								if(!state.visited().equals(stateToCompare.visited()))
+								{
+									System.out.println("!= visited");
+									fail();
+								}
+							}
+							if(state.sitesToRemove() != null)
+							{
+								if(!state.sitesToRemove().equals(stateToCompare.sitesToRemove()))
+								{
+									System.out.println("!= sitesToRemove");
+									fail();
+								}
+							}
+							for(int pid = 1; pid < game.players().size(); pid++)
+								if(state.getTeam(pid) !=  stateToCompare.getTeam(pid))
+								{
+									System.out.println("!= team player " + pid);
+									fail();
+								}
 							
+							if(state.remainingDominoes() != null)
+							{
+								if(!state.remainingDominoes().equals(stateToCompare.remainingDominoes()))
+								{
+									System.out.println("!= remainingDominoes");
+									fail();
+								}
+							}
+							if(state.numConsecutivesPasses() != stateToCompare.numConsecutivesPasses())
+							{
+								System.out.println("!= numConsecutivesPasses");
+								fail();
+							}
+							if(state.storedState() != stateToCompare.storedState())
+							{
+								System.out.println("!= storedState");
+								fail();
+							}
+							if(state.onTrackIndices() != null)
+							{
+								if(!state.onTrackIndices().equals(stateToCompare.onTrackIndices()))
+								{
+									System.out.println("!= onTrackIndices");
+									fail();
+								}
+							}
+							
+//							if(!state.owned().equals(stateToCompare.owned())) // CODE TO DO FOR OWNED !
+//							{
+//								System.out.println("!= onTrackIndices");
+//								fail();
+//							}
 						}
 						
 						
