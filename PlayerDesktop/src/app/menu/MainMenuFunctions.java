@@ -52,6 +52,7 @@ import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
 import app.views.tools.ToolView;
+import approaches.random.Generator;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -1240,34 +1241,34 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			DeveloperDialog.showDialog(app);
 		}
-//		else if (source.getText().equals("Generate Random Game"))
-//		{
-//			boolean validGameFound = false;
-//			while (!validGameFound)
-//			{
-//				final String gameDescription = Generator.testGames(1, true, true, false, true);
-//				if (gameDescription != null)
-//				{
-//					GameSetup.compileAndShowGame(app, gameDescription, false);
-//					validGameFound = true;
-//				}
-//			}
-//		}
-//		else if (source.getText().equals("Generate 1000 Random Games"))
-//		{
-//			Generator.testGames
-//			(
-//				1000,   // num games 
-//				true,   // random
-//				true,   // valid
-//				false,  // boardless
-//				true    // save
-//			);
-//		}
-//		else if (source.getText().equals("Generate 1 Game with Restrictions (dev)"))
-//		{
-//			Generator.testGamesEric(1, true, false);
-//		}
+		else if (source.getText().equals("Generate Random Game"))
+		{
+			boolean validGameFound = false;
+			while (!validGameFound)
+			{
+				final String gameDescription = Generator.testGames(1, true, true, false, true);
+				if (gameDescription != null)
+				{
+					GameSetup.compileAndShowGame(app, gameDescription, false);
+					validGameFound = true;
+				}
+			}
+		}
+		else if (source.getText().equals("Generate 1000 Random Games"))
+		{
+			Generator.testGames
+			(
+				1000,   // num games 
+				true,   // random
+				true,   // valid
+				false,  // boardless
+				true    // save
+			);
+		}
+		else if (source.getText().equals("Generate 1 Game with Restrictions (dev)"))
+		{
+			Generator.testGamesEric(1, true, false);
+		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
 			// Check if a recent game has been selected
