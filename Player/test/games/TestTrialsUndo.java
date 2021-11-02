@@ -115,8 +115,8 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			//if (fileEntry.getPath().contains("Tic-Tac-Toe")) // Ex Nihilo
-			if (fileEntry.getName().equals("Tic-Tac-Toe.lud")) // Ex Nihilo
+			if (fileEntry.getPath().contains("Ex Nihilo")) // Ex Nihilo
+			//if (fileEntry.getName().equals("")) // Ex Nihilo
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -401,7 +401,7 @@ public class TestTrialsUndo
 												fail();
 											}
 											
-											if(type == game.board().defaultSite())
+											if(game.isBoardless() && type == game.board().defaultSite())
 												if(cs.isPlayable(index) != csToCompare.isPlayable(index))
 												{
 													System.out.println(type + " != Playable at  " + index);
