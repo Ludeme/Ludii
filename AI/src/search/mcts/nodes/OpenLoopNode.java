@@ -30,6 +30,9 @@ public final class OpenLoopNode extends BaseNode
 	/** Our root nodes will keep a deterministic context reference */
 	protected Context deterministicContext = null;
 	
+	/** For the root, we no longer need thread-local current-legal move lists and can instead use a single fixed list */
+	protected FastArrayList<Move> rootLegalMovesList = null;
+	
 	/** Current list of legal moves */
 	protected ThreadLocal<FastArrayList<Move>> currentLegalMoves = ThreadLocal.withInitial(() -> {return null;});
 	
@@ -44,6 +47,9 @@ public final class OpenLoopNode extends BaseNode
 	 * the corresponding child node (or null if not yet expanded).
 	 */
 	protected ThreadLocal<OpenLoopNode[]> moveIdxToNode = ThreadLocal.withInitial(() -> {return null;});
+	
+	/** A mapping from move indices to nodes for the root (no longer want this to be thread-local) */
+	protected OpenLoopNode[] rootMoveIdxToNode = null;
 	
 	/** Cached logit computed according to learned selection policy */
 	protected ThreadLocal<Float> logit = ThreadLocal.withInitial(() -> {return Float.valueOf(Float.NaN);});
@@ -87,6 +93,9 @@ public final class OpenLoopNode extends BaseNode
 	@Override
     public OpenLoopNode childForNthLegalMove(final int n)
     {
+		if (rootMoveIdxToNode != null)
+			return rootMoveIdxToNode[n];
+		
 		return moveIdxToNode.get()[n];
     }
 	
@@ -128,6 +137,9 @@ public final class OpenLoopNode extends BaseNode
     @Override
     public FastArrayList<Move> movesFromNode()
     {
+    	if (rootLegalMovesList != null)
+    		return rootLegalMovesList;
+    	
     	return currentLegalMoves.get();
     }
     
@@ -140,13 +152,13 @@ public final class OpenLoopNode extends BaseNode
     @Override
     public Move nthLegalMove(final int n)
     {
-    	return currentLegalMoves.get().get(n);
+    	return movesFromNode().get(n);
     }
 	
 	@Override
 	public int numLegalMoves()
 	{
-		return currentLegalMoves.get().size();
+		return movesFromNode().size();
 	}
 	
 	@Override
@@ -196,7 +208,7 @@ public final class OpenLoopNode extends BaseNode
     {
     	// No need to copy current context, just modify it
 		final Context context = currentItContext.get();
-		context.game().apply(context, currentLegalMoves.get().get(moveIdx));
+		context.game().apply(context, movesFromNode().get(moveIdx));
     	return context;
     }
 	
@@ -222,56 +234,75 @@ public final class OpenLoopNode extends BaseNode
 	{
 		// TODO a bunch of the ThreadLocal .get() calls should only be done once and cached in local variables
 		final Context context = root ? deterministicContext : currentItContext.get();
-		currentLegalMoves.set(new FastArrayList<Move>(context.game().moves(context).moves()));
+		final FastArrayList<Move> legalMoves;
 		
 		if (root)
 		{
-			// now that this is a root node, we may be able to remove some 
+			rootLegalMovesList = new FastArrayList<Move>(context.game().moves(context).moves());
+			currentLegalMoves.set(null);
+			legalMoves = rootLegalMovesList;
+		}
+		else
+		{
+			legalMoves = new FastArrayList<Move>(context.game().moves(context).moves());
+			currentLegalMoves.set(legalMoves);
+		}
+					
+		if (root)
+		{
+			// Now that this is a root node, we may be able to remove some 
 			// children with moves that are not legal
-			for (int i = 0; i < children.size(); /**/)
+			for (int i = children.size() - 1; i >= 0; --i)
 			{
-				if (currentLegalMoves.get().contains(children.get(i).parentMoveWithoutConseq))
-					++i;
-				else
+				if (!legalMoves.contains(children.get(i).parentMoveWithoutConseq))
 					children.remove(i);
 			}
 		}
 		
-		// update mapping from legal move index to child node
-		moveIdxToNode.set(new OpenLoopNode[currentLegalMoves.get().size()]);
-		
-		for (int i = 0; i < moveIdxToNode.get().length; ++i)
+		// Update mapping from legal move index to child node
+		final OpenLoopNode[] mapping = new OpenLoopNode[legalMoves.size()];
+		if (root)
 		{
-			final Move move = currentLegalMoves.get().get(i);
+			rootMoveIdxToNode = mapping;
+			moveIdxToNode.set(null);
+		}
+		else
+		{
+			moveIdxToNode.set(mapping);
+		}
+		
+		for (int i = 0; i < mapping.length; ++i)
+		{
+			final Move move = legalMoves.get(i);
 			
 			for (int j = 0; j < children.size(); ++j)
 			{
 				if (move.equals(children.get(j).parentMoveWithoutConseq))
 				{
-					moveIdxToNode.get()[i] = children.get(j);
+					mapping[i] = children.get(j);
 					break;
 				}
 			}
 		}
 		
-		// update learned policy distribution
+		// Update learned policy distribution
 		if (mcts.learnedSelectionPolicy() != null)
 		{
-			final float[] logits = new float[moveIdxToNode.get().length];
+			final float[] logits = new float[mapping.length];
 			
 			for (int i = 0; i < logits.length; ++i)
 			{
-				if (moveIdxToNode.get()[i] != null && !Float.isNaN(moveIdxToNode.get()[i].logit.get().floatValue()))
+				if (mapping[i] != null && !Float.isNaN(mapping[i].logit.get().floatValue()))
 				{
-					logits[i] = moveIdxToNode.get()[i].logit.get().floatValue();
+					logits[i] = mapping[i].logit.get().floatValue();
 				}
 				else
 				{
-					logits[i] = mcts.learnedSelectionPolicy().computeLogit(context, currentLegalMoves.get().get(i));
+					logits[i] = mcts.learnedSelectionPolicy().computeLogit(context, legalMoves.get(i));
 					
-					if (moveIdxToNode.get()[i] != null)
+					if (mapping[i] != null)
 					{
-						moveIdxToNode.get()[i].logit.set(Float.valueOf(logits[i]));
+						mapping[i].logit.set(Float.valueOf(logits[i]));
 					}
 				}
 			}
