@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import features.Feature;
@@ -505,9 +506,9 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		 */
 		public JITMap()
 		{
-			this.propInstanceSetMap = new HashMap<MoveFeaturesKey, PropFeatureInstanceSet>();
-			this.spatterNetMap = new HashMap<MoveFeaturesKey, SPatterNet>();
-			this.spatterNetMapThresholded = new HashMap<MoveFeaturesKey, SPatterNet>();
+			this.propInstanceSetMap = new ConcurrentHashMap<MoveFeaturesKey, PropFeatureInstanceSet>();
+			this.spatterNetMap = new ConcurrentHashMap<MoveFeaturesKey, SPatterNet>();
+			this.spatterNetMapThresholded = new ConcurrentHashMap<MoveFeaturesKey, SPatterNet>();
 		}
 		
 		/**
