@@ -231,6 +231,22 @@ public final class OpenLoopNode extends BaseNode
 		}
 	}
 	
+	@Override
+	public void cleanThreadLocals()
+	{
+		currentItContext.remove();
+		currentLegalMoves.remove();
+		currentLegalMoves.remove();
+		learnedSelectionPolicy.remove();
+		moveIdxToNode.remove();
+		logit.remove();
+		
+		for (final OpenLoopNode child : children)
+		{
+			child.cleanThreadLocals();
+		}
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -262,7 +278,7 @@ public final class OpenLoopNode extends BaseNode
 			for (int i = children.size() - 1; i >= 0; --i)
 			{
 				if (!legalMoves.contains(children.get(i).parentMoveWithoutConseq))
-					children.remove(i);
+					children.remove(i).cleanThreadLocals();		// NOTE: also let removed node clean up thread-locals
 			}
 		}
 		

@@ -548,6 +548,10 @@ public class MCTS extends ExpertPolicy
 		
 		lastNumPlayoutActions = 0;	// TODO if this variable actually becomes important, may want to make it Atomic
 		
+		// Store this in a separate variable because threading weirdness sometimes sets the class variable to null
+		// even though some threads here still want to do something with it.
+		final BaseNode rootThisCall = rootNode;
+		
 		// For each thread, queue up a job
 		final CountDownLatch latch = new CountDownLatch(numThreads);
 		final long finalStopTime = stopTime;	// Need this to be final for use in inner lambda
@@ -565,7 +569,7 @@ public class MCTS extends ExpertPolicy
 							/*********************
 								Selection Phase
 							*********************/
-							BaseNode current = rootNode;
+							BaseNode current = rootThisCall;
 							current.addVirtualVisit();
 							current.startNewIteration(context);
 							
@@ -645,6 +649,8 @@ public class MCTS extends ExpertPolicy
 							
 							numIterations.incrementAndGet();
 						}
+						
+						rootThisCall.cleanThreadLocals();
 					}
 					catch (final Exception e)
 					{
@@ -660,7 +666,7 @@ public class MCTS extends ExpertPolicy
 		
 		try
 		{
-			latch.await(stopTime - startTime + 1000L, TimeUnit.MILLISECONDS);
+			latch.await(stopTime - startTime + 2000L, TimeUnit.MILLISECONDS);
 		}
 		catch (final InterruptedException e)
 		{
@@ -669,21 +675,21 @@ public class MCTS extends ExpertPolicy
 
 		lastNumMctsIterations = numIterations.get();
 		
-		final Move returnMove = finalMoveSelectionStrategy.selectMove(rootNode);
+		final Move returnMove = finalMoveSelectionStrategy.selectMove(rootThisCall);
 		
 		if (!wantsInterrupt)
 		{
 			int moveVisits = -1;
 			
-			for (int i = 0; i < rootNode.numLegalMoves(); ++i)
+			for (int i = 0; i < rootThisCall.numLegalMoves(); ++i)
 			{
-				final BaseNode child = rootNode.childForNthLegalMove(i);
+				final BaseNode child = rootThisCall.childForNthLegalMove(i);
 	
 				if (child != null)
 				{
-					if (rootNode.nthLegalMove(i).equals(returnMove))
+					if (rootThisCall.nthLegalMove(i).equals(returnMove))
 					{
-						final State state = rootNode.deterministicContextRef().state();
+						final State state = rootThisCall.deterministicContextRef().state();
 				        final int moverAgent = state.playerToAgent(state.mover());
 						moveVisits = child.numVisits();
 						lastReturnedMoveValueEst = child.expectedScore(moverAgent);
@@ -693,7 +699,7 @@ public class MCTS extends ExpertPolicy
 				}
 			}
 			
-			final int numRootIts = rootNode.numVisits();
+			final int numRootIts = rootThisCall.numVisits();
 			
 			analysisReport = 
 					friendlyName + 
@@ -711,6 +717,7 @@ public class MCTS extends ExpertPolicy
 		}
 		
 		// We can already try to clean up a bit of memory here
+		// NOTE: from this point on we have to use rootNode instead of rootThisCall again!
 		if (!preserveRootNode)
 		{
 			if (!treeReuse)

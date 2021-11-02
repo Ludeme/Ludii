@@ -194,7 +194,13 @@ public abstract class DeterministicNode extends BaseNode
     @Override
     public void updateContextRef()
     {
-    	// do nothing
+    	// Do nothing
+    }
+    
+    @Override
+    public void cleanThreadLocals()
+    {
+    	// Do nothing
     }
     
     //-------------------------------------------------------------------------

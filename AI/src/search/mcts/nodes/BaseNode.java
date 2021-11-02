@@ -194,6 +194,12 @@ public abstract class BaseNode
 	 */
 	public abstract void updateContextRef();
 	
+	/**
+	 * Recursively clean any thread-local variables we may have (it
+	 * seems like GC struggles with them otherwise).
+	 */
+	public abstract void cleanThreadLocals();
+	
 	//-------------------------------------------------------------------------
 	
 	/**
