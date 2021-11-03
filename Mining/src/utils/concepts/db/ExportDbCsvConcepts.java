@@ -725,7 +725,7 @@ public class ExportDbCsvConcepts
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
 		{
 			for(int i = 0 ; i < edgesUsage.size(); i++)
-				writer.println(i+","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
+				writer.println(i+","+ edgesUsage.get(i) +","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
 		}
 		catch (FileNotFoundException e)
 		{
