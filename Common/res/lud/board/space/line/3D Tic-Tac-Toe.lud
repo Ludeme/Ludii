@@ -25,7 +25,7 @@
         (start (place "Dot0" <Board:dot0>)) // Places neutral dots to separate the four levels of the board.
         (play (move Add (to (sites Empty))))
         (end {
-            (if (is Line 4) (result Mover Win))
+            (if (is Line <Board:size>) (result Mover Win))
             (if "Line3D" (result Mover Win))
         })
     )

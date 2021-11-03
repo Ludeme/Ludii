@@ -15,7 +15,6 @@ import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
-import other.state.stacking.BaseContainerStateStacking;
 import other.state.track.OnTrackIndices;
 
 /**
@@ -333,19 +332,17 @@ public final class ActionAdd extends BaseAction
 		int pieceIdx = 0;
 		if (context.game().isStacking())
 		{
-			pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), site, type)
-					: cs.remove(context.state(), site, level, type);
-			final BaseContainerStateStacking csStack = (BaseContainerStateStacking) cs;
+			final int levelToRemove = (level == Constants.UNDEFINED ? cs.sizeStack(site, type) -1 : Math.min(level, cs.sizeStack(site, type) -1));
+			pieceIdx = cs.remove(context.state(), site, levelToRemove, type);
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
 				final int owner = piece.owner();
-				context.state().owned().remove(owner, pieceIdx, site,
-						(level == Constants.UNDEFINED) ? csStack.sizeStack(site, type) : level, type);
+				context.state().owned().remove(owner, pieceIdx, site, levelToRemove, type);
 			}
 
-			if (csStack.sizeStack(site, type) == 0)
-				csStack.addToEmpty(site, type);
+			if (cs.sizeStack(site, type) == 0)
+				cs.addToEmpty(site, type);
 		}
 		else
 		{
