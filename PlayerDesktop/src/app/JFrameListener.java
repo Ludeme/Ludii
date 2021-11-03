@@ -6,7 +6,6 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
 import app.move.MoveHandler;
-import app.views.tools.ToolView;
 import game.util.directions.AbsoluteDirection;
 
 /**
@@ -37,26 +36,6 @@ public class JFrameListener extends JFrame implements KeyListener
 		{
 			app.settingsPlayer().setCurrentWalkExtra(app.settingsPlayer().currentWalkExtra()+1);
 			app.repaint();
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_SPACE)
-		{
-			DesktopApp.view().toolPanel().buttons.get(ToolView.PLAY_BUTTON_INDEX).press();
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-		{
-			DesktopApp.view().toolPanel().buttons.get(ToolView.BACK_BUTTON_INDEX).press();
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-		{
-			DesktopApp.view().toolPanel().buttons.get(ToolView.FORWARD_BUTTON_INDEX).press();
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-		{
-			DesktopApp.view().toolPanel().buttons.get(ToolView.START_BUTTON_INDEX).press();
-		}
-		else if (e.getKeyCode() == KeyEvent.VK_UP)
-		{
-			DesktopApp.view().toolPanel().buttons.get(ToolView.END_BUTTON_INDEX).press();
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_TAB)
 		{

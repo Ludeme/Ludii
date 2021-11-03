@@ -62,11 +62,13 @@ public class DistanceUtils
 		}
 
 		// Calculate full Ludii game vocabulary.
-		final double numGames = 0.0;
+		double numGames = 0.0;
 		final Map<String, Double> vocabulary = new HashMap<>();
 		for (final String[] gameRulesetName : GameLoader.allAnalysisGameRulesetNames())
 		{
 			final Game game = GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]);
+			System.out.println(game.name());
+			numGames++;
 			for (final String s : dataset.getBagOfWords(game).keySet())
 			{
 				if (vocabulary.containsKey(s))

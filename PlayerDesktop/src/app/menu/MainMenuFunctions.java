@@ -699,6 +699,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			DesktopApp.view().toolPanel().buttons.get(ToolView.END_BUTTON_INDEX).press();
 		}
+		else if (source.getText().equals("Pass"))
+		{
+			DesktopApp.view().toolPanel().buttons.get(ToolView.PASS_BUTTON_INDEX).press();
+		}
 		else if (source.getText().equals("Random Playout Instance"))
 		{
 			app.manager().ref().randomPlayoutSingleInstance(app.manager());
