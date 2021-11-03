@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
@@ -59,6 +60,9 @@ public abstract class BaseNode
     
     /** Table of AMAF stats for GRAVE */
     protected final Map<MoveKey, NodeStatistics> graveStats;
+    
+    /** Lock for MCTS code that modifies/reads node data in ways that should be synchronised */
+    protected transient ReentrantLock nodeLock = new ReentrantLock();
 	
 	//-------------------------------------------------------------------------
 	
@@ -708,6 +712,16 @@ public abstract class BaseNode
     	}
     	
     	return experiences;
+    }
+    
+    //-------------------------------------------------------------------------
+    
+    /**
+     * @return Lock for this node
+     */
+    public ReentrantLock getLock()
+    {
+    	return nodeLock;
     }
     
     //-------------------------------------------------------------------------

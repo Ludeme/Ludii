@@ -454,7 +454,7 @@ public class MCTS extends ExpertPolicy
 		long stopTime = (maxSeconds > 0.0) ? startTime + (long) (maxSeconds * 1000) : Long.MAX_VALUE;
 		final int maxIts = (maxIterations >= 0) ? maxIterations : Integer.MAX_VALUE;
 		
-		while (numThreadsBusy.get() > 0 && System.currentTimeMillis() < Math.min(stopTime, startTime + 1000L))
+		while (numThreadsBusy.get() != 0 && System.currentTimeMillis() < Math.min(stopTime, startTime + 1000L))
 		{
 			// Give threads in thread pool some more time to clean up after themselves from previous iteration
 		}

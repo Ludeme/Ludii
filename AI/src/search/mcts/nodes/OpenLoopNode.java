@@ -240,9 +240,17 @@ public final class OpenLoopNode extends BaseNode
 		moveIdxToNode.remove();
 		logit.remove();
 		
-		for (final OpenLoopNode child : children)
+		getLock().lock();
+		try
 		{
-			child.cleanThreadLocals();
+			for (final OpenLoopNode child : children)
+			{
+				child.cleanThreadLocals();
+			}
+		}
+		finally
+		{
+			getLock().unlock();
 		}
 	}
 	
@@ -277,7 +285,7 @@ public final class OpenLoopNode extends BaseNode
 			for (int i = children.size() - 1; i >= 0; --i)
 			{
 				if (!legalMoves.contains(children.get(i).parentMoveWithoutConseq))
-					children.remove(i).cleanThreadLocals();		// NOTE: also let removed node clean up thread-locals
+					children.remove(i).cleanThreadLocals();
 			}
 		}
 		
