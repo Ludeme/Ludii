@@ -7,6 +7,7 @@ import gnu.trove.list.array.TLongArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 import main.collections.FastTIntArrayList;
+import other.state.zhash.HashedBitSet;
 
 /**
  * Undo Data necessary to be able to undo a move.
@@ -89,6 +90,15 @@ public class UndoData
 	/** All the remaining dominoes. */
 	private FastTIntArrayList remainingDominoes;
 
+	/**
+	 * BitSet used to store all the site already visited (from & to) by each move
+	 * done by the player in a sequence of turns played by the same player.
+	 */
+	private HashedBitSet visited = null;
+
+	/** In case of a sequence of capture to remove (e.g. some draughts games). */
+	private TIntArrayList sitesToRemove = null;
+
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -113,6 +123,8 @@ public class UndoData
 	 * @param numTurnSamePlayer		   The number of moves played so far in the same turn.
 	 * @param numConsecutivePasses	   Number of consecutive pass moves.
 	 * @param remainingDominoes		   All the remainingDominoes.
+	 * @param visited	  			   Sites visited during the same turn.
+	 * @param sitesToRemove		   	   Sites to remove in case of a sequence of capture.
 	 */
 	public UndoData
 	(
@@ -136,7 +148,9 @@ public class UndoData
 		final int numTurn,
 		final int numTurnSamePlayer,
 		final int numConsecutivePasses,
-		final FastTIntArrayList remainingDominoes
+		final FastTIntArrayList remainingDominoes,
+		final HashedBitSet visited,
+		final TIntArrayList sitesToRemove
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -160,6 +174,8 @@ public class UndoData
 		this.numTurnSamePlayer = numTurnSamePlayer;
 		this.numConsecutivePasses = numConsecutivePasses;
 		this.remainingDominoes = remainingDominoes == null ? null : new FastTIntArrayList(remainingDominoes);
+		this.visited = visited == null ? null : visited.clone();
+		this.sitesToRemove = sitesToRemove == null ? null : new TIntArrayList(sitesToRemove);
 	}
 
 	//-------------------------------------------------------------------------
@@ -330,5 +346,21 @@ public class UndoData
 	public FastTIntArrayList remainingDominoes()
 	{
 		return remainingDominoes;
+	}
+	
+	/**
+	 * @return Sites visited during the same turn.
+	 */
+	public HashedBitSet visited()
+	{
+		return visited;
+	}
+	
+	/**
+	 * @return Sites to remove in case of a sequence of capture.
+	 */
+	public TIntArrayList sitesToRemove()
+	{
+		return sitesToRemove;
 	}
 }

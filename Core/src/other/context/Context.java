@@ -1714,7 +1714,9 @@ public class Context
 				state.numTurn(),
 				state.numTurnSamePlayer(),
 				state.numConsecutivesPasses(),
-				state.remainingDominoes()
+				state.remainingDominoes(),
+				state.visited(),
+				state.sitesToRemove()
 		);
 		
 		trial.addEndData(endData);

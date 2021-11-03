@@ -1706,6 +1706,14 @@ public class State implements Serializable
 	}
 
 	/**
+	 * @param newVisited The visited sites replacing the current one.
+	 */
+	public void setVisited(final HashedBitSet newVisited)
+	{
+		visited = newVisited.clone();
+	}
+
+	/**
 	 * @param site
 	 * @return true if the site is already visited
 	 */

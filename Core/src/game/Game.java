@@ -107,6 +107,7 @@ import other.playout.PlayoutMoveSelector;
 import other.playout.PlayoutNoRepetition;
 import other.state.State;
 import other.state.container.ContainerState;
+import other.state.zhash.HashedBitSet;
 import other.topology.SiteFinder;
 import other.topology.Topology;
 import other.topology.TopologyElement;
@@ -3066,6 +3067,8 @@ public class Game extends BaseLudeme implements API, Serializable
 			final int numTurnSamePlayer = undoData == null ? 0 : undoData.numTurnSamePlayer();
 			final int numConsecutivePasses = undoData == null ? 0 : undoData.numConsecutivePasses();
 			final FastTIntArrayList remainingDominoes = undoData == null ? null : undoData.remainingDominoes();
+			final HashedBitSet visited = undoData == null ? null : undoData.visited();
+			final TIntArrayList sitesToRemove = undoData == null ? null : undoData.sitesToRemove();
 			
 			int active = 0;
 			if(undoData != null)
@@ -3137,6 +3140,16 @@ public class Game extends BaseLudeme implements API, Serializable
 				for(int i = 0; i < remainingDominoes.size(); i++)
 					state.remainingDominoes().add(remainingDominoes.get(i));
 			}
+			if(visited != null)
+				state.setVisited(visited);
+
+			if(sitesToRemove != null)
+			{
+				state.sitesToRemove().clear();
+				for(int i = 0; i < sitesToRemove.size(); i++)
+					state.sitesToRemove().add(sitesToRemove.get(i));
+			}
+			
 			final Move move = context.trial().removeLastMove();
 			
 			// Step 4: Undo the last move played.
