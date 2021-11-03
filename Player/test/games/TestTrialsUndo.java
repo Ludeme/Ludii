@@ -45,7 +45,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = true;
+		final boolean stateComparaison = false;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -116,7 +116,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Lielow")) 
+			if (fileEntry.getPath().contains("N-Mesh")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -535,7 +535,9 @@ public class TestTrialsUndo
 							{
 								if(!state.getValueMap().equals(stateToCompare.getValueMap()))
 								{
-									System.out.println("!= value Map");
+									System.out.println("IN MOVE " + trial.numberRealMoves() + " != value Map");
+									System.out.println("correct one is " + stateToCompare.getValueMap());
+									System.out.println("undo one is " + state.getValueMap());
 									fail();
 								}
 							}
@@ -757,10 +759,23 @@ public class TestTrialsUndo
 							{
 								if (move.from() == loadedMove.from() && move.to() == loadedMove.to())
 								{
-									if (move.getActionsWithConsequences(context).equals(loadedMoveAllActions))
+									final List<Action> moveAllActions = move.getActionsWithConsequences(context);
+									if(moveAllActions.size() == loadedMoveAllActions.size())
 									{
-										matchingMove = move;
-										break;
+										boolean moveFound = true;
+										for(Action action:  moveAllActions)
+										{
+											if(!loadedMoveAllActions.contains(action))
+											{
+												moveFound=false;
+												break;
+											}
+										}
+										if(moveFound)
+										{
+											matchingMove = move;
+											break;
+										}
 									}
 								}
 							}

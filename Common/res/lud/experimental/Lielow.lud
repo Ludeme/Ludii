@@ -111,12 +111,10 @@
 
 (game "Lielow"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (square 10))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" 
