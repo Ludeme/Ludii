@@ -169,7 +169,7 @@ public final class ActionAdd extends BaseAction
 		{
 			if (game.isStacking())
 			{
-				final int levelAdded = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+				final int levelAdded = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : Math.min(level, cs.sizeStack(to, type));
 				previousState = cs.state(to, levelAdded, type);
 				previousRotation = cs.rotation(to, levelAdded, type);
 				previousValue = cs.value(to, levelAdded, type);
@@ -332,8 +332,9 @@ public final class ActionAdd extends BaseAction
 		int pieceIdx = 0;
 		if (context.game().isStacking())
 		{
-			final int levelToRemove = (level == Constants.UNDEFINED ? cs.sizeStack(site, type) -1 : Math.min(level, cs.sizeStack(site, type) -1));
+			final int levelToRemove = cs.sizeStack(site, type) - 1;
 			pieceIdx = cs.remove(context.state(), site, levelToRemove, type);
+			
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
