@@ -169,6 +169,50 @@ public final class ActionInsert extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		type = (type == null) ? context.board().defaultSite() : type;
+
+		// If the site is not supported by the type, that's a cell of another container.
+		if (to >= context.board().topology().getGraphElements(type).size())
+			type = SiteType.Cell;
+		
+		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
+		final ContainerState cs = context.state().containerStates()[contID];
+		
+//		final int who = (what < 1) ? 0 : context.components()[what].owner();
+//		final int sizeStack = cs.sizeStack(to, type);
+		
+		final int pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), to, type)
+				: cs.remove(context.state(), to, level, type);
+		
+		final int levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+		if (pieceIdx > 0)
+		{
+			final Component piece = context.components()[pieceIdx];
+			final int owner = piece.owner();
+			context.state().owned().remove(owner, pieceIdx, to,
+					levelRemoved, type);
+		}
+
+		if (cs.sizeStack(to, type) == 0)
+			cs.addToEmpty(to, type);
+		
+		if (pieceIdx > 0)
+		{
+			// We update the structure about track indices if the game uses track.
+			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+			if (onTrackIndices != null)
+			{
+				for (final Track track : context.board().tracks())
+				{
+					final int trackIdx = track.trackIdx();
+					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
+
+					for (int i = 0; i < indices.size(); i++)
+						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
+				}
+			}
+		}
+		
 		return this;
 	}
 

@@ -116,8 +116,8 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Ex Nihilo")) // Ex Nihilo
-			//if (fileEntry.getName().equals("")) // Ex Nihilo
+			if (fileEntry.getPath().contains("Lielow")) 
+			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -305,7 +305,7 @@ public class TestTrialsUndo
 										{
 											if(cs.sizeStack(index, type) != csToCompare.sizeStack(index, type))
 											{
-												System.out.println("!= stack size for " + type + " " + index);
+												System.out.println("IN MOVE " + trial.numberRealMoves() +  " != stack size for " + type + " " + index);
 												fail();
 											}
 											
@@ -446,31 +446,37 @@ public class TestTrialsUndo
 								System.out.println("!= mover");
 								fail();
 							}
+							
 							if(state.prev() != stateToCompare.prev())
 							{
 								System.out.println("!= prev");
 								fail();
 							}
+							
 							if(state.next() != stateToCompare.next())
 							{
 								System.out.println("!= next");
 								fail();
 							}
+							
 							if(state.counter() != stateToCompare.counter())
 							{
 								System.out.println("!= counter");
 								fail();
 							}
+							
 							if(state.temp() != stateToCompare.temp())
 							{
 								System.out.println("!= tempValue");
 								fail();
 							}
+							
 							if(state.temp() != stateToCompare.temp())
 							{
 								System.out.println("!= tempValue");
 								fail();
 							}
+							
 							if(state.pendingValues() != null)
 							{
 								if(state.pendingValues().equals(stateToCompare.pendingValues()))
@@ -479,6 +485,7 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							for(int pid = 0; pid < game.players().size(); pid++)
 							{
 								if(state.amount(pid) !=  stateToCompare.amount(pid))
@@ -487,17 +494,22 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							if(state.pot() != stateToCompare.pot())
 							{
 								System.out.println("!= money pot");
 								fail();
 							}
+							
 							for(int pid = 0; pid < game.players().size(); pid++)
+							{
 								if(state.currentPhase(pid) !=  stateToCompare.currentPhase(pid))
 								{
 									System.out.println("!= phase for player " + pid);
 									fail();
 								}
+							}
+							
 							if(state.sumDice() != null)
 							{
 								for(int indexHandDice = 0; indexHandDice < state.sumDice().length; indexHandDice++)
@@ -507,6 +519,7 @@ public class TestTrialsUndo
 										fail();
 									}
 							}
+							
 							if(state.currentDice() != null)
 							{
 								for(int indexHandDice = 0; indexHandDice < state.currentDice().length; indexHandDice++)
@@ -517,6 +530,7 @@ public class TestTrialsUndo
 										fail();
 									}
 							}
+							
 							if(state.getValueMap() != null)
 							{
 								if(!state.getValueMap().equals(stateToCompare.getValueMap()))
@@ -525,26 +539,31 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							if(state.isDiceAllEqual() != stateToCompare.isDiceAllEqual())
 							{
 								System.out.println("!= diceAllEqual");
 								fail();
 							}
+							
 							if(state.numTurnSamePlayer() != stateToCompare.numTurnSamePlayer())
 							{
 								System.out.println("!= numTurnSamePlayer");
 								fail();
 							}
+							
 							if(state.numTurn() != stateToCompare.numTurn())
 							{
 								System.out.println("!= numTurn");
 								fail();
 							}
+							
 							if(state.trumpSuit() != stateToCompare.trumpSuit())
 							{
 								System.out.println("!= trumpSuit");
 								fail();
 							}
+							
 							if(state.propositions() != null)
 							{
 								if(!state.propositions().equals(stateToCompare.propositions()))
@@ -553,6 +572,7 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							if(state.votes() != null)
 							{
 								if(!state.votes().equals(stateToCompare.votes()))
@@ -561,17 +581,22 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							for(int pid = 1; pid < game.players().size(); pid++)
+							{
 								if(state.getValue(pid) !=  stateToCompare.getValue(pid))
 								{
 									System.out.println("!= value player " + pid);
 									fail();
 								}
+							}
+							
 							if(state.isDecided() != stateToCompare.isDecided())
 							{
 								System.out.println("!= isDecided");
 								fail();
 							}
+							
 							if(state.rememberingValues() != null)
 							{
 								if(!state.rememberingValues().equals(stateToCompare.rememberingValues()))
@@ -580,6 +605,7 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							if(state.mapRememberingValues() != null)
 							{
 								if(!state.mapRememberingValues().equals(stateToCompare.mapRememberingValues()))
@@ -588,6 +614,7 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							if(state.getNotes() != null)
 							{
 								if(!state.getNotes().equals(stateToCompare.getNotes()))
@@ -605,6 +632,7 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							if(state.sitesToRemove() != null)
 							{
 								if(!state.sitesToRemove().equals(stateToCompare.sitesToRemove()))
@@ -613,6 +641,7 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							for(int pid = 1; pid < game.players().size(); pid++)
 								if(state.getTeam(pid) !=  stateToCompare.getTeam(pid))
 								{
@@ -628,16 +657,19 @@ public class TestTrialsUndo
 									fail();
 								}
 							}
+							
 							if(state.numConsecutivesPasses() != stateToCompare.numConsecutivesPasses())
 							{
 								System.out.println("!= numConsecutivesPasses");
 								fail();
 							}
+							
 							if(state.storedState() != stateToCompare.storedState())
 							{
 								System.out.println("!= storedState");
 								fail();
 							}
+							
 							if(state.onTrackIndices() != null)
 							{
 								if(!state.onTrackIndices().equals(stateToCompare.onTrackIndices()))
