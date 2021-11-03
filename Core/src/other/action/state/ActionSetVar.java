@@ -3,6 +3,7 @@ package other.action.state;
 import java.util.BitSet;
 
 import game.rules.play.moves.Moves;
+import main.Constants;
 import other.action.Action;
 import other.action.BaseAction;
 import other.concept.Concept;
@@ -85,7 +86,10 @@ public final class ActionSetVar extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
-		context.state().setValue(name, previousValue);
+		if(previousValue == Constants.UNDEFINED)
+			context.state().removeKeyValue(name);
+		else
+			context.state().setValue(name, previousValue);
 		return this;
 	}
 
