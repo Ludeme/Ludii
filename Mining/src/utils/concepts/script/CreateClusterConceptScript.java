@@ -24,13 +24,13 @@ public class CreateClusterConceptScript
 {
 	public static void main(final String[] args)
 	{
-		final int maxTimeMinutesCluster = 600;
+		final int maxTimeMinutesCluster = 600; // 6000
 		final int numPlayout = 100;
 		final int maxTime = 175000;
 		final int maxMove = 250; //5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
 		final String folder = ""; //"/../Trials/TrialsRandom";
 		final String mainScriptName = "StateConcepts.sh";
