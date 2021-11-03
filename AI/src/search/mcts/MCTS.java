@@ -588,7 +588,9 @@ public class MCTS extends ExpertPolicy
 							
 							while (current.contextRef().trial().status() == null)
 							{
-								synchronized(current)
+								current.getLock().lock();
+
+								try
 								{
 									final int selectedIdx = selectionStrategy.select(this, current);
 									BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
@@ -630,6 +632,10 @@ public class MCTS extends ExpertPolicy
 									current = nextNode;
 									current.addVirtualVisit();
 									current.updateContextRef();
+								}
+								finally
+								{
+									current.getLock().unlock();
 								}
 							}
 							
