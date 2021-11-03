@@ -1177,18 +1177,28 @@ public class State implements Serializable
 	}
 
 	/**
-	 * Add a value to the map
+	 * Add a value to the map.
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key The key of the map.
+	 * @param value The value.
 	 */
 	public void setValue(final String key, final int value)
 	{
 		valueMap.put(key, value);
 	}
+	
+	/**
+	 * remove a key from the map.
+	 * 
+	 * @param key The key of the map.
+	 */
+	public void removeKeyValue(final String key)
+	{
+		valueMap.remove(key);
+	}
 
 	/**
-	 * @param key
+	 * @param key The key of the map.
 	 * @return value for this key, or Constants.OFF if not found
 	 */
 	public int getValue(final String key)
