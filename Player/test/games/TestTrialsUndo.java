@@ -32,7 +32,7 @@ import other.state.State;
  * A Unit Test to load Trials from the TravisTrials repository, and check if they
  * all still play out the same way in the current Ludii codebase.
  * 
- * @author Dennis Soemers and Eric.Piette
+ * @author Eric.Piette
  */
 public class TestTrialsUndo
 {
@@ -45,7 +45,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = false;
+		final boolean stateComparaison = true;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -116,7 +116,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("N-Mesh")) 
+			if (fileEntry.getPath().contains("Bagh Bandi")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -301,7 +301,7 @@ public class TestTrialsUndo
 								{
 									if(cid == 0 || (cid != 0 && type.equals(SiteType.Cell)))
 									{
-										for(int index = 0; index < game.board().topology().getGraphElements(type).size(); index++)
+										for(int index = context.sitesFrom()[cid] ; index < (context.sitesFrom()[cid] + game.equipment().containers()[cid].topology().getGraphElements(type).size()); index++)
 										{
 											if(cs.sizeStack(index, type) != csToCompare.sizeStack(index, type))
 											{
@@ -639,7 +639,9 @@ public class TestTrialsUndo
 							{
 								if(!state.sitesToRemove().equals(stateToCompare.sitesToRemove()))
 								{
-									System.out.println("!= sitesToRemove");
+									System.out.println("IN MOVE " + trial.numberRealMoves() + " != sitesToRemove");
+									System.out.println("correct one is " + stateToCompare.sitesToRemove());
+									System.out.println("undo one is " + state.sitesToRemove());
 									fail();
 								}
 							}
