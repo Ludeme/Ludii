@@ -588,7 +588,8 @@ public class MCTS extends ExpertPolicy
 							
 							while (current.contextRef().trial().status() == null)
 							{
-								current.getLock().lock();
+								BaseNode prevNode = current;
+								prevNode.getLock().lock();
 
 								try
 								{
@@ -635,7 +636,7 @@ public class MCTS extends ExpertPolicy
 								}
 								finally
 								{
-									current.getLock().unlock();
+									prevNode.getLock().unlock();
 								}
 							}
 							
