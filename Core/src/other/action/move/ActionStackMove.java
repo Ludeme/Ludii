@@ -167,6 +167,54 @@ public final class ActionStackMove extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		final int contIdA = context.containerId()[from];
+		final int contIdB = context.containerId()[to];
+		final ContainerState csA = context.state().containerStates()[contIdA];
+		final ContainerState csB = context.state().containerStates()[contIdB];
+		
+		final int sizeStackB = csB.sizeStack(to, typeTo);
+		final int what = csB.what(to, typeTo);
+
+		if (what == 0 || sizeStackB < numLevel)
+			return this;
+
+		final int[] movedElement = new int[numLevel];
+		final int[] ownerElement = new int[numLevel];
+		final int[] stateElement = new int[numLevel];
+		final int[] rotationElement = new int[numLevel];
+		final int[] valueElement = new int[numLevel];
+
+		for (int i = 0; i < numLevel; i++)
+		{
+			final int whatTop = csB.what(to, typeTo);
+			movedElement[i] = whatTop;
+			final int whoTop = csB.who(to, typeTo);
+			ownerElement[i] = whoTop;
+			final int stateTop = csB.state(to, typeTo);
+			stateElement[i] = stateTop;
+			final int rotationTop = csB.rotation(to, typeTo);
+			rotationElement[i] = rotationTop;
+			final int valueTop = csB.value(to, typeTo);
+			valueElement[i] = valueTop;
+			final int topLevel = csB.sizeStack(to, typeTo) - 1;
+			context.state().owned().remove(whoTop, whatTop, to, topLevel, typeTo);
+			csB.remove(context.state(), to, typeTo);
+		}
+
+		if (csB.sizeStack(to, typeTo) == 0)
+			csB.addToEmpty(to, typeTo);
+
+		boolean wasEmpty = (csA.sizeStack(from, typeFrom) == 0);
+		
+		for (int i = movedElement.length - 1; i >= 0; i--)
+		{
+			csA.addItemGeneric(context.state(), from, movedElement[i], ownerElement[i], stateElement[i], rotationElement[i], valueElement[i], context.game(), typeFrom);
+			context.state().owned().add(ownerElement[i], movedElement[i], from, csA.sizeStack(from, typeFrom) - 1, typeFrom);
+		}
+		
+		if (wasEmpty && csA.sizeStack(from, typeFrom) != 0)
+			csA.removeFromEmpty(from, typeFrom);
+		
 		return this;
 	}
 
