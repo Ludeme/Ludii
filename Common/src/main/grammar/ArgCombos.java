@@ -24,7 +24,7 @@ public class ArgCombos
 
 	private ArgCombos()
 	{		
-//		create();
+		create();
 		//dump();
 	}
 
