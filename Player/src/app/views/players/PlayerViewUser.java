@@ -8,16 +8,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import org.jfree.graphics2d.svg.SVGGraphics2D;
 
 import app.PlayerApp;
 import app.utils.GUIUtil;
-import app.utils.SVGUtil;
 import app.utils.Spinner;
 import app.views.View;
 import game.Game;
@@ -25,11 +19,9 @@ import game.equipment.Equipment;
 import game.equipment.container.Container;
 import game.functions.ints.IntFunction;
 import game.types.state.GameType;
-import graphics.svg.SVGtoImage;
 import metadata.graphics.util.ScoreDisplayInfo;
 import metadata.graphics.util.WhenScoreType;
 import metadata.graphics.util.colour.ColourRoutines;
-import other.AI;
 import other.context.Context;
 import other.model.SimultaneousMove;
 
@@ -272,41 +264,41 @@ public class PlayerViewUser extends View
 	 */
 	void drawAIFace(final Graphics2D g2d)
 	{
-		final AI ai = app.manager().aiSelected()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)].ai();
-
-		if (ai != null)
-		{
-			final double happinessValue = ai.estimateValue();
-			
-			String imagePath = "/svg/faces/symbola_cool.svg";
-			if (happinessValue < -0.8)
-				imagePath = "/svg/faces/symbola_sad.svg";
-			else if (happinessValue < -0.5)
-				imagePath = "/svg/faces/symbola_scared.svg";
-			else if (happinessValue < -0.2)
-				imagePath = "/svg/faces/symbola_worried.svg";
-			else if (happinessValue < 0.2)
-				imagePath = "/svg/faces/symbola_neutral.svg";
-			else if (happinessValue < 0.5)
-				imagePath = "/svg/faces/symbola_pleased.svg";
-			else if (happinessValue < 0.8)
-				imagePath = "/svg/faces/symbola_happy.svg";
-
-			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(imagePath))))
-			{
-				final Rectangle2D nameRect = app.playerNameList()[playerId];
-				final double r = PlayerView.playerNameFont.getSize();
-				final SVGGraphics2D svg = new SVGGraphics2D((int)r, (int) r);
-				SVGtoImage.loadFromReader(svg, reader, new Rectangle2D.Double(0,0,r,r), Color.BLACK, Color.WHITE, 0);
-				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + 3,  nameRect.getCenterY() - 3);
-				g2d.drawImage(SVGUtil.createSVGImage(svg.getSVGDocument(), (int) r, (int) r), (int) drawPosn.getX(), (int) drawPosn.getY(), null);
-				reader.close();
-			}
-			catch (final IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+//		final AI ai = app.manager().aiSelected()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)].ai();
+//
+//		if (ai != null)
+//		{
+//			final double happinessValue = ai.estimateValue();
+//			
+//			String imagePath = "/svg/faces/symbola_cool.svg";
+//			if (happinessValue < -0.8)
+//				imagePath = "/svg/faces/symbola_sad.svg";
+//			else if (happinessValue < -0.5)
+//				imagePath = "/svg/faces/symbola_scared.svg";
+//			else if (happinessValue < -0.2)
+//				imagePath = "/svg/faces/symbola_worried.svg";
+//			else if (happinessValue < 0.2)
+//				imagePath = "/svg/faces/symbola_neutral.svg";
+//			else if (happinessValue < 0.5)
+//				imagePath = "/svg/faces/symbola_pleased.svg";
+//			else if (happinessValue < 0.8)
+//				imagePath = "/svg/faces/symbola_happy.svg";
+//
+//			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(imagePath))))
+//			{
+//				final Rectangle2D nameRect = app.playerNameList()[playerId];
+//				final double r = PlayerView.playerNameFont.getSize();
+//				final SVGGraphics2D svg = new SVGGraphics2D((int)r, (int) r);
+//				SVGtoImage.loadFromReader(svg, reader, new Rectangle2D.Double(0,0,r,r), Color.BLACK, Color.WHITE, 0);
+//				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + 3,  nameRect.getCenterY() - 3);
+//				g2d.drawImage(SVGUtil.createSVGImage(svg.getSVGDocument(), (int) r, (int) r), (int) drawPosn.getX(), (int) drawPosn.getY(), null);
+//				reader.close();
+//			}
+//			catch (final IOException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
 	}
 	
 	//-------------------------------------------------------------------------
