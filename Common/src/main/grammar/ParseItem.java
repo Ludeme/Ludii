@@ -343,30 +343,34 @@ public class ParseItem
 					continue;
 				}
 			
-				if (clause.args().size() > ArgCombos.MAX_ARGS)
-				{
-					if (tab != null)
-						System.out.println(tab + "   X: " + clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
-					report.addWarning(clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
-					continue;
-				}
+//				if (clause.args().size() > ArgCombos.MAX_ARGS)
+//				{
+//					if (tab != null)
+//						System.out.println(tab + "   X: " + clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
+//					report.addWarning(clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
+//					continue;
+//				}
 			
 				// **
 				// ** Don't check each argument individually, as position in list can dictate what type it is 
 				// **
 				
 				final int numSlots = clause.args().size();  //comboLength = combo.size();
-
-				final List<BitSet>[][] argCombos = ArgCombos.get().combos();
 				
-//				// Extract the bit patterns out of sequential numbers in range
-//				List<BitSet> combos2 = new ArrayList<BitSet>();
-//				final int cl = clause.args().size();
-//				for (int seed = 0; seed < (0x1 << cl); seed++)
-//					combos2.add(BitSet.valueOf(new long[] { seed }));	
-							
-				for (final BitSet combo : argCombos[arguments.size()][clause.args().size()])
-				//for (final BitSet combo : combos2)
+				// Extract the bit patterns out of sequential numbers in range
+				List<BitSet> combos = new ArrayList<BitSet>();
+				final int cas = clause.args().size();
+				final int as  = arguments.size();
+				for (int seed = 0; seed < (0x1 << cas); seed++)
+				{
+					final int on = Integer.bitCount(seed);
+					if (as == on)
+						combos.add(BitSet.valueOf(new long[] { seed }));	
+				}
+				
+				//final List<BitSet>[][] argCombos = ArgCombos.get().combos();
+				//for (final BitSet combo : argCombos[arguments.size()][clause.args().size()])
+				for (final BitSet combo : combos)
 				{	
 					// Try this arg combo
 					final BitSet subset = (BitSet)combo.clone();
