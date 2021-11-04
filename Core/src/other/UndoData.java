@@ -7,6 +7,7 @@ import gnu.trove.list.array.TLongArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 import main.collections.FastTIntArrayList;
+import other.state.track.OnTrackIndices;
 import other.state.zhash.HashedBitSet;
 
 /**
@@ -98,6 +99,9 @@ public class UndoData
 
 	/** In case of a sequence of capture to remove (e.g. some draughts games). */
 	private TIntArrayList sitesToRemove = null;
+	
+	/** To access where are each type of piece on each track. */
+	private OnTrackIndices onTrackIndices;
 
 	//-------------------------------------------------------------------------
 	
@@ -125,6 +129,7 @@ public class UndoData
 	 * @param remainingDominoes		   All the remainingDominoes.
 	 * @param visited	  			   Sites visited during the same turn.
 	 * @param sitesToRemove		   	   Sites to remove in case of a sequence of capture.
+	 * @param onTrackIndices		   To access where are each type of piece on each track.
 	 */
 	public UndoData
 	(
@@ -150,7 +155,8 @@ public class UndoData
 		final int numConsecutivePasses,
 		final FastTIntArrayList remainingDominoes,
 		final HashedBitSet visited,
-		final TIntArrayList sitesToRemove
+		final TIntArrayList sitesToRemove,
+		final OnTrackIndices onTrackIndices
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -176,6 +182,7 @@ public class UndoData
 		this.remainingDominoes = remainingDominoes == null ? null : new FastTIntArrayList(remainingDominoes);
 		this.visited = visited == null ? null : visited.clone();
 		this.sitesToRemove = sitesToRemove == null ? null : new TIntArrayList(sitesToRemove);
+		this.onTrackIndices = onTrackIndices == null ? null : new OnTrackIndices(onTrackIndices);
 	}
 
 	//-------------------------------------------------------------------------
@@ -362,5 +369,13 @@ public class UndoData
 	public TIntArrayList sitesToRemove()
 	{
 		return sitesToRemove;
+	}
+	
+	/**
+	 * @return To access where are each type of piece on each track. 
+	 */
+	public OnTrackIndices onTrackIndices()
+	{
+		return onTrackIndices;
 	}
 }

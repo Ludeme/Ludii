@@ -336,50 +336,50 @@ public final class ActionMoveN extends BaseAction
 			context.state().owned().add(who, what, from, typeFrom);
 		}
 
-		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
-		// We update the structure about track indices if the game uses track.
-		if (what != 0 && onTrackIndices != null)
-		{
-			for (final Track track : context.board().tracks())
-			{
-				final int trackIdx = track.trackIdx();
-				final TIntArrayList indicesLocTo = onTrackIndices.locToIndex(trackIdx, to);
-
-				for (int k = 0; k < indicesLocTo.size(); k++)
-				{
-					final int indexA = indicesLocTo.getQuick(k);
-					final int countAtIndex = onTrackIndices.whats(trackIdx, what, indicesLocTo.getQuick(k));
-
-					if (countAtIndex > 0)
-					{
-						onTrackIndices.remove(trackIdx, what, this.count, indexA);
-						final TIntArrayList newWhatIndice = onTrackIndices.locToIndexFrom(trackIdx, from, indexA);
-
-						if (newWhatIndice.size() > 0)
-						{
-							onTrackIndices.add(trackIdx, what, this.count, newWhatIndice.getQuick(0));
-						}
-						else
-						{
-							final TIntArrayList newWhatIndiceIfNotAfter = onTrackIndices.locToIndex(trackIdx, from);
-							if (newWhatIndiceIfNotAfter.size() > 0)
-								onTrackIndices.add(trackIdx, what, this.count, newWhatIndiceIfNotAfter.getQuick(0));
-						}
-
-						break;
-					}
-				}
-
-				// If the piece was not in the track but enter on it, we update the structure
-				// corresponding to that track.
-				if (indicesLocTo.size() == 0)
-				{
-					final TIntArrayList indicesLocFrom = onTrackIndices.locToIndex(trackIdx, from);
-					if (indicesLocFrom.size() != 0)
-						onTrackIndices.add(trackIdx, what, 1, indicesLocFrom.getQuick(0));
-				}
-			}
-		}
+//		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+//		// We update the structure about track indices if the game uses track.
+//		if (what != 0 && onTrackIndices != null)
+//		{
+//			for (final Track track : context.board().tracks())
+//			{
+//				final int trackIdx = track.trackIdx();
+//				final TIntArrayList indicesLocTo = onTrackIndices.locToIndex(trackIdx, to);
+//
+//				for (int k = 0; k < indicesLocTo.size(); k++)
+//				{
+//					final int indexA = indicesLocTo.getQuick(k);
+//					final int countAtIndex = onTrackIndices.whats(trackIdx, what, indicesLocTo.getQuick(k));
+//
+//					if (countAtIndex > 0)
+//					{
+//						onTrackIndices.remove(trackIdx, what, this.count, indexA);
+//						final TIntArrayList newWhatIndice = onTrackIndices.locToIndexFrom(trackIdx, from, indexA);
+//
+//						if (newWhatIndice.size() > 0)
+//						{
+//							onTrackIndices.add(trackIdx, what, this.count, newWhatIndice.getQuick(0));
+//						}
+//						else
+//						{
+//							final TIntArrayList newWhatIndiceIfNotAfter = onTrackIndices.locToIndex(trackIdx, from);
+//							if (newWhatIndiceIfNotAfter.size() > 0)
+//								onTrackIndices.add(trackIdx, what, this.count, newWhatIndiceIfNotAfter.getQuick(0));
+//						}
+//
+//						break;
+//					}
+//				}
+//
+//				// If the piece was not in the track but enter on it, we update the structure
+//				// corresponding to that track.
+//				if (indicesLocTo.size() == 0)
+//				{
+//					final TIntArrayList indicesLocFrom = onTrackIndices.locToIndex(trackIdx, from);
+//					if (indicesLocFrom.size() != 0)
+//						onTrackIndices.add(trackIdx, what, 1, indicesLocFrom.getQuick(0));
+//				}
+//			}
+//		}
 
 		return this;
 	}

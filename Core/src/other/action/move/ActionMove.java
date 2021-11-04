@@ -707,7 +707,7 @@ public final class ActionMove extends BaseAction
 	{
 		// In undo ActionMove from = to and to = from.
 		
-		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+		//final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 		final int contIdTo = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final Game game = context.game();
@@ -961,7 +961,7 @@ public final class ActionMove extends BaseAction
 			}
 
 			// We update the structure about track indices if the game uses track.
-			updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
+			//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 
 //			if (context.state().onTrackIndices() != null)
 //			{
@@ -1125,7 +1125,7 @@ public final class ActionMove extends BaseAction
 				}
 				
 				// We update the structure about track indices if the game uses track.
-				updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
+				//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 
 //				if (context.state().onTrackIndices() != null)
 //				{
@@ -1204,7 +1204,7 @@ public final class ActionMove extends BaseAction
 				}
 
 				// We update the structure about track indices if the game uses track.
-				updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
+				//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 			}
 		}
 		
