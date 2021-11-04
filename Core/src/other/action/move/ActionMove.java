@@ -1005,11 +1005,12 @@ public final class ActionMove extends BaseAction
 		// On a stacking game
 		else
 		{
+			
 			if(from == to)
 				return this;
 			
-			final ContainerState containerTo = context.state().containerStates()[contIdFrom];
-			final ContainerState containerFrom = context.state().containerStates()[contIdTo];
+			final ContainerState containerTo = context.state().containerStates()[contIdTo];
+			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
 
 			// To move a complete stack
 			if(onStacking)
@@ -1112,7 +1113,7 @@ public final class ActionMove extends BaseAction
 							context.state().owned().add(owner, piece, from, i + 1, typeFrom);
 						}
 						
-						containerFrom.insertCell(context.state(), from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom,
+						containerFrom.insert(context.state(), typeFrom, from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom,
 								context.game());
 						
 						context.state().owned().add(ownerTo, what, from,
