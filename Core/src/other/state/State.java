@@ -1034,6 +1034,15 @@ public class State implements Serializable
 		return otherOnTrackIndices == null ? null : new OnTrackIndices(otherOnTrackIndices);
 	}
 	
+	/**
+	 * To set on track indices.
+	 * @param otherOnTrackIndices The on track indices to set.
+	 */
+	public void setOnTrackIndices(final OnTrackIndices otherOnTrackIndices)
+	{
+		this.onTrackIndices = (otherOnTrackIndices == null ? null : new OnTrackIndices(otherOnTrackIndices));
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**

@@ -114,11 +114,21 @@ public class OnTrackIndices
 	 * NOTE: callers should not modify the returned list or its contents!
 	 * 
 	 * @param trackIdx The index of the track
-	 * @return The onTracks for each what on a track.
+	 * @return The onTracks for a what on a track.
 	 */
 	public List<FastTIntArrayList> whats(final int trackIdx)
 	{
 		return this.onTrackIndices[trackIdx];
+	}
+	
+	/**
+	 * NOTE: callers should not modify the returned list or its contents!
+	 * 
+	 * @return The onTracks for each what on a track.
+	 */
+	public List<FastTIntArrayList>[] onTrackIndices()
+	{
+		return this.onTrackIndices;
 	}
 
 	/**

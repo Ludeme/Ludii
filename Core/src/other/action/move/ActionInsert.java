@@ -196,22 +196,22 @@ public final class ActionInsert extends BaseAction
 		if (cs.sizeStack(to, type) == 0)
 			cs.addToEmpty(to, type);
 		
-		if (pieceIdx > 0)
-		{
-			// We update the structure about track indices if the game uses track.
-			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
-			if (onTrackIndices != null)
-			{
-				for (final Track track : context.board().tracks())
-				{
-					final int trackIdx = track.trackIdx();
-					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
-
-					for (int i = 0; i < indices.size(); i++)
-						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
-				}
-			}
-		}
+//		if (pieceIdx > 0)
+//		{
+//			// We update the structure about track indices if the game uses track.
+//			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+//			if (onTrackIndices != null)
+//			{
+//				for (final Track track : context.board().tracks())
+//				{
+//					final int trackIdx = track.trackIdx();
+//					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
+//
+//					for (int i = 0; i < indices.size(); i++)
+//						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
+//				}
+//			}
+//		}
 		
 		return this;
 	}

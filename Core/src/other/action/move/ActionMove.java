@@ -707,7 +707,7 @@ public final class ActionMove extends BaseAction
 	{
 		// In undo ActionMove from = to and to = from.
 		
-		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+		//final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 		final int contIdTo = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final Game game = context.game();
@@ -961,7 +961,7 @@ public final class ActionMove extends BaseAction
 			}
 
 			// We update the structure about track indices if the game uses track.
-			updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
+			//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 
 //			if (context.state().onTrackIndices() != null)
 //			{
@@ -1005,11 +1005,12 @@ public final class ActionMove extends BaseAction
 		// On a stacking game
 		else
 		{
+			
 			if(from == to)
 				return this;
 			
-			final ContainerState containerTo = context.state().containerStates()[contIdFrom];
-			final ContainerState containerFrom = context.state().containerStates()[contIdTo];
+			final ContainerState containerTo = context.state().containerStates()[contIdTo];
+			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
 
 			// To move a complete stack
 			if(onStacking)
@@ -1112,7 +1113,7 @@ public final class ActionMove extends BaseAction
 							context.state().owned().add(owner, piece, from, i + 1, typeFrom);
 						}
 						
-						containerFrom.insertCell(context.state(), from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom,
+						containerFrom.insert(context.state(), typeFrom, from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom,
 								context.game());
 						
 						context.state().owned().add(ownerTo, what, from,
@@ -1124,7 +1125,7 @@ public final class ActionMove extends BaseAction
 				}
 				
 				// We update the structure about track indices if the game uses track.
-				updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
+				//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 
 //				if (context.state().onTrackIndices() != null)
 //				{
@@ -1203,7 +1204,7 @@ public final class ActionMove extends BaseAction
 				}
 
 				// We update the structure about track indices if the game uses track.
-				updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
+				//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 			}
 		}
 		

@@ -1716,7 +1716,8 @@ public class Context
 				state.numConsecutivesPasses(),
 				state.remainingDominoes(),
 				state.visited(),
-				state.sitesToRemove()
+				state.sitesToRemove(),
+				state.onTrackIndices()
 		);
 		
 		trial.addEndData(endData);

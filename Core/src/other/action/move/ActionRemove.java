@@ -350,22 +350,22 @@ public final class ActionRemove extends BaseAction
 		}
 		
 		
-		if (previousWhat > 0)
-		{
-			// We update the structure about track indices if the game uses track.
-			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
-			if (onTrackIndices != null)
-			{
-				for (final Track track : context.board().tracks())
-				{
-					final int trackIdx = track.trackIdx();
-					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
-
-					if (indices.size() > 0)
-						onTrackIndices.add(trackIdx, previousWhat, previousCount, indices.getQuick(0));
-				}
-			}
-		}
+//		if (previousWhat > 0)
+//		{
+//			// We update the structure about track indices if the game uses track.
+//			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+//			if (onTrackIndices != null)
+//			{
+//				for (final Track track : context.board().tracks())
+//				{
+//					final int trackIdx = track.trackIdx();
+//					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
+//
+//					if (indices.size() > 0)
+//						onTrackIndices.add(trackIdx, previousWhat, previousCount, indices.getQuick(0));
+//				}
+//			}
+//		}
 		
 		return this;
 	}
