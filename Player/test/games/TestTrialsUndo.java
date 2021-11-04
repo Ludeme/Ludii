@@ -116,7 +116,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Bagh Bandi")) 
+			if (fileEntry.getPath().contains("Asi Keliya")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -424,11 +424,6 @@ public class TestTrialsUndo
 								System.out.println("!= num forced passes");
 								fail();
 							}
-							if(trial.numLogicalDecisions(game) != trialToCompare.numLogicalDecisions(game))
-							{
-								System.out.println("!= num logical decision");
-								fail();
-							}
 							if(!trial.previousState().equals(trialToCompare.previousState()))
 							{
 								System.out.println("!= previous states");
@@ -479,10 +474,38 @@ public class TestTrialsUndo
 							
 							if(state.pendingValues() != null)
 							{
-								if(state.pendingValues().equals(stateToCompare.pendingValues()))
+								
+								if(state.pendingValues().size() != stateToCompare.pendingValues().size())
 								{
-									System.out.println("!= pendingValues");
+									System.out.println("IN MOVE " + trial.numberRealMoves() +  " != pendingValues");
+									System.out.println("correct one is " + stateToCompare.pendingValues());
+									System.out.println("undo one is " + state.pendingValues());
 									fail();
+								}
+								else
+								{
+									final int[] pendingValuesUndo = state.pendingValues().toArray();
+									final int[] pendingValuesToCompare = stateToCompare.pendingValues().toArray();
+									
+									for(int pendingValue : pendingValuesUndo)
+									{
+										boolean found = false;
+										for(int pendingValueToCompare : pendingValuesToCompare)
+										{
+											if(pendingValue == pendingValueToCompare)
+											{
+												found = true;
+												break;
+											}
+										}
+										if(!found)
+										{
+											System.out.println("IN MOVE " + trial.numberRealMoves() +  " != pendingValues");
+											System.out.println("correct one is " + stateToCompare.pendingValues());
+											System.out.println("undo one is " + state.pendingValues());
+											fail();
+										}
+									}
 								}
 							}
 							
