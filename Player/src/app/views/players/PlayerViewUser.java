@@ -399,9 +399,6 @@ public class PlayerViewUser extends View
 		if (app.manager().aiSelected()[playerIndex].ai() != null)
 			strAIName += " (" + app.manager().aiSelected()[playerIndex].ai().friendlyName() + ") ";
 		
-		//if (DesktopApp.aiSelected()[playerIndex].menuItemName().label.equals("From JAR"))
-		//	strAIName += " (" + DesktopApp.aiSelected()[playerIndex].ai().friendlyName + ")";
-		
 		// Score
 		final ScoreDisplayInfo scoreDisplayInfo = instance.metadata().graphics().scoreDisplayInfo(instanceContext, playerId);
 		if (scoreDisplayInfo.scoreReplacement() != null)
@@ -453,10 +450,10 @@ public class PlayerViewUser extends View
 		if (app.manager().settingsNetwork().playerTimeRemaining()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)-1] > 0)
 			strExtras += " Time: " + app.manager().settingsNetwork().playerTimeRemaining()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)-1] + "s";
 		
-		strExtras = strAIName + strExtras;
+		strName += strAIName;
 		
 		// cut string off at a specified pixel width
-		final int maxLengthPixels = 150;
+		final int maxLengthPixels = 200;
 		String shortendedString = "";
 		for (int i = 0; i < strName.length(); i++)
 		{
@@ -471,7 +468,7 @@ public class PlayerViewUser extends View
 			}
 		}
 		
-		return strName + " " + strExtras;
+		return strName + strExtras;
 	}
 	
 	//-------------------------------------------------------------------------
