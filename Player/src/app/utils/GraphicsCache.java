@@ -91,8 +91,8 @@ public class GraphicsCache
 			final SVGGraphics2D svg = componentStyle.getImageSVG(localState);
 			final BufferedImage componentImage = getComponentBufferedImage(svg, component, componentStyle, context, containerId, imageSize, localState, secondary);
 
-			componentImageArray.setCacheImage(componentImage, containerId, componentId, owner, localState, value, hiddenValue, rotation);
-			componentImageArray.setCacheImageSize(imageSize, containerId, componentId, owner, localState, value, hiddenValue, rotation);
+			//componentImageArray.setCacheImage(componentImage, containerId, componentId, owner, localState, value, hiddenValue, rotation);
+			//componentImageArray.setCacheImageSize(imageSize, containerId, componentId, owner, localState, value, hiddenValue, rotation);
 			
 			cacheImage = componentImage;
 			cacheImageSize = imageSize;
