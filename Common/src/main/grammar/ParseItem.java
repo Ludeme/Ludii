@@ -357,10 +357,25 @@ public class ParseItem
 				
 				final int numSlots = clause.args().size();  //comboLength = combo.size();
 
-				final List<BitSet>[][] argCombos = ArgCombos.get().combos();
-					
-				for (final BitSet combo : argCombos[arguments.size()][clause.args().size()])
+//				final List<BitSet>[][] argCombos = ArgCombos.get().combos();
+				
+				List<BitSet> combos2 = new ArrayList<BitSet>();
+
+				//final int ar = arguments.size();
+				final int cl = clause.args().size();
+				
+				// Extract the bit patterns out of sequential numbers in range
+				for (int seed = 0; seed < (0x1 << cl); seed++)  //(ArgCombos.MAX_ARGS)); seed++)
 				{
+//					final int on = Integer.bitCount(seed);
+//					for (int n = on; n < MAX_ARGS+1; n++)
+//						if (seed < (0x1 << cl))  // all on-bits are within range
+							combos2.add(BitSet.valueOf(new long[] { seed }));	
+				}
+							
+				//for (final BitSet combo : argCombos[arguments.size()][clause.args().size()])
+				for (final BitSet combo : combos2)
+				{	
 					// Try this arg combo
 					final BitSet subset = (BitSet)combo.clone();
 					subset.and(clause.mandatory());
