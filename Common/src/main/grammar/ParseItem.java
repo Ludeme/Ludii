@@ -355,11 +355,12 @@ public class ParseItem
 				// ** Don't check each argument individually, as position in list can dictate what type it is 
 				// **
 				
-				final int numSlots = clause.args().size();  //comboLength = combo.size();
+				final int numSlots = clause.args().size();
 				
 				final int clauseSize = clause.args().size();
-				final int argsSize  = arguments.size();
+				final int argsSize = arguments.size();
 				
+				// Generate all combinations of on-bits up to the maximum expected size
 				for (int seed = 0; seed < (0x1 << clauseSize); seed++)
 				{
 					if (Integer.bitCount(seed) != argsSize)
