@@ -23,8 +23,6 @@ import util.StringUtil;
 public class GameSetup 
 {
 
-	//private static Map<String, Game> cachedGames = new HashMap<>();
-	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -38,25 +36,6 @@ public class GameSetup
 		
 		try
 		{
-			// Cache the game object if using the web player, to allow faster access later.
-//			Game game;
-//			if (app.manager().isWebApp())
-//			{
-//				if (cachedGames.containsKey(desc))
-//				{
-//					game = cachedGames.get(desc);
-//				}
-//				else
-//				{
-//					game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
-//					cachedGames.put(desc, game);
-//				}
-//			}
-//			else
-//			{
-//				game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
-//			}
-
 			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
 			app.manager().ref().setGame(app.manager(), game);			
 			
