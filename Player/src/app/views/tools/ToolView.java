@@ -103,7 +103,7 @@ public class ToolView extends View
 			buttons.add(null);  
 		buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
 		
-		if (!app.settingsPlayer().isWebApp())
+		if (!app.manager().isWebApp())
 		{
 			buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
 			buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));

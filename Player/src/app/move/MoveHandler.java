@@ -90,7 +90,7 @@ public class MoveHandler
 					return false;
 				
 				// If using web app (only clicks) check if any other legal moves have fromInfo as their from location.
-				if (app.settingsPlayer().isWebApp())
+				if (app.manager().isWebApp())
 					if (
 							locnFromInfo.equals(locnToInfo) 
 							&& 

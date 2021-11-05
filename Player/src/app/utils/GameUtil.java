@@ -124,7 +124,7 @@ public class GameUtil
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
 			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());
 			
-			if (app.settingsPlayer().isWebApp())
+			if (app.manager().isWebApp())
 				app.setTemporaryMessage(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), app.manager().ref().context().trial()));
 			else
 				app.setTemporaryMessage("Choose Game > Restart to play again.");

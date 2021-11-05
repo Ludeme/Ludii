@@ -316,7 +316,7 @@ public class PlayerViewUser extends View
 	 */
 	private void drawAISpinner(final Graphics2D g2d, final Context context)
 	{
-		if (app.settingsPlayer().isWebApp())
+		if (app.manager().isWebApp())
 			return;
 		
 		final Rectangle2D nameRect = app.playerNameList()[playerId];

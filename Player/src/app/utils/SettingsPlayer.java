@@ -74,9 +74,13 @@ public class SettingsPlayer
 	/** Tab currently selected. */
 	private int tabSelected = 0;
 	
-	/** If this is the web player application. Used to disable various unsupported features.*/
-	private boolean webApp = false;
+	//-------------------------------------------------------------------------
+	// Web player settings
+	
+	/** Store the results of this game in the DB */
 	private boolean webGameResultValid = true;
+	
+	/** If played index has always been an agent */
 	private final boolean[] agentArray = {true,true,true,true,true,true,true,true,true,true,
 										  true,true,true,true,true,true,true,true,true,true};
 	
@@ -724,14 +728,6 @@ public class SettingsPlayer
 	public void setSandboxMode(final boolean sandboxMode) 
 	{
 		this.sandboxMode = sandboxMode;
-	}
-
-	public boolean isWebApp() {
-		return webApp;
-	}
-
-	public void setWebApp(final boolean webApp) {
-		this.webApp = webApp;
 	}
 
 	public boolean isPerformingTutorialVisualisation() 

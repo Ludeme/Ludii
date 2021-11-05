@@ -50,6 +50,8 @@ public final class Manager
 	private final SettingsManager settingsManager = new SettingsManager();
 	private final SettingsNetwork settingsNetwork = new SettingsNetwork();
 	
+	private boolean webApp = false;
+	
 	//-------------------------------------------------------------------------
 	
 	public Manager(final PlayerInterface playerInterface)
@@ -179,6 +181,18 @@ public final class Manager
 	public DatabaseFunctionsPublic databaseFunctionsPublic() 
 	{
 		return databaseFunctionsPublic;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	public boolean isWebApp()
+	{
+		return webApp;
+	}
+
+	public void setWebApp(final boolean webPlayer)
+	{
+		webApp = webPlayer;
 	}
 	
 	//-------------------------------------------------------------------------
