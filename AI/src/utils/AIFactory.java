@@ -264,6 +264,10 @@ public class AIFactory
 		{
 			return new HeuristicSampling();
 		}
+		else if (string.equalsIgnoreCase("Heuristic Sampling (1)"))
+		{
+			return new HeuristicSampling(1);
+		}
 		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
