@@ -1,7 +1,9 @@
 package app.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
@@ -23,6 +25,8 @@ import util.StringUtil;
 public class GameSetup 
 {
 
+	private static Map<String, Game> cachedGames = new HashMap<>();
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -36,7 +40,25 @@ public class GameSetup
 		
 		try
 		{
-			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
+			// Cache the game object if using the web player, to allow faster access later.
+			Game game;
+			if (app.manager().isWebApp())
+			{
+				if (cachedGames.containsKey(desc))
+				{
+					game = cachedGames.get(desc);
+				}
+				else
+				{
+					game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
+					cachedGames.put(desc, game);
+				}
+			}
+			else
+			{
+				game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
+			}
+
 			app.manager().ref().setGame(app.manager(), game);			
 			
 			printCompilationMessages(app, game, debug, report);
