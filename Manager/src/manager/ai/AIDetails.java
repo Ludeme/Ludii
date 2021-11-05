@@ -43,19 +43,21 @@ public class AIDetails
 			final String algName = aiObj.getString("algorithm");
 			if (!algName.equalsIgnoreCase("Human"))
 			{
-				AI aiFromName = AIFactory.fromJson(object);
+//				AI aiFromName = AIFactory.fromJson(object);
+//				
+//				// Dont use feature AI in web player
+//				if (manager.isWebApp() && aiFromName.usesFeatures())
+//				{
+//					final JSONObject json = new JSONObject()
+//							.put("AI", new JSONObject()
+//							.put("algorithm", "AlphaBeta")
+//							);
+//					aiFromName = AIFactory.fromJson(json);
+//				}
+//				
+//				setAI(aiFromName);
 				
-				// Dont use feature AI in web player
-				if (manager.isWebApp() && aiFromName.usesFeatures())
-				{
-					final JSONObject json = new JSONObject()
-							.put("AI", new JSONObject()
-							.put("algorithm", "AlphaBeta")
-							);
-					aiFromName = AIFactory.fromJson(json);
-				}
-				
-				setAI(aiFromName);
+				setAI(AIFactory.fromJson(object));
 			}	
 		}
 		else
