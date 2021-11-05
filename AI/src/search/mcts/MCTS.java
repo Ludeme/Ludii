@@ -992,6 +992,12 @@ public class MCTS extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	@Override
+	public boolean usesFeatures()
+	{
+		return (learnedSelectionPolicy != null || playoutStrategy instanceof SoftmaxPolicy);
+	}
+	
+	@Override
 	public void initAI(final Game game, final int playerID)
 	{
 		// Store state flags

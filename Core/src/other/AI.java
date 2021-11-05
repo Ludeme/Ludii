@@ -340,6 +340,14 @@ public abstract class AI
 		return wantsCheatRNG;
 	}
 	
+	/**
+	 * @return Does this AI use spatial state-action features?
+	 */
+	public boolean usesFeatures()
+	{
+		return false;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
