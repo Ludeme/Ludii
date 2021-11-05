@@ -563,6 +563,10 @@ public class AIFactory
 		{
 			return new HeuristicSampling();
 		}
+		else if (algName.equalsIgnoreCase("Heuristic Sampling (1)"))
+		{
+			return new HeuristicSampling(1);
+		}
 		else if (algName.equalsIgnoreCase("From JAR"))
 		{
 			final File jarFile = new File(aiObj.getString("JAR File"));
