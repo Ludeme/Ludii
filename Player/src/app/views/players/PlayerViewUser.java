@@ -454,7 +454,7 @@ public class PlayerViewUser extends View
 		strName += strAIName;
 		
 		// cut string off at a specified pixel width
-		final int maxLengthPixels = 250;
+		final int maxLengthPixels = g2d.getFont().getSize() > 20 ? 250 : 200;			// More pixels allocated if font is large (i.e. Mobile)
 		String shortendedString = "";
 		for (int i = 0; i < strName.length(); i++)
 		{

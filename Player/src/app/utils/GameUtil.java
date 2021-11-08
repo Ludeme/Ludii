@@ -9,6 +9,9 @@ import app.move.MoveHandler;
 import app.move.animation.MoveAnimation;
 import compiler.Compiler;
 import game.Game;
+import game.equipment.container.Container;
+import game.types.board.SiteType;
+import game.types.play.RoleType;
 import main.Constants;
 import main.grammar.Report;
 import main.options.Ruleset;
@@ -103,6 +106,20 @@ public class GameUtil
 		app.updateFrameTitle(true);
 		
 		AIUtil.pauseAgentsIfNeeded(app.manager());
+		
+		if (app.manager().isWebApp())
+		{
+			// Check if that game contains a shared hand (above the board)
+			final Game game = app.manager().ref().context().game();
+			boolean hasSharedHand = false;
+			for (final Container container : game.equipment().containers())
+				if (container.role().equals(RoleType.Shared))
+					hasSharedHand = true;
+			
+			// Make the margins around the board thinner
+			if (game.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand)
+				app.bridge().getContainerStyle(0).setDefaultBoardScale(0.95);
+		}
 
 		MoveHandler.checkMoveWarnings(app);
 		app.repaint();

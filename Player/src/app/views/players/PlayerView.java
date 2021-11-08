@@ -57,7 +57,7 @@ public class PlayerView extends View
 		{
 			boardSize = app.width();
 			startX = 8;
-			startY = boardSize + 48;	// +40 for the height of the toolView
+			startY = app.manager().isWebApp() ? boardSize + 88 : boardSize + 48;	// +40 for the height of the toolView, +80 on mobile
 			width = boardSize - 8;
 			height = Math.min(maxHandHeight, (int)((app.height() - boardSize)*maxPanelPercentageHeight/numPlayers));
 		}
