@@ -65,7 +65,7 @@ public class PlayerView extends View
 			final int x0 = startX;
 			final int y0 = startY + (pid-1) * height;
 			final Rectangle place = new Rectangle(x0, y0, width, height);
-			final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this);
+			final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this, portraitMode);
 			app.getPanels().add(playerPage);
 			playerSections.add(playerPage);
 		}
@@ -74,7 +74,7 @@ public class PlayerView extends View
 		if (app.contextSnapshot().getContext(app).hasSharedPlayer())
 		{
 			final Rectangle place = new Rectangle(0, 0, boardSize, app.height() / 10);
-			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
+			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this, portraitMode);
 			app.getPanels().add(naturePlayerPage);
 			playerSections.add(naturePlayerPage);
 		}

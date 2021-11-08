@@ -53,15 +53,18 @@ public class PlayerViewUser extends View
 	
 	/** Store a spinner for this player, to represent if an AI is thinking about a move for it. */
 	public Spinner spinner = null;
+	
+	private boolean portraitMode = false;
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor.
 	 */
-	public PlayerViewUser(final PlayerApp app, final Rectangle rect, final int pid, final PlayerView playerView)
+	public PlayerViewUser(final PlayerApp app, final Rectangle rect, final int pid, final PlayerView playerView, final boolean portraitMode)
 	{
 		super(app);
+		this.portraitMode = portraitMode;
 		this.playerView = playerView;
 		playerId = pid;
 		determineHand(app.contextSnapshot().getContext(app).equipment());
@@ -225,6 +228,10 @@ public class PlayerViewUser extends View
 	private void drawPlayerName(final Graphics2D g2d, final int mover, final ArrayList<Integer> winnerNumbers, final Context context)
 	{
 		g2d.setFont(PlayerView.playerNameFont);
+		
+		if (app.manager().isWebApp() && portraitMode)
+			g2d.setFont(new Font("Arial", Font.PLAIN, 32));
+		
 		final String stringNameAndExtras = getNameAndExtrasString(context, g2d);
 		final Rectangle2D bounds = PlayerView.playerNameFont.getStringBounds(stringNameAndExtras, g2d.getFontRenderContext());	
 		
