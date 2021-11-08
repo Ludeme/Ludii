@@ -64,7 +64,6 @@ public class ToolView extends View
 
 		int toolHeight = 40;
 		
-		
 		if (portraitMode)
 			toolHeight = 80;
 		
