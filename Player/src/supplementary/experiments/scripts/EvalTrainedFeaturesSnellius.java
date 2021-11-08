@@ -6,9 +6,11 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import game.Game;
+import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
@@ -140,6 +142,8 @@ public class EvalTrainedFeaturesSnellius
 		final String userName = argParse.getValueString("--user-name");
 		
 		final List<Object[][]> matchupsPerPlayerCount = new ArrayList<Object[][]>();
+		
+		final int maxMatchupsPerGame = ListUtils.numCombinationsWithReplacement(VARIANTS.length, 3);
 
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
@@ -162,6 +166,28 @@ public class EvalTrainedFeaturesSnellius
 			
 			if (matchupsPerPlayerCount.get(numPlayers) == null)
 				matchupsPerPlayerCount.set(numPlayers, ListUtils.generateCombinationsWithReplacement(VARIANTS, numPlayers));
+			
+			if (matchupsPerPlayerCount.get(numPlayers).length > maxMatchupsPerGame)
+			{
+				// Too many matchups: remove some of them
+				final TIntArrayList indicesToKeep = new TIntArrayList(matchupsPerPlayerCount.get(numPlayers).length);
+				for (int i = 0; i < matchupsPerPlayerCount.get(numPlayers).length; ++i)
+				{
+					indicesToKeep.add(i);
+				}
+				
+				while (indicesToKeep.size() > maxMatchupsPerGame)
+				{
+					ListUtils.removeSwap(indicesToKeep, ThreadLocalRandom.current().nextInt(indicesToKeep.size()));
+				}
+				
+				final Object[][] newMatchups = new Object[maxMatchupsPerGame][numPlayers];
+				for (int i = 0; i < newMatchups.length; ++i)
+				{
+					newMatchups[i] = matchupsPerPlayerCount.get(numPlayers)[indicesToKeep.getQuick(i)];
+				}
+				matchupsPerPlayerCount.set(numPlayers, newMatchups);
+			}
 			
 			for (int i = 0; i < matchupsPerPlayerCount.get(numPlayers).length; ++i)
 			{

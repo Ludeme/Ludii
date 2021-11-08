@@ -231,6 +231,29 @@ public class ListUtils
 	}
 	
 	/**
+	 * @param numItems Number of items from which we can pick
+	 * @param combinationLength How many items should we pick per combination
+	 * @return How many combinations of N items are there, if we sample with replacement
+	 * 	(and order does not matter)?
+	 */
+	public static final int numCombinationsWithReplacement(final int numItems, final int combinationLength)
+	{
+		int numerator = 1;
+		for (int i = combinationLength + 1; i <= (numItems + combinationLength - 1); ++i)
+		{
+			numerator *= i;
+		}
+		
+		int denominator = 1;
+		for (int i = 1; i <= (numItems - 1); ++i)
+		{
+			denominator *= i;
+		}
+		
+		return numerator / denominator;
+	}
+	
+	/**
 	 * @param items
 	 * @param combinationLength
 	 * @return All possible combinations of n selections of given array of items,
@@ -245,19 +268,7 @@ public class ListUtils
 		if (combinationLength == 0)
 			return new Object[0][];
 		
-		int numerator = 1;
-		for (int i = combinationLength + 1; i <= (items.length + combinationLength - 1); ++i)
-		{
-			numerator *= i;
-		}
-		
-		int denominator = 1;
-		for (int i = 1; i <= (items.length - 1); ++i)
-		{
-			denominator *= i;
-		}
-		
-		final int numCombinations = numerator / denominator;
+		final int numCombinations = numCombinationsWithReplacement(items.length, combinationLength);
 		final Object[][] combinations = new Object[numCombinations][combinationLength];
 		
 		int nextCombIdx = 0;
