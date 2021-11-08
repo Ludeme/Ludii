@@ -505,9 +505,26 @@ public class SoftmaxPolicy extends Policy
 					
 					if (!new File(policyWeightsFilepath).exists())
 					{
-						// replace with whatever is the latest file we have
-						policyWeightsFilepath = 
-								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsCE_P" + i, "txt");
+						// Replace with whatever is the latest file we have
+						if (policyWeightsFilepath.contains("Selection"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsSelection_P" + i, "txt");
+						}
+						else if (policyWeightsFilepath.contains("Playout"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsPlayout_P" + i, "txt");
+						}
+						else if (policyWeightsFilepath.contains("TSPG"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsTSPG_P" + i, "txt");
+						}
+						else
+						{
+							policyWeightsFilepath = null;
+						}
 					}
 					
 					if (boosted)

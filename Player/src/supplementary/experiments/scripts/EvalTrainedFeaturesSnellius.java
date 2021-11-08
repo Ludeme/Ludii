@@ -14,6 +14,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import main.collections.ListUtils;
 import other.GameLoader;
 
 /**
@@ -27,11 +28,11 @@ public class EvalTrainedFeaturesSnellius
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
-	/** Memory to assign to JVM, in MB (2 GB per core --> we take 3 cores per job, 6GB per job, use 5GB for JVM) */
-	private static final String JVM_MEM = "5120";
+	/** Memory to assign to JVM, in MB (2 GB per core --> we take 2 cores per job, 4GB per job, use 3GB for JVM) */
+	private static final String JVM_MEM = "3072";
 	
 	/** Memory to assign per process (in GB) */
-	private static final int MEM_PER_PROCESS = 6;
+	private static final int MEM_PER_PROCESS = 4;
 	
 	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
 	private static final int MEM_PER_NODE = 256;
@@ -40,7 +41,7 @@ public class EvalTrainedFeaturesSnellius
 	private static final int MAX_REQUEST_MEM = 234;
 	
 	/** Max number of self-play trials */
-	private static final int MAX_SELFPLAY_TRIALS = 200;
+	private static final int NUM_TRIALS = 150;
 	
 	/** Max wall time (in minutes) */
 	private static final int MAX_WALL_TIME = 2880;
@@ -49,7 +50,7 @@ public class EvalTrainedFeaturesSnellius
 	private static final int CORES_PER_NODE = 128;
 	
 	/** Two cores is not enough since we want at least 5GB memory per job, so we take 3 cores (and 6GB memory) per job */
-	private static final int CORES_PER_PROCESS = 3;
+	private static final int CORES_PER_PROCESS = 2;
 	
 	/** If we request more cores than this in a job, we get billed for the entire node anyway, so should request exclusive */
 	private static final int EXCLUSIVE_CORES_THRESHOLD = 96;
@@ -137,6 +138,8 @@ public class EvalTrainedFeaturesSnellius
 			scriptsDir += "/";
 		
 		final String userName = argParse.getValueString("--user-name");
+		
+		final List<Object[][]> matchupsPerPlayerCount = new ArrayList<Object[][]>();
 
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
@@ -149,7 +152,21 @@ public class EvalTrainedFeaturesSnellius
 			if (game == null)
 				throw new IllegalArgumentException("Cannot load game: " + gameName);
 			
-			processDataList.add(new ProcessData(gameName));
+			final int numPlayers = game.players().count();
+			
+			// Check if we already have a matrix of matchup-lists for this player count
+			while (matchupsPerPlayerCount.size() <= numPlayers)
+			{
+				matchupsPerPlayerCount.add(null);
+			}
+			
+			if (matchupsPerPlayerCount.get(numPlayers) == null)
+				matchupsPerPlayerCount.set(numPlayers, ListUtils.generateCombinationsWithReplacement(VARIANTS, numPlayers));
+			
+			for (int i = 0; i < matchupsPerPlayerCount.get(numPlayers).length; ++i)
+			{
+				processDataList.add(new ProcessData(gameName, numPlayers, matchupsPerPlayerCount.get(numPlayers)[i]));
+			}
 		}
 		
 		int processIdx = 0;
@@ -168,9 +185,26 @@ public class EvalTrainedFeaturesSnellius
 				writer.println("#SBATCH -t " + MAX_WALL_TIME);
 				writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
 				
+				// Compute memory and core requirements
+				final int numProcessesThisJob = Math.min(processDataList.size() - processIdx, PROCESSES_PER_JOB);
+				final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
+				final int jobMemRequestGB;
+				if (exclusive)
+					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
+				else
+					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
+				
+				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
+				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
+				
+				if (exclusive)
+					writer.println("#SBATCH --exclusive");
+				else
+					writer.println("#SBATCH --exclusive");	// Just making always exclusive for now because otherwise taskset doesn't work
+				
 				// load Java modules
-				writer.println("module load 2020");
-				writer.println("module load Java/1.8.0_261");
+				writer.println("module load 2021");
+				writer.println("module load Java/11.0.2");
 				
 				// Put up to PROCESSES_PER_JOB processes in this job
 				int numJobProcesses = 0;
@@ -178,45 +212,68 @@ public class EvalTrainedFeaturesSnellius
 				{
 					final ProcessData processData = processDataList.get(processIdx);
 					
-					final String agentToEval = 
-							StringRoutines.join
+					final List<String> agentStrings = new ArrayList<String>();
+					for (final Object agent : processData.matchup)
+					{
+						final List<String> playoutStrParts = new ArrayList<String>();
+						playoutStrParts.add("playout=softmax");
+						for (int p = 1; p < processData.numPlayers; ++p)
+						{
+							playoutStrParts.add
 							(
-								";", 
-								"algorithm=MCTS",
-								"selection=noisyag0selection",
+								"policyweights" + 
+								p + 
+								"=/home/" + 
+								userName + 
+								"/TrainFeatureSnellius/Out/" + 
+								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
+								"_" + (String)agent + 
+								"/PolicyWeightsPlayout_P" + p + "_00201.txt"
+							);
+						}
+						
+						final List<String> learnedSelectionStrParts = new ArrayList<String>();
+						learnedSelectionStrParts.add("learned_selection_policy=softmax");
+						for (int p = 1; p < processData.numPlayers; ++p)
+						{
+							learnedSelectionStrParts.add
+							(
+								"policyweights" + 
+								p + 
+								"=/home/" + 
+								userName + 
+								"/TrainFeatureSnellius/Out/" + 
+								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
+								"_" + (String)agent + 
+								"/PolicyWeightsSelection_P" + p + "_00201.txt"
+							);
+						}
+						
+						final String agentStr = 
 								StringRoutines.join
 								(
-									",", 
-									"playout=softmax",
-									"policyweights1=/home/" + userName + "/TrainFeaturesCorrConfIntervals/Out/" + StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "_With/PolicyWeightsCE_P1_00201.txt",
-									"policyweights2=/home/" + userName + "/TrainFeaturesCorrConfIntervals/Out/" + StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "_With/PolicyWeightsCE_P2_00201.txt"
-								),
-								"tree_reuse=true",
-								"num_threads=2",
-								"final_move=robustchild",
-								"learned_selection_policy=playout",
-								"friendly_name=With"
-							);
-					
-					final String opponent = 
-							StringRoutines.join
-							(
-								";", 
-								"algorithm=MCTS",
-								"selection=noisyag0selection",
-								StringRoutines.join
-								(
-									",", 
-									"playout=softmax",
-									"policyweights1=/home/" + userName + "/TrainFeaturesCorrConfIntervals/Out/" + StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "_Without/PolicyWeightsCE_P1_00201.txt",
-									"policyweights2=/home/" + userName + "/TrainFeaturesCorrConfIntervals/Out/" + StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "_Without/PolicyWeightsCE_P2_00201.txt"
-								),
-								"tree_reuse=true",
-								"num_threads=2",
-								"final_move=robustchild",
-								"learned_selection_policy=playout",
-								"friendly_name=Without"
-							);
+									";", 
+									"algorithm=MCTS",
+									"selection=noisyag0selection",
+									StringRoutines.join
+									(
+										",", 
+										playoutStrParts
+									),
+									"tree_reuse=true",
+									"use_score_bounds=true",
+									"num_threads=2",
+									"final_move=robustchild",
+									StringRoutines.join
+									(
+										",", 
+										learnedSelectionStrParts
+									),
+									"friendly_name=With"
+								);
+						
+						agentStrings.add(StringRoutines.quote(agentStr));
+					}
 					
 					// Write Java call for this process
 					final String javaCall = StringRoutines.join
@@ -237,21 +294,23 @@ public class EvalTrainedFeaturesSnellius
 								"--eval-agents",
 								"--game",
 								StringRoutines.quote("/" + processData.gameName),
-								"-n 150",
+								"-n " + NUM_TRIALS,
 								"--thinking-time 1",
 								"--agents",
-								StringRoutines.quote(agentToEval),
-								StringRoutines.quote(opponent),
+								StringRoutines.join(" ", agentStrings),
 								"--out-dir",
 								StringRoutines.quote
 								(
 									"/home/" + 
 									userName + 
-									"/EvalFeaturesCorrConfIntervals/Out/" + 
-									StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "/"
+									"/EvalFeaturesSnellius/Out/" + 
+									StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "/" + 
+									StringRoutines.join("_", processData.matchup)
 								),
 								"--output-summary",
 								"--output-alpha-rank-data",
+								"--max-wall-time",
+								String.valueOf(MAX_WALL_TIME),
 								">",
 								"/home/" + userName + "/EvalFeaturesSnellius/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
 								"&"		// Run processes in parallel
@@ -323,14 +382,20 @@ public class EvalTrainedFeaturesSnellius
 	private static class ProcessData
 	{
 		public final String gameName;
+		public final int numPlayers;
+		public final Object[] matchup;
 		
 		/**
 		 * Constructor
 		 * @param gameName
+		 * @param numPlayers
+		 * @param matchup
 		 */
-		public ProcessData(final String gameName)
+		public ProcessData(final String gameName, final int numPlayers, final Object[] matchup)
 		{
 			this.gameName = gameName;
+			this.numPlayers = numPlayers;
+			this.matchup = matchup;
 		}
 	}
 	

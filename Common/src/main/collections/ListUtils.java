@@ -230,6 +230,72 @@ public class ListUtils
 		}
 	}
 	
+	/**
+	 * @param items
+	 * @param combinationLength
+	 * @return All possible combinations of n selections of given array of items,
+	 * sampled with replacement. Order does not matter.
+	 */
+	public static Object[][] generateCombinationsWithReplacement
+	(
+		final Object[] items,
+		final int combinationLength
+	)
+	{
+		if (combinationLength == 0)
+			return new Object[0][];
+		
+		int numerator = 1;
+		for (int i = combinationLength + 1; i <= (items.length + combinationLength - 1); ++i)
+		{
+			numerator *= i;
+		}
+		
+		int denominator = 1;
+		for (int i = 1; i <= (items.length - 1); ++i)
+		{
+			denominator *= i;
+		}
+		
+		final int numCombinations = numerator / denominator;
+		final Object[][] combinations = new Object[numCombinations][combinationLength];
+		
+		int nextCombIdx = 0;
+		final int[] indices = new int[combinationLength];
+		while (true)
+		{
+			final Object[] arr = new Object[combinationLength];
+			
+			for (int i = 0; i < indices.length; ++i)
+			{
+				arr[i] = items[indices[i]];
+			}
+			
+			combinations[nextCombIdx++] = arr;
+			
+			int idxToIncrement = indices.length - 1;
+			while (idxToIncrement >= 0)
+			{
+				if (++indices[idxToIncrement] == items.length)
+				{
+					indices[idxToIncrement--] = 0;
+				}
+				else
+				{
+					break;
+				}
+			}
+			
+			if (idxToIncrement < 0)
+				break;
+		}
+		
+		if (nextCombIdx != numCombinations)
+			System.err.println("ERROR: Expected to generate " + numCombinations + " combinations, but only generated " + nextCombIdx);
+		
+		return combinations;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**

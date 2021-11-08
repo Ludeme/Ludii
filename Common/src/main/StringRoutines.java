@@ -695,6 +695,27 @@ public final class StringRoutines
 	}
 	
 	/**
+	 * @param joinStr
+	 * @param objects
+	 * @return Strings of all the given objects merged into a single string, with "joinStr"
+	 * used to separate the parts.
+	 */
+	public static String join(final String joinStr, final Object... objects)
+	{
+		final StringBuilder sb = new StringBuilder();
+		
+		for (int i = 0; i < objects.length; ++i)
+		{
+			if (i > 0)
+				sb.append(joinStr);
+			
+			sb.append(objects[i].toString());
+		}
+		
+		return sb.toString();
+	}
+	
+	/**
 	 * @param str
 	 * @return The given string, wrapped in a pair of quotes: "str"
 	 */
