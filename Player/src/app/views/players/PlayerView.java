@@ -27,7 +27,7 @@ public class PlayerView extends View
 	public List<PlayerViewUser> playerSections = new ArrayList<>();
 	
 	/** Font. */
-	public static Font playerNameFont = new Font("Arial", Font.PLAIN, 16);
+	public Font playerNameFont = new Font("Arial", Font.PLAIN, 16);
 
 	//-------------------------------------------------------------------------
 

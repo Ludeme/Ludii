@@ -224,10 +224,10 @@ public class PlayerViewUser extends View
 	 */
 	private void drawPlayerName(final Graphics2D g2d, final int mover, final ArrayList<Integer> winnerNumbers, final Context context)
 	{
-		g2d.setFont(PlayerView.playerNameFont);
+		g2d.setFont(playerView.playerNameFont);
 		
 		final String stringNameAndExtras = getNameAndExtrasString(context, g2d);
-		final Rectangle2D bounds = PlayerView.playerNameFont.getStringBounds(stringNameAndExtras, g2d.getFontRenderContext());	
+		final Rectangle2D bounds = playerView.playerNameFont.getStringBounds(stringNameAndExtras, g2d.getFontRenderContext());	
 		
 		final Rectangle2D square = app.playerSwatchList()[playerId];
 		final Point2D drawPosn = new Point2D.Double(square.getCenterX() + square.getWidth(), square.getCenterY());
@@ -296,7 +296,7 @@ public class PlayerViewUser extends View
 			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(imagePath))))
 			{
 				final Rectangle2D nameRect = app.playerNameList()[playerId];
-				final double r = PlayerView.playerNameFont.getSize();
+				final double r = playerView.playerNameFont.getSize();
 				final SVGGraphics2D svg = new SVGGraphics2D((int)r, (int) r);
 				SVGtoImage.loadFromReader(svg, reader, new Rectangle2D.Double(0,0,r,r), Color.BLACK, Color.WHITE, 0);
 				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + 3,  nameRect.getCenterY() - 3);
@@ -321,7 +321,7 @@ public class PlayerViewUser extends View
 			return;
 		
 		final Rectangle2D nameRect = app.playerNameList()[playerId];
-		final double r = PlayerView.playerNameFont.getSize();
+		final double r = playerView.playerNameFont.getSize();
 		final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
 		
 		if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
