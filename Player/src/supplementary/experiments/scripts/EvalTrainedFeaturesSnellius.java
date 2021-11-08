@@ -269,7 +269,7 @@ public class EvalTrainedFeaturesSnellius
 										",", 
 										learnedSelectionStrParts
 									),
-									"friendly_name=With"
+									"friendly_name=" + (String)agent
 								);
 						
 						agentStrings.add(StringRoutines.quote(agentStr));
