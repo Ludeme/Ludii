@@ -27,7 +27,7 @@ public class PlayerView extends View
 	public List<PlayerViewUser> playerSections = new ArrayList<>();
 	
 	/** Font. */
-	public final static Font playerNameFont = new Font("Arial", Font.PLAIN, 16);
+	public static Font playerNameFont = new Font("Arial", Font.PLAIN, 16);
 
 	//-------------------------------------------------------------------------
 
@@ -50,6 +50,9 @@ public class PlayerView extends View
 		int width = app.width() - boardSize;
 		int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
 		
+		if (app.manager().isWebApp() && portraitMode)
+			playerNameFont = new Font("Arial", Font.PLAIN, 32);
+		
 		if (portraitMode)
 		{
 			boardSize = app.width();
@@ -65,7 +68,7 @@ public class PlayerView extends View
 			final int x0 = startX;
 			final int y0 = startY + (pid-1) * height;
 			final Rectangle place = new Rectangle(x0, y0, width, height);
-			final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this, portraitMode);
+			final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this);
 			app.getPanels().add(playerPage);
 			playerSections.add(playerPage);
 		}
@@ -74,7 +77,7 @@ public class PlayerView extends View
 		if (app.contextSnapshot().getContext(app).hasSharedPlayer())
 		{
 			final Rectangle place = new Rectangle(0, 0, boardSize, app.height() / 10);
-			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this, portraitMode);
+			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);
 			playerSections.add(naturePlayerPage);
 		}

@@ -20,9 +20,9 @@ public class PlayerViewShared extends PlayerViewUser
 	/**
 	 * Constructor.
 	 */
-	public PlayerViewShared(final PlayerApp app, final Rectangle rect, final int pid, final PlayerView playerView, final boolean portraitMode)
+	public PlayerViewShared(final PlayerApp app, final Rectangle rect, final int pid, final PlayerView playerView)
 	{
-		super(app, rect, pid, playerView, portraitMode);
+		super(app, rect, pid, playerView);
 	}
 	
 	//-------------------------------------------------------------------------
