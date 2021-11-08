@@ -1313,6 +1313,7 @@ public class MCTS extends ExpertPolicy
 
 		// Defaults - some extras
 		boolean treeReuse = false;
+		boolean useScoreBounds = false;
 		int numThreads = 1;
 		SoftmaxPolicy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
@@ -1403,6 +1404,21 @@ public class MCTS extends ExpertPolicy
 					System.err.println("Error in line: " + line);
 				}
 			}
+			else if (lineParts[0].toLowerCase().startsWith("use_score_bounds="))
+			{
+				if (lineParts[0].toLowerCase().endsWith("true"))
+				{
+					useScoreBounds = true;
+				}
+				else if (lineParts[0].toLowerCase().endsWith("false"))
+				{
+					useScoreBounds = false;
+				}
+				else
+				{
+					System.err.println("Error in line: " + line);
+				}
+			}
 			else if (lineParts[0].toLowerCase().startsWith("num_threads="))
 			{
 				numThreads = Integer.parseInt(lineParts[0].substring("num_threads=".length()));
@@ -1437,6 +1453,7 @@ public class MCTS extends ExpertPolicy
 		MCTS mcts = new MCTS(selection, playout, backprop, finalMove);
 
 		mcts.setTreeReuse(treeReuse);
+		mcts.setUseScoreBounds(useScoreBounds);
 		mcts.setNumThreads(numThreads);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
 		mcts.setHeuristics(heuristics);
