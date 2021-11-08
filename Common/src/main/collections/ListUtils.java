@@ -262,6 +262,7 @@ public class ListUtils
 		
 		int nextCombIdx = 0;
 		final int[] indices = new int[combinationLength];
+		int idxToIncrement = indices.length - 1;
 		while (true)
 		{
 			final Object[] arr = new Object[combinationLength];
@@ -273,7 +274,6 @@ public class ListUtils
 			
 			combinations[nextCombIdx++] = arr;
 			
-			int idxToIncrement = indices.length - 1;
 			while (idxToIncrement >= 0)
 			{
 				if (++indices[idxToIncrement] == items.length)
@@ -288,6 +288,14 @@ public class ListUtils
 			
 			if (idxToIncrement < 0)
 				break;
+			
+			// Order does not matter
+			for (int i = idxToIncrement + 1; i < indices.length; ++i)
+			{
+				indices[i] = indices[idxToIncrement];
+			}
+			
+			idxToIncrement = indices.length - 1;
 		}
 		
 		if (nextCombIdx != numCombinations)
