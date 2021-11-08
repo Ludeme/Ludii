@@ -299,7 +299,7 @@ public class PlayerViewUser extends View
 				final double r = playerView.playerNameFont.getSize();
 				final SVGGraphics2D svg = new SVGGraphics2D((int)r, (int) r);
 				SVGtoImage.loadFromReader(svg, reader, new Rectangle2D.Double(0,0,r,r), Color.BLACK, Color.WHITE, 0);
-				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + 3,  nameRect.getCenterY() - 3);
+				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + g2d.getFont().getSize()/5,  nameRect.getCenterY() - g2d.getFont().getSize()/5);
 				g2d.drawImage(SVGUtil.createSVGImage(svg.getSVGDocument(), (int) r, (int) r), (int) drawPosn.getX(), (int) drawPosn.getY(), null);
 				reader.close();
 			}
