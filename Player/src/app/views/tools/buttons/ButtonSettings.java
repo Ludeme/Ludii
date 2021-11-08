@@ -43,8 +43,12 @@ public class ButtonSettings extends ToolButton
 		
 		g2d.setColor(getButtonColour());
 		
-		final int d = 10;
-		final int dd = 7;
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
+
+		final int d = (int)(10 * scale);
+		final int dd = (int)(7 * scale);
 
 		g2d.drawLine(cx - d, cy, cx + d, cy);
 		g2d.drawLine(cx, cy - d, cx, cy + d);

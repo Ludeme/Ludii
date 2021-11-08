@@ -42,15 +42,22 @@ public class ButtonInfo extends ToolButton
 		final int cy = (int) rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
+	
 		final Font oldFont = g2d.getFont();
-		final int r = 10;
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
+
+		final int r = (int)(10 * scale);
 		g2d.fillArc(cx - r, cy - r, 2 * r + 1, 2 * r + 1, 0, 360);
-		final int fontSize = 17;
+
+		final int fontSize = (int)(17 * scale);
 		final int flags = Font.ITALIC | Font.BOLD;
 		final Font font = new Font("Arial", flags, fontSize);
 		g2d.setFont(font);
 		g2d.setColor(Color.white);
-		g2d.drawString("i", cx - 3, cy + 6);
+		g2d.drawString("i", cx - (int)(3 * scale), cy + (int)(6 * scale));
 		g2d.setFont(oldFont);
 	}
 

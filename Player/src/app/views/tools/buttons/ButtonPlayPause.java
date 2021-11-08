@@ -46,11 +46,9 @@ public class ButtonPlayPause extends ToolButton
 		//g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		GeneralPath path = new GeneralPath();
 		
-		//System.out.println("PlayPause button rect height: " + rect.height);
-		
 		// Determine button scale, so that buttons are scaled up on the mobile version.
 		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
-		final double scale = rect.getHeight() / 32.0;
+		final double scale = scaleForDevice();
 		
 		if (app.manager().settingsManager().agentsPaused())
 		{

@@ -88,6 +88,16 @@ public abstract class ToolButton
 		rect.y = y;
 	}
 
+	/**
+	 * Scale toolbar buttons depending on type of device.
+	 * @return 2 for mobile device, 1 for everything else.
+	 */
+	public double scaleForDevice()
+	{
+		// Based on default toolbar height for desktop player of 32 pixels.
+		return rect.getHeight() / 32.0;
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**
