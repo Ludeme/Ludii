@@ -43,30 +43,36 @@ public class ButtonPlayPause extends ToolButton
 		final double cy = rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
-		g2d.setStroke(new BasicStroke((3 ), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		//g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		GeneralPath path = new GeneralPath();
+		
+		//System.out.println("PlayPause button rect height: " + rect.height);
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = rect.getHeight() / 32.0;
 		
 		if (app.manager().settingsManager().agentsPaused())
 		{
 			// Display Play Symbol
-			path.moveTo(cx + 9 , cy);
-			path.lineTo(cx - 7 , cy - 9 );
-			path.lineTo(cx - 7 , cy + 9 );
+			path.moveTo(cx + 9 * scale, cy);
+			path.lineTo(cx - 7 * scale, cy - 9 * scale);
+			path.lineTo(cx - 7 * scale, cy + 9 * scale);
 			g2d.fill(path);
 		}
 		else
 		{
 			// Display Pause Symbol
-			path.moveTo(cx - 7 , cy + 9 );
-			path.lineTo(cx - 7 , cy - 9 );
-			path.lineTo(cx - 2 , cy - 9 );
-			path.lineTo(cx - 2 , cy + 9 );
+			path.moveTo(cx - 7 * scale , cy + 9 * scale );
+			path.lineTo(cx - 7 * scale , cy - 9 * scale );
+			path.lineTo(cx - 2 * scale , cy - 9 * scale );
+			path.lineTo(cx - 2 * scale , cy + 9 * scale );
 			g2d.fill(path);
 			path = new GeneralPath();
-			path.moveTo(cx + 2 , cy + 9 );
-			path.lineTo(cx + 2 , cy - 9 );
-			path.lineTo(cx + 7 , cy - 9 );
-			path.lineTo(cx + 7 , cy + 9 );
+			path.moveTo(cx + 2 * scale , cy + 9 * scale );
+			path.lineTo(cx + 2 * scale , cy - 9 * scale );
+			path.lineTo(cx + 7 * scale , cy - 9 * scale );
+			path.lineTo(cx + 7 * scale , cy + 9 * scale );
 			g2d.fill(path);
 		}
 	}
