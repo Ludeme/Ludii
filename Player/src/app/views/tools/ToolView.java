@@ -62,7 +62,11 @@ public class ToolView extends View
 	{
 		super(app);
 
-		final int toolHeight = 40;
+		int toolHeight = 40;
+		
+		
+		if (portraitMode)
+			toolHeight = 80;
 		
 		int boardSize = app.height();
 		int startX = boardSize;
@@ -78,12 +82,12 @@ public class ToolView extends View
 		}
 		
 		placement.setBounds(startX, startY, width, toolHeight);
-		drawButtons();
+		drawButtons(toolHeight);
 	}
 	
 	//-------------------------------------------------------------------------
 	
-	public void drawButtons()
+	public void drawButtons(final int toolHeight)
 	{
 		int cx = placement.x;
 		final int cy = placement.y;
