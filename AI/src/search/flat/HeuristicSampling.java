@@ -193,9 +193,12 @@ public class HeuristicSampling extends AI
 			}
 			
 			float score = 0;
-			if (continuation && contextCopy.state().mover() == mover && depth <= 10)
+			if (!contextCopy.active(mover))
 			{
-				//System.out.println("Recursing...");
+				score = 0.f;	// Must be a draw in this case
+			}
+			else if (continuation && contextCopy.state().mover() == mover && depth <= 10)
+			{
 				score = evaluateMoves(game, contextCopy, depth + 1).score();
 			}
 			else
