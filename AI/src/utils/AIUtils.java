@@ -16,8 +16,10 @@ import metadata.ai.heuristics.terms.CentreProximity;
 import metadata.ai.heuristics.terms.ComponentValues;
 import metadata.ai.heuristics.terms.CornerProximity;
 import metadata.ai.heuristics.terms.Influence;
+import metadata.ai.heuristics.terms.InfluenceAdvanced;
 import metadata.ai.heuristics.terms.LineCompletionHeuristic;
 import metadata.ai.heuristics.terms.Material;
+import metadata.ai.heuristics.terms.MobilityAdvanced;
 import metadata.ai.heuristics.terms.MobilitySimple;
 import metadata.ai.heuristics.terms.NullHeuristic;
 import metadata.ai.heuristics.terms.OwnRegionsCount;
@@ -26,6 +28,7 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
+import metadata.ai.heuristics.terms.UnthreatenedMaterial;
 import metadata.ai.misc.Pair;
 import other.AI;
 import other.RankUtils;
@@ -389,11 +392,14 @@ public class AIUtils
 		switch(s)
 		{
 		case "MaterialPos" : return new Heuristics(new Material(null, Float.valueOf(1.f), null, null));
+		case "UnthreatenedMaterialPos" : return new Heuristics(new UnthreatenedMaterial(null, Float.valueOf(1.f), null));
 		case "InfluencePos" : return new Heuristics(new Influence(null, Float.valueOf(1.f)));
+		case "InfluenceAdvancedPos" : return new Heuristics(new InfluenceAdvanced(null, Float.valueOf(1.f)));
 		case "SidesProximityPos" : return new Heuristics(new SidesProximity(null, Float.valueOf(1.f), null));
 		case "LineCompletionHeuristicPos" : return new Heuristics(new LineCompletionHeuristic(null, Float.valueOf(1.f), null));
 		case "CornerProximityPos" : return new Heuristics(new CornerProximity(null, Float.valueOf(1.f), null));
 		case "MobilitySimplePos" : return new Heuristics(new MobilitySimple(null, Float.valueOf(1.f)));
+		case "MobilityAdvancedPos" : return new Heuristics(new MobilityAdvanced(null, Float.valueOf(1.f)));
 		case "CentreProximityPos" : return new Heuristics(new CentreProximity(null, Float.valueOf(1.f), null));
 		case "RegionProximityPos" : return new Heuristics(new RegionProximity(null, Float.valueOf(1.f), null, null));
 		case "ScorePos" : return new Heuristics(new Score(null, Float.valueOf(1.f)));
@@ -403,11 +409,14 @@ public class AIUtils
 		case "ComponentValuesPos" : return new Heuristics(new ComponentValues(null, Float.valueOf(1.f), null, null));
 		
 		case "MaterialNeg" : return new Heuristics(new Material(null, Float.valueOf(-1.f), null, null));
+		case "UnthreatenedMaterialNeg" : return new Heuristics(new UnthreatenedMaterial(null, Float.valueOf(-1.f), null));
 		case "InfluenceNeg" : return new Heuristics(new Influence(null, Float.valueOf(-1.f)));
+		case "InfluenceAdvancedNeg" : return new Heuristics(new InfluenceAdvanced(null, Float.valueOf(-1.f)));
 		case "SidesProximityNeg" : return new Heuristics(new SidesProximity(null, Float.valueOf(-1.f), null));
 		case "LineCompletionHeuristicNeg" : return new Heuristics(new LineCompletionHeuristic(null, Float.valueOf(-1.f), null));
 		case "CornerProximityNeg" : return new Heuristics(new CornerProximity(null, Float.valueOf(-1.f), null));
 		case "MobilitySimpleNeg" : return new Heuristics(new MobilitySimple(null, Float.valueOf(-1.f)));
+		case "MobilityAdvancedNeg" : return new Heuristics(new MobilityAdvanced(null, Float.valueOf(-1.f)));
 		case "CentreProximityNeg" : return new Heuristics(new CentreProximity(null, Float.valueOf(-1.f), null));
 		case "RegionProximityNeg" : return new Heuristics(new RegionProximity(null, Float.valueOf(-1.f), null, null));
 		case "ScoreNeg" : return new Heuristics(new Score(null, Float.valueOf(-1.f)));
@@ -427,7 +436,9 @@ public class AIUtils
 				"LineCompletionHeuristicPos", "CornerProximityNeg",	"MobilitySimpleNeg", "CentreProximityNeg", "InfluenceNeg", 
 				"MaterialNeg", "CornerProximityPos", "MobilitySimplePos", "CentreProximityPos", "SidesProximityNeg", "RegionProximityNeg",
 				"RegionProximityPos", "ScorePos", "ScoreNeg", "PlayerRegionsProximityNeg", "PlayerRegionsProximityPos", "PlayerSiteMapCountPos", 
-				"PlayerSiteMapCountNeg", "OwnRegionsCountPos", "OwnRegionsCountNeg", "ComponentValuesPos", "ComponentValuesNeg"};
+				"PlayerSiteMapCountNeg", "OwnRegionsCountPos", "OwnRegionsCountNeg", "ComponentValuesPos", "ComponentValuesNeg",
+				"UnthreatenedMaterialPos", "UnthreatenedMaterialNeg", "MobilityAdvancedPos", "MobilityAdvancedNeg",
+				"InfluenceAdvancedPos", "InfluenceAdvancedNeg"};
 	}
 	
 	//-------------------------------------------------------------------------
