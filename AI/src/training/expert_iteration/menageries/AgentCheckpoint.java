@@ -103,6 +103,10 @@ public class AgentCheckpoint
 				{
 					ai = (ExpertPolicy) AIFactory.createAI("MC-GRAVE");
 				}
+				else if (bestAgent.agent().equals("MC-BRAVE"))
+				{
+					ai = (ExpertPolicy) AIFactory.createAI("MC-BRAVE");
+				}
 				else if (bestAgent.agent().equals("Biased MCTS"))
 				{
 					final Features features = (Features)compiler.Compiler.compileObject
@@ -183,6 +187,10 @@ public class AgentCheckpoint
 		else if (agentName.equals("MC-GRAVE"))
 		{
 			ai = (ExpertPolicy) AIFactory.createAI("MC-GRAVE");
+		}
+		else if (agentName.equals("MC-BRAVE"))
+		{
+			ai = (ExpertPolicy) AIFactory.createAI("MC-BRAVE");
 		}
 		else
 		{

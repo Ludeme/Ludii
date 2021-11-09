@@ -36,6 +36,7 @@ import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.MAST;
 import search.mcts.playout.NST;
 import search.mcts.playout.RandomPlayout;
+import search.mcts.selection.McBRAVE;
 import search.mcts.selection.McGRAVE;
 import search.mcts.selection.ProgressiveBias;
 import search.mcts.selection.ProgressiveHistory;
@@ -107,6 +108,21 @@ public class AIFactory
 			mcGRAVE.setQInit(QInit.INF);
 			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
+		}
+		
+		if (string.equalsIgnoreCase("MC-BRAVE"))
+		{
+			final MCTS mcBRAVE =
+					new MCTS
+					(
+						new McBRAVE(),
+						new RandomPlayout(200),
+						new MonteCarloBackprop(),
+						new RobustChild()
+					);
+			mcBRAVE.setQInit(QInit.INF);
+			mcBRAVE.setFriendlyName("MC-BRAVE");
+			return mcBRAVE;
 		}
 		
 		if (string.equalsIgnoreCase("UCB1Tuned"))
@@ -466,6 +482,13 @@ public class AIFactory
 			mcGRAVE.setQInit(QInit.INF);
 			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
+		}
+		else if (algName.equalsIgnoreCase("MC-BRAVE"))
+		{
+			final MCTS mcBRAVE = new MCTS(new McBRAVE(), new RandomPlayout(200), new MonteCarloBackprop(), new RobustChild());
+			mcBRAVE.setQInit(QInit.INF);
+			mcBRAVE.setFriendlyName("MC-BRAVE");
+			return mcBRAVE;
 		}
 		else if (algName.equalsIgnoreCase("UCB1Tuned"))
 		{
