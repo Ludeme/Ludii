@@ -86,6 +86,10 @@ public class PlayerViewUser extends View
 		final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
 		componentPushBufferX = swatchWidth + maxNameWidth + placement.height/2;
 		
+		// Extra buffer on mobile devices
+		if (g2d.getFont().getSize() > 20)
+			componentPushBufferX += 30;
+		
 		if (hand != null)
 		{
 			final int containerMarginWidth = (int) (0.05 * placement.height); // add a small 5% margin on either side of the container
