@@ -225,9 +225,12 @@ public class AIUtils
 				key.startsWith("ComponentValues") ||
 				key.startsWith("CornerProximity") ||
 				key.startsWith("CurrentMoverHeuristic") ||
+				key.startsWith("Influence") ||
+				key.startsWith("InfluenceAdvanced") ||
 				key.startsWith("Intercept") ||
 				key.startsWith("LineCompletionHeuristic") ||
 				key.startsWith("Material") ||
+				key.startsWith("MobilityAdvanced") ||
 				key.startsWith("MobilitySimple") ||
 				key.startsWith("NullHeuristic") ||
 				key.startsWith("OpponentPieceProximity") ||
@@ -236,7 +239,8 @@ public class AIUtils
 				key.startsWith("PlayerSiteMapCount") ||
 				key.startsWith("RegionProximity") ||
 				key.startsWith("Score") ||
-				key.startsWith("SidesProximity")
+				key.startsWith("SidesProximity") ||
+				key.startsWith("UnthreatenedMaterial")
 				);
 	}
 	
