@@ -7,16 +7,17 @@ import main.collections.FVector;
 import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import other.context.Context;
+import other.context.TempContext;
 
 /**
- * Defines a simple heuristic term that multiplies its weight by the number
- * of moves that a player has in a current game state. 
- * 
- * @remarks Always produces a score of $0$ for players who are not the current mover.
+ * Defines a more advanced Mobility heuristic that attempts to also compute
+ * non-zero mobility values for players other than the current mover (by
+ * modifying the game state temporarily such that it thinks the current mover
+ * is any other player).
  * 
  * @author Dennis Soemers
  */
-public class MobilitySimple extends HeuristicTerm
+public class MobilityAdvanced extends HeuristicTerm
 {
 	
 	//-------------------------------------------------------------------------
@@ -29,9 +30,9 @@ public class MobilitySimple extends HeuristicTerm
 	 * @param weight The weight for this term in a linear combination of multiple terms.
 	 * If not specified, a default weight of $1.0$ is used.
 	 * 
-	 * @example (mobilitySimple weight:0.5)
+	 * @example (mobilityAdvanced weight:0.5)
 	 */
-	public MobilitySimple
+	public MobilityAdvanced
 	(
 		@Name @Opt final HeuristicTransformation transformation,
 		@Name @Opt final Float weight
@@ -41,16 +42,16 @@ public class MobilitySimple extends HeuristicTerm
 	}
 	
 	@Override
-	public MobilitySimple copy()
+	public MobilityAdvanced copy()
 	{
-		return new MobilitySimple(this);
+		return new MobilityAdvanced(this);
 	}
 	
 	/**
 	 * Copy constructor (private, so not visible to grammar)
 	 * @param other
 	 */
-	private MobilitySimple(final MobilitySimple other)
+	private MobilityAdvanced(final MobilityAdvanced other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
 	}
@@ -61,9 +62,16 @@ public class MobilitySimple extends HeuristicTerm
 	public float computeValue(final Context context, final int player, final float absWeightThreshold)
 	{
 		if (context.state().mover() == player)
+		{
 			return context.game().moves(context).count();
+		}
 		else
-			return 0.f;
+		{
+			final TempContext copy = new TempContext(context);
+			copy.state().setMover(player);
+			copy.trial().clearLegalMoves();
+			return copy.game().moves(copy).count();
+		}
 	}
 	
 	@Override
@@ -109,7 +117,7 @@ public class MobilitySimple extends HeuristicTerm
 	{
 		final StringBuilder sb = new StringBuilder();
 		
-		sb.append("(mobilitySimple");
+		sb.append("(mobilityAdvanced");
 		if (transformation != null)
 			sb.append(" transformation:" + transformation.toString());
 		if (weight != 1.f)
@@ -137,7 +145,7 @@ public class MobilitySimple extends HeuristicTerm
 		{
 			final StringBuilder sb = new StringBuilder();
 		
-			sb.append("(mobilitySimple");
+			sb.append("(mobilityAdvanced");
 			if (transformation != null)
 				sb.append(" transformation:" + transformation.toString());
 			if (weight != 1.f)

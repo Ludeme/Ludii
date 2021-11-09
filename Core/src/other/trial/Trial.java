@@ -345,7 +345,8 @@ public class Trial implements Serializable
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Clears cached list of legal moves
+	 * Clears cached list of legal moves (NOTE: not really clearing, actually
+	 * it instantiates a new empty list)
 	 */
 	public void clearLegalMoves()
 	{

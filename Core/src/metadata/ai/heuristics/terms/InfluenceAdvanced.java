@@ -3,20 +3,27 @@ package metadata.ai.heuristics.terms;
 import annotations.Name;
 import annotations.Opt;
 import game.Game;
+import game.types.state.GameType;
+import gnu.trove.set.hash.TIntHashSet;
 import main.collections.FVector;
+import main.collections.FastArrayList;
 import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import other.context.Context;
+import other.context.TempContext;
+import other.move.Move;
 
 /**
- * Defines a simple heuristic term that multiplies its weight by the number
- * of moves that a player has in a current game state. 
- * 
- * @remarks Always produces a score of $0$ for players who are not the current mover.
+ * Defines a heuristic term that multiplies its weight by the number
+ * of moves with distinct "to" positions that a player has in a current game state,
+ * divided by the number of playable positions that exist in the game.
+ * In comparison to Influence, this is a more advanced version that will also attempt
+ * to gain non-zero estimates of the influence of players other than the current
+ * player to move.
  * 
  * @author Dennis Soemers
  */
-public class MobilitySimple extends HeuristicTerm
+public class InfluenceAdvanced extends HeuristicTerm
 {
 	
 	//-------------------------------------------------------------------------
@@ -29,9 +36,9 @@ public class MobilitySimple extends HeuristicTerm
 	 * @param weight The weight for this term in a linear combination of multiple terms.
 	 * If not specified, a default weight of $1.0$ is used.
 	 * 
-	 * @example (mobilitySimple weight:0.5)
+	 * @example (influenceAdvanced weight:0.5)
 	 */
-	public MobilitySimple
+	public InfluenceAdvanced
 	(
 		@Name @Opt final HeuristicTransformation transformation,
 		@Name @Opt final Float weight
@@ -41,16 +48,16 @@ public class MobilitySimple extends HeuristicTerm
 	}
 	
 	@Override
-	public MobilitySimple copy()
+	public HeuristicTerm copy()
 	{
-		return new MobilitySimple(this);
+		return new InfluenceAdvanced(this);
 	}
 	
 	/**
 	 * Copy constructor (private, so not visible to grammar)
 	 * @param other
 	 */
-	private MobilitySimple(final MobilitySimple other)
+	private InfluenceAdvanced(final InfluenceAdvanced other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
 	}
@@ -60,10 +67,29 @@ public class MobilitySimple extends HeuristicTerm
 	@Override
 	public float computeValue(final Context context, final int player, final float absWeightThreshold)
 	{
+		final Context computeContext;
+		
 		if (context.state().mover() == player)
-			return context.game().moves(context).count();
+		{
+			computeContext = context;
+		}
 		else
-			return 0.f;
+		{
+			computeContext = new TempContext(context);
+			computeContext.state().setMover(player);
+			computeContext.trial().clearLegalMoves();
+		}
+		
+		final FastArrayList<Move> legalMoves = computeContext.game().moves(computeContext).moves();
+		final TIntHashSet toPositions = new TIntHashSet();
+		for (final Move move : legalMoves)
+		{
+			final int to = move.to();
+			if (to >= 0)
+				toPositions.add(to);
+		}
+		
+		return ((float) toPositions.size()) / computeContext.game().equipment().totalDefaultSites();
 	}
 	
 	@Override
@@ -88,7 +114,10 @@ public class MobilitySimple extends HeuristicTerm
 	 */
 	public static boolean isApplicableToGame(final Game game)
 	{
-		return game.isAlternatingMoveGame();
+		// Note: we only allow this heuristic in games that also use from-positions, because
+		// otherwise the number of moves with distinct to-positions is almost always meaningless
+		// (with some exceptions, like if moves have same to-position but different consequents)
+		return game.isAlternatingMoveGame() && ((game.gameFlags() & GameType.UsesFromPositions) != 0L);
 	}
 	
 	/**
@@ -109,7 +138,7 @@ public class MobilitySimple extends HeuristicTerm
 	{
 		final StringBuilder sb = new StringBuilder();
 		
-		sb.append("(mobilitySimple");
+		sb.append("(influenceAdvanced");
 		if (transformation != null)
 			sb.append(" transformation:" + transformation.toString());
 		if (weight != 1.f)
@@ -137,7 +166,7 @@ public class MobilitySimple extends HeuristicTerm
 		{
 			final StringBuilder sb = new StringBuilder();
 		
-			sb.append("(mobilitySimple");
+			sb.append("(influenceAdvanced");
 			if (transformation != null)
 				sb.append(" transformation:" + transformation.toString());
 			if (weight != 1.f)
@@ -152,13 +181,13 @@ public class MobilitySimple extends HeuristicTerm
 		}
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String description() 
 	{
-		return "Number of legal moves.";
+		return "Number of legal moves with distinct destination positions.";
 	}
-	
-	//-------------------------------------------------------------------------
 	
 	@Override
 	public String toEnglishString(final Context context, final int playerIndex) 
@@ -166,9 +195,9 @@ public class MobilitySimple extends HeuristicTerm
 		final StringBuilder sb = new StringBuilder();
 
 		if (weight > 0)
-			sb.append("You should try to maximise the number of moves you can make");
+			sb.append("You should try to maximise the number of spaces you can move to");
 		else
-			sb.append("You should try to minimise the number of moves you can make");
+			sb.append("You should try to minimise the number of spaces you can move to");
 		
 		sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		

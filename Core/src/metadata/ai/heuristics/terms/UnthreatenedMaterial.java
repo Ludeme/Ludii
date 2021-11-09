@@ -7,23 +7,31 @@ import annotations.Name;
 import annotations.Opt;
 import game.Game;
 import game.equipment.component.Component;
+import game.types.board.SiteType;
+import gnu.trove.set.hash.TIntHashSet;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
+import main.collections.FastArrayList;
 import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import metadata.ai.misc.Pair;
+import other.action.Action;
+import other.action.move.ActionRemove;
+import other.concept.Concept;
 import other.context.Context;
+import other.context.TempContext;
 import other.location.Location;
+import other.move.Move;
 import other.state.owned.Owned;
 
 /**
- * Defines a heuristic term based on the proximity of pieces to the corners of
- * a game's board.
- *
+ * Defines a heuristic term based on the unthreatened material (which
+ * opponents cannot threaten with their legal moves).
+ * 
  * @author Dennis Soemers
  */
-public class CornerProximity extends HeuristicTerm
+public class UnthreatenedMaterial extends HeuristicTerm
 {
 	
 	//-------------------------------------------------------------------------
@@ -40,9 +48,6 @@ public class CornerProximity extends HeuristicTerm
 	/** Vector with weights for every piece type */
 	private FVector pieceWeights = null;
 	
-	/** The maximum distance that exists in our Corners distance table */
-	private final int maxDistance = -1;
-	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -57,9 +62,9 @@ public class CornerProximity extends HeuristicTerm
 	 * weights are only specified for some piece types, all other piece types get a
 	 * weight of $0$.
 	 * 
-	 * @example (cornerProximity pieceWeights:{ (pair "Queen" -1.0) (pair "King" 1.0) })
+	 * @example (unthreatenedMaterial pieceWeights:{ (pair "Pawn" 1.0) (pair "Bishop" 3.0) })
 	 */
-	public CornerProximity
+	public UnthreatenedMaterial
 	(
 		@Name @Opt final HeuristicTransformation transformation,
 		@Name @Opt final Float weight,
@@ -90,14 +95,14 @@ public class CornerProximity extends HeuristicTerm
 	@Override
 	public HeuristicTerm copy()
 	{
-		return new CornerProximity(this);
+		return new UnthreatenedMaterial(this);
 	}
 	
 	/**
 	 * Copy constructor (private, so not visible to grammar)
 	 * @param other
 	 */
-	private CornerProximity(final CornerProximity other)
+	private UnthreatenedMaterial(final UnthreatenedMaterial other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
 		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
@@ -109,38 +114,75 @@ public class CornerProximity extends HeuristicTerm
 	@Override
 	public float computeValue(final Context context, final int player, final float absWeightThreshold)
 	{
-//		if (maxDistance == 0)
-//			return 0.f;  
-		
-		final int[] distances = context.game().distancesToCorners();		
+		final Game game = context.game();
 		final Owned owned = context.state().owned();
-
+		
+		// First find all threatened positions by any opposing players
+		final TIntHashSet threatenedSites = new TIntHashSet();
+		for (int p = 1; p <= game.players().count(); ++p)
+		{
+			if (p == player)
+				continue;
+			
+			final FastArrayList<Move> oppLegalMoves;
+			if (context.state().mover() == p)
+			{
+				oppLegalMoves = game.moves(context).moves();
+			}
+			else
+			{
+				final TempContext temp = new TempContext(context);
+				temp.state().setMover(player);
+				temp.trial().clearLegalMoves();
+				oppLegalMoves = game.moves(temp).moves();
+				
+				for (final Move move : oppLegalMoves)
+				{
+					for (final Action action : move.actions())
+					{
+						if (action instanceof ActionRemove)
+						{
+							final ActionRemove removeAction = (ActionRemove) action;
+							final int removeSite = removeAction.to();
+							final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
+							
+							if (contID == 0)
+							{
+								threatenedSites.add(removeSite);
+							}
+						}
+					}
+					
+					// Also assume we threaten the site we move to, regardless of whether or not there are Remove actions
+					if (move.to() >= 0)
+						threatenedSites.add(move.to());
+				}
+			}
+		}
+		
+		// Now count material value, but only for unthreatened sites
 		final List<? extends Location>[] pieces = owned.positions(player);
 		float value = 0.f;
-
+		
 		for (int i = 0; i < pieces.length; ++i)
 		{
 			if (pieces[i].isEmpty())
 				continue;
 			
 			final float pieceWeight = pieceWeights.get(owned.reverseMap(player, i));
-			
 			if (Math.abs(pieceWeight) >= absWeightThreshold)
 			{
-				for (final Location position : pieces[i])
+				for (final Location loc : pieces[i])
 				{
-					final int site = position.site();
-					if (site >= distances.length)	// Different container, skip it
-						continue;
-					
-					final int dist = distances[site];
-					
-					final float proximity = 1.f - ((float) dist / maxDistance);
-					value += pieceWeight * proximity;
+					if (loc.siteType() != SiteType.Cell || context.containerId()[loc.site()] == 0)
+					{
+						if (!threatenedSites.contains(loc.site()))
+							value += pieceWeight;
+					}
 				}
 			}
 		}
-
+	
 		return value;
 	}
 	
@@ -149,30 +191,67 @@ public class CornerProximity extends HeuristicTerm
 	{
 		final FVector featureVector = new FVector(pieceWeights.dim());
 		
-		if (maxDistance != 0.f)
+		final Game game = context.game();
+		final Owned owned = context.state().owned();
+		
+		// First find all threatened positions by any opposing players
+		final TIntHashSet threatenedSites = new TIntHashSet();
+		for (int p = 1; p <= game.players().count(); ++p)
 		{
-			final int[] distances = context.game().distancesToCorners();		
-			final Owned owned = context.state().owned();
-	
-			final List<? extends Location>[] pieces = owned.positions(player);
-	
-			for (int i = 0; i < pieces.length; ++i)
+			if (p == player)
+				continue;
+			
+			final FastArrayList<Move> oppLegalMoves;
+			if (context.state().mover() == p)
 			{
-				if (pieces[i].isEmpty())
-					continue;
+				oppLegalMoves = game.moves(context).moves();
+			}
+			else
+			{
+				final TempContext temp = new TempContext(context);
+				temp.state().setMover(player);
+				temp.trial().clearLegalMoves();
+				oppLegalMoves = game.moves(temp).moves();
 				
-				final int compIdx = owned.reverseMap(player, i);
-						
-				for (final Location position : pieces[i])
+				for (final Move move : oppLegalMoves)
 				{
-					final int site = position.site();
-					if (site >= distances.length)	// Different container, skip it
-						continue;
-						
-					final int dist = distances[site];
-						
-					final float proximity = 1.f - ((float) dist / maxDistance);
-					featureVector.addToEntry(compIdx, proximity);
+					for (final Action action : move.actions())
+					{
+						if (action instanceof ActionRemove)
+						{
+							final ActionRemove removeAction = (ActionRemove) action;
+							final int removeSite = removeAction.to();
+							final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
+							
+							if (contID == 0)
+							{
+								threatenedSites.add(removeSite);
+							}
+						}
+					}
+					
+					// Also assume we threaten the site we move to, regardless of whether or not there are Remove actions
+					if (move.to() >= 0)
+						threatenedSites.add(move.to());
+				}
+			}
+		}
+		
+		final List<? extends Location>[] pieces = owned.positions(player);
+		
+		for (int i = 0; i < pieces.length; ++i)
+		{
+			if (pieces[i].isEmpty())
+				continue;
+			
+			final int compIdx = owned.reverseMap(player, i);
+
+			for (final Location loc : pieces[i])
+			{
+				if (loc.siteType() != SiteType.Cell || context.containerId()[loc.site()] == 0)
+				{
+					if (!threatenedSites.contains(loc.site()))
+						featureVector.addToEntry(compIdx, 1.f);
 				}
 			}
 		}
@@ -191,9 +270,6 @@ public class CornerProximity extends HeuristicTerm
 	{
 		// Compute vector of piece weights
 		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
-		
-		// Precompute maximum distance for this game
-		computeMaxDist(game);
 	}
 	
 	@Override
@@ -213,35 +289,6 @@ public class CornerProximity extends HeuristicTerm
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Helper method for constructors
-	 * @param game
-	 * @return Computed max dist
-	 */
-	private final static int computeMaxDist(final Game game)
-	{
-		final int[] distances = game.distancesToCorners();
-		
-		if (distances != null)
-		{
-			int max = 0;
-			
-			for (int i = 0; i < distances.length; ++i)
-			{
-				if (distances[i] > max)
-					max = distances[i];
-			}
-			
-			return max;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
 	 * @param game
 	 * @return True if heuristic of this type could be applicable to given game
 	 */
@@ -250,9 +297,6 @@ public class CornerProximity extends HeuristicTerm
 		final Component[] components = game.equipment().components();
 		
 		if (components.length <= 1)
-			return false;
-		
-		if (game.distancesToCorners() == null)
 			return false;
 		
 		return true;
@@ -266,7 +310,7 @@ public class CornerProximity extends HeuristicTerm
 	 */
 	public static boolean isSensibleForGame(final Game game)
 	{
-		return isApplicableToGame(game);
+		return isApplicableToGame(game) && game.booleanConcepts().get(Concept.Capture.id());
 	}
 	
 	//-------------------------------------------------------------------------
@@ -276,7 +320,7 @@ public class CornerProximity extends HeuristicTerm
 	{
 		final StringBuilder sb = new StringBuilder();
 		
-		sb.append("(cornerProximity");
+		sb.append("(unthreatenedMaterial");
 		if (transformation != null)
 			sb.append(" transformation:" + transformation.toString());
 		if (weight != 1.f)
@@ -332,7 +376,7 @@ public class CornerProximity extends HeuristicTerm
 		{
 			final StringBuilder sb = new StringBuilder();
 		
-			sb.append("(cornerProximity");
+			sb.append("(unthreatenedMaterial");
 			if (transformation != null)
 				sb.append(" transformation:" + transformation.toString());
 			if (weight != 1.f)
@@ -359,7 +403,7 @@ public class CornerProximity extends HeuristicTerm
 	@Override
 	public void merge(final HeuristicTerm term) 
 	{
-		final CornerProximity castTerm = (CornerProximity) term;
+		final UnthreatenedMaterial castTerm = (UnthreatenedMaterial) term;
 		for (int i = 0; i < pieceWeightNames.length; i++)
 			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
 				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
@@ -392,7 +436,7 @@ public class CornerProximity extends HeuristicTerm
 	@Override
 	public String description() 
 	{
-		return "Sum of owned pieces, weighted by proximity to nearest corner.";
+		return "Sum of unthreatened owned pieces.";
 	}
 	
 	@Override
@@ -410,10 +454,10 @@ public class CornerProximity extends HeuristicTerm
 
 					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
 					{
-						if (weight > 0)
-							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) towards the corners of the board");
+						if (gameAgnosticWeightsArray[i] > 0)
+							sb.append("You should try to maximise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						else
-							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) away from the corners of the board");
+							sb.append("You should try to minimise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						
 						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
@@ -423,9 +467,9 @@ public class CornerProximity extends HeuristicTerm
 		else
 		{
 			if (weight > 0)
-				sb.append("You should try to move your piece(s) towards the corners of the board");
+				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
 			else
-				sb.append("You should try to move your piece(s) away from the corners of the board");
+				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
 			
 			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
@@ -434,4 +478,5 @@ public class CornerProximity extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
+
 }
