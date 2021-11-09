@@ -616,5 +616,34 @@ public class AIUtils
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param heuristicName
+	 * @return Shortened version of given heuristic name
+	 */
+	public static String shortenHeuristicName(final String heuristicName)
+	{
+		return heuristicName
+				.replaceAll(Pattern.quote("CentreProximity"), "CeProx")
+				.replaceAll(Pattern.quote("ComponentValues"), "CompVal")
+				.replaceAll(Pattern.quote("CornerProximity"), "CoProx")
+				.replaceAll(Pattern.quote("CurrentMoverHeuristic"), "CurrMov")
+				.replaceAll(Pattern.quote("InfluenceAdvanced"), "InfAdv")
+				.replaceAll(Pattern.quote("Influence"), "Inf")
+				.replaceAll(Pattern.quote("Intercept"), "Inter")
+				.replaceAll(Pattern.quote("LineCompletionHeuristic"), "LineComp")
+				.replaceAll(Pattern.quote("MobilityAdvanced"), "MobAdv")
+				.replaceAll(Pattern.quote("MobilitySimple"), "MobS")
+				.replaceAll(Pattern.quote("NullHeuristic"), "Null")
+				.replaceAll(Pattern.quote("OwnRegionsCount"), "OwnRegC")
+				.replaceAll(Pattern.quote("PlayerRegionsProximity"), "PRegProx")
+				.replaceAll(Pattern.quote("PlayerSiteMapCount"), "PSMapC")
+				.replaceAll(Pattern.quote("RegionProximity"), "ReProx")
+				.replaceAll(Pattern.quote("SidesProximity"), "SiProx")
+				.replaceAll(Pattern.quote("UnthreatenedMaterial"), "UntMat")
+				.replaceAll(Pattern.quote("Material"), "Mat");
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

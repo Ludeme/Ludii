@@ -42,6 +42,7 @@ import metadata.ai.heuristics.terms.SidesProximity;
 import metadata.ai.heuristics.terms.UnthreatenedMaterial;
 import other.GameLoader;
 import search.minimax.AlphaBetaSearch;
+import utils.AIUtils;
 
 /**
  * Method to generate cluster job scripts for finding the best
@@ -308,7 +309,7 @@ public class FindBestStartingHeuristicsScriptsGen
 											"heuristics=" + StringRoutines.quote(heuristicFilepath),
 											"friendly_name=" + heuristicName
 										));
-								matchupStr += heuristicName;
+								matchupStr += AIUtils.shortenHeuristicName(heuristicName);
 							}
 							
 							final String javaCall = StringRoutines.join
