@@ -89,10 +89,33 @@ public class ExperimentFileUtils
 		int index = 0;
 		String result = null;
 		
-		while (new File(String.format(fileSequenceFormat, baseFilepath, Integer.valueOf(index), extension)).exists())
+		final File checkpoint0 = new File(String.format(fileSequenceFormat, baseFilepath, Integer.valueOf(index), extension));
+		
+		if (checkpoint0.exists())
 		{
-			result = String.format(fileSequenceFormat, baseFilepath, Integer.valueOf(index), extension);
-			++index;
+			final File dir = checkpoint0.getParentFile();
+			final File[] files = dir.listFiles();
+			
+			for (final File file : files)
+			{
+				final String filepath = file.getAbsolutePath();
+				if (filepath.endsWith("." + extension) && filepath.contains(baseFilepath))
+				{
+					try
+					{
+						final int idx = Integer.parseInt(filepath.substring(filepath.lastIndexOf("_") + 1));
+						if (idx > index)
+						{
+							index = idx;
+							result = String.format(fileSequenceFormat, baseFilepath, Integer.valueOf(index), extension);
+						}
+					}
+					catch (final Exception e)
+					{
+						// Do nothing
+					}
+				}
+			}
 		}
 		
 		return result;
