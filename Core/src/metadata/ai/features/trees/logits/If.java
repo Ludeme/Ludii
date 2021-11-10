@@ -1,6 +1,7 @@
 package metadata.ai.features.trees.logits;
 
 import annotations.Name;
+import main.StringRoutines;
 
 /**
  * Describes a decision node in a logit tree for features; it contains one
@@ -41,6 +42,29 @@ public class If extends LogitNode
 		this.feature = feature;
 		this.thenNode = then;
 		this.elseNode = Else;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toString()
+	{
+		return toString(0);
+	}
+	
+	@Override
+	public String toString(final int indent)
+	{
+		final StringBuilder sb = new StringBuilder();
+		final String outerIndentStr = StringRoutines.indent(4, indent);
+		final String innerIndentStr = StringRoutines.indent(4, indent + 1);
+		
+		sb.append("(if " + StringRoutines.quote(feature) + "\n");
+		sb.append(innerIndentStr + "then:" + thenNode.toString(indent + 1) + "\n");
+		sb.append(innerIndentStr + "else:" + elseNode.toString(indent + 1) + "\n");
+		sb.append(outerIndentStr + ")");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

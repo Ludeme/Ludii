@@ -13,7 +13,11 @@ public abstract class LogitNode implements AIItem
 	
 	//-------------------------------------------------------------------------
 	
-	// Nothing to do here...
+	/**
+	 * @param indent Number of tabs (assuming four spaces) to indent
+	 * @return String representation of this node.
+	 */
+	public abstract String toString(final int indent);
 	
 	//-------------------------------------------------------------------------
 

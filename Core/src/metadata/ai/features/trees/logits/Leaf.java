@@ -1,5 +1,6 @@
 package metadata.ai.features.trees.logits;
 
+import main.StringRoutines;
 import metadata.ai.misc.Pair;
 
 /**
@@ -37,6 +38,31 @@ public class Leaf extends LogitNode
 			featureStrings[i] = features[i].key();
 			weights[i] = features[i].floatVal();
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toString()
+	{
+		return toString(0);
+	}
+	
+	@Override
+	public String toString(final int indent)
+	{
+		final StringBuilder sb = new StringBuilder();
+		final String outerIndentStr = StringRoutines.indent(4, indent);
+		final String innerIndentStr = StringRoutines.indent(4, indent + 1);
+		
+		sb.append("(leaf {\n");
+		for (int i = 0; i < featureStrings.length; ++i)
+		{
+			sb.append(innerIndentStr + "(pair " + StringRoutines.quote(featureStrings[i]) + " " + weights[i] + ")\n");
+		}
+		sb.append(outerIndentStr + "})");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------
