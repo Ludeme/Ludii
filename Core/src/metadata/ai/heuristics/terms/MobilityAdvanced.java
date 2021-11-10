@@ -68,6 +68,7 @@ public class MobilityAdvanced extends HeuristicTerm
 		else
 		{
 			final TempContext copy = new TempContext(context);
+			copy.state().setPrev(context.state().mover());
 			copy.state().setMover(player);
 			copy.trial().clearLegalMoves();
 			return copy.game().moves(copy).count();

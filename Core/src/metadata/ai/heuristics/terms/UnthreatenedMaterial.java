@@ -132,6 +132,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 			else
 			{
 				final TempContext temp = new TempContext(context);
+				temp.state().setPrev(context.state().mover());
 				temp.state().setMover(player);
 				temp.trial().clearLegalMoves();
 				oppLegalMoves = game.moves(temp).moves();

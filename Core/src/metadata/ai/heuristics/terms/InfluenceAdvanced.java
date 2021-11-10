@@ -76,6 +76,7 @@ public class InfluenceAdvanced extends HeuristicTerm
 		else
 		{
 			computeContext = new TempContext(context);
+			computeContext.state().setPrev(context.state().mover());
 			computeContext.state().setMover(player);
 			computeContext.trial().clearLegalMoves();
 		}
