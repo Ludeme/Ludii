@@ -4543,6 +4543,9 @@ SUBCLASS: metadata.ai.Ai
 SUBCLASS: metadata.ai.AIItem
 SUBCLASS: metadata.ai.features.Features
 SUBCLASS: metadata.ai.features.FeatureSet
+SUBCLASS: metadata.ai.features.trees.logits.If
+SUBCLASS: metadata.ai.features.trees.logits.Leaf
+SUBCLASS: metadata.ai.features.trees.logits.LogitNode
 SUBCLASS: metadata.ai.heuristics.Heuristics
 SUBCLASS: metadata.ai.heuristics.terms.CentreProximity
 SUBCLASS: metadata.ai.heuristics.terms.ComponentValues
@@ -4620,6 +4623,9 @@ TYPE: metadata.ai.AIItem
 TYPE JAVADOC: General function hint for this game.Metadata containing hints for AI agents for this game.
 SUBCLASS: metadata.ai.features.Features
 SUBCLASS: metadata.ai.features.FeatureSet
+SUBCLASS: metadata.ai.features.trees.logits.If
+SUBCLASS: metadata.ai.features.trees.logits.Leaf
+SUBCLASS: metadata.ai.features.trees.logits.LogitNode
 SUBCLASS: metadata.ai.heuristics.Heuristics
 SUBCLASS: metadata.ai.heuristics.terms.CentreProximity
 SUBCLASS: metadata.ai.heuristics.terms.ComponentValues
