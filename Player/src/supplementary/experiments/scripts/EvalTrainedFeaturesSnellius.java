@@ -43,7 +43,7 @@ public class EvalTrainedFeaturesSnellius
 	private static final int MAX_REQUEST_MEM = 234;
 	
 	/** Max number of self-play trials */
-	private static final int NUM_TRIALS = 150;
+	private static final int NUM_TRIALS = 144;
 	
 	/** Max wall time (in minutes) */
 	private static final int MAX_WALL_TIME = 2880;
