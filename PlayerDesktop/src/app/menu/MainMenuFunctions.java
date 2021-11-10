@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -41,6 +42,7 @@ import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
+import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.screenCapture.ScreenCapture;
 import app.display.util.Thumbnails;
 import app.display.views.tabs.TabView;
@@ -239,6 +241,30 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Editor (Expanded)"))
 		{
 			EditorDialog.createAndShowGUI(app, true, true, true);
+		}
+		else if (source.getText().equals("Visual Editor (Beta)"))
+		{
+			// Create and lauch an instance of the visual editor
+			final VisualEditorPanel visual = new VisualEditorPanel(app);
+			
+			final JFrame frame = new JFrame("Visual Game Editor");
+			frame.setContentPane(visual);
+			frame.setSize(800, 800);
+			frame.setLocationRelativeTo(null);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+			frame.setVisible(true);
+			
+			try
+			{
+				app.frame().add(frame);
+			}
+			catch (final Exception ve)
+			{
+				// **
+				// ** TODO: Set up visual editor frame correctly. 
+				// **
+				System.out.println("Adding visual editor frame to main frame causes an exception: " + ve.getMessage());
+			}
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))

@@ -173,6 +173,10 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("Editor (Expanded)");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
+
+			menuItem = new JMenuItem("Visual Editor (Beta)");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 		}
 
 		//---------------------------------------------------------------------

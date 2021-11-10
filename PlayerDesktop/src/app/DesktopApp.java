@@ -149,7 +149,7 @@ public final class DesktopApp extends PlayerApp
 	{
 		// Do nothing.
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
