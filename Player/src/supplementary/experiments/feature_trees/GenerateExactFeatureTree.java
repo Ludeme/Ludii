@@ -1,52 +1,49 @@
-package supplementary.experiments.game_files;
+package supplementary.experiments.feature_trees;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
+import features.feature_sets.BaseFeatureSet;
+import function_approx.LinearFunction;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
-import metadata.ai.features.Features;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import utils.AIFactory;
-import utils.AIUtils;
 
 /**
- * Class to write a set of features and weights to a file
- *
+ * Class to convert a trained feature set + weights into an exact logit
+ * tree (with exact meaning that it will be guaranteed to produce identical
+ * outputs for identical inputs).
+ * 
  * @author Dennis Soemers
  */
-public class WriteFeaturesMetadata
+public class GenerateExactFeatureTree
 {
-	
+
 	//-------------------------------------------------------------------------
 	
 	/**
 	 * Private constructor
 	 */
-	private WriteFeaturesMetadata()
+	private GenerateExactFeatureTree()
 	{
 		// Do nothing
 	}
 	
 	//-------------------------------------------------------------------------
 	
-	/** Filepaths for Selection feature weights to write */
-	protected List<String> featureWeightsFilepathsSelection;
+	/** Filepaths for trained feature weights */
+	protected List<String> featureWeightsFilepaths;
 	
-	/** Filepaths for Playout feature weights to write */
-	protected List<String> featureWeightsFilepathsPlayout;
-	
-	/** File to write features metadata to */
+	/** File to write tree metadata to */
 	protected File outFile;
 	
 	/** If true, we expect Playout policy weight files to be boosted */
 	protected boolean boosted;
-
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -59,21 +56,16 @@ public class WriteFeaturesMetadata
 		final StringBuilder playoutSb = new StringBuilder();
 		playoutSb.append("playout=softmax");
 
-		for (int p = 1; p <= featureWeightsFilepathsPlayout.size(); ++p)
+		for (int p = 1; p <= featureWeightsFilepaths.size(); ++p)
 		{
-			playoutSb.append(",policyweights" + p + "=" + featureWeightsFilepathsPlayout.get(p - 1));
+			playoutSb.append(",policyweights" + p + "=" + featureWeightsFilepaths.get(p - 1));
 		}
 		
 		if (boosted)
 			playoutSb.append(",boosted=true");
 		
 		final StringBuilder selectionSb = new StringBuilder();
-		selectionSb.append("learned_selection_policy=softmax");
-
-		for (int p = 1; p <= featureWeightsFilepathsSelection.size(); ++p)
-		{
-			selectionSb.append(",policyweights" + p + "=" + featureWeightsFilepathsSelection.get(p - 1));
-		}
+		selectionSb.append("learned_selection_policy=playout");
 
 		final String agentStr = StringRoutines.join
 				(
@@ -88,20 +80,19 @@ public class WriteFeaturesMetadata
 				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicy selectionSoftmax = mcts.learnedSelectionPolicy();
 		final SoftmaxPolicy playoutSoftmax = (SoftmaxPolicy) mcts.playoutStrategy();
-
-		// Generate our features metadata and write it
-		final Features features = AIUtils.generateFeaturesMetadata(selectionSoftmax, playoutSoftmax);
-
-		try (final PrintWriter writer = new PrintWriter(outFile))
+		
+		final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
+		
+		@SuppressWarnings("unused")		// TODO
+		final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();
+		
+		for (int p = 1; p < featureSets.length; ++p)
 		{
-			writer.println(features.toString());
+			// TODO generate logit tree for Player p
 		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
+		
+		// TODO write
 	}
 	
 	//-------------------------------------------------------------------------
@@ -122,13 +113,8 @@ public class WriteFeaturesMetadata
 				);
 		
 		argParse.addOption(new ArgOption()
-				.withNames("--selection-feature-weights-filepaths")
-				.help("Filepaths for feature weights for Selection.")
-				.withNumVals("+")
-				.withType(OptionTypes.String));
-		argParse.addOption(new ArgOption()
-				.withNames("--playout-feature-weights-filepaths")
-				.help("Filepaths for feature weights for Selection.")
+				.withNames("--feature-weights-filepaths")
+				.help("Filepaths for trained feature weights.")
 				.withNumVals("+")
 				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
@@ -146,10 +132,9 @@ public class WriteFeaturesMetadata
 		if (!argParse.parseArguments(args))
 			return;
 
-		final WriteFeaturesMetadata task = new WriteFeaturesMetadata();
+		final GenerateExactFeatureTree task = new GenerateExactFeatureTree();
 		
-		task.featureWeightsFilepathsSelection = (List<String>) argParse.getValue("--selection-feature-weights-filepaths");
-		task.featureWeightsFilepathsPlayout = (List<String>) argParse.getValue("--playout-feature-weights-filepaths");
+		task.featureWeightsFilepaths = (List<String>) argParse.getValue("--feature-weights-filepaths");
 		task.outFile = new File(argParse.getValueString("--out-file"));
 		task.boosted = argParse.getValueBool("--boosted");
 		
@@ -157,5 +142,5 @@ public class WriteFeaturesMetadata
 	}
 	
 	//-------------------------------------------------------------------------
-
+	
 }
