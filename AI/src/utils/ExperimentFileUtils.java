@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 /**
  * Some utilities related to files in experiments
@@ -103,7 +104,13 @@ public class ExperimentFileUtils
 				{
 					try
 					{
-						final int idx = Integer.parseInt(filepath.substring(filepath.lastIndexOf("_") + 1));
+						final int idx = 
+								Integer.parseInt
+								(
+									filepath
+									.substring(filepath.lastIndexOf("_") + 1)
+									.replaceAll(Pattern.quote("." + extension), "")
+								);
 						if (idx > index)
 						{
 							index = idx;
@@ -113,6 +120,7 @@ public class ExperimentFileUtils
 					catch (final Exception e)
 					{
 						// Do nothing
+						//e.printStackTrace();
 					}
 				}
 			}
