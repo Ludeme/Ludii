@@ -76,7 +76,7 @@ public class Metadata implements MetadataItem, Serializable
 		if (ai != null)
 			this.ai = ai;
 		else
-			this.ai = new Ai(null, null, null);
+			this.ai = new Ai(null, null, null, null);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class Metadata implements MetadataItem, Serializable
 	{
 		this.info 	  = new Info(null, null);
 		this.graphics = new Graphics(null, null);
-		this.ai 	  = new Ai(null, null, null);		
+		this.ai 	  = new Ai(null, null, null, null);		
 	}
 	
 	//-------------------------------------------------------------------------
