@@ -64,7 +64,7 @@ public class ToolView extends View
 
 		int toolHeight = 40;
 		
-		if (portraitMode)
+		if (portraitMode && app.manager().isWebApp())
 			toolHeight = 80;
 		
 		int boardSize = app.height();
