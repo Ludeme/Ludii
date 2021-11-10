@@ -243,7 +243,7 @@ public class EvalTrainedFeaturesSnellius
 					{
 						final List<String> playoutStrParts = new ArrayList<String>();
 						playoutStrParts.add("playout=softmax");
-						for (int p = 1; p < processData.numPlayers; ++p)
+						for (int p = 1; p <= processData.numPlayers; ++p)
 						{
 							playoutStrParts.add
 							(
@@ -260,7 +260,7 @@ public class EvalTrainedFeaturesSnellius
 						
 						final List<String> learnedSelectionStrParts = new ArrayList<String>();
 						learnedSelectionStrParts.add("learned_selection_policy=softmax");
-						for (int p = 1; p < processData.numPlayers; ++p)
+						for (int p = 1; p <= processData.numPlayers; ++p)
 						{
 							learnedSelectionStrParts.add
 							(
