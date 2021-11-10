@@ -251,7 +251,7 @@ public class EvalTrainedFeaturesSnellius
 								p + 
 								"=/home/" + 
 								userName + 
-								"/TrainFeatureSnellius/Out/" + 
+								"/TrainFeaturesSnellius/Out/" + 
 								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
 								"_" + (String)agent + 
 								"/PolicyWeightsPlayout_P" + p + "_00201.txt"
@@ -268,7 +268,7 @@ public class EvalTrainedFeaturesSnellius
 								p + 
 								"=/home/" + 
 								userName + 
-								"/TrainFeatureSnellius/Out/" + 
+								"/TrainFeaturesSnellius/Out/" + 
 								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
 								"_" + (String)agent + 
 								"/PolicyWeightsSelection_P" + p + "_00201.txt"
