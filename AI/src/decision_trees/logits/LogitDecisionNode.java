@@ -16,10 +16,10 @@ public class LogitDecisionNode extends LogitTreeNode
 	protected final Feature feature;
 	
 	/** Node we should traverse to if feature is true */
-	protected final LogitDecisionNode trueNode;
+	protected final LogitTreeNode trueNode;
 	
 	/** Node we should traverse to if feature is false */
-	protected final LogitDecisionNode falseNode;
+	protected final LogitTreeNode falseNode;
 	
 	//-------------------------------------------------------------------------
 	
@@ -32,8 +32,8 @@ public class LogitDecisionNode extends LogitTreeNode
 	public LogitDecisionNode
 	(
 		final Feature feature, 
-		final LogitDecisionNode trueNode, 
-		final LogitDecisionNode falseNode
+		final LogitTreeNode trueNode, 
+		final LogitTreeNode falseNode
 	)
 	{
 		this.feature = feature;
