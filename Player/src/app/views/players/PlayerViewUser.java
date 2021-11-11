@@ -277,7 +277,7 @@ public class PlayerViewUser extends View
 	 */
 	void drawAIFace(final Graphics2D g2d)
 	{
-		final AI ai = app.manager().aiSelected()[convertedPlayerIndex(app.contextSnapshot().getContext(app))].ai();
+		final AI ai = app.manager().aiSelected()[app.manager().playerToAgent(playerId)].ai();
 
 		if (ai != null)
 		{
@@ -333,7 +333,7 @@ public class PlayerViewUser extends View
 
 		if (spinner != null)
 		{
-			if (context.state().mover() == playerId && !app.manager().aiSelected()[convertedPlayerIndex(app.contextSnapshot().getContext(app))].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+			if (context.state().mover() == playerId && !app.manager().aiSelected()[app.manager().playerToAgent(playerId)].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
 				spinner.startSpinner();
 			else
 				spinner.stopSpinner();
@@ -387,7 +387,7 @@ public class PlayerViewUser extends View
 		final Context instanceContext = context.currentInstanceContext();
 		final Game instance = instanceContext.game();
 		
-		final int playerIndex = convertedPlayerIndex(instanceContext);
+		final int playerIndex = app.manager().playerToAgent(playerId);
 		final Font playerNameFont = g2d.getFont();
 		
 		String strName = app.manager().aiSelected()[playerIndex].name();
@@ -452,7 +452,7 @@ public class PlayerViewUser extends View
 		if (app.contextSnapshot().getContext(app).game().requiresTeams())
 			strExtras += " Team " + app.contextSnapshot().getContext(app).state().getTeam(playerId);
 		
-		if (app.manager().settingsNetwork().playerTimeRemaining()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)-1] > 0)
+		if (app.manager().settingsNetwork().playerTimeRemaining()[app.manager().playerToAgent(playerId)-1] > 0)
 			strExtras += " Time: " + app.manager().settingsNetwork().playerTimeRemaining()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)-1] + "s";
 		
 		strName += strAIName;
@@ -532,13 +532,6 @@ public class PlayerViewUser extends View
 	public int playerId()
 	{
 		return playerId;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	private int convertedPlayerIndex(final Context context)
-	{
-		return context.currentInstanceContext().state().playerToAgent(playerId);
 	}
 
 }

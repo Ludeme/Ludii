@@ -702,7 +702,7 @@ public class Referee
 		
 		if 
 		(
-			manager.aiSelected()[manager.realMoverIndex()].ai() == null 			// Don't check instant pass if an AI is selected. Can potentially cause GUI threading issues.
+			manager.aiSelected()[manager.moverToAgent()].ai() == null 			// Don't check instant pass if an AI is selected. Can potentially cause GUI threading issues.
 			&& 
 			legal.moves().size() == 1 && firstMove.isPass() && firstMove.isForced()
 			&& 

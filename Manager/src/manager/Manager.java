@@ -197,7 +197,7 @@ public final class Manager
 	
 	//-------------------------------------------------------------------------
 	
-	public int realMoverIndex()
+	public int moverToAgent()
 	{
 		return ref().context().state().playerToAgent(ref().context().state().mover());
 	}
@@ -206,5 +206,7 @@ public final class Manager
 	{
 		return ref().context().state().playerToAgent(i);
 	}
+	
+	//-------------------------------------------------------------------------
 
 }

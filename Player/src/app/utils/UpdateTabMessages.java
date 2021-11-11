@@ -97,7 +97,7 @@ public class UpdateTabMessages
 
 		// Show next player to move
 		if (!context.trial().over() && nextMover < game.players().size())
-			statusString += app.manager().aiSelected()[context.state().playerToAgent(nextMover)].name() + " to move.\n";
+			statusString += app.manager().aiSelected()[app.manager().playerToAgent(nextMover)].name() + " to move.\n";
 		
 		app.addTextToStatusPanel(statusString);
 	}

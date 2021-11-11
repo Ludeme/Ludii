@@ -34,7 +34,7 @@ public class MouseHandler
 			app.settingsPlayer().setComponentIsSelected(false);
 		
 		// Can't select pieces if the AI is moving
-		if (app.manager().aiSelected()[app.manager().realMoverIndex()].ai() != null && !app.manager().settingsManager().agentsPaused())
+		if (app.manager().aiSelected()[app.manager().moverToAgent()].ai() != null && !app.manager().settingsManager().agentsPaused())
 			return;
 
 		// Get the nearest valid from location to the pressed point.
