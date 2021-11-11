@@ -992,7 +992,7 @@ public class MCTS extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public boolean usesFeatures()
+	public boolean usesFeatures(final Game game)
 	{
 		return (learnedSelectionPolicy != null || playoutStrategy instanceof SoftmaxPolicy);
 	}

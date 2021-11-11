@@ -341,9 +341,10 @@ public abstract class AI
 	}
 	
 	/**
+	 * @param game
 	 * @return Does this AI use spatial state-action features?
 	 */
-	public boolean usesFeatures()
+	public boolean usesFeatures(final Game game)
 	{
 		return false;
 	}

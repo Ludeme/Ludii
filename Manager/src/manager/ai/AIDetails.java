@@ -44,13 +44,9 @@ public class AIDetails
 			if (!algName.equalsIgnoreCase("Human"))
 			{
 				AI aiFromName = AIFactory.fromJson(object);		
-				System.out.println("here2");
-				System.out.println(aiFromName.name());
-				System.out.println(aiFromName.usesFeatures());
 				
-				if (aiFromName.usesFeatures())
+				if (manager.ref().context() != null && aiFromName.usesFeatures(manager.ref().context().game()))
 				{
-					System.out.println("here");
 					final JSONObject json = new JSONObject()
 							.put("AI", new JSONObject()
 							.put("algorithm", "AlphaBeta")

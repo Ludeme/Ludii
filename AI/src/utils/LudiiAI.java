@@ -125,6 +125,12 @@ public final class LudiiAI extends AI
 			currentAgent.setWantsInterrupt(val);
 	}
 	
+	@Override
+	public boolean usesFeatures(final Game game)
+	{
+		return AIFactory.fromMetadata(game).usesFeatures(game);
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
