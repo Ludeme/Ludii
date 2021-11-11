@@ -64,26 +64,16 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	 * @param aspatialFeatures
 	 * @param spatialFeatures
 	 */
-	public JITSPatterNetFeatureSet(final List<AspatialFeature> aspatialFeatures, final List<SpatialFeature> spatialFeatures)
+	public static JITSPatterNetFeatureSet construct(final List<AspatialFeature> aspatialFeatures, final List<SpatialFeature> spatialFeatures)
 	{
-		this.spatialFeatures = new SpatialFeature[spatialFeatures.size()];
-		
-		for (int i = 0; i < this.spatialFeatures.length; ++i)
-		{
-			this.spatialFeatures[i] = spatialFeatures.get(i);
-			this.spatialFeatures[i].setSpatialFeatureSetIndex(i);
-		}
-		
-		this.aspatialFeatures = aspatialFeatures.toArray(new AspatialFeature[aspatialFeatures.size()]);
-		
-		jitMap = null;
+		return new JITSPatterNetFeatureSet(aspatialFeatures, spatialFeatures);
 	}
 	
 	/**
 	 * Loads a feature set from a given filename
 	 * @param filename
 	 */
-	public JITSPatterNetFeatureSet(final String filename)
+	public static JITSPatterNetFeatureSet construct(final String filename)
 	{
 		Feature[] tempFeatures;
 		
@@ -114,8 +104,27 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			}
 		}
 		
-		this.aspatialFeatures = aspatialFeaturesList.toArray(new AspatialFeature[aspatialFeaturesList.size()]);
-		this.spatialFeatures = spatialFeaturesList.toArray(new SpatialFeature[spatialFeaturesList.size()]);
+		return construct(aspatialFeaturesList, spatialFeaturesList);
+	}
+	
+	/**
+	 * Construct feature set from lists of features
+	 * @param aspatialFeatures
+	 * @param spatialFeatures
+	 */
+	private JITSPatterNetFeatureSet(final List<AspatialFeature> aspatialFeatures, final List<SpatialFeature> spatialFeatures)
+	{
+		this.spatialFeatures = new SpatialFeature[spatialFeatures.size()];
+		
+		for (int i = 0; i < this.spatialFeatures.length; ++i)
+		{
+			this.spatialFeatures[i] = spatialFeatures.get(i);
+			this.spatialFeatures[i].setSpatialFeatureSetIndex(i);
+		}
+		
+		this.aspatialFeatures = aspatialFeatures.toArray(new AspatialFeature[aspatialFeatures.size()]);
+		
+		jitMap = null;
 	}
 	
 	//-------------------------------------------------------------------------
