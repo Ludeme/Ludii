@@ -76,7 +76,7 @@ public class PlayerView extends View
 		// create the shared player pages (if it exists)
 		if (app.contextSnapshot().getContext(app).hasSharedPlayer())
 		{
-			final Rectangle place = new Rectangle(0, 0, boardSize, app.height() / 10);
+			final Rectangle place = new Rectangle(0, 0, boardSize, boardSize/10);
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);
 			playerSections.add(naturePlayerPage);
