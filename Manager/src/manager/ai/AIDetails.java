@@ -43,9 +43,14 @@ public class AIDetails
 			final String algName = aiObj.getString("algorithm");
 			if (!algName.equalsIgnoreCase("Human"))
 			{
-				AI aiFromName = AIFactory.fromJson(object);			
-				if (manager.isWebApp() && aiFromName.usesFeatures())
+				AI aiFromName = AIFactory.fromJson(object);		
+				System.out.println("here2");
+				System.out.println(aiFromName.name());
+				System.out.println(aiFromName.usesFeatures());
+				
+				if (aiFromName.usesFeatures())
 				{
+					System.out.println("here");
 					final JSONObject json = new JSONObject()
 							.put("AI", new JSONObject()
 							.put("algorithm", "AlphaBeta")
