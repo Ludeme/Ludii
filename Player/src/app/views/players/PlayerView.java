@@ -50,7 +50,7 @@ public class PlayerView extends View
 		int width = app.width() - boardSize;
 		int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
 		
-		if (app.manager().isWebApp() && portraitMode)
+		if (app.manager().isWebApp() && portraitMode && numPlayers <= 4)
 			playerNameFont = new Font("Arial", Font.PLAIN, 32);
 		
 		if (portraitMode)

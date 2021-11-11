@@ -92,7 +92,7 @@ public class AIUtil
 	{
 		if (manager.settingsNetwork().getActiveGameId() != 0 && !manager.settingsNetwork().getOnlineAIAllowed())
 			manager.settingsManager().setAgentsPaused(manager, true);
-		else if (manager.aiSelected()[manager.ref().context().state().mover()].ai() != null)
+		else if (manager.aiSelected()[manager.realMoverIndex()].ai() != null)
 			manager.settingsManager().setAgentsPaused(manager, true);
 		else if (manager.ref().context().model() instanceof SimultaneousMove)
 			manager.settingsManager().setAgentsPaused(manager, true);

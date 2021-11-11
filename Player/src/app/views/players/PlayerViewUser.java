@@ -84,7 +84,7 @@ public class PlayerViewUser extends View
 		int componentPushBufferX = 0;
 		final int swatchWidth = app.playerSwatchList()[playerId].width;
 		final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
-		componentPushBufferX = swatchWidth + maxNameWidth + placement.height/2;
+		componentPushBufferX = (int) (swatchWidth + maxNameWidth + app.playerNameList()[playerId].getHeight()*2);
 		
 		// Extra buffer on mobile devices
 		if (g2d.getFont().getSize() > 20)
@@ -92,7 +92,7 @@ public class PlayerViewUser extends View
 		
 		if (hand != null)
 		{
-			final int containerMarginWidth = (int) (0.05 * placement.height); // add a small 5% margin on either side of the container
+			final int containerMarginWidth = (int) (0.05 * placement.height);
 			final Rectangle containerPlacement = new Rectangle(
 																placement.x + componentPushBufferX + containerMarginWidth, 
 																placement.y - placement.height/2, 
@@ -277,7 +277,7 @@ public class PlayerViewUser extends View
 	 */
 	void drawAIFace(final Graphics2D g2d)
 	{
-		final AI ai = app.manager().aiSelected()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)].ai();
+		final AI ai = app.manager().aiSelected()[convertedPlayerIndex(app.contextSnapshot().getContext(app))].ai();
 
 		if (ai != null)
 		{
@@ -333,7 +333,7 @@ public class PlayerViewUser extends View
 
 		if (spinner != null)
 		{
-			if (context.state().mover() == playerId && !app.manager().aiSelected()[playerId].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+			if (context.state().mover() == playerId && !app.manager().aiSelected()[convertedPlayerIndex(app.contextSnapshot().getContext(app))].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
 				spinner.startSpinner();
 			else
 				spinner.stopSpinner();
@@ -387,7 +387,7 @@ public class PlayerViewUser extends View
 		final Context instanceContext = context.currentInstanceContext();
 		final Game instance = instanceContext.game();
 		
-		final int playerIndex = instanceContext.state().playerToAgent(playerId);
+		final int playerIndex = convertedPlayerIndex(instanceContext);
 		final Font playerNameFont = g2d.getFont();
 		
 		String strName = app.manager().aiSelected()[playerIndex].name();
@@ -535,5 +535,10 @@ public class PlayerViewUser extends View
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	private int convertedPlayerIndex(final Context context)
+	{
+		return context.currentInstanceContext().state().playerToAgent(playerId);
+	}
 
 }
