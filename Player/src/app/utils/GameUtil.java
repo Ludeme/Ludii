@@ -165,7 +165,7 @@ public class GameUtil
 		context.game().incrementGameStartCount();
 		
 		final int numPlayers = context.game().players().count();
-		for (int p = 1; p < app.manager().aiSelected().length; ++p)
+		for (int p = 0; p < app.manager().aiSelected().length; ++p)
 		{
 			// Close AI players that may have had data from previous game
 			if (app.manager().aiSelected()[p].ai() != null)

@@ -125,22 +125,6 @@ public class PlayerView extends View
 	}
 	
 	//-------------------------------------------------------------------------
-
-	/**
-	 * Return True if any of the current players of the game are AI agents.
-	 */
-	public boolean anyPlayersAreAgents(final Context context)
-	{		
-		boolean anyPlayersAreAgents = false;
-		for (int i = 1; i <= context.game().players().count(); i++)
-		{
-			if (app.manager().aiSelected()[i].ai() != null)
-				anyPlayersAreAgents = true;
-		}
-		return anyPlayersAreAgents;
-	}
-	
-	//-------------------------------------------------------------------------
 	
 	public void paintHand(final Graphics2D g2d, final Context context, final Rectangle place, final int handIndex)
 	{

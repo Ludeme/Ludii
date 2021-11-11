@@ -45,10 +45,10 @@ public class ContextSnapshot
 			int humanIndex = 0;
 			for (int i = 1; i <= context.game().players().count(); i++)
 			{
-				if (app.manager().aiSelected()[i].ai() == null)
+				if (app.manager().aiSelected()[app.manager().playerToAgent(i)].ai() == null)
 				{
 					humansFound++;
-					humanIndex = app.manager().playerToAgent(i);
+					humanIndex = i;
 				}
 			}
 			
