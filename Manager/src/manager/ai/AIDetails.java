@@ -45,7 +45,7 @@ public class AIDetails
 			{
 				AI aiFromName = AIFactory.fromJson(object);		
 				
-				if (manager.ref().context() != null && manager.isWebApp() && aiFromName.usesFeatures(manager.ref().context().game()))
+				if (manager.isWebApp() && manager.ref().context() != null && aiFromName.usesFeatures(manager.ref().context().game()))
 				{
 					final JSONObject json = new JSONObject()
 							.put("AI", new JSONObject()
