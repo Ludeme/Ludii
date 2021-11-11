@@ -1248,6 +1248,9 @@ public class ExpertIteration
 							}
 						}
 					}
+					
+					// Previously cached feature sets likely useless / less useful now, so clear cache
+					JITSPatterNetFeatureSet.clearFeatureSetCache();
 
 					return expandedFeatureSet;
 				}
@@ -2156,7 +2159,7 @@ public class ExpertIteration
 					{
 						// create new Feature Set
 						final AtomicFeatureGenerator atomicFeatures = new AtomicFeatureGenerator(game, 2, 4);
-						featureSet = new JITSPatterNetFeatureSet(atomicFeatures.getAspatialFeatures(), atomicFeatures.getSpatialFeatures());
+						featureSet = JITSPatterNetFeatureSet.construct(atomicFeatures.getAspatialFeatures(), atomicFeatures.getSpatialFeatures());
 						newlyCreated.add(p);
 						logLine(logWriter, "starting with new initial feature set for Player " + p);
 						logLine(logWriter, "num atomic features = " + featureSet.getNumSpatialFeatures());
@@ -2164,7 +2167,7 @@ public class ExpertIteration
 					else
 					{
 						// load feature set from file
-						featureSet = new JITSPatterNetFeatureSet(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[p]);
+						featureSet = JITSPatterNetFeatureSet.construct(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[p]);
 						logLine
 						(
 							logWriter, 
@@ -2351,7 +2354,7 @@ public class ExpertIteration
 							if (!featuresToRemove.contains(i))
 								keepFeatures.add(featureSet.spatialFeatures()[i]);
 						}
-						final BaseFeatureSet newFeatureSet = new JITSPatterNetFeatureSet(Arrays.asList(featureSet.aspatialFeatures()), keepFeatures);
+						final BaseFeatureSet newFeatureSet = JITSPatterNetFeatureSet.construct(Arrays.asList(featureSet.aspatialFeatures()), keepFeatures);
 						
 						final int[] supportedPlayers;
 						if (p == 0)
@@ -2658,8 +2661,11 @@ public class ExpertIteration
 	 */
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args)
-	{		
-		// define options for arg parser
+	{
+		// Feature Set caching is safe in this main method
+		JITSPatterNetFeatureSet.ALLOW_FEATURE_SET_CACHE = true;
+		
+		// Define options for arg parser
 		final CommandLineArgParse argParse = 
 				new CommandLineArgParse
 				(

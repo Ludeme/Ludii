@@ -148,7 +148,7 @@ public class MCTS extends ExpertPolicy
 	private ExecutorService threadPool = null;
 	
 	/** Number of threads this MCTS should use for parallel iterations */
-	private int numThreads = 3;
+	private int numThreads = 1;
 	
 	/** Lets us track whether all threads in our thread pool have completely finished */
 	private AtomicInteger numThreadsBusy = new AtomicInteger(0);

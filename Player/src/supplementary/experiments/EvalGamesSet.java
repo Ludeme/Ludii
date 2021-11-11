@@ -213,7 +213,7 @@ public class EvalGamesSet
 						}
 						else
 						{
-							System.err.println
+							System.out.println
 							(
 								String.format
 								(

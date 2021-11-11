@@ -532,7 +532,7 @@ public class SoftmaxPolicy extends Policy
 					else
 						linearFunctions[i] = LinearFunction.fromFile(policyWeightsFilepath);
 					
-					featureSets[i] = new JITSPatterNetFeatureSet(parentDir + File.separator + linearFunctions[i].featureSetFile());
+					featureSets[i] = JITSPatterNetFeatureSet.construct(parentDir + File.separator + linearFunctions[i].featureSetFile());
 				}
 			}
 		}
@@ -832,7 +832,7 @@ public class SoftmaxPolicy extends Policy
 			weights.add(featureWeights[i]);
 		}
 		
-		outFeatureSets.set(playerIdx, new JITSPatterNetFeatureSet(aspatialFeatures, spatialFeatures));
+		outFeatureSets.set(playerIdx, JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures));
 		outLinFuncs.set(playerIdx, new LinearFunction(new WeightVector(new FVector(weights.toArray()))));
 	}
 

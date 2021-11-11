@@ -32,8 +32,14 @@ public class SPatterNet
 	/** For every proposition, a bitset of feature instances that depend on that proposition */
 	protected final BitSet[] instancesPerProp;
 	
-	/** For every feature, a bitset containing the instances for that feature */
+	/** 
+	 * For every feature, a bitset containing the instances for that feature.
+	 * NOTE: subtract featureOffset for correct indexing
+	 */
 	protected final BitSet[] instancesPerFeature;
+	
+	/** Minimum feature index for which we have more than 0 instances */
+	protected final int featureOffset;
 	
 	/** For every feature instance, an array of the propositions required for that feature instance */
 	protected final int[][] propsPerInstance;
@@ -99,10 +105,40 @@ public class SPatterNet
 		
 		this.featureIndices = featureIndices;
 		
-		if (featureIndices.length == 0)
-			this.instancesPerFeature = new BitSet[0];	// Waste less memory in this case
+		int firstValidFeatureIdx = -1;
+		for (int i = 0; i < instancesPerFeature.length; ++i)
+		{
+			if (instancesPerFeature[i] != null)
+			{
+				firstValidFeatureIdx = i;
+				break;
+			}
+		}
+		
+		if (firstValidFeatureIdx < 0)
+		{
+			this.featureOffset = 0;
+			this.instancesPerFeature = new BitSet[0];
+		}
 		else
-			this.instancesPerFeature = instancesPerFeature;
+		{
+			this.featureOffset = firstValidFeatureIdx;
+			int lastValidFeatureIdx = -1;
+			for (int i = instancesPerFeature.length - 1; i >= firstValidFeatureIdx; --i)
+			{
+				if (instancesPerFeature[i] != null)
+				{
+					lastValidFeatureIdx = i;
+					break;
+				}
+			}
+			
+			this.instancesPerFeature = new BitSet[lastValidFeatureIdx - firstValidFeatureIdx + 1];
+			for (int i = 0; i < this.instancesPerFeature.length; ++i)
+			{
+				this.instancesPerFeature[i] = instancesPerFeature[i + featureOffset];
+			}
+		}
 		
 		this.propositions = propositions;
 		this.instancesPerProp = dependentFeatureInstances;
@@ -346,7 +382,7 @@ public class SPatterNet
 	 */
 	public FastTIntArrayList getActiveFeatures(final State state)
 	{
-		final FastTIntArrayList activeFeatures = new FastTIntArrayList(instancesPerFeature.length);
+		final FastTIntArrayList activeFeatures = new FastTIntArrayList(instancesPerFeature.length + autoActiveFeatures.length);
 		activeFeatures.add(autoActiveFeatures);
 		
 		final boolean[] activeProps = ALL_PROPS_ACTIVE.clone();
@@ -423,7 +459,7 @@ public class SPatterNet
 			activeFeatures.add(newActiveFeature);
 			
 			// This also means that we can skip any remaining instances for the same feature
-			activeInstances.andNot(instancesPerFeature[newActiveFeature]);
+			activeInstances.andNot(instancesPerFeature[newActiveFeature - featureOffset]);
 		}
 		
 		//System.out.println();

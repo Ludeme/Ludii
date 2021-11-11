@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.spatial.FeatureUtils;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -318,6 +319,9 @@ public class Reinforce
 									{
 										expandedFeatureSets[p] = featureSetP;
 									}
+									
+									// Previously cached feature sets likely useless / less useful now, so clear cache
+									JITSPatterNetFeatureSet.clearFeatureSetCache();
 									
 									experiment.logLine
 									(

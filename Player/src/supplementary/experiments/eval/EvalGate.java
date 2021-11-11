@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
@@ -569,7 +570,10 @@ public class EvalGate
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args)
 	{
-		// define options for arg parser
+		// Feature Set caching is safe in this main method
+		JITSPatterNetFeatureSet.ALLOW_FEATURE_SET_CACHE = true;
+		
+		// Define options for arg parser
 		final CommandLineArgParse argParse = 
 				new CommandLineArgParse
 				(

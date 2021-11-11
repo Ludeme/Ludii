@@ -57,7 +57,7 @@ public class TestGomokuFeatures
 		if (rand < 0.25)
 			featureSet = new SPatterNetFeatureSet(new ArrayList<AspatialFeature>(), features);
 		else if (rand < 0.5)
-			featureSet = new JITSPatterNetFeatureSet(new ArrayList<AspatialFeature>(), features);
+			featureSet = JITSPatterNetFeatureSet.construct(new ArrayList<AspatialFeature>(), features);
 		else if (rand < 0.75)
 			featureSet = new LegacyFeatureSet(new ArrayList<AspatialFeature>(), features);
 		else

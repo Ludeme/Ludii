@@ -332,7 +332,7 @@ public final class PlayoutsPerSec
 				}
 				else if (featureSetType.equals("JITSPatterNet"))
 				{
-					featureSet = new JITSPatterNetFeatureSet(featureGen.getAspatialFeatures(), featureGen.getSpatialFeatures());
+					featureSet = JITSPatterNetFeatureSet.construct(featureGen.getAspatialFeatures(), featureGen.getSpatialFeatures());
 				}
 				else
 				{
@@ -438,7 +438,7 @@ public final class PlayoutsPerSec
 					else if (featureSetType.equals("JITSPatterNet"))
 					{
 						featureSet = 
-								new JITSPatterNetFeatureSet
+								JITSPatterNetFeatureSet.construct
 								(
 									trainedDirPath + 
 									String.format
@@ -557,7 +557,7 @@ public final class PlayoutsPerSec
 					else if (featureSetType.equals("JITSPatterNet"))
 					{
 						featureSet = 
-								new JITSPatterNetFeatureSet
+								JITSPatterNetFeatureSet.construct
 								(
 									trainedDirPath + 
 									String.format
