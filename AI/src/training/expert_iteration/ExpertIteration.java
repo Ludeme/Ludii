@@ -1248,6 +1248,9 @@ public class ExpertIteration
 							}
 						}
 					}
+					
+					// Previously cached feature sets likely useless / less useful now, so clear cache
+					JITSPatterNetFeatureSet.clearFeatureSetCache();
 
 					return expandedFeatureSet;
 				}
@@ -2658,8 +2661,11 @@ public class ExpertIteration
 	 */
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args)
-	{		
-		// define options for arg parser
+	{
+		// Feature Set caching is safe in this main method
+		JITSPatterNetFeatureSet.ALLOW_FEATURE_SET_CACHE = true;
+		
+		// Define options for arg parser
 		final CommandLineArgParse argParse = 
 				new CommandLineArgParse
 				(

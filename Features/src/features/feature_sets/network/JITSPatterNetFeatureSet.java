@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -48,6 +49,28 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * If this is set to true, we allow for the user of a Feature Set cache that
+	 * recognises when we try to load exactly the same feature set and returns
+	 * the same object instead of constructing a new one.
+	 * 
+	 * Note that it is not necessarily always safe to do this, for instance because
+	 * we call instantiateFeatures() on a feature set whenever an AI that uses it
+	 * gets initialised, and we do not want this to happen while (e.g., in a different
+	 * thread) the feature set is being actively used by a different AI.
+	 * 
+	 * In cases where we can be sure that it is safe (like some highly controlled
+	 * experiments / training runs), this can save us a lot of memory (and maybe
+	 * even slightly improve performance due to more re-usable JIT behaviour).
+	 */
+	public static boolean ALLOW_FEATURE_SET_CACHE = false;
+	
+	/** Cache of feature set objects */
+	protected static final Map<FeatureLists, JITSPatterNetFeatureSet> featureSetsCache = 
+			new ConcurrentHashMap<FeatureLists, JITSPatterNetFeatureSet>();
+	
+	//-------------------------------------------------------------------------
+	
 	/** JIT map (mix of proactive and reactive keys) */
 	protected JITMap jitMap;
 	
@@ -60,12 +83,33 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Clear the entire cache of feature set objects.
+	 */
+	public static void clearFeatureSetCache()
+	{
+		featureSetsCache.clear();
+	}
+	
+	/**
 	 * Construct feature set from lists of features
 	 * @param aspatialFeatures
 	 * @param spatialFeatures
 	 */
 	public static JITSPatterNetFeatureSet construct(final List<AspatialFeature> aspatialFeatures, final List<SpatialFeature> spatialFeatures)
 	{
+		if (ALLOW_FEATURE_SET_CACHE)
+		{
+			final FeatureLists key = new FeatureLists(aspatialFeatures, spatialFeatures);
+			final JITSPatterNetFeatureSet cached = featureSetsCache.get(key);
+			
+			if (cached != null)
+				return cached;
+			
+			final JITSPatterNetFeatureSet newSet = new JITSPatterNetFeatureSet(aspatialFeatures, spatialFeatures);
+			featureSetsCache.put(key, newSet);
+			return newSet;
+		}
+		
 		return new JITSPatterNetFeatureSet(aspatialFeatures, spatialFeatures);
 	}
 	
@@ -853,6 +897,50 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			}
 			
 			return net;
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Wrapper around a list of aspatial features and a list of spatial features.
+	 * 
+	 * @author Dennis Soemers
+	 */
+	private static class FeatureLists
+	{
+		/** List of aspatial features */
+		protected final List<AspatialFeature> aspatialFeatures;
+		/** List of spatial features */
+		protected final List<SpatialFeature> spatialFeatures;
+		
+		/**
+		 * Constructor
+		 * @param aspatialFeatures
+		 * @param spatialFeatures
+		 */
+		public FeatureLists(final List<AspatialFeature> aspatialFeatures, final List<SpatialFeature> spatialFeatures)
+		{
+			this.aspatialFeatures = aspatialFeatures;
+			this.spatialFeatures = spatialFeatures;
+		}
+
+		@Override
+		public int hashCode() 
+		{
+			return Objects.hash(aspatialFeatures, spatialFeatures);
+		}
+
+		@Override
+		public boolean equals(final Object obj) 
+		{
+			if (this == obj)
+				return true;
+			if (!(obj instanceof FeatureLists))
+				return false;
+			final FeatureLists other = (FeatureLists) obj;
+			return Objects.equals(aspatialFeatures, other.aspatialFeatures)
+					&& Objects.equals(spatialFeatures, other.spatialFeatures);
 		}
 	}
 	
