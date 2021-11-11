@@ -479,8 +479,6 @@ public class Parser
 			// Associate clauses with each instance of arg
 			for (final Instance instance : item.instances())
 			{
-				System.out.println("Instance: " + instance);
-				
 				final GrammarRule rule = instance.symbol().rule();
 				if (rule != null)
 					instance.setClauses(rule.rhs());
