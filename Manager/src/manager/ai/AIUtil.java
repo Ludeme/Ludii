@@ -143,4 +143,13 @@ public class AIUtil
 	
 	//-------------------------------------------------------------------------
 	
+	public static boolean anyAIPlayer(final Manager manager)
+	{
+		for (int i = 1; i <= manager.ref().context().game().players().count(); i++)
+			if (manager.aiSelected()[i].ai() != null)
+				return true;
+		
+		return false;
+	}
+	
 }

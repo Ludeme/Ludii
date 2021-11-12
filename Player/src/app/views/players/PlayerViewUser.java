@@ -26,6 +26,7 @@ import game.equipment.container.Container;
 import game.functions.ints.IntFunction;
 import game.types.state.GameType;
 import graphics.svg.SVGtoImage;
+import manager.ai.AIUtil;
 import metadata.graphics.util.ScoreDisplayInfo;
 import metadata.graphics.util.WhenScoreType;
 import metadata.graphics.util.colour.ColourRoutines;
@@ -85,14 +86,8 @@ public class PlayerViewUser extends View
 		final int swatchWidth = app.playerSwatchList()[playerId].width;
 		final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
 		componentPushBufferX = (int) (swatchWidth + maxNameWidth + app.playerNameList()[playerId].getHeight()*2);
-		
-		// check if any AI face is drawn
-		boolean AnyAIPlayer = false;
-		for (int i = 1; i <= app.manager().ref().context().game().players().count(); i++)
-			if (app.manager().aiSelected()[i].ai() != null)
-				AnyAIPlayer = true;
-		
-		if (AnyAIPlayer)
+
+		if (AIUtil.anyAIPlayer(app.manager()))
 			componentPushBufferX += playerView.playerNameFont.getSize();
 		
 		if (hand != null)

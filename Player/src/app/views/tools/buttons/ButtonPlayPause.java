@@ -7,6 +7,7 @@ import app.PlayerApp;
 import app.views.tools.ToolButton;
 import game.types.play.ModeType;
 import main.Constants;
+import manager.ai.AIUtil;
 import other.location.FullLocation;
 
 //-----------------------------------------------------------------------------
@@ -81,13 +82,8 @@ public class ButtonPlayPause extends ToolButton
 	{
 		if (app.manager().ref().context().game().mode().mode().equals(ModeType.Simulation))
 			return true;
-
-		boolean AnyAIPlayer = false;
-		for (int i = 1; i <= app.manager().ref().context().game().players().count(); i++)
-			if (app.manager().aiSelected()[i].ai() != null)
-				AnyAIPlayer = true;
 		
-		if (AnyAIPlayer && (app.manager().settingsNetwork().getActiveGameId() == 0 || app.manager().settingsNetwork().getOnlineAIAllowed()))
+		if (AIUtil.anyAIPlayer(app.manager()) && (app.manager().settingsNetwork().getActiveGameId() == 0 || app.manager().settingsNetwork().getOnlineAIAllowed()))
 			return true;
 		
 		return false;
