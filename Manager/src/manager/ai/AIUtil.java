@@ -143,6 +143,10 @@ public class AIUtil
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @param manager
+	 * @return If any of the games players are being controlled by an AI.
+	 */
 	public static boolean anyAIPlayer(final Manager manager)
 	{
 		for (int i = 1; i <= manager.ref().context().game().players().count(); i++)
@@ -151,5 +155,7 @@ public class AIUtil
 		
 		return false;
 	}
+	
+	//-------------------------------------------------------------------------
 	
 }
