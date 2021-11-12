@@ -263,92 +263,100 @@ public final class OpenLoopNode extends BaseNode
 	 */
 	private void updateLegalMoveDependencies(final boolean root)
 	{
-		final Context context = root ? deterministicContext : currentItContext.get();
-		final FastArrayList<Move> legalMoves;
-		
-		if (root)
+		getLock().lock();
+		try
 		{
-			rootLegalMovesList = new FastArrayList<Move>(context.game().moves(context).moves());
-			currentLegalMoves.set(null);
-			legalMoves = rootLegalMovesList;
-		}
-		else
-		{
-			legalMoves = new FastArrayList<Move>(context.game().moves(context).moves());
-			currentLegalMoves.set(legalMoves);
-		}
-					
-		if (root)
-		{
-			// Now that this is a root node, we may be able to remove some 
-			// children with moves that are not legal
-			for (int i = children.size() - 1; i >= 0; --i)
-			{
-				if (!legalMoves.contains(children.get(i).parentMoveWithoutConseq))
-					children.remove(i).cleanThreadLocals();
-			}
-		}
-		
-		// Update mapping from legal move index to child node
-		final OpenLoopNode[] mapping = new OpenLoopNode[legalMoves.size()];
-		if (root)
-		{
-			rootMoveIdxToNode = mapping;
-			moveIdxToNode.set(null);
-		}
-		else
-		{
-			moveIdxToNode.set(mapping);
-		}
-		
-		for (int i = 0; i < mapping.length; ++i)
-		{
-			final Move move = legalMoves.get(i);
+			final Context context = root ? deterministicContext : currentItContext.get();
+			final FastArrayList<Move> legalMoves;
 			
-			for (int j = 0; j < children.size(); ++j)
+			if (root)
 			{
-				if (move.equals(children.get(j).parentMoveWithoutConseq))
+				rootLegalMovesList = new FastArrayList<Move>(context.game().moves(context).moves());
+				currentLegalMoves.set(null);
+				legalMoves = rootLegalMovesList;
+			}
+			else
+			{
+				legalMoves = new FastArrayList<Move>(context.game().moves(context).moves());
+				currentLegalMoves.set(legalMoves);
+			}
+						
+			if (root)
+			{
+				// Now that this is a root node, we may be able to remove some 
+				// children with moves that are not legal
+				for (int i = children.size() - 1; i >= 0; --i)
 				{
-					mapping[i] = children.get(j);
-					break;
+					if (!legalMoves.contains(children.get(i).parentMoveWithoutConseq))
+						children.remove(i).cleanThreadLocals();
 				}
 			}
-		}
-		
-		// Update learned policy distribution
-		if (mcts.learnedSelectionPolicy() != null)
-		{
-			final float[] logits = new float[mapping.length];
 			
-			for (int i = 0; i < logits.length; ++i)
+			// Update mapping from legal move index to child node
+			final OpenLoopNode[] mapping = new OpenLoopNode[legalMoves.size()];
+			if (root)
 			{
-				if (mapping[i] != null && !Float.isNaN(mapping[i].logit.get().floatValue()))
+				rootMoveIdxToNode = mapping;
+				moveIdxToNode.set(null);
+			}
+			else
+			{
+				moveIdxToNode.set(mapping);
+			}
+			
+			for (int i = 0; i < mapping.length; ++i)
+			{
+				final Move move = legalMoves.get(i);
+				
+				for (int j = 0; j < children.size(); ++j)
 				{
-					logits[i] = mapping[i].logit.get().floatValue();
-				}
-				else
-				{
-					logits[i] = mcts.learnedSelectionPolicy().computeLogit(context, legalMoves.get(i));
-					
-					if (mapping[i] != null)
+					if (move.equals(children.get(j).parentMoveWithoutConseq))
 					{
-						mapping[i].logit.set(Float.valueOf(logits[i]));
+						mapping[i] = children.get(j);
+						break;
 					}
 				}
 			}
 			
-			final FVector dist = FVector.wrap(logits);
-			dist.softmax();
-			
-			if (root)
+			// Update learned policy distribution
+			if (mcts.learnedSelectionPolicy() != null)
 			{
-				rootLearnedSelectionPolicy = dist;
-				learnedSelectionPolicy.set(null);
+				final float[] logits = new float[mapping.length];
+				
+				for (int i = 0; i < logits.length; ++i)
+				{
+					if (mapping[i] != null && !Float.isNaN(mapping[i].logit.get().floatValue()))
+					{
+						logits[i] = mapping[i].logit.get().floatValue();
+					}
+					else
+					{
+						logits[i] = mcts.learnedSelectionPolicy().computeLogit(context, legalMoves.get(i));
+						
+						if (mapping[i] != null)
+						{
+							mapping[i].logit.set(Float.valueOf(logits[i]));
+						}
+					}
+				}
+				
+				final FVector dist = FVector.wrap(logits);
+				dist.softmax();
+				
+				if (root)
+				{
+					rootLearnedSelectionPolicy = dist;
+					learnedSelectionPolicy.set(null);
+				}
+				else
+				{
+					learnedSelectionPolicy.set(dist);
+				}
 			}
-			else
-			{
-				learnedSelectionPolicy.set(dist);
-			}
+		}
+		finally
+		{
+			getLock().unlock();
 		}
 	}
 	
