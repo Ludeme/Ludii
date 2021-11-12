@@ -86,9 +86,14 @@ public class PlayerViewUser extends View
 		final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
 		componentPushBufferX = (int) (swatchWidth + maxNameWidth + app.playerNameList()[playerId].getHeight()*2);
 		
-		// Extra buffer on mobile devices
-		if (g2d.getFont().getSize() > 20)
-			componentPushBufferX += 30;
+		// check if any AI face is drawn
+		boolean AnyAIPlayer = false;
+		for (int i = 1; i <= app.manager().ref().context().game().players().count(); i++)
+			if (app.manager().aiSelected()[i].ai() != null)
+				AnyAIPlayer = true;
+		
+		if (AnyAIPlayer)
+			componentPushBufferX += playerView.playerNameFont.getSize();
 		
 		if (hand != null)
 		{

@@ -83,7 +83,7 @@ public class ButtonPlayPause extends ToolButton
 			return true;
 
 		boolean AnyAIPlayer = false;
-		for (int i = 0; i < app.manager().aiSelected().length; i++)
+		for (int i = 1; i <= app.manager().ref().context().game().players().count(); i++)
 			if (app.manager().aiSelected()[i].ai() != null)
 				AnyAIPlayer = true;
 		
