@@ -285,7 +285,8 @@
 //---------------------------------------------
 (define "ColourBackground" (colour 126 130 156)) 
 
-(metadata
+(metadata {
+{
     (info
         {
         (description "Branching Coral is a placement game based on the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter. 
@@ -359,5 +360,4 @@
         (show Piece Value "Disc" Middle)
         (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
         }
-))
-
+)} } )

@@ -150,7 +150,8 @@
 // (define "ColourBackground" (colour 126 130 156)) 
 (define "ColourBackground" (colour 135 170 130)) 
 
-(metadata
+(metadata {
+{
     (info
         {
         (description "Double-move Situ is based on 'Situ' a finite, Line-of-Sight game with the goal of being the last player able to complete their turn. The game is based on the choice of placing one's own piece or removing an opponent's piece.
@@ -219,9 +220,4 @@
     (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2 )
     (piece Background P1 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.1 offsetY:.2)
     (piece Background P2 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.15 offsetY:.3)
-(piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08 )// offsetX:-.16 offsetY:-.2 )
-
-}
-)
-(ai (heuristics (score)))
-)
+(piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08 )// offsetX:-.16 offsetY:-.2 } } )

@@ -147,7 +147,8 @@
 // (define "ColourBackground" (colour 126 130 156)) 
 (define "ColourBackground" (colour 135 170 130)) 
 
-(metadata
+(metadata {
+{
     (info
         {
         (description "'Dogtown Clans' is a simplification of Double-move Situ and resembles Ki, as well. 
@@ -215,6 +216,4 @@
     (piece Background P2 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.15 offsetY:.3)
     (piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08 )
     }
-)
-(ai (heuristics (score)))
-)
+} } )

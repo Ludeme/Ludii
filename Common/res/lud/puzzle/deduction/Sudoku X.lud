@@ -29,7 +29,9 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata {
+{
+
     (info
         {
         (description "Sudoku X is a variant of Sudoku included the diagonals of the square board in the constraints.")
@@ -47,4 +49,4 @@
         (region Colour (sites Direction from:(intersection (sites Left) (sites Bottom)) NE included:True) (colour 228 204 188))
         (region Colour (sites Direction from:(intersection (sites right) (sites Bottom)) NW included:True) (colour 228 204 188))
     })
-)
+} } )

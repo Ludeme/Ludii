@@ -182,7 +182,8 @@
 
 (define "ColourBackground"  (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
 
-(metadata
+(metadata {
+{
     (info
         {
         (description "Windflowers is a finite, 2-4 player, place-or-capture, connectivity game. 
@@ -264,5 +265,4 @@
         (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80)  scale:<BoardSize:backgroundSize>) 
         }
     )
-)
-
+} } )

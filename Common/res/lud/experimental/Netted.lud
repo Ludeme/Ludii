@@ -523,7 +523,8 @@
 
 (define "ColourBackground" (colour Cream)) 
 
-(metadata
+(metadata {
+{
     (info
         {
         (description "Netted is a race to surround the opponent  Nets include Hex diagonals and single empty spaces, and so can cross each other. It is placement only and so can be played as a paper and pencil game. However the computer version adds markers for the empty space connections which must be removed when the spaces are filled.
@@ -591,20 +592,4 @@ A player who cannot place on their turn, loses.")
 (piece Rotate  "I" state:4 degrees:150)
 (piece Rotate  "I" state:5 degrees:120)
 //    (piece Rotate  "I"  state:6 degrees:90)
-(piece Scale "I" 1.2)  //0.9)
-(board Colour Phase0 "ColourBackground")
-(board StyleThickness InnerEdges 0.4)
-(board StyleThickness OuterEdges 0.6)
-(board StyleThickness InnerVertices 0.45)
-(board StyleThickness OuterVertices 0.45)
-(board Colour InnerVertices (colour Grey))
-(board Colour OuterVertices (colour Grey))
-(board Colour InnerEdges (colour Black))
-(board Colour OuterEdges (colour Black))
-(show Edges Diagonal Hidden (colour DarkGrey))
-(stackType None)
-//    (show Piece State "I")
-
-}
-)
-)
+(piece Scale "I" 1.2)  //0.9} } )
