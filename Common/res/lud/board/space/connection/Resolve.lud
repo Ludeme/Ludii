@@ -126,8 +126,7 @@
 (define "ColourBackground" (colour LightTan)) 
 (define "Invisible" (colour 0 0 0 0))
 
-(metadata {
-{
+(metadata
     (info
         {
         (description "A square connection game where crosscuts are resolved by swapping stones. Resolve was designed by Alek Erickson in July 2020. The rules were finalized through critical playtesting session with Dale Walton and Luis Bolaños Mures. The game was partly inspired by the swap mechanic from Michael Zapala's Slyde. The original idea for swapping stones to resolve crosscuts can be traced to Phil Leduc's Thruway and Bill Taylor's Swapway as early as 2008, but the notion of a resolving stone where a single stone gets serially swapped to fix cuts in Resolve is novel.")
@@ -152,4 +151,4 @@
         (board Style Go)
         }
     )
-} } )
+)
