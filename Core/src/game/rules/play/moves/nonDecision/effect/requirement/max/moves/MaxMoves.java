@@ -83,24 +83,27 @@ public final class MaxMoves extends Effect
 			
 			final Context newContext = new TempContext(context);
 			evalledMoves[i] = newContext.game().apply(newContext, m);
-			if(!withValue)
+			if (!withValue)
+			{
 				replayCount[i] = getReplayCount(newContext, 1, withValue);
+			}
 			else
 			{
 				int numCaptureWithValue = 0;
 				final List<Action> actions = m.getActionsWithConsequences(context);
 				for (final Action action : actions)
+				{
 					if (action instanceof ActionRemove)
-						{
-							final int site = action.to();
-							final int level = action.levelTo();
-							final SiteType type = action.toType();
-							final ContainerState cs = context.containerState(0);
-							final int value = cs.value(site, level, type);
-							numCaptureWithValue += value;
-						}
+					{
+						final int site = action.to();
+						final int level = action.levelTo();
+						final SiteType type = action.toType();
+						final ContainerState cs = context.containerState(0);
+						final int value = cs.value(site, level, type);
+						numCaptureWithValue += value;
+					}
+				}
 				replayCount[i] = getReplayCount(newContext, numCaptureWithValue, withValue);
-				
 			}
 		}
 
@@ -134,7 +137,7 @@ public final class MaxMoves extends Effect
 	 */
 	private int getReplayCount(final Context contextCopy, final int count, final boolean withValue)
 	{
-		if (contextCopy.state().prev() != contextCopy.state().mover())
+		if (contextCopy.trial().over() || contextCopy.state().prev() != contextCopy.state().mover())
 			return count;
 
 		final Moves legalMoves = contextCopy.game().moves(contextCopy);
@@ -146,22 +149,26 @@ public final class MaxMoves extends Effect
 			final Move newMove = legalMoves.moves().get(i);
 			final Context newContext = new TempContext(contextCopy);
 			newContext.game().apply(newContext, newMove);
-			if(!withValue)
-				replayCount[i] = getReplayCount(newContext, count + 1 , withValue);
+			if (!withValue)
+			{
+				replayCount[i] = getReplayCount(newContext, count + 1, withValue);
+			}
 			else
 			{
 				int numCaptureWithValue = 0;
 				final List<Action> actions = newMove.getActionsWithConsequences(contextCopy);
 				for (final Action action : actions)
+				{
 					if (action instanceof ActionRemove)
-						{
-							final int site = action.to();
-							final SiteType type = action.toType();
-							final ContainerState cs = contextCopy.containerState(0);
-							final int value = cs.value(site, type);
-							numCaptureWithValue += value;
-						}
-				replayCount[i] = getReplayCount(newContext, count + numCaptureWithValue , withValue);
+					{
+						final int site = action.to();
+						final SiteType type = action.toType();
+						final ContainerState cs = contextCopy.containerState(0);
+						final int value = cs.value(site, type);
+						numCaptureWithValue += value;
+					}
+				}
+				replayCount[i] = getReplayCount(newContext, count + numCaptureWithValue, withValue);
 				
 			}
 		}
