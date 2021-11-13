@@ -185,7 +185,7 @@ public class End extends BaseLudeme implements Rule
 					context.addWinner(who);
 					assert(rank >= 1.0 && rank <= context.trial().ranking().length);
 					context.trial().ranking()[who] = rank;
-
+					
 					onlyOneActive = context.onlyOneActive();
 					if (onlyOneActive != 0)
 					{
@@ -199,6 +199,7 @@ public class End extends BaseLudeme implements Rule
 								break;
 							}
 						}
+						context.setActive(onlyOneActive, false);
 					}
 					else if (!context.active())
 					{
