@@ -212,11 +212,11 @@
         
         (piece Scale "Marker" container:1 1)
         (piece Scale "Marker" 1.5)
-        (board Colour InnerVertices (colour Black))
-        (board Colour OuterVertices (colour Black))
+        (board Colour InnerVertices (colour DarkGrey))
+        (board Colour OuterVertices (colour DarkGrey))
         (board Background fillColour:(colour 255 250 220) edgeColour:(colour 100 95 75) scale:2.0)
         (show Line {{3 6}} Edge (colour Black) scale:2.0)
-        (show Symbol "disc" (expand (sites Bottom) steps:"NumRow") fillColour:(colour Black) edgeColour:(colour Black) scale:0.666)
+        (show Symbol "disc" (expand (sites Bottom) steps:"NumRow") fillColour:(colour DarkGrey) edgeColour:(colour DarkGrey) scale:0.666)
         (hand Placement Shared scale:0.4 offsetX:0.75 offsetY:0.25 vertical:True)
         
     })

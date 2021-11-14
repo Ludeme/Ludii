@@ -60,6 +60,9 @@ public class UpdateTabMessages
 				if (action.message() != null)
 					if (action.who() == context.state().mover())
 						statusString += "Note for Player " + action.who() + ": " + action.message() + ".\n";
+		
+		if (lastMove != null && lastMove.isSwap())
+			app.setTemporaryMessage("Player " + lastMove.mover() + " made a swap move.");
 
 		// Check if any player has just lost or won
 		for (int i = 1; i <= game.players().count(); i++)
