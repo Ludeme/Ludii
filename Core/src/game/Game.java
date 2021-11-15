@@ -3001,9 +3001,7 @@ public class Game extends BaseLudeme implements API, Serializable
 				for (int site = siteFrom; site < siteTo; site++)
 				{
 					sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
-					// context.state().currentDice()[i][site - siteFrom] =
-					// context.components().get(cs.what(site))
-					// .getFaces()[cs.state(site)];
+					//context.state().currentDice()[i][site - siteFrom] = context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
 				}
 				state.sumDice()[i] = sum;
 			}
