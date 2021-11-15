@@ -72,8 +72,8 @@ public class Show implements GraphicsItem
 	 * For showing the index of sites on the board.
 	 * 
 	 * @param showDataType 		The type of data to apply.
-	 * @param type 				Site Type [Cell]
-	 * @param additionalValue   Additional value to add to the index [0]
+	 * @param type 				Site Type [Cell].
+	 * @param additionalValue   Additional value to add to the index [0].
 	 * 
 	 * @example (show SiteIndex Cell 5)
 	 */

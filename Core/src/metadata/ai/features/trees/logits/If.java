@@ -1,5 +1,6 @@
 package metadata.ai.features.trees.logits;
 
+import annotations.Hide;
 import annotations.Name;
 import main.StringRoutines;
 
@@ -10,6 +11,7 @@ import main.StringRoutines;
  * 
  * @author Dennis Soemers
  */
+@Hide
 public class If extends LogitNode
 {
 	
