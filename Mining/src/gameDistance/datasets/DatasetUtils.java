@@ -22,8 +22,6 @@ public class DatasetUtils
 	
 	/**
 	 * TODO currently the loaded trial doesn't consider rulesetStrings
-	 * @param candidateGameName
-	 * @param rulesetStrings
 	 */
 	public static List<Trial> getSavedTrials(final Game game)
 	{

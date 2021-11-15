@@ -31,7 +31,6 @@ import javax.swing.event.PopupMenuListener;
  * @version 1.5.0 04/05/12
  * @author Darryl
  */
-@SuppressWarnings("synthetic-access")
 public class MenuScroller 
 {
   //private JMenu menu;

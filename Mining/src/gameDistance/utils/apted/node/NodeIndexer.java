@@ -58,6 +58,7 @@ import gameDistance.utils.apted.costmodel.CostModel;
  * @see node.Node
  * @see parser.InputParser
  */
+@SuppressWarnings("all")
 public class NodeIndexer<D, C extends CostModel> {
 
   // [TODO] Be consistent in naming index variables: <FROM>_to_<TO>.

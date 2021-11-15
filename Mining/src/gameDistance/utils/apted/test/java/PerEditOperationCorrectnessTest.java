@@ -42,6 +42,7 @@ import gameDistance.utils.apted.parser.BracketStringInputParser;
  * @see node.StringNodeData
  * @see costmodel.PerEditOperationStringNodeDataCostModel
  */
+@SuppressWarnings("all")
 @RunWith(Parameterized.class)
 public class PerEditOperationCorrectnessTest {
 

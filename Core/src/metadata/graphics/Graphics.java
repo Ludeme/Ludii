@@ -1414,6 +1414,8 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param game The game.
+	 * @param element The topology element.
 	 * @return Returns the additional value to add to this sites index when displayed, Null if no value to be shown.
 	 */
 	public Integer showSiteIndex(final Game game, final TopologyElement element)

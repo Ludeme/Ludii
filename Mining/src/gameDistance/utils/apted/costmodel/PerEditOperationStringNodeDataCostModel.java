@@ -27,7 +27,7 @@ import gameDistance.utils.apted.node.Node;
 import gameDistance.utils.apted.node.StringNodeData;
 
 /**
- * This is a cost model defined on {@link node.StringNodeData} with a fixed cost
+ * This is a cost model defined  with a fixed cost
  * per edit operation.
  */
 public class PerEditOperationStringNodeDataCostModel implements CostModel<StringNodeData> {

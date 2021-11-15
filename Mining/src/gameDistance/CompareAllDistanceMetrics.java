@@ -30,11 +30,11 @@ import other.GameLoader;
 /**
  * Compares all distance metrics for a given set of games.
  * 
- * Download the “TrialsRandom.zip” file from the Ludii Server.
- * Copy “TrialsRandom.zip” into “Ludii/Trials/”, and extract the zip to a “TrialsRandom” folder (just right click and select “Extract Here”). Making the fullPath “Ludii/Trials/TrialsRandom/”.
+ * Download the â€œTrialsRandom.zipâ€� file from the Ludii Server.
+ * Copy â€œTrialsRandom.zipâ€� into â€œLudii/Trials/â€�, and extract the zip to a â€œTrialsRandomâ€� folder (just right click and select â€œExtract Hereâ€�). Making the fullPath â€œLudii/Trials/TrialsRandom/â€�.
  * Run CompareAllDistanceMetrics.java
  * Output for each game/ruleset is stored in Ludii/Mining/res/gameDistance/
- * Make sure to set the “overrideStoredVocabularies” variable to true if any trials or games have changed.
+ * Make sure to set the â€œoverrideStoredVocabulariesâ€� variable to true if any trials or games have changed.
  * 
  * @author matthew.stephenson
  */
@@ -166,7 +166,6 @@ public class CompareAllDistanceMetrics
 	 * Specific games/rulesets to compare.
 	 * @return List of two String arrays, for all game and ruleset names to compare.
 	 */
-	@SuppressWarnings("unused")
 	private static List<String[]> getSpecificGamesToCompare()
 	{	
 		final String[] gamesToCompare = 

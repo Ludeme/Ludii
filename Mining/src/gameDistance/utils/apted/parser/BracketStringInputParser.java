@@ -42,6 +42,7 @@ import gameDistance.utils.apted.util.FormatUtilities;
  * @see Node
  * @see StringNodeData
  */
+@SuppressWarnings("all")
 public class BracketStringInputParser implements InputParser<StringNodeData> {
 
   /**

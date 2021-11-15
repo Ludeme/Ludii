@@ -447,7 +447,6 @@ public class AIUtils
 	 * Generates features metadata from given Selection and Playout policies
 	 * @param selectionPolicy
 	 * @param playoutPolicy
-	 * @return
 	 */
 	public static metadata.ai.features.Features generateFeaturesMetadata
 	(

@@ -39,6 +39,7 @@ import gameDistance.utils.apted.node.NodeIndexer;
  * @param <C> type of cost model.
  * @param <D> type of node data.
  */
+@SuppressWarnings("all")
 public class AllPossibleMappingsTED<C extends CostModel, D> {
 
   /**

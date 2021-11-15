@@ -83,16 +83,19 @@ public class VisualEditorPanel extends JPanel implements MouseListener, MouseMot
 	@Override
 	public void mouseClicked(MouseEvent arg0)
 	{
+		// Nothing to do.
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0)
 	{
+		// Nothing to do.
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0)
 	{
+		// Nothing to do.
 	}
 
 	@Override
@@ -116,6 +119,7 @@ public class VisualEditorPanel extends JPanel implements MouseListener, MouseMot
 	@Override
 	public void mouseMoved(MouseEvent arg0)
 	{
+		// Nothing to do.
 	}
 
 	//-------------------------------------------------------------------------

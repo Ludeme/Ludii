@@ -44,6 +44,7 @@ import gameDistance.utils.apted.parser.InputParser;
  * @see CostModel
  * @see InputParser
  */
+@SuppressWarnings("all")
 public class CommandLine<C extends CostModel, P extends InputParser> {
 
   private final String helpMessage =

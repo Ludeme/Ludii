@@ -297,6 +297,8 @@ public final class GameLoader
 	
 	/**
 	 * Returns the complete file path for a given lud name.
+	 * @param name The name of the game.
+	 * @return The file path.
 	 */
 	public static String getFilePath(final String name)
 	{
@@ -430,6 +432,9 @@ public final class GameLoader
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return All the analysis.
+	 */
 	public static List<String[]> allAnalysisGameRulesetNames()
 	{
 		final List<String[]> allGameRulesetNames = new ArrayList<>();

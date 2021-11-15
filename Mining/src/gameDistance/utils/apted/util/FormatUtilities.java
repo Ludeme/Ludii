@@ -35,6 +35,7 @@ import java.util.Random;
  * @author Nikolaus Augsten
  *
  */
+@SuppressWarnings("all")
 public class FormatUtilities
 {
 

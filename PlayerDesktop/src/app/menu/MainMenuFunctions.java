@@ -27,6 +27,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.WindowConstants;
 
 import agentPrediction.external.AgentPredictionExternal;
 import agentPrediction.internal.AgentPredictionInternal;
@@ -251,12 +252,12 @@ public class MainMenuFunctions extends JMenuBar
 			frame.setContentPane(visual);
 			frame.setSize(800, 800);
 			frame.setLocationRelativeTo(null);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
 			frame.setVisible(true);
 			
 			try
 			{
-				app.frame().add(frame);
+				DesktopApp.frame().add(frame);
 			}
 			catch (final Exception ve)
 			{

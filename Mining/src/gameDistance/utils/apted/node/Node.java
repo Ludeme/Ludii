@@ -33,6 +33,7 @@ import java.util.List;
  *
  * @param <D> the type of node data (node label).
  */
+@SuppressWarnings("all")
 public class Node<D> {
 
   /**

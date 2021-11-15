@@ -47,6 +47,7 @@ import gameDistance.utils.apted.parser.BracketStringInputParser;
  * @see StringNodeData
  * @see StringUnitCostModel
  */
+@SuppressWarnings("all")
 @RunWith(Parameterized.class)
 public class CorrectnessTest {
 

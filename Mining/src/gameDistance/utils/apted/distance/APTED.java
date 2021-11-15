@@ -58,6 +58,7 @@ import gameDistance.utils.apted.node.NodeIndexer;
  * @param <C> type of cost model.
  * @param <D> type of node data.
  */
+@SuppressWarnings("all")
 public class APTED<C extends CostModel, D> {
 
   /**
