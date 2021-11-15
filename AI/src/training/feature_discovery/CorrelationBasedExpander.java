@@ -231,57 +231,57 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		
 		// For every feature, compute sample correlation coefficient between its activity level (0 or 1)
 		// and errors
-		final double[] featureErrorCorrelations = new double[featureSet.getNumSpatialFeatures()];
+//		final double[] featureErrorCorrelations = new double[featureSet.getNumSpatialFeatures()];
 		
 		// For every feature, compute expectation of absolute value of error given that feature is active
 		final double[] expectedAbsErrorGivenFeature = new double[featureSet.getNumSpatialFeatures()];
 		
 		// For every feature, computed expected value of feature activity times absolute error
-		final double[] expectedFeatureTimesAbsError = new double[featureSet.getNumSpatialFeatures()];
+//		final double[] expectedFeatureTimesAbsError = new double[featureSet.getNumSpatialFeatures()];
 		
 		for (int fIdx = 0; fIdx < featureSet.getNumSpatialFeatures(); ++fIdx)
 		{
 			final TDoubleArrayList errorsWhenActive = errorsPerActiveFeature[fIdx];
-			final TDoubleArrayList errorsWhenInactive = errorsPerInactiveFeature[fIdx];
+//			final TDoubleArrayList errorsWhenInactive = errorsPerInactiveFeature[fIdx];
 			
-			final double avgFeatureVal = 
-					(double) errorsWhenActive.size() 
-					/ 
-					(errorsWhenActive.size() + errorsPerInactiveFeature[fIdx].size());
+//			final double avgFeatureVal = 
+//					(double) errorsWhenActive.size() 
+//					/ 
+//					(errorsWhenActive.size() + errorsPerInactiveFeature[fIdx].size());
 			
-			double dErrorSquaresSum = 0.0;
-			double numerator = 0.0;
+//			double dErrorSquaresSum = 0.0;
+//			double numerator = 0.0;
 			
 			for (int i = 0; i < errorsWhenActive.size(); ++i)
 			{
 				final double error = errorsWhenActive.getQuick(i);
-				final double dError = error - avgActionError;
-				numerator += (1.0 - avgFeatureVal) * dError;
-				dErrorSquaresSum += (dError * dError);
+//				final double dError = error - avgActionError;
+//				numerator += (1.0 - avgFeatureVal) * dError;
+//				dErrorSquaresSum += (dError * dError);
 				
 				expectedAbsErrorGivenFeature[fIdx] += (Math.abs(error) - expectedAbsErrorGivenFeature[fIdx]) / (i + 1);
-				expectedFeatureTimesAbsError[fIdx] += (Math.abs(error) - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
+//				expectedFeatureTimesAbsError[fIdx] += (Math.abs(error) - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
 			}
 			
-			for (int i = 0; i < errorsWhenInactive.size(); ++i)
-			{
-				final double error = errorsWhenInactive.getQuick(i);
-				final double dError = error - avgActionError;
-				numerator += (0.0 - avgFeatureVal) * dError;
-				dErrorSquaresSum += (dError * dError);
+//			for (int i = 0; i < errorsWhenInactive.size(); ++i)
+//			{
+//				final double error = errorsWhenInactive.getQuick(i);
+//				final double dError = error - avgActionError;
+//				numerator += (0.0 - avgFeatureVal) * dError;
+//				dErrorSquaresSum += (dError * dError);
 				
-				expectedFeatureTimesAbsError[fIdx] += (0.0 - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
-			}
+//				expectedFeatureTimesAbsError[fIdx] += (0.0 - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
+//			}
 			
-			final double dFeatureSquaresSum = 
-					errorsWhenActive.size() * ((1.0 - avgFeatureVal) * (1.0 - avgFeatureVal))
-					+
-					errorsWhenInactive.size() * ((0.0 - avgFeatureVal) * (0.0 - avgFeatureVal));
-			
-			final double denominator = Math.sqrt(dFeatureSquaresSum * dErrorSquaresSum);
-			featureErrorCorrelations[fIdx] = numerator / denominator;
-			if (Double.isNaN(featureErrorCorrelations[fIdx]))
-				featureErrorCorrelations[fIdx] = 0.f;
+//			final double dFeatureSquaresSum = 
+//					errorsWhenActive.size() * ((1.0 - avgFeatureVal) * (1.0 - avgFeatureVal))
+//					+
+//					errorsWhenInactive.size() * ((0.0 - avgFeatureVal) * (0.0 - avgFeatureVal));
+//			
+//			final double denominator = Math.sqrt(dFeatureSquaresSum * dErrorSquaresSum);
+//			featureErrorCorrelations[fIdx] = numerator / denominator;
+//			if (Double.isNaN(featureErrorCorrelations[fIdx]))
+//				featureErrorCorrelations[fIdx] = 0.f;
 		}
 
 		// Create list of indices that we can use to index into batch, sorted in descending order
