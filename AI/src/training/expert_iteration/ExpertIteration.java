@@ -68,6 +68,7 @@ import training.expert_iteration.params.OutParams;
 import training.expert_iteration.params.OutParams.CheckpointTypes;
 import training.expert_iteration.params.TrainingParams;
 import training.feature_discovery.CorrelationBasedExpander;
+import training.feature_discovery.CorrelationErrorSignExpander;
 import training.feature_discovery.FeatureSetExpander;
 import training.feature_discovery.SpecialMovesCorrelationExpander;
 import training.policy_gradients.Reinforce;
@@ -376,7 +377,21 @@ public class ExpertIteration
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final FeatureSetExpander featureSetExpander = new CorrelationBasedExpander();
+				final FeatureSetExpander featureSetExpander;
+				switch (featureDiscoveryParams.expanderType)
+				{
+				case "CorrelationBasedExpander":
+					featureSetExpander = new CorrelationBasedExpander();
+					break;
+				case "CorrelationErrorSignExpander":
+					featureSetExpander = new CorrelationErrorSignExpander();
+					break;
+				default:
+					System.err.println("Did not recognise feature set expander type: " + featureDiscoveryParams.expanderType);
+					return;
+				}
+				
+				
 				final FeatureSetExpander specialMovesExpander = new SpecialMovesCorrelationExpander();
 				
 				// create our value function
@@ -2874,6 +2889,13 @@ public class ExpertIteration
 				.withNames("--special-moves-expander")
 				.help("If true, we'll use a special-moves feature expander in addition to the normal one.")
 				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--expander-type")
+				.help("Type of feature set expander to use.")
+				.withNumVals(1)
+				.withType(OptionTypes.String)
+				.withDefault("CorrelationBasedExpander")
+				.withLegalVals("CorrelationBasedExpander", "CorrelationErrorSignExpander"));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--train-tspg")
@@ -3016,6 +3038,7 @@ public class ExpertIteration
 		exIt.featureDiscoveryParams.numFeatureDiscoveryThreads = argParse.getValueInt("--num-feature-discovery-threads");
 		exIt.featureDiscoveryParams.criticalValueCorrConf = argParse.getValueDouble("--critical-value-corr-conf");
 		exIt.featureDiscoveryParams.useSpecialMovesExpander = argParse.getValueBool("--special-moves-expander");
+		exIt.featureDiscoveryParams.expanderType = argParse.getValueString("--expander-type");
 		
 		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
 		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");

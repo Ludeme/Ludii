@@ -40,6 +40,9 @@ public class FeatureDiscoveryParams
 	/** If true, use a special-moves expander in addition to the normal one */
 	public boolean useSpecialMovesExpander;
 	
+	/** Type of feature set expander to use */
+	public String expanderType;
+	
 	//-------------------------------------------------------------------------
 
 }

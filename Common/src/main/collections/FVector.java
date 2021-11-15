@@ -548,6 +548,19 @@ public final class FVector implements Serializable
 	}
 	
 	/**
+	 * Replaces every entry in the vector with the sign of that entry (-1.f, 0.f, or +1.f).
+	 * Note that this modifies the vector in-place
+	 */
+	public void sign()
+	{
+		final int d = floats.length;
+		for (int i = 0; i < d; ++i)
+		{
+			floats[i] = (floats[i]) > 0.f ? +1.f : (floats[i] < 0.f ? -1.f : 0.f);
+		}
+	}
+	
+	/**
 	 * Computes the softmax of this vector. 
 	 * Note that this modifies the vector in-place
 	 */
