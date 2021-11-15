@@ -71,7 +71,7 @@ public class MoveSequence implements Serializable
 	public MoveSequence(final MoveSequence parent, final boolean allowInvalidation)
 	{
 		this.parent = parent;
-		this.moves = new ArrayList<Move>();
+		this.moves = new ArrayList<Move>(1);	// Very often only need to add 1 move after (temp) copy
 		
 		if (parent != null)
 		{
