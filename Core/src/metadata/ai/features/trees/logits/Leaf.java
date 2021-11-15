@@ -1,5 +1,6 @@
 package metadata.ai.features.trees.logits;
 
+import annotations.Hide;
 import main.StringRoutines;
 import metadata.ai.misc.Pair;
 
@@ -11,6 +12,7 @@ import metadata.ai.misc.Pair;
  * 
  * @author Dennis Soemers
  */
+@Hide
 public class Leaf extends LogitNode
 {
 	

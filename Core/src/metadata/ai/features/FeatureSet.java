@@ -40,7 +40,7 @@ public class FeatureSet implements AIItem
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Constructor
+	 * For a single collection of features and weights for one role.
 	 * 
 	 * @param role The Player (P1, P2, etc.) for which the feature set should apply,
 	 * or All if it is applicable to all features in a game.
@@ -68,7 +68,8 @@ public class FeatureSet implements AIItem
 	}
 	
 	/**
-	 * Constructor
+	 * For distinct sets of features and weights for Selection, Playout, and
+	 * TSPG purposes, for a single role.
 	 * 
 	 * @param role The Player (P1, P2, etc.) for which the feature set should apply,
 	 * or All if it is applicable to all features in a game.
