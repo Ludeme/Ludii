@@ -33,27 +33,27 @@
             (apply (remove (to)))
         )
     )
- )
-    
-(define "CanNotMove"
-	    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King_noCross" #1)))) )
-	)
+)
 
-    (define "RemovePiecesIfCheckmate"
-    	    (if (and (is Active #1) (not (is Mover #1)))
-    	        (if 
-    	        	(or
-    	            (and 
-    	                ("IsInCheck" "King_noCross" #1)
-    	                ("CanNotMove" #1 #2)
-    	            )
-    	            (= (where (id "King_noCross" #1)) Off)
-    	            )
-    	        	(forEach Site (sites Occupied by:#1)
-    	        		(remove (site))
-    	            )
-    	        )
-    	    )		
+(define "CanNotMove"
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King_noCross" #1)))) )
+)
+
+(define "RemovePiecesIfCheckmate"
+    (if (and (is Active #1) (not (is Mover #1)))
+        (if 
+            (or
+                (and 
+                    ("IsInCheck" "King_noCross" #1)
+                    ("CanNotMove" #1 #2)
+                )
+                (= (where (id "King_noCross" #1)) Off)
+            )
+            (forEach Site (sites Occupied by:#1)
+                (remove (site))
+            )
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -114,7 +114,7 @@
         )
     })  
     (rules 
-    		
+        
         (start { 
             (place "Pawn1" (intersection (expand (sites Left) steps:3) (sites Row 1)))
             (place "Pawn2" (intersection (expand (sites Right) steps:3) (sites Row 6)))
@@ -129,33 +129,33 @@
         })
         
         (play 
-                (do 
-                    (forEach Piece)
-                    ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-                    (then
-                    		(and {
-                            ("RemovePiecesIfCheckmate" P1 1)
-                            ("RemovePiecesIfCheckmate" P2 2)
-                            ("RemovePiecesIfCheckmate" P3 3)
-                            ("RemovePiecesIfCheckmate" P4 4)
-                    		})
-                    )
+            (do 
+                (forEach Piece)
+                ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+                (then
+                    (and {
+                        ("RemovePiecesIfCheckmate" P1 1)
+                        ("RemovePiecesIfCheckmate" P2 2)
+                        ("RemovePiecesIfCheckmate" P3 3)
+                        ("RemovePiecesIfCheckmate" P4 4)
+                    })
                 )
+            )
         )
         
         (end {
             (forEach NonMover
-                    if:(= (where "King_noCross" Player) Off) 
-                    (result Player Loss)
-                )
+                if:(= (where "King_noCross" Player) Off) 
+                (result Player Loss)
+            )
             (if 
-            	(and {
-	            	(no Pieces Enemy "Pawn") 
-	            	(no Pieces Enemy "Knight") 
-	            	(no Pieces Enemy "Elephant") 
-	            	(no Pieces Enemy "Rook") 
-            	})
-            	(result TeamMover Win)
+                (and {
+                    (no Pieces Enemy "Pawn") 
+                    (no Pieces Enemy "Knight") 
+                    (no Pieces Enemy "Elephant") 
+                    (no Pieces Enemy "Rook") 
+                })
+                (result TeamMover Win)
             )
         })
     )
