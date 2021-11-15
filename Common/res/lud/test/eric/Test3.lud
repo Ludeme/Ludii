@@ -3,7 +3,7 @@
 )
 
 (define "PieceIsColumn"
-   (= (what at:(from)) (id "Column" Mover))
+    (= (what at:(from)) (id "Column" Mover))
 )
 
 (define "EnemyBase"
@@ -34,13 +34,13 @@
         Hop
         (from #1)
         (between if:(or
-                        (is Friend (who at:(between)))
-                        (is In (between) (sites Mover "Base"))
-                    )
+                (is Friend (who at:(between)))
+                (is In (between) (sites Mover "Base"))
+            )
         )
         (to 
             if:("EmptyAndNotVisited")
-// can I insert conditional if: here so "PieceIsStone" allows check for "NotOwnBase" and "PieceIsColumn" allows "CaptureToPiece" and move end?          
+            // can I insert conditional if: here so "PieceIsStone" allows check for "NotOwnBase" and "PieceIsColumn" allows "CaptureToPiece" and move end?          
         )
         #2		
     )
@@ -82,7 +82,7 @@
             (place "Stone1" {47 48 59 61 72 73})
             (place "Stone2" {53 54 65 67 78 79})
         })
-
+        
         phases:{
         (phase "Movement"  
             (play
@@ -103,8 +103,8 @@
             (nextPhase (not (is Mover (next))) "Movement")
         ) 
         }
-
-       // (end (if (is In (last To) ("EnemyBase")) (result Mover Win)))
+        
+        // (end (if (is In (last To) ("EnemyBase")) (result Mover Win)))
         (end (if (or
                     (is In (last To) ("EnemyBase"))
                     (no Moves Next )
@@ -123,17 +123,17 @@
         (aliases {"BattleStones (iPad/iPhone/Mac app)"})
         (rules "Played on a 7x7x7 hex board containing two player Bases.
             Each player has one Column piece placed on their Base, surrounded by six Stone pieces.
-
+            
             Stones can move one space in any direction.
             Columns can move any number of spaces in any direction.
             Alternately, all pieces can hop over team pieces (and their own Base) multiple times.
-
+            
             Players may capture pieces by moving their Column onto a space occupied by an opponent's piece.
-
+            
             Stones may not move onto their own Base.
             Columns can not be captured while occupying their own Base.
-
-            Players win by moving a piece onto the opponent's Base, or capturing all the opponent's pieces.")
+            
+        Players win by moving a piece onto the opponent's Base, or capturing all the opponent's pieces.")
         (source "<a href=\"https://www.digitalharmonics.org/harmonygames.html\" target=\"_blank\" />archived web site</a>")
         (version "1.2.11")
         (classification "board/race/reach")
