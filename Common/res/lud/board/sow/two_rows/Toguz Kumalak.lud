@@ -24,10 +24,8 @@
         (regions P1 (sites Bottom))                       // P1 home
         (regions P2 (sites Top))                          // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})    // kalahs (storage pits)
-        (map "RightMostHole" {(pair P1 9) (pair P2 10)})  // The rightMost hole to a player
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
         
         (start (set Count 9 to:(sites Track)) )
@@ -55,8 +53,10 @@
                                     (is In (to) (sites Next)) 
                                     (= (count at:(to)) 3) 
                                     (< ("Tuz" Mover) 0) 
-                                    (!= (to) (mapEntry "RightMostHole" Next)) 
-                                    (!= "OppositePit" ("Tuz" Next))
+                                    (if (< ("Tuz" Next) 0)
+                                    	True
+                                    	(!= (+ (to) ("Tuz" Next)) 19)
+                                    )
                                 })  
                                 (and
                                     (set Value Mover (to))
