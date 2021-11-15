@@ -1,0 +1,33 @@
+(game "Pasakakrida (Type 1)"  
+    (players 2)  
+    (equipment { 
+        (board // The board can be different according to the description
+            (merge 
+                (rectangle 1 12)
+                (shift 0 2 (rectangle 1 12))
+            )
+        )
+        (dice d:4 faces:{2 3 4 5} num:2) // can also be 4 or 5 beans
+        (piece "Marker" Each) // 6 pieces per players
+    })  
+    (rules 
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
