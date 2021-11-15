@@ -87,6 +87,27 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		type = (type == null) ? context.board().defaultSite() : type;
+		final int contID = context.containerId()[0];
+		final ContainerState sc = context.state().containerStates()[contID];
+		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
+		if(type.equals(SiteType.Vertex))
+			ps.toggleVerts(var, value);
+		else if(type.equals(SiteType.Edge))
+			ps.toggleEdges(var, value);
+		else // Cell
+			ps.toggleCells(var, value);
+		
+		return this;
+	}
+
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int hashCode()

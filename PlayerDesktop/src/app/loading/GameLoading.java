@@ -73,7 +73,7 @@ public class GameLoading
 			{
 				app.settingsPlayer().setLoadedFromMemory(false);
 				desc = FileHandling.loadTextContentsFromFile(filePath);
-				GameSetup.compileAndShowGame(app, desc, filePath, false);
+				GameSetup.compileAndShowGame(app, desc, false);
 			}
 			catch (final FileNotFoundException ex)
 			{
@@ -147,7 +147,7 @@ public class GameLoading
 			}
 			
 			app.settingsPlayer().setLoadedFromMemory(true);
-			GameSetup.compileAndShowGame(app, sb.toString(), path, debug);
+			GameSetup.compileAndShowGame(app, sb.toString(), debug);
 		}
 	}
 	
@@ -168,7 +168,7 @@ public class GameLoading
 			app.settingsPlayer().setLoadedFromMemory(true);
 			app.manager().settingsManager().userSelections().setRuleset(Constants.UNDEFINED);
 			app.manager().settingsManager().userSelections().setSelectOptionStrings(options);
-			GameSetup.compileAndShowGame(app, gameDescriptionString, name, false);
+			GameSetup.compileAndShowGame(app, gameDescriptionString, false);
 		}
 		catch (final Exception e)
 		{
@@ -184,128 +184,159 @@ public class GameLoading
 	 */
 	public static String getGameDescriptionRawFromName(final PlayerApp app, final String name)
 	{
-		String inName = name.replaceAll(Pattern.quote("\\"), "/");
+		final String filePath = GameLoader.getFilePath(name);
+		final StringBuilder sb = new StringBuilder();
 		
-		if (inName.startsWith("../Common/res"))
-			inName = inName.substring("../Common/res".length());
-
-		if (!inName.startsWith("/lud/"))
-			inName = "/lud/" + inName;
+		app.manager().setSavedLudName(filePath);
 		
-		try (InputStream in = GameLoader.class.getResourceAsStream(inName))
+		try (InputStream in = GameLoader.class.getResourceAsStream(filePath))
 		{
-			app.manager().setSavedLudName(name);
-			
-			final StringBuilder sb = new StringBuilder();
-			if (in == null)
+			try (final BufferedReader rdr = new BufferedReader(new InputStreamReader(in, "UTF-8")))
 			{
-				// exact match with full filepath under /lud/ not found; let's try
-				// to see if we can figure out which game the user intended
-				final String[] allGameNames = FileHandling.listGames();
-				int shortestNonMatchLength = Integer.MAX_VALUE;
-				String bestMatchFilepath = null;
-				String givenName = name.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
-	
-				if (givenName.startsWith("/lud/"))
-					givenName = givenName.substring("/lud/".length());
-				else if (givenName.startsWith("lud/"))
-					givenName = givenName.substring("lud/".length());
-				
-				for (final String gameName : allGameNames)
-				{
-					final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
-					
-					if (str.endsWith("/" + givenName))
-					{
-						final int nonMatchLength = str.length() - givenName.length();
-						if (nonMatchLength < shortestNonMatchLength)
-						{
-							shortestNonMatchLength = nonMatchLength;
-							bestMatchFilepath = "..\\Common\\res\\" + gameName;
-						}
-					}
-				}
-	
-				if (bestMatchFilepath == null)
-				{
-					for (final String gameName : allGameNames)
-					{
-						final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
-						if (str.endsWith(givenName))
-						{
-							final int nonMatchLength = str.length() - givenName.length();
-							if (nonMatchLength < shortestNonMatchLength)
-							{
-								shortestNonMatchLength = nonMatchLength;
-								bestMatchFilepath = "..\\Common\\res\\" + gameName;
-							}
-						}
-					}
-				}
-	
-				if (bestMatchFilepath == null)
-				{
-					final String[] givenSplit = givenName.split(Pattern.quote("/"));
-					if (givenSplit.length > 1)
-					{
-						final String givenEnd = givenSplit[givenSplit.length - 1];
-						for (final String gameName : allGameNames)
-						{
-							final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
-							if (str.endsWith(givenEnd))
-							{
-								final int nonMatchLength = str.length() - givenName.length();
-								if (nonMatchLength < shortestNonMatchLength)
-								{
-									shortestNonMatchLength = nonMatchLength;
-									bestMatchFilepath = "..\\Common\\res\\" + gameName;
-								}
-							}
-						}
-					}
-				}
-	
-				String resourceStr = bestMatchFilepath.replaceAll(Pattern.quote("\\"), "/");
-				resourceStr = resourceStr.substring(resourceStr.indexOf("/lud/"));
-				app.manager().setSavedLudName(resourceStr);
-				
-				try(InputStream resourceInput = GameLoader.class.getResourceAsStream(resourceStr))
-				{
-					try (final BufferedReader rdr = new BufferedReader(new InputStreamReader(resourceInput, "UTF-8")))
-					{
-						String line;
-						while ((line = rdr.readLine()) != null)
-							sb.append(line + "\n");
-					}
-					catch (final IOException e)
-					{
-						e.printStackTrace();
-					}
-				}
+				String line;
+				while ((line = rdr.readLine()) != null)
+					sb.append(line + "\n");
 			}
-			else
+			catch (final IOException e)
 			{
-				try (final BufferedReader rdr = new BufferedReader(new InputStreamReader(in, "UTF-8")))
-				{
-					String line;
-					while ((line = rdr.readLine()) != null)
-						sb.append(line + "\n");
-				}
-				catch (final IOException e)
-				{
-					e.printStackTrace();
-				}
+				e.printStackTrace();
 			}
-
-			return sb.toString();
 		}
 		catch (final Exception e)
 		{
 			System.out.println("Did you change the name??");
 		}
 		
-		return null;
+		return sb.toString();
 	}
+	
+//	/**
+//	 * Returns the raw game description for a game, based on the name.
+//	 */
+//	public static String getGameDescriptionRawFromName(final PlayerApp app, final String name)
+//	{
+//		String inName = name.replaceAll(Pattern.quote("\\"), "/");
+//		
+//		if (inName.startsWith("../Common/res"))
+//			inName = inName.substring("../Common/res".length());
+//
+//		if (!inName.startsWith("/lud/"))
+//			inName = "/lud/" + inName;
+//		
+//		try (InputStream in = GameLoader.class.getResourceAsStream(inName))
+//		{
+//			app.manager().setSavedLudName(name);
+//			
+//			final StringBuilder sb = new StringBuilder();
+//			if (in == null)
+//			{
+//				// exact match with full filepath under /lud/ not found; let's try
+//				// to see if we can figure out which game the user intended
+//				final String[] allGameNames = FileHandling.listGames();
+//				int shortestNonMatchLength = Integer.MAX_VALUE;
+//				String bestMatchFilepath = null;
+//				String givenName = name.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+//	
+//				if (givenName.startsWith("/lud/"))
+//					givenName = givenName.substring("/lud/".length());
+//				else if (givenName.startsWith("lud/"))
+//					givenName = givenName.substring("lud/".length());
+//				
+//				for (final String gameName : allGameNames)
+//				{
+//					final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+//					
+//					if (str.endsWith("/" + givenName))
+//					{
+//						final int nonMatchLength = str.length() - givenName.length();
+//						if (nonMatchLength < shortestNonMatchLength)
+//						{
+//							shortestNonMatchLength = nonMatchLength;
+//							bestMatchFilepath = "..\\Common\\res\\" + gameName;
+//						}
+//					}
+//				}
+//	
+//				if (bestMatchFilepath == null)
+//				{
+//					for (final String gameName : allGameNames)
+//					{
+//						final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+//						if (str.endsWith(givenName))
+//						{
+//							final int nonMatchLength = str.length() - givenName.length();
+//							if (nonMatchLength < shortestNonMatchLength)
+//							{
+//								shortestNonMatchLength = nonMatchLength;
+//								bestMatchFilepath = "..\\Common\\res\\" + gameName;
+//							}
+//						}
+//					}
+//				}
+//	
+//				if (bestMatchFilepath == null)
+//				{
+//					final String[] givenSplit = givenName.split(Pattern.quote("/"));
+//					if (givenSplit.length > 1)
+//					{
+//						final String givenEnd = givenSplit[givenSplit.length - 1];
+//						for (final String gameName : allGameNames)
+//						{
+//							final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+//							if (str.endsWith(givenEnd))
+//							{
+//								final int nonMatchLength = str.length() - givenName.length();
+//								if (nonMatchLength < shortestNonMatchLength)
+//								{
+//									shortestNonMatchLength = nonMatchLength;
+//									bestMatchFilepath = "..\\Common\\res\\" + gameName;
+//								}
+//							}
+//						}
+//					}
+//				}
+//	
+//				String resourceStr = bestMatchFilepath.replaceAll(Pattern.quote("\\"), "/");
+//				resourceStr = resourceStr.substring(resourceStr.indexOf("/lud/"));
+//				app.manager().setSavedLudName(resourceStr);
+//				
+//				try(InputStream resourceInput = GameLoader.class.getResourceAsStream(resourceStr))
+//				{
+//					try (final BufferedReader rdr = new BufferedReader(new InputStreamReader(resourceInput, "UTF-8")))
+//					{
+//						String line;
+//						while ((line = rdr.readLine()) != null)
+//							sb.append(line + "\n");
+//					}
+//					catch (final IOException e)
+//					{
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//			else
+//			{
+//				try (final BufferedReader rdr = new BufferedReader(new InputStreamReader(in, "UTF-8")))
+//				{
+//					String line;
+//					while ((line = rdr.readLine()) != null)
+//						sb.append(line + "\n");
+//				}
+//				catch (final IOException e)
+//				{
+//					e.printStackTrace();
+//				}
+//			}
+//
+//			return sb.toString();
+//		}
+//		catch (final Exception e)
+//		{
+//			System.out.println("Did you change the name??");
+//		}
+//		
+//		return null;
+//	}
 
 	//-------------------------------------------------------------------------
 	

@@ -197,8 +197,14 @@ public final class FlatCellOnlyOwned implements Owned, Serializable
 	}
 
 	@Override
-	public void remove(final int playerId, final int componentId, final int pieceLoc, final int level,
-			final SiteType type)
+	public void remove(final int playerId, final int componentId, final int pieceLoc, final int level, final SiteType type)
+	{
+		assert (level == 0);
+		remove(playerId, componentId, pieceLoc, type);
+	}
+	
+	@Override
+	public void removeNoUpdate(final int playerId, final int componentId, final int pieceLoc, final int level, final SiteType type)
 	{
 		assert (level == 0);
 		remove(playerId, componentId, pieceLoc, type);

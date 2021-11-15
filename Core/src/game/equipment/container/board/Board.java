@@ -170,7 +170,7 @@ public class Board extends Container
 		return graph;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Built the graph and compute the trajectories.

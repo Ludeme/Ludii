@@ -1,6 +1,5 @@
 package app.views.tools.buttons;
 
-import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 
@@ -42,15 +41,21 @@ public class ButtonPass extends ToolButton
 		final double cy = rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
-		g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
+
+		//g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		
 		final GeneralPath path = new GeneralPath();
-		path.moveTo( cx -15, cy + 10);
-		path.curveTo(cx -15, cy + 0, cx - 8, cy - 7, cx + 2, cy - 7);
-		path.lineTo( cx + 0, cy -12);
-		path.lineTo( cx +15, cy - 5);
-		path.lineTo( cx + 0, cy + 2);
-		path.lineTo( cx + 2, cy - 3);
-		path.curveTo(cx - 7, cy - 3, cx - 13, cy + 6, cx - 15, cy + 10);
+		path.moveTo( cx - 15 * scale, cy + 10 * scale);
+		path.curveTo(cx - 15 * scale, cy, cx - 8 * scale, cy - 7 * scale, cx + 2 * scale, cy - 7 * scale);
+		path.lineTo( cx,              cy - 12 * scale);
+		path.lineTo( cx + 15 * scale, cy - 5 * scale);
+		path.lineTo( cx,              cy + 2 * scale);
+		path.lineTo( cx +  2 * scale, cy - 3 * scale);
+		path.curveTo(cx -  7 * scale, cy - 3 * scale, cx - 13 * scale, cy + 6 * scale, cx - 15 * scale, cy + 10 * scale);
 		g2d.fill(path);
 	}
 	

@@ -30,7 +30,7 @@ public class IsTree extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;	
 
-	// ----------------------------------------------------------------------------------
+	//----------------------------------------------------------------------------------
 	
 	/** The type of player. **/
 	private final IntFunction who;	

@@ -65,6 +65,16 @@ public final class Status implements Serializable
 		this.winner = winner;
 		this.endType = endType;
 	}
+	
+	/**
+	 * To copy the status.
+	 * @param status The status.
+	 */
+	public Status(final Status status)
+	{
+		this.winner = status.winner;
+		this.endType = status.endType;
+	}
 
 	//-------------------------------------------------------------------------
 

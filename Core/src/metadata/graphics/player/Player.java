@@ -16,7 +16,7 @@ import metadata.graphics.util.colour.Colour;
  */
 public class Player implements GraphicsItem
 {
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	/**
 	 * For setting the colour of a player.
@@ -48,7 +48,7 @@ public class Player implements GraphicsItem
 		throw new IllegalArgumentException("Player(): A PlayerColourType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	/**
 	 * For setting the name of a player.
@@ -80,14 +80,14 @@ public class Player implements GraphicsItem
 		throw new IllegalArgumentException("Player(): A PlayerNameType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	private Player()
 	{
 		// Ensure that compiler does not pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

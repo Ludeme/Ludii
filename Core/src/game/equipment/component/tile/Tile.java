@@ -232,7 +232,7 @@ public class Tile extends Component implements Serializable
 		return flips;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

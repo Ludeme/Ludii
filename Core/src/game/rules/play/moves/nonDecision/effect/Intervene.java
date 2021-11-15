@@ -36,7 +36,7 @@ public final class Intervene extends Effect
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Location of the piece. */
 	private final IntFunction startLocationFn;
@@ -59,7 +59,7 @@ public final class Intervene extends Effect
 	/** Add on Cell/Edge/Vertex. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param from       The data about the sites to intervene [(from (last To))].
@@ -95,7 +95,7 @@ public final class Intervene extends Effect
 				: to.effect();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Moves eval(final Context context)
@@ -252,7 +252,7 @@ public final class Intervene extends Effect
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)

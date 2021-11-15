@@ -17,7 +17,7 @@ public final class CountActive extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * 
@@ -27,7 +27,7 @@ public final class CountActive extends BaseIntFunction
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -40,7 +40,7 @@ public final class CountActive extends BaseIntFunction
 		return count;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

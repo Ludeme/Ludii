@@ -64,6 +64,15 @@ public final class ActionNote extends BaseAction
 		context.state().addNote(context.trial().moveNumber(), player, message);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		// No need to undo.
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

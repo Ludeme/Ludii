@@ -31,6 +31,14 @@ public final class ActionSetPhase extends BaseAction
 
 	//-------------------------------------------------------------------------
 	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous phase. */
+	private int previousPhase;
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param type  The graph element type.
 	 * @param to    The site.
@@ -77,7 +85,24 @@ public final class ActionSetPhase extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
+		
+		if(!alreadyApplied)
+		{
+			previousPhase = context.topology().getGraphElements(type).get(to).phase();
+			alreadyApplied = true;
+		}
+		
 		context.topology().getGraphElements(type).get(to).setPhase(phase);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		type = (type == null) ? context.board().defaultSite() : type;
+		context.topology().getGraphElements(type).get(to).setPhase(previousPhase);
 		return this;
 	}
 
@@ -220,7 +245,7 @@ public final class ActionSetPhase extends BaseAction
 		return to;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

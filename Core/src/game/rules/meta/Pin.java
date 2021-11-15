@@ -26,7 +26,7 @@ public class Pin extends MetaRule
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * The pin type.
@@ -43,7 +43,7 @@ public class Pin extends MetaRule
 		this.type = type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public void eval(final Context context)
@@ -101,7 +101,7 @@ public class Pin extends MetaRule
 		}
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)

@@ -2,10 +2,10 @@ package other.action.move;
 
 import java.util.BitSet;
 
+import game.Game;
 import game.equipment.component.Component;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
-import game.types.state.GameType;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
@@ -39,6 +39,23 @@ public final class ActionPromote extends BaseAction
 
 	//-------------------------------------------------------------------------
 
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous index of the piece before to be removed. */
+	private int previousWhat;
+	
+	/** The previous state value of the piece before to be removed. */
+	private int previousState;
+
+	/** The previous rotation value of the piece before to be removed. */
+	private int previousRotation;
+
+	/** The previous value of the piece before to be removed. */
+	private int previousValue;
+
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param type The graph element type.
 	 * @param to   Location to promote the component.
@@ -89,24 +106,34 @@ public final class ActionPromote extends BaseAction
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState cs = context.state().containerStates()[contID];
-
-		if ((context.game().gameFlags() & GameType.Stacking) == 0L)
+		final Game game = context.game();
+		final int oldWhat = (level == Constants.UNDEFINED) ? cs.what(to, type) : cs.what(to, level, type);
+		
+		if(!alreadyApplied)
 		{
-			final int what = cs.what(to, type);
+			previousWhat = oldWhat;
+			previousState = cs.state(to, type);
+			previousRotation = cs.rotation(to, type);
+			previousValue = cs.value(to, type);
+			alreadyApplied = true;
+		}
+		
+		if (!game.isStacking())
+		{
 			Component piece = null;
-			// to keep the site of the item in cache for each player
-			if (what != 0)
+			// To keep the site of the item in cache for each player.
+			if (oldWhat != 0)
 			{
-				piece = context.components()[what];
+				piece = context.components()[oldWhat];
 				final int owner = piece.owner();
 				if (owner != 0)
 				{
-					context.state().owned().remove(owner, what, to, type);
+					context.state().owned().remove(owner, oldWhat, to, type);
 				}
 			}
 			cs.remove(context.state(), to, type);
 
-			final int who = (what < 1) ? 0 : context.components()[newWhat].owner();
+			final int who = (oldWhat < 1) ? 0 : context.components()[newWhat].owner();
 			cs.setSite(context.state(), to, who, newWhat, 1, Constants.UNDEFINED, Constants.UNDEFINED,
 					Constants.UNDEFINED, type);
 
@@ -121,10 +148,7 @@ public final class ActionPromote extends BaseAction
 		}
 		else
 		{
-
-			Component piece = null;
-			final int oldWhat = (level == Constants.UNDEFINED) ? cs.what(to, type) : cs.what(to, level, type);
-			piece = context.components()[oldWhat];
+			Component piece = context.components()[oldWhat];
 			final int previousOwner = piece.owner();
 
 			if (level == Constants.UNDEFINED) // remove the item on the top of the stack
@@ -137,7 +161,7 @@ public final class ActionPromote extends BaseAction
 			if (cs.sizeStack(to, type) == 0)
 				cs.addToEmptyCell(to);
 
-			// to keep the site of the item in cache for each player
+			// To keep the site of the item in cache for each player.
 			if (cs.sizeStack(to, type) != 0)
 			{
 				if (previousOwner != 0)
@@ -167,6 +191,95 @@ public final class ActionPromote extends BaseAction
 			}
 		}
 
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		type = (type == null) ? context.board().defaultSite() : type;
+		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
+		final ContainerState cs = context.state().containerStates()[contID];
+		final Game game = context.game();
+		final int oldWhat = (level == Constants.UNDEFINED) ? cs.what(to, type) : cs.what(to, level, type);
+		
+		if (!game.isStacking())
+		{
+			Component piece = null;
+			// to keep the site of the item in cache for each player
+			if (oldWhat != 0)
+			{
+				piece = context.components()[oldWhat];
+				final int owner = piece.owner();
+				if (owner != 0)
+				{
+					context.state().owned().remove(owner, oldWhat, to, type);
+				}
+			}
+			cs.remove(context.state(), to, type);
+
+			final int who = (oldWhat < 1) ? 0 : context.components()[previousWhat].owner();
+			cs.setSite(context.state(), to, who, previousWhat, 1, previousState, previousRotation,
+					previousValue, type);
+
+			// to keep the site of the item in cache for each player
+			if (previousWhat != 0)
+			{
+				piece = context.components()[previousWhat];
+				final int owner = piece.owner();
+				if (owner != 0)
+					context.state().owned().add(owner, previousWhat, to, type);
+			}
+		}
+		else
+		{
+			Component piece = null;
+
+			piece = context.components()[oldWhat];
+			final int previousOwner = piece.owner();
+
+			if (level == Constants.UNDEFINED) // remove the item on the top of the stack
+				cs.remove(context.state(), to, type);
+			else
+				cs.remove(context.state(), to, level);
+
+			final int sizeStack = cs.sizeStack(to, type);
+
+			if (cs.sizeStack(to, type) == 0)
+				cs.addToEmptyCell(to);
+
+			// to keep the site of the item in cache for each player
+			if (cs.sizeStack(to, type) != 0)
+			{
+				if (previousOwner != 0)
+				{
+					if (level == Constants.UNDEFINED)
+						context.state().owned().remove(previousOwner, oldWhat, to, sizeStack, type);
+					else
+						context.state().owned().remove(previousOwner, oldWhat, to, level, type);
+				}
+			}
+
+			final int who = (previousWhat < 1) ? 0 : context.components()[previousWhat].owner();
+			cs.addItemGeneric(context.state(), to, previousWhat, who, context.game(), type);
+			cs.removeFromEmptyCell(to);
+
+			if (previousWhat != 0)
+			{
+				piece = context.components()[previousWhat];
+				final int owner = piece.owner();
+				if (owner != 0)
+				{
+					if (level == Constants.UNDEFINED)
+						context.state().owned().add(owner, previousWhat, to, sizeStack, type);
+					else
+						context.state().owned().add(owner, previousWhat, to, level, type);
+				}
+			}
+		}
+		
 		return this;
 	}
 
@@ -371,7 +484,7 @@ public final class ActionPromote extends BaseAction
 		this.level = level;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

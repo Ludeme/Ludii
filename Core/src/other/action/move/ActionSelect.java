@@ -104,6 +104,14 @@ public final class ActionSelect extends BaseAction
 		// do nothing
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

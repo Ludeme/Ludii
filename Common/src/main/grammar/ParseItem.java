@@ -343,24 +343,31 @@ public class ParseItem
 					continue;
 				}
 			
-				if (clause.args().size() > ArgCombos.MAX_ARGS)
-				{
-					if (tab != null)
-						System.out.println(tab + "   X: " + clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
-					report.addWarning(clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
-					continue;
-				}
+//				if (clause.args().size() > ArgCombos.MAX_ARGS)
+//				{
+//					if (tab != null)
+//						System.out.println(tab + "   X: " + clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
+//					report.addWarning(clause.symbol().name() + " has more than " + ArgCombos.MAX_ARGS + " args.");
+//					continue;
+//				}
 			
 				// **
 				// ** Don't check each argument individually, as position in list can dictate what type it is 
 				// **
 				
-				final int numSlots = clause.args().size();  //comboLength = combo.size();
-
-				final List<BitSet>[][] argCombos = ArgCombos.get().combos();
-					
-				for (final BitSet combo : argCombos[arguments.size()][clause.args().size()])
+				final int numSlots = clause.args().size();
+				
+				final int clauseSize = clause.args().size();
+				final int argsSize = arguments.size();
+				
+				// Generate all combinations of on-bits up to the maximum expected size
+				for (int seed = 0; seed < (0x1 << clauseSize); seed++)
 				{
+					if (Integer.bitCount(seed) != argsSize)
+						continue;  // wrong number of on-bits
+	
+					final BitSet combo = BitSet.valueOf(new long[] { seed });
+					
 					// Try this arg combo
 					final BitSet subset = (BitSet)combo.clone();
 					subset.and(clause.mandatory());

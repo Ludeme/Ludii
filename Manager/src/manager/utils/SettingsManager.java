@@ -30,6 +30,8 @@ public final class SettingsManager
 	
 	private boolean alwaysAutoPass = false;
 	
+	private double minimumAgentThinkTime = 0.5;
+	
 	//-------------------------------------------------------------------------
 	// Variables used for displaying repeated moves.
 	
@@ -160,6 +162,16 @@ public final class SettingsManager
 	public void setAlwaysAutoPass(final boolean alwaysAutoPass) 
 	{
 		this.alwaysAutoPass = alwaysAutoPass;
+	}
+
+	public double minimumAgentThinkTime()
+	{
+		return minimumAgentThinkTime;
+	}
+
+	public void setMinimumAgentThinkTime(double minimumAgentThinkTime)
+	{
+		this.minimumAgentThinkTime = minimumAgentThinkTime;
 	}
 
 }

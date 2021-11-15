@@ -10,7 +10,7 @@ import app.move.animation.AnimationParameters;
 import app.move.animation.MoveAnimation;
 import game.equipment.component.Component;
 import other.move.Move;
-import policies.softmax.SoftmaxFromMetadata;
+import policies.softmax.SoftmaxFromMetadataSelection;
 
 /**
  * Settings for the current player.
@@ -37,6 +37,8 @@ public class SettingsPlayer
 	
 	/** Font size for the text area. */
 	private int editorFontSize = 13;
+	
+	private boolean editorParseText = true;
 	
 	/** Format for printing moves (Move, Full, Short). */
 	private MoveFormat moveFormat = MoveFormat.Move;
@@ -72,8 +74,15 @@ public class SettingsPlayer
 	/** Tab currently selected. */
 	private int tabSelected = 0;
 	
-	/** If this is the web player application. Used to disable various unsupported features.*/
-	private boolean webApp = false;
+	//-------------------------------------------------------------------------
+	// Web player settings
+	
+	/** Store the results of this game in the DB */
+	private boolean webGameResultValid = true;
+	
+	/** If played index has always been an agent */
+	private final boolean[] agentArray = {true,true,true,true,true,true,true,true,true,true,
+										  true,true,true,true,true,true,true,true,true,true};
 	
 	//-------------------------------------------------------------------------
 	// User settings
@@ -107,7 +116,7 @@ public class SettingsPlayer
 	private boolean printMoveFeatureInstances = false;
 	
 	/** Object we can use to compute active features for printing purposes */
-	private final SoftmaxFromMetadata featurePrintingSoftmax = new SoftmaxFromMetadata(0.0);
+	private final SoftmaxFromMetadataSelection featurePrintingSoftmax = new SoftmaxFromMetadataSelection(0.0);
 	
 	private boolean devMode = false;
 	
@@ -511,7 +520,7 @@ public class SettingsPlayer
 	/**
 	 * @return The softmax object we can use for computing features to print
 	 */
-	public SoftmaxFromMetadata featurePrintingSoftmax()
+	public SoftmaxFromMetadataSelection featurePrintingSoftmax()
 	{
 		return featurePrintingSoftmax;
 	}
@@ -721,14 +730,6 @@ public class SettingsPlayer
 		this.sandboxMode = sandboxMode;
 	}
 
-	public boolean isWebApp() {
-		return webApp;
-	}
-
-	public void setWebApp(final boolean webApp) {
-		this.webApp = webApp;
-	}
-
 	public boolean isPerformingTutorialVisualisation() 
 	{
 		return performingTutorialVisualisation;
@@ -754,9 +755,39 @@ public class SettingsPlayer
 		return showPhaseInTitle;
 	}
 
-	public void setShowPhaseInTitle(boolean showPhaseInTitle) 
+	public void setShowPhaseInTitle(final boolean showPhaseInTitle) 
 	{
 		this.showPhaseInTitle = showPhaseInTitle;
+	}
+
+	public boolean isEditorParseText() 
+	{
+		return editorParseText;
+	}
+
+	public void setEditorParseText(final boolean editorParseText) 
+	{
+		this.editorParseText = editorParseText;
+	}
+
+	public boolean[] agentArray()
+	{
+		return agentArray;
+	}
+
+	public void setAgentArray(final int i, final boolean b)
+	{
+		agentArray[i] = b;
+	}
+
+	public boolean isWebGameResultValid()
+	{
+		return webGameResultValid;
+	}
+
+	public void setWebGameResultValid(final boolean webGameResultValid)
+	{
+		this.webGameResultValid = webGameResultValid;
 	}
 			
 	//-------------------------------------------------------------------------

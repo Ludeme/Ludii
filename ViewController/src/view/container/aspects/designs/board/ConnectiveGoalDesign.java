@@ -77,7 +77,7 @@ public class ConnectiveGoalDesign extends BoardDesign
 		drawOuterCellEdges(bridge, g2d, context);
 		
 		// Symbols
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 		
 		// Foreground
 		drawGround(g2d, context, false);

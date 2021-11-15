@@ -50,6 +50,56 @@ public final class ActionMoveN extends BaseAction
 
 	//-------------------------------------------------------------------------
 
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** Previous Site state value of the from site. */
+	private int previousStateFrom;
+
+	/** Previous Rotation value of the from site. */
+	private int previousRotationFrom;
+
+	/** Previous Piece value of the from site. */
+	private int previousValueFrom;
+	
+	/** Previous Site state value of the to site. */
+	private int previousStateTo;
+
+	/** Previous Rotation value of the to site. */
+	private int previousRotationTo;
+
+	/** Previous Piece value of the to site. */
+	private int previousValueTo;
+	
+	/** Previous What of the to site. */
+	private int previousWhatTo;
+	
+	/** Previous Who of the to site. */
+	private int previousWhoTo;
+	
+	/** The previous hidden info values of the to site before to be removed. */
+	private boolean[] previousHiddenTo;
+	
+	/** The previous hidden what info values of the to site before to be removed. */
+	private boolean[] previousHiddenWhatTo;
+	
+	/** The previous hidden who info values of the to site before to be removed. */
+	private boolean[] previousHiddenWhoTo;
+
+	/** The previous hidden count info values of the to site before to be removed. */
+	private boolean[] previousHiddenCountTo;
+
+	/** The previous hidden rotation info values of the to site before to be removed. */
+	private boolean[] previousHiddenRotationTo;
+
+	/** The previous hidden State info values of the to site before to be removed. */
+	private boolean[] previousHiddenStateTo;
+
+	/** The previous hidden Value info values of the to site before to be removed. */
+	private boolean[] previousHiddenValueTo;
+
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param typeFrom The graph element type of the origin.
 	 * @param from     From site of the move.
@@ -106,44 +156,87 @@ public final class ActionMoveN extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
-		final int contIdA = context.containerId()[from];
-		final int contIdB = context.containerId()[to];
-		final ContainerState csA = context.state().containerStates()[contIdA];
-		final ContainerState csB = context.state().containerStates()[contIdB];
+		final int cidFrom = context.containerId()[from];
+		final int cidTo = context.containerId()[to];
+		final ContainerState csFrom = context.state().containerStates()[cidFrom];
+		final ContainerState csTo = context.state().containerStates()[cidTo];
 
-		final int what = csA.what(from, typeFrom);
+		final int what = csFrom.what(from, typeFrom);
 		final int who = (what < 1) ? 0 : context.components()[what].owner();
+		int currentStateFrom = Constants.UNDEFINED;
+		int currentRotationFrom = Constants.UNDEFINED;
+		int currentValueFrom = Constants.UNDEFINED;
 
-		// modification on A
-		if (csA.count(from, typeFrom) - count <= 0)
+		// take the local state of the site from
+		currentStateFrom = (csFrom.what(from, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, typeFrom);
+		currentRotationFrom = csFrom.rotation(from, typeFrom);
+		currentValueFrom = csFrom.value(from, typeFrom);
+		
+		if(!alreadyApplied)
 		{
-			csA.remove(context.state(), from, typeFrom);
+			previousStateFrom = currentStateFrom;
+			previousRotationFrom = currentRotationFrom;
+			previousValueFrom = currentValueFrom;
+			previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
+			previousRotationTo = csTo.rotation(to, typeTo);
+			previousValueTo = csTo.value(to, typeTo);
+			previousWhoTo = csTo.who(to, typeTo);
+			previousWhatTo = csTo.what(to, typeTo);
+			
+			if(context.game().hiddenInformation())
+			{
+				previousHiddenTo = new boolean[context.players().size()];
+				previousHiddenWhatTo = new boolean[context.players().size()];
+				previousHiddenWhoTo =  new boolean[context.players().size()];
+				previousHiddenCountTo =  new boolean[context.players().size()];
+				previousHiddenStateTo =  new boolean[context.players().size()];
+				previousHiddenRotationTo =  new boolean[context.players().size()];
+				previousHiddenValueTo =  new boolean[context.players().size()];
+				for (int pid = 1; pid < context.players().size(); pid++)
+				{
+					previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
+					previousHiddenWhatTo[pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
+					previousHiddenWhoTo[pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
+					previousHiddenCountTo[pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
+					previousHiddenStateTo[pid] = csTo.isHiddenState(pid, to, 0, typeTo);
+					previousHiddenRotationTo[pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
+					previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
+				}
+			}
+			alreadyApplied = true;
+		}
+		
+		// modification on A
+		if (csFrom.count(from, typeFrom) - count <= 0)
+		{
+			csFrom.remove(context.state(), from, typeFrom);
 		}
 		else
 		{
-			csA.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED,
-					csA.count(from, typeFrom) - count,
+			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED,
+					csFrom.count(from, typeFrom) - count,
 					Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeFrom);
 		}
 
 		// modification on B
-		if (csB.count(to, typeTo) == 0)
+		if (csTo.count(to, typeTo) == 0)
 		{
-			csB.setSite(context.state(), to, who, what, count, Constants.UNDEFINED, Constants.UNDEFINED,
+			csTo.setSite(context.state(), to, who, what, count, Constants.UNDEFINED, Constants.UNDEFINED,
 					Constants.UNDEFINED, typeTo);
 		}
-		else if (csB.what(to, typeTo) == what)
+		else if (csTo.what(to, typeTo) == what)
 		{
-			csB.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-					csB.count(to, typeTo) + count,
-					Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
+			if((csTo.count(to, typeTo) + count) <= context.game().maxCount())
+				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
+						csTo.count(to, typeTo) + count,
+						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
 		}
 
 //		Component piece = null;
 		// to keep the site of the item in cache for each player
 		if (what != 0 && who !=0)
 		{
-			if(csA.count(from, typeFrom) == 0)
+			if(csFrom.count(from, typeFrom) == 0)
 				context.state().owned().remove(who, what, from, typeFrom);
 			context.state().owned().add(who, what, to, typeTo);
 		}
@@ -155,12 +248,12 @@ public final class ActionMoveN extends BaseAction
 			for (final Track track : context.board().tracks())
 			{
 				final int trackIdx = track.trackIdx();
-				final TIntArrayList indicesLocA = onTrackIndices.locToIndex(trackIdx, from);
+				final TIntArrayList indicesLocFrom = onTrackIndices.locToIndex(trackIdx, from);
 
-				for (int k = 0; k < indicesLocA.size(); k++)
+				for (int k = 0; k < indicesLocFrom.size(); k++)
 				{
-					final int indexA = indicesLocA.getQuick(k);
-					final int countAtIndex = onTrackIndices.whats(trackIdx, what, indicesLocA.getQuick(k));
+					final int indexA = indicesLocFrom.getQuick(k);
+					final int countAtIndex = onTrackIndices.whats(trackIdx, what, indicesLocFrom.getQuick(k));
 
 					if (countAtIndex > 0)
 					{
@@ -184,14 +277,109 @@ public final class ActionMoveN extends BaseAction
 
 				// If the piece was not in the track but enter on it, we update the structure
 				// corresponding to that track.
-				if (indicesLocA.size() == 0)
+				if (indicesLocFrom.size() == 0)
 				{
-					final TIntArrayList indicesLocB = onTrackIndices.locToIndex(trackIdx, to);
-					if (indicesLocB.size() != 0)
-						onTrackIndices.add(trackIdx, what, 1, indicesLocB.getQuick(0));
+					final TIntArrayList indicesLocTo = onTrackIndices.locToIndex(trackIdx, to);
+					if (indicesLocTo.size() != 0)
+						onTrackIndices.add(trackIdx, what, 1, indicesLocTo.getQuick(0));
 				}
 			}
 		}
+
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		final int cidFrom = context.containerId()[from];
+		final int cidTo = context.containerId()[to];
+		final ContainerState csFrom = context.state().containerStates()[cidFrom];
+		final ContainerState csTo = context.state().containerStates()[cidTo];
+
+		final int what = csTo.what(to, typeTo);
+		final int who = (what < 1) ? 0 : context.components()[what].owner();
+
+		// modification on To
+		if (csTo.count(to, typeTo) - count <= 0)
+		{
+			csTo.remove(context.state(), to, typeTo);
+		}
+		else
+		{
+			csTo.setSite(context.state(), to, previousWhoTo, previousWhatTo,
+					csTo.count(to, typeTo) - count,
+					previousStateTo, previousRotationTo, previousValueTo, typeTo);
+		}
+
+		// modification on From
+		if (csFrom.count(from, typeFrom) == 0)
+		{
+			csFrom.setSite(context.state(), from, who, what, count, previousStateFrom, previousRotationFrom,
+					previousValueFrom, typeFrom);
+		}
+		else if (csFrom.what(from, typeFrom) == what)
+		{
+			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED,
+					csFrom.count(from, typeFrom) + count,
+					previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
+		}
+		
+//		Component piece = null;
+		// to keep the site of the item in cache for each player
+		if (what != 0 && who !=0)
+		{
+			if(csTo.count(to, typeTo) == 0)
+				context.state().owned().remove(who, what, to, typeTo);
+			context.state().owned().add(who, what, from, typeFrom);
+		}
+
+//		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+//		// We update the structure about track indices if the game uses track.
+//		if (what != 0 && onTrackIndices != null)
+//		{
+//			for (final Track track : context.board().tracks())
+//			{
+//				final int trackIdx = track.trackIdx();
+//				final TIntArrayList indicesLocTo = onTrackIndices.locToIndex(trackIdx, to);
+//
+//				for (int k = 0; k < indicesLocTo.size(); k++)
+//				{
+//					final int indexA = indicesLocTo.getQuick(k);
+//					final int countAtIndex = onTrackIndices.whats(trackIdx, what, indicesLocTo.getQuick(k));
+//
+//					if (countAtIndex > 0)
+//					{
+//						onTrackIndices.remove(trackIdx, what, this.count, indexA);
+//						final TIntArrayList newWhatIndice = onTrackIndices.locToIndexFrom(trackIdx, from, indexA);
+//
+//						if (newWhatIndice.size() > 0)
+//						{
+//							onTrackIndices.add(trackIdx, what, this.count, newWhatIndice.getQuick(0));
+//						}
+//						else
+//						{
+//							final TIntArrayList newWhatIndiceIfNotAfter = onTrackIndices.locToIndex(trackIdx, from);
+//							if (newWhatIndiceIfNotAfter.size() > 0)
+//								onTrackIndices.add(trackIdx, what, this.count, newWhatIndiceIfNotAfter.getQuick(0));
+//						}
+//
+//						break;
+//					}
+//				}
+//
+//				// If the piece was not in the track but enter on it, we update the structure
+//				// corresponding to that track.
+//				if (indicesLocTo.size() == 0)
+//				{
+//					final TIntArrayList indicesLocFrom = onTrackIndices.locToIndex(trackIdx, from);
+//					if (indicesLocFrom.size() != 0)
+//						onTrackIndices.add(trackIdx, what, 1, indicesLocFrom.getQuick(0));
+//				}
+//			}
+//		}
 
 		return this;
 	}
@@ -408,7 +596,7 @@ public final class ActionMoveN extends BaseAction
 		return ActionType.Move;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

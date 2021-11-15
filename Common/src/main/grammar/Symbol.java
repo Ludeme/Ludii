@@ -1,8 +1,8 @@
 package main.grammar;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import main.Constants;
 
@@ -159,7 +159,7 @@ public class Symbol
 		this.ludemeType = type;
 		this.path = new String(path);
 		this.cls  = cls;
-		this.hasAlias = (alias != "");
+		this.hasAlias = (alias != null && alias != "");
 		
 		extractPackagePath();
 		extractName();
@@ -195,7 +195,7 @@ public class Symbol
 		this.notionalLocation = new String(notionalLocation);
 		this.cls = cls;
 
-		this.hasAlias = (alias != "");
+		this.hasAlias = (alias != null && alias != "");
 		
 		extractName();
 		deriveKeyword(alias);
@@ -964,7 +964,7 @@ public class Symbol
 		notionalLocation = notionalLocation.replace('/', '.');  // handle absolute paths
 		// name = name.replace('$', '.'); // Don't include inner classes!
 
-		if (notionalLocation.contains(".java"))
+		if (notionalLocation.endsWith(".java"))
 			notionalLocation = notionalLocation.substring(0, name.length() - 5);  // remove file extension
 
 		int c;

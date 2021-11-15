@@ -40,7 +40,7 @@ import other.state.zhash.ZobristHashUtilities;
 /**
  * Game state.
  *
- * @author cambolbro and Eric.Piette
+ * @author Eric.Piette and cambolbro 
  */
 @Hide
 public class State implements Serializable
@@ -288,7 +288,7 @@ public class State implements Serializable
 				numConsecutivePassesHashes[0][numConsecutivePasses] :
 				numConsecutivePassesHashes[1][numConsecutivePasses % numConsecutivePassesHashCap];
 	}
-
+	
 	/** @return full hash value containing all fields */ 
 	public long fullHash() 
 	{
@@ -1034,6 +1034,15 @@ public class State implements Serializable
 		return otherOnTrackIndices == null ? null : new OnTrackIndices(otherOnTrackIndices);
 	}
 	
+	/**
+	 * To set on track indices.
+	 * @param otherOnTrackIndices The on track indices to set.
+	 */
+	public void setOnTrackIndices(final OnTrackIndices otherOnTrackIndices)
+	{
+		this.onTrackIndices = (otherOnTrackIndices == null ? null : new OnTrackIndices(otherOnTrackIndices));
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -1133,7 +1142,9 @@ public class State implements Serializable
 	 */
 	public int amount(final int player)
 	{
-		return amount[player];
+		if(amount != null)
+			return amount[player];
+		return 0;
 	}
 
 	/**
@@ -1175,18 +1186,28 @@ public class State implements Serializable
 	}
 
 	/**
-	 * Add a value to the map
+	 * Add a value to the map.
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key The key of the map.
+	 * @param value The value.
 	 */
 	public void setValue(final String key, final int value)
 	{
 		valueMap.put(key, value);
 	}
+	
+	/**
+	 * remove a key from the map.
+	 * 
+	 * @param key The key of the map.
+	 */
+	public void removeKeyValue(final String key)
+	{
+		valueMap.remove(key);
+	}
 
 	/**
-	 * @param key
+	 * @param key The key of the map.
 	 * @return value for this key, or Constants.OFF if not found
 	 */
 	public int getValue(final String key)
@@ -1195,6 +1216,14 @@ public class State implements Serializable
 			return Constants.OFF;
 		
 		return valueMap.get(key);
+	}
+	
+	/**  
+	 * @return To get the value map.
+	 */
+	public TObjectIntMap<String> getValueMap()
+	{
+		return valueMap;
 	}
 
 	/**
@@ -1234,6 +1263,14 @@ public class State implements Serializable
 			return null;
 
 		return notes.get(move).get(player);
+	}
+	
+	/** 
+	 * @return the notes.
+	 */
+	public TIntObjectMap<TIntObjectMap<String>> getNotes()
+	{
+		return notes;
 	}
 	
 	/**
@@ -1328,6 +1365,23 @@ public class State implements Serializable
 	}
 	
 	/**
+	 * @return Number of consecutive pass moves.
+	 */
+	public int numConsecutivesPasses()
+	{
+		return this.numConsecutivePasses;
+	}
+	
+	/**
+	 * To set the number of consecutive pass moves.
+	 * @param numConsecutivesPasses Number of consecutive pass moves.
+	 */
+	public void setNumConsecutivesPasses(final int numConsecutivesPasses)
+	{
+		this.numConsecutivePasses = numConsecutivesPasses;
+	}
+	
+	/**
 	 * @return Counter.
 	 */
 	public int counter()
@@ -1341,6 +1395,13 @@ public class State implements Serializable
 	public void incrCounter()
 	{
 		counter++;
+	}
+	/**
+	 * To decrement the counter.
+	 */
+	public void decrCounter()
+	{
+		counter--;
 	}
 	
 	/**
@@ -1448,6 +1509,14 @@ public class State implements Serializable
 	{
 		return !pendingValues.isEmpty();
 	}
+	
+	/**
+	 * @param value The value to remove from the pending values
+	 */
+	public void removePendingValue(final int value)
+	{
+		pendingValues.remove(value);
+	}
 
 	/**
 	 * To clear the pending values
@@ -1462,6 +1531,23 @@ public class State implements Serializable
 				updatePendingHash(it.next());
 			}
 			pendingValues.clear();
+		}
+	}
+	
+	/**
+	 * To restore the pending values.
+	 * @param values The pending values.
+	 */
+	public void restorePending(final TIntHashSet values)
+	{
+		if(values != null)
+		{
+			rebootPending();
+			final TIntIterator it = values.iterator();
+			while (it.hasNext())
+			{
+				setPending(it.next());
+			}
 		}
 	}
 
@@ -1629,6 +1715,14 @@ public class State implements Serializable
 	}
 
 	/**
+	 * @param newVisited The visited sites replacing the current one.
+	 */
+	public void setVisited(final HashedBitSet newVisited)
+	{
+		visited = newVisited.clone();
+	}
+
+	/**
 	 * @param site
 	 * @return true if the site is already visited
 	 */
@@ -1647,6 +1741,15 @@ public class State implements Serializable
 		if(visited.internalState().size() > site && site >= 0)
 			visited.set(this, site, true);
 	}
+	
+	
+	/**
+	 * @return visited sites.
+	 */
+	public HashedBitSet visited()
+	{
+		return visited;
+	}
 
 	/**
 	 * To reinit the visited BitSet.
@@ -1657,13 +1760,23 @@ public class State implements Serializable
 	}
 
 	/**
-	 * To update the pieceToRemove bitSet with the site of the piece to remove.
+	 * To add the site of the piece to remove to the pieceToRemove bitSet.
 	 *
-	 * @param site
+	 * @param site The site of the piece.
 	 */
 	public void addSitesToRemove(final int site)
 	{
 		sitesToRemove.add(site);
+	}
+	
+	/**
+	 * To remove the site of the piece to remove from the pieceToRemove bitSet.
+	 *
+	 * @param site The site of the piece.
+	 */
+	public void removeSitesToRemove(final int site)
+	{
+		sitesToRemove.remove(site);
 	}
 	
 	/**
@@ -1742,6 +1855,14 @@ public class State implements Serializable
 		numTurnSamePlayer = 0;
 		++numTurn;
 	}
+	
+	/**
+	 * @param numTurnSamePlayer The number of moves of the same player so far in the turn.
+	 */
+	public void setTurnSamePlayer(final int numTurnSamePlayer)
+	{
+		this.numTurnSamePlayer = numTurnSamePlayer;
+	}
 
 	/**
 	 * to increment the number of turn played by the same player
@@ -1757,6 +1878,14 @@ public class State implements Serializable
 	public int numTurn()
 	{
 		return numTurn;
+	}
+	
+	/**
+	 * @param numTurn The number of turns.
+	 */
+	public void setNumTurn(final int numTurn)
+	{
+		this.numTurn = numTurn;
 	}
 
 	//-------------------------------------------------------------------------
@@ -1914,12 +2043,12 @@ public class State implements Serializable
 	/**
 	 * @return The remaining dominoes
 	 */
-	public TIntArrayList remainingDominoes()
+	public FastTIntArrayList remainingDominoes()
 	{
 		return remainingDominoes;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The values stored in previous states.
@@ -1937,7 +2066,7 @@ public class State implements Serializable
 		return mapRememberingValues;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The state stored in the game.
@@ -1956,7 +2085,17 @@ public class State implements Serializable
 	{
 		storedState = state.stateHash();
 	}
+	
+	/**
+	 * To restore a state of the game
+	 * 
+	 * @param value The state hash value to restore.
+	 */
+	public void restoreCurrentState(final long value)
+	{
+		storedState = value;
+	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 }

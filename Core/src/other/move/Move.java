@@ -121,7 +121,7 @@ public class Move extends BaseAction
 	/** The "Moves" where comes from the move. */
 	private transient Moves movesLudeme;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param actions
@@ -600,6 +600,32 @@ public class Move extends BaseAction
 		return returnMove;
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		//final List<Action> returnActions = new ArrayList<>(actions.size());
+
+		// Apply the list of actions
+		for (int i = actions.size()-1; i >= 0; i--)
+		{
+			final Action action = actions.get(i);
+			action.undo(context);
+			//final Action returnAction = action.undo(context);
+			
+//			if (returnAction instanceof Move)
+//				returnActions.addAll(((Move) returnAction).actions);
+//			else
+//				returnActions.add(returnAction);
+		}
+		
+		// ERIC: To check if more code is needed here.
+		return this;
+	}
+
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param actionsList
 	 * @return True if the list of actions to apply contains SetNextPlayer.
@@ -1366,7 +1392,7 @@ public class Move extends BaseAction
 		return new FullLocation(to, levelTo(), toType());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param topo The topology.
@@ -1414,7 +1440,7 @@ public class Move extends BaseAction
 		return null;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The Moves concepts computed thanks to the action concepts.
@@ -1458,7 +1484,7 @@ public class Move extends BaseAction
 		this.movesLudeme = movesLudeme;
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** 
 	 * @return A short string representation of this move's action descriptions. 
@@ -1491,6 +1517,6 @@ public class Move extends BaseAction
 		return actionString;
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 }

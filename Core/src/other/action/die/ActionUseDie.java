@@ -18,7 +18,7 @@ public class ActionUseDie extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Hand Dice index. */
 	 private final int indexHandDice;
@@ -29,6 +29,14 @@ public class ActionUseDie extends BaseAction
 	/** Index of the site. */
 	 private final int site;
 
+	//-------------------------------------------------------------------------
+		
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+		
+	/** The previous dice value. */
+	private int previousCurrentDieValue;
+		
 	//-------------------------------------------------------------------------
 
 	/**
@@ -76,7 +84,22 @@ public class ActionUseDie extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousCurrentDieValue = context.state().currentDice()[indexHandDice][indexDie];
+			alreadyApplied = true;
+		}
+		
 		context.state().updateCurrentDice(0, indexDie, indexHandDice);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().updateCurrentDice(previousCurrentDieValue, indexDie, indexHandDice);
 		return this;
 	}
 
@@ -183,7 +206,7 @@ public class ActionUseDie extends BaseAction
 		return ActionType.UseDie;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

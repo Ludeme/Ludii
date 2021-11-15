@@ -35,7 +35,7 @@ public final class SetRotation extends Effect
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Which Direction. */
 	private final IntFunction siteFn;

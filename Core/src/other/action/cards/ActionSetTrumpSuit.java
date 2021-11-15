@@ -19,11 +19,19 @@ public class ActionSetTrumpSuit extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The new trump suit. */
 	private final int trumpSuit;
 
+	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous trump suit. */
+	private int previousTrumpSuit;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -59,11 +67,26 @@ public class ActionSetTrumpSuit extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousTrumpSuit = context.state().trumpSuit();
+			alreadyApplied = true;
+		}
+		
 		context.state().setTrumpSuit(trumpSuit);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().setTrumpSuit(previousTrumpSuit);
+		return this;
+	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -148,7 +171,7 @@ public class ActionSetTrumpSuit extends BaseAction
 		return trumpSuit;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

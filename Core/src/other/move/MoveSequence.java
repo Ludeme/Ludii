@@ -50,7 +50,7 @@ public class MoveSequence implements Serializable
 	public MoveSequence(final MoveSequence parent)
 	{
 		this.parent = parent;
-		this.moves = new ArrayList<Move>();
+		this.moves = new ArrayList<Move>(1);
 		
 		if (parent != null)
 		{
@@ -71,7 +71,7 @@ public class MoveSequence implements Serializable
 	public MoveSequence(final MoveSequence parent, final boolean allowInvalidation)
 	{
 		this.parent = parent;
-		this.moves = new ArrayList<Move>();
+		this.moves = new ArrayList<Move>(1);	// Very often only need to add 1 move after (temp) copy
 		
 		if (parent != null)
 		{
@@ -145,6 +145,22 @@ public class MoveSequence implements Serializable
 	}
 	
 	//-----------------------------------------------------------------------------
+	
+	/**
+	 * @return The last move in this sequence, or null if it's empty
+	 */
+	public Move removeLastMove()
+	{
+		final int size = moves.size();
+		if (size != 0)
+		{
+			final Move move = moves.get(size -1);
+			moves.remove(moves.size()-1);
+			return move;
+		}
+		
+		return null;
+	}
 	
 	/**
 	 * @return The last move in this sequence, or null if it's empty

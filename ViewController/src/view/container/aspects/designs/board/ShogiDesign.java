@@ -75,7 +75,7 @@ public class ShogiDesign extends BoardDesign
 			for (final int i : symbolLocations)
 				symbols.add(new MetadataImageInfo(i,SiteType.Vertex,"dot",(float)0.2));
 		
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 
 		drawOuterCellEdges(bridge, g2d, context);
 

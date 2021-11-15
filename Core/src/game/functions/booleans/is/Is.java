@@ -858,7 +858,7 @@ public class Is extends BaseBooleanFunction
 		throw new IllegalArgumentException("Is(): A IsLineType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For test relative to a loop.
@@ -922,7 +922,7 @@ public class Is extends BaseBooleanFunction
 		throw new IllegalArgumentException("Is(): A IsLoopType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For test relative a path.
@@ -970,7 +970,7 @@ public class Is extends BaseBooleanFunction
 		throw new IllegalArgumentException("Is(): A IsPathType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For test relative to an empty or occupied site.
@@ -1003,7 +1003,7 @@ public class Is extends BaseBooleanFunction
 		throw new IllegalArgumentException("Is(): A IsSiteType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For testing if a site is in a region or if an integer is in an array of

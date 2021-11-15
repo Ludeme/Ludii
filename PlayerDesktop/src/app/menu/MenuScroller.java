@@ -1,6 +1,3 @@
-/**
- * @(#)MenuScroller.java	1.5.0 04/02/12
- */
 package app.menu;
 
 import java.awt.Color;
@@ -34,7 +31,6 @@ import javax.swing.event.PopupMenuListener;
  * @version 1.5.0 04/05/12
  * @author Darryl
  */
-@SuppressWarnings("synthetic-access")
 public class MenuScroller 
 {
   //private JMenu menu;

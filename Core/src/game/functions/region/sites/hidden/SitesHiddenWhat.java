@@ -40,7 +40,7 @@ public final class SitesHiddenWhat extends BaseRegionFunction
 	/** The RoleType if used */
 	private final RoleType roleType;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type       The graph element type [default of the board].

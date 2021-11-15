@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import annotations.Alias;
 import main.StringRoutines;
@@ -303,9 +301,9 @@ public class Call
 	/**
 	 * @return LudemeInfo set representation of callTree for ludemplex analysis purposes.
 	 */
-	public Set<LudemeInfo> analysisFormat(final int depth, final List<LudemeInfo> ludemes)
+	public List<LudemeInfo> analysisFormat(final int depth, final List<LudemeInfo> ludemes)
 	{
-		final Set<LudemeInfo> ludemesFound = new HashSet<>();
+		final List<LudemeInfo> ludemesFound = new ArrayList<>();
 		
 		switch (type)
 		{
@@ -316,13 +314,68 @@ public class Call
 				ludemesFound.addAll(arg.analysisFormat(depth, ludemes));
 			break;
 		case Class:
-			ludemesFound.addAll(LudemeInfo.findLudemeInfo(this, ludemes));
-			if (args.size() > 0)
-				for (final Call arg : args)
-					ludemesFound.addAll(arg.analysisFormat(depth + 1, ludemes));
+			final LudemeInfo ludemeInfo = LudemeInfo.findLudemeInfo(this, ludemes);
+			if (ludemeInfo != null)
+			{
+				ludemesFound.add(ludemeInfo);
+				if (args.size() > 0)
+					for (final Call arg : args)
+						ludemesFound.addAll(arg.analysisFormat(depth + 1, ludemes));
+			}
 			break;
 		case Terminal:
-			ludemesFound.addAll(LudemeInfo.findLudemeInfo(this, ludemes));
+			final LudemeInfo ludemeInfo2 = LudemeInfo.findLudemeInfo(this, ludemes);
+			if (ludemeInfo2 != null)
+				ludemesFound.add(ludemeInfo2);
+			break;
+		default:
+			System.out.println("** Call.format() should never hit default.");
+			break;
+		}
+		
+		return ludemesFound;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return String representation of call tree in preorder notation, e.g. f(a b(c)).
+	 */
+	public String preorderFormat(final int depth, final List<LudemeInfo> ludemes)
+	{
+		String ludemesFound = "";
+		
+		switch (type)
+		{
+		case Null:
+			break;
+		case Array:
+			String newString = "(";
+			for (final Call arg : args)
+				newString += arg.preorderFormat(depth, ludemes) + " ";
+			newString += ")";
+			if (newString.replaceAll("\\s+","").length() > 2)
+				ludemesFound += "Array" + newString;
+			break;
+		case Class:
+			final LudemeInfo ludemeInfo = LudemeInfo.findLudemeInfo(this, ludemes);
+			if (ludemeInfo != null)
+			{
+				String newString2 = "(";
+				if (args.size() > 0)
+					for (final Call arg : args)
+						newString2 += arg.preorderFormat(depth + 1, ludemes) + " ";
+				newString2 += ")";
+				if (newString2.replaceAll("\\s+","").length() > 2)
+					ludemesFound += ludemeInfo.symbol().name() + newString2;
+				else
+					ludemesFound += ludemeInfo.symbol().name();
+			}
+			break;
+		case Terminal:
+			final LudemeInfo ludemeInfo2 = LudemeInfo.findLudemeInfo(this, ludemes);
+			if (ludemeInfo2 != null)
+				ludemesFound += ludemeInfo2.symbol().name() + " ";
 			break;
 		default:
 			System.out.println("** Call.format() should never hit default.");

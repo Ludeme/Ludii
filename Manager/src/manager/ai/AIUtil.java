@@ -92,7 +92,7 @@ public class AIUtil
 	{
 		if (manager.settingsNetwork().getActiveGameId() != 0 && !manager.settingsNetwork().getOnlineAIAllowed())
 			manager.settingsManager().setAgentsPaused(manager, true);
-		else if (manager.aiSelected()[manager.ref().context().state().mover()].ai() != null)
+		else if (manager.aiSelected()[manager.moverToAgent()].ai() != null)
 			manager.settingsManager().setAgentsPaused(manager, true);
 		else if (manager.ref().context().model() instanceof SimultaneousMove)
 			manager.settingsManager().setAgentsPaused(manager, true);
@@ -139,6 +139,21 @@ public class AIUtil
 				manager.aiSelected()[p].ai().initIfNeeded(context.game(), p);
 		}
 		manager.settingsNetwork().backupAiPlayers(manager);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param manager
+	 * @return If any of the games players are being controlled by an AI.
+	 */
+	public static boolean anyAIPlayer(final Manager manager)
+	{
+		for (int i = 1; i <= manager.ref().context().game().players().count(); i++)
+			if (manager.aiSelected()[i].ai() != null)
+				return true;
+		
+		return false;
 	}
 	
 	//-------------------------------------------------------------------------

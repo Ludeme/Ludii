@@ -77,6 +77,30 @@ public class ActionForgetValue extends BaseAction
 		}
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		if (name == null)
+		{
+			context.state().rememberingValues().insert(0,value);
+		}
+		else
+		{
+			FastTIntArrayList rememberingValues = context.state().mapRememberingValues().get(name);
+			if (rememberingValues == null)
+			{
+				rememberingValues = new FastTIntArrayList();
+				context.state().mapRememberingValues().put(name, rememberingValues);
+			}
+			
+			rememberingValues.insert(0,value);
+		}
+		
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

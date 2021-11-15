@@ -32,7 +32,7 @@ import other.context.Context;
 import other.playout.PlayoutMoveSelector;
 import other.trial.Trial;
 import playout_move_selectors.FeaturesSoftmaxMoveSelector;
-import policies.softmax.SoftmaxFromMetadata;
+import policies.softmax.SoftmaxFromMetadataSelection;
 
 /**
  * Experiment for measuring playouts per second.
@@ -291,7 +291,7 @@ public final class PlayoutsPerSec
 			if (featuresToUse.toLowerCase().contains("metadata"))
 			{
 				// Load features from metadata
-				final SoftmaxFromMetadata softmax = new SoftmaxFromMetadata(0.0);
+				final SoftmaxFromMetadataSelection softmax = new SoftmaxFromMetadataSelection(0.0);
 				softmax.initAI(game, -1);
 	
 				if (softmax.featureSets().length > 0)
@@ -332,7 +332,7 @@ public final class PlayoutsPerSec
 				}
 				else if (featureSetType.equals("JITSPatterNet"))
 				{
-					featureSet = new JITSPatterNetFeatureSet(featureGen.getAspatialFeatures(), featureGen.getSpatialFeatures());
+					featureSet = JITSPatterNetFeatureSet.construct(featureGen.getAspatialFeatures(), featureGen.getSpatialFeatures());
 				}
 				else
 				{
@@ -438,7 +438,7 @@ public final class PlayoutsPerSec
 					else if (featureSetType.equals("JITSPatterNet"))
 					{
 						featureSet = 
-								new JITSPatterNetFeatureSet
+								JITSPatterNetFeatureSet.construct
 								(
 									trainedDirPath + 
 									String.format
@@ -557,7 +557,7 @@ public final class PlayoutsPerSec
 					else if (featureSetType.equals("JITSPatterNet"))
 					{
 						featureSet = 
-								new JITSPatterNetFeatureSet
+								JITSPatterNetFeatureSet.construct
 								(
 									trainedDirPath + 
 									String.format

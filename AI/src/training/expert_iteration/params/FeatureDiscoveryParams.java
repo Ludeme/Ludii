@@ -37,6 +37,12 @@ public class FeatureDiscoveryParams
 	/** Critical value used when computing confidence intervals for correlations */
 	public double criticalValueCorrConf;
 	
+	/** If true, use a special-moves expander in addition to the normal one */
+	public boolean useSpecialMovesExpander;
+	
+	/** Type of feature set expander to use */
+	public String expanderType;
+	
 	//-------------------------------------------------------------------------
 
 }

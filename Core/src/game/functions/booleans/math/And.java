@@ -199,7 +199,7 @@ public final class And extends BaseBooleanFunction
 		return list;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<Location> satisfyingSites(final Context context)

@@ -32,6 +32,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -46,7 +47,10 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.DocumentFilter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -150,10 +154,33 @@ public class EditorDialog extends JDialog
 		final JScrollPane scrollPane = new JScrollPane( noWrapPanel );
 		contentPanel.add(scrollPane);
 		
+		final JPanel topPane = new JPanel();
+		topPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(topPane, BorderLayout.NORTH);
+
+		JCheckBox verifiedByParserCheckbox = new JCheckBox();
+		verifiedByParserCheckbox.setHorizontalAlignment(SwingConstants.RIGHT);
+		verifiedByParserCheckbox.setText("Parse Text");
+		verifiedByParserCheckbox.setSelected(app.settingsPlayer().isEditorParseText());
+		topPane.add(verifiedByParserCheckbox, BorderLayout.NORTH);
+		
+		final ActionListener parserListener = new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				app.settingsPlayer().setEditorParseText(verifiedByParserCheckbox.isSelected());
+				verifiedByParserCheckbox.setSelected(app.settingsPlayer().isEditorParseText());
+				app.addTextToStatusPanel("Please close and repoen the editor for this change to apply.\n");
+			}
+		};
+		
+		verifiedByParserCheckbox.addActionListener(parserListener);
+		
 		verifiedByParser = new JLabel();
 		verifiedByParser.setHorizontalAlignment(SwingConstants.RIGHT);
-		getContentPane().add(verifiedByParser, BorderLayout.NORTH);
-
+		topPane.add(verifiedByParser, BorderLayout.NORTH);
+		
 		final JPanel bottomPane = new JPanel();
 		bottomPane.setLayout(new BoxLayout(bottomPane, BoxLayout.LINE_AXIS));
 		getContentPane().add(bottomPane, BorderLayout.SOUTH);
@@ -258,6 +285,8 @@ public class EditorDialog extends JDialog
 					@Override
 					public void run()
 					{
+						highlightMatchingBracket();
+						
 						if (trace) System.out.println(">>EVENT: textArea/keypressed");
 						undoRecordTimer.stop();
 						storeUndoText();
@@ -427,12 +456,105 @@ public class EditorDialog extends JDialog
 						textArea.setSelectionEnd(range.to());
 					}
 				}
+				
+				highlightMatchingBracket();
 			}
 //			@Override public void mousePressed(MouseEvent e)
 //			@Override public void mouseReleased(MouseEvent e)
 //			@Override public void mouseEntered(MouseEvent e) 
 //			@Override public void mouseExited(MouseEvent e)
+
+			
 		});
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	void highlightMatchingBracket()
+	{
+		textArea.getHighlighter().removeAllHighlights();
+		final int caretPos = textArea.getCaretPosition();
+		String prevChar;
+		try
+		{
+			prevChar = textArea.getText(caretPos-1, 1);
+			int matchingCharLocation = -1;
+			
+			if (prevChar.equals("("))
+				matchingCharLocation = findMatching("(", ")", caretPos, true);
+			else if (prevChar.equals(")"))
+				matchingCharLocation = findMatching(")", "(", caretPos, false);
+			else if (prevChar.equals("{"))
+				matchingCharLocation = findMatching("{", "}", caretPos, true);
+			else if (prevChar.equals("}"))
+				matchingCharLocation = findMatching("}", "{", caretPos, false);
+			else if (prevChar.equals("["))
+				matchingCharLocation = findMatching("[", "]", caretPos, true);
+			else if (prevChar.equals("]"))
+				matchingCharLocation = findMatching("]", "[", caretPos, false);
+			
+			if (matchingCharLocation != -1)
+			{
+				Highlighter highlighter = textArea.getHighlighter();
+				HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+				highlighter.addHighlight(matchingCharLocation, matchingCharLocation+1, painter);
+			}
+		}
+		catch (BadLocationException e)
+		{
+			// carry on
+		}
+	}
+	
+	int findMatching(final String selectedString, final String matchingString, final int initialPosition, final boolean checkForward)
+	{
+		int caretPos = initialPosition;
+		int numSelectedString = 1;
+		String textToCheck;
+		try
+		{
+			if (checkForward)
+			{
+				textToCheck = textArea.getText(caretPos, textArea.getText().length()-caretPos);
+				while (textToCheck.length() > 0)
+				{
+					if (String.valueOf(textToCheck.charAt(0)).equals(matchingString))
+						numSelectedString--;
+					else if (String.valueOf(textToCheck.charAt(0)).equals(selectedString))
+						numSelectedString++;
+					
+					if (numSelectedString == 0)
+						return caretPos;
+					
+					caretPos++;
+					textToCheck = textToCheck.substring(1);
+				}
+			}
+			else
+			{
+				textToCheck = textArea.getText(0, caretPos-1);
+				while (textToCheck.length() > 0)
+				{
+					if (String.valueOf(textToCheck.charAt(textToCheck.length()-1)).equals(matchingString))
+						numSelectedString--;
+					else if (String.valueOf(textToCheck.charAt(textToCheck.length()-1)).equals(selectedString))
+						numSelectedString++;
+					
+					if (numSelectedString == 0)
+						return caretPos-2;
+					
+					caretPos--;
+					textToCheck = textToCheck.substring(0,textToCheck.length()-1);
+				}
+			}
+		}
+		catch (BadLocationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return -1;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -628,7 +750,7 @@ public class EditorDialog extends JDialog
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				GameSetup.compileAndShowGame(app, textAreaFullDocument(), null, false);
+				GameSetup.compileAndShowGame(app, textAreaFullDocument(), false);
 			}
 		};
 
@@ -679,7 +801,7 @@ public class EditorDialog extends JDialog
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				GameSetup.compileAndShowGame(app, textAreaFullDocument(), null, true);
+				GameSetup.compileAndShowGame(app, textAreaFullDocument(), true);
 			}
 		};
 
@@ -773,7 +895,10 @@ public class EditorDialog extends JDialog
 			textArea.setSelectionEnd(selEnd);
 		}
 
-		checkParseState(app.manager(), gameDescription);
+		if (app.settingsPlayer().isEditorParseText())
+			checkParseState(app.manager(), gameDescription);
+		
+		highlightMatchingBracket();
 	}
 	
 	//-------------------------------------------------------------------------

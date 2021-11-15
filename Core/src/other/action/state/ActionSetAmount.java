@@ -23,6 +23,14 @@ public final class ActionSetAmount extends BaseAction
 	private final int amount;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous amount. */
+	private int previousAmount;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param player The index of the player.
@@ -63,7 +71,22 @@ public final class ActionSetAmount extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousAmount = context.state().amount(player);
+			alreadyApplied = true;
+		}
+		
 		context.state().setAmount(player, amount);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().setAmount(player, previousAmount);
 		return this;
 	}
 	

@@ -26,6 +26,7 @@ import game.equipment.container.Container;
 import game.functions.ints.IntFunction;
 import game.types.state.GameType;
 import graphics.svg.SVGtoImage;
+import manager.ai.AIUtil;
 import metadata.graphics.util.ScoreDisplayInfo;
 import metadata.graphics.util.WhenScoreType;
 import metadata.graphics.util.colour.ColourRoutines;
@@ -84,11 +85,14 @@ public class PlayerViewUser extends View
 		int componentPushBufferX = 0;
 		final int swatchWidth = app.playerSwatchList()[playerId].width;
 		final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
-		componentPushBufferX = swatchWidth + maxNameWidth + placement.height/2;
+		componentPushBufferX = (int) (swatchWidth + maxNameWidth + app.playerNameList()[playerId].getHeight()*2);
+
+		if (AIUtil.anyAIPlayer(app.manager()))
+			componentPushBufferX += playerView.playerNameFont.getSize();
 		
 		if (hand != null)
 		{
-			final int containerMarginWidth = (int) (0.05 * placement.height); // add a small 5% margin on either side of the container
+			final int containerMarginWidth = (int) (0.05 * placement.height);
 			final Rectangle containerPlacement = new Rectangle(
 																placement.x + componentPushBufferX + containerMarginWidth, 
 																placement.y - placement.height/2, 
@@ -224,9 +228,10 @@ public class PlayerViewUser extends View
 	 */
 	private void drawPlayerName(final Graphics2D g2d, final int mover, final ArrayList<Integer> winnerNumbers, final Context context)
 	{
-		g2d.setFont(PlayerView.playerNameFont);
+		g2d.setFont(playerView.playerNameFont);
+		
 		final String stringNameAndExtras = getNameAndExtrasString(context, g2d);
-		final Rectangle2D bounds = PlayerView.playerNameFont.getStringBounds(stringNameAndExtras, g2d.getFontRenderContext());	
+		final Rectangle2D bounds = playerView.playerNameFont.getStringBounds(stringNameAndExtras, g2d.getFontRenderContext());	
 		
 		final Rectangle2D square = app.playerSwatchList()[playerId];
 		final Point2D drawPosn = new Point2D.Double(square.getCenterX() + square.getWidth(), square.getCenterY());
@@ -272,7 +277,7 @@ public class PlayerViewUser extends View
 	 */
 	void drawAIFace(final Graphics2D g2d)
 	{
-		final AI ai = app.manager().aiSelected()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)].ai();
+		final AI ai = app.manager().aiSelected()[app.manager().playerToAgent(playerId)].ai();
 
 		if (ai != null)
 		{
@@ -295,10 +300,10 @@ public class PlayerViewUser extends View
 			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(imagePath))))
 			{
 				final Rectangle2D nameRect = app.playerNameList()[playerId];
-				final double r = PlayerView.playerNameFont.getSize();
+				final double r = playerView.playerNameFont.getSize();
 				final SVGGraphics2D svg = new SVGGraphics2D((int)r, (int) r);
 				SVGtoImage.loadFromReader(svg, reader, new Rectangle2D.Double(0,0,r,r), Color.BLACK, Color.WHITE, 0);
-				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + 3,  nameRect.getCenterY() - 3);
+				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + g2d.getFont().getSize()/5,  nameRect.getCenterY() - g2d.getFont().getSize()/5);
 				g2d.drawImage(SVGUtil.createSVGImage(svg.getSVGDocument(), (int) r, (int) r), (int) drawPosn.getX(), (int) drawPosn.getY(), null);
 				reader.close();
 			}
@@ -316,11 +321,11 @@ public class PlayerViewUser extends View
 	 */
 	private void drawAISpinner(final Graphics2D g2d, final Context context)
 	{
-		if (app.settingsPlayer().isWebApp())
+		if (app.manager().isWebApp())
 			return;
 		
 		final Rectangle2D nameRect = app.playerNameList()[playerId];
-		final double r = PlayerView.playerNameFont.getSize();
+		final double r = playerView.playerNameFont.getSize();
 		final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
 		
 		if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
@@ -328,7 +333,7 @@ public class PlayerViewUser extends View
 
 		if (spinner != null)
 		{
-			if (context.state().mover() == playerId && !app.manager().aiSelected()[playerId].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+			if (context.state().mover() == playerId && !app.manager().aiSelected()[app.manager().playerToAgent(playerId)].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
 				spinner.startSpinner();
 			else
 				spinner.stopSpinner();
@@ -382,7 +387,7 @@ public class PlayerViewUser extends View
 		final Context instanceContext = context.currentInstanceContext();
 		final Game instance = instanceContext.game();
 		
-		final int playerIndex = instanceContext.state().playerToAgent(playerId);
+		final int playerIndex = app.manager().playerToAgent(playerId);
 		final Font playerNameFont = g2d.getFont();
 		
 		String strName = app.manager().aiSelected()[playerIndex].name();
@@ -398,9 +403,6 @@ public class PlayerViewUser extends View
 		
 		if (app.manager().aiSelected()[playerIndex].ai() != null)
 			strAIName += " (" + app.manager().aiSelected()[playerIndex].ai().friendlyName() + ") ";
-		
-		//if (DesktopApp.aiSelected()[playerIndex].menuItemName().label.equals("From JAR"))
-		//	strAIName += " (" + DesktopApp.aiSelected()[playerIndex].ai().friendlyName + ")";
 		
 		// Score
 		final ScoreDisplayInfo scoreDisplayInfo = instance.metadata().graphics().scoreDisplayInfo(instanceContext, playerId);
@@ -450,13 +452,13 @@ public class PlayerViewUser extends View
 		if (app.contextSnapshot().getContext(app).game().requiresTeams())
 			strExtras += " Team " + app.contextSnapshot().getContext(app).state().getTeam(playerId);
 		
-		if (app.manager().settingsNetwork().playerTimeRemaining()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)-1] > 0)
+		if (app.manager().settingsNetwork().playerTimeRemaining()[app.manager().playerToAgent(playerId)-1] > 0)
 			strExtras += " Time: " + app.manager().settingsNetwork().playerTimeRemaining()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)-1] + "s";
 		
-		strExtras = strAIName + strExtras;
+		strName += strAIName;
 		
 		// cut string off at a specified pixel width
-		final int maxLengthPixels = 150;
+		final int maxLengthPixels = g2d.getFont().getSize() > 20 ? 250 : 200;			// More pixels allocated if font is large (i.e. Mobile)
 		String shortendedString = "";
 		for (int i = 0; i < strName.length(); i++)
 		{
@@ -471,7 +473,7 @@ public class PlayerViewUser extends View
 			}
 		}
 		
-		return strName + " " + strExtras;
+		return strName + strExtras;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -531,7 +533,5 @@ public class PlayerViewUser extends View
 	{
 		return playerId;
 	}
-	
-	//-------------------------------------------------------------------------
 
 }

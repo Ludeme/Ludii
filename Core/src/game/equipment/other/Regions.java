@@ -35,7 +35,7 @@ public class Regions extends Item
 	/** If we can, we'll precompute once and cache. */
 	private int[] precomputedRegion = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The sites implied. */
 	private final int[] sites;

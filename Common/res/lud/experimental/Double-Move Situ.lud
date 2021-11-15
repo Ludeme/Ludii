@@ -1,0 +1,230 @@
+// --------------------------------------
+(define "ScoreFor"
+    (set Score #1
+        (+
+            (results
+                from:(forEach
+                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))    
+                    if:("IsControlledBy" #1 (site))
+                )
+                to:(from) 
+                (if (is Empty (to)) 1 2)
+))))
+
+(define "IsControlledBy" 
+    (<=
+        (+
+            <Control:surplus>
+            (count Pieces
+                in:(difference
+                    (sites LineOfSight Piece at:#2 "LoSDirection")
+                    (sites Occupied by:Neutral)
+        )))
+        (* 2
+            (count Pieces #1
+                in:(sites LineOfSight Piece at:#2 "LoSDirection")
+))))
+
+(define "MoveTwiceThenScore" 
+    (if
+        (is Prev Next)
+        (moveAgain)
+        (and 
+            ("ScoreFor" Mover)
+            ("ScoreFor" Next)  
+)))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Double-Move Situ"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Counter" P1)
+        (piece "Counter" P2)
+        (piece "X" Neutral)
+        (piece "Counter" Neutral)
+        }
+    )
+    (rules
+        (meta (passEnd NoEnd))
+        (play
+            (if
+                (and
+                    (= -1 (var "DoubleTurnPhase"))
+                    (= 1 (mover))
+                )
+                
+                (or
+                    (move Pass)
+                    (move Add
+                        (piece "X0") 
+                        (to (sites Empty))
+                        (then
+                            (if
+                                (> 2 (count Pieces in:(sites Occupied by:Neutral)))
+                                (moveAgain)
+                ))))
+                
+                (or
+                    {
+                    (move Add
+                        (to
+                            (sites Empty)
+                            if:(not ("IsControlledBy" Next (to)))
+                        )
+                        (then
+                            (if
+                                (= -1 (var "DoubleTurnPhase"))
+                                (set Var "DoubleTurnPhase" 1)
+                                ("MoveTwiceThenScore")
+                    )))
+                    (move Remove 
+                        (forEach
+                            (sites Occupied by:Next)
+                            if:("IsControlledBy" Mover (site)) 
+                        )
+                        (then ("MoveTwiceThenScore"))
+                    )
+                    }
+                )
+                (then
+                    (if
+                        (no Moves Next)
+                        (and 
+                            ("ScoreFor" Mover)
+                            ("ScoreFor" Next)  
+        )))))
+        
+        (end 
+            (if 
+                (no Moves Mover)
+                (result Mover Loss) //last to place wins a tie
+))))
+
+/-----------------------------------------
+// Defines for Options
+
+(define "LoSDirection" <Grid:connectivity>)
+(define "BoardUsed" <Grid:selected> )
+
+(define "Hex2Limp" (board (dual (hex  (/ <BoardSize:smallSide> 2) (+ 2 (/ <BoardSize:smallSide> 2)))) use:Vertex))
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
+(define "SquareDiagonal" (board (square <BoardSize:smallSide>) use:Vertex))
+
+//-------------------------------------------------
+// Options
+
+(option "Board Size" <BoardSize> args:{<smallSide>} 
+    {
+    (item "XSmall" <4> "Order 2 board")**
+    (item "S" <6> "Order 3 board")
+    (item "M" <8> "Order 4 board")
+    (item "L" <10> "Order 5 board")
+    (item "XL" <12> "Order 6 board")
+    (item "XXL" <14> "Order 7 board")
+    
+    }
+)
+
+(option "Board Grid" <Grid> args:{<selected> <connectivity> <diagShow>} 
+    {
+    (item "Hex Grid" <"Hex2Limp"> <Orthogonal> <Hidden>  "Hex N/N+2 grid w/even nodes, no center")**
+    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden>  "Square 2N grid w/even nodes, no center")
+    (item "Square Diagonal" <"SquareDiagonal"> <All> <ThinDotted> "Square 2N grid w/even nodes, no center")*
+    }
+)
+
+(option "Node-controlling surplus" <Control> args:{<surplus>}
+    {
+    (item "1: Highly tactical" <1> "Highly tactical. Control a site with a surplus of 1 on lines of sight.")
+    (item "2: Tactical" <2> "Tactical. Control a site with a surplus of 2 on lines of sight.")
+    (item "3: Strategic" <3> "Strategic. Control a site with a surplus of 3 on lines of sight.")**
+    (item "4: Slow strategic" <4> "Slow strategic. Control a site with a surplus of 4 on lines of sight.")
+    }
+)
+//---------------------------------------------
+// (define "ColourBackground" (colour 155 160 195)) 
+// (define "ColourBackground" (colour 126 130 156)) 
+(define "ColourBackground" (colour 135 170 130)) 
+
+(metadata
+    (info
+        {
+        (description "Double-move Situ is based on 'Situ' a finite, Line-of-Sight game with the goal of being the last player able to complete their turn. The game is based on the choice of placing one's own piece or removing an opponent's piece.
+            
+            It can be played on hex grids, square grids or square grids with diagonals.
+            The original Situ was played on a Hex grid with N, N+1 edges and a single stone pie-rule as an option.
+            
+            In contrast, 'Double-move Situ' starts with a single placement followed by double moves thereafter. Therefore centerless boards with an even number of nodes are used, and a Hex with edges N, N+2 assures this. 
+            
+            However there is a changing parameter that determines which sites are controlled, and this parameter affects balance. So, the first player has the option of removing upto 2 nodes from the board, before the 2nd player starts with the single piece placement.
+            
+            Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls.
+            
+            Control is determined by the difference in count between the two player's pieces in line-of-sight of the given node. This difference is the  parameter for the game.  When the its value is met or exceeded, the player with the excess LoS pieces controls the site.
+            
+            In the original Situ this parameter is fixed at 2. In Double-move Situ it can be set from 1 to 4. The lower the number, the larger number of restricted nodes and possible captures, so the more tactical the game is. With higher numbers the game becomes more strategic. In any case, the game is finite, ending with one player running out of nodes to play upon.
+            
+            History:
+            Situ is a descendant of my game Shaka that was designed as an exploration of line-of-sight. Shaka triggered the creation of Michał Zapała's 'Tore' and a flurry of LoS games on BGG Abstract Forum. While Situ may have helped stimulate Michał Zapała's 'Tumbleweed' As Alek Erikson tested Situ with me before assisting Michał with Tumbleweed's development.
+            
+            Steve Metzger and Luis Bolaños Mures 'Stigmergy' is a similar game, a simplification of 'Tumbleweed', that uses a majority of friendly LoS cells rather than a majority of the players pieces for control, and capture in that game is a flip whereas in 'Situ' it is a simple removal.
+            
+        A recent BGG thread proposing a game 'InSight' stimulated me to script my original game and create this new version. ")
+        (rules "Structure of Play:
+            There is no passing.
+            Maroon chooses to remove up to two nodes of the board before passing to White. 
+            Then White places an initial stone onto a remaining node on the board.
+            
+            After this play alternates, two turns per player, until one player cannot complete both turns. That player loses
+            
+            On each of the turns, the current player must either:
+            - - place a stone on an empty node that the opponent does not control, or
+            - - remove an opponent's stone that the current player controls.
+            
+            A player controls a node and any stone on it when the count of his stones in line-of-sight of the node, exceed those of his opponent by the node-control value chosen for the game, or more. (default is 3)
+            
+            ('in line-of-site of the node' refers to the first stone in each radial grid direction.) 
+            
+        There are options for the board size and type, and the number of surplus stones needed to control a node.")
+        (version "1.3.0")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "14-10-2021")
+        }
+    )
+    (graphics 
+        {
+        (player Colour P1 (colour 120 36 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale P1 "Counter" 0.98)
+        (piece Scale P2 "Counter" 0.98)
+        (piece Colour P1 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) ) 
+        (piece Colour P2 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) ) 
+        (piece Colour Neutral "X" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) ) 
+        (board Colour Phase0 "ColourBackground")
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3 )// offsetX:0.021 offsetY:-0.015 )   
+    (piece Foreground P1 "Counter" image:"DoubleCounter" fillColour:(colour 120 36 0) edgeColour:(colour Black) scale:0.98)
+    (piece Foreground P2 "Counter" image:"DoubleCounter" fillColour:(colour Cream) edgeColour:(colour VeryDarkGrey) scale:0.98)
+    (piece Foreground Neutral "X" image:"Cross" fillColour:(colour DarkBlue) edgeColour:(colour DarkBlue) scale:.45 offsetX:.16 offsetY:.2 )
+    (piece Background P1 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.1 offsetY:.2)
+    (piece Background P2 "Counter" image:"Counter" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-.15 offsetY:.3)
+(piece Background Neutral "X" image:"Counter" fillColour:"ColourBackground" edgeColour:(colour 0 0 0 0) scale:1.08 )// offsetX:-.16 offsetY:-.2 )
+
+}
+)
+(ai (heuristics (score)))
+)

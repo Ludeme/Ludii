@@ -59,7 +59,7 @@ public class Piece implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceStyleType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the name of a piece.
@@ -105,7 +105,7 @@ public class Piece implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceNameType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the families of the pieces.
@@ -135,7 +135,7 @@ public class Piece implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceFamiliesType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the background or foreground image of a piece.
@@ -200,7 +200,7 @@ public class Piece implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceGroundType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the colour of a piece.
@@ -244,7 +244,7 @@ public class Piece implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceColourType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For rotating the piece.
@@ -284,7 +284,7 @@ public class Piece implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceRotateType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For scaling a piece.
@@ -329,14 +329,14 @@ public class Piece implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceScaleType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	private Piece()
 	{
 		// Ensure that compiler does not pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

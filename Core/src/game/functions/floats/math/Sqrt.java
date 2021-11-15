@@ -17,12 +17,12 @@ public final class Sqrt extends BaseFloatFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The value. */
 	private final FloatFunction a;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param a The first value.
@@ -33,7 +33,7 @@ public final class Sqrt extends BaseFloatFunction
 		this.a = a;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public float eval(Context context)

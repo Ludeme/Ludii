@@ -3,6 +3,9 @@ package other.action.move;
 import java.util.BitSet;
 import java.util.List;
 
+import game.Game;
+import game.equipment.component.Component;
+import game.equipment.container.board.Track;
 import game.rules.play.moves.Moves;
 import game.types.board.RelationType;
 import game.types.board.SiteType;
@@ -17,6 +20,7 @@ import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
+import other.state.track.OnTrackIndices;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 
@@ -41,7 +45,7 @@ public final class ActionCopy extends BaseAction
 	private int levelFrom;
 
 	/** The graph element type of the to site. */
-	private final SiteType typeTo;
+	private SiteType typeTo;
 
 	/** To site index. */
 	private final int to;
@@ -63,6 +67,20 @@ public final class ActionCopy extends BaseAction
 
 	//-------------------------------------------------------------------------
 
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous state value of the piece before to be removed. */
+	private int previousState;
+
+	/** The previous rotation value of the piece before to be removed. */
+	private int previousRotation;
+
+	/** The previous value of the piece before to be removed. */
+	private int previousValue;
+
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param typeFrom   The graph element type of the from site.
 	 * @param from       From site index.
@@ -149,17 +167,35 @@ public final class ActionCopy extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		final Game game = context.game();
 		final int contIdA = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final ContainerState csA = context.state().containerStates()[contIdA];
 
 		final int originalCount = csA.count(from, typeFrom);
 
-		final ActionMove actionMove = new ActionMove(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation,
-				value, onStacking);
-		actionMove.apply(context, store);
-
 		final int contIdB = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState csB = context.state().containerStates()[contIdB];
+
+		if(alreadyApplied)
+		{
+			if (game.isStacking())
+			{
+				final int levelCopyIn = (levelTo == Constants.UNDEFINED) ? csB.sizeStack(to, typeTo) : levelTo;
+				previousState = csB.state(to, levelCopyIn, typeTo);
+				previousRotation = csB.rotation(to, levelCopyIn, typeTo);
+				previousValue = csB.value(to, levelCopyIn, typeTo);
+			}
+			else
+			{
+				previousState = csB.state(to, typeTo);
+				previousRotation = csB.rotation(to, typeTo);
+				previousValue = csB.value(to, typeTo);
+			}
+			alreadyApplied = true;
+		}
+		
+		final ActionMove actionMove = new ActionMove(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value, onStacking);
+		actionMove.apply(context, store);
 
 		final boolean requiresStack = context.game().isStacking();
 		if (!requiresStack)
@@ -188,6 +224,76 @@ public final class ActionCopy extends BaseAction
 			}
 		}
 
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		final Game game = context.game();
+		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
+		final int site = to;
+		typeTo = (typeTo == null) ? context.board().defaultSite() : typeTo;
+		
+		// If the site is not supported by the type, that's a cell of another container.
+		if (to >= context.board().topology().getGraphElements(typeTo).size())
+			typeTo = SiteType.Cell;
+				
+		final ContainerState cs = context.state().containerStates()[contID];
+		int pieceIdx = 0;
+		if (context.game().isStacking())
+		{
+			final int levelCopyIn = (levelTo == Constants.UNDEFINED) ? cs.sizeStack(to, typeTo) - 1 : levelTo;
+			pieceIdx = cs.remove(context.state(), site, levelCopyIn, typeTo);
+			if (pieceIdx > 0)
+			{
+				final Component piece = context.components()[pieceIdx];
+				final int owner = piece.owner();
+				context.state().owned().remove(owner, pieceIdx, site, levelCopyIn, typeTo);
+			}
+
+			if (cs.sizeStack(site, typeTo) == 0)
+				cs.addToEmpty(site, typeTo);
+		}
+		else
+		{
+			final int currentCount = cs.count(site, typeTo);
+			if(currentCount <= 1)
+			{
+				pieceIdx = cs.remove(context.state(), site, typeTo);
+				if (pieceIdx > 0)
+				{
+					final Component piece = context.components()[pieceIdx];
+					final int owner = piece.owner();
+					context.state().owned().remove(owner, pieceIdx, site, typeTo);
+				}
+			}
+			else // We update the count.
+			{
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
+						(game.requiresCount() ? currentCount - 1 : 1), previousState, previousRotation, previousValue, typeTo);
+			}
+		}
+		
+		// We update the structure about track indices if the game uses track.
+		if (pieceIdx > 0)
+		{
+			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+			if (onTrackIndices != null)
+			{
+				for (final Track track : context.board().tracks())
+				{
+					final int trackIdx = track.trackIdx();
+					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, site);
+
+					for (int i = 0; i < indices.size(); i++)
+						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
+				}
+			}
+		}
+		
 		return this;
 	}
 
@@ -427,7 +533,7 @@ public final class ActionCopy extends BaseAction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public SiteType fromType()
@@ -507,7 +613,7 @@ public final class ActionCopy extends BaseAction
 		return ActionType.Copy;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

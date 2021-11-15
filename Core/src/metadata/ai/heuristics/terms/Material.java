@@ -249,7 +249,7 @@ public class Material extends HeuristicTerm
 		// Compute vector of piece weights
 		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
 		
-		// Precompute maximum distance for this game
+		// Precompute hand indices for this game
 		computeHandIndices(game);
 		
 		gameHasMultipleContainers = (game.equipment().containers().length > 1);
@@ -312,6 +312,17 @@ public class Material extends HeuristicTerm
 			return false;
 		
 		return true;
+	}
+	
+	/**
+	 * @param game
+	 * @return True if the heuristic of this type is sensible for the given game
+	 * 	(must be applicable, but even some applicable heuristics may be considered
+	 * 	to be not sensible).
+	 */
+	public static boolean isSensibleForGame(final Game game)
+	{
+		return isApplicableToGame(game);
 	}
 	
 	//-------------------------------------------------------------------------

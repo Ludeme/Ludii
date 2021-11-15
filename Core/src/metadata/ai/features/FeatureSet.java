@@ -1,5 +1,7 @@
 package metadata.ai.features;
 
+import annotations.Name;
+import annotations.Opt;
 import game.types.play.RoleType;
 import main.StringRoutines;
 import metadata.ai.AIItem;
@@ -26,13 +28,19 @@ public class FeatureSet implements AIItem
 	/** Array of strings describing features */
 	protected final String[] featureStrings;
 	
-	/** Array of weights (one per feature) */
-	protected final float[] featureWeights;
+	/** Array of weights (one per feature) for Selection */
+	protected final float[] selectionWeights;
+	
+	/** Array of weights (one per feature) for Playouts */
+	protected final float[] playoutWeights;
+	
+	/** Array of weights (one per feature) for TSPG objective */
+	protected final float[] tspgWeights;
 	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Constructor
+	 * For a single collection of features and weights for one role.
 	 * 
 	 * @param role The Player (P1, P2, etc.) for which the feature set should apply,
 	 * or All if it is applicable to all features in a game.
@@ -47,12 +55,123 @@ public class FeatureSet implements AIItem
 		this.role = role;
 		
 		featureStrings = new String[features.length];
-		featureWeights = new float[features.length];
+		selectionWeights = new float[features.length];
 		
 		for (int i = 0; i < features.length; ++i)
 		{
 			featureStrings[i] = features[i].key();
-			featureWeights[i] = features[i].floatVal();
+			selectionWeights[i] = features[i].floatVal();
+		}
+		
+		playoutWeights = null;
+		tspgWeights = null;
+	}
+	
+	/**
+	 * For distinct sets of features and weights for Selection, Playout, and
+	 * TSPG purposes, for a single role.
+	 * 
+	 * @param role The Player (P1, P2, etc.) for which the feature set should apply,
+	 * or All if it is applicable to all features in a game.
+	 * @param selectionFeatures Complete list of all features and weights for this feature set, 
+	 * for MCTS Selection phase.
+	 * @param playoutFeatures Complete list of all features and weights for this feature set, 
+	 * for MCTS Playout phase.
+	 * @param tspgFeatures Complete list of all features and weights for this feature set, 
+	 * trained with Tree Search Policy Gradients objective.
+	 * 
+	 * @example (featureSet P1 selectionFeatures:{ (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) } playoutFeatures:{ (pair "rel:to=<{}>:pat=<els=[-{}]>" 2.0) })
+	 */
+	public FeatureSet
+	(
+		final RoleType role, 
+		@Opt @Name final Pair[] selectionFeatures,
+		@Opt @Name final Pair[] playoutFeatures,
+		@Opt @Name final Pair[] tspgFeatures
+	)
+	{
+		this.role = role;
+		
+		if (selectionFeatures == null && playoutFeatures == null && tspgFeatures == null)
+			throw new IllegalArgumentException("At least one of selectionFeatures, playoutFeatures and tspgFeatures must be specified!");
+		
+		if (selectionFeatures != null && playoutFeatures != null && selectionFeatures.length != playoutFeatures.length)
+			throw new UnsupportedOperationException("Different feature strings for Selection and Playout currently not supported!");
+		
+		if (selectionFeatures != null && tspgFeatures != null && selectionFeatures.length != tspgFeatures.length)
+			throw new UnsupportedOperationException("Different feature strings for Selection and TSPG currently not supported!");
+		
+		if (playoutFeatures != null && tspgFeatures != null && playoutFeatures.length != tspgFeatures.length)
+			throw new UnsupportedOperationException("Different feature strings for Playout and TSPG currently not supported!");
+		
+		assert(selectionFeatures == null || playoutFeatures == null || featureStringsEqual(selectionFeatures, playoutFeatures));
+		assert(selectionFeatures == null || tspgFeatures == null || featureStringsEqual(selectionFeatures, tspgFeatures));
+		assert(playoutFeatures == null || tspgFeatures == null || featureStringsEqual(playoutFeatures, tspgFeatures));
+		
+		// NOTE: we currently just assume that all arrays of pairs
+		// have exactly the same strings for features
+		if (selectionFeatures != null)
+		{
+			featureStrings = new String[selectionFeatures.length];
+			for (int i = 0; i < selectionFeatures.length; ++i)
+			{
+				featureStrings[i] = selectionFeatures[i].key();
+			}
+		}
+		else if (playoutFeatures != null)
+		{
+			featureStrings = new String[playoutFeatures.length];
+			for (int i = 0; i < playoutFeatures.length; ++i)
+			{
+				featureStrings[i] = playoutFeatures[i].key();
+			}
+		}
+		else
+		{
+			featureStrings = new String[tspgFeatures.length];
+			for (int i = 0; i < tspgFeatures.length; ++i)
+			{
+				featureStrings[i] = tspgFeatures[i].key();
+			}
+		}
+		
+		if (selectionFeatures != null)
+		{
+			selectionWeights = new float[featureStrings.length];
+			for (int i = 0; i < selectionWeights.length; ++i)
+			{
+				selectionWeights[i] = selectionFeatures[i].floatVal();
+			}
+		}
+		else
+		{
+			selectionWeights = null;
+		}
+		
+		if (playoutFeatures != null)
+		{
+			playoutWeights = new float[featureStrings.length];
+			for (int i = 0; i < playoutWeights.length; ++i)
+			{
+				playoutWeights[i] = playoutFeatures[i].floatVal();
+			}
+		}
+		else
+		{
+			playoutWeights = null;
+		}
+		
+		if (tspgFeatures != null)
+		{
+			tspgWeights = new float[featureStrings.length];
+			for (int i = 0; i < tspgWeights.length; ++i)
+			{
+				tspgWeights[i] = tspgFeatures[i].floatVal();
+			}
+		}
+		else
+		{
+			tspgWeights = null;
 		}
 	}
 	
@@ -75,11 +194,33 @@ public class FeatureSet implements AIItem
 	}
 	
 	/**
-	 * @return Array of weights for features
+	 * @return Array of weights for Selection
 	 */
-	public float[] featureWeights()
+	public float[] selectionWeights()
 	{
-		return featureWeights;
+		if (selectionWeights != null)
+			return selectionWeights;
+		
+		// We'll use playout or TSPG weights as fallback if no selection weights
+		if (playoutWeights != null)
+			return playoutWeights;
+		
+		return tspgWeights;
+	}
+	
+	/**
+	 * @return Array of weights for Playout
+	 */
+	public float[] playoutWeights()
+	{
+		if (playoutWeights != null)
+			return playoutWeights;
+		
+		// We'll use selection or TSPG weights as fallback if no selection weights
+		if (selectionWeights != null)
+			return selectionWeights;
+		
+		return tspgWeights;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -89,17 +230,48 @@ public class FeatureSet implements AIItem
 	{
 		final StringBuilder sb = new StringBuilder();
 		
-		sb.append("    (featureSet " + role + " {\n");
+		sb.append("    (featureSet " + role + " ");
 		
-		for (int i = 0; i < featureStrings.length; ++i)
+		if (selectionWeights != null)
 		{
-			sb.append("        (pair ");
-			sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
-			sb.append(featureWeights[i]);
-			sb.append(")\n");
+			sb.append("selectionFeatures:{\n");
+			for (int i = 0; i < featureStrings.length; ++i)
+			{
+				sb.append("        (pair ");
+				sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
+				sb.append(selectionWeights[i]);
+				sb.append(")\n");
+			}
+			sb.append("    }\n");
 		}
 		
-		sb.append("    })\n");
+		if (playoutWeights != null)
+		{
+			sb.append("playoutWeights:{\n");
+			for (int i = 0; i < featureStrings.length; ++i)
+			{
+				sb.append("        (pair ");
+				sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
+				sb.append(playoutWeights[i]);
+				sb.append(")\n");
+			}
+			sb.append("    }\n");
+		}
+		
+		if (tspgWeights != null)
+		{
+			sb.append("tspgWeights:{\n");
+			for (int i = 0; i < featureStrings.length; ++i)
+			{
+				sb.append("        (pair ");
+				sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
+				sb.append(tspgWeights[i]);
+				sb.append(")\n");
+			}
+			sb.append("    }\n");
+		}
+			
+		sb.append("    )\n");
 		
 		return sb.toString();
 	}
@@ -115,22 +287,83 @@ public class FeatureSet implements AIItem
 	{
 		final StringBuilder sb = new StringBuilder();
 		
-		sb.append("    (featureSet " + role + " {\n");
+		sb.append("    (featureSet " + role + " ");
 		
-		for (int i = 0; i < featureStrings.length; ++i)
+		if (selectionWeights != null)
 		{
-			if (Math.abs(featureWeights[i]) >= threshold)
+			sb.append("selectionFeatures:{\n");
+			for (int i = 0; i < featureStrings.length; ++i)
 			{
-				sb.append("        (pair ");
-				sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
-				sb.append(featureWeights[i]);
-				sb.append(")\n");
+				if (Math.abs(selectionWeights[i]) >= threshold)
+				{
+					sb.append("        (pair ");
+					sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
+					sb.append(selectionWeights[i]);
+					sb.append(")\n");
+				}
 			}
+			sb.append("    }\n");
 		}
 		
-		sb.append("    })\n");
+		if (playoutWeights != null)
+		{
+			sb.append("playoutWeights:{\n");
+			for (int i = 0; i < featureStrings.length; ++i)
+			{
+				if (Math.abs(playoutWeights[i]) >= threshold)
+				{
+					sb.append("        (pair ");
+					sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
+					sb.append(playoutWeights[i]);
+					sb.append(")\n");
+				}
+			}
+			sb.append("    }\n");
+		}
+		
+		if (tspgWeights != null)
+		{
+			sb.append("tspgWeights:{\n");
+			for (int i = 0; i < featureStrings.length; ++i)
+			{
+				if (Math.abs(tspgWeights[i]) >= threshold)
+				{
+					sb.append("        (pair ");
+					sb.append(StringRoutines.quote(featureStrings[i].trim()) + " ");
+					sb.append(tspgWeights[i]);
+					sb.append(")\n");
+				}
+			}
+			sb.append("    }\n");
+		}
+			
+		sb.append("    )\n");
 		
 		return sb.toString();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Helper method for asserts, check whether two arrays of Pairs have identical
+	 * feature strings (different weights are allowed).
+	 * 
+	 * @param pairsA
+	 * @param pairsB
+	 * @return
+	 */
+	private static boolean featureStringsEqual(final Pair[] pairsA, final Pair[] pairsB)
+	{
+		if (pairsA.length != pairsB.length)
+			return false;
+		
+		for (int i = 0; i < pairsA.length; ++i)
+		{
+			if (!pairsA[i].key().equals(pairsB[i].key()))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	//-------------------------------------------------------------------------

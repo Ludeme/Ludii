@@ -28,7 +28,7 @@ public class GameSetup
 	/**
 	 * Compile and display the specified description with the corresponding menu options.
 	 */
-	public static void compileAndShowGame(final PlayerApp app, final String desc, final String filePath, final boolean debug)
+	public static void compileAndShowGame(final PlayerApp app, final String desc, final boolean debug)
 	{
 		final Description gameDescription = new Description(desc);
 		final Report report = new Report();

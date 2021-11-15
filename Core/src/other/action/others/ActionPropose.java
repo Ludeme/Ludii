@@ -68,6 +68,15 @@ public final class ActionPropose extends BaseAction
 		context.state().propositions().add(propositionInt);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().propositions().remove(propositionInt);
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 	
@@ -164,7 +173,7 @@ public final class ActionPropose extends BaseAction
 		return ActionType.Propose;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

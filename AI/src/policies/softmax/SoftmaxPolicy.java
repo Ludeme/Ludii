@@ -28,7 +28,6 @@ import main.Constants;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import metadata.ai.features.Features;
-import metadata.ai.misc.Pair;
 import other.context.Context;
 import other.move.Move;
 import other.playout.PlayoutMoveSelector;
@@ -138,38 +137,60 @@ public class SoftmaxPolicy extends Policy
 	
 	/**
 	 * Constructs a softmax policy from a given set of features as created
-	 * by the compiler.
+	 * by the compiler, using the Selection weights.
 	 * 
 	 * @param features
+	 * @param epsilon Epsilon for epsilon-greedy playouts (should be irrelevant for Selection policy)
 	 */
-	public SoftmaxPolicy(final Features features)
+	public static SoftmaxPolicy constructSelectionPolicy(final Features features, final double epsilon)
 	{
-		this(features, 0.0);
-	}
-	
-	/**
-	 * Constructs a softmax policy from a given set of features as created
-	 * by the compiler.
-	 * 
-	 * @param features
-	 * @param epsilon Epsilon for epsilon-greedy playouts
-	 */
-	public SoftmaxPolicy(final Features features, final double epsilon)
-	{
+		final SoftmaxPolicy softmax = new SoftmaxPolicy();
+		
 		final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
 		final List<LinearFunction> linFuncs = new ArrayList<LinearFunction>();
 				
 		for (final metadata.ai.features.FeatureSet featureSet : features.featureSets())
 		{
 			if (featureSet.role() == RoleType.Shared || featureSet.role() == RoleType.Neutral)
-				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.featureWeights(), featureSetsList, linFuncs);
+				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 			else
-				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.featureWeights(), featureSetsList, linFuncs);
+				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.selectionWeights(), featureSetsList, linFuncs);
 		}
 		
-		this.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
-		this.linearFunctions = linFuncs.toArray(new LinearFunction[linFuncs.size()]);
-		this.epsilon = epsilon;
+		softmax.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
+		softmax.linearFunctions = linFuncs.toArray(new LinearFunction[linFuncs.size()]);
+		softmax.epsilon = epsilon;
+		
+		return softmax;
+	}
+	
+	/**
+	 * Constructs a softmax policy from a given set of features as created
+	 * by the compiler, using the Playout weights.
+	 * 
+	 * @param features
+	 * @param epsilon Epsilon for epsilon-greedy playouts
+	 */
+	public static SoftmaxPolicy constructPlayoutPolicy(final Features features, final double epsilon)
+	{
+		final SoftmaxPolicy softmax = new SoftmaxPolicy();
+		
+		final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
+		final List<LinearFunction> linFuncs = new ArrayList<LinearFunction>();
+				
+		for (final metadata.ai.features.FeatureSet featureSet : features.featureSets())
+		{
+			if (featureSet.role() == RoleType.Shared || featureSet.role() == RoleType.Neutral)
+				addFeatureSetWeights(0, featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
+			else
+				addFeatureSetWeights(featureSet.role().owner(), featureSet.featureStrings(), featureSet.playoutWeights(), featureSetsList, linFuncs);
+		}
+		
+		softmax.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
+		softmax.linearFunctions = linFuncs.toArray(new LinearFunction[linFuncs.size()]);
+		softmax.epsilon = epsilon;
+		
+		return softmax;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -241,23 +262,6 @@ public class SoftmaxPolicy extends Policy
 		distribution.softmax();
 		
 		return distribution;
-	}
-	
-	/**
-	 * @param estimatedDistribution
-	 * @param targetDistribution
-	 * @return Vector of errors for estimated distribution in comparison to 
-	 * target distribution (simply estimated - target)
-	 */
-	public FVector computeDistributionErrors
-	(
-		final FVector estimatedDistribution, 
-		final FVector targetDistribution
-	)
-	{
-		final FVector errors = estimatedDistribution.copy();
-		errors.subtract(targetDistribution);
-		return errors;
 	}
 	
 	/**
@@ -501,9 +505,26 @@ public class SoftmaxPolicy extends Policy
 					
 					if (!new File(policyWeightsFilepath).exists())
 					{
-						// replace with whatever is the latest file we have
-						policyWeightsFilepath = 
-								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsCE_P" + i, "txt");
+						// Replace with whatever is the latest file we have
+						if (policyWeightsFilepath.contains("Selection"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsSelection_P" + i, "txt");
+						}
+						else if (policyWeightsFilepath.contains("Playout"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsPlayout_P" + i, "txt");
+						}
+						else if (policyWeightsFilepath.contains("TSPG"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsTSPG_P" + i, "txt");
+						}
+						else
+						{
+							policyWeightsFilepath = null;
+						}
 					}
 					
 					if (boosted)
@@ -511,7 +532,7 @@ public class SoftmaxPolicy extends Policy
 					else
 						linearFunctions[i] = LinearFunction.fromFile(policyWeightsFilepath);
 					
-					featureSets[i] = new JITSPatterNetFeatureSet(parentDir + File.separator + linearFunctions[i].featureSetFile());
+					featureSets[i] = JITSPatterNetFeatureSet.construct(parentDir + File.separator + linearFunctions[i].featureSetFile());
 				}
 			}
 		}
@@ -641,63 +662,63 @@ public class SoftmaxPolicy extends Policy
 	/**
 	 * @return A metadata Features item describing the features + weights for this policy
 	 */
-	public metadata.ai.features.Features generateFeaturesMetadata()
-	{
-		final Features features;
-		
-		if (featureSets.length == 1)
-		{
-			// Just a single featureset for all players
-			final BaseFeatureSet featureSet = featureSets[0];
-			final LinearFunction linFunc = linearFunctions[0];
-			final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
-			
-			for (int i = 0; i < pairs.length; ++i)
-			{
-				final float weight = linFunc.effectiveParams().allWeights().get(i);
-				pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
-				
-				if (Float.isNaN(weight))
-					System.err.println("WARNING: writing NaN weight");
-				else if (Float.isInfinite(weight))
-					System.err.println("WARNING: writing infinity weight");
-			}
-			
-			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, pairs));
-		}
-		else
-		{
-			// One featureset per player
-			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
-			
-			for (int p = 0; p < featureSets.length; ++p)
-			{
-				final BaseFeatureSet featureSet = featureSets[p];
-				if (featureSet == null)
-					continue;
-				
-				final LinearFunction linFunc = linearFunctions[p];
-				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
-				
-				for (int i = 0; i < pairs.length; ++i)
-				{
-					final float weight = linFunc.effectiveParams().allWeights().get(i);
-					pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
-					
-					if (Float.isNaN(weight))
-						System.err.println("WARNING: writing NaN weight");
-					else if (Float.isInfinite(weight))
-						System.err.println("WARNING: writing infinity weight");
-				}
-				
-				metadataFeatureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
-			}
-			
-			features = new Features(metadataFeatureSets);
-		}
-		
-		return features;
-	}
+//	public metadata.ai.features.Features generateFeaturesMetadata()
+//	{
+//		final Features features;
+//		
+//		if (featureSets.length == 1)
+//		{
+//			// Just a single featureset for all players
+//			final BaseFeatureSet featureSet = featureSets[0];
+//			final LinearFunction linFunc = linearFunctions[0];
+//			final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+//			
+//			for (int i = 0; i < pairs.length; ++i)
+//			{
+//				final float weight = linFunc.effectiveParams().allWeights().get(i);
+//				pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+//				
+//				if (Float.isNaN(weight))
+//					System.err.println("WARNING: writing NaN weight");
+//				else if (Float.isInfinite(weight))
+//					System.err.println("WARNING: writing infinity weight");
+//			}
+//			
+//			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, pairs));
+//		}
+//		else
+//		{
+//			// One featureset per player
+//			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
+//			
+//			for (int p = 0; p < featureSets.length; ++p)
+//			{
+//				final BaseFeatureSet featureSet = featureSets[p];
+//				if (featureSet == null)
+//					continue;
+//				
+//				final LinearFunction linFunc = linearFunctions[p];
+//				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
+//				
+//				for (int i = 0; i < pairs.length; ++i)
+//				{
+//					final float weight = linFunc.effectiveParams().allWeights().get(i);
+//					pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
+//					
+//					if (Float.isNaN(weight))
+//						System.err.println("WARNING: writing NaN weight");
+//					else if (Float.isInfinite(weight))
+//						System.err.println("WARNING: writing infinity weight");
+//				}
+//				
+//				metadataFeatureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
+//			}
+//			
+//			features = new Features(metadataFeatureSets);
+//		}
+//		
+//		return features;
+//	}
 	
 	//-------------------------------------------------------------------------
 	
@@ -713,7 +734,7 @@ public class SoftmaxPolicy extends Policy
 		{
 			if (line.equalsIgnoreCase("features=from_metadata"))
 			{
-				policy = new SoftmaxFromMetadata(0.0);
+				policy = new SoftmaxFromMetadataSelection(0.0);
 				break;
 			}
 		}
@@ -811,7 +832,7 @@ public class SoftmaxPolicy extends Policy
 			weights.add(featureWeights[i]);
 		}
 		
-		outFeatureSets.set(playerIdx, new JITSPatterNetFeatureSet(aspatialFeatures, spatialFeatures));
+		outFeatureSets.set(playerIdx, JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures));
 		outLinFuncs.set(playerIdx, new LinearFunction(new WeightVector(new FVector(weights.toArray()))));
 	}
 

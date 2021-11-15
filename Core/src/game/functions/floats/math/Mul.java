@@ -19,7 +19,7 @@ public final class Mul extends BaseFloatFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The first value. */
 	private final FloatFunction a;
@@ -30,7 +30,7 @@ public final class Mul extends BaseFloatFunction
 	/** The list of values. */
 	protected final FloatFunction[] list;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To multiply two values.
@@ -63,7 +63,7 @@ public final class Mul extends BaseFloatFunction
 		this.list = list;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public float eval(Context context)

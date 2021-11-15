@@ -518,7 +518,8 @@ public final class FVector implements Serializable
 	}
 	
 	/**
-	 * Normalises this vector such that it sums up to 1
+	 * Normalises this vector such that it sums up to 1, by
+	 * dividing all entries by the sum of entries.
 	 */
 	public void normalise()
 	{
@@ -543,6 +544,19 @@ public final class FVector implements Serializable
 			{
 				floats[i] *= scalar;
 			}
+		}
+	}
+	
+	/**
+	 * Replaces every entry in the vector with the sign of that entry (-1.f, 0.f, or +1.f).
+	 * Note that this modifies the vector in-place
+	 */
+	public void sign()
+	{
+		final int d = floats.length;
+		for (int i = 0; i < d; ++i)
+		{
+			floats[i] = (floats[i]) > 0.f ? +1.f : (floats[i] < 0.f ? -1.f : 0.f);
 		}
 	}
 	
@@ -599,9 +613,9 @@ public final class FVector implements Serializable
 	 * Computes the softmax of this vector, with a temperature parameter
 	 * (making it the same as computing a Boltzmann distribution).
 	 * 
-	 * Temperature --> 0 puts all probability mass on max
-	 * Temperature = 1 gives regular softmax
-	 * Temperature > 1 gives more uniform distribution
+	 * Temperature --> 0 puts all probability mass on max.
+	 * Temperature = 1 gives regular softmax.
+	 * Temperature > 1 gives more uniform distribution.
 	 * 
 	 * Note that this modifies the vector in-place
 	 */

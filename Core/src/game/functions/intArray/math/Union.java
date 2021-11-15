@@ -18,7 +18,7 @@ public final class Union extends BaseIntArrayFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Which array 1. */
 	private final IntArrayFunction array1;
@@ -32,7 +32,7 @@ public final class Union extends BaseIntArrayFunction
 	/** If we can, we'll precompute once and cache */
 	private int[] precomputedArray = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For the union of two arrays.
@@ -68,7 +68,7 @@ public final class Union extends BaseIntArrayFunction
 		this.arrays = arrays;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int[] eval(final Context context)
@@ -109,7 +109,7 @@ public final class Union extends BaseIntArrayFunction
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

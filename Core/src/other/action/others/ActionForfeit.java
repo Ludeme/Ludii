@@ -20,7 +20,7 @@ public final class ActionForfeit extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The player. */
 	private final RoleType player;
@@ -50,18 +50,25 @@ public final class ActionForfeit extends BaseAction
 		decision = true;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
 		// To forfeit a player has to lose directly.
-		new End(new If(new BooleanConstant(true), null, null, new Result(player, ResultType.Loss)), null)
-				.eval(context);
+		new End(new If(new BooleanConstant(true), null, null, new Result(player, ResultType.Loss)), null).eval(context);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -111,7 +118,7 @@ public final class ActionForfeit extends BaseAction
 		return "(Forfeit " + player + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -119,7 +126,7 @@ public final class ActionForfeit extends BaseAction
 		return "Forfeit";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public ActionType actionType()

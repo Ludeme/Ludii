@@ -30,7 +30,15 @@ public final class ActionSetCost extends BaseAction
 	/** The type of the graph element. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous cost. */
+	private int previousCost;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type The graph element.
@@ -78,7 +86,24 @@ public final class ActionSetCost extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
+		
+		if(!alreadyApplied)
+		{
+			previousCost = context.topology().getGraphElements(type).get(to).cost();
+			alreadyApplied = true;
+		}
+		
 		context.topology().getGraphElements(type).get(to).setCost(cost);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		type = (type == null) ? context.board().defaultSite() : type;
+		context.topology().getGraphElements(type).get(to).setCost(previousCost);
 		return this;
 	}
 
@@ -228,7 +253,7 @@ public final class ActionSetCost extends BaseAction
 		return ActionType.SetCost;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

@@ -97,7 +97,7 @@ public class PuzzleDesign extends BoardDesign
 		drawInnerCellEdges(g2d, context);
 		drawOuterCellEdges(bridge, g2d, context);
 		
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 
 		if (context.game().metadata().graphics().showRegionOwner())
 			drawRegions(g2d, context, colorSymbol(), strokeThick, hintRegions);

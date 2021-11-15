@@ -42,7 +42,7 @@ public final class ForEach extends Effect
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For iterating through levels at a site.
@@ -69,7 +69,7 @@ public final class ForEach extends Effect
 		return new ForEachLevel(type, site, stackDirection, moves, then);
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For iterating on teams.

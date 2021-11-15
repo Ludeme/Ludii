@@ -20,12 +20,12 @@ public final class IsAnyDie extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The site to check. */
 	private final IntFunction valueFn;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param value The value to check.
@@ -35,7 +35,7 @@ public final class IsAnyDie extends BaseBooleanFunction
 		valueFn = value;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -52,7 +52,7 @@ public final class IsAnyDie extends BaseBooleanFunction
 		return false;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()
@@ -60,7 +60,7 @@ public final class IsAnyDie extends BaseBooleanFunction
 		return "IsDie";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

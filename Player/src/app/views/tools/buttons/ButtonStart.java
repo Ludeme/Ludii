@@ -44,18 +44,23 @@ public class ButtonStart extends ToolButton
 		final double cy = rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
-		g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
+
+		g2d.setStroke(new BasicStroke((float)(3 * scale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 
 		GeneralPath path = new GeneralPath();
-		path.moveTo(cx + 10 , cy + 7 );
-		path.lineTo(cx + 0 , cy + 0 );
-		path.lineTo(cx + 10 , cy - 7 );
+		path.moveTo(cx + 10 * scale, cy + 7 * scale);
+		path.lineTo(cx, cy);
+		path.lineTo(cx + 10 * scale , cy - 7 * scale);
 		g2d.draw(path);
 		
 		g2d.setStroke(new BasicStroke((2), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		path = new GeneralPath();
-		path.moveTo(cx - 4 , cy + 9 );
-		path.lineTo(cx - 4 , cy - 9 );
+		path.moveTo(cx - 4 * scale, cy + 9 * scale);
+		path.lineTo(cx - 4 * scale, cy - 9 * scale);
 		g2d.draw(path);
 	}
 	

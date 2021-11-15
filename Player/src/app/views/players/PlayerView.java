@@ -27,28 +27,40 @@ public class PlayerView extends View
 	public List<PlayerViewUser> playerSections = new ArrayList<>();
 	
 	/** Font. */
-	public final static Font playerNameFont = new Font("Arial", Font.PLAIN, 16);
+	public Font playerNameFont = new Font("Arial", Font.PLAIN, 16);
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor.
 	 */
-	public PlayerView(final PlayerApp app)
+	public PlayerView(final PlayerApp app, final boolean portraitMode)
 	{
 		super(app);
 		playerSections.clear();
 		final Game game = app.contextSnapshot().getContext(app).game();
-		final int boardSize = app.height();
 		final int numPlayers = game.players().count();
 		
 		final int maxHandHeight = 100;					// Maximum height of a player's hand.
 		final double maxPanelPercentageHeight = 0.7;	// Maximum height of the entire panel (as percentage of app height).			
 		
-		final int startX = boardSize;
-		final int startY = 8;
-		final int width = app.width() - boardSize;
-		final int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
+		int boardSize = app.height();
+		int startX = boardSize + 8;
+		int startY = 8;
+		int width = app.width() - boardSize;
+		int height = Math.min(maxHandHeight, (int)(app.height()*maxPanelPercentageHeight/numPlayers));
+		
+		if (app.manager().isWebApp() && portraitMode && numPlayers <= 4)
+			playerNameFont = new Font("Arial", Font.PLAIN, 32);
+		
+		if (portraitMode)
+		{
+			boardSize = app.width();
+			startX = 8;
+			startY = app.manager().isWebApp() ? boardSize + 88 : boardSize + 48;	// +40 for the height of the toolView, +80 on mobile
+			width = boardSize - 8;
+			height = Math.min(maxHandHeight, (int)((app.height() - boardSize)*maxPanelPercentageHeight/numPlayers));
+		}
 		
 		// create a specific user page for each player.
 		for (int pid = 1; pid <= numPlayers; pid++)
@@ -64,14 +76,14 @@ public class PlayerView extends View
 		// create the shared player pages (if it exists)
 		if (app.contextSnapshot().getContext(app).hasSharedPlayer())
 		{
-			final Rectangle place = new Rectangle(0, 0, boardSize, app.height() / 10);
+			final Rectangle place = new Rectangle(0, 0, boardSize, boardSize/10);
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);
 			playerSections.add(naturePlayerPage);
 		}
 		
 		final int playerPanelWidth = app.width() - boardSize;
-		final int playerPanelHeight = startY + numPlayers * height + 16;
+		final int playerPanelHeight = numPlayers * height + 24;
 		
 		placement.setBounds(boardSize, 0, playerPanelWidth, playerPanelHeight);
 	}
@@ -110,22 +122,6 @@ public class PlayerView extends View
 			maxNameWidth = Math.max((int) bounds.getWidth(), maxNameWidth);
 		}
 		return maxNameWidth;
-	}
-	
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Return True if any of the current players of the game are AI agents.
-	 */
-	public boolean anyPlayersAreAgents(final Context context)
-	{		
-		boolean anyPlayersAreAgents = false;
-		for (int i = 1; i <= context.game().players().count(); i++)
-		{
-			if (app.manager().aiSelected()[i].ai() != null)
-				anyPlayersAreAgents = true;
-		}
-		return anyPlayersAreAgents;
 	}
 	
 	//-------------------------------------------------------------------------

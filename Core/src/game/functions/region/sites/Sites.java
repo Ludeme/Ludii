@@ -118,7 +118,7 @@ public final class Sites extends BaseRegionFunction
 		return new SitesContext();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting the sites in a loop or making the loop.
@@ -180,7 +180,7 @@ public final class Sites extends BaseRegionFunction
 		throw new IllegalArgumentException("Sites(): A SitesLoopType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting the sites in a pattern.
@@ -227,7 +227,7 @@ public final class Sites extends BaseRegionFunction
 		throw new IllegalArgumentException("Is(): An SitesPatternType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting the sites with specific hidden information for a player.
@@ -289,7 +289,7 @@ public final class Sites extends BaseRegionFunction
 		throw new IllegalArgumentException("Sites(): A SitesHiddenType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting the sites (in the same radial) between two others sites.
@@ -330,7 +330,7 @@ public final class Sites extends BaseRegionFunction
 		throw new IllegalArgumentException("Sites(): A SitesBetweenType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting the sites occupied by a large piece from the root of the large
@@ -516,7 +516,7 @@ public final class Sites extends BaseRegionFunction
 		throw new IllegalArgumentException("Sites(): A SitesEdgeType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting sites without any parameter or only the graph element type.

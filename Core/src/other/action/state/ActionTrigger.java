@@ -26,7 +26,7 @@ public final class ActionTrigger extends BaseAction
 	private final String event;
 
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * @param player The player related to the event.
 	 * @param event  The event to trigger.
@@ -68,6 +68,15 @@ public final class ActionTrigger extends BaseAction
 	{
 		// Event to add.
 		context.state().triggers(player, true);
+		return this;
+	}	
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().triggers(player, false);
 		return this;
 	}
 
@@ -149,7 +158,7 @@ public final class ActionTrigger extends BaseAction
 		return player;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

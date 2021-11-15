@@ -21,7 +21,7 @@ import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.collections.ListUtils;
-import main.math.Stats;
+import main.math.statistics.Stats;
 import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;

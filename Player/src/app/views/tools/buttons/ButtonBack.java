@@ -42,11 +42,17 @@ public class ButtonBack extends ToolButton
 		final double cy = rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
-		g2d.setStroke(new BasicStroke((3 ), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
+
+		g2d.setStroke(new BasicStroke((float)(3 * scale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		
 		final GeneralPath path = new GeneralPath();
-		path.moveTo(cx + 5 , cy + 7 );
-		path.lineTo(cx - 5 , cy + 0 );
-		path.lineTo(cx + 5 , cy - 7 );
+		path.moveTo(cx + 5 * scale, cy + 7 * scale);
+		path.lineTo(cx - 5 * scale, cy);
+		path.lineTo(cx + 5 * scale, cy - 7 * scale);
 		g2d.draw(path);
 	}
 	
@@ -81,6 +87,7 @@ public class ButtonBack extends ToolButton
 		if (isEnabled())
 		{
 			final Context context = app.manager().ref().context();
+			//context.game().undo(context);
 			ToolView.jumpToMove(app, context.trial().numMoves() - 1);
 		}
 	}

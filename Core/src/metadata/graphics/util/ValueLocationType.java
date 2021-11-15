@@ -28,7 +28,7 @@ public enum ValueLocationType implements GraphicsItem
 	Middle,
 	;
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

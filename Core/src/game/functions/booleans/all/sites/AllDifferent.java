@@ -28,7 +28,7 @@ public final class AllDifferent extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Region to check. */
 	private final RegionFunction region;
@@ -50,7 +50,7 @@ public final class AllDifferent extends BaseBooleanFunction
 		condition = If;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -89,7 +89,7 @@ public final class AllDifferent extends BaseBooleanFunction
 		return true;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()
@@ -163,7 +163,7 @@ public final class AllDifferent extends BaseBooleanFunction
 		return willCrash;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<Location> satisfyingSites(final Context context)

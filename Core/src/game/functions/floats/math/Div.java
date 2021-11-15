@@ -19,7 +19,7 @@ public final class Div extends BaseFloatFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The first value. */
 	private final FloatFunction a;
@@ -27,7 +27,7 @@ public final class Div extends BaseFloatFunction
 	/** The second value. */
 	private final FloatFunction b;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To divide a value by another.
@@ -46,7 +46,7 @@ public final class Div extends BaseFloatFunction
 		this.b = b;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public float eval(Context context)

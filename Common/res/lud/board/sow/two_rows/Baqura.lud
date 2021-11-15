@@ -19,8 +19,7 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start {
@@ -54,7 +53,7 @@
                         (then 
                             (sow
                                 if:(> (count at:(to)) 1)
-                                apply:(if (is Odd (count at:(to)))
+                                apply:(if (and (> (count at:(to)) 1) (is Odd (count at:(to))))
                                     (moveAgain)
                                     (and
                                         (if (> (count at:("OppositePit" (to))) 0)
@@ -71,7 +70,7 @@
                                         ) 
                                     )
                                 )
-                                backtracking:(and (!= (count at:(to)) 0) (is Even (count at:(to))))
+                                backtracking:(and { (is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
                             )
                         )
                     )
@@ -79,10 +78,12 @@
                         (then 
                             (and
                                 (forEach Site (sites Next)
-                                    (fromTo 
-                                        (from (site))
-                                        (to (handSite Next))
-                                        count:(count at:(site))
+                                    (if (is Occupied (site))
+                                        (fromTo 
+                                            (from (site))
+                                            (to (handSite Next))
+                                            count:(count at:(site))
+                                        )
                                     )
                                 )
                                 (if (< ("PiecesOwnedBy" P1) ("PiecesOwnedBy" P2))
@@ -104,10 +105,12 @@
                     (then
                         (if ("HandEmpty" Mover)
                             (forEach Site (sites Mover)
-                                (fromTo 
-                                    (from (handSite Next))
-                                    (to ("OppositePit" (site)))
-                                    count:(count at:(site))
+                                (if (is Occupied (site))
+                                    (fromTo 
+                                        (from Cell (handSite Next))
+                                        (to ("OppositePit" (site)))
+                                        count:(count at:(site))
+                                    )
                                 )
                             )
                             (moveAgain)
@@ -134,7 +137,7 @@
         (description "Baqura is a two-row mancala-style board game reported in the seventeenth century by Thomas Hyde in his De Ludis Orientalibus. He describes the rules and states that it was played in Mesopotamia.")
         (rules "2x6 board. Each player has 36 counters which they arrange however they like in their holes. Play begins from any hole in a player's row. Sowing occurs in an anti-clockwise direction. When the last counter falls makes an odd number of counters in the final hole of the sowing, these are picked up and sowing continues. If the last hole is made to be even, these are captured, as well as the contents of the opposite hole. If the previous hole is also even, those counters and those in the opposite hole are also taken, continuing until there is an odd or empty hole. If the final counter falls into an empty hole, play ends. The round ends when one player is unable to move. A new round begins. The player with the smaller number of counters distributes them as they like in their holes. The opponent then copies this arrangement, keeping the surplus of counters. Play continues as before. Rounds are played until one player has no remaining counters.")
         (source "Hyde 1694: 230-232.")
-        (version "1.2.11")
+        (version "1.3.0")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         (origin  "This game was played in Mesopotamia, around 1694.")

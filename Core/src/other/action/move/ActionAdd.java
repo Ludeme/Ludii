@@ -56,6 +56,20 @@ public final class ActionAdd extends BaseAction
 	private int level = Constants.UNDEFINED;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous state value of the piece before to be removed. */
+	private int previousState;
+
+	/** The previous rotation value of the piece before to be removed. */
+	private int previousRotation;
+
+	/** The previous value of the piece before to be removed. */
+	private int previousValue;
+
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type       The type of the graph element.
@@ -139,7 +153,7 @@ public final class ActionAdd extends BaseAction
 			return this;
 
 		type = (type == null) ? context.board().defaultSite() : type;
-
+		
 		// If the site is not supported by the type, that's a cell of another container.
 		if (to >= context.board().topology().getGraphElements(type).size())
 			type = SiteType.Cell;
@@ -150,13 +164,32 @@ public final class ActionAdd extends BaseAction
 		final int who = (what < 1) ? 0 : context.components()[what].owner();
 		final boolean requiresStack = game.isStacking();
 		
+		// Undo save data before to remove.
+		if(alreadyApplied)
+		{
+			if (game.isStacking())
+			{
+				final int levelAdded = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : Math.min(level, cs.sizeStack(to, type));
+				previousState = cs.state(to, levelAdded, type);
+				previousRotation = cs.rotation(to, levelAdded, type);
+				previousValue = cs.value(to, levelAdded, type);
+			}
+			else
+			{
+				previousState = cs.state(to, type);
+				previousRotation = cs.rotation(to, type);
+				previousValue = cs.value(to, type);
+			}
+			alreadyApplied = true;
+		}
+		
 		if (requiresStack)
 			applyStack(context, cs);
 
-		int whatt = 0;
-		whatt = cs.what(to, type);
+		int currentWhat = 0;
+		currentWhat = cs.what(to, type);
 
-		if (whatt == 0)
+		if (currentWhat == 0)
 		{
 			cs.setSite(context.state(), to, who, what, count, state, rotation,
 					(context.game().hasDominoes() ? 1 : value), type);
@@ -279,6 +312,78 @@ public final class ActionAdd extends BaseAction
 					onTrackIndices.add(trackIdx, what, count, indices.getQuick(0));
 			}
 		}
+	}
+
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		final Game game = context.game();
+		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
+		final int site = to;
+		type = (type == null) ? context.board().defaultSite() : type;
+		
+		// If the site is not supported by the type, that's a cell of another container.
+		if (to >= context.board().topology().getGraphElements(type).size())
+			type = SiteType.Cell;
+				
+		final ContainerState cs = context.state().containerStates()[contID];
+		int pieceIdx = 0;
+		if (context.game().isStacking())
+		{
+			final int levelToRemove = cs.sizeStack(site, type) - 1;
+			pieceIdx = cs.remove(context.state(), site, levelToRemove, type);
+			
+			if (pieceIdx > 0)
+			{
+				final Component piece = context.components()[pieceIdx];
+				final int owner = piece.owner();
+				context.state().owned().remove(owner, pieceIdx, site, levelToRemove, type);
+			}
+
+			if (cs.sizeStack(site, type) == 0)
+				cs.addToEmpty(site, type);
+		}
+		else
+		{
+			final int currentCount = cs.count(site, type);
+			final int newCount = currentCount - count;
+			if(newCount <= 0)
+			{
+				pieceIdx = cs.remove(context.state(), site, type);
+				if (pieceIdx > 0)
+				{
+					final Component piece = context.components()[pieceIdx];
+					final int owner = piece.owner();
+					context.state().owned().remove(owner, pieceIdx, site, type);
+				}
+			}
+			else // We update the count.
+			{
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
+						(game.requiresCount() ? newCount : 1), previousState, previousRotation, previousValue, type);
+			}
+		}
+		
+		// We update the structure about track indices if the game uses track.
+//		if (pieceIdx > 0)
+//		{
+//			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+//			if (onTrackIndices != null)
+//			{
+//				for (final Track track : context.board().tracks())
+//				{
+//					final int trackIdx = track.trackIdx();
+//					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, site);
+//
+//					for (int i = 0; i < indices.size(); i++)
+//						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
+//				}
+//			}
+//		}
+		
+		return this;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -577,7 +682,7 @@ public final class ActionAdd extends BaseAction
 		this.level = level;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

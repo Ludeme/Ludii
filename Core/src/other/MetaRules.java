@@ -26,7 +26,7 @@ public class MetaRules
 	/** To know if a metarule about repetition is activated. */
 	private RepetitionType repetitionType = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return True if the game uses automove.
@@ -46,7 +46,7 @@ public class MetaRules
 		this.automove = automove;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return True if the game uses the swap rule.
@@ -66,7 +66,7 @@ public class MetaRules
 		usesSwapRule = swap;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To set the repetition meta rule.
@@ -86,7 +86,7 @@ public class MetaRules
 		return repetitionType;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To set the gravity meta rule.
@@ -106,7 +106,7 @@ public class MetaRules
 		return gravityType;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To set the pin meta rule.

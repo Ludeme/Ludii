@@ -66,6 +66,15 @@ public final class ActionSwap extends BaseAction
 		context.state().swapPlayerOrder(player1, player2);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().swapPlayerOrder(player2, player1);
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 
@@ -159,7 +168,7 @@ public final class ActionSwap extends BaseAction
 		return player2;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

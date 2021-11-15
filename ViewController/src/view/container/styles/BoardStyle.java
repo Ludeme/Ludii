@@ -28,6 +28,12 @@ public class BoardStyle extends BaseContainerStyle
 		containerAxis = new BoardAxis(this);
 		containerDesign = new BoardDesign(this, boardPlacement);
 	}
+
+	@Override
+	public void setDefaultBoardScale(final double scale) 
+	{
+		boardPlacement.setDefaultBoardScale(scale);
+	}
 	
 	//-------------------------------------------------------------------------
 

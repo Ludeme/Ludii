@@ -13,7 +13,7 @@ import java.util.Map;
 import game.Game;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import main.math.Stats;
+import main.math.statistics.Stats;
 
 /**
  * A summary of results for multiple played games

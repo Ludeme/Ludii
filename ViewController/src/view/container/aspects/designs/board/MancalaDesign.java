@@ -74,7 +74,7 @@ public class MancalaDesign extends BoardDesign
 				: true;
 		
 		final int[] specialHoles = context.metadata().graphics().sitesAsSpecialHoles();
-		final HoleType type = context.metadata().graphics().ShapeSpecialHole();
+		final HoleType type = context.metadata().graphics().shapeSpecialHole();
 
 		final boolean circleTiling = context.game().booleanConcepts().get(Concept.CircleTiling.id());
 		final boolean notMancalaBoard = !circleTiling && !(context.board() instanceof MancalaBoard);

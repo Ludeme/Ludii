@@ -2,6 +2,7 @@ package view.container.aspects.designs;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -36,6 +37,7 @@ import other.topology.Vertex;
 import util.ContainerUtil;
 import util.GraphUtil;
 import util.ShadedCells;
+import util.StringUtil;
 import util.StrokeUtil;
 import view.container.aspects.placement.BoardPlacement;
 import view.container.styles.BoardStyle;
@@ -133,7 +135,7 @@ public class BoardDesign extends ContainerDesign
 		drawOuterCellEdges(bridge, g2d, context);
 		
 		// Symbols
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 		
 		// Foreground
 		drawGround(g2d, context, false);
@@ -695,7 +697,7 @@ public class BoardDesign extends ContainerDesign
 	/**
 	 * Draw symbols on the board.
 	 */
-	protected void drawSymbols(final Graphics2D g2d)
+	protected void drawSymbols(final Graphics2D g2d, final Context context)
 	{		
 		// Draw lines
 		for (final MetadataImageInfo s : symbols)
@@ -784,6 +786,21 @@ public class BoardDesign extends ContainerDesign
 					);
 			
 			SVGtoImage.loadFromFilePath(g2d, fullPath, rect, edgeColour, fillColour, rotation);
+		}
+		
+		// Draw indices on sites if specified.
+		for (final TopologyElement e : boardStyle.topology().getAllGraphElements())
+		{
+			final Integer additionalValue = context.game().metadata().graphics().showSiteIndex(context.game(), e);
+			if (additionalValue != null)
+			{
+				final Point drawPosn = boardStyle.screenPosn(e.centroid());
+				g2d.setColor(Color.WHITE);
+				final int fontSize = (int) (0.85 * boardStyle.cellRadius() * boardStyle.placement().width + 0.5);
+				final Font font = new Font("Arial", Font.PLAIN, fontSize);
+				g2d.setFont(font);
+				StringUtil.drawStringAtPoint(g2d, String.valueOf(e.index() + additionalValue.intValue()), e, drawPosn, true);
+			}
 		}
 	}
 	

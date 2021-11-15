@@ -362,7 +362,7 @@ public class Deck extends Container
 		return true;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public void createTopology(final int beginIndex, final int numEdge)

@@ -23,8 +23,8 @@ import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
 import training.expert_iteration.ExItExperience;
-import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.ExItExperience.ExItExperienceState;
+import training.expert_iteration.ExpertPolicy;
 import utils.data_structures.transposition_table.TranspositionTable;
 import utils.data_structures.transposition_table.TranspositionTable.ABTTData;
 
@@ -71,7 +71,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	public static final float PARANOID_OPP_WIN_SCORE = 10000.f;
 	
 	/** We skip computing heuristics with absolute weight value lower than this */
-	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;
+	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.001f;
 	
 	//-------------------------------------------------------------------------
 	
@@ -1062,6 +1062,9 @@ public class AlphaBetaSearch extends ExpertPolicy
 		if (game.hiddenInformation())
 			return false;
 		
+		if (game.hasSubgames())		// Cant properly init most heuristics
+			return false;
+		
 		return game.isAlternatingMoveGame();
 	}
 	
@@ -1112,7 +1115,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	}
 	
 	@Override
-	public ExItExperience generateExItExperience()
+	public List<ExItExperience> generateExItExperiences()
 	{
 		final FastArrayList<Move> actions = new FastArrayList<Move>(currentRootMoves.size());
 		for (int i = 0; i < currentRootMoves.size(); ++i)
@@ -1123,13 +1126,18 @@ public class AlphaBetaSearch extends ExpertPolicy
     		actions.add(m);
 		}
 		
-    	return new ExItExperience
+    	final ExItExperience experience =
+    			new ExItExperience
     			(
+    				new Context(lastSearchedRootContext),
     				new ExItExperienceState(lastSearchedRootContext),
     				actions,
     				computeExpertPolicy(1.0),
-    				FVector.zeros(actions.size())
+    				FVector.zeros(actions.size()),
+    				1.f
     			);
+    	
+    	return Arrays.asList(experience);
 	}
 	
 	//-------------------------------------------------------------------------

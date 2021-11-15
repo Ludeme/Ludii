@@ -16,7 +16,7 @@ public class PassEnd extends MetaRule
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * The passEnd type.
@@ -33,7 +33,7 @@ public class PassEnd extends MetaRule
 		this.type = type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public void eval(final Context context)
@@ -41,7 +41,7 @@ public class PassEnd extends MetaRule
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)

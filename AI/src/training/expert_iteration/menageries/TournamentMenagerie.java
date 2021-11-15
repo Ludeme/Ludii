@@ -191,7 +191,7 @@ public class TournamentMenagerie implements Menagerie
 			
 			final double expectedWinProb = 1.0 / (1.0 + (Math.pow(10.0, (pElo - avgOpponentsElo) / 400.0)));
 			final double expectedUtil = 2.0 * expectedWinProb - 1.0;
-			elosToAdd[p] += 30 * (pUtility - expectedUtil);
+			elosToAdd[p] += 15 * (pUtility - expectedUtil);
 		}
 		
 		// Do the actual Elo updates

@@ -506,7 +506,7 @@ public class Referee
 							agents,
 							thinkTime,
 							-1, -1,
-							0.5,		// minimum thinking time
+							manager.settingsManager().minimumAgentThinkTime(),
 							false, 		// don't block
 							true, 		// force use of threads
 							false,		// don't force use of no threads
@@ -702,14 +702,13 @@ public class Referee
 		
 		if 
 		(
-			manager.aiSelected()[context.state().mover()].ai() == null 			// Don't check instant pass if an AI is selected. Can potentially cause GUI threading issues.
+			manager.aiSelected()[manager.moverToAgent()].ai() == null 			// Don't check instant pass if an AI is selected. Can potentially cause GUI threading issues.
 			&& 
-			legal.moves().size() == 1 && firstMove.isPass() 
+			legal.moves().size() == 1 && firstMove.isPass() && firstMove.isForced()
 			&& 
 			(!context.game().isStochasticGame() || manager.settingsManager().alwaysAutoPass())
 			&&
 			manager.settingsNetwork().getActiveGameId() == 0					// Instant pass can cause problems for remote games.
-			//(manager.settingsNetwork().getActiveGameId() == 0 || firstMove.mover() == manager.settingsNetwork().getNetworkPlayerNumber())
 		)
 		{
 			applyHumanMoveToGame(manager, firstMove);

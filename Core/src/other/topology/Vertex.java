@@ -59,7 +59,7 @@ public final class Vertex extends TopologyElement implements Serializable
 		centroid = new Point3D(x, y, z);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return cells using that vertex.

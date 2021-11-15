@@ -1,6 +1,7 @@
 package app.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import app.PlayerApp;
@@ -8,6 +9,9 @@ import app.move.MoveHandler;
 import app.move.animation.MoveAnimation;
 import compiler.Compiler;
 import game.Game;
+import game.equipment.container.Container;
+import game.types.board.SiteType;
+import game.types.play.RoleType;
 import main.Constants;
 import main.grammar.Report;
 import main.options.Ruleset;
@@ -15,6 +19,7 @@ import manager.Referee;
 import manager.ai.AIUtil;
 import other.context.Context;
 import other.location.FullLocation;
+import other.move.Move;
 import tournament.TournamentUtil;
 
 /**
@@ -36,6 +41,9 @@ public class GameUtil
 		final Context context = ref.context();
 		Game game = context.game();
 		app.manager().undoneMoves().clear();
+		ref.interruptAI(app.manager());
+		Arrays.fill(app.settingsPlayer().agentArray(), true);
+		app.settingsPlayer().setWebGameResultValid(true);
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
@@ -82,8 +90,6 @@ public class GameUtil
 
 		app.manager().ref().interruptAI(app.manager());
 		
-		//app.view().createPanels();
-		
 		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 		app.bridge().settingsVC().setSelectingConsequenceMove(false);
 		app.settingsPlayer().setCurrentWalkExtra(0);
@@ -100,6 +106,30 @@ public class GameUtil
 		app.updateFrameTitle(true);
 		
 		AIUtil.pauseAgentsIfNeeded(app.manager());
+		
+		if (app.manager().isWebApp())
+		{
+			final Context context = app.manager().ref().context();
+			final Game game = context.game();
+			
+			// Check if that game contains a shared hand (above the board)
+			boolean hasSharedHand = false;
+			for (final Container container : game.equipment().containers())
+				if (container.role().equals(RoleType.Shared))
+					hasSharedHand = true;
+			
+			// Check if the game has custom hand placement
+			boolean hasCustomHandPlacement = false;
+			for (int i = 0; i <= Constants.MAX_PLAYERS; i++)
+				if (context.game().metadata().graphics().handPlacement(context, i) != null)
+					hasCustomHandPlacement = true;
+			
+			final boolean boardBackground = game.metadata().graphics().boardBackground(context).size() > 0;
+			
+			// Make the margins around the board thinner
+			if (game.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
+				app.bridge().getContainerStyle(0).setDefaultBoardScale(0.95);
+		}
 
 		MoveHandler.checkMoveWarnings(app);
 		app.repaint();
@@ -110,17 +140,21 @@ public class GameUtil
 	/**
 	 * various tasks that are performed when a normal game ends.
 	 */
-	public static void gameOverTasks(final PlayerApp app)
+	public static void gameOverTasks(final PlayerApp app, final Move move)
 	{
 		final Context context = app.manager().ref().context();
 		final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-		
-		if (context.trial().over())
+
+		if (context.trial().over() && context.trial().lastMove().equals(move))	
 		{
 			app.addTextToStatusPanel(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), context.trial()));
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
 			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());
-			app.setTemporaryMessage("Choose Game > Restart to play again.");
+			
+			if (app.manager().isWebApp())
+				app.setTemporaryMessage(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), app.manager().ref().context().trial()));
+			else
+				app.setTemporaryMessage("Choose Game > Restart to play again.");
 		}
 		else if (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves())
 		{
@@ -137,7 +171,7 @@ public class GameUtil
 		context.game().incrementGameStartCount();
 		
 		final int numPlayers = context.game().players().count();
-		for (int p = 1; p < app.manager().aiSelected().length; ++p)
+		for (int p = 0; p < app.manager().aiSelected().length; ++p)
 		{
 			// Close AI players that may have had data from previous game
 			if (app.manager().aiSelected()[p].ai() != null)
@@ -206,7 +240,7 @@ public class GameUtil
 					
 					try
 					{
-						GameSetup.compileAndShowGame(app, game.description().raw(), game.description().filePath(), false);
+						GameSetup.compileAndShowGame(app, game.description().raw(), false);
 					}
 					catch (final Exception exception)
 					{

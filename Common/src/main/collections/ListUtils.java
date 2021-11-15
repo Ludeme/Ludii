@@ -165,6 +165,32 @@ public class ListUtils
 	}
 	
 	/**
+	 * Removes element at given index. Does not shift all subsequent elements,
+	 * but only swaps the last element into the removed index.
+	 * @param list
+	 * @param idx
+	 */
+	public static void removeSwap(final TIntArrayList list, final int idx)
+	{
+		final int lastIdx = list.size() - 1;
+		list.setQuick(idx, list.getQuick(lastIdx));
+		list.removeAt(lastIdx);
+	}
+	
+	/**
+	 * Removes element at given index. Does not shift all subsequent elements,
+	 * but only swaps the last element into the removed index.
+	 * @param list
+	 * @param idx
+	 */
+	public static void removeSwap(final TFloatArrayList list, final int idx)
+	{
+		final int lastIdx = list.size() - 1;
+		list.setQuick(idx, list.getQuick(lastIdx));
+		list.removeAt(lastIdx);
+	}
+	
+	/**
 	 * Removes all elements from the given list that satisfy the given predicate, using
 	 * remove-swap (which means that the order of the list may not be preserved).
 	 * @param list
@@ -215,6 +241,91 @@ public class ListUtils
 				generateAllCombinations(candidates, combinationLength - 1, i + 1, currentCombination, combinations);
 			}
 		}
+	}
+	
+	/**
+	 * @param numItems Number of items from which we can pick
+	 * @param combinationLength How many items should we pick per combination
+	 * @return How many combinations of N items are there, if we sample with replacement
+	 * 	(and order does not matter)?
+	 */
+	public static final int numCombinationsWithReplacement(final int numItems, final int combinationLength)
+	{
+		int numerator = 1;
+		for (int i = combinationLength + 1; i <= (numItems + combinationLength - 1); ++i)
+		{
+			numerator *= i;
+		}
+		
+		int denominator = 1;
+		for (int i = 1; i <= (numItems - 1); ++i)
+		{
+			denominator *= i;
+		}
+		
+		return numerator / denominator;
+	}
+	
+	/**
+	 * @param items
+	 * @param combinationLength
+	 * @return All possible combinations of n selections of given array of items,
+	 * sampled with replacement. Order does not matter.
+	 */
+	public static Object[][] generateCombinationsWithReplacement
+	(
+		final Object[] items,
+		final int combinationLength
+	)
+	{
+		if (combinationLength == 0)
+			return new Object[0][];
+		
+		final int numCombinations = numCombinationsWithReplacement(items.length, combinationLength);
+		final Object[][] combinations = new Object[numCombinations][combinationLength];
+		
+		int nextCombIdx = 0;
+		final int[] indices = new int[combinationLength];
+		int idxToIncrement = indices.length - 1;
+		while (true)
+		{
+			final Object[] arr = new Object[combinationLength];
+			
+			for (int i = 0; i < indices.length; ++i)
+			{
+				arr[i] = items[indices[i]];
+			}
+			
+			combinations[nextCombIdx++] = arr;
+			
+			while (idxToIncrement >= 0)
+			{
+				if (++indices[idxToIncrement] == items.length)
+				{
+					indices[idxToIncrement--] = 0;
+				}
+				else
+				{
+					break;
+				}
+			}
+			
+			if (idxToIncrement < 0)
+				break;
+			
+			// Order does not matter
+			for (int i = idxToIncrement + 1; i < indices.length; ++i)
+			{
+				indices[i] = indices[idxToIncrement];
+			}
+			
+			idxToIncrement = indices.length - 1;
+		}
+		
+		if (nextCombIdx != numCombinations)
+			System.err.println("ERROR: Expected to generate " + numCombinations + " combinations, but only generated " + nextCombIdx);
+		
+		return combinations;
 	}
 	
 	//-------------------------------------------------------------------------

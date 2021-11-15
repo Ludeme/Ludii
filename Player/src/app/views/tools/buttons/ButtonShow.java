@@ -3,6 +3,7 @@ package app.views.tools.buttons;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 import app.PlayerApp;
 import app.views.tools.ToolButton;
@@ -40,15 +41,31 @@ public class ButtonShow extends ToolButton
 		final int cy = (int) rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
+		
 		final Font oldFont = g2d.getFont();
-		final int r = 10;
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
+
+		final int r = (int)(10 * scale);
 		g2d.fillArc(cx - r, cy - r, 2 * r + 1, 2 * r + 1, 0, 360);
-		final int fontSize = 17;
+		
+		final int fontSize = (int)(17 * scale);
 		final int flags = Font.BOLD;
 		final Font font = new Font("Arial", flags, fontSize);
 		g2d.setFont(font);
+		
 		g2d.setColor(Color.white);
-		g2d.drawString("?", cx - 3, cy + 6);
+		
+		final String str = "?";
+		final Rectangle2D bounds = g2d.getFontMetrics().getStringBounds(str, g2d);
+		
+		final int tx = (int)(cx - bounds.getWidth()  / 2 + 0 * scale);
+		final int ty = (int)(cy + bounds.getHeight() / 2 - 3 * scale);
+		
+		g2d.drawString(str, tx, ty);
+		
 		g2d.setFont(oldFont);
 	}
 

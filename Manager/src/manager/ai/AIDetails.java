@@ -43,7 +43,18 @@ public class AIDetails
 			final String algName = aiObj.getString("algorithm");
 			if (!algName.equalsIgnoreCase("Human"))
 			{
-				setAI(AIFactory.fromJson(object));
+				AI aiFromName = AIFactory.fromJson(object);		
+				
+				if (manager.isWebApp() && manager.ref().context() != null && aiFromName.usesFeatures(manager.ref().context().game()))
+				{
+					final JSONObject json = new JSONObject()
+							.put("AI", new JSONObject()
+							.put("algorithm", "AlphaBeta")
+							);
+					aiFromName = AIFactory.fromJson(json);
+				}
+				
+				setAI(aiFromName);
 			}	
 		}
 		else

@@ -20,6 +20,14 @@ public final class ActionSetPot extends BaseAction
 	private final int pot;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous pot. */
+	private int previousPot;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param pot The new value of the pot.
@@ -54,7 +62,22 @@ public final class ActionSetPot extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousPot = context.state().pot();
+			alreadyApplied = true;
+		}
+		
 		context.state().setPot(pot);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().setPot(previousPot);
 		return this;
 	}
 
@@ -119,7 +142,7 @@ public final class ActionSetPot extends BaseAction
 		return "(Pot = " + pot + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isOtherMove()

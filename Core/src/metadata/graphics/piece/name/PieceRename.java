@@ -53,7 +53,7 @@ public class PieceRename implements GraphicsItem
 		@Opt @Name  final String piece,
 		@Opt @Name	final Integer container,
 		@Opt @Name  final Integer state,
-		@Opt @Name final Integer value,
+		@Opt @Name  final Integer value,
 		     		final String nameReplacement
 	)
 	{

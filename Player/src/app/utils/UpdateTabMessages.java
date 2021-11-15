@@ -60,6 +60,9 @@ public class UpdateTabMessages
 				if (action.message() != null)
 					if (action.who() == context.state().mover())
 						statusString += "Note for Player " + action.who() + ": " + action.message() + ".\n";
+		
+		if (lastMove != null && lastMove.isSwap())
+			app.setTemporaryMessage("Player " + lastMove.mover() + " made a swap move.");
 
 		// Check if any player has just lost or won
 		for (int i = 1; i <= game.players().count(); i++)
@@ -97,7 +100,7 @@ public class UpdateTabMessages
 
 		// Show next player to move
 		if (!context.trial().over() && nextMover < game.players().size())
-			statusString += app.manager().aiSelected()[context.state().playerToAgent(nextMover)].name() + " to move.\n";
+			statusString += app.manager().aiSelected()[app.manager().playerToAgent(nextMover)].name() + " to move.\n";
 		
 		app.addTextToStatusPanel(statusString);
 	}

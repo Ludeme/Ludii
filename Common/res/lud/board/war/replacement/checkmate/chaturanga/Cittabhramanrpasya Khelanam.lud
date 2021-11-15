@@ -1,0 +1,168 @@
+(define "CaptureToPiece"
+    (apply 
+        (remove 
+            (to) 
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Cittabhramanrpasya Khelanam"
+    (players {(player S) (player N)})  
+    (equipment { 
+        (board (square 8))
+        
+        (piece "Pawn" P1 
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                (then
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (and
+                            (promote (last To) (piece "Ferz_noCross") Mover)	
+                            (fromTo (from (last To)) (to (last From)))
+                        )
+                    )
+                )
+            )
+        )
+        (piece "Rook" P1 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "King_noCross" P1 
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (piece "Elephant" P1 
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        ) 
+        (piece "Knight" P1 
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Ferz_noCross" P1 
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "King_noCross" P2 
+            (or
+                (move
+                    Leap 
+                    "KnightWalk" 
+                    (to 
+                        if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites Around (where "King-noCross" Next)))))
+                        "CaptureToPiece"
+                    ) 
+                )
+                
+                (move
+                    Slide 
+                    (to 
+                        if:(is Enemy (who at:(to))) 
+                        (apply 
+                            if:(not (is In (to) (sites Around (where "King-noCross" Next))))
+                            (remove 
+                                (to) 
+                            )
+                        )
+                    ) 
+                )
+            )
+        )
+        (regions "Promotion" P1 (sites Bottom) )
+    })  
+    (rules 
+        (start { 
+            (place "Pawn1" (sites Row 6))
+            (place "Rook1" {"A8" "H8"}) (place "Knight1" {"B8" "G8"}) (place "Elephant1" {"C8" "F8"}) (place "Ferz_noCross1" coord:"E8") (place "King_noCross1" coord:"D8") 
+            (place "King_noCross2" coord:"E1")
+        })
+        
+        (play 
+            (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+        )
+        
+        (end {
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Cittabhramanrpasya Khelanam is a game dervied from Chaturanga played in India during the nineteenth century. In it, one player plays as a single King, which can move like any of the other pieces, against the opponent who plays with their usual complement of pieces. It is described in the Kriddakausalya of Harikrishna.")
+        (rules "8x8 board. One player plays with the following pieces: Raja (x1): moves one space in any direction; Mantri (x1): moves any distance orthogonally or diagonally; Ushtra (x2): moves diagonally any distance; Vaha (x2): move orthogonally one space and then diagonally another, jumping over any intervening pieces; Danti (x2): moves orthogonally any distance. Padati (x8): move forward orthogonally one space or one space diagonally forward to capture. When a Padati reaches the opposite edge of the board, it is promoted to a Mantri and is moved immediately to the space it last moved from. The opponent plays as one Raja, which can move as any of the other pieces. This Raja cannot move to a space adjacent to the opponent's Raja. An opponent's piece is captured by moving one of the player's own pieces onto the space occupied by the opponent's piece. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot be in check at the end of the player's turn. If this is impossible, the opponent wins. Check and checkmate rules apply to the player with a single Raja.")
+        (source "Iyer 1982: 51-52; Bock-Raming 1996: 116.")
+        (version "1.3.0")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1871.")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.825)
+        (show Check "King")
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+        (show Symbol "thinCross" {27 28 35 36} scale:0.9)
+    })
+    
+)

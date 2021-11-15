@@ -87,7 +87,7 @@ public final class TrackSite extends BaseIntFunction
 		throw new IllegalArgumentException("TrackSite(): A TrackSiteType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting the site in a track from a site after some steps.

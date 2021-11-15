@@ -126,7 +126,7 @@ public class End extends BaseLudeme implements Rule
 //		for (int id = 0; id < context.state().ranking().length; id++)
 //			System.out.println("id = 0, rank is " + context.state().ranking()[id]);
 	}
-
+	
 	/**
 	 * Apply the result of the game.
 	 * 
@@ -185,11 +185,12 @@ public class End extends BaseLudeme implements Rule
 					context.addWinner(who);
 					assert(rank >= 1.0 && rank <= context.trial().ranking().length);
 					context.trial().ranking()[who] = rank;
-
+					
 					onlyOneActive = context.onlyOneActive();
 					if (onlyOneActive != 0)
 					{
 						context.trial().ranking()[onlyOneActive] = rank + 1.0;
+						context.addLoser(onlyOneActive);
 						for (int player = 1; player < context.trial().ranking().length; player++)
 						{
 							if (context.trial().ranking()[player] == 1)
@@ -198,6 +199,7 @@ public class End extends BaseLudeme implements Rule
 								break;
 							}
 						}
+						context.setActive(onlyOneActive, false);
 					}
 					else if (!context.active())
 					{

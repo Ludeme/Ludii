@@ -7,14 +7,16 @@ import java.util.Map;
 import java.util.Set;
 
 import game.Game;
-import main.FileHandling;
 import main.grammar.Call;
-import main.options.Ruleset;
 import other.GameLoader;
 import utils.DBGameInfo;
 
 /**
  * Detects all ludemeplexes within all games in Ludii.
+ * 
+ * Run “LudemeplexDetection.java”
+ * Ouput csv files are stored in Ludii/Mining/res/ludemeplexDetection/output/
+ * These files should be uploaded to the Ludii database.
  *
  * @author matthew.stephenson
  */
@@ -29,43 +31,7 @@ public class LudemeplexDetection
 	
 	// Map of all ludemeplexes and the number of times they occur across all games.
 	final static Map<Call, Integer> allLudemeplexesCount = new HashMap<>();
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Records all ludemeplexes across all Games/Rulesets.
-	 */
-	private static String[] recordLudemeplexesAcrossAllGames() 
-	{
-		final String[] choices = FileHandling.listGames();
-		//final String[] choices = IntStream.range(0, 500).mapToObj(i -> FileHandling.listGames()[i]).toArray(String[]::new);
-		//final String[] choices = {"Chess.lud"};
-		
-		for (final String s : choices)
-		{
-			if (!FileHandling.shouldIgnoreLudAnalysis(s))
-			{
-				final String gameName = s.split("\\/")[s.split("\\/").length-1];
-				final Game tempGame = GameLoader.loadGameFromName(gameName);
-				final List<Ruleset> rulesets = tempGame.description().rulesets();
-				if (rulesets != null && !rulesets.isEmpty())
-				{
-					// Record ludemeplexes for each ruleset
-					for (int rs = 0; rs < rulesets.size(); rs++)
-						if (!rulesets.get(rs).optionSettings().isEmpty())
-							recordLudemeplexesInGame(GameLoader.loadGameFromName(gameName, rulesets.get(rs).optionSettings()));
-				}
-				else
-				{
-					// Record ludemeplexes just for the base game
-					recordLudemeplexesInGame(tempGame);
-				}
-			}
-		}
-		
-		return choices;
-	}
-	
+
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -139,27 +105,29 @@ public class LudemeplexDetection
 	public static void main(final String[] args)
 	{		
 		// Record the ludemeplexes across all lud files.
-		final String[] chosenGameNames = recordLudemeplexesAcrossAllGames();
+		final List<String[]> chosenGames = GameLoader.allAnalysisGameRulesetNames();
+		for (final String[] gameRulesetName : chosenGames)
+			recordLudemeplexesInGame(GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]));
+			
 		
 		System.out.println("//-------------------------------------------------------------------------");
 	
 		// Store relevant details in output csv files for uploading to DB
 		DatabaseFunctions.storeLudemeInfo();
 		System.out.println("Ludemes Recorded");
-//		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
-//		System.out.println("Ludemeplexes Recorded");
-//		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
-//		System.out.println("Ludemes in Ludemeplexes Recorded");
-//		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
-//		System.out.println("Ruleset Ludemeplexes Recorded");
-//		
-//		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
-//		System.out.println("Define Ludemeplexes Recorded");
-//		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
-//		System.out.println("Define Ruleset Ludemeplexes Recorded");
+		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
+		System.out.println("Ludemeplexes Recorded");
+		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
+		System.out.println("Ludemes in Ludemeplexes Recorded");
+		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
+		System.out.println("Ruleset Ludemeplexes Recorded");
 		
-		DatabaseFunctions.storeLudemesInGames(GetLudemeInfo.getLudemeInfo(), chosenGameNames);
-//		DatabaseFunctions.storeTokensInGames(chosenGameNames);
+		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
+		System.out.println("Define Ludemeplexes Recorded");
+		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
+		System.out.println("Define Ruleset Ludemeplexes Recorded");
+		
+		DatabaseFunctions.storeLudemesInGames(GetLudemeInfo.getLudemeInfo(), chosenGames);
 		
 		System.out.println("//-------------------------------------------------------------------------");
 	}

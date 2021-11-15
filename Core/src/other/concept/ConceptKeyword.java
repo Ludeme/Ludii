@@ -251,7 +251,7 @@ public enum ConceptKeyword
 	Friend(82, "Involves friend pieces."),
 	;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The id of the keyword. */
 	final int id;
@@ -259,7 +259,7 @@ public enum ConceptKeyword
 	/** The description of the concept keyword. */
 	final String description;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To create a new keyword.
@@ -276,7 +276,7 @@ public enum ConceptKeyword
 		this.description = description;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The id of the keyword.

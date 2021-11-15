@@ -404,7 +404,7 @@ public class SettingsDialog extends JDialog
 			{
 				for (int i = 1; i < app.manager().aiSelected().length; i++)
 				{
-					app.manager().aiSelected()[context.state().playerToAgent(i)].setName("Player " + i);
+					app.manager().aiSelected()[i].setName("Player " + i);
 					playerNamesArray[i].setText("Player " + i);
 					app.manager().aiSelected()[i].setThinkTime(1.0);
 					final JSONObject json = new JSONObject().put("AI",
@@ -902,11 +902,11 @@ public class SettingsDialog extends JDialog
 		maxLength1.setMaxChars(maxNameLength);
 		textFieldPlayerName1.setDocument(maxLength1);
 		textFieldPlayerName1.setEnabled(true);
-		textFieldPlayerName1.setText(app.manager().aiSelected()[context.state().playerToAgent(playerId)].name());
+		textFieldPlayerName1.setText(app.manager().aiSelected()[playerId].name());
 		playerJpanel.add(textFieldPlayerName1);
 		
 		// AI Algorithm
-		final AIDetails associatedAI = app.manager().aiSelected()[context.state().playerToAgent(playerId)];
+		final AIDetails associatedAI = app.manager().aiSelected()[playerId];
 		final String[] comboBoxContents = DesktopGUIUtil.getAIDropdownStrings(app, true).toArray(new String[DesktopGUIUtil.getAIDropdownStrings(app, true).size()]);
 		final JComboBox<String> myComboBox = new JComboBox<String>(comboBoxContents); //comboBoxContents
 		myComboBox.setBounds(240, 46 + playerId*30, 100, 20);
@@ -962,9 +962,9 @@ public class SettingsDialog extends JDialog
 			// Player Names
 			final String name = playerNamesArray[i].getText();
 			if (name != null)
-				app.manager().aiSelected()[context.state().playerToAgent(i)].setName(name);
+				app.manager().aiSelected()[i].setName(name);
 			else
-				app.manager().aiSelected()[context.state().playerToAgent(i)].setName("");
+				app.manager().aiSelected()[i].setName("");
 			
 			// Think time
 			String comboBoxThinkTime = playerThinkTimesArray[i].getSelectedItem().toString();
@@ -981,19 +981,19 @@ public class SettingsDialog extends JDialog
 			}
 			if (thinkTime <= 0)
 				thinkTime = 1;
-			final int newPlayerIndex = app.contextSnapshot().getContext(app).state().playerToAgent(i);
-			app.manager().aiSelected()[newPlayerIndex].setThinkTime(thinkTime);
+			
+			app.manager().aiSelected()[i].setThinkTime(thinkTime);
 
 			// AI agent
 			final JSONObject json = new JSONObject().put("AI",
 				new JSONObject()
 				.put("algorithm", playerAgentsArray[i].getSelectedItem().toString())
 				);
-			AIUtil.updateSelectedAI(app.manager(), json, newPlayerIndex, playerAgentsArray[i].getSelectedItem().toString());
+			AIUtil.updateSelectedAI(app.manager(), json, i, playerAgentsArray[i].getSelectedItem().toString());
 			
 			// Need to initialise the AI if "Ludii AI" selected, so we can get the algorithm name.
 			if (playerAgentsArray[i].getSelectedItem().toString().equals("Ludii AI"))
-				app.manager().aiSelected()[newPlayerIndex].ai().initIfNeeded(app.contextSnapshot().getContext(app).game(), newPlayerIndex);
+				app.manager().aiSelected()[i].ai().initIfNeeded(app.contextSnapshot().getContext(app).game(), i);
 		}
 		
 		app.manager().settingsNetwork().backupAiPlayers(app.manager());

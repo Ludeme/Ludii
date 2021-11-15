@@ -27,6 +27,14 @@ public final class ActionBet extends BaseAction
 	private final int bet;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous amount. */
+	private int previousBet;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param player The index of the player.
@@ -67,7 +75,22 @@ public final class ActionBet extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousBet = context.state().amount(player);
+			alreadyApplied = true;
+		}
+		
 		context.state().setAmount(player, bet);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().setAmount(player, previousBet);
 		return this;
 	}
 
@@ -134,7 +157,7 @@ public final class ActionBet extends BaseAction
 		return "(P" + player + " Bet = " + bet + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isOtherMove()
@@ -160,7 +183,7 @@ public final class ActionBet extends BaseAction
 		return ActionType.Bet;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

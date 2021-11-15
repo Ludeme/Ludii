@@ -21,11 +21,13 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.WindowConstants;
 
 import agentPrediction.external.AgentPredictionExternal;
 import agentPrediction.internal.AgentPredictionInternal;
@@ -34,7 +36,6 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.AboutDialog;
 import app.display.dialogs.DeveloperDialog;
-import app.display.dialogs.DistanceDialog;
 import app.display.dialogs.EvaluationDialog;
 import app.display.dialogs.GameLoaderDialog;
 import app.display.dialogs.SVGViewerDialog;
@@ -42,6 +43,7 @@ import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
+import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.screenCapture.ScreenCapture;
 import app.display.util.Thumbnails;
 import app.display.views.tabs.TabView;
@@ -53,7 +55,7 @@ import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
 import app.views.tools.ToolView;
-import common.AdvancedDistanceDialog;
+import approaches.random.Generator;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -240,6 +242,30 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Editor (Expanded)"))
 		{
 			EditorDialog.createAndShowGUI(app, true, true, true);
+		}
+		else if (source.getText().equals("Visual Editor (Beta)"))
+		{
+			// Create and lauch an instance of the visual editor
+			final VisualEditorPanel visual = new VisualEditorPanel(app);
+			
+			final JFrame frame = new JFrame("Visual Game Editor");
+			frame.setContentPane(visual);
+			frame.setSize(800, 800);
+			frame.setLocationRelativeTo(null);
+			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
+			frame.setVisible(true);
+			
+			try
+			{
+				DesktopApp.frame().add(frame);
+			}
+			catch (final Exception ve)
+			{
+				// **
+				// ** TODO: Set up visual editor frame correctly. 
+				// **
+				System.out.println("Adding visual editor frame to main frame causes an exception: " + ve.getMessage());
+			}
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))
@@ -700,6 +726,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			DesktopApp.view().toolPanel().buttons.get(ToolView.END_BUTTON_INDEX).press();
 		}
+		else if (source.getText().equals("Pass"))
+		{
+			DesktopApp.view().toolPanel().buttons.get(ToolView.PASS_BUTTON_INDEX).press();
+		}
 		else if (source.getText().equals("Random Playout Instance"))
 		{
 			app.manager().ref().randomPlayoutSingleInstance(app.manager());
@@ -755,6 +785,9 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.addTextToStatusPanel(Grammar.grammar().toString());
 			System.out.print(Grammar.grammar());
+			
+			System.out.println("Aliases in grammar:\n" + Grammar.grammar().aliases());
+			
 			try
 			{
 				Grammar.grammar().export("ludii-grammar-" + Constants.LUDEME_VERSION + ".txt");
@@ -875,10 +908,6 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			DesktopApp.view().tabPanel().page(TabView.PanelStatus).clear();
 		}
-		else if (source.getText().startsWith("Distance Dialog"))
-		{
-			DistanceDialog.showDialog(app);
-		}
 		else if (source.getText().startsWith("Compile Game (Debug)"))
 		{
 			if (!app.manager().settingsManager().agentsPaused())
@@ -889,7 +918,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().startsWith("Recompile Current Game"))
 		{
-			GameSetup.compileAndShowGame(app, context.game().description().raw(), context.game().description().filePath(), false);
+			GameSetup.compileAndShowGame(app, context.game().description().raw(), false);
 		}
 		else if (source.getText().startsWith("Show Call Tree"))
 		{
@@ -1055,7 +1084,7 @@ public class MainMenuFunctions extends JMenuBar
 							"metadata.ai.features.Features",
 							new Report()
 						);
-				final SoftmaxPolicy softmax = new SoftmaxPolicy(features);
+				final SoftmaxPolicy softmax = SoftmaxPolicy.constructSelectionPolicy(features, 0.0);
 				softmax.initAI(game, context.state().mover());
 				
 				final BaseFeatureSet[] featureSets = softmax.featureSets();
@@ -1122,10 +1151,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			System.out.println(context.board().graph());
 		}
-		else if (source.getText().startsWith("Advanced Distance Dialog"))
-		{
-			AdvancedDistanceDialog.showDialog();
-		}
+//		else if (source.getText().startsWith("Advanced Distance Dialog"))
+//		{
+//			AdvancedDistanceDialog.showDialog();
+//		}
 		else if (source.getText().startsWith("Print Trajectories"))
 		{
 			context.board().graph().trajectories().report(context.board().graph());
@@ -1243,44 +1272,34 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			DeveloperDialog.showDialog(app);
 		}
-//		else if (source.getText().equals("Generate Random Game"))
-//		{
-//			boolean validGameFound = false;
-//			while (!validGameFound)
-//			{
-//				final String gameDescription = Generator.testGames(1, true, true, false, true);
-//				if (gameDescription != null)
-//				{
-//					GameRestart.compileAndShowGame(app, gameDescription, false, false);
-//					validGameFound = true;
-//				}
-//			}
-//		}
-//		else if (source.getText().equals("Generate 1000 Random Games"))
-//		{
-////			Generator.testGames(1000, true, true, false, true);
-//
-////			final int numGames      = 1000;
-////			final boolean random    = true;
-////			final boolean valid     = true;
-////			final boolean boardless = false;
-////			final boolean save      = true;
-//
-//			Generator.testGames
-//			(
-//				1000,   // num games 
-//				true,   // random
-//				true,   // valid
-//				false,  // boardless
-//				true    // save
-//			);
-//	
-////			Generator.testGames(numGames, random, valid, boardless, save);
-//		}
-//		else if (source.getText().equals("Generate 1 Game with Restrictions (dev)"))
-//		{
-//			Generator.testGamesEric(1, true, false);
-//		}
+		else if (source.getText().equals("Generate Random Game"))
+		{
+			boolean validGameFound = false;
+			while (!validGameFound)
+			{
+				final String gameDescription = Generator.testGames(1, true, true, false, true);
+				if (gameDescription != null)
+				{
+					GameSetup.compileAndShowGame(app, gameDescription, false);
+					validGameFound = true;
+				}
+			}
+		}
+		else if (source.getText().equals("Generate 1000 Random Games"))
+		{
+			Generator.testGames
+			(
+				1000,   // num games 
+				true,   // random
+				true,   // valid
+				false,  // boardless
+				true    // save
+			);
+		}
+		else if (source.getText().equals("Generate 1 Game with Restrictions (dev)"))
+		{
+			Generator.testGamesEric(1, true, false);
+		}
 		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
 			// Check if a recent game has been selected
@@ -1596,7 +1615,7 @@ public class MainMenuFunctions extends JMenuBar
 								
 								try
 								{
-									GameSetup.compileAndShowGame(app, game.description().raw(), game.description().filePath(), false);
+									GameSetup.compileAndShowGame(app, game.description().raw(), false);
 								}
 								catch (final Exception exception)
 								{

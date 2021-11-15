@@ -33,7 +33,7 @@ public final class AllGroups extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The condition for each element of the group. */
 	private final BooleanFunction groupElementConditionFn;
@@ -47,7 +47,7 @@ public final class AllGroups extends BaseBooleanFunction
 	/** The graph element type. */
 	private SiteType type;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * @param type        The type of the graph elements of the group.
@@ -71,7 +71,7 @@ public final class AllGroups extends BaseBooleanFunction
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	} 
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -176,7 +176,7 @@ public final class AllGroups extends BaseBooleanFunction
 		return true;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()
@@ -184,7 +184,7 @@ public final class AllGroups extends BaseBooleanFunction
 		return "AllGroups()";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

@@ -34,6 +34,18 @@ public class TrainingParams
 	/** Number of trials to run per epoch for policy gradients */
 	public int numTrialsPerPolicyGradientEpoch;
 	
+	/** Discount factor gamma for policy gradients */
+	public double pgGamma;
+	
+	/** Weight for entropy regularisation */
+	public double entropyRegWeight;
+	
+	/** Number of threads to use for parallel trials for policy gradients */
+	public int numPolicyGradientThreads;
+	
+	/** After running policy gradients, scale obtained weights by this value */
+	public double postPGWeightScalar;
+	
 	//-------------------------------------------------------------------------
 
 }

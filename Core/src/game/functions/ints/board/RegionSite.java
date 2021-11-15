@@ -19,7 +19,7 @@ public final class RegionSite extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Which region. */
 	private final RegionFunction region;
@@ -30,7 +30,7 @@ public final class RegionSite extends BaseIntFunction
 	/** Precomputed value if possible. */
 	private int precomputedValue = Constants.OFF;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param region The region.
@@ -47,7 +47,7 @@ public final class RegionSite extends BaseIntFunction
 		indexFn = index;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -72,7 +72,7 @@ public final class RegionSite extends BaseIntFunction
 		return Constants.OFF;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

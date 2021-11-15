@@ -14,7 +14,7 @@ import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import main.Status;
-import main.math.Stats;
+import main.math.statistics.Stats;
 import other.AI;
 import other.GameLoader;
 import other.context.Context;

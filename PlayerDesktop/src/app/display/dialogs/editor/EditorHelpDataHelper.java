@@ -29,7 +29,7 @@ import main.EditorHelpData;
 /**
  * Formats the editor help data.
  *  
- * @author cambolbro
+ * @author mrraow and cambolbro
  */
 public final class EditorHelpDataHelper
 {

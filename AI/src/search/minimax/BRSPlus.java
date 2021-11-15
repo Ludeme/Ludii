@@ -3,6 +3,7 @@ package search.minimax;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,8 +23,8 @@ import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
 import training.expert_iteration.ExItExperience;
-import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.ExItExperience.ExItExperienceState;
+import training.expert_iteration.ExpertPolicy;
 import utils.data_structures.transposition_table.TranspositionTable;
 import utils.data_structures.transposition_table.TranspositionTable.ABTTData;
 
@@ -754,7 +755,7 @@ public class BRSPlus extends ExpertPolicy
 	}
 	
 	@Override
-	public ExItExperience generateExItExperience()
+	public List<ExItExperience> generateExItExperiences()
 	{
 		final FastArrayList<Move> actions = new FastArrayList<Move>(currentRootMoves.size());
 		for (int i = 0; i < currentRootMoves.size(); ++i)
@@ -765,13 +766,18 @@ public class BRSPlus extends ExpertPolicy
     		actions.add(m);
 		}
 		
-    	return new ExItExperience
+    	final ExItExperience experience =
+    			new ExItExperience
     			(
+    				new Context(lastSearchedRootContext),
     				new ExItExperienceState(lastSearchedRootContext),
     				actions,
     				computeExpertPolicy(1.0),
-    				FVector.zeros(actions.size())
+    				FVector.zeros(actions.size()),
+    				1.f
     			);
+    	
+    	return Arrays.asList(experience);
 	}
 	
 	//-------------------------------------------------------------------------

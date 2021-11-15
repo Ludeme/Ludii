@@ -28,9 +28,9 @@ public interface FeatureSetExpander
 	 * @param policy Current policy with current weights for predictions 
 	 * @param game
 	 * @param featureDiscoveryMaxNumFeatureInstances
-	 * @param fActiveRatios
 	 * @param objectiveParams
 	 * @param featureDiscoveryParams
+	 * @param featureActiveRatios
 	 * @param logWriter
 	 * @param experiment Experiment in which this is being used
 	 * @return Expanded version of given feature set, or null if no expanded version
@@ -43,9 +43,9 @@ public interface FeatureSetExpander
 		final SoftmaxPolicy policy,
 		final Game game,
 		final int featureDiscoveryMaxNumFeatureInstances,
-		final TDoubleArrayList fActiveRatios,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
+		final TDoubleArrayList featureActiveRatios,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	);
@@ -123,7 +123,7 @@ public interface FeatureSetExpander
 			}
 			else
 			{
-				// we don't just arbitrarily combine a with b, but want to make
+				// We don't just arbitrarily combine a with b, but want to make
 				// sure to do so in a consistent, reproducible order
 				if (a.feature().spatialFeatureSetIndex() < b.feature().spatialFeatureSetIndex())
 				{
@@ -191,6 +191,57 @@ public interface FeatureSetExpander
 			return combinedFeature + " (from " + a + " and " + b + ")";
 		}
 	}
+	
+	/**
+	 * Wrapper class for a single feature instance, with equals() and
+	 * hashCode() implementations that ignore differences in anchor
+	 * position (and resulting differences in exactly which positions
+	 * we place requirements on).
+	 * 
+	 * @author Dennis Soemers
+	 */
+//	final class AnchorInvariantFeatureInstance
+//	{
+//		
+//		/** The feature instance */
+//		public final FeatureInstance instance;
+//
+//		/** Cached hash code */
+//		private int cachedHash = Integer.MIN_VALUE;
+//
+//		/**
+//		 * Constructor
+//		 * @param instance
+//		 */
+//		public AnchorInvariantFeatureInstance(final FeatureInstance instance)
+//		{
+//			this.instance = instance;
+//		}
+//
+//		@Override
+//		public boolean equals(final Object other)
+//		{
+//			if (!(other instanceof AnchorInvariantFeatureInstance))
+//				return false;
+//
+//			return instance.equalsIgnoreAnchor(((AnchorInvariantFeatureInstance) other).instance);
+//		}
+//
+//		@Override
+//		public int hashCode()
+//		{
+//			if (cachedHash == Integer.MIN_VALUE)
+//				cachedHash = instance.hashCodeIgnoreAnchor();
+//
+//			return cachedHash;
+//		}
+//
+//		@Override
+//		public String toString()
+//		{
+//			return "[Anchor-invariant instance (from: " + instance + ")]";
+//		}
+//	}
 	
 	//-------------------------------------------------------------------------
 

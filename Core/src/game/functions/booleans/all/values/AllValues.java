@@ -21,7 +21,7 @@ public final class AllValues extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Integer array to check. */
 	private final IntArrayFunction array;
@@ -43,7 +43,7 @@ public final class AllValues extends BaseBooleanFunction
 		condition = If;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -65,7 +65,7 @@ public final class AllValues extends BaseBooleanFunction
 		return true;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

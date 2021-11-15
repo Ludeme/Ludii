@@ -19,7 +19,7 @@ public class Payoffs extends Result
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** To compute the scores. */
 	final private Payoff[] finalPayoff;

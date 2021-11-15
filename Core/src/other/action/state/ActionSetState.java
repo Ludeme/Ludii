@@ -35,6 +35,14 @@ public class ActionSetState extends BaseAction
 	private SiteType type;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous state of the site before to be removed. */
+	private int previousState;
+
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type  The graph element type.
@@ -88,16 +96,22 @@ public class ActionSetState extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
+		final int cid = type.equals(SiteType.Cell) ?  context.containerId()[to] : 0;
+		final ContainerState cs = context.state().containerStates()[cid];
 
 		if (context.game().isStacking())
 		{
 			if (level != Constants.UNDEFINED)
 			{
-				final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
-				final ContainerState cs = context.state().containerStates()[cid];
 				final int stackSize = cs.sizeStack(to, type);
 				if (level < stackSize)
 				{
+					if(!alreadyApplied)
+					{
+						previousState = cs.state(to, level, type);
+						alreadyApplied = true;
+					}
+					
 					final int what = cs.what(to, level, type);
 					final int who = cs.who(to, level, type);
 					final int rotation = cs.rotation(to, level, type);
@@ -108,18 +122,69 @@ public class ActionSetState extends BaseAction
 			}
 			else
 			{
-				final int cidTo = type.equals(SiteType.Cell) ?  context.containerId()[to] : 0;
-				if(to < context.containers()[cidTo].topology().getGraphElements(type).size())
-					context.containerState(cidTo).setSite(context.state(), to, Constants.UNDEFINED,
+				if(!alreadyApplied)
+				{
+					previousState = cs.state(to, type);
+					alreadyApplied = true;
+				}
+				
+				if(to < context.containers()[cid].topology().getGraphElements(type).size())
+					cs.setSite(context.state(), to, Constants.UNDEFINED,
 							Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
 			}
 		}
 		else
 		{
-			final int cidTo = type.equals(SiteType.Cell) ?  context.containerId()[to] : 0;
-			if(to < context.containers()[cidTo].topology().getGraphElements(type).size())
-				context.containerState(cidTo).setSite(context.state(), to, Constants.UNDEFINED,
+			if(!alreadyApplied)
+			{
+				previousState = cs.state(to, type);
+				alreadyApplied = true;
+			}
+			
+			if(to < context.containers()[cid].topology().getGraphElements(type).size())
+				cs.setSite(context.state(), to, Constants.UNDEFINED,
 						Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+		}
+
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		type = (type == null) ? context.board().defaultSite() : type;
+		final int cid = type.equals(SiteType.Cell) ?  context.containerId()[to] : 0;
+		final ContainerState cs = context.state().containerStates()[cid];
+
+		if (context.game().isStacking())
+		{
+			if (level != Constants.UNDEFINED)
+			{
+				final int stackSize = cs.sizeStack(to, type);
+				if (level < stackSize)
+				{
+					final int what = cs.what(to, level, type);
+					final int who = cs.who(to, level, type);
+					final int rotation = cs.rotation(to, level, type);
+					final int value = cs.value(to, level, type);
+					cs.remove(context.state(), to, level, type);
+					cs.insert(context.state(), type, to, level, what, who, previousState, rotation, value, context.game());
+				}
+			}
+			else
+			{
+				if(to < context.containers()[cid].topology().getGraphElements(type).size())
+					cs.setSite(context.state(), to, Constants.UNDEFINED,
+							Constants.UNDEFINED, Constants.UNDEFINED, previousState, Constants.UNDEFINED, Constants.UNDEFINED, type);
+			}
+		}
+		else
+		{
+			if(to < context.containers()[cid].topology().getGraphElements(type).size())
+				cs.setSite(context.state(), to, Constants.UNDEFINED,
+						Constants.UNDEFINED, Constants.UNDEFINED, previousState, Constants.UNDEFINED, Constants.UNDEFINED, type);
 		}
 
 		return this;
@@ -301,7 +366,7 @@ public class ActionSetState extends BaseAction
 		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

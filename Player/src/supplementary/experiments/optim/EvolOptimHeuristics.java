@@ -21,15 +21,17 @@ import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.collections.ListUtils;
-import main.math.Stats;
+import main.math.statistics.Stats;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
 import metadata.ai.heuristics.terms.ComponentValues;
 import metadata.ai.heuristics.terms.CornerProximity;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import metadata.ai.heuristics.terms.Influence;
+import metadata.ai.heuristics.terms.InfluenceAdvanced;
 import metadata.ai.heuristics.terms.LineCompletionHeuristic;
 import metadata.ai.heuristics.terms.Material;
+import metadata.ai.heuristics.terms.MobilityAdvanced;
 import metadata.ai.heuristics.terms.MobilitySimple;
 import metadata.ai.heuristics.terms.NullHeuristic;
 import metadata.ai.heuristics.terms.OwnRegionsCount;
@@ -38,6 +40,7 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
+import metadata.ai.heuristics.terms.UnthreatenedMaterial;
 import metadata.ai.misc.Pair;
 import other.AI;
 import other.GameLoader;
@@ -517,60 +520,73 @@ public class EvolOptimHeuristics
 		
 		for (final float weight : new float[]{-1.f, 1.f})
 		{
-			if (LineCompletionHeuristic.isApplicableToGame(game) && !skipHeuristics.contains("LineCompletionHeuristic"))
+			if (LineCompletionHeuristic.isSensibleForGame(game) && !skipHeuristics.contains("LineCompletionHeuristic"))
 				heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(weight), null));
 			
-			if (MobilitySimple.isApplicableToGame(game) && !skipHeuristics.contains("MobilitySimple"))
+			if (MobilitySimple.isSensibleForGame(game) && !skipHeuristics.contains("MobilitySimple"))
 				heuristicTerms.add(new MobilitySimple(null, Float.valueOf(weight)));
 			
-			if (Influence.isApplicableToGame(game) && !skipHeuristics.contains("Influence"))
+			if (MobilityAdvanced.isSensibleForGame(game) && !skipHeuristics.contains("MobilityAdvanced"))
+				heuristicTerms.add(new MobilityAdvanced(null, Float.valueOf(weight)));
+			
+			if (Influence.isSensibleForGame(game) && !skipHeuristics.contains("Influence"))
 				heuristicTerms.add(new Influence(null, Float.valueOf(weight)));
 			
-			if (OwnRegionsCount.isApplicableToGame(game) && !skipHeuristics.contains("OwnRegionsCount"))
+			if (InfluenceAdvanced.isSensibleForGame(game) && !skipHeuristics.contains("InfluenceAdvanced"))
+				heuristicTerms.add(new InfluenceAdvanced(null, Float.valueOf(weight)));
+			
+			if (OwnRegionsCount.isSensibleForGame(game) && !skipHeuristics.contains("OwnRegionsCount"))
 				heuristicTerms.add(new OwnRegionsCount(null, Float.valueOf(weight)));
 			
-			if (PlayerSiteMapCount.isApplicableToGame(game) && !skipHeuristics.contains("PlayerSiteMapCount"))
+			if (PlayerSiteMapCount.isSensibleForGame(game) && !skipHeuristics.contains("PlayerSiteMapCount"))
 				heuristicTerms.add(new PlayerSiteMapCount(null, Float.valueOf(weight)));
 			
-			if (Score.isApplicableToGame(game) && !skipHeuristics.contains("Score"))
+			if (Score.isSensibleForGame(game) && !skipHeuristics.contains("Score"))
 				heuristicTerms.add(new Score(null, Float.valueOf(weight)));
 			
-			if (CentreProximity.isApplicableToGame(game) && !skipHeuristics.contains("CentreProximity"))
+			if (CentreProximity.isSensibleForGame(game) && !skipHeuristics.contains("CentreProximity"))
 			{
 				heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
 			}
 			
-			if (ComponentValues.isApplicableToGame(game) && !skipHeuristics.contains("ComponentValues"))
+			if (ComponentValues.isSensibleForGame(game) && !skipHeuristics.contains("ComponentValues"))
 			{
 				heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), null, null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), componentPairs, null));
 			}
 				
-			if (CornerProximity.isApplicableToGame(game) && !skipHeuristics.contains("CornerProximity"))
+			if (CornerProximity.isSensibleForGame(game) && !skipHeuristics.contains("CornerProximity"))
 			{
 				heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), componentPairs));
 			}
 		
-			if (Material.isApplicableToGame(game) && !skipHeuristics.contains("Material"))
+			if (Material.isSensibleForGame(game) && !skipHeuristics.contains("Material"))
 			{
 				heuristicTerms.add(new Material(null, Float.valueOf(weight), null, null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new Material(null, Float.valueOf(weight), componentPairs, null));
 			}
+			
+			if (UnthreatenedMaterial.isSensibleForGame(game) && !skipHeuristics.contains("UnthreatenedMaterial"))
+			{
+				heuristicTerms.add(new UnthreatenedMaterial(null, Float.valueOf(weight), null));
+				for (final Pair[] componentPairs : allComponentPairsCombinations)
+					heuristicTerms.add(new UnthreatenedMaterial(null, Float.valueOf(weight), componentPairs));
+			}
 		
-			if (SidesProximity.isApplicableToGame(game) && !skipHeuristics.contains("SidesProximity"))
+			if (SidesProximity.isSensibleForGame(game) && !skipHeuristics.contains("SidesProximity"))
 			{
 				heuristicTerms.add(new SidesProximity(null, Float.valueOf(weight), null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
 			}
 			
-			if (PlayerRegionsProximity.isApplicableToGame(game) && !skipHeuristics.contains("PlayerRegionsProximity"))
+			if (PlayerRegionsProximity.isSensibleForGame(game) && !skipHeuristics.contains("PlayerRegionsProximity"))
 			{
 				for (int p = 1; p <= game.players().count(); ++p)
 				{
@@ -580,7 +596,7 @@ public class EvolOptimHeuristics
 				}
 			}
 			
-			if (RegionProximity.isApplicableToGame(game) && !skipHeuristics.contains("RegionProximity"))
+			if (RegionProximity.isSensibleForGame(game) && !skipHeuristics.contains("RegionProximity"))
 			{
 				for (int i = 0; i < game.equipment().regions().length; ++i)
 				{

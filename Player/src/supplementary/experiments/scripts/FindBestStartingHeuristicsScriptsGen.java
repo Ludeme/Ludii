@@ -27,8 +27,10 @@ import metadata.ai.heuristics.terms.ComponentValues;
 import metadata.ai.heuristics.terms.CornerProximity;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import metadata.ai.heuristics.terms.Influence;
+import metadata.ai.heuristics.terms.InfluenceAdvanced;
 import metadata.ai.heuristics.terms.LineCompletionHeuristic;
 import metadata.ai.heuristics.terms.Material;
+import metadata.ai.heuristics.terms.MobilityAdvanced;
 import metadata.ai.heuristics.terms.MobilitySimple;
 import metadata.ai.heuristics.terms.NullHeuristic;
 import metadata.ai.heuristics.terms.OwnRegionsCount;
@@ -37,8 +39,10 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
+import metadata.ai.heuristics.terms.UnthreatenedMaterial;
 import other.GameLoader;
 import search.minimax.AlphaBetaSearch;
+import utils.AIUtils;
 
 /**
  * Method to generate cluster job scripts for finding the best
@@ -60,7 +64,7 @@ public class FindBestStartingHeuristicsScriptsGen
 	private static final String MEM_PER_CPU = "4096";
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 6000;
+	private static final int MAX_WALL_TIME = 3000;
 	
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
@@ -159,46 +163,55 @@ public class FindBestStartingHeuristicsScriptsGen
 				
 				final List<String> relevantHeuristics = new ArrayList<String>();
 				
-				if (CentreProximity.isApplicableToGame(game))
+				if (CentreProximity.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("CentreProximity", game, argParse));
 				
-				if (ComponentValues.isApplicableToGame(game))
+				if (ComponentValues.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("ComponentValues", game, argParse));
 	
-				if (CornerProximity.isApplicableToGame(game))
+				if (CornerProximity.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("CornerProximity", game, argParse));
 	
-				if (LineCompletionHeuristic.isApplicableToGame(game))
+				if (LineCompletionHeuristic.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("LineCompletionHeuristic", game, argParse));
 	
-				if (Material.isApplicableToGame(game))
+				if (Material.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("Material", game, argParse));
+				
+				if (UnthreatenedMaterial.isSensibleForGame(game))
+					relevantHeuristics.addAll(heuristicFilepaths("UnthreatenedMaterial", game, argParse));
 	
-				if (MobilitySimple.isApplicableToGame(game))
+				if (MobilitySimple.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("MobilitySimple", game, argParse));
 				
-				if (NullHeuristic.isApplicableToGame(game))
+				if (MobilityAdvanced.isSensibleForGame(game))
+					relevantHeuristics.addAll(heuristicFilepaths("MobilityAdvanced", game, argParse));
+				
+				if (NullHeuristic.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("NullHeuristic", game, argParse));
 				
-				if (Influence.isApplicableToGame(game))
+				if (Influence.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("Influence", game, argParse));
+				
+				if (InfluenceAdvanced.isSensibleForGame(game))
+					relevantHeuristics.addAll(heuristicFilepaths("InfluenceAdvanced", game, argParse));
 	
-				if (OwnRegionsCount.isApplicableToGame(game))
+				if (OwnRegionsCount.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("OwnRegionsCount", game, argParse));
 	
-				if (PlayerRegionsProximity.isApplicableToGame(game))
+				if (PlayerRegionsProximity.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("PlayerRegionsProximity", game, argParse));
 	
-				if (PlayerSiteMapCount.isApplicableToGame(game))
+				if (PlayerSiteMapCount.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("PlayerSiteMapCount", game, argParse));
 	
-				if (RegionProximity.isApplicableToGame(game))
+				if (RegionProximity.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("RegionProximity", game, argParse));
 	
-				if (Score.isApplicableToGame(game))
+				if (Score.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("Score", game, argParse));
 	
-				if (SidesProximity.isApplicableToGame(game))
+				if (SidesProximity.isSensibleForGame(game))
 					relevantHeuristics.addAll(heuristicFilepaths("SidesProximity", game, argParse));
 				
 				final int numPlayers = game.players().count();
@@ -248,7 +261,7 @@ public class FindBestStartingHeuristicsScriptsGen
 					final int numCombinations = opponentCombinations.size();
 					int numGamesPerComb = 10;
 					
-					while (numCombinations * numGamesPerComb < 100)
+					while (numCombinations * numGamesPerComb < 120)
 					{
 						numGamesPerComb += 10;
 					}
@@ -296,7 +309,7 @@ public class FindBestStartingHeuristicsScriptsGen
 											"heuristics=" + StringRoutines.quote(heuristicFilepath),
 											"friendly_name=" + heuristicName
 										));
-								matchupStr += heuristicName;
+								matchupStr += AIUtils.shortenHeuristicName(heuristicName);
 							}
 							
 							final String javaCall = StringRoutines.join
@@ -504,6 +517,16 @@ public class FindBestStartingHeuristicsScriptsGen
 			writeFilepaths.add(scriptsDir + "MaterialNeg.txt");
 			heuristicTerms.add(new Material(null, Float.valueOf(-1.f), null, null));
 		}
+		else if (heuristicDescription.equals("MobilityAdvanced"))
+		{
+			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/MobilityAdvancedPos.txt");
+			writeFilepaths.add(scriptsDir + "MobilityAdvancedPos.txt");
+			heuristicTerms.add(new MobilityAdvanced(null, Float.valueOf(1.f)));
+			
+			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/MobilityAdvancedNeg.txt");
+			writeFilepaths.add(scriptsDir + "MobilityAdvancedNeg.txt");
+			heuristicTerms.add(new MobilityAdvanced(null, Float.valueOf(-1.f)));
+		}
 		else if (heuristicDescription.equals("MobilitySimple"))
 		{
 			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/MobilitySimplePos.txt");
@@ -529,6 +552,16 @@ public class FindBestStartingHeuristicsScriptsGen
 			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/InfluenceNeg.txt");
 			writeFilepaths.add(scriptsDir + "InfluenceNeg.txt");
 			heuristicTerms.add(new Influence(null, Float.valueOf(-1.f)));
+		}
+		else if (heuristicDescription.equals("InfluenceAdvanced"))
+		{
+			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/InfluenceAdvancedPos.txt");
+			writeFilepaths.add(scriptsDir + "InfluenceAdvancedPos.txt");
+			heuristicTerms.add(new InfluenceAdvanced(null, Float.valueOf(1.f)));
+			
+			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/InfluenceAdvancedNeg.txt");
+			writeFilepaths.add(scriptsDir + "InfluenceAdvancedNeg.txt");
+			heuristicTerms.add(new InfluenceAdvanced(null, Float.valueOf(-1.f)));
 		}
 		else if (heuristicDescription.equals("OwnRegionsCount"))
 		{
@@ -616,6 +649,16 @@ public class FindBestStartingHeuristicsScriptsGen
 			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/SidesProximityNeg.txt");
 			writeFilepaths.add(scriptsDir + "SidesProximityNeg.txt");
 			heuristicTerms.add(new SidesProximity(null, Float.valueOf(-1.f), null));
+		}
+		else if (heuristicDescription.equals("UnthreatenedMaterial"))
+		{
+			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/UnthreatenedMaterialPos.txt");
+			writeFilepaths.add(scriptsDir + "UnthreatenedMaterialPos.txt");
+			heuristicTerms.add(new UnthreatenedMaterial(null, Float.valueOf(1.f), null));
+			
+			returnFilepaths.add("/home/" + userName + "/FindStartingHeuristic/UnthreatenedMaterialNeg.txt");
+			writeFilepaths.add(scriptsDir + "UnthreatenedMaterialNeg.txt");
+			heuristicTerms.add(new UnthreatenedMaterial(null, Float.valueOf(-1.f), null));
 		}
 		else
 		{

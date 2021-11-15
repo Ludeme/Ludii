@@ -25,6 +25,14 @@ public interface Action extends Serializable
 	 *         in Moves)
 	 */
 	public Action apply(final Context context, final boolean store);
+	
+	/**
+	 * To undo an action.
+	 *
+	 * @param context The context.
+	 * @return Action as applied to undo the corresponding action.
+	 */
+	public Action undo(final Context context);
 
 	/**
 	 * @return Whether this action is a pass.

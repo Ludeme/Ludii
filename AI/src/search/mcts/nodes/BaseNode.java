@@ -1,8 +1,11 @@
 package search.mcts.nodes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
@@ -57,6 +60,9 @@ public abstract class BaseNode
     
     /** Table of AMAF stats for GRAVE */
     protected final Map<MoveKey, NodeStatistics> graveStats;
+    
+    /** Lock for MCTS code that modifies/reads node data in ways that should be synchronised */
+    protected transient ReentrantLock nodeLock = new ReentrantLock();
 	
 	//-------------------------------------------------------------------------
 	
@@ -192,6 +198,12 @@ public abstract class BaseNode
 	 */
 	public abstract void updateContextRef();
 	
+	/**
+	 * Recursively clean any thread-local variables we may have (it
+	 * seems like GC struggles with them otherwise).
+	 */
+	public abstract void cleanThreadLocals();
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -215,6 +227,15 @@ public abstract class BaseNode
     public double exploitationScore(final int agent)
     {
     	return expectedScore(agent);
+    }
+    
+    /**
+     * @param agent
+     * @return Is the value for given agent fully proven in this node?
+     */
+    public boolean isValueProven(final int agent)
+    {
+    	return false;
     }
     
     /**
@@ -329,7 +350,6 @@ public abstract class BaseNode
     
     /**
      * @param agent Agent index
-     * @param state
      * 
      * @return Value estimate for unvisited children of this node
      */
@@ -617,9 +637,10 @@ public abstract class BaseNode
     //-------------------------------------------------------------------------
     
     /**
+     * @param weightVisitCount
      * @return A sample of experience for learning with Expert Iteration
      */
-    public ExItExperience generateExItExperience()
+    public ExItExperience generateExItExperience(final float weightVisitCount)
     {
     	final FastArrayList<Move> actions = new FastArrayList<Move>(numLegalMoves());
     	final float[] valueEstimates = new float[numLegalMoves()];
@@ -639,13 +660,68 @@ public abstract class BaseNode
     			valueEstimates[i] = (float) child.expectedScore(state.playerToAgent(state.mover()));
        	}
     	
+    	FVector visitCountPolicy = computeVisitCountPolicy(1.0);
+    	final float min = visitCountPolicy.min();
+    	boolean allPruned = true;
+    	for (int i = 0; i < numLegalMoves(); ++i)
+    	{
+    		final BaseNode child = childForNthLegalMove(i);
+    		if (child != null && child instanceof ScoreBoundsNode)
+    		{
+    			if (((ScoreBoundsNode) child).isPruned())
+    				visitCountPolicy.set(i, min);
+    			else
+    				allPruned = false;
+    		}
+    		else
+    		{
+    			allPruned = false;
+    		}
+    	}
+    	
+    	if (allPruned)		// Special case; if EVERYTHING gets pruned, we prefer to stick to existing biases
+    		visitCountPolicy = computeVisitCountPolicy(1.0);
+    	else
+    		visitCountPolicy.normalise();
+    	
     	return new ExItExperience
     			(
+    				new Context(deterministicContextRef()),
     				new ExItExperienceState(deterministicContextRef()),
     				actions,
-    				computeVisitCountPolicy(1.0),
-    				FVector.wrap(valueEstimates)
+    				visitCountPolicy,
+    				FVector.wrap(valueEstimates),
+    				weightVisitCount
     			);
+    }
+    
+    /**
+     * @return List of samples of experience for learning with Expert Iteration
+     */
+    public List<ExItExperience> generateExItExperiences()
+    {
+    	final List<ExItExperience> experiences = new ArrayList<ExItExperience>();
+    	experiences.add(generateExItExperience(1.f));
+    	final State myState = this.contextRef().state();
+    	
+    	for (int i = 0; i < numLegalMoves(); ++i)
+    	{
+    		final BaseNode child = childForNthLegalMove(i);
+    		if (child != null && child.numVisits() > 0 && child.isValueProven(myState.playerToAgent(myState.mover())) && child.numLegalMoves() > 0)
+    			experiences.add(child.generateExItExperience(((float) child.numVisits() / numVisits())));
+    	}
+    	
+    	return experiences;
+    }
+    
+    //-------------------------------------------------------------------------
+    
+    /**
+     * @return Lock for this node
+     */
+    public ReentrantLock getLock()
+    {
+    	return nodeLock;
     }
     
     //-------------------------------------------------------------------------

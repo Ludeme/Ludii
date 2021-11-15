@@ -31,7 +31,7 @@ public final class SetTeam extends Effect
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The index of the team. */
 	final IntFunction teamIdFn;
@@ -42,7 +42,7 @@ public final class SetTeam extends Effect
 	/** The roletypes used to check them in the required warning method. */
 	final RoleType[] roles;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param team  The index of the team.
@@ -70,7 +70,7 @@ public final class SetTeam extends Effect
 		this.roles = roles;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Moves eval(final Context context)
@@ -109,7 +109,7 @@ public final class SetTeam extends Effect
 		return moves;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean canMoveTo(final Context context, final int target)
@@ -117,7 +117,7 @@ public final class SetTeam extends Effect
 		return false;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)

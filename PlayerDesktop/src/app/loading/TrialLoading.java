@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 
@@ -19,7 +18,6 @@ import manager.ai.AIUtil;
 import manager.utils.game_logs.MatchRecord;
 import other.context.Context;
 import other.move.Move;
-import utils.AIUtils;
 
 public class TrialLoading
 {
@@ -47,13 +45,13 @@ public class TrialLoading
 			
 			if (app.settingsPlayer().saveHeuristics())
 			{
-				AIUtils.saveHeuristicScores
-				(
-					app.manager().ref().context().trial(), 
-					app.manager().ref().context(), 
-					app.manager().currGameStartRngState(),
-					new File(filePath.replaceAll(Pattern.quote(".trl"), "_heuristics.csv"))
-				);
+//				AIUtils.saveHeuristicScores
+//				(
+//					app.manager().ref().context().trial(), 
+//					app.manager().ref().context(), 
+//					app.manager().currGameStartRngState(),
+//					new File(filePath.replaceAll(Pattern.quote(".trl"), "_heuristics.csv"))
+//				);
 			}
 		}
 	}

@@ -34,7 +34,7 @@ public final class SitesBetween extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The 'from' site. */
 	private final IntFunction fromFn;
@@ -85,7 +85,7 @@ public final class SitesBetween extends BaseRegionFunction
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -170,7 +170,7 @@ public final class SitesBetween extends BaseRegionFunction
 		return new Region(sites.toArray());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

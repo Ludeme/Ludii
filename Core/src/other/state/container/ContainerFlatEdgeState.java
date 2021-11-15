@@ -22,7 +22,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Owner of an edge. */
 	private final HashedChunkSet whoEdge;
@@ -66,7 +66,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 	/** Which edge slots are empty. */
 	private final Region emptyEdge;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor of a flat container.
@@ -212,7 +212,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return new ContainerFlatEdgeState(this);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	protected long calcCanonicalHash(final int[] siteRemap, final int[] edgeRemap, final int[] vertexRemap,
@@ -275,7 +275,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return hash;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Reset this state.
@@ -332,7 +332,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 			emptyEdge.set(numEdge);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isHidden(final int player, final int site, final int level, final SiteType type)
@@ -543,7 +543,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		this.hiddenCountEdge[player].set(state, site, on);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isPlayable(final int site)
@@ -557,7 +557,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isOccupied(final int site)
@@ -565,7 +565,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return countEdge(site) != 0;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	@Override
 	public void setSite(final State trialState, final int site, final int whoVal, final int whatVal, final int countVal,
 			final int stateVal, final int rotationVal, final int valueVal, final SiteType type)
@@ -630,7 +630,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int whoCell(final int site)
@@ -638,7 +638,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return 0;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int whatCell(final int site)
@@ -646,7 +646,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return 0;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int stateCell(final int site)
@@ -666,7 +666,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return 0;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int countCell(final int site)
@@ -674,7 +674,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return 0;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int remove(final State trialState, final int site, final SiteType type)
@@ -692,7 +692,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return remove(trialState, site, type);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int hashCode()
@@ -880,7 +880,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		return thisSet.equals(otherSet);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param site
@@ -1284,7 +1284,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 		emptyEdge.remove(site);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param preferred

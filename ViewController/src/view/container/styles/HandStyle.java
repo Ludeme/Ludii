@@ -16,6 +16,12 @@ public class HandStyle extends BaseContainerStyle
 		super(bridge, container);
 		containerPlacement = new HandPlacement(bridge, this);
 	}
+
+	@Override
+	public void setDefaultBoardScale(final double scale) 
+	{
+		// do nothing
+	}
 	
 	//-------------------------------------------------------------------------
 

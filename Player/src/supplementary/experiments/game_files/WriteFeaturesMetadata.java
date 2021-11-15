@@ -13,6 +13,7 @@ import metadata.ai.features.Features;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import utils.AIFactory;
+import utils.AIUtils;
 
 /**
  * Class to write a set of features and weights to a file
@@ -21,13 +22,29 @@ import utils.AIFactory;
  */
 public class WriteFeaturesMetadata
 {
-	/** Filepaths for feature weights to write */
-	protected List<String> featureWeightsFilepaths;
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Private constructor
+	 */
+	private WriteFeaturesMetadata()
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/** Filepaths for Selection feature weights to write */
+	protected List<String> featureWeightsFilepathsSelection;
+	
+	/** Filepaths for Playout feature weights to write */
+	protected List<String> featureWeightsFilepathsPlayout;
 	
 	/** File to write features metadata to */
 	protected File outFile;
 	
-	/** If true, we expect policy weight files to be boosted */
+	/** If true, we expect Playout policy weight files to be boosted */
 	protected boolean boosted;
 
 	//-------------------------------------------------------------------------
@@ -42,31 +59,40 @@ public class WriteFeaturesMetadata
 		final StringBuilder playoutSb = new StringBuilder();
 		playoutSb.append("playout=softmax");
 
-		for (int p = 1; p <= featureWeightsFilepaths.size(); ++p)
+		for (int p = 1; p <= featureWeightsFilepathsPlayout.size(); ++p)
 		{
-			playoutSb.append(",policyweights" + p + "=" + featureWeightsFilepaths.get(p - 1));
+			playoutSb.append(",policyweights" + p + "=" + featureWeightsFilepathsPlayout.get(p - 1));
 		}
 		
 		if (boosted)
 			playoutSb.append(",boosted=true");
+		
+		final StringBuilder selectionSb = new StringBuilder();
+		selectionSb.append("learned_selection_policy=softmax");
+
+		for (int p = 1; p <= featureWeightsFilepathsSelection.size(); ++p)
+		{
+			selectionSb.append(",policyweights" + p + "=" + featureWeightsFilepathsSelection.get(p - 1));
+		}
 
 		final String agentStr = StringRoutines.join
 				(
-						";", 
-						"algorithm=MCTS",
-						"selection=ag0selection",
-						playoutSb.toString(),
-						"final_move=robustchild",
-						"tree_reuse=true",
-						"learned_selection_policy=playout",
-						"friendly_name=BiasedMCTS"
-						);
+					";", 
+					"algorithm=MCTS",
+					"selection=noisyag0selection",
+					playoutSb.toString(),
+					"final_move=robustchild",
+					"tree_reuse=true",
+					selectionSb.toString(),
+					"friendly_name=BiasedMCTS"
+				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicy softmax = (SoftmaxPolicy) mcts.playoutStrategy();
+		final SoftmaxPolicy selectionSoftmax = mcts.learnedSelectionPolicy();
+		final SoftmaxPolicy playoutSoftmax = (SoftmaxPolicy) mcts.playoutStrategy();
 
 		// Generate our features metadata and write it
-		final Features features = softmax.generateFeaturesMetadata();
+		final Features features = AIUtils.generateFeaturesMetadata(selectionSoftmax, playoutSoftmax);
 
 		try (final PrintWriter writer = new PrintWriter(outFile))
 		{
@@ -87,7 +113,7 @@ public class WriteFeaturesMetadata
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args)
 	{
-		// define options for arg parser
+		// Define options for arg parser
 		final CommandLineArgParse argParse = 
 				new CommandLineArgParse
 				(
@@ -96,8 +122,13 @@ public class WriteFeaturesMetadata
 				);
 		
 		argParse.addOption(new ArgOption()
-				.withNames("--feature-weights-filepaths")
-				.help("Filepaths for feature weights.")
+				.withNames("--selection-feature-weights-filepaths")
+				.help("Filepaths for feature weights for Selection.")
+				.withNumVals("+")
+				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--playout-feature-weights-filepaths")
+				.help("Filepaths for feature weights for Selection.")
 				.withNumVals("+")
 				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
@@ -117,7 +148,8 @@ public class WriteFeaturesMetadata
 
 		final WriteFeaturesMetadata task = new WriteFeaturesMetadata();
 		
-		task.featureWeightsFilepaths = (List<String>) argParse.getValue("--feature-weights-filepaths");
+		task.featureWeightsFilepathsSelection = (List<String>) argParse.getValue("--selection-feature-weights-filepaths");
+		task.featureWeightsFilepathsPlayout = (List<String>) argParse.getValue("--playout-feature-weights-filepaths");
 		task.outFile = new File(argParse.getValueString("--out-file"));
 		task.boosted = argParse.getValueBool("--boosted");
 		

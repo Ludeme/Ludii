@@ -14,6 +14,14 @@ public class ActionStoreStateInContext extends BaseAction
 	private static final long serialVersionUID = 1L;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private long previousValue;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * 
@@ -42,7 +50,22 @@ public class ActionStoreStateInContext extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousValue = context.state().storedState();
+			alreadyApplied = true;
+		}
+		
 		context.state().storeCurrentState(context.state());
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		context.state().restoreCurrentState(previousValue);
 		return this;
 	}
 

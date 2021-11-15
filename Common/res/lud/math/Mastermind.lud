@@ -58,7 +58,7 @@
     ("AddHint" "Disc1")
 )
 
-// -------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 (game "Mastermind"
     (players 2)
@@ -188,7 +188,7 @@
             The objective of the second player (called codebreaker) is to try to guess the pattern, in both order and color, within a specific number of tries (corresponding to the number of rows). Each guess is made by placing a row of code pegs on the board.
         Once placed, a feedback on his last try is provided by placing from zero to four key pegs in the small holes of the row with the guess. A black key peg is placed for each code peg from the guess which is correct in both color and position. A white key peg indicates the existence of a correct color code peg placed in the wrong position.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Mastermind_(board_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.2.11")
+        (version "1.3.0")
         (classification "math")
         (author "Mordecai Meirowitz")
         (credit "Eric Piette")
@@ -212,11 +212,11 @@
         
         (piece Scale "Marker" container:1 1)
         (piece Scale "Marker" 1.5)
-        (board Colour InnerVertices (colour Black))
-        (board Colour OuterVertices (colour Black))
+        (board Colour InnerVertices (colour DarkGrey))
+        (board Colour OuterVertices (colour DarkGrey))
         (board Background fillColour:(colour 255 250 220) edgeColour:(colour 100 95 75) scale:2.0)
         (show Line {{3 6}} Edge (colour Black) scale:2.0)
-        (show Symbol "disc" (expand (sites Bottom) steps:"NumRow") fillColour:(colour Black) edgeColour:(colour Black) scale:0.666)
+        (show Symbol "disc" (expand (sites Bottom) steps:"NumRow") fillColour:(colour DarkGrey) edgeColour:(colour DarkGrey) scale:0.666)
         (hand Placement Shared scale:0.4 offsetX:0.75 offsetY:0.25 vertical:True)
         
     })

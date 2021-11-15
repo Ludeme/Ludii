@@ -1,6 +1,5 @@
 package app.views.tools.buttons;
 
-import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 
@@ -8,6 +7,7 @@ import app.PlayerApp;
 import app.views.tools.ToolButton;
 import game.types.play.ModeType;
 import main.Constants;
+import manager.ai.AIUtil;
 import other.location.FullLocation;
 
 //-----------------------------------------------------------------------------
@@ -43,30 +43,34 @@ public class ButtonPlayPause extends ToolButton
 		final double cy = rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
-		g2d.setStroke(new BasicStroke((3 ), BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		//g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		GeneralPath path = new GeneralPath();
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
 		
 		if (app.manager().settingsManager().agentsPaused())
 		{
 			// Display Play Symbol
-			path.moveTo(cx + 9 , cy);
-			path.lineTo(cx - 7 , cy - 9 );
-			path.lineTo(cx - 7 , cy + 9 );
+			path.moveTo(cx + 9 * scale, cy);
+			path.lineTo(cx - 7 * scale, cy - 9 * scale);
+			path.lineTo(cx - 7 * scale, cy + 9 * scale);
 			g2d.fill(path);
 		}
 		else
 		{
 			// Display Pause Symbol
-			path.moveTo(cx - 7 , cy + 9 );
-			path.lineTo(cx - 7 , cy - 9 );
-			path.lineTo(cx - 2 , cy - 9 );
-			path.lineTo(cx - 2 , cy + 9 );
+			path.moveTo(cx - 7 * scale , cy + 9 * scale );
+			path.lineTo(cx - 7 * scale , cy - 9 * scale );
+			path.lineTo(cx - 2 * scale , cy - 9 * scale );
+			path.lineTo(cx - 2 * scale , cy + 9 * scale );
 			g2d.fill(path);
 			path = new GeneralPath();
-			path.moveTo(cx + 2 , cy + 9 );
-			path.lineTo(cx + 2 , cy - 9 );
-			path.lineTo(cx + 7 , cy - 9 );
-			path.lineTo(cx + 7 , cy + 9 );
+			path.moveTo(cx + 2 * scale , cy + 9 * scale );
+			path.lineTo(cx + 2 * scale , cy - 9 * scale );
+			path.lineTo(cx + 7 * scale , cy - 9 * scale );
+			path.lineTo(cx + 7 * scale , cy + 9 * scale );
 			g2d.fill(path);
 		}
 	}
@@ -78,13 +82,8 @@ public class ButtonPlayPause extends ToolButton
 	{
 		if (app.manager().ref().context().game().mode().mode().equals(ModeType.Simulation))
 			return true;
-
-		boolean AnyAIPlayer = false;
-		for (int i = 0; i < app.manager().aiSelected().length; i++)
-			if (app.manager().aiSelected()[i].ai() != null)
-				AnyAIPlayer = true;
 		
-		if (AnyAIPlayer && (app.manager().settingsNetwork().getActiveGameId() == 0 || app.manager().settingsNetwork().getOnlineAIAllowed()))
+		if (AIUtil.anyAIPlayer(app.manager()) && (app.manager().settingsNetwork().getActiveGameId() == 0 || app.manager().settingsNetwork().getOnlineAIAllowed()))
 			return true;
 		
 		return false;

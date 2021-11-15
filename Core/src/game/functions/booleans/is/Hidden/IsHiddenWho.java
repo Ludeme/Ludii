@@ -25,7 +25,7 @@ public final class IsHiddenWho extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Which site. */
 	private final IntFunction siteFn;
@@ -42,7 +42,7 @@ public final class IsHiddenWho extends BaseBooleanFunction
 	/** Precomputed boolean. */
 	private Boolean precomputedBoolean;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For checking the hidden information about the piece owner at a location for a
@@ -69,7 +69,7 @@ public final class IsHiddenWho extends BaseBooleanFunction
 		 this.whoFn = (to == null && To == null) ? null : To != null ? RoleType.toIntFunction(To) : to.originalIndex();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -91,7 +91,7 @@ public final class IsHiddenWho extends BaseBooleanFunction
 		return cs.isHiddenWho(who, site, level, realType);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

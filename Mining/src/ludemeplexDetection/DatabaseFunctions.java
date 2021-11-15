@@ -11,11 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 import game.Game;
-import main.FileHandling;
 import main.grammar.Call;
 import main.grammar.LudemeInfo;
 import main.grammar.Report;
-import main.options.Ruleset;
 import other.GameLoader;
 import utils.DBGameInfo;
 
@@ -37,15 +35,7 @@ public class DatabaseFunctions
 	private static String defineRulesetludemeplexOutputFilePath = "./res/ludemeplexDetection/output/rulesetDefineLudemeplexes.csv";
 	private static String ludemeplexesLudemeOutputFilePath = "./res/ludemeplexDetection/output/ludemeplexLudemes.csv";
 	private static String rulesetludemesOutputFilePath = "./res/ludemeplexDetection/output/rulesetLudemes.csv";
-	
-	@SuppressWarnings("unused")  // DO NOT KILL: May be needed.
-	private static String tokensOutputFilePath = "./res/ludemeplexDetection/output/tokens.csv";
-	
-	@SuppressWarnings("unused")  // DO NOT KILL: May be needed.
-	private static String rulesetTokensOutputFilePath = "./res/ludemeplexDetection/output/rulesetTokens.csv";
-	
-	//-------------------------------------------------------------------------
-	// OUTPUT
+
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -336,7 +326,7 @@ public class DatabaseFunctions
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
 				// Get all ludemes in this ludemeplex
-				final Set<LudemeInfo> ludemesInLudemeplex = entry.getKey().analysisFormat(0, GetLudemeInfo.getLudemeInfo()); 
+				final List<LudemeInfo> ludemesInLudemeplex = entry.getKey().analysisFormat(0, GetLudemeInfo.getLudemeInfo()); 
 				ludemesInLudemeplex.remove(null);
 				
 				for (final LudemeInfo ludeme : ludemesInLudemeplex)
@@ -364,66 +354,30 @@ public class DatabaseFunctions
 	
 	//-------------------------------------------------------------------------
 	
-	public static void storeLudemesInGames(final List<LudemeInfo> allValidLudemes, final String[] choices)
+	public static void storeLudemesInGames(final List<LudemeInfo> allValidLudemes, final List<String[]> gameRulesetNames)
 	{
 		int IdCounter = 1;
 		final Set<LudemeInfo> allLudemesfound = new HashSet<LudemeInfo>();
 		
 		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(rulesetludemesOutputFilePath, false)))
 		{			
-			for (final String s : choices)
+			for (final String[] gameRulesetName : gameRulesetNames)
 			{
-				if (!FileHandling.shouldIgnoreLudAnalysis(s))
+				final Game game = GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]);
+				final List<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
+				final String name = DBGameInfo.getUniqueName(game);
+				
+				for (final LudemeInfo ludeme : ludemesInGame)
 				{
-					final String gameName = s.split("\\/")[s.split("\\/").length-1];
-					final Game tempGame = GameLoader.loadGameFromName(gameName);
-					final List<Ruleset> rulesets = tempGame.description().rulesets();
-					if (rulesets != null && !rulesets.isEmpty())
+					allLudemesfound.add(ludeme);
+					if (DBGameInfo.getRulesetIds().containsKey(name))
 					{
-						// Record ludemes for each ruleset
-						for (int rs = 0; rs < rulesets.size(); rs++)
-						{
-							if (!rulesets.get(rs).optionSettings().isEmpty())
-							{
-								final Game game = GameLoader.loadGameFromName(gameName, rulesets.get(rs).optionSettings());
-								final Set<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
-								final String name = DBGameInfo.getUniqueName(game);
-								
-								for (final LudemeInfo ludeme : ludemesInGame)
-								{
-									allLudemesfound.add(ludeme);
-									if (DBGameInfo.getRulesetIds().containsKey(name))
-									{
-										writer.write(IdCounter + "," + DBGameInfo.getRulesetIds().get(name) + "," + ludeme.id() + "\n");
-										IdCounter++;
-									}
-									else
-									{
-										System.out.println("could not find game name: " + name);
-									}
-								}
-							}
-						}
+						writer.write(IdCounter + "," + DBGameInfo.getRulesetIds().get(name) + "," + ludeme.id() + "\n");
+						IdCounter++;
 					}
 					else
 					{
-						final Game game = GameLoader.loadGameFromName(gameName);
-						final Set<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
-						final String name = DBGameInfo.getUniqueName(game);
-						
-						for (final LudemeInfo ludeme : ludemesInGame)
-						{
-							allLudemesfound.add(ludeme);
-							if (DBGameInfo.getRulesetIds().containsKey(name))
-							{
-								writer.write(IdCounter + "," + DBGameInfo.getRulesetIds().get(name) + "," + ludeme.id() + "\n");
-								IdCounter++;
-							}
-							else
-							{
-								System.out.println("could not find game name: " + name);
-							}
-						}
+						System.out.println("could not find game name: " + name);
 					}
 				}
 			}
@@ -447,7 +401,7 @@ public class DatabaseFunctions
 		for (final LudemeInfo ludeme : allValidLudemes)
 			if (!allLudemesfound.contains(ludeme))
 				notFoundLudemesString += ludeme.getDBString() + "\n";
-		try (final BufferedWriter writer = new BufferedWriter(new FileWriter("NOTFOUNDLUDEMES.csv", false)))
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter("/res/ludemeplexDetection/output/NOTFOUNDLUDEMES.csv", false)))
 		{
 			writer.write(notFoundLudemesString);
 			writer.close();

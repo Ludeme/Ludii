@@ -30,6 +30,7 @@ import main.Constants;
 import main.math.BitTwiddling;
 import metadata.Metadata;
 import other.GameLoader;
+import other.UndoData;
 import other.model.MatchModel;
 import other.model.Model;
 import other.move.Move;
@@ -413,6 +414,15 @@ public class Context
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * To set the active bits.
+	 * @param active For each player a bit to indicate if a player is active.
+	 */
+	public void setActive(final int active)
+	{
+		this.active = active;
+	}
+	
+	/**
 	 * @param who
 	 * @return Whether player is active.
 	 */
@@ -510,12 +520,28 @@ public class Context
 	}
 	
 	/**
+	 * @return The array of scores.
+	 */
+	public int[] scores()
+	{
+		return this.scores;
+	}
+	
+	/**
 	 * @param pid
 	 * @return Current score for player with given Player ID
 	 */
 	public int score(final int pid)
 	{
 		return scores[pid];
+	}
+	
+	/**
+	 * @return The array of payoffs.
+	 */
+	public double[] payoffs()
+	{
+		return this.payoffs;
 	}
 	
 	/**
@@ -1314,7 +1340,7 @@ public class Context
 		return completedTrials;
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param role
@@ -1655,5 +1681,45 @@ public class Context
 	public TIntIntHashMap diceSiteState()
 	{
 		return diceSiteStates;
+	}
+	
+	/**
+	 * Store the current end data into the trial.
+	 */
+	public void storeCurrentEndData()
+	{
+		// Store the phase of each player.
+		final int[] phases = new int[players().size()];
+		for(int pid = 1; pid < players().size(); pid++)
+			phases[pid] = state().currentPhase(pid);
+		
+		final UndoData endData = new UndoData(
+				trial.ranking(),
+				trial.status(), 
+				winners, 
+				losers, 
+				active, 
+				scores, 
+				payoffs, 
+				numLossesDecided, 
+				numWinsDecided, 
+				phases, 
+				state.pendingValues(), 
+				state.counter(), 
+				trial.previousStateWithinATurn(), 
+				trial.previousState(),
+				state.prev(),
+				state.mover(),
+				state.next(),
+				state.numTurn(),
+				state.numTurnSamePlayer(),
+				state.numConsecutivesPasses(),
+				state.remainingDominoes(),
+				state.visited(),
+				state.sitesToRemove(),
+				state.onTrackIndices()
+		);
+		
+		trial.addEndData(endData);
 	}
 }

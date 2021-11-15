@@ -21,7 +21,7 @@ public abstract class AspatialFeature extends Feature
 	 * @return Fetaure value for given move in given state.
 	 */
 	public abstract float featureVal(final State state, final Move move);
-	
+
 	//-------------------------------------------------------------------------
 	
 	@Override

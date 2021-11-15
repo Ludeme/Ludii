@@ -42,10 +42,15 @@ public class ButtonOther extends ToolButton
 		final double cy = rect.getCenterY();
 		
 		g2d.setColor(getButtonColour());
-		final double r = 2.75;
-		g2d.fill(new Ellipse2D.Double(cx-r, cy-r-9, 2*r, 2*r));
-		g2d.fill(new Ellipse2D.Double(cx-r, cy-r,   2*r, 2*r));
-		g2d.fill(new Ellipse2D.Double(cx-r, cy-r+9, 2*r, 2*r));
+		
+		// Determine button scale, so that buttons are scaled up on the mobile version.
+		// The desktop version assume a toolbar height of 32 pixels, this should be 64 for mobile version.
+		final double scale = scaleForDevice();
+
+		final double r = 2.75 * scale;
+		g2d.fill(new Ellipse2D.Double(cx-r, cy-r-9 * scale, 2*r, 2*r));
+		g2d.fill(new Ellipse2D.Double(cx-r, cy-r,           2*r, 2*r));
+		g2d.fill(new Ellipse2D.Double(cx-r, cy-r+9 * scale, 2*r, 2*r));
 		
 		if (otherPossibleMoves.size() > 0)
 			showPossibleMovesTemporaryMessage();

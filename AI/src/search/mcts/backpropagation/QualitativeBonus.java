@@ -1,6 +1,6 @@
 package search.mcts.backpropagation;
 
-import main.math.IncrementalStats;
+import main.math.statistics.IncrementalStats;
 import other.context.Context;
 import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;

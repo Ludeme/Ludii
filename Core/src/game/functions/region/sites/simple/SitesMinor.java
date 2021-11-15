@@ -20,12 +20,12 @@ public final class SitesMinor extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** If we can, we'll precompute once and cache. */
 	private Region precomputedRegion = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param elementType Type of graph elements to return [Cell (or Vertex if the
@@ -39,7 +39,7 @@ public final class SitesMinor extends BaseRegionFunction
 		type = elementType;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -54,7 +54,7 @@ public final class SitesMinor extends BaseRegionFunction
 		return new Region(graph.minor(realType));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

@@ -294,6 +294,9 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
+		if (precomputedRegion != null)
+			return precomputedRegion.toEnglish(game);
+		
 		String text = "";
 		for (final List<Regions> regions : regionsPerPlayer) 
 		{
@@ -301,7 +304,7 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 			{
 				for (final Regions region : regions) 
 				{					
-					text += region.toEnglish(game);
+					text += region.name();
 					text += " or ";
 				}
 			}
@@ -312,4 +315,5 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 		
 		return text;
 	}
+
 }

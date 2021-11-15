@@ -15,7 +15,7 @@ public class Was extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param wasType The event to query.
@@ -39,7 +39,7 @@ public class Was extends BaseBooleanFunction
 		throw new IllegalArgumentException("Was(): A wasType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private Was()
 	{

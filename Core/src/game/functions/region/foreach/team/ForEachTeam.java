@@ -23,12 +23,12 @@ public final class ForEachTeam extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Region to return for each player. */
 	private final RegionFunction region;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param region The region.
@@ -38,7 +38,7 @@ public final class ForEachTeam extends BaseRegionFunction
 		this.region = region;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public final Region eval(final Context context)
@@ -67,7 +67,7 @@ public final class ForEachTeam extends BaseRegionFunction
 		return new Region(returnSites.toArray());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

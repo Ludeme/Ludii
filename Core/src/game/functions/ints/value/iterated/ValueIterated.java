@@ -21,7 +21,7 @@ public final class ValueIterated extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @example (value)
@@ -31,7 +31,7 @@ public final class ValueIterated extends BaseIntFunction
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -39,7 +39,7 @@ public final class ValueIterated extends BaseIntFunction
 		return context.value();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()
@@ -87,7 +87,7 @@ public final class ValueIterated extends BaseIntFunction
 		// nothing to do
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()

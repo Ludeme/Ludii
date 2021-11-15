@@ -19,7 +19,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * A Unit Test to generate, and store, one random trial for every game.
+ * A Unit Test to generate, and store, random trials for every game.
  * Games for which trials are already stored will be skipped.
  * 
  * @author Dennis Soemers
@@ -32,8 +32,6 @@ public class GenerateRandomTestTrials
 	
 	/**
 	 * Generates trials for Travis tests.
-	 * 
-	 * TODO: Move somewhere else as this is not really a test?
 	 */
 	@Test
 	public void test()

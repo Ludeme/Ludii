@@ -23,6 +23,8 @@ public final class ActionSetPending extends BaseAction
 	/** The potential pending value. */
 	final int value;
 
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param value The value.
 	 */
@@ -56,6 +58,15 @@ public final class ActionSetPending extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		context.state().setPending(value);
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		// No need going to be reset in game.undo(...)
 		return this;
 	}
 
@@ -127,7 +138,7 @@ public final class ActionSetPending extends BaseAction
 		return "(Pending)";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

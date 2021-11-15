@@ -71,6 +71,7 @@ import metadata.graphics.show.edges.ShowEdges;
 import metadata.graphics.show.line.ShowLine;
 import metadata.graphics.show.score.ShowScore;
 import metadata.graphics.show.sites.ShowSitesAsHoles;
+import metadata.graphics.show.sites.ShowSitesIndex;
 import metadata.graphics.show.sites.ShowSitesShape;
 import metadata.graphics.show.symbol.ShowSymbol;
 import metadata.graphics.util.BoardGraphicsType;
@@ -92,6 +93,7 @@ import metadata.graphics.util.StackPropertyType;
 import metadata.graphics.util.ValueDisplayInfo;
 import metadata.graphics.util.colour.Colour;
 import other.context.Context;
+import other.topology.TopologyElement;
 
 /**
  * Graphics hints for rendering the game.
@@ -1400,11 +1402,28 @@ public class Graphics implements Serializable
 	/**
 	 * @return The shape of the holes.
 	 */
-	public HoleType ShapeSpecialHole()
+	public HoleType shapeSpecialHole()
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowSitesAsHoles)
 				return ((ShowSitesAsHoles) graphicsItem).type();
+
+		return null;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game The game.
+	 * @param element The topology element.
+	 * @return Returns the additional value to add to this sites index when displayed, Null if no value to be shown.
+	 */
+	public Integer showSiteIndex(final Game game, final TopologyElement element)
+	{
+		for (final GraphicsItem graphicsItem : items)
+			if (graphicsItem instanceof ShowSitesIndex)
+				if (((ShowSitesIndex) graphicsItem).type().equals(element.elementType()))
+					return ((ShowSitesIndex) graphicsItem).additionalValue();
 
 		return null;
 	}
@@ -1721,7 +1740,7 @@ public class Graphics implements Serializable
 		errorReport = s;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param game The game.

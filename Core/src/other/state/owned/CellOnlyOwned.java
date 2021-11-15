@@ -209,8 +209,7 @@ public final class CellOnlyOwned implements Owned, Serializable
 	}
 
 	@Override
-	public void remove(final int playerId, final int componentId, final int pieceLoc, final int level,
-			final SiteType type)
+	public void remove(final int playerId, final int componentId, final int pieceLoc, final int level, final SiteType type)
 	{
 		final List<CellOnlyLocation> locs = locations[playerId][indexMapper.compIndex(playerId, componentId)];
 		for (int i = 0; i < locs.size(); i++)
@@ -240,6 +239,25 @@ public final class CellOnlyOwned implements Owned, Serializable
 						locations[idPlayer][i].get(idPos).decrementLevel();
 					}
 				}
+			}
+		}
+	}
+	
+	@Override
+	public void removeNoUpdate(final int playerId, final int componentId, final int pieceLoc, final int level, final SiteType type)
+	{
+		final List<CellOnlyLocation> locs = locations[playerId][indexMapper.compIndex(playerId, componentId)];
+		for (int i = 0; i < locs.size(); i++)
+		{
+			if 
+			(
+				locs.get(i).site() == pieceLoc
+				&& 
+				locs.get(i).level() == level
+			)
+			{
+				locs.remove(i);
+				i--;
 			}
 		}
 	}

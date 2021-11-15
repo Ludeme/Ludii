@@ -23,7 +23,7 @@ public final class ForEach extends BaseEndRule
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The Roletype to iterate. */
 	final private RoleType type;
@@ -255,7 +255,7 @@ public final class ForEach extends BaseEndRule
 			result().preprocess(game);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet stateConcepts(final Context context)

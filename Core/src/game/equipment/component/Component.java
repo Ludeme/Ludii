@@ -1073,6 +1073,8 @@ public class Component extends Item implements Cloneable
 			final char ch = Character.toUpperCase(nameWithoutNumber.charAt(0));
 			if (ch >= 'A' && ch <= 'Z')
 				return nameWithoutNumber + " image from the Arial TTF font.";
+			else if (ch >= '9' && ch <= '0')
+				return nameWithoutNumber + " image from the Arial TTF font.";
 		}
 		
 		//-----------------------------------------------------

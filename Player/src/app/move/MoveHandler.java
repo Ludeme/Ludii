@@ -25,7 +25,7 @@ import other.location.Location;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.Vertex;
-import policies.softmax.SoftmaxFromMetadata;
+import policies.softmax.SoftmaxFromMetadataSelection;
 import util.ContainerUtil;
 
 /**
@@ -90,7 +90,7 @@ public class MoveHandler
 					return false;
 				
 				// If using web app (only clicks) check if any other legal moves have fromInfo as their from location.
-				if (app.settingsPlayer().isWebApp())
+				if (app.manager().isWebApp())
 					if (
 							locnFromInfo.equals(locnToInfo) 
 							&& 
@@ -144,7 +144,7 @@ public class MoveHandler
 	private static void printMoveFeatures(final PlayerApp app, final Context context, final FastArrayList<Move> possibleMoves)
 	{
 		// Don't apply move, but print active features for all matching moves
-		final SoftmaxFromMetadata softmax = app.settingsPlayer().featurePrintingSoftmax();
+		final SoftmaxFromMetadataSelection softmax = app.settingsPlayer().featurePrintingSoftmax();
 		softmax.initIfNeeded(context.game(), context.state().mover());
 		
 		final BaseFeatureSet[] featureSets = softmax.featureSets();

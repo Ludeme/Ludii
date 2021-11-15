@@ -91,6 +91,17 @@ public class MobilitySimple extends HeuristicTerm
 		return game.isAlternatingMoveGame();
 	}
 	
+	/**
+	 * @param game
+	 * @return True if the heuristic of this type is sensible for the given game
+	 * 	(must be applicable, but even some applicable heuristics may be considered
+	 * 	to be not sensible).
+	 */
+	public static boolean isSensibleForGame(final Game game)
+	{
+		return isApplicableToGame(game);
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override

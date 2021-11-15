@@ -69,7 +69,7 @@ public class TaflDesign extends BoardDesign
 				symbols.add(new MetadataImageInfo(i,SiteType.Cell,"knotSquare",(float)0.9));	
 		}
 		
-		drawSymbols(g2d);
+		drawSymbols(g2d, context);
 		drawOuterCellEdges(bridge, g2d, context);
 
 		return g2d.getSVGDocument();

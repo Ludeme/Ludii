@@ -131,7 +131,7 @@ public final class Subgame extends BaseLudeme implements Serializable
 		return result;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	@Override
 	public BitSet concepts(final Game g)

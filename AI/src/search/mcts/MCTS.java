@@ -17,7 +17,7 @@ import game.types.state.GameType;
 import main.DaemonThreadFactory;
 import main.collections.FVector;
 import main.collections.FastArrayList;
-import main.math.IncrementalStats;
+import main.math.statistics.IncrementalStats;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
@@ -29,7 +29,8 @@ import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
-import policies.softmax.SoftmaxFromMetadata;
+import policies.softmax.SoftmaxFromMetadataPlayout;
+import policies.softmax.SoftmaxFromMetadataSelection;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.BackpropagationStrategy;
@@ -46,6 +47,7 @@ import search.mcts.playout.HeuristicSampingPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
+import search.mcts.selection.NoisyAG0Selection;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
 import training.expert_iteration.ExItExperience;
@@ -87,7 +89,7 @@ public class MCTS extends ExpertPolicy
 		
 		/** 
 		 * Estimate the value of unvisited nodes as a draw (0.0). This causes
-		 * us to prioritize empirical wins over unvisited nodes.
+		 * us to prioritise empirical wins over unvisited nodes.
 		 */
 		DRAW,
 		
@@ -147,6 +149,9 @@ public class MCTS extends ExpertPolicy
 	
 	/** Number of threads this MCTS should use for parallel iterations */
 	private int numThreads = 1;
+	
+	/** Lets us track whether all threads in our thread pool have completely finished */
+	private AtomicInteger numThreadsBusy = new AtomicInteger(0);
 	
 	//-------------------------------------------------------------------------
 	
@@ -277,17 +282,42 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS createBiasedMCTS(final double epsilon)
 	{
-		final SoftmaxPolicy softmax = new SoftmaxFromMetadata(epsilon);
 		final MCTS mcts = 
 				new MCTS
 				(
-					new AG0Selection(), 
-					epsilon < 1.0 ? softmax : new RandomPlayout(200),
+					new NoisyAG0Selection(), 
+					epsilon < 1.0 ? new SoftmaxFromMetadataPlayout(epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
-		mcts.setLearnedSelectionPolicy(softmax);
+		mcts.setQInit(QInit.WIN);
+		mcts.setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(epsilon));
+		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
+		
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Biased MCTS agent using given collection of features
+	 * 
+	 * @param features
+	 * @param epsilon Epsilon for epsilon-greedy feature-based playouts. 1 for uniform, 0 for always softmax
+	 * @return Biased MCTS agent
+	 */
+	public static MCTS createBiasedMCTS(final Features features, final double epsilon)
+	{
+		final MCTS mcts = 
+				new MCTS
+				(
+					new NoisyAG0Selection(), 
+					epsilon < 1.0 ? SoftmaxPolicy.constructPlayoutPolicy(features, epsilon) : new RandomPlayout(200),
+					new MonteCarloBackprop(),
+					new RobustChild()
+				);
+		
+		mcts.setQInit(QInit.WIN);
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, epsilon));
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
 		return mcts;
@@ -336,31 +366,6 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Creates a Biased MCTS agent using given collection of features
-	 * 
-	 * @param features
-	 * @param epsilon Epsilon for epsilon-greedy feature-based playouts. 1 for uniform, 0 for always softmax
-	 * @return Biased MCTS agent
-	 */
-	public static MCTS createBiasedMCTS(final Features features, final double epsilon)
-	{
-		final SoftmaxPolicy softmax = new SoftmaxPolicy(features, epsilon);
-		final MCTS mcts = 
-				new MCTS
-				(
-					new AG0Selection(), 
-					epsilon < 1.0 ? softmax : new RandomPlayout(200),
-					new MonteCarloBackprop(),
-					new RobustChild()
-				);
-		
-		mcts.setLearnedSelectionPolicy(softmax);
-		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
-		
-		return mcts;
-	}
-	
-	/**
 	 * Creates a Policy-Value Tree Search agent, using features for policy and heuristics
 	 * for value function.
 	 * 
@@ -370,17 +375,16 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS createPVTS(final Features features, final Heuristics heuristics)
 	{
-		final SoftmaxPolicy softmax = new SoftmaxPolicy(features, 0.0);
 		final MCTS mcts = 
 				new MCTS
 				(
-					new AG0Selection(), 
+					new NoisyAG0Selection(), 
 					new RandomPlayout(0),
 					new AlphaGoBackprop(),
 					new RobustChild()
 				);
 		
-		mcts.setLearnedSelectionPolicy(softmax);
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, 0.0));
 		mcts.setPlayoutValueWeight(0.0);
 		mcts.setWantsMetadataHeuristics(false);
 		mcts.setHeuristics(heuristics);
@@ -449,6 +453,14 @@ public class MCTS extends ExpertPolicy
 		final long startTime = System.currentTimeMillis();
 		long stopTime = (maxSeconds > 0.0) ? startTime + (long) (maxSeconds * 1000) : Long.MAX_VALUE;
 		final int maxIts = (maxIterations >= 0) ? maxIterations : Integer.MAX_VALUE;
+		
+		while (numThreadsBusy.get() != 0 && System.currentTimeMillis() < Math.min(stopTime, startTime + 1000L))
+		{
+			// Give threads in thread pool some more time to clean up after themselves from previous iteration
+		}
+		
+		// We'll assume all threads are really done now and just reset to 0
+		numThreadsBusy.set(0);
 				
 		final AtomicInteger numIterations = new AtomicInteger();
 		
@@ -547,6 +559,10 @@ public class MCTS extends ExpertPolicy
 		
 		lastNumPlayoutActions = 0;	// TODO if this variable actually becomes important, may want to make it Atomic
 		
+		// Store this in a separate variable because threading weirdness sometimes sets the class variable to null
+		// even though some threads here still want to do something with it.
+		final BaseNode rootThisCall = rootNode;
+		
 		// For each thread, queue up a job
 		final CountDownLatch latch = new CountDownLatch(numThreads);
 		final long finalStopTime = stopTime;	// Need this to be final for use in inner lambda
@@ -558,19 +574,24 @@ public class MCTS extends ExpertPolicy
 				{
 					try
 					{
+						numThreadsBusy.incrementAndGet();
+						
 						// Search until we have to stop
 						while (numIterations.get() < maxIts && System.currentTimeMillis() < finalStopTime && !wantsInterrupt)
 						{
 							/*********************
 								Selection Phase
 							*********************/
-							BaseNode current = rootNode;
+							BaseNode current = rootThisCall;
 							current.addVirtualVisit();
 							current.startNewIteration(context);
 							
 							while (current.contextRef().trial().status() == null)
 							{
-								synchronized(current)
+								BaseNode prevNode = current;
+								prevNode.getLock().lock();
+
+								try
 								{
 									final int selectedIdx = selectionStrategy.select(this, current);
 									BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
@@ -613,6 +634,10 @@ public class MCTS extends ExpertPolicy
 									current.addVirtualVisit();
 									current.updateContextRef();
 								}
+								finally
+								{
+									prevNode.getLock().unlock();
+								}
 							}
 							
 							final Context playoutContext = current.playoutContext();
@@ -644,6 +669,8 @@ public class MCTS extends ExpertPolicy
 							
 							numIterations.incrementAndGet();
 						}
+						
+						rootThisCall.cleanThreadLocals();
 					}
 					catch (final Exception e)
 					{
@@ -651,6 +678,7 @@ public class MCTS extends ExpertPolicy
 					}
 					finally
 					{
+						numThreadsBusy.decrementAndGet();
 						latch.countDown();
 					}
 				}
@@ -659,7 +687,7 @@ public class MCTS extends ExpertPolicy
 		
 		try
 		{
-			latch.await(stopTime - startTime + 1000L, TimeUnit.MILLISECONDS);
+			latch.await(stopTime - startTime + 2000L, TimeUnit.MILLISECONDS);
 		}
 		catch (final InterruptedException e)
 		{
@@ -668,21 +696,21 @@ public class MCTS extends ExpertPolicy
 
 		lastNumMctsIterations = numIterations.get();
 		
-		final Move returnMove = finalMoveSelectionStrategy.selectMove(rootNode);
+		final Move returnMove = finalMoveSelectionStrategy.selectMove(rootThisCall);
 		
 		if (!wantsInterrupt)
 		{
 			int moveVisits = -1;
 			
-			for (int i = 0; i < rootNode.numLegalMoves(); ++i)
+			for (int i = 0; i < rootThisCall.numLegalMoves(); ++i)
 			{
-				final BaseNode child = rootNode.childForNthLegalMove(i);
+				final BaseNode child = rootThisCall.childForNthLegalMove(i);
 	
 				if (child != null)
 				{
-					if (rootNode.nthLegalMove(i).equals(returnMove))
+					if (rootThisCall.nthLegalMove(i).equals(returnMove))
 					{
-						final State state = rootNode.deterministicContextRef().state();
+						final State state = rootThisCall.deterministicContextRef().state();
 				        final int moverAgent = state.playerToAgent(state.mover());
 						moveVisits = child.numVisits();
 						lastReturnedMoveValueEst = child.expectedScore(moverAgent);
@@ -692,7 +720,7 @@ public class MCTS extends ExpertPolicy
 				}
 			}
 			
-			final int numRootIts = rootNode.numVisits();
+			final int numRootIts = rootThisCall.numVisits();
 			
 			analysisReport = 
 					friendlyName + 
@@ -710,6 +738,7 @@ public class MCTS extends ExpertPolicy
 		}
 		
 		// We can already try to clean up a bit of memory here
+		// NOTE: from this point on we have to use rootNode instead of rootThisCall again!
 		if (!preserveRootNode)
 		{
 			if (!treeReuse)
@@ -963,6 +992,12 @@ public class MCTS extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	@Override
+	public boolean usesFeatures(final Game game)
+	{
+		return (learnedSelectionPolicy != null || playoutStrategy instanceof SoftmaxPolicy);
+	}
+	
+	@Override
 	public void initAI(final Game game, final int playerID)
 	{
 		// Store state flags
@@ -1183,7 +1218,7 @@ public class MCTS extends ExpertPolicy
     }
     
     /**
-     * @param moveKey
+     * @param nGramMoveKey
      * @return global MCTS-wide N-gram action statistics for given N-gram move key,
      * 	or null if it doesn't exist yet
      */
@@ -1193,7 +1228,7 @@ public class MCTS extends ExpertPolicy
     }
     
     /**
-     * @param moveKey
+     * @param nGramMoveKey
      * @return global MCTS-wide N-gram action statistics for given N-gram move key
      */
     public ActionStatistics getOrCreateNGramActionStatsEntry(final NGramMoveKey nGramMoveKey)
@@ -1256,9 +1291,9 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	@Override
-	public ExItExperience generateExItExperience()
+	public List<ExItExperience> generateExItExperiences()
 	{
-		return rootNode.generateExItExperience();
+		return rootNode.generateExItExperiences();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -1278,6 +1313,7 @@ public class MCTS extends ExpertPolicy
 
 		// Defaults - some extras
 		boolean treeReuse = false;
+		boolean useScoreBounds = false;
 		int numThreads = 1;
 		SoftmaxPolicy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
@@ -1288,7 +1324,7 @@ public class MCTS extends ExpertPolicy
 			final String[] lineParts = line.split(",");
 
 			//-----------------------------------------------------------------
-			// main parts
+			// Main parts
 			//-----------------------------------------------------------------
 			if (lineParts[0].toLowerCase().startsWith("selection="))
 			{
@@ -1304,6 +1340,15 @@ public class MCTS extends ExpertPolicy
 				)
 				{
 					selection = new AG0Selection();
+					selection.customise(lineParts);
+				}
+				else if 
+				(
+					lineParts[0].toLowerCase().endsWith("noisyag0selection") || 
+					lineParts[0].toLowerCase().endsWith("noisyalphago0selection")
+				)
+				{
+					selection = new NoisyAG0Selection();
 					selection.customise(lineParts);
 				}
 				else
@@ -1342,7 +1387,7 @@ public class MCTS extends ExpertPolicy
 				}
 			}
 			//-----------------------------------------------------------------
-			// extras
+			// Extras
 			//-----------------------------------------------------------------
 			else if (lineParts[0].toLowerCase().startsWith("tree_reuse="))
 			{
@@ -1353,6 +1398,21 @@ public class MCTS extends ExpertPolicy
 				else if (lineParts[0].toLowerCase().endsWith("false"))
 				{
 					treeReuse = false;
+				}
+				else
+				{
+					System.err.println("Error in line: " + line);
+				}
+			}
+			else if (lineParts[0].toLowerCase().startsWith("use_score_bounds="))
+			{
+				if (lineParts[0].toLowerCase().endsWith("true"))
+				{
+					useScoreBounds = true;
+				}
+				else if (lineParts[0].toLowerCase().endsWith("false"))
+				{
+					useScoreBounds = false;
 				}
 				else
 				{
@@ -1393,6 +1453,7 @@ public class MCTS extends ExpertPolicy
 		MCTS mcts = new MCTS(selection, playout, backprop, finalMove);
 
 		mcts.setTreeReuse(treeReuse);
+		mcts.setUseScoreBounds(useScoreBounds);
 		mcts.setNumThreads(numThreads);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
 		mcts.setHeuristics(heuristics);

@@ -149,7 +149,7 @@ public final class DesktopApp extends PlayerApp
 	{
 		// Do nothing.
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -429,7 +429,7 @@ public final class DesktopApp extends PlayerApp
 				else
 				{
 					settingsPlayer().setLoadedFromMemory(true);
-					GameSetup.compileAndShowGame(this, Constants.FAIL_SAFE_GAME_DESCRIPTION, Constants.DEFAULT_GAME_PATH, false);
+					GameSetup.compileAndShowGame(this, Constants.FAIL_SAFE_GAME_DESCRIPTION, false);
 					EventQueue.invokeLater(() -> 
 					{
 						setTemporaryMessage("Failed to start game. Loading default game (Tic-Tac-Toe).");

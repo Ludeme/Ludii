@@ -133,7 +133,7 @@ public final class Count extends BaseIntFunction
 		throw new IllegalArgumentException("Count(): A CountSimpleType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For counting according to no parameters or only a graph element type.

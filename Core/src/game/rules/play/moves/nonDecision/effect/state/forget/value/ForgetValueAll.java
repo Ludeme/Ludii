@@ -28,7 +28,7 @@ public final class ForgetValueAll extends Effect
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The name of the remembering values. */
 	private final String name;
@@ -47,7 +47,7 @@ public final class ForgetValueAll extends Effect
 		this.name = name;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Moves eval(final Context context)
@@ -114,7 +114,7 @@ public final class ForgetValueAll extends Effect
 		return moves;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean canMoveTo(final Context context, final int target)
@@ -122,7 +122,7 @@ public final class ForgetValueAll extends Effect
 		return false;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
@@ -25,6 +26,7 @@ import main.Constants;
 import main.Status;
 import main.collections.FastArrayList;
 import main.collections.FastTLongArrayList;
+import other.UndoData;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
@@ -86,12 +88,24 @@ public class Trial implements Serializable
 	 */
 	protected transient AuxilTrialData auxilTrialData = null;
 
+	//------------------------------Data used to undo--------------------------------
+	
+	/**
+	 * The list of all the end data in each previous state from the initial state.
+	 */
+	private List<UndoData> endData;
+	
+	/**
+	 * The list of all the RNG states at each state.
+	 */
+	private List<RandomProviderState> RNGStates;
+
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor.
 	 *
-	 * @param game
+	 * @param game The game.
 	 */
 	public Trial(final Game game)
 	{
@@ -114,6 +128,8 @@ public class Trial implements Serializable
 		
 		moves = new MoveSequence(null);
 		ranking = new double[game.players().count() + 1];
+		endData = new ArrayList<UndoData>();
+		RNGStates = new ArrayList<RandomProviderState>();
 	}
 
 	/**
@@ -143,6 +159,8 @@ public class Trial implements Serializable
 		numSubmovesPlayed = other.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(other.ranking, other.ranking.length);
+		endData = new ArrayList<UndoData>(other.endData);
+		RNGStates = new ArrayList<RandomProviderState>(other.RNGStates);
 	}
 	
 	/**
@@ -171,6 +189,8 @@ public class Trial implements Serializable
 		numSubmovesPlayed = trial.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(trial.ranking, trial.ranking.length);
+		endData = new ArrayList<UndoData>(trial.endData);
+		RNGStates = new ArrayList<RandomProviderState>(trial.RNGStates);
 	}
 
 	//-------------------------------------------------------------------------
@@ -202,6 +222,15 @@ public class Trial implements Serializable
 	public void addMove(final Move move)
 	{
 		moves = moves.add(move);
+	}
+	
+	/**
+	 * To remove the last action from the history of played actions.
+	 * @return The action removed.
+	 */
+	public Move removeLastMove()
+	{
+		return moves.removeLastMove();
 	}
 	
 	/**
@@ -316,7 +345,8 @@ public class Trial implements Serializable
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Clears cached list of legal moves
+	 * Clears cached list of legal moves (NOTE: not really clearing, actually
+	 * it instantiates a new empty list)
 	 */
 	public void clearLegalMoves()
 	{
@@ -380,7 +410,7 @@ public class Trial implements Serializable
 	{
 		return moves.lastMove();
 	}
-
+	
 	/**
 	 * @param pid The index of the player.
 	 * @return Last move of a specific player.
@@ -902,7 +932,7 @@ public class Trial implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @return the previous state in case of no repetition rule
+	 * @return The previous state in case of no repetition rule.
 	 */
 	public TLongArrayList previousState()
 	{
@@ -910,7 +940,7 @@ public class Trial implements Serializable
 	}
 	
 	/**
-	 * @return the previous state in the same turn
+	 * @return The previous state in the same turn.
 	 */
 	public TLongArrayList previousStateWithinATurn()
 	{
@@ -919,7 +949,7 @@ public class Trial implements Serializable
 
 	/**
 	 * @param idComponent
-	 * @return the starting positions of a component.
+	 * @return The starting positions of a component.
 	 */
 	public Region startingPos(final int idComponent)
 	{
@@ -944,5 +974,55 @@ public class Trial implements Serializable
 		return numMoves() - numInitialPlacementMoves();
 	}
 	
-	//-------------------------------------------------------------------------
+	//-----------------------Undo Data------------------------------------
+	
+	/**
+	 * @return The list of End Data.
+	 */
+	public List<UndoData> endData()
+	{
+		return endData;
+	}
+	
+	/**
+	 * To add an endData to the list.
+	 * @param endDatum The end Data to add.
+	 */
+	public void addEndData(final UndoData endDatum)
+	{
+		endData.add(endDatum);
+	}
+	
+	/**
+	 * To remove the last end data from the list.
+	 */
+	public void removeLastEndData()
+	{
+		endData.remove(endData.size()-1);
+	}
+	
+	/**
+	 * @return The list of RNG States.
+	 */
+	public List<RandomProviderState> RNGStates()
+	{
+		return RNGStates;
+	}
+	
+	/**
+	 * To add an RNGState to the list.
+	 * @param RNGState The RNG state to add.
+	 */
+	public void addRNGState(final RandomProviderState RNGState)
+	{
+		RNGStates.add(RNGState);
+	}
+	
+	/**
+	 * To remove the last RNG state from the list.
+	 */
+	public void removeLastRNGStates()
+	{
+		RNGStates.remove(RNGStates.size()-1);
+	}
 }

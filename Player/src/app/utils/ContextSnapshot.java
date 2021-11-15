@@ -3,7 +3,6 @@ package app.utils;
 import app.PlayerApp;
 import other.context.Context;
 import other.context.InformationContext;
-import other.state.State;
 
 /**
  * A snapshot of the last recorded context.
@@ -31,8 +30,7 @@ public class ContextSnapshot
 	private static int getInformationContextPlayerNumber(final PlayerApp app)
 	{
 		final Context context = app.manager().ref().context();
-		final State state = context.state();
-		int mover = state.mover();
+		int mover = context.state().mover();
 		
 		if (context.game().isDeductionPuzzle())
 			return mover;
@@ -47,10 +45,10 @@ public class ContextSnapshot
 			int humanIndex = 0;
 			for (int i = 1; i <= context.game().players().count(); i++)
 			{
-				if (app.manager().aiSelected()[i].ai() == null)
+				if (app.manager().aiSelected()[app.manager().playerToAgent(i)].ai() == null)
 				{
 					humansFound++;
-					humanIndex = state.playerToAgent(i);
+					humanIndex = i;
 				}
 			}
 			

@@ -28,6 +28,7 @@ import metadata.graphics.show.edges.ShowEdges;
 import metadata.graphics.show.line.ShowLine;
 import metadata.graphics.show.score.ShowScore;
 import metadata.graphics.show.sites.ShowSitesAsHoles;
+import metadata.graphics.show.sites.ShowSitesIndex;
 import metadata.graphics.show.symbol.ShowSymbol;
 import metadata.graphics.util.BoardGraphicsType;
 import metadata.graphics.util.CurveType;
@@ -65,7 +66,28 @@ public class Show implements GraphicsItem
 		return new ShowSitesAsHoles(indices,type);
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
+	
+	/**
+	 * For showing the index of sites on the board.
+	 * 
+	 * @param showDataType 		The type of data to apply.
+	 * @param type 				Site Type [Cell].
+	 * @param additionalValue   Additional value to add to the index [0].
+	 * 
+	 * @example (show SiteIndex Cell 5)
+	 */
+	public static GraphicsItem construct
+	(
+		 final ShowSiteDataType showDataType, 
+		 @Opt final SiteType type,
+		 @Opt final Integer additionalValue
+	)
+	{
+		return new ShowSitesIndex(type, additionalValue);
+	}
+
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For showing symbols on sites.
@@ -128,7 +150,7 @@ public class Show implements GraphicsItem
 		throw new IllegalArgumentException("Show(): A ShowSymbolType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For showing symbols on sites.
@@ -168,7 +190,7 @@ public class Show implements GraphicsItem
 		throw new IllegalArgumentException("Show(): A ShowLineType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For showing specific edges of the graph board (only valid with GraphStyle or its children).
@@ -372,14 +394,14 @@ public class Show implements GraphicsItem
 		throw new IllegalArgumentException("Show(): A ShowScoreType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	private Show()
 	{
 		// Ensure that compiler does not pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

@@ -49,30 +49,44 @@ public class ToolView extends View
 	
 	public static final int SETTINGS_BUTTON_INDEX 		= 8;
 	public static final int INFO_BUTTON_INDEX     		= 9;
+	
+	// WebApp only
+	// public static final int CYCLE_AI_INDEX	 			= 8;
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor.
 	 */
-	public ToolView(final PlayerApp app)
+	public ToolView(final PlayerApp app, final boolean portraitMode)
 	{
 		super(app);
 
-		final int toolHeight = 40;
-		final int boardSize = app.height();
+		int toolHeight = 40;
 		
-		final int startX = boardSize;
-		final int startY = app.height() - toolHeight;
-		final int width = app.width() - boardSize - toolHeight;
+		if (portraitMode && app.manager().isWebApp())
+			toolHeight = 80;
+		
+		int boardSize = app.height();
+		int startX = boardSize;
+		int startY = app.height() - toolHeight;
+		int width = app.width() - boardSize - toolHeight;
+		
+		if (portraitMode)
+		{
+			boardSize = app.width();
+			startX = 0;
+			startY = boardSize + 8;
+			width = app.width() - toolHeight;
+		}
 		
 		placement.setBounds(startX, startY, width, toolHeight);
-		drawButtons();
+		drawButtons(toolHeight);
 	}
 	
 	//-------------------------------------------------------------------------
 	
-	public void drawButtons()
+	public void drawButtons(final int toolHeight)
 	{
 		int cx = placement.x;
 		final int cy = placement.y;
@@ -92,7 +106,7 @@ public class ToolView extends View
 			buttons.add(null);  
 		buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
 		
-		if (!app.settingsPlayer().isWebApp())
+		if (!app.manager().isWebApp())
 		{
 			buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
 			buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
@@ -170,6 +184,7 @@ public class ToolView extends View
 	public static void jumpToMove(final PlayerApp app, final int moveToJumpTo)
 	{
 		app.manager().settingsManager().setAgentsPaused(app.manager(), true);
+		app.settingsPlayer().setWebGameResultValid(false);
 		
 		final Context context = app.manager().ref().context();
 

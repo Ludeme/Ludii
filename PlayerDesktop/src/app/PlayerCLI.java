@@ -17,6 +17,7 @@ import test.instructionGeneration.TestInstructionGeneration;
 import training.expert_iteration.ExpertIteration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
+import utils.trials.GenerateTrialsCluster;
 
 /**
  * Class with helper method to delegate to various other main methods
@@ -60,6 +61,7 @@ public class PlayerCLI
 					"--generate-gating-scripts",
 					"--export-features-db",
 					"--export-moveconcept-db",
+					"--generate-trials",
 					"--tutorial-generation"
 				)
 				.withNumVals(1)
@@ -94,6 +96,8 @@ public class PlayerCLI
 			ExportFeaturesDB.main(passArgs);
 		else if (command.equalsIgnoreCase("--export-moveconcept-db"))
 			ExportDbCsvConcepts.main(passArgs);
+		else if (command.equalsIgnoreCase("--generate-trials"))
+			GenerateTrialsCluster.main(passArgs);
 		else if (command.equalsIgnoreCase("--tutorial-generation"))
 			TestInstructionGeneration.main(passArgs);
 		else

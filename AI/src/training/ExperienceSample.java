@@ -1,5 +1,7 @@
 package training;
 
+import java.util.BitSet;
+
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import main.collections.FVector;
@@ -40,14 +42,34 @@ public abstract class ExperienceSample
 	public abstract State gameState();
 	
 	/**
-	 * @return Last decision move (which lead to game state stored in this sample)
+	 * @return From-position, for features, from last decision move.
 	 */
-	public abstract Move lastDecisionMove();
+	public abstract int lastFromPos();
+	
+	/**
+	 * @return To-position, for features, from last decision move.
+	 */
+	public abstract int lastToPos();
 	
 	/**
 	 * @return List of legal moves
 	 */
 	public abstract FastArrayList<Move> moves();
+	
+	/**
+	 * @return BitSet of winning moves
+	 */
+	public abstract BitSet winningMoves();
+	
+	/**
+	 * @return BitSet of losing moves
+	 */
+	public abstract BitSet losingMoves();
+	
+	/**
+	 * @return BitSet of anti-defeating moves
+	 */
+	public abstract BitSet antiDefeatingMoves();
 	
 	//-------------------------------------------------------------------------
 

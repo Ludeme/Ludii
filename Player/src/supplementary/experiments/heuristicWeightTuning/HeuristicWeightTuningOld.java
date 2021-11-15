@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.collections.ListUtils;
-import main.math.Stats;
+import main.math.statistics.Stats;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
 import metadata.ai.heuristics.terms.ComponentValues;

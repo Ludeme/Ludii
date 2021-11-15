@@ -91,7 +91,7 @@ public class CountLudemes
 		
 		try
 		{	
-			records.add(new Record("Ludeme classes",      Class.forName("util.Ludeme")));
+			records.add(new Record("Ludeme classes",      Class.forName("other.Ludeme")));
 			records.add(new Record("Integer functions",   Class.forName("game.functions.ints.BaseIntFunction")));
 			records.add(new Record("Boolean functions",   Class.forName("game.functions.booleans.BaseBooleanFunction")));	
 			records.add(new Record("Region functions",    Class.forName("game.functions.region.RegionFunction")));	
@@ -140,7 +140,7 @@ public class CountLudemes
 		Class<?> clsLudeme = null;
 		try
 		{
-			clsLudeme = Class.forName("util.Ludeme");
+			clsLudeme = Class.forName("other.Ludeme");
 		}
 		catch (final ClassNotFoundException e)
 		{

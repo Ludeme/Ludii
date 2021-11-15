@@ -15,7 +15,7 @@ public final class Pot extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @example (pot)
@@ -25,7 +25,7 @@ public final class Pot extends BaseIntFunction
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public final int eval(final Context context)
@@ -33,7 +33,7 @@ public final class Pot extends BaseIntFunction
 		return context.state().pot();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

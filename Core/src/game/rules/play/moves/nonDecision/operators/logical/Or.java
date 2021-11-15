@@ -23,7 +23,7 @@ public final class Or extends Operator
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	final Moves[] list;
 

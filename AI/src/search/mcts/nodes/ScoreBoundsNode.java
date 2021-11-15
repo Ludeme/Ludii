@@ -111,6 +111,12 @@ public final class ScoreBoundsNode extends DeterministicNode
     	return super.exploitationScore(agent);
     }
     
+    @Override
+    public boolean isValueProven(final int agent)
+    {
+    	return (pessimisticScores[agent] == optimisticScores[agent]);
+    }
+    
     //-------------------------------------------------------------------------
     
     /**
@@ -296,6 +302,14 @@ public final class ScoreBoundsNode extends DeterministicNode
 //    	System.out.println("Parent pessimistic bound for agent " + parentMover + " = " + sbParent.pessBound(parentMover));
 //    	System.out.println("Parent optimistic bound for agent " + parentMover + " = " + sbParent.optBound(parentMover));
 //    	System.out.println("My status = " + deterministicContextRef().trial().status());
+    }
+    
+    /**
+     * @return Did this node get marked as "pruned"?
+     */
+    public boolean isPruned()
+    {
+    	return pruned;
     }
     
 	//-------------------------------------------------------------------------

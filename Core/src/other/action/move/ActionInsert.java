@@ -20,7 +20,7 @@ public final class ActionInsert extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The graph element type. */
 	private SiteType type;
@@ -37,7 +37,7 @@ public final class ActionInsert extends BaseAction
 	/** State of the site. */
 	private final int state;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type  The graph element type.
@@ -91,7 +91,7 @@ public final class ActionInsert extends BaseAction
 		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
@@ -103,44 +103,43 @@ public final class ActionInsert extends BaseAction
 			type = SiteType.Cell;
 		
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
-		final ContainerState container = context.state()
+		final ContainerState cs = context.state()
 				.containerStates()[contID];
 		final int who = (what < 1) ? 0 : context.components()[what].owner();
-		final int sizeStack = container.sizeStack(to, type);
+		final int sizeStack = cs.sizeStack(to, type);
 
 		if (level == sizeStack)
 		{
 			// We insert the new piece.
-			container.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
+			cs.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
 					Constants.UNDEFINED,
 					context.game());
 
 			// we update the empty list
-			container.removeFromEmpty(to, type);
+			cs.removeFromEmpty(to, type);
 
 			// we update the own list with the new piece
 			if (what != 0)
 			{
 				final Component piece = context.components()[what];
 				final int owner = piece.owner();
-				context.state().owned().add(owner, what, to, container.sizeStack(to, type) - 1, type);
+				context.state().owned().add(owner, what, to, cs.sizeStack(to, type) - 1, type);
 			}
 		}
 		else
 		{
 			// we update the own list of the pieces on the top of that piece inserted.
-			for (int i = sizeStack - 1; i >= level; i--)
+			for (int lvl = sizeStack - 1; lvl >= level; lvl--)
 			{
-				final int owner = container.who(to, i, type);
-				final int piece = container.what(to, i, type);
-				context.state().owned().remove(owner, piece, to, i, type);
-				context.state().owned().add(owner, piece, to, i + 1, type);
+				final int owner = cs.who(to, lvl, type);
+				final int piece = cs.what(to, lvl, type);
+				context.state().owned().removeNoUpdate(owner, piece, to, lvl, type);
+				context.state().owned().add(owner, piece, to, lvl + 1, type);
 			}
 
 			// We insert the new piece.
-			container.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
-					Constants.UNDEFINED,
-					context.game());
+			cs.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
+					Constants.UNDEFINED, context.game());
 
 			// we update the own list with the new piece
 			final Component piece = context.components()[what];
@@ -164,8 +163,60 @@ public final class ActionInsert extends BaseAction
 
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		type = (type == null) ? context.board().defaultSite() : type;
 
-	// -------------------------------------------------------------------------
+		// If the site is not supported by the type, that's a cell of another container.
+		if (to >= context.board().topology().getGraphElements(type).size())
+			type = SiteType.Cell;
+		
+		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
+		final ContainerState cs = context.state().containerStates()[contID];
+		
+//		final int who = (what < 1) ? 0 : context.components()[what].owner();
+//		final int sizeStack = cs.sizeStack(to, type);
+		
+		final int pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), to, type)
+				: cs.remove(context.state(), to, level, type);
+		
+		final int levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+		if (pieceIdx > 0)
+		{
+			final Component piece = context.components()[pieceIdx];
+			final int owner = piece.owner();
+			context.state().owned().remove(owner, pieceIdx, to,
+					levelRemoved, type);
+		}
+
+		if (cs.sizeStack(to, type) == 0)
+			cs.addToEmpty(to, type);
+		
+//		if (pieceIdx > 0)
+//		{
+//			// We update the structure about track indices if the game uses track.
+//			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+//			if (onTrackIndices != null)
+//			{
+//				for (final Track track : context.board().tracks())
+//				{
+//					final int trackIdx = track.trackIdx();
+//					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
+//
+//					for (int i = 0; i < indices.size(); i++)
+//						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
+//				}
+//			}
+//		}
+		
+		return this;
+	}
+
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int hashCode()
@@ -195,7 +246,7 @@ public final class ActionInsert extends BaseAction
 				&& what == other.what && type.equals(other.type));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -226,7 +277,7 @@ public final class ActionInsert extends BaseAction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -311,7 +362,7 @@ public final class ActionInsert extends BaseAction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int from()

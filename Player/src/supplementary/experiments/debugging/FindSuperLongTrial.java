@@ -39,7 +39,7 @@ public class FindSuperLongTrial
 	/** List of game options to use when compiling game */
 	protected List<String> gameOptions;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Basic experiment setup */
 
 	/** Number of evaluation games to run */
@@ -66,13 +66,13 @@ public class FindSuperLongTrial
 	/** If a single trial takes more than this number of milliseconds, we save the trial */
 	protected volatile long maxMillisPerTrial;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Agents setup */
 	
 	/** Strings describing agents to use */
 	private List<String> agentStrings;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/** File saving stuff and other outputs */
 	
 	/** Output directory */
@@ -81,7 +81,7 @@ public class FindSuperLongTrial
 	/** Whether we allow printing some messages to System.out */
 	protected boolean printOut = true;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/* Auxiliary experiment setup */
 	

@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
@@ -32,6 +33,7 @@ import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
 import utils.AIFactory;
+import utils.AIUtils;
 import utils.experiments.InterruptableExperiment;
 import utils.experiments.ResultsSummary;
 
@@ -127,7 +129,7 @@ public class EvalGate
 					(
 						";", 
 						"algorithm=MCTS",
-						"selection=ag0selection",
+						"selection=noisyag0selection",
 						playoutSb.toString(),
 						"final_move=robustchild",
 						"tree_reuse=true",
@@ -151,7 +153,7 @@ public class EvalGate
 					(
 						";", 
 						"algorithm=MCTS",
-						"selection=ag0selection",
+						"selection=noisyag0selection",
 						"playout=random",
 						"final_move=robustchild",
 						"tree_reuse=true",
@@ -529,7 +531,7 @@ public class EvalGate
 								(
 									";", 
 									"algorithm=MCTS",
-									"selection=ag0selection",
+									"selection=noisyag0selection",
 									playoutSb.toString(),
 									"final_move=robustchild",
 									"tree_reuse=true",
@@ -538,10 +540,10 @@ public class EvalGate
 								);
 						
 						final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-						final SoftmaxPolicy softmax = (SoftmaxPolicy) mcts.playoutStrategy();
 						
 						// Generate our features metadata and write it
-						final Features features = softmax.generateFeaturesMetadata();
+						final Features features = 
+								AIUtils.generateFeaturesMetadata(mcts.learnedSelectionPolicy(), (SoftmaxPolicy) mcts.playoutStrategy());
 						
 						try (final PrintWriter writer = new PrintWriter(bestFeaturesFile))
 						{
@@ -568,7 +570,10 @@ public class EvalGate
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args)
 	{
-		// define options for arg parser
+		// Feature Set caching is safe in this main method
+		JITSPatterNetFeatureSet.ALLOW_FEATURE_SET_CACHE = true;
+		
+		// Define options for arg parser
 		final CommandLineArgParse argParse = 
 				new CommandLineArgParse
 				(

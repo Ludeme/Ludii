@@ -24,7 +24,7 @@ public final class Rotation extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Which location. */
 	private final IntFunction locn;
@@ -35,7 +35,7 @@ public final class Rotation extends BaseIntFunction
 	/** Cell/Edge/Vertex. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type  The graph element type [default SiteType of the board].
@@ -56,7 +56,7 @@ public final class Rotation extends BaseIntFunction
 		this.type  = type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -83,7 +83,7 @@ public final class Rotation extends BaseIntFunction
 		return cs.rotation(loc, type);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

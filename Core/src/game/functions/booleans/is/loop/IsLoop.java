@@ -82,7 +82,7 @@ public final class IsLoop extends BaseBooleanFunction
 	// Indices of the outer sites of the board.
 	TIntArrayList outerIndices;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/**
 	 * @param type         The graph element type [default SiteType of the board].
 	 * @param surround     Used to define the inside condition of the loop.

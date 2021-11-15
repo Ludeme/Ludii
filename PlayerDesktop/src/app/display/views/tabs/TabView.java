@@ -56,19 +56,28 @@ public class TabView extends View
 	/**
 	 * Constructor.
 	 */
-	public TabView(final PlayerApp app)
+	public TabView(final PlayerApp app, final boolean portraitMode)
 	{
 		super(app);
 		
 		pages.clear();
 		
 		final int toolHeight = DesktopApp.view().toolPanel().placement().height;
-		final int boardSize = DesktopApp.view().getBoardPanel().placement().width;
+		int boardSize = DesktopApp.view().getBoardPanel().placement().width;
 		
-		final int startX = boardSize;
-		final int startY = DesktopApp.view().getPlayerPanel().placement().height;
-		final int width  = DesktopApp.view().getWidth() - boardSize;
-		final int height = DesktopApp.view().getHeight() - DesktopApp.view().getPlayerPanel().placement().height - toolHeight;
+		int startX = boardSize;
+		int startY = DesktopApp.view().getPlayerPanel().placement().height;
+		int width  = DesktopApp.view().getWidth() - boardSize;
+		int height = DesktopApp.view().getHeight() - DesktopApp.view().getPlayerPanel().placement().height - toolHeight;
+		
+		if (portraitMode)
+		{
+			boardSize = app.width();
+			startX = 8;
+			startY = boardSize + DesktopApp.view().getPlayerPanel().placement().height + 40;	// +40 for the height of the toolView
+			width = boardSize - 16;
+			height = app.height() - boardSize - DesktopApp.view().getPlayerPanel().placement().height - 40;
+		}
 		
 		placement.setBounds(startX, startY, width, height);
 		

@@ -53,6 +53,9 @@ public final class GameLoader
 	 */
 	public static Game loadGameFromName(final String name, final String rulesetName)
 	{
+		if (rulesetName.length() == 0)
+			return loadGameFromName(name);
+		
 		final Game tempGame = GameLoader.loadGameFromName(name);
 		final List<Ruleset> rulesets = tempGame.description().rulesets();
 		if (rulesets != null && !rulesets.isEmpty())
@@ -291,6 +294,112 @@ public final class GameLoader
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * Returns the complete file path for a given lud name.
+	 * @param name The name of the game.
+	 * @return The file path.
+	 */
+	public static String getFilePath(final String name)
+	{
+		String inName = name.replaceAll(Pattern.quote("\\"), "/");
+		
+		if (!inName.endsWith(".lud"))
+			inName += ".lud";
+		
+		if (inName.startsWith("../Common/res"))
+			inName = inName.substring("../Common/res".length());
+
+		if (!inName.startsWith("/lud/"))
+			inName = "/lud/" + inName;
+		
+		try (InputStream in = GameLoader.class.getResourceAsStream(inName))
+		{
+			if (in == null)
+			{
+				// exact match with full filepath under /lud/ not found; let's try
+				// to see if we can figure out which game the user intended
+				final String[] allGameNames = FileHandling.listGames();
+				int shortestNonMatchLength = Integer.MAX_VALUE;
+				String bestMatchFilepath = null;
+				String givenName = inName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+	
+				if (givenName.startsWith("/lud/"))
+					givenName = givenName.substring("/lud/".length());
+				else if (givenName.startsWith("lud/"))
+					givenName = givenName.substring("lud/".length());
+				
+				for (final String gameName : allGameNames)
+				{
+					final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+					
+					if (str.endsWith("/" + givenName))
+					{
+						final int nonMatchLength = str.length() - givenName.length();
+						if (nonMatchLength < shortestNonMatchLength)
+						{
+							shortestNonMatchLength = nonMatchLength;
+							bestMatchFilepath = "..\\Common\\res\\" + gameName;
+						}
+					}
+				}
+	
+				if (bestMatchFilepath == null)
+				{
+					for (final String gameName : allGameNames)
+					{
+						final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+						if (str.endsWith(givenName))
+						{
+							final int nonMatchLength = str.length() - givenName.length();
+							if (nonMatchLength < shortestNonMatchLength)
+							{
+								shortestNonMatchLength = nonMatchLength;
+								bestMatchFilepath = "..\\Common\\res\\" + gameName;
+							}
+						}
+					}
+				}
+	
+				if (bestMatchFilepath == null)
+				{
+					final String[] givenSplit = givenName.split(Pattern.quote("/"));
+					if (givenSplit.length > 1)
+					{
+						final String givenEnd = givenSplit[givenSplit.length - 1];
+						for (final String gameName : allGameNames)
+						{
+							final String str = gameName.toLowerCase().replaceAll(Pattern.quote("\\"), "/");
+							if (str.endsWith(givenEnd))
+							{
+								final int nonMatchLength = str.length() - givenName.length();
+								if (nonMatchLength < shortestNonMatchLength)
+								{
+									shortestNonMatchLength = nonMatchLength;
+									bestMatchFilepath = "..\\Common\\res\\" + gameName;
+								}
+							}
+						}
+					}
+				}
+				
+				String resourceStr = bestMatchFilepath.replaceAll(Pattern.quote("\\"), "/");
+				resourceStr = resourceStr.substring(resourceStr.indexOf("/lud/"));
+				
+				return resourceStr;
+			}
+
+			return inName;
+		}
+		catch (final Exception e)
+		{
+			System.out.println("Did you change the name??");
+		}
+		
+		return null;
+	}
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To compile the game of an instance of a match.
@@ -320,5 +429,40 @@ public final class GameLoader
 			instanceObjectOptions.setOptionCategories(optionsAvailable);
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return All the analysis.
+	 */
+	public static List<String[]> allAnalysisGameRulesetNames()
+	{
+		final List<String[]> allGameRulesetNames = new ArrayList<>();
+		final String[] choices = FileHandling.listGames();
+		
+		for (final String s : choices)
+		{
+			if (!FileHandling.shouldIgnoreLudAnalysis(s))
+			{
+				final String gameName = s.split("\\/")[s.split("\\/").length-1];
+				final Game tempGame = GameLoader.loadGameFromName(gameName);
+				final List<Ruleset> rulesets = tempGame.description().rulesets();
+				if (rulesets != null && !rulesets.isEmpty())
+				{
+					for (int rs = 0; rs < rulesets.size(); rs++)
+						if (!rulesets.get(rs).optionSettings().isEmpty())
+							allGameRulesetNames.add(new String[] {getFilePath(gameName), rulesets.get(rs).heading()});
+				}
+				else
+				{
+					allGameRulesetNames.add(new String[] {getFilePath(gameName), ""});
+				}
+			}
+		}
+		
+		return allGameRulesetNames;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

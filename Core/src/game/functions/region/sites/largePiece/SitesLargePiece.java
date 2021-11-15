@@ -25,7 +25,7 @@ public final class SitesLargePiece extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The site to look */
 	private final IntFunction at;
@@ -44,7 +44,7 @@ public final class SitesLargePiece extends BaseRegionFunction
 		this.type = type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -82,7 +82,7 @@ public final class SitesLargePiece extends BaseRegionFunction
 		return new Region(sitesOccupied.toArray());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
@@ -31,7 +32,7 @@ public class EvalAgents
 	/** Name of ruleset to compile. Any options will be ignored if ruleset is provided. */
 	protected String ruleset;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Basic experiment setup */
 
 	/** Number of evaluation games to run */
@@ -58,13 +59,13 @@ public class EvalAgents
 	/** If true, increase number of games to play to next number that can be divided by number of permutations of agents */
 	protected boolean roundToNextPermutationsDivisor;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Agents setup */
 	
 	/** Strings describing agents to use */
 	protected List<String> agentStrings;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** File saving stuff and other outputs */
 	
@@ -80,7 +81,7 @@ public class EvalAgents
 	/** Whether we want to print general messages to System.out */
 	protected boolean printOut;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/* Auxiliary experiment setup */
 	
@@ -168,7 +169,10 @@ public class EvalAgents
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args)
 	{
-		// define options for arg parser
+		// Feature Set caching is safe in this main method
+		JITSPatterNetFeatureSet.ALLOW_FEATURE_SET_CACHE = true;
+		
+		// Define options for arg parser
 		final CommandLineArgParse argParse = 
 				new CommandLineArgParse
 				(

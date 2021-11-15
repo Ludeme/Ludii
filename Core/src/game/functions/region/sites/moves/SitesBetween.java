@@ -21,12 +21,12 @@ public final class SitesBetween extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The moves from which to take from-sites. */
 	private final Moves moves;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param moves The moves from which to take from-sites.
@@ -36,7 +36,7 @@ public final class SitesBetween extends BaseRegionFunction
 		this.moves = moves;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -50,7 +50,7 @@ public final class SitesBetween extends BaseRegionFunction
 		return new Region(sites.toArray());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

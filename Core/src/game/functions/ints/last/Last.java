@@ -18,7 +18,7 @@ public final class Last extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param lastType         The site to return.
@@ -58,7 +58,7 @@ public final class Last extends BaseIntFunction
 		// Make grammar pick up construct() and not default constructor
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)

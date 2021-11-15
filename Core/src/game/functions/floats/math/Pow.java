@@ -19,7 +19,7 @@ public final class Pow extends BaseFloatFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The first value. */
 	private final FloatFunction a;
@@ -27,7 +27,7 @@ public final class Pow extends BaseFloatFunction
 	/** The second value. */
 	private final FloatFunction b;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param a The first value.
@@ -44,7 +44,7 @@ public final class Pow extends BaseFloatFunction
 		this.b = b;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public float eval(Context context)

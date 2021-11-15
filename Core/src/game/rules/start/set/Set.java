@@ -191,7 +191,7 @@ public final class Set extends StartRule
 		return new SetSite(role, type, locs, region, coords);
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For setting the count, the cost or the phase to sites.
@@ -243,7 +243,7 @@ public final class Set extends StartRule
 		throw new IllegalArgumentException("Set(): A SetStartSitesType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For setting the amount or the score of a player.
@@ -275,7 +275,7 @@ public final class Set extends StartRule
 		throw new IllegalArgumentException("Set(): A SetStartPlayerType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For setting a team.
@@ -317,7 +317,7 @@ public final class Set extends StartRule
 		throw new UnsupportedOperationException("Set.eval(): Should never be called directly.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

@@ -90,7 +90,7 @@ public class MainMenu extends JMenuBar
 		this.add(menu);
 		
 		menuItem = new JMenuItem("Preferences");
-		menuItem.setAccelerator(KeyStroke.getKeyStroke('P', ALT_DOWN_MASK));
+		menuItem.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.SHIFT_DOWN_MASK));
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 
@@ -169,12 +169,14 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("Editor (Packed)");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
-			menuItem.setAccelerator(KeyStroke.getKeyStroke('P', InputEvent.SHIFT_DOWN_MASK));
 
 			menuItem = new JMenuItem("Editor (Expanded)");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
-			menuItem.setAccelerator(KeyStroke.getKeyStroke('E', InputEvent.SHIFT_DOWN_MASK));
+
+			menuItem = new JMenuItem("Visual Editor (Beta)");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 		}
 
 		//---------------------------------------------------------------------
@@ -279,26 +281,31 @@ public class MainMenu extends JMenuBar
 			this.add(menu);
 	
 			menuItem = new JMenuItem("Play/Pause");
+			menuItem.setAccelerator(KeyStroke.getKeyStroke("SPACE"));
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 	
 			menu.addSeparator();
 	
 			menuItem = new JMenuItem("Previous Move");
+			menuItem.setAccelerator(KeyStroke.getKeyStroke("LEFT"));
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 	
 			menuItem = new JMenuItem("Next Move");
+			menuItem.setAccelerator(KeyStroke.getKeyStroke("RIGHT"));
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 	
 			menu.addSeparator();
 	
 			menuItem = new JMenuItem("Go To Start");
+			menuItem.setAccelerator(KeyStroke.getKeyStroke("DOWN"));
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 	
 			menuItem = new JMenuItem("Go To End");
+			menuItem.setAccelerator(KeyStroke.getKeyStroke("UP"));
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
@@ -310,6 +317,13 @@ public class MainMenu extends JMenuBar
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
 			}
+			
+			menu.addSeparator();
+			
+			menuItem = new JMenuItem("Pass");
+			menuItem.setAccelerator(KeyStroke.getKeyStroke('P', ALT_DOWN_MASK));
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 		}
 
 		//---------------------------------------------------------------------
@@ -404,12 +418,6 @@ public class MainMenu extends JMenuBar
 			menu.add(menuItem);
 			
 			menu.addSeparator();
-
-			menuItem = new JMenuItem("Distance Dialog");
-			menuItem.addActionListener(al);
-			menu.add(menuItem);
-			
-			menu.addSeparator();
 			
 			menuItem = new JMenuItem("Show Compilation Concepts");
 			menuItem.addActionListener(al);
@@ -483,7 +491,7 @@ public class MainMenu extends JMenuBar
 				submenuAgent.add(submenuAgentCla);
 				submenuHeuristic.add(submenuHeuristicCla);
 				
-				final File file = new File("../../LudiiPhhrivate/DataMiningScripts/Sklearn/res/trainedModels");
+				final File file = new File("../../LudiiPrivate/DataMiningScripts/Sklearn/res/trainedModels");
 				final String[] directories = file.list(new FilenameFilter() {
 					  @Override
 					  public boolean accept(final File current, final String name) {
@@ -746,11 +754,11 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
-			menu.addSeparator();
-			
-			menuItem = new JMenuItem("Advanced Distance Dialog");
-			menuItem.addActionListener(al);
-			menu.add(menuItem);
+//			menu.addSeparator();
+//			
+//			menuItem = new JMenuItem("Advanced Distance Dialog");
+//			menuItem.addActionListener(al);
+//			menu.add(menuItem);
 			
 			menu.addSeparator();
 	

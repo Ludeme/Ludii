@@ -234,8 +234,8 @@ public final class IsConnected extends BaseBooleanFunction
 
 		if (groupSites.size() > 0)
 		{
-			final boolean[] inGroupSites = new boolean[realTypeElements.size()];
-			inGroupSites[from] = true;
+			final boolean[] visited = new boolean[realTypeElements.size()];
+			visited[from] = true;
 			
 			int i = 0;
 			while (i < groupSites.size())
@@ -249,15 +249,17 @@ public final class IsConnected extends BaseBooleanFunction
 				for (final AbsoluteDirection direction : directions)
 				{
 					final List<game.util.graph.Step> steps = topology.trajectories().steps(realType,
-							siteElement.index(), realType, direction);
+							site, realType, direction);
 
 					for (final game.util.graph.Step step : steps)
 					{
 						final int to = step.to().id();
 
 						// If we already have it we continue to look the others.
-						if (inGroupSites[to])
+						if (visited[to])
 							continue;
+						
+						visited[to] = true;
 
 						// New element in the group.
 						if (who == cs.who(to, realType))
@@ -269,18 +271,19 @@ public final class IsConnected extends BaseBooleanFunction
 								if (regionToConnect.get(to))
 								{
 									numRegionConnected++;
+									
+									// If enough regions connected we return true.
+									// Do this inside loop because we almost always expect
+									// to enter this if-block only once per loop anyway
+									if (numRegionConnected == numRegionToConnect)
+										return true;
 
 									// Region is connected we remove it.
 									sitesRegions.remove(j);
 								}
-
-								// If enough regions connected we return true.
-								if (numRegionConnected == numRegionToConnect)
-									return true;
 							}
 							
 							groupSites.add(to);
-							inGroupSites[to] = true;
 						}
 					}
 				}
