@@ -50,7 +50,7 @@ public class MoveSequence implements Serializable
 	public MoveSequence(final MoveSequence parent)
 	{
 		this.parent = parent;
-		this.moves = new ArrayList<Move>();
+		this.moves = new ArrayList<Move>(1);
 		
 		if (parent != null)
 		{
