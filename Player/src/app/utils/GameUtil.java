@@ -118,10 +118,16 @@ public class GameUtil
 				if (container.role().equals(RoleType.Shared))
 					hasSharedHand = true;
 			
+			// Check if the game has custom hand placement
+			boolean hasCustomHandPlacement = false;
+			for (int i = 0; i <= Constants.MAX_PLAYERS; i++)
+				if (context.game().metadata().graphics().handPlacement(context, i) != null)
+					hasCustomHandPlacement = true;
+			
 			final boolean boardBackground = game.metadata().graphics().boardBackground(context).size() > 0;
 			
 			// Make the margins around the board thinner
-			if (game.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground)
+			if (game.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
 				app.bridge().getContainerStyle(0).setDefaultBoardScale(0.95);
 		}
 
