@@ -134,21 +134,23 @@ SUBCLASS: game.equipment.container.other.Hand
 TYPE: game.equipment.container.board.Board
 TYPE JAVADOC: Defines a board by its graph, consisting of vertex locations and edge pairs.
 NEW CTOR
-(board <graphFunction> ([<track>]  | [{<track>}]) ([<values>] ([{<values>}]) [use:<siteType>])
+(board <graphFunction> ([<track>]  | [{<track>}]) ([<values>] ([{<values>}]) [use:<siteType>] [largeStack:<boolean>])
 PARAM JAVADOC: <graphFunction>: The graph function used to build the board.
 PARAM JAVADOC: [<track>]: The track on the board.
 PARAM JAVADOC: [{<track>}]: The tracks on the board.
 PARAM JAVADOC: [<values>]: The range values of a graph element used for deduction puzzle.
 PARAM JAVADOC: [{<values>}]: The range values of many graph elements used for deduction puzzle.
 PARAM JAVADOC: [use:<siteType>]: Graph element type to use by default [Cell].
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 EXAMPLE: (board (graph vertices:{ {1 0} {2 0} {0 1} {1 1} {2 1} {3 1} {0 2} {1 2} {2 2} {3 2} {1 3} {2 3}} edges:{ {0 2} {0 3} {3 2} {3 4} {1 4} {4 5} {1 5} {3 7} {4 8} {6 7} {7 8} {8 9} {6 10} {11 9} {10 7} {11 8}} ) )
 REMARKS: The values range are used for deduction puzzles. The state model for these puzzles is a Constraint Satisfaction Problem (CSP) model, possibly with a variable for each graph element (i.e. vertex, edge and cell), each with a range of possible values.
 TYPE: game.equipment.container.board.Boardless
 TYPE JAVADOC: Defines a boardless container growing in function of the pieces played.
 NEW CTOR
-(boardless <tilingBoardlessType> [<dimFunction>])
+(boardless <tilingBoardlessType> [<dimFunction>] [largeStack:<boolean>])
 PARAM JAVADOC: <tilingBoardlessType>: The tiling of the boardless container.
 PARAM JAVADOC: [<dimFunction>]: The "fake" size of the board used for boardless [41].
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 EXAMPLE: (boardless Hexagonal)
 REMARKS: The playable sites of the board will be all the sites adjacent to the places already played/placed. No pregeneration is computed on the graph except the centre.
 TYPE: game.equipment.container.board.Track
@@ -170,21 +172,23 @@ REMARKS: Tracks are typically used for race games, or any game in which pieces m
 TYPE: game.equipment.container.board.custom.MancalaBoard
 TYPE JAVADOC: Defines a Mancala-style board.
 NEW CTOR
-(mancalaBoard int int [store:<storeType>] [numStores:int] ([<track>]  | [{<track>}]))
+(mancalaBoard int int [store:<storeType>] [numStores:int] [largeStack:<boolean>] ([<track>]  | [{<track>}]))
 PARAM JAVADOC: int: The number of rows.
 PARAM JAVADOC: int: The number of columns.
 PARAM JAVADOC: [store:<storeType>]: The type of the store.
 PARAM JAVADOC: [numStores:int]: The number of store.
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 PARAM JAVADOC: [<track>]: The track on the board.
 PARAM JAVADOC: [{<track>}]: The tracks on the board.
 EXAMPLE: (mancalaBoard 2 6)
 TYPE: game.equipment.container.board.custom.SurakartaBoard
 TYPE JAVADOC: Defines a Surakarta-style board.
 NEW CTOR
-(surakartaBoard <graphFunction> [loops:int] [from:int])
+(surakartaBoard <graphFunction> [loops:int] [from:int] [largeStack:<boolean>])
 PARAM JAVADOC: <graphFunction>: The graph function used to build the board.
 PARAM JAVADOC: [loops:int]: Number of loops, i.e. special capture tracks [(minDim - 1) / 2].
 PARAM JAVADOC: [from:int]: Which row to start loops from [1].
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 EXAMPLE: (surakartaBoard (square 6) loops:2)
 REMARKS: Surakata-style boards have loops that pieces must travel around in order to capture other pieces. The following board shapes are supported: Square, Rectangle, Hexagon, Triangle.
 TYPE: game.equipment.container.other.Deck
@@ -479,8 +483,8 @@ PARAM JAVADOC: <int>: Minimum length of lines.
 PARAM JAVADOC: [<absoluteDirection>]: Direction category to which potential lines must belong [Adjacent].
 PARAM JAVADOC: [through:<int>]: Location through which the line must pass.
 PARAM JAVADOC: [throughAny:<region>]: The line must pass through at least one of these sites.
-PARAM JAVADOC: [<roleType>]: The owner of the pieces making a line.
-PARAM JAVADOC: [what:<int>]: The index of the component composing the line.
+PARAM JAVADOC: [<roleType>]: The owner of the pieces making a line [Mover].
+PARAM JAVADOC: [what:<int>]: The index of the component composing the line [(mover)].
 PARAM JAVADOC: [whats:{<int>}]: The indices of the components composing the line.
 PARAM JAVADOC: [exact:<boolean>]: If true, then lines cannot exceed minimum length [False].
 PARAM JAVADOC: [contiguous:<boolean>]: If true, the line has to be contiguous [True].
@@ -2248,6 +2252,9 @@ CONST JAVADOC: Piece: First piece (of any type) in line of sight along each dire
 TYPE: game.functions.region.sites.Sites
 TYPE JAVADOC: Returns the specified set of sites.
 NEW CTOR
+(sites)
+EXAMPLE: (sites)
+NEW CTOR
 (sites Loop [inside:<boolean>] [<siteType>] ([surround:<roleType>]  | [{<roleType>}]) [<direction>] [<int>] ([<int>]  | [<region>]))
 PARAM JAVADOC: [inside:<boolean>]: True to return the sites inside the loop [False].
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
@@ -2275,9 +2282,6 @@ PARAM JAVADOC: To:<roleType>: The roleType with these hidden information.
 EXAMPLE: (sites Hidden to:Mover)
 EXAMPLE: (sites Hidden What to:(player (next)))
 EXAMPLE: (sites Hidden Rotation Vertex to:Next)
-NEW CTOR
-(sites)
-EXAMPLE: (sites)
 NEW CTOR
 (sites Between [<direction>] [<siteType>] from:<int> [fromIncluded:<boolean>] to:<int> [toIncluded:<boolean>] [cond:<boolean>])
 PARAM JAVADOC: [<direction>]: The directions of the move [Adjacent].
@@ -3736,7 +3740,7 @@ PARAM JAVADOC: <moves>: The second list.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (allCombinations (add (piece (id "Disc0") state:(mover)) (to (site))) (flip (between)) )
 TYPE: game.rules.play.moves.nonDecision.operators.logical.And
-TYPE JAVADOC: Is used to combine lists of moves.
+TYPE JAVADOC: Moves all the moves in the list if used in a consequence else only one move in the list.
 NEW CTOR
 (and <moves> <moves> [<then>])
 PARAM JAVADOC: <moves>: The first move.
@@ -4200,20 +4204,8 @@ CONST JAVADOC: Ally: Ally players.
 CONST JAVADOC: Player: Placeholder for iterator over all players, e.g. from end.ForEach.
 TYPE: game.types.play.WhenType
 TYPE JAVADOC: Defines when to perform certain tests or actions within a game.
-CONST JAVADOC: StartOfMove: Start of a move.
-CONST JAVADOC: EndOfMove: End of a move.
 CONST JAVADOC: StartOfTurn: Start of a turn.
 CONST JAVADOC: EndOfTurn: End of a turn.
-CONST JAVADOC: StartOfRound: Start of a round.
-CONST JAVADOC: EndOfRound: End of a round.
-CONST JAVADOC: StartOfPhase: Start of a phase.
-CONST JAVADOC: EndOfPhase: End of a phase.
-CONST JAVADOC: StartOfGame: Start of a game.
-CONST JAVADOC: EndOfGame: End of a game.
-CONST JAVADOC: StartOfMatch: Start of a match.
-CONST JAVADOC: EndOfMatch: End of a match.
-CONST JAVADOC: StartOfSession: Start of a session.
-CONST JAVADOC: EndOfSession: End of a session.
 TYPE: game.util.directions.AbsoluteDirection
 TYPE JAVADOC: Describes categories of absolute directions.
 CONST JAVADOC: All: All directions.
@@ -4656,9 +4648,10 @@ SUBCLASS: metadata.ai.misc.BestAgent
 TYPE: metadata.ai.Ai
 TYPE JAVADOC: Defines metadata that can help AIs in the Ludii app to play this game at a  stronger level.
 NEW CTOR
-(ai [<bestAgent>] [<heuristics>] [<features>])
+(ai [<bestAgent>] [<heuristics>] [trainedHeuristics:<heuristics>] [<features>])
 PARAM JAVADOC: [<bestAgent>]: Can be used to specify the agent that is expected to perform best in this game. This algorithm will be used when the ``Ludii AI" option is selected in the Ludii app.
-PARAM JAVADOC: [<heuristics>]: Heuristics to be used by Alpha-Beta agents. If not specified, Alpha-Beta agents will default to a combination of Material and Mobility heuristics.
+PARAM JAVADOC: [<heuristics>]: Heuristics to be used by Alpha-Beta agents. These may be handcrafted heuristics.
+PARAM JAVADOC: [trainedHeuristics:<heuristics>]: Heuristics trained or otherwise generated by some sort of automated process. Alpha-Beta agents will only use these if the previous parameter (for potentially handcrafted heuristics) is not used.
 PARAM JAVADOC: [<features>]: Feature sets to be used for biasing MCTS-based agents. If not specified, Biased MCTS will not be available as an AI for this game in Ludii.
 EXAMPLE: (ai (bestAgent "UCT"))
 REMARKS: Specifying AI metadata for games is not mandatory.
@@ -4670,6 +4663,13 @@ PARAM JAVADOC: <roleType>: The Player (P1, P2, etc.) for which the feature set s
 PARAM JAVADOC: {<pair>}: Complete list of all features and weights for this feature set.
 EXAMPLE: (featureSet All { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) })
 EXAMPLE: (featureSet P1 { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) })
+NEW CTOR
+(featureSet <roleType> [selectionFeatures:{<pair>}] [playoutFeatures:{<pair>}] [tspgFeatures:{<pair>}])
+PARAM JAVADOC: <roleType>: The Player (P1, P2, etc.) for which the feature set should apply, or All if it is applicable to all features in a game.
+PARAM JAVADOC: [selectionFeatures:{<pair>}]: Complete list of all features and weights for this feature set, for MCTS Selection phase.
+PARAM JAVADOC: [playoutFeatures:{<pair>}]: Complete list of all features and weights for this feature set, for MCTS Playout phase.
+PARAM JAVADOC: [tspgFeatures:{<pair>}]: Complete list of all features and weights for this feature set, trained with Tree Search Policy Gradients objective.
+EXAMPLE: (featureSet P1 selectionFeatures:{ (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) } playoutFeatures:{ (pair "rel:to=<{}>:pat=<els=[-{}]>" 2.0) })
 REMARKS: Use \All for feature sets that are applicable to all players in a game, or \P1, \P2, etc. for feature sets that are applicable only to individual players.
 TYPE: metadata.ai.features.Features
 TYPE JAVADOC: Describes one or more sets of features (local, geometric patterns) to be used by Biased MCTS agents.
@@ -4682,6 +4682,22 @@ NEW CTOR
 PARAM JAVADOC: [{<featureSet>}]: A sequence of multiple feature sets (typically each applying to a different player).
 EXAMPLE: (features { (featureSet P1 { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) }) (featureSet P2 { (pair "rel:to=<{}>:pat=<els=[-{}]>" -1.0) }) })
 REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70–75).
+TYPE: metadata.ai.features.trees.logits.If
+TYPE JAVADOC: Describes a decision node in a logit tree for features; it contains one  feature (the condition we check), and two branches; one for the case  where the condition is true, and one for the case where the condition is false.
+NEW CTOR
+(if <string> then:<logitNode> Else:<logitNode>)
+PARAM JAVADOC: <string>: The feature to evaluate (the condition).
+PARAM JAVADOC: then:<logitNode>: The branch to take if the feature is active.
+PARAM JAVADOC: Else:<logitNode>: The branch to take if the feature is not active.
+TYPE: metadata.ai.features.trees.logits.Leaf
+TYPE JAVADOC: Describes a leaf node in a logit tree for features; it contains an array  of features and weights, describing a linear function to use to compute the  logit in this node. An intercept feature should collect all the weights  inferred from features evaluated in decision nodes leading up to this leaf.
+NEW CTOR
+(leaf {<pair>})
+PARAM JAVADOC: {<pair>}: List of remaining features to evaluate and their weights.
+TYPE: metadata.ai.features.trees.logits.LogitNode
+TYPE JAVADOC: Describes a node in a logit tree for features. May either be a condition  node (internal node), or a node with a linear model (a leaf node).
+SUBCLASS: metadata.ai.features.trees.logits.If
+SUBCLASS: metadata.ai.features.trees.logits.Leaf
 TYPE: metadata.ai.heuristics.Heuristics
 TYPE JAVADOC: Defines a collection of heuristics, which can be used by Alpha-Beta agent in  Ludii for their heuristics state evaluations.
 NEW CTOR
@@ -4753,6 +4769,20 @@ PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transform
 PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
 EXAMPLE: (influence weight:0.5)
 REMARKS: Always produces a score of $0$ for players who are not the current mover.
+TYPE: metadata.ai.heuristics.terms.InfluenceAdvanced
+TYPE JAVADOC: Defines a heuristic term that multiplies its weight by the number  of moves with distinct "to" positions that a player has in a current game state,  divided by the number of playable positions that exist in the game.  In comparison to Influence, this is a more advanced version that will also attempt  to gain non-zero estimates of the influence of players other than the current  player to move.
+NEW CTOR
+(influenceAdvanced [transformation:<heuristicTransformation>] [weight:<float>])
+PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transformation to be applied to any raw heuristic score outputs.
+PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
+EXAMPLE: (influenceAdvanced weight:0.5)
+TYPE: metadata.ai.heuristics.terms.Intercept
+TYPE JAVADOC: Defines an intercept term for heuristic-based value functions, with one  weight per player.
+NEW CTOR
+(intercept [transformation:<heuristicTransformation>] playerWeights:{<pair>})
+PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transformation to be applied to any raw heuristic score outputs.
+PARAM JAVADOC: playerWeights:{<pair>}: Weights for different players. Players for which no weights are specified are given a weight of 0.0. Player names must be one of the following: "P1", "P2", ..., "P16".
+EXAMPLE: (intercept playerWeights:{ (pair "P1" 1.0) (pair "P2" 0.5) })
 TYPE: metadata.ai.heuristics.terms.LineCompletionHeuristic
 TYPE JAVADOC: Defines a heuristic state value based on a player's potential to  complete lines up to a given target length.  This mostly follows the description of the N-in-a-Row advisor as  described on pages 82-84 of:  	``Browne, C.B. (2009) Automatic generation and evaluation of recombination games.   	PhD thesis, Queensland University of Technology''.
 NEW CTOR
@@ -4770,6 +4800,13 @@ PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combinatio
 PARAM JAVADOC: [pieceWeights:{<pair>}]: Weights for different piece types. If no piece weights are specified at all, all piece types are given an equal weight of $1.0$. If piece weights are only specified for some piece types, all other piece types get a weight of $0$.
 PARAM JAVADOC: [boardOnly:<boolean>]: If true, only pieces that are on the game's main board are counted, and pieces that are, for instance, in players' hands are excluded. False by default.
 EXAMPLE: (material pieceWeights:{ (pair "Pawn" 1.0) (pair "Bishop" 3.0) })
+TYPE: metadata.ai.heuristics.terms.MobilityAdvanced
+TYPE JAVADOC: Defines a more advanced Mobility heuristic that attempts to also compute  non-zero mobility values for players other than the current mover (by  modifying the game state temporarily such that it thinks the current mover  is any other player).
+NEW CTOR
+(mobilityAdvanced [transformation:<heuristicTransformation>] [weight:<float>])
+PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transformation to be applied to any raw heuristic score outputs.
+PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
+EXAMPLE: (mobilityAdvanced weight:0.5)
 TYPE: metadata.ai.heuristics.terms.MobilitySimple
 TYPE JAVADOC: Defines a simple heuristic term that multiplies its weight by the number  of moves that a player has in a current game state.
 NEW CTOR
@@ -4830,6 +4867,14 @@ PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transform
 PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
 PARAM JAVADOC: [pieceWeights:{<pair>}]: Weights for different piece types. If no piece weights are specified at all, all piece types are given an equal weight of $1.0$. If piece weights are only specified for some piece types, all other piece types get a weight of $0$.
 EXAMPLE: (sidesProximity weight:-1.0)
+TYPE: metadata.ai.heuristics.terms.UnthreatenedMaterial
+TYPE JAVADOC: Defines a heuristic term based on the unthreatened material (which  opponents cannot threaten with their legal moves).
+NEW CTOR
+(unthreatenedMaterial [transformation:<heuristicTransformation>] [weight:<float>] [pieceWeights:{<pair>}])
+PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transformation to be applied to any raw heuristic score outputs.
+PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
+PARAM JAVADOC: [pieceWeights:{<pair>}]: Weights for different piece types. If no piece weights are specified at all, all piece types are given an equal weight of $1.0$. If piece weights are only specified for some piece types, all other piece types get a weight of $0$.
+EXAMPLE: (unthreatenedMaterial pieceWeights:{ (pair "Pawn" 1.0) (pair "Bishop" 3.0) })
 TYPE: metadata.ai.heuristics.transformations.DivNumBoardSites
 TYPE JAVADOC: Transforms heuristic scores by dividing them by the number of sites  in a game's board.
 NEW CTOR
@@ -5194,6 +5239,12 @@ PARAM JAVADOC: {int}: The list of indices of the holes.
 PARAM JAVADOC: <holeType>: The shape of the holes.
 EXAMPLE: (show AsHoles {5 10} Square)
 NEW CTOR
+(show <showSiteDataType> [<siteType>] [int])
+PARAM JAVADOC: <showSiteDataType>: The type of data to apply.
+PARAM JAVADOC: [<siteType>]: Site Type [Cell]
+PARAM JAVADOC: [int]: Additional value to add to the index [0]
+EXAMPLE: (show SiteIndex Cell 5)
+NEW CTOR
 (show Symbol <string> [<string>] [<roleType>] [<siteType>] ([{int}]  | [int]) [<region>] [<boardGraphicsType>] [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
 PARAM JAVADOC: <string>: Name of the image to show.
 PARAM JAVADOC: [<string>]: Draw image on all sites in this region.
@@ -5238,13 +5289,16 @@ EXAMPLE: (show Pits)
 EXAMPLE: (show PlayerHoles)
 EXAMPLE: (show RegionOwner)
 NEW CTOR
-(show Piece <showComponentDataType> [<roleType>] [<string>] [<valueLocationType>] [offsetImage:<boolean>] [valueOutline:<boolean>])
+(show Piece <showComponentDataType> [<roleType>] [<string>] [<valueLocationType>] [offsetImage:<boolean>] [valueOutline:<boolean>] [scale:<float>] [offsetX:<float>] [offsetY:<float>])
 PARAM JAVADOC: <showComponentDataType>: The type of data to show.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
 PARAM JAVADOC: [<valueLocationType>]: The location to draw the value [Corner].
 PARAM JAVADOC: [offsetImage:<boolean>]: Offset the image by the size of the displayed value [False].
 PARAM JAVADOC: [valueOutline:<boolean>]: Draw outline around the displayed value [False].
+PARAM JAVADOC: [scale:<float>]: Scale for the drawn image relative to the cell size of the container [1.0].
+PARAM JAVADOC: [offsetX:<float>]: Offset distance percentage to push the image to the right [0].
+PARAM JAVADOC: [offsetY:<float>]: Offset distance percentage to push the image down [0].
 EXAMPLE: (show Piece State)
 EXAMPLE: (show Piece Value)
 NEW CTOR
@@ -5293,6 +5347,7 @@ CONST JAVADOC: Score: To indicate whether the score should be shown only in cert
 TYPE: metadata.graphics.show.ShowSiteDataType
 TYPE JAVADOC: Defines the types of Show metadata related to a data of the sites.
 CONST JAVADOC: AsHoles: To indicate whether the sites of the board should be represented as holes.
+CONST JAVADOC: SiteIndex: Indicates whether the sites of the board should have their index displayed/
 TYPE: metadata.graphics.show.ShowSiteType
 TYPE JAVADOC: Defines the types of Show metadata related to a site.
 CONST JAVADOC: Sites: To apply it on the sites.
