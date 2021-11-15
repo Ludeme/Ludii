@@ -71,7 +71,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	public static final float PARANOID_OPP_WIN_SCORE = 10000.f;
 	
 	/** We skip computing heuristics with absolute weight value lower than this */
-	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;
+	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.001f;
 	
 	//-------------------------------------------------------------------------
 	
