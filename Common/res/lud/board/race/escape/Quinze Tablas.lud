@@ -2,14 +2,57 @@
 
 (define "RemoveAPiece" (move Remove (from) ) )
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (remove (to))
-    ) 
-)
-
 (define "DieNotUsed" (!= (pips) 0))
+
+(define "Bar" (handSite Mover))
+
+(define "BarEmpty" (= (what Cell at:"Bar") 0))
+
+(define "NextSiteFrom" 
+	    (trackSite Move 
+	        from:#1 
+	        steps:(pips)
+	    )
+	)
+
+(define "CaptureEnemyPiece"    
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (fromTo 
+	            (from (to)) 
+	            (to (handSite Next))
+	        )
+	    )
+	)
+
+(define "NotEnemyOrOnlyOne"    
+	    (or 
+	        (and 
+	            (is Enemy (who at:(to))) 
+	            (= (topLevel at:(to)) 0)
+	        ) 
+	        (not (is Enemy (who at:(to))))
+	    )
+	)
+
+(define "MoveAPiece" 
+	    (move 
+	        (from #1)
+	        (to 
+	            ("NextSiteFrom" #1) 
+	            if:("NotEnemyOrOnlyOne") 
+	            ("CaptureEnemyPiece")
+	        )
+	    )
+	)
+
+(define "MoveAPieceIf" 
+	    (forEach Die 
+	        replayDouble:True 
+	        if:#1
+	        ("MoveAPiece" #2)
+	    )		
+	)
 
 //------------------------------------------------------------------------------
 
@@ -24,12 +67,13 @@
                 (shift 7 6 (rectangle 1 6) )
             })
             {
-            (track "Track1" {0..5 6..11 23..18 17..12 End} P1 directed:True)
-            (track "Track2" {12..17 18..23 11..6 5..0 End} P2 directed:True)
+            (track "Track1" {24 0..5 6..11 23..18 17..12 End} P1 directed:True)
+            (track "Track2" {25 12..17 18..23 11..6 5..0 End} P2 directed:True)
             }
             use:Vertex
         )
         (dice d:6 num:3)
+        (hand Each)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
@@ -69,15 +113,17 @@
         (play 
             (do 
                 (if (not "SameTurn") (roll)) 
-                next:(forEach Piece top:True
+                next:(if ("BarEmpty")
+                	(forEach Piece top:True)
+                    ("MoveAPieceIf" ("DieNotUsed") ("Bar"))
                     (then 
                         (if (not (all DiceUsed))
                             (moveAgain)
                         )
                     )
                 )
+                	)
             )
-        )
         (end {
             (if (no Pieces P1) (result P1 Win))
             (if (no Pieces P2) (result P2 Win))
@@ -104,8 +150,8 @@
     (graphics {
         (show Edges Hidden)
         (board Style Table)
-        (stackType Backgammon)
+        (stackType 0 Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
     })
-    
 )
-
