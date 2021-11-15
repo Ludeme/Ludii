@@ -1,1 +1,12 @@
-(game "Chatrang")
+(game "Chatrang"
+	(players 4)
+	(equipment {
+		(board (square 8))
+	})
+	(rules
+	(play 
+		(forEach Piece)
+	)
+	(end (if (no Moves Next) (result Mover Win)))
+	)
+)
