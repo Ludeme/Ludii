@@ -1,0 +1,264 @@
+//----------------------------
+//Utility defines 
+
+(define "Included"
+ (= Infinity
+  (count Steps
+   (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
+   (site)
+   (difference (sites Outer) <Board:inner>)   
+)))
+
+(define "RawTerritoryOf"
+ (forEach
+  (difference <Board:inner> (sites Occupied by:(player (id #1))))
+  if:("Included" #1)
+))
+
+(define "TC" // Territory Count
+ (size Array
+  (array
+   (forEach
+    (difference <Board:inner> (sites Occupied by:#1))
+    if:(and
+     ("Included" #1)
+     (is Empty (site))
+)))))
+
+//--------------------
+// Square scoring utilities
+
+(define "IsSiteInSameTerritory"
+ (!= Infinity
+  (count Steps 
+   (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
+   (from) 
+   (site)
+)))
+
+(define "Coordinates" 
+ (results
+  from:(to)
+  to:(forEach (sites Board) if:("IsSiteInSameTerritory" #1))
+  #2
+))
+      
+(define "IsLowestReachableSite"
+ (= Infinity
+  (count Steps 
+   (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
+   (site) 
+   (sites
+    (results 
+     from:(site)
+     to:(forEach (sites Board) if:(< (from) (site)))
+     (to)
+)))))
+
+(define "RCSQ" //region count - Square
+ (+
+  (results
+   from:(forEach
+    (difference <Board:inner> (sites Occupied by:(player (id #1))))
+    if:(and
+     ("Included" #1)
+     ("IsLowestReachableSite" #1)
+   ))
+   to:(from)
+   (+ 1
+    (max
+     (-
+      (max ("Coordinates" #1 (column of:(to))))
+      (min ("Coordinates" #1 (column of:(to))))
+     )
+     (-
+      (max ("Coordinates" #1 (row of:(to))))
+      (min ("Coordinates" #1 (row of:(to))))
+))))))
+
+     
+(define "RCHX" //region count - Hex  
+ (size Array
+  (array
+   (forEach
+    (difference <Board:inner> (sites Occupied by:#1))
+    if:(and
+     ("Included" #1)
+     (= Infinity
+      (count Steps 
+       (step Orthogonal (to if:(not (= (id #1) (who at:(to))))))
+       (site) 
+       (sites
+        (results 
+         from:(site)
+         to:(forEach <Board:inner> if:(< (from) (site)))
+         (to)
+)))))))))
+
+(define "GetTerritorySitesAndScore"
+ (and
+  {
+  (set Value at:(handSite #1 0) ("TC" #1))
+  (set Value at:(handSite #1 1) (<Board:regionScoring> #1))
+   (set Score #1
+    (*
+     ("TC" #1)
+     (<Board:regionScoring> #1)
+   ))
+  }
+))
+ 
+(define "RabbitMove"
+ (forEach Piece
+  (do
+   (set Var "SitesMoverAroundFrom" (count Sites in:(sites Around (from) Orthogonal if:(is Mover (who at:(to))))))
+   next:(move Hop
+    Adjacent
+    (between (range 0 Infinity) if:True)
+    (to (sites Empty)
+     if:(is Empty (to))
+   ))
+   ifAfterwards:(or
+    (<
+     (var "SitesMoverAroundFrom")
+     (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
+    )
+    (and   
+     (=
+      (var "SitesMoverAroundFrom")
+      (count Sites in:(sites Around (last To) Orthogonal if:(is Mover (who at:(to)))))
+     )   
+     (>
+      (count Sites in:(sites Around (last From) Orthogonal if:(is Next (who at:(to)))))
+      (count Sites in:(sites Around (last To) Orthogonal if:(is Next (who at:(to)))))
+   )))
+   (then 
+    (and
+     {
+      ("GetTerritorySitesAndScore" Mover)
+      ("GetTerritorySitesAndScore" Next)
+      (if
+       (is Prev Next)
+       (moveAgain)
+      )
+     }
+)))))
+
+  
+
+  
+//-----------------------------------------------
+// Main routine
+
+(game "Rabbit Warrens"
+ (players 2)
+ (equipment
+  {
+   (board <Board:side> use:Cell)
+   (hand P1 size:2)
+   (hand P2 size:2)
+   (piece "Ball" Each)
+   (piece "<Board:shape>" Each)
+   (piece "<Board:shape>" Neutral)
+  }
+ )
+ (rules
+  (start
+   {
+    <Board:white> 
+    <Board:black>
+    (place "<Board:shape>1" (handSite P1 0) value:0)
+    (place "<Board:shape>2" (handSite P2 0) value:0)
+    (place "<Board:shape>0" (handSite P1 1) value:0) 
+    (place "<Board:shape>0" (handSite P2 1) value:0)     
+   })
+  (play
+   (or
+    (move Pass)
+    "RabbitMove"
+  ))
+  (end 
+   {
+    (if 
+     (and
+      (= (score P1) (score P2))
+      (all Passed)
+     )
+     (byScore {(score Mover 0)}) // (score Next (score Next))})
+    )
+    (if 
+     (all Passed)
+     (byScore)
+    )
+   }
+)))
+
+//--------------------------------------
+// End conditions
+
+//-------------------------------------------------
+// Options
+
+(option "Board Type" <Board> args:{<side> <inner> <white> <black> <shape> <regionScoring>} 
+  {
+
+  (item "Hex (6,8)" 
+   <(hex Hexagon 6 8)>
+   <(sites Inner)> 
+   <(place "Ball1" {2 6 9 13 17 21 25 29 33 37 38 42 46 53 57 61 64 68 72 77 81 85 89 93 97 101 108 112 113 117 121 125})>
+   <(place "Ball2" {1 5 11 15 18 22 26 27 31 35 41 45 49 51 55 59 65 69 73 75 79 83 88 92 99 103 105 109 115 119 120 124})>
+   <Hex>
+   <"RCHX">
+   "Rabbit Warrens (hex 6,8). Scoring: Product of the number of distinct enclosures, times the total number of empty sites within the enclosures.")***
+      
+  (item "Square (10)"
+   <(square 10)> 
+   <(sites Inner)> 
+   <(place "Ball1" { 6 8 11 13 19 25 27 31 33 39 45 47 52 54 60 66 68 72 74 80 86 88 91 93})>
+   <(place "Ball2" {1 3 10 16 18 22 24 30 36 38 42 44 55 57 61 63 69 75 77 81 83 89 96 98})>
+   <Square>
+   <"RCSQ">
+   "Rabbit Square (order 10). Scoring: Product of the sum of the largest dimension of each distinct enclosure, times the total number of empty sites within the enclosures.")*
+
+   }
+)
+
+//---------------------------------------------
+(define "ColourBackground" (colour 245 245 245)) 
+
+(metadata
+  (info     
+   {
+    }
+  )
+  
+  (graphics 
+   {
+    (player Colour P1 (colour 250 188 157))
+    (player Colour P2 (colour Burgundy))
+    (piece Scale "Ball" 0.93)
+    (piece Colour P1 strokeColour:(colour VeryDarkGrey))
+    (piece Colour P2 strokeColour:(colour DarkGrey))
+    (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:1 offsetY:1.5)
+    (piece Foreground P2 "Ball" image:"Hare-alt2" fillColour:(colour 0 0 0 150) edgeColour:(colour 240 180 150 180) scale:0.7 )
+    (piece Foreground P1 "Ball" image:"Hare-alt2" fillColour:(colour 255 255 255 150) edgeColour:(colour 120 90 75 180) scale:0.7 )
+    (board Colour Phase0 (colour 250 250 230 90))
+    (board StyleThickness InnerEdges 1.2)
+    (board StyleThickness OuterEdges 1.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (region Colour (sites Outer) (colour 200 250 230 90))
+    (region Colour ("RawTerritoryOf" P1) (colour 240 180 150 90))       
+    (region Colour ("RawTerritoryOf" P2) (colour 70 0 0 90))       
+    (piece Colour P1 "<Board:shape>" fillColour:(colour 240 180 150 90))  
+    (piece Colour P2 "<Board:shape>" fillColour:(colour 70 0 0 150))       
+    (piece Colour Neutral "<Board:shape>" fillColour:(colour White) strokeColour:(colour DarkGrey))       
+    (show Piece Value "<Board:shape>" Middle scale:0.70 offsetX:.25 offsetY:.25)
+    }
+  )
+  (ai (heuristics (score)))
+)
