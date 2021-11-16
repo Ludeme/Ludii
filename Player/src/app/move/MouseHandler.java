@@ -58,7 +58,7 @@ public class MouseHandler
 		final Location selectedFromLocation = app.bridge().settingsVC().selectedFromLocation();
 		Location selectedToLocation;
 
-		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode() || context.game().hasLargePiece())
+		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode())
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getAllLocations(context, app.bridge()));	
 		else
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getLegalToLocations(app.bridge(), context));

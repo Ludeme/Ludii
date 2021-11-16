@@ -89,7 +89,7 @@ public abstract class BaseController implements Controller
 		double furthestPossibleDistance = 0;
 		ContainerStyle containerStyle = bridge.getContainerStyle(container.index());
 		
-		if (containerStyle.ignorePieceSelectionLimit() || context.game().hasLargePiece())
+		if (containerStyle.ignorePieceSelectionLimit())
 		{
 			if (containerStyle.placement() != null)
 				furthestPossibleDistance = Math.max(containerStyle.placement().getWidth(), containerStyle.placement().getHeight());
