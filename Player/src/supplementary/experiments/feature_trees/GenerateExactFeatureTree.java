@@ -1,14 +1,22 @@
 package supplementary.experiments.feature_trees;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
+import decision_trees.logits.ExactLogitTreeLearner;
+import decision_trees.logits.LogitTreeNode;
 import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
+import game.types.play.RoleType;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
+import metadata.ai.features.trees.FeatureTrees;
+import metadata.ai.features.trees.logits.LogitNode;
+import metadata.ai.features.trees.logits.LogitTree;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import utils.AIFactory;
@@ -84,15 +92,28 @@ public class GenerateExactFeatureTree
 		
 		final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
 		
-		@SuppressWarnings("unused")		// TODO
 		final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();
+		
+		final LogitTree[] metadataTrees = new LogitTree[featureSets.length - 1];
 		
 		for (int p = 1; p < featureSets.length; ++p)
 		{
-			// TODO generate logit tree for Player p
+			// Generate logit tree for Player p
+			final LogitTreeNode root = ExactLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p]);
+			
+			// Convert to metadata structure
+			final LogitNode metadataRoot = root.toMetadataNode();
+			metadataTrees[p - 1] = new LogitTree(RoleType.roleForPlayerId(p), metadataRoot);
 		}
 		
-		// TODO write
+		try (final PrintWriter writer = new PrintWriter(outFile))
+		{
+			writer.println(new FeatureTrees(metadataTrees));
+		}
+		catch (final IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	//-------------------------------------------------------------------------

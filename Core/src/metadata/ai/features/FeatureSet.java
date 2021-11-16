@@ -43,7 +43,7 @@ public class FeatureSet implements AIItem
 	 * For a single collection of features and weights for one role.
 	 * 
 	 * @param role The Player (P1, P2, etc.) for which the feature set should apply,
-	 * or All if it is applicable to all features in a game.
+	 * or All if it is applicable to all players in a game.
 	 * @param features Complete list of all features and weights for this feature
 	 * set.
 	 * 
@@ -72,7 +72,7 @@ public class FeatureSet implements AIItem
 	 * TSPG purposes, for a single role.
 	 * 
 	 * @param role The Player (P1, P2, etc.) for which the feature set should apply,
-	 * or All if it is applicable to all features in a game.
+	 * or All if it is applicable to all players in a game.
 	 * @param selectionFeatures Complete list of all features and weights for this feature set, 
 	 * for MCTS Selection phase.
 	 * @param playoutFeatures Complete list of all features and weights for this feature set, 

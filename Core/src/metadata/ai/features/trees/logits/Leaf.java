@@ -1,6 +1,5 @@
 package metadata.ai.features.trees.logits;
 
-import annotations.Hide;
 import main.StringRoutines;
 import metadata.ai.misc.Pair;
 
@@ -12,7 +11,6 @@ import metadata.ai.misc.Pair;
  * 
  * @author Dennis Soemers
  */
-@Hide
 public class Leaf extends LogitNode
 {
 	
@@ -29,6 +27,8 @@ public class Leaf extends LogitNode
 	/**
 	 * Defines the feature (condition), and the two branches.
 	 * @param features List of remaining features to evaluate and their weights.
+	 * 
+	 * @example (leaf { (pair "Intercept" 1.0) })
 	 */
 	public Leaf(final Pair[] features)
 	{
