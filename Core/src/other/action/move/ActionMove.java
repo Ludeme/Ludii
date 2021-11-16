@@ -597,9 +597,8 @@ public final class ActionMove extends BaseAction
 					{
 						pieceFrom = context.components()[what];
 						ownerFrom = pieceFrom.owner();
-							context.state().owned().add(ownerFrom, what, to,
-									containerTo.sizeStack(to, typeTo) - 1, typeTo);
-							context.state().owned().remove(ownerFrom, what, from, levelFrom, typeFrom);
+						context.state().owned().add(ownerFrom, what, to, containerTo.sizeStack(to, typeTo) - 1, typeTo);
+						context.state().owned().remove(ownerFrom, what, from, levelFrom, typeFrom);
 					}
 				}
 				else
@@ -1005,7 +1004,6 @@ public final class ActionMove extends BaseAction
 		// On a stacking game
 		else
 		{
-			
 			if(from == to)
 				return this;
 			
@@ -1099,28 +1097,35 @@ public final class ActionMove extends BaseAction
 					// To keep the site of the item in cache for each player
 					Component pieceTo = null;
 					int ownerTo = 0;
+					
 					if (what != 0)
 					{
 						pieceTo = context.components()[what];
 						ownerTo = pieceTo.owner();
+
 						final int sizeStack = containerFrom.sizeStack(from, typeFrom);
 						// we update the own list of the pieces on the top of that piece inserted.
 						for (int i = sizeStack - 1; i >= levelFrom; i--)
 						{
 							final int owner = containerFrom.who(from, i, typeFrom);
 							final int piece = containerFrom.what(from, i, typeFrom);
-							context.state().owned().remove(owner, piece, from, i, typeFrom);
+							context.state().owned().removeNoUpdate(owner, piece, from, i, typeFrom);
 							context.state().owned().add(owner, piece, from, i + 1, typeFrom);
 						}
 						
-						containerFrom.insert(context.state(), typeFrom, from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom,
-								context.game());
+						containerFrom.insert(context.state(), typeFrom, from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom, context.game());
 						
-						context.state().owned().add(ownerTo, what, from,
-								levelFrom, typeFrom);
+						context.state().owned().add(ownerTo, what, from, levelFrom, typeFrom);
 						
-						context.state().owned().remove(ownerTo, what, to,
-								containerTo.sizeStack(to, typeTo), typeTo);
+//						if(context.trial().numberRealMoves() == 33)
+//						{
+//							System.out.println("there with ownerTo = " + ownerTo);
+//							System.out.println("to = " + to);
+//							System.out.println("levelTo = " + containerTo.sizeStack(to, typeTo));
+//							System.out.println(context.state().owned().getClass());
+//						}
+						
+						context.state().owned().remove(ownerTo, what, to, containerTo.sizeStack(to, typeTo), typeTo);
 					}
 				}
 				
