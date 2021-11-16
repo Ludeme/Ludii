@@ -213,62 +213,65 @@ public final class ActionMove extends BaseAction
 		
 		final boolean requiresStack = context.game().isStacking();
 		
+		int currentStateFrom = Constants.UNDEFINED;
+		int currentRotationFrom = Constants.UNDEFINED;
+		int currentValueFrom = Constants.UNDEFINED;
+		Component piece = null;
+
+		final ContainerState csFrom = context.state().containerStates()[contIdFrom];
+		final ContainerState csTo = context.state().containerStates()[contIdTo];
+		
+		// take the local state of the site from
+		currentStateFrom = (levelFrom == Constants.UNDEFINED) ? 
+				((csFrom.what(from, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, typeFrom))
+				: ((csFrom.what(from, levelFrom, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, levelFrom, typeFrom))
+				;
+		currentRotationFrom = (levelFrom == Constants.UNDEFINED) ? csFrom.rotation(from, typeFrom) : csFrom.rotation(from, levelFrom, typeFrom);
+		currentValueFrom =  (levelFrom == Constants.UNDEFINED) ? csFrom.value(from, typeFrom) : csFrom.value(from, levelFrom, typeFrom);
+		
+		// Keep in memory the data of the site from and to (for undo method)
+		if(!alreadyApplied)
+		{
+			previousStateFrom = currentStateFrom;
+			previousRotationFrom = currentRotationFrom;
+			previousValueFrom = currentValueFrom;
+			previousStateTo = (levelTo == Constants.UNDEFINED) ? csTo.state(to, typeTo) : csTo.state(to, levelTo, typeTo);
+			previousRotationTo = (levelTo == Constants.UNDEFINED) ? csTo.rotation(to, typeTo) : csTo.rotation(to, levelTo, typeTo); 
+			previousValueTo = (levelTo == Constants.UNDEFINED) ? csTo.value(to, typeTo) : csTo.value(to, levelTo, typeTo);
+			previousWhoTo = (levelTo == Constants.UNDEFINED) ? csTo.who(to, typeTo) : csTo.who(to, levelTo, typeTo);
+			previousWhatTo = (levelTo == Constants.UNDEFINED) ? csTo.what(to, typeTo) : csTo.what(to, levelTo, typeTo);
+			
+			if(context.game().hiddenInformation())
+			{
+				previousHiddenTo = new boolean[context.players().size()];
+				previousHiddenWhatTo = new boolean[context.players().size()];
+				previousHiddenWhoTo =  new boolean[context.players().size()];
+				previousHiddenCountTo =  new boolean[context.players().size()];
+				previousHiddenStateTo =  new boolean[context.players().size()];
+				previousHiddenRotationTo =  new boolean[context.players().size()];
+				previousHiddenValueTo =  new boolean[context.players().size()];
+				for (int pid = 1; pid < context.players().size(); pid++)
+				{
+					previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
+					previousHiddenWhatTo[pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
+					previousHiddenWhoTo[pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
+					previousHiddenCountTo[pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
+					previousHiddenStateTo[pid] = csTo.isHiddenState(pid, to, 0, typeTo);
+					previousHiddenRotationTo[pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
+					previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
+				}
+			}
+			alreadyApplied = true;
+		}
+		
 		if (!requiresStack)
 		{
-			// System.out.println("loc is " + loc);
-			final ContainerState csFrom = context.state().containerStates()[contIdFrom];
-			final ContainerState csTo = context.state().containerStates()[contIdTo];
-
 			// If the origin is empty we do not apply this action.
 			if (csFrom.what(from, typeFrom) == 0 && csFrom.count(from, typeFrom) == 0)
 				return this;
 
 			final int what = csFrom.what(from, typeFrom);
 			final int count = csFrom.count(from, typeFrom);
-			int currentStateFrom = Constants.UNDEFINED;
-			int currentRotationFrom = Constants.UNDEFINED;
-			int currentValueFrom = Constants.UNDEFINED;
-			Component piece = null;
-
-			// take the local state of the site from
-			currentStateFrom = (csFrom.what(from, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, typeFrom);
-			currentRotationFrom = csFrom.rotation(from, typeFrom);
-			currentValueFrom = csFrom.value(from, typeFrom);
-			
-			// Keep in memory the data of the site from and to (for undo method)
-			if(!alreadyApplied)
-			{
-				previousStateFrom = currentStateFrom;
-				previousRotationFrom = currentRotationFrom;
-				previousValueFrom = currentValueFrom;
-				previousStateTo = csTo.state(to, typeTo);
-				previousRotationTo = csTo.rotation(to, typeTo);
-				previousValueTo = csTo.value(to, typeTo);
-				previousWhoTo = csTo.who(to, typeTo);
-				previousWhatTo = csTo.what(to, typeTo);
-				
-				if(context.game().hiddenInformation())
-				{
-					previousHiddenTo = new boolean[context.players().size()];
-					previousHiddenWhatTo = new boolean[context.players().size()];
-					previousHiddenWhoTo =  new boolean[context.players().size()];
-					previousHiddenCountTo =  new boolean[context.players().size()];
-					previousHiddenStateTo =  new boolean[context.players().size()];
-					previousHiddenRotationTo =  new boolean[context.players().size()];
-					previousHiddenValueTo =  new boolean[context.players().size()];
-					for (int pid = 1; pid < context.players().size(); pid++)
-					{
-						previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
-						previousHiddenWhatTo[pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
-						previousHiddenWhoTo[pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
-						previousHiddenCountTo[pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
-						previousHiddenStateTo[pid] = csTo.isHiddenState(pid, to, 0, typeTo);
-						previousHiddenRotationTo[pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
-						previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
-					}
-				}
-				alreadyApplied = true;
-			}
 
 			if (count == 1)
 			{
@@ -609,17 +612,17 @@ public final class ActionMove extends BaseAction
 					for (int i = sizeStack - 1; i >= levelTo; i--)
 					{
 						final int owner = containerTo.who(to, i, typeTo);
-						final int piece = containerTo.what(to, i, typeTo);
-						context.state().owned().remove(owner, piece, to, i, typeTo);
-						context.state().owned().add(owner, piece, to, i + 1, typeTo);
+						final int pieceTo = containerTo.what(to, i, typeTo);
+						context.state().owned().remove(owner, pieceTo, to, i, typeTo);
+						context.state().owned().add(owner, pieceTo, to, i + 1, typeTo);
 					}
 					
 					// We insert the piece.
 					containerTo.insertCell(context.state(), to, levelTo, what, who, state, rotation, value, context.game());
 				
 					// we update the own list with the new piece
-					final Component piece = context.components()[what];
-					final int owner = piece.owner();
+					final Component pieceTo = context.components()[what];
+					final int owner = pieceTo.owner();
 					context.state().owned().add(owner, what, to, levelTo, typeTo);
 
 					if (containerTo.sizeStack(to, typeTo) != 0)
@@ -1116,14 +1119,6 @@ public final class ActionMove extends BaseAction
 						containerFrom.insert(context.state(), typeFrom, from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom, context.game());
 						
 						context.state().owned().add(ownerTo, what, from, levelFrom, typeFrom);
-						
-//						if(context.trial().numberRealMoves() == 33)
-//						{
-//							System.out.println("there with ownerTo = " + ownerTo);
-//							System.out.println("to = " + to);
-//							System.out.println("levelTo = " + containerTo.sizeStack(to, typeTo));
-//							System.out.println(context.state().owned().getClass());
-//						}
 						
 						context.state().owned().remove(ownerTo, what, to, containerTo.sizeStack(to, typeTo), typeTo);
 					}
