@@ -241,24 +241,27 @@ public final class ActionMove extends BaseAction
 			previousWhoTo = (levelTo == Constants.UNDEFINED) ? csTo.who(to, typeTo) : csTo.who(to, levelTo, typeTo);
 			previousWhatTo = (levelTo == Constants.UNDEFINED) ? csTo.what(to, typeTo) : csTo.what(to, levelTo, typeTo);
 			
-			if(context.game().hiddenInformation())
+			if (!requiresStack)
 			{
-				previousHiddenTo = new boolean[context.players().size()];
-				previousHiddenWhatTo = new boolean[context.players().size()];
-				previousHiddenWhoTo =  new boolean[context.players().size()];
-				previousHiddenCountTo =  new boolean[context.players().size()];
-				previousHiddenStateTo =  new boolean[context.players().size()];
-				previousHiddenRotationTo =  new boolean[context.players().size()];
-				previousHiddenValueTo =  new boolean[context.players().size()];
-				for (int pid = 1; pid < context.players().size(); pid++)
+				if(context.game().hiddenInformation())
 				{
-					previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
-					previousHiddenWhatTo[pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
-					previousHiddenWhoTo[pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
-					previousHiddenCountTo[pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
-					previousHiddenStateTo[pid] = csTo.isHiddenState(pid, to, 0, typeTo);
-					previousHiddenRotationTo[pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
-					previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
+					previousHiddenTo = new boolean[context.players().size()];
+					previousHiddenWhatTo = new boolean[context.players().size()];
+					previousHiddenWhoTo =  new boolean[context.players().size()];
+					previousHiddenCountTo =  new boolean[context.players().size()];
+					previousHiddenStateTo =  new boolean[context.players().size()];
+					previousHiddenRotationTo =  new boolean[context.players().size()];
+					previousHiddenValueTo =  new boolean[context.players().size()];
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
+						previousHiddenWhatTo[pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
+						previousHiddenWhoTo[pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
+						previousHiddenCountTo[pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
+						previousHiddenStateTo[pid] = csTo.isHiddenState(pid, to, 0, typeTo);
+						previousHiddenRotationTo[pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
+						previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
+					}
 				}
 			}
 			alreadyApplied = true;
@@ -885,7 +888,7 @@ public final class ActionMove extends BaseAction
 			final int who = (what < 1) ? 0 : context.components()[what].owner();
 
 			if (csFrom.what(from, typeFrom) != 0 && (!context.game().requiresCount()
-					|| context.game().requiresCount() && csFrom.what(from, typeFrom) != what)) // HERE PROBABLY THE TO PIECE WAS REMOVE SO NEED TO RE ADD IT IN THE UNDO
+					|| context.game().requiresCount() && csFrom.what(from, typeFrom) != what))
 			{
 				final Component pieceFromRemove = context.components()[csFrom.what(from, typeFrom)];
 				final int owner = pieceFromRemove.owner();
@@ -905,11 +908,17 @@ public final class ActionMove extends BaseAction
 			}
 
 			// to keep the site of the item in cache for each player
-			if (what != 0 && csFrom.count(from, typeFrom) == 1)
+			if (what != 0)
 			{
 				piece = context.components()[what];
 				final int owner = piece.owner();
-				context.state().owned().add(owner, what, from, typeFrom);
+				if(csFrom.count(from, typeFrom) == 1)
+					context.state().owned().add(owner, what, from, typeFrom);
+				
+//				System.out.println("new count is " + (countTo - 1));
+//				System.out.println("to site is " + to);
+				
+				context.state().owned().remove(owner, what, to, typeTo);
 			}
 
 			// In case of LargePiece we update the empty chunkSet
@@ -961,15 +970,6 @@ public final class ActionMove extends BaseAction
 					}
 				}
 			}
-
-			// We update the structure about track indices if the game uses track.
-			//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
-
-//			if (context.state().onTrackIndices() != null)
-//			{
-//				System.out.println("TRACK UPDATED by ActionMove on non stacking game");
-//				System.out.println(context.state().onTrackIndices());
-//			}
 
 			// We keep the update for hidden info.
 			if (context.game().hiddenInformation())
@@ -1124,15 +1124,6 @@ public final class ActionMove extends BaseAction
 					}
 				}
 				
-				// We update the structure about track indices if the game uses track.
-				//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
-
-//				if (context.state().onTrackIndices() != null)
-//				{
-//					System.out.println("TRACK UPDATED by ActionMove on stack top piece");
-//					System.out.println(context.state().onTrackIndices());
-//				}
-
 			} // to move only a level of the stack.
 			else
 			{
@@ -1202,9 +1193,6 @@ public final class ActionMove extends BaseAction
 							context.state().owned().remove(ownerTo, what, to, levelTo, typeTo);
 					}
 				}
-
-				// We update the structure about track indices if the game uses track.
-				//updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 			}
 		}
 		
