@@ -34,10 +34,16 @@ public final class ActionUpdateDice extends BaseAction
 	//----------------------Undo Data---------------------------------------------
 
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
+	private boolean alreadyAppliedState = false;
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyAppliedValue = false;
 	
 	/** The previous state of the die. */
 	private int previousState;
+	
+	/** The previous value of the die. */
+	private int previousDieValue;
 	
 	//-------------------------------------------------------------------------
 
@@ -88,10 +94,10 @@ public final class ActionUpdateDice extends BaseAction
 		final int cid = context.containerId()[site];
 		final ContainerState cs = context.state().containerStates()[cid];
 		
-		if(!alreadyApplied)
+		if(!alreadyAppliedState)
 		{
 			previousState = cs.state(site, SiteType.Cell);
-			alreadyApplied = true;
+			alreadyAppliedState = true;
 		}
 		
 		cs.setSite(context.state(), site, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, newState,
@@ -113,6 +119,13 @@ public final class ActionUpdateDice extends BaseAction
 			final int from = context.sitesFrom()[cid];
 			final int what = cs.whatCell(site);
 			final int dieIndex = site - from;
+			
+			if(!alreadyAppliedValue)
+			{
+				previousDieValue = context.state().currentDice()[indexDice][dieIndex];
+				alreadyAppliedValue = true;
+			}
+			
 			context.state().currentDice()[indexDice][dieIndex] = context.components()[what].getFaces()[newState];
 		}
 
@@ -147,12 +160,11 @@ public final class ActionUpdateDice extends BaseAction
 				}
 			}
 			final int from = context.sitesFrom()[cid];
-			final int what = cs.whatCell(site);
 			final int dieIndex = site - from;
 			
-			context.state().currentDice()[indexDice][dieIndex] = context.components()[what].getFaces()[previousState];
+			context.state().currentDice()[indexDice][dieIndex] = previousDieValue;
 		}
-
+		
 		return this;
 	}
 
