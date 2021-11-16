@@ -15,7 +15,7 @@ public abstract class LogitTreeNode
 	
 	/**
 	 * Convert to tree in metadata format.
-	 * @return
+	 * @return logit node.
 	 */
 	public abstract LogitNode toMetadataNode();
 	
