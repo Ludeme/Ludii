@@ -37,7 +37,7 @@
             (lineCompletionHeuristic weight:-1.0)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[f{0}]>" 0.3727651)
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[e{0}]>" 0.5363295)
