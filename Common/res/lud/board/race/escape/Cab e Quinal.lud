@@ -23,10 +23,7 @@
         "RemoveAPiece"
         (if (or
                 (not (is Enemy (who at:#1)))
-                (and 
-                    (is Enemy (who at:#1))
-                    (= 1 (size Stack at:#1))
-                )
+                (= 1 (size Stack at:#1))
             )
             (move 
                 (from) 
