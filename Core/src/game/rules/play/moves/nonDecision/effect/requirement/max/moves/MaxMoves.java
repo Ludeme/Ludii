@@ -137,7 +137,7 @@ public final class MaxMoves extends Effect
 	 */
 	private int getReplayCount(final Context contextCopy, final int count, final boolean withValue)
 	{
-		if (contextCopy.trial().over() || contextCopy.state().prev() != contextCopy.state().mover())
+		if (contextCopy.state().prev() != contextCopy.state().mover() || contextCopy.trial().over())
 			return count;
 
 		final Moves legalMoves = contextCopy.game().moves(contextCopy);
