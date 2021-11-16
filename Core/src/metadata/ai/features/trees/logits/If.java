@@ -1,6 +1,5 @@
 package metadata.ai.features.trees.logits;
 
-import annotations.Hide;
 import annotations.Name;
 import main.StringRoutines;
 
@@ -11,7 +10,6 @@ import main.StringRoutines;
  * 
  * @author Dennis Soemers
  */
-@Hide
 public class If extends LogitNode
 {
 	
@@ -33,6 +31,8 @@ public class If extends LogitNode
 	 * @param feature The feature to evaluate (the condition).
 	 * @param then The branch to take if the feature is active.
 	 * @param Else The branch to take if the feature is not active.
+	 * 
+	 * @example (if "rel:to=<{}>:pat=<els=[f{0}]>" then:(leaf { (pair "Intercept" 1.0) }) else:(leaf { (pair "Intercept" -1.0) }))
 	 */
 	public If
 	(

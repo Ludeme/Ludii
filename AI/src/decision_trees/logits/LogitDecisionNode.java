@@ -1,6 +1,8 @@
 package decision_trees.logits;
 
 import features.Feature;
+import metadata.ai.features.trees.logits.If;
+import metadata.ai.features.trees.logits.LogitNode;
 
 /**
  * Decision node in a feature-based logit tree
@@ -39,6 +41,14 @@ public class LogitDecisionNode extends LogitTreeNode
 		this.feature = feature;
 		this.trueNode = trueNode;
 		this.falseNode = falseNode;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public LogitNode toMetadataNode()
+	{
+		return new If(feature.toString(), trueNode.toMetadataNode(), falseNode.toMetadataNode());
 	}
 	
 	//-------------------------------------------------------------------------
