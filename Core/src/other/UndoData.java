@@ -7,6 +7,7 @@ import gnu.trove.list.array.TLongArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 import main.collections.FastTIntArrayList;
+import other.state.owned.Owned;
 import other.state.track.OnTrackIndices;
 import other.state.zhash.HashedBitSet;
 
@@ -102,6 +103,9 @@ public class UndoData
 	
 	/** To access where are each type of piece on each track. */
 	private OnTrackIndices onTrackIndices;
+	
+	/** To access where are each type of piece on each track. */
+	private Owned owned;
 
 	//-------------------------------------------------------------------------
 	
@@ -130,6 +134,7 @@ public class UndoData
 	 * @param visited	  			   Sites visited during the same turn.
 	 * @param sitesToRemove		   	   Sites to remove in case of a sequence of capture.
 	 * @param onTrackIndices		   To access where are each type of piece on each track.
+	 * @param owned		  			   Access to list of sites for each kind of component owned per player.
 	 */
 	public UndoData
 	(
@@ -156,7 +161,8 @@ public class UndoData
 		final FastTIntArrayList remainingDominoes,
 		final HashedBitSet visited,
 		final TIntArrayList sitesToRemove,
-		final OnTrackIndices onTrackIndices
+		final OnTrackIndices onTrackIndices,
+		final Owned owned
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -183,6 +189,7 @@ public class UndoData
 		this.visited = visited == null ? null : visited.clone();
 		this.sitesToRemove = sitesToRemove == null ? null : new TIntArrayList(sitesToRemove);
 		this.onTrackIndices = onTrackIndices == null ? null : new OnTrackIndices(onTrackIndices);
+		this.owned = owned == null ? null : owned.copy();
 	}
 
 	//-------------------------------------------------------------------------
@@ -377,5 +384,13 @@ public class UndoData
 	public OnTrackIndices onTrackIndices()
 	{
 		return onTrackIndices;
+	}
+	
+	/**
+	 * @return Owned sites per component
+	 */
+	public Owned owned()
+	{
+		return owned;
 	}
 }

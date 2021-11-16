@@ -211,7 +211,7 @@ public final class ActionMove extends BaseAction
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final int contIdTo = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		
-		final boolean requiresStack = context.game().isStacking();
+		final boolean requiresStack = context.currentInstanceContext().game().isStacking();
 		
 		int currentStateFrom = Constants.UNDEFINED;
 		int currentRotationFrom = Constants.UNDEFINED;
@@ -711,7 +711,7 @@ public final class ActionMove extends BaseAction
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final Game game = context.game();
 		
-		final boolean requiresStack = context.game().isStacking();
+		final boolean requiresStack = context.currentInstanceContext().game().isStacking();
 		
 		if (!requiresStack)
 		{
@@ -909,10 +909,18 @@ public final class ActionMove extends BaseAction
 				if(csFrom.count(from, typeFrom) == 1)
 					context.state().owned().add(owner, what, from, typeFrom);
 				
-//				System.out.println("new count is " + (countTo - 1));
-//				System.out.println("to site is " + to);
-				
-				context.state().owned().remove(owner, what, to, typeTo);
+//				final Owned ownedUndo = context.state().owned();
+//				final TIntArrayList ownedSites = ownedUndo.sites(owner); 
+//				int ownedToCount = 0;
+//				for(int i = 0; i < ownedSites.size() ; i++)
+//					if(ownedSites.get(i) == to)
+//						ownedToCount++;
+
+//				while(ownedToCount > csTo.count(to, typeTo))
+//				{
+//					context.state().owned().remove(owner, what, to, typeTo);
+//					ownedToCount--;
+//				}
 			}
 
 			// In case of LargePiece we update the empty chunkSet

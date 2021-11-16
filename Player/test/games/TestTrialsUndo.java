@@ -112,7 +112,7 @@ public class TestTrialsUndo
 		
 		boolean gameReached = false;
 		final String gameToReached = "";
-		final String gameToSkip = "Chaupar";
+		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
 

@@ -1717,7 +1717,8 @@ public class Context
 				state.remainingDominoes(),
 				state.visited(),
 				state.sitesToRemove(),
-				state.onTrackIndices()
+				state.onTrackIndices(),
+				state.owned()
 		);
 		
 		trial.addEndData(endData);
