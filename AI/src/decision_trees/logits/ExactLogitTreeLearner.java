@@ -324,7 +324,6 @@ public class ExactLogitTreeLearner
 				remainingAspatialsWhenFalse = new ArrayList<AspatialFeature>(remainingAspatialFeatures);
 				remainingAspatialWeightsWhenFalse = new TFloatArrayList(remainingAspatialWeights);
 				ListUtils.removeSwap(remainingAspatialsWhenFalse, bestIdx);
-				accumInterceptWhenFalse += remainingAspatialWeightsWhenFalse.getQuick(bestIdx);
 				ListUtils.removeSwap(remainingAspatialWeightsWhenFalse, bestIdx);
 
 				// Keep all spatial features when an aspatial feature is false
@@ -346,7 +345,6 @@ public class ExactLogitTreeLearner
 					if (i == bestIdx)
 					{
 						ListUtils.removeSwap(remainingSpatialsWhenFalse, i);
-						accumInterceptWhenFalse += remainingSpatialWeightsWhenFalse.getQuick(i);
 						ListUtils.removeSwap(remainingSpatialWeightsWhenFalse, i);
 					}
 					else
@@ -355,7 +353,6 @@ public class ExactLogitTreeLearner
 						if (((SpatialFeature)splittingFeature).generalises(other))
 						{
 							ListUtils.removeSwap(remainingSpatialsWhenFalse, i);
-							accumInterceptWhenFalse += remainingSpatialWeightsWhenFalse.getQuick(i);
 							ListUtils.removeSwap(remainingSpatialWeightsWhenFalse, i);
 						}
 					}
