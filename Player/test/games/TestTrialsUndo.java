@@ -23,8 +23,10 @@ import main.grammar.Description;
 import manager.utils.game_logs.MatchRecord;
 import other.action.Action;
 import other.context.Context;
+import other.location.Location;
 import other.move.Move;
 import other.state.container.ContainerState;
+import other.state.owned.Owned;
 import other.trial.Trial;
 import other.state.State;
 
@@ -45,7 +47,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = false;
+		final boolean stateComparaison = true;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -110,13 +112,13 @@ public class TestTrialsUndo
 		
 		boolean gameReached = false;
 		final String gameToReached = "";
-		final String gameToSkip = "";
+		final String gameToSkip = "Chaupar";
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("")) 
+			if (fileEntry.getPath().contains("Kawade Kelia")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -699,44 +701,94 @@ public class TestTrialsUndo
 								fail();
 							}
 							
-//							if(state.onTrackIndices() != null)
-//							{
-//								if(!state.onTrackIndices().equals(stateToCompare.onTrackIndices()))
-//								{
-//									System.out.println("IN MOVE " + trial.numberRealMoves() + " != onTrackIndices");
-//									for(int i = 0; i < state.onTrackIndices().onTrackIndices().length; i++)
-//									{
-//										System.out.println("What is " + i);
-//										System.out.println("correct one is " + stateToCompare.onTrackIndices().whats(i));
-//										System.out.println("undo one is " + state.onTrackIndices().whats(i));
-//									}
-//									
-//									fail();
-//								}
-//							}
+							if(state.onTrackIndices() != null)
+							{
+								if(!state.onTrackIndices().equals(stateToCompare.onTrackIndices()))
+								{
+									System.out.println("IN MOVE " + trial.numberRealMoves() + " != onTrackIndices");
+									for(int i = 0; i < state.onTrackIndices().onTrackIndices().length; i++)
+									{
+										System.out.println("What is " + i);
+										System.out.println("correct one is " + stateToCompare.onTrackIndices().whats(i));
+										System.out.println("undo one is " + state.onTrackIndices().whats(i));
+									}
+									
+									fail();
+								}
+							}
 							
 							// Check the owned structure.
 							for(int pid = 0; pid <= game.players().size(); pid++)
 							{
-								final TIntArrayList ownedUndo = state.owned().sites(pid);
-								final TIntArrayList ownedToCompare = stateToCompare.owned().sites(pid);
-								if(ownedToCompare.size() != ownedUndo.size())
+								final Owned ownedUndo = state.owned();
+								final TIntArrayList ownedSitesUndo = ownedUndo.sites(pid); 
+								final List<? extends Location>[] ownedPositionsUndo = ownedUndo.positions(pid);
+
+								final Owned ownedToCompare = stateToCompare.owned();
+								final TIntArrayList ownedSitesToCompare = ownedToCompare.sites(pid);
+								final List<? extends Location>[] ownedPositionsToCompare = ownedToCompare.positions(pid);
+								
+								if(ownedSitesToCompare.size() != ownedSitesUndo.size())
 								{
 									System.out.println("IN MOVE " + trial.numberRealMoves() + " != owned for pid = " + pid);
-									System.out.println("correct one is " + stateToCompare.owned().sites(pid));
-									System.out.println("undo one is " + state.owned().sites(pid));
+									
+									System.out.println("correct one is");
+									for(int i = 0; i < ownedPositionsToCompare.length ;i++)
+										for(Location loc: ownedPositionsToCompare[i])
+											System.out.println(loc.site() + " lvl = " + loc.level());
+									
+									System.out.println("undo one is ");
+									for(int i = 0; i < ownedPositionsUndo.length ;i++)
+										for(Location loc: ownedPositionsUndo[i])
+											System.out.println(loc.site() + " lvl = " + loc.level());
 									fail();
 								}
 								else
 								{
-									for(int i = 0 ; i < ownedUndo.size() ; i++)
-									{
-										final int site = ownedUndo.get(i);
-										if(!ownedToCompare.contains(site))
+									for(int i = 0; i < ownedPositionsUndo.length ;i++)
+										for(Location loc: ownedPositionsUndo[i])
 										{
-											System.out.println("IN MOVE " + trial.numberRealMoves() + " site " + site + " should not be owned by " + pid);
+											final int site = loc.site();
+											final int level = loc.level();
+											boolean found = false;
+											for(int j = 0; j < ownedPositionsToCompare.length ;j++)
+											{
+												for(Location locToCompare: ownedPositionsToCompare[j])
+												{
+													final int siteToCompare = locToCompare.site();
+													final int levelToCompare = locToCompare.level();
+													if(site == siteToCompare && level == levelToCompare)
+													{
+														found = true;
+														break;
+													}
+												}
+												if(found)
+													break;
+											}
+											
+											if(!found)
+											{
+												System.out.println("IN MOVE " + trial.numberRealMoves() + " site " + site + " level = " + level +" should not be owned by " + pid);
+												
+												System.out.println("correct one is");
+												for(int j = 0; j < ownedPositionsToCompare.length ;j++)
+													for(Location locToCompare: ownedPositionsToCompare[j])
+														System.out.println(locToCompare.site() + " lvl = " + locToCompare.level());
+												
+												fail();
+											}
 										}
-									}
+									
+//									for(int i = 0 ; i < ownedSitesUndo.size() ; i++)
+//									{
+//										final int site = ownedSitesUndo.get(i);
+//										final int site = ownedSitesUndo.get(i);
+//										if(!ownedSitesToCompare.contains(site))
+//										{
+//											System.out.println("IN MOVE " + trial.numberRealMoves() + " site " + site + " should not be owned by " + pid);
+//										}
+//									}
 								}
 							}
 						}
@@ -776,6 +828,10 @@ public class TestTrialsUndo
 							{
 								System.out.println("moveIdx = " + (moveIdx - trial.numInitialPlacementMoves()));
 								System.out.println("legalMoves.moves().size() = " + legalMoves.moves().size());
+								
+								for(Move move : legalMoves.moves())
+									System.out.println(move.getActionsWithConsequences(context));
+								
 								System.out.println(
 										"loadedTrial.legalMovesHistorySizes().getQuick(moveIdx - trial.numInitPlace()) = "
 												+ loadedTrial.auxilTrialData().legalMovesHistorySizes()
