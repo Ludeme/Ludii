@@ -1676,6 +1676,15 @@ public class State implements Serializable
 	}
 
 	/**
+	 * Set the owned structure.
+	 * @param owned The owned structure.
+	 */
+	public void setOwned(final Owned owned)
+	{
+		this.owned = owned.copy();
+	}
+	
+	/**
 	 * @return Owned sites per component
 	 */
 	public Owned owned()

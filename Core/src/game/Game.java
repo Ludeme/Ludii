@@ -107,6 +107,7 @@ import other.playout.PlayoutMoveSelector;
 import other.playout.PlayoutNoRepetition;
 import other.state.State;
 import other.state.container.ContainerState;
+import other.state.owned.Owned;
 import other.state.track.OnTrackIndices;
 import other.state.zhash.HashedBitSet;
 import other.topology.SiteFinder;
@@ -3069,6 +3070,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			final HashedBitSet visited = undoData == null ? null : undoData.visited();
 			final TIntArrayList sitesToRemove = undoData == null ? null : undoData.sitesToRemove();
 			final OnTrackIndices onTrackIndices = undoData == null ? null : undoData.onTrackIndices();
+			final Owned owned = undoData == null ? null : undoData.owned();
 			
 			int active = 0;
 			if(undoData != null)
@@ -3162,6 +3164,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			state.setTurnSamePlayer(numTurnSamePlayer);
 			state.setNumConsecutivesPasses(numConsecutivePasses);
 			state.setOnTrackIndices(onTrackIndices);
+			state.setOwned(owned);
 			
 			// Step 5: To update the sum of the dice container.
 			if (hasHandDice())
