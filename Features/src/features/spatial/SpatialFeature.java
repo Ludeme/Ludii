@@ -65,8 +65,8 @@ public abstract class SpatialFeature extends Feature
 	 */
 	protected int spatialFeatureSetIndex = -1;
 
-	/** Optional comment */
-	protected String comment = "";
+//	/** Optional comment */
+//	protected String comment = "";
 
 	//-------------------------------------------------------------------------
 
@@ -1516,23 +1516,23 @@ public abstract class SpatialFeature extends Feature
 
 	//-------------------------------------------------------------------------
 
-	/**
-	 * @return The feature's comment
-	 */
-	public String comment()
-	{
-		return comment;
-	}
-
-	/**
-	 * @param newComment New comment for the feature
-	 * @return this Feature object (after modification)
-	 */
-	public SpatialFeature setComment(final String newComment)
-	{
-		comment = newComment;
-		return this;
-	}
+//	/**
+//	 * @return The feature's comment
+//	 */
+//	public String comment()
+//	{
+//		return comment;
+//	}
+//
+//	/**
+//	 * @param newComment New comment for the feature
+//	 * @return this Feature object (after modification)
+//	 */
+//	public SpatialFeature setComment(final String newComment)
+//	{
+//		comment = newComment;
+//		return this;
+//	}
 	
 	/**
 	 * @return This feature's graph element type

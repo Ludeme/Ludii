@@ -102,7 +102,7 @@ public class RelativeFeature extends SpatialFeature
 				other.lastFromPosition == null ? null : 
 					new Walk(other.lastFromPosition);
 		
-		this.comment = new String(other.comment);
+//		this.comment = new String(other.comment);
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class RelativeFeature extends SpatialFeature
 			{
 				part = part.substring(
 						"comment=\"".length(), part.length() - "\"".length());
-				comment = part;
+//				comment = part;
 			}
 		}
 		
@@ -568,10 +568,10 @@ public class RelativeFeature extends SpatialFeature
 			str = String.format("last_from=<%s>:%s", lastFromPosition, str);
 		}
 		
-		if (comment.length() > 0)
-		{
-			str = String.format("%s:comment=\"%s\"", str, comment);
-		}
+//		if (comment.length() > 0)
+//		{
+//			str = String.format("%s:comment=\"%s\"", str, comment);
+//		}
 
 		return "rel:" + str;
 	}
