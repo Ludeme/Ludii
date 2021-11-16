@@ -130,7 +130,7 @@ public class GameUtil
 			final boolean boardBackground = context.game().metadata().graphics().boardBackground(context).size() > 0;
 			
 			// Make the margins around the board thinner
-			if (context.game().board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
+			if (context.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
 				app.bridge().getContainerStyle(0).setDefaultBoardScale(0.95);
 		}
 

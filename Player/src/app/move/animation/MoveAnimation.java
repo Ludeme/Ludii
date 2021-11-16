@@ -422,7 +422,7 @@ public class MoveAnimation
 
 								allMovingPieceImages.add(new DrawnImageInfo(pieceImage, new ImageInfo(new Point((int)(dragPosition.x + offsetDistance.x), (int)(dragPosition.y + offsetDistance.y)), graphElement.index(), level, graphElement.elementType())));
 
-								if (!game.isStacking())
+								if (!context.currentInstanceContext().game().isStacking())
 									return allMovingPieceImages;
 							}
 							catch (final NullPointerException e)
