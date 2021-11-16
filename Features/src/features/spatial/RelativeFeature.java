@@ -2,6 +2,7 @@ package features.spatial;
 
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
+import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
 
 /**
@@ -574,6 +575,14 @@ public class RelativeFeature extends SpatialFeature
 //		}
 
 		return "rel:" + str;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String generateTikzCode(final Game game)
+	{
+		return "TO DO";
 	}
 	
 	//-------------------------------------------------------------------------
