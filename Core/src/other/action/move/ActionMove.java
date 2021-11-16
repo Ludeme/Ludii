@@ -428,12 +428,6 @@ public final class ActionMove extends BaseAction
 			// We update the structure about track indices if the game uses track.
 			updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 
-//			if (context.state().onTrackIndices() != null)
-//			{
-//				System.out.println("TRACK UPDATED by ActionMove on non stacking game");
-//				System.out.println(context.state().onTrackIndices());
-//			}
-
 			// We keep the update for hidden info.
 			if (context.game().hiddenInformation())
 			{
@@ -1503,7 +1497,7 @@ public final class ActionMove extends BaseAction
 	@Override
 	public void setLevelFrom(final int levelA)
 	{
-		this.levelFrom = levelA;
+		levelFrom = levelA;
 	}
 	
 	@Override
