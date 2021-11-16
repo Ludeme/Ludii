@@ -122,6 +122,9 @@ public class ContainerComponents
 						if (component.isDie())
 						{
 							final int diceLocalState = context.diceSiteState().get(site);
+//							System.out.println(site);
+//							System.out.println(diceLocalState);
+//							System.out.println(context.currentInstanceContext().diceSiteState().get(site));
 							if (diceLocalState != -99)
 								localState = diceLocalState;
 						}
