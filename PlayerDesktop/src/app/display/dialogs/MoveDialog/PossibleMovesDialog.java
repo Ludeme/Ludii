@@ -214,7 +214,11 @@ public class PossibleMovesDialog extends MoveDialog
 						final Component c = context.components()[componentValue];
 						if (c.isLargePiece())
 						{
-							final BufferedImage componentImage = app.graphicsCache().getComponentImage(app.bridge(), fromContainerIndex, c, c.owner(), a.state(), 0, m.from(), 0, m.fromType(), imageSize, app.contextSnapshot().getContext(app), 0, 0, true);
+							final ComponentStyle componentStyle = app.bridge().getComponentStyle(c.index());
+							final int maxSize = Math.max(componentStyle.largePieceSize().x, componentStyle.largePieceSize().y);
+							final double scaleFactor = 0.9 * imageSize / maxSize;
+							BufferedImage componentImage = app.graphicsCache().getComponentImage(app.bridge(), fromContainerIndex, c, c.owner(), a.state(), 0, m.from(), 0, m.fromType(), imageSize, app.contextSnapshot().getContext(app), 0, 0, true);
+							componentImage = BufferedImageUtil.resize(componentImage, (int)(scaleFactor * componentStyle.largePieceSize().x), (int)(scaleFactor * componentStyle.largePieceSize().y));
 							final JButton button = AddButton(app, m, componentImage, "");
 							setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 						

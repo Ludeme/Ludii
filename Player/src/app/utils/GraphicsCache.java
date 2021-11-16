@@ -119,7 +119,7 @@ public class GraphicsCache
 			if (component.isLargePiece()) 
 			{
 				componentImage = SVGUtil.createSVGImage(svg.getSVGDocument(), componentStyle.largePieceSize().x, componentStyle.largePieceSize().y);
-				if (containerId != 0 || secondary)
+				if (containerId != 0)
 				{
 					final int maxSize = Math.max(componentStyle.largePieceSize().x, componentStyle.largePieceSize().y);
 					final double scaleFactor = 0.9 * imageSize / maxSize;

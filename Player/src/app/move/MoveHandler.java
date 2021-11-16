@@ -83,7 +83,7 @@ public class MoveHandler
 			}
 		}
 		else
-		{
+		{			
 			for (final Move move : legal.moves())
 			{
 				if (locnFromInfo.site() == -1)

@@ -101,6 +101,7 @@ public class GameUtil
 		
 		app.settingsPlayer().setComponentIsSelected(false);
 		app.bridge().settingsVC().setPieceBeingDragged(false);
+		app.settingsPlayer().setDragComponent(null);
 		
 		app.setTemporaryMessage("");
 		

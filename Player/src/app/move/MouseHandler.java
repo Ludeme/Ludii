@@ -66,8 +66,10 @@ public class MouseHandler
 		// Account for any large component offsets
 		if 
 		(
+			app.bridge().settingsVC().pieceBeingDragged()
+			&&
 			app.settingsPlayer().dragComponent() != null 
-			&& 
+			&&
 			app.bridge().getComponentStyle(app.settingsPlayer().dragComponent().index()).getLargeOffsets().size() > app.settingsPlayer().dragComponentState()
 		)
 		{
