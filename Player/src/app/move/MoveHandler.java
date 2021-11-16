@@ -89,8 +89,6 @@ public class MoveHandler
 				if (locnFromInfo.site() == -1)
 					return false;
 				
-				// If using web app (only clicks) 
-				//if (app.manager().isWebApp())
 				// Check if any other legal moves have fromInfo as their from location.
 				if 
 				(
