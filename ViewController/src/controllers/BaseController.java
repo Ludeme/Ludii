@@ -91,7 +91,8 @@ public abstract class BaseController implements Controller
 		
 		if (containerStyle.ignorePieceSelectionLimit() || context.game().hasLargePiece())
 		{
-			furthestPossibleDistance = Math.max(containerStyle.placement().getWidth(), containerStyle.placement().getHeight());
+			if (containerStyle.placement() != null)
+				furthestPossibleDistance = Math.max(containerStyle.placement().getWidth(), containerStyle.placement().getHeight());
 		}
 		else
 		{
