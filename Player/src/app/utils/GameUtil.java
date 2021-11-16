@@ -114,11 +114,10 @@ public class GameUtil
 		if (app.manager().isWebApp())
 		{
 			final Context context = app.manager().ref().context();
-			final Game game = context.game();
 			
 			// Check if that game contains a shared hand (above the board)
 			boolean hasSharedHand = false;
-			for (final Container container : game.equipment().containers())
+			for (final Container container : context.equipment().containers())
 				if (container.role().equals(RoleType.Shared))
 					hasSharedHand = true;
 			
@@ -128,10 +127,10 @@ public class GameUtil
 				if (context.game().metadata().graphics().handPlacement(context, i) != null)
 					hasCustomHandPlacement = true;
 			
-			final boolean boardBackground = game.metadata().graphics().boardBackground(context).size() > 0;
+			final boolean boardBackground = context.game().metadata().graphics().boardBackground(context).size() > 0;
 			
 			// Make the margins around the board thinner
-			if (game.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
+			if (context.game().board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
 				app.bridge().getContainerStyle(0).setDefaultBoardScale(0.95);
 		}
 
