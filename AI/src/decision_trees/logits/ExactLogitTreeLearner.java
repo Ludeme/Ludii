@@ -27,9 +27,10 @@ public class ExactLogitTreeLearner
 	 * Builds an exact logit tree node for given feature set and linear function of weights
 	 * @param featureSet
 	 * @param linFunc
+	 * @param maxDepth
 	 * @return Root node of the generated tree
 	 */
-	public static LogitTreeNode buildTree(final BaseFeatureSet featureSet, final LinearFunction linFunc)
+	public static LogitTreeNode buildTree(final BaseFeatureSet featureSet, final LinearFunction linFunc, final int maxDepth)
 	{
 		final List<AspatialFeature> aspatialFeatures = new ArrayList<AspatialFeature>(featureSet.aspatialFeatures().length);
 		for (final AspatialFeature aspatial : featureSet.aspatialFeatures())
@@ -66,7 +67,25 @@ public class ExactLogitTreeLearner
 			}
 		}
 		
-		return buildNode(aspatialFeatures, aspatialWeights, spatialFeatures, spatialWeights, accumInterceptWeight);
+		// Remove all 0-weight features
+		for (int i = aspatialFeatures.size() - 1; i >= 0; --i)
+		{
+			if (aspatialWeights.getQuick(i) == 0.f)
+			{
+				ListUtils.removeSwap(aspatialWeights, i);
+				ListUtils.removeSwap(aspatialFeatures, i);
+			}
+		}
+		for (int i = spatialFeatures.size() - 1; i >= 0; --i)
+		{
+			if (spatialWeights.getQuick(i) == 0.f)
+			{
+				ListUtils.removeSwap(spatialWeights, i);
+				ListUtils.removeSwap(spatialFeatures, i);
+			}
+		}
+		
+		return buildNode(aspatialFeatures, aspatialWeights, spatialFeatures, spatialWeights, accumInterceptWeight, maxDepth);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -77,6 +96,7 @@ public class ExactLogitTreeLearner
 	 * @param remainingSpatialFeatures
 	 * @param remainingSpatialWeights
 	 * @param accumInterceptWeight
+	 * @param allowedDepth
 	 * @return Newly built node for logit tree, for given data
 	 */
 	private static LogitTreeNode buildNode
@@ -85,13 +105,44 @@ public class ExactLogitTreeLearner
 		final TFloatArrayList remainingAspatialWeights,
 		final List<SpatialFeature> remainingSpatialFeatures,
 		final TFloatArrayList remainingSpatialWeights,
-		final float accumInterceptWeight
+		final float accumInterceptWeight,
+		final int allowedDepth
 	)
 	{
 		if (remainingAspatialFeatures.isEmpty() && remainingSpatialFeatures.isEmpty())
 		{
 			// Time to create leaf node: a model with just a single intercept feature
 			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {accumInterceptWeight});
+		}
+		
+		if (allowedDepth == 0)
+		{
+			// Have to create leaf node with remaining features
+			final int numModelFeatures = remainingAspatialFeatures.size() + remainingSpatialFeatures.size() + 1;
+			final Feature[] featuresArray = new Feature[numModelFeatures];
+			final float[] weightsArray = new float[numModelFeatures];
+			
+			int nextIdx = 0;
+			
+			// Start with intercept
+			featuresArray[nextIdx] = new InterceptFeature();
+			weightsArray[nextIdx++] = accumInterceptWeight;
+			
+			// Now aspatial features
+			for (int i = 0; i < remainingAspatialFeatures.size(); ++i)
+			{
+				featuresArray[nextIdx] = remainingAspatialFeatures.get(i);
+				weightsArray[nextIdx++] = remainingAspatialWeights.getQuick(i);
+			}
+			
+			// And finally spatial features
+			for (int i = 0; i < remainingSpatialFeatures.size(); ++i)
+			{
+				featuresArray[nextIdx] = remainingSpatialFeatures.get(i);
+				weightsArray[nextIdx++] = remainingSpatialWeights.getQuick(i);
+			}
+			
+			return new LogitModelNode(featuresArray, weightsArray);
 		}
 		
 		// Find optimal splitting feature. As optimal splitting criterion, we try to
@@ -253,7 +304,8 @@ public class ExactLogitTreeLearner
 						remainingAspatialWeightsWhenTrue, 
 						remainingSpatialsWhenTrue, 
 						remainingSpatialWeightsWhenTrue, 
-						accumInterceptWhenTrue
+						accumInterceptWhenTrue,
+						allowedDepth - 1
 					);
 		}
 		
@@ -317,7 +369,8 @@ public class ExactLogitTreeLearner
 						remainingAspatialWeightsWhenFalse, 
 						remainingSpatialsWhenFalse, 
 						remainingSpatialWeightsWhenFalse, 
-						accumInterceptWhenFalse
+						accumInterceptWhenFalse,
+						allowedDepth - 1
 					);
 		}
 		

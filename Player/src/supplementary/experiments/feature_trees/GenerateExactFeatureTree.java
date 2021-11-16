@@ -99,7 +99,7 @@ public class GenerateExactFeatureTree
 		for (int p = 1; p < featureSets.length; ++p)
 		{
 			// Generate logit tree for Player p
-			final LogitTreeNode root = ExactLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p]);
+			final LogitTreeNode root = ExactLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], 10);
 			
 			// Convert to metadata structure
 			final LogitNode metadataRoot = root.toMetadataNode();
