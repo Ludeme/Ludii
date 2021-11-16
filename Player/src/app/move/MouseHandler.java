@@ -58,19 +58,17 @@ public class MouseHandler
 		final Location selectedFromLocation = app.bridge().settingsVC().selectedFromLocation();
 		Location selectedToLocation;
 
-		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode())
+		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode() || context.game().hasLargePiece())
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getAllLocations(context, app.bridge()));	
 		else
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getLegalToLocations(app.bridge(), context));
-		
+
 		// Account for any large component offsets
 		if 
 		(
 			app.settingsPlayer().dragComponent() != null 
 			&& 
-			app.bridge().getComponentStyle(app.settingsPlayer().dragComponent().index()).getLargeOffsets().size() 
-			> 
-			app.settingsPlayer().dragComponentState()
+			app.bridge().getComponentStyle(app.settingsPlayer().dragComponent().index()).getLargeOffsets().size() > app.settingsPlayer().dragComponentState()
 		)
 		{
 			final Point newPoint = releasedPoint;
@@ -124,7 +122,14 @@ public class MouseHandler
 		
 		// Store the last clicked location, used for dev display and selecting pieces.
 		final Context context = app.contextSnapshot().getContext(app);
-		final Location clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getLegalFromLocations(context));		// Change this back to all locations if any problems.
+		
+		// clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getAllLocations(context, app.bridge()));
+		final Location clickedLocation;
+		if (app.settingsPlayer().componentIsSelected())
+			clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getLegalToLocations(app.bridge(), context));
+		else
+			clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getLegalFromLocations(context));
+		
 		app.bridge().settingsVC().setLastClickedSite(clickedLocation);
 		app.repaint();
 	}

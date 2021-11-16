@@ -99,6 +99,9 @@ public class GameUtil
 		app.manager().settingsManager().storedGameStatesForVisuals().clear();
 		app.manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(app.manager().ref().context().state().stateHash()));
 		
+		app.settingsPlayer().setComponentIsSelected(false);
+		app.bridge().settingsVC().setPieceBeingDragged(false);
+		
 		app.setTemporaryMessage("");
 		
 		app.manager().settingsNetwork().resetNetworkPlayers();
