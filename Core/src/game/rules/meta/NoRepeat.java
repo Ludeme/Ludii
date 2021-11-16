@@ -62,12 +62,12 @@ public class NoRepeat extends MetaRule
 		final Game game = context.game();
 		final MetaRules metaRules = game.metaRules();
 		
-		if (move.isPass())
-			return true;
-		
 		final RepetitionType type = metaRules.repetitionType();
-		if(type != null)
+		if (type != null)
 		{
+			if (move.isPass())
+				return true;
+			
 			final Context newContext = new TempContext(context);
 			move.apply(newContext, true);
 			switch (type)
