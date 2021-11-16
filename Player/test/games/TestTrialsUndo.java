@@ -47,7 +47,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = false;
+		final boolean stateComparaison = true;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -118,7 +118,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("")) 
+			if (fileEntry.getPath().contains("Panchi")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -308,6 +308,8 @@ public class TestTrialsUndo
 											if(cs.sizeStack(index, type) != csToCompare.sizeStack(index, type))
 											{
 												System.out.println("IN MOVE " + trial.numberRealMoves() +  " != stack size for " + type + " " + index);
+												System.out.println("correct one is " + csToCompare.sizeStack(index, type));
+												System.out.println("undo one is " + cs.sizeStack(index, type));
 												fail();
 											}
 											

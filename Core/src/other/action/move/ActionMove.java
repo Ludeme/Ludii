@@ -747,8 +747,8 @@ public final class ActionMove extends BaseAction
 				if (what != 0)
 				{
 					piece = context.components()[what];
-					final int owner = piece.owner();
-					context.state().owned().remove(owner, what, to, typeTo);
+					//final int owner = piece.owner();
+					//context.state().owned().remove(owner, what, to, typeTo);
 				}
 
 				// In case of LargePiece we update the empty chunkSet
@@ -784,8 +784,8 @@ public final class ActionMove extends BaseAction
 
 						// to keep the site of the item in cache for each player
 						pieceTo = context.components()[previousWhatTo];
-						final int owner = pieceTo.owner();
-						context.state().owned().add(owner, previousWhatTo, to, typeTo);
+//						final int owner = pieceTo.owner();
+//						context.state().owned().add(owner, previousWhatTo, to, typeTo);
 						if (pieceTo.isDomino())
 							context.state().remainingDominoes().remove(pieceTo.index());
 						
@@ -821,8 +821,8 @@ public final class ActionMove extends BaseAction
 					if (what != 0)
 					{
 						piece = context.components()[what];
-						final int owner = piece.owner();
-						context.state().owned().remove(owner, what, to, typeTo);
+//						final int owner = piece.owner();
+//						context.state().owned().remove(owner, what, to, typeTo);
 					}
 					
 					// In case of LargePiece we update the empty chunkSet
@@ -881,13 +881,13 @@ public final class ActionMove extends BaseAction
 			
 			final int who = (what < 1) ? 0 : context.components()[what].owner();
 
-			if (csFrom.what(from, typeFrom) != 0 && (!context.game().requiresCount()
-					|| context.game().requiresCount() && csFrom.what(from, typeFrom) != what))
-			{
-				final Component pieceFromRemove = context.components()[csFrom.what(from, typeFrom)];
-				final int owner = pieceFromRemove.owner();
-				context.state().owned().remove(owner, csFrom.what(from, typeFrom), from, typeFrom);
-			}
+//			if (csFrom.what(from, typeFrom) != 0 && (!context.game().requiresCount()
+//					|| context.game().requiresCount() && csFrom.what(from, typeFrom) != what))
+//			{
+//				final Component pieceFromRemove = context.components()[csFrom.what(from, typeFrom)];
+//				final int owner = pieceFromRemove.owner();
+//				context.state().owned().remove(owner, csFrom.what(from, typeFrom), from, typeFrom);
+//			}
 
 			if (csFrom.what(from, typeFrom) == what && csFrom.count(from, typeFrom) > 0)
 			{
@@ -905,9 +905,9 @@ public final class ActionMove extends BaseAction
 			if (what != 0)
 			{
 				piece = context.components()[what];
-				final int owner = piece.owner();
-				if(csFrom.count(from, typeFrom) == 1)
-					context.state().owned().add(owner, what, from, typeFrom);
+//				final int owner = piece.owner();
+//				if(csFrom.count(from, typeFrom) == 1)
+//					context.state().owned().add(owner, what, from, typeFrom);
 				
 //				final Owned ownedUndo = context.state().owned();
 //				final TIntArrayList ownedSites = ownedUndo.sites(owner); 
@@ -1018,7 +1018,7 @@ public final class ActionMove extends BaseAction
 			// To move a complete stack
 			if(onStacking)
 			{
-				final int sizeStackTo = containerTo.sizeStack(to, typeTo);
+				//final int sizeStackTo = containerTo.sizeStack(to, typeTo);
 				for (int slevel = 0; slevel < containerTo.sizeStack(to, typeTo); slevel++)
 				{
 					if (levelFrom == Constants.UNDEFINED)
@@ -1033,36 +1033,36 @@ public final class ActionMove extends BaseAction
 				}
 
 				// We update owned for loc To.
-				for (int level = 0; level < containerTo.sizeStack(to, typeTo); level++)
-				{
-					final int whatTo = containerTo.what(to, level, typeTo);
-					if (whatTo != 0)
-					{
-						final Component pieceTo = context.components()[whatTo];
-						final int ownerTo = pieceTo.owner();
-						if (ownerTo != 0)
-							context.state().owned().remove(ownerTo, whatTo, to, typeTo);
-					}
-				}
+//				for (int level = 0; level < containerTo.sizeStack(to, typeTo); level++)
+//				{
+//					final int whatTo = containerTo.what(to, level, typeTo);
+//					if (whatTo != 0)
+//					{
+//						final Component pieceTo = context.components()[whatTo];
+//						final int ownerTo = pieceTo.owner();
+//						if (ownerTo != 0)
+//							context.state().owned().remove(ownerTo, whatTo, to, typeTo);
+//					}
+//				}
 				
 				containerTo.removeStackGeneric(context.state(), to, typeTo);
 				containerTo.addToEmpty(to, typeTo);
 				containerFrom.removeFromEmpty(from, typeFrom);
 
 				// We update owned for loc From.
-				for (int level = containerFrom.sizeStack(from, typeFrom) - sizeStackTo; level < containerFrom.sizeStack(from, typeTo); level++)
-				{
-					if (level < 0)
-						continue;
-					final int whatFrom = containerFrom.what(from, level, typeFrom);
-					if (whatFrom != 0)
-					{
-						final Component pieceFrom = context.components()[whatFrom];
-						final int ownerFrom = pieceFrom.owner();
-						if (ownerFrom != 0)
-							context.state().owned().add(ownerFrom, whatFrom, from, level, typeFrom);
-					}
-				}
+//				for (int level = containerFrom.sizeStack(from, typeFrom) - sizeStackTo; level < containerFrom.sizeStack(from, typeTo); level++)
+//				{
+//					if (level < 0)
+//						continue;
+//					final int whatFrom = containerFrom.what(from, level, typeFrom);
+//					if (whatFrom != 0)
+//					{
+//						final Component pieceFrom = context.components()[whatFrom];
+//						final int ownerFrom = pieceFrom.owner();
+//						if (ownerFrom != 0)
+//							context.state().owned().add(ownerFrom, whatFrom, from, level, typeFrom);
+//					}
+//				}
 			}
 			// To move only the top piece
 			else if (levelTo == Constants.UNDEFINED)
@@ -1084,45 +1084,45 @@ public final class ActionMove extends BaseAction
 						containerFrom.removeFromEmpty(from, typeFrom);
 					
 					// To keep the site of the item in cache for each player
-					Component pieceTo = null;
-					int ownerTo = 0;
-					if (what != 0)
-					{
-						pieceTo = context.components()[what];
-						ownerTo = pieceTo.owner();
-						final int sizeStack = containerFrom.sizeStack(from, typeFrom);
-							context.state().owned().add(ownerTo, what, from,
-									sizeStack - 1, typeFrom);
-						context.state().owned().remove(ownerTo, what, to,
-								containerTo.sizeStack(to, typeTo), typeTo);
-					}
+//					Component pieceTo = null;
+//					int ownerTo = 0;
+//					if (what != 0)
+//					{
+//						pieceTo = context.components()[what];
+//						ownerTo = pieceTo.owner();
+//						final int sizeStack = containerFrom.sizeStack(from, typeFrom);
+//							context.state().owned().add(ownerTo, what, from,
+//									sizeStack - 1, typeFrom);
+//						context.state().owned().remove(ownerTo, what, to,
+//								containerTo.sizeStack(to, typeTo), typeTo);
+//					}
 				}
 				else
 				{
 					// To keep the site of the item in cache for each player
-					Component pieceTo = null;
-					int ownerTo = 0;
+//					Component pieceTo = null;
+//					int ownerTo = 0;
 					
 					if (what != 0)
 					{
-						pieceTo = context.components()[what];
-						ownerTo = pieceTo.owner();
+						//pieceTo = context.components()[what];
+						//ownerTo = pieceTo.owner();
 
-						final int sizeStack = containerFrom.sizeStack(from, typeFrom);
+						//final int sizeStack = containerFrom.sizeStack(from, typeFrom);
 						// we update the own list of the pieces on the top of that piece inserted.
-						for (int i = sizeStack - 1; i >= levelFrom; i--)
-						{
-							final int owner = containerFrom.who(from, i, typeFrom);
-							final int piece = containerFrom.what(from, i, typeFrom);
-							context.state().owned().removeNoUpdate(owner, piece, from, i, typeFrom);
-							context.state().owned().add(owner, piece, from, i + 1, typeFrom);
-						}
+//						for (int i = sizeStack - 1; i >= levelFrom; i--)
+//						{
+//							final int owner = containerFrom.who(from, i, typeFrom);
+//							final int piece = containerFrom.what(from, i, typeFrom);
+//							context.state().owned().removeNoUpdate(owner, piece, from, i, typeFrom);
+//							context.state().owned().add(owner, piece, from, i + 1, typeFrom);
+//						}
 						
 						containerFrom.insert(context.state(), typeFrom, from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom, context.game());
 						
-						context.state().owned().add(ownerTo, what, from, levelFrom, typeFrom);
-						
-						context.state().owned().remove(ownerTo, what, to, containerTo.sizeStack(to, typeTo), typeTo);
+//						context.state().owned().add(ownerTo, what, from, levelFrom, typeFrom);
+//						
+//						context.state().owned().remove(ownerTo, what, to, containerTo.sizeStack(to, typeTo), typeTo);
 					}
 				}
 				
@@ -1149,51 +1149,51 @@ public final class ActionMove extends BaseAction
 						containerFrom.removeFromEmpty(from, typeFrom);
 
 					// to keep the site of the item in cache for each player
-					Component pieceTo = null;
-					int ownerTo = 0;
-					if (what != 0)
-					{
-						pieceTo = context.components()[what];
-						ownerTo = pieceTo.owner();
-							context.state().owned().add(ownerTo, what, from,
-									containerFrom.sizeStack(from, typeFrom) - 1, typeFrom);
-							context.state().owned().remove(ownerTo, what, to, levelTo, typeTo);
-					}
+//					Component pieceTo = null;
+//					int ownerTo = 0;
+//					if (what != 0)
+//					{
+//						pieceTo = context.components()[what];
+//						ownerTo = pieceTo.owner();
+//							context.state().owned().add(ownerTo, what, from,
+//									containerFrom.sizeStack(from, typeFrom) - 1, typeFrom);
+//							context.state().owned().remove(ownerTo, what, to, levelTo, typeTo);
+//					}
 				}
 				else
 				{
-					final int sizeStack = containerFrom.sizeStack(from, typeFrom);
+					//final int sizeStack = containerFrom.sizeStack(from, typeFrom);
 					
 					// we update the own list of the pieces on the top of that piece inserted.
-					for (int i = sizeStack - 1; i >= levelFrom; i--)
-					{
-						final int owner = containerFrom.who(from, i, typeFrom);
-						final int piece = containerFrom.what(from, i, typeFrom);
-						context.state().owned().remove(owner, piece, from, i, typeFrom);
-						context.state().owned().add(owner, piece, from, i + 1, typeFrom);
-					}
+//					for (int i = sizeStack - 1; i >= levelFrom; i--)
+//					{
+//						final int owner = containerFrom.who(from, i, typeFrom);
+//						final int piece = containerFrom.what(from, i, typeFrom);
+//						context.state().owned().remove(owner, piece, from, i, typeFrom);
+//						context.state().owned().add(owner, piece, from, i + 1, typeFrom);
+//					}
 					
 					// We insert the piece.
 					containerFrom.insertCell(context.state(), from, levelFrom, what, who, state, rotation, value, context.game());
 				
 					// we update the own list with the new piece
-					final Component piece = context.components()[what];
-					final int owner = piece.owner();
-					context.state().owned().add(owner, what, from, levelFrom, typeFrom);
+//					final Component piece = context.components()[what];
+//					final int owner = piece.owner();
+//					context.state().owned().add(owner, what, from, levelFrom, typeFrom);
 
 					if (containerFrom.sizeStack(from, typeFrom) != 0)
 						containerFrom.removeFromEmpty(from, typeFrom);
 
 					// to keep the site of the item in cache for each player
-					Component pieceTo = null;
-					int ownerTo = 0;
-					if (what != 0)
-					{
-						pieceTo = context.components()[what];
-						ownerTo = pieceTo.owner();
-						if (ownerTo != 0)
-							context.state().owned().remove(ownerTo, what, to, levelTo, typeTo);
-					}
+//					Component pieceTo = null;
+//					int ownerTo = 0;
+//					if (what != 0)
+//					{
+//						pieceTo = context.components()[what];
+//						ownerTo = pieceTo.owner();
+//						if (ownerTo != 0)
+//							context.state().owned().remove(ownerTo, what, to, levelTo, typeTo);
+//					}
 				}
 			}
 		}

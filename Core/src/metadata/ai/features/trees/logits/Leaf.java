@@ -54,15 +54,13 @@ public class Leaf extends LogitNode
 	public String toString(final int indent)
 	{
 		final StringBuilder sb = new StringBuilder();
-		final String outerIndentStr = StringRoutines.indent(4, indent);
-		final String innerIndentStr = StringRoutines.indent(4, indent + 1);
 		
-		sb.append("(leaf {\n");
+		sb.append("(leaf { ");
 		for (int i = 0; i < featureStrings.length; ++i)
 		{
-			sb.append(innerIndentStr + "(pair " + StringRoutines.quote(featureStrings[i]) + " " + weights[i] + ")\n");
+			sb.append("(pair " + StringRoutines.quote(featureStrings[i]) + " " + weights[i] + ") ");
 		}
-		sb.append(outerIndentStr + "})");
+		sb.append( "})");
 		
 		return sb.toString();
 	}

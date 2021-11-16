@@ -305,7 +305,6 @@ public class MoveAnimation
 		final List<DrawnImageInfo> allMovingPieceImages = new ArrayList<>();
 		
 		final Context context = app.contextSnapshot().getContext(app);
-		final Game game = context.game();
 		final Moves legal = context.game().moves(context);
 		
 		// If all moves from this location involve the same level range, then use that level range.
