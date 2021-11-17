@@ -1,5 +1,6 @@
 package features.aspatial;
 
+import game.Game;
 import other.move.Move;
 import other.state.State;
 
@@ -28,6 +29,14 @@ public class PassMoveFeature extends AspatialFeature
 	public String toString()
 	{
 		return "PassMove";
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String generateTikzCode(final Game game)
+	{
+		return "\\node[rectangle,draw{,REL_POS}] ({LABEL}) {Pass};";
 	}
 	
 	//-------------------------------------------------------------------------

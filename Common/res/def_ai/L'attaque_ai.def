@@ -1,6 +1,6 @@
 (define "L'attaque_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -0.10024916)
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N4{}]>" 0.050595444)
