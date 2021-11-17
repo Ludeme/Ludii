@@ -1,5 +1,11 @@
 package features.spatial;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
 import game.Game;
@@ -582,7 +588,156 @@ public class RelativeFeature extends SpatialFeature
 	@Override
 	public String generateTikzCode(final Game game)
 	{
-		return "TO DO";
+		final Map<TFloatArrayList, List<String>> stringsPerWalk = new HashMap<TFloatArrayList, List<String>>();
+		
+		// Anchor
+		stringsPerWalk.put(new TFloatArrayList(), new ArrayList<String>());
+		stringsPerWalk.get(new TFloatArrayList()).add("");
+		
+		if (toPosition != null)
+		{
+			final TFloatArrayList key = toPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("To");
+		}
+		
+		if (fromPosition != null)
+		{
+			final TFloatArrayList key = fromPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("From");
+		}
+		
+		if (lastToPosition != null)
+		{
+			final TFloatArrayList key = lastToPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("Last To");
+		}
+		
+		if (lastFromPosition != null)
+		{
+			final TFloatArrayList key = lastFromPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("Last From");
+		}
+		
+		for (final FeatureElement el : pattern.featureElements())
+		{
+			final TFloatArrayList key = ((RelativeFeatureElement)el).walk().steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add((el.not() ? "!" : "") + el.type().label + (el.itemIndex() >= 0 ? String.valueOf(el.itemIndex()) : ""));
+		}
+		
+		final StringBuilder sb = new StringBuilder();
+		
+		final Map<TFloatArrayList, String> walksToLabels = new HashMap<TFloatArrayList, String>();
+		
+		// Start with node for anchor
+		sb.append("\\node[ellipse, draw, align=center] (Anchor) at (0,0) {");
+		final List<String> anchorStrings = stringsPerWalk.get(new TFloatArrayList());
+		while (anchorStrings.remove("")) { /** Keep going */ }
+		for (int i = 0; i < anchorStrings.size(); ++i)
+		{
+			if (i > 0)
+				sb.append("\\\\");
+			sb.append(anchorStrings.get(i));
+		}
+		sb.append("}; \n");
+		
+		walksToLabels.put(new TFloatArrayList(), "(Anchor)");
+		
+		final double STEP_SIZE = 2.0;
+		
+		for (final Entry<TFloatArrayList, List<String>> entry : stringsPerWalk.entrySet())
+		{
+			final TFloatArrayList walk = entry.getKey();
+			
+			if (!walksToLabels.containsKey(walk))
+			{
+				String currLabel = "(Anchor)";
+				double x = 0.0;
+				double y = 0.0;
+				double currTheta = 0.5 * Math.PI;
+				
+				final TFloatArrayList partialWalk = new TFloatArrayList();
+				for (int i = 0; i < walk.size(); ++i)
+				{
+					final float step = walk.getQuick(i);
+					partialWalk.add(step);
+					
+					currTheta -= step * 2.0 * Math.PI;
+					x += STEP_SIZE * Math.cos(currTheta);
+					y += STEP_SIZE * Math.sin(currTheta);
+					
+					final String newLabel = "(N" + partialWalk.toString().replaceAll("[{} ]", "").replaceAll("[,]", "_") + ")";
+					
+					if (!walksToLabels.containsKey(partialWalk))
+					{
+						walksToLabels.put(partialWalk, newLabel);
+						
+						// Need to draw a node for this partial walk
+						final StringBuilder nodeText = new StringBuilder();
+						final List<String> walkStrings = stringsPerWalk.get(partialWalk);
+						
+						if (walkStrings != null)
+						{
+							while (walkStrings.remove("")) { /** Keep going */ }
+							for (int j = 0; j < walkStrings.size(); ++j)
+							{
+								if (j > 0)
+									nodeText.append("\\\\");
+								nodeText.append(walkStrings.get(j));
+							}
+						}
+						
+						sb.append("\\node[ellipse, draw, align=center] " + newLabel + " at (" + x + ", " + y + ") {" + nodeText + "}; \n");
+						
+						// Draw arrow between previous node and this node
+						sb.append("\\path[->,draw] " + currLabel + " edge " + newLabel + "; \n");
+					}
+					
+					currLabel = newLabel;
+				}
+			}
+		}
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------
