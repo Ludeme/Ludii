@@ -284,23 +284,31 @@ public final class ActionRemove extends BaseAction
 		
 		if (context.game().isStacking())
 		{
-			final int levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
-			
 			if (previousState != Constants.UNDEFINED || previousRotation != Constants.UNDEFINED || previousValue != Constants.UNDEFINED)
 			{
-				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
+				if(level == Constants.UNDEFINED)
+					cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
 						(previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue,
 						context.game(), type);
+				else
+				{
+					cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
+				}
 			}
 			else
 			{
-				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, context.game(), type);
+				if(level == Constants.UNDEFINED)
+					cs.addItemGeneric(context.state(), to, previousWhat, previousWho, context.game(), type);
+				else
+				{
+					cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
+				}
 			}
 
 			cs.removeFromEmpty(to, type);
 
-			if (previousWhat != 0)
-				context.state().owned().add(previousWho, previousWhat, to, levelRemoved, type);
+//			if (previousWhat != 0)
+//				context.state().owned().add(previousWho, previousWhat, to, levelRemoved, type);
 		}
 		else
 		{
@@ -318,8 +326,8 @@ public final class ActionRemove extends BaseAction
 				if (previousWhat != 0)
 				{
 					piece = context.components()[previousWhat];
-					final int owner = piece.owner();
-					context.state().owned().add(owner, previousWhat, to, type);
+//					final int owner = piece.owner();
+//					context.state().owned().add(owner, previousWhat, to, type);
 					if (piece.isDomino())
 						context.state().remainingDominoes().remove(piece.index());
 				}
