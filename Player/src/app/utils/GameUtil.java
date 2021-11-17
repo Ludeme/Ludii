@@ -43,7 +43,7 @@ public class GameUtil
 		app.manager().undoneMoves().clear();
 		ref.interruptAI(app.manager());
 		Arrays.fill(app.settingsPlayer().agentArray(), true);
-		app.settingsPlayer().setWebGameResultValid(true);
+		//app.settingsPlayer().setWebGameResultValid(true);
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
