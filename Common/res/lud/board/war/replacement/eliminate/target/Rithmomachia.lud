@@ -20,7 +20,7 @@
                     (!= (from) (site))
                     (is In (to)
                         (sites To
-                            (forEach Level (site)
+                            (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
                                     (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
@@ -57,7 +57,7 @@
                     (!= (from) (site))
                     (is In (to)
                         (sites To
-                            (forEach Level (site)
+                            (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
                                     (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
@@ -94,7 +94,7 @@
                     (!= (from) (site))
                     (is In (to)
                         (sites To
-                            (forEach Level (site)
+                            (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
                                     (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
@@ -131,7 +131,7 @@
                     (!= (from) (site))
                     (is In (to)
                         (sites To
-                            (forEach Level (site)
+                            (forEach Level (site) FromBottom
                                 (if (= (what at:(site) level:(level)) (id "Disc" Mover))
                                     (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
                                     (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
@@ -901,7 +901,7 @@
             (or
                 (forEach Piece)
                 (forEach Site (sites Occupied by:Next)
-                    (forEach Level (site)
+                    (forEach Level (site) FromBottom
                         (if 
                             ("Encirclement")
                             (move Remove (site) level:(level))

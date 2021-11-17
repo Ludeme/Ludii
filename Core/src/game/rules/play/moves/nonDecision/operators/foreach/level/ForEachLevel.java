@@ -44,10 +44,9 @@ public final class ForEachLevel extends Effect
 	private final StackDirection stackDirection;
 
 	/**
-	 * @param type           The type of the graph elements of the group [default
-	 *                       SiteType of the board].
+	 * @param type           The type of the graph elements of the group [default SiteType of the board].
 	 * @param siteFn         The site to iterate through.
-	 * @param stackDirection The direction to count in the stack [FromBottom].
+	 * @param stackDirection The direction to count in the stack [FromTop].
 	 * @param generator      The move to apply.
 	 * @param then           The moves applied after that move is applied.
 	 */
@@ -64,7 +63,7 @@ public final class ForEachLevel extends Effect
 		this.siteFn = siteFn;
 		this.generator = generator;
 		this.type = type;
-		this.stackDirection = (stackDirection == null) ? StackDirection.FromBottom : stackDirection;
+		this.stackDirection = (stackDirection == null) ? StackDirection.FromTop : stackDirection;
 	}
 
 	@Override
