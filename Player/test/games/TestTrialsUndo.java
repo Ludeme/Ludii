@@ -118,7 +118,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("BlooGo")) 
+			if (fileEntry.getPath().contains("Kawasukuts")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -345,7 +345,9 @@ public class TestTrialsUndo
 												
 												if(cs.value(index, level, type) != csToCompare.value(index, level, type))
 												{
-													System.out.println(type + " != Value at  " + index + " level " + level);
+													System.out.println("IN MOVE " + trial.numberRealMoves() +  " " + type + " != Value at  " + index + " level " + level);
+													System.out.println("correct one is " + csToCompare.value(index, level, type));
+													System.out.println("undo one is " + cs.value(index, level, type));
 													fail();
 												}
 												

@@ -1075,10 +1075,13 @@ public final class ActionMove extends BaseAction
 					containerTo.addToEmpty(to, typeTo);
 
 				final int who = (what < 1) ? 0 : context.components()[what].owner();
+				final int newStateFrom = (previousStateFrom == Constants.UNDEFINED) ? containerTo.state(to, levelTo, typeTo) : previousStateFrom;
+				final int newRotationFrom = (previousRotationFrom == Constants.UNDEFINED) ? containerTo.rotation(to, levelTo, typeTo) : previousRotationFrom;
+				final int newValueFrom = (previousValueFrom == Constants.UNDEFINED) ? containerTo.value(to, levelTo, typeTo) : previousValueFrom;
 
 				if (levelFrom == Constants.UNDEFINED)
 				{
-					containerFrom.addItemGeneric(context.state(), from, what, who, context.game(), typeFrom);
+					containerFrom.addItemGeneric(context.state(), from, what, who, newStateFrom, newRotationFrom, newValueFrom, context.game(), typeFrom);
 					
 					if (containerFrom.sizeStack(from, typeFrom) != 0)
 						containerFrom.removeFromEmpty(from, typeFrom);
