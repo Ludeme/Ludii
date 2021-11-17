@@ -684,6 +684,8 @@ public class RelativeFeature extends SpatialFeature
 		
 		final double STEP_SIZE = 2.0;
 		
+		// TODO should use (x, y) coordinates as keys instead of lists of steps
+		
 		for (final Entry<TFloatArrayList, List<String>> entry : stringsPerWalk.entrySet())
 		{
 			final TFloatArrayList walk = entry.getKey();
