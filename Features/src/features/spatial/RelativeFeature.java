@@ -686,6 +686,8 @@ public class RelativeFeature extends SpatialFeature
 		
 		// TODO should use (x, y) coordinates as keys instead of lists of steps
 		
+		int nextLabelIdx = 1;
+		
 		for (final Entry<TFloatArrayList, List<String>> entry : stringsPerWalk.entrySet())
 		{
 			final TFloatArrayList walk = entry.getKey();
@@ -707,11 +709,12 @@ public class RelativeFeature extends SpatialFeature
 					x += STEP_SIZE * Math.cos(currTheta);
 					y += STEP_SIZE * Math.sin(currTheta);
 					
-					final String newLabel = "(N" + partialWalk.toString().replaceAll("[{} ]", "").replaceAll("[,]", "_") + ")";
+					final String nextLabel;
 					
 					if (!walksToLabels.containsKey(partialWalk))
 					{
-						walksToLabels.put(partialWalk, newLabel);
+						nextLabel = "(N" + (nextLabelIdx++) + ")";
+						walksToLabels.put(partialWalk, nextLabel);
 						
 						// Need to draw a node for this partial walk
 						final StringBuilder nodeText = new StringBuilder();
@@ -728,13 +731,17 @@ public class RelativeFeature extends SpatialFeature
 							}
 						}
 						
-						sb.append("\\node[ellipse, draw, align=center] " + newLabel + " at (" + x + ", " + y + ") {" + nodeText + "}; \n");
+						sb.append("\\node[ellipse, draw, align=center] " + nextLabel + " at (" + x + ", " + y + ") {" + nodeText + "}; \n");
 						
 						// Draw arrow between previous node and this node
-						sb.append("\\path[->,draw] " + currLabel + " edge " + newLabel + "; \n");
+						sb.append("\\path[->,draw] " + currLabel + " edge " + nextLabel + "; \n");
+					}
+					else
+					{
+						nextLabel = walksToLabels.get(partialWalk);
 					}
 					
-					currLabel = newLabel;
+					currLabel = nextLabel;
 				}
 			}
 		}
