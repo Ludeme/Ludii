@@ -118,7 +118,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Panchi")) 
+			if (fileEntry.getPath().contains("Tsun K'i")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -317,7 +317,9 @@ public class TestTrialsUndo
 											{
 												if(cs.what(index, level, type) != csToCompare.what(index, level, type))
 												{
-													System.out.println(type + " != What at  " + index + " level " + level);
+													System.out.println("IN MOVE " + trial.numberRealMoves() +  " " + type + " != What at  " + index + " level " + level);
+													System.out.println("correct one is " + csToCompare.what(index, level, type));
+													System.out.println("undo one is " + cs.what(index, level, type));
 													fail();
 												}
 												
