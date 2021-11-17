@@ -10,6 +10,8 @@ import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
 import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
+import main.Constants;
+import main.math.Point2D;
 
 /**
  * In a Relative Feature, the Action-to-play is implied by
@@ -666,21 +668,28 @@ public class RelativeFeature extends SpatialFeature
 		
 		final StringBuilder sb = new StringBuilder();
 		
-		final Map<TFloatArrayList, String> walksToLabels = new HashMap<TFloatArrayList, String>();
+		final List<Point2D> points = new ArrayList<Point2D>();
+		final List<String> labels = new ArrayList<String>();
+		final List<List<String>> stringsPerPoint = new ArrayList<List<String>>();
 		
 		// Start with node for anchor
 		sb.append("\\node[ellipse, draw, align=center] (Anchor) at (0,0) {");
 		final List<String> anchorStrings = stringsPerWalk.get(new TFloatArrayList());
 		while (anchorStrings.remove("")) { /** Keep going */ }
-		for (int i = 0; i < anchorStrings.size(); ++i)
-		{
-			if (i > 0)
-				sb.append("\\\\");
-			sb.append(anchorStrings.get(i));
-		}
+		
+//		for (int i = 0; i < anchorStrings.size(); ++i)
+//		{
+//			if (i > 0)
+//				sb.append("\\\\");
+//			sb.append(anchorStrings.get(i));
+//		}
+		sb.append("{POINT_STRINGS_" + points.size() + "}");
+		
 		sb.append("}; \n");
 		
-		walksToLabels.put(new TFloatArrayList(), "(Anchor)");
+		points.add(new Point2D(0.0, 0.0));
+		labels.add("(Anchor)");
+		stringsPerPoint.add(anchorStrings);
 		
 		final double STEP_SIZE = 2.0;
 		
@@ -692,61 +701,107 @@ public class RelativeFeature extends SpatialFeature
 		{
 			final TFloatArrayList walk = entry.getKey();
 			
-			if (!walksToLabels.containsKey(walk))
+			String currLabel = "(Anchor)";
+			double x = 0.0;
+			double y = 0.0;
+			double currTheta = 0.5 * Math.PI;
+			
+			final TFloatArrayList partialWalk = new TFloatArrayList();
+			for (int i = 0; i < walk.size(); ++i)
 			{
-				String currLabel = "(Anchor)";
-				double x = 0.0;
-				double y = 0.0;
-				double currTheta = 0.5 * Math.PI;
+				final float step = walk.getQuick(i);
+				partialWalk.add(step);
 				
-				final TFloatArrayList partialWalk = new TFloatArrayList();
-				for (int i = 0; i < walk.size(); ++i)
+				currTheta -= step * 2.0 * Math.PI;
+				x += STEP_SIZE * Math.cos(currTheta);
+				y += STEP_SIZE * Math.sin(currTheta);
+				final Point2D currPoint = new Point2D(x, y);
+				
+				String nextLabel = null;
+				List<String> pointStrings = null;
+				
+				for (int j = 0; j < points.size(); ++j)
 				{
-					final float step = walk.getQuick(i);
-					partialWalk.add(step);
-					
-					currTheta -= step * 2.0 * Math.PI;
-					x += STEP_SIZE * Math.cos(currTheta);
-					y += STEP_SIZE * Math.sin(currTheta);
-					
-					final String nextLabel;
-					
-					if (!walksToLabels.containsKey(partialWalk))
+					if (points.get(j).equalsApprox(currPoint, Constants.EPSILON))
 					{
-						nextLabel = "(N" + (nextLabelIdx++) + ")";
-						walksToLabels.put(partialWalk, nextLabel);
-						
-						// Need to draw a node for this partial walk
-						final StringBuilder nodeText = new StringBuilder();
-						final List<String> walkStrings = stringsPerWalk.get(partialWalk);
-						
-						if (walkStrings != null)
-						{
-							while (walkStrings.remove("")) { /** Keep going */ }
-							for (int j = 0; j < walkStrings.size(); ++j)
-							{
-								if (j > 0)
-									nodeText.append("\\\\");
-								nodeText.append(walkStrings.get(j));
-							}
-						}
-						
-						sb.append("\\node[ellipse, draw, align=center] " + nextLabel + " at (" + x + ", " + y + ") {" + nodeText + "}; \n");
-						
-						// Draw arrow between previous node and this node
-						sb.append("\\path[->,draw] " + currLabel + " edge " + nextLabel + "; \n");
+						nextLabel = labels.get(j);
+						pointStrings = stringsPerPoint.get(j);
+						break;
 					}
-					else
-					{
-						nextLabel = walksToLabels.get(partialWalk);
-					}
-					
-					currLabel = nextLabel;
 				}
+				
+				if (nextLabel == null)
+				{
+					nextLabel = "(N" + (nextLabelIdx++) + ")";
+					
+					// Need to draw a node for this partial walk
+//					final StringBuilder nodeText = new StringBuilder();
+//					final List<String> walkStrings = stringsPerWalk.get(partialWalk);
+//					
+//					if (walkStrings != null)
+//					{
+//						while (walkStrings.remove("")) { /** Keep going */ }
+//						for (int j = 0; j < walkStrings.size(); ++j)
+//						{
+//							if (j > 0)
+//								nodeText.append("\\\\");
+//							nodeText.append(walkStrings.get(j));
+//						}
+//					}
+					
+					sb.append("\\node[ellipse, draw, align=center] " + nextLabel + " at (" + x + ", " + y + ") {{POINT_STRINGS_" + points.size() + "}}; \n");
+					
+					// Draw arrow between previous node and this node
+					sb.append("\\path[->,draw] " + currLabel + " edge " + nextLabel + "; \n");
+					
+					points.add(currPoint);
+					labels.add(nextLabel);
+					pointStrings = new ArrayList<String>();
+					stringsPerPoint.add(pointStrings);
+				}
+				
+				final List<String> walkStrings = stringsPerWalk.get(partialWalk);
+				if (walkStrings != null)
+				{
+					while (walkStrings.remove("")) { /** Keep going */ }
+					for (final String walkString : walkStrings)
+					{
+						if (!pointStrings.contains(walkString))
+							pointStrings.add(walkString);
+					}
+				}
+				
+				currLabel = nextLabel;
 			}
 		}
 		
-		return sb.toString();
+		String returnStr = sb.toString();
+		
+		for (int i = 0; i < points.size(); ++i)
+		{
+			final StringBuilder replaceStr = new StringBuilder();
+			for (int j = 0; j < stringsPerPoint.get(i).size(); ++j)
+			{
+				if (j > 0)
+					replaceStr.append("\\\\");
+				replaceStr.append(stringsPerPoint.get(i).get(j));
+			}
+			
+			returnStr = 
+					returnStr.replaceFirst
+					(
+						java.util.regex.Pattern.quote("{POINT_STRINGS_" + i + "}"), 
+						java.util.regex.Matcher.quoteReplacement(replaceStr.toString())
+					);
+		}
+		
+		returnStr = returnStr.replaceAll
+				(
+					java.util.regex.Pattern.quote("#"), 
+					java.util.regex.Matcher.quoteReplacement("\\#")
+				);
+		
+		return returnStr;
 	}
 	
 	//-------------------------------------------------------------------------

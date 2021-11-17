@@ -4,6 +4,7 @@ import features.Feature;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
+import main.StringRoutines;
 
 public class FeatureToTikz
 {
@@ -31,6 +32,7 @@ public class FeatureToTikz
 	public void run()
 	{
 		final Feature f = Feature.fromString(feature);
+		System.out.println("% Code generated for feature: " + StringRoutines.quote(feature));
 		System.out.println(f.generateTikzCode(null));
 	}
 	
