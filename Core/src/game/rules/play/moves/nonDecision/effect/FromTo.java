@@ -169,6 +169,7 @@ public final class FromTo extends Effect
 		final boolean copyTo = copy.eval(context);
 
 		final BaseMoves moves = new BaseMoves(super.then());
+		final boolean stackingGame = context.currentInstanceContext().game().isStacking();
 
 		for (final int from : sitesFrom)
 		{
@@ -280,7 +281,7 @@ public final class FromTo extends Effect
 						}
 						else
 						{
-							if (!stack)
+							if (!stackingGame && !stack)
 							{
 								actionMove = new ActionMoveN(realTypeFrom, from, realTypeTo, to, count);
 								actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);

@@ -238,8 +238,8 @@
                         (move (from ("ReleaseCandidatesByState" (var "LastState"))) (to ("ReleaseZone"))
                             (then
                                 (and
-                                    (set Var "LastState" -1)
-                                    (set Var "ReleaseCountdown" (+ (var "ReleaseCountdown") -1))
+                                    (set Var "LastState" -2)
+                                    (set Var "ReleaseCountdown" (- (var "ReleaseCountdown") 1))
                                 )
                             )
                         )
@@ -248,14 +248,14 @@
                                 (then
                                     (and
                                         (set Var "LastState" (state at:(last To)))
-                                        (set Var "ReleaseCountdown" (+ (var "ReleaseCountdown") -1))
+                                        (set Var "ReleaseCountdown" (- (var "ReleaseCountdown") 1))
                                     )
                                 )
                             )
                             (move Pass
                                 (then
                                     (and
-                                        (set Var "LastState" -1)
+                                        (set Var "LastState" -2)
                                         (set Var "ReleaseCountdown" 0)
                                     )
                                 )

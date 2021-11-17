@@ -206,7 +206,7 @@ public final class ActionMoveN extends BaseAction
 			alreadyApplied = true;
 		}
 		
-		// modification on A
+		// modification on From
 		if (csFrom.count(from, typeFrom) - count <= 0)
 		{
 			csFrom.remove(context.state(), from, typeFrom);
@@ -218,7 +218,7 @@ public final class ActionMoveN extends BaseAction
 					Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeFrom);
 		}
 
-		// modification on B
+		// modification on To
 		if (csTo.count(to, typeTo) == 0)
 		{
 			csTo.setSite(context.state(), to, who, what, count, Constants.UNDEFINED, Constants.UNDEFINED,
@@ -329,12 +329,12 @@ public final class ActionMoveN extends BaseAction
 		
 //		Component piece = null;
 		// to keep the site of the item in cache for each player
-		if (what != 0 && who !=0)
-		{
-			if(csTo.count(to, typeTo) == 0)
-				context.state().owned().remove(who, what, to, typeTo);
-			context.state().owned().add(who, what, from, typeFrom);
-		}
+//		if (what != 0 && who !=0)
+//		{
+//			if(csTo.count(to, typeTo) == 0)
+//				context.state().owned().remove(who, what, to, typeTo);
+//			context.state().owned().add(who, what, from, typeFrom);
+//		}
 
 //		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 //		// We update the structure about track indices if the game uses track.
