@@ -81,8 +81,8 @@ public class SettingsPlayer
 	private boolean webGameResultValid = true;
 	
 	/** If played index has always been an agent */
-	private final boolean[] agentArray = {false,true,true,true,true,true,true,true,true,true,
-										  true,true,true,true,true,true,true,true,true,true};
+	private final boolean[] agentArray = {false,false,false,false,false,false,false,false,false,false,
+										  false,false,false,false,false,false,false,false,false,false};
 	
 	//-------------------------------------------------------------------------
 	// User settings
