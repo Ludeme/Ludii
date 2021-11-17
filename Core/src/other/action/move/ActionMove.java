@@ -69,6 +69,8 @@ public final class ActionMove extends BaseAction
 
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
+
+	//-- from data
 	
 	/** Previous Size stack of the from site. */
 	private int previousSizeStackFrom;
@@ -81,6 +83,29 @@ public final class ActionMove extends BaseAction
 
 	/** Previous Piece value of the from site. */
 	private int previousValueFrom;
+	
+	/** The previous hidden info values of the from site before to be removed. */
+	private boolean[] previousHiddenFrom;
+	
+	/** The previous hidden what info values of the from site before to be removed. */
+	private boolean[] previousHiddenWhatFrom;
+	
+	/** The previous hidden who info values of the from site before to be removed. */
+	private boolean[] previousHiddenWhoFrom;
+
+	/** The previous hidden count info values of the from site before to be removed. */
+	private boolean[] previousHiddenCountFrom;
+
+	/** The previous hidden rotation info values of the from site before to be removed. */
+	private boolean[] previousHiddenRotationFrom;
+
+	/** The previous hidden State info values of the from site before to be removed. */
+	private boolean[] previousHiddenStateFrom;
+
+	/** The previous hidden Value info values of the from site before to be removed. */
+	private boolean[] previousHiddenValueFrom;
+	
+	//--- to data
 	
 	/** Previous Site state value of the to site. */
 	private int previousStateTo;
@@ -251,6 +276,24 @@ public final class ActionMove extends BaseAction
 			{
 				if(context.game().hiddenInformation())
 				{
+					previousHiddenFrom = new boolean[context.players().size()];
+					previousHiddenWhatFrom = new boolean[context.players().size()];
+					previousHiddenWhoFrom =  new boolean[context.players().size()];
+					previousHiddenCountFrom =  new boolean[context.players().size()];
+					previousHiddenStateFrom =  new boolean[context.players().size()];
+					previousHiddenRotationFrom =  new boolean[context.players().size()];
+					previousHiddenValueFrom =  new boolean[context.players().size()];
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						previousHiddenFrom[pid] = csFrom.isHidden(pid, from, 0, typeFrom);
+						previousHiddenWhatFrom[pid] = csFrom.isHiddenWhat(pid, from, 0, typeFrom);
+						previousHiddenWhoFrom[pid] = csFrom.isHiddenWho(pid, from, 0, typeFrom);
+						previousHiddenCountFrom[pid] = csFrom.isHiddenCount(pid, from, 0, typeFrom);
+						previousHiddenStateFrom[pid] = csFrom.isHiddenState(pid, from, 0, typeFrom);
+						previousHiddenRotationFrom[pid] = csFrom.isHiddenRotation(pid, from, 0, typeFrom);
+						previousHiddenValueFrom[pid] = csFrom.isHiddenValue(pid, from, 0, typeFrom);
+					}
+					
 					previousHiddenTo = new boolean[context.players().size()];
 					previousHiddenWhatTo = new boolean[context.players().size()];
 					previousHiddenWhoTo =  new boolean[context.players().size()];
@@ -1011,6 +1054,21 @@ public final class ActionMove extends BaseAction
 								+ ","
 								+ csFrom.state(from, typeFrom) + "," + csFrom.state(from, typeFrom) + ")");
 			}
+			
+			if(context.game().hiddenInformation())
+			{
+				for (int pid = 1; pid < context.players().size(); pid++)
+				{
+					csFrom.setHidden(context.state(), pid, from, 0, typeFrom, previousHiddenFrom[pid]);
+					csFrom.setHiddenWhat(context.state(), pid, from, 0, typeFrom, previousHiddenWhatFrom[pid]);
+					csFrom.setHiddenWho(context.state(), pid, from, 0, typeFrom, previousHiddenWhoFrom[pid]);
+					csFrom.setHiddenCount(context.state(), pid, from, 0, typeFrom, previousHiddenCountFrom[pid]);
+					csFrom.setHiddenState(context.state(), pid, from, 0, typeFrom, previousHiddenStateFrom[pid]);
+					csFrom.setHiddenRotation(context.state(), pid, from, 0, typeFrom, previousHiddenRotationFrom[pid]);
+					csFrom.setHiddenValue(context.state(), pid, from, 0, typeFrom, previousHiddenValueFrom[pid]);
+				}
+			}
+			
 		}
 		// On a stacking game
 		else

@@ -118,7 +118,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Murus Gallicus")) 
+			if (fileEntry.getPath().contains("Sneakthrough")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -355,7 +355,9 @@ public class TestTrialsUndo
 												{
 													if(cs.isHidden(pid, index, level, type) != csToCompare.isHidden(pid, index, level, type))
 													{
-														System.out.println(type + " != isHidden at  " + index + " level " + level + " player " + pid);
+														System.out.println("IN MOVE " + trial.numberRealMoves() + " " + type + " != isHidden at  " + index + " level " + level + " player " + pid);
+														System.out.println("correct one is " + csToCompare.isHidden(pid, index, level, type));
+														System.out.println("undo one is " + cs.isHidden(pid, index, level, type));
 														fail();
 													}
 													
