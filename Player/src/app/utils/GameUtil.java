@@ -1,7 +1,6 @@
 package app.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import app.PlayerApp;
@@ -42,8 +41,16 @@ public class GameUtil
 		Game game = context.game();
 		app.manager().undoneMoves().clear();
 		ref.interruptAI(app.manager());
-		Arrays.fill(app.settingsPlayer().agentArray(), true);
-		//app.settingsPlayer().setWebGameResultValid(true);
+		
+		// Web Player settings
+		app.settingsPlayer().setWebGameResultValid(true);
+		for (int i = 0; i <= game.players().count(); i++)
+		{
+			if (app.manager().aiSelected()[app.manager().playerToAgent(i)].ai() != null)
+				app.settingsPlayer().setAgentArray(i, true);
+			else
+				app.settingsPlayer().setAgentArray(i, false);
+		}
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
