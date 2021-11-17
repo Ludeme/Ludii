@@ -70,6 +70,9 @@ public final class ActionMove extends BaseAction
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
+	/** Previous Size stack of the from site. */
+	private int previousSizeStackFrom;
+	
 	/** Previous Site state value of the from site. */
 	private int previousStateFrom;
 
@@ -240,6 +243,9 @@ public final class ActionMove extends BaseAction
 			previousValueTo = (levelTo == Constants.UNDEFINED) ? csTo.value(to, typeTo) : csTo.value(to, levelTo, typeTo);
 			previousWhoTo = (levelTo == Constants.UNDEFINED) ? csTo.who(to, typeTo) : csTo.who(to, levelTo, typeTo);
 			previousWhatTo = (levelTo == Constants.UNDEFINED) ? csTo.what(to, typeTo) : csTo.what(to, levelTo, typeTo);
+			
+			if(onStacking)
+				previousSizeStackFrom = csFrom.sizeStack(from, typeFrom);
 			
 			if (!requiresStack)
 			{
@@ -1019,7 +1025,7 @@ public final class ActionMove extends BaseAction
 			if(onStacking)
 			{
 				//final int sizeStackTo = containerTo.sizeStack(to, typeTo);
-				for (int slevel = 0; slevel < containerTo.sizeStack(to, typeTo); slevel++)
+				for (int slevel = 0; slevel < previousSizeStackFrom; slevel++)
 				{
 					if (levelFrom == Constants.UNDEFINED)
 						containerFrom.addItemGeneric(context.state(), from, containerTo.what(to, slevel, typeTo),
@@ -1045,8 +1051,12 @@ public final class ActionMove extends BaseAction
 //					}
 //				}
 				
-				containerTo.removeStackGeneric(context.state(), to, typeTo);
-				containerTo.addToEmpty(to, typeTo);
+				for (int slevel = 0; slevel < previousSizeStackFrom; slevel++)
+					containerTo.remove(context.state(), to, typeTo);
+				
+				if(containerTo.sizeStack(to, typeTo) == 0)
+					containerTo.addToEmpty(to, typeTo);
+
 				containerFrom.removeFromEmpty(from, typeFrom);
 
 				// We update owned for loc From.
