@@ -177,7 +177,7 @@ public class UndoData
 		this.phases = phases == null ? null : Arrays.copyOf(phases, phases.length);
 		this.pendingValues = pendingValues == null ? null : new TIntHashSet(pendingValues);
 		this.counter = counter;
-		this.previousStateWithinATurn = new TLongArrayList(previousState);
+		this.previousStateWithinATurn = new TLongArrayList(previousStateWithinATurn);
 		this.previousState = new TLongArrayList(previousState);
 		this.prev = prev;
 		this.mover = mover;

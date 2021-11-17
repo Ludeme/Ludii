@@ -118,7 +118,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Chonpa")) 
+			if (fileEntry.getPath().contains("BlooGo")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -434,12 +434,16 @@ public class TestTrialsUndo
 							}
 							if(!trial.previousState().equals(trialToCompare.previousState()))
 							{
-								System.out.println("!= previous states");
+								System.out.println("IN MOVE " + trial.numberRealMoves() +   " != previous states");
+								System.out.println("correct one is " + trialToCompare.previousState());
+								System.out.println("undo one is " + trial.previousState());
 								fail();
 							}
 							if(!trial.previousStateWithinATurn().equals(trialToCompare.previousStateWithinATurn()))
 							{
-								System.out.println("!= previous states within turn");
+								System.out.println("IN MOVE " + trial.numberRealMoves() +   " != previous states within turn");
+								System.out.println("correct one is " + trialToCompare.previousStateWithinATurn());
+								System.out.println("undo one is " + trial.previousStateWithinATurn());
 								fail();
 							}
 							

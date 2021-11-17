@@ -119,7 +119,7 @@ import other.trial.Trial;
 /**
  * Defines the main ludeme that describes the players, mode, equipment and rules of a game.
  *
- * @author cambolbro and Eric.Piette
+ * @author Eric.Piette and cambolbro 
  */
 public class Game extends BaseLudeme implements API, Serializable
 {
@@ -3134,7 +3134,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			{
 				trial.previousState().clear();
 				for(int i = 0; i < previousState.size(); i++)
-					trial.previousStateWithinATurn().add(previousState.get(i));
+					trial.previousState().add(previousState.get(i));
 			}
 			if(remainingDominoes != null)
 			{
