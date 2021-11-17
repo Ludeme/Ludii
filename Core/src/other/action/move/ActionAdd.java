@@ -292,7 +292,7 @@ public final class ActionAdd extends BaseAction
 			}
 		}
 	}
-
+	
 	/**
 	 * To update the track indices.
 	 * 
@@ -333,14 +333,15 @@ public final class ActionAdd extends BaseAction
 		if (context.game().isStacking())
 		{
 			final int levelToRemove = cs.sizeStack(site, type) - 1;
-			pieceIdx = cs.remove(context.state(), site, levelToRemove, type);
+			//pieceIdx = 
+			cs.remove(context.state(), site, levelToRemove, type);
 			
-			if (pieceIdx > 0)
-			{
-				final Component piece = context.components()[pieceIdx];
-				final int owner = piece.owner();
-				context.state().owned().remove(owner, pieceIdx, site, levelToRemove, type);
-			}
+//			if (pieceIdx > 0)
+//			{
+//				final Component piece = context.components()[pieceIdx];
+//				final int owner = piece.owner();
+//				context.state().owned().remove(owner, pieceIdx, site, levelToRemove, type);
+//			}
 
 			if (cs.sizeStack(site, type) == 0)
 				cs.addToEmpty(site, type);
@@ -352,12 +353,14 @@ public final class ActionAdd extends BaseAction
 			if(newCount <= 0)
 			{
 				pieceIdx = cs.remove(context.state(), site, type);
-				if (pieceIdx > 0)
-				{
-					final Component piece = context.components()[pieceIdx];
-					final int owner = piece.owner();
-					context.state().owned().remove(owner, pieceIdx, site, type);
-				}
+				Component piece = context.components()[pieceIdx];
+				undoLargePiece(context, piece, cs);
+//				if (pieceIdx > 0)
+//				{
+//					final Component piece = context.components()[pieceIdx];
+//					final int owner = piece.owner();
+//					context.state().owned().remove(owner, pieceIdx, site, type);
+//				}
 			}
 			else // We update the count.
 			{
@@ -384,6 +387,43 @@ public final class ActionAdd extends BaseAction
 //		}
 		
 		return this;
+	}
+	
+	/**
+	 * We undo the state in case of a large piece.
+	 * 
+	 * @param context The context.
+	 * @param piece   The piece.
+	 * @param cs      The container state.
+	 */
+	public void undoLargePiece(final Context context, final Component piece, final ContainerState cs)
+	{
+		if (piece != null && piece.isLargePiece() && to < context.containers()[0].numSites())
+		{
+			final Component largePiece = piece;
+			final TIntArrayList locs = largePiece.locs(context, to, state, context.topology());
+
+			for (int i = 0; i < locs.size(); i++)
+			{
+				cs.addToEmpty(locs.getQuick(i), SiteType.Cell);
+				cs.setCount(context.state(), locs.getQuick(i), 0);
+			}
+
+			if (largePiece.isDomino())
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					cs.setValueCell(context.state(), locs.getQuick(i), 0);
+					//cs.setPlayable(context.state(), locs.getQuick(i), false);
+				}
+
+				for (int i = 4; i < 8; i++)
+				{
+					cs.setValueCell(context.state(), locs.getQuick(i), 0);
+					//cs.setPlayable(context.state(), locs.getQuick(i), false);
+				}
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------
