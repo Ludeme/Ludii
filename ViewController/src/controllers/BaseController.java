@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bridge.Bridge;
+import game.equipment.component.Component;
 import game.equipment.container.Container;
 import game.types.board.SiteType;
 import main.Constants;
@@ -19,6 +20,7 @@ import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.TopologyElement;
 import other.topology.Vertex;
+import util.ContainerUtil;
 import util.StackVisuals;
 import util.WorldLocation;
 import view.container.ContainerStyle;
@@ -144,27 +146,27 @@ public abstract class BaseController implements Controller
 			}
 			else
 			{		
-				final Point sitePosn = containerStyle.screenPosn(validLocations.get(i).position());
-				final int dx = pt.x - sitePosn.x;
-				final int dy = pt.y - sitePosn.y;
+				Point sitePosn = containerStyle.screenPosn(validLocations.get(i).position());
+				int dx = pt.x - sitePosn.x;
+				int dy = pt.y - sitePosn.y;
 				dist = Math.sqrt(dx * dx + dy * dy);
 
 				// Check if any large pieces are selected
-//				final ContainerState cs = context.state().containerStates()[container.index()];
-//				if (validLocations.get(i).location().siteType().equals(SiteType.Cell) && validLocations.get(i).location().level() == 0)
-//				{
-//					final int localState = cs.state(site, 0, SiteType.Cell);
-//					for (final Component component : context.equipment().components())
-//					{
-//						for (final Integer cellIndex : ContainerUtil.cellsCoveredByPiece(context, container, component, site, localState))
-//						{
-//							sitePosn = containerStyle.screenPosn(context.board().topology().cells().get(cellIndex).centroid());
-//							dx = pt.x - sitePosn.x;
-//							dy = pt.y - sitePosn.y;
-//							dist = Math.min(dist, Math.sqrt(dx * dx + dy * dy));
-//						}
-//					}
-//				}
+				final ContainerState cs = context.state().containerStates()[container.index()];
+				if (validLocations.get(i).location().siteType().equals(SiteType.Cell) && validLocations.get(i).location().level() == 0)
+				{
+					final int localState = cs.state(site, 0, SiteType.Cell);
+					for (final Component component : context.equipment().components())
+					{
+						for (final Integer cellIndex : ContainerUtil.cellsCoveredByPiece(context, container, component, site, localState))
+						{
+							sitePosn = containerStyle.screenPosn(context.board().topology().cells().get(cellIndex).centroid());
+							dx = pt.x - sitePosn.x;
+							dy = pt.y - sitePosn.y;
+							dist = Math.min(dist, Math.sqrt(dx * dx + dy * dy));
+						}
+					}
+				}
 			}
 
 			if (dist < minDist && dist < furthestPossibleDistance)
