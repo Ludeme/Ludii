@@ -53,6 +53,12 @@ public final class ActionMoveN extends BaseAction
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
+	/** Previous What of the from site. */
+	private int previousWhatFrom;
+	
+	/** Previous Who of the from site. */
+	private int previousWhoFrom;
+	
 	/** Previous Site state value of the from site. */
 	private int previousStateFrom;
 
@@ -61,6 +67,9 @@ public final class ActionMoveN extends BaseAction
 
 	/** Previous Piece value of the from site. */
 	private int previousValueFrom;
+	
+	/** Previous Piece value of the from site. */
+	private int previousCountFrom;
 	
 	/** Previous Site state value of the to site. */
 	private int previousStateTo;
@@ -76,6 +85,9 @@ public final class ActionMoveN extends BaseAction
 	
 	/** Previous Who of the to site. */
 	private int previousWhoTo;
+	
+	/** Previous Piece value of the from site. */
+	private int previousCountTo;
 	
 	/** The previous hidden info values of the to site before to be removed. */
 	private boolean[] previousHiddenTo;
@@ -175,13 +187,17 @@ public final class ActionMoveN extends BaseAction
 		if(!alreadyApplied)
 		{
 			previousStateFrom = currentStateFrom;
+			previousCountFrom = csFrom.count(from, typeFrom);
 			previousRotationFrom = currentRotationFrom;
 			previousValueFrom = currentValueFrom;
+			previousWhoFrom = csFrom.who(from, typeFrom);
+			previousWhatFrom = csFrom.what(from, typeFrom);
 			previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
 			previousRotationTo = csTo.rotation(to, typeTo);
 			previousValueTo = csTo.value(to, typeTo);
 			previousWhoTo = csTo.who(to, typeTo);
 			previousWhatTo = csTo.what(to, typeTo);
+			previousCountTo = csTo.count(to, typeTo);
 			
 			if(context.game().hiddenInformation())
 			{
@@ -299,32 +315,25 @@ public final class ActionMoveN extends BaseAction
 		final ContainerState csFrom = context.state().containerStates()[cidFrom];
 		final ContainerState csTo = context.state().containerStates()[cidTo];
 
-		final int what = csTo.what(to, typeTo);
-		final int who = (what < 1) ? 0 : context.components()[what].owner();
-
 		// modification on To
-		if (csTo.count(to, typeTo) - count <= 0)
+		if (previousCountTo <= 0)
 		{
 			csTo.remove(context.state(), to, typeTo);
 		}
 		else
 		{
 			csTo.setSite(context.state(), to, previousWhoTo, previousWhatTo,
-					csTo.count(to, typeTo) - count,
-					previousStateTo, previousRotationTo, previousValueTo, typeTo);
+					previousCountTo, previousStateTo, previousRotationTo, previousValueTo, typeTo);
 		}
 
 		// modification on From
 		if (csFrom.count(from, typeFrom) == 0)
 		{
-			csFrom.setSite(context.state(), from, who, what, count, previousStateFrom, previousRotationFrom,
-					previousValueFrom, typeFrom);
+			csFrom.setSite(context.state(), from, previousWhoFrom, previousWhatFrom, previousCountFrom, previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
 		}
-		else if (csFrom.what(from, typeFrom) == what)
+		else if (csFrom.what(from, typeFrom) == previousWhatFrom)
 		{
-			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED,
-					csFrom.count(from, typeFrom) + count,
-					previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
+			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, previousCountFrom, previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
 		}
 		
 //		Component piece = null;

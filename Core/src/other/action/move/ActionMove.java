@@ -83,6 +83,9 @@ public final class ActionMove extends BaseAction
 
 	/** Previous Piece value of the from site. */
 	private int previousValueFrom;
+
+	/** Previous Count of the from site. */
+	private int previousCountFrom;
 	
 	/** The previous hidden info values of the from site before to be removed. */
 	private boolean[] previousHiddenFrom;
@@ -121,6 +124,9 @@ public final class ActionMove extends BaseAction
 	
 	/** Previous Who of the to site. */
 	private int previousWhoTo;
+
+	/** Previous Count of the to site. */
+	private int previousCountTo;
 	
 	/** The previous hidden info values of the to site before to be removed. */
 	private boolean[] previousHiddenTo;
@@ -271,6 +277,11 @@ public final class ActionMove extends BaseAction
 			
 			if(onStacking)
 				previousSizeStackFrom = csFrom.sizeStack(from, typeFrom);
+			else
+			{
+				previousCountFrom = csFrom.count(from, typeFrom);
+				previousCountTo = csTo.count(to, typeTo);
+			}
 			
 			if (!requiresStack)
 			{
@@ -765,7 +776,7 @@ public final class ActionMove extends BaseAction
 		if (!requiresStack)
 		{
 			// Nothing to do if no modification.
-			if(from == to && state == Constants.UNDEFINED && rotation == Constants.UNDEFINED && value == Constants.UNDEFINED) 
+			if(from == to && state == Constants.UNDEFINED && rotation == Constants.UNDEFINED && value == Constants.UNDEFINED || previousCountFrom == 0) 
 				return this;
 			
 			// System.out.println("loc is " + loc);
@@ -787,7 +798,7 @@ public final class ActionMove extends BaseAction
 			currentStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
 			currentRotationTo = csTo.rotation(to, typeTo);
 			currentValueTo = csTo.value(to, typeTo);
-
+			
 			if (countTo == 1)
 			{
 				csTo.remove(context.state(), to, typeTo);
@@ -897,7 +908,7 @@ public final class ActionMove extends BaseAction
 				}
 				else
 				{
-					csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, countTo - 1, Constants.UNDEFINED,
+					csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, previousCountTo, Constants.UNDEFINED,
 							Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : Constants.OFF), typeTo);
 				}
 			}

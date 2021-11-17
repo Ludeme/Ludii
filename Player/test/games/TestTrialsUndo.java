@@ -47,7 +47,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = true;
+		final boolean stateComparaison = false;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -111,14 +111,14 @@ public class TestTrialsUndo
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "";
-		final String gameToSkip = "";
+		final String gameToReached = "Deka";//"Ceelkoqyuqkoqiji";
+		final String gameToSkip = "Deka";//"Ceelkoqyuqkoqiji";
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Sneakthrough")) 
+			if (fileEntry.getPath().contains("")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
@@ -325,7 +325,9 @@ public class TestTrialsUndo
 												
 												if(cs.who(index, level, type) != csToCompare.who(index, level, type))
 												{
-													System.out.println(type + " != Who at  " + index + " level " + level);
+													System.out.println("IN MOVE " + trial.numberRealMoves() +  " " +type + " != Who at  " + index + " level " + level);
+													System.out.println("correct one is " + csToCompare.who(index, level, type));
+													System.out.println("undo one is " + cs.who(index, level, type));
 													fail();
 												}
 												
@@ -399,11 +401,13 @@ public class TestTrialsUndo
 												}
 											}
 											
-											if(!game.isStochasticGame())
+											if(!game.isStacking())
 											{
 												if(cs.count(index, type) != csToCompare.count(index, type))
 												{
-													System.out.println(type + " != Count at  " + index);
+													System.out.println("IN MOVE " + trial.numberRealMoves() + " " + type + " != Count at  " + index);
+													System.out.println("correct one is " + csToCompare.count(index, type));
+													System.out.println("undo one is " + cs.count(index, type));
 													fail();
 												}
 											}
@@ -490,7 +494,6 @@ public class TestTrialsUndo
 							
 							if(state.pendingValues() != null)
 							{
-								
 								if(state.pendingValues().size() != stateToCompare.pendingValues().size())
 								{
 									System.out.println("IN MOVE " + trial.numberRealMoves() +  " != pendingValues");
@@ -618,10 +621,37 @@ public class TestTrialsUndo
 							
 							if(state.votes() != null)
 							{
-								if(!state.votes().equals(stateToCompare.votes()))
+								if(state.votes().size() != stateToCompare.votes().size())
 								{
-									System.out.println("!= votes");
+									System.out.println("IN MOVE " + trial.numberRealMoves() + " != votes");
+									System.out.println("correct one is " + stateToCompare.votes());
+									System.out.println("undo one is " + state.votes());
 									fail();
+								}
+								else
+								{
+									final int[] votesUndo = state.votes().toArray();
+									final int[] votesToCompare = stateToCompare.votes().toArray();
+									
+									for(int vote : votesUndo)
+									{
+										boolean found = false;
+										for(int voteToCompare : votesToCompare)
+										{
+											if(vote == voteToCompare)
+											{
+												found = true;
+												break;
+											}
+										}
+										if(!found)
+										{
+											System.out.println("IN MOVE " + trial.numberRealMoves() + " != votes");
+											System.out.println("correct one is " + stateToCompare.votes());
+											System.out.println("undo one is " + state.votes());
+											fail();
+										}
+									}
 								}
 							}
 							
@@ -636,7 +666,9 @@ public class TestTrialsUndo
 							
 							if(state.isDecided() != stateToCompare.isDecided())
 							{
-								System.out.println("!= isDecided");
+								System.out.println("IN MOVE " + trial.numberRealMoves() + " != isDecided");
+								System.out.println("correct one is " + stateToCompare.isDecided());
+								System.out.println("undo one is " + state.isDecided());
 								fail();
 							}
 							
