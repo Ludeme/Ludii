@@ -52,6 +52,9 @@ public class GenerateExactFeatureTree
 	/** If true, we expect Playout policy weight files to be boosted */
 	protected boolean boosted;
 	
+	/** Type of tree to build */
+	protected String treeType;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -99,7 +102,13 @@ public class GenerateExactFeatureTree
 		for (int p = 1; p < featureSets.length; ++p)
 		{
 			// Generate logit tree for Player p
-			final LogitTreeNode root = ExactLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], 10);
+			final LogitTreeNode root;
+			if (treeType.equals("Exact"))
+				root = ExactLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], 10);
+			else if (treeType.equals("NaiveMaxAbs"))
+				root = ExactLogitTreeLearner.buildTreeNaiveMaxAbs(featureSets[p], linearFunctions[p], 10);
+			else
+				root = null;
 			
 			// Convert to metadata structure
 			final LogitNode metadataRoot = root.toMetadataNode();
@@ -149,6 +158,14 @@ public class GenerateExactFeatureTree
 				.help("Indicates that the policy weight files are expected to be boosted.")
 				.withType(OptionTypes.Boolean));
 		
+		argParse.addOption(new ArgOption()
+				.withNames("--tree-type")
+				.help("Type of tree to build.")
+				.withNumVals(1)
+				.withType(OptionTypes.String)
+				.withDefault("Exact")
+				.withLegalVals("Exact", "NaiveMaxAbs"));
+		
 		// parse the args
 		if (!argParse.parseArguments(args))
 			return;
@@ -158,6 +175,8 @@ public class GenerateExactFeatureTree
 		task.featureWeightsFilepaths = (List<String>) argParse.getValue("--feature-weights-filepaths");
 		task.outFile = new File(argParse.getValueString("--out-file"));
 		task.boosted = argParse.getValueBool("--boosted");
+		
+		task.treeType = argParse.getValueString("--tree-type");
 		
 		task.run();
 	}
