@@ -21,8 +21,8 @@ import game.types.play.RoleType;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.IntArrayFromRegion;
+import other.action.Action;
 import other.action.move.ActionAdd;
-import other.action.move.ActionRemove;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
@@ -154,7 +154,7 @@ public final class TakeControl extends Effect
 			if (newWhat == Constants.UNDEFINED)
 				continue;
 
-			final ActionRemove actionRemove = new other.action.move.ActionRemove(type, site, Constants.UNDEFINED, true);
+			final Action actionRemove = other.action.move.remove.ActionRemove.construct(type, site, Constants.UNDEFINED, true);
 			final ActionAdd actionAdd = new ActionAdd(type, site, newWhat, count, state, rotation, value,
 					null);
 			final Move move = new Move(actionRemove);

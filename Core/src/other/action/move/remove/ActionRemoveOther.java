@@ -1,4 +1,4 @@
-package other.action.move;
+package other.action.move.remove;
 
 import java.util.BitSet;
 
@@ -22,7 +22,7 @@ import other.state.track.OnTrackIndices;
  *
  * @author Eric.Piette
  */
-public final class ActionRemove extends BaseAction
+public class ActionRemoveOther extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
@@ -92,7 +92,7 @@ public final class ActionRemove extends BaseAction
 	 * @param level   Level to remove the component(s).
 	 * @param applied True if the action has to be applied immediately.
 	 */
-	public ActionRemove
+	public ActionRemoveOther
 	(
 		final SiteType type,
 		final int to, 
@@ -112,7 +112,7 @@ public final class ActionRemove extends BaseAction
 	 * 
 	 * @param detailedString
 	 */
-	public ActionRemove(final String detailedString)
+	public ActionRemoveOther(final String detailedString)
 	{
 		assert (detailedString.startsWith("[Remove:"));
 
@@ -306,9 +306,6 @@ public final class ActionRemove extends BaseAction
 			}
 
 			cs.removeFromEmpty(to, type);
-
-//			if (previousWhat != 0)
-//				context.state().owned().add(previousWho, previousWhat, to, levelRemoved, type);
 		}
 		else
 		{
@@ -326,8 +323,6 @@ public final class ActionRemove extends BaseAction
 				if (previousWhat != 0)
 				{
 					piece = context.components()[previousWhat];
-//					final int owner = piece.owner();
-//					context.state().owned().add(owner, previousWhat, to, type);
 					if (piece.isDomino())
 						context.state().remainingDominoes().remove(piece.index());
 				}
@@ -357,24 +352,6 @@ public final class ActionRemove extends BaseAction
 			}
 		}
 		
-		
-//		if (previousWhat > 0)
-//		{
-//			// We update the structure about track indices if the game uses track.
-//			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
-//			if (onTrackIndices != null)
-//			{
-//				for (final Track track : context.board().tracks())
-//				{
-//					final int trackIdx = track.trackIdx();
-//					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
-//
-//					if (indices.size() > 0)
-//						onTrackIndices.add(trackIdx, previousWhat, previousCount, indices.getQuick(0));
-//				}
-//			}
-//		}
-		
 		return this;
 	}
 
@@ -398,10 +375,10 @@ public final class ActionRemove extends BaseAction
 		if (this == obj)
 			return true;
 
-		if (!(obj instanceof ActionRemove))
+		if (!(obj instanceof ActionRemoveOther))
 			return false;
 
-		final ActionRemove other = (ActionRemove) obj;
+		final ActionRemoveOther other = (ActionRemoveOther) obj;
 		return (decision == other.decision &&
 				applied == other.applied &&
 				to == other.to && type == other.type);

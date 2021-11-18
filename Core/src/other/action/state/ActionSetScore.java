@@ -1,6 +1,7 @@
 package other.action.state;
 
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.context.Context;
 
@@ -174,6 +175,12 @@ public final class ActionSetScore extends BaseAction
 	public int who()
 	{
 		return player;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.SetScore;
 	}
 
 }

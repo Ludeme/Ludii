@@ -4,6 +4,7 @@ import java.util.BitSet;
 
 import game.rules.play.moves.Moves;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
@@ -167,6 +168,12 @@ public final class ActionSetNextPlayer extends BaseAction
 	public int playerSelected()
 	{
 		return player;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.SetNextPlayer;
 	}
 
 	//-------------------------------------------------------------------------

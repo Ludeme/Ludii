@@ -69,7 +69,7 @@ public class Pin extends MetaRule
 					final Move move = legalMoves.moves().get(indexMove);
 					boolean forbiddenMove = false;
 					for(final Action action : move.actions())
-						if(action.actionType().equals(ActionType.Remove))
+						if (action != null && action.actionType().equals(ActionType.Remove))
 						{
 							final int siteToRemove = action.to();
 							final ContainerState cs = context.containerState(context.containerId()[siteToRemove]);

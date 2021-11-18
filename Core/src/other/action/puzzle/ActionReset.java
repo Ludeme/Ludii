@@ -2,6 +2,7 @@ package other.action.puzzle;
 
 import game.types.board.SiteType;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -295,6 +296,12 @@ public class ActionReset extends BaseAction
 	public boolean isAlwaysGUILegal()
 	{
 		return true;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.Reset;
 	}
 
 }

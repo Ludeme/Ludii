@@ -2,6 +2,7 @@ package other.action.puzzle;
 
 import game.types.board.SiteType;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -302,6 +303,12 @@ public class ActionSet extends BaseAction
 	public int count()
 	{
 		return 1;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.SetValuePuzzle;
 	}
 
 }

@@ -15,7 +15,7 @@ import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.board.SiteType;
 import other.action.Action;
-import other.action.move.ActionRemove;
+import other.action.ActionType;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;
@@ -93,7 +93,7 @@ public final class MaxMoves extends Effect
 				final List<Action> actions = m.getActionsWithConsequences(context);
 				for (final Action action : actions)
 				{
-					if (action instanceof ActionRemove)
+					if (action != null && action.actionType().equals(ActionType.Remove))
 					{
 						final int site = action.to();
 						final int level = action.levelTo();
@@ -159,7 +159,7 @@ public final class MaxMoves extends Effect
 				final List<Action> actions = newMove.getActionsWithConsequences(contextCopy);
 				for (final Action action : actions)
 				{
-					if (action instanceof ActionRemove)
+					if (action != null && action.actionType().equals(ActionType.Remove))
 					{
 						final int site = action.to();
 						final SiteType type = action.toType();

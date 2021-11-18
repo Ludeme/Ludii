@@ -66,6 +66,9 @@ public enum ActionType
 
 	/** To select the from/to sites. */
 	Select,
+	
+	/** To select the from/to sites. */
+	Insert,
 
 	/** To promote a piece. */
 	Promote,
@@ -82,9 +85,90 @@ public enum ActionType
 	/** To set the amount of a player. */
 	SetAmount,
 	
+	/** To set the count of a site. */
+	SetCount,
+	
 	/** To move a piece from a site to another. */
 	Move,
 	
+	/** To move n piece(s) from a site to another. */
+	MoveN,
+	
+	/** To move a stack of piece(s) from a site to another. */
+	StackMove,
+	
 	/** To copy a piece from a site to another. */
 	Copy,
+	
+	/** To set hidden a site to a player. */
+	SetHidden,
+	
+	/** To set hidden count a site to a player. */
+	SetHiddenCount,
+	
+	/** To set hidden rotation a site to a player. */
+	SetHiddenRotation,
+	
+	/** To set hidden state a site to a player. */
+	SetHiddenState,
+	
+	/** To set hidden value a site to a player. */
+	SetHiddenValue,
+	
+	/** To set hidden What a site to a player. */
+	SetHiddenWhat,
+	
+	/** To set hidden Who a site to a player. */
+	SetHiddenWho,
+	
+	/** To set the counter. */
+	SetCounter,
+	
+	/** To set the next player. */
+	SetNextPlayer,
+	
+	/** To set the pending value. */
+	SetPending,
+	
+	/** To swap two players. */
+	Swap,
+	
+	/** To reset the possible values in a deduction puzzle. */
+	Reset,
+	
+	/** To set a value to a variable in a deduction puzzle. */
+	SetValuePuzzle,
+	
+	/** To toggle a value to a variable in a deduction puzzle. */
+	Toggle,
+	
+	/** To forget a value. */
+	Forget,
+	
+	/** To remember a value. */
+	Remember,
+	
+	/** To set the rotation. */
+	SetRotation,
+	
+	/** To set the value. */
+	SetValue,
+	
+	/** To set the local state. */
+	SetState,
+	
+	/** To set the score. */
+	SetScore,
+	
+	/** To set the temp value. */
+	SetTemp,
+	
+	/** To set a var. */
+	SetVar,
+	
+	/** To store the state. */
+	StoreState,
+	
+	/** To trigger an event. */
+	Trigger,
 }

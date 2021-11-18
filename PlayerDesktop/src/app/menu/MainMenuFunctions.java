@@ -85,7 +85,7 @@ import metadata.ai.heuristics.Heuristics;
 import other.AI;
 import other.GameLoader;
 import other.action.Action;
-import other.action.move.ActionRemove;
+import other.action.move.remove.ActionRemove;
 import other.action.state.ActionSetNextPlayer;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
@@ -748,7 +748,7 @@ public class MainMenuFunctions extends JMenuBar
     		
 			for (int i = 0; i < context.board().numSites(); i++)
 			{
-				final ActionRemove actionRemove = new ActionRemove(context.board().defaultSite(), i, Constants.UNDEFINED, true);
+				final Action actionRemove = ActionRemove.construct(context.board().defaultSite(), i, Constants.UNDEFINED, true);
 				final Move moveToApply = new Move(actionRemove);
 				moveToApply.then().add(csq);
 				

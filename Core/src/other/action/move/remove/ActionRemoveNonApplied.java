@@ -1,73 +1,47 @@
-package other.action.puzzle;
+package other.action.move.remove;
 
+import java.util.BitSet;
+
+import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
+import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
-import other.state.puzzle.ContainerDeductionPuzzleState;
 
 /**
- * Excludes a value from the possible values of a variable in a deduction
- * puzzle.
+ * Removes one or more component(s) from a location.
  *
  * @author Eric.Piette
  */
-public class ActionToggle extends BaseAction  //implements ActionAtomic
+public final class ActionRemoveNonApplied extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
 	//-------------------------------------------------------------------------
 
-	/** The index of the site (the variable). */
-	private final int var;
-
-	/** The value to toggle to the variable. */
-	private final int value;
+	/** Location where to remove the component(s). */
+	private final int to;
 
 	/** The graph element type. */
 	private SiteType type;
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param to    The index of the site (the variable).
-	 * @param value The value to toggle.
-	 * @param type  The graph element type.
+	 * @param type The graph element type.
+	 * @param to   Location to remove the component(s).
 	 */
-	public ActionToggle
+	public ActionRemoveNonApplied
 	(
 		final SiteType type,
-		final int to,
-		final int value
+		final int to 
 	)
 	{
-		this.var = to;
-		this.value = value;
-		this.type = type;
-	}
-
-	/**
-	 * Reconstructs an ActionToggle object from a detailed String
-	 * (generated using toDetailedString())
-	 * @param detailedString
-	 */
-	public ActionToggle(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Toggle:"));
-
-		final String strType = Action.extractData(detailedString, "type");
-		type = (strType.isEmpty()) ? null : SiteType.valueOf(strType);
-
-		final String strVar = Action.extractData(detailedString, "var");
-		var = Integer.parseInt(strVar);
-
-		final String strValue = Action.extractData(detailedString, "value");
-		value = Integer.parseInt(strValue);
-
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
+		this.to = to;
 	}
 
 	//-------------------------------------------------------------------------
@@ -75,17 +49,7 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
-		type = (type == null) ? context.board().defaultSite() : type;
-		final int contID = context.containerId()[0];
-		final ContainerState sc = context.state().containerStates()[contID];
-		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
-		if(type.equals(SiteType.Vertex))
-			ps.toggleVerts(var, value);
-		else if(type.equals(SiteType.Edge))
-			ps.toggleEdges(var, value);
-		else // Cell
-			ps.toggleCells(var, value);
-
+		context.state().addSitesToRemove(to);
 		return this;
 	}
 	
@@ -94,17 +58,7 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	@Override
 	public Action undo(final Context context)
 	{
-		type = (type == null) ? context.board().defaultSite() : type;
-		final int contID = context.containerId()[0];
-		final ContainerState sc = context.state().containerStates()[contID];
-		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
-		if(type.equals(SiteType.Vertex))
-			ps.toggleVerts(var, value);
-		else if(type.equals(SiteType.Edge))
-			ps.toggleEdges(var, value);
-		else // Cell
-			ps.toggleCells(var, value);
-		
+		context.state().removeSitesToRemove(to);
 		return this;
 	}
 
@@ -116,8 +70,7 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + var;
-		result = prime * result + value;
+		result = prime * result + to;
 		return result;
 	}
 
@@ -127,13 +80,11 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 		if (this == obj)
 			return true;
 
-		if (!(obj instanceof ActionToggle))
+		if (!(obj instanceof ActionRemoveNonApplied))
 			return false;
 
-		final ActionToggle other = (ActionToggle) obj;
-		return (decision == other.decision &&
-				var == other.var &&
-				value == other.value && type == other.type);
+		final ActionRemoveNonApplied other = (ActionRemoveNonApplied) obj;
+		return (decision == other.decision && to == other.to);
 	}
 
 	//-------------------------------------------------------------------------
@@ -143,19 +94,18 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		sb.append("[Toggle:");
+		sb.append("[Remove:");
 		if (type != null || (context != null && type != context.board().defaultSite()))
 		{
 			sb.append("type=" + type);
-			sb.append(",var=" + var);
+			sb.append(",to=" + to);
 		}
 		else
-			sb.append("var=" + var);
+			sb.append("to=" + to);
 
-		sb.append(",value=" + value);
+		sb.append(",applied=" + false);
 		if (decision)
 			sb.append(",decision=" + decision);
-
 		sb.append(']');
 
 		return sb.toString();
@@ -166,7 +116,7 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	@Override
 	public String getDescription()
 	{
-		return "Toggle";
+		return "Remove";
 	}
 	
 	@Override
@@ -174,16 +124,16 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		String newTo = var + "";
+		String newTo = to + "";
 		if (useCoords)
 		{
 			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[var]
+					? context.containerId()[to]
 					: 0;
 			if (cid == 0)
 			{
 				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(var)
+				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
 						.label();
 			}
 		}
@@ -193,7 +143,9 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 		else
 			sb.append(newTo);
 
-		sb.append("^=" + value);
+		sb.append("-");
+
+		sb.append("...");
 
 		return sb.toString();
 	}
@@ -203,18 +155,18 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		sb.append("(Toggle ");
+		sb.append("(Remove ");
 
-		String newTo = var + "";
+		String newTo = to + "";
 		if (useCoords)
 		{
 			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[var]
+					? context.containerId()[to]
 					: 0;
 			if (cid == 0)
 			{
 				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(var)
+				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
 						.label();
 			}
 		}
@@ -224,7 +176,7 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 		else
 			sb.append(newTo);
 
-		sb.append(" on " + value);
+		sb.append(" applied = false");
 
 		sb.append(')');
 
@@ -248,24 +200,80 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	@Override
 	public int from()
 	{
-		return var;
+		return to;
 	}
 
 	@Override
 	public int to()
 	{
-		return var;
+		return to;
 	}
 
 	@Override
-	public int count()
+	public int levelFrom()
 	{
-		return 1;
+		return Constants.GROUND_LEVEL;
 	}
-	
+
+	@Override
+	public int levelTo()
+	{
+		return Constants.GROUND_LEVEL;
+	}
+
 	@Override
 	public ActionType actionType()
 	{
-		return ActionType.Toggle;
+		return ActionType.Remove;
+	}
+
+	//-------------------------------------------------------------------------
+
+	@Override
+	public BitSet concepts(final Context context, final Moves movesLudeme)
+	{
+		final BitSet ludemeConcept = (movesLudeme != null) ? movesLudeme.concepts(context.game()) : new BitSet();
+		final BitSet concepts = new BitSet();
+
+		final int contId = type.equals(SiteType.Cell) ? context.containerId()[to] : 0;
+		final ContainerState cs = context.state().containerStates()[contId];
+		final int what = cs.what(to, type);
+
+		if (what != 0)
+		{
+			if (isDecision())
+				concepts.set(Concept.RemoveDecision.id(), true);
+			else
+				concepts.set(Concept.RemoveEffect.id(), true);
+
+			if (ludemeConcept.get(Concept.ReplacementCapture.id()))
+				concepts.set(Concept.ReplacementCapture.id(), true);
+
+			if (ludemeConcept.get(Concept.HopCapture.id()))
+				concepts.set(Concept.HopCapture.id(), true);
+
+			if (ludemeConcept.get(Concept.DirectionCapture.id()))
+				concepts.set(Concept.DirectionCapture.id(), true);
+
+			if (ludemeConcept.get(Concept.EncloseCapture.id()))
+				concepts.set(Concept.EncloseCapture.id(), true);
+
+			if (ludemeConcept.get(Concept.CustodialCapture.id()))
+				concepts.set(Concept.CustodialCapture.id(), true);
+
+			if (ludemeConcept.get(Concept.InterveneCapture.id()))
+				concepts.set(Concept.InterveneCapture.id(), true);
+
+			if (ludemeConcept.get(Concept.SurroundCapture.id()))
+				concepts.set(Concept.SurroundCapture.id(), true);
+
+			if (ludemeConcept.get(Concept.CaptureSequence.id()))
+				concepts.set(Concept.CaptureSequence.id(), true);
+
+			if (ludemeConcept.get(Concept.SowCapture.id()))
+				concepts.set(Concept.SowCapture.id(), true);
+		}
+
+		return concepts;
 	}
 }

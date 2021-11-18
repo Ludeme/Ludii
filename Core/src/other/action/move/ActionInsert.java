@@ -6,6 +6,7 @@ import game.types.board.SiteType;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -411,5 +412,11 @@ public final class ActionInsert extends BaseAction
 	public SiteType toType()
 	{
 		return type;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.Insert;
 	}
 }

@@ -111,14 +111,14 @@ public class TestTrialsUndo
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "Bashni";
+		final String gameToReached = "";
 		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("")) 
+			if (fileEntry.getPath().contains("Fenix")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)

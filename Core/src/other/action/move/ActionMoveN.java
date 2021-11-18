@@ -602,7 +602,7 @@ public final class ActionMoveN extends BaseAction
 	@Override
 	public ActionType actionType()
 	{
-		return ActionType.Move;
+		return ActionType.MoveN;
 	}
 
 	//-------------------------------------------------------------------------

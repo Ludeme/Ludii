@@ -459,7 +459,7 @@ public final class ActionStackMove extends BaseAction
 	@Override
 	public ActionType actionType()
 	{
-		return ActionType.Move;
+		return ActionType.StackMove;
 	}
 
 	//-------------------------------------------------------------------------

@@ -12,7 +12,7 @@ import other.action.Action;
 import other.action.move.ActionAdd;
 import other.action.move.ActionInsert;
 import other.action.move.ActionMove;
-import other.action.move.ActionRemove;
+import other.action.move.remove.ActionRemove;
 import other.action.state.ActionSetCount;
 import other.action.state.ActionSetNextPlayer;
 import other.action.state.ActionSetRotation;
@@ -147,7 +147,7 @@ public class SandboxUtil
 	{
 		final Context context = app.manager().ref().context();	
 		
-		final Action actionRemove = new ActionRemove(selectedLocation.siteType(), selectedLocation.site(), selectedLocation.level(), true);	
+		final Action actionRemove = ActionRemove.construct(selectedLocation.siteType(), selectedLocation.site(), selectedLocation.level(), true);	
 		actionRemove.setDecision(true);
 		final Move moveToApply = new Move(actionRemove);
 		final Moves csq = new BaseMoves(null);

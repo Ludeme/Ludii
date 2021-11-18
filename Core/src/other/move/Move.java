@@ -39,9 +39,9 @@ import other.action.move.ActionInsert;
 import other.action.move.ActionMove;
 import other.action.move.ActionMoveN;
 import other.action.move.ActionPromote;
-import other.action.move.ActionRemove;
 import other.action.move.ActionSelect;
 import other.action.move.ActionStackMove;
+import other.action.move.remove.ActionRemove;
 import other.action.others.ActionForfeit;
 import other.action.others.ActionNextInstance;
 import other.action.others.ActionNote;
@@ -370,7 +370,7 @@ public class Move extends BaseAction
 			else if (actionStr.startsWith("[Trigger:"))
 				actions.add(new ActionTrigger(actionStr));
 			else if (actionStr.startsWith("[Remove:"))
-				actions.add(new ActionRemove(actionStr));
+				actions.add(ActionRemove.construct(actionStr));
 			else if (actionStr.startsWith("[SetNextPlayer:"))
 				actions.add(new ActionSetNextPlayer(actionStr));
 			else if (actionStr.startsWith("[Forfeit:"))
@@ -551,7 +551,7 @@ public class Move extends BaseAction
 							if(numToRemove > 0)
 								for(int level = numToRemove - 1; level >=0 ; level--)
 								{
-									final ActionRemove remove = new other.action.move.ActionRemove(
+									final Action remove = other.action.move.remove.ActionRemove.construct(
 											context.board().defaultSite(), site, level, true);
 									remove.apply(context, false);
 									returnActions.add(0, remove);
@@ -564,7 +564,7 @@ public class Move extends BaseAction
 					for (int i = 0; i < sitesToRemove.size();i++)
 					{
 						final int site = sitesToRemove.get(i);
-						final ActionRemove remove = new other.action.move.ActionRemove(
+						final Action remove = other.action.move.remove.ActionRemove.construct(
 								context.board().defaultSite(), site, Constants.UNDEFINED,
 									true);
 	

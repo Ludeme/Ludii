@@ -159,6 +159,6 @@ public final class ActionSetPot extends BaseAction
 	@Override
 	public ActionType actionType()
 	{
-		return ActionType.Bet;
+		return ActionType.SetPot;
 	}
 }

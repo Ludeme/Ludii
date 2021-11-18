@@ -17,8 +17,9 @@ import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.action.Action;
+import other.action.BaseAction;
 import other.action.move.ActionAdd;
-import other.action.move.ActionRemove;
+import other.action.move.remove.ActionRemove;
 import other.context.Context;
 import other.move.Move;
 import other.state.container.ContainerState;
@@ -102,8 +103,7 @@ public final class Attract extends Effect
 					if (what != 0)
 					{
 						piecesInThisDirection.add(what);
-						final ActionRemove removeAction = new ActionRemove(context.board().defaultSite(), to,
-								Constants.UNDEFINED, true);
+						final BaseAction removeAction = ActionRemove.construct(context.board().defaultSite(), to, Constants.UNDEFINED, true);
 						final Move move = new Move(removeAction);
 						moves.moves().add(move);
 					}
