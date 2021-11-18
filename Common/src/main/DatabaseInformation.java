@@ -20,12 +20,19 @@ public class DatabaseInformation
 	 */
 	public static String getRulesetDBName(final String rulesetHeading)
 	{
-		final String[] rulesetNameArray = rulesetHeading.split("[/(]");
-		String rulesetNameString = "";
-		for (int i = 1; i < rulesetNameArray.length-1; i++)
-			rulesetNameString += rulesetNameArray[i] + "(";
-		rulesetNameString = rulesetNameString.substring(0, rulesetNameString.length()-1);
-		return rulesetNameString.trim();
+		try
+		{
+			final String[] rulesetNameArray = rulesetHeading.split("[/(]");
+			String rulesetNameString = "";
+			for (int i = 1; i < rulesetNameArray.length-1; i++)
+				rulesetNameString += rulesetNameArray[i] + "(";
+			rulesetNameString = rulesetNameString.substring(0, rulesetNameString.length()-1);
+			return rulesetNameString.trim();
+		}
+		catch (final Exception e)
+		{
+			return rulesetHeading;
+		}
 	}
 	
 	//-------------------------------------------------------------------------
