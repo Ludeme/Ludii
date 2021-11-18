@@ -34,9 +34,6 @@ public final class ActionRemoveLevel extends BaseAction
 	/** Level where to remove the component(s). */
 	private final int level;
 
-	/** Useful in case of remove all a sequence (e.g. draughts) */
-	private final boolean applied;
-
 	/** The graph element type. */
 	private SiteType type;
 
@@ -90,19 +87,16 @@ public final class ActionRemoveLevel extends BaseAction
 	 * @param type    The graph element type.
 	 * @param to      Location to remove the component(s).
 	 * @param level   Level to remove the component(s).
-	 * @param applied True if the action has to be applied immediately.
 	 */
 	public ActionRemoveLevel
 	(
 		final SiteType type,
 		final int to, 
-		final int level, 
-		final boolean applied
+		final int level 
 	)
 	{
 		this.to = to;
 		this.level = level;
-		this.applied = applied;
 		this.type = type;
 	}
 
@@ -115,13 +109,6 @@ public final class ActionRemoveLevel extends BaseAction
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
 		
-		// For the capture sequence mechanism.
-		if (!applied)
-		{
-			context.state().addSitesToRemove(to);
-			return this;
-		}
-		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
 		// Undo save data before to remove.
@@ -129,13 +116,11 @@ public final class ActionRemoveLevel extends BaseAction
 		{
 			if (context.game().isStacking())
 			{
-				final int levelToRemove = (level == Constants.UNDEFINED) ? ((cs.sizeStack(to, type) == 0) ? 0 : cs.sizeStack(to, type) -1) : level;
-				
-				previousWhat = cs.what(to, levelToRemove, type);
-				previousWho = cs.who(to, levelToRemove, type);
-				previousState = cs.state(to, levelToRemove, type);
-				previousRotation = cs.rotation(to, levelToRemove, type);
-				previousValue = cs.value(to, levelToRemove, type);
+				previousWhat = cs.what(to, level, type);
+				previousWho = cs.who(to, level, type);
+				previousState = cs.state(to, level, type);
+				previousRotation = cs.rotation(to, level, type);
+				previousValue = cs.value(to, level, type);
 				
 				if(game.hiddenInformation())
 				{
@@ -148,13 +133,13 @@ public final class ActionRemoveLevel extends BaseAction
 					previousHiddenValue =  new boolean[context.players().size()];
 					for (int pid = 1; pid < context.players().size(); pid++)
 					{
-						previousHidden[pid] = cs.isHidden(pid, to, levelToRemove, type);
-						previousHiddenWhat[pid] = cs.isHiddenWhat(pid, to, levelToRemove, type);
-						previousHiddenWho[pid] = cs.isHiddenWho(pid, to, levelToRemove, type);
-						previousHiddenCount[pid] = cs.isHiddenCount(pid, to, levelToRemove, type);
-						previousHiddenState[pid] = cs.isHiddenState(pid, to, levelToRemove, type);
-						previousHiddenRotation[pid] = cs.isHiddenRotation(pid, to, levelToRemove, type);
-						previousHiddenValue[pid] = cs.isHiddenValue(pid, to, levelToRemove, type);
+						previousHidden[pid] = cs.isHidden(pid, to, level, type);
+						previousHiddenWhat[pid] = cs.isHiddenWhat(pid, to, level, type);
+						previousHiddenWho[pid] = cs.isHiddenWho(pid, to, level, type);
+						previousHiddenCount[pid] = cs.isHiddenCount(pid, to, level, type);
+						previousHiddenState[pid] = cs.isHiddenState(pid, to, level, type);
+						previousHiddenRotation[pid] = cs.isHiddenRotation(pid, to, level, type);
+						previousHiddenValue[pid] = cs.isHiddenValue(pid, to, level, type);
 					}
 				}
 			}
@@ -191,18 +176,15 @@ public final class ActionRemoveLevel extends BaseAction
 			alreadyApplied = true;
 		}
 		
-		final int pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), to, type)
-				: cs.remove(context.state(), to, level, type);
+		final int pieceIdx = cs.remove(context.state(), to, level, type);
 		
 		if (context.game().isStacking())
 		{
-			final int levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
 				final int owner = piece.owner();
-				context.state().owned().remove(owner, pieceIdx, to,
-						levelRemoved, type);
+				context.state().owned().remove(owner, pieceIdx, to, level, type);
 			}
 
 			if (cs.sizeStack(to, type) == 0)
@@ -247,36 +229,17 @@ public final class ActionRemoveLevel extends BaseAction
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
 				
-		// For the capture sequence mechanism.
-		if (!applied)
-		{
-			context.state().removeSitesToRemove(to);
-			return this;
-		}
-		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
 		if (context.game().isStacking())
 		{
 			if (previousState != Constants.UNDEFINED || previousRotation != Constants.UNDEFINED || previousValue != Constants.UNDEFINED)
 			{
-				if(level == Constants.UNDEFINED)
-					cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
-						(previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue,
-						context.game(), type);
-				else
-				{
-					cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
-				}
+				cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
 			}
 			else
 			{
-				if(level == Constants.UNDEFINED)
-					cs.addItemGeneric(context.state(), to, previousWhat, previousWho, context.game(), type);
-				else
-				{
 					cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
-				}
 			}
 
 			cs.removeFromEmpty(to, type);
@@ -337,7 +300,7 @@ public final class ActionRemoveLevel extends BaseAction
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + (applied ? 1231 : 1237);
+		result = prime * result + 1231;
 		result = prime * result + to;
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -354,7 +317,6 @@ public final class ActionRemoveLevel extends BaseAction
 
 		final ActionRemoveLevel other = (ActionRemoveLevel) obj;
 		return (decision == other.decision &&
-				applied == other.applied &&
 				to == other.to && type == other.type);
 	}
 
@@ -374,11 +336,8 @@ public final class ActionRemoveLevel extends BaseAction
 		else
 			sb.append("to=" + to);
 
-		if (level != Constants.UNDEFINED)
-			sb.append(",level=" + level);
+		sb.append(",level=" + level);
 
-		if (!applied)
-			sb.append(",applied=" + applied);
 		if (decision)
 			sb.append(",decision=" + decision);
 		sb.append(']');
@@ -418,13 +377,9 @@ public final class ActionRemoveLevel extends BaseAction
 		else
 			sb.append(newTo);
 
-		if (level != Constants.UNDEFINED)
-			sb.append("/" + level);
+		sb.append("/" + level);
 
 		sb.append("-");
-
-		if (!applied)
-			sb.append("...");
 
 		return sb.toString();
 	}
@@ -455,11 +410,7 @@ public final class ActionRemoveLevel extends BaseAction
 		else
 			sb.append(newTo);
 
-		if (level != Constants.UNDEFINED)
-			sb.append("/" + level);
-
-		if (!applied)
-			sb.append(" applied = false");
+		sb.append("/" + level);
 
 		sb.append(')');
 
@@ -495,13 +446,13 @@ public final class ActionRemoveLevel extends BaseAction
 	@Override
 	public int levelFrom()
 	{
-		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
+		return level;
 	}
 
 	@Override
 	public int levelTo()
 	{
-		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
+		return level;
 	}
 
 	@Override

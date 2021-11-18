@@ -13,7 +13,7 @@ import other.context.Context;
 import other.state.container.ContainerState;
 
 /**
- * Removes one or more component(s) from a location.
+ * Remove later a specific site (sequential capture).
  *
  * @author Eric.Piette
  */

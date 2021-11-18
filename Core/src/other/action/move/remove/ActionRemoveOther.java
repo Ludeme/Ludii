@@ -31,12 +31,6 @@ public class ActionRemoveOther extends BaseAction
 	/** Location where to remove the component(s). */
 	private final int to;
 	
-	/** Level where to remove the component(s). */
-	private final int level;
-
-	/** Useful in case of remove all a sequence (e.g. draughts) */
-	private final boolean applied;
-
 	/** The graph element type. */
 	private SiteType type;
 
@@ -89,47 +83,15 @@ public class ActionRemoveOther extends BaseAction
 	/**
 	 * @param type    The graph element type.
 	 * @param to      Location to remove the component(s).
-	 * @param level   Level to remove the component(s).
-	 * @param applied True if the action has to be applied immediately.
 	 */
 	public ActionRemoveOther
 	(
 		final SiteType type,
-		final int to, 
-		final int level, 
-		final boolean applied
+		final int to 
 	)
 	{
 		this.to = to;
-		this.level = level;
-		this.applied = applied;
 		this.type = type;
-	}
-
-	/**
-	 * Reconstructs a ActionRemove object from a detailed String (generated using
-	 * toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionRemoveOther(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Remove:"));
-
-		final String strType = Action.extractData(detailedString, "type");
-		type = (strType.isEmpty()) ? null : SiteType.valueOf(strType);
-
-		final String strTo = Action.extractData(detailedString, "to");
-		to = Integer.parseInt(strTo);
-
-		final String strLevel = Action.extractData(detailedString, "level");
-		level = (strLevel.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevel);
-
-		final String strApplied = Action.extractData(detailedString, "applied");
-		applied = (strApplied.isEmpty()) ? true : Boolean.parseBoolean(strApplied);
-
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
 	//-------------------------------------------------------------------------
@@ -141,13 +103,6 @@ public class ActionRemoveOther extends BaseAction
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
 		
-		// For the capture sequence mechanism.
-		if (!applied)
-		{
-			context.state().addSitesToRemove(to);
-			return this;
-		}
-		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
 		// Undo save data before to remove.
@@ -155,7 +110,7 @@ public class ActionRemoveOther extends BaseAction
 		{
 			if (context.game().isStacking())
 			{
-				final int levelToRemove = (level == Constants.UNDEFINED) ? ((cs.sizeStack(to, type) == 0) ? 0 : cs.sizeStack(to, type) -1) : level;
+				final int levelToRemove = ((cs.sizeStack(to, type) == 0) ? 0 : cs.sizeStack(to, type) -1);
 				
 				previousWhat = cs.what(to, levelToRemove, type);
 				previousWho = cs.who(to, levelToRemove, type);
@@ -217,12 +172,11 @@ public class ActionRemoveOther extends BaseAction
 			alreadyApplied = true;
 		}
 		
-		final int pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), to, type)
-				: cs.remove(context.state(), to, level, type);
+		final int pieceIdx = cs.remove(context.state(), to, type);
 		
 		if (context.game().isStacking())
 		{
-			final int levelRemoved = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+			final int levelRemoved = cs.sizeStack(to, type);
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
@@ -273,36 +227,19 @@ public class ActionRemoveOther extends BaseAction
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
 				
-		// For the capture sequence mechanism.
-		if (!applied)
-		{
-			context.state().removeSitesToRemove(to);
-			return this;
-		}
-		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
 		if (context.game().isStacking())
 		{
 			if (previousState != Constants.UNDEFINED || previousRotation != Constants.UNDEFINED || previousValue != Constants.UNDEFINED)
 			{
-				if(level == Constants.UNDEFINED)
-					cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
-						(previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue,
-						context.game(), type);
-				else
-				{
-					cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
-				}
+				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
+					(previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue,
+					context.game(), type);
 			}
 			else
 			{
-				if(level == Constants.UNDEFINED)
-					cs.addItemGeneric(context.state(), to, previousWhat, previousWho, context.game(), type);
-				else
-				{
-					cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
-				}
+				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, context.game(), type);
 			}
 
 			cs.removeFromEmpty(to, type);
@@ -363,7 +300,7 @@ public class ActionRemoveOther extends BaseAction
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + (applied ? 1231 : 1237);
+		result = prime * result + 1231;
 		result = prime * result + to;
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -380,7 +317,6 @@ public class ActionRemoveOther extends BaseAction
 
 		final ActionRemoveOther other = (ActionRemoveOther) obj;
 		return (decision == other.decision &&
-				applied == other.applied &&
 				to == other.to && type == other.type);
 	}
 
@@ -400,11 +336,6 @@ public class ActionRemoveOther extends BaseAction
 		else
 			sb.append("to=" + to);
 
-		if (level != Constants.UNDEFINED)
-			sb.append(",level=" + level);
-
-		if (!applied)
-			sb.append(",applied=" + applied);
 		if (decision)
 			sb.append(",decision=" + decision);
 		sb.append(']');
@@ -444,13 +375,7 @@ public class ActionRemoveOther extends BaseAction
 		else
 			sb.append(newTo);
 
-		if (level != Constants.UNDEFINED)
-			sb.append("/" + level);
-
 		sb.append("-");
-
-		if (!applied)
-			sb.append("...");
 
 		return sb.toString();
 	}
@@ -480,12 +405,6 @@ public class ActionRemoveOther extends BaseAction
 			sb.append(type + " " + newTo);
 		else
 			sb.append(newTo);
-
-		if (level != Constants.UNDEFINED)
-			sb.append("/" + level);
-
-		if (!applied)
-			sb.append(" applied = false");
 
 		sb.append(')');
 
@@ -521,13 +440,13 @@ public class ActionRemoveOther extends BaseAction
 	@Override
 	public int levelFrom()
 	{
-		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
+		return Constants.GROUND_LEVEL;
 	}
 
 	@Override
 	public int levelTo()
 	{
-		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
+		return Constants.GROUND_LEVEL;
 	}
 
 	@Override

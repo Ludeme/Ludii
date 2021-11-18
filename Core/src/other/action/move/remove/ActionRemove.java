@@ -31,9 +31,9 @@ public class ActionRemove extends BaseAction
 		if(!applied)
 			return new ActionRemoveNonApplied(type, to);
 		else if(level != Constants.UNDEFINED)
-			return new ActionRemoveLevel(type, to, level, applied);
+			return new ActionRemoveLevel(type, to, level);
 		else
-			return new ActionRemoveOther(type, to, level, applied);
+			return new ActionRemoveOther(type, to);
 	}
 
 	/**
@@ -66,9 +66,9 @@ public class ActionRemove extends BaseAction
 		if(!applied)
 			action = new ActionRemoveNonApplied(type, to);
 		else if(level != Constants.UNDEFINED)
-			action = new ActionRemoveLevel(type, to, level, applied);
+			action = new ActionRemoveLevel(type, to, level);
 		else
-			action=  new ActionRemoveOther(type, to, level, applied);
+			action=  new ActionRemoveOther(type, to);
 		
 		action.setDecision(decision);
 		return action;
