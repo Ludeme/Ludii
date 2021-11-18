@@ -1,7 +1,7 @@
 (define "Ludus Latrunculorum_ai"
     (useFor { "Suggested Variants/Ulrich Schaedler" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:-0.07066889)
             (centreProximity pieceWeights:{
                 (pair "Counter1" 2.3424797)
@@ -34,42 +34,42 @@
     )
     (useFor { "Suggested Variants/Museum Quintana" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Suggested Variants/Edward Falkener" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         
     )
     (useFor { "Suggested Variants/Kowalski 8x12" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Suggested Variants/Kowalski 10x11" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Suggested Variants/R.C. Bell 8x7" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (cornerProximity)
         })
         
     )
     (useFor { "Suggested Variants/R.C. Bell 8x8" }
         (bestAgent "MC-GRAVE")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (cornerProximity)
         })
         

@@ -1,6 +1,6 @@
 (define "Jekab_ai"
     (bestAgent "ProgressiveHistory")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
         (centreProximity pieceWeights:{
             (pair "Counter1" 0.87763697)

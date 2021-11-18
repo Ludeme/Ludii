@@ -1,6 +1,6 @@
 (define "Nine Holes_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (influence weight:-0.10943389)
         (centreProximity pieceWeights:{
             (pair "Marker1" 0.62502307)

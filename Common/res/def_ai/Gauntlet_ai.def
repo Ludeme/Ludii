@@ -1,6 +1,6 @@
 (define "Gauntlet_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:1)
     })
     

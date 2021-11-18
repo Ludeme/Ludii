@@ -1,6 +1,6 @@
 (define "Yavalade_ai"
     (bestAgent "MC-GRAVE")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
         (cornerProximity pieceWeights:{
             (pair "Marker2" 0.12644199)

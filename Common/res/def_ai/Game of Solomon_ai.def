@@ -1,6 +1,6 @@
 (define "Game of Solomon_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Counter1" -0.18230943)

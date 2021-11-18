@@ -1,6 +1,6 @@
 (define "Daldosa_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity pieceWeights:{
             (pair "Minus1" 0.3142034)
             (pair "Minus2" 0.016565992)

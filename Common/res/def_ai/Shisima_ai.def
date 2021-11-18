@@ -1,6 +1,6 @@
 (define "Shisima_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
         (cornerProximity pieceWeights:{
             (pair "Marker1" 0.40700245)

@@ -1,7 +1,7 @@
 (define "XII Scripta_ai"
     (useFor { "Variant/Murray" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material weight:-1.0)
         })
         

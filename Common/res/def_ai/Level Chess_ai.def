@@ -1,6 +1,6 @@
 (define "Level Chess_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
     })
     

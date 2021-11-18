@@ -1,6 +1,6 @@
 (define "Squava_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:1.248773)
         (centreProximity pieceWeights:{
             (pair "Marker1" -0.327855)

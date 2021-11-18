@@ -1,6 +1,6 @@
 (define "Quarto_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity weight:-1.0)
     })
     

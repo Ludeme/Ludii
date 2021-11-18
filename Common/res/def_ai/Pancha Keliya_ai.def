@@ -1,6 +1,6 @@
 (define "Pancha Keliya_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity weight:-1.0)
     })
     

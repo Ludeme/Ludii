@@ -1,6 +1,6 @@
 (define "Dama (Philippines)_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Disc" -0.3628969)

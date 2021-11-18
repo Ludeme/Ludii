@@ -1,6 +1,6 @@
 (define "LastEdge_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity pieceWeights:{
             (pair "Disc" 0.23586926)
             (pair "Disc1" -0.13821475)

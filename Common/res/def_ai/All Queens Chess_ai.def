@@ -1,6 +1,6 @@
 (define "All Queens Chess_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity weight:-1.0)
     })
     

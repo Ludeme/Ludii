@@ -1,6 +1,6 @@
 (define "Conspirateurs_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Pawn1" -1.1266714)

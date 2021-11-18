@@ -1,6 +1,6 @@
 (define "International Draughts_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
     })
     

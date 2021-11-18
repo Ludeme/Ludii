@@ -1,6 +1,6 @@
 (define "Quoridor_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:-0.044765435)
         (centreProximity pieceWeights:{
             (pair "Pawn1" -2.2586896)

@@ -1,6 +1,6 @@
 (define "Skirmish (GDL)_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
         (centreProximity pieceWeights:{
             (pair "Pawn1" 0.17061943)

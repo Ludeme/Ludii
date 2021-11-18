@@ -1,6 +1,6 @@
 (define "Tap Urdy_ai"
     (bestAgent "ProgressiveHistory")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     

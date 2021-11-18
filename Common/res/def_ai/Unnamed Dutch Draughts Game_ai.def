@@ -1,6 +1,6 @@
 (define "Unnamed Dutch Draughts Game_ai"
     (bestAgent "ProgressiveHistory")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (playerRegionsProximity player:1)
     })
     

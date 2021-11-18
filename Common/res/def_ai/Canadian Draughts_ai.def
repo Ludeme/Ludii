@@ -1,6 +1,6 @@
 (define "Canadian Draughts_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
         (centreProximity pieceWeights:{
             (pair "Counter1" -1.0535425)

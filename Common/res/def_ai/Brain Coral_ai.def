@@ -1,6 +1,6 @@
 (define "Brain Coral_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity pieceWeights:{
             (pair "Ball1" 0.2795935)
             (pair "Ball2" 1.8915032)

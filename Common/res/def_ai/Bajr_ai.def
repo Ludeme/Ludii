@@ -1,21 +1,21 @@
 (define "Bajr_ai"
     (useFor { "Board/6x6" "Players/2" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount weight:-1.0)
         })
         
     )
     (useFor { "Board/8x8" "Players/2" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount weight:-1.0)
         })
         
     )
     (useFor { "Board/10x10" "Players/2" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (regionProximity region:1)
         })
         

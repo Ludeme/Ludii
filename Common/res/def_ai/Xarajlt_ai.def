@@ -1,6 +1,6 @@
 (define "Xarajlt_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Marker1" 1.2322209)

@@ -1,6 +1,6 @@
 (define "Refugia_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:0.077898346)
         (centreProximity pieceWeights:{
             (pair "Disc" 0.3014774)

@@ -1,6 +1,6 @@
 (define "Ethiopian Capture Game_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Marker1" 0.123125486)

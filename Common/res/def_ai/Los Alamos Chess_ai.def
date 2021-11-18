@@ -1,6 +1,6 @@
 (define "Los Alamos Chess_ai"
     (bestAgent "Alpha-Beta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
             (pair "Pawn1" 1.0)
             (pair "Pawn2" 1.0)

@@ -1,6 +1,6 @@
 (define "Tugul Shodra_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity weight:-1.0)
     })
     

@@ -1,14 +1,14 @@
 (define "Tablut_ai"
     (useFor { "Play Rules/King Flanked" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (cornerProximity)
         })
         
     )
     (useFor { "Play Rules/King Surrounded" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:1.0117979)
             (centreProximity pieceWeights:{
                 (pair "Thrall1" 0.16435)

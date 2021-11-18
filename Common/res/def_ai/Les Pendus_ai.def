@@ -1,7 +1,7 @@
 (define "Les Pendus_ai"
     (useFor { "Board Size/3x3" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
         })
         

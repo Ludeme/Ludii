@@ -1,6 +1,6 @@
 (define "Kyoto Shogi_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
     })
     

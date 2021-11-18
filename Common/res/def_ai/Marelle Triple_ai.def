@@ -1,6 +1,6 @@
 (define "Marelle Triple_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:-1.2289186)
         (centreProximity pieceWeights:{
             (pair "Marker1" -0.21848977)

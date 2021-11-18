@@ -1,7 +1,7 @@
 (define "58 Holes_ai"
     (useFor { "Variant/Carnarvon and Carter" }
         (bestAgent "MC-GRAVE")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:-0.03247712)
             (centreProximity pieceWeights:{
                 (pair "Marker1" -0.18584655)

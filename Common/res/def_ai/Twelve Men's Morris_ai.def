@@ -1,7 +1,7 @@
 (define "Twelve Men's Morris_ai"
     (useFor { "Board/With Diagonal" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic weight:-0.32944024)
             (centreProximity pieceWeights:{
                 (pair "Marker1" -1.9657472)
@@ -26,7 +26,7 @@
     )
     (useFor { "Board/Without Diagonal" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (sidesProximity)
         })
         

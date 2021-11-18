@@ -1,7 +1,7 @@
 (define "Tai Shogi_ai"
     (useFor { "Variant/Wikipedia" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (cornerProximity)
         })
         

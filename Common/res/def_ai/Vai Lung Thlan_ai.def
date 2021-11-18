@@ -1,6 +1,6 @@
 (define "Vai Lung Thlan_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (ownRegionsCount weight:-1.0)
     })
     

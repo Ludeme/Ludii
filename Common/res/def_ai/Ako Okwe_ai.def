@@ -1,7 +1,7 @@
 (define "Ako Okwe_ai"
     (useFor { "Play Rules/First capture = 3, Second Capture = 1" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         
@@ -132,7 +132,7 @@
     )
     (useFor { "Play Rules/First capture = 1" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         

@@ -1,7 +1,7 @@
 (define "Hoyito_ai"
     (useFor { "Board Size/6" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
         })
         

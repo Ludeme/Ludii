@@ -1,6 +1,6 @@
 (define "Ataxx_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
         (centreProximity pieceWeights:{
             (pair "Marker1" 1.4133493)

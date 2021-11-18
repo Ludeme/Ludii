@@ -1,6 +1,6 @@
 (define "Let's Catch the Lion_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity pieceWeights:{
             (pair "Giraffe1" -2.2169209)
             (pair "Giraffe2" 0.07212717)

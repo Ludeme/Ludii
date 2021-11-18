@@ -1,6 +1,6 @@
 (define "Lisa_ai"
     (bestAgent "Alpha-Beta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material pieceWeights:{ (pair "Marker" -0.2) })
         (cornerProximity pieceWeights:{
             (pair "Marker1" 0.9)

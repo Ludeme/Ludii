@@ -1,7 +1,7 @@
 (define "Ashtapada_ai"
     (useFor { "Players/2" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (cornerProximity)
         })
         

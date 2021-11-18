@@ -1,6 +1,6 @@
 (define "Reversi_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (score weight:0.033921152)
         (mobilitySimple weight:0.012719406)
         (influence weight:0.6954622)

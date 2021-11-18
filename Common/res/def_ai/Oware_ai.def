@@ -1,14 +1,14 @@
 (define "Oware_ai"
     (useFor { "Play Rules/No limit by hole" "End Rules/No Piece" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (playerSiteMapCount)
         })
         
     )
     (useFor { "Play Rules/12 counters max by hole" "End Rules/25 Counters" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (playerSiteMapCount)
         })
         

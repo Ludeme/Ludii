@@ -1,7 +1,7 @@
 (define "Picaria_ai"
     (useFor { "Board/9 Holes" "Play/Anywhere" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:0.0969397)
             (centreProximity pieceWeights:{
                 (pair "Marker1" -1.3798143)
@@ -25,7 +25,7 @@
     )
     (useFor { "Board/13 Sites" "Play/Not Middle" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
         })
         

@@ -1,6 +1,6 @@
 (define "Nine Men's Morris_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     

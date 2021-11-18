@@ -1,6 +1,6 @@
 (define "Had_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (influence weight:2.045832)
         (centreProximity pieceWeights:{
             (pair "Marker1" 0.106021754)

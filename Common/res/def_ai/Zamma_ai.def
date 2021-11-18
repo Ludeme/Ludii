@@ -1,6 +1,6 @@
 (define "Zamma_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:1)
     })
     

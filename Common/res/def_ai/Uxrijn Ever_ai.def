@@ -1,6 +1,6 @@
 (define "Uxrijn Ever_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity weight:-1.0)
     })
     

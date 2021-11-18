@@ -1,6 +1,6 @@
 (define "Blue Nile_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:-0.12756869)
     })
     

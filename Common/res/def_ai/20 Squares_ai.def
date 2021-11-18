@@ -1,7 +1,7 @@
 (define "20 Squares_ai"
     (useFor { "Variant/Seleucid" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity)
             (cornerProximity pieceWeights:{
                 (pair "UrPiece1" 0.10074285)

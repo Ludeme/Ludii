@@ -1,6 +1,6 @@
 (define "Djara-Badakh_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     

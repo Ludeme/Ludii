@@ -1,6 +1,6 @@
 (define "Shafran Chess_ai"
     (bestAgent "Alpha-Beta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
             // Estimates of relative value. Not supported by experimentation. 
             (pair "Pawn1"   1.0)

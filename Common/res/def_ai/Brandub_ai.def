@@ -1,7 +1,7 @@
 (define "Brandub_ai"
     (useFor { "Variant/Nielsen" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         

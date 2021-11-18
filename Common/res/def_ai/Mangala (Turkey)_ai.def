@@ -1,14 +1,14 @@
 (define "Mangala (Turkey)_ai"
     (useFor { "Board Size/7" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         
     )
     (useFor { "Board Size/6" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         

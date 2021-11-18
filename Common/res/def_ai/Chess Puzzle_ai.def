@@ -1,6 +1,6 @@
 (define "Chess Puzzle_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:-1.0)
     })
     
