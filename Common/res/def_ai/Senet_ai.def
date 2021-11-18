@@ -1,7 +1,7 @@
 (define "Senet_ai"
     (useFor { "Play Rules/Kendall" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         
@@ -848,7 +848,7 @@
     )
     (useFor { "Play Rules/Kendall 5 pieces" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:0.025331752)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.20444703)
@@ -1714,7 +1714,7 @@
     )
     (useFor { "Play Rules/Kendall with trap" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:2.2101781)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.85952103)
@@ -2606,7 +2606,7 @@
     )
     (useFor { "Play Rules/Kendall special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:0.8339782)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.39811385)
@@ -3516,14 +3516,14 @@
     )
     (useFor { "Play Rules/Kendall starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (regionProximity weight:-1.0 region:1)
         })
         
     )
     (useFor { "Play Rules/Kendall with trap and special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (regionProximity weight:-1.0 region:3)
         })
         
@@ -4365,7 +4365,7 @@
     )
     (useFor { "Play Rules/Kendall 5 pieces and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:-0.14620553)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.21333219)
@@ -5264,7 +5264,7 @@
     )
     (useFor { "Play Rules/Kendall with trap and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:2.7728796)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.06696363)
@@ -5330,7 +5330,7 @@
     )
     (useFor { "Play Rules/Kendall starting throw special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:0.02576144)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.1762193)
@@ -6248,7 +6248,7 @@
     )
     (useFor { "Play Rules/Kendall 5 pieces and with trap" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" 0.3974237)
                 (pair "SenetPiece2" -0.16450025)
@@ -6311,7 +6311,7 @@
     )
     (useFor { "Play Rules/Kendall 5 pieces special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:0.046441086)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.38025728)
@@ -7182,14 +7182,14 @@
     )
     (useFor { "Play Rules/Kendall 5 pieces special bear off and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (regionProximity weight:-1.0 region:2)
         })
         
     )
     (useFor { "Play Rules/Kendall 5 pieces trap and special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:2.6709802)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.31098318)
@@ -8107,7 +8107,7 @@
     )
     (useFor { "Play Rules/Kendall 5 pieces trap and starting throw" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:0.29874873)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.025625428)
@@ -8170,14 +8170,14 @@
     )
     (useFor { "Play Rules/Kendall starting throw trap and special bear off" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "ProgressiveHistory")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         
     )
     (useFor { "Play Rules/Kendall all options" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:0.6793261)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" -0.45824775)
@@ -9027,14 +9027,14 @@
     )
     (useFor { "Play Rules/Bell" "Dice/1xD4" "Throw/Sum" "Track/Boustrophedon" }
         (bestAgent "ProgressiveHistory")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Play Rules/Piccione" "Dice/4xD2" "Throw/Piccione-Kendall" "Track/Boustrophedon + Backward Except Three Last Spaces" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (regionProximity region:3)
             (centreProximity pieceWeights:{
                 (pair "SenetPiece1" 0.19659172)
@@ -9096,7 +9096,7 @@
     )
     (useFor { "Play Rules/Jequier" "Dice/4xD2" "Throw/Jequier" "Track/Boustrophedon + Backward" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (regionProximity weight:-1.0 region:7)
         })
         

@@ -1,7 +1,7 @@
 (define "Ghingskoot_ai"
     (useFor { "Players/2" "Start Rules/2" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount weight:0.6503527)
             (centreProximity pieceWeights:{
                 (pair "Marker1" 0.22201946)

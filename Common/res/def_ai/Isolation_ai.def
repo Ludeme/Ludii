@@ -1,6 +1,6 @@
 (define "Isolation_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (influence weight:0.98444813)
         (centreProximity pieceWeights:{
             (pair "Pawn1" 0.41344148)

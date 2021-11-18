@@ -1,21 +1,21 @@
 (define "Seega_ai"
     (useFor { "Board Size/5x5" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Board Size/7x7" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Board Size/9x9" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

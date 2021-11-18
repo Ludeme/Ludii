@@ -1,6 +1,6 @@
 (define "Atari Go_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
     })
     

@@ -1,6 +1,6 @@
 (define "Ploy_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
         (centreProximity pieceWeights:{
             (pair "Commander1" 0.055838794)

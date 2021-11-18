@@ -1,6 +1,6 @@
 (define "Shatranj al-Mustatila_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:1)
     })
     

@@ -1,6 +1,6 @@
 (define "Tule Paid_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:12.419639)
         (centreProximity pieceWeights:{
             (pair "Marker1" -3.7709424)

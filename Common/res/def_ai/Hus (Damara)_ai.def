@@ -1,14 +1,14 @@
 (define "Hus (Damara)_ai"
     (useFor { "Play Rules/Sowing with 1 or more seeds" "Board Size/12" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         
     )
     (useFor { "Play Rules/Sowing with 2 or more seeds" "Board Size/12" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         

@@ -1,6 +1,6 @@
 (define "Two-Colour_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (score weight:0.88571966)
         (centreProximity pieceWeights:{
             (pair "Marker1" -0.11966052)

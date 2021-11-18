@@ -1,7 +1,7 @@
 (define "Msuwa wa Kunja_ai"
     (useFor { "Board Size/10" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple)
         })
         

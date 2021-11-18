@@ -1,6 +1,6 @@
 (define "Maharajah Chess_ai"
     (bestAgent "Alpha-Beta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
             (pair "Pawn2" 1.0)
             (pair "Rook2" 5.0)

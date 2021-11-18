@@ -1,7 +1,7 @@
 (define "Mehen_ai"
     (useFor { "Variant/Kendall" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

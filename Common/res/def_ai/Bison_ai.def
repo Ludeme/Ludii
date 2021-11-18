@@ -1,6 +1,6 @@
 (define "Bison_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (cornerProximity pieceWeights:{
             (pair "Bull1" 0.047846407)

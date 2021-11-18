@@ -1,7 +1,7 @@
 (define "Sijat El Taba_ai"
     (useFor { "Board Size/6x10" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
             (centreProximity pieceWeights:{
                 (pair "Marker1" -0.14697541)

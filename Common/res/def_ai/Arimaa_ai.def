@@ -1,6 +1,6 @@
 (define "Arimaa_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:1)
     })
     

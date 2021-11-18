@@ -1,14 +1,14 @@
 (define "Dabuda_ai"
     (useFor { "Opening/One Rightmost hole" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         
     )
     (useFor { "Opening/Four Rightmost holes" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         

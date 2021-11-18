@@ -1,6 +1,6 @@
 (define "American Pool Checkers_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
         (centreProximity pieceWeights:{
             (pair "Counter1" 0.6729074)

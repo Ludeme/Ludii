@@ -1,7 +1,7 @@
 (define "Chaturaji_ai"
     (useFor { "Variant/Wikipedia" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (score)
         })
         

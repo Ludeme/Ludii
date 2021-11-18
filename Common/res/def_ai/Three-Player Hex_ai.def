@@ -1,6 +1,6 @@
 (define "Three-Player Hex_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity weight:-1.0 region:1)
     })
     

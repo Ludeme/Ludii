@@ -1,6 +1,6 @@
 (define "Tic-Tac-Die_ai"
     (bestAgent "Biased MCTS")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:0.6303046)
         (centreProximity pieceWeights:{
             (pair "Disc" 0.58604)

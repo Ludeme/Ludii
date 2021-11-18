@@ -1,7 +1,7 @@
 (define "Mefuvha_ai"
     (useFor { "Board Size/16" }
         (bestAgent "ProgressiveHistory")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple)
         })
         

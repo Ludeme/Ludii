@@ -1,6 +1,6 @@
 (define "Breakthrough_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
         (centreProximity pieceWeights:{
             (pair "Pawn1" 0.08369076)

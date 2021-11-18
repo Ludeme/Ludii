@@ -1,21 +1,21 @@
 (define "Renard et les Poules_ai"
     (useFor { "Fox Moves/One Single Capture" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Fox Moves/One Single Orthogonal Capture" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Fox Moves/One Single Diagonal Capture And Orthogonal Move" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic weight:2.8306131)
             (centreProximity pieceWeights:{
                 (pair "Fox1" -1.5921857)

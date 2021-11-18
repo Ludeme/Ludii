@@ -1,6 +1,6 @@
 (define "Throngs_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
         (centreProximity pieceWeights:{
             (pair "Ball1" 7.594825)

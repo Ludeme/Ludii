@@ -1,6 +1,6 @@
 (define "Taikyoku Shogi_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
     })
     

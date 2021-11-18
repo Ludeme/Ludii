@@ -1,6 +1,6 @@
 (define "Odd_ai"
     (bestAgent "MC-GRAVE")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:1.1821557)
         (centreProximity pieceWeights:{
             (pair "Marker1" 0.71223843)

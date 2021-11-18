@@ -1,7 +1,7 @@
 (define "Muvalavala (Luena)_ai"
     (useFor { "Board Size/6" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple)
         })
         

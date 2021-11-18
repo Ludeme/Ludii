@@ -1,14 +1,14 @@
 (define "Fox and Geese_ai"
     (useFor { "Start Rules/13 Geese" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
         })
         
     )
     (useFor { "Start Rules/17 Geese" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

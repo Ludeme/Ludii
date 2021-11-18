@@ -1,7 +1,7 @@
 (define "Four-Player Hex_ai"
     (useFor { "End Rules/Misere" }
         (bestAgent "MC-GRAVE")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic weight:0.54306334)
             (centreProximity pieceWeights:{
                 (pair "Marker1" -0.22664936)
@@ -33,7 +33,7 @@
     )
     (useFor { "End Rules/Standard" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic weight:-1.0)
         })
         

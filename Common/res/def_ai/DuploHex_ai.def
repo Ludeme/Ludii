@@ -1,6 +1,6 @@
 (define "DuploHex_ai"
     (bestAgent "MC-GRAVE")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     

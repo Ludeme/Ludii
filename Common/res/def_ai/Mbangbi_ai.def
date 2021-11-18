@@ -1,7 +1,7 @@
 (define "Mbangbi_ai"
     (useFor { "Play Rules/Sowing in CCW" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple)
         })
         
@@ -129,7 +129,7 @@
     )
     (useFor { "Play Rules/Sowing in CW" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:0.016108595)
         })
         

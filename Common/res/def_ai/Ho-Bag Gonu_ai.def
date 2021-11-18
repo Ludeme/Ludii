@@ -1,6 +1,6 @@
 (define "Ho-Bag Gonu_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (playerRegionsProximity weight:-1.0 player:1)
     })
     

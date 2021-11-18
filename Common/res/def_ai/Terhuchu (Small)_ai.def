@@ -1,14 +1,14 @@
 (define "Terhuchu (Small)_ai"
     (useFor { "Start Rules/10 pieces" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Start Rules/8 pieces" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

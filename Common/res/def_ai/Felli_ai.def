@@ -1,7 +1,7 @@
 (define "Felli_ai"
     (useFor { "Play Rules/BoardGameGeek" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
@@ -236,7 +236,7 @@
     )
     (useFor { "Play Rules/Simplified" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

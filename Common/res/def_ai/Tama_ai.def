@@ -1,7 +1,7 @@
 (define "Tama_ai"
     (useFor { "Variant/Wikipedia" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

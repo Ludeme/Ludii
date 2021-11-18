@@ -1,6 +1,6 @@
 (define "Tic-Tac-Four_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
     })
     

@@ -1,6 +1,6 @@
 (define "Grasshopper_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (ownRegionsCount weight:-1.0)
     })
     

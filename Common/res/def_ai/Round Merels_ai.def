@@ -1,7 +1,7 @@
 (define "Round Merels_ai"
     (useFor { "Variant/Blumlein" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (sidesProximity)
         })
         

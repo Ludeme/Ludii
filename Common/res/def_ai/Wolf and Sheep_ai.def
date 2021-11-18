@@ -1,6 +1,6 @@
 (define "Wolf and Sheep_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (influence weight:2.7068205)
         (centreProximity pieceWeights:{
             (pair "Sheep1" -0.42067876)

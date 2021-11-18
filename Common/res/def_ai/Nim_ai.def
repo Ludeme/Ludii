@@ -1,7 +1,7 @@
 (define "Nim_ai"
     (useFor { "Number Piles/5" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple)
         })
         

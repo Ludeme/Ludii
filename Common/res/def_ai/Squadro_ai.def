@@ -1,6 +1,6 @@
 (define "Squadro_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:-0.0505587)
         (centreProximity pieceWeights:{
             (pair "Minus1" 0.32517347)

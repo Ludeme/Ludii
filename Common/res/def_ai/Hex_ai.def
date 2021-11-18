@@ -1,6 +1,6 @@
 (define "Hex_ai"
     (bestAgent "MC-GRAVE")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:9.023443)
         (centreProximity pieceWeights:{
             (pair "Marker1" -0.88088256)

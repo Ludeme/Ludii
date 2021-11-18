@@ -1,6 +1,6 @@
 (define "Press Ups_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:0)
     })
     

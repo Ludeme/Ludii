@@ -1,6 +1,6 @@
 (define "Ultimate Tic-Tac-Toe_ai"
     (bestAgent "ProgressiveHistory")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:5)
         (centreProximity pieceWeights:{
             (pair "Disc" -0.4858806)

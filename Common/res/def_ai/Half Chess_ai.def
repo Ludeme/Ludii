@@ -1,6 +1,6 @@
 (define "Half Chess_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
         (centreProximity pieceWeights:{
             (pair "Rook1" -0.3116458)

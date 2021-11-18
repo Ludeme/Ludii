@@ -1,7 +1,7 @@
 (define "Laram Wali_ai"
     (useFor { "Board Size/3" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

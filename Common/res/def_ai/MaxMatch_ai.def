@@ -1,6 +1,6 @@
 (define "MaxMatch_ai"
     (bestAgent "MC-GRAVE")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (score weight:0.93806446)
         (centreProximity pieceWeights:{
             (pair "Ball11" -0.16769856)

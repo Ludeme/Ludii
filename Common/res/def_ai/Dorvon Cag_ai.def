@@ -1,6 +1,6 @@
 (define "Dorvon Cag_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:-1.0)
     })
     

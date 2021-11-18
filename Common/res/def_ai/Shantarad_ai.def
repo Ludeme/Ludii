@@ -1,6 +1,6 @@
 (define "Shantarad_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity weight:-1.0)
     })
     

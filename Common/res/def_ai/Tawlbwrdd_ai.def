@@ -1,7 +1,7 @@
 (define "Tawlbwrdd_ai"
     (useFor { "Variant/Cyningstan" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence weight:1.0214853)
             (centreProximity pieceWeights:{
                 (pair "Thrall1" 0.12664333)

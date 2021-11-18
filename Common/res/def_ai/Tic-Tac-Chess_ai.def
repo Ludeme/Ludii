@@ -1,6 +1,6 @@
 (define "Tic-Tac-Chess_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     
