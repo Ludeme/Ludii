@@ -442,6 +442,9 @@ public final class GameLoader
 		
 		for (final String s : choices)
 		{
+			if (!s.contains("hunt"))
+				continue;
+			
 			if (!FileHandling.shouldIgnoreLudAnalysis(s))
 			{
 				final String gameName = s.split("\\/")[s.split("\\/").length-1];

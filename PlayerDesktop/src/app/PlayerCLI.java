@@ -2,6 +2,7 @@ package app;
 
 import java.util.Arrays;
 
+import gameDistance.CompareAllDistanceMetrics;
 import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -100,6 +101,8 @@ public class PlayerCLI
 			GenerateTrialsCluster.main(passArgs);
 		else if (command.equalsIgnoreCase("--tutorial-generation"))
 			TestInstructionGeneration.main(passArgs);
+		else if (command.equalsIgnoreCase("--game-distance"))
+			CompareAllDistanceMetrics.main(passArgs);
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 
