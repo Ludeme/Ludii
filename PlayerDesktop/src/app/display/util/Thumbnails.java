@@ -15,6 +15,8 @@ import app.utils.BufferedImageUtil;
 import app.utils.GameUtil;
 import app.utils.SVGUtil;
 import game.equipment.container.board.Board;
+import main.DatabaseInformation;
+import main.options.Ruleset;
 import other.context.Context;
 import other.trial.Trial;
 import util.PlaneType;
@@ -81,11 +83,7 @@ public class Thumbnails
 		String outputName = app.manager().ref().context().game().name();
 		if (includeRulesetName && app.manager().settingsManager().userSelections().ruleset() != -1)
 		{
-			final String[] rulesetNameArray = app.manager().ref().context().game().description().rulesets().get(app.manager().settingsManager().userSelections().ruleset()).heading().split("[/(]");
-			String rulesetNameString = "";
-			for (int i = 1; i < rulesetNameArray.length-1; i++)
-				rulesetNameString += rulesetNameArray[i] + "(";
-			rulesetNameString = rulesetNameString.substring(0, rulesetNameString.length()-1);
+			final String rulesetNameString = DatabaseInformation.getRulesetDBName(app.manager().ref().context().game().description().rulesets().get(app.manager().settingsManager().userSelections().ruleset()));
 			outputName += "-" + rulesetNameString;
 		}
 		outputName = outputName.trim();
@@ -145,7 +143,7 @@ public class Thumbnails
 		app.graphicsCache().clearAllCachedImages();
 		app.repaint();
 	}
-	
+
 	//-------------------------------------------------------------------------
 	
 	/**

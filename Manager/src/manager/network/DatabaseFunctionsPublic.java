@@ -96,7 +96,7 @@ public class DatabaseFunctionsPublic
 	/**
 	 * Stores a website trail in the database.
 	 */
-	public void storeWebTrialInDatabase(final String gameName, final List<String> gameOptions, final boolean[] agents, final double thinkingTime, final int maxTurns, final int gameHash, final Trial trial, final RandomProviderDefaultState RNG)
+	public void storeWebTrialInDatabase(final String gameName, final String rulesetName, final List<String> gameOptions, final int gameId, final int rulesetId, final boolean[] agents, final String username, final int gameHash, final Trial trial, final RandomProviderDefaultState RNG)
 	{
 		// Do nothing.
 	}
