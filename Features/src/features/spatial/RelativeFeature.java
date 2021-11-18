@@ -1,10 +1,13 @@
 package features.spatial;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
@@ -671,6 +674,7 @@ public class RelativeFeature extends SpatialFeature
 		final List<Point2D> points = new ArrayList<Point2D>();
 		final List<String> labels = new ArrayList<String>();
 		final List<List<String>> stringsPerPoint = new ArrayList<List<String>>();
+		final Set<List<String>> connections = new HashSet<List<String>>();
 		
 		// Start with node for anchor
 		sb.append("\\node[ellipse, draw, align=center] (Anchor) at (0,0) {");
@@ -692,9 +696,7 @@ public class RelativeFeature extends SpatialFeature
 		stringsPerPoint.add(anchorStrings);
 		
 		final double STEP_SIZE = 2.0;
-		
-		// TODO should use (x, y) coordinates as keys instead of lists of steps
-		
+				
 		int nextLabelIdx = 1;
 		
 		for (final Entry<TFloatArrayList, List<String>> entry : stringsPerWalk.entrySet())
@@ -751,9 +753,6 @@ public class RelativeFeature extends SpatialFeature
 					
 					sb.append("\\node[ellipse, draw, align=center] " + nextLabel + " at (" + x + ", " + y + ") {{POINT_STRINGS_" + points.size() + "}}; \n");
 					
-					// Draw arrow between previous node and this node
-					sb.append("\\path[->,draw] " + currLabel + " edge " + nextLabel + "; \n");
-					
 					points.add(currPoint);
 					labels.add(nextLabel);
 					pointStrings = new ArrayList<String>();
@@ -771,8 +770,14 @@ public class RelativeFeature extends SpatialFeature
 					}
 				}
 				
+				connections.add(Arrays.asList(new String[] {currLabel, nextLabel}));
 				currLabel = nextLabel;
 			}
+		}
+		
+		for (final List<String> connection : connections)
+		{
+			sb.append("\\path[->,draw] " + connection.get(0) + " edge " + connection.get(1) + "; \n");
 		}
 		
 		String returnStr = sb.toString();
