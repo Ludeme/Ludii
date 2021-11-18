@@ -196,7 +196,7 @@ public final class Slide extends Effect
 		final Topology topology = context.topology();
 
 		final TopologyElement fromV = topology.getGraphElements(type).get(from);
-		context.setFrom(fromV.index());
+		context.setFrom(from);
 		final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(type, fromV, null, null, null,
 				context);
 
@@ -213,7 +213,7 @@ public final class Slide extends Effect
 
 		for (final AbsoluteDirection direction : directions)
 		{
-			final List<Radial> radials = topology.trajectories().radials(type, fromV.index(), direction);
+			final List<Radial> radials = topology.trajectories().radials(type, from, direction);
 			
 			for (final Radial radial : radials)
 			{

@@ -19,6 +19,7 @@ import game.functions.region.RegionFunction;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.equipment.Region;
+import game.util.graph.GraphElement;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
@@ -107,6 +108,7 @@ public final class SitesDirection extends BaseRegionFunction
 		final int[] region = regionFn.eval(context);
 		final TIntArrayList sites = new TIntArrayList();
 		final int distance = distanceFn.eval(context);
+		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
 		
 		for (final int loc : region)
 		{
@@ -116,7 +118,6 @@ public final class SitesDirection extends BaseRegionFunction
 			if (loc == Constants.UNDEFINED)
 				return new Region(sites.toArray());
 
-			final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
 			final TopologyElement element = topology.getGraphElements(realType).get(loc);
 			final int originTo = context.to();
 
@@ -128,13 +129,15 @@ public final class SitesDirection extends BaseRegionFunction
 
 			for (final AbsoluteDirection direction : directions)
 			{
-				final List<Radial> radialList = topology.trajectories().radials(realType, element.index(), direction);
+				final List<Radial> radialList = topology.trajectories().radials(realType, loc, direction);
 
 				for (final Radial radial : radialList)
 				{
-					for (int toIdx = 1; toIdx < radial.steps().length && toIdx <= distance; toIdx++)
+					final GraphElement[] steps = radial.steps();
+					final int limit = Math.min(steps.length, distance + 1);
+					for (int toIdx = 1; toIdx < limit; toIdx++)
 					{
-						final int to = radial.steps()[toIdx].id();
+						final int to = steps[toIdx].id();
 						context.setTo(to);
 						if (stopRule.eval(context))
 						{
@@ -148,7 +151,6 @@ public final class SitesDirection extends BaseRegionFunction
 			}
 			context.setTo(originTo);
 		}
-		
 
 		return new Region(sites.toArray());
 	}
