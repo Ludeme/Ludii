@@ -25,7 +25,7 @@ public class DatabaseInformation
 		for (int i = 1; i < rulesetNameArray.length-1; i++)
 			rulesetNameString += rulesetNameArray[i] + "(";
 		rulesetNameString = rulesetNameString.substring(0, rulesetNameString.length()-1);
-		return rulesetNameString;
+		return rulesetNameString.trim();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -50,13 +50,13 @@ public class DatabaseInformation
 					String line;
 					while ((line = rdr.readLine()) != null)
 					{
-						final String[] lineArray = line.split(",");
+						final String[] lineArray = line.replaceAll("\"", "").split(",");
 						
 						if (lineArray[1].equals(gameName) && lineArray[3].equals(rulesetName))
 							return Integer.valueOf(lineArray[4]);
 						
 						if (lineArray[1].equals(gameName) && lineArray[3].equals(getRulesetDBName(rulesetName)))
-							return Integer.valueOf(lineArray[4]);
+							return Integer.valueOf(lineArray[2]);
 					}
 				}
 			}
@@ -90,7 +90,7 @@ public class DatabaseInformation
 					String line;
 					while ((line = rdr.readLine()) != null)
 					{
-						final String[] lineArray = line.split(",");
+						final String[] lineArray = line.replaceAll("\"", "").split(",");
 						
 						if (lineArray[1].equals(gameName))
 							return Integer.valueOf(lineArray[0]);

@@ -1697,7 +1697,7 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			ImageIO.write(img, "png", new File(fileName));
 		}
-		catch (IOException e1)
+		catch (final IOException e1)
 		{
 			e1.printStackTrace();
 		} 
