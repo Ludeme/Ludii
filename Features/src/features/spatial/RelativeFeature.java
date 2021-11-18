@@ -1,13 +1,12 @@
 package features.spatial;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
@@ -674,7 +673,7 @@ public class RelativeFeature extends SpatialFeature
 		final List<Point2D> points = new ArrayList<Point2D>();
 		final List<String> labels = new ArrayList<String>();
 		final List<List<String>> stringsPerPoint = new ArrayList<List<String>>();
-		final Set<List<String>> connections = new HashSet<List<String>>();
+		final Map<List<String>, String> connections = new HashMap<List<String>, String>();
 		
 		// Start with node for anchor
 		sb.append("\\node[ellipse, draw, align=center] (Anchor) at (0,0) {");
@@ -770,14 +769,14 @@ public class RelativeFeature extends SpatialFeature
 					}
 				}
 				
-				connections.add(Arrays.asList(new String[] {currLabel, nextLabel}));
+				connections.put(Arrays.asList(new String[] {currLabel, nextLabel}), "$" + new DecimalFormat("#.##").format(step) + "$");
 				currLabel = nextLabel;
 			}
 		}
 		
-		for (final List<String> connection : connections)
+		for (final Entry<List<String>, String> connection : connections.entrySet())
 		{
-			sb.append("\\path[->,draw] " + connection.get(0) + " edge " + connection.get(1) + "; \n");
+			sb.append("\\path[->,draw] " + connection.getKey().get(0) + " edge node {" + connection.getValue() + "} " + connection.getKey().get(1) + "; \n");
 		}
 		
 		String returnStr = sb.toString();
