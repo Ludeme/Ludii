@@ -177,19 +177,22 @@ public class Description
 		
 		for (int i = 0; i < rulesets.size(); ++i)
 		{
-			boolean fullMatch = true;
-			
-			for (final String requiredOpt : rulesets.get(i).optionSettings())
-			{
-				if (!allActiveOptions.contains(requiredOpt))
+			if (!rulesets.get(i).optionSettings().isEmpty())	// Eric wants to hide unimplemented rulesets
+			{		
+				boolean fullMatch = true;
+				
+				for (final String requiredOpt : rulesets.get(i).optionSettings())
 				{
-					fullMatch = false;
-					break;
+					if (!allActiveOptions.contains(requiredOpt))
+					{
+						fullMatch = false;
+						break;
+					}
 				}
+				
+				if (fullMatch)
+					return i;
 			}
-			
-			if (fullMatch)
-				return i;
 		}
 		
 		return Constants.UNDEFINED;
