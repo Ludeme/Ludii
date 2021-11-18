@@ -169,7 +169,7 @@ public final class Hop extends Effect
 
 		final int maxDistanceFromHurdle = maxDistanceFromHurdleFn.eval(context);
 		final int minLengthHurdle = minLengthHurdleFn.eval(context);
-		final int maxLengthHurdle = maxLengthHurdleFn.eval(context);
+		final int maxLengthHurdle = (minLengthHurdleFn == maxLengthHurdleFn) ? minLengthHurdle : maxLengthHurdleFn.eval(context);
 		final int maxDistanceHurdleTo = maxDistanceHurdleToFn.eval(context);
 		
 		context.setFrom(from);
