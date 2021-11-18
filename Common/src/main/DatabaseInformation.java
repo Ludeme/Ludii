@@ -60,7 +60,7 @@ public class DatabaseInformation
 						final String[] lineArray = line.replaceAll("\"", "").split(",");
 						
 						if (lineArray[1].equals(gameName) && lineArray[3].equals(rulesetName))
-							return Integer.valueOf(lineArray[4]);
+							return Integer.valueOf(lineArray[2]);
 						
 						if (lineArray[1].equals(gameName) && lineArray[3].equals(getRulesetDBName(rulesetName)))
 							return Integer.valueOf(lineArray[2]);
