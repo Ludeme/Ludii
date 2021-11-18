@@ -64,6 +64,8 @@ import game.rules.play.moves.Moves;
 import game.types.play.RepetitionType;
 import gnu.trove.list.array.TIntArrayList;
 import grammar.Grammar;
+import graphics.qr_codes.QrCode;
+import graphics.qr_codes.ToImage;
 import graphics.svg.SVGLoader;
 import main.Constants;
 import main.FileHandling;
@@ -705,6 +707,10 @@ public class MainMenuFunctions extends JMenuBar
 		        }, 
 		        500 
 			);	
+		}
+		else if (source.getText().equals("Make QR Code"))
+		{
+			makeQRCode(game);
 		}
 		else if (source.getText().equals("Play/Pause"))
 		{
@@ -1653,4 +1659,50 @@ public class MainMenuFunctions extends JMenuBar
 	
 	//---------------------------------------------------------------------
 	
+	static void makeQRCode(final Game game)
+	{
+		// Determine the file name
+		String fileName = "qr-" + game.name();
+//		if (game.getRuleset() != null)
+//		{
+//			fileName += "-" + game.getRuleset().heading();
+//			fileName = fileName.replaceAll("Ruleset/", "");  // remove keyword
+//		}
+		fileName = fileName.replaceAll(" ", "-");  // remove empty spaces
+		fileName = fileName.replaceAll("/", "-");  // remove slashes spaces
+		fileName += ".png";
+		
+		// Determine URL to encode
+		String url = "https://ludii.games/details.php?keyword=" + game.name(); 
+//		if (game.getRuleset() != null)
+//		{
+//			// Format: https://ludii.games/variantDetails.php?keyword=Achi&variant=563
+//			// **
+//			// ** TODO: Get correct variant index in the DB for this result.
+//			// **
+//			final int variant = 0;
+//			url = "https://ludii.games/variantDetails.php?keyword=" + game.name() + 
+//				  "&variant=" + variant;
+//		}
+		url = url.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
+		
+		final QrCode qr = QrCode.encodeText(url, QrCode.Ecc.MEDIUM);
+	
+		// Make the image
+		final int scale = 10;
+		final int border = 4;
+	
+		final BufferedImage img = ToImage.toLudiiCodeImage(qr, scale, border);   
+		try
+		{
+			ImageIO.write(img, "png", new File(fileName));
+		}
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		} 
+	}
+	
+	//---------------------------------------------------------------------
+
 }

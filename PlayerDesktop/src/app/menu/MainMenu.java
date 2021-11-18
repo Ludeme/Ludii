@@ -228,12 +228,18 @@ public class MainMenu extends JMenuBar
 			menu.add(menuItem);
 		}
 
+		menu.addSeparator();
+		
 		menuItem = new JMenuItem("Game Screenshot");
 		menuItem.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.SHIFT_DOWN_MASK));
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 		
 		menuItem = new JMenuItem("Game Gif");
+		menuItem.addActionListener(al);
+		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Make QR Code");
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 
