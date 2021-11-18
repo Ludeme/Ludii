@@ -442,7 +442,7 @@ public final class GameLoader
 		
 		for (final String s : choices)
 		{
-			if (!s.contains("hunt"))
+			if (!s.contains("hunt") || s.contains("museum"))
 				continue;
 			
 			if (!FileHandling.shouldIgnoreLudAnalysis(s))

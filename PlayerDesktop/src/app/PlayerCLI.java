@@ -63,7 +63,8 @@ public class PlayerCLI
 					"--export-features-db",
 					"--export-moveconcept-db",
 					"--generate-trials",
-					"--tutorial-generation"
+					"--tutorial-generation",
+					"--game-distance"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));

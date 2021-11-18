@@ -30,11 +30,11 @@ import other.GameLoader;
 /**
  * Compares all distance metrics for a given set of games.
  * 
- * Download the â€œTrialsRandom.zipâ€� file from the Ludii Server.
- * Copy â€œTrialsRandom.zipâ€� into â€œLudii/Trials/â€�, and extract the zip to a â€œTrialsRandomâ€� folder (just right click and select â€œExtract Hereâ€�). Making the fullPath â€œLudii/Trials/TrialsRandom/â€�.
+ * Download the "TrialsRandom.zip" file from the Ludii Server.
+ * Copy "TrialsRandom.zip" into "Ludii/Trials/", and extract the zip to a "TrialsRandom" folder (just right click and select "Extract Here"). Making the fullPath "Ludii/Trials/TrialsRandom/".
  * Run CompareAllDistanceMetrics.java
  * Output for each game/ruleset is stored in Ludii/Mining/res/gameDistance/
- * Make sure to set the â€œoverrideStoredVocabulariesâ€� variable to true if any trials or games have changed.
+ * Make sure to set the "overrideStoredVocabularies" variable to true if any trials or games have changed.
  * 
  * @author matthew.stephenson
  */
@@ -42,7 +42,7 @@ public class CompareAllDistanceMetrics
 {
 	
 	/** Set this variable to true, if the stored vocabularies should be overwritten on the next comparison. */
-	final static boolean overrideStoredVocabularies = false;
+	final static boolean overrideStoredVocabularies = true;
 	
 	//---------------------------------------------------------------------
 
@@ -88,6 +88,7 @@ public class CompareAllDistanceMetrics
 		for (int i = 0; i < gamesToCompare.length; i++)
 		{
 			// Create output file.
+			System.out.println("New Game!");
 			System.out.println(gamesToCompare[i]);
 			final File outputFile = new File
 					(outputPath + 
