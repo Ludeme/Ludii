@@ -1089,12 +1089,14 @@ public final class ActionMove extends BaseAction
 			
 			final ContainerState containerTo = context.state().containerStates()[contIdTo];
 			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
+			
+			final int stackSize = containerTo.sizeStack(to, typeTo);
 
 			// To move a complete stack
 			if(onStacking)
 			{
 				//final int sizeStackTo = containerTo.sizeStack(to, typeTo);
-				for (int slevel = 0; slevel < previousSizeStackFrom; slevel++)
+				for (int slevel = Math.abs(previousSizeStackFrom - stackSize) ; slevel < stackSize ; slevel++)
 				{
 					if (levelFrom == Constants.UNDEFINED)
 						containerFrom.addItemGeneric(context.state(), from, containerTo.what(to, slevel, typeTo),
@@ -1120,7 +1122,7 @@ public final class ActionMove extends BaseAction
 //					}
 //				}
 				
-				for (int slevel = 0; slevel < previousSizeStackFrom; slevel++)
+				for (int slevel = Math.abs(previousSizeStackFrom - stackSize) ; slevel < stackSize ; slevel++)
 					containerTo.remove(context.state(), to, typeTo);
 				
 				if(containerTo.sizeStack(to, typeTo) == 0)
