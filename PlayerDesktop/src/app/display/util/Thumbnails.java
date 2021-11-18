@@ -16,7 +16,6 @@ import app.utils.GameUtil;
 import app.utils.SVGUtil;
 import game.equipment.container.board.Board;
 import main.DatabaseInformation;
-import main.options.Ruleset;
 import other.context.Context;
 import other.trial.Trial;
 import util.PlaneType;
@@ -83,7 +82,7 @@ public class Thumbnails
 		String outputName = app.manager().ref().context().game().name();
 		if (includeRulesetName && app.manager().settingsManager().userSelections().ruleset() != -1)
 		{
-			final String rulesetNameString = DatabaseInformation.getRulesetDBName(app.manager().ref().context().game().description().rulesets().get(app.manager().settingsManager().userSelections().ruleset()));
+			final String rulesetNameString = DatabaseInformation.getRulesetDBName(app.manager().ref().context().game().description().rulesets().get(app.manager().settingsManager().userSelections().ruleset()).heading());
 			outputName += "-" + rulesetNameString;
 		}
 		outputName = outputName.trim();

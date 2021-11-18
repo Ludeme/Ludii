@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import main.options.Ruleset;
-
 public class DatabaseInformation
 {
 
@@ -20,9 +18,9 @@ public class DatabaseInformation
 	 * @param ruleset
 	 * @return the database name for a given ruleset.
 	 */
-	public static String getRulesetDBName(final Ruleset ruleset)
+	public static String getRulesetDBName(final String rulesetHeading)
 	{
-		final String[] rulesetNameArray = ruleset.heading().split("[/(]");
+		final String[] rulesetNameArray = rulesetHeading.split("[/(]");
 		String rulesetNameString = "";
 		for (int i = 1; i < rulesetNameArray.length-1; i++)
 			rulesetNameString += rulesetNameArray[i] + "(";
@@ -55,6 +53,9 @@ public class DatabaseInformation
 						final String[] lineArray = line.split(",");
 						
 						if (lineArray[1].equals(gameName) && lineArray[3].equals(rulesetName))
+							return Integer.valueOf(lineArray[4]);
+						
+						if (lineArray[1].equals(gameName) && lineArray[3].equals(getRulesetDBName(rulesetName)))
 							return Integer.valueOf(lineArray[4]);
 					}
 				}
