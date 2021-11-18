@@ -9,6 +9,7 @@ import utils.data_structures.support.zhang_shasha.Tree;
 
 /**
  * Returns Zhang-Shasha tree edit distance.
+ * https://www.researchgate.net/publication/220618233_Simple_Fast_Algorithms_for_the_Editing_Distance_Between_Trees_and_Related_Problems
  * 
  * @author matthew.stephenson
  */
