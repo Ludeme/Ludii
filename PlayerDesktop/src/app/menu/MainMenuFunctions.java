@@ -51,6 +51,7 @@ import app.loading.GameLoading;
 import app.loading.MiscLoading;
 import app.loading.TrialLoading;
 import app.manualGeneration.ManualGeneration;
+import app.util.QrCodeGeneration;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
@@ -64,11 +65,8 @@ import game.rules.play.moves.Moves;
 import game.types.play.RepetitionType;
 import gnu.trove.list.array.TIntArrayList;
 import grammar.Grammar;
-import graphics.qr_codes.QrCode;
-import graphics.qr_codes.ToImage;
 import graphics.svg.SVGLoader;
 import main.Constants;
-import main.DatabaseInformation;
 import main.FileHandling;
 import main.StringRoutines;
 import main.collections.FastArrayList;
@@ -694,7 +692,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Make QR Code"))
 		{
-			makeQRCode(game);
+			QrCodeGeneration.makeQRCode(game);
 		}
 		else if (source.getText().equals("Play/Pause"))
 		{
@@ -1639,49 +1637,6 @@ public class MainMenuFunctions extends JMenuBar
 			currentContainer = ((JMenu)((JPopupMenu) currentContainer.getParent()).getInvoker());
 		
 		return ((JMenu)currentContainer).getText();
-	}
-	
-	//---------------------------------------------------------------------
-	
-	static void makeQRCode(final Game game)
-	{
-		// Determine the file name
-		String fileName = "qr-" + game.name();
-		if (game.getRuleset() != null)
-		{
-			fileName += "-" + game.getRuleset().heading();
-			fileName = fileName.replaceAll("Ruleset/", "");  // remove keyword
-		}
-		fileName = fileName.replaceAll(" ", "-");  // remove empty spaces
-		fileName = fileName.replaceAll("/", "-");  // remove slashes spaces
-		fileName += ".png";
-		
-		// Determine URL to encode
-		String url = "https://ludii.games/details.php?keyword=" + game.name(); 
-		if (game.getRuleset() != null)
-		{
-			// Format: https://ludii.games/variantDetails.php?keyword=Achi&variant=563
-			final int variant = DatabaseInformation.getRulesetId(game.name(), game.getRuleset().heading());
-			url = "https://ludii.games/variantDetails.php?keyword=" + game.name() + 
-				  "&variant=" + variant;
-		}
-		url = url.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
-		
-		final QrCode qr = QrCode.encodeText(url, QrCode.Ecc.MEDIUM);
-	
-		// Make the image
-		final int scale = 10;
-		final int border = 4;
-	
-		final BufferedImage img = ToImage.toLudiiCodeImage(qr, scale, border);   
-		try
-		{
-			ImageIO.write(img, "png", new File(fileName));
-		}
-		catch (final IOException e1)
-		{
-			e1.printStackTrace();
-		} 
 	}
 	
 	//---------------------------------------------------------------------
