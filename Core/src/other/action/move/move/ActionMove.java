@@ -45,10 +45,18 @@ public final class ActionMove extends BaseAction
 		final boolean onStacking
 	)
 	{
+		
+
 		if(onStacking)
 			return new ActionMoveStacking(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
+		else if (levelFrom >= 0 && levelTo >= 0)
+			return new ActionMoveLevelFromLevelTo(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
+		else if (levelFrom >= 0)
+			return new ActionMoveLevelFrom(typeFrom, from, levelFrom, typeTo, to, state, rotation, value);
+		else if (levelTo >= 0)
+			return new ActionMoveLevelTo(typeFrom, from, typeTo, to, levelTo, state, rotation, value);
 		else
-			return new ActionMoveTopPiece(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
+			return new ActionMoveTopPiece(typeFrom, from, typeTo, to, state, rotation, value);
 	}
 
 	/**
@@ -96,8 +104,14 @@ public final class ActionMove extends BaseAction
 		
 		if(onStacking)
 			action = new ActionMoveStacking(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
+		else if (levelFrom >= 0 && levelTo >= 0)
+			action = new ActionMoveLevelFromLevelTo(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
+		else if (levelFrom >= 0)
+			action = new ActionMoveLevelFrom(typeFrom, from, levelFrom, typeTo, to, state, rotation, value);
+		else if (levelTo >= 0)
+			action = new ActionMoveLevelTo(typeFrom, from, typeTo, to, levelTo, state, rotation, value);
 		else
-			action =  new ActionMoveTopPiece(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
+			action = new ActionMoveTopPiece(typeFrom, from, typeTo, to, state, rotation, value);
 		
 		action.setDecision(decision);
 		

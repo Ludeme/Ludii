@@ -25,11 +25,11 @@ import other.topology.Topology;
 import other.topology.TopologyElement;
 
 /**
- * Moves a piece from a site to another (only the top piece).
+ * Moves a piece from a site at a specific level to another site at a specific level.
  *
  * @author Eric.Piette
  */
-public final class ActionMoveTopPiece extends BaseAction
+public final class ActionMoveLevelFromLevelTo extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
@@ -41,11 +41,17 @@ public final class ActionMoveTopPiece extends BaseAction
 	/** From site index. */
 	private final int from;
 
+	/** From level index (e.g. stacking game). */
+	private int levelFrom;
+
 	/** The graph element type of the to site. */
 	private final SiteType typeTo;
 
 	/** To site index. */
 	private final int to;
+
+	/** To level index (e.g. stacking game). */
+	private final int levelTo;
 
 	/** Site state value of the to site. */
 	private final int state;
@@ -142,18 +148,22 @@ public final class ActionMoveTopPiece extends BaseAction
 	/**
 	 * @param typeFrom   The graph element type of the from site.
 	 * @param from       From site index.
+	 * @param levelFrom  From level index.
 	 * @param typeTo     The graph element type of the to site.
 	 * @param to         To site index.
+	 * @param levelTo    To level index.
 	 * @param state      The state site of the to site.
 	 * @param rotation   The rotation value of the to site.
 	 * @param value      The piece value of the to site.
 	 */
-	public ActionMoveTopPiece
+	public ActionMoveLevelFromLevelTo
 	(
 		final SiteType typeFrom,
 		final int from,
+		final int levelFrom,
 		final SiteType typeTo,
 		final int to,
+		final int levelTo,
 		final int state,
 		final int rotation,
 		final int value
@@ -161,8 +171,10 @@ public final class ActionMoveTopPiece extends BaseAction
 	{
 		this.typeFrom = typeFrom;
 		this.from = from;
+		this.levelFrom = levelFrom;
 		this.typeTo = typeTo;
 		this.to = to;
+		this.levelTo = levelTo;
 		this.state = state;
 		this.rotation = rotation;
 		this.value = value;
@@ -192,10 +204,9 @@ public final class ActionMoveTopPiece extends BaseAction
 		final ContainerState csTo = context.state().containerStates()[contIdTo];
 		
 		// take the local state of the site from
-		currentStateFrom = (csFrom.what(from, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, typeFrom);
-		
-		currentRotationFrom = csFrom.rotation(from, typeFrom);
-		currentValueFrom =  csFrom.value(from, typeFrom);
+		currentStateFrom = ((csFrom.what(from, levelFrom, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, levelFrom, typeFrom));
+		currentRotationFrom = csFrom.rotation(from, levelFrom, typeFrom);
+		currentValueFrom =  csFrom.value(from, levelFrom, typeFrom);
 		
 		// Keep in memory the data of the site from and to (for undo method)
 		if(!alreadyApplied)
@@ -203,11 +214,11 @@ public final class ActionMoveTopPiece extends BaseAction
 			previousStateFrom = currentStateFrom;
 			previousRotationFrom = currentRotationFrom;
 			previousValueFrom = currentValueFrom;
-			previousStateTo = csTo.state(to, typeTo);
-			previousRotationTo =csTo.rotation(to, typeTo); 
-			previousValueTo = csTo.value(to, typeTo);
-			previousWhoTo = csTo.who(to, typeTo);
-			previousWhatTo = csTo.what(to, typeTo);
+			previousStateTo =  csTo.state(to, levelTo, typeTo);
+			previousRotationTo = csTo.rotation(to, levelTo, typeTo); 
+			previousValueTo = csTo.value(to, levelTo, typeTo);
+			previousWhoTo = csTo.who(to, levelTo, typeTo);
+			previousWhatTo = csTo.what(to, levelTo, typeTo);
 			previousCountFrom = csFrom.count(from, typeFrom);
 			previousCountTo = csTo.count(to, typeTo);
 			
@@ -458,17 +469,32 @@ public final class ActionMoveTopPiece extends BaseAction
 			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
 			final ContainerState containerTo = context.state().containerStates()[contIdTo];
 
-			final int what = containerFrom.what(from, typeFrom);
+			final int what = containerFrom.what(from, levelFrom, typeFrom);
+			containerFrom.remove(context.state(), from, levelFrom, typeFrom);
 
-			containerFrom.remove(context.state(), from, typeFrom);
-				
 			if (containerFrom.sizeStack(from, typeFrom) == 0)
 				containerFrom.addToEmpty(from, typeFrom);
 
 			final int who = (what < 1) ? 0 : context.components()[what].owner();
 
-			if (!context.game().hasCard())
-				containerTo.addItemGeneric(context.state(), to, what, who, context.game(), typeTo);
+			final int sizeStack = containerTo.sizeStack(to, typeTo);
+				
+			// we update the own list of the pieces on the top of that piece inserted.
+			for (int i = sizeStack - 1; i >= levelTo; i--)
+			{
+				final int owner = containerTo.who(to, i, typeTo);
+				final int pieceTo = containerTo.what(to, i, typeTo);
+				context.state().owned().remove(owner, pieceTo, to, i, typeTo);
+				context.state().owned().add(owner, pieceTo, to, i + 1, typeTo);
+			}
+					
+			// We insert the piece.
+			containerTo.insertCell(context.state(), to, levelTo, what, who, state, rotation, value, context.game());
+				
+			// we update the own list with the new piece
+			final Component pieceTo = context.components()[what];
+			final int owner = pieceTo.owner();
+			context.state().owned().add(owner, what, to, levelTo, typeTo);
 
 			if (containerTo.sizeStack(to, typeTo) != 0)
 				containerTo.removeFromEmpty(to, typeTo);
@@ -480,10 +506,8 @@ public final class ActionMoveTopPiece extends BaseAction
 			{
 				pieceFrom = context.components()[what];
 				ownerFrom = pieceFrom.owner();
-				context.state().owned().add(ownerFrom, what, to,
-						containerTo.sizeStack(to, typeTo) - 1, typeTo);
-				context.state().owned().remove(ownerFrom, what, from,
-						containerFrom.sizeStack(from, typeFrom), typeFrom);
+				if (ownerFrom != 0)
+					context.state().owned().remove(ownerFrom, what, from, levelFrom, typeFrom);
 			}
 
 			// We update the structure about track indices if the game uses track.
@@ -841,24 +865,21 @@ public final class ActionMoveTopPiece extends BaseAction
 			final ContainerState containerTo = context.state().containerStates()[contIdTo];
 			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
 			
-			final int what = containerTo.what(to, typeTo);
-
-			containerTo.remove(context.state(), to, typeTo);
+			final int what = containerTo.what(to, levelTo, typeTo);
 				
+			containerTo.remove(context.state(), to, levelTo, typeTo);
+
 			if (containerTo.sizeStack(to, typeTo) == 0)
 				containerTo.addToEmpty(to, typeTo);
 
 			final int who = (what < 1) ? 0 : context.components()[what].owner();
-			final int newStateFrom = (previousStateFrom == Constants.UNDEFINED) ? containerTo.state(to, typeTo) : previousStateFrom;
-			final int newRotationFrom = (previousRotationFrom == Constants.UNDEFINED) ? containerTo.rotation(to, typeTo) : previousRotationFrom;
-			final int newValueFrom = (previousValueFrom == Constants.UNDEFINED) ? containerTo.value(to, typeTo) : previousValueFrom;
 
-			containerFrom.addItemGeneric(context.state(), from, what, who, newStateFrom, newRotationFrom, newValueFrom, context.game(), typeFrom);
-					
+			// We insert the piece.
+			containerFrom.insertCell(context.state(), from, levelFrom, what, who, state, rotation, value, context.game());
+
 			if (containerFrom.sizeStack(from, typeFrom) != 0)
 				containerFrom.removeFromEmpty(from, typeFrom);
-				
-		} 
+		}
 		
 		return this;
 	}
@@ -879,10 +900,14 @@ public final class ActionMoveTopPiece extends BaseAction
 		else
 			sb.append("from=" + from);
 
+		sb.append(",levelFrom=" + levelFrom);
+
 		if (typeTo != null || (context != null && typeTo != context.board().defaultSite()))
 			sb.append(",typeTo=" + typeTo);
 
 		sb.append(",to=" + to);
+
+		sb.append(",levelTo=" + levelTo);
 
 		if (state != Constants.UNDEFINED)
 			sb.append(",state=" + state);
@@ -908,7 +933,9 @@ public final class ActionMoveTopPiece extends BaseAction
 		int result = 1;
 		result = prime * result + (decision ? 1231 : 1237);
 		result = prime * result + from;
+		result = prime * result + levelFrom;
 		result = prime * result + to;
+		result = prime * result + levelTo;
 		result = prime * result + state;
 		result = prime * result + rotation;
 		result = prime * result + value;
@@ -924,14 +951,16 @@ public final class ActionMoveTopPiece extends BaseAction
 		if (this == obj)
 			return true;
 
-		if (!(obj instanceof ActionMoveTopPiece))
+		if (!(obj instanceof ActionMoveLevelFromLevelTo))
 			return false;
 
-		final ActionMoveTopPiece other = (ActionMoveTopPiece) obj;
+		final ActionMoveLevelFromLevelTo other = (ActionMoveLevelFromLevelTo) obj;
 
 		return (decision == other.decision &&
 				from == other.from &&
+				levelFrom == other.levelFrom &&
 				to == other.to &&
+				levelTo == other.levelTo &&
 				state == other.state &&
 				rotation == other.rotation &&
 				value == other.value &&
@@ -970,6 +999,9 @@ public final class ActionMoveTopPiece extends BaseAction
 		else
 			sb.append(newFrom);
 
+		if (context.game().isStacking())
+			sb.append("/" + levelFrom);
+
 		String newTo = to + "";
 		if (useCoords)
 		{
@@ -988,6 +1020,8 @@ public final class ActionMoveTopPiece extends BaseAction
 			sb.append("-" + typeTo + " " + newTo);
 		else
 			sb.append("-" + newTo);
+
+		sb.append("/" + levelTo);
 
 		if (state != Constants.UNDEFINED)
 			sb.append("=" + state);
@@ -1028,6 +1062,8 @@ public final class ActionMoveTopPiece extends BaseAction
 		else
 			sb.append(newFrom);
 
+		sb.append("/" + levelFrom);
+
 		String newTo = to + "";
 		if (useCoords)
 		{
@@ -1050,6 +1086,8 @@ public final class ActionMoveTopPiece extends BaseAction
 			sb.append(" - " + typeTo + " " + newTo);
 		else
 			sb.append("-" + newTo);
+
+		sb.append("/" + levelTo);
 
 		if (state != Constants.UNDEFINED)
 			sb.append(" state=" + state);
@@ -1094,13 +1132,13 @@ public final class ActionMoveTopPiece extends BaseAction
 	@Override
 	public int levelFrom()
 	{
-		return Constants.GROUND_LEVEL;
+		return levelFrom;
 	}
 
 	@Override
 	public int levelTo()
 	{
-		return  Constants.GROUND_LEVEL;
+		return levelTo;
 	}
 
 	@Override
@@ -1133,6 +1171,12 @@ public final class ActionMoveTopPiece extends BaseAction
 		return false;
 	}
 
+	@Override
+	public void setLevelFrom(final int levelA)
+	{
+		levelFrom = levelA;
+	}
+	
 	@Override
 	public ActionType actionType()
 	{
