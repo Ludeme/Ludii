@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseInformation
 {
@@ -54,17 +56,25 @@ public class DatabaseInformation
 					final BufferedReader rdr = new BufferedReader(isr)
 				)
 				{
+					final List<Integer> allRulesetIdsForGame = new ArrayList<>();
+					
 					String line;
 					while ((line = rdr.readLine()) != null)
 					{
 						final String[] lineArray = line.replaceAll("\"", "").split(",");
 						
-						if (lineArray[1].equals(gameName) && lineArray[3].equals(rulesetName))
-							return Integer.valueOf(lineArray[2]);
+						if (lineArray[1].equals(gameName))
+						{
+							allRulesetIdsForGame.add(Integer.valueOf(lineArray[2]));
 						
-						if (lineArray[1].equals(gameName) && lineArray[3].equals(getRulesetDBName(rulesetName)))
-							return Integer.valueOf(lineArray[2]);
+							if (lineArray[3].equals(rulesetName) || lineArray[3].equals(getRulesetDBName(rulesetName)))
+								return Integer.valueOf(lineArray[2]);		
+						}
 					}
+					
+					// Check if there is only one ruleset for this game.
+					if (rulesetName.length() == 0 && allRulesetIdsForGame.size() == 1)
+						return allRulesetIdsForGame.get(0);
 				}
 			}
 		}

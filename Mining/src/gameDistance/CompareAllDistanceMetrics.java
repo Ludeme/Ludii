@@ -137,7 +137,7 @@ public class CompareAllDistanceMetrics
 				    // Get corresponding ruleset Id.
 				    final String[] nameArray = gameName.split("_")[0].split("/");
 				    final String formattedGameName = nameArray[nameArray.length-1].substring(0,nameArray[nameArray.length-1].length()-4);
-				    String formattedRulesetName = "Default";
+				    String formattedRulesetName = "";
 				    if (gameName.split("_").length > 1)
 				    	formattedRulesetName = gameName.split("_")[1];
 				    final int rulesetId = DatabaseInformation.getRulesetId(formattedGameName, formattedRulesetName);
