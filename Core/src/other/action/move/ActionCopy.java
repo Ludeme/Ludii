@@ -4,8 +4,6 @@ import java.util.BitSet;
 import java.util.List;
 
 import game.Game;
-import game.equipment.component.Component;
-import game.equipment.container.board.Track;
 import game.rules.play.moves.Moves;
 import game.types.board.RelationType;
 import game.types.board.SiteType;
@@ -21,7 +19,6 @@ import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
-import other.state.track.OnTrackIndices;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 
@@ -243,17 +240,10 @@ public final class ActionCopy extends BaseAction
 			typeTo = SiteType.Cell;
 				
 		final ContainerState cs = context.state().containerStates()[contID];
-		int pieceIdx = 0;
 		if (context.game().isStacking())
 		{
 			final int levelCopyIn = (levelTo == Constants.UNDEFINED) ? cs.sizeStack(to, typeTo) - 1 : levelTo;
-			pieceIdx = cs.remove(context.state(), site, levelCopyIn, typeTo);
-			if (pieceIdx > 0)
-			{
-				final Component piece = context.components()[pieceIdx];
-				final int owner = piece.owner();
-				context.state().owned().remove(owner, pieceIdx, site, levelCopyIn, typeTo);
-			}
+			cs.remove(context.state(), site, levelCopyIn, typeTo);
 
 			if (cs.sizeStack(site, typeTo) == 0)
 				cs.addToEmpty(site, typeTo);
@@ -263,35 +253,12 @@ public final class ActionCopy extends BaseAction
 			final int currentCount = cs.count(site, typeTo);
 			if(currentCount <= 1)
 			{
-				pieceIdx = cs.remove(context.state(), site, typeTo);
-				if (pieceIdx > 0)
-				{
-					final Component piece = context.components()[pieceIdx];
-					final int owner = piece.owner();
-					context.state().owned().remove(owner, pieceIdx, site, typeTo);
-				}
+				cs.remove(context.state(), site, typeTo);
 			}
 			else // We update the count.
 			{
-				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-						(game.requiresCount() ? currentCount - 1 : 1), previousState, previousRotation, previousValue, typeTo);
-			}
-		}
-		
-		// We update the structure about track indices if the game uses track.
-		if (pieceIdx > 0)
-		{
-			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
-			if (onTrackIndices != null)
-			{
-				for (final Track track : context.board().tracks())
-				{
-					final int trackIdx = track.trackIdx();
-					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, site);
-
-					for (int i = 0; i < indices.size(); i++)
-						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
-				}
+				final int previousCount = (game.requiresCount() ? currentCount - 1 : 1);
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, previousCount, previousState, previousRotation, previousValue, typeTo);
 			}
 		}
 		

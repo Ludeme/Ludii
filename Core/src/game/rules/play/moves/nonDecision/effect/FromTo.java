@@ -24,7 +24,7 @@ import main.Constants;
 import other.action.Action;
 import other.action.move.ActionCopy;
 import other.action.move.ActionMoveN;
-import other.action.move.ActionStackMove;
+import other.action.move.ActionSubStackMove;
 import other.action.move.move.ActionMove;
 import other.action.state.ActionSetRotation;
 import other.concept.Concept;
@@ -211,6 +211,7 @@ public final class FromTo extends Effect
 				{					
 					if (to > Constants.OFF)
 					{
+						// Get the right container id for 'to' and the right site type of the 'to'.
 						int cidTo;
 						SiteType realTypeTo = typeTo;
 						if (typeToDefined)
@@ -225,9 +226,9 @@ public final class FromTo extends Effect
 							else if (realTypeTo == null)
 								realTypeTo = context.board().defaultSite();
 						}
-
 						final ContainerState csTo = context.containerState(cidTo);
 
+						// Compute the right action to move the piece(s).
 						final Action actionMove;
 						if (levelTo != null)
 						{
@@ -344,7 +345,7 @@ public final class FromTo extends Effect
 							// Move a sub stack.
 							else
 							{
-								actionMove = new ActionStackMove(realTypeFrom, from, realTypeTo, to, count);
+								actionMove = new ActionSubStackMove(realTypeFrom, from, realTypeTo, to, count);
 								actionMove.setLevelFrom(cs.sizeStack(from, realTypeFrom) - (count));
 								actionMove.setLevelTo(csTo.sizeStack(to, realTypeTo));
 							}

@@ -39,7 +39,7 @@ import other.action.move.ActionInsert;
 import other.action.move.ActionMoveN;
 import other.action.move.ActionPromote;
 import other.action.move.ActionSelect;
-import other.action.move.ActionStackMove;
+import other.action.move.ActionSubStackMove;
 import other.action.move.move.ActionMove;
 import other.action.move.remove.ActionRemove;
 import other.action.others.ActionForfeit;
@@ -318,7 +318,7 @@ public class Move extends BaseAction
 			else if (actionStr.startsWith("[Move:"))
 				actions.add(new ActionMove(actionStr));
 			else if (actionStr.startsWith("[StackMove:"))
-				actions.add(new ActionStackMove(actionStr));
+				actions.add(new ActionSubStackMove(actionStr));
 			else if (actionStr.startsWith("[SetValueOfPlayer:"))
 				actions.add(new ActionSetValueOfPlayer(actionStr));
 			else if (actionStr.startsWith("[SetAmount:"))

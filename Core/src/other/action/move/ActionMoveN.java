@@ -224,28 +224,19 @@ public final class ActionMoveN extends BaseAction
 		
 		// modification on From
 		if (csFrom.count(from, typeFrom) - count <= 0)
-		{
 			csFrom.remove(context.state(), from, typeFrom);
-		}
 		else
-		{
-			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED,
-					csFrom.count(from, typeFrom) - count,
-					Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeFrom);
-		}
+			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, csFrom.count(from, typeFrom) - count, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeFrom);
 
 		// modification on To
 		if (csTo.count(to, typeTo) == 0)
 		{
-			csTo.setSite(context.state(), to, who, what, count, Constants.UNDEFINED, Constants.UNDEFINED,
-					Constants.UNDEFINED, typeTo);
+			csTo.setSite(context.state(), to, who, what, count, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
 		}
 		else if (csTo.what(to, typeTo) == what)
 		{
 			if((csTo.count(to, typeTo) + count) <= context.game().maxCount())
-				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-						csTo.count(to, typeTo) + count,
-						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
+				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, csTo.count(to, typeTo) + count, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
 		}
 
 //		Component piece = null;
@@ -317,79 +308,16 @@ public final class ActionMoveN extends BaseAction
 
 		// modification on To
 		if (previousCountTo <= 0)
-		{
 			csTo.remove(context.state(), to, typeTo);
-		}
 		else
-		{
-			csTo.setSite(context.state(), to, previousWhoTo, previousWhatTo,
-					previousCountTo, previousStateTo, previousRotationTo, previousValueTo, typeTo);
-		}
+			csTo.setSite(context.state(), to, previousWhoTo, previousWhatTo, previousCountTo, previousStateTo, previousRotationTo, previousValueTo, typeTo);
 
 		// modification on From
 		if (csFrom.count(from, typeFrom) == 0)
-		{
 			csFrom.setSite(context.state(), from, previousWhoFrom, previousWhatFrom, previousCountFrom, previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
-		}
 		else if (csFrom.what(from, typeFrom) == previousWhatFrom)
-		{
 			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, previousCountFrom, previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
-		}
 		
-//		Component piece = null;
-		// to keep the site of the item in cache for each player
-//		if (what != 0 && who !=0)
-//		{
-//			if(csTo.count(to, typeTo) == 0)
-//				context.state().owned().remove(who, what, to, typeTo);
-//			context.state().owned().add(who, what, from, typeFrom);
-//		}
-
-//		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
-//		// We update the structure about track indices if the game uses track.
-//		if (what != 0 && onTrackIndices != null)
-//		{
-//			for (final Track track : context.board().tracks())
-//			{
-//				final int trackIdx = track.trackIdx();
-//				final TIntArrayList indicesLocTo = onTrackIndices.locToIndex(trackIdx, to);
-//
-//				for (int k = 0; k < indicesLocTo.size(); k++)
-//				{
-//					final int indexA = indicesLocTo.getQuick(k);
-//					final int countAtIndex = onTrackIndices.whats(trackIdx, what, indicesLocTo.getQuick(k));
-//
-//					if (countAtIndex > 0)
-//					{
-//						onTrackIndices.remove(trackIdx, what, this.count, indexA);
-//						final TIntArrayList newWhatIndice = onTrackIndices.locToIndexFrom(trackIdx, from, indexA);
-//
-//						if (newWhatIndice.size() > 0)
-//						{
-//							onTrackIndices.add(trackIdx, what, this.count, newWhatIndice.getQuick(0));
-//						}
-//						else
-//						{
-//							final TIntArrayList newWhatIndiceIfNotAfter = onTrackIndices.locToIndex(trackIdx, from);
-//							if (newWhatIndiceIfNotAfter.size() > 0)
-//								onTrackIndices.add(trackIdx, what, this.count, newWhatIndiceIfNotAfter.getQuick(0));
-//						}
-//
-//						break;
-//					}
-//				}
-//
-//				// If the piece was not in the track but enter on it, we update the structure
-//				// corresponding to that track.
-//				if (indicesLocTo.size() == 0)
-//				{
-//					final TIntArrayList indicesLocFrom = onTrackIndices.locToIndex(trackIdx, from);
-//					if (indicesLocFrom.size() != 0)
-//						onTrackIndices.add(trackIdx, what, 1, indicesLocFrom.getQuick(0));
-//				}
-//			}
-//		}
-
 		return this;
 	}
 

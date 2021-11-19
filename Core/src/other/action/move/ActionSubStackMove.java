@@ -25,7 +25,7 @@ import other.topology.TopologyElement;
  *
  * @author Eric.Piette
  */
-public final class ActionStackMove extends BaseAction
+public final class ActionSubStackMove extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
@@ -61,7 +61,7 @@ public final class ActionStackMove extends BaseAction
 	 * @param typeFrom The type of the origin.
 	 * @param typeTo   The type of the target.
 	 */
-	public ActionStackMove
+	public ActionSubStackMove
 	(
 		final SiteType typeFrom,
 		final int from, 
@@ -83,7 +83,7 @@ public final class ActionStackMove extends BaseAction
 	 * 
 	 * @param detailedString
 	 */
-	public ActionStackMove(final String detailedString)
+	public ActionSubStackMove(final String detailedString)
 	{
 		assert(detailedString.startsWith("[StackMove:"));
 
@@ -152,8 +152,7 @@ public final class ActionStackMove extends BaseAction
 		for (int i = movedElement.length - 1; i >= 0; i--)
 		{
 			csB.addItemGeneric(context.state(), to, movedElement[i], ownerElement[i], stateElement[i], rotationElement[i], valueElement[i], context.game(), typeTo);
-			context.state().owned().add(ownerElement[i], movedElement[i], to,
-					csB.sizeStack(to, typeTo) - 1, typeTo);
+			context.state().owned().add(ownerElement[i], movedElement[i], to, csB.sizeStack(to, typeTo) - 1, typeTo);
 		}
 		
 		if (wasEmpty && csB.sizeStack(to, typeTo) != 0)
@@ -196,8 +195,6 @@ public final class ActionStackMove extends BaseAction
 			rotationElement[i] = rotationTop;
 			final int valueTop = csB.value(to, typeTo);
 			valueElement[i] = valueTop;
-			final int topLevel = csB.sizeStack(to, typeTo) - 1;
-			context.state().owned().remove(whoTop, whatTop, to, topLevel, typeTo);
 			csB.remove(context.state(), to, typeTo);
 		}
 
@@ -207,10 +204,7 @@ public final class ActionStackMove extends BaseAction
 		boolean wasEmpty = (csA.sizeStack(from, typeFrom) == 0);
 		
 		for (int i = movedElement.length - 1; i >= 0; i--)
-		{
 			csA.addItemGeneric(context.state(), from, movedElement[i], ownerElement[i], stateElement[i], rotationElement[i], valueElement[i], context.game(), typeFrom);
-			context.state().owned().add(ownerElement[i], movedElement[i], from, csA.sizeStack(from, typeFrom) - 1, typeFrom);
-		}
 		
 		if (wasEmpty && csA.sizeStack(from, typeFrom) != 0)
 			csA.removeFromEmpty(from, typeFrom);
@@ -269,10 +263,10 @@ public final class ActionStackMove extends BaseAction
 		if (this == obj)
 			return true;
 
-		if (!(obj instanceof ActionStackMove))
+		if (!(obj instanceof ActionSubStackMove))
 			return false;
 
-		final ActionStackMove other = (ActionStackMove) obj;
+		final ActionSubStackMove other = (ActionSubStackMove) obj;
 		return (numLevel == other.numLevel &&
 				decision == other.decision &&
 				from == other.from && to == other.to && typeFrom == other.typeFrom && typeTo == other.typeTo);

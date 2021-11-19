@@ -333,16 +333,8 @@ public final class ActionAdd extends BaseAction
 		if (context.game().isStacking())
 		{
 			final int levelToRemove = cs.sizeStack(site, type) - 1;
-			//pieceIdx = 
 			cs.remove(context.state(), site, levelToRemove, type);
 			
-//			if (pieceIdx > 0)
-//			{
-//				final Component piece = context.components()[pieceIdx];
-//				final int owner = piece.owner();
-//				context.state().owned().remove(owner, pieceIdx, site, levelToRemove, type);
-//			}
-
 			if (cs.sizeStack(site, type) == 0)
 				cs.addToEmpty(site, type);
 		}
@@ -355,12 +347,6 @@ public final class ActionAdd extends BaseAction
 				pieceIdx = cs.remove(context.state(), site, type);
 				Component piece = context.components()[pieceIdx];
 				undoLargePiece(context, piece, cs);
-//				if (pieceIdx > 0)
-//				{
-//					final Component piece = context.components()[pieceIdx];
-//					final int owner = piece.owner();
-//					context.state().owned().remove(owner, pieceIdx, site, type);
-//				}
 			}
 			else // We update the count.
 			{
@@ -368,23 +354,6 @@ public final class ActionAdd extends BaseAction
 						(game.requiresCount() ? newCount : 1), previousState, previousRotation, previousValue, type);
 			}
 		}
-		
-		// We update the structure about track indices if the game uses track.
-//		if (pieceIdx > 0)
-//		{
-//			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
-//			if (onTrackIndices != null)
-//			{
-//				for (final Track track : context.board().tracks())
-//				{
-//					final int trackIdx = track.trackIdx();
-//					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, site);
-//
-//					for (int i = 0; i < indices.size(); i++)
-//						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
-//				}
-//			}
-//		}
 		
 		return this;
 	}
