@@ -988,7 +988,7 @@ public class Trial implements Serializable
 	 * To add an endData to the list.
 	 * @param endDatum The end Data to add.
 	 */
-	public void addEndData(final UndoData endDatum)
+	public void addUndoData(final UndoData endDatum)
 	{
 		endData.add(endDatum);
 	}

@@ -2773,6 +2773,9 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
+			// Save data before applying end rules (for undo).
+			context.storeCurrentData();
+			
 			// Meta-rule: We apply the auto move rules if existing.
 			Automove.apply(context, move);
 
@@ -2802,8 +2805,6 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move applyInternal(final Context context, final Move move, final boolean skipEndRules)
 	{
-		// Save data before applying end rules (for undo).
-		context.storeCurrentEndData();
 		
 		final Trial trial = context.trial();
 		final State state = context.state();
@@ -3071,6 +3072,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			final TIntArrayList sitesToRemove = undoData == null ? null : undoData.sitesToRemove();
 			final OnTrackIndices onTrackIndices = undoData == null ? null : undoData.onTrackIndices();
 			final Owned owned = undoData == null ? null : undoData.owned();
+			final int isDecided = undoData == null ? Constants.UNDEFINED : undoData.isDecided();
 			
 			int active = 0;
 			if(undoData != null)
@@ -3165,6 +3167,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			state.setNumConsecutivesPasses(numConsecutivePasses);
 			state.setOnTrackIndices(onTrackIndices);
 			state.setOwned(owned);
+			state.setIsDecided(isDecided);
 			
 			// Step 5: To update the sum of the dice container.
 			if (hasHandDice())
@@ -3197,6 +3200,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			// For temporary copies of context, we need not do this
 			if (!(context instanceof TempContext) && !trial.over() && context.game().isStochasticGame())
 				context.game().moves(context);
+
 			
 			return move;
 		}

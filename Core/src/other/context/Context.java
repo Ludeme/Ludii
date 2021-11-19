@@ -1686,7 +1686,7 @@ public class Context
 	/**
 	 * Store the current end data into the trial.
 	 */
-	public void storeCurrentEndData()
+	public void storeCurrentData()
 	{
 		// Store the phase of each player.
 		final int[] phases = new int[players().size()];
@@ -1718,9 +1718,10 @@ public class Context
 				state.visited(),
 				state.sitesToRemove(),
 				state.onTrackIndices(),
-				state.owned()
+				state.owned(),
+				state.isDecided()
 		);
 		
-		trial.addEndData(endData);
+		trial.addUndoData(endData);
 	}
 }

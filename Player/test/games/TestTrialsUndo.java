@@ -47,7 +47,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = true;
+		final boolean stateComparaison = false;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -111,14 +111,14 @@ public class TestTrialsUndo
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "";
+		final String gameToReached = "Ceelkoqyuqkoqiji";
 		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Fenix")) 
+			if (fileEntry.getPath().contains("")) 
 			//if (fileEntry.getName().equals(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)

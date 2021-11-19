@@ -92,6 +92,9 @@ public class UndoData
 	/** All the remaining dominoes. */
 	private FastTIntArrayList remainingDominoes;
 
+	/** The decision after voting. */
+	private int isDecided;
+
 	/**
 	 * BitSet used to store all the site already visited (from & to) by each move
 	 * done by the player in a sequence of turns played by the same player.
@@ -135,6 +138,7 @@ public class UndoData
 	 * @param sitesToRemove		   	   Sites to remove in case of a sequence of capture.
 	 * @param onTrackIndices		   To access where are each type of piece on each track.
 	 * @param owned		  			   Access to list of sites for each kind of component owned per player.
+	 * @param isDecided		  		   The decision after voting.
 	 */
 	public UndoData
 	(
@@ -162,7 +166,8 @@ public class UndoData
 		final HashedBitSet visited,
 		final TIntArrayList sitesToRemove,
 		final OnTrackIndices onTrackIndices,
-		final Owned owned
+		final Owned owned,
+		final int isDecided
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -190,6 +195,7 @@ public class UndoData
 		this.sitesToRemove = sitesToRemove == null ? null : new TIntArrayList(sitesToRemove);
 		this.onTrackIndices = onTrackIndices == null ? null : new OnTrackIndices(onTrackIndices);
 		this.owned = owned == null ? null : owned.copy();
+		this.isDecided = isDecided;
 	}
 
 	//-------------------------------------------------------------------------
@@ -392,5 +398,13 @@ public class UndoData
 	public Owned owned()
 	{
 		return owned;
+	}
+	
+	/**
+	 * @return The decision after voting.
+	 */
+	public int isDecided()
+	{
+		return isDecided;
 	}
 }
