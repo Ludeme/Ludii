@@ -33,7 +33,6 @@ import other.context.EvalContextData;
 import other.move.Move;
 import other.move.MoveUtilities;
 import other.state.container.ContainerState;
-import other.state.stacking.BaseContainerStateStacking;
 
 /**
  * Moves a piece from one site to another, possibly in another container, with
@@ -161,8 +160,7 @@ public final class FromTo extends Effect
 	@Override
 	public Moves eval(final Context context)
 	{
-		final int[] sitesFrom = (regionFrom == null) ? new int[]
-		{ locFrom.eval(context) } : regionFrom.eval(context).sites();
+		final int[] sitesFrom = (regionFrom == null) ? new int[] { locFrom.eval(context) } : regionFrom.eval(context).sites();
 
 		final int origFrom = context.from();
 		final int origTo = context.to();
@@ -217,15 +215,11 @@ public final class FromTo extends Effect
 						SiteType realTypeTo = typeTo;
 						if (typeToDefined)
 						{
-							if (!typeTo.equals(SiteType.Cell))
-								cidTo = 0;
-							else
-								cidTo = context.containerId()[to];
+							cidTo = (!typeTo.equals(SiteType.Cell)) ? 0 : context.containerId()[to];
 						}
 						else
 						{
 							cidTo = to >= context.containerId().length ? 0 : context.containerId()[to];
-
 							if (cidTo > 0)
 								realTypeTo = SiteType.Cell;
 							else if (realTypeTo == null)
@@ -358,6 +352,7 @@ public final class FromTo extends Effect
 
 						if (isDecision())
 							actionMove.setDecision(true);
+						
 						context.setFrom(from);
 						context.setTo(to);
 						
@@ -373,20 +368,8 @@ public final class FromTo extends Effect
 							{
 								if (levelFrom == null)
 								{
-									move.setLevelMinNonDecision
-									(
-										((BaseContainerStateStacking) context.state()
-													.containerStates()[context.containerId()[from]]).sizeStack(from,
-															realTypeFrom)
-										- 1
-									);
-									move.setLevelMaxNonDecision
-									(
-										((BaseContainerStateStacking) context.state()
-													.containerStates()[context.containerId()[from]]).sizeStack(from,
-															realTypeFrom)
-										- 1
-									);
+									move.setLevelMinNonDecision(cs.sizeStack(from,realTypeFrom) - 1);
+									move.setLevelMaxNonDecision(cs.sizeStack(from,realTypeFrom) - 1);
 								}
 								else
 								{

@@ -183,7 +183,6 @@ public final class QrCode
 	 * This is a mid-level API; the high-level API is {@link #encodeText(String,Ecc)}
 	 * and {@link #encodeBinary(byte[],Ecc)}.</p>
 	 * @param segs the segments to encode
-	 * @param ecl the error correction level to use (not {@code null}) (boostable)
 	 * @param minVersion the minimum allowed version of the QR Code (at least 1)
 	 * @param maxVersion the maximum allowed version of the QR Code (at most 40)
 	 * @param mask the mask number to use (between 0 and 7 (inclusive)), or &#x2212;1 for automatic mask

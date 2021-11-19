@@ -17,7 +17,7 @@ public class DatabaseInformation
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param ruleset
+	 * @param rulesetHeading The heading of the ruleset.
 	 * @return the database name for a given ruleset.
 	 */
 	public static String getRulesetDBName(final String rulesetHeading)
@@ -31,7 +31,7 @@ public class DatabaseInformation
 			rulesetNameString = rulesetNameString.substring(0, rulesetNameString.length()-1);
 			return rulesetNameString.trim();
 		}
-		catch (final Exception e)
+		catch (@SuppressWarnings("unused") final Exception e)
 		{
 			return rulesetHeading;
 		}
