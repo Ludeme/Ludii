@@ -47,7 +47,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = false;
+		final boolean stateComparaison = true;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -111,7 +111,7 @@ public class TestTrialsUndo
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "Ceelkoqyuqkoqiji";
+		final String gameToReached = "Deka";
 		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
@@ -867,26 +867,26 @@ public class TestTrialsUndo
 						
 						final Moves legalMoves = game.moves(context);
 						
-//						if (loadedTrial.auxilTrialData() != null) // TEMPORARY
-//						{
-//							if (legalMoves.moves().size() != loadedTrial.auxilTrialData().legalMovesHistorySizes()
-//									.getQuick(moveIdx - trial.numInitialPlacementMoves()))
-//							{
-//								System.out.println("moveIdx = " + (moveIdx - trial.numInitialPlacementMoves()));
-//								System.out.println("legalMoves.moves().size() = " + legalMoves.moves().size());
-//								
-//								for(Move move : legalMoves.moves())
-//									System.out.println(move.getActionsWithConsequences(context));
-//								
-//								System.out.println(
-//										"loadedTrial.legalMovesHistorySizes().getQuick(moveIdx - trial.numInitPlace()) = "
-//												+ loadedTrial.auxilTrialData().legalMovesHistorySizes()
-//														.getQuick(moveIdx - trial.numInitialPlacementMoves()));
-//							}
-//	
-//							assert (legalMoves.moves().size() == loadedTrial.auxilTrialData().legalMovesHistorySizes()
-//									.getQuick(moveIdx - trial.numInitialPlacementMoves()));
-//						}
+						if (loadedTrial.auxilTrialData() != null)
+						{
+							if (legalMoves.moves().size() != loadedTrial.auxilTrialData().legalMovesHistorySizes()
+									.getQuick(moveIdx - trial.numInitialPlacementMoves()))
+							{
+								System.out.println("moveIdx = " + (moveIdx - trial.numInitialPlacementMoves()));
+								System.out.println("legalMoves.moves().size() = " + legalMoves.moves().size());
+								
+								for(Move move : legalMoves.moves())
+									System.out.println(move.getActionsWithConsequences(context));
+								
+								System.out.println(
+										"loadedTrial.legalMovesHistorySizes().getQuick(moveIdx - trial.numInitPlace()) = "
+												+ loadedTrial.auxilTrialData().legalMovesHistorySizes()
+														.getQuick(moveIdx - trial.numInitialPlacementMoves()));
+							}
+	
+							assert (legalMoves.moves().size() == loadedTrial.auxilTrialData().legalMovesHistorySizes()
+									.getQuick(moveIdx - trial.numInitialPlacementMoves()));
+						}
 						
 						if (game.mode().mode() == ModeType.Alternating)
 						{

@@ -52,11 +52,13 @@ public final class ActionMoveN extends BaseAction
 
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
-	
-	/** Previous What of the from site. */
+
+	//-- from data
+
+	/** Previous What value of the from site. */
 	private int previousWhatFrom;
 	
-	/** Previous Who of the from site. */
+	/** Previous Who value of the from site. */
 	private int previousWhoFrom;
 	
 	/** Previous Site state value of the from site. */
@@ -67,9 +69,38 @@ public final class ActionMoveN extends BaseAction
 
 	/** Previous Piece value of the from site. */
 	private int previousValueFrom;
-	
-	/** Previous Piece value of the from site. */
+
+	/** Previous Piece count of the from site. */
 	private int previousCountFrom;
+
+	/** The previous hidden info values of the from site before to be removed. */
+	private boolean[] previousHiddenFrom;
+	
+	/** The previous hidden what info values of the from site before to be removed. */
+	private boolean[] previousHiddenWhatFrom;
+	
+	/** The previous hidden who info values of the from site before to be removed. */
+	private boolean[] previousHiddenWhoFrom;
+
+	/** The previous hidden count info values of the from site before to be removed. */
+	private boolean[] previousHiddenCountFrom;
+
+	/** The previous hidden rotation info values of the from site before to be removed. */
+	private boolean[] previousHiddenRotationFrom;
+
+	/** The previous hidden State info values of the from site before to be removed. */
+	private boolean[] previousHiddenStateFrom;
+
+	/** The previous hidden Value info values of the from site before to be removed. */
+	private boolean[] previousHiddenValueFrom;
+	
+	//--- to data
+	
+	/** Previous What of the to site. */
+	private int previousWhatTo;
+	
+	/** Previous Who of the to site. */
+	private int previousWhoTo;
 	
 	/** Previous Site state value of the to site. */
 	private int previousStateTo;
@@ -79,16 +110,10 @@ public final class ActionMoveN extends BaseAction
 
 	/** Previous Piece value of the to site. */
 	private int previousValueTo;
-	
-	/** Previous What of the to site. */
-	private int previousWhatTo;
-	
-	/** Previous Who of the to site. */
-	private int previousWhoTo;
-	
-	/** Previous Piece value of the from site. */
+
+	/** Previous Piece count of the to site. */
 	private int previousCountTo;
-	
+
 	/** The previous hidden info values of the to site before to be removed. */
 	private boolean[] previousHiddenTo;
 	
@@ -175,30 +200,46 @@ public final class ActionMoveN extends BaseAction
 
 		final int what = csFrom.what(from, typeFrom);
 		final int who = (what < 1) ? 0 : context.components()[what].owner();
-		int currentStateFrom = Constants.UNDEFINED;
-		int currentRotationFrom = Constants.UNDEFINED;
-		int currentValueFrom = Constants.UNDEFINED;
-
-		// take the local state of the site from
-		currentStateFrom = (csFrom.what(from, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, typeFrom);
-		currentRotationFrom = csFrom.rotation(from, typeFrom);
-		currentValueFrom = csFrom.value(from, typeFrom);
 		
+		// Keep in memory the data of the site from and to (for undo method)
 		if(!alreadyApplied)
 		{
-			previousStateFrom = currentStateFrom;
 			previousCountFrom = csFrom.count(from, typeFrom);
-			previousRotationFrom = currentRotationFrom;
-			previousValueFrom = currentValueFrom;
-			previousWhoFrom = csFrom.who(from, typeFrom);
 			previousWhatFrom = csFrom.what(from, typeFrom);
-			previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
+			previousWhoFrom = csFrom.who(from, typeFrom);
+			previousStateFrom = csFrom.state(from, typeFrom);
+			previousRotationFrom = csFrom.rotation(from, typeFrom);
+			previousValueFrom = csFrom.value(from, typeFrom);
+				
+			if(context.game().hiddenInformation())
+			{
+				previousHiddenFrom = new boolean[context.players().size()];
+				previousHiddenWhatFrom = new boolean[context.players().size()];
+				previousHiddenWhoFrom =  new boolean[context.players().size()];
+				previousHiddenCountFrom =  new boolean[context.players().size()];
+				previousHiddenStateFrom =  new boolean[context.players().size()];
+				previousHiddenRotationFrom =  new boolean[context.players().size()];
+				previousHiddenValueFrom =  new boolean[context.players().size()];
+					
+				for (int pid = 1; pid < context.players().size(); pid++)
+				{
+					previousHiddenFrom[pid] = csFrom.isHidden(pid, from, 0, typeFrom);
+					previousHiddenWhatFrom[pid] = csFrom.isHiddenWhat(pid, from, 0, typeFrom);
+					previousHiddenWhoFrom[pid] = csFrom.isHiddenWho(pid, from, 0, typeFrom);
+					previousHiddenCountFrom[pid] = csFrom.isHiddenCount(pid, from, 0 ,typeFrom);
+					previousHiddenStateFrom[pid] = csFrom.isHiddenState(pid, from, 0, typeFrom);
+					previousHiddenRotationFrom[pid] = csFrom.isHiddenRotation(pid, 0, from, typeFrom);
+					previousHiddenValueFrom[pid] = csFrom.isHiddenValue(pid, from, 0, typeFrom);
+				}
+			}
+
+			previousCountTo = csTo.count(to, typeTo);
+			previousWhatTo = csTo.what(to, typeTo);
+			previousWhoTo = csTo.who(to, typeTo);
+			previousStateTo = csTo.state(to, typeTo);
 			previousRotationTo = csTo.rotation(to, typeTo);
 			previousValueTo = csTo.value(to, typeTo);
-			previousWhoTo = csTo.who(to, typeTo);
-			previousWhatTo = csTo.what(to, typeTo);
-			previousCountTo = csTo.count(to, typeTo);
-			
+				
 			if(context.game().hiddenInformation())
 			{
 				previousHiddenTo = new boolean[context.players().size()];
@@ -208,6 +249,7 @@ public final class ActionMoveN extends BaseAction
 				previousHiddenStateTo =  new boolean[context.players().size()];
 				previousHiddenRotationTo =  new boolean[context.players().size()];
 				previousHiddenValueTo =  new boolean[context.players().size()];
+					
 				for (int pid = 1; pid < context.players().size(); pid++)
 				{
 					previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
@@ -219,6 +261,7 @@ public final class ActionMoveN extends BaseAction
 					previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
 				}
 			}
+			
 			alreadyApplied = true;
 		}
 		
@@ -230,14 +273,10 @@ public final class ActionMoveN extends BaseAction
 
 		// modification on To
 		if (csTo.count(to, typeTo) == 0)
-		{
 			csTo.setSite(context.state(), to, who, what, count, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
-		}
 		else if (csTo.what(to, typeTo) == what)
-		{
 			if((csTo.count(to, typeTo) + count) <= context.game().maxCount())
 				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, csTo.count(to, typeTo) + count, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, typeTo);
-		}
 
 //		Component piece = null;
 		// to keep the site of the item in cache for each player
@@ -306,17 +345,19 @@ public final class ActionMoveN extends BaseAction
 		final ContainerState csFrom = context.state().containerStates()[cidFrom];
 		final ContainerState csTo = context.state().containerStates()[cidTo];
 
-		// modification on To
-		if (previousCountTo <= 0)
-			csTo.remove(context.state(), to, typeTo);
-		else
-			csTo.setSite(context.state(), to, previousWhoTo, previousWhatTo, previousCountTo, previousStateTo, previousRotationTo, previousValueTo, typeTo);
-
-		// modification on From
-		if (csFrom.count(from, typeFrom) == 0)
+		csFrom.remove(context.state(), from, typeFrom);
+		csTo.remove(context.state(), to, typeTo);
+		
+		if(previousCountFrom > 0)
 			csFrom.setSite(context.state(), from, previousWhoFrom, previousWhatFrom, previousCountFrom, previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
-		else if (csFrom.what(from, typeFrom) == previousWhatFrom)
-			csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, previousCountFrom, previousStateFrom, previousRotationFrom, previousValueFrom, typeFrom);
+		if(previousCountTo > 0)
+			csTo.setSite(context.state(), to, previousWhoTo, previousWhatTo, previousCountTo, previousStateTo, previousRotationTo, previousValueTo, typeTo);
+	
+		if (csTo.sizeStack(to, typeTo) == 0)
+			csTo.addToEmpty(to, typeTo);
+		
+		if (csFrom.sizeStack(from, typeFrom) != 0)
+			csFrom.removeFromEmpty(from, typeFrom);
 		
 		return this;
 	}

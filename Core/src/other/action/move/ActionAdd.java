@@ -191,11 +191,8 @@ public final class ActionAdd extends BaseAction
 
 		if (currentWhat == 0)
 		{
-			cs.setSite(context.state(), to, who, what, count, state, rotation,
-					(context.game().hasDominoes() ? 1 : value), type);
-
+			cs.setSite(context.state(), to, who, what, count, state, rotation, (context.game().hasDominoes() ? 1 : value), type);
 			Component piece = null;
-
 			// to keep the site of the item in cache for each player
 			if (what != 0)
 			{
@@ -212,9 +209,7 @@ public final class ActionAdd extends BaseAction
 		else
 		{
 			final int oldCount = cs.count(to, type);
-			cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-					(game.requiresCount() ? oldCount + count : 1), state, rotation, value,
-					type);
+			cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, (game.requiresCount() ? oldCount + count : 1), state, rotation, value,type);
 		}
 		
 		updateTrackIndices(context);
@@ -236,8 +231,7 @@ public final class ActionAdd extends BaseAction
 		if (state != Constants.UNDEFINED || rotation != Constants.UNDEFINED || value != Constants.UNDEFINED)
 		{
 			cs.addItemGeneric(context.state(), to, what, who, (state == Constants.UNDEFINED) ? 0 : state,
-					(rotation == Constants.UNDEFINED) ? 0 : rotation, (value == Constants.UNDEFINED) ? 0 : value,
-					context.game(), type);
+					(rotation == Constants.UNDEFINED) ? 0 : rotation, (value == Constants.UNDEFINED) ? 0 : value, context.game(), type);
 		}
 		else
 		{
@@ -350,8 +344,7 @@ public final class ActionAdd extends BaseAction
 			}
 			else // We update the count.
 			{
-				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-						(game.requiresCount() ? newCount : 1), previousState, previousRotation, previousValue, type);
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, (game.requiresCount() ? newCount : 1), previousState, previousRotation, previousValue, type);
 			}
 		}
 		
