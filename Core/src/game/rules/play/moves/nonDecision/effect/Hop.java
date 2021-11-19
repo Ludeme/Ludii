@@ -24,6 +24,7 @@ import game.util.moves.To;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import main.collections.FastTIntArrayList;
+import other.action.Action;
 import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
@@ -198,8 +199,7 @@ public final class Hop extends Effect
 
 					if (!alreadyCompute(moves, from, to))
 					{
-						final ActionMove action = new ActionMove(type, from, Constants.UNDEFINED, type, to,
-								Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
+						final Action action = ActionMove.construct(type, from, Constants.UNDEFINED, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 
 						if (isDecision())
 							action.setDecision(true);
@@ -292,11 +292,7 @@ public final class Hop extends Effect
 									{
 										if (stopRule != null && stopRule.eval(context))
 										{
-											final ActionMove action = new ActionMove(type, from, Constants.UNDEFINED,
-													type,
-													afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF,
-													Constants.OFF,
-													stack);
+											final Action action = ActionMove.construct(type, from, Constants.UNDEFINED, type, afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 											if (isDecision())
 												action.setDecision(true);
 											Move move = new Move(action);
@@ -316,10 +312,7 @@ public final class Hop extends Effect
 	
 									if (stopRule == null)
 									{
-										final ActionMove action = new ActionMove(type, from, Constants.UNDEFINED, type,
-												afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF,
-												Constants.OFF,
-												stack);
+										final Action action = ActionMove.construct(type, from, Constants.UNDEFINED, type, afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 										if (isDecision())
 											action.setDecision(true);
 

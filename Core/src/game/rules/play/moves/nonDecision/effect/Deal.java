@@ -19,6 +19,7 @@ import game.types.component.DealableType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import other.action.Action;
 import other.action.BaseAction;
 import other.action.move.ActionAdd;
 import other.action.move.move.ActionMove;
@@ -98,7 +99,7 @@ public final class Deal extends Effect
 		if (context.game().handDeck().isEmpty())
 			return moves;
 
-		final List<Integer> handIndex = new ArrayList<>();		// TODO make this a TIntArrayList
+		final List<Integer> handIndex = new ArrayList<>();	
 		for (final Container c : context.containers())
 			if (c.isHand() && !c.isDeck() && !c.isDice())
 				handIndex.add(Integer.valueOf(context.sitesFrom()[c.index()]));
@@ -120,20 +121,8 @@ public final class Deal extends Effect
 		int counter = 0;
 		for (int indexCard = 0; indexCard < count * handIndex.size(); indexCard++)
 		{
-			final BaseAction dealAction = new ActionMove(SiteType.Cell, indexSiteDeck,
-					cs.sizeStackCell(indexSiteDeck) - 1 - counter, SiteType.Cell,
-					handIndex.get(hand).intValue(),
-					Constants.OFF, Constants.OFF, Constants.OFF, Constants.OFF, false);
+			final Action dealAction = ActionMove.construct(SiteType.Cell, indexSiteDeck, cs.sizeStackCell(indexSiteDeck) - 1 - counter, SiteType.Cell, handIndex.get(hand).intValue(), Constants.OFF, Constants.OFF, Constants.OFF, Constants.OFF, false);
 			final Move move = new Move(dealAction);
-//			for (int pid = 1; pid < context.game().players().size(); pid++)
-//			{
-//				final BaseAction makeMaskedAction = new ActionSetMasked(SiteType.Cell, handIndex.get(hand).intValue(),
-//						Constants.UNDEFINED, pid);
-//				move.actions().add(makeMaskedAction);
-//			}
-//			final BaseAction makeVisibleAction = new ActionSetVisible(SiteType.Cell, handIndex.get(hand).intValue(),
-//					Constants.UNDEFINED, hand + 1);
-//			move.actions().add(makeVisibleAction);
 			moves.moves().add(move);
 
 			if (hand == context.game().players().count() - 1)

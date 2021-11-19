@@ -18,11 +18,11 @@ import other.state.container.ContainerState;
 import other.state.track.OnTrackIndices;
 
 /**
- * Removes one or more component(s) from a location.
+ * Removes one or more component(s) from a location (always the top piece).
  *
  * @author Eric.Piette
  */
-public class ActionRemoveOther extends BaseAction
+public class ActionRemoveTopPiece extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
@@ -84,7 +84,7 @@ public class ActionRemoveOther extends BaseAction
 	 * @param type    The graph element type.
 	 * @param to      Location to remove the component(s).
 	 */
-	public ActionRemoveOther
+	public ActionRemoveTopPiece
 	(
 		final SiteType type,
 		final int to 
@@ -307,10 +307,10 @@ public class ActionRemoveOther extends BaseAction
 		if (this == obj)
 			return true;
 
-		if (!(obj instanceof ActionRemoveOther))
+		if (!(obj instanceof ActionRemoveTopPiece))
 			return false;
 
-		final ActionRemoveOther other = (ActionRemoveOther) obj;
+		final ActionRemoveTopPiece other = (ActionRemoveTopPiece) obj;
 		return (decision == other.decision &&
 				to == other.to && type == other.type);
 	}

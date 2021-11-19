@@ -94,9 +94,7 @@ public class Gravity extends MetaRule
 								final int toSite = step.to().id();
 								if (cs.what(toSite, SiteType.Vertex) == 0)
 								{
-									final Action action = new ActionMove(SiteType.Vertex, site, 0,
-											SiteType.Vertex, toSite, 0, Constants.UNDEFINED,
-											Constants.UNDEFINED, Constants.UNDEFINED, false);
+									final Action action = ActionMove.construct(SiteType.Vertex, site, 0, SiteType.Vertex, toSite, 0, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, false);
 									final Move moveToApply = new Move(action);
 									moveToApply.apply(newContext, false);
 									droppedMove.actions().add(action);

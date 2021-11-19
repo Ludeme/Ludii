@@ -192,7 +192,7 @@ public final class ActionCopy extends BaseAction
 			alreadyApplied = true;
 		}
 		
-		final ActionMove actionMove = new ActionMove(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value, onStacking);
+		final Action actionMove = ActionMove.construct(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value, onStacking);
 		actionMove.apply(context, store);
 
 		final boolean requiresStack = context.game().isStacking();

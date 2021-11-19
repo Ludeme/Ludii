@@ -113,7 +113,7 @@ public class SandboxUtil
 			final int nextMover = context.state().next();
 			final int previousMover = context.state().prev();
 			
-			final ActionMove actionRemove = new ActionMove(selectedFromLocation.siteType(), selectedFromLocation.site(), selectedFromLocation.level(), selectedToLocation.siteType(), selectedToLocation.site(), selectedToLocation.level(), Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, false);
+			final Action actionRemove = ActionMove.construct(selectedFromLocation.siteType(), selectedFromLocation.site(), selectedFromLocation.level(), selectedToLocation.siteType(), selectedToLocation.site(), selectedToLocation.level(), Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, false);
 			actionRemove.setDecision(true);
 			final Move moveToApply = new Move(actionRemove);
 			final Moves csq = new BaseMoves(null);

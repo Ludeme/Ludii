@@ -19,6 +19,7 @@ import game.types.board.SiteType;
 import game.types.state.GameType;
 import game.util.directions.AbsoluteDirection;
 import main.Constants;
+import other.action.Action;
 import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
@@ -193,7 +194,7 @@ public final class Step extends Effect
 
 				if (!alreadyCompute(moves, from, to))
 				{
-					ActionMove action = null;
+					Action action = null;
 					Move move = null;
 					if (levelFrom == Constants.UNDEFINED || stack == true)
 					{
@@ -202,8 +203,7 @@ public final class Step extends Effect
 										: context.state().containerStates()[0].sizeStack(from, type) - 1
 								: Constants.UNDEFINED;
 
-						action = new ActionMove(type, from, level, type, to, Constants.OFF, Constants.UNDEFINED,
-								Constants.OFF, Constants.OFF, stack);
+						action = ActionMove.construct(type, from, level, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 						if (isDecision())
 							action.setDecision(true);
 						move = new Move(action);
@@ -217,8 +217,7 @@ public final class Step extends Effect
 					}
 					else // Step a piece at a specific level.
 					{
-						action = new ActionMove(type, from, levelFrom, type, to, Constants.UNDEFINED,
-								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, stack);
+						action = ActionMove.construct(type, from, levelFrom, type, to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, stack);
 
 						if (isDecision())
 							action.setDecision(true);
@@ -303,8 +302,7 @@ public final class Step extends Effect
 					if (!rule.eval(context))
 						continue;
 
-					final ActionMove action = new ActionMove(SiteType.Cell, from, Constants.UNDEFINED, SiteType.Cell,
-							to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
+					final Action action = ActionMove.construct(SiteType.Cell, from, Constants.UNDEFINED, SiteType.Cell, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 
 					if (isDecision())
 						action.setDecision(true);

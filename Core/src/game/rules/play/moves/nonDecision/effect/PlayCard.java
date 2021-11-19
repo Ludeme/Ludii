@@ -56,8 +56,7 @@ public final class PlayCard extends Effect
 					for (int level = 0; level < context.containerState(cid).sizeStackCell(site); level++)
 					{
 						final int to = context.state().mover() - 1;
-						final Action actionMove = new ActionMove(SiteType.Cell, site, level, SiteType.Cell, to,
-								Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false);
+						final Action actionMove = ActionMove.construct(SiteType.Cell, site, level, SiteType.Cell, to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false);
 						if (isDecision())
 							actionMove.setDecision(true);
 						final Move move = new Move(actionMove);

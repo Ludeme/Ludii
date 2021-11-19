@@ -33,12 +33,11 @@ public class ActionRemove extends BaseAction
 		else if(level != Constants.UNDEFINED)
 			return new ActionRemoveLevel(type, to, level);
 		else
-			return new ActionRemoveOther(type, to);
+			return new ActionRemoveTopPiece(type, to);
 	}
 
 	/**
-	 * Reconstructs a ActionRemove object from a detailed String (generated using
-	 * toDetailedString())
+	 * Reconstructs a ActionRemove object from a detailed String (generated using toDetailedString())
 	 * 
 	 * @param detailedString
 	 */
@@ -47,19 +46,19 @@ public class ActionRemove extends BaseAction
 		assert (detailedString.startsWith("[Remove:"));
 
 		final String strType = Action.extractData(detailedString, "type");
-		SiteType type = (strType.isEmpty()) ? null : SiteType.valueOf(strType);
+		final SiteType type = (strType.isEmpty()) ? null : SiteType.valueOf(strType);
 
 		final String strTo = Action.extractData(detailedString, "to");
-		int to = Integer.parseInt(strTo);
+		final int to = Integer.parseInt(strTo);
 
 		final String strLevel = Action.extractData(detailedString, "level");
-		int level = (strLevel.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevel);
+		final int level = (strLevel.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevel);
 
 		final String strApplied = Action.extractData(detailedString, "applied");
-		boolean applied = (strApplied.isEmpty()) ? true : Boolean.parseBoolean(strApplied);
+		final boolean applied = (strApplied.isEmpty()) ? true : Boolean.parseBoolean(strApplied);
 
 		final String strDecision = Action.extractData(detailedString, "decision");
-		boolean decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
+		final boolean decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 		
 		BaseAction action = null;
 		
@@ -68,7 +67,7 @@ public class ActionRemove extends BaseAction
 		else if(level != Constants.UNDEFINED)
 			action = new ActionRemoveLevel(type, to, level);
 		else
-			action=  new ActionRemoveOther(type, to);
+			action=  new ActionRemoveTopPiece(type, to);
 		
 		action.setDecision(decision);
 		return action;

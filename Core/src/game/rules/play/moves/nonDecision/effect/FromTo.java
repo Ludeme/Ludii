@@ -236,7 +236,7 @@ public final class FromTo extends Effect
 							{
 								if (levelFrom == null)
 								{
-									actionMove = new ActionMove
+									actionMove = ActionMove.construct
 											(
 												realTypeFrom, 
 												from, 
@@ -253,7 +253,7 @@ public final class FromTo extends Effect
 								}
 								else
 								{
-									actionMove = new ActionMove
+									actionMove = ActionMove.construct
 											(
 												realTypeFrom, 
 												from, 
@@ -270,7 +270,7 @@ public final class FromTo extends Effect
 							}
 							else
 							{
-								actionMove = new ActionMove
+								actionMove = ActionMove.construct
 										(
 											realTypeFrom, 
 											from, 
@@ -303,7 +303,7 @@ public final class FromTo extends Effect
 											false
 										);
 							else
-								actionMove = new ActionMove
+								actionMove = ActionMove.construct
 									(
 										realTypeFrom, 
 										from, 
@@ -321,7 +321,7 @@ public final class FromTo extends Effect
 						}
 						else if (levelFrom != null)
 						{
-							actionMove = new ActionMove
+							actionMove = ActionMove.construct
 									(
 										realTypeFrom, 
 										from, 
@@ -471,7 +471,7 @@ public final class FromTo extends Effect
 				}
 				if (valid && (from != to || (from == to) && localState != state))
 				{
-					final Action actionMove = new ActionMove
+					final Action actionMove = ActionMove.construct
 						(
 							typeFrom, 
 							from, 

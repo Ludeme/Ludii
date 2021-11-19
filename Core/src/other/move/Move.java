@@ -316,7 +316,7 @@ public class Move extends BaseAction
 			else if (actionStr.startsWith("[Move:") && actionStr.contains("count="))
 				actions.add(new ActionMoveN(actionStr));
 			else if (actionStr.startsWith("[Move:"))
-				actions.add(new ActionMove(actionStr));
+				actions.add(ActionMove.construct(actionStr));
 			else if (actionStr.startsWith("[StackMove:"))
 				actions.add(new ActionSubStackMove(actionStr));
 			else if (actionStr.startsWith("[SetValueOfPlayer:"))

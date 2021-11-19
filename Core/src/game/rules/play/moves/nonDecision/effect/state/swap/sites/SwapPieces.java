@@ -73,8 +73,7 @@ public final class SwapPieces extends Effect
 		final ContainerState cs = context.containerState(context.containerId()[locB]);
 		final int whatB = cs.whatCell(locB);
 		
-		final ActionMove actionMove = new ActionMove(SiteType.Cell, locA, Constants.UNDEFINED, SiteType.Cell, locB,
-				Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
+		final Action actionMove = ActionMove.construct(SiteType.Cell, locA, Constants.UNDEFINED, SiteType.Cell, locB, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 		if (isDecision())
 			actionMove.setDecision(true);
 		final Move swapMove = new Move(actionMove);

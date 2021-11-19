@@ -14,7 +14,7 @@ import game.types.component.DealableType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
-import other.action.BaseAction;
+import other.action.Action;
 import other.action.move.move.ActionMove;
 import other.context.Context;
 import other.move.Move;
@@ -102,18 +102,10 @@ public final class Deal extends StartRule
 //		int level = 0;
 		for (int indexCard = 0; indexCard < count * handIndex.size(); indexCard++)
 		{
-			final BaseAction dealAction = new ActionMove(SiteType.Cell, indexSiteDeck,
-					cs.sizeStackCell(indexSiteDeck) - 1, SiteType.Cell,
-					handIndex.get(hand).intValue(),
-					Constants.OFF, Constants.OFF, Constants.OFF, Constants.OFF, false);
+			final Action dealAction =  ActionMove.construct(SiteType.Cell, indexSiteDeck,cs.sizeStackCell(indexSiteDeck) - 1, SiteType.Cell, handIndex.get(hand).intValue(), Constants.OFF, Constants.OFF, Constants.OFF, Constants.OFF, false);
 			dealAction.apply(context, true);
 			context.trial().addMove(new Move(dealAction));
 			context.trial().addInitPlacement();
-//			final BaseAction makeVisibleAction = new ActionSetVisible(SiteType.Cell, handIndex.get(hand).intValue(),
-//					level, hand + 1);
-//			makeVisibleAction.apply(context, true);
-//			context.trial().addMove(new Move(makeVisibleAction));
-//			context.trial().addInitPlacement();
 
 			if (hand == context.game().players().count() - 1)
 			{
