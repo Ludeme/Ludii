@@ -108,7 +108,6 @@ public final class ActionRemoveLevel extends BaseAction
 		final Game game = context.game();
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
-		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
 		// Undo save data before to remove.
@@ -176,6 +175,7 @@ public final class ActionRemoveLevel extends BaseAction
 			alreadyApplied = true;
 		}
 		
+		// Apply remove level site.
 		final int pieceIdx = cs.remove(context.state(), to, level, type);
 		
 		if (context.game().isStacking())
@@ -200,9 +200,9 @@ public final class ActionRemoveLevel extends BaseAction
 			}
 		}
 
+		// We update the structure about track indices if the game uses track.
 		if (pieceIdx > 0)
 		{
-			// We update the structure about track indices if the game uses track.
 			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 			if (onTrackIndices != null)
 			{
@@ -228,52 +228,42 @@ public final class ActionRemoveLevel extends BaseAction
 		final Game game = context.game();
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
-				
 		final ContainerState cs = context.state().containerStates()[contID];
 		
-		if (context.game().isStacking())
+		if (context.game().isStacking()) // We re-insert the removed piece.
 		{
-			if (previousState != Constants.UNDEFINED || previousRotation != Constants.UNDEFINED || previousValue != Constants.UNDEFINED)
-			{
-				cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
-			}
-			else
-			{
-					cs.insert(context.state(), type, to, level, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState, (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue, context.game());
-			}
-
+			final int undoStateValue = (previousState == Constants.UNDEFINED) ? 0 : previousState;
+			final int undoRotationValue = (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation;
+			final int undoValueValue = (previousValue == Constants.UNDEFINED) ? 0 : previousValue;
+			cs.insert(context.state(), type, to, level, previousWhat, previousWho, undoStateValue, undoRotationValue, undoValueValue, context.game());
 			cs.removeFromEmpty(to, type);
 		}
 		else
 		{
-			int currentWhat = 0;
-			currentWhat = cs.what(to, type);
+			int currentWhat = cs.what(to, type);
 
-			if (currentWhat == 0)
+			if (currentWhat == 0) // We re-add the piece.
 			{
-				cs.setSite(context.state(), to, previousWho, previousWhat, previousCount, previousState, previousRotation,
-						(context.game().hasDominoes() ? 1 : previousValue), type);
-
-				Component piece = null;
-
-				// to keep the site of the item in cache for each player
-				if (previousWhat != 0)
+				final int undoValueValue = (context.game().hasDominoes() ? 1 : previousValue);
+				cs.setSite(context.state(), to, previousWho, previousWhat, previousCount, previousState, previousRotation, undoValueValue, type);
+				
+				if(context.game().hasDominoes())
 				{
-					piece = context.components()[previousWhat];
-					if (piece.isDomino())
-						context.state().remainingDominoes().remove(piece.index());
+					if (previousWhat != 0)
+					{
+						Component piece = context.components()[previousWhat];
+						if (piece.isDomino())
+							context.state().remainingDominoes().remove(piece.index());
+					}
 				}
-
-//				// If large piece we need to update the other sites used by the large piece.
-//				applyLargePiece(context, piece, cs); // ERIC: TODO UNDO REMOVE LARGE PIECE
 			}
-			else
+			else // We update the count at the previous value.
 			{
 				final int oldCount = cs.count(to, type);
-				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-						(game.requiresCount() ? oldCount : 1), previousState, previousRotation, previousValue, type);
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, (game.requiresCount() ? oldCount : 1), previousState, previousRotation, previousValue, type);
 			}
 			
+			// Restore Hidden info.
 			if(game.hiddenInformation())
 			{
 				for (int pid = 1; pid < context.players().size(); pid++)
