@@ -19,7 +19,7 @@ import game.types.board.SiteType;
 import game.types.state.GameType;
 import game.util.directions.AbsoluteDirection;
 import main.Constants;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;

@@ -29,7 +29,7 @@ import main.Constants;
 import main.collections.FastTIntArrayList;
 import other.action.Action;
 import other.action.move.ActionAdd;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;

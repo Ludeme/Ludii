@@ -15,7 +15,7 @@ import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.action.BaseAction;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.context.Context;
 import other.move.Move;
 import other.state.container.ContainerState;

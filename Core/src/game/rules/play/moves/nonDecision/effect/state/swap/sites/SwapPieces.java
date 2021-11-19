@@ -18,7 +18,7 @@ import game.types.state.GameType;
 import main.Constants;
 import other.action.Action;
 import other.action.move.ActionAdd;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;

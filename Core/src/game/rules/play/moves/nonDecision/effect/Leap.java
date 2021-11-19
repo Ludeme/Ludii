@@ -22,7 +22,7 @@ import game.util.directions.CompassDirection;
 import game.util.moves.To;
 import main.Constants;
 import other.ContainerId;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;

@@ -15,7 +15,7 @@ import game.util.graph.Step;
 import main.Constants;
 import other.MetaRules;
 import other.action.Action;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;

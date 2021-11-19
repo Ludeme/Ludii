@@ -23,9 +23,9 @@ import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.action.Action;
 import other.action.move.ActionCopy;
-import other.action.move.ActionMove;
 import other.action.move.ActionMoveN;
 import other.action.move.ActionStackMove;
+import other.action.move.move.ActionMove;
 import other.action.state.ActionSetRotation;
 import other.concept.Concept;
 import other.context.Context;
@@ -194,13 +194,13 @@ public final class FromTo extends Effect
 				if (fromCondition != null && !fromCondition.eval(context))
 					continue;
 
-				final int[] sitesTo = (regionTo == null) ? new int[]
-				{ locTo.eval(context) } : regionTo.eval(context).sites();
+				final int[] sitesTo = (regionTo == null) ? new int[] { locTo.eval(context) } : regionTo.eval(context).sites();
 				final int count = (countFn == null) ? 1 : countFn.eval(context);
 				context.setFrom(origFrom);
 
 				final Component component = context.components()[what];
-				// special case for LargePiece.
+				
+				// Special case for LargePiece.
 				if (component != null && component.isLargePiece())
 				{
 					final BaseMoves movesLargePiece = evalLargePiece(context, from, sitesTo);
@@ -241,43 +241,104 @@ public final class FromTo extends Effect
 							{
 								if (levelFrom == null)
 								{
-									actionMove = new ActionMove(realTypeFrom, from, Constants.UNDEFINED, realTypeTo, to,
-											levelTo.eval(context), Constants.UNDEFINED,
-											Constants.UNDEFINED, Constants.OFF, false);
+									actionMove = new ActionMove
+											(
+												realTypeFrom, 
+												from, 
+												Constants.UNDEFINED, 
+												realTypeTo, 
+												to,
+												levelTo.eval(context), 
+												Constants.UNDEFINED,
+												Constants.UNDEFINED,
+												Constants.OFF, 
+												false
+											);
 									actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
 								}
 								else
 								{
-									actionMove = new ActionMove(realTypeFrom, from, levelFrom.eval(context), realTypeTo,
-											to, levelTo.eval(context), Constants.UNDEFINED,
-											Constants.UNDEFINED, Constants.OFF, false);
+									actionMove = new ActionMove
+											(
+												realTypeFrom, 
+												from, 
+												levelFrom.eval(context),
+												realTypeTo,
+												to, 
+												levelTo.eval(context), 
+												Constants.UNDEFINED,
+												Constants.UNDEFINED, 
+												Constants.OFF, 
+												false
+											);
 								}
 							}
 							else
 							{
-								actionMove = new ActionMove(realTypeFrom, from, Constants.UNDEFINED, realTypeTo, to,
-										levelTo.eval(context), Constants.UNDEFINED,
-										Constants.UNDEFINED, Constants.OFF, true
-									);
+								actionMove = new ActionMove
+										(
+											realTypeFrom, 
+											from, 
+											Constants.UNDEFINED, 
+											realTypeTo, 
+											to,
+											levelTo.eval(context), 
+											Constants.UNDEFINED,
+											Constants.UNDEFINED, 
+											Constants.OFF, 
+											true
+										);
 								actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
 							}
 						}
 						else if (levelFrom == null && countFn == null)
 						{
 							if (copyTo)
-								actionMove = new ActionCopy(realTypeFrom, from, Constants.UNDEFINED, realTypeTo,
-										to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
+								actionMove = new ActionCopy
+										(
+											realTypeFrom, 
+											from, 
+											Constants.UNDEFINED, 
+											realTypeTo,
+											to, 
+											Constants.OFF, 
+											Constants.UNDEFINED, 
+											Constants.OFF, 
+											Constants.OFF, 
+											false
+										);
 							else
-								actionMove = new ActionMove(realTypeFrom, from, Constants.UNDEFINED, realTypeTo, to,
-										Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF,
-										false);
+								actionMove = new ActionMove
+									(
+										realTypeFrom, 
+										from, 
+										Constants.UNDEFINED, 
+										realTypeTo, 
+										to,
+										Constants.OFF, 
+										Constants.UNDEFINED, 
+										Constants.OFF, 
+										Constants.OFF,
+										false
+									);
+							
 							actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
 						}
 						else if (levelFrom != null)
 						{
-							actionMove = new ActionMove(realTypeFrom, from, levelFrom.eval(context), realTypeTo, to,
-									Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
-									false);
+							actionMove = new ActionMove
+									(
+										realTypeFrom, 
+										from, 
+										levelFrom.eval(context), 
+										realTypeTo, 
+										to,
+										Constants.UNDEFINED, 
+										Constants.UNDEFINED, 
+										Constants.UNDEFINED, 
+										Constants.OFF,
+										false
+									);
 						}
 						else
 						{
@@ -299,6 +360,7 @@ public final class FromTo extends Effect
 							actionMove.setDecision(true);
 						context.setFrom(from);
 						context.setTo(to);
+						
 						if (moveRule.eval(context))
 						{
 							context.setFrom(origFrom);
@@ -339,8 +401,7 @@ public final class FromTo extends Effect
 								for (final int rotation : rotations)
 								{
 									final Move moveWithRotation = new Move(move);
-									final ActionSetRotation actionRotation = new ActionSetRotation(typeTo, to,
-											rotation);
+									final Action actionRotation = new ActionSetRotation(typeTo, to, rotation);
 									moveWithRotation.actions().add(actionRotation);
 									moves.moves().add(moveWithRotation);
 								}
@@ -391,15 +452,12 @@ public final class FromTo extends Effect
 		final Component largePiece = context.components()[what];
 		final int nbPossibleStates = largePiece.walk().length * 4;
 		final TIntArrayList currentLocs = largePiece.locs(context, from, localState, context.topology());
+		
 		final TIntArrayList newSitesTo = new TIntArrayList();
 		for (int i = 0; i < sitesTo.length; i++)
-		{
 			newSitesTo.add(sitesTo[i]);
-		}
 		for (int i = 1; i < currentLocs.size(); i++)
-		{
 			newSitesTo.add(currentLocs.getQuick(i));
-		}
 
 		for (int index = 0; index < newSitesTo.size(); index++)
 		{
@@ -429,11 +487,23 @@ public final class FromTo extends Effect
 				}
 				if (valid && (from != to || (from == to) && localState != state))
 				{
-					final ActionMove actionMove = new ActionMove(typeFrom, from, Constants.UNDEFINED, typeTo, to,
-							Constants.OFF, state, Constants.OFF, Constants.OFF,
-							false);
+					final Action actionMove = new ActionMove
+						(
+							typeFrom, 
+							from, 
+							Constants.UNDEFINED, 
+							typeTo, 
+							to,
+							Constants.OFF,
+							state, 
+							Constants.OFF, 
+							Constants.OFF,
+							false
+						);
+					
 					if (isDecision())
 						actionMove.setDecision(true);
+					
 					Move move = new Move(actionMove);
 					move = MoveUtilities.chainRuleWithAction(context, captureEffect, move, true, false);
 

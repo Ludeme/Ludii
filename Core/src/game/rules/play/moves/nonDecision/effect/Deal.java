@@ -21,7 +21,7 @@ import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.action.BaseAction;
 import other.action.move.ActionAdd;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;

@@ -11,7 +11,7 @@ import main.Constants;
 import other.action.Action;
 import other.action.move.ActionAdd;
 import other.action.move.ActionInsert;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.action.move.remove.ActionRemove;
 import other.action.state.ActionSetCount;
 import other.action.state.ActionSetNextPlayer;

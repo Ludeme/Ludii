@@ -26,7 +26,7 @@ import main.collections.FastArrayList;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.cards.ActionSetTrumpSuit;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.action.others.ActionPropose;
 import other.action.others.ActionVote;
 import other.action.state.ActionBet;

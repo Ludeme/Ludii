@@ -23,7 +23,7 @@ import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.GameLoader;
 import other.action.move.ActionAdd;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.action.state.ActionSetNextPlayer;
 import other.context.Context;
 import other.move.Move;

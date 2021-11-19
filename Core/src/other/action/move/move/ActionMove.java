@@ -1,4 +1,4 @@
-package other.action.move;
+package other.action.move.move;
 
 import java.util.BitSet;
 import java.util.List;
