@@ -68,6 +68,7 @@ import graphics.qr_codes.QrCode;
 import graphics.qr_codes.ToImage;
 import graphics.svg.SVGLoader;
 import main.Constants;
+import main.DatabaseInformation;
 import main.FileHandling;
 import main.StringRoutines;
 import main.collections.FastArrayList;
@@ -142,26 +143,9 @@ public class MainMenuFunctions extends JMenuBar
 			app.addTextToStatusPanel("\nChar count (excluding spaces): " + context.game().description().raw().replaceAll("\\s+","").length());
 			app.addTextToStatusPanel(ludemeCounter.result());
 			System.out.println(ludemeCounter.result());
-			
-//			final String[] choices = FileHandling.listGames();
-//			for (final String s : choices)
-//			{
-//				if (!FileHandling.shouldIgnoreLudAnalysis(s))
-//				{
-//					final String gameName = s.split("\\/")[s.split("\\/").length-1];
-//					final Game tempGame = GameLoader.loadGameFromName(gameName);
-//					System.out.println(gameName.substring(0,gameName.length()-4) + "," + tempGame.description().raw().length() + "," + tempGame.description().raw().replaceAll("\\s+","").length());
-//				}
-//			}
 		}
 		else if (source.getText().equals("Game Description Length"))
 		{
-//			final String[] formattedDescription = game.description().expanded().replaceAll("[(){}\n]","").split(" ");
-//			int numTokens = 0;
-//			for (final String s : formattedDescription)
-//				if (s.trim().length() > 0)
-//					numTokens++;
-			
 			final String allOutputs = game.name() + ", Raw: " + game.description().raw().replaceAll("\\s+","").length() + ", Expanded: " + game.description().expanded().replaceAll("\\s+","").length() + ", Tokens: " + game.description().tokenForest().tokenTree().countKeywords();
 			app.addTextToStatusPanel(allOutputs + "\n");
 		}
@@ -1663,27 +1647,24 @@ public class MainMenuFunctions extends JMenuBar
 	{
 		// Determine the file name
 		String fileName = "qr-" + game.name();
-//		if (game.getRuleset() != null)
-//		{
-//			fileName += "-" + game.getRuleset().heading();
-//			fileName = fileName.replaceAll("Ruleset/", "");  // remove keyword
-//		}
+		if (game.getRuleset() != null)
+		{
+			fileName += "-" + game.getRuleset().heading();
+			fileName = fileName.replaceAll("Ruleset/", "");  // remove keyword
+		}
 		fileName = fileName.replaceAll(" ", "-");  // remove empty spaces
 		fileName = fileName.replaceAll("/", "-");  // remove slashes spaces
 		fileName += ".png";
 		
 		// Determine URL to encode
 		String url = "https://ludii.games/details.php?keyword=" + game.name(); 
-//		if (game.getRuleset() != null)
-//		{
-//			// Format: https://ludii.games/variantDetails.php?keyword=Achi&variant=563
-//			// **
-//			// ** TODO: Get correct variant index in the DB for this result.
-//			// **
-//			final int variant = 0;
-//			url = "https://ludii.games/variantDetails.php?keyword=" + game.name() + 
-//				  "&variant=" + variant;
-//		}
+		if (game.getRuleset() != null)
+		{
+			// Format: https://ludii.games/variantDetails.php?keyword=Achi&variant=563
+			final int variant = DatabaseInformation.getRulesetId(game.name(), game.getRuleset().heading());
+			url = "https://ludii.games/variantDetails.php?keyword=" + game.name() + 
+				  "&variant=" + variant;
+		}
 		url = url.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
 		
 		final QrCode qr = QrCode.encodeText(url, QrCode.Ecc.MEDIUM);
