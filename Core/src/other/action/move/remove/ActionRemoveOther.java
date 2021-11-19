@@ -102,7 +102,6 @@ public class ActionRemoveOther extends BaseAction
 		final Game game = context.game();
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
-		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
 		// Undo save data before to remove.
@@ -172,17 +171,18 @@ public class ActionRemoveOther extends BaseAction
 			alreadyApplied = true;
 		}
 		
+		// We remove the piece.
 		final int pieceIdx = cs.remove(context.state(), to, type);
 		
-		if (context.game().isStacking())
+		// We update the owned structure and the empty bitsets.
+		if (context.game().isStacking()) 
 		{
-			final int levelRemoved = cs.sizeStack(to, type);
 			if (pieceIdx > 0)
 			{
+				final int levelRemoved = cs.sizeStack(to, type);
 				final Component piece = context.components()[pieceIdx];
 				final int owner = piece.owner();
-				context.state().owned().remove(owner, pieceIdx, to,
-						levelRemoved, type);
+				context.state().owned().remove(owner, pieceIdx, to, levelRemoved, type);
 			}
 
 			if (cs.sizeStack(to, type) == 0)
@@ -198,9 +198,9 @@ public class ActionRemoveOther extends BaseAction
 			}
 		}
 
+		// We update the structure about track indices if the game uses track.
 		if (pieceIdx > 0)
 		{
-			// We update the structure about track indices if the game uses track.
 			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 			if (onTrackIndices != null)
 			{
@@ -226,21 +226,19 @@ public class ActionRemoveOther extends BaseAction
 		final Game game = context.game();
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
-				
 		final ContainerState cs = context.state().containerStates()[contID];
 		
-		if (context.game().isStacking())
+		if (context.game().isStacking()) // We re-insert the removed piece.
 		{
 			if (previousState != Constants.UNDEFINED || previousRotation != Constants.UNDEFINED || previousValue != Constants.UNDEFINED)
 			{
-				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, (previousState == Constants.UNDEFINED) ? 0 : previousState,
-					(previousRotation == Constants.UNDEFINED) ? 0 : previousRotation, (previousValue == Constants.UNDEFINED) ? 0 : previousValue,
-					context.game(), type);
+				final int undoStateValue = (previousState == Constants.UNDEFINED) ? 0 : previousState;
+				final int undoRotationValue = (previousRotation == Constants.UNDEFINED) ? 0 : previousRotation;
+				final int undoValueValue = (previousValue == Constants.UNDEFINED) ? 0 : previousValue;
+				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, undoStateValue, undoRotationValue, undoValueValue, context.game(), type);
 			}
 			else
-			{
 				cs.addItemGeneric(context.state(), to, previousWhat, previousWho, context.game(), type);
-			}
 
 			cs.removeFromEmpty(to, type);
 		}
@@ -249,29 +247,26 @@ public class ActionRemoveOther extends BaseAction
 			int currentWhat = 0;
 			currentWhat = cs.what(to, type);
 
-			if (currentWhat == 0)
+			if (currentWhat == 0) // We re-add the piece.
 			{
-				cs.setSite(context.state(), to, previousWho, previousWhat, previousCount, previousState, previousRotation,
-						(context.game().hasDominoes() ? 1 : previousValue), type);
-
-				Component piece = null;
-
-				// to keep the site of the item in cache for each player
-				if (previousWhat != 0)
+				final int undoValueValue = (context.game().hasDominoes() ? 1 : previousValue);
+				cs.setSite(context.state(), to, previousWho, previousWhat, previousCount, previousState, previousRotation, undoValueValue, type);
+				
+				if(context.game().hasDominoes())
 				{
-					piece = context.components()[previousWhat];
-					if (piece.isDomino())
-						context.state().remainingDominoes().remove(piece.index());
+					if (previousWhat != 0)
+					{
+						Component piece = context.components()[previousWhat];
+						if (piece.isDomino())
+							context.state().remainingDominoes().remove(piece.index());
+					}
 				}
-
-//				// If large piece we need to update the other sites used by the large piece.
-//				applyLargePiece(context, piece, cs); // ERIC: TODO UNDO REMOVE LARGE PIECE
 			}
-			else
+			else // We update the count at the previous value.
 			{
 				final int oldCount = cs.count(to, type);
-				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-						(game.requiresCount() ? oldCount : 1), previousState, previousRotation, previousValue, type);
+				final int undoValueValue = (context.game().hasDominoes() ? oldCount : previousValue);
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, undoValueValue, previousState, previousRotation, previousValue, type);
 			}
 			
 			if(game.hiddenInformation())

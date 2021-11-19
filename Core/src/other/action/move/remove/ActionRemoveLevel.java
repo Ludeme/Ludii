@@ -18,7 +18,7 @@ import other.state.container.ContainerState;
 import other.state.track.OnTrackIndices;
 
 /**
- * Removes one or more component(s) from a location.
+ * Removes one component from a location and a specific level.
  *
  * @author Eric.Piette
  */
@@ -260,7 +260,8 @@ public final class ActionRemoveLevel extends BaseAction
 			else // We update the count at the previous value.
 			{
 				final int oldCount = cs.count(to, type);
-				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, (game.requiresCount() ? oldCount : 1), previousState, previousRotation, previousValue, type);
+				final int undoValueValue = (context.game().hasDominoes() ? oldCount : previousValue);
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, undoValueValue, previousState, previousRotation, previousValue, type);
 			}
 			
 			// Restore Hidden info.
