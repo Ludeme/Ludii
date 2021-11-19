@@ -62,18 +62,12 @@ public final class ActionMoveTopPiece extends BaseAction
 	/** piece value of the to site. */
 	private final int value;
 
-	/** Stacking game or not. */
-	private final boolean onStacking;
-
 	//----------------------Undo Data---------------------------------------------
 
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 
 	//-- from data
-	
-	/** Previous Size stack of the from site. */
-	private int previousSizeStackFrom;
 	
 	/** Previous Site state value of the from site. */
 	private int previousStateFrom;
@@ -161,7 +155,6 @@ public final class ActionMoveTopPiece extends BaseAction
 	 * @param state      The state site of the to site.
 	 * @param rotation   The rotation value of the to site.
 	 * @param value      The piece value of the to site.
-	 * @param onStacking True if we move a full stack.
 	 */
 	public ActionMoveTopPiece
 	(
@@ -173,8 +166,7 @@ public final class ActionMoveTopPiece extends BaseAction
 		final int levelTo,
 		final int state,
 		final int rotation,
-		final int value,
-		final boolean onStacking
+		final int value
 	)
 	{
 		this.typeFrom = typeFrom;
@@ -186,50 +178,6 @@ public final class ActionMoveTopPiece extends BaseAction
 		this.state = state;
 		this.rotation = rotation;
 		this.value = value;
-		this.onStacking = onStacking;
-	}
-
-	/**
-	 * Reconstructs an ActionMove object from a detailed String
-	 * (generated using toDetailedString())
-	 * @param detailedString
-	 */
-	public ActionMoveTopPiece(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Move:"));
-
-		final String strTypeFrom = Action.extractData(detailedString, "typeFrom");
-		typeFrom = (strTypeFrom.isEmpty()) ? null : SiteType.valueOf(strTypeFrom);
-
-		final String strFrom = Action.extractData(detailedString, "from");
-		from = Integer.parseInt(strFrom);
-
-		final String strLevelFrom = Action.extractData(detailedString, "levelFrom");
-		levelFrom = (strLevelFrom.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevelFrom);
-		
-		final String strTypeTo = Action.extractData(detailedString, "typeTo");
-		typeTo = (strTypeTo.isEmpty()) ? null : SiteType.valueOf(strTypeTo);
-
-		final String strTo = Action.extractData(detailedString, "to");
-		to = Integer.parseInt(strTo);
-		
-		final String strLevelTo = Action.extractData(detailedString, "levelTo");
-		levelTo = (strLevelTo.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevelTo);
-
-		final String strState = Action.extractData(detailedString, "state");
-		state = (strState.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strState);
-
-		final String strRotation = Action.extractData(detailedString, "rotation");
-		rotation = (strRotation.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strRotation);
-
-		final String strValue = Action.extractData(detailedString, "value");
-		value = (strValue.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strValue);
-
-		final String strStack = Action.extractData(detailedString, "stack");
-		onStacking = (strStack.isEmpty()) ? false : Boolean.parseBoolean(strStack);
-
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
 	//-------------------------------------------------------------------------
@@ -274,14 +222,8 @@ public final class ActionMoveTopPiece extends BaseAction
 			previousValueTo = (levelTo == Constants.UNDEFINED) ? csTo.value(to, typeTo) : csTo.value(to, levelTo, typeTo);
 			previousWhoTo = (levelTo == Constants.UNDEFINED) ? csTo.who(to, typeTo) : csTo.who(to, levelTo, typeTo);
 			previousWhatTo = (levelTo == Constants.UNDEFINED) ? csTo.what(to, typeTo) : csTo.what(to, levelTo, typeTo);
-			
-			if(onStacking)
-				previousSizeStackFrom = csFrom.sizeStack(from, typeFrom);
-			else
-			{
-				previousCountFrom = csFrom.count(from, typeFrom);
-				previousCountTo = csTo.count(to, typeTo);
-			}
+			previousCountFrom = csFrom.count(from, typeFrom);
+			previousCountTo = csTo.count(to, typeTo);
 			
 			if (!requiresStack)
 			{
@@ -530,59 +472,8 @@ public final class ActionMoveTopPiece extends BaseAction
 			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
 			final ContainerState containerTo = context.state().containerStates()[contIdTo];
 
-			// To move a complete stack
-			if(onStacking)
-			{
-				final int sizeStackFrom = containerFrom.sizeStack(from, typeFrom);
-				for (int slevel = 0; slevel < containerFrom.sizeStack(from, typeFrom); slevel++)
-				{
-					if (levelTo == Constants.UNDEFINED)
-						containerTo.addItemGeneric(context.state(), to, containerFrom.what(from, slevel, typeFrom),
-								containerFrom.who(from, slevel, typeFrom), containerFrom.state(from, slevel, typeFrom),
-								containerFrom.rotation(from, slevel, typeFrom), containerFrom.value(from, slevel, typeFrom),
-								context.game(), typeTo);
-					else
-					{
-						containerTo.insert(context.state(), typeTo, to, levelTo, containerFrom.what(from, slevel, typeFrom),
-								containerFrom.who(from, slevel, typeFrom), state, rotation, value,
-								context.game());
-					}
-				}
-
-				// we update owned for loc From.
-				for (int level = 0; level < containerFrom.sizeStack(from, typeFrom); level++)
-				{
-					final int whatFrom = containerFrom.what(from, level, typeFrom);
-					if (whatFrom != 0)
-					{
-						final Component pieceFrom = context.components()[whatFrom];
-						final int ownerFrom = pieceFrom.owner();
-						if (ownerFrom != 0)
-							context.state().owned().remove(ownerFrom, whatFrom, from, typeFrom);
-					}
-				}
-				
-				containerFrom.removeStackGeneric(context.state(), from, typeFrom);
-				containerFrom.addToEmpty(from, typeFrom);
-				containerTo.removeFromEmpty(to, typeTo);
-
-				// we update owned for loc To.
-				for (int level = containerTo.sizeStack(to, typeTo) - sizeStackFrom; level < containerTo.sizeStack(to, typeTo); level++)
-				{
-					if (level < 0)
-						continue;
-					final int whatTo = containerTo.what(to, level, typeTo);
-					if (whatTo != 0)
-					{
-						final Component pieceTo = context.components()[whatTo];
-						final int ownerTo = pieceTo.owner();
-						if (ownerTo != 0)
-							context.state().owned().add(ownerTo, whatTo, to, level, typeTo);
-					}
-				}
-			}
 			// to move only the top piece
-			else if (levelFrom == Constants.UNDEFINED)
+			if (levelFrom == Constants.UNDEFINED)
 			{
 				final int what = containerFrom.what(from, typeFrom);
 
@@ -1047,35 +938,8 @@ public final class ActionMoveTopPiece extends BaseAction
 			final ContainerState containerTo = context.state().containerStates()[contIdTo];
 			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
 			
-			final int stackSize = containerTo.sizeStack(to, typeTo);
-
-			// To move a complete stack
-			if(onStacking)
-			{
-				//final int sizeStackTo = containerTo.sizeStack(to, typeTo);
-				for (int slevel = Math.abs(previousSizeStackFrom - stackSize) ; slevel < stackSize ; slevel++)
-				{
-					if (levelFrom == Constants.UNDEFINED)
-						containerFrom.addItemGeneric(context.state(), from, containerTo.what(to, slevel, typeTo),
-								containerTo.who(to, slevel, typeTo), containerTo.state(to, slevel, typeTo),
-								containerTo.rotation(to, slevel, typeTo), containerTo.value(to, slevel, typeTo), context.game(), typeFrom);
-					else
-					{
-						containerFrom.insert(context.state(), typeFrom, from, levelFrom, containerTo.what(to, slevel, typeTo),
-								containerTo.who(to, slevel, typeTo), previousStateFrom, previousRotationFrom, previousValueFrom, context.game());
-					}
-				}
-				
-				for (int slevel = Math.abs(previousSizeStackFrom - stackSize) ; slevel < stackSize ; slevel++)
-					containerTo.remove(context.state(), to, typeTo);
-				
-				if(containerTo.sizeStack(to, typeTo) == 0)
-					containerTo.addToEmpty(to, typeTo);
-
-				containerFrom.removeFromEmpty(from, typeFrom);
-			}
 			// To move only the top piece
-			else if (levelTo == Constants.UNDEFINED)
+			 if (levelTo == Constants.UNDEFINED)
 			{
 				final int what = containerTo.what(to, typeTo);
 
@@ -1174,9 +1038,6 @@ public final class ActionMoveTopPiece extends BaseAction
 		if (value != Constants.UNDEFINED)
 			sb.append(",value=" + value);
 
-		if (onStacking)
-			sb.append(",stack=" + onStacking);
-
 		if (decision)
 			sb.append(",decision=" + decision);
 
@@ -1198,7 +1059,7 @@ public final class ActionMoveTopPiece extends BaseAction
 		result = prime * result + state;
 		result = prime * result + rotation;
 		result = prime * result + value;
-		result = prime * result + (onStacking ? 1231 : 1237);
+		result = prime * result + 1237;
 		result = prime * result + ((typeFrom == null) ? 0 : typeFrom.hashCode());
 		result = prime * result + ((typeTo == null) ? 0 : typeTo.hashCode());
 		return result;
@@ -1223,7 +1084,7 @@ public final class ActionMoveTopPiece extends BaseAction
 				state == other.state &&
 				rotation == other.rotation &&
 				value == other.value &&
-				onStacking == other.onStacking && typeFrom == other.typeFrom && typeTo == other.typeTo);
+				typeFrom == other.typeFrom && typeTo == other.typeTo);
 	}
 
 	//-------------------------------------------------------------------------
@@ -1292,9 +1153,6 @@ public final class ActionMoveTopPiece extends BaseAction
 		if (value != Constants.UNDEFINED)
 			sb.append(" v" + value);
 
-		if (onStacking)
-			sb.append(" ^");
-
 		return sb.toString();
 	}
 
@@ -1362,9 +1220,6 @@ public final class ActionMoveTopPiece extends BaseAction
 
 		if (state != Constants.UNDEFINED)
 			sb.append(" state=" + state);
-
-		if (onStacking)
-			sb.append(" stack=" + onStacking);
 
 		sb.append(')');
 
@@ -1436,7 +1291,7 @@ public final class ActionMoveTopPiece extends BaseAction
 	@Override
 	public boolean isStacking()
 	{
-		return onStacking;
+		return false;
 	}
 
 	@Override
