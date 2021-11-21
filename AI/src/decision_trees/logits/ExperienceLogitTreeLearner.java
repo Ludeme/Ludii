@@ -167,6 +167,11 @@ public class ExperienceLogitTreeLearner
 					sumLogitsIfTrueSpatial[j] += targetLogit;
 					++numTrueSpatial[j];
 				}
+				else
+				{
+					sumLogitsIfFalseSpatial[j] += targetLogit;
+					++numFalseSpatial[j];
+				}
 			}
 		}
 		
@@ -244,7 +249,7 @@ public class ExperienceLogitTreeLearner
 				
 				sumSquaredErrors += (error * error);
 			}
-			
+						
 			if (sumSquaredErrors < minSumSquaredErrors)
 			{
 				minSumSquaredErrors = sumSquaredErrors;
