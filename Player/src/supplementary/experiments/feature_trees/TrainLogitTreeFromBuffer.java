@@ -104,6 +104,7 @@ public class TrainLogitTreeFromBuffer
 		final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();
 		
 		final Game game = GameLoader.loadGameFromName(gameName);
+		playoutSoftmax.initAI(game, -1);
 		
 		final LogitTree[] metadataTrees = new LogitTree[featureSets.length - 1];
 		

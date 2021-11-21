@@ -48,12 +48,15 @@ public class ExperienceLogitTreeLearner
 		
 		for (final ExItExperience sample : samples)
 		{
-			final FeatureVector[] featureVectors = featureSet.computeFeatureVectors(sample.context(), sample.moves(), false);
-			
-			for (final FeatureVector featureVector : featureVectors)
+			if (sample != null)
 			{
-				allFeatureVectors.add(featureVector);
-				allTargetLogits.add(oracleWeightVector.dot(featureVector));
+				final FeatureVector[] featureVectors = sample.generateFeatureVectors(featureSet);
+				
+				for (final FeatureVector featureVector : featureVectors)
+				{
+					allFeatureVectors.add(featureVector);
+					allTargetLogits.add(oracleWeightVector.dot(featureVector));
+				}
 			}
 		}
 		
@@ -136,10 +139,10 @@ public class ExperienceLogitTreeLearner
 			}
 		}
 		
-		final double[] sumLogitsIfFalseSpatial = new double[numAspatialFeatures];
-		final int[] numFalseSpatial = new int[numAspatialFeatures];
-		final double[] sumLogitsIfTrueSpatial = new double[numAspatialFeatures];
-		final int[] numTrueSpatial = new int[numAspatialFeatures];
+		final double[] sumLogitsIfFalseSpatial = new double[numSpatialFeatures];
+		final int[] numFalseSpatial = new int[numSpatialFeatures];
+		final double[] sumLogitsIfTrueSpatial = new double[numSpatialFeatures];
+		final int[] numTrueSpatial = new int[numSpatialFeatures];
 		
 		for (int i = 0; i < remainingFeatureVectors.size(); ++i)
 		{
