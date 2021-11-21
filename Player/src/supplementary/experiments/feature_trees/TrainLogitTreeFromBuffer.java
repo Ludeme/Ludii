@@ -132,7 +132,7 @@ public class TrainLogitTreeFromBuffer
 			}
 			
 			// Generate logit tree for Player p
-			final LogitTreeNode root = ExperienceLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], 10);
+			final LogitTreeNode root = ExperienceLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, 10);
 			
 			// Convert to metadata structure
 			final LogitNode metadataRoot = root.toMetadataNode();

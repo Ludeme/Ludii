@@ -1,17 +1,19 @@
 package decision_trees.logits;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 
 import features.Feature;
-import features.aspatial.AspatialFeature;
+import features.FeatureVector;
+import features.WeightVector;
 import features.aspatial.InterceptFeature;
 import features.feature_sets.BaseFeatureSet;
-import features.spatial.SpatialFeature;
 import function_approx.LinearFunction;
 import gnu.trove.list.array.TFloatArrayList;
-import main.collections.FVector;
-import main.collections.ListUtils;
+import gnu.trove.list.array.TIntArrayList;
+import training.expert_iteration.ExItExperience;
+import utils.data_structures.experience_buffers.ExperienceBuffer;
 
 /**
  * Class with methods for learning logit trees from experience.
@@ -24,287 +26,312 @@ public class ExperienceLogitTreeLearner
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Builds an exact logit tree node for given feature set and linear function of weights
+	 * Builds an exact logit tree node for given feature set and experience buffer
 	 * @param featureSet
 	 * @param linFunc
+	 * @param buffer
 	 * @param maxDepth
 	 * @return Root node of the generated tree
 	 */
-	public static LogitTreeNode buildTree(final BaseFeatureSet featureSet, final LinearFunction linFunc, final int maxDepth)
+	public static LogitTreeNode buildTree
+	(
+		final BaseFeatureSet featureSet, 
+		final LinearFunction linFunc, 
+		final ExperienceBuffer buffer, 
+		final int maxDepth
+	)
 	{
-		final List<AspatialFeature> aspatialFeatures = new ArrayList<AspatialFeature>(featureSet.aspatialFeatures().length);
-		for (final AspatialFeature aspatial : featureSet.aspatialFeatures())
-		{
-			aspatialFeatures.add(aspatial);
-		}
+		final WeightVector oracleWeightVector = linFunc.effectiveParams();
+		final ExItExperience[] samples = buffer.allExperience();
+		final List<FeatureVector> allFeatureVectors = new ArrayList<FeatureVector>();
+		final TFloatArrayList allTargetLogits = new TFloatArrayList();
 		
-		final List<SpatialFeature> spatialFeatures = new ArrayList<SpatialFeature>(featureSet.spatialFeatures().length);
-		for (final SpatialFeature spatial : featureSet.spatialFeatures())
+		for (final ExItExperience sample : samples)
 		{
-			spatialFeatures.add(spatial);
-		}
-		
-		final FVector allWeights = linFunc.effectiveParams().allWeights();
-		final TFloatArrayList aspatialWeights = new TFloatArrayList(aspatialFeatures.size());
-		final TFloatArrayList spatialWeights = new TFloatArrayList(spatialFeatures.size());
-		
-		for (int i = 0; i < allWeights.dim(); ++i)
-		{
-			if (i < aspatialFeatures.size())
-				aspatialWeights.add(allWeights.get(i));
-			else
-				spatialWeights.add(allWeights.get(i));
-		}
-		
-		// Remove intercept features and collect accumulated intercept
-		float accumInterceptWeight = 0.f;
-		for (int i = aspatialFeatures.size() - 1; i >= 0; --i)
-		{
-			if (aspatialFeatures.get(i) instanceof InterceptFeature)
+			final FeatureVector[] featureVectors = featureSet.computeFeatureVectors(sample.context(), sample.moves(), false);
+			
+			for (final FeatureVector featureVector : featureVectors)
 			{
-				accumInterceptWeight += aspatialWeights.removeAt(i);
-				aspatialFeatures.remove(i);
+				allFeatureVectors.add(featureVector);
+				allTargetLogits.add(oracleWeightVector.dot(featureVector));
 			}
 		}
 		
-		// Remove all 0-weight features
-		for (int i = aspatialFeatures.size() - 1; i >= 0; --i)
-		{
-			if (aspatialWeights.getQuick(i) == 0.f)
-			{
-				ListUtils.removeSwap(aspatialWeights, i);
-				ListUtils.removeSwap(aspatialFeatures, i);
-			}
-		}
-		for (int i = spatialFeatures.size() - 1; i >= 0; --i)
-		{
-			if (spatialWeights.getQuick(i) == 0.f)
-			{
-				ListUtils.removeSwap(spatialWeights, i);
-				ListUtils.removeSwap(spatialFeatures, i);
-			}
-		}
-		
-		return buildNode(aspatialFeatures, aspatialWeights, spatialFeatures, spatialWeights, accumInterceptWeight, maxDepth);
+		return buildNode
+				(
+					featureSet,
+					allFeatureVectors, 
+					allTargetLogits, 
+					new BitSet(), new BitSet(), 
+					featureSet.getNumAspatialFeatures(), featureSet.getNumSpatialFeatures(),
+					maxDepth
+				);
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param remainingAspatialFeatures
-	 * @param remainingAspatialWeights
-	 * @param remainingSpatialFeatures
-	 * @param remainingSpatialWeights
-	 * @param accumInterceptWeight
+	 * @param featureSet
+	 * @param remainingFeatureVectors
+	 * @param remainingTargetLogits
+	 * @param alreadyPickedAspatials
+	 * @param alreadyPickedSpatials
+	 * @param numAspatialFeatures
+	 * @param numSpatialFeatures
 	 * @param allowedDepth
 	 * @return Newly built node for logit tree, for given data
 	 */
 	private static LogitTreeNode buildNode
 	(
-		final List<AspatialFeature> remainingAspatialFeatures,
-		final TFloatArrayList remainingAspatialWeights,
-		final List<SpatialFeature> remainingSpatialFeatures,
-		final TFloatArrayList remainingSpatialWeights,
-		final float accumInterceptWeight,
+		final BaseFeatureSet featureSet,
+		final List<FeatureVector> remainingFeatureVectors,
+		final TFloatArrayList remainingTargetLogits,
+		final BitSet alreadyPickedAspatials,
+		final BitSet alreadyPickedSpatials,
+		final int numAspatialFeatures,
+		final int numSpatialFeatures,
 		final int allowedDepth
 	)
 	{
-		if (remainingAspatialFeatures.isEmpty() && remainingSpatialFeatures.isEmpty())
+		if (remainingFeatureVectors.isEmpty())
 		{
-			// Time to create leaf node: a model with just a single intercept feature
-			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {accumInterceptWeight});
+			// This should probably never happen
+			System.err.println("Empty list of remaining feature vectors!");
+			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {0.f});
 		}
 		
 		if (allowedDepth == 0)
 		{
-			// Have to create leaf node with remaining features
-			final int numModelFeatures = remainingAspatialFeatures.size() + remainingSpatialFeatures.size() + 1;
-			final Feature[] featuresArray = new Feature[numModelFeatures];
-			final float[] weightsArray = new float[numModelFeatures];
-			
-			int nextIdx = 0;
-			
-			// Start with intercept
-			featuresArray[nextIdx] = new InterceptFeature();
-			weightsArray[nextIdx++] = accumInterceptWeight;
-			
-			// Now aspatial features
-			for (int i = 0; i < remainingAspatialFeatures.size(); ++i)
-			{
-				featuresArray[nextIdx] = remainingAspatialFeatures.get(i);
-				weightsArray[nextIdx++] = remainingAspatialWeights.getQuick(i);
-			}
-			
-			// And finally spatial features
-			for (int i = 0; i < remainingSpatialFeatures.size(); ++i)
-			{
-				featuresArray[nextIdx] = remainingSpatialFeatures.get(i);
-				weightsArray[nextIdx++] = remainingSpatialWeights.getQuick(i);
-			}
-			
-			return new LogitModelNode(featuresArray, weightsArray);
+			// Have to create leaf node here		TODO could in theory use remaining features to compute a model again
+			final float meanLogit = remainingTargetLogits.sum() / remainingTargetLogits.size();
+			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {meanLogit});
 		}
 		
-		// Find optimal splitting feature. As optimal splitting criterion, we try to
-		// get the lowest average (between our two children) sum of absolute weight values
-		// in remaining non-intercept features.
-		float lowestScore = Float.POSITIVE_INFINITY;
+		// For every aspatial and every spatial feature, if not already picked, compute mean logits for true and false branches
+		final double[] sumLogitsIfFalseAspatial = new double[numAspatialFeatures];
+		final int[] numFalseAspatial = new int[numAspatialFeatures];
+		final double[] sumLogitsIfTrueAspatial = new double[numAspatialFeatures];
+		final int[] numTrueAspatial = new int[numAspatialFeatures];
+		
+		for (int i = 0; i < numAspatialFeatures; ++i)
+		{
+			if (alreadyPickedAspatials.get(i))
+				continue;
+			
+			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
+			{
+				final FeatureVector featureVector = remainingFeatureVectors.get(j);
+				final float targetLogit = remainingTargetLogits.getQuick(j);
+				
+				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
+				{
+					sumLogitsIfTrueAspatial[i] += targetLogit;
+					++numTrueAspatial[i];
+				}
+				else
+				{
+					sumLogitsIfFalseAspatial[i] += targetLogit;
+					++numFalseAspatial[i];
+				}
+			}
+		}
+		
+		final double[] sumLogitsIfFalseSpatial = new double[numAspatialFeatures];
+		final int[] numFalseSpatial = new int[numAspatialFeatures];
+		final double[] sumLogitsIfTrueSpatial = new double[numAspatialFeatures];
+		final int[] numTrueSpatial = new int[numAspatialFeatures];
+		
+		for (int i = 0; i < remainingFeatureVectors.size(); ++i)
+		{
+			final FeatureVector featureVector = remainingFeatureVectors.get(i);
+			final float targetLogit = remainingTargetLogits.getQuick(i);
+			
+			final boolean[] active = new boolean[numSpatialFeatures];
+			final TIntArrayList sparseSpatials = featureVector.activeSpatialFeatureIndices();
+			
+			for (int j = 0; j < sparseSpatials.size(); ++j)
+			{
+				active[sparseSpatials.getQuick(j)] = true;
+			}
+			
+			for (int j = 0; j < active.length; ++j)
+			{
+				if (alreadyPickedSpatials.get(j))
+					continue;
+				
+				if (active[j])
+				{
+					sumLogitsIfTrueSpatial[j] += targetLogit;
+					++numTrueSpatial[j];
+				}
+			}
+		}
+		
+		final double[] meanLogitsIfFalseAspatial = new double[numAspatialFeatures];
+		final double[] meanLogitsIfTrueAspatial = new double[numAspatialFeatures];
+		final double[] meanLogitsIfFalseSpatial = new double[numSpatialFeatures];
+		final double[] meanLogitsIfTrueSpatial = new double[numSpatialFeatures];
+		
+		for (int i = 0; i < numAspatialFeatures; ++i)
+		{
+			if (numFalseAspatial[i] > 0)
+				meanLogitsIfFalseAspatial[i] = sumLogitsIfFalseAspatial[i] / numFalseAspatial[i];
+			
+			if (numTrueAspatial[i] > 0)
+				meanLogitsIfTrueAspatial[i] = sumLogitsIfTrueAspatial[i] / numTrueAspatial[i];
+		}
+		
+		for (int i = 0; i < numSpatialFeatures; ++i)
+		{
+			if (numFalseSpatial[i] > 0)
+				meanLogitsIfFalseSpatial[i] = sumLogitsIfFalseSpatial[i] / numFalseSpatial[i];
+			
+			if (numTrueSpatial[i] > 0)
+				meanLogitsIfTrueSpatial[i] = sumLogitsIfTrueSpatial[i] / numTrueSpatial[i];
+		}
+		
+		// Find feature that maximally reduces sum of squared errors
+		double minSumSquaredErrors = Double.POSITIVE_INFINITY;
 		int bestIdx = -1;
 		boolean bestFeatureIsAspatial = true;
 		
-		float sumAllAbsWeights = 0.f;
-		for (int i = 0; i < remainingAspatialWeights.size(); ++i)
+		for (int i = 0; i < numAspatialFeatures; ++i)
 		{
-			sumAllAbsWeights += Math.abs(remainingAspatialWeights.getQuick(i));
-		}
-		for (int i = 0; i < remainingSpatialWeights.size(); ++i)
-		{
-			sumAllAbsWeights += Math.abs(remainingSpatialWeights.getQuick(i));
-		}
-		
-		for (int i = 0; i < remainingAspatialFeatures.size(); ++i)
-		{
-			// Since we already filtered out intercept terms, we know that whenever any other
-			// aspatial feature is true, all the spatial features must be false (so then we
-			// can absorb all their weights at once). If an aspatial feature is false, we
-			// do not lose any other weights.
-			final float absFeatureWeight = Math.abs(remainingAspatialWeights.getQuick(i));
+			if (numFalseAspatial[i] == 0 || numTrueAspatial[i] == 0)
+				continue;
 			
-			float falseScore = sumAllAbsWeights - absFeatureWeight;
-			float trueScore = sumAllAbsWeights - absFeatureWeight;
-			for (int j = 0; j < remainingSpatialWeights.size(); ++j)
+			double sumSquaredErrors = 0.0;
+			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
 			{
-				trueScore -= Math.abs(remainingSpatialWeights.getQuick(j));
+				final FeatureVector featureVector = remainingFeatureVectors.get(j);
+				final float targetLogit = remainingTargetLogits.getQuick(j);
+				final double error;
+				
+				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
+					error = targetLogit - meanLogitsIfTrueAspatial[i];
+				else
+					error = targetLogit - meanLogitsIfFalseAspatial[i];
+				
+				sumSquaredErrors += (error * error);
 			}
 			
-			final float splitScore = (falseScore + trueScore) / 2.f;
-			
-			if (splitScore < lowestScore)
+			if (sumSquaredErrors < minSumSquaredErrors)
 			{
-				lowestScore = splitScore;
+				minSumSquaredErrors = sumSquaredErrors;
 				bestIdx = i;
 			}
 		}
 		
-		for (int i = 0; i < remainingSpatialFeatures.size(); ++i)
+		for (int i = 0; i < numSpatialFeatures; ++i)
 		{
-			final SpatialFeature spatial = remainingSpatialFeatures.get(i);
-			final float absFeatureWeight = Math.abs(remainingSpatialWeights.getQuick(i));
+			if (numFalseSpatial[i] == 0 || numTrueSpatial[i] == 0)
+				continue;
 			
-			float falseScore = sumAllAbsWeights - absFeatureWeight;
-			float trueScore = sumAllAbsWeights - absFeatureWeight;
-			
-			// If a spatial feature is true, we lose all the aspatial weights (none of them can be true)
-			for (int j = 0; j < remainingAspatialWeights.size(); ++j)
+			double sumSquaredErrors = 0.0;
+			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
 			{
-				trueScore -= Math.abs(remainingAspatialWeights.getQuick(j));
+				final FeatureVector featureVector = remainingFeatureVectors.get(j);
+				final float targetLogit = remainingTargetLogits.getQuick(j);
+				final double error;
+				
+				if (featureVector.activeSpatialFeatureIndices().contains(i))
+					error = targetLogit - meanLogitsIfTrueSpatial[i];
+				else
+					error = targetLogit - meanLogitsIfFalseSpatial[i];
+				
+				sumSquaredErrors += (error * error);
 			}
 			
-			for (int j = 0; j < remainingSpatialFeatures.size(); ++j)
+			if (sumSquaredErrors < minSumSquaredErrors)
 			{
-				if (i == j)
-					continue;
-				
-				final SpatialFeature otherFeature = remainingSpatialFeatures.get(j);
-				
-				if (otherFeature.generalises(spatial))
-				{
-					// The other feature generalises the splitting candidate. This means
-					// that in the branch where the splitting candidate is true, this 
-					// feature must also be true and we can therefore also absorb its
-					// weight.
-					final float otherAbsWeight = Math.abs(remainingSpatialWeights.getQuick(j));
-					trueScore -= otherAbsWeight;
-				}
-				
-				if (spatial.generalises(otherFeature))
-				{
-					// The splitting candidate generalises the other feature. This means
-					// that in the branch where the splitting candidate is false, the other 
-					// feature must also be false and we can therefore also absorb its
-					// weight.
-					final float otherAbsWeight = Math.abs(remainingSpatialWeights.getQuick(j));
-					falseScore -= otherAbsWeight;
-				}
-			}
-			
-			final float splitScore = (falseScore + trueScore) / 2.f;
-			
-			if (splitScore < lowestScore)
-			{
-				lowestScore = splitScore;
+				minSumSquaredErrors = sumSquaredErrors;
 				bestIdx = i;
 				bestFeatureIsAspatial = false;
 			}
 		}
 		
+		if (bestIdx == -1)
+		{
+			// No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
+			final float meanLogit = remainingTargetLogits.sum() / remainingTargetLogits.size();
+			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {meanLogit});
+		}
+		
 		final Feature splittingFeature;
 		if (bestFeatureIsAspatial)
-			splittingFeature = remainingAspatialFeatures.get(bestIdx);
+			splittingFeature = featureSet.aspatialFeatures()[bestIdx];
 		else
-			splittingFeature = remainingSpatialFeatures.get(bestIdx);
+			splittingFeature = featureSet.spatialFeatures()[bestIdx];
+		
+		final BitSet newAlreadyPickedAspatials;
+		final BitSet newAlreadyPickedSpatials;
+		
+		if (bestFeatureIsAspatial)
+		{
+			newAlreadyPickedAspatials = (BitSet) alreadyPickedAspatials.clone();
+			newAlreadyPickedAspatials.set(bestIdx);
+			newAlreadyPickedSpatials = alreadyPickedSpatials;
+		}
+		else
+		{
+			newAlreadyPickedSpatials = (BitSet) alreadyPickedSpatials.clone();
+			newAlreadyPickedSpatials.set(bestIdx);
+			newAlreadyPickedAspatials = alreadyPickedAspatials;
+		}
+		
+		// Split remaining data for the two branches
+		final List<FeatureVector> remainingFeatureVectorsTrue = new ArrayList<FeatureVector>();
+		final TFloatArrayList remainingTargetLogitsTrue = new TFloatArrayList();
+		
+		final List<FeatureVector> remainingFeatureVectorsFalse = new ArrayList<FeatureVector>();
+		final TFloatArrayList remainingTargetLogitsFalse = new TFloatArrayList();
+		
+		if (bestFeatureIsAspatial)
+		{
+			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
+			{
+				if (remainingFeatureVectors.get(i).aspatialFeatureValues().get(bestIdx) != 0.f)
+				{
+					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
+					remainingTargetLogitsTrue.add(remainingTargetLogits.getQuick(i));
+				}
+				else
+				{
+					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
+					remainingTargetLogitsFalse.add(remainingTargetLogits.getQuick(i));
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
+			{
+				if (remainingFeatureVectors.get(i).activeSpatialFeatureIndices().contains(bestIdx))
+				{
+					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
+					remainingTargetLogitsTrue.add(remainingTargetLogits.getQuick(i));
+				}
+				else
+				{
+					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
+					remainingTargetLogitsFalse.add(remainingTargetLogits.getQuick(i));
+				}
+			}
+		}
 		
 		// Create the node for case where splitting feature is true
 		final LogitTreeNode trueBranch;
 		{
-			final List<AspatialFeature> remainingAspatialsWhenTrue;
-			final TFloatArrayList remainingAspatialWeightsWhenTrue;
-			final List<SpatialFeature> remainingSpatialsWhenTrue;
-			final TFloatArrayList remainingSpatialWeightsWhenTrue;
-			float accumInterceptWhenTrue = accumInterceptWeight;
-			
-			if (bestFeatureIsAspatial)
-			{
-				// Remove the aspatial feature that we split on
-				remainingAspatialsWhenTrue = new ArrayList<AspatialFeature>(remainingAspatialFeatures);
-				remainingAspatialWeightsWhenTrue = new TFloatArrayList(remainingAspatialWeights);
-				ListUtils.removeSwap(remainingAspatialsWhenTrue, bestIdx);
-				accumInterceptWhenTrue += remainingAspatialWeightsWhenTrue.getQuick(bestIdx);
-				ListUtils.removeSwap(remainingAspatialWeightsWhenTrue, bestIdx);
-				
-				// Remove all spatial features when an aspatial feature is true
-				remainingSpatialsWhenTrue = new ArrayList<SpatialFeature>();
-				remainingSpatialWeightsWhenTrue = new TFloatArrayList();
-			}
-			else
-			{
-				// Remove all the aspatial features if a spatial feature is true
-				remainingAspatialsWhenTrue = new ArrayList<AspatialFeature>();
-				remainingAspatialWeightsWhenTrue = new TFloatArrayList();
-				
-				// Remove all spatial features that are more general than our splitting feature + the splitting feature
-				remainingSpatialsWhenTrue = new ArrayList<SpatialFeature>(remainingSpatialFeatures);
-				remainingSpatialWeightsWhenTrue = new TFloatArrayList(remainingSpatialWeights);
-				
-				for (int i = remainingSpatialsWhenTrue.size() - 1; i >= 0; --i)
-				{
-					if (i == bestIdx)
-					{
-						ListUtils.removeSwap(remainingSpatialsWhenTrue, i);
-						accumInterceptWhenTrue += remainingSpatialWeightsWhenTrue.getQuick(i);
-						ListUtils.removeSwap(remainingSpatialWeightsWhenTrue, i);
-					}
-					else
-					{
-						final SpatialFeature other = remainingSpatialsWhenTrue.get(i);
-						if (other.generalises((SpatialFeature)splittingFeature))
-						{
-							ListUtils.removeSwap(remainingSpatialsWhenTrue, i);
-							accumInterceptWhenTrue += remainingSpatialWeightsWhenTrue.getQuick(i);
-							ListUtils.removeSwap(remainingSpatialWeightsWhenTrue, i);
-						}
-					}
-				}
-			}
-			
 			trueBranch = 
 					buildNode
 					(
-						remainingAspatialsWhenTrue, 
-						remainingAspatialWeightsWhenTrue, 
-						remainingSpatialsWhenTrue, 
-						remainingSpatialWeightsWhenTrue, 
-						accumInterceptWhenTrue,
+						featureSet,
+						remainingFeatureVectorsTrue,
+						remainingTargetLogitsTrue,
+						newAlreadyPickedAspatials,
+						newAlreadyPickedSpatials,
+						numAspatialFeatures,
+						numSpatialFeatures,
 						allowedDepth - 1
 					);
 		}
@@ -312,61 +339,16 @@ public class ExperienceLogitTreeLearner
 		// Create the node for case where splitting feature is false
 		final LogitTreeNode falseBranch;
 		{
-			final List<AspatialFeature> remainingAspatialsWhenFalse;
-			final TFloatArrayList remainingAspatialWeightsWhenFalse;
-			final List<SpatialFeature> remainingSpatialsWhenFalse;
-			final TFloatArrayList remainingSpatialWeightsWhenFalse;
-			float accumInterceptWhenFalse = accumInterceptWeight;
-
-			if (bestFeatureIsAspatial)
-			{
-				// Remove the aspatial feature that we split on
-				remainingAspatialsWhenFalse = new ArrayList<AspatialFeature>(remainingAspatialFeatures);
-				remainingAspatialWeightsWhenFalse = new TFloatArrayList(remainingAspatialWeights);
-				ListUtils.removeSwap(remainingAspatialsWhenFalse, bestIdx);
-				ListUtils.removeSwap(remainingAspatialWeightsWhenFalse, bestIdx);
-
-				// Keep all spatial features when an aspatial feature is false
-				remainingSpatialsWhenFalse = new ArrayList<SpatialFeature>(remainingSpatialFeatures);
-				remainingSpatialWeightsWhenFalse = new TFloatArrayList(remainingSpatialWeights);
-			}
-			else
-			{
-				// Keep all the aspatial features if a spatial feature is false
-				remainingAspatialsWhenFalse = new ArrayList<AspatialFeature>(remainingAspatialFeatures);
-				remainingAspatialWeightsWhenFalse = new TFloatArrayList(remainingAspatialWeights);
-
-				// Remove all spatial features that are generalised by our splitting feature + the splitting feature
-				remainingSpatialsWhenFalse = new ArrayList<SpatialFeature>(remainingSpatialFeatures);
-				remainingSpatialWeightsWhenFalse = new TFloatArrayList(remainingSpatialWeights);
-
-				for (int i = remainingSpatialsWhenFalse.size() - 1; i >= 0; --i)
-				{
-					if (i == bestIdx)
-					{
-						ListUtils.removeSwap(remainingSpatialsWhenFalse, i);
-						ListUtils.removeSwap(remainingSpatialWeightsWhenFalse, i);
-					}
-					else
-					{
-						final SpatialFeature other = remainingSpatialsWhenFalse.get(i);
-						if (((SpatialFeature)splittingFeature).generalises(other))
-						{
-							ListUtils.removeSwap(remainingSpatialsWhenFalse, i);
-							ListUtils.removeSwap(remainingSpatialWeightsWhenFalse, i);
-						}
-					}
-				}
-			}
-
 			falseBranch = 
 					buildNode
 					(
-						remainingAspatialsWhenFalse, 
-						remainingAspatialWeightsWhenFalse, 
-						remainingSpatialsWhenFalse, 
-						remainingSpatialWeightsWhenFalse, 
-						accumInterceptWhenFalse,
+						featureSet,
+						remainingFeatureVectorsFalse,
+						remainingTargetLogitsFalse,
+						newAlreadyPickedAspatials,
+						newAlreadyPickedSpatials,
+						numAspatialFeatures,
+						numSpatialFeatures,
 						allowedDepth - 1
 					);
 		}

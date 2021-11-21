@@ -114,6 +114,12 @@ public class UniformExperienceBuffer implements Serializable, ExperienceBuffer
 		return batch;
 	}
 	
+	@Override
+	public ExItExperience[] allExperience()
+	{
+		return buffer;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
