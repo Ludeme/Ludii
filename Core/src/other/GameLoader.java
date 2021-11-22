@@ -443,8 +443,8 @@ public final class GameLoader
 		for (final String s : choices)
 		{
 			// Temporary restriction to check smaller set of games
-			if (!s.contains("/chess/"))
-				continue;
+//			if (!s.contains("/chess/"))
+//				continue;
 			
 			if (!FileHandling.shouldIgnoreLudAnalysis(s))
 			{
