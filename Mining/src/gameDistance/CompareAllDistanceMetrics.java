@@ -211,10 +211,10 @@ public class CompareAllDistanceMetrics
 				
 				// Write the top row of the file
 				String topRow = "Id";
-				for (final Map.Entry<String, Map<String, Double>> gameEntry : allGameDistances.get(0).entrySet()) 
+				for (int j = 0; j < gamesToCompare.length; j++) 
 				{
-					final String gameName = gameEntry.getKey();
-				    
+					final String gameName = gamesToCompare[j] + "_" + rulesetsToCompare[j];
+					
 				    // Get corresponding ruleset Id.
 				    final String[] nameArray = gameName.split("_")[0].split("/");
 				    final String formattedGameName = nameArray[nameArray.length-1].substring(0,nameArray[nameArray.length-1].length()-4);
@@ -232,10 +232,14 @@ public class CompareAllDistanceMetrics
 				{
 					String row = allRulesetIds.get(j);
 					
-					// Store all distances for this ruleset.
-					for (final Map.Entry<String, Map<String, Double>> gameEntry1 : allGameDistances.get(j).entrySet()) 
-						row += "," + gameEntry1.getValue().get(distanceNames.get(i));
+					final Map<String, Map<String, Double>> distanceMapAllGames = allGameDistances.get(j);
 					
+					for (int k = 0; k < gamesToCompare.length; k++)
+					{
+						final Map<String, Double> distanceMap = distanceMapAllGames.get(gamesToCompare[k] + "_" + rulesetsToCompare[k]);
+						row += "," + distanceMap.get(distanceNames.get(i));
+					}
+
 					myWriter.write(row + "\n");
 				}
 
