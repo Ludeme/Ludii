@@ -142,12 +142,13 @@ public class PlayerRegionsProximity extends HeuristicTerm
 				for (final Location position : pieces[i])
 				{
 					final int site = position.site();
-					if (site >= distances.length)	// Different container, skip it
-						continue;
-					
+
 					int minDist = Integer.MAX_VALUE;
 					for (final int regionIdx : regionIndices)
 					{
+						if (site >= distances[regionIdx].length)	// Different container, skip it
+							continue;
+						
 						final int dist = distances[regionIdx][site];
 						
 						if (dist < minDist)

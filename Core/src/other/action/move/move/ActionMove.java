@@ -45,8 +45,6 @@ public final class ActionMove extends BaseAction
 		final boolean onStacking
 	)
 	{
-		
-
 		if(onStacking)
 			return new ActionMoveStacking(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
 		else if (levelFrom >= 0 && levelTo >= 0)
