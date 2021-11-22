@@ -5,7 +5,6 @@ import java.util.List;
 
 import game.Game;
 import game.equipment.component.Component;
-import game.equipment.container.board.Track;
 import game.rules.play.moves.Moves;
 import game.types.board.RelationType;
 import game.types.board.SiteType;
@@ -16,7 +15,6 @@ import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
-import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -29,7 +27,7 @@ import other.topology.TopologyElement;
  *
  * @author Eric.Piette
  */
-public class ActionMoveTopPiece extends BaseAction
+public final class ActionMoveLargePiece extends ActionMoveTopPiece
 {
 	private static final long serialVersionUID = 1L;
 
@@ -148,7 +146,7 @@ public class ActionMoveTopPiece extends BaseAction
 	 * @param rotation   The rotation value of the to site.
 	 * @param value      The piece value of the to site.
 	 */
-	public ActionMoveTopPiece
+	public ActionMoveLargePiece
 	(
 		final SiteType typeFrom,
 		final int from,
@@ -159,6 +157,7 @@ public class ActionMoveTopPiece extends BaseAction
 		final int value
 	)
 	{
+		super(typeFrom, from, typeTo, to, state, rotation, value);
 		this.typeFrom = typeFrom;
 		this.from = from;
 		this.typeTo = typeTo;
@@ -180,6 +179,7 @@ public class ActionMoveTopPiece extends BaseAction
 		final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final int contIdTo = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
+		
 		final boolean requiresStack = context.currentInstanceContext().game().isStacking();
 		
 		int currentStateFrom = Constants.UNDEFINED;
@@ -189,20 +189,6 @@ public class ActionMoveTopPiece extends BaseAction
 
 		final ContainerState csFrom = context.state().containerStates()[contIdFrom];
 		final ContainerState csTo = context.state().containerStates()[contIdTo];
-
-		final int what = csFrom.what(from, typeFrom);
-		
-		// We check if this a large piece to call the related class.
-		if(what != 0)
-		{
-			piece = context.components()[what];
-			if(piece.isLargePiece())
-			{
-				Action largeMove = new ActionMoveLargePiece(typeFrom, from, typeTo, to, state, rotation, value);
-				largeMove.apply(context, store);
-				return largeMove;
-			}
-		}
 		
 		// take the local state of the site from
 		currentStateFrom = (csFrom.what(from, typeFrom) == 0) ? Constants.UNDEFINED : csFrom.state(from, typeFrom);
@@ -216,7 +202,7 @@ public class ActionMoveTopPiece extends BaseAction
 			previousRotationFrom = currentRotationFrom;
 			previousValueFrom = currentValueFrom;
 			previousStateTo = csTo.state(to, typeTo);
-			previousRotationTo = csTo.rotation(to, typeTo); 
+			previousRotationTo =csTo.rotation(to, typeTo); 
 			previousValueTo = csTo.value(to, typeTo);
 			previousWhoTo = csTo.who(to, typeTo);
 			previousWhatTo = csTo.what(to, typeTo);
@@ -273,6 +259,7 @@ public class ActionMoveTopPiece extends BaseAction
 			if (csFrom.what(from, typeFrom) == 0 && csFrom.count(from, typeFrom) == 0)
 				return this;
 
+			final int what = csFrom.what(from, typeFrom);
 			final int count = csFrom.count(from, typeFrom);
 
 			if (count == 1)
@@ -286,11 +273,31 @@ public class ActionMoveTopPiece extends BaseAction
 					final int owner = piece.owner();
 					context.state().owned().remove(owner, what, from, typeFrom);
 				}
+
+				// In case of LargePiece we update the empty chunkSet
+				if (piece != null && piece.isLargePiece())
+				{
+					final Component largePiece = piece;
+					final TIntArrayList locs = largePiece.locs(context, from, currentStateFrom, context.topology());
+					for (int i = 0; i < locs.size(); i++)
+					{
+						csFrom.addToEmpty(locs.getQuick(i), SiteType.Cell);
+						csFrom.setCount(context.state(), locs.getQuick(i), 0);
+					}
+					if (largePiece.isDomino() && context.containerId()[from] == 0)
+					{
+						for (int i = 0; i < 4; i++)
+							csFrom.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue());
+
+						for (int i = 4; i < 8; i++)
+							csFrom.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue2());
+					}
+				}
 			}
 			else
 			{
-				final int valueFrom = (context.game().usesLineOfPlay() ? 1 : Constants.OFF);
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, count - 1, Constants.UNDEFINED, Constants.UNDEFINED, valueFrom, typeFrom);
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, count - 1, Constants.UNDEFINED,
+						Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : Constants.OFF), typeFrom);
 			}
 
 			// update the local state of the site To
@@ -307,15 +314,9 @@ public class ActionMoveTopPiece extends BaseAction
 
 			// update the piece value of the site To
 			if (currentValueFrom != Constants.UNDEFINED && value == Constants.UNDEFINED)
-			{
-				final int valueFrom = (context.game().usesLineOfPlay() ? 1 : currentValueFrom);
-				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, valueFrom, typeTo);
-			}
+				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : currentValueFrom), typeTo);
 			else if (value != Constants.UNDEFINED)
-			{
-				final int valueFrom = (context.game().usesLineOfPlay() ? 1 : value);
-				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, valueFrom, typeTo);
-			}
+				csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : value), typeTo);
 			
 			final int who = (what < 1) ? 0 : context.components()[what].owner();
 
@@ -343,6 +344,55 @@ public class ActionMoveTopPiece extends BaseAction
 				piece = context.components()[what];
 				final int owner = piece.owner();
 				context.state().owned().add(owner, what, to, typeTo);
+			}
+
+			// In case of LargePiece we update the empty chunkSet
+			if (piece != null && piece.isLargePiece())
+			{
+				final Component largePiece = piece;
+				final TIntArrayList locs = largePiece.locs(context, to, state, context.topology());
+				for (int i = 0; i < locs.size(); i++)
+				{
+					csTo.removeFromEmpty(locs.getQuick(i), SiteType.Cell);
+					csTo.setCount(context.state(), locs.getQuick(i), (context.game().usesLineOfPlay() ? piece.index() : 1));
+				}
+
+				if (context.game().usesLineOfPlay() && context.containerId()[to] == 0)
+				{
+					for (int i = 0; i < 4; i++)
+					{
+						csTo.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue());
+					}
+
+					for (int i = 4; i < 8; i++)
+					{
+						csTo.setValueCell(context.state(), locs.getQuick(i), largePiece.getValue2());
+					}
+
+					// We update the line of play for dominoes
+					for (int i = 0; i < context.containers()[0].numSites(); i++)
+						csTo.setPlayable(context.state(), i, false);
+
+					for (int i = 0; i < context.containers()[0].numSites(); i++)
+					{
+						if (csTo.what(i, typeTo) != 0)
+						{
+							final Component currentComponent = context.components()[csTo.what(i, typeTo)];
+							final int currentState = csTo.state(i, typeTo);
+							final TIntArrayList locsToUpdate = largePiece.locs(context, i, currentState,
+									context.topology());
+
+							lineOfPlayDominoes(context, locsToUpdate.getQuick(0), locsToUpdate.getQuick(1), getDirnDomino(0, currentState), false, true);
+							lineOfPlayDominoes(context, locsToUpdate.getQuick(7), locsToUpdate.getQuick(6), getDirnDomino(2, currentState), false, false);
+
+							if (currentComponent.isDoubleDomino())
+							{
+								lineOfPlayDominoes(context, locsToUpdate.getQuick(2), locsToUpdate.getQuick(5), getDirnDomino(1, currentState), true, true);
+								lineOfPlayDominoes(context, locsToUpdate.getQuick(3), locsToUpdate.getQuick(4), getDirnDomino(3, currentState), true, true);
+							}
+						}
+					}
+				}
 			}
 
 			// We update the structure about track indices if the game uses track.
@@ -376,7 +426,8 @@ public class ActionMoveTopPiece extends BaseAction
 			if (csTo.isEmpty(to, typeTo))
 			{
 				throw new RuntimeException("Did not expect locationTo to be empty at site locnTo="+to+"(who, what,count,state)=("
-						+ csTo.who(to, typeTo) + "," + csTo.what(to, typeTo) + "," + csTo.count(to, typeTo) + "," + csTo.state(to, typeTo) + "," + csTo.state(to, typeTo) + ")");
+						+ csTo.who(to, typeTo) + "," + csTo.what(to, typeTo) + "," + csTo.count(to, typeTo) + ","
+								+ csTo.state(to, typeTo) + "," + csTo.state(to, typeTo) + ")");
 			}
 		}
 		// on a stacking game
@@ -385,18 +436,23 @@ public class ActionMoveTopPiece extends BaseAction
 			if(from == to)
 				return this;
 			
-			csFrom.remove(context.state(), from, typeFrom);
+			final ContainerState containerFrom = context.state().containerStates()[contIdFrom];
+			final ContainerState containerTo = context.state().containerStates()[contIdTo];
+
+			final int what = containerFrom.what(from, typeFrom);
+
+			containerFrom.remove(context.state(), from, typeFrom);
 				
-			if (csFrom.sizeStack(from, typeFrom) == 0)
-				csFrom.addToEmpty(from, typeFrom);
+			if (containerFrom.sizeStack(from, typeFrom) == 0)
+				containerFrom.addToEmpty(from, typeFrom);
 
 			final int who = (what < 1) ? 0 : context.components()[what].owner();
 
 			if (!context.game().hasCard())
-				csTo.addItemGeneric(context.state(), to, what, who, context.game(), typeTo);
+				containerTo.addItemGeneric(context.state(), to, what, who, context.game(), typeTo);
 
-			if (csTo.sizeStack(to, typeTo) != 0)
-				csTo.removeFromEmpty(to, typeTo);
+			if (containerTo.sizeStack(to, typeTo) != 0)
+				containerTo.removeFromEmpty(to, typeTo);
 
 			// to keep the site of the item in cache for each player
 			Component pieceFrom = null;
@@ -405,8 +461,8 @@ public class ActionMoveTopPiece extends BaseAction
 			{
 				pieceFrom = context.components()[what];
 				ownerFrom = pieceFrom.owner();
-				context.state().owned().add(ownerFrom, what, to, csTo.sizeStack(to, typeTo) - 1, typeTo);
-				context.state().owned().remove(ownerFrom, what, from, csFrom.sizeStack(from, typeFrom), typeFrom);
+				context.state().owned().add(ownerFrom, what, to, containerTo.sizeStack(to, typeTo) - 1, typeTo);
+				context.state().owned().remove(ownerFrom, what, from, containerFrom.sizeStack(from, typeFrom), typeFrom);
 			}
 
 			// We update the structure about track indices if the game uses track.
@@ -416,60 +472,6 @@ public class ActionMoveTopPiece extends BaseAction
 		return this;
 	}
 
-	/**
-	 * To update the onTrackIndices after a move.
-	 * 
-	 * @param what           The index of the component moved.
-	 * @param onTrackIndices The structure onTrackIndices
-	 * @param tracks         The list of the tracks.
-	 */
-	public void updateOnTrackIndices(final int what, final OnTrackIndices onTrackIndices, final List<Track> tracks)
-	{
-		// We update the structure about track indices if the game uses track.
-		if (what != 0 && onTrackIndices != null)
-		{
-			for (final Track track : tracks)
-			{
-				final int trackIdx = track.trackIdx();
-				final TIntArrayList indicesLocA = onTrackIndices.locToIndex(trackIdx, from);
-
-				for (int k = 0; k < indicesLocA.size(); k++)
-				{
-					final int indexA = indicesLocA.getQuick(k);
-					final int countAtIndex = onTrackIndices.whats(trackIdx, what, indicesLocA.getQuick(k));
-
-					if (countAtIndex > 0)
-					{
-						onTrackIndices.remove(trackIdx, what, 1, indexA);
-						final TIntArrayList newWhatIndice = onTrackIndices.locToIndexFrom(trackIdx, to, indexA);
-
-						if (newWhatIndice.size() > 0)
-						{
-							onTrackIndices.add(trackIdx, what, 1, newWhatIndice.getQuick(0));
-						}
-						else
-						{
-							final TIntArrayList newWhatIndiceIfNotAfter = onTrackIndices.locToIndex(trackIdx, to);
-							if (newWhatIndiceIfNotAfter.size() > 0)
-								onTrackIndices.add(trackIdx, what, 1, newWhatIndiceIfNotAfter.getQuick(0));
-						}
-
-						break;
-					}
-				}
-
-				// If the piece was not in the track but enter on it, we update the structure
-				// corresponding to that track.
-				if (indicesLocA.size() == 0)
-				{
-					final TIntArrayList indicesLocB = onTrackIndices.locToIndex(trackIdx, to);
-					if (indicesLocB.size() != 0)
-						onTrackIndices.add(trackIdx, what, 1, indicesLocB.get(0));
-				}
-			}
-		}
-	}
-	
 	//-------------------------------------------------------------------------
 	
 	@Override
@@ -502,7 +504,8 @@ public class ActionMoveTopPiece extends BaseAction
 			int currentStateTo = Constants.UNDEFINED;
 			int currentRotationTo = Constants.UNDEFINED;
 			int currentValueTo = Constants.UNDEFINED;
-			
+			Component piece = null;
+
 			// take the local state of the site from
 			currentStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
 			currentRotationTo = csTo.rotation(to, typeTo);
@@ -512,6 +515,31 @@ public class ActionMoveTopPiece extends BaseAction
 			{
 				csTo.remove(context.state(), to, typeTo);
 
+				// to keep the site of the item in cache for each player
+				if (what != 0)
+					piece = context.components()[what];
+
+				// In case of LargePiece we update the empty chunkSet
+				if (piece != null && piece.isLargePiece())
+				{
+					final Component largePiece = piece;
+					final TIntArrayList locs = largePiece.locs(context, to, currentStateTo, context.topology());
+					for (int i = 0; i < locs.size(); i++)
+					{
+						csTo.addToEmpty(locs.getQuick(i), SiteType.Cell);
+						csTo.setCount(context.state(), locs.getQuick(i), 0);
+						csTo.remove(context.state(), locs.getQuick(i), SiteType.Cell);
+					}
+					if (largePiece.isDomino() && context.containerId()[to] == 0)
+					{
+						for (int i = 0; i < 4; i++)
+							csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+
+						for (int i = 4; i < 8; i++)
+							csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+					}
+				}
+				
 				// In case the to site was occupied by another piece we re-add it.
 				if(previousWhatTo > 0)
 				{
@@ -545,46 +573,71 @@ public class ActionMoveTopPiece extends BaseAction
 				else
 				{
 					if(previousStateTo > 0 || previousRotationTo > 0 || previousValueTo > 0)
-					{
-						final int valueTo = (context.game().hasDominoes() ? 1 : previousValueTo);
-						csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, 0, previousStateTo, previousRotationTo, valueTo, typeTo);
-					}
+						csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, 0, previousStateTo, previousRotationTo,
+								(context.game().hasDominoes() ? 1 : previousValueTo), typeTo);
 				}
 			}
 			else
 			{
 				if(game.hasDominoes()) // Special case for dominoes because the count is used for the value of each part of the domino too....
+				{
 					csTo.remove(context.state(), to, typeTo);
+					
+					// to keep the site of the item in cache for each player
+					if (what != 0)
+						piece = context.components()[what];
+					
+					// In case of LargePiece we update the empty chunkSet
+					if (piece != null && piece.isLargePiece())
+					{
+						final Component largePiece = piece;
+						final TIntArrayList locs = largePiece.locs(context, to, currentStateTo, context.topology());
+						for (int i = 0; i < locs.size(); i++)
+						{
+							csTo.addToEmpty(locs.getQuick(i), SiteType.Cell);
+							csTo.setCount(context.state(), locs.getQuick(i), 0);
+							csTo.remove(context.state(), locs.getQuick(i), SiteType.Cell);
+						}
+						if (largePiece.isDomino() && context.containerId()[to] == 0)
+						{
+							for (int i = 0; i < 4; i++)
+								csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+
+							for (int i = 4; i < 8; i++)
+								csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+						}
+					}
+				}
 				else
 				{
-					final int valueTo = (context.game().usesLineOfPlay() ? 1 : Constants.OFF);
-					csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, previousCountTo, Constants.UNDEFINED, Constants.UNDEFINED, valueTo, typeTo);
+					csTo.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, previousCountTo, Constants.UNDEFINED,
+							Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : Constants.OFF), typeTo);
 				}
 			}
 
 			// update the local state of the site From
 			if (currentStateTo != Constants.UNDEFINED && previousStateFrom == Constants.UNDEFINED)
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, currentStateTo, Constants.UNDEFINED, Constants.OFF, typeFrom);
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, currentStateTo,
+						Constants.UNDEFINED, Constants.OFF, typeFrom);
 			else if (previousStateFrom != Constants.UNDEFINED)
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousStateFrom, Constants.UNDEFINED, Constants.OFF, typeFrom);
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousStateFrom,
+						Constants.UNDEFINED, Constants.OFF, typeFrom);
 
 			// update the rotation state of the site From
 			if (currentRotationTo != Constants.UNDEFINED && previousRotationFrom == Constants.UNDEFINED)
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, currentRotationTo, Constants.OFF, typeFrom);
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
+						Constants.UNDEFINED, currentRotationTo, Constants.OFF, typeFrom);
 			else if (previousRotationFrom != Constants.UNDEFINED)
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousRotationFrom, Constants.OFF, typeFrom);
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
+						Constants.UNDEFINED, previousRotationFrom, Constants.OFF, typeFrom);
 
 			// update the piece value of the site From
 			if (currentValueTo != Constants.UNDEFINED && previousValueFrom == Constants.UNDEFINED)
-			{
-				final int valueFrom = (context.game().usesLineOfPlay() ? 1 : currentValueTo);
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, valueFrom, typeFrom);
-			}
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
+						Constants.UNDEFINED, Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : currentValueTo), typeFrom);
 			else if (previousValueFrom != Constants.UNDEFINED)
-			{
-				final int valueFrom = (context.game().usesLineOfPlay() ? 1 : previousValueFrom);
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, valueFrom, typeFrom);
-			}
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
+						Constants.UNDEFINED, Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : previousValueFrom), typeFrom);
 			
 			// ERIC: NEED TO UPDATE THE STATE/ROTATION/VALUE OF THE TO SITE IF THEY CHANGED DURING THE APPLY METHOD.
 			
@@ -592,14 +645,68 @@ public class ActionMoveTopPiece extends BaseAction
 
 			if (csFrom.what(from, typeFrom) == what && csFrom.count(from, typeFrom) > 0)
 			{
-				final int countFrom = (context.game().requiresCount() ? csFrom.count(from, typeFrom) + 1 : 1);
-				final int valueFrom = (context.game().usesLineOfPlay() ? 1 : Constants.OFF);
-				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED, countFrom, Constants.UNDEFINED, Constants.UNDEFINED, valueFrom, typeFrom);
+				csFrom.setSite(context.state(), from, Constants.UNDEFINED, Constants.UNDEFINED,
+						(context.game().requiresCount() ? csFrom.count(from, typeFrom) + 1 : 1),
+						Constants.UNDEFINED, Constants.UNDEFINED, (context.game().usesLineOfPlay() ? 1 : Constants.OFF), typeFrom);
 			}
 			else
 			{
 				csFrom.setSite(context.state(), from, who, what, 1, Constants.UNDEFINED, Constants.UNDEFINED,
 						(context.game().usesLineOfPlay() ? 1 : Constants.OFF), typeFrom);
+			}
+
+			// to keep the site of the item in cache for each player
+			if (what != 0)
+				piece = context.components()[what];
+
+			// In case of LargePiece we update the empty chunkSet
+			if (piece != null && piece.isLargePiece())
+			{
+				final Component largePiece = piece;
+				final TIntArrayList locs = largePiece.locs(context, from, previousStateFrom, context.topology());
+				for (int i = 0; i < locs.size(); i++)
+				{
+					csFrom.removeFromEmpty(locs.getQuick(i), SiteType.Cell);
+					csFrom.setCount(context.state(), locs.getQuick(i),
+							(context.game().usesLineOfPlay() ? piece.index() : 1));
+				}
+
+				if (context.game().usesLineOfPlay() && context.containerId()[to] == 0)
+				{
+					for (int i = 0; i < 4; i++)
+						csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+
+					for (int i = 4; i < 8; i++)
+						csTo.setValueCell(context.state(), locs.getQuick(i), 0);
+
+					// We update the line of play for dominoes
+					for (int i = 0; i < context.containers()[0].numSites(); i++)
+						csTo.setPlayable(context.state(), i, false);
+
+					for (int i = 0; i < context.containers()[0].numSites(); i++)
+					{
+						if (csTo.what(i, typeTo) != 0)
+						{
+							final Component currentComponent = context.components()[csTo.what(i, typeTo)];
+							final int currentState = csTo.state(i, typeTo);
+							final TIntArrayList locsToUpdate = largePiece.locs(context, i, currentState,
+									context.topology());
+
+							lineOfPlayDominoes(context, locsToUpdate.getQuick(0), locsToUpdate.getQuick(1),
+									getDirnDomino(0, currentState), false, true);
+							lineOfPlayDominoes(context, locsToUpdate.getQuick(7), locsToUpdate.getQuick(6),
+									getDirnDomino(2, currentState), false, false);
+
+							if (currentComponent.isDoubleDomino())
+							{
+								lineOfPlayDominoes(context, locsToUpdate.getQuick(2), locsToUpdate.getQuick(5),
+										getDirnDomino(1, currentState), true, true);
+								lineOfPlayDominoes(context, locsToUpdate.getQuick(3), locsToUpdate.getQuick(4),
+										getDirnDomino(3, currentState), true, true);
+							}
+						}
+					}
+				}
 			}
 
 			// We keep the update for hidden info.
@@ -742,10 +849,10 @@ public class ActionMoveTopPiece extends BaseAction
 		if (this == obj)
 			return true;
 
-		if (!(obj instanceof ActionMoveTopPiece))
+		if (!(obj instanceof ActionMoveLargePiece))
 			return false;
 
-		final ActionMoveTopPiece other = (ActionMoveTopPiece) obj;
+		final ActionMoveLargePiece other = (ActionMoveLargePiece) obj;
 
 		return (decision == other.decision &&
 				from == other.from &&
