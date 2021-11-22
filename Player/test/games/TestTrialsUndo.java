@@ -111,8 +111,8 @@ public class TestTrialsUndo
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "Deka";
-		final String gameToSkip = "";
+		final String gameToReached = "L Game";
+		final String gameToSkip = "Galatjang";
 
 		final long startTime = System.currentTimeMillis();
 
