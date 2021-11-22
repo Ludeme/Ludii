@@ -3046,8 +3046,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	
 			// Step 1: restore previous RNG.
 			trial.removeLastRNGStates();
-			final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
-			context.rng().restoreState(previousRNGState);
+			if(!trial.RNGStates().isEmpty())
+			{
+				final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
+				context.rng().restoreState(previousRNGState);
+			}
 			
 			// Step 2: Restore the data modified by the last end rules or nextPhase.
 			// Get the previous end data.
