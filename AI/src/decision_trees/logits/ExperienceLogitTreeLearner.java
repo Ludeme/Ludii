@@ -48,7 +48,7 @@ public class ExperienceLogitTreeLearner
 		
 		for (final ExItExperience sample : samples)
 		{
-			if (sample != null)
+			if (sample != null && sample.moves().size() > 1)
 			{
 				final FeatureVector[] featureVectors = sample.generateFeatureVectors(featureSet);
 				
