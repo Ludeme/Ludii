@@ -146,6 +146,7 @@ public class ActionMoveTopPiece extends BaseAction
 	
 	//-------------------------------------------------------------------------
 	
+	/** Class used to move a large piece. */
 	private Action actionLargePiece = null;
 	
 	//-------------------------------------------------------------------------
@@ -603,6 +604,33 @@ public class ActionMoveTopPiece extends BaseAction
 				csFrom.setSite(context.state(), from, previousWhoFrom[0], previousWhatFrom[0], previousCountFrom, previousStateFrom[0], previousRotationFrom[0], previousValueFrom[0], typeFrom);
 			if(previousCountTo > 0)
 				csTo.setSite(context.state(), to, previousWhoTo[0], previousWhatTo[0], previousCountTo, previousStateTo[0], previousRotationTo[0], previousValueTo[0], typeTo);
+			
+			if(context.game().hiddenInformation())
+			{
+				if(previousHiddenFrom.length > 0)
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						csFrom.setHidden(gameState, pid, from, 0, typeFrom, previousHiddenFrom[0][pid]);
+						csFrom.setHiddenWhat(gameState, pid, from, 0, typeFrom, previousHiddenWhatFrom[0][pid]);
+						csFrom.setHiddenWho(gameState, pid, from, 0, typeFrom, previousHiddenWhoFrom[0][pid]);
+						csFrom.setHiddenCount(gameState, pid, from, 0, typeFrom, previousHiddenCountFrom[0][pid]);
+						csFrom.setHiddenState(gameState, pid, from, 0, typeFrom, previousHiddenStateFrom[0][pid]);
+						csFrom.setHiddenRotation(gameState, pid, from, 0, typeFrom, previousHiddenRotationFrom[0][pid]);
+						csFrom.setHiddenValue(gameState, pid, from, 0, typeFrom, previousHiddenValueFrom[0][pid]);
+					}
+
+				if(previousHiddenTo.length > 0)
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						csTo.setHidden(gameState, pid, to, 0, typeTo, previousHiddenTo[0][pid]);
+						csTo.setHiddenWhat(gameState, pid, to, 0, typeTo, previousHiddenWhatTo[0][pid]);
+						csTo.setHiddenWho(gameState, pid, to, 0, typeTo, previousHiddenWhoTo[0][pid]);
+						csTo.setHiddenCount(gameState, pid, to, 0, typeTo, previousHiddenCountTo[0][pid]);
+						csTo.setHiddenState(gameState, pid, to, 0, typeTo, previousHiddenStateTo[0][pid]);
+						csTo.setHiddenRotation(gameState, pid, to, 0, typeTo, previousHiddenRotationTo[0][pid]);
+						csTo.setHiddenValue(gameState, pid, to, 0, typeTo, previousHiddenValueTo[0][pid]);
+					}
+			}
 		}
 		
 		if (csTo.sizeStack(to, typeTo) == 0)

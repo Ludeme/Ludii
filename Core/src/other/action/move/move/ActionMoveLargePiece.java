@@ -11,7 +11,7 @@ import other.state.container.ContainerState;
 import other.state.track.OnTrackIndices;
 
 /**
- * Moves a piece from a site to another (only the top piece).
+ * Moves a large piece. This class is a "sub-class" of ActionMoveTopPiece which is used only by it. To never it alone.
  *
  * @author Eric.Piette
  */
