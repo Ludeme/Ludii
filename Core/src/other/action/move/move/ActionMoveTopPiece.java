@@ -249,6 +249,46 @@ public class ActionMoveTopPiece extends BaseAction
 				previousStateTo[0] = csTo.state(to, 0, typeTo);
 				previousRotationTo[0] = csTo.rotation(to, 0, typeTo);
 				previousValueTo[0] = csTo.value(to, 0, typeTo);
+				
+				if(context.game().hiddenInformation())
+				{
+					previousHiddenFrom = new boolean[1][context.players().size()];
+					previousHiddenWhatFrom = new boolean[1][context.players().size()];
+					previousHiddenWhoFrom = new boolean[1][context.players().size()];
+					previousHiddenCountFrom = new boolean[1][context.players().size()];
+					previousHiddenRotationFrom = new boolean[1][context.players().size()];
+					previousHiddenStateFrom = new boolean[1][context.players().size()];
+					previousHiddenValueFrom = new boolean[1][context.players().size()];
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						previousHiddenFrom[0][pid] = csFrom.isHidden(pid, from, 0, typeFrom);
+						previousHiddenWhatFrom[0][pid] = csFrom.isHiddenWhat(pid, from, 0, typeFrom);
+						previousHiddenWhoFrom[0][pid] = csFrom.isHiddenWho(pid, from, 0, typeFrom);
+						previousHiddenCountFrom[0][pid] = csFrom.isHiddenCount(pid, from, 0, typeFrom);
+						previousHiddenStateFrom[0][pid] = csFrom.isHiddenState(pid, from, 0, typeFrom);
+						previousHiddenRotationFrom[0][pid] = csFrom.isHiddenRotation(pid, from, 0, typeFrom);
+						previousHiddenValueFrom[0][pid] = csFrom.isHiddenValue(pid, from, 0, typeFrom);
+					}
+					
+					previousHiddenTo = new boolean[1][context.players().size()];
+					previousHiddenWhatTo = new boolean[1][context.players().size()];
+					previousHiddenWhoTo = new boolean[1][context.players().size()];
+					previousHiddenCountTo = new boolean[1][context.players().size()];
+					previousHiddenRotationTo = new boolean[1][context.players().size()];
+					previousHiddenStateTo = new boolean[1][context.players().size()];
+					previousHiddenValueTo = new boolean[1][context.players().size()];
+					
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						previousHiddenTo[0][pid] = csTo.isHidden(pid, to, 0, typeTo);
+						previousHiddenWhatTo[0][pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
+						previousHiddenWhoTo[0][pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
+						previousHiddenCountTo[0][pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
+						previousHiddenStateTo[0][pid] = csTo.isHiddenState(pid, to, 0, typeTo);
+						previousHiddenRotationTo[0][pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
+						previousHiddenValueTo[0][pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
+					}
+				}
 			}
 			else // Stacking game.
 			{
@@ -259,13 +299,6 @@ public class ActionMoveTopPiece extends BaseAction
 				previousStateFrom = new int[sizeStackFrom];
 				previousRotationFrom = new int[sizeStackFrom];
 				previousValueFrom = new int[sizeStackFrom];
-				previousHiddenFrom = new boolean[sizeStackFrom][];
-				previousHiddenWhatFrom = new boolean[sizeStackFrom][];
-				previousHiddenWhoFrom = new boolean[sizeStackFrom][];
-				previousHiddenCountFrom = new boolean[sizeStackFrom][];
-				previousHiddenRotationFrom = new boolean[sizeStackFrom][];
-				previousHiddenStateFrom = new boolean[sizeStackFrom][];
-				previousHiddenValueFrom = new boolean[sizeStackFrom][];
 				
 				for(int lvl = 0 ; lvl < sizeStackFrom; lvl++)
 				{
@@ -277,14 +310,13 @@ public class ActionMoveTopPiece extends BaseAction
 					
 					if(context.game().hiddenInformation())
 					{
-						previousHiddenFrom[lvl] = new boolean[context.players().size()];
-						previousHiddenWhatFrom[lvl] = new boolean[context.players().size()];
-						previousHiddenWhoFrom[lvl] =  new boolean[context.players().size()];
-						previousHiddenCountFrom[lvl] =  new boolean[context.players().size()];
-						previousHiddenStateFrom[lvl] =  new boolean[context.players().size()];
-						previousHiddenRotationFrom[lvl] =  new boolean[context.players().size()];
-						previousHiddenValueFrom[lvl] =  new boolean[context.players().size()];
-						
+						previousHiddenFrom = new boolean[sizeStackFrom][context.players().size()];
+						previousHiddenWhatFrom = new boolean[sizeStackFrom][context.players().size()];
+						previousHiddenWhoFrom = new boolean[sizeStackFrom][context.players().size()];
+						previousHiddenCountFrom = new boolean[sizeStackFrom][context.players().size()];
+						previousHiddenRotationFrom = new boolean[sizeStackFrom][context.players().size()];
+						previousHiddenStateFrom = new boolean[sizeStackFrom][context.players().size()];
+						previousHiddenValueFrom = new boolean[sizeStackFrom][context.players().size()];
 						for (int pid = 1; pid < context.players().size(); pid++)
 						{
 							previousHiddenFrom[lvl][pid] = csFrom.isHidden(pid, from, lvl, typeFrom);
@@ -304,13 +336,6 @@ public class ActionMoveTopPiece extends BaseAction
 				previousStateTo = new int[sizeStackTo];
 				previousRotationTo = new int[sizeStackTo];
 				previousValueTo = new int[sizeStackTo];
-				previousHiddenTo = new boolean[sizeStackTo][];
-				previousHiddenWhatTo = new boolean[sizeStackTo][];
-				previousHiddenWhoTo = new boolean[sizeStackTo][];
-				previousHiddenCountTo = new boolean[sizeStackTo][];
-				previousHiddenRotationTo = new boolean[sizeStackTo][];
-				previousHiddenStateTo = new boolean[sizeStackTo][];
-				previousHiddenValueTo = new boolean[sizeStackTo][];
 				for(int lvl = 0 ; lvl < sizeStackTo; lvl++)
 				{
 					previousWhatTo[lvl] = csTo.what(to, lvl, typeTo);
@@ -321,14 +346,13 @@ public class ActionMoveTopPiece extends BaseAction
 					
 					if(context.game().hiddenInformation())
 					{
-						previousHiddenTo[lvl] = new boolean[context.players().size()];
-						previousHiddenWhatTo[lvl] = new boolean[context.players().size()];
-						previousHiddenWhoTo[lvl] =  new boolean[context.players().size()];
-						previousHiddenCountTo[lvl] =  new boolean[context.players().size()];
-						previousHiddenStateTo[lvl] =  new boolean[context.players().size()];
-						previousHiddenRotationTo[lvl] =  new boolean[context.players().size()];
-						previousHiddenValueTo[lvl] =  new boolean[context.players().size()];
-						
+						previousHiddenTo = new boolean[sizeStackTo][context.players().size()];
+						previousHiddenWhatTo = new boolean[sizeStackTo][context.players().size()];
+						previousHiddenWhoTo = new boolean[sizeStackTo][context.players().size()];
+						previousHiddenCountTo = new boolean[sizeStackTo][context.players().size()];
+						previousHiddenRotationTo = new boolean[sizeStackTo][context.players().size()];
+						previousHiddenStateTo = new boolean[sizeStackTo][context.players().size()];
+						previousHiddenValueTo = new boolean[sizeStackTo][context.players().size()];
 						for (int pid = 1; pid < context.players().size(); pid++)
 						{
 							previousHiddenTo[lvl][pid] = csTo.isHidden(pid, to, lvl, typeTo);
