@@ -47,7 +47,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = true;
+		final boolean stateComparaison = false;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -111,8 +111,12 @@ public class TestTrialsUndo
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "L Game";
-		final String gameToSkip = "Galatjang";
+		final String gameToReached = "";
+		final ArrayList<String> gamesToSkip = new ArrayList<String>();
+		gamesToSkip.add("Galatjang");
+		gamesToSkip.add("Seesaw Draughts");
+		gamesToSkip.add("Sahkku");
+		gamesToSkip.add("Kriegsspiel");
 
 		final long startTime = System.currentTimeMillis();
 
@@ -127,7 +131,15 @@ public class TestTrialsUndo
 				if (!gameReached)
 					continue;
 
-				if (!gameToSkip.equals("") && fileEntry.getName().contains(gameToSkip))
+				boolean skip = false;
+				for(String gameToSkip : gamesToSkip)
+					if (!gameToSkip.equals("") && fileEntry.getName().contains(gameToSkip))
+						{
+						skip = true;
+						break;
+						}
+				
+				if(skip)
 					continue;
 
 				final String ludPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
@@ -414,7 +426,9 @@ public class TestTrialsUndo
 											
 											if(cs.isEmpty(index, type) != csToCompare.isEmpty(index, type))
 											{
-												System.out.println(type + " != Empty at  " + index);
+												System.out.println("IN MOVE " + trial.numberRealMoves() + " " + type + " != Empty at  " + index);
+												System.out.println("correct one is " + csToCompare.isEmpty(index, type));
+												System.out.println("undo one is " + cs.isEmpty(index, type));
 												fail();
 											}
 											

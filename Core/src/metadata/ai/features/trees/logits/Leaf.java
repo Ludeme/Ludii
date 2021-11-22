@@ -25,7 +25,7 @@ public class Leaf extends LogitNode
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Defines the feature (condition), and the two branches.
+	 * Defines the reamining feautures (used in linear model) and their weights.
 	 * @param features List of remaining features to evaluate and their weights.
 	 * 
 	 * @example (leaf { (pair "Intercept" 1.0) })
