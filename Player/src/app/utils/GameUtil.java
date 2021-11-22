@@ -1,5 +1,6 @@
 package app.utils;
 
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +143,11 @@ public class GameUtil
 		}
 
 		MoveHandler.checkMoveWarnings(app);
-		app.repaint();
+		
+		EventQueue.invokeLater(() -> 
+		{
+			app.repaint();
+		});
 	}
 	
 	//-------------------------------------------------------------------------
