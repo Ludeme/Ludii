@@ -35,6 +35,9 @@ import other.GameLoader;
  * Copy "TrialsRandom.zip" into "Ludii/Trials/", and extract the zip to a "TrialsRandom" folder (just right click and select "Extract Here"). Making the fullPath "Ludii/Trials/TrialsRandom/".
  * Run CompareAllDistanceMetrics.java
  * Output for each game/ruleset is stored in Ludii/Mining/res/gameDistance/
+ * "byGame" folder stores the distance from a specific ruleset to all other games for all metrics.
+ * "byMetric" folder stores the distance between all ruleset pairs for a specific metric.
+ * 
  * Make sure to set the "overrideStoredVocabularies" variable to true if any trials or games have changed.
  * 
  * @author matthew.stephenson
@@ -86,6 +89,7 @@ public class CompareAllDistanceMetrics
 	 */
 	private static void recordAllComparisonDistances(final String[] gamesToCompare, final String[] rulesetsToCompare)
 	{
+		// [Game, {Game, {DistanceMetric, Value}}]
 		final List<Map<String, Map<String, Double>>> allGameDistances = new ArrayList<>();
 		
 		for (int i = 0; i < gamesToCompare.length; i++)
