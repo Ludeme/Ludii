@@ -49,6 +49,7 @@ public final class ToImage
 	{
 		final BufferedImage img = toImage(qr, scale, border, 0xFFFFFF, 0x000000);
 		insertLudiiLogo(img, scale, false);
+		insertTeardropMarkers(img, qr, scale, border);
 		return img;
 	}
 	
@@ -97,7 +98,7 @@ public final class ToImage
 			}
 		return img;
 	}
-	
+
 	/**
 	 * Insert the Ludii logo in the centre of the image.
 	 * Destructively modifies the code, so use MEDIUM error correction level or better!
@@ -157,6 +158,140 @@ public final class ToImage
         g2d.setStroke(new BasicStroke(sw, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     	g2d.draw(path);
 	}	
+	
+	
+	/**
+	 * Make the three corner markers rounded teardop shapes.
+	 * @param img
+	 * @param scale
+	 * @param invert
+	 */
+	public static void insertTeardropMarkers
+	(
+		final BufferedImage img, final QrCode qr, final int scale, final int border
+	)
+	{
+		// . . . . . . .
+		// . . o o o . .
+		// . o . . . o .
+		// . o . . . o .
+		// . o . . . o .
+		// . . o o o o . 
+		// . . . . . . .
+		
+		// Determine marker size
+		final int sx = img.getWidth();
+		final int sy = img.getHeight();
+		
+//		final int cx = sx / 2;
+//		final int cy = sy / 2;
+
+		// Determine marker size
+		int sz = -1;
+		int numOff = 0;
+		for (int i = 0; i < sx / scale; i++)
+		{
+			final boolean on = qr.getModule(i, 2);
+			//System.out.println(i + ": on=" + on);
+			if (!on)
+			{
+				numOff++;
+				if (numOff == 3)
+				{
+					sz = i;
+					break;
+				}
+			}
+		}
+		//System.out.println("sz=" + sz);
+		
+		final int rndO = 4 * scale; 
+		final int rndI = 2 * scale; 
+		
+	 	Graphics2D g2d = (Graphics2D)img.getGraphics();
+    	g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    	g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+		final float sw = scale;
+		g2d.setStroke(new BasicStroke(sw, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+    			
+		int a = border * scale;
+		int b = a + scale;
+		int c = b + scale;
+		int f = (border + sz) * scale;
+		int e = f - scale;
+		int d = e - scale;
+		int m = (a + f) / 2;
+
+		final int ab = (a + b) / 2;
+		final int ef = (e + f) / 2;
+		
+		// Top left marker
+		g2d.setColor(Color.white);
+		g2d.fillRect(a, a, sz * scale, sz * scale);
+		
+		g2d.setColor(Color.black);		
+		g2d.drawRoundRect((a + b) / 2, (a + b) / 2, (sz - 1) * scale, (sz - 1) * scale, rndO, rndO);
+ 		g2d.fillRoundRect(c, c, (sz - 4) * scale, (sz - 4) * scale, rndI, rndI);
+    	
+ 		g2d.setColor(Color.white);
+		g2d.fillRect(m+1, m+1, sz*scale/2+1, sz*scale/2+1);
+
+		g2d.setColor(Color.black);
+		g2d.fillRect(m, m, d-m, d-m);
+		
+		final GeneralPath path = new GeneralPath();
+		path.moveTo( m, ef);
+		path.lineTo(ef, ef);
+		path.lineTo(ef, m);
+		g2d.draw(path);
+
+		// Bottom left marker
+		int dx = 0;
+		int dy = sy - (2 * border + sz) * scale;
+		
+		g2d.setColor(Color.white);
+		g2d.fillRect(dx+a, dy+a, sz * scale, sz * scale);
+		
+		g2d.setColor(Color.black);		
+		g2d.drawRoundRect(dx+(a + b) / 2, dy+(a + b) / 2, (sz - 1) * scale, (sz - 1) * scale, rndO, rndO);
+ 		g2d.fillRoundRect(dx+c, dy+c, (sz - 4) * scale, (sz - 4) * scale, rndI, rndI);
+    	
+ 		g2d.setColor(Color.white);
+		g2d.fillRect(dx+m+1, dy+a-1, sz*scale/2+1, sz*scale/2+1);
+
+		g2d.setColor(Color.black);
+		g2d.fillRect(dx+m, dy+c, d-m, d-m);
+		
+		path.reset();
+		path.moveTo(dx+ m, dy+ab);
+		path.lineTo(dx+ef, dy+ab);
+		path.lineTo(dx+ef, dy+m);
+		g2d.draw(path);
+
+		// Top right marker
+		dx = sx - (2 * border + sz) * scale;
+		dy = 0;
+		
+		g2d.setColor(Color.white);
+		g2d.fillRect(dx+a, dy+a, sz * scale, sz * scale);
+		
+		g2d.setColor(Color.black);		
+		g2d.drawRoundRect(dx+(a + b) / 2, dy+(a + b) / 2, (sz - 1) * scale, (sz - 1) * scale, rndO, rndO);
+ 		g2d.fillRoundRect(dx+c, dy+c, (sz - 4) * scale, (sz - 4) * scale, rndI, rndI);
+    	
+ 		g2d.setColor(Color.white);
+		g2d.fillRect(dx+a-1, dy+m+1, sz*scale/2+1, sz*scale/2+1);
+
+		g2d.setColor(Color.black);
+		g2d.fillRect(dx+c, dy+m, d-m, d-m);
+		
+		path.reset();
+		path.moveTo(dx+ab, dy+m);
+		path.lineTo(dx+ab, dy+ef);
+		path.lineTo(dx+ m, dy+ef);
+		g2d.draw(path);
+	}
 	
 //	// Helper function to reduce code duplication.
 //	private static void writePng(BufferedImage img, String filepath) throws IOException 
