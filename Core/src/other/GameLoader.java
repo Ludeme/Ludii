@@ -443,7 +443,7 @@ public final class GameLoader
 		for (final String s : choices)
 		{
 			// Temporary restriction to check smaller set of games
-			if (!s.contains("Bagh"))
+			if (!s.contains("hunt") || s.contains("museum"))
 				continue;
 			
 			if (!FileHandling.shouldIgnoreLudAnalysis(s))
