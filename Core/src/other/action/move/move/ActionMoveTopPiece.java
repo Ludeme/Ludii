@@ -146,6 +146,10 @@ public class ActionMoveTopPiece extends BaseAction
 	
 	//-------------------------------------------------------------------------
 	
+	private Action actionLargePiece = null;
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param typeFrom   The graph element type of the from site.
 	 * @param from       From site index.
@@ -205,8 +209,8 @@ public class ActionMoveTopPiece extends BaseAction
 			piece = context.components()[what];
 			if(piece.isLargePiece())
 			{
-				Action largeMove = new ActionMoveLargePiece(typeFrom, from, typeTo, to, state, rotation, value);
-				largeMove.apply(context, store);
+				actionLargePiece = new ActionMoveLargePiece(typeFrom, from, typeTo, to, state, rotation, value);
+				actionLargePiece.apply(context, store);
 				return this;
 			}
 		}
@@ -527,6 +531,13 @@ public class ActionMoveTopPiece extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		// If a large piece was moved we call the right class.
+		if(actionLargePiece != null)
+		{
+			actionLargePiece.undo(context);
+			return this;
+		}
+		
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final int contIdTo = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState csFrom = context.state().containerStates()[contIdFrom];

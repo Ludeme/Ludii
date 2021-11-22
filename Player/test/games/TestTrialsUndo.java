@@ -111,7 +111,7 @@ public class TestTrialsUndo
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "Deka";
+		final String gameToReached = "";
 		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
@@ -858,9 +858,7 @@ public class TestTrialsUndo
 						final List<Action> loadedAllActions = loadedMoves.get(moveIdx-1).getActionsWithConsequences(context);
 						final List<Action> trialMoveAllActions = trial.getMove(moveIdx-1).getActionsWithConsequences(context);
 						assert (loadedAllActions.equals(trialMoveAllActions)) : 
-						("Loaded Move Actions = "
-								+ loadedAllActions + ", trial actions = "
-								+ trialMoveAllActions);
+						("Loaded Move Actions = " + loadedAllActions + ", trial actions = " + trialMoveAllActions);
 						
 						final Move loadedMove = loadedMoves.get(moveIdx);
 						final List<Action> loadedMoveAllActions = loadedMove.getActionsWithConsequences(context);
