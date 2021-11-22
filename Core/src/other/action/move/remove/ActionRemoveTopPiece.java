@@ -104,7 +104,6 @@ public class ActionRemoveTopPiece extends BaseAction
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
 		final ContainerState cs = context.state().containerStates()[contID];
-		
 		final boolean requiresStack = game.isStacking();
 		
 		// Keep in memory the data of the site from and to (for undo method)
