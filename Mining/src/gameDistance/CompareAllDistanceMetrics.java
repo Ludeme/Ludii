@@ -86,17 +86,45 @@ public class CompareAllDistanceMetrics
 	 */
 	private static void recordAllComparisonDistances(final String[] gamesToCompare, final String[] rulesetsToCompare)
 	{
+		final List<Map<String, Map<String, Double>>> allGameDistances = new ArrayList<>();
+		
+		for (int i = 0; i < gamesToCompare.length; i++)
+		{			
+			final Map<String, Map<String, Double>> gameDistances = new HashMap<>();
+			
+			for (int j = 0; j < gamesToCompare.length; j++)
+			{
+				gameDistances.put
+				(
+					gamesToCompare[j] + "_" + rulesetsToCompare[j], 
+					compareTwoGames(GameLoader.loadGameFromName(gamesToCompare[i], rulesetsToCompare[i]), GameLoader.loadGameFromName(gamesToCompare[j], rulesetsToCompare[j]))
+				);
+			}
+			
+			allGameDistances.add(gameDistances);
+		}
+		
+		storeByGameResults(gamesToCompare, rulesetsToCompare, allGameDistances);
+		storeByMetricResults(gamesToCompare, rulesetsToCompare, allGameDistances);
+	}
+	
+	//---------------------------------------------------------------------
+	
+	/**
+	 * Stores the distance results in a set of .csv files, with each file representing a single game and its distance to all other games.
+	 * @param gamesToCompare
+	 * @param rulesetsToCompare
+	 * @param allGameDistances
+	 */
+	@SuppressWarnings("unchecked")
+	private static void storeByGameResults(final String[] gamesToCompare, final String[] rulesetsToCompare, final List<Map<String, Map<String, Double>>> allGameDistances)
+	{
 		for (int i = 0; i < gamesToCompare.length; i++)
 		{
 			// Create output file.
-			System.out.println("New Game!");
-			System.out.println(gamesToCompare[i]);
-			final File outputFile = new File
-					(outputPath + 
-							gamesToCompare[i].split("\\/")[gamesToCompare[i].split("\\/").length-1] + 
-							"_" + 
-							rulesetsToCompare[i].split("\\/")[rulesetsToCompare[i].split("\\/").length-1] + 
-							".csv");
+			final File outputFile = new File(outputPath + "output/byGame/" +
+											 gamesToCompare[i].split("\\/")[gamesToCompare[i].split("\\/").length-1] + "_" + 
+											 rulesetsToCompare[i].split("\\/")[rulesetsToCompare[i].split("\\/").length-1] + ".csv");
 			try
 			{
 				outputFile.createNewFile();
@@ -105,36 +133,22 @@ public class CompareAllDistanceMetrics
 			{
 				e1.printStackTrace();
 			} 
-
+			
 			// Store distances in output file.
 			try (final FileWriter myWriter = new FileWriter(outputFile))
 			{
-				final Map<String, Map<String, Double>> allGameDistances = new HashMap<>();
-				
-				for (int j = 0; j < gamesToCompare.length; j++)
-				{
-					allGameDistances.put
-					(
-						gamesToCompare[j] + "_" + rulesetsToCompare[j], 
-						compareTwoGames(GameLoader.loadGameFromName(gamesToCompare[i], rulesetsToCompare[i]), GameLoader.loadGameFromName(gamesToCompare[j], rulesetsToCompare[j]))
-					);
-				}
-				
 				// Write the top row of the csv
 				String topRow = "GameName,Id";
-				@SuppressWarnings("unchecked")
-				final List<String> distanceNames = new ArrayList<>(((Map<String, Double>) allGameDistances.values().toArray()[0]).keySet());
+				final List<String> distanceNames = new ArrayList<>(((Map<String, Double>) allGameDistances.get(i).values().toArray()[0]).keySet());
 				for (final String distance : distanceNames)
-				{
 					topRow += "," + distance;
-				}
 				myWriter.write(topRow + "\n");
 				
-				for (final Map.Entry<String, Map<String, Double>> gameEntry : allGameDistances.entrySet()) 
+				// Store all distances for this ruleset.
+				for (final Map.Entry<String, Map<String, Double>> gameEntry : allGameDistances.get(i).entrySet()) 
 				{
 				    final String gameName = gameEntry.getKey();
-				    final List<String> row =  new ArrayList<>(distanceNames);
-				    
+
 				    // Get corresponding ruleset Id.
 				    final String[] nameArray = gameName.split("_")[0].split("/");
 				    final String formattedGameName = nameArray[nameArray.length-1].substring(0,nameArray[nameArray.length-1].length()-4);
@@ -143,6 +157,7 @@ public class CompareAllDistanceMetrics
 				    	formattedRulesetName = gameName.split("_")[1];
 				    final int rulesetId = DatabaseInformation.getRulesetId(formattedGameName, formattedRulesetName);
 				    
+				    final List<String> row =  new ArrayList<>(distanceNames);
 				    for (final Map.Entry<String, Double> distanceEntry : gameEntry.getValue().entrySet()) 
 					{
 				    	final String distanceMetric = distanceEntry.getKey();
@@ -163,6 +178,76 @@ public class CompareAllDistanceMetrics
 		}
 	}
 	
+	//---------------------------------------------------------------------
+	
+	/**
+	 * Stores the distance results in a set of .csv files, with each file representing a single distance metric for all game-distance pairs.
+	 * @param gamesToCompare
+	 * @param rulesetsToCompare
+	 * @param allGameDistances
+	 */
+	@SuppressWarnings("unchecked")
+	private static void storeByMetricResults(final String[] gamesToCompare, final String[] rulesetsToCompare, final List<Map<String, Map<String, Double>>> allGameDistances)
+	{
+		final List<String> distanceNames = new ArrayList<>(((Map<String, Double>) allGameDistances.get(0).values().toArray()[0]).keySet());
+		
+		for (int i = 0; i < distanceNames.size(); i++)
+		{
+			// Create output file.
+			final File outputFile = new File(outputPath + "output/byMetric/" + distanceNames.get(i) + ".csv");
+			try
+			{
+				outputFile.createNewFile();
+			}
+			catch (final IOException e1)
+			{
+				e1.printStackTrace();
+			} 
+			
+			// Store distances in output file.
+			try (final FileWriter myWriter = new FileWriter(outputFile))
+			{
+				final List<String> allRulesetIds = new ArrayList<>();
+				
+				// Write the top row of the file
+				String topRow = "Id";
+				for (final Map.Entry<String, Map<String, Double>> gameEntry : allGameDistances.get(0).entrySet()) 
+				{
+					final String gameName = gameEntry.getKey();
+				    
+				    // Get corresponding ruleset Id.
+				    final String[] nameArray = gameName.split("_")[0].split("/");
+				    final String formattedGameName = nameArray[nameArray.length-1].substring(0,nameArray[nameArray.length-1].length()-4);
+				    String formattedRulesetName = "";
+				    if (gameName.split("_").length > 1)
+				    	formattedRulesetName = gameName.split("_")[1];
+				    final int rulesetId = DatabaseInformation.getRulesetId(formattedGameName, formattedRulesetName);
+				    allRulesetIds.add(String.valueOf(rulesetId));
+				    
+				    topRow += "," + rulesetId;
+				}
+				myWriter.write(topRow + "\n");
+
+				for (int j = 0; j < gamesToCompare.length; j++)
+				{
+					String row = allRulesetIds.get(j);
+					
+					// Store all distances for this ruleset.
+					for (final Map.Entry<String, Map<String, Double>> gameEntry1 : allGameDistances.get(j).entrySet()) 
+						row += "," + gameEntry1.getValue().get(distanceNames.get(i));
+					
+					myWriter.write(row + "\n");
+				}
+
+				myWriter.close();
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
 	//---------------------------------------------------------------------
 	
 	/**
@@ -250,8 +335,8 @@ public class CompareAllDistanceMetrics
 		
 		final Map<String, Double> defaultBooleanConceptVocabulary = DistanceUtils.defaultVocabulary(booleanConceptDataset, gameA, gameB);
 		
-		final Map<String, Double> defaultMoveConceptVocabulary = DistanceUtils.defaultVocabulary(moveConceptDataset, gameA, gameB);
-		final Map<String, Double> defaultMoveConceptNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), gameA, gameB);
+		//final Map<String, Double> defaultMoveConceptVocabulary = DistanceUtils.defaultVocabulary(moveConceptDataset, gameA, gameB);
+		//final Map<String, Double> defaultMoveConceptNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), gameA, gameB);
 		
 		//---------------------------------------------------------------------
 		// JensenShannonDivergence
@@ -260,14 +345,14 @@ public class CompareAllDistanceMetrics
 		
 		allDistances.put("JSD_ludeme", jensenShannonDivergenceMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 		allDistances.put("JSD_booleanConcept", jensenShannonDivergenceMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("JSD_moveConcept", jensenShannonDivergenceMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
+		//allDistances.put("JSD_moveConcept", jensenShannonDivergenceMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
 		
 		allDistances.put("JSD_ludeme_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		allDistances.put("JSD_moveCooncept_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+		//allDistances.put("JSD_moveCooncept_ngram", jensenShannonDivergenceMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
 		allDistances.put("JSD_ludeme_TFIDF", jensenShannonDivergenceMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
 		allDistances.put("JSD_booleanConcept_TFIDF", jensenShannonDivergenceMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("JSD_moveConcept_TFIDF", jensenShannonDivergenceMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+		//allDistances.put("JSD_moveConcept_TFIDF", jensenShannonDivergenceMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Cosine
@@ -276,14 +361,14 @@ public class CompareAllDistanceMetrics
 		
 		allDistances.put("Cosine_ludeme", cosineMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 		allDistances.put("Cosine_booleanConcept", cosineMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("Cosine_moveConcept", cosineMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
+		//allDistances.put("Cosine_moveConcept", cosineMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
 		
 		allDistances.put("Cosine_ludeme_ngram", cosineMetric.distance(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		allDistances.put("Cosine_moveCooncept_ngram", cosineMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+		//allDistances.put("Cosine_moveCooncept_ngram", cosineMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
 		allDistances.put("Cosine_ludeme_TFIDF", cosineMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
 		allDistances.put("Cosine_booleanConcept_TFIDF", cosineMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("Cosine_moveConcept_TFIDF", cosineMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+		//allDistances.put("Cosine_moveConcept_TFIDF", cosineMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Jaccard
@@ -292,14 +377,14 @@ public class CompareAllDistanceMetrics
 		
 		allDistances.put("Jaccard_ludeme", jaccardMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 		allDistances.put("Jaccard_booleanConcept", jaccardMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("Jaccard_moveConcept", jaccardMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
+		//allDistances.put("Jaccard_moveConcept", jaccardMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
 		
 		allDistances.put("Jaccard_ludeme_ngram", jaccardMetric.distance(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		allDistances.put("Jaccard_moveCooncept_ngram", jaccardMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+		//allDistances.put("Jaccard_moveCooncept_ngram", jaccardMetric.distance(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
 		allDistances.put("Jaccard_ludeme_TFIDF", jaccardMetric.distance(ludemeDataset, fullLudemeVocabulary, gameA, gameB));
 		allDistances.put("Jaccard_booleanConcept_TFIDF", jaccardMetric.distance(booleanConceptDataset, fullBooleanConceptVocabulary, gameA, gameB));
-		allDistances.put("Jaccard_moveConcept_TFIDF", jaccardMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
+		//allDistances.put("Jaccard_moveConcept_TFIDF", jaccardMetric.distance(moveConceptDataset, fullMoveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Levenshtein
@@ -307,7 +392,7 @@ public class CompareAllDistanceMetrics
 		final DistanceMetric levenshteinMetric = new Levenshtein();
 		
 		allDistances.put("Levenshtein_ludeme", levenshteinMetric.distance(ludemeDataset, null, gameA, gameB));
-		allDistances.put("Levenshtein_moveConcept", levenshteinMetric.distance(moveConceptDataset, null, gameA, gameB));
+		//allDistances.put("Levenshtein_moveConcept", levenshteinMetric.distance(moveConceptDataset, null, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Local Alignment
@@ -315,7 +400,7 @@ public class CompareAllDistanceMetrics
 		final DistanceMetric localAlignmentMetric = new LocalAlignment();
 		
 		allDistances.put("LocalAlignment_ludeme", localAlignmentMetric.distance(ludemeDataset, null, gameA, gameB));
-		allDistances.put("LocalAlignment_moveConcept", localAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
+		//allDistances.put("LocalAlignment_moveConcept", localAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Repeated Local Alignment
@@ -323,7 +408,7 @@ public class CompareAllDistanceMetrics
 		final DistanceMetric repeatedLocalAlignmentMetric = new RepeatedLocalAlignment();
 		
 		allDistances.put("RepeatedLocalAlignment_ludeme", repeatedLocalAlignmentMetric.distance(ludemeDataset, null, gameA, gameB));
-		allDistances.put("RepeatedLocalAlignment_moveConcept", repeatedLocalAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
+		//allDistances.put("RepeatedLocalAlignment_moveConcept", repeatedLocalAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Global Alignment
@@ -331,7 +416,7 @@ public class CompareAllDistanceMetrics
 		final DistanceMetric globalAlignmentMetric = new GlobalAlignment();
 		
 		allDistances.put("GlobalAlignment_ludeme", globalAlignmentMetric.distance(ludemeDataset, null, gameA, gameB));
-		allDistances.put("GlobalAlignment_moveConcept", globalAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
+		//allDistances.put("GlobalAlignment_moveConcept", globalAlignmentMetric.distance(moveConceptDataset, null, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Zhang Shasha
