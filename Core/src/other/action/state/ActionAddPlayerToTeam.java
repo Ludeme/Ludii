@@ -90,7 +90,7 @@ public final class ActionAddPlayerToTeam extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().setPlayerToTeam(player, previousTeam);
 		return this;

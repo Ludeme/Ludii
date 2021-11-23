@@ -135,7 +135,7 @@ public final class ActionVote extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final TIntArrayList votes = context.state().votes();
 

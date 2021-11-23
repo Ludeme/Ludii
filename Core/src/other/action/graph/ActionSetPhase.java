@@ -100,7 +100,7 @@ public final class ActionSetPhase extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		context.topology().getGraphElements(type).get(to).setPhase(previousPhase);

@@ -345,7 +345,7 @@ public final class ActionMoveN extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final int contIdFrom = typeFrom.equals(SiteType.Cell) ? context.containerId()[from] : 0;
 		final int contIdTo = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;

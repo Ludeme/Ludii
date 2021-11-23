@@ -84,7 +84,7 @@ public class ActionRememberValue extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		if (name == null)
 		{

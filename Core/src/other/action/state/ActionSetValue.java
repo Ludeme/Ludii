@@ -157,7 +157,7 @@ public class ActionSetValue extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
 		final ContainerState cs = context.state().containerStates()[cid];

@@ -64,7 +64,7 @@ public class ActionStoreStateInContext extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().restoreCurrentState(previousValue);
 		return this;

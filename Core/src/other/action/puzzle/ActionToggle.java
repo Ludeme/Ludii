@@ -92,7 +92,7 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = context.containerId()[0];

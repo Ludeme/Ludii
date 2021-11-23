@@ -153,7 +153,7 @@ public class ActionSetState extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int cid = type.equals(SiteType.Cell) ?  context.containerId()[to] : 0;

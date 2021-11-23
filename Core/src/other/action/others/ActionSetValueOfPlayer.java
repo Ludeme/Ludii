@@ -84,7 +84,7 @@ public final class ActionSetValueOfPlayer extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().setValueForPlayer(player, previousValue);
 		return this;

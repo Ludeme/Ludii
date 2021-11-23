@@ -161,7 +161,7 @@ public class ActionSetCount extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final int contID = (previousType == SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState cs = context.state().containerStates()[contID];

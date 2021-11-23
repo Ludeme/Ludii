@@ -197,7 +197,7 @@ public final class ActionPromote extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;

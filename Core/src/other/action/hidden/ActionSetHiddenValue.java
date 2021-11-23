@@ -120,7 +120,7 @@ public final class ActionSetHiddenValue extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.containerState(context.containerId()[to]).setHiddenValue(context.state(), who, to, level, previousType, previousValue);
 		return this;

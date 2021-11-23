@@ -85,7 +85,7 @@ public final class ActionSetVar extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		if(previousValue == Constants.UNDEFINED)
 			context.state().removeKeyValue(name);

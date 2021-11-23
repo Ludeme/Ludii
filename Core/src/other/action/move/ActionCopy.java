@@ -228,7 +228,7 @@ public final class ActionCopy extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final Game game = context.game();
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];

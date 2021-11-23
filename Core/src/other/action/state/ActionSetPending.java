@@ -65,7 +65,7 @@ public final class ActionSetPending extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		// No need going to be reset in game.undo(...)
 		return this;

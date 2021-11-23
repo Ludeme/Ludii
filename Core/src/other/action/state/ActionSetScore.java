@@ -96,7 +96,7 @@ public final class ActionSetScore extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.setScore(player, previousScore);
 		return this;

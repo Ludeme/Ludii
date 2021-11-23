@@ -129,7 +129,7 @@ public final class ActionMove extends BaseAction
 	}
 
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		throw new UnsupportedOperationException("ActionMove.undo(): Should never be called directly.");
 	}

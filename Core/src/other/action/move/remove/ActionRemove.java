@@ -82,7 +82,7 @@ public class ActionRemove extends BaseAction
 	}
 
 	@Override
-	public Action undo(Context context)
+	public Action undo(Context context, boolean discard)
 	{
 		throw new UnsupportedOperationException("ActionRemove.undo(): Should never be called directly.");
 	}

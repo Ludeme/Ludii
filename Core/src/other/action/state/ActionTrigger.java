@@ -75,7 +75,7 @@ public final class ActionTrigger extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().triggers(player, false);
 		return this;

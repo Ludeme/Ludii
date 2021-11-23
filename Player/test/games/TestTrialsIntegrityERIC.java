@@ -208,6 +208,13 @@ public class TestTrialsIntegrityERIC
 							final List<Action> loadedAllActions = loadedMoves.get(moveIdx).getActionsWithConsequences(context);
 							final List<Action> trialMoveAllActions = trial.getMove(moveIdx).getActionsWithConsequences(context);
 							
+							if(!loadedAllActions.equals(trialMoveAllActions))
+							{
+								System.out.println("moveIdx = " + (moveIdx - trial.numInitialPlacementMoves()));
+								System.out.println("loadedAllActions = " + loadedAllActions);
+								System.out.println("trialMoveAllActions = " + trialMoveAllActions);
+							}
+							
 							assert (loadedAllActions.equals(trialMoveAllActions)) : 
 								("Loaded Move Actions = "
 										+ loadedAllActions + ", trial actions = "

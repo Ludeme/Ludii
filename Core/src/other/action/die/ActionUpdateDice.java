@@ -135,7 +135,7 @@ public final class ActionUpdateDice extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		if(newState < 0)
 			return this;

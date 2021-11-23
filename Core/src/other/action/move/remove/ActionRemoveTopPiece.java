@@ -237,7 +237,7 @@ public class ActionRemoveTopPiece extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final Game game = context.game();
 		final int contIdTo = type.equals(SiteType.Cell) ? context.containerId()[to] : 0;

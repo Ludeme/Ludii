@@ -575,7 +575,7 @@ public class ActionMoveTopPiece extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		// If a large piece was moved we call the right class.
 		if(actionLargePiece)

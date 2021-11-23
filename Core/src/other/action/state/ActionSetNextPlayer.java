@@ -79,7 +79,7 @@ public final class ActionSetNextPlayer extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().setNext(previousValue);
 		return this;

@@ -97,7 +97,7 @@ public class ActionUseDie extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().updateCurrentDice(previousCurrentDieValue, indexDie, indexHandDice);
 		return this;

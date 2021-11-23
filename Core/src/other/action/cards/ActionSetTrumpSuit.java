@@ -80,7 +80,7 @@ public class ActionSetTrumpSuit extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().setTrumpSuit(previousTrumpSuit);
 		return this;
