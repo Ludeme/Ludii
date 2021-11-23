@@ -131,46 +131,45 @@ public final class MaxMoves extends Effect
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param contextCopy The copy of the context.
+	 * @param context The context.
 	 * @param withValue If true, the capture has to maximise the values of the capturing pieces too.
 	 * @return the count of the replay of this move.
 	 */
-	private int getReplayCount(final Context contextCopy, final int count, final boolean withValue)
+	private int getReplayCount(final Context context, final int count, final boolean withValue)
 	{
-		if (contextCopy.state().prev() != contextCopy.state().mover() || contextCopy.trial().over())
+		if (context.state().prev() != context.state().mover() || context.trial().over())
 			return count;
 
-		final Moves legalMoves = contextCopy.game().moves(contextCopy);
+		final Moves legalMoves = context.game().moves(context);
 
 		final int[] replayCount = new int[legalMoves.moves().size()];
 
 		for (int i = 0; i < legalMoves.moves().size(); i++)
 		{
 			final Move newMove = legalMoves.moves().get(i);
-			final Context newContext = new TempContext(contextCopy);
-			newContext.game().apply(newContext, newMove);
+			context.game().apply(context, newMove);
 			if (!withValue)
 			{
-				replayCount[i] = getReplayCount(newContext, count + 1, withValue);
+				replayCount[i] = getReplayCount(context, count + 1, withValue);
 			}
 			else
 			{
 				int numCaptureWithValue = 0;
-				final List<Action> actions = newMove.getActionsWithConsequences(contextCopy);
+				final List<Action> actions = newMove.getActionsWithConsequences(context);
 				for (final Action action : actions)
 				{
 					if (action != null && action.actionType().equals(ActionType.Remove))
 					{
 						final int site = action.to();
 						final SiteType type = action.toType();
-						final ContainerState cs = contextCopy.containerState(0);
+						final ContainerState cs = context.containerState(0);
 						final int value = cs.value(site, type);
 						numCaptureWithValue += value;
 					}
 				}
-				replayCount[i] = getReplayCount(newContext, count + numCaptureWithValue, withValue);
-				
+				replayCount[i] = getReplayCount(context, count + numCaptureWithValue, withValue);
 			}
+			context.game().undo(context);
 		}
 
 		int max = 0;
