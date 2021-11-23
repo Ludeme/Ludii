@@ -2421,7 +2421,10 @@ public class ExpertIteration
 						
 						// and special moves CSV
 						final String specialMovesCSVFilename = createCheckpointFilename("SpecialMoves_P" + p, nextCheckpoint, "csv");
-						try (final PrintWriter writer = new PrintWriter(specialMovesCSVFilename, "UTF-8"))
+						try 
+						(
+							final PrintWriter writer = new PrintWriter(outParams.outDir.getAbsolutePath() + File.separator + specialMovesCSVFilename, "UTF-8")
+						)
 						{
 							// Write header
 							writer.println
