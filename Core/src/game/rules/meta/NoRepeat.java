@@ -9,7 +9,6 @@ import game.types.state.GameType;
 import other.MetaRules;
 import other.concept.Concept;
 import other.context.Context;
-import other.context.TempContext;
 import other.move.Move;
 
 /**
@@ -67,22 +66,38 @@ public class NoRepeat extends MetaRule
 		{
 			if (move.isPass())
 				return true;
-			
-			final Context newContext = new TempContext(context);
-			move.apply(newContext, true);
+
+			context.storeCurrentData(); // We need to save the data before to apply the move.
+			final Move moveApplied = (Move) move.apply(context, true);
+			boolean noRepeat = true;
 			switch (type)
 			{
 				case PositionalInTurn:
-					return !context.trial().previousStateWithinATurn().contains(newContext.state().stateHash());
+				{
+					noRepeat = !context.trial().previousStateWithinATurn().contains(context.state().stateHash());
+					break;
+				}
 				case SituationalInTurn:
-					return !context.trial().previousStateWithinATurn().contains(newContext.state().fullHash());
+				{
+					noRepeat = !context.trial().previousStateWithinATurn().contains(context.state().fullHash());
+					break;
+				}
 				case Positional:
-					return !context.trial().previousState().contains(newContext.state().stateHash());
+				{
+					noRepeat = !context.trial().previousState().contains(context.state().stateHash());
+					break;
+				}
 				case Situational:
-					return !context.trial().previousState().contains(newContext.state().fullHash());
+				{
+					noRepeat = !context.trial().previousState().contains(context.state().fullHash());
+					break;
+				}
 				default:
 					break;
 			}
+
+			moveApplied.undo(context, true); // We undo the move.
+			return noRepeat;
 		}
 		return true;
 	}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import annotations.Hide;
@@ -622,14 +621,6 @@ public class Move extends BaseAction
 			final Trial trial = context.trial();
 			final State currentState = context.state();
 			final Game game = context.game();
-			
-			// Step 1: restore previous RNG.
-			trial.removeLastRNGStates();
-			if(!trial.RNGStates().isEmpty())
-			{
-				final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
-				context.rng().restoreState(previousRNGState);
-			}
 			
 			// Step 2: Restore the data modified by the last end rules or nextPhase.
 			// Get the previous end data.

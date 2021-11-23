@@ -3032,6 +3032,15 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
+			final Trial trial = context.trial();
+			// Step 1: restore previous RNG.
+			trial.removeLastRNGStates();
+			if(!trial.RNGStates().isEmpty())
+			{
+				final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
+				context.rng().restoreState(previousRNGState);
+			}
+			
 			final Move move = context.trial().lastMove();
 			move.undo(context, true);
 			return move;
