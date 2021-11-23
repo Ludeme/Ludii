@@ -492,6 +492,8 @@ public class ExpertIteration
 						break;
 					}
 					
+					final int thisIterationGameCounter = gameCounter;
+					
 					saveCheckpoints
 					(
 						gameCounter, 
@@ -545,7 +547,7 @@ public class ExpertIteration
 										
 										final long startTime = System.currentTimeMillis();
 										final BaseFeatureSet expandedFeatureSet;
-										if (!featureDiscoveryParams.useSpecialMovesExpanderSplit)
+										if (!featureDiscoveryParams.useSpecialMovesExpanderSplit || thisIterationGameCounter % 2 != 0)
 										{
 											expandedFeatureSet = 
 													expandFeatureSet
