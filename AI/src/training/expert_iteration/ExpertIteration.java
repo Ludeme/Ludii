@@ -65,6 +65,7 @@ import training.expert_iteration.params.TrainingParams;
 import training.feature_discovery.CorrelationBasedExpander;
 import training.feature_discovery.CorrelationErrorSignExpander;
 import training.feature_discovery.FeatureSetExpander;
+import training.feature_discovery.RandomExpander;
 import training.feature_discovery.SpecialMovesCorrelationExpander;
 import training.policy_gradients.Reinforce;
 import utils.AIUtils;
@@ -381,6 +382,8 @@ public class ExpertIteration
 				case "CorrelationErrorSignExpander":
 					featureSetExpander = new CorrelationErrorSignExpander();
 					break;
+				case "Random":
+					featureSetExpander = new RandomExpander();
 				default:
 					System.err.println("Did not recognise feature set expander type: " + featureDiscoveryParams.expanderType);
 					return;
@@ -2725,7 +2728,7 @@ public class ExpertIteration
 				.withNumVals(1)
 				.withType(OptionTypes.String)
 				.withDefault("CorrelationBasedExpander")
-				.withLegalVals("CorrelationBasedExpander", "CorrelationErrorSignExpander"));
+				.withLegalVals("CorrelationBasedExpander", "CorrelationErrorSignExpander", "Random"));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--train-tspg")
