@@ -507,6 +507,10 @@ public class ExpertIteration
 						tspgOptimisers,
 						valueFunctionOptimiser,
 						avgGameDurations,
+						featureOccurrences,
+						winningMovesFeatures,
+						losingMovesFeatures,
+						antiDefeatingMovesFeatures,
 						false
 					);
 
@@ -1003,7 +1007,7 @@ public class ExpertIteration
 					}
 				}
 				
-				// final forced save of checkpoints at end of run
+				// Final forced save of checkpoints at end of run
 				saveCheckpoints
 				(
 					gameCounter + 1, 
@@ -1019,36 +1023,16 @@ public class ExpertIteration
 					tspgOptimisers,
 					valueFunctionOptimiser,
 					avgGameDurations,
+					featureOccurrences,
+					winningMovesFeatures,
+					losingMovesFeatures,
+					antiDefeatingMovesFeatures,
 					true
 				);
 				
 				final String menagerieLog = menagerie.generateLog();
 				if (menagerieLog != null)
 					logLine(logWriter, menagerie.generateLog());
-				
-//				for (int p = 1; p < winningMovesFeatures.length; ++p)
-//				{
-//					System.out.println();
-//					System.out.println("Player " + p);
-//					System.out.println("Winning features: ");
-//					for (int i = winningMovesFeatures[p].nextSetBit(0); i >= 0; i = winningMovesFeatures[p].nextSetBit(i + 1))
-//					{
-//						if (featureOccurrences[p].getQuick(i) > 0L)
-//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-//					}
-//					System.out.println("Losing features: ");
-//					for (int i = losingMovesFeatures[p].nextSetBit(0); i >= 0; i = losingMovesFeatures[p].nextSetBit(i + 1))
-//					{
-//						if (featureOccurrences[p].getQuick(i) > 0L)
-//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-//					}
-//					System.out.println("Anti-defeating features: ");
-//					for (int i = antiDefeatingMovesFeatures[p].nextSetBit(0); i >= 0; i = antiDefeatingMovesFeatures[p].nextSetBit(i + 1))
-//					{
-//						if (featureOccurrences[p].getQuick(i) > 0L)
-//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-//					}
-//				}
 			}
 			
 			//-----------------------------------------------------------------
@@ -2345,6 +2329,10 @@ public class ExpertIteration
 				final Optimiser[] tspgOptimisers,
 				final Optimiser valueFunctionOptimiser,
 				final ExponentialMovingAverage[] avgGameDurations,
+				final TLongArrayList[] featureOccurrences,
+				final BitSet[] winningMovesFeatures,
+				final BitSet[] losingMovesFeatures,
+				final BitSet[] antiDefeatingMovesFeatures,
 				final boolean forced
 			)
 			{
@@ -2428,6 +2416,37 @@ public class ExpertIteration
 						final String gameDurationTrackerFilename = createCheckpointFilename("GameDurationTracker_P" + p, nextCheckpoint, "bin");
 						avgGameDurations[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + gameDurationTrackerFilename);
 						currentGameDurationTrackerFilenames[p] = gameDurationTrackerFilename;
+						
+						// and special moves CSV
+						final String specialMovesCSVFilename = createCheckpointFilename("SpecialMoves_P" + p, nextCheckpoint, "csv");
+						try (final PrintWriter writer = new PrintWriter(specialMovesCSVFilename, "UTF-8"))
+						{
+							// Write header
+							writer.println
+							(
+								StringRoutines.join(",", "SpatialFeatureIndex", "AlwaysWinning", "AlwaysLosing", "AlwaysAntiDefeating", "NumOccurrences")
+							);
+							
+							for (int i = 0; i < featureSets[p].getNumSpatialFeatures(); ++i)
+							{
+								writer.println
+								(
+									StringRoutines.join
+									(
+										",", 
+										String.valueOf(i),
+										winningMovesFeatures[p].get(i) ? "1" : "0",
+										losingMovesFeatures[p].get(i) ? "1" : "0",
+										antiDefeatingMovesFeatures[p].get(i) ? "1" : "0",
+										String.valueOf(featureOccurrences[p].getQuick(i))
+									)
+								);
+							}
+						} 
+						catch (final IOException e) 
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 				
