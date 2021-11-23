@@ -81,7 +81,7 @@ public class ManualGeneration
 		if (includeHandMoves && app.manager().ref().context().game().requiresHand())
 			DesktopApp.frame().setSize(800, 465);
 		else
-			DesktopApp.frame().setSize(300, 465);
+			DesktopApp.frame().setSize(410, 465);
 
 		// Generate all trials that will be used.
 		final List<Trial> generatedTrials = new ArrayList<>();
