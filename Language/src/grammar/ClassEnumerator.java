@@ -19,7 +19,7 @@ import java.util.jar.JarFile;
 
 /**
  * Routines for enumerating classes.
- * @author Dennis and cambolbro
+ * @author Dennis Soemers and cambolbro
  */
 public class ClassEnumerator 
 {
@@ -104,10 +104,18 @@ public class ClassEnumerator
 				final String entryName = entry.getName();
 				String className = null;
 				
-				//If content is a class save class name.
-				if(entryName.endsWith(".class") && entryName.startsWith(relPath) 
-						&& entryName.length() > (relPath.length() + "/".length())) {
-					className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
+				// If content is a class save class name.
+				if 
+				(
+					entryName.endsWith(".class")
+					&& 
+					entryName.startsWith(relPath) 
+					&& 
+					entryName.length() > (relPath.length() + "/".length())
+				) 
+				{
+					className = entryName.replace('/', '.').replace('\\', '.');
+					className = className.substring(0, className.length() - ".class".length());
 				}
 				
 	//			log("JarEntry '" + entryName + "'  =>  class '" + className + "'");

@@ -102,8 +102,10 @@ public class ClassEnumeratorFindAll
 				String className = null;
 
 				// If content is a class save class name.
-				if (entryName.endsWith(".class")) {
-					className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
+				if (entryName.endsWith(".class")) 
+				{
+					className = entryName.replace('/', '.').replace('\\', '.');
+					className = className.substring(0, className.length() - ".class".length());
 				}
 
 //				log("JarEntry '" + entryName + "'  =>  class '" + className + "'");
