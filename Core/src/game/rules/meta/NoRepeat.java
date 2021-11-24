@@ -140,7 +140,6 @@ public class NoRepeat extends MetaRule
 	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.CopyContext.id(), true);
 		concepts.set(Concept.PositionalSuperko.id(), true);
 		return concepts;
 	}

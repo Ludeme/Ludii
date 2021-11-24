@@ -8,7 +8,9 @@ import game.functions.booleans.BaseBooleanFunction;
 import game.rules.play.moves.Moves;
 import other.concept.Concept;
 import other.context.Context;
-import other.context.TempContext;
+import other.move.Move;
+import other.state.State;
+import other.state.zhash.HashedBitSet;
 
 /**
  * Checks if a list of moves is not empty.
@@ -56,12 +58,16 @@ public class CanMove extends BaseBooleanFunction
 	{
 		if (context.game().requiresVisited())
 		{
-			final Context newContext = new TempContext(context);
-			final int from = newContext.trial().lastMove().fromNonDecision();
-			final int to = newContext.trial().lastMove().toNonDecision();
-			newContext.state().visit(from);
-			newContext.state().visit(to);
-			return moves.canMove(newContext);
+			final Move lastMove = context.trial().lastMove();
+			final State state = context.state();
+			final int from = lastMove.fromNonDecision();
+			final int to = lastMove.toNonDecision();
+			HashedBitSet savedVisited = state.visited().clone();
+			state.visit(from);
+			state.visit(to);
+			boolean canMove = moves.canMove(context);
+			state.setVisited(savedVisited);
+			return canMove;
 		}
 		return moves.canMove(context);
 	}
@@ -80,8 +86,6 @@ public class CanMove extends BaseBooleanFunction
 		final BitSet concepts = new BitSet();
 		concepts.or(moves.concepts(game));
 		concepts.set(Concept.CanMove.id(), true);
-		if (game.requiresVisited())
-			concepts.set(Concept.CopyContext.id(), true);
 		return concepts;
 	}
 
