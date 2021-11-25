@@ -1,5 +1,8 @@
 package main.collections;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -215,6 +218,27 @@ public class ArrayUtils
 		}
 		
 		return sb.toString();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param numEntries
+	 * @param comp
+	 * @return A list of indices (ranging from 0 up to numEntries (exclusive), sorted
+	 * using the given comparator.
+	 */
+	public static List<Integer> sortedIndices(final int numEntries, final Comparator<Integer> comp)
+	{
+		final List<Integer> list = new ArrayList<Integer>(numEntries);
+		
+		for (int i = 0; i < numEntries; ++i)
+		{
+			list.add(Integer.valueOf(i));
+		}
+		list.sort(comp);
+		
+		return list;
 	}
 	
 	//-------------------------------------------------------------------------

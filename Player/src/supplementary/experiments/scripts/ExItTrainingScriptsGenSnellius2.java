@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import main.collections.ArrayUtils;
 import other.GameLoader;
 import supplementary.experiments.analysis.RulesetConceptsUCT;
 import utils.RulesetNames;
@@ -165,15 +167,29 @@ public class ExItTrainingScriptsGenSnellius2
 			
 			System.out.println("expected duration per trial for " + GAMES[i] + " = " + expectedTrialDurations[i]);
 		}
+		
+		final List<Integer> sortedGameIndices = ArrayUtils.sortedIndices(GAMES.length, new Comparator<Integer>()
+		{
+
+			@Override
+			public int compare(final Integer i1, final Integer i2) 
+			{
+				final double delta = expectedTrialDurations[i2.intValue()] - expectedTrialDurations[i1.intValue()];
+				if (delta < 0.0)
+					return -1;
+				if (delta > 0.0)
+					return 1;
+				return 0;
+			}
+			
+		});
 
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
-		for (final String gameName : GAMES)
+		for (int idx : sortedGameIndices)
 		{
-			final Game game = GameLoader.loadGameFromName(gameName);
-			
-			if (game == null)
-				throw new IllegalArgumentException("Cannot load game: " + gameName);
+			final Game game = compiledGames[idx];
+			final String gameName = GAMES[idx];
 			
 			for (final String variant : VARIANTS)
 			{
