@@ -3574,7 +3574,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 
 	/**
-	 * Set the options used when compiling this game
+	 * Set the options used when compiling this game.
+	 * 
+	 * NOTE: call hierarchy in Eclipse is not entirely accurate,
+	 * this method also gets called (through Reflection) by compiler!
+	 * 
 	 * @param options
 	 */
 	public void setOptions(final List<String> options) 
@@ -3589,9 +3593,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Ruleset getRuleset()
 	{
+		final List<String> allOptions = description().gameOptions().allOptionStrings(getOptions());
+		
 		for (final Ruleset r : description().rulesets())
 			if (!r.optionSettings().isEmpty())
-				if (r.optionSettings().equals(getOptions()))
+				if (r.optionSettings().equals(allOptions))
 					return r;
 		
 		return null;

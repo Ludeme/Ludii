@@ -15,6 +15,8 @@ import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import other.GameLoader;
+import supplementary.experiments.analysis.RulesetConceptsUCT;
+import utils.RulesetNames;
 
 /**
  * Generates job scripts to submit to SLURM for running ExIt training runs
@@ -25,6 +27,8 @@ import other.GameLoader;
  */
 public class ExItTrainingScriptsGenSnellius2
 {
+	
+	//-------------------------------------------------------------------------
 	
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
@@ -142,13 +146,30 @@ public class ExItTrainingScriptsGenSnellius2
 			scriptsDir += "/";
 		
 		final String userName = argParse.getValueString("--user-name");
+		
+		// Sort games in decreasing order of expected duration (in moves per trial)
+		// This ensures that we start with the slow games, and that games of similar
+		// durations are likely to end up in the same job script (and therefore run
+		// on the same node at the same time).
+		final Game[] compiledGames = new Game[GAMES.length];
+		final double[] expectedTrialDurations = new double[GAMES.length];
+		for (int i = 0; i < compiledGames.length; ++i)
+		{
+			final Game game = GameLoader.loadGameFromName(GAMES[i]);
+			
+			if (game == null)
+				throw new IllegalArgumentException("Cannot load game: " + GAMES[i]);
+			
+			compiledGames[i] = game;
+			expectedTrialDurations[i] = RulesetConceptsUCT.getValue(RulesetNames.gameRulesetName(game), "DurationMoves");
+			
+			System.out.println("expected duration per trial for " + GAMES[i] + " = " + expectedTrialDurations[i]);
+		}
 
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
 		for (final String gameName : GAMES)
 		{
-			// Sanity check: make sure game with this name loads correctly
-			System.out.println("gameName = " + gameName);
 			final Game game = GameLoader.loadGameFromName(gameName);
 			
 			if (game == null)

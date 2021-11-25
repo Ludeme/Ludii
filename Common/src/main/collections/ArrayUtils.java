@@ -89,6 +89,22 @@ public class ArrayUtils
 	}
 	
 	/**
+	 * @param val
+	 * @param arr
+	 * @return (First) index of given val in given array. -1 if not found
+	 */
+	public static int indexOf(final Object val, final Object[] arr)
+	{
+		for (int i = 0; i < arr.length; ++i)
+		{
+			if (arr[i].equals(val))
+				return i;
+		}
+		
+		return -1;
+	}
+	
+	/**
 	 * @param arr
 	 * @return Maximum value in given array
 	 */
