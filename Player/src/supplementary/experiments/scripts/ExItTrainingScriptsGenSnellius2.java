@@ -45,7 +45,7 @@ public class ExItTrainingScriptsGenSnellius2
 	private static final int MEM_PER_NODE = 256;
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 245;
+	private static final int MAX_REQUEST_MEM = 234;
 	
 	/** Max number of self-play trials */
 	private static final int MAX_SELFPLAY_TRIALS = 200;
