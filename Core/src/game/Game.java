@@ -3597,7 +3597,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		for (final Ruleset r : description().rulesets())
 			if (!r.optionSettings().isEmpty())
-				if (r.optionSettings().equals(allOptions))
+				if (description().gameOptions().allOptionStrings(r.optionSettings()).equals(allOptions))
 					return r;
 		
 		return null;
