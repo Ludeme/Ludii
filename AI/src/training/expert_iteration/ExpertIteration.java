@@ -2658,7 +2658,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--num-trials-per-policy-gradient-epoch")
 				.help("Number of trials to run per epoch for policy gradients.")
-				.withDefault(Integer.valueOf(100))
+				.withDefault(Integer.valueOf(60))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
