@@ -51,7 +51,7 @@ public class Reinforce
 	private static final double EXPERIENCE_DISCOUNT_THRESHOLD = 0.001;
 	
 	/** If we have a discount factor gamma = 1, we'll use this threshold to limit amount of data stored per trial */
-	private static final int DATA_PER_TRIAL_THRESHOLD = 150;
+	private static final int DATA_PER_TRIAL_THRESHOLD = 50;
 	
 	//-------------------------------------------------------------------------
 	
