@@ -12,7 +12,6 @@ import game.Game;
 import gameDistance.datasets.Dataset;
 import gameDistance.datasets.bagOfWords.BooleanConceptDataset;
 import gameDistance.datasets.bagOfWords.NGramDataset;
-import gameDistance.datasets.sequence.MoveConceptDataset;
 import gameDistance.datasets.treeEdit.LudemeDataset;
 import gameDistance.metrics.DistanceMetric;
 import gameDistance.metrics.bagOfWords.Cosine;
@@ -54,11 +53,11 @@ public class CompareAllDistanceMetrics
 	
 	final static Dataset ludemeDataset = new LudemeDataset();
 	final static Dataset booleanConceptDataset = new BooleanConceptDataset();
-	final static Dataset moveConceptDataset = new MoveConceptDataset();
+	//final static Dataset moveConceptDataset = new MoveConceptDataset();
 	
 	static Map<String, Double> fullLudemeVocabulary;
 	static Map<String, Double> fullBooleanConceptVocabulary;
-	static Map<String, Double> fullMoveConceptVocabulary;
+	//static Map<String, Double> fullMoveConceptVocabulary;
 
 	//---------------------------------------------------------------------
 	
@@ -269,8 +268,8 @@ public class CompareAllDistanceMetrics
 		fullBooleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset, "booleanConceptDataset", overrideStoredVocabularies);
 		System.out.println("booleanConceptVocabulary recorded");
 		
-		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset", overrideStoredVocabularies);
-		System.out.println("moveConceptVocabulary recorded");
+		//fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset", overrideStoredVocabularies);
+		//System.out.println("moveConceptVocabulary recorded");
 	}
 	
 	//---------------------------------------------------------------------
