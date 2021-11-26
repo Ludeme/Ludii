@@ -53,25 +53,21 @@
         
         (board
             (add
-                (keep 
-                    (rotate 45 (dual (square 12 diagonals:Concentric)))
-                    (poly { {2.5 2.5} {2.5 9.5} {9.5 9.5} {9.5 2.5} })
+                (keep
+                    (splitCrossings 
+                        (merge 
+                            (rotate 45 (dual (square 12 diagonals:Concentric)))
+                            (shift 3 3 (scale 6 (square 1)))
+                        )
+                    )
+                    (poly { {3 3} {3 9} {9 9} {9 3} })
                 )
                 vertices:{{6 6}}
             )
         )
         (piece "Marker" Each)
         (piece "Rectangle" Each)
-        (regions "Holes" 
-            (sites { 
-                99 59 40 0
-                51 41 61 69 77 83 89 93 94 90 86 80 74 66 58 48 38 30 22 16 10 6 5 9 13 19 25 33 29
-                42 52 62 70 78 84 85 79 73 65 57 47 37 39 21 15 14 20 26 34
-                35 43 53 63 71 72 64 56 46 36 28 27
-                44 45 54 55 100
-                
-            })
-        )
+        (regions "Holes"  (union (difference (sites Board Vertex) (sites Outer Vertex)) (sites Corners Vertex)))
         (regions P1 { (sites Side N) (sites Side S) } )
         (regions P2 { (sites Side W) (sites Side E) } )
     })
@@ -116,10 +112,13 @@
         (show Symbol "disc" "Holes" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
-        (board Background image:"triangle.svg" fillColour:(colour Red) edgeColour:(colour Red) scale:1.2 rotation:90 offsetX:-0.1)
-        (board Background image:"triangle.svg" fillColour:(colour Red) edgeColour:(colour Red) scale:1.2 rotation:270 offsetX:0.1)
-        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:1.18 offsetY:0.12)
-        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:1.18 rotation:180 offsetY:-0.12)
+        (board Background image:"rectangle.svg" fillColour:(colour Red) edgeColour:(colour Red) scaleX:1.26 scaleY:2)
+        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:1.26 offsetY:0.25)
+        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:1.26 rotation:180 offsetY:-0.51)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.5 scaleY:2.5 offsetX:-0.825)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.5 scaleY:2.5 offsetX:0.825)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:2.5 scaleY:0.5 offsetY:-0.75)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:2.5 scaleY:0.5 offsetY:0.75)
         (piece Scale "Marker" 0.5)
     })
     

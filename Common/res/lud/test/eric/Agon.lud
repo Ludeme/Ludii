@@ -1,21 +1,32 @@
+(define "OriginalCloserToTheseus"
+    (> (count Steps Orthogonal (to) (centrePoint)) 
+        (count Steps Orthogonal (to) (centrePoint)) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Agon"  
     (players 2)  
     (equipment { 
         (board (hex 6))
-        (piece "Ball" Each) 
+        (piece "Pawn" Each) 
+        (piece "Queen" Each) 
     })  
     (rules 
-    	(start {
-    		(place "Ball1" (sites {85 89 60 20 3 6 51}))
-    		(place "Ball2" (sites {87 84 39 5 1 30 70}))
-    	})
+        (start {
+            (place "Pawn1" (sites {89 60 20 3 6 51}))
+            (place "Pawn2" (sites {87 84 39 1 30 70}))
+            (place "Queen1" 85)
+            (place "Queen2" 5)
+        })
         (play 
-                (move 
-                    Add 
-                    (to (sites Empty) 
-                        if:(is Flat)
-                    )
+            (move 
+                Add 
+                (to (sites Empty) 
+                    if:(is Flat)
                 )
+            )
         )
         (end (if (is Connected Mover) (result Mover Win)))
     )
@@ -26,6 +37,7 @@
 (metadata 
     
     (graphics {
+        (piece Scale "Pawn" 0.75)
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Symbol "star" (sites Centre) fillColour:(colour Red) edgeColour:(colour Red) scale:0.8) 
