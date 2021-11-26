@@ -384,6 +384,7 @@ public class ExpertIteration
 					break;
 				case "Random":
 					featureSetExpander = new RandomExpander();
+					break;
 				default:
 					System.err.println("Did not recognise feature set expander type: " + featureDiscoveryParams.expanderType);
 					return;
