@@ -72,7 +72,8 @@
         (regions P2 { (sites Side W) (sites Side E) } )
     })
     (rules
-        
+    		
+    	(meta (swap) )
         (play 
             (move Add (to Vertex (sites Empty Vertex) if:(is In (to) (sites "Holes")))
                 (then 
