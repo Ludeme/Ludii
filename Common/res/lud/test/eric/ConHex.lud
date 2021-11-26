@@ -1,20 +1,86 @@
+(define "CellOfLastVertex" 
+    (sites Incident Cell of:Vertex at:(last To)) 
+)
+
+(define "AllHolesOfCell"
+    (intersection
+        (sites Incident Vertex of:Cell at:(site))
+        (sites "Holes")
+    )
+)
+
+(define "NumHolesCells" 
+    (count Sites ("AllHolesOfCell"))
+)
+
+(define "NumOwnedHolesCells"
+    (count Sites 
+        (intersection
+            ("AllHolesOfCell")
+            (sites Occupied by:Mover on:Vertex)
+        )
+    )		
+)
+
+(define "MajorityOfEmptyCell" 
+    (>=
+        ("NumOwnedHolesCells")
+        (/ ("NumHolesCells") 2)
+    )
+)
+
+(define "CaptureTheCell" 
+    (claim
+        (to
+            Cell 
+            (site) 
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
 (game "ConHex" 
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rotate 45 (square 2)) 
-                (shift -0.155 -0.155 (rotate 45 (scale 0.5 1 (hex 1))))
-                (shift 1.155 1.155 (rotate 45 (scale 0.5 1 (hex 1))))
-                //			(shift 1.155 -0.155 (rotate 135 (scale 0.5 1 (hex 1))))
-            })
-            use:Vertex
+        
+        (board
+            (add
+                (keep 
+                    (rotate 45 (dual (square 12 diagonals:Concentric)))
+                    (poly { {2.5 2.5} {2.5 9.5} {9.5 9.5} {9.5 2.5} })
+                )
+                vertices:{{6 6}}
+            )
         )
         (piece "Marker" Each)
+        (regions "Holes" 
+            (sites { 
+                99 59 40 0
+                51 41 61 69 77 83 89 93 94 90 86 80 74 66 58 48 38 30 22 16 10 6 5 9 13 19 25 33
+                42 52 62 70 78 84 85 79 73 65 57 47 37 39 21 15 14 20 26 34
+                35 43 53 63 71 72 64 56 46 36 28 27
+                44 45 54 55 100
+                
+            })
+        )
+        (regions P1 { (sites Side N) (sites Side S) } )
+        (regions P2 { (sites Side W) (sites Side E) } )
     })
     (rules
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play 
+            (move Add (to Vertex (sites Empty Vertex) if:(is In (to) (sites "Holes")))
+                (then 
+                    (forEach Site
+                        "CellOfLastVertex" 
+                        (if "MajorityOfEmptyCell"
+                            "CaptureTheCell"
+                        )
+                    )
+                )		
+            )
+        )
+        (end (if (is Connected Mover) (result Mover Win))) 
     )
 )
 //------------------------------------------------------------------------------
@@ -26,8 +92,14 @@
     )
     
     (graphics {
-        
         (show Edges Diagonal Hidden)
+        (show Symbol "disc" "Holes" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+        (board Background image:"triangle.svg" fillColour:(colour Red) edgeColour:(colour Red) scale:1.2 rotation:90 offsetX:-0.1)
+        (board Background image:"triangle.svg" fillColour:(colour Red) edgeColour:(colour Red) scale:1.2 rotation:270 offsetX:0.1)
+        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:1.18 offsetY:0.12)
+        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:1.18 rotation:180 offsetY:-0.12)
     })
     
 )

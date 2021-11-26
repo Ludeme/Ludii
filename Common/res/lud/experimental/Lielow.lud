@@ -143,8 +143,8 @@
                 top:True
                 (then 
                     (do
-                    	(remove (sites Outer) count:(size Stack at:(last To)))
-                    	next:("UpdateKing")
+                        (remove (sites Outer) count:(size Stack at:(last To)))
+                        next:("UpdateKing")
                     )
                 )
             )

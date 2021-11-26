@@ -9,8 +9,8 @@
 
 (define "NotEnemyOrOnlyOne"    
     (or 
-    	(not (is Enemy (who at:(to))))
-    	(= (topLevel at:(to)) 0)
+        (not (is Enemy (who at:(to))))
+        (= (topLevel at:(to)) 0)
     )
 )
 
