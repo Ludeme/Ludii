@@ -142,9 +142,9 @@
                 Mover
                 top:True
                 (then 
-                    (and 
-                        (remove (sites Outer) count:(size Stack at:(last To)))
-                        ("UpdateKing")
+                    (do
+                    	(remove (sites Outer) count:(size Stack at:(last To)))
+                    	next:("UpdateKing")
                     )
                 )
             )
