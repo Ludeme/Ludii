@@ -11,22 +11,23 @@
     (equipment { 
         (board (hex 6))
         (piece "Pawn" Each 
-        	(move Step 
-        		(to if:(and 
-        				(is Empty (to))
-        				("CloserToCentre")
-        			)
-        		)
-        	)
+            (move Step 
+                (to if:(and {
+                        (is Empty (to))
+                        ("CloserToCentre")
+                        (!= (to) (centrePoint))
+                    })
+                )
+            )
         ) 
         (piece "Queen" Each
-        		(move Step 
-                		(to if:(and 
-                				(is Empty (to))
-                				("CloserToCentre")
-                			)
-                		)
-                	)		
+            (move Step 
+                (to if:(and 
+                        (is Empty (to))
+                        ("CloserToCentre")
+                    )
+                )
+            )		
         ) 
     })  
     (rules 
@@ -40,16 +41,21 @@
             (forEach Piece)
         )
         (end 
-        	(if 
-        		(and
-        			(all Sites 
-        				(difference (sites Around (sites Centre)) (sites Centre))
-        				if:(= (id "Pawn" Mover) (what at:(site)))
-        			)
-        			(= (centrePoint) (where "Queen" Mover)) 
-        		)
-        		(result Mover Win)
-        	)
+            (if (all Sites 
+                    (difference (sites Around (sites Centre)) (sites Centre))
+                    if:(= (id "Pawn" Mover) (what at:(site)))
+                )
+                {
+                (if 
+                    (= (id "Queen" Mover) (what at:(centrePoint)))
+                    (result Mover Win)
+                )
+                (if 
+                    (!= (id "Queen" Mover) (what at:(centrePoint)))
+                    (result Mover Loss)
+                )
+                }
+            )
         )
     )
 )
