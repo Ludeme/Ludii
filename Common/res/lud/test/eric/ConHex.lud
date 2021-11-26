@@ -86,7 +86,7 @@
                             "CaptureTheCell"
                         )
                         (then
-                            (forEach Site (intersection (sites Occupied by:Mover) ("CellOfLastVertex"))
+                            (forEach Site (forEach ("CellOfLastVertex") if:(is Mover (who Cell at:(site))))
                                 (if (is Connected at:(site) Mover)
                                     (trigger "Connected" Mover)
                                 )
