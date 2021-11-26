@@ -195,7 +195,7 @@ public class TargetCorrelationBasedExpander implements FeatureSetExpander
 				
 				for (int featureIdx = 0; featureIdx < featureSet.getNumSpatialFeatures(); ++featureIdx)
 				{
-					if (sparseFeatureVector.getQuick(sparseIdx) == featureIdx)
+					if (sparseIdx < sparseFeatureVector.size() && sparseFeatureVector.getQuick(sparseIdx) == featureIdx)
 					{
 						// This spatial feature is active
 						errorsPerActiveFeature[featureIdx].add(actionError);
