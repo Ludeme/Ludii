@@ -1,5 +1,5 @@
-(define "OriginalCloserToTheseus"
-    (> (count Steps Orthogonal (to) (centrePoint)) 
+(define "CloserToCentre"
+    (>= (count Steps Orthogonal (from) (centrePoint)) 
         (count Steps Orthogonal (to) (centrePoint)) 
     )
 )
@@ -10,7 +10,15 @@
     (players 2)  
     (equipment { 
         (board (hex 6))
-        (piece "Pawn" Each) 
+        (piece "Pawn" Each 
+        	(move Step 
+        		(to if:(and 
+        				(is Empty (to))
+        				("CloserToCentre")
+        			)
+        		)
+        	)
+        ) 
         (piece "Queen" Each) 
     })  
     (rules 
@@ -21,14 +29,9 @@
             (place "Queen2" 5)
         })
         (play 
-            (move 
-                Add 
-                (to (sites Empty) 
-                    if:(is Flat)
-                )
-            )
+            (forEach Piece)
         )
-        (end (if (is Connected Mover) (result Mover Win)))
+        (end (if (= (centrePoint) (where "Queen" Mover)) (result Mover Win)))
     )
 )
 
