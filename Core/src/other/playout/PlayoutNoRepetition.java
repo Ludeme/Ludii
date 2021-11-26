@@ -82,16 +82,18 @@ public class PlayoutNoRepetition implements Playout
 				)
 				{
 					final int moverLastTurn = context.trial().lastTurnMover(mover);
-					if(mover != moverLastTurn && moverLastTurn != Constants.UNDEFINED)
+					if (mover != moverLastTurn && moverLastTurn != Constants.UNDEFINED)
 					{
-						final Moves swapMove = game.rules.play.moves.decision.Move.construct(
-								MoveSwapType.Swap,
-								SwapPlayersType.Players, 
-								new IntConstant(mover), 
-								null, 
-								new IntConstant(moverLastTurn), 
-								null, 
-								null
+						final Moves swapMove = 
+								game.rules.play.moves.decision.Move.construct
+								(
+									MoveSwapType.Swap,
+									SwapPlayersType.Players, 
+									new IntConstant(mover), 
+									null, 
+									new IntConstant(moverLastTurn), 
+									null, 
+									null
 								);
 						legalMoves.moves().addAll(swapMove.eval(context).moves());
 					}

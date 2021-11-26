@@ -181,10 +181,10 @@ public class TestCustomPlayouts
 				assert
 				(loadedMoves.get(moveIdx).getActionsWithConsequences(context).equals(trial.getMove(moveIdx).getActionsWithConsequences(context))) 
 				: 
-					(
-							"Loaded Move Actions = " + loadedMoves.get(moveIdx).getActionsWithConsequences(context) + 
-							", trial actions = " + trial.getMove(moveIdx).getActionsWithConsequences(context)
-							);
+				(
+					"Loaded Move Actions = " + loadedMoves.get(moveIdx).getActionsWithConsequences(context) + 
+					", trial actions = " + trial.getMove(moveIdx).getActionsWithConsequences(context)
+				);
 				++moveIdx;
 			}
 
@@ -227,6 +227,15 @@ public class TestCustomPlayouts
 					{
 						System.out.println("legal move: " + move.getActionsWithConsequences(context));
 					}
+					
+//					try 
+//					{
+//						System.out.println("Saving trial at time of crash to: " + new File("./Trial.trl").getAbsolutePath());
+//						trial.saveTrialToTextFile(new File("./Trial.trl"), game.name(), new ArrayList<String>(), gameStartRngState);
+//					} 
+//					catch (final IOException e) {
+//						e.printStackTrace();
+//					}
 
 					fail();
 				}
