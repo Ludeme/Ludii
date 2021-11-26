@@ -19,7 +19,15 @@
         		)
         	)
         ) 
-        (piece "Queen" Each) 
+        (piece "Queen" Each
+        		(move Step 
+                		(to if:(and 
+                				(is Empty (to))
+                				("CloserToCentre")
+                			)
+                		)
+                	)		
+        ) 
     })  
     (rules 
         (start {
@@ -31,7 +39,18 @@
         (play 
             (forEach Piece)
         )
-        (end (if (= (centrePoint) (where "Queen" Mover)) (result Mover Win)))
+        (end 
+        	(if 
+        		(and
+        			(all Sites 
+        				(difference (sites Around (sites Centre)) (sites Centre))
+        				if:(= (id "Pawn" Mover) (what at:(site)))
+        			)
+        			(= (centrePoint) (where "Queen" Mover)) 
+        		)
+        		(result Mover Win)
+        	)
+        )
     )
 )
 
