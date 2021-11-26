@@ -4,6 +4,35 @@
     )
 )
 
+(define "AllPawnsInInnerRing"
+    (all Sites 
+        (difference (sites Around (sites Centre)) (sites Centre))
+        if:(= (id "Pawn" Mover) (what at:(site)))
+    )	
+)
+
+(define "CapturePiece"
+    (custodial 
+        (from (last To)) 
+        Orthogonal
+        (between (max 1) if:(is Enemy (who at:(between))) (apply (set State at:(between) 1)))
+        (to if:(is Friend (who at:(to)))) 
+    )
+)
+
+(define "ReleaseCapturePiece"
+    (forEach Site 
+        (forEach (sites Occupied by:Mover component:#1) if:(!= 0 (state at:(site))))
+        (move
+            (from (site))
+            (to (sites #2) if:(is Empty (to)))
+            (then
+                (set State at:(last To) 0)
+            )
+        )
+    )	
+)
+
 //------------------------------------------------------------------------------
 
 (game "Agon"  
@@ -18,6 +47,7 @@
                         (!= (to) (centrePoint))
                     })
                 )
+                (then ("CapturePiece"))
             )
         ) 
         (piece "Queen" Each
@@ -27,6 +57,7 @@
                         ("CloserToCentre")
                     )
                 )
+                (then ("CapturePiece"))
             )		
         ) 
     })  
@@ -38,13 +69,24 @@
             (place "Queen2" 5)
         })
         (play 
-            (forEach Piece)
+            (priority {
+                ("ReleaseCapturePiece" "Queen" Board)
+                ("ReleaseCapturePiece" "Pawn" Outer)
+                (do (forEach Piece)
+                    ifAfterwards:(not (can Move
+                            (intervene 
+                                (from (last To)) 
+                                Orthogonal
+                                (to if:(is Enemy (who at:(to))))
+                            )
+                    ))
+                )
+                
+                }
+            )
         )
         (end 
-            (if (all Sites 
-                    (difference (sites Around (sites Centre)) (sites Centre))
-                    if:(= (id "Pawn" Mover) (what at:(site)))
-                )
+            (if ("AllPawnsInInnerRing")
                 {
                 (if 
                     (= (id "Queen" Mover) (what at:(centrePoint)))
