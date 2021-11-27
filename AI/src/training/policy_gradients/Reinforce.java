@@ -591,7 +591,7 @@ public class Reinforce
 			
 			for (int i = featureVectorsList.size() - 1; i >= 0; --i)
 			{
-				if (!skipData[i])
+				if (!skipData[i] && legalMovesList.get(i).size() > 1)
 				{
 					epochExperiences[p].add
 					(
