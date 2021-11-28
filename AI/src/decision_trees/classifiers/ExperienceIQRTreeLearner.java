@@ -170,15 +170,28 @@ public class ExperienceIQRTreeLearner
 			return new DecisionLeafNode(1.f / 3, 1.f / 3, 1.f / 3);
 		}
 		
+		if (allowedDepth == 0)
+		{
+			// Have to create leaf node here
+			int numBottom25 = 0;
+			int numTop25 = 0;
+			
+			for (final IQRClass iqrClass : remainingTargetClasses)
+			{
+				if (iqrClass == IQRClass.Bottom25)
+					++numBottom25;
+				else if (iqrClass == IQRClass.Top25)
+					++numTop25;
+			}
+			
+			final float probBottom25 = ((float)numBottom25) / remainingTargetClasses.size();
+			final float probTop25 = ((float)numTop25) / remainingTargetClasses.size();
+			final float probIQR = 1.f - probBottom25 - probTop25;
+			return new DecisionLeafNode(probBottom25, probIQR, probTop25);
+		}
+		
 		return null;
 		
-//		if (allowedDepth == 0)
-//		{
-//			// Have to create leaf node here		TODO could in theory use remaining features to compute a model again
-//			final float meanLogit = remainingTargetLogits.sum() / remainingTargetLogits.size();
-//			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {meanLogit});
-//		}
-//		
 //		// For every aspatial and every spatial feature, if not already picked, compute mean logits for true and false branches
 //		final double[] sumLogitsIfFalseAspatial = new double[numAspatialFeatures];
 //		final int[] numFalseAspatial = new int[numAspatialFeatures];
