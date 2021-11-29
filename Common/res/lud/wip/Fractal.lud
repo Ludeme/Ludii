@@ -1,0 +1,33 @@
+(game "Fractal"
+    (players 2)
+    (equipment {
+        (board 
+       
+            (remove
+            (clip
+                (hex 3)
+                (poly { { 0 1} { 2 1 } { 4 5 } { 1 4 } })
+            )
+           cells:{9}
+           )
+        )
+        (piece "Marker" Each)
+    })
+    (rules
+        (play (move Add (to (sites Empty))))
+        (end 
+            (if (no Moves Next) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
