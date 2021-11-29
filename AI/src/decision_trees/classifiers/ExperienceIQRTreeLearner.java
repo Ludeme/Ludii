@@ -399,7 +399,7 @@ public class ExperienceIQRTreeLearner
 			}
 		}
 
-		if (bestIdx == -1)
+		if (bestIdx == -1 || maxInformationGain == 0.0)
 		{
 			// No point in making any split at all, so just make leaf
 			return new DecisionLeafNode(probBottom25, probIQR, probTop25);
