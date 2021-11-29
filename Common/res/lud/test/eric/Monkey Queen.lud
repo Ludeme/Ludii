@@ -1,0 +1,26 @@
+(game "Monkey Queen"
+	(players 2)
+	(equipment {
+		(board (square 12))
+		(piece "Marker")
+	})
+	(rules
+		(start {
+			(place Stack "Marker2" coord:"F12" count:20)
+		})
+		(play  (forEach Piece))
+		(end (if (no Moves Next) (result Mover Win)))
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+  
+  (graphics {
+      (board Style Chess)
+	  (board Colour Phase0 (colour 210 181 141))
+	  (board Colour Phase1 (colour 250 238 216))
+	  (board Background image:"square.svg" fillColour:(colour 250 238 216) edgeColour:(colour 250 238 216) scale:1.2)
+  })
+)
