@@ -1,0 +1,80 @@
+(game "Monkey Queen"
+	(players 2)
+	(equipment {
+		(board (square 12))
+		(piece "Marker"
+			(or {
+				(move Slide
+					(to 
+		                if:(is Enemy (who at:(to))) // Capturing Queen Move and Capturing Baby Monkey Move
+						(apply 
+							if:(is Enemy (who at:(to)))
+							(remove (to) count:(size Stack at:(to)))
+						)
+					)
+					stack:True
+					(then
+						(if (< 1 (size Stack at:(last To)))
+							(set Value Mover (last To))
+						)
+					)
+				)
+				(if (< 2 (size Stack at:(from))) // Non capturing Queen Move
+					(move Slide
+						stack:True
+						(then
+							(and
+								(fromTo
+									(from (last To) level:0)
+									(to (last From))
+								)
+								(set Value Mover (last To))
+							)
+						)
+					)
+				)
+				(if (= 1 (size Stack at:(from))) // Non capturing Baby Monkey Move
+					(move Slide
+						(between 
+							if:(and
+								(< (count Steps (to) (value Player Next)) (count Steps (from) (value Player Next)))
+								(is Empty (between))
+								)
+						)
+					)
+				)
+			})
+		)
+	})
+	(rules
+		(meta (swap))
+		(start {
+			(place Stack "Marker1" 6 count:20)
+			(place Stack "Marker2" 137 count:20)
+		})
+		(play (forEach Piece top:True))
+		(end 
+			(if 
+				(or
+					(all Sites (sites Occupied by:Next) if:(= 1 (size Stack at:(site))))
+					(no Moves Next) 
+				)
+				(result Mover Win)
+			)
+		)
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+  
+  (graphics {
+	  (player Colour P2 (colour Brown))
+      (board Style Chess)
+	  (board Colour Phase0 (colour 210 181 141))
+	  (board Colour Phase1 (colour 250 238 216))
+	  (board Background image:"square.svg" fillColour:(colour 250 238 216) edgeColour:(colour 250 238 216) scale:1.2)
+	  (stackType Count)
+  })
+)
