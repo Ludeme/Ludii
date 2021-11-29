@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import decision_trees.logits.ExperienceLogitTreeLearner;
-import decision_trees.logits.LogitTreeNode;
+import decision_trees.classifiers.DecisionTreeNode;
+import decision_trees.classifiers.ExperienceIQRTreeLearner;
 import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
 import game.Game;
@@ -16,8 +16,6 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import metadata.ai.features.trees.FeatureTrees;
-import metadata.ai.features.trees.logits.LogitNode;
-import metadata.ai.features.trees.logits.LogitTree;
 import other.GameLoader;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
@@ -108,7 +106,7 @@ public class TrainIQRDecisionTreeFromBuffer
 		final Game game = GameLoader.loadGameFromName(gameName);
 		playoutSoftmax.initAI(game, -1);
 		
-		final LogitTree[] metadataTrees = new LogitTree[featureSets.length - 1];
+		final metadata.ai.features.trees.classifiers.DecisionTree[] metadataTrees = new metadata.ai.features.trees.classifiers.DecisionTree[featureSets.length - 1];
 		
 		for (int p = 1; p < featureSets.length; ++p)
 		{
@@ -134,17 +132,17 @@ public class TrainIQRDecisionTreeFromBuffer
 				}
 			}
 			
-			// Generate logit tree for Player p		TODO
-			final LogitTreeNode root = ExperienceLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, 10);
+			// Generate decision tree for Player p
+			final DecisionTreeNode root = ExperienceIQRTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, 10);
 			
 			// Convert to metadata structure
-			final LogitNode metadataRoot = root.toMetadataNode();
-			metadataTrees[p - 1] = new LogitTree(RoleType.roleForPlayerId(p), metadataRoot);
+			final metadata.ai.features.trees.classifiers.DecisionTreeNode metadataRoot = root.toMetadataNode();
+			metadataTrees[p - 1] = new metadata.ai.features.trees.classifiers.DecisionTree(RoleType.roleForPlayerId(p), metadataRoot);
 		}
 		
 		try (final PrintWriter writer = new PrintWriter(outFile))
 		{
-			writer.println(new FeatureTrees(metadataTrees));
+			writer.println(new FeatureTrees(null, metadataTrees));
 		}
 		catch (final IOException e)
 		{

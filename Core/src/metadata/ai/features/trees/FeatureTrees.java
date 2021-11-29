@@ -2,6 +2,7 @@ package metadata.ai.features.trees;
 
 import annotations.Name;
 import annotations.Opt;
+import metadata.ai.features.trees.classifiers.DecisionTree;
 import metadata.ai.features.trees.logits.LogitTree;
 
 /**
@@ -18,12 +19,17 @@ public class FeatureTrees
 	/** Exact logit trees */
 	protected LogitTree[] exactLogitTrees;
 	
+	/** Decision trees for predicting bottom 25% / IQR / top 25% */
+	protected DecisionTree[] decisionTrees;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
 	 * For a variety of different types of trees, each for one or more roles.
 	 * 
 	 * @param exactLogitTrees One or more exact logit trees (each for the All
+	 * role or for a specific player).
+	 * @param decisionTrees One or more decision trees (each for the All
 	 * role or for a specific player).
 	 * 
 	 * @example (featureTrees exactLogitTrees:{ 
@@ -32,10 +38,12 @@ public class FeatureTrees
 	 */
 	public FeatureTrees
 	(
-		@Name @Opt final LogitTree[] exactLogitTrees
+		@Name @Opt final LogitTree[] exactLogitTrees,
+		@Name @Opt final DecisionTree[] decisionTrees
 	)
 	{
 		this.exactLogitTrees = exactLogitTrees;
+		this.decisionTrees = decisionTrees;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -51,6 +59,16 @@ public class FeatureTrees
 		{
 			sb.append("exactLogitTrees:{\n");
 			for (final LogitTree tree : exactLogitTrees)
+			{
+				sb.append(tree.toString() + "\n");
+			}
+			sb.append("}\n");
+		}
+		
+		if (decisionTrees != null)
+		{
+			sb.append("decisionTrees:{\n");
+			for (final DecisionTree tree : decisionTrees)
 			{
 				sb.append(tree.toString() + "\n");
 			}

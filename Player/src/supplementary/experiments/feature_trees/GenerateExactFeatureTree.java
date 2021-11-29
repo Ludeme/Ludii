@@ -117,7 +117,7 @@ public class GenerateExactFeatureTree
 		
 		try (final PrintWriter writer = new PrintWriter(outFile))
 		{
-			writer.println(new FeatureTrees(metadataTrees));
+			writer.println(new FeatureTrees(metadataTrees, null));
 		}
 		catch (final IOException e)
 		{
