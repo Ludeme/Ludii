@@ -114,7 +114,7 @@
                 )
             )
             from:(from)
-            (range 1 (+ 1 (var)))
+            (range 1 (var))
         )
         (sites Distance
             (step
@@ -124,7 +124,7 @@
                 )
             )
             from:(from)
-            (range 1 (+ 1 (var)))
+            (range 1 (var))
         )
     )
 )
@@ -194,7 +194,7 @@
             )
         )
         from:(from)
-        (range 1 #1)
+        (range 1 (- #1 1))
     )
 )
 

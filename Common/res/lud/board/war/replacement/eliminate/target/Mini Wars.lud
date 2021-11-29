@@ -20,7 +20,7 @@
                     )
                 ) 
                 from:(from) 
-                (range 1 #2)
+                (range 1 (- #2 1))
             )
             if:(is Empty (to)) 
             (apply 

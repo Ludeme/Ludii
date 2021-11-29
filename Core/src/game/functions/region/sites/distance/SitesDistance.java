@@ -165,18 +165,18 @@ public final class SitesDistance extends BaseRegionFunction
 			final TIntArrayList sitesChecked = new TIntArrayList();
 			sitesChecked.add(from);
 			sitesChecked.addAll(currList);
-
+			
 			if (numSteps >= minDistance)
 				for (int i = 0; i < currList.size(); i++)
 					if (!sitesToReturn.contains(currList.getQuick(i)))
 						sitesToReturn.add(currList.getQuick(i));
 
-			while (!currList.isEmpty() && numSteps < (maxDistance - 1))
+			while (!currList.isEmpty() && numSteps < maxDistance)
 			{
 				for (int i = 0; i < currList.size(); i++)
 				{
 					final int newSite = currList.getQuick(i);
-
+					
 					if (newRotationFn != null)
 					{
 						final int originValue = context.value();
@@ -186,6 +186,7 @@ public final class SitesDistance extends BaseRegionFunction
 					}
 					
 					final TIntArrayList stepMoves = stepMove(context, realType, newSite, stepMove.goRule(), component, facingDirection, rotation);
+					
 					for (int j = 0; j < stepMoves.size(); j++)
 					{
 						final int to = stepMoves.getQuick(j);
@@ -198,6 +199,8 @@ public final class SitesDistance extends BaseRegionFunction
 				currList.clear();
 				currList.addAll(nextList);
 
+				++numSteps;
+				
 				// We keep only the non duplicate site which are >= min
 				if (numSteps >= minDistance)
 					for (int i = 0; i < nextList.size(); i++)
@@ -205,8 +208,6 @@ public final class SitesDistance extends BaseRegionFunction
 							sitesToReturn.add(nextList.getQuick(i));
 
 				nextList.clear();
-
-				++numSteps;
 			}
 
 			return new Region(sitesToReturn.toArray());
