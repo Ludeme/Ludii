@@ -5,11 +5,13 @@ import java.util.BitSet;
 import java.util.Comparator;
 import java.util.List;
 
+import features.Feature;
 import features.FeatureVector;
 import features.WeightVector;
 import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
 import main.collections.ArrayUtils;
+import main.math.MathRoutines;
 import training.expert_iteration.ExItExperience;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
 
@@ -170,280 +172,336 @@ public class ExperienceIQRTreeLearner
 			return new DecisionLeafNode(1.f / 3, 1.f / 3, 1.f / 3);
 		}
 		
+		int numBottom25 = 0;
+		int numTop25 = 0;
+
+		for (final IQRClass iqrClass : remainingTargetClasses)
+		{
+			if (iqrClass == IQRClass.Bottom25)
+				++numBottom25;
+			else if (iqrClass == IQRClass.Top25)
+				++numTop25;
+		}
+
+		final float probBottom25 = ((float)numBottom25) / remainingTargetClasses.size();
+		final float probTop25 = ((float)numTop25) / remainingTargetClasses.size();
+		final float probIQR = 1.f - probBottom25 - probTop25;
+		
 		if (allowedDepth == 0)
 		{
 			// Have to create leaf node here
-			int numBottom25 = 0;
-			int numTop25 = 0;
-			
-			for (final IQRClass iqrClass : remainingTargetClasses)
-			{
-				if (iqrClass == IQRClass.Bottom25)
-					++numBottom25;
-				else if (iqrClass == IQRClass.Top25)
-					++numTop25;
-			}
-			
-			final float probBottom25 = ((float)numBottom25) / remainingTargetClasses.size();
-			final float probTop25 = ((float)numTop25) / remainingTargetClasses.size();
-			final float probIQR = 1.f - probBottom25 - probTop25;
 			return new DecisionLeafNode(probBottom25, probIQR, probTop25);
 		}
 		
-		return null;
+		double entropyBeforeSplit = 0.0;
+		if (probBottom25 > 0.f)
+			entropyBeforeSplit -= probBottom25 * MathRoutines.log2(probBottom25);
+		if (probTop25 > 0.f)
+			entropyBeforeSplit -= probTop25 * MathRoutines.log2(probTop25);
+		if (probIQR > 0.f)
+			entropyBeforeSplit -= probIQR * MathRoutines.log2(probIQR);
 		
-//		// For every aspatial and every spatial feature, if not already picked, compute mean logits for true and false branches
-//		final double[] sumLogitsIfFalseAspatial = new double[numAspatialFeatures];
-//		final int[] numFalseAspatial = new int[numAspatialFeatures];
-//		final double[] sumLogitsIfTrueAspatial = new double[numAspatialFeatures];
-//		final int[] numTrueAspatial = new int[numAspatialFeatures];
-//		
-//		for (int i = 0; i < numAspatialFeatures; ++i)
-//		{
-//			if (alreadyPickedAspatials.get(i))
-//				continue;
-//			
-//			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
-//			{
-//				final FeatureVector featureVector = remainingFeatureVectors.get(j);
-//				final float targetLogit = remainingTargetLogits.getQuick(j);
-//				
-//				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
-//				{
-//					sumLogitsIfTrueAspatial[i] += targetLogit;
-//					++numTrueAspatial[i];
-//				}
-//				else
-//				{
-//					sumLogitsIfFalseAspatial[i] += targetLogit;
-//					++numFalseAspatial[i];
-//				}
-//			}
-//		}
-//		
-//		final double[] sumLogitsIfFalseSpatial = new double[numSpatialFeatures];
-//		final int[] numFalseSpatial = new int[numSpatialFeatures];
-//		final double[] sumLogitsIfTrueSpatial = new double[numSpatialFeatures];
-//		final int[] numTrueSpatial = new int[numSpatialFeatures];
-//		
-//		for (int i = 0; i < remainingFeatureVectors.size(); ++i)
-//		{
-//			final FeatureVector featureVector = remainingFeatureVectors.get(i);
-//			final float targetLogit = remainingTargetLogits.getQuick(i);
-//			
-//			final boolean[] active = new boolean[numSpatialFeatures];
-//			final TIntArrayList sparseSpatials = featureVector.activeSpatialFeatureIndices();
-//			
-//			for (int j = 0; j < sparseSpatials.size(); ++j)
-//			{
-//				active[sparseSpatials.getQuick(j)] = true;
-//			}
-//			
-//			for (int j = 0; j < active.length; ++j)
-//			{
-//				if (alreadyPickedSpatials.get(j))
-//					continue;
-//				
-//				if (active[j])
-//				{
-//					sumLogitsIfTrueSpatial[j] += targetLogit;
-//					++numTrueSpatial[j];
-//				}
-//				else
-//				{
-//					sumLogitsIfFalseSpatial[j] += targetLogit;
-//					++numFalseSpatial[j];
-//				}
-//			}
-//		}
-//		
-//		final double[] meanLogitsIfFalseAspatial = new double[numAspatialFeatures];
-//		final double[] meanLogitsIfTrueAspatial = new double[numAspatialFeatures];
-//		final double[] meanLogitsIfFalseSpatial = new double[numSpatialFeatures];
-//		final double[] meanLogitsIfTrueSpatial = new double[numSpatialFeatures];
-//		
-//		for (int i = 0; i < numAspatialFeatures; ++i)
-//		{
-//			if (numFalseAspatial[i] > 0)
-//				meanLogitsIfFalseAspatial[i] = sumLogitsIfFalseAspatial[i] / numFalseAspatial[i];
-//			
-//			if (numTrueAspatial[i] > 0)
-//				meanLogitsIfTrueAspatial[i] = sumLogitsIfTrueAspatial[i] / numTrueAspatial[i];
-//		}
-//		
-//		for (int i = 0; i < numSpatialFeatures; ++i)
-//		{
-//			if (numFalseSpatial[i] > 0)
-//				meanLogitsIfFalseSpatial[i] = sumLogitsIfFalseSpatial[i] / numFalseSpatial[i];
-//			
-//			if (numTrueSpatial[i] > 0)
-//				meanLogitsIfTrueSpatial[i] = sumLogitsIfTrueSpatial[i] / numTrueSpatial[i];
-//		}
-//		
-//		// Find feature that maximally reduces sum of squared errors
-//		double minSumSquaredErrors = Double.POSITIVE_INFINITY;
-//		int bestIdx = -1;
-//		boolean bestFeatureIsAspatial = true;
-//		
-//		for (int i = 0; i < numAspatialFeatures; ++i)
-//		{
-//			if (numFalseAspatial[i] == 0 || numTrueAspatial[i] == 0)
-//				continue;
-//			
-//			double sumSquaredErrors = 0.0;
-//			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
-//			{
-//				final FeatureVector featureVector = remainingFeatureVectors.get(j);
-//				final float targetLogit = remainingTargetLogits.getQuick(j);
-//				final double error;
-//				
-//				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
-//					error = targetLogit - meanLogitsIfTrueAspatial[i];
-//				else
-//					error = targetLogit - meanLogitsIfFalseAspatial[i];
-//				
-//				sumSquaredErrors += (error * error);
-//			}
-//			
-//			if (sumSquaredErrors < minSumSquaredErrors)
-//			{
-//				minSumSquaredErrors = sumSquaredErrors;
-//				bestIdx = i;
-//			}
-//		}
-//		
-//		for (int i = 0; i < numSpatialFeatures; ++i)
-//		{
-//			if (numFalseSpatial[i] == 0 || numTrueSpatial[i] == 0)
-//				continue;
-//			
-//			double sumSquaredErrors = 0.0;
-//			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
-//			{
-//				final FeatureVector featureVector = remainingFeatureVectors.get(j);
-//				final float targetLogit = remainingTargetLogits.getQuick(j);
-//				final double error;
-//				
-//				if (featureVector.activeSpatialFeatureIndices().contains(i))
-//					error = targetLogit - meanLogitsIfTrueSpatial[i];
-//				else
-//					error = targetLogit - meanLogitsIfFalseSpatial[i];
-//				
-//				sumSquaredErrors += (error * error);
-//			}
-//						
-//			if (sumSquaredErrors < minSumSquaredErrors)
-//			{
-//				minSumSquaredErrors = sumSquaredErrors;
-//				bestIdx = i;
-//				bestFeatureIsAspatial = false;
-//			}
-//		}
-//		
-//		if (bestIdx == -1)
-//		{
-//			// No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
-//			final float meanLogit = remainingTargetLogits.sum() / remainingTargetLogits.size();
-//			return new LogitModelNode(new Feature[] {new InterceptFeature()}, new float[] {meanLogit});
-//		}
-//		
-//		final Feature splittingFeature;
-//		if (bestFeatureIsAspatial)
-//			splittingFeature = featureSet.aspatialFeatures()[bestIdx];
-//		else
-//			splittingFeature = featureSet.spatialFeatures()[bestIdx];
-//		
-//		final BitSet newAlreadyPickedAspatials;
-//		final BitSet newAlreadyPickedSpatials;
-//		
-//		if (bestFeatureIsAspatial)
-//		{
-//			newAlreadyPickedAspatials = (BitSet) alreadyPickedAspatials.clone();
-//			newAlreadyPickedAspatials.set(bestIdx);
-//			newAlreadyPickedSpatials = alreadyPickedSpatials;
-//		}
-//		else
-//		{
-//			newAlreadyPickedSpatials = (BitSet) alreadyPickedSpatials.clone();
-//			newAlreadyPickedSpatials.set(bestIdx);
-//			newAlreadyPickedAspatials = alreadyPickedAspatials;
-//		}
-//		
-//		// Split remaining data for the two branches
-//		final List<FeatureVector> remainingFeatureVectorsTrue = new ArrayList<FeatureVector>();
-//		final TFloatArrayList remainingTargetLogitsTrue = new TFloatArrayList();
-//		
-//		final List<FeatureVector> remainingFeatureVectorsFalse = new ArrayList<FeatureVector>();
-//		final TFloatArrayList remainingTargetLogitsFalse = new TFloatArrayList();
-//		
-//		if (bestFeatureIsAspatial)
-//		{
-//			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
-//			{
-//				if (remainingFeatureVectors.get(i).aspatialFeatureValues().get(bestIdx) != 0.f)
-//				{
-//					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
-//					remainingTargetLogitsTrue.add(remainingTargetLogits.getQuick(i));
-//				}
-//				else
-//				{
-//					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
-//					remainingTargetLogitsFalse.add(remainingTargetLogits.getQuick(i));
-//				}
-//			}
-//		}
-//		else
-//		{
-//			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
-//			{
-//				if (remainingFeatureVectors.get(i).activeSpatialFeatureIndices().contains(bestIdx))
-//				{
-//					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
-//					remainingTargetLogitsTrue.add(remainingTargetLogits.getQuick(i));
-//				}
-//				else
-//				{
-//					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
-//					remainingTargetLogitsFalse.add(remainingTargetLogits.getQuick(i));
-//				}
-//			}
-//		}
-//		
-//		// Create the node for case where splitting feature is true
-//		final DecisionTreeNode trueBranch;
-//		{
-//			trueBranch = 
-//					buildNode
-//					(
-//						featureSet,
-//						remainingFeatureVectorsTrue,
-//						remainingTargetLogitsTrue,
-//						newAlreadyPickedAspatials,
-//						newAlreadyPickedSpatials,
-//						numAspatialFeatures,
-//						numSpatialFeatures,
-//						allowedDepth - 1
-//					);
-//		}
-//		
-//		// Create the node for case where splitting feature is false
-//		final DecisionTreeNode falseBranch;
-//		{
-//			falseBranch = 
-//					buildNode
-//					(
-//						featureSet,
-//						remainingFeatureVectorsFalse,
-//						remainingTargetLogitsFalse,
-//						newAlreadyPickedAspatials,
-//						newAlreadyPickedSpatials,
-//						numAspatialFeatures,
-//						numSpatialFeatures,
-//						allowedDepth - 1
-//					);
-//		}
-//		
-//		return new LogitDecisionNode(splittingFeature, trueBranch, falseBranch);
+		// Find feature with maximum information gain
+		double maxInformationGain = Double.NEGATIVE_INFINITY;
+		int bestIdx = -1;
+		boolean bestFeatureIsAspatial = true;
+		
+		for (int i = 0; i < numAspatialFeatures; ++i)
+		{
+			if (alreadyPickedAspatials.get(i))
+				continue;
+			
+			int numBottom25IfFalse = 0;
+			int numIQRIfFalse = 0;
+			int numTop25IfFalse = 0;
+			
+			int numBottom25IfTrue = 0;
+			int numIQRIfTrue = 0;
+			int numTop25IfTrue = 0;
+
+			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
+			{
+				final FeatureVector featureVector = remainingFeatureVectors.get(j);
+				final IQRClass iqrClass = remainingTargetClasses.get(j);
+
+				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
+				{
+					switch (iqrClass)
+					{
+					case Bottom25:
+						++numBottom25IfTrue;
+						break;
+					case IQR:
+						++numIQRIfTrue;
+						break;
+					case Top25:
+						++numTop25IfTrue;
+						break;
+					default:
+						System.err.println("Unrecognised IQR class!");
+					}
+				}
+				else
+				{
+					switch (iqrClass)
+					{
+					case Bottom25:
+						++numBottom25IfFalse;
+						break;
+					case IQR:
+						++numIQRIfFalse;
+						break;
+					case Top25:
+						++numTop25IfFalse;
+						break;
+					default:
+						System.err.println("Unrecognised IQR class!");
+					}
+				}
+			}
+			
+			final int totalNumFalse = numBottom25IfFalse + numIQRIfFalse + numTop25IfFalse;
+			final int totalNumTrue = numBottom25IfTrue + numIQRIfTrue + numTop25IfTrue;
+			
+			if (totalNumFalse == 0 || totalNumTrue == 0)
+				continue;
+			
+			final double probBottom25IfFalse = ((double)numBottom25IfFalse) / totalNumFalse;
+			final double probIQRIfFalse = ((double)numIQRIfFalse) / totalNumFalse;
+			final double probTop25IfFalse = ((double)numTop25IfFalse) / totalNumFalse;
+			
+			final double probBottom25IfTrue = ((double)numBottom25IfTrue) / totalNumTrue;
+			final double probIQRIfTrue = ((double)numIQRIfTrue) / totalNumTrue;
+			final double probTop25IfTrue = ((double)numTop25IfTrue) / totalNumTrue;
+			
+			double entropyFalseBranch = 0.0;
+			if (probBottom25IfFalse > 0.f)
+				entropyFalseBranch -= probBottom25IfFalse * MathRoutines.log2(probBottom25IfFalse);
+			if (probIQRIfFalse > 0.f)
+				entropyFalseBranch -= probIQRIfFalse * MathRoutines.log2(probIQRIfFalse);
+			if (probTop25IfFalse > 0.f)
+				entropyFalseBranch -= probTop25IfFalse * MathRoutines.log2(probTop25IfFalse);
+			
+			double entropyTrueBranch = 0.0;
+			if (probBottom25IfTrue > 0.f)
+				entropyTrueBranch -= probBottom25IfTrue * MathRoutines.log2(probBottom25IfTrue);
+			if (probIQRIfTrue > 0.f)
+				entropyTrueBranch -= probIQRIfTrue * MathRoutines.log2(probIQRIfTrue);
+			if (probTop25IfTrue > 0.f)
+				entropyTrueBranch -= probTop25IfTrue * MathRoutines.log2(probTop25IfTrue);
+			
+			final double probFalse = ((double)totalNumFalse) / (totalNumFalse + totalNumTrue);
+			final double probTrue = 1.0 - probFalse;
+			
+			final double informationGain = entropyBeforeSplit - probFalse * entropyFalseBranch - probTrue * entropyTrueBranch;
+			
+			if (informationGain > maxInformationGain)
+			{
+				maxInformationGain = informationGain;
+				bestIdx = i;
+			}
+		}
+		
+		for (int i = 0; i < numSpatialFeatures; ++i)
+		{
+			if (alreadyPickedSpatials.get(i))
+				continue;
+			
+			int numBottom25IfFalse = 0;
+			int numIQRIfFalse = 0;
+			int numTop25IfFalse = 0;
+			
+			int numBottom25IfTrue = 0;
+			int numIQRIfTrue = 0;
+			int numTop25IfTrue = 0;
+			
+			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
+			{
+				final FeatureVector featureVector = remainingFeatureVectors.get(j);
+				final IQRClass iqrClass = remainingTargetClasses.get(j);
+				
+				if (featureVector.activeSpatialFeatureIndices().contains(i))
+				{
+					switch (iqrClass)
+					{
+					case Bottom25:
+						++numBottom25IfTrue;
+						break;
+					case IQR:
+						++numIQRIfTrue;
+						break;
+					case Top25:
+						++numTop25IfTrue;
+						break;
+					default:
+						System.err.println("Unrecognised IQR class!");
+					}
+				}
+				else
+				{
+					switch (iqrClass)
+					{
+					case Bottom25:
+						++numBottom25IfFalse;
+						break;
+					case IQR:
+						++numIQRIfFalse;
+						break;
+					case Top25:
+						++numTop25IfFalse;
+						break;
+					default:
+						System.err.println("Unrecognised IQR class!");
+					}
+				}
+			}
+			
+			final int totalNumFalse = numBottom25IfFalse + numIQRIfFalse + numTop25IfFalse;
+			final int totalNumTrue = numBottom25IfTrue + numIQRIfTrue + numTop25IfTrue;
+			
+			if (totalNumFalse == 0 || totalNumTrue == 0)
+				continue;
+			
+			final double probBottom25IfFalse = ((double)numBottom25IfFalse) / totalNumFalse;
+			final double probIQRIfFalse = ((double)numIQRIfFalse) / totalNumFalse;
+			final double probTop25IfFalse = ((double)numTop25IfFalse) / totalNumFalse;
+			
+			final double probBottom25IfTrue = ((double)numBottom25IfTrue) / totalNumTrue;
+			final double probIQRIfTrue = ((double)numIQRIfTrue) / totalNumTrue;
+			final double probTop25IfTrue = ((double)numTop25IfTrue) / totalNumTrue;
+			
+			double entropyFalseBranch = 0.0;
+			if (probBottom25IfFalse > 0.f)
+				entropyFalseBranch -= probBottom25IfFalse * MathRoutines.log2(probBottom25IfFalse);
+			if (probIQRIfFalse > 0.f)
+				entropyFalseBranch -= probIQRIfFalse * MathRoutines.log2(probIQRIfFalse);
+			if (probTop25IfFalse > 0.f)
+				entropyFalseBranch -= probTop25IfFalse * MathRoutines.log2(probTop25IfFalse);
+			
+			double entropyTrueBranch = 0.0;
+			if (probBottom25IfTrue > 0.f)
+				entropyTrueBranch -= probBottom25IfTrue * MathRoutines.log2(probBottom25IfTrue);
+			if (probIQRIfTrue > 0.f)
+				entropyTrueBranch -= probIQRIfTrue * MathRoutines.log2(probIQRIfTrue);
+			if (probTop25IfTrue > 0.f)
+				entropyTrueBranch -= probTop25IfTrue * MathRoutines.log2(probTop25IfTrue);
+			
+			final double probFalse = ((double)totalNumFalse) / (totalNumFalse + totalNumTrue);
+			final double probTrue = 1.0 - probFalse;
+			
+			final double informationGain = entropyBeforeSplit - probFalse * entropyFalseBranch - probTrue * entropyTrueBranch;
+						
+			if (informationGain > maxInformationGain)
+			{
+				maxInformationGain = informationGain;
+				bestIdx = i;
+				bestFeatureIsAspatial = false;
+			}
+		}
+
+		if (bestIdx == -1)
+		{
+			// No point in making any split at all, so just make leaf
+			return new DecisionLeafNode(probBottom25, probIQR, probTop25);
+		}
+		
+		final Feature splittingFeature;
+		if (bestFeatureIsAspatial)
+			splittingFeature = featureSet.aspatialFeatures()[bestIdx];
+		else
+			splittingFeature = featureSet.spatialFeatures()[bestIdx];
+		
+		final BitSet newAlreadyPickedAspatials;
+		final BitSet newAlreadyPickedSpatials;
+		
+		if (bestFeatureIsAspatial)
+		{
+			newAlreadyPickedAspatials = (BitSet) alreadyPickedAspatials.clone();
+			newAlreadyPickedAspatials.set(bestIdx);
+			newAlreadyPickedSpatials = alreadyPickedSpatials;
+		}
+		else
+		{
+			newAlreadyPickedSpatials = (BitSet) alreadyPickedSpatials.clone();
+			newAlreadyPickedSpatials.set(bestIdx);
+			newAlreadyPickedAspatials = alreadyPickedAspatials;
+		}
+		
+		// Split remaining data for the two branches
+		final List<FeatureVector> remainingFeatureVectorsTrue = new ArrayList<FeatureVector>();
+		final List<IQRClass> remainingTargetClassesTrue = new ArrayList<IQRClass>();
+		
+		final List<FeatureVector> remainingFeatureVectorsFalse = new ArrayList<FeatureVector>();
+		final List<IQRClass> remainingTargetClassesFalse = new ArrayList<IQRClass>();
+		
+		if (bestFeatureIsAspatial)
+		{
+			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
+			{
+				if (remainingFeatureVectors.get(i).aspatialFeatureValues().get(bestIdx) != 0.f)
+				{
+					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
+					remainingTargetClassesTrue.add(remainingTargetClasses.get(i));
+				}
+				else
+				{
+					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
+					remainingTargetClassesFalse.add(remainingTargetClasses.get(i));
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
+			{
+				if (remainingFeatureVectors.get(i).activeSpatialFeatureIndices().contains(bestIdx))
+				{
+					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
+					remainingTargetClassesTrue.add(remainingTargetClasses.get(i));
+				}
+				else
+				{
+					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
+					remainingTargetClassesFalse.add(remainingTargetClasses.get(i));
+				}
+			}
+		}
+		
+		// Create the node for case where splitting feature is true
+		final DecisionTreeNode trueBranch;
+		{
+			trueBranch = 
+					buildNode
+					(
+						featureSet,
+						remainingFeatureVectorsTrue,
+						remainingTargetClassesTrue,
+						newAlreadyPickedAspatials,
+						newAlreadyPickedSpatials,
+						numAspatialFeatures,
+						numSpatialFeatures,
+						allowedDepth - 1
+					);
+		}
+		
+		// Create the node for case where splitting feature is false
+		final DecisionTreeNode falseBranch;
+		{
+			falseBranch = 
+					buildNode
+					(
+						featureSet,
+						remainingFeatureVectorsFalse,
+						remainingTargetClassesFalse,
+						newAlreadyPickedAspatials,
+						newAlreadyPickedSpatials,
+						numAspatialFeatures,
+						numSpatialFeatures,
+						allowedDepth - 1
+					);
+		}
+		
+		return new DecisionConditionNode(splittingFeature, trueBranch, falseBranch);
 	}
 	
 	//-------------------------------------------------------------------------
