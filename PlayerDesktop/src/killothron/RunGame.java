@@ -29,6 +29,9 @@ public class RunGame extends Thread
 	/** The number of players. */
 	private final int numPlayers;
 	
+	/** The limit of moves per player. */
+	private final int moveLimitPerPlayer;
+	
 	/** The graphical app used to show the game. */
 	private final PlayerApp app;
 
@@ -41,12 +44,14 @@ public class RunGame extends Thread
 	(
 		final PlayerApp app, 
 		final String name,
-		final int numPlayers
+		final int numPlayers,
+		final int moveLimit
 	)
 	{
 		this.app = app;
 		gameName = name;
 		this.numPlayers = numPlayers;
+		this.moveLimitPerPlayer = moveLimit;
 	}
 
 	@Override
@@ -59,7 +64,7 @@ public class RunGame extends Thread
 			EventQueue.invokeAndWait(() ->
 			{
 				GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
-				manager.ref().context().game().setMaxMoveLimit(numPlayers*200); // 200 moves per player.
+				manager.ref().context().game().setMaxMoveLimit(numPlayers*moveLimitPerPlayer); // limit of moves per player.
 				for(int pid = 1; pid <= numPlayers; pid++)
 				{
 					final String AIName = pid == 1 ? "UCT" : "Random";

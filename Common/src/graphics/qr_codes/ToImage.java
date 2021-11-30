@@ -164,7 +164,6 @@ public final class ToImage
 	 * Make the three corner markers rounded teardop shapes.
 	 * @param img
 	 * @param scale
-	 * @param invert
 	 */
 	public static void insertTeardropMarkers
 	(
