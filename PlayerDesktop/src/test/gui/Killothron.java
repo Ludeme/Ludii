@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import app.DesktopApp;
+import game.Game;
 import main.FileHandling;
+import other.GameLoader;
 
 /**
  * To start a killothron (beat a weak ai on all games and send report to a mail).
@@ -26,11 +28,31 @@ public class Killothron
 
 		for (final String s : choices)
 		{
-			if (!s.contains("/bad/") && !s.contains("/bad_playout/") && !s.contains("/test/") && !s.contains("/wip/")
-					&& !s.contains("/wishlist/"))
-			{
-				validChoices.add(s);
-			}
+			if (s.contains("/lud/plex"))
+				continue;
+
+			if (s.contains("/lud/wip"))
+				continue;
+
+			if (s.contains("/lud/wishlist"))
+				continue;
+
+			if (s.contains("/lud/reconstruction"))
+				continue;
+
+			if (s.contains("/lud/WishlistDLP"))
+				continue;
+
+			if (s.contains("/lud/test"))
+				continue;
+
+			if (s.contains("/res/lud/bad"))
+				continue;
+
+			if (s.contains("/res/lud/bad_playout"))
+				continue;
+			
+			validChoices.add(s);
 		}
 		
 		Collections.shuffle(validChoices);
@@ -38,23 +60,31 @@ public class Killothron
 		final String gameToReach = "";
 
 		boolean reached = (gameToReach.equals("") ? true : false);
-
+		int numGame = 0;
+		
 		for (final String gameName : validChoices)
 		{
 			if (reached)
 			{
-				final RunGame thread = new RunGame(app, gameName);
-				thread.run();
-				while (!thread.isOver())
-					try
+				final Game game = GameLoader.loadGameFromName(gameName);
+				if(!game.hasSubgames() && !game.hiddenInformation() && !game.isSimultaneousMoveGame() && !game.isSimulationMoveGame())
+				{
+					numGame++;
+					System.out.println("game #" + numGame + ": " + game.name() + " is running");
+					final RunGame thread = new RunGame(app, gameName);
+					thread.run();
+					while (!thread.isOver())
 					{
-						Thread.sleep(100);
+						try
+						{
+							Thread.sleep(100);
+						}
+						catch (InterruptedException e)
+						{
+							e.printStackTrace();
+						}
 					}
-					catch (InterruptedException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				}
 			}
 			else if (gameName.contains(gameToReach))
 			{

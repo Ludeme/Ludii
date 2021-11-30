@@ -16,11 +16,24 @@ import app.loading.GameLoading;
  */
 public class RunGame extends Thread
 {
+	/** The name of the game. */
 	private final String gameName;
+	
+	/** Value used to determine when the game is over. */
 	private boolean over = false;
+	
+	/** The graphical app used to show the game. */
 	private final PlayerApp app;
 
-	public RunGame(final PlayerApp app, final String name)
+	/**
+	 * @param app The app.
+	 * @param name The game name.
+	 */
+	public RunGame
+	(
+		final PlayerApp app, 
+		final String name
+		)
 	{
 		this.app = app;
 		gameName = name;
@@ -33,10 +46,7 @@ public class RunGame extends Thread
 		{
 			EventQueue.invokeAndWait(() ->
 			{
-				System.out.println("TEST GUI FOR " + gameName);
 				GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
-				app.manager().ref().context().game().toEnglish(app.manager().ref().context().game());
-				//InstructionGeneration.instructionGeneration(app);
 				over = true;
 			});
 		}
@@ -47,8 +57,12 @@ public class RunGame extends Thread
 		}
 	}
 
+	/**
+	 * @return True if the game is over.
+	 */
 	public boolean isOver()
 	{
 		return over;
 	}
+	
 }
