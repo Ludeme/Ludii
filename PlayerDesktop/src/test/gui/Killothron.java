@@ -10,6 +10,7 @@ import other.GameLoader;
 
 /**
  * To start a killothron (beat a weak ai on all games and send report to a mail).
+ * Note: All games except, match, hidden information, simultaneous games or simulation games.
  * 
  * @author Eric.Piette
  */
@@ -70,8 +71,8 @@ public class Killothron
 				if(!game.hasSubgames() && !game.hiddenInformation() && !game.isSimultaneousMoveGame() && !game.isSimulationMoveGame())
 				{
 					numGame++;
-					System.out.println("game #" + numGame + ": " + game.name() + " is running");
-					final RunGame thread = new RunGame(app, gameName);
+					System.out.println("game " + numGame + ": " + game.name() + " is running");
+					final RunGame thread = new RunGame(app, gameName, game.players().count());
 					thread.run();
 					while (!thread.isOver())
 					{

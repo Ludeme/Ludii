@@ -11,8 +11,6 @@ import app.views.tools.ToolView;
 import manager.ai.AIUtil;
 import other.context.Context;
 
-//-----------------------------------------------------------------------------
-
 /**
  * Settings button.
  * 
