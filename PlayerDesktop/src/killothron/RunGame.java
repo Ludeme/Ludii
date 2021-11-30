@@ -1,4 +1,4 @@
-package test.gui;
+package killothron;
 
 import static org.junit.Assert.fail;
 
