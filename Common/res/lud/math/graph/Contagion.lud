@@ -143,7 +143,7 @@
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour Blue))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         
     })
     

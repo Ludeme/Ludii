@@ -85,7 +85,7 @@
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
         (player Colour Shared (colour Black))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
         
     })

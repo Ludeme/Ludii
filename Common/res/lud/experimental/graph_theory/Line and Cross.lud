@@ -138,7 +138,7 @@
     
     (graphics {
         (player Colour Shared (colour 255 200 0))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
         
     })

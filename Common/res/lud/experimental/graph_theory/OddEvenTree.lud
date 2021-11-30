@@ -156,7 +156,7 @@
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
         (show Cost)
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
         
     })

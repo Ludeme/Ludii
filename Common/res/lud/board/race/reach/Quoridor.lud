@@ -156,7 +156,7 @@
     
     (graphics {
         (player Colour Shared (colour Yellow))
-        (board Style PenAndPaper replaceComponentsWithFilledCells:False)
+        (board Style PenAndPaper)
         (board Colour InnerVertices (colour Hidden))
         (board Colour OuterVertices (colour Hidden))
         (show Symbol "Square" (sites Board) fillColour:(colour 110 52 52) scale:0.9) 

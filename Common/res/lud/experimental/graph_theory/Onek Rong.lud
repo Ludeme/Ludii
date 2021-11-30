@@ -201,7 +201,7 @@
         (player Colour P2 (colour Green))
         (player Colour P3 (colour Orange))
         (player Colour P4 (colour Blue))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Cost)
         (show Edges ThinDotted (colour 127 127 127))
         

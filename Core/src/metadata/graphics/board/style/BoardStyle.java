@@ -3,6 +3,8 @@ package metadata.graphics.board.style;
 import java.util.BitSet;
 
 import annotations.Hide;
+import annotations.Name;
+import annotations.Opt;
 import game.Game;
 import game.equipment.container.board.custom.MancalaBoard;
 import game.types.board.StoreType;
@@ -21,23 +23,23 @@ public class BoardStyle implements GraphicsItem
 	/** Container style to apply. */
 	private final ContainerStyleType containerStyleType;
 	
-	/** Don't draw any components, and fill their cells instead (only for pen and paper style) . */
-	private final boolean replaceComponentsWithFilledCells;
+	/** Don't draw any components, and fill their cells instead. */
+	private final Boolean replaceComponentsWithFilledCells;
 		
 	//-------------------------------------------------------------------------
 
 	/**
 	 * @param containerStyleType 					Container style wanted for the board.
-	 * @param replaceComponentsWithFilledCells      True if cells should be filled instead of component drawn.
+	 * @param replaceComponentsWithFilledCells      True if cells should be filled instead of component drawn [False].
 	 */
 	public BoardStyle
 	(
 		final ContainerStyleType containerStyleType,
-		final boolean replaceComponentsWithFilledCells
+		@Opt @Name final Boolean replaceComponentsWithFilledCells
 	)
 	{
 		this.containerStyleType = containerStyleType;
-		this.replaceComponentsWithFilledCells = replaceComponentsWithFilledCells;
+		this.replaceComponentsWithFilledCells = replaceComponentsWithFilledCells == null ? false : replaceComponentsWithFilledCells;
 	}
 
 	//-------------------------------------------------------------------------
@@ -55,7 +57,7 @@ public class BoardStyle implements GraphicsItem
 	 */
 	public boolean replaceComponentsWithFilledCells()
 	{
-		return replaceComponentsWithFilledCells;
+		return replaceComponentsWithFilledCells.booleanValue();
 	}
 	
 	//-------------------------------------------------------------------------

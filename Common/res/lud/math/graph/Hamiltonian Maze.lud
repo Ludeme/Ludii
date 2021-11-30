@@ -231,7 +231,7 @@
     
     (graphics {
         (player Colour P1 (colour Red))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted (colour 127 127 127))
         
     })
