@@ -370,24 +370,26 @@ public class State implements Serializable
 			
 		numConsecutivePassesHashCap = 2 * game.players().count() + 1;
 		numConsecutivePassesHashes = ZobristHashUtilities.getSequence(generator, 2, numConsecutivePassesHashCap);
+		
+		isPendingHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
+		
+		stateHash = ZobristHashUtilities.INITIAL_VALUE;
+		scoreHash = ZobristHashUtilities.INITIAL_VALUE;
+		amountHash = ZobristHashUtilities.INITIAL_VALUE;
 
+		//-------------- on with the plot ----------------
+		
 		playerOrder = new int[game.players().count() + 1];
 		for (int i = 1; i < playerOrder.length; i++)
 		{
 			playerOrder[i] = i;
 			updateStateHash(playerOrderHashes[i][playerOrder[i]]);
 		}
-
-		//-------------- on with the plot ----------------
 		
 		assert (!game.hasSubgames());
 
 		moneyPot = 0;
-		isPendingHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
-		stateHash = ZobristHashUtilities.INITIAL_VALUE;
-		scoreHash = ZobristHashUtilities.INITIAL_VALUE;
-		amountHash = ZobristHashUtilities.INITIAL_VALUE;
-
+		
 		containerStates = new ContainerState[game.equipment().containers().length];
 		
 		if (game.usesPendingValues())
@@ -491,17 +493,6 @@ public class State implements Serializable
 		// Back to the plot
 		numPlayers = other.numPlayers;
 		
-		stateHash = other.stateHash;
-		moverHash = other.moverHash;
-		nextHash = other.nextHash;
-		prevHash = other.prevHash;
-		activeHash = other.activeHash;
-		checkmatedHash = other.checkmatedHash;
-		stalematedHash = other.stalematedHash;
-		pendingHash = other.pendingHash;
-		scoreHash = other.scoreHash;
-		amountHash = other.amountHash;
-		
 		trumpSuit = other.trumpSuit;
 		
 		mover = other.mover;
@@ -524,8 +515,8 @@ public class State implements Serializable
 					containerStates[is] = other.containerStates[is].deepClone();
 		}
 
-		setCounter(other.counter);
-		setTemp(other.tempValue);
+		counter = other.counter;
+		tempValue = other.tempValue;
 		
 		if (other.pendingValues != null)
 			pendingValues = new TIntHashSet(other.pendingValues);
@@ -610,6 +601,17 @@ public class State implements Serializable
 		
 		if (other.valueMap != null)
 			valueMap = new TObjectIntHashMap<String>(other.valueMap);
+		
+		stateHash = other.stateHash;
+		moverHash = other.moverHash;
+		nextHash = other.nextHash;
+		prevHash = other.prevHash;
+		activeHash = other.activeHash;
+		checkmatedHash = other.checkmatedHash;
+		stalematedHash = other.stalematedHash;
+		pendingHash = other.pendingHash;
+		scoreHash = other.scoreHash;
+		amountHash = other.amountHash;
 	}
 
 	//-------------------------------------------------------------------------
@@ -896,17 +898,6 @@ public class State implements Serializable
 		// Back to the plot
 		numPlayers = other.numPlayers;
 				
-		stateHash = other.stateHash;
-		moverHash = other.moverHash;
-		nextHash = other.nextHash;
-		prevHash = other.prevHash;
-		activeHash = other.activeHash;
-		checkmatedHash = other.checkmatedHash;
-		stalematedHash = other.stalematedHash;
-		pendingHash = other.pendingHash;
-		scoreHash = other.scoreHash;
-		amountHash = other.amountHash;
-				
 		trumpSuit = other.trumpSuit;
 				
 		mover = other.mover;
@@ -929,8 +920,8 @@ public class State implements Serializable
 					containerStates[is] = other.containerStates[is].deepClone();
 		}
 
-		setCounter(other.counter);
-		setTemp(other.tempValue);
+		counter = other.counter;
+		tempValue = other.tempValue;
 				
 		if (other.pendingValues != null)
 			pendingValues = new TIntHashSet(other.pendingValues);
@@ -1018,6 +1009,17 @@ public class State implements Serializable
 
 		if (game.isBoardless() && containerStates[0].isEmpty(game.board().topology().centre(SiteType.Cell).get(0).index(), SiteType.Cell))
 			containerStates[0].setPlayable(this, game.board().topology().centre(SiteType.Cell).get(0).index(), true);
+		
+		stateHash = other.stateHash;
+		moverHash = other.moverHash;
+		nextHash = other.nextHash;
+		prevHash = other.prevHash;
+		activeHash = other.activeHash;
+		checkmatedHash = other.checkmatedHash;
+		stalematedHash = other.stalematedHash;
+		pendingHash = other.pendingHash;
+		scoreHash = other.scoreHash;
+		amountHash = other.amountHash;
 	}
 
 	//-------------------------------------------------------------------------
@@ -1726,7 +1728,7 @@ public class State implements Serializable
 	/**
 	 * @param newVisited The visited sites replacing the current one.
 	 */
-	public void setVisited(final HashedBitSet newVisited)
+	public void setVisited(final HashedBitSet newVisited)		// FIXME this method should not exist, doesn't update Zobrist hash
 	{
 		visited = newVisited.clone();
 	}
