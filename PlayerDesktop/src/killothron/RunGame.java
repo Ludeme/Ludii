@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import app.PlayerApp;
 import app.loading.GameLoading;
 import app.utils.GameUtil;
+import main.Status;
 import manager.Manager;
 import manager.ai.AIDetails;
 import manager.ai.AIUtil;
@@ -58,19 +59,17 @@ public class RunGame extends Thread
 			EventQueue.invokeAndWait(() ->
 			{
 				GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
+				manager.ref().context().game().setMaxMoveLimit(numPlayers*200); // 200 moves per player.
 				for(int pid = 1; pid <= numPlayers; pid++)
 				{
-					if (manager.aiSelected()[pid].ai() == null)		
-					{
-							final JSONObject json = new JSONObject().put("AI", new JSONObject().put("algorithm", "Random"));
-							AIUtil.updateSelectedAI(app.manager(), json, pid, "Random");
+					final String AIName = pid == 1 ? "UCT" : "Random";
+					final JSONObject json = new JSONObject().put("AI", new JSONObject().put("algorithm", AIName));
+					AIUtil.updateSelectedAI(app.manager(), json, pid, AIName);
 							
-							if (manager.aiSelected()[pid].ai() != null)
-								manager.aiSelected()[pid].ai().closeAI();
+					if (manager.aiSelected()[pid].ai() != null)
+						manager.aiSelected()[pid].ai().closeAI();
 							
-							manager.aiSelected()[pid] = new AIDetails(manager, json, pid, "Random");
-							manager.settingsNetwork().backupAiPlayers(manager);
-					}
+					manager.aiSelected()[pid] = new AIDetails(manager, json, pid, "Random");
 				}
 				GameUtil.startGame(app);
 				app.manager().settingsManager().setAgentsPaused(app.manager(), false);
@@ -85,11 +84,52 @@ public class RunGame extends Thread
 	}
 
 	/**
+	 * Set the first player to random.
+	 */
+	public void setFirstPlayerToRandom()
+	{
+		final Manager manager = app.manager();
+		final JSONObject json = new JSONObject().put("AI", new JSONObject().put("algorithm", "Random"));
+		AIUtil.updateSelectedAI(app.manager(), json, 1, "Random");
+				
+		if (manager.aiSelected()[1].ai() != null)
+			manager.aiSelected()[1].ai().closeAI();
+				
+		manager.aiSelected()[1] = new AIDetails(manager, json, 1, "Random");
+		app.manager().settingsManager().setAgentsPaused(app.manager(), false);
+		app.manager().ref().nextMove(app.manager(), false);
+	}
+	
+	/**
 	 * @return True if the game is over.
 	 */
 	public boolean isOver()
 	{
 		return app.manager().ref().context().trial().over();
+	}
+	
+	/** 
+	 * @return The game length of the current game. 
+	 */
+	public int gameLength()
+	{
+		return app.manager().ref().context().trial().numberRealMoves();
+	}
+	
+	/**
+	 * @return The status of the current game.
+	 */
+	public Status status()
+	{
+		return app.manager().ref().context().trial().status();
+	}
+	
+	/**
+	 * @return The current mover.
+	 */
+	public int mover()
+	{
+		return app.manager().ref().context().state().mover();
 	}
 	
 }

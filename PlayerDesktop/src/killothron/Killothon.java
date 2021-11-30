@@ -22,6 +22,8 @@ public class Killothon
 	 */
 	public static void main(final String[] args)
 	{
+		final int sleepTimeMs = 1;
+		
 		final DesktopApp app = new DesktopApp();
 		app.createDesktopApp();
 		final String[] choices = FileHandling.listGames();
@@ -73,18 +75,35 @@ public class Killothon
 					numGame++;
 					System.out.println("game " + numGame + ": " + game.name() + " is running");
 					final RunGame thread = new RunGame(app, gameName, game.players().count());
+					double time = System.currentTimeMillis();
+					double remainingTime = 60000; // One minute
 					thread.run();
 					while (!thread.isOver())
 					{
 						try
 						{
-							Thread.sleep(100);
+							Thread.sleep(sleepTimeMs);
+							
+							if(remainingTime > 0) // We check the remaining time to be able to think smartly for the challenger.
+							{
+								final double timeUsed = System.currentTimeMillis() - time;
+								if(thread.mover() == 1) // If that's the challenger we decrement the time used.
+								{
+									remainingTime = remainingTime - timeUsed;
+									//System.out.println("remaining Time = " + remainingTime/1000 + " s");
+								}
+							    time = System.currentTimeMillis();
+							    
+								if(remainingTime <= 0)
+									thread.setFirstPlayerToRandom();
+							}
 						}
 						catch (InterruptedException e)
 						{
 							e.printStackTrace();
 						}
 					}
+					System.out.println("Winner is " + thread.status().winner() + " finished in " + thread.gameLength() + " moves.");
 				}
 			}
 			else if (gameName.contains(gameToReach))
