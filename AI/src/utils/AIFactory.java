@@ -24,7 +24,7 @@ import org.json.JSONTokener;
 import game.Game;
 import other.AI;
 import policies.GreedyPolicy;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.flat.FlatMonteCarlo;
 import search.flat.HeuristicSampling;
 import search.mcts.MCTS;
@@ -359,7 +359,7 @@ public class AIFactory
 				algName.equalsIgnoreCase("SoftmaxPolicy")
 			)
 			{
-				return SoftmaxPolicy.fromLines(lines);
+				return SoftmaxPolicyLinear.fromLines(lines);
 			}
 			else if 
 			(

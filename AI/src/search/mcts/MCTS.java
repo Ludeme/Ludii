@@ -31,7 +31,7 @@ import other.state.State;
 import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadataPlayout;
 import policies.softmax.SoftmaxFromMetadataSelection;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.BackpropagationStrategy;
 import search.mcts.backpropagation.MonteCarloBackprop;
@@ -206,7 +206,7 @@ public class MCTS extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	/** A learned policy to use in Selection phase */
-	protected SoftmaxPolicy learnedSelectionPolicy = null;
+	protected SoftmaxPolicyLinear learnedSelectionPolicy = null;
 	
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
@@ -311,13 +311,13 @@ public class MCTS extends ExpertPolicy
 				new MCTS
 				(
 					new NoisyAG0Selection(), 
-					epsilon < 1.0 ? SoftmaxPolicy.constructPlayoutPolicy(features, epsilon) : new RandomPlayout(200),
+					epsilon < 1.0 ? SoftmaxPolicyLinear.constructPlayoutPolicy(features, epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
 		mcts.setQInit(QInit.WIN);
-		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, epsilon));
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicyLinear.constructSelectionPolicy(features, epsilon));
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
 		return mcts;
@@ -384,7 +384,7 @@ public class MCTS extends ExpertPolicy
 					new RobustChild()
 				);
 		
-		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, 0.0));
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicyLinear.constructSelectionPolicy(features, 0.0));
 		mcts.setPlayoutValueWeight(0.0);
 		mcts.setWantsMetadataHeuristics(false);
 		mcts.setHeuristics(heuristics);
@@ -833,7 +833,7 @@ public class MCTS extends ExpertPolicy
 	/**
 	 * @return Learned (linear, softmax) policy for Selection phase
 	 */
-	public SoftmaxPolicy learnedSelectionPolicy()
+	public SoftmaxPolicyLinear learnedSelectionPolicy()
 	{
 		return learnedSelectionPolicy;
 	}
@@ -882,7 +882,7 @@ public class MCTS extends ExpertPolicy
 	 * Sets the learned policy to use in Selection phase
 	 * @param policy The policy.
 	 */
-	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
+	public void setLearnedSelectionPolicy(final SoftmaxPolicyLinear policy)
 	{
 		learnedSelectionPolicy = policy;
 	}
@@ -994,7 +994,7 @@ public class MCTS extends ExpertPolicy
 	@Override
 	public boolean usesFeatures(final Game game)
 	{
-		return (learnedSelectionPolicy != null || playoutStrategy instanceof SoftmaxPolicy);
+		return (learnedSelectionPolicy != null || playoutStrategy instanceof SoftmaxPolicyLinear);
 	}
 	
 	@Override
@@ -1315,7 +1315,7 @@ public class MCTS extends ExpertPolicy
 		boolean treeReuse = false;
 		boolean useScoreBounds = false;
 		int numThreads = 1;
-		SoftmaxPolicy learnedSelectionPolicy = null;
+		SoftmaxPolicyLinear learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
 		String friendlyName = "MCTS";
 
@@ -1428,7 +1428,7 @@ public class MCTS extends ExpertPolicy
 				if (lineParts[0].toLowerCase().endsWith("playout"))
 				{
 					// our playout strategy is our learned Selection policy
-					learnedSelectionPolicy = (SoftmaxPolicy) playout;
+					learnedSelectionPolicy = (SoftmaxPolicyLinear) playout;
 				}
 				else if 
 				(
@@ -1436,7 +1436,7 @@ public class MCTS extends ExpertPolicy
 					lineParts[0].toLowerCase().endsWith("softmaxplayout")
 				)
 				{
-					learnedSelectionPolicy = new SoftmaxPolicy();
+					learnedSelectionPolicy = new SoftmaxPolicyLinear();
 					learnedSelectionPolicy.customise(lineParts);
 				}
 			}

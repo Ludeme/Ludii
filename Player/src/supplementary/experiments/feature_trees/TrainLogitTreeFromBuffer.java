@@ -19,7 +19,7 @@ import metadata.ai.features.trees.FeatureTrees;
 import metadata.ai.features.trees.logits.LogitNode;
 import metadata.ai.features.trees.logits.LogitTree;
 import other.GameLoader;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import utils.AIFactory;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -98,7 +98,7 @@ public class TrainLogitTreeFromBuffer
 				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicy playoutSoftmax = (SoftmaxPolicy) mcts.playoutStrategy();
+		final SoftmaxPolicyLinear playoutSoftmax = (SoftmaxPolicyLinear) mcts.playoutStrategy();
 		
 		final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
 		final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();

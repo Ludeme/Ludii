@@ -15,7 +15,7 @@ import metadata.ai.features.Features;
  * 
  * @author Dennis Soemers
  */
-public class SoftmaxFromMetadataPlayout extends SoftmaxPolicy
+public class SoftmaxFromMetadataPlayout extends SoftmaxPolicyLinear
 {
 	
 	/**

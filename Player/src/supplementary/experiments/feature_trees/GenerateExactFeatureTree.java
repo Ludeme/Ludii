@@ -17,7 +17,7 @@ import main.StringRoutines;
 import metadata.ai.features.trees.FeatureTrees;
 import metadata.ai.features.trees.logits.LogitNode;
 import metadata.ai.features.trees.logits.LogitTree;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import utils.AIFactory;
 
@@ -91,7 +91,7 @@ public class GenerateExactFeatureTree
 				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicy playoutSoftmax = (SoftmaxPolicy) mcts.playoutStrategy();
+		final SoftmaxPolicyLinear playoutSoftmax = (SoftmaxPolicyLinear) mcts.playoutStrategy();
 		
 		final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
 		

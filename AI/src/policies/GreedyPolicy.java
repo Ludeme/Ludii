@@ -107,34 +107,6 @@ public class GreedyPolicy extends Policy
 				);
 	}
 	
-	@Override
-	public float computeLogit(final Context context, final Move move)
-	{
-		final BaseFeatureSet featureSet;
-		
-		if (featureSets.length == 1)
-		{
-			featureSet = featureSets[0];
-		}
-		else
-		{
-			featureSet = featureSets[context.state().mover()];
-		}
-		
-		final LinearFunction linearFunction;
-		
-		if (linearFunctions.length == 1)
-		{
-			linearFunction = linearFunctions[0];
-		}
-		else
-		{
-			linearFunction = linearFunctions[context.state().mover()];
-		}
-		
-		return linearFunction.predict(featureSet.computeFeatureVector(context, move, true));
-	}
-	
 	/**
 	 * @param featureVectors
 	 * @param player

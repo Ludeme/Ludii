@@ -28,7 +28,7 @@ import main.math.MathRoutines;
 import main.math.statistics.KolmogorovSmirnov;
 import main.math.statistics.Sampling;
 import other.move.Move;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import training.ExperienceSample;
 import training.expert_iteration.gradients.Gradients;
 import training.expert_iteration.params.FeatureDiscoveryParams;
@@ -49,7 +49,7 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 	(
 		final List<? extends ExperienceSample> batch,
 		final BaseFeatureSet featureSet,
-		final SoftmaxPolicy policy,
+		final SoftmaxPolicyLinear policy,
 		final Game game,
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final ObjectiveParams objectiveParams,

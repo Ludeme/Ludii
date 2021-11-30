@@ -8,7 +8,7 @@ import features.spatial.SpatialFeature;
 import features.spatial.instances.FeatureInstance;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
@@ -40,7 +40,7 @@ public interface FeatureSetExpander
 	(
 		final List<? extends ExperienceSample> batch,
 		final BaseFeatureSet featureSet,
-		final SoftmaxPolicy policy,
+		final SoftmaxPolicyLinear policy,
 		final Game game,
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final ObjectiveParams objectiveParams,

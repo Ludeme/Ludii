@@ -47,7 +47,7 @@ import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
 import other.trial.Trial;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import training.expert_iteration.gradients.Gradients;
 import training.expert_iteration.menageries.Menagerie;
@@ -349,24 +349,24 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions = prepareTSPGFunctions(featureSets, selectionFunctions);
 				
 				// create our policies
-				final SoftmaxPolicy selectionPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear selectionPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							selectionFunctions, 
 							featureSets,
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final SoftmaxPolicy playoutPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear playoutPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							playoutFunctions, 
 							featureSets,
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final SoftmaxPolicy tspgPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear tspgPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							tspgFunctions, 
 							featureSets,
@@ -1219,7 +1219,7 @@ public class ExpertIteration
 				final FeatureSetExpander expander,
 				final BaseFeatureSet featureSet,
 				final int p,
-				final SoftmaxPolicy policy,
+				final SoftmaxPolicyLinear policy,
 				final TDoubleArrayList featureActiveRatios,
 				final TLongArrayList featureLifetimes,
 				final TLongArrayList featureOccurrences,

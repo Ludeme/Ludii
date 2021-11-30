@@ -8,7 +8,7 @@ import game.Game;
 import other.context.Context;
 import other.trial.Trial;
 import policies.GreedyPolicy;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 
 /**
@@ -89,7 +89,7 @@ public interface PlayoutStrategy
 		}
 		else if (inputs[0].endsWith("softmax") || inputs[0].endsWith("softmaxplayout"))
 		{
-			playout = new SoftmaxPolicy();
+			playout = new SoftmaxPolicyLinear();
 			playout.customise(inputs);
 		}
 		else if (inputs[0].endsWith("greedy"))

@@ -28,7 +28,7 @@ import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
@@ -73,9 +73,9 @@ public class Reinforce
 	public static BaseFeatureSet[] runSelfPlayPG
 	(
 		final Game game,
-		final SoftmaxPolicy selectionPolicy,
-		final SoftmaxPolicy playoutPolicy,
-		final SoftmaxPolicy tspgPolicy,
+		final SoftmaxPolicyLinear selectionPolicy,
+		final SoftmaxPolicyLinear playoutPolicy,
+		final SoftmaxPolicyLinear tspgPolicy,
 		final BaseFeatureSet[] inFeatureSets,
 		final FeatureSetExpander featureSetExpander,
 		final Optimiser[] optimisers,

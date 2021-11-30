@@ -34,7 +34,7 @@ import other.AI;
 import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.minimax.AlphaBetaSearch;
 
 /**
@@ -450,7 +450,7 @@ public class AIUtils
 	 */
 	public static metadata.ai.features.Features generateFeaturesMetadata
 	(
-		final SoftmaxPolicy selectionPolicy, final SoftmaxPolicy playoutPolicy
+		final SoftmaxPolicyLinear selectionPolicy, final SoftmaxPolicyLinear playoutPolicy
 	)
 	{
 		final Features features;
