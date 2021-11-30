@@ -52,10 +52,11 @@ public class HashedBitSet implements Serializable
 	public void clear(final State trialState) 
 	{
 		long hashDelta = 0L;
-		for (int site = 0; site < hashes.length; site++)
-			if (internalState.get(site)) 
-				hashDelta ^= hashes[site];
-		
+		for (int site = internalState.nextSetBit(0); site >= 0; site = internalState.nextSetBit(site + 1))
+		{
+			hashDelta ^= hashes[site];
+		}
+
 		internalState.clear();
 				
 		trialState.updateStateHash(hashDelta);
