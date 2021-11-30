@@ -22,7 +22,8 @@ public class Killothon
 	 */
 	public static void main(final String[] args)
 	{
-		final int sleepTimeMs = 1;
+		final int sleepTime = 1; // Sleep time before to update the game (in ms).
+		final double timeToThink = 60000; // Time for the challenger to think smartly (in ms).
 		
 		final DesktopApp app = new DesktopApp();
 		app.createDesktopApp();
@@ -58,31 +59,29 @@ public class Killothon
 			validChoices.add(s);
 		}
 		
-		Collections.shuffle(validChoices);
+		Collections.shuffle(validChoices); // Random order for the games.
 
-		final String gameToReach = "";
-
-		boolean reached = (gameToReach.equals("") ? true : false);
-		int numGame = 0;
-		
+		int idGame = 0; // index of the game.
 		for (final String gameName : validChoices)
 		{
-			if (reached)
-			{
 				final Game game = GameLoader.loadGameFromName(gameName);
 				if(!game.hasSubgames() && !game.hiddenInformation() && !game.isSimultaneousMoveGame() && !game.isSimulationMoveGame())
 				{
-					numGame++;
-					System.out.println("game " + numGame + ": " + game.name() + " is running");
+					idGame++;
+					System.out.println("game " + idGame + ": " + game.name() + " is running");
+					
+					// Start the game.
 					final RunGame thread = new RunGame(app, gameName, game.players().count());
 					double time = System.currentTimeMillis();
-					double remainingTime = 60000; // One minute
+					double remainingTime = timeToThink; // One minute
+					
+					// Run the game.
 					thread.run();
 					while (!thread.isOver())
 					{
 						try
 						{
-							Thread.sleep(sleepTimeMs);
+							Thread.sleep(sleepTime);
 							
 							if(remainingTime > 0) // We check the remaining time to be able to think smartly for the challenger.
 							{
@@ -103,13 +102,10 @@ public class Killothon
 							e.printStackTrace();
 						}
 					}
-					System.out.println("Winner is " + thread.status().winner() + " finished in " + thread.gameLength() + " moves.");
+					
+					// Print the results.
+					System.out.println("Ranking of P1 : " + thread.ranking()[1] + " finished in " + thread.gameLength() + " moves.");
 				}
-			}
-			else if (gameName.contains(gameToReach))
-			{
-				reached = true;
-			}
 		}
 	}
 }

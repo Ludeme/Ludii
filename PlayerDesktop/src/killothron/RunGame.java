@@ -125,6 +125,14 @@ public class RunGame extends Thread
 	}
 	
 	/**
+	 * @return The status of the current game.
+	 */
+	public double[] ranking()
+	{
+		return app.manager().ref().context().trial().ranking();
+	}
+	
+	/**
 	 * @return The current mover.
 	 */
 	public int mover()
