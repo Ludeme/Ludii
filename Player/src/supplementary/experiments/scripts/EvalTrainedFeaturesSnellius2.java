@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -16,8 +17,11 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import main.collections.ArrayUtils;
 import main.collections.ListUtils;
 import other.GameLoader;
+import supplementary.experiments.analysis.RulesetConceptsUCT;
+import utils.RulesetNames;
 
 /**
  * Script to generate scripts for evaluation of training runs with vs. without
@@ -25,7 +29,7 @@ import other.GameLoader;
  *
  * @author Dennis Soemers
  */
-public class EvalTrainedFeaturesSnellius
+public class EvalTrainedFeaturesSnellius2
 {
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
@@ -76,7 +80,7 @@ public class EvalTrainedFeaturesSnellius
 				"Bizingo.lud",
 				"Breakthrough.lud",
 				"Chess.lud",
-				"Chinese Checkers.lud",
+				//"Chinese Checkers.lud",
 				"English Draughts.lud",
 				"Fanorona.lud",
 				"Fox and Geese.lud",
@@ -87,7 +91,7 @@ public class EvalTrainedFeaturesSnellius
 				"Hex.lud",
 				"Knightthrough.lud",
 				"Konane.lud",
-				"Level Chess.lud",
+				//"Level Chess.lud",
 				"Lines of Action.lud",
 				"Pentalath.lud",
 				"Pretwa.lud",
@@ -96,7 +100,7 @@ public class EvalTrainedFeaturesSnellius
 				"Surakarta.lud",
 				"Shobu.lud",
 				"Tablut.lud",
-				"Triad.lud",
+				//"Triad.lud",
 				"XII Scripta.lud",
 				"Yavalath.lud"
 			};
@@ -106,12 +110,15 @@ public class EvalTrainedFeaturesSnellius
 			new String[]
 			{
 				"Baseline",
-				"TournamentMode",
-				"Reinforce",
-				"ReinforceZero",
-				"ReinforceOne",
+				//"TournamentMode",
+				"ReinforceGamma1",
+				"ReinforceGamma099",
+				"ReinforceGamma09",
 				"SpecialMovesExpander",
-				"All"
+				"SpecialMovesExpanderSplit",
+				"SignCorrelationExpander",
+				"RandomExpander",
+				//"All"
 			};
 	
 	//-------------------------------------------------------------------------
@@ -119,7 +126,7 @@ public class EvalTrainedFeaturesSnellius
 	/**
 	 * Constructor (don't need this)
 	 */
-	private EvalTrainedFeaturesSnellius()
+	private EvalTrainedFeaturesSnellius2()
 	{
 		// Do nothing
 	}
@@ -141,20 +148,51 @@ public class EvalTrainedFeaturesSnellius
 		
 		final String userName = argParse.getValueString("--user-name");
 		
+		// Sort games in decreasing order of expected duration (in moves per trial)
+		// This ensures that we start with the slow games, and that games of similar
+		// durations are likely to end up in the same job script (and therefore run
+		// on the same node at the same time).
+		final Game[] compiledGames = new Game[GAMES.length];
+		final double[] expectedTrialDurations = new double[GAMES.length];
+		for (int i = 0; i < compiledGames.length; ++i)
+		{
+			final Game game = GameLoader.loadGameFromName(GAMES[i]);
+
+			if (game == null)
+				throw new IllegalArgumentException("Cannot load game: " + GAMES[i]);
+
+			compiledGames[i] = game;
+			expectedTrialDurations[i] = RulesetConceptsUCT.getValue(RulesetNames.gameRulesetName(game), "DurationMoves");
+
+			System.out.println("expected duration per trial for " + GAMES[i] + " = " + expectedTrialDurations[i]);
+		}
+
+		final List<Integer> sortedGameIndices = ArrayUtils.sortedIndices(GAMES.length, new Comparator<Integer>()
+		{
+
+			@Override
+			public int compare(final Integer i1, final Integer i2) 
+			{
+				final double delta = expectedTrialDurations[i2.intValue()] - expectedTrialDurations[i1.intValue()];
+				if (delta < 0.0)
+					return -1;
+				if (delta > 0.0)
+					return 1;
+				return 0;
+			}
+
+		});
+		
 		final List<Object[][]> matchupsPerPlayerCount = new ArrayList<Object[][]>();
 		
 		final int maxMatchupsPerGame = ListUtils.numCombinationsWithReplacement(VARIANTS.length, 3);
 
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
-		for (final String gameName : GAMES)
+		for (int idx : sortedGameIndices)
 		{
-			// Sanity check: make sure game with this name loads correctly
-			System.out.println("gameName = " + gameName);
-			final Game game = GameLoader.loadGameFromName(gameName);
-			
-			if (game == null)
-				throw new IllegalArgumentException("Cannot load game: " + gameName);
+			final Game game = compiledGames[idx];
+			final String gameName = GAMES[idx];
 			
 			final int numPlayers = game.players().count();
 			
@@ -195,6 +233,8 @@ public class EvalTrainedFeaturesSnellius
 			}
 		}
 		
+		long totalRequestedCoreHours = 0L;
+		
 		int processIdx = 0;
 		while (processIdx < processDataList.size())
 		{
@@ -222,6 +262,8 @@ public class EvalTrainedFeaturesSnellius
 				
 				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
+				
+				totalRequestedCoreHours += (CORES_PER_NODE * (MAX_WALL_TIME / 60));
 				
 				if (exclusive)
 					writer.println("#SBATCH --exclusive");
@@ -357,6 +399,8 @@ public class EvalTrainedFeaturesSnellius
 				e.printStackTrace();
 			}
 		}
+		
+		System.out.println("Total requested core hours = " + totalRequestedCoreHours);
 		
 		final List<List<String>> jobScriptsLists = new ArrayList<List<String>>();
 		List<String> remainingJobScriptNames = jobScriptNames;
