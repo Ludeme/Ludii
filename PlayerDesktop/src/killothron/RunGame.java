@@ -16,7 +16,7 @@ import manager.ai.AIDetails;
 import manager.ai.AIUtil;
 
 /**
- * Method used to run a game in the killothron.
+ * Method used to run a game in the killothon.
  * 
  * @author Eric.Piette
  */
@@ -70,8 +70,6 @@ public class RunGame extends Thread
 							
 							manager.aiSelected()[pid] = new AIDetails(manager, json, pid, "Random");
 							manager.settingsNetwork().backupAiPlayers(manager);
-							//pauseAgentsIfNeeded(manager);
-							//manager.aiSelected()[pid].ai().initIfNeeded(app.contextSnapshot().getContext(app).game(), pid);
 					}
 				}
 				GameUtil.startGame(app);

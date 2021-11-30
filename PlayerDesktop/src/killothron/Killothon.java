@@ -9,12 +9,12 @@ import main.FileHandling;
 import other.GameLoader;
 
 /**
- * To start a killothron (beat a weak ai on all games and send report to a mail).
+ * To start a killothon (beat a weak ai on all games and send report to a mail).
  * Note: All games except, match, hidden information, simultaneous games or simulation games.
  * 
  * @author Eric.Piette
  */
-public class Killothron
+public class Killothon
 {
 	/**
 	 * Main method
