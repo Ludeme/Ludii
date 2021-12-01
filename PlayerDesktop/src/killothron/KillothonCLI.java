@@ -60,10 +60,10 @@ public class KillothonCLI
 		double sumUtilities = 0;
 		int sumNumMoves = 0;
 		
-		final String[] choices = FileHandling.listGames();
+		// Get the list of games.
+		final String[] gameList = FileHandling.listGames();
 		final ArrayList<String> validChoices = new ArrayList<>();
-
-		for (final String s : choices)
+		for (final String s : gameList)
 		{
 			if (s.contains("/lud/plex"))
 				continue;
@@ -92,7 +92,8 @@ public class KillothonCLI
 			validChoices.add(s);
 		}
 		
-		Collections.shuffle(validChoices); // Random order for the games.
+		// Random order for the games.
+		Collections.shuffle(validChoices); 
 
 		int idGame = 0; // index of the game.
 		final String output = "KilothonResults.csv";
@@ -103,11 +104,13 @@ public class KillothonCLI
 					final Game game = GameLoader.loadGameFromName(gameName);
 					final int numPlayers = game.players().count();
 					
+					// look only the games we want in the Killothon.
 					if(!game.hasSubgames() && !game.hiddenInformation() && !game.isSimultaneousMoveGame() && !game.isSimulationMoveGame())
 					{
 						idGame++;
 						System.out.println("game " + idGame + ": " + game.name() + " is running");
 						
+						// Set the AIs.
 						final List<AI> ais = new ArrayList<AI>();
 						ais.add(null);
 						for(int pid = 1; pid <= numPlayers; pid++)
@@ -119,7 +122,7 @@ public class KillothonCLI
 						}
 
 						// Start the game.
-						game.setMaxMoveLimit(numPlayers*movesLimitPerPlayer); // limit of moves per player.
+						game.setMaxMoveLimit(numPlayers*movesLimitPerPlayer); // Limit of moves per player.
 						final Context context = new Context(game, new Trial(game));
 						final Trial trial = context.trial();
 						game.start(context);
@@ -129,6 +132,7 @@ public class KillothonCLI
 							ais.get(p).initAI(game, p);
 						final Model model = context.model();
 						
+						// Run the game.
 						double remainingTime = timeToThink; // One minute
 						while (!trial.over())
 						{
@@ -137,7 +141,8 @@ public class KillothonCLI
 							model.startNewStep(context, ais, 1);
 							final double timeUsed = System.currentTimeMillis() - time;
 						    
-							if(remainingTime > 0) // We check the remaining time to be able to think smartly for the challenger.
+							// We check the remaining time to be able to think smartly for the challenger.
+							if(remainingTime > 0) 
 							{
 								if(mover == 1)
 								{
@@ -149,21 +154,15 @@ public class KillothonCLI
 										ais.set(1, new utils.RandomAI());
 										ais.get(1).initAI(game, 1);
 									}
-//									else
-//									{
-//										System.out.println("remaining Time = " + remainingTime / 1000 + " s");
-//									}
 								}
 							}
 						}
 
+						// Get results.
 						final double numMoves = trial.numberRealMoves();
 						final double rankingP1 = trial.ranking()[1];
 						final double rewardP1 = RankUtils.rankToUtil(rankingP1, numPlayers);
-						
-						// Print the results.
 						System.out.println("Reward of P1 = " + rewardP1 + " (ranking = " + rankingP1 + ") finished in " + trial.numberRealMoves() + " moves.");
-	
 						sumUtilities += rewardP1;
 						sumNumMoves += numMoves;
 						final List<String> lineToWrite = new ArrayList<String>();
@@ -189,9 +188,9 @@ public class KillothonCLI
 		int hours   = (int) ((killothonTime / (1000*60*60)) % 24);
 		System.out.println("Killothon done in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.");
 		
-		// email ID of Recipient.
+		// Sent results.
 	    String to = "ludii.killothon@gmail.com";
-	    String from = "ludii.killothon@gmail.com"; // To change to the second mail used to send results.
+	    String from = "ludii.killothon@gmail.com"; // TODO change to the second mail used to send results.
 	 
         Properties properties = System.getProperties();
         properties = new Properties();
@@ -210,7 +209,7 @@ public class KillothonCLI
 	            new javax.mail.Authenticator() {
 	                @Override
 					protected PasswordAuthentication getPasswordAuthentication() {
-	                    return new PasswordAuthentication("ludii.killothon@gmail.com", "killothon2022"); // To change to the second mail used to send results.
+	                    return new PasswordAuthentication("ludii.killothon@gmail.com", "killothon2022"); // TODO change to the second mail used to send results.
 	                }
 	            });
 	 
@@ -255,7 +254,7 @@ public class KillothonCLI
 	 
 	       // Send email.
            Transport transport = session.getTransport("smtps");
-           transport.connect("smtp.gmail.com", 465, "ludii.killothon@gmail.com", "killothon2022"); // To change to the second mail used to send results.
+           transport.connect("smtp.gmail.com", 465, "ludii.killothon@gmail.com", "killothon2022"); // TODO change to the second mail used to send results.
            transport.sendMessage(message, message.getAllRecipients());
            transport.close();  
 	       System.out.println("Mail successfully sent");
