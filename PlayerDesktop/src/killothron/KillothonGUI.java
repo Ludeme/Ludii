@@ -128,7 +128,7 @@ public class KillothonGUI
 						writer.println(StringRoutines.join(",", lineToWrite));
 					}
 					
-					if((idGame -1) > numGamesToPlay) // To stop the killothon after a specific number of games (for test).
+					if((idGame + 1) > numGamesToPlay) // To stop the killothon after a specific number of games (for test).
 						break;
 			}
 		}
