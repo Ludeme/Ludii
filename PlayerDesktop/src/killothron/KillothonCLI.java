@@ -9,24 +9,32 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import game.Game;
 import main.Constants;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import other.AI;
 import other.GameLoader;
+import other.RankUtils;
 import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
-import other.AI;
 import utils.AIFactory;
 
 /**
@@ -45,10 +53,11 @@ public class KillothonCLI
 	public static void main(final String[] args)
 	{
 		final double startTime = System.currentTimeMillis();
-		
 		final double timeToThink = 60000; // Time for the challenger to think smartly (in ms).
 		final int movesLimitPerPlayer = 200; // Max number of moves per player.
-		final int numGamesToPlay =  Constants.INFINITY;
+		final int numGamesToPlay = Constants.INFINITY;
+		final String login = "Challenger";
+		double sumUtilities = 0;
 		
 		final String[] choices = FileHandling.listGames();
 		final ArrayList<String> validChoices = new ArrayList<>();
@@ -84,10 +93,10 @@ public class KillothonCLI
 		
 		Collections.shuffle(validChoices); // Random order for the games.
 
+		int idGame = 0; // index of the game.
 		final String output = "KilothonResults.csv";
 		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
 		{
-			int idGame = 0; // index of the game.
 			for (final String gameName : validChoices)
 			{
 					final Game game = GameLoader.loadGameFromName(gameName);
@@ -97,8 +106,6 @@ public class KillothonCLI
 					{
 						idGame++;
 						System.out.println("game " + idGame + ": " + game.name() + " is running");
-						
-						// Start the game.
 						
 						final List<AI> ais = new ArrayList<AI>();
 						ais.add(null);
@@ -110,6 +117,7 @@ public class KillothonCLI
 								ais.add(new utils.RandomAI());
 						}
 
+						// Start the game.
 						game.setMaxMoveLimit(numPlayers*movesLimitPerPlayer); // limit of moves per player.
 						final Context context = new Context(game, new Trial(game));
 						final Trial trial = context.trial();
@@ -148,13 +156,17 @@ public class KillothonCLI
 							}
 						}
 
+						final double rankingP1 = trial.ranking()[1];
+						final double rewardP1 = RankUtils.rankToUtil(rankingP1, numPlayers);
 						
 						// Print the results.
-						System.out.println("Ranking of P1 : " + trial.ranking()[1] + " finished in " + trial.numberRealMoves() + " moves.");
+						System.out.println("Reward of P1 = " + rewardP1 + " (ranking = " + rankingP1 + ") finished in " + trial.numberRealMoves() + " moves.");
 	
+						sumUtilities += rewardP1;
 						final List<String> lineToWrite = new ArrayList<String>();
 						lineToWrite.add(game.name() + ""); // game name 
-						lineToWrite.add(trial.ranking()[1] + ""); // ranking of P1
+						lineToWrite.add(rankingP1 + ""); // ranking of P1
+						lineToWrite.add(rewardP1 + ""); // reward of P1
 						lineToWrite.add(trial.numberRealMoves() + ""); // game length
 						writer.println(StringRoutines.join(",", lineToWrite));
 					}
@@ -177,12 +189,9 @@ public class KillothonCLI
 		
 		// email ID of Recipient.
 	    String to = "ludii.killothon@gmail.com";
-	 
-	    // email ID of  Sender.
-	    String from = "ludii.killothon@gmail.com";
+	    String from = "ludii.killothon@gmail.com"; // To change to the second mail used to send results.
 	 
         Properties properties = System.getProperties();
-	    // Setting up mail server
         properties = new Properties();
         properties.put("mail.smtp.user", "ludii.killothon@gmail.com");
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -199,7 +208,7 @@ public class KillothonCLI
 	            new javax.mail.Authenticator() {
 	                @Override
 					protected PasswordAuthentication getPasswordAuthentication() {
-	                    return new PasswordAuthentication("ludii.killothon@gmail.com", "killothon2022");
+	                    return new PasswordAuthentication("ludii.killothon@gmail.com", "killothon2022"); // To change to the second mail used to send results.
 	                }
 	            });
 	 
@@ -207,22 +216,42 @@ public class KillothonCLI
 	    {
 	       // MimeMessage object.
 	       MimeMessage message = new MimeMessage(session);
-	 
+	       
+	       // Set Subject: subject of the email
+	       message.setSubject("Results of killothon");
+	       
 	       // Set From Field: adding senders email to from field.
 	       message.setFrom(new InternetAddress(from));
+	       
+	       // Make the body message.
+	       BodyPart messageBodyPart1 = new MimeBodyPart();  
+	       String bodyMsg = "Killothon run by " + login;
+	       bodyMsg += "\nAgent name = " + "UCT";
+	       bodyMsg += "\nSmart thinking time (in ms) = " + timeToThink;
+	       bodyMsg += "\nMoves limit per player = " + movesLimitPerPlayer;
+	       bodyMsg += "\nGames played = " + idGame;
+	       bodyMsg += "\nAVG utility = " + (sumUtilities/idGame);
+	       bodyMsg += "\nDone in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.";
+	       messageBodyPart1.setText(bodyMsg);  
+	       
+	       // Add the attachment.
+	       MimeBodyPart messageBodyPart2 = new MimeBodyPart();  
+	       DataSource source = new FileDataSource(output);  
+	       messageBodyPart2.setDataHandler(new DataHandler(source)); 
+	       messageBodyPart2.setFileName(output);
+	 
+	       // Set up the full message.
+	       Multipart multipart = new MimeMultipart();  
+	       multipart.addBodyPart(messageBodyPart1);  
+	       multipart.addBodyPart(messageBodyPart2);
+	       message.setContent(multipart);  
 	 
 	       // Set To Field: adding recipient's email to from field.
 	       message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 	 
-	       // Set Subject: subject of the email
-	       message.setSubject("Results of killothon");
-	 
-	       // set body of the email.
-	       message.setText("This is a test mail");
-	 
 	       // Send email.
            Transport transport = session.getTransport("smtps");
-           transport.connect("smtp.gmail.com", 465, "ludii.killothon@gmail.com", "killothon2022");
+           transport.connect("smtp.gmail.com", 465, "ludii.killothon@gmail.com", "killothon2022"); // To change to the second mail used to send results.
            transport.sendMessage(message, message.getAllRecipients());
            transport.close();  
 	       System.out.println("Mail successfully sent");
