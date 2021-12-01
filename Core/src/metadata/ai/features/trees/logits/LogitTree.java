@@ -39,6 +39,24 @@ public class LogitTree implements AIItem
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return Root node of this logit tree
+	 */
+	public LogitNode root()
+	{
+		return root;
+	}
+	
+	/**
+	 * @return The role that this tree belongs to
+	 */
+	public RoleType role()
+	{
+		return role;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String toString()
 	{
