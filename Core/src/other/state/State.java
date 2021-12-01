@@ -229,7 +229,25 @@ public class State implements Serializable
 	/** @param delta incremental hash to be xored with value */ 
 	public void updateStateHash(final long delta) 
 	{
+//		final long old = stateHash;
 		stateHash ^= delta; 
+		
+//		if (old != stateHash)
+//		{
+//			final String stacktraceString = Utilities.stackTraceString();
+//			if 
+//			(
+//				!stacktraceString.contains("getMoveStringToDisplay") 
+//				&& 
+//				!stacktraceString.contains("other.context.InformationContext.moves") 
+//				&& 
+//				!stacktraceString.contains("game.rules.play.moves.Moves$1.canMoveConditionally(Moves.java:305)")
+//			)
+//			{
+//				System.out.println("Updated stateHash from " + old + " to " + stateHash);
+//				Utilities.stackTrace();
+//			}
+//		}
 	}
 	
 	/**
