@@ -1724,15 +1724,7 @@ public class State implements Serializable
 	{
 		visited.clear(this);
 	}
-
-	/**
-	 * @param newVisited The visited sites replacing the current one.
-	 */
-	public void setVisited(final HashedBitSet newVisited)		// FIXME this method should not exist, doesn't update Zobrist hash
-	{
-		visited = newVisited.clone();
-	}
-
+	
 	/**
 	 * @param site
 	 * @return true if the site is already visited
@@ -1752,7 +1744,6 @@ public class State implements Serializable
 		if(visited.internalState().size() > site && site >= 0)
 			visited.set(this, site, true);
 	}
-	
 	
 	/**
 	 * @return visited sites.

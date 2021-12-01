@@ -717,8 +717,14 @@ public class Move extends BaseAction
 				for(int i = 0; i < remainingDominoes.size(); i++)
 					currentState.remainingDominoes().add(remainingDominoes.get(i));
 			}
+			
 			if(visited != null)
-				currentState.setVisited(visited);
+			{
+				currentState.reInitVisited();
+				for(int site = 0; site < visited.internalState().size(); site++)
+					if(visited.internalState().get(site))
+						currentState.visit(site);
+			}
 	
 			if(sitesToRemove != null)
 			{

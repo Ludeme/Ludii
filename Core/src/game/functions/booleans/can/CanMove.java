@@ -66,7 +66,10 @@ public class CanMove extends BaseBooleanFunction
 			state.visit(from);
 			state.visit(to);
 			boolean canMove = moves.canMove(context);
-			state.setVisited(savedVisited);
+			state.reInitVisited();
+			for(int site = 0; site < savedVisited.internalState().size(); site++)
+				if(savedVisited.internalState().get(site))
+					state.visit(site);
 			return canMove;
 		}
 		return moves.canMove(context);
