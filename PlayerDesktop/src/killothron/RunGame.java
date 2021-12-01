@@ -11,10 +11,10 @@ import org.json.JSONObject;
 import app.PlayerApp;
 import app.loading.GameLoading;
 import app.utils.GameUtil;
-import main.Status;
 import manager.Manager;
 import manager.ai.AIDetails;
 import manager.ai.AIUtil;
+import other.trial.Trial;
 
 /**
  * Method used to run a game in the killothon.
@@ -113,28 +113,12 @@ public class RunGame extends Thread
 		return app.manager().ref().context().trial().over();
 	}
 	
-	/** 
-	 * @return The game length of the current game. 
-	 */
-	public int gameLength()
-	{
-		return app.manager().ref().context().trial().numberRealMoves();
-	}
-	
 	/**
-	 * @return The status of the current game.
+	 * @return The trial of the current game.
 	 */
-	public Status status()
+	public Trial trial()
 	{
-		return app.manager().ref().context().trial().status();
-	}
-	
-	/**
-	 * @return The status of the current game.
-	 */
-	public double[] ranking()
-	{
-		return app.manager().ref().context().trial().ranking();
+		return app.manager().ref().context().trial();
 	}
 	
 	/**
