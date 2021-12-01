@@ -58,6 +58,7 @@ public class KillothonCLI
 		final int numGamesToPlay = Constants.INFINITY;
 		final String login = "Challenger";
 		double sumUtilities = 0;
+		int sumNumMoves = 0;
 		
 		final String[] choices = FileHandling.listGames();
 		final ArrayList<String> validChoices = new ArrayList<>();
@@ -156,6 +157,7 @@ public class KillothonCLI
 							}
 						}
 
+						final double numMoves = trial.numberRealMoves();
 						final double rankingP1 = trial.ranking()[1];
 						final double rewardP1 = RankUtils.rankToUtil(rankingP1, numPlayers);
 						
@@ -163,11 +165,12 @@ public class KillothonCLI
 						System.out.println("Reward of P1 = " + rewardP1 + " (ranking = " + rankingP1 + ") finished in " + trial.numberRealMoves() + " moves.");
 	
 						sumUtilities += rewardP1;
+						sumNumMoves += numMoves;
 						final List<String> lineToWrite = new ArrayList<String>();
 						lineToWrite.add(game.name() + ""); // game name 
 						lineToWrite.add(rankingP1 + ""); // ranking of P1
 						lineToWrite.add(rewardP1 + ""); // reward of P1
-						lineToWrite.add(trial.numberRealMoves() + ""); // game length
+						lineToWrite.add(numMoves + ""); // game length
 						writer.println(StringRoutines.join(",", lineToWrite));
 					}
 					
@@ -181,11 +184,10 @@ public class KillothonCLI
 		}
 		
 		final double killothonTime = System.currentTimeMillis() - startTime;
-		final double allSeconds = killothonTime / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		final int milliSeconds = (int) (killothonTime - (seconds * 1000));
-		System.out.println("Killothon done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+		int seconds = (int) (killothonTime / 1000) % 60 ;
+		int minutes = (int) ((killothonTime / (1000*60)) % 60);
+		int hours   = (int) ((killothonTime / (1000*60*60)) % 24);
+		System.out.println("Killothon done in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.");
 		
 		// email ID of Recipient.
 	    String to = "ludii.killothon@gmail.com";
@@ -231,7 +233,9 @@ public class KillothonCLI
 	       bodyMsg += "\nMoves limit per player = " + movesLimitPerPlayer;
 	       bodyMsg += "\nGames played = " + idGame;
 	       bodyMsg += "\nAVG utility = " + (sumUtilities/idGame);
-	       bodyMsg += "\nDone in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.";
+	       bodyMsg += "\nNum Moves = " + sumNumMoves;
+	       bodyMsg += "\nAVG Moves = " + (sumNumMoves/idGame);
+	       bodyMsg += "\nDone in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.";
 	       messageBodyPart1.setText(bodyMsg);  
 	       
 	       // Add the attachment.
