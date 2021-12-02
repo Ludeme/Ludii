@@ -135,7 +135,7 @@ public class HashedBitSet implements Serializable
 	}
 	
 	/**
-	 * To set the bits without modifying the state hash.
+	 * To set the bits without modifying the state hash.	FIXME this method should not exist
 	 * 
 	 * @param trialState
 	 * @param bitIndex
