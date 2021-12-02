@@ -1760,7 +1760,7 @@ public class State implements Serializable
 	public void visit(final int site)
 	{
 		if(visited.internalState().size() > site && site >= 0)
-			visited.set(this, site, true);
+			visited.setNoHashUpdate(this, site, true);
 	}
 	
 	/**

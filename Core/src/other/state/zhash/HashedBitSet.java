@@ -133,6 +133,18 @@ public class HashedBitSet implements Serializable
 		if (on != internalState.get(bitIndex)) trialState.updateStateHash(hashes[bitIndex]);		
 		internalState.set(bitIndex, on);
 	}
+	
+	/**
+	 * To set the bits without modifying the state hash.
+	 * 
+	 * @param trialState
+	 * @param bitIndex
+	 * @param on
+	 */
+	public void setNoHashUpdate(final State trialState, final int bitIndex, final boolean on) 
+	{
+		internalState.set(bitIndex, on);
+	}
 
 /* ----------------------------------------------------------------------------------------------------
  * The following methods are read-only, and do not need to manage their internal states
