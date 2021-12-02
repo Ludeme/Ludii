@@ -330,7 +330,7 @@ public class ExItTrainingScriptsGenSnellius3
 						javaCall += " --handle-aliasing";
 					
 					if (processData.trainingVariant.equals("HandleAliasingPlayouts"))
-						javaCall += "--handle-aliasing-playouts";
+						javaCall += " --handle-aliasing-playouts";
 					
 					javaCall += " " + StringRoutines.join
 							(
