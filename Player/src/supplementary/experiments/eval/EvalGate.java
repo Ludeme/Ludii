@@ -543,7 +543,11 @@ public class EvalGate
 						
 						// Generate our features metadata and write it
 						final Features features = 
-								AIUtils.generateFeaturesMetadata(mcts.learnedSelectionPolicy(), (SoftmaxPolicyLinear) mcts.playoutStrategy());
+								AIUtils.generateFeaturesMetadata
+								(
+									(SoftmaxPolicyLinear) mcts.learnedSelectionPolicy(), 
+									(SoftmaxPolicyLinear) mcts.playoutStrategy()
+								);
 						
 						try (final PrintWriter writer = new PrintWriter(bestFeaturesFile))
 						{

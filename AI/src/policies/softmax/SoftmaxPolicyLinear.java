@@ -453,8 +453,10 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 							policyWeightsFilepaths.add(null);
 						}
 						
-						// FIXME below not correct for X >= 10
-						policyWeightsFilepaths.set(p, input.substring("policyweightsX=".length()));
+						if (p < 10)
+							policyWeightsFilepaths.set(p, input.substring("policyweightsX=".length()));
+						else		// Doubt we'll ever have more than 99 players
+							policyWeightsFilepaths.set(p, input.substring("policyweightsXX=".length()));
 					}
 				}
 			}
@@ -537,7 +539,7 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 		}
 		else
 		{
-			System.err.println("Cannot construct Softmax Policy from: " + Arrays.toString(inputs));
+			System.err.println("Cannot construct linear Softmax Policy from: " + Arrays.toString(inputs));
 		}
 	}
 	

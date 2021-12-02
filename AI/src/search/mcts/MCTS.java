@@ -31,7 +31,9 @@ import other.state.State;
 import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadataPlayout;
 import policies.softmax.SoftmaxFromMetadataSelection;
+import policies.softmax.SoftmaxPolicy;
 import policies.softmax.SoftmaxPolicyLinear;
+import policies.softmax.SoftmaxPolicyLogitTree;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.BackpropagationStrategy;
 import search.mcts.backpropagation.MonteCarloBackprop;
@@ -206,7 +208,7 @@ public class MCTS extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	/** A learned policy to use in Selection phase */
-	protected SoftmaxPolicyLinear learnedSelectionPolicy = null;
+	protected SoftmaxPolicy learnedSelectionPolicy = null;
 	
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
@@ -831,9 +833,9 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * @return Learned (linear, softmax) policy for Selection phase
+	 * @return Learned (linear or logits tree, softmax) policy for Selection phase
 	 */
-	public SoftmaxPolicyLinear learnedSelectionPolicy()
+	public SoftmaxPolicy learnedSelectionPolicy()
 	{
 		return learnedSelectionPolicy;
 	}
@@ -882,7 +884,7 @@ public class MCTS extends ExpertPolicy
 	 * Sets the learned policy to use in Selection phase
 	 * @param policy The policy.
 	 */
-	public void setLearnedSelectionPolicy(final SoftmaxPolicyLinear policy)
+	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
 	{
 		learnedSelectionPolicy = policy;
 	}
@@ -1315,7 +1317,7 @@ public class MCTS extends ExpertPolicy
 		boolean treeReuse = false;
 		boolean useScoreBounds = false;
 		int numThreads = 1;
-		SoftmaxPolicyLinear learnedSelectionPolicy = null;
+		SoftmaxPolicy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
 		String friendlyName = "MCTS";
 
@@ -1432,11 +1434,19 @@ public class MCTS extends ExpertPolicy
 				}
 				else if 
 				(
-					lineParts[0].toLowerCase().endsWith("softmax") || 
+					lineParts[0].toLowerCase().endsWith("softmax") 
+					|| 
 					lineParts[0].toLowerCase().endsWith("softmaxplayout")
+					||
+					lineParts[0].toLowerCase().endsWith("softmaxlinear")
 				)
 				{
 					learnedSelectionPolicy = new SoftmaxPolicyLinear();
+					learnedSelectionPolicy.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("softmaxlogittree"))
+				{
+					learnedSelectionPolicy = new SoftmaxPolicyLogitTree();
 					learnedSelectionPolicy.customise(lineParts);
 				}
 			}

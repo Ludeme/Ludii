@@ -88,7 +88,7 @@ public class WriteFeaturesMetadata
 				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicyLinear selectionSoftmax = mcts.learnedSelectionPolicy();
+		final SoftmaxPolicyLinear selectionSoftmax = (SoftmaxPolicyLinear) mcts.learnedSelectionPolicy();
 		final SoftmaxPolicyLinear playoutSoftmax = (SoftmaxPolicyLinear) mcts.playoutStrategy();
 
 		// Generate our features metadata and write it

@@ -221,85 +221,22 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //	)
 //	{
 //		final float[] logits = new float[featureVectors.length];
-//		final LinearFunction linearFunction;
+//		final LogitTreeNode regressionTreeRoot;
 //		
-//		if (linearFunctions.length == 1)
-//			linearFunction = linearFunctions[0];
+//		if (regressionTreeRoots.length == 1)
+//			regressionTreeRoot = regressionTreeRoots[0];
 //		else
-//			linearFunction = linearFunctions[player];
+//			regressionTreeRoot = regressionTreeRoots[player];
 //		
 //		for (int i = 0; i < featureVectors.length; ++i)
 //		{
-//			logits[i] = linearFunction.predict(featureVectors[i]);
+//			logits[i] = regressionTreeRoot.predict(featureVectors[i]);
 //		}
 //		
 //		final FVector distribution = FVector.wrap(logits);
 //		distribution.softmax();
 //		
 //		return distribution;
-//	}
-//	
-//	/**
-//	 * @param errors Vector of errors in distributions
-//	 * @param featureVectors One feature vector for every element 
-//	 * (action) in the distributions.
-//	 * @param player The player whose parameters we want to compute gradients of
-//	 * @return Vector of gradients of the loss function (assumed to be 
-//	 * cross-entropy loss) with respect to our linear function's vector of 
-//	 * parameters.
-//	 */
-//	public FVector computeParamGradients
-//	(
-//		final FVector errors,
-//		final FeatureVector[] featureVectors,
-//		final int player
-//	)
-//	{
-//		final LinearFunction linearFunction;
-//		
-//		if (linearFunctions.length == 1)
-//			linearFunction = linearFunctions[0];
-//		else
-//			linearFunction = linearFunctions[player];
-//		
-//		// now compute gradients w.r.t. parameters
-//		final FVector grads = new FVector(linearFunction.trainableParams().allWeights().dim());
-//		final int numActions = errors.dim();
-//		
-//		for (int i = 0; i < numActions; ++i)
-//		{
-//			// error for this action
-//			final float error = errors.get(i);
-//			
-//			// feature vector for this action
-//			final FeatureVector featureVector = featureVectors[i];
-//			
-//			// Feature values for aspatial features (dense representation); gradients for these first
-//			final FVector aspatialFeatureValues = featureVector.aspatialFeatureValues();
-//			final int numAspatialFeatures = aspatialFeatureValues.dim();
-//			
-//			for (int j = 0; j < numAspatialFeatures; ++j)
-//			{
-//				grads.addToEntry(j, error * featureVector.aspatialFeatureValues().get(j));
-//			}
-//			
-//			// Saprse representation of active spatial features; gradients for these second,
-//			// with offset for indexing based on number of aspatial features
-//			final TIntArrayList activeSpatialFeatureIndices = featureVector.activeSpatialFeatureIndices();
-//			
-//			for (int j = 0; j < activeSpatialFeatureIndices.size(); ++j)
-//			{
-//				final int featureIdx = activeSpatialFeatureIndices.getQuick(j);
-//				grads.addToEntry(featureIdx + numAspatialFeatures, error);
-//			}
-//		}
-//		
-//		//System.out.println("est. distr. = " + estimatedDistribution);
-//		//System.out.println("tar. distr. = " + targetDistribution);
-//		//System.out.println("errors      = " + errors);
-//		//System.out.println("grads = " + grads);
-//		
-//		return grads;
 //	}
 //	
 //	/**
@@ -311,66 +248,18 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //		return distribution.sampleFromDistribution();
 //	}
 //	
-//	/**
-//	 * Updates this policy to use a new array of Feature Sets.
-//	 * For now, this method assumes that Feature Sets can only grow, and that newly-added
-//	 * features are always new spatial features.
-//	 * 
-//	 * @param newFeatureSets
-//	 */
-//	public void updateFeatureSets(final BaseFeatureSet[] newFeatureSets)
-//	{
-//		for (int i = 0; i < linearFunctions.length; ++i)
-//		{
-//			if (newFeatureSets[i] != null)
-//			{
-//				final int numExtraFeatures = newFeatureSets[i].getNumSpatialFeatures() - featureSets[i].getNumSpatialFeatures();
-//
-//				for (int j = 0; j < numExtraFeatures; ++j)
-//				{
-//					linearFunctions[i].setTheta(new WeightVector(linearFunctions[i].trainableParams().allWeights().append(0.f)));
-//				}
-//				
-//				featureSets[i] = newFeatureSets[i];
-//			}
-//			else if (newFeatureSets[0] != null)
-//			{
-//				// Handle the case where all players have different functions but share the 0th feature set
-//				final int numExtraFeatures = newFeatureSets[0].getNumSpatialFeatures() - featureSets[0].getNumSpatialFeatures();
-//				
-//				for (int j = 0; j < numExtraFeatures; ++j)
-//				{
-//					linearFunctions[i].setTheta(new WeightVector(linearFunctions[i].trainableParams().allWeights().append(0.f)));
-//				}
-//			}
-//		}
-//	}
-//	
 //	//-------------------------------------------------------------------------
 //	
 //	@Override
 //	public Trial runPlayout(final MCTS mcts, final Context context) 
-//	{
-//		final WeightVector[] params = new WeightVector[linearFunctions.length];
-//		for (int i = 0; i < linearFunctions.length; ++i)
-//		{
-//			if (linearFunctions[i] == null)
-//			{
-//				params[i] = null;
-//			}
-//			else
-//			{
-//				params[i] = linearFunctions[i].effectiveParams();
-//			}
-//		}
-//		
+//	{		
 //		final PlayoutMoveSelector playoutMoveSelector;
 //		if (epsilon < 1.0)
 //		{
 //			if (epsilon <= 0.0)
-//				playoutMoveSelector = new FeaturesSoftmaxMoveSelector(featureSets, params, true);
+//				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots);
 //			else
-//				playoutMoveSelector = new EpsilonGreedyWrapper(new FeaturesSoftmaxMoveSelector(featureSets, params, true), epsilon);
+//				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots), epsilon);
 //		}
 //		else
 //		{
@@ -429,8 +318,10 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //							policyWeightsFilepaths.add(null);
 //						}
 //						
-//						// FIXME below not correct for X >= 10
-//						policyWeightsFilepaths.set(p, input.substring("policyweightsX=".length()));
+//						if (p < 10)
+//							policyWeightsFilepaths.set(p, input.substring("policyweightsX=".length()));
+//						else		// Doubt we'll ever have more than 99 players
+//							policyWeightsFilepaths.set(p, input.substring("policyweightsXX=".length()));
 //					}
 //				}
 //			}
