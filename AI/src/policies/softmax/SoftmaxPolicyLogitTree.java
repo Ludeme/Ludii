@@ -293,37 +293,15 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //	@Override
 //	public void customise(final String[] inputs) 
 //	{
-//		final List<String> policyWeightsFilepaths = new ArrayList<String>();
-//		boolean boosted = false;
+//		String policyTreesFilepath = null;
 //		
 //		for (int i = 1; i < inputs.length; ++i)
 //		{
 //			final String input = inputs[i];
 //			
-//			if (input.toLowerCase().startsWith("policyweights="))
+//			if (input.toLowerCase().startsWith("policytrees="))
 //			{
-//				if (policyWeightsFilepaths.size() > 0)
-//					policyWeightsFilepaths.clear();
-//				
-//				policyWeightsFilepaths.add(input.substring("policyweights=".length()));
-//			}
-//			else if (input.toLowerCase().startsWith("policyweights"))
-//			{
-//				for (int p = 1; p <= Constants.MAX_PLAYERS; ++p)
-//				{
-//					if (input.toLowerCase().startsWith("policyweights" + p + "="))
-//					{
-//						while (policyWeightsFilepaths.size() <= p)
-//						{
-//							policyWeightsFilepaths.add(null);
-//						}
-//						
-//						if (p < 10)
-//							policyWeightsFilepaths.set(p, input.substring("policyweightsX=".length()));
-//						else		// Doubt we'll ever have more than 99 players
-//							policyWeightsFilepaths.set(p, input.substring("policyweightsXX=".length()));
-//					}
-//				}
+//				policyTreesFilepath = input.substring("policytrees=".length());
 //			}
 //			else if (input.toLowerCase().startsWith("playoutactionlimit="))
 //			{
@@ -343,69 +321,49 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //			{
 //				friendlyName = input.substring("friendly_name=".length());
 //			}
-//			else if (input.toLowerCase().startsWith("boosted="))
-//			{
-//				if (input.toLowerCase().endsWith("true"))
-//				{
-//					boosted = true;
-//				}
-//			}
 //			else if (input.toLowerCase().startsWith("epsilon="))
 //			{
 //				epsilon = Double.parseDouble(input.substring("epsilon=".length()));
 //			}
 //		}
 //		
-//		if (!policyWeightsFilepaths.isEmpty())
+//		if (policyTreesFilepath != null)
 //		{
-//			this.linearFunctions = new LinearFunction[policyWeightsFilepaths.size()];
-//			this.featureSets = new BaseFeatureSet[linearFunctions.length];
+//			final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
+//			final List<LogitTreeNode> roots = new ArrayList<LogitTreeNode>();
 //			
-//			for (int i = 0; i < policyWeightsFilepaths.size(); ++i)
+//			try 
 //			{
-//				String policyWeightsFilepath = policyWeightsFilepaths.get(i);
-//				
-//				if (policyWeightsFilepath != null)
+//				final String featureTreesString = FileHandling.loadTextContentsFromFile(policyTreesFilepath);
+//				final FeatureTrees featureTrees = 
+//						(FeatureTrees)compiler.Compiler.compileObject
+//						(
+//							featureTreesString, 
+//							"metadata.ai.features.trees.FeatureTrees",
+//							new Report()
+//						);
+//						
+//				for (final LogitTree logitTree : featureTrees.logitTrees())
 //				{
-//					final String parentDir = new File(policyWeightsFilepath).getParent();
-//					
-//					if (!new File(policyWeightsFilepath).exists())
-//					{
-//						// Replace with whatever is the latest file we have
-//						if (policyWeightsFilepath.contains("Selection"))
-//						{
-//							policyWeightsFilepath = 
-//								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsSelection_P" + i, "txt");
-//						}
-//						else if (policyWeightsFilepath.contains("Playout"))
-//						{
-//							policyWeightsFilepath = 
-//								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsPlayout_P" + i, "txt");
-//						}
-//						else if (policyWeightsFilepath.contains("TSPG"))
-//						{
-//							policyWeightsFilepath = 
-//								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsTSPG_P" + i, "txt");
-//						}
-//						else
-//						{
-//							policyWeightsFilepath = null;
-//						}
-//					}
-//					
-//					if (boosted)
-//						linearFunctions[i] = BoostedLinearFunction.boostedFromFile(policyWeightsFilepath, null);
+//					if (logitTree.role() == RoleType.Shared || logitTree.role() == RoleType.Neutral)
+//						addFeatureSetRoot(0, logitTree.root(), featureSetsList, roots);
 //					else
-//						linearFunctions[i] = LinearFunction.fromFile(policyWeightsFilepath);
-//					
-//					featureSets[i] = JITSPatterNetFeatureSet.construct(parentDir + File.separator + linearFunctions[i].featureSetFile());
+//						addFeatureSetRoot(logitTree.role().owner(), logitTree.root(), featureSetsList, roots);
 //				}
+//				
+//				this.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
+//				this.regressionTreeRoots = roots.toArray(new LogitTreeNode[roots.size()]);
+//			} 
+//			catch (final IOException e) 
+//			{
+//				e.printStackTrace();
 //			}
+//				
 //		}
 //		else
 //		{
-//			System.err.println("Cannot construct Softmax Policy from: " + Arrays.toString(inputs));
-//		}
+//			System.err.println("Cannot construct Softmax Policy Logit Tree from: " + Arrays.toString(inputs));
+//		}		
 //	}
 //	
 //	//-------------------------------------------------------------------------
@@ -463,13 +421,13 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //				supportedPlayers[i] = i + 1;
 //			}
 //			
-//			featureSets[0].init(game, supportedPlayers, linearFunctions[0].effectiveParams());
+//			featureSets[0].init(game, supportedPlayers, null);
 //		}
 //		else
 //		{
 //			for (int i = 1; i < featureSets.length; ++i)
 //			{
-//				featureSets[i].init(game, new int[] {i}, linearFunctions[i].effectiveParams());
+//				featureSets[i].init(game, new int[] {i}, null);
 //			}
 //		}
 //	}
@@ -496,95 +454,12 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //	//-------------------------------------------------------------------------
 //	
 //	/**
-//	 * @param player
-//	 * @return Linear function corresponding to given player
-//	 */
-//	public LinearFunction linearFunction(final int player)
-//	{
-//		if (linearFunctions.length == 1)
-//			return linearFunctions[0];
-//		else
-//			return linearFunctions[player];
-//	}
-//	
-//	/**
-//	 * @return The linear functions used to compute logits
-//	 */
-//	public LinearFunction[] linearFunctions()
-//	{
-//		return linearFunctions;
-//	}
-//	
-//	/**
 //	 * @return Feature Sets used by this policy
 //	 */
 //	public BaseFeatureSet[] featureSets()
 //	{
 //		return featureSets;
 //	}
-//	
-//	//-------------------------------------------------------------------------
-//	
-//	/**
-//	 * @return A metadata Features item describing the features + weights for this policy
-//	 */
-////	public metadata.ai.features.Features generateFeaturesMetadata()
-////	{
-////		final Features features;
-////		
-////		if (featureSets.length == 1)
-////		{
-////			// Just a single featureset for all players
-////			final BaseFeatureSet featureSet = featureSets[0];
-////			final LinearFunction linFunc = linearFunctions[0];
-////			final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
-////			
-////			for (int i = 0; i < pairs.length; ++i)
-////			{
-////				final float weight = linFunc.effectiveParams().allWeights().get(i);
-////				pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
-////				
-////				if (Float.isNaN(weight))
-////					System.err.println("WARNING: writing NaN weight");
-////				else if (Float.isInfinite(weight))
-////					System.err.println("WARNING: writing infinity weight");
-////			}
-////			
-////			features = new Features(new metadata.ai.features.FeatureSet(RoleType.Shared, pairs));
-////		}
-////		else
-////		{
-////			// One featureset per player
-////			final metadata.ai.features.FeatureSet[] metadataFeatureSets = new metadata.ai.features.FeatureSet[featureSets.length - 1];
-////			
-////			for (int p = 0; p < featureSets.length; ++p)
-////			{
-////				final BaseFeatureSet featureSet = featureSets[p];
-////				if (featureSet == null)
-////					continue;
-////				
-////				final LinearFunction linFunc = linearFunctions[p];
-////				final Pair[] pairs = new Pair[featureSet.spatialFeatures().length];
-////				
-////				for (int i = 0; i < pairs.length; ++i)
-////				{
-////					final float weight = linFunc.effectiveParams().allWeights().get(i);
-////					pairs[i] = new Pair(featureSet.spatialFeatures()[i].toString(), Float.valueOf(weight));
-////					
-////					if (Float.isNaN(weight))
-////						System.err.println("WARNING: writing NaN weight");
-////					else if (Float.isInfinite(weight))
-////						System.err.println("WARNING: writing infinity weight");
-////				}
-////				
-////				metadataFeatureSets[p - 1] = new metadata.ai.features.FeatureSet(RoleType.roleForPlayerId(p), pairs);
-////			}
-////			
-////			features = new Features(metadataFeatureSets);
-////		}
-////		
-////		return features;
-////	}
 //	
 //	//-------------------------------------------------------------------------
 //	
