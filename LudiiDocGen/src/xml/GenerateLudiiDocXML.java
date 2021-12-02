@@ -41,9 +41,24 @@ public class GenerateLudiiDocXML
 	 */
 	public static void generateXML() throws InterruptedException, IOException
 	{
-		final String command = StringRoutines.join(
+		final String executableName;
+		if (new File("C:/Program Files/Java/jdk1.8.0_301/bin/javadoc.exe").exists())
+		{
+			// Hardcoding this filepath for Dennis' desktop because otherwise Eclipse
+			// uses the wrong javadoc (the one packaged with Eclipse, which is version 13
+			// and incompatible with our doclet)
+			executableName = "C:/Program Files/Java/jdk1.8.0_301/bin/javadoc";
+		}
+		else
+		{
+			executableName = "javadoc";
+		}
+		
+		final String command = 
+				StringRoutines.join
+				(
 				" ",
-				"javadoc",
+				executableName,
 				"-doclet",
 				"com.jeldoclet.JELDoclet",
 				"-docletpath",
@@ -61,6 +76,10 @@ public class GenerateLudiiDocXML
 				"UTF-8"//,
 				//"-verbose"
 				);
+		
+		System.out.println("where javadoc:");
+		new ProcessBuilder("where javadoc".split(Pattern.quote(" "))).inheritIO().start().waitFor();
+		
 		System.out.println("Executing command: " + command);
 		new ProcessBuilder(command.split(Pattern.quote(" "))).inheritIO().start().waitFor();
 	}
