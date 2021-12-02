@@ -1,5 +1,7 @@
 package metadata.ai.features.trees.logits;
 
+import java.util.Set;
+
 import annotations.Name;
 import main.StringRoutines;
 
@@ -44,6 +46,41 @@ public class If extends LogitNode
 		this.feature = feature;
 		this.thenNode = then;
 		this.elseNode = Else;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void collectFeatureStrings(final Set<String> outFeatureStrings)
+	{
+		thenNode.collectFeatureStrings(outFeatureStrings);
+		elseNode.collectFeatureStrings(outFeatureStrings);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The feature string
+	 */
+	public String featureString()
+	{
+		return feature;
+	}
+	
+	/**
+	 * @return The then node
+	 */
+	public LogitNode thenNode()
+	{
+		return thenNode;
+	}
+	
+	/**
+	 * @return The else node
+	 */
+	public LogitNode elseNode()
+	{
+		return elseNode;
 	}
 	
 	//-------------------------------------------------------------------------

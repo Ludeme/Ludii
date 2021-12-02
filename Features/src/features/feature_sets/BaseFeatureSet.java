@@ -459,6 +459,31 @@ public abstract class BaseFeatureSet
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * NOTE: implementation not very fast.
+	 * 
+	 * @param s
+	 * @return Index of feature in this feature set that matches given string, or -1 if none found.
+	 */
+	public int findFeatureIndexForString(final String s)
+	{
+		for (int i = 0; i < aspatialFeatures.length; ++i)
+		{
+			if (aspatialFeatures[i].toString().equals(s))
+				return i;
+		}
+		
+		for (int i = 0; i < spatialFeatures.length; ++i)
+		{
+			if (spatialFeatures[i].toString().equals(s))
+				return i;
+		}
+		
+		return -1;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * Writes the feature set to a file
 	 * @param filepath Filepath to write to
 	 */

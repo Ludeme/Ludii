@@ -1,5 +1,7 @@
 package metadata.ai.features.trees.logits;
 
+import java.util.Set;
+
 import main.StringRoutines;
 import metadata.ai.misc.Pair;
 
@@ -40,6 +42,35 @@ public class Leaf extends LogitNode
 			featureStrings[i] = features[i].key();
 			weights[i] = features[i].floatVal();
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void collectFeatureStrings(final Set<String> outFeatureStrings)
+	{
+		for (final String s : featureStrings)
+		{
+			outFeatureStrings.add(s);
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Array of strings of features used in model
+	 */
+	public String[] featureStrings()
+	{
+		return featureStrings;
+	}
+
+	/**
+	 * @return Array of weights used in model
+	 */
+	public float[] weights()
+	{
+		return weights;
 	}
 	
 	//-------------------------------------------------------------------------

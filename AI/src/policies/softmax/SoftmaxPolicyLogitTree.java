@@ -58,7 +58,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 //	//-------------------------------------------------------------------------
 //	
 //	/** 
@@ -198,14 +198,14 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //		else
 //			featureSet = featureSets[context.state().mover()];
 //		
-//		final LinearFunction linearFunction;
+//		final LogitTreeNode regressionTreeRoot;
 //		
-//		if (linearFunctions.length == 1)
-//			linearFunction = linearFunctions[0];
+//		if (regressionTreeRoots.length == 1)
+//			regressionTreeRoot = regressionTreeRoots[0];
 //		else
-//			linearFunction = linearFunctions[context.state().mover()];
+//			regressionTreeRoot = regressionTreeRoots[context.state().mover()];
 //		
-//		return linearFunction.predict(featureSet.computeFeatureVector(context, move, true));
+//		return regressionTreeRoot.predict(featureSet.computeFeatureVector(context, move, true));
 //	}
 //	
 //	/**
@@ -791,24 +791,25 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //		
 //		final List<AspatialFeature> aspatialFeatures = new ArrayList<AspatialFeature>();
 //		final List<SpatialFeature> spatialFeatures = new ArrayList<SpatialFeature>();
-//		final TFloatArrayList weights = new TFloatArrayList();
 //		
-//		for (int i = 0; i < featureStrings.length; ++i)
+//		final Set<String> featureStrings = new HashSet<String>();
+//		rootNode.collectFeatureStrings(featureStrings);
+//		
+//		for (final String featureString : featureStrings)
 //		{
-//			final Feature feature = Feature.fromString(featureStrings[i]);
+//			final Feature feature = Feature.fromString(featureString);
 //			
 //			if (feature instanceof AspatialFeature)
 //				aspatialFeatures.add((AspatialFeature)feature);
 //			else
 //				spatialFeatures.add((SpatialFeature)feature);
-//			
-//			weights.add(featureWeights[i]);
 //		}
 //		
-//		outFeatureSets.set(playerIdx, JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures));
-//		outRoots.set(playerIdx, new LinearFunction(new WeightVector(new FVector(weights.toArray()))));
+//		final BaseFeatureSet featureSet = JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures);
+//		outFeatureSets.set(playerIdx, featureSet);
+//		outRoots.set(playerIdx, LogitTreeNode.fromMetadataNode(rootNode, featureSet));
 //	}
-
-	//-------------------------------------------------------------------------
+//
+//	//-------------------------------------------------------------------------
 	
 }
