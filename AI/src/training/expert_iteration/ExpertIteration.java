@@ -788,7 +788,7 @@ public class ExpertIteration
 									final FVector playoutErrors = 
 											Gradients.computeCrossEntropyErrors
 											(
-												playoutPolicy, expertPolicy, featureVectors, p, false
+												playoutPolicy, expertPolicy, featureVectors, p, objectiveParams.handleAliasingPlayouts
 											);
 
 									final FVector selectionGradients = selectionPolicy.computeParamGradients
@@ -2749,7 +2749,11 @@ public class ExpertIteration
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--handle-aliasing")
-				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them")
+				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training selection policy.")
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--handle-aliasing-playouts")
+				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training playout policy.")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--weight-decay-lambda")
@@ -2877,6 +2881,7 @@ public class ExpertIteration
 		exIt.objectiveParams.weightedImportanceSampling = argParse.getValueBool("--wis");
 		exIt.objectiveParams.noValueLearning = argParse.getValueBool("--no-value-learning");
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");
+		exIt.objectiveParams.handleAliasingPlayouts = argParse.getValueBool("--handle-aliasing-playouts");
 		exIt.objectiveParams.weightDecayLambda = argParse.getValueDouble("--weight-decay-lambda");
 		
 		exIt.optimisersParams.selectionOptimiserConfig = argParse.getValueString("--selection-optimiser");

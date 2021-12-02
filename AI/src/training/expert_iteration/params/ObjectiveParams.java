@@ -22,8 +22,11 @@ public class ObjectiveParams
 	/** If true, we don't do any value function learning */
 	public boolean noValueLearning;
 	
-	/** If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them */
+	/** If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training selection policy. */
 	public boolean handleAliasing;
+	
+	/** If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training playout policy. */
+	public boolean handleAliasingPlayouts;
 	
 	/** Lambda param for weight decay (~= 2c for L2 regularisation, in absence of momentum) */
 	public double weightDecayLambda;
