@@ -1,0 +1,117 @@
+(define "MidpointSquares" 
+    (forEach (sites Board) 
+        if:(and
+            (= 4 
+                (count Sites in:(sites Around (site)))
+            )
+            (not (is In (site) (sites Outer)))
+        )
+    )		
+)
+
+(define "AllCornersSquareEmpty" 
+    (all Sites
+        (sites Around (site))
+        if:(is Empty (site))
+    )
+)
+
+(define "AllCornersSquareOccupied" 
+    (all Sites
+        (sites Around (site))
+        if:(is Occupied (site))
+    )
+)
+
+(define "NumEnemyCorners" 
+    (count Sites 
+        in:(forEach 
+            (sites Around (site)) 
+            if:(is Enemy (who at:(site)))
+        )
+    )
+)
+
+(define "NumEnemyOppositeCorners" 
+    (count Sites 
+        in:(forEach 
+            (sites Around (site)) 
+            if:(and 
+                (is In (site) (sites Around (last To))) 
+                (is Enemy (who at:(site)))
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Onyx"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (keep
+                (rotate -45 (subdivide (tiling T33434 7 7) min:4))
+                (poly {{-6.5 1.75} {-6.5 12.75} {4.5 12.75} {4.5 1.75}}) 
+            ) 
+            use:Vertex
+        ) 
+        (piece "Disc" Each) 
+        (regions P1 { (sites Side W) (sites Side E) } )
+        (regions P2 { (sites Side N) (sites Side S) } )
+    })  
+    (rules
+        (start {
+            (place "Disc1" (sites {15 24 119 128}))
+            (place "Disc2" (sites {20 27 116 123}))
+        })
+        (play 
+            (move Add
+                (to
+                    (forEach (sites Empty) 
+                        if:(if (is In (site) ("MidpointSquares")) ("AllCornersSquareEmpty") True)
+                    )
+                )
+                (then
+                    (forEach Site ("MidpointSquares")
+                        (if (and { 
+                                (is Empty (site))
+                                (is In (last To) (sites Around (site))) 
+                                ("AllCornersSquareOccupied")
+                                (= 2 ("NumEnemyCorners"))
+                                (= 2 ("NumEnemyOppositeCorners"))
+                            })
+                            (remove
+                                (forEach 
+                                    (sites Around (site)) 
+                                    if:(is Enemy (who at:(site)))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end (if (is Connected Mover) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Background image:"square.svg" fillColour:(colour 218 164 50) edgeColour:(colour Black) scale:1.3)
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black)) 
+        (board Colour InnerVertices (colour Hidden))
+        (board Colour OuterVertices (colour Hidden)) 
+    })
+)

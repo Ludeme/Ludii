@@ -108,8 +108,8 @@ public class TestTrialsIntegrityERIC
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "Ludus Latrunculorum";
-		final String gameToSkip = "Ludus Latrunculorum";
+		final String gameToReached = "";
+		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
 
