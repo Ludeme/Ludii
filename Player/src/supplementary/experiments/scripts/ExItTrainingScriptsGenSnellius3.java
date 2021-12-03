@@ -94,6 +94,7 @@ public class ExItTrainingScriptsGenSnellius3
 				"Konane.lud",
 				//"Level Chess.lud",
 				"Lines of Action.lud",
+				"Omega.lud",
 				"Pentalath.lud",
 				"Pretwa.lud",
 				"Reversi.lud",
