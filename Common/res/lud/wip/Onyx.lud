@@ -40,5 +40,10 @@
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
+        (board Background image:"square.svg" fillColour:(colour 218 164 50) edgeColour:(colour Black) scale:1.3)
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black)) 
+        (board Colour InnerVertices (colour Hidden))
+        (board Colour OuterVertices (colour Hidden)) 
     })
 )
