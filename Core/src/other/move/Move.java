@@ -85,7 +85,6 @@ import other.state.State;
 import other.state.container.ContainerState;
 import other.state.owned.Owned;
 import other.state.track.OnTrackIndices;
-import other.state.zhash.HashedBitSet;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 import other.trial.Trial;
@@ -641,7 +640,7 @@ public class Move extends BaseAction
 			final int numTurnSamePlayer = undoData == null ? 0 : undoData.numTurnSamePlayer();
 			final int numConsecutivePasses = undoData == null ? 0 : undoData.numConsecutivePasses();
 			final FastTIntArrayList remainingDominoes = undoData == null ? null : undoData.remainingDominoes();
-			final HashedBitSet visited = undoData == null ? null : undoData.visited();
+			final BitSet visited = undoData == null ? null : undoData.visited();
 			final TIntArrayList sitesToRemove = undoData == null ? null : undoData.sitesToRemove();
 			final OnTrackIndices onTrackIndices = undoData == null ? null : undoData.onTrackIndices();
 			final Owned owned = undoData == null ? null : undoData.owned();
@@ -721,8 +720,8 @@ public class Move extends BaseAction
 			if(visited != null)
 			{
 				currentState.reInitVisited();
-				for(int site = 0; site < visited.internalState().size(); site++)
-					if(visited.internalState().get(site))
+				for(int site = 0; site < visited.size(); site++)
+					if(visited.get(site))
 						currentState.visit(site);
 			}
 	

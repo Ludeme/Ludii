@@ -715,11 +715,11 @@ public class TestTrialsUndo
 							
 							if(state.visited() != null)
 							{
-								if(!state.visited().internalState().equals(stateToCompare.visited().internalState()))
+								if(!state.visited().equals(stateToCompare.visited()))
 								{
 									System.out.println("IN MOVE " + trial.numberRealMoves() +" != visited");
-									System.out.println("correct one is " + stateToCompare.visited().internalState());
-									System.out.println("undo one is " + state.visited().internalState());
+									System.out.println("correct one is " + stateToCompare.visited());
+									System.out.println("undo one is " + state.visited());
 									fail();
 								}
 							}

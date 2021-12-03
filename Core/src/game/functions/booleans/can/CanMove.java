@@ -10,7 +10,6 @@ import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
 import other.state.State;
-import other.state.zhash.HashedBitSet;
 
 /**
  * Checks if a list of moves is not empty.
@@ -62,13 +61,13 @@ public class CanMove extends BaseBooleanFunction
 			final State state = context.state();
 			final int from = lastMove.fromNonDecision();
 			final int to = lastMove.toNonDecision();
-			HashedBitSet savedVisited = state.visited().clone();
+			BitSet savedVisited = (BitSet) state.visited().clone();
 			state.visit(from);
 			state.visit(to);
 			boolean canMove = moves.canMove(context);
 			state.reInitVisited();
-			for(int site = 0; site < savedVisited.internalState().size(); site++)
-				if(savedVisited.internalState().get(site))
+			for(int site = 0; site < savedVisited.size(); site++)
+				if(savedVisited.get(site))
 					state.visit(site);
 			return canMove;
 		}

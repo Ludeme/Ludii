@@ -1,6 +1,7 @@
 package other;
 
 import java.util.Arrays;
+import java.util.BitSet;
 
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
@@ -9,7 +10,6 @@ import main.Status;
 import main.collections.FastTIntArrayList;
 import other.state.owned.Owned;
 import other.state.track.OnTrackIndices;
-import other.state.zhash.HashedBitSet;
 
 /**
  * Undo Data necessary to be able to undo a move.
@@ -99,7 +99,7 @@ public class UndoData
 	 * BitSet used to store all the site already visited (from & to) by each move
 	 * done by the player in a sequence of turns played by the same player.
 	 */
-	private HashedBitSet visited = null;
+	private BitSet visited = null;
 
 	/** In case of a sequence of capture to remove (e.g. some draughts games). */
 	private TIntArrayList sitesToRemove = null;
@@ -163,7 +163,7 @@ public class UndoData
 		final int numTurnSamePlayer,
 		final int numConsecutivePasses,
 		final FastTIntArrayList remainingDominoes,
-		final HashedBitSet visited,
+		final BitSet visited,
 		final TIntArrayList sitesToRemove,
 		final OnTrackIndices onTrackIndices,
 		final Owned owned,
@@ -191,7 +191,7 @@ public class UndoData
 		this.numTurnSamePlayer = numTurnSamePlayer;
 		this.numConsecutivePasses = numConsecutivePasses;
 		this.remainingDominoes = remainingDominoes == null ? null : new FastTIntArrayList(remainingDominoes);
-		this.visited = visited == null ? null : visited.clone();
+		this.visited = visited == null ? null : (BitSet) visited.clone();
 		this.sitesToRemove = sitesToRemove == null ? null : new TIntArrayList(sitesToRemove);
 		this.onTrackIndices = onTrackIndices == null ? null : new OnTrackIndices(onTrackIndices);
 		this.owned = owned == null ? null : owned.copy();
@@ -371,7 +371,7 @@ public class UndoData
 	/**
 	 * @return Sites visited during the same turn.
 	 */
-	public HashedBitSet visited()
+	public BitSet visited()
 	{
 		return visited;
 	}

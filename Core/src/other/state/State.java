@@ -2,6 +2,7 @@ package other.state;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,7 +34,6 @@ import other.state.owned.Owned;
 import other.state.owned.OwnedFactory;
 import other.state.symmetry.SymmetryValidator;
 import other.state.track.OnTrackIndices;
-import other.state.zhash.HashedBitSet;
 import other.state.zhash.ZobristHashGenerator;
 import other.state.zhash.ZobristHashUtilities;
 
@@ -158,7 +158,7 @@ public class State implements Serializable
 	 * BitSet used to store all the site already visited (from & to) by each move
 	 * done by the player in a sequence of turns played by the same player.
 	 */
-	private HashedBitSet visited = null;
+	private BitSet visited = null;
 
 	/** In case of a sequence of capture to remove (e.g. some draughts games). */
 	private TIntArrayList sitesToRemove = null;
@@ -437,7 +437,7 @@ public class State implements Serializable
 		owned = OwnedFactory.createOwned(game);
 
 		if (game.requiresVisited())
-			visited = new HashedBitSet(generator, game.board().numSites());
+			visited = new BitSet(game.board().numSites());
 
 		if (game.hasSequenceCapture())
 			sitesToRemove = new TIntArrayList();
@@ -558,7 +558,7 @@ public class State implements Serializable
 		}
 		
 		if (other.visited != null)
-			visited = other.visited.clone();
+			visited = (BitSet) other.visited.clone();
 
 		if (other.sitesToRemove != null)
 			sitesToRemove = new TIntArrayList(other.sitesToRemove);
@@ -963,7 +963,7 @@ public class State implements Serializable
 		}
 				
 		if (other.visited != null)
-			visited = other.visited.clone();
+			visited = (BitSet) other.visited.clone();
 
 		if (other.sitesToRemove != null)
 			sitesToRemove = new TIntArrayList(other.sitesToRemove);
@@ -1740,7 +1740,7 @@ public class State implements Serializable
 	 */
 	public void reInitVisited()
 	{
-		visited.clear(this);
+		visited.clear();
 	}
 	
 	/**
@@ -1759,14 +1759,14 @@ public class State implements Serializable
 	 */
 	public void visit(final int site)
 	{
-		if(visited.internalState().size() > site && site >= 0)
-			visited.setNoHashUpdate(this, site, true);
+		if(visited.size() > site && site >= 0)
+			visited.set(site, true);
 	}
 	
 	/**
 	 * @return visited sites.
 	 */
-	public HashedBitSet visited()
+	public BitSet visited()
 	{
 		return visited;
 	}

@@ -134,18 +134,6 @@ public class HashedBitSet implements Serializable
 		internalState.set(bitIndex, on);
 	}
 	
-	/**
-	 * To set the bits without modifying the state hash.	FIXME this method should not exist
-	 * 
-	 * @param trialState
-	 * @param bitIndex
-	 * @param on
-	 */
-	public void setNoHashUpdate(final State trialState, final int bitIndex, final boolean on) 
-	{
-		internalState.set(bitIndex, on);
-	}
-
 /* ----------------------------------------------------------------------------------------------------
  * The following methods are read-only, and do not need to manage their internal states
  * ---------------------------------------------------------------------------------------------------- */
