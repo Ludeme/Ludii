@@ -76,6 +76,8 @@
         (regions P2 { (sites Side N) (sites Side S) } )
     })  
     (rules
+    	(meta (swap))
+    		
         (start (place "Disc" "Hand" count:12))
         
         phases:{
