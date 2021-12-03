@@ -1764,6 +1764,17 @@ public class State implements Serializable
 	}
 	
 	/**
+	 * To unvi the visited bitSet with the site visited.
+	 *
+	 * @param site
+	 */
+	public void unvisit(final int site)
+	{
+		if(visited.size() > site && site >= 0)
+			visited.set(site, false);
+	}
+	
+	/**
 	 * @return visited sites.
 	 */
 	public BitSet visited()

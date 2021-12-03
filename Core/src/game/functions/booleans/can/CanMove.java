@@ -61,14 +61,11 @@ public class CanMove extends BaseBooleanFunction
 			final State state = context.state();
 			final int from = lastMove.fromNonDecision();
 			final int to = lastMove.toNonDecision();
-			BitSet savedVisited = (BitSet) state.visited().clone();
 			state.visit(from);
 			state.visit(to);
 			boolean canMove = moves.canMove(context);
-			state.reInitVisited();
-			for(int site = 0; site < savedVisited.size(); site++)
-				if(savedVisited.get(site))
-					state.visit(site);
+			state.unvisit(from);
+			state.unvisit(to);
 			return canMove;
 		}
 		return moves.canMove(context);
