@@ -53,38 +53,31 @@
         	(rotate 90 (tiling T33434 3))
             use:Vertex
         ) 
-        (piece "Disc" Each) 
+        (piece "Disc" Each (move Step (to if:(is Empty (to))))) 
+        (piece "Disc" Neutral)
+        (hand Each)
         (regions P1 { (sites Side W) (sites Side E) } )
         (regions P2 { (sites Side N) (sites Side S) } )
     })  
     (rules
-        (play 
-            (move Add
-                (to
-                    (forEach (sites Empty) 
-                        if:(if (is In (site) ("MidpointSquares")) ("AllCornersSquareEmpty") True)
-                    )
-                )
-                (then
-                    (forEach Site ("MidpointSquares")
-                        (if (and { 
-                                (is Empty (site))
-                                (is In (last To) (sites Around (site))) 
-                                ("AllCornersSquareOccupied")
-                                (= 2 ("NumEnemyCorners"))
-                                (= 2 ("NumEnemyOppositeCorners"))
-                            })
-                            (remove
-                                (forEach 
-                                    (sites Around (site)) 
-                                    if:(is Enemy (who at:(site)))
-                                )
-                            )
-                        )
-                    )
-                )
+    	(start (place "Disc" "Hand" count:12))
+    	
+    	phases:{
+    	(phase "Placement"
+    	        (play 
+    	           (move
+    	        	(from (handSite Mover))
+    	        	(to (sites Empty))
+    	           )
+    	        )
+    	        (nextPhase Mover (is Empty (handSite Mover)) "Movement")
             )
+    	(phase "Movement"
+	        (play 
+	           (forEach Piece)
+	        )
         )
+    	}
         (end (if (is Connected Mover) (result Mover Win))) 
     )
 )
@@ -99,6 +92,7 @@
     )
     
     (graphics {
+        (player Colour Neutral (colour Red))
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Background image:"square.svg" fillColour:(colour 218 164 50) edgeColour:(colour Black) scale:1.3)
