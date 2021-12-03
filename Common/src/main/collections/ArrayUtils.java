@@ -143,6 +143,23 @@ public class ArrayUtils
 	
 	/**
 	 * @param arr
+	 * @return Minimum value in given array
+	 */
+	public static float min(final float[] arr)
+	{
+		float min = Float.POSITIVE_INFINITY;
+		
+		for (final float val : arr)
+		{
+			if (val < min)
+				min = val;
+		}
+		
+		return min;
+	}
+	
+	/**
+	 * @param arr
 	 * @param val
 	 * @return Number of occurrences of given value in given array
 	 */

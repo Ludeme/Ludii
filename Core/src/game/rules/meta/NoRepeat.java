@@ -68,6 +68,19 @@ public class NoRepeat extends MetaRule
 				return true;
 
 			context.storeCurrentData(); // We need to save the data before to apply the move.
+			
+//			final String stacktraceString = Utilities.stackTraceString();
+//			if 
+//			(
+//				!stacktraceString.contains("getMoveStringToDisplay") 
+//				&& 
+//				!stacktraceString.contains("other.context.InformationContext.moves") 
+//				&& 
+//				!stacktraceString.contains("game.rules.play.moves.Moves$1.canMoveConditionally(Moves.java:305)")
+//			)
+//			{
+//				System.out.println("Applying move: " + move);
+//			}
 			final Move moveApplied = (Move) move.apply(context, true);
 			boolean noRepeat = true;
 			switch (type)
@@ -96,6 +109,17 @@ public class NoRepeat extends MetaRule
 					break;
 			}
 
+//			if 
+//			(
+//				!stacktraceString.contains("getMoveStringToDisplay") 
+//				&& 
+//				!stacktraceString.contains("other.context.InformationContext.moves") 
+//				&& 
+//				!stacktraceString.contains("game.rules.play.moves.Moves$1.canMoveConditionally(Moves.java:305)")
+//			)
+//			{
+//				System.out.println("Undoing move: " + move);
+//			}
 			moveApplied.undo(context, true); // We undo the move.
 			return noRepeat;
 		}

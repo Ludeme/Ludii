@@ -79,6 +79,19 @@ public class ExperienceIQRTreeLearner
 					logits[i] = oracleWeightVector.dot(featureVector);
 				}
 				
+				// Maximise logits for winning moves and minimise for losing moves
+				final float maxLogit = ArrayUtils.max(logits);
+				for (int i = sample.winningMoves().nextSetBit(0); i >= 0; i = sample.winningMoves().nextSetBit(i + 1))
+				{
+					logits[i] = maxLogit;
+				}
+				
+				final float minLogit = ArrayUtils.min(logits);
+				for (int i = sample.losingMoves().nextSetBit(0); i >= 0; i = sample.losingMoves().nextSetBit(i + 1))
+				{
+					logits[i] = minLogit;
+				}
+				
 				final List<Integer> sortedIndices = 
 						ArrayUtils.sortedIndices
 						(
