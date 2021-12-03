@@ -88,7 +88,7 @@
                     (to (sites Empty))
                     (then
                     	(and
-                        (forEach Site (sites Board Cell) 
+                        (forEach Site (sites Incident Cell of:Vertex at:(last To))
                             (if ("SquareFilled") (trigger "Win" Mover))
                         )
                         (set Counter)
