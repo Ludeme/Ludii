@@ -6,12 +6,12 @@
     )		
 )
 
-(define "All4PlayersInLastStack" 
+(define "AllActivePlayersInLastStack" 
     (and {
-        (is In 1 ("OwnerInLastStack"))
-        (is In 2 ("OwnerInLastStack"))
-        (is In 3 ("OwnerInLastStack"))
-        (is In 4 ("OwnerInLastStack"))
+        (if (is Active P1) (is In 1 ("OwnerInLastStack")) True)
+        (if (is Active P2) (is In 2 ("OwnerInLastStack")) True)
+        (if (is Active P3) (is In 3 ("OwnerInLastStack")) True)
+        (if (is Active P4) (is In 4 ("OwnerInLastStack")) True)
     })
 )
 
@@ -102,7 +102,7 @@
                     )
                 )
                 (if (and (not (is Pending)) (is Prev Mover))
-                    (if ("All4PlayersInLastStack")
+                    (if ("AllActivePlayersInLastStack")
                         (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
                         (forEach Player
                             (if (and (is Active (player)) (not (is In (player) ("OwnerInLastStack"))))
