@@ -27,6 +27,7 @@ import policies.GreedyPolicy;
 import policies.softmax.SoftmaxPolicyLinear;
 import search.flat.FlatMonteCarlo;
 import search.flat.HeuristicSampling;
+import search.flat.OnePlyNoHeuristic;
 import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
 import search.mcts.backpropagation.AlphaGoBackprop;
@@ -284,6 +285,9 @@ public class AIFactory
 		{
 			return new HeuristicSampling(1);
 		}
+		
+		if (string.equalsIgnoreCase("One-Ply (No Heuristic)"))
+			return new OnePlyNoHeuristic();
 		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
@@ -589,6 +593,10 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("Heuristic Sampling (1)"))
 		{
 			return new HeuristicSampling(1);
+		}
+		else if (algName.equalsIgnoreCase("One-Ply (No Heuristic)"))
+		{
+			return new OnePlyNoHeuristic();
 		}
 		else if (algName.equalsIgnoreCase("From JAR"))
 		{
