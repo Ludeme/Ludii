@@ -123,6 +123,21 @@
 	                    			)
 	                    	)
 	                    )
+	                    (forEach Player 
+	                    	(if (not (is Mover Player))
+			                    (move
+			                    	(from
+				                    	(forEach (sites Hand Mover) 
+				                    		if:(and 
+				                    				(!= (site) (handSite Mover 0))
+				                    				(is Occupied (site))
+				                    			)
+				                    	)
+				                    )
+			                    	(to (handSite Player (who at:(from))))
+			                    )
+			                 )
+	                    )
                     })
                 )
             )
