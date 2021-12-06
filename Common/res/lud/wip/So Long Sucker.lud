@@ -1,50 +1,54 @@
 (define "OwnerInLastStack" 
-	(results 
-		from:(last To) 
-		to:(forEach Level at:(last To)) 
-		(who at:(last To) level:(to))
-	)		
+    (results 
+        from:(last To) 
+        to:(forEach Level at:(last To)) 
+        (who at:(last To) level:(to))
+    )		
 )
 
 (define "All4PlayersInLastStack" 
-	(and {
-		(is In 1 ("OwnerInLastStack"))
-		(is In 2 ("OwnerInLastStack"))
-		(is In 3 ("OwnerInLastStack"))
-		(is In 4 ("OwnerInLastStack"))
-	})
+    (and {
+        (is In 1 ("OwnerInLastStack"))
+        (is In 2 ("OwnerInLastStack"))
+        (is In 3 ("OwnerInLastStack"))
+        (is In 4 ("OwnerInLastStack"))
+    })
 )
 
 (define "OwnerMostRecentPlayedChip"
-	(arrayValue 
-			(results 
-				from:(last To) 
-				to:(forEach Level at:(last To) FromBottom 
-					if:(not 
-						(is In 
-							(who at:(last To) level:(level))
-							(results 
-								from:(last To) 
-								to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
-								(who at:(last To) level:(to))
-							)
-						)
-					)
-				)
-				(who at:(last To) level:(to))
-			)
-		index:0
-	)
+    (arrayValue 
+        (results 
+            from:(last To) 
+            to:(forEach Level at:(last To) FromBottom 
+                if:(not 
+                    (is In 
+                        (who at:(last To) level:(level))
+                        (results 
+                            from:(last To) 
+                            to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
+                            (who at:(last To) level:(to))
+                        )
+                    )
+                )
+            )
+            (who at:(last To) level:(to))
+        )
+        index:0
+    )
 )
 
 (define "ACaptureIsMade"
-		(and
-				   (> (size Stack at:(last To) 1))
-				   (= 
-				     (who at:(last To) level:(- (size Stack at:(last To)) 1))
-					 (who at:(last To) level:(- (size Stack at:(last To)) 2))
-				   )
-				)	
+    (and
+        (> (size Stack at:(last To)) 1)
+        (= 
+            (who at:(last To) level:(- (size Stack at:(last To)) 1))
+            (who at:(last To) level:(- (size Stack at:(last To)) 2))
+        )
+    )	
+)
+
+(define "ACaptureWasMade"
+    (is Pending)
 )
 
 //-------------------------------------------------------------------------
@@ -53,51 +57,63 @@
     (players 4)  
     (equipment { 
         (board (square 4))
-        (hand Each size:4)
+        (hand Each size:5)
         (piece "Marker" Each)
     })  
     (rules
-      (start {
-    	  (place Stack "Marker1" (handSite P1) count:7)
-    	  (place Stack "Marker2" (handSite P2) count:7)
-    	  (place Stack "Marker3" (handSite P3) count:7)
-    	  (place Stack "Marker4" (handSite P4) count:7)
-      })
-      
-      (play 
-    	(if (is Prev Mover)
-    		(if ("All4PlayersInLastStack")
-    			(move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
-	    		(forEach Player
-	    			(if (not (is In (player) ("OwnerInLastStack")))
-	    				(move Set NextPlayer (player (player)))
-	    			)
-	    		)
-    		)
-	    	(move 
-	    		(from (sites Hand Mover))
-	    		(to (sites Board))
-	    		stack:True
-	    		(then
-	    			(if (and
-	    				   (> (size Stack at:(last To)) 1)
-	    				   (= 
-	    				     (who at:(last To) level:(- (size Stack at:(last To)) 1))
-	    					 (who at:(last To) level:(- (size Stack at:(last To)) 2))
-	    				   )
-	    				)
-	    				(and
-	    					(set Pending)
-	    					(set NextPlayer (player (who at:(last To))))
-	    				)
-	    				(moveAgain)
-	    			)
-	    		)
-	    	)  
-    	)
-      )
-      
-      (end (if (no Pieces Next) (result Mover Win)))
+        (start {
+            (place Stack "Marker1" (handSite P1) count:7)
+            (place Stack "Marker2" (handSite P2) count:7)
+            (place Stack "Marker3" (handSite P3) count:7)
+            (place Stack "Marker4" (handSite P4) count:7)
+        })
+        
+        (play 
+            (if (is Prev Mover)
+                (if ("ACaptureWasMade")
+                    (forEach Level (last To)
+                        (move Remove (last To) level:(level))
+                        (then
+                            (forEach Level (last To)
+                            	(fromTo
+                            		(from (last To) level:(level))
+                            		(to 
+                            			(if (is Mover (who at:(last To) level:(level)))
+                            				(handSite Mover 0)
+                            				(handSite Mover (who at:(last To) level:(level)))
+                            			)
+                            		)
+                            	)
+                            )
+                        )
+                    )
+                    (if ("All4PlayersInLastStack")
+                        (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
+                        (forEach Player
+                            (if (not (is In (player) ("OwnerInLastStack")))
+                                (move Set NextPlayer (player (player)))
+                            )
+                        )
+                    )
+                )
+                (move 
+                    (from (sites Hand Mover))
+                    (to (sites Board))
+                    stack:True
+                    (then
+                        (if ("ACaptureIsMade")
+                            (and
+                                (set Pending)
+                                (set NextPlayer (player (who at:(last To))))
+                            )
+                            (moveAgain)
+                        )
+                    )
+                )  
+            )
+        )
+        
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
