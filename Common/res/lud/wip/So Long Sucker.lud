@@ -8,32 +8,49 @@
 
 (define "AllActivePlayersInLastStack" 
     (and {
-        (if (is Active P1) (is In 1 ("OwnerInLastStack")) True)
-        (if (is Active P2) (is In 2 ("OwnerInLastStack")) True)
-        (if (is Active P3) (is In 3 ("OwnerInLastStack")) True)
-        (if (is Active P4) (is In 4 ("OwnerInLastStack")) True)
+        (or (not (is Active P1)) (is In 1 ("OwnerInLastStack")))
+        (or (not (is Active P2)) (is In 2 ("OwnerInLastStack")))
+        (or (not (is Active P3)) (is In 3 ("OwnerInLastStack")))
+        (or (not (is Active P4)) (is In 4 ("OwnerInLastStack")))
     })
 )
 
-(define "OwnerMostRecentPlayedChip"
-    (arrayValue 
+(define "MostRecentPlayedChip"
         (results 
-            from:(last To) 
-            to:(forEach Level at:(last To) FromBottom 
-                if:(not 
-                    (is In 
-                        (who at:(last To) level:(level))
-                        (results 
-                            from:(last To) 
-                            to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
-                            (who at:(last To) level:(to))
+                from:(last To) 
+                to:(forEach Level at:(last To) FromBottom 
+                    if:(not 
+                        (is In 
+                            (who at:(last To) level:(level))
+                            (results 
+                                from:(last To) 
+                                to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
+                                (who at:(last To) level:(to))
+                            )
                         )
                     )
                 )
-            )
-            (who at:(last To) level:(to))
-        )
-        index:0
+                (who at:(last To) level:(to))
+            )		
+)
+
+(define "PlayerInMostRecentPlayedChip"
+		(arrayValue 
+		        ("MostRecentPlayedChip")
+		        index:#1
+		    )
+)
+
+(define "OwnerMostRecentPlayedChip"
+	(if (is Active ("PlayerInMostRecentPlayedChip" 0))
+			("PlayerInMostRecentPlayedChip" 0)
+			(if (is Active ("PlayerInMostRecentPlayedChip" 1))
+				("PlayerInMostRecentPlayedChip" 1)
+				(if (is Active ("PlayerInMostRecentPlayedChip" 2))
+					("PlayerInMostRecentPlayedChip" 2)
+					("PlayerInMostRecentPlayedChip" 3)
+				)
+			)
     )
 )
 
@@ -109,6 +126,7 @@
                                 (move Set NextPlayer (player (player)))
                             )
                         )
+                        (then (set Pending))
                     )
                     (if ("NoChip")
                     	(move Pass 
