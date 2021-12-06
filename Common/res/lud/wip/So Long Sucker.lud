@@ -51,12 +51,22 @@
     (= (var "CaptureWasMade") 1)
 )
 
+(define "NoChip"
+	(and {
+		(is Empty (handSite Mover))
+		(is Empty (handSite Mover 1))
+		(is Empty (handSite Mover 2))
+		(is Empty (handSite Mover 3))
+		(is Empty (handSite Mover 4))
+	})
+)
+
 //-------------------------------------------------------------------------
 
 (game "So Long Sucker"  
     (players 4)  
     (equipment { 
-        (board (square 4))
+        (board (rectangle 4 7))
         (hand Each size:5)
         (piece "Marker" Each)
     })  
@@ -100,50 +110,62 @@
                             )
                         )
                     )
-                    (or {
-	                    (move 
-	                        (from (sites Hand Mover))
-	                        (to (sites Board))
-	                        stack:True
-	                        (then
-	                            (if ("ACaptureIsMade")
-	                                (and
-	                                    (set Var "CaptureWasMade" 1)
-	                                    (set NextPlayer (player (who at:(last To))))
-	                                )
-	                                (moveAgain)
-	                            )
-	                        )
-	                    ) 
-	                    (move Remove
-	                    	(forEach (sites Hand Mover) 
-	                    		if:(and 
-	                    				(!= (site) (handSite Mover 0))
-	                    				(is Occupied (site))
-	                    			)
-	                    	)
-	                    )
-	                    (forEach Player 
-	                    	(if (not (is Mover Player))
-			                    (move
-			                    	(from
-				                    	(forEach (sites Hand Mover) 
-				                    		if:(and 
-				                    				(!= (site) (handSite Mover 0))
-				                    				(is Occupied (site))
-				                    			)
-				                    	)
+                    (if ("NoChip")
+                    	(move Pass 
+                    		(then 
+                    			(and
+                    			(set Var "Defeat" (mover))
+                    			(set NextPlayer (player (prev)))
+                    			)
+                    		)
+                    	)
+	                    (or {
+		                    (move 
+		                        (from (sites Hand Mover))
+		                        (to (sites Board))
+		                        stack:True
+		                        (then
+		                            (if ("ACaptureIsMade")
+		                                (and
+		                                    (set Var "CaptureWasMade" 1)
+		                                    (set NextPlayer (player (who at:(last To))))
+		                                )
+		                                (moveAgain)
+		                            )
+		                        )
+		                    ) 
+		                    (move Remove
+		                    	(forEach (sites Hand Mover) 
+		                    		if:(and 
+		                    				(!= (site) (handSite Mover 0))
+		                    				(is Occupied (site))
+		                    			)
+		                    	)
+		                    )
+		                    (forEach Player 
+		                    	(if (not (is Mover Player))
+				                    (move
+				                    	(from
+					                    	(forEach (sites Hand Mover) 
+					                    		if:(and 
+					                    				(!= (site) (handSite Mover 0))
+					                    				(is Occupied (site))
+					                    			)
+					                    	)
+					                    )
+				                    	(to (handSite Player (who at:(from))))
 				                    )
-			                    	(to (handSite Player (who at:(from))))
-			                    )
-			                 )
-	                    )
-                    })
+				                 )
+		                    )
+	                    })
+                    )
                 )
             )
         )
         
-        (end (if (no Pieces Next) (result Mover Win)))
+        (end 
+        	(if (is Mover (var "Defeat")) (result Mover Loss))
+        )
     )
 )
 
