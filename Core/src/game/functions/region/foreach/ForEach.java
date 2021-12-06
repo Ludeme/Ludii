@@ -15,6 +15,7 @@ import game.functions.region.foreach.sites.ForEachSiteInRegion;
 import game.functions.region.foreach.team.ForEachTeam;
 import game.rules.start.forEach.ForEachTeamType;
 import game.types.board.SiteType;
+import game.util.directions.StackDirection;
 import game.util.equipment.Region;
 import other.context.Context;
 
@@ -33,9 +34,10 @@ public final class ForEach extends BaseRegionFunction
 	/**
 	 * For iterating through levels of a site.
 	 * 
-	 * @param forEachType The type of property to iterate.
-	 * @param at          The site.
-	 * @param If          The condition to satisfy.
+	 * @param forEachType    The type of property to iterate.
+	 * @param at             The site.
+	 * @param stackDirection The direction to count in the stack [FromTop].
+	 * @param If             The condition to satisfy.
 	 * 
 	 * @example (forEach Level at:(site))
 	 */
@@ -44,10 +46,11 @@ public final class ForEach extends BaseRegionFunction
 		           final ForEachLevelType forEachType, 
 		     @Opt  final SiteType         type,
 	         @Name final IntFunction      at,
+	 	@Opt       final StackDirection   stackDirection,
 		@Opt @Name final BooleanFunction  If
 	)
 	{
-		return new ForEachLevel(type, at, If);
+		return new ForEachLevel(type, at, stackDirection, If);
 	}
 	
 	//-------------------------------------------------------------------------

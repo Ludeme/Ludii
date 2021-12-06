@@ -10,6 +10,7 @@ import game.functions.booleans.BooleanFunction;
 import game.functions.ints.IntFunction;
 import game.functions.region.BaseRegionFunction;
 import game.types.board.SiteType;
+import game.util.directions.StackDirection;
 import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
 import other.context.Context;
@@ -34,24 +35,30 @@ public final class ForEachLevel extends BaseRegionFunction
 	
 	/** The list of players. */
 	private final BooleanFunction cond;
+
+	/** To start from the bottom or the top of the stack. */
+	private final StackDirection stackDirection;
 	
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param type The type
-	 * @param at   The site.
-	 * @param If   The condition to satisfy.
+	 * @param type           The type
+	 * @param at             The site.
+	 * @param stackDirection The direction to count in the stack [FromTop].
+	 * @param If             The condition to satisfy.
 	 */
 	public ForEachLevel
 	(
 		@Opt       final SiteType         type,
 	         @Name final IntFunction      at,
+	 	@Opt       final StackDirection   stackDirection,
 		@Opt @Name final BooleanFunction  If
 	)
 	{
 		this.type = type;
 		this.siteFn = at;
 		this.cond   = If;
+		this.stackDirection = (stackDirection == null) ? StackDirection.FromTop : stackDirection;
 	}
 
 	//-------------------------------------------------------------------------
@@ -72,11 +79,23 @@ public final class ForEachLevel extends BaseRegionFunction
 		final int stackSize = cs.sizeStack(site, type);
 		final int originLevel = context.level();
 		
-		for(int lvl = 0; lvl < stackSize; lvl++)
+		if(stackDirection.equals(StackDirection.FromBottom))
 		{
-			context.setLevel(lvl);
-			if(cond == null || cond.eval(context))
-				returnLevels.add(lvl);
+			for(int lvl = 0; lvl < stackSize; lvl++)
+			{
+				context.setLevel(lvl);
+				if(cond == null || cond.eval(context))
+					returnLevels.add(lvl);
+			}
+		}
+		else
+		{
+			for(int lvl = stackSize -1 ; lvl >= 0; lvl--)
+			{
+				context.setLevel(lvl);
+				if(cond == null || cond.eval(context))
+					returnLevels.add(lvl);
+			}
 		}
 
 		context.setLevel(originLevel);
