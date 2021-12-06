@@ -48,7 +48,7 @@ public class LogitModelNode extends LogitTreeNode
 	 * Constructor
 	 * @param features
 	 * @param weights
-	 * @param
+	 * @param featureIndices
 	 */
 	public LogitModelNode
 	(

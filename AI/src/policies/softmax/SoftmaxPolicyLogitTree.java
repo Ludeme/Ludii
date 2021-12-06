@@ -126,7 +126,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	 * Constructs a softmax policy from a given set of feature trees as created
 	 * by the compiler, using the Selection weights.
 	 * 
-	 * @param features
+	 * @param featureTrees
 	 * @param epsilon Epsilon for epsilon-greedy playouts
 	 */
 	public static SoftmaxPolicyLogitTree constructPolicy(final FeatureTrees featureTrees, final double epsilon)
