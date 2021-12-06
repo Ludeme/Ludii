@@ -100,20 +100,30 @@
                             )
                         )
                     )
-                    (move 
-                        (from (sites Hand Mover))
-                        (to (sites Board))
-                        stack:True
-                        (then
-                            (if ("ACaptureIsMade")
-                                (and
-                                    (set Var "CaptureWasMade" 1)
-                                    (set NextPlayer (player (who at:(last To))))
-                                )
-                                (moveAgain)
-                            )
-                        )
-                    )  
+                    (or {
+	                    (move 
+	                        (from (sites Hand Mover))
+	                        (to (sites Board))
+	                        stack:True
+	                        (then
+	                            (if ("ACaptureIsMade")
+	                                (and
+	                                    (set Var "CaptureWasMade" 1)
+	                                    (set NextPlayer (player (who at:(last To))))
+	                                )
+	                                (moveAgain)
+	                            )
+	                        )
+	                    ) 
+	                    (move Remove
+	                    	(forEach (sites Hand Mover) 
+	                    		if:(and 
+	                    				(!= (site) (handSite Mover 0))
+	                    				(is Occupied (site))
+	                    			)
+	                    	)
+	                    )
+                    })
                 )
             )
         )
