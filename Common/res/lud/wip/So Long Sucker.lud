@@ -1,3 +1,9 @@
+(define "OwnerInLastStack" 
+	(results 
+		from:(last To) 
+		to:(forEach Level at:(last To)) (who at:(last To) level:(to))
+	)		
+)
 
 //-------------------------------------------------------------------------
 
@@ -15,10 +21,11 @@
     	  (place Stack "Marker3" (handSite P3) count:7)
     	  (place Stack "Marker4" (handSite P4) count:7)
       })
+      
       (play 
     	(if (is Prev Mover)
     		(forEach Player
-    			(if (!= (mover) (player))
+    			(if (not (is in (player) ("OwnerInLastStack")))
     				(move Set NextPlayer (player (player)))
     			)
     		)
@@ -30,6 +37,7 @@
 	    	)  
     	)
       )
+      
       (end (if (no Moves Next) (result Mover Win)))
     )
 )
