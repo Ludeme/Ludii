@@ -15,7 +15,7 @@
 	})
 )
 
-(define "OwnerMostRecentPlayerChip"
+(define "OwnerMostRecentPlayedChip"
 	(arrayValue 
 			(results 
 				from:(last To) 
@@ -35,6 +35,16 @@
 			)
 		index:0
 	)
+)
+
+(define "ACaptureIsMade"
+		(and
+				   (> (size Stack at:(last To) 1))
+				   (= 
+				     (who at:(last To) level:(- (size Stack at:(last To)) 1))
+					 (who at:(last To) level:(- (size Stack at:(last To)) 2))
+				   )
+				)	
 )
 
 //-------------------------------------------------------------------------
@@ -57,7 +67,7 @@
       (play 
     	(if (is Prev Mover)
     		(if ("All4PlayersInLastStack")
-    			(move Set NextPlayer (player ("OwnerMostRecentPlayerChip")))
+    			(move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
 	    		(forEach Player
 	    			(if (not (is In (player) ("OwnerInLastStack")))
 	    				(move Set NextPlayer (player (player)))
@@ -65,10 +75,24 @@
 	    		)
     		)
 	    	(move 
-	    		(from (handSite Mover))
+	    		(from (sites Hand Mover))
 	    		(to (sites Board))
 	    		stack:True
-	    		(then (moveAgain))
+	    		(then
+	    			(if (and
+	    				   (> (size Stack at:(last To)) 1)
+	    				   (= 
+	    				     (who at:(last To) level:(- (size Stack at:(last To)) 1))
+	    					 (who at:(last To) level:(- (size Stack at:(last To)) 2))
+	    				   )
+	    				)
+	    				(and
+	    					(set Pending)
+	    					(set NextPlayer (player (who at:(last To))))
+	    				)
+	    				(moveAgain)
+	    			)
+	    		)
 	    	)  
     	)
       )
@@ -84,6 +108,7 @@
     
     (graphics {
         (no Board)
+        (stackType 0 Default 0.5)
         (stackType 1 Count)
         (stackType 2 Count)
         (stackType 3 Count)
