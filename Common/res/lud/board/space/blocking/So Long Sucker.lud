@@ -172,7 +172,10 @@
                                         (and {
                                             (set Var "Defeat" (mover))
                                             (set Var "CanBeDefeated" Undefined)
-                                            (set NextPlayer (player (var "PrevWas")))
+                                            (if (is Active (var "PrevWas"))
+                                            	(set NextPlayer (player (var "PrevWas")))
+                                            	(set NextPlayer (player (next)))
+                                            )
                                             (set Var "PrevWas" Undefined)
                                         })
                                     )
@@ -237,6 +240,8 @@
         )
     )
 )
+
+//-------------------------------------------------------------------------
 
 (metadata
     (info {
