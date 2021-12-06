@@ -105,7 +105,7 @@
                     (if ("All4PlayersInLastStack")
                         (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
                         (forEach Player
-                            (if (not (is In (player) ("OwnerInLastStack")))
+                            (if (and (is Active (player)) (not (is In (player) ("OwnerInLastStack"))))
                                 (move Set NextPlayer (player (player)))
                             )
                         )
