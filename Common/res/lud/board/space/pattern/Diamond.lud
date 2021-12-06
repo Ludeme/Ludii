@@ -57,12 +57,12 @@
                                     ("TwoFriendPieces")
                                     ("OneEnemyPiece")
                                 })
-                            	(and
-                                (forEach Site
-                                    (forEach (sites Incident Vertex of:Cell at:(site)) if:(is Next (who at:(site))))
-                                    ("ReplaceEnemyPieceByNeutral")
-                                )
-                                (set Counter)
+                                (and
+                                    (forEach Site
+                                        (forEach (sites Incident Vertex of:Cell at:(site)) if:(is Next (who at:(site))))
+                                        ("ReplaceEnemyPieceByNeutral")
+                                    )
+                                    (set Counter)
                                 )
                             )
                         )
@@ -76,8 +76,8 @@
         (regions P2 { (sites Side N) (sites Side S) } )
     })  
     (rules
-    	(meta (swap))
-    		
+        (meta (swap))
+        
         (start (place "Disc" "Hand" count:12))
         
         phases:{
@@ -87,11 +87,11 @@
                     (from (handSite Mover))
                     (to (sites Empty))
                     (then
-                    	(and
-                        (forEach Site (sites Incident Cell of:Vertex at:(last To))
-                            (if ("SquareFilled") (trigger "Win" Mover))
-                        )
-                        (set Counter)
+                        (and
+                            (forEach Site (sites Incident Cell of:Vertex at:(last To))
+                                (if ("SquareFilled") (trigger "Win" Mover))
+                            )
+                            (set Counter)
                         )
                     )
                 )

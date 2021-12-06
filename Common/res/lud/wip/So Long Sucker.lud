@@ -48,7 +48,7 @@
 )
 
 (define "ACaptureWasMade"
-    (is Pending)
+    (= (var "CaptureWasMade") 1)
 )
 
 //-------------------------------------------------------------------------
@@ -69,24 +69,29 @@
         })
         
         (play 
-            (if (is Prev Mover)
-                (if ("ACaptureWasMade")
-                    (forEach Level (last To)
-                        (move Remove (last To) level:(level))
-                        (then
-                            (forEach Level (last To)
-                            	(fromTo
-                            		(from (last To) level:(level))
-                            		(to 
-                            			(if (is Mover (who at:(last To) level:(level)))
-                            				(handSite Mover 0)
-                            				(handSite Mover (who at:(last To) level:(level)))
-                            			)
-                            		)
-                            	)
-                            )
-                        )
+            (if ("ACaptureWasMade")
+                (forEach Level (last To)
+                    (move Remove (last To) level:(level))
+                    (then
+                    	(and {
+	                        (forEach Level (last To)
+	                            (fromTo
+	                                (from (last To) level:(level))
+	                                (to 
+	                                    (if (is Mover (who at:(last To) level:(level)))
+	                                        (handSite Mover 0)
+	                                        (handSite Mover (who at:(last To) level:(level)))
+	                                    )
+	                                )
+	                            )
+	                        )
+	                        (moveAgain)
+	                        (set Pending)
+                            (set Var "CaptureWasMade" 0)
+                    	})
                     )
+                )
+                (if (and (not (is Pending)) (is Prev Mover))
                     (if ("All4PlayersInLastStack")
                         (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
                         (forEach Player
@@ -95,21 +100,21 @@
                             )
                         )
                     )
-                )
-                (move 
-                    (from (sites Hand Mover))
-                    (to (sites Board))
-                    stack:True
-                    (then
-                        (if ("ACaptureIsMade")
-                            (and
-                                (set Pending)
-                                (set NextPlayer (player (who at:(last To))))
+                    (move 
+                        (from (sites Hand Mover))
+                        (to (sites Board))
+                        stack:True
+                        (then
+                            (if ("ACaptureIsMade")
+                                (and
+                                    (set Var "CaptureWasMade" 1)
+                                    (set NextPlayer (player (who at:(last To))))
+                                )
+                                (moveAgain)
                             )
-                            (moveAgain)
                         )
-                    )
-                )  
+                    )  
+                )
             )
         )
         
