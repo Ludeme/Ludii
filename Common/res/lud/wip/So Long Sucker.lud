@@ -126,9 +126,18 @@
 		                        stack:True
 		                        (then
 		                            (if ("ACaptureIsMade")
-		                                (and
-		                                    (set Var "CaptureWasMade" 1)
-		                                    (set NextPlayer (player (who at:(last To))))
+		                            	(if (is Active (who at:(last To) level:(- (size Stack at:(last To)) 1)))
+			                                (and
+			                                    (set Var "CaptureWasMade" 1)
+			                                    (set NextPlayer (player (who at:(last To))))
+			                                )
+			                                (and {
+			                                	(forEach Level (last To)
+			                                		(remove (last To) level:(level))
+			                                	)
+			                                	(moveAgain)
+			                                	(set Pending)
+			                                })
 		                                )
 		                                (moveAgain)
 		                            )
