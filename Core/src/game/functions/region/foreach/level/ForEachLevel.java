@@ -7,12 +7,14 @@ import annotations.Name;
 import annotations.Opt;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
+import game.functions.ints.IntConstant;
 import game.functions.ints.IntFunction;
 import game.functions.region.BaseRegionFunction;
 import game.types.board.SiteType;
 import game.util.directions.StackDirection;
 import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
+import main.Constants;
 import other.context.Context;
 import other.context.EvalContextData;
 import other.state.container.ContainerState;
@@ -39,6 +41,9 @@ public final class ForEachLevel extends BaseRegionFunction
 	/** To start from the bottom or the top of the stack. */
 	private final StackDirection stackDirection;
 	
+	/** The level to start to look at. */
+	private final IntFunction startAtFn;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -46,19 +51,22 @@ public final class ForEachLevel extends BaseRegionFunction
 	 * @param at             The site.
 	 * @param stackDirection The direction to count in the stack [FromTop].
 	 * @param If             The condition to satisfy.
+	 * @param startAt        The level to start to look at.
 	 */
 	public ForEachLevel
 	(
 		@Opt       final SiteType         type,
 	         @Name final IntFunction      at,
 	 	@Opt       final StackDirection   stackDirection,
-		@Opt @Name final BooleanFunction  If
+		@Opt @Name final BooleanFunction  If,
+		@Opt @Name final IntFunction      startAt
 	)
 	{
 		this.type = type;
 		this.siteFn = at;
 		this.cond   = If;
 		this.stackDirection = (stackDirection == null) ? StackDirection.FromTop : stackDirection;
+		this.startAtFn = (startAt == null) ? new IntConstant(Constants.UNDEFINED) : startAt;
 	}
 
 	//-------------------------------------------------------------------------
@@ -68,7 +76,6 @@ public final class ForEachLevel extends BaseRegionFunction
 	{
 		final TIntArrayList returnLevels = new TIntArrayList();
 		final int site = siteFn.eval(context);
-		
 		final int cid = site >= context.containerId().length ? 0 : context.containerId()[site];
 		SiteType realType = type;
 		if (cid > 0)
@@ -78,10 +85,12 @@ public final class ForEachLevel extends BaseRegionFunction
 		final ContainerState cs = context.containerState(cid);
 		final int stackSize = cs.sizeStack(site, type);
 		final int originLevel = context.level();
+		int startAt = startAtFn.eval(context);
 		
 		if(stackDirection.equals(StackDirection.FromBottom))
 		{
-			for(int lvl = 0; lvl < stackSize; lvl++)
+			startAt = (startAt < 0) ? 0 : startAt;
+			for(int lvl = startAt; lvl < stackSize; lvl++)
 			{
 				context.setLevel(lvl);
 				if(cond == null || cond.eval(context))
@@ -90,7 +99,9 @@ public final class ForEachLevel extends BaseRegionFunction
 		}
 		else
 		{
-			for(int lvl = stackSize -1 ; lvl >= 0; lvl--)
+			startAt = (startAt < 0) ? stackSize -1 : startAt;
+			startAt = (startAt >= stackSize) ?  stackSize -1 : startAt;
+			for(int lvl = startAt ; lvl >= 0; lvl--)
 			{
 				context.setLevel(lvl);
 				if(cond == null || cond.eval(context))
