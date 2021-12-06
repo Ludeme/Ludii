@@ -1,8 +1,40 @@
 (define "OwnerInLastStack" 
 	(results 
 		from:(last To) 
-		to:(forEach Level at:(last To)) (who at:(last To) level:(to))
+		to:(forEach Level at:(last To)) 
+		(who at:(last To) level:(to))
 	)		
+)
+
+(define "All4PlayersInLastStack" 
+	(and {
+		(is In 1 ("OwnerInLastStack"))
+		(is In 2 ("OwnerInLastStack"))
+		(is In 3 ("OwnerInLastStack"))
+		(is In 4 ("OwnerInLastStack"))
+	})
+)
+
+(define "OwnerMostRecentPlayerChip"
+	(arrayValue 
+			(results 
+				from:(last To) 
+				to:(forEach Level at:(last To) FromBottom 
+					if:(not 
+						(is In 
+							(who at:(last To) level:(level))
+							(results 
+								from:(last To) 
+								to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
+								(who at:(last To) level:(to))
+							)
+						)
+					)
+				)
+				(who at:(last To) level:(to))
+			)
+		index:0
+	)
 )
 
 //-------------------------------------------------------------------------
@@ -24,10 +56,13 @@
       
       (play 
     	(if (is Prev Mover)
-    		(forEach Player
-    			(if (not (is in (player) ("OwnerInLastStack")))
-    				(move Set NextPlayer (player (player)))
-    			)
+    		(if ("All4PlayersInLastStack")
+    			(move Set NextPlayer (player ("OwnerMostRecentPlayerChip")))
+	    		(forEach Player
+	    			(if (not (is In (player) ("OwnerInLastStack")))
+	    				(move Set NextPlayer (player (player)))
+	    			)
+	    		)
     		)
 	    	(move 
 	    		(from (handSite Mover))
@@ -38,7 +73,7 @@
     	)
       )
       
-      (end (if (no Moves Next) (result Mover Win)))
+      (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
