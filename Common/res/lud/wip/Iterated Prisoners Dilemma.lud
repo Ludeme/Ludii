@@ -1,0 +1,12 @@
+(game "Iterated Prisoners Dilemma"
+	(players 2)
+	(equipment {
+		(board (square 2))
+	})
+	(rules
+		(play 
+			(move Select (from (sites Board)))
+		)
+		(end (if (no Moves Next) (result Mover Win)))
+	)
+)
