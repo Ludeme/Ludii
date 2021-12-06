@@ -16,41 +16,41 @@
 )
 
 (define "MostRecentPlayedChip"
-        (results 
-                from:(last To) 
-                to:(forEach Level at:(last To) FromBottom 
-                    if:(not 
-                        (is In 
-                            (who at:(last To) level:(level))
-                            (results 
-                                from:(last To) 
-                                to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
-                                (who at:(last To) level:(to))
-                            )
-                        )
+    (results 
+        from:(last To) 
+        to:(forEach Level at:(last To) FromBottom 
+            if:(not 
+                (is In 
+                    (who at:(last To) level:(level))
+                    (results 
+                        from:(last To) 
+                        to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
+                        (who at:(last To) level:(to))
                     )
                 )
-                (who at:(last To) level:(to))
-            )		
+            )
+        )
+        (who at:(last To) level:(to))
+    )		
 )
 
 (define "PlayerInMostRecentPlayedChip"
-		(arrayValue 
-		        ("MostRecentPlayedChip")
-		        index:#1
-		    )
+    (arrayValue 
+        ("MostRecentPlayedChip")
+        index:#1
+    )
 )
 
 (define "OwnerMostRecentPlayedChip"
-	(if (is Active ("PlayerInMostRecentPlayedChip" 0))
-			("PlayerInMostRecentPlayedChip" 0)
-			(if (is Active ("PlayerInMostRecentPlayedChip" 1))
-				("PlayerInMostRecentPlayedChip" 1)
-				(if (is Active ("PlayerInMostRecentPlayedChip" 2))
-					("PlayerInMostRecentPlayedChip" 2)
-					("PlayerInMostRecentPlayedChip" 3)
-				)
-			)
+    (if (is Active ("PlayerInMostRecentPlayedChip" 0))
+        ("PlayerInMostRecentPlayedChip" 0)
+        (if (is Active ("PlayerInMostRecentPlayedChip" 1))
+            ("PlayerInMostRecentPlayedChip" 1)
+            (if (is Active ("PlayerInMostRecentPlayedChip" 2))
+                ("PlayerInMostRecentPlayedChip" 2)
+                ("PlayerInMostRecentPlayedChip" 3)
+            )
+        )
     )
 )
 
@@ -69,13 +69,20 @@
 )
 
 (define "NoChip"
-	(and {
-		(is Empty (handSite Mover))
-		(is Empty (handSite Mover 1))
-		(is Empty (handSite Mover 2))
-		(is Empty (handSite Mover 3))
-		(is Empty (handSite Mover 4))
-	})
+    (and {
+        (is Empty (handSite Mover))
+        (is Empty (handSite Mover 1))
+        (is Empty (handSite Mover 2))
+        (is Empty (handSite Mover 3))
+        (is Empty (handSite Mover 4))
+    })
+)
+
+(define "APlayerCanLose" 
+    (and
+        (!= Undefined (var "CanBeDefeated"))
+        (not (is Mover (var "CanBeDefeated")))
+    )
 )
 
 //-------------------------------------------------------------------------
@@ -96,102 +103,137 @@
         })
         
         (play 
-            (if ("ACaptureWasMade")
-                (forEach Level (last To)
-                    (move Remove (last To) level:(level))
-                    (then
-                    	(and {
-	                        (forEach Level (last To)
-	                            (fromTo
-	                                (from (last To) level:(level))
-	                                (to 
-	                                    (if (is Mover (who at:(last To) level:(level)))
-	                                        (handSite Mover 0)
-	                                        (handSite Mover (who at:(last To) level:(level)))
-	                                    )
-	                                )
-	                            )
-	                        )
-	                        (moveAgain)
-	                        (set Pending)
-                            (set Var "CaptureWasMade" 0)
-                    	})
-                    )
-                )
-                (if (and (not (is Pending)) (is Prev Mover))
-                    (if ("AllActivePlayersInLastStack")
-                        (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
-                        (forEach Player
-                            (if (and (is Active (player)) (not (is In (player) ("OwnerInLastStack"))))
-                                (move Set NextPlayer (player (player)))
+            (if ("APlayerCanLose")
+                (or 
+                    (move Set NextPlayer (player (next)) (then (note "Sorry Buddy!")))
+                    (move
+                        (from
+                            (forEach (sites Hand Mover) 
+                                if:(and 
+                                    (!= (site) (handSite Mover 0))
+                                    (is Occupied (site))
+                                )
                             )
                         )
-                        (then (set Pending))
+                        (to (handSite Player (var "CanBeDefeated")))
+                        (then
+                            (and {
+                                (set NextPlayer (player (var "CanBeDefeated")))
+                                (set Var "CanBeDefeated" Undefined)		
+                                (set Var "PrevWas" Undefined)
+                            })
+                        )
                     )
-                    (if ("NoChip")
-                    	(move Pass 
-                    		(then 
-                    			(and
-                    			(set Var "Defeat" (mover))
-                    			(set NextPlayer (player (prev)))
-                    			)
-                    		)
-                    	)
-	                    (or {
-		                    (move 
-		                        (from (sites Hand Mover))
-		                        (to (sites Board))
-		                        stack:True
-		                        (then
-		                            (if ("ACaptureIsMade")
-		                            	(if (is Active (who at:(last To) level:(- (size Stack at:(last To)) 1)))
-			                                (and
-			                                    (set Var "CaptureWasMade" 1)
-			                                    (set NextPlayer (player (who at:(last To))))
-			                                )
-			                                (and {
-			                                	(forEach Level (last To)
-			                                		(remove (last To) level:(level))
-			                                	)
-			                                	(moveAgain)
-			                                	(set Pending)
-			                                })
-		                                )
-		                                (moveAgain)
-		                            )
-		                        )
-		                    ) 
-		                    (move Remove
-		                    	(forEach (sites Hand Mover) 
-		                    		if:(and 
-		                    				(!= (site) (handSite Mover 0))
-		                    				(is Occupied (site))
-		                    			)
-		                    	)
-		                    )
-		                    (forEach Player 
-		                    	(if (not (is Mover Player))
-				                    (move
-				                    	(from
-					                    	(forEach (sites Hand Mover) 
-					                    		if:(and 
-					                    				(!= (site) (handSite Mover 0))
-					                    				(is Occupied (site))
-					                    			)
-					                    	)
-					                    )
-				                    	(to (handSite Player (who at:(from))))
-				                    )
-				                 )
-		                    )
-	                    })
+                )
+                (if ("ACaptureWasMade")
+                    (forEach Level (last To)
+                        (move Remove (last To) level:(level))
+                        (then
+                            (and {
+                                (forEach Level (last To)
+                                    (fromTo
+                                        (from (last To) level:(level))
+                                        (to 
+                                            (if (is Mover (who at:(last To) level:(level)))
+                                                (handSite Mover 0)
+                                                (handSite Mover (who at:(last To) level:(level)))
+                                            )
+                                        )
+                                    )
+                                )
+                                (moveAgain)
+                                (set Pending)
+                                (set Var "CaptureWasMade" 0)
+                            })
+                        )
+                    )
+                    (if (and (not (is Pending)) (is Prev Mover))
+                        (if ("AllActivePlayersInLastStack")
+                            (move Set NextPlayer (player ("OwnerMostRecentPlayedChip")))
+                            (forEach Player
+                                (if (and (is Active (player)) (not (is In (player) ("OwnerInLastStack"))))
+                                    (move Set NextPlayer (player (player)))
+                                )
+                            )
+                            (then (set Pending))
+                        )
+                        (if ("NoChip")
+                            (if (= Undefined (var "CanBeDefeated"))
+                                (move Pass 
+                                    (then
+                                        (and
+                                            (set Var "CanBeDefeated" (mover))
+                                            (set Var "PrevWas" (prev))
+                                        )
+                                    )
+                                )
+                                (move Pass 
+                                    (then 
+                                        (and {
+                                            (set Var "Defeat" (mover))
+                                            (set Var "CanBeDefeated" Undefined)
+                                            (set NextPlayer (player (var "PrevWas")))
+                                            (set Var "PrevWas" Undefined)
+                                        })
+                                    )
+                                )
+                            )
+                            (or {
+                                (move 
+                                    (from (sites Hand Mover))
+                                    (to (sites Board))
+                                    stack:True
+                                    (then
+                                        (if ("ACaptureIsMade")
+                                            (if (is Active (who at:(last To) level:(- (size Stack at:(last To)) 1)))
+                                                (and
+                                                    (set Var "CaptureWasMade" 1)
+                                                    (set NextPlayer (player (who at:(last To))))
+                                                )
+                                                (and {
+                                                    (forEach Level (last To)
+                                                        (remove (last To) level:(level))
+                                                    )
+                                                    (moveAgain)
+                                                    (set Pending)
+                                                })
+                                            )
+                                            (moveAgain)
+                                        )
+                                    )
+                                ) 
+                                (move Remove
+                                    (forEach (sites Hand Mover) 
+                                        if:(and 
+                                            (!= (site) (handSite Mover 0))
+                                            (is Occupied (site))
+                                        )
+                                    )
+                                )
+                                (forEach Player 
+                                    (if (not (is Mover Player))
+                                        (move
+                                            (from
+                                                (forEach (sites Hand Mover) 
+                                                    if:(and 
+                                                        (!= (site) (handSite Mover 0))
+                                                        (is Occupied (site))
+                                                    )
+                                                )
+                                            )
+                                            (to (handSite Player (who at:(from))))
+                                        )
+                                    )
+                                )
+                            })
+                        )
                     )
                 )
             )
         )
         
         (end 
-        	(if (is Mover (var "Defeat")) (result Mover Loss))
+            (if (is Mover (var "Defeat")) (result Mover Loss))
         )
     )
 )

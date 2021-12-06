@@ -54,7 +54,7 @@ import other.context.Context;
 /**
  * Defines a decision move.
  * 
- * @author Eric.Piette and cambolbro
+ * @author Eric.Piette
  */
 @SuppressWarnings("javadoc")
 public final class Move extends Decision
