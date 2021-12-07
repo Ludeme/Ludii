@@ -1,27 +1,27 @@
-(game "Peg Solitaire"  
-    (players 1)  
-    (equipment { 
+(game "Peg Solitaire"
+    (players 1)
+    (equipment {
         <Variant:board>
-        (piece "Marker" P1 
+        (piece "Marker" P1
             (move
                 Hop
-                Orthogonal 
-                (between 
-                    if:(is Friend (who at:(between))) 
+                Orthogonal
+                (between
+                    if:(is Friend (who at:(between)))
                     (apply (remove (between)))
                 )
                 (to if:(is Empty (to)))
             )
         )
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place "Marker" (difference (sites Board) (sites <Variant:noPieceSite>) ) )
         })
-        
+
         (play (forEach Piece))
-        (end (if <Variant:end> (result P1 Win) ) )  
+        (end (if <Variant:end> (result P1 Win) ) )
     )
 )
 
@@ -29,53 +29,53 @@
 
 (option "Known Variants" <Variant> args:{ <board> <noPieceSite> <end> }
     {
-    (item "English"      
-        <(board 
-            (merge 
-                (shift 0 2 (rectangle 3 7)) 
+    (item "English"
+        <(board
+            (merge
+                (shift 0 2 (rectangle 3 7))
                 (shift 2 0 (rectangle 7 3))
-            ) 
+            )
             use:Vertex
         )>
         <{"D4"}>
-        <(and (is Friend (who at:(centrePoint))) (= 1 (count Pieces All)))>    
-    "The game is played on the English board.")   
-    (item "European" 
-        <(board 
-            (keep 
-                (square 7) 
+        <(and (is Friend (who at:(centrePoint))) (= 1 (count Pieces All)))>
+    "The game is played on the English board.")
+    (item "European"
+        <(board
+            (keep
+                (square 7)
                 (poly { {-2 3.5} {3.5 -2} {7.5 3.5} {3.5 7.5} })
-            ) 
+            )
             use:Vertex
         )>
         <{"D6"}>
-        <(= 1 (count Pieces All))>   
+        <(= 1 (count Pieces All))>
         "The game is played on the european board."
     )
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/European (Described)" 
+(rulesets {
+
+    (ruleset "Ruleset/European (Described)"
         {
         "Known Variants/European"
         }
     )
-    
-    (ruleset "Ruleset/English (Described)" 
+
+    (ruleset "Ruleset/English (Described)"
         {
         "Known Variants/English"
         }
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Peg Solitaire is a single-player game attested in Europe since the seventeenth century. There are two board variations, \"European\" which is hexagonal with three spaces per side and \"English\" which has the central hole in each of the six sides of the hexagon removed. Spaces take the form of holes in which pegs are inserted.")
@@ -90,18 +90,18 @@
         (origin  "This game was played in Europe, around 1687.")
         }
     )
-    
+
     (graphics {
         (board Style Graph)
         (show Edges Orthogonal Hidden)
         (show Edges Diagonal Hidden)
         (board StyleThickness InnerVertices 3.0)
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Peg Solitaire_ai"
     )
-    
+
 )
 

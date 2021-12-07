@@ -1,9 +1,9 @@
-(game "Do Guti"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Do Guti"
+    (players 2)
+    (equipment {
+        (board
             (remove
-                (add 
+                (add
                     (square 2)
                     vertices:{{0.5 0.5}}
                     edges:{{0 4} {1 4} {2 4} {3 4}}
@@ -15,33 +15,33 @@
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start (place "Disc" "Hand" count:2))
         phases:{
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+        (phase "Placement"
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
                 )
-            ) 
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
-        
-        (phase "Movement" 
+        )
+
+        (phase "Movement"
             (play (forEach Piece) )
         )
         }
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Do Guti is a blockade game from what is now Pakistan. Graffiti on early monuments suggest this game could be medieval in date.")
@@ -53,11 +53,11 @@
         (origin  "This game was played in Pakistan, around 1926.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
     (ai
         "Do Guti_ai"
     )

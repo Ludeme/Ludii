@@ -4,36 +4,36 @@
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
-(define "Sow" 
+(define "Sow"
     (move
-        Select 
-        (from 
-            (if 
-                (is Mover Prev) 
-                "PlayFromLastHole" 
-                (sites Mover #1) 
-            ) 
+        Select
+        (from
+            (if
+                (is Mover Prev)
+                "PlayFromLastHole"
+                (sites Mover #1)
+            )
             if:(> (count at:(from)) 0)
         )
-        (then 
+        (then
             (sow
-                apply:(if 
-                    (and { 
-                        (is In (to) (sites Mover "Home")) 
-                        (= (count at:(to)) 1) 
-                        (> (count at:"OppositePit") 0) 
-                    } ) 
-                    (and 
-                        (fromTo 
-                            (from "OppositePit") 
-                            (to (handSite Mover)) 
+                apply:(if
+                    (and {
+                        (is In (to) (sites Mover "Home"))
+                        (= (count at:(to)) 1)
+                        (> (count at:"OppositePit") 0)
+                    } )
+                    (and
+                        (fromTo
+                            (from "OppositePit")
+                            (to (handSite Mover))
                             count:(count at:"OppositePit")
-                        ) 
-                        (fromTo 
-                            (from (to)) 
-                            (to (handSite Mover)) 
+                        )
+                        (fromTo
+                            (from (to))
+                            (to (handSite Mover))
                             count:1
-                        )  
+                        )
                     )
                     (if (> (count at:(to)) 1) (moveAgain) )
                 )
@@ -46,10 +46,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dabuda"  
-    (players 2)  
-    
-    (equipment { 
+(game "Dabuda"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -60,25 +60,25 @@
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 4 to:(sites Track) ) )
-        
+
         phases:{
-        (phase "Rightmost" 			  	
+        (phase "Rightmost"
             (play ("Sow" "RightMost") )
             (nextPhase (= (count Turns) 2) "HomePhase")
         )
-        (phase "HomePhase"  
-            (play ("Sow" "Home") ) 
+        (phase "HomePhase"
+            (play ("Sow" "Home") )
         )
         }
-        
+
         (end
             (if  (no Moves Mover)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -97,26 +97,26 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Afar (Observed)" 
+(rulesets {
+
+    (ruleset "Ruleset/Afar (Observed)"
         {
         "Opening/One Rightmost hole"
         }
     )**
-    
-    (ruleset "Ruleset/Damohoita (Observed)" 
+
+    (ruleset "Ruleset/Damohoita (Observed)"
         {
         "Opening/Four Rightmost holes"
         }
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dabuda is a two-row mancala-style game that is particularly popular among the Afar who live in the Horn of Africa, and described by men from Asaita, Jibuti and Thio.")
@@ -130,11 +130,11 @@
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
     (ai
         "Dabuda_ai"
     )

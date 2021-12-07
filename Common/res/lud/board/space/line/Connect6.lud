@@ -1,26 +1,26 @@
-(game "Connect6"  
-    (players 2)  
-    (equipment 
-        { 
-        (board (square 19) use:Vertex) 
-        (piece "Marker" Each) 
+(game "Connect6"
+    (players 2)
+    (equipment
+        {
+        (board (square 19) use:Vertex)
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         phases:{
-        (phase "Opening" 
+        (phase "Opening"
             (play (move Add (to (sites Empty))))
             (nextPhase "Playing")
         )
-        (phase "Playing" 
-            (play 
-                (move 
+        (phase "Playing"
+            (play
+                (move
                     Add
-                    (to (sites Empty)) 
-                    (then 
-                        (if 
-                            (is Even (count Moves)) 
+                    (to (sites Empty))
+                    (then
+                        (if
+                            (is Even (count Moves))
                             (moveAgain)
                         )
                     )
@@ -29,15 +29,15 @@
             (nextPhase "Playing")
         )
         }
-        
+
         (end (if (is Line 6 All) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Connect6 is a game invented by I-Chen Wu in Taiwan in 2003 and played on a Go board. The goal of the game is to make a line of six pieces.")
@@ -50,15 +50,15 @@
         (origin  "This game is from Taiwan, on 2003.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Style Go)
     })
-    
-    (ai 
+
+    (ai
         "Connect6_ai"
     )
-    
+
 )

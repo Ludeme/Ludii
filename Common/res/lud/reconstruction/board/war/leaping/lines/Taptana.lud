@@ -1,10 +1,10 @@
 (game "Taptana"
-    (players 2)  
-    (equipment { 
+    (players 2)
+    (equipment {
         ("AlquerqueBoard" 5 5)
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Taptána was a game played in Peru. Famously, it is said to have been played by the last Inka emperor, Atahualpa, while he was imprisoned. The board is very similar to Spanish Alquerque, and cannot be dated to before the Spanish conquest.")
@@ -25,9 +25,9 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
 )

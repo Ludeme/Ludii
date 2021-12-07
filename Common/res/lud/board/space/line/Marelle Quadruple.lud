@@ -1,21 +1,21 @@
 (game "Marelle Quadruple"
-    (players 2)  
-    (equipment 
+    (players 2)
+    (equipment
         {
         ("AlquerqueBoard" 5 5)
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:5))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Marelle Quadruple is an alignment game played in nineteenth century France.")
@@ -39,11 +39,11 @@
         (origin  "This game was played in France, around 1840.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
     (ai
         "Marelle Quadruple_ai"
     )

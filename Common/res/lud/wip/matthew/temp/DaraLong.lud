@@ -11,34 +11,34 @@
         }
     )
     (rules
-        (start 
+        (start
             {
-            (place "Marker" "Hand" count:12) 
+            (place "Marker" "Hand" count:12)
             }
         )
-        
+
         phases:{
         (phase "Placement"
             <Rules>
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
-            (play 
+            (play
                 (if "SameTurn"
                     (move
                         Remove
-                        (sites Occupied by:Next container:"Board") 
+                        (sites Occupied by:Next container:"Board")
                     )
-                    (do 
-                        (forEach Site (sites Occupied by:Mover) 
-                            (move 
-                                Step 
+                    (do
+                        (forEach Site (sites Occupied by:Mover)
+                            (move
+                                Step
                                 (from (site))
-                                (to if:(is Empty (to))) 
-                                (then 
-                                    (if 
-                                        (is Line 3) 
+                                (to if:(is Empty (to)))
+                                (then
+                                    (if
+                                        (is Line 3)
                                         (moveAgain)
                                     )
                                 )
@@ -50,9 +50,9 @@
             )
         )
         }
-        
+
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------

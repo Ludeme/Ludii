@@ -1,28 +1,28 @@
 (define "Leap"
     (move Leap { {F F R F} {F F L F} }
         (to if:(not (is Friend (who at:(to)))) (apply (remove (to))))
-    )		
+    )
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)) )
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough (Leap)" 
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8) use:Vertex) 
+(game "Breakthrough (Leap)"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8) use:Vertex)
         (piece "Knight" Each ("Leap"))
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Knight" "Hand" count:18))
-        
+
         phases:{
         (phase "Placement"
-            (play 
+            (play
                 (move
                     (from (handSite Mover))
                     (to (expand (sites Next) steps:2) if:(is Empty (to)))
@@ -32,7 +32,7 @@
         )
         (phase "Move"
             (play (forEach Piece))
-            (end (if "ReachedTarget" (result Mover Win))) 
+            (end (if "ReachedTarget" (result Mover Win)))
         )
         }
     )
@@ -41,9 +41,9 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

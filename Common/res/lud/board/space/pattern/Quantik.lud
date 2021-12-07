@@ -1,30 +1,30 @@
 (define "NotSameRow"
-    (all Sites 
-        (sites Row (row of:(to))) 
+    (all Sites
+        (sites Row (row of:(to)))
         if:(!= (what at:(site)) (mapEntry (what at:(from))))
     )
 )
 
 (define "NotSameColumn"
-    (all Sites 
-        (sites Column (column of:(to))) 
+    (all Sites
+        (sites Column (column of:(to)))
         if:(!= (what at:(site)) (mapEntry (what at:(from))))
     )
 )
 
 (define "NotSameRegion"
-    (all Sites 
+    (all Sites
         (sites #1)
         if:(!= (what at:(site)) (mapEntry (what at:(from))))
     )
 )
 
 (define "NotSameSquare"
-    (if (is In (to) (sites "BottomLeft")) 
+    (if (is In (to) (sites "BottomLeft"))
         ("NotSameRegion" "BottomLeft")
-        (if (is In (to) (sites "BottomRight")) 
+        (if (is In (to) (sites "BottomRight"))
             ("NotSameRegion" "BottomRight")
-            (if (is In (to) (sites "TopLeft")) 
+            (if (is In (to) (sites "TopLeft"))
                 ("NotSameRegion" "TopLeft")
                 ("NotSameRegion" "TopRight")
             )
@@ -51,14 +51,14 @@
         (regions "TopLeft" (expand origin:(coord "A4") All))
         (regions "TopRight" (expand origin:(coord "D4") All))
         (hand Each size:4)
-        (map { 
+        (map {
             (pair (id "Disc1") (id "Disc2")) (pair (id "Disc2") (id "Disc1"))
             (pair (id "Square1") (id "Square2")) (pair (id "Square2") (id "Square1"))
             (pair (id "Triangle1") (id "Triangle2")) (pair (id "Triangle2") (id "Triangle1"))
             (pair (id "Hex1") (id "Hex2")) (pair (id "Hex2") (id "Hex1"))
         })
     })
-    (rules 
+    (rules
         (start {
             (place "Disc1" (handSite P1) count:2)
             (place "Disc2" (handSite P2) count:2)
@@ -69,11 +69,11 @@
             (place "Hex1" (handSite P1 3) count:2)
             (place "Hex2" (handSite P2 3) count:2)
         })
-        (play 
-            (move 
+        (play
+            (move
                 (from (sites Occupied by:Mover container:(mover)))
-                (to (sites Empty) 
-                    if:(and { 
+                (to (sites Empty)
+                    if:(and {
                         "NotSameRow"
                         "NotSameColumn"
                         "NotSameSquare"
@@ -81,8 +81,8 @@
                 )
             )
         )
-        (end 
-            (if 
+        (end
+            (if
                 (or {
                     ("AllDifferent" (sites "BottomLeft"))
                     ("AllDifferent" (sites "BottomRight"))
@@ -96,7 +96,7 @@
                     ("AllDifferent" (sites Column 1))
                     ("AllDifferent" (sites Column 2))
                     ("AllDifferent" (sites Column 3))
-                    (no Moves Next) 
+                    (no Moves Next)
                 })
                 (result Mover Win)
             )
@@ -107,7 +107,7 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Quantik is a pure abstract strategy game. The goal is to be the first player to pose the fourth different forms of a line, a column or a square zone.")
@@ -121,10 +121,10 @@
         (date "2019")
         }
     )
-    
+
     (graphics {
-        (show Symbol "Disc" (sites Board) fillColour:(colour Black) edgeColour:(colour White) scale:0.6) 
-        
+        (show Symbol "Disc" (sites Board) fillColour:(colour Black) edgeColour:(colour White) scale:0.6)
+
         (show Edges Hidden)
         (board Placement scale:0.8)
         (board Background image:"square.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:1.45)
@@ -137,7 +137,7 @@
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
     })
-    
+
     (ai
         "Quantik_ai"
     )

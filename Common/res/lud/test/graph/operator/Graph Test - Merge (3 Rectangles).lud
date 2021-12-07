@@ -1,11 +1,11 @@
-(game "Graph Test - Merge (3 Rectangles)"  
-    (players 2)  
-    (equipment { 
-        (board (merge { (rectangle 6 2) (square 4) (rectangle 3 7) } ) use:Cell) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+(game "Graph Test - Merge (3 Rectangles)"
+    (players 2)
+    (equipment {
+        (board (merge { (rectangle 6 2) (square 4) (rectangle 3 7) } ) use:Cell)
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

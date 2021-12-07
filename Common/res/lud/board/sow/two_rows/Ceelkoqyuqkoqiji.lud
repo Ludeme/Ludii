@@ -1,20 +1,20 @@
 (define "Columns" <Row:size>)
 
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
     )
 )
 
-(define "RemmemberOpponentOwnedHoles" 
+(define "RemmemberOpponentOwnedHoles"
     (if (is Mover P2)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -24,16 +24,16 @@
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
-(define "LeftMostEmpty" 
-    (trackSite FirstSite 
+(define "LeftMostEmpty"
+    (trackSite FirstSite
         "TrackCCW"
         from:(mapEntry Mover)
         if:(and (not (is In (to) (sites "EndHoles"))) (is Empty (to)))
     )
 )
 
-(define "NextLeftMostEmpty" 
-    (trackSite FirstSite 
+(define "NextLeftMostEmpty"
+    (trackSite FirstSite
         "TrackCCW"
         from:("LeftMostEmpty")
         if:(and {(not (is In (to) (sites "EndHoles"))) (is Empty (to)) (!= (("LeftMostEmpty") (to)))})
@@ -42,14 +42,14 @@
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "NoPieceOnOwnedHoles" 
+(define "NoPieceOnOwnedHoles"
     (if (= 1 #1)
         (no Pieces All in:(sites (values Remembered "OwnedP1")))
         (no Pieces All in:(sites (values Remembered "OwnedP2")))
     )
 )
 
-(define "NumOwnedHoles" 
+(define "NumOwnedHoles"
     (if (= 1 #1)
         (count Sites in:(sites (values Remembered "OwnedP1")))
         (count Sites in:(sites (values Remembered "OwnedP2")))
@@ -58,14 +58,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ceelkoqyuqkoqiji"  
-    (players 2)  
-    
-    (equipment { 
+(game "Ceelkoqyuqkoqiji"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" largeStack:True
             <Row:tracks>
         )
-        (piece "Seed" Shared) 
+        (piece "Seed" Shared)
         (piece "Ball" P1)
         (piece "Ball" P2)
         (hand Each size:2)
@@ -73,9 +73,9 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
         (regions "EndHoles" (sites {0 (+ 1 (* 2 ("Columns")))}))
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (place Stack "Seed" (union (sites Bottom) (sites Top)) count:<Row:size>)
             (place Stack "Ball1" (mapEntry P1))
@@ -83,17 +83,17 @@
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
                 (or {
                     (if (!= (var "Direction") 2)
                         (move Select
-                            (from 
+                            (from
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    ("OwnedHoles") 
+                                    ("OwnedHoles")
                                 )
                                 if:(!= 0 (size Stack at:(from)))
                             )
@@ -139,11 +139,11 @@
                     )
                     (if (!= (var "Direction") 1)
                         (move Select
-                            (from 
+                            (from
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    ("OwnedHoles") 
-                                ) 
+                                    ("OwnedHoles")
+                                )
                                 if:(!= 0 (size Stack at:(from)))
                             )
                             (then
@@ -266,7 +266,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (>= 4 (size Stack Cell at:(handSite P1)))
@@ -280,7 +280,7 @@
             )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= <Row:size> (size Stack Cell at:(handSite Mover)))
@@ -324,7 +324,7 @@
                         )
                     )
                     (then
-                        (if (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2))) 
+                        (if (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2)))
                             (and
                                 (if (= (size Stack Cell at:(handSite P1 1)) 2)
                                     (and
@@ -385,7 +385,7 @@
 
 (option "Board Size" <Row> args:{ <size> <tracks> <conditionBetweenRounds>}
     {
-    (item "5"   <5>  
+    (item "5"   <5>
         <
         {
         (track "TrackCCW" "0,1,E,11,10,W" loop:True)
@@ -395,8 +395,8 @@
         <
         (or (= 8 (count Cell at:(handSite Mover))) (= 9 (count Cell at:(handSite Mover))))
         >
-    "Each row has 5 holes.")*   
-    (item "7"   <7>  
+    "Each row has 5 holes.")*
+    (item "7"   <7>
         <
         {
         (track "TrackCCW" "0,1,E,15,14,W" loop:True)
@@ -406,27 +406,27 @@
         <
         (or { (= 13 (count Cell at:(handSite Mover))) (= 12 (count Cell at:(handSite Mover))) (= 11 (count Cell at:(handSite Mover)))})
         >
-    "Each row has 7 holes.")   
+    "Each row has 7 holes.")
 })
 
 (option "Play Rules" <Row> args:{ <size> }
     {
-    (item "5"   <5>  "The price of the largest stone is .")   
-    (item "7"   <7>  "The price of the largest stone is 7.")*  
+    (item "5"   <5>  "The price of the largest stone is .")
+    (item "7"   <7>  "The price of the largest stone is 7.")*
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Eagle (Observed)" {
         "Board Size/5" "Play Rules/7"
     })*
-    
+
     (ruleset "Ruleset/Equal Cost (Observed)" {
         "Board Size/5" "Play Rules/5"
     })
-    
+
     (ruleset "Ruleset/Fourteen holes (Observed)" {
         "Board Size/7" "Play Rules/7"
     })
@@ -434,7 +434,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Ceelkoqyuqkoqiji is a two-row mancala-style board game documented in Yunnan Province, China by Vernon Eagle. It was described to him by He Hao, Li Qiulan, and Wang Qiaoxin.")
@@ -449,7 +449,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (piece Scale "Ball1" 1.3)

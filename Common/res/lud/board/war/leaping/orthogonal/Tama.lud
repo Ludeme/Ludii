@@ -1,19 +1,19 @@
-(define "PromotedHopOrthogonalSequenceCapture" 
+(define "PromotedHopOrthogonalSequenceCapture"
     <Variant:promotedCaptureMove>
 )
 
-(define "HopMan" 
+(define "HopMan"
     (move
-        Hop 
-        (from #1) 
-        (directions {Forward Rightward Leftward}) 
-        (between 
+        Hop
+        (from #1)
+        (directions {Forward Rightward Leftward})
+        (between
             if:(is Enemy (who at:(between)))
             (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -22,68 +22,68 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tama"  
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
+(game "Tama"
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place "Counter1" (union (sites Row 1) (sites Row 2)))
             (place "Counter2" (union (sites Row 5) (sites Row 6)))
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
                         ("HopMan" (last To)
-                            (then 
-                                (if (can Move ("HopMan" (last To)) ) 
+                            (then
+                                (if (can Move ("HopMan" (last To)) )
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                     )
                     (max Moves ("PromotedHopOrthogonalSequenceCapture" (from (last To)) (difference Orthogonal OppositeDirection)) )
                 )
-                (priority 
+                (priority
                     {
                     (max Moves
-                        (or { 
-                            (forEach Piece "Counter" 
+                        (or {
+                            (forEach Piece "Counter"
                                 ("HopMan" (from)
-                                    (then 
-                                        (if (can Move ("HopMan" (last To)) ) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
+                                    (then
+                                        (if (can Move ("HopMan" (last To)) )
+                                            (moveAgain)
+                                            (if "JumpToPromotionZone"
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
                                             )
-                                        ) 
-                                    ) 
-                                ) 
+                                        )
+                                    )
+                                )
                             )
                             (forEach Piece "DoubleCounter" ("PromotedHopOrthogonalSequenceCapture" (from) Orthogonal))
                             }
                         )
                     )
-                    (or 
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions {Forwards Rightward Leftward}) 
+                                Step
+                                (directions {Forwards Rightward Leftward})
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -92,12 +92,12 @@
                         (forEach Piece "DoubleCounter" <Variant:promotedMove> )
                     )
                     }
-                    
+
                 )
             )
-        ) 
-        
-        <Variant:endRule> 
+        )
+
+        <Variant:endRule>
     )
 )
 
@@ -105,101 +105,101 @@
 
 (option "Variant" <Variant> args:{ <promotedCaptureMove> <promotedMove> <endRule> }
     {
-    (item "Schmidt" 
+    (item "Schmidt"
         <
         (move
-            Hop 
-            #1 
+            Hop
+            #1
             #2
-            (between 
+            (between
                 if:(is Enemy (who at:(between)))
                 (apply (remove (between)))
-            ) 
-            (to if:(is Empty (to))) 
-            (then 
-                (if (can Move 
-                        (hop 
-                            (from (last To)) 
+            )
+            (to if:(is Empty (to)))
+            (then
+                (if (can Move
+                        (hop
+                            (from (last To))
                             #2
-                            (between 
+                            (between
                                 if:(is Enemy (who at:(between)))
                                 (apply (remove (between)))
                             )
                             (to if:(is Empty (to)))
                         )
-                    ) 
+                    )
                     (moveAgain)
                 )
             )
-        ) 
-        >    
-        < 
+        )
+        >
+        <
         (move
-            Step 
+            Step
             (to if:(is Empty (to)))
         )
         >
         <(end (if (no Pieces Next) (result Mover Win))) >
     "The rules come from Schmidt.")*
-    
-    (item "Wikipedia" 
+
+    (item "Wikipedia"
         <
         (move Hop
             #1
             #2
-            (between 
-                before:(count Rows) 
+            (between
+                before:(count Rows)
                 after:(count Rows)
-                if:(is Enemy (who at:(between))) 
+                if:(is Enemy (who at:(between)))
                 (apply (remove (between)))
             )
             (to if:(is Empty (to)))
-            (then 
-                (if (can Move 
-                        (hop 
-                            (from (last To)) 
+            (then
+                (if (can Move
+                        (hop
+                            (from (last To))
                             (difference Orthogonal OppositeDirection)
-                            (between 
-                                before:(count Rows) 
+                            (between
+                                before:(count Rows)
                                 after:(count Rows)
-                                if:(and 
-                                    (not (is In (between) (sites ToClear))) 
+                                if:(and
+                                    (not (is In (between) (sites ToClear)))
                                     (is Enemy (who at:(between)))
                                 )
                                 (apply (remove (between)))
                             )
                             (to if:(is Empty (to)))
                         )
-                    ) 
+                    )
                     (moveAgain)
                 )
             )
-        )	
-        > 
+        )
+        >
         < (move Slide All)>
         <(end (if (no Moves Next) (result Mover Win))) >
-    "The rules come from Wikipedia.") 
+    "The rules come from Wikipedia.")
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Tama (Observed)" {
         "Variant/Schmidt"
     })
-    
+
     (ruleset "Ruleset/Wikipedia (Suggested)" {
         "Variant/Wikipedia"
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tama is a game with leaping captures played in Armenia. It allows both orthogonal and diagonal movement, and was played on a checkered board. ")
@@ -214,7 +214,7 @@
         (origin  "This game was played in Armenia, around 1934.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Defined" "Isometric"})
         (useFor "Ruleset/Wikipedia (Suggested)" (board Colour Phase0 (colour 223 178 110)))
@@ -222,5 +222,5 @@
         (useFor "Ruleset/Wikipedia (Suggested)" (board Colour OuterEdges (colour Black)))
         (useFor "Ruleset/Tama (Observed)" (board Style Chess))
     })
-    
+
 )

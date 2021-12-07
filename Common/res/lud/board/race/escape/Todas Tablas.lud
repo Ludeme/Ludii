@@ -1,23 +1,23 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:#2
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
-(define "GoBack" 
+(define "GoBack"
     (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:0))
             (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:0))))
         )
@@ -61,9 +61,9 @@
 (game "Todas Tablas"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -76,18 +76,18 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
                 if:("DieNotUsed")
                 (if (= Off ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
-                    (move 
+                    (move
                         (from (from))
-                        (to 
+                        (to
                             ("NextSiteFrom" (from) (pips))
                             if:("NotEnemyOrOnlyOne")
-                            (apply 
+                            (apply
                                 (if (is Enemy (who at:(to)))
-                                    (fromTo 
+                                    (fromTo
                                         (from (to))
                                         (to ("GoBack" Next))
                                     )
@@ -96,7 +96,7 @@
                         )
                     )
                 )
-                (then 
+                (then
                     (if (not (all DiceUsed))
                         (moveAgain)
                     )
@@ -106,26 +106,26 @@
         (regions "StartQuadrant" P1 (sites {6..11}))
         (regions "StartQuadrant" P2 (sites {18..23}))
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" 6 count:5) (place Stack "Disc1" 4 count:3) (place Stack "Disc1" 12 count:5) (place Stack "Disc1" 23 count:2)
             (place Stack "Disc2" 18 count:5) (place Stack "Disc2" 16 count:3) (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 11 count:2)
         })
-        
-        (play 
+
+        (play
             (do (if (not "SameTurn") (roll))
                 next:(forEach Piece)
             )
         )
-        
+
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Todas Tablas is a race game from medieval Spain that is related to other European Tables games, and which most closely resembles modern Backgammon.")
@@ -137,12 +137,12 @@
         (origin  "This game was played in Spain, from around 1283 to 1674.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
         (stackType Backgammon)
     })
-    
+
 )
 

@@ -1,6 +1,6 @@
 (define "EastDoor" 38)
 
-(define "SiteToMoveOnSelectedTrack" 
+(define "SiteToMoveOnSelectedTrack"
     (if (= (state at:(from)) 1)
         (trackSite Move "TrackCW" steps:("ThrowValue"))
         (trackSite Move "TrackCCW"  steps:("ThrowValue"))
@@ -10,7 +10,7 @@
 (define "SiteToMoveOnTrackCW" (trackSite Move "TrackCW" steps:("ThrowValue")))
 (define "SiteToMoveOnTrackCCW" (trackSite Move "TrackCCW" steps:("ThrowValue")))
 
-(define "ThrowValue" 
+(define "ThrowValue"
     (if (= (count Pips) 3)
         5
         (if (= (count Pips) 0)
@@ -28,7 +28,7 @@
 
 (define "NextSite" (trackSite Move from:#1 #2 steps:1))
 
-(define "MadeACompleteCircuit" 
+(define "MadeACompleteCircuit"
     (if (= 1 (state at:(where "Stick" Mover)))
         (is In "EastDoor" (sites Track "TrackCW" from:("NextSite" (last From) "TrackCW") to:(last To)))
         (is In "EastDoor" (sites Track "TrackCCW" from:("NextSite" (last From) "TrackCCW") to:(last To)))
@@ -39,19 +39,19 @@
     (= (last To) "EastDoor")
 )
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (fromTo (from (to)) (to "EastDoor"))
-    ) 
+    )
 )
 
-(define "MoveOn" 
+(define "MoveOn"
     (if (!= #1 Off)
-        (move 
+        (move
             (from (from) level:(level))
-            (to 
-                #1 
+            (to
+                #1
                 if:<Variant:moveCondition>
                 <Variant:capture>
             )
@@ -67,7 +67,7 @@
     (equipment {
         (board
             (add
-                (remove 
+                (remove
                     (concentric {44})
                     vertices:{43 21 0 22}
                 )
@@ -92,13 +92,13 @@
         (dice d:2 from:0 num:3)
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             (place Stack items:<Player:init> Edge "EastDoor")
         })
         (play (do (roll) next:(forEach Piece)))
-        (end 
-            (if 
+        (end
+            (if
                 <Variant:goal>
                 (result Mover Win)
             )
@@ -110,56 +110,56 @@
 
 (option "Players" <Player> args:{ <num> <init>}
     {
-    (item "2" <2> <{"Stick2" "Stick1"}>  "The game has 2 players.")   
-    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}>  "The game has 3 players.")  
-    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 4 players.")*  
-    (item "5" <5> <{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 5 players.")  
-    (item "6" <6> <{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 6 players.")  
-    (item "7" <7> <{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>   "The game has 7 players.")  
-    (item "8" <8> <{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 8 players.")  
+    (item "2" <2> <{"Stick2" "Stick1"}>  "The game has 2 players.")
+    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}>  "The game has 3 players.")
+    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 4 players.")*
+    (item "5" <5> <{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 5 players.")
+    (item "6" <6> <{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 6 players.")
+    (item "7" <7> <{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>   "The game has 7 players.")
+    (item "8" <8> <{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 8 players.")
 })
 
 (option "Variant" <Variant> args:{ <capture> <moveCondition> <goal>}
     {
-    (item "PassEastDoor" 
-        <> 
-        <(is Empty #1)>  
+    (item "PassEastDoor"
+        <>
+        <(is Empty #1)>
         <(and (not (was Pass)) ("MadeACompleteCircuit"))>
         "The goal is to pass the east door."
-    )   
-    (item "ReachEastDoor" 
-        <"CaptureEnemyPiece"> 
-        <(or (is Enemy (who at:#1)) (is Empty #1))> 
+    )
+    (item "ReachEastDoor"
+        <"CaptureEnemyPiece">
+        <(or (is Enemy (who at:#1)) (is Empty #1))>
         <(and (not (was Pass)) ("ReachEastDoor"))>
-    "The goal is to reach the east door and capture is allowed.")  
+    "The goal is to reach the east door and capture is allowed.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Owasokotz Pass (Observed)" {
-        "Variant/PassEastDoor" "Players/4"   
+        "Variant/PassEastDoor" "Players/4"
         }
-        variations:{ "Players/2" "Players/3" "Players/5" 
+        variations:{ "Players/2" "Players/3" "Players/5"
         "Players/6" "Players/7" "Players/8"
         }
     )*
-    
+
     (ruleset "Ruleset/Owasokotz Enter (Observed)" {
-        "Variant/ReachEastDoor" "Players/4"  
+        "Variant/ReachEastDoor" "Players/4"
         }
-        variations:{ "Players/2" "Players/3" "Players/5" 
+        variations:{ "Players/2" "Players/3" "Players/5"
         "Players/6" "Players/7" "Players/8"
         }
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Owasokotz is a race game played by the Kawalka people of New Mexico. It can be played two ways, one which requires the player to pass the starting point, and another which requires the player to land exactly on the starting point, which also allows players to send each other back to start.")
@@ -175,7 +175,7 @@
         (origin  "This game was played in New Mexico, around 1907.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Marker" 0.5)
         (stackType 0 Ground)
@@ -184,6 +184,6 @@
         (board Background image:"disc" edgeColour:(colour Black) scale:0.1)
         (piece Colour "Die" state:1 fillColour:(colour Black))
     })
-    
+
 )
 

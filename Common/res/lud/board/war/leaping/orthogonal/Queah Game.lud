@@ -2,20 +2,20 @@
 
 (define "LessThanFourSticksOnBoard" (< (count Sites in:(sites Occupied by:Mover container:"Board")) 4) )
 
-(define "ReplaceStick" 
-    (move 
-        (from (handSite Mover)) 
-        (to (sites Empty)) 
+(define "ReplaceStick"
+    (move
+        (from (handSite Mover))
+        (to (sites Empty))
         (then (moveAgain))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Queah Game"  
+(game "Queah Game"
     (players 2)
     (equipment {
-        (board 
+        (board
             (rotate 45
                 (merge
                     (shift 1 -1 (rectangle 5 1))
@@ -34,16 +34,16 @@
         )
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             (place "Stick1" {"A1" "B2" "A3" "B4"})
             (place "Stick2" {"E5" "D4" "E3" "D2"})
             (place "Stick" "Hand" count:6)
         })
         (play
-            (if (and 
-                    ("HaveRemainingSticks") 
-                    ("LessThanFourSticksOnBoard") 
+            (if (and
+                    ("HaveRemainingSticks")
+                    ("LessThanFourSticksOnBoard")
                 )
                 ("ReplaceStick")
                 (forEach Piece)
@@ -59,7 +59,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "The Queah Game is a game from nineteenth century Liberia, the name of which has not been reported. It is typically played in a \"board\" of interwoven sticks, in which \"male\" and \"female\" sticks are placed as pieces.")
@@ -71,7 +71,7 @@
         (origin  "This game was played in Liberia, from around 1879 to 1882.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Stick" 0.7)
         (board Colour Phase0 (colour 223 178 110))

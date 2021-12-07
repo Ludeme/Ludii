@@ -6,10 +6,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pente Grammai"  
+(game "Pente Grammai"
     (players 2)
     (equipment {
-        (board 
+        (board
             (add
                 (scale 1.5
                     (merge {
@@ -18,7 +18,7 @@
                         (shift 1 0 (rectangle 2 1))
                         (shift 0.5 0 (rectangle 2 1))
                         (rectangle 2 1)
-                    }) 
+                    })
                 )
                 vertices:{{1.5 0.75}}
             )
@@ -33,19 +33,19 @@
         (dice d:6 num:1)
         (map "Goal" {(pair P1 5) (pair P2 4)})
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Marker1" (handSite P1) count:5)
             (place Stack "Marker2" (handSite P2) count:5)
         })
-        (play 
-            (do 
-                (roll) 
+        (play
+            (do
+                (roll)
                 next:(priority {
                     <Play:enterBoard>
                     (forEach Piece)
                     }
-                    (then 
+                    (then
                         (if (= (mapEntry "Goal" Mover) (last To))
                             (fromTo (from (last To)) (to "SacredLine") stack:True)
                         )
@@ -53,8 +53,8 @@
                 )
             )
         )
-        (end 
-            (if 
+        (end
+            (if
                 (= 0 (count Sites in:(difference (sites Occupied by:Mover) "SacredLine" )))
                 (result Mover Win)
             )
@@ -66,7 +66,7 @@
 
 (option "Play Rules" <Play> args:{ <enterBoard> <movePiece>}
     {
-    (item "No Capture" 
+    (item "No Capture"
         <
         (if (and (not ("HandEmpty" Mover)) (is Empty ("EnterToBoard")))
             (move (from (handSite Mover)) (to ("EnterToBoard")))
@@ -74,24 +74,24 @@
         >
         <
         (if (and (!= (from) "SacredLine") (is In "SiteToMoveOnTrack" (sites Empty)))
-            (move 
-                (from) 
+            (move
+                (from)
                 (to "SiteToMoveOnTrack")
             )
         )
         >
         "No capture."
-    )*   
-    (item "Capture"    
+    )*
+    (item "Capture"
         <
         (if (and (not ("HandEmpty" Mover)) (or (is Enemy (who at:"EnterToBoard")) (is Empty ("EnterToBoard"))))
-            (move 
-                (from (handSite Mover)) 
-                (to 
+            (move
+                (from (handSite Mover))
+                (to
                     ("EnterToBoard")
-                    (apply 
+                    (apply
                         if:(is Enemy (who at:"EnterToBoard"))
-                        (fromTo 
+                        (fromTo
                             (from ("EnterToBoard"))
                             (to (handSite Next))
                             stack:True
@@ -103,12 +103,12 @@
         >
         <
         (if (and (!= (from) "SacredLine") (or (is Enemy (who at:"SiteToMoveOnTrack")) (is In "SiteToMoveOnTrack" (sites Empty))))
-            (move 
-                (from) 
+            (move
+                (from)
                 (to "SiteToMoveOnTrack"
-                    (apply 
+                    (apply
                         if:(is Enemy (who at:"SiteToMoveOnTrack"))
-                        (fromTo 
+                        (fromTo
                             (from ("SiteToMoveOnTrack"))
                             (to (handSite Next))
                             stack:True
@@ -119,48 +119,48 @@
         )
         >
         "Captures are allowed."
-    ) 
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Schadler (Scholarly)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Locos Ludi Race (Scholarly)" {
         "Play Rules/No Capture"
     })**
-    
+
     (ruleset "Ruleset/Locus Ludi  Knock-Off Mode (Scholarly)" {
         "Play Rules/Capture"
     })
-    
+
     (ruleset "Ruleset/Schadler (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pente Grammai, or \"Five Lines,\" is a game known from Ancient Greek sources. Objects and graffiti have been found at Greek archaeological sites which come in the form of five parallel rows of lines, which have been identified as this game. Other versions appear that seem to have been doubled forms of the game. Other game boards in a 2x5 pattern that form square grids or rows of holes seem to be later versions of this game. ")
         (aliases {"Five Lines"})
         (useFor "Ruleset/Historical Information (Incomplete)" (rules "2x5 board. Five pieces per player. Pieces played on the end of the lines. Two dice. Central line marked. Pieces move from the \"sacred line\" to win. Moving from the sacred line can be bad.
-                
+
         "))
         (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP Evidence."))
-        (useFor "Ruleset/Schadler (Scholarly)" (rules "Board consists of five parallel lines. Each player has five pieces, one player’s pieces are placed at one end of each line, the other player on the opposite ends of the lines. Played using two cubic dice. Players move their pieces according to the roll of the dice. Pieces move in a counter-clockwise direction. The goal is to get all five pieces onto the “sacred line,” which is the central line. Perhaps they had to move several times around the board in order to land on the sacred line. 
+        (useFor "Ruleset/Schadler (Scholarly)" (rules "Board consists of five parallel lines. Each player has five pieces, one player’s pieces are placed at one end of each line, the other player on the opposite ends of the lines. Played using two cubic dice. Players move their pieces according to the roll of the dice. Pieces move in a counter-clockwise direction. The goal is to get all five pieces onto the “sacred line,” which is the central line. Perhaps they had to move several times around the board in order to land on the sacred line.
         "))
         (useFor "Ruleset/Schadler (Scholarly)" (source "Schädler 2009: 184-189."))
         (useFor "Ruleset/Locos Ludi Race (Scholarly)" (rules "Five pieces per player. One six-sided die. Players move their pieces onto the board using the throws of the dice. A piece must be brought onto the board if it is possible. Pieces move in an anti-clockwise direction around the board. Only one piece may be placed on a point at a time, except for the central line, which is the \"sacred line.\" The first person to collect all of their pieces on the sacred line by reaching it on the opponent's side of the board by an exact throw wins."))
@@ -173,11 +173,11 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Scale "Marker" 0.3)
         (stackType Default 0.2)
-        
+
     })
-    
+
 )

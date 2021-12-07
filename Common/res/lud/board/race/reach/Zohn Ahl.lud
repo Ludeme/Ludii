@@ -1,20 +1,20 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 (define "ReplayThrow"
-    (or 
+    (or
         (= ("ThrowValue") 5)
         (= ("ThrowValue") 10)
     )
 )
 
-(define "HandTeam" 
+(define "HandTeam"
     (if (or (is Mover P1) (is Mover P2))
         1
         3
     )
 )
 
-(define "HandOpponent" 
+(define "HandOpponent"
     (if (or (is Mover P1) (is Mover P2))
         3
         1
@@ -23,7 +23,7 @@
 
 (define "Move"
     (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
-        (move 
+        (move
             (from (from))
             (to (mapEntry "Start" Mover))
             (then
@@ -33,7 +33,7 @@
                 )
             )
         )
-        (move 
+        (move
             (from (from))
             (to
                 ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
@@ -68,7 +68,7 @@
                 )
             )
         )
-    )		
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -77,11 +77,11 @@
     (players 4)
     (equipment {
         (board
-            (graph 
+            (graph
                 vertices:{
-                {0 0} {1 0.4} {2 0.4} {3 0.4} {4 0} {5 0} {6 0.4} {7 0.4} {8 0.4} {9 0} {4 1} {5 1} 
+                {0 0} {1 0.4} {2 0.4} {3 0.4} {4 0} {5 0} {6 0.4} {7 0.4} {8 0.4} {9 0} {4 1} {5 1}
                 {-6 3} {-5.6 4} {-5.6 5} {-5.6 6} {-6 7} {-6 8} {-5 7} {-5 8} {-5.6 9} {-5.6 10} {-5.6 11} {-6 12}
-                {0 15} {1 14.6} {2 14.6} {3 14.6} {4 15} {5 15} {6 14.6} {7 14.6} {8 14.6} {9 15} {4 14} {5 14} 
+                {0 15} {1 14.6} {2 14.6} {3 14.6} {4 15} {5 15} {6 14.6} {7 14.6} {8 14.6} {9 15} {4 14} {5 14}
                 {15 3} {14.6 4} {14.6 5} {14.6 6} {15 7} {15 8} {14 7} {14 8} {14.6 9} {14.6 10} {14.6 11} {15 12}
                 }
                 edges:{
@@ -108,7 +108,7 @@
         (map "Opposite" {(pair P1 29) (pair P2 29) (pair P3 28) (pair P4 28)})
         (map "Start" {(pair P1 5) (pair P2 5) (pair P3 4) (pair P4 4)})
     })
-    (rules 
+    (rules
         (start {
             (set Team 1 {P1 P2})
             (set Team 2 {P3 P4})
@@ -117,8 +117,8 @@
             (place "Stick0" (handSite P1) count:<Scoring:num>)
             (place "Stick0" (handSite P3) count:<Scoring:num>)
         })
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(if (or (is Mover P1) (is Mover P2))
                     (forEach Piece P1)
                     (forEach Piece P3)
@@ -137,26 +137,26 @@
 //------------------------------------------------------------------------------
 
 (option "Start" <Scoring> args:{ <num> } {
-    (item "2"   <2>  "Each team has 2 scoring sticks.") 
-    (item "3"   <3>  "Each team has 3 scoring sticks.") 
-    (item "4"   <4>  "Each team has 4 scoring sticks.") 
-    (item "5"   <5>  "Each team has 5 scoring sticks.") 
-    (item "6"   <6>  "Each team has 6 scoring sticks.") 
-    (item "7"   <7>  "Each team has 7 scoring sticks.") 
-    (item "8"   <8>  "Each team has 8 scoring sticks.") 
-    (item "9"   <9>  "Each team has 9 scoring sticks.") 
-    (item "10"  <10> "Each team has 10 scoring sticks.")* 
-    (item "11"  <11> "Each team has 11 scoring sticks.") 
-    (item "12"  <12> "Each team has 12 scoring sticks.") 
-    (item "13"  <13> "Each team has 13 scoring sticks.") 
-    (item "14"  <14> "Each team has 14 scoring sticks.") 
-    (item "15"  <15> "Each team has 15 scoring sticks.") 
+    (item "2"   <2>  "Each team has 2 scoring sticks.")
+    (item "3"   <3>  "Each team has 3 scoring sticks.")
+    (item "4"   <4>  "Each team has 4 scoring sticks.")
+    (item "5"   <5>  "Each team has 5 scoring sticks.")
+    (item "6"   <6>  "Each team has 6 scoring sticks.")
+    (item "7"   <7>  "Each team has 7 scoring sticks.")
+    (item "8"   <8>  "Each team has 8 scoring sticks.")
+    (item "9"   <9>  "Each team has 9 scoring sticks.")
+    (item "10"  <10> "Each team has 10 scoring sticks.")*
+    (item "11"  <11> "Each team has 11 scoring sticks.")
+    (item "12"  <12> "Each team has 12 scoring sticks.")
+    (item "13"  <13> "Each team has 13 scoring sticks.")
+    (item "14"  <14> "Each team has 14 scoring sticks.")
+    (item "15"  <15> "Each team has 15 scoring sticks.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Zohn Ahl (Observed)" {
         "Start/10"
         }
@@ -165,13 +165,13 @@
         "Start/13" "Start/14" "Start/15"
         }
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Zohn Ahl is a race game played by the Kiowa people of Oklahoma during the nineteenth century. It was typically played on a cloth with the board drawn on it. Players race around the circuit of the board, trying to \"whip\" their opponents back to start, and avoid falling into the \"creek.\" It is only played by women and girls.")
@@ -184,7 +184,7 @@
         (origin  "This game was played in Great Plains, around 1898.")
         }
     )
-    
+
     (graphics {
         (board Background image:"disc" edgeColour:(colour Black) scale:0.07)
         (show Line {{9 36}} curve:{0 0 -2.5 0})
@@ -192,6 +192,6 @@
         (show Line {{24 23}} curve:{0 0 2.5 0})
         (show Line {{12 0}} curve:{2.5 0 0 0})
     })
-    
+
 )
 

@@ -1,14 +1,14 @@
-(define "Surrounded" 
+(define "Surrounded"
     (or
         (if (and (!= (ahead (from) N) (from)) (!= (ahead (from) S) (from)))
             (and
-                (= (next) (who at:(ahead (from) N))) 
+                (= (next) (who at:(ahead (from) N)))
                 (= (next) (who at:(ahead (from) S)))
             )
         )
         (if (and (!= (ahead (from) E) (from)) (!= (ahead (from) W) (from)))
             (and
-                (= (next) (who at:(ahead (from) E))) 
+                (= (next) (who at:(ahead (from) E)))
                 (= (next) (who at:(ahead (from) W)))
             )
         )
@@ -19,47 +19,47 @@
 
 (game "Triodi (Chios)"
     (players 2)
-    
-    (equipment 
-        { 
-        (board (square 3) use:Vertex) 
+
+    (equipment
+        {
+        (board (square 3) use:Vertex)
         (hand Each)
-        (piece "Marker" Each 
-            (if 
+        (piece "Marker" Each
+            (if
                 (not ("Surrounded"))
                 (move
-                    Step 
-                    (to if:(is Empty (to))) 
+                    Step
+                    (to if:(is Empty (to)))
                 )
             )
-        ) 
+        )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
-                )  
-            ) 
+                (move
+                    (from (handSite Mover))
+                    (to (sites Empty))
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        
+
         (phase "Movement" (play (forEach Piece) ))
         }
-        
+
         (end (if (is Line 3) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Triodi is a name for alignment games in Greece. This game is played by children on the island of Chios.")
@@ -71,12 +71,12 @@
         (origin  "This game was played in Greece, around 1949.")
         }
     )
-    
+
     (graphics {
-        
+
         (show Edges Diagonal Hidden)
     })
-    
+
     (ai
         "Triodi (Chios)_ai"
     )

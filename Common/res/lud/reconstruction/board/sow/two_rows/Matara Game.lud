@@ -1,17 +1,17 @@
-(game "Matara Game"  
-    (players 2)  
-    
-    (equipment { 
+(game "Matara Game"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 8
             (track "Track" "1,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (play (forEach Piece))
-        
+
         (end
             (if  (no Moves Next)
                 (result Mover Win)
@@ -22,7 +22,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "This game appears to be a two-row mancala-style board which was found on the steps of a building at the Axumite site of Matara in Eritrea.")
@@ -33,7 +33,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

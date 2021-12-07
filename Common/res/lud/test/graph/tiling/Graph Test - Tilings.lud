@@ -1,10 +1,10 @@
-(game "Graph Test - Tilings"  
-    (players 2)  
-    (equipment { 
-        (board <Board>) 
-        (piece "Marker") 
-    })  
-    (rules 
+(game "Graph Test - Tilings"
+    (players 2)
+    (equipment {
+        (board <Board>)
+        (piece "Marker")
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 8) (result Mover Win)))
     )
@@ -14,25 +14,25 @@
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item  "S"   <(square 4)>    "")  
-    (item  "H"   <(hex 4)>    "")  
-    (item  "T"   <(tri 4)>    "")  
-    
-    (item  "488"    <(tiling T488 2)>    "")  
-    (item  "4612"   <(tiling T4612 2)>    "")  
-    (item  "3464"   <(tiling T3464 2)>    "")  
-    (item  "3636"   <(tiling T3636 2)>    "")  
-    (item  "31212"  <(tiling T31212 2)>    "")  
-    (item  "33336"  <(tiling T33336 2)>    "")  
-    (item  "33344"  <(tiling T33344 2)>    "")  
-    (item  "33434"  <(tiling T33434 2)>    "")  
+    (item  "S"   <(square 4)>    "")
+    (item  "H"   <(hex 4)>    "")
+    (item  "T"   <(tri 4)>    "")
+
+    (item  "488"    <(tiling T488 2)>    "")
+    (item  "4612"   <(tiling T4612 2)>    "")
+    (item  "3464"   <(tiling T3464 2)>    "")
+    (item  "3636"   <(tiling T3636 2)>    "")
+    (item  "31212"  <(tiling T31212 2)>    "")
+    (item  "33336"  <(tiling T33336 2)>    "")
+    (item  "33344"  <(tiling T33344 2)>    "")
+    (item  "33434"  <(tiling T33434 2)>    "")
     }
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")
@@ -45,7 +45,7 @@
         (origin  "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
-    
+
     (graphics {
         //(board Checkered)
         //(board Colour Phase0 (colour 100 200 255))
@@ -57,5 +57,5 @@
         (board StyleThickness OuterEdges 2)
         (board StyleThickness InnerEdges 2)
     })
-    
+
 )

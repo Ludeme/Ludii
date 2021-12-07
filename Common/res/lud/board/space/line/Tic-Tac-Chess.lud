@@ -1,10 +1,10 @@
-(define "FromHand" 
-    (from (sites Occupied by:Mover container:(mover))) 
+(define "FromHand"
+    (from (sites Occupied by:Mover container:(mover)))
 )
 
-(define "HopOpponent" 
+(define "HopOpponent"
     (move
-        Hop 
+        Hop
         (between if:(is Enemy (who at:(between))))
         (to if:(is Empty (to)))
     )
@@ -12,41 +12,41 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tic-Tac-Chess"  
-    (players 2)  
-    (equipment { 
-        (board (square 3)) 
+(game "Tic-Tac-Chess"
+    (players 2)
+    (equipment {
+        (board (square 3))
         (hand Each size:3)
         (piece "Queen" Each (or ("HopOpponent") (move Slide All)))
         (piece "King"  Each (or ("HopOpponent") ("StepToEmpty")))
         (piece "Rook"  Each (or ("HopOpponent") (move Slide Orthogonal)))
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Queen" "Hand")
             (place "King"  "Hand")
             (place "Rook"  "Hand")
         })
-        
+
         phases:{
         (phase "Placement"
             (play (move ("FromHand") (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
         }
-        
+
         (end (if (is Line 3 Mover) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (rules "Players take turns placing a piece of theirs at an empty cell. When all pieces have been placed, players take turns moving one of their pieces. The pieces move like the equivalent Chess pieces but do not capture. Any piece can hop over an adjacent enemy piece to an empty cell beyond (without capturing it). First to make a line of 3 of their pieces, at any time, wins the game.")

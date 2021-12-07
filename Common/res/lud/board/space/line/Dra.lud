@@ -1,20 +1,20 @@
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
+(define "IfLine3MoveAgain"
+    (then
+        (if
+            (is Line 3 Orthogonal exact:True)
             (moveAgain)
         )
     )
 )
 
-(define "NoLine3" 
+(define "NoLine3"
     (not (is Line 3 Orthogonal))
 )
 
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (move
         Remove
-        (sites Occupied by:Next container:"Board") 
+        (sites Occupied by:Next container:"Board")
     )
 )
 
@@ -22,48 +22,48 @@
 
 (game "Dra"
     (players 2)
-    
-    (equipment 
-        { 
+
+    (equipment
+        {
         (board (rectangle 5 6))
         (hand Each)
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (move
-                Step 
-                Orthogonal 
-                (to 
-                    if:(is Empty (to)) 
-                ) 
+                Step
+                Orthogonal
+                (to
+                    if:(is Empty (to))
+                )
                 "IfLine3MoveAgain"
             )
         )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:12))
-        
+
         phases:{
         (phase "Placement"
-            (play 
+            (play
                 (do
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Empty))
                     )
                     ifAfterwards:"NoLine3"
                 )
             )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
-            (play         
+            (play
                 (if "SameTurn"
-                    "RemoveEnemyPiece" 
-                    (forEach Piece) 
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
                 )
             )
-            
+
             (end (if (= (count Pieces Next) 2) (result Mover Win)))
         )
         }
@@ -72,8 +72,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dra is a game popular in West Africa, particularly in the areas of the Sahel and across several groups including the Touareg, Hausa, Bambara, Bozo, Sourai, and Fula. Typically, one player plays with twelve sticks, the other with twelve stones.")
@@ -86,15 +86,15 @@
         (origin  "This game was played in West Africa, around 1939.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
-    (ai 
+
+    (ai
         "Dra_ai"
     )
-    
+
 )

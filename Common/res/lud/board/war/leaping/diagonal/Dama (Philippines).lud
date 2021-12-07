@@ -1,45 +1,45 @@
-(define "HopDisc" 
+(define "HopDisc"
     (move
-        Hop 
-        (from #1) 
-        (directions {FR FL})  
-        (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-(define "HopDiscDouble" 
-    (move Hop
+        Hop
         (from #1)
-        #2
-        (between 
-            before:(count Rows) 
-            after:(count Rows)
-            if:(is Enemy (who at:(between))) 
+        (directions {FR FL})
+        (between
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
+        #2
+    )
+)
+
+(define "HopDiscDouble"
+    (move Hop
+        (from #1)
+        #2
+        (between
+            before:(count Rows)
+            after:(count Rows)
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then
+            (if (can Move
+                    (hop
+                        (from (last To))
                         SameDirection
-                        (between 
-                            before:(count Rows) 
+                        (between
+                            before:(count Rows)
                             after:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
+                            if:(and
+                                (not (is In (between) (sites ToClear)))
                                 (is Enemy (who at:(between)))
                             )
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
                     )
-                ) 
+                )
                 (moveAgain)
             )
         )
@@ -52,10 +52,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dama (Philippines)" 
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Dama (Philippines)"
+    (players 2)
+    (equipment {
+        (board
             (rotate 45
                 (merge {
                     (rectangle 5 4)
@@ -65,35 +65,35 @@
                 })
             )
             use:Vertex
-        ) 
+        )
         (piece "Disc" P1 N)
-        (piece "Disc" P2 S) 
+        (piece "Disc" P2 S)
         (piece "DiscDouble" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Disc1" (expand (sites Bottom) steps:2))
             (place "Disc2" (expand (sites Top) steps:2))
             }
         )
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (or
                     (if "IsUnpromoted"
                         ("HopDisc" (last To)
-                            (then 
-                                (if (can Move ("HopDisc" (last To))) 
+                            (then
+                                (if (can Move ("HopDisc" (last To)))
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DiscDouble") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                         ("HopDiscDouble" (last To) SameDirection)
                     )
@@ -101,25 +101,25 @@
                 )
                 (or {
                     (forEach Piece "Disc"
-                        ("HopDisc" (from) 
-                            (then 
-                                (if (can Move ("HopDisc" (last To))) 
-                                    (moveAgain) 
-                                    (if "JumpToPromotionZone" 
+                        ("HopDisc" (from)
+                            (then
+                                (if (can Move ("HopDisc" (last To)))
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DiscDouble") Mover)
                                     )
-                                ) 
-                            ) 
-                        ) 
+                                )
+                            )
+                        )
                     )
                     (forEach Piece "DiscDouble" ("HopDiscDouble"))
-                    (forEach Piece "Disc" 
+                    (forEach Piece "Disc"
                         (move
-                            Step 
-                            (directions {FR FL}) 
+                            Step
+                            (directions {FR FL})
                             (to if:(is Empty (to)))
                         )
-                        (then 
+                        (then
                             (if "JumpToPromotionZone"
                                 (move Promote (last To) (piece "DiscDouble") Mover)
                             )
@@ -128,16 +128,16 @@
                     (forEach Piece "DiscDouble" (move Slide))
                 })
             )
-        ) 
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+        )
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dama is a game with leaping captures played in the Philippines. In it, a kinged piece may capture by the flying leap in one direction. ")
@@ -150,12 +150,12 @@
         (origin  "This game was played in Philippines, around 1892.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Dama (Philippines)_ai"
     )

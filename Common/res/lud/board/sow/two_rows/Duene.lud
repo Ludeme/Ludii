@@ -5,8 +5,8 @@
 //------------------------------------------------------------------------------
 
 (game "Duene"
-    (players 2)  
-    (equipment { 
+    (players 2)
+    (equipment {
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
@@ -14,34 +14,34 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (start (set Count 4 to:(sites Track)))
         phases:{
         (phase "Playing"
-            (play 
+            (play
                 (move
-                    Select 
-                    (from 
-                        (if 
-                            (is Mover Prev) 
-                            ("PlayFromLastHole") 
-                            (sites Mover) 
-                        )  
+                    Select
+                    (from
+                        (if
+                            (is Mover Prev)
+                            ("PlayFromLastHole")
+                            (sites Mover)
+                        )
                         if:(< 0 (count at:(from)))
                     )
-                    (then 
+                    (then
                         (do
                             (and
                                 (set Var "From" (last From))
-                                (sow  
+                                (sow
                                     apply:(and
                                         (set Var "To" (to))
                                         (if (= (count at:(to)) 4)
-                                            (fromTo 
-                                                (from (to)) 
-                                                (to (mapEntry (mover))) 
+                                            (fromTo
+                                                (from (to))
+                                                (to (mapEntry (mover)))
                                                 count:(count at:(to))
                                             )
                                             (if (> (count at:(to)) 1)
@@ -49,7 +49,7 @@
                                             )
                                         )
                                     )
-                                    
+
                                     backtracking:(= (count at:(to)) 4)
                                 )
                             )
@@ -62,7 +62,7 @@
                                     )
                                     (fromTo
                                         (from (site))
-                                        (to (mapEntry P1)) 
+                                        (to (mapEntry P1))
                                         count:(count at:(site))
                                     )
                                 )
@@ -73,7 +73,7 @@
                                     )
                                     (fromTo
                                         (from (site))
-                                        (to (mapEntry P2)) 
+                                        (to (mapEntry P2))
                                         count:(count at:(site))
                                     )
                                 )
@@ -85,26 +85,26 @@
             (nextPhase (<= (count in:(sites Track)) 8) "EndGame")
         )
         (phase "EndGame"
-            (play 
+            (play
                 (move
-                    Select 
-                    (from 
-                        (if 
-                            (is Mover Prev) 
-                            ("PlayFromLastHole") 
-                            (sites Mover) 
-                        )  
+                    Select
+                    (from
+                        (if
+                            (is Mover Prev)
+                            ("PlayFromLastHole")
+                            (sites Mover)
+                        )
                         if:(< 0 (count at:(from)))
                     )
-                    (then 
-                        (sow  
+                    (then
+                        (sow
                             apply:(if (= (count at:(to)) 4)
-                                (forEach Site 
+                                (forEach Site
                                     (sites Track)
                                     (if (< 0 (count at:(site)))
-                                        (fromTo 
-                                            (from (site)) 
-                                            (to (mapEntry (mover))) 
+                                        (fromTo
+                                            (from (site))
+                                            (to (mapEntry (mover)))
                                             count:(count at:(site))
                                         )
                                     )
@@ -113,7 +113,7 @@
                                     (moveAgain)
                                 )
                             )
-                            
+
                         )
                     )
                 )
@@ -123,17 +123,17 @@
         (end
             (if (= (count in:(sites Track)) 0)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Duene is  two-row mancala-style board game played by the Ewe people in what is now togo and Ghana.")
@@ -145,11 +145,11 @@
         (origin  "This game was played in West Africa, from around 1908 to 1909.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
     (ai
         "Duene_ai"
     )

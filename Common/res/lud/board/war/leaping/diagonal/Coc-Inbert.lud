@@ -1,15 +1,15 @@
-(define "HopMan" 
+(define "HopMan"
     (move
-        Hop 
-        (from #1) 
-        (directions {FR FL}) 
-        (between 
+        Hop
+        (from #1)
+        (directions {FR FL})
+        (between
             if:(and (is Enemy (who at:(between))) (!= (what at:(last To)) (id "DoubleCounter" Next)))
             (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -18,36 +18,36 @@
 
 //------------------------------------------------------------------------------
 
-(game "Coc-Inbert" 
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
+(game "Coc-Inbert"
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
-                    (max Moves 
-                        ("HopMan" (last To) 
-                            (then 
-                                (if "JumpToPromotionZone" 
+                    (max Moves
+                        ("HopMan" (last To)
+                            (then
+                                (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    (if (can Move ("HopMan" (last To))) (moveAgain) ) 
-                                ) 
-                            ) 
+                                    (if (can Move ("HopMan" (last To))) (moveAgain) )
+                                )
+                            )
                         )
                     )
                     (max Moves ("HopDiagonalSequenceCaptureAgain"))
@@ -56,26 +56,26 @@
                     (max Moves
                         (priority {
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture") )
-                            (forEach Piece "Counter" 
-                                ("HopMan" (from) 
-                                    (then 
+                            (forEach Piece "Counter"
+                                ("HopMan" (from)
+                                    (then
                                         (if "JumpToPromotionZone"
-                                            (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                            (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
-                                        ) 
-                                    ) 
-                                ) 
+                                            (move Promote (last To) (piece "DoubleCounter") Mover)
+                                            (if (can Move ("HopMan" (last To)) ) (moveAgain) )
+                                        )
+                                    )
+                                )
                             )
                         })
                     )
-                    (or  
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions {FR FL}) 
+                                Step
+                                (directions {FR FL})
                                 (to if:(is Empty (to)))
-                            ) 
-                            (then 
+                            )
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -85,19 +85,19 @@
                     )
                 })
             )
-        ) 
-        
+        )
+
         (end {
             (if (no Pieces P1) (result P1 Win))
             (if (no Pieces P2) (result P2 Win))
-        }) 
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Coc-Inbert is a Draughts game from early modern France. In it, the goal is reversed: The player who wins is the one who successfully forces the opponent to take all of the player's pieces.")
@@ -109,12 +109,12 @@
         (origin  "This game was played in France, around 1668.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "Coc-Inbert_ai"
     )

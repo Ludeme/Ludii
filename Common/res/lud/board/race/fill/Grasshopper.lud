@@ -2,30 +2,30 @@
 
 (define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
 
-(define "EmptyAndNotVisited"     							  
-    (and 
-        (is Empty (to)) 
-        (not (is Visited (to))) 
-    ) 
+(define "EmptyAndNotVisited"
+    (and
+        (is Empty (to))
+        (not (is Visited (to)))
+    )
 )
 
-(define "Hop" 
+(define "Hop"
     (move
         Hop
         (from #1)
         (between if:(not (is Empty (between))))
-        (to 
+        (to
             if:(and
                 "EmptyAndNotVisited"
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
-                    ("ToIsOnTheRegionToFill" (to)) 
+                    ("ToIsOnTheRegionToFill" (to))
                 )
             )
         )
-        #2		
+        #2
     )
-) 
+)
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
 
@@ -33,54 +33,54 @@
 
 //------------------------------------------------------------------------------
 
-(game "Grasshopper"  
-    (players 2)  
-    (equipment { 
-        (board <Board:size>) 
+(game "Grasshopper"
+    (players 2)
+    (equipment {
+        (board <Board:size>)
         (piece "Counter" Each)
         <Board:home>
         (map {(pair P1 P2) (pair P2 P1)})
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (sites P1))
             (place "Counter2" (sites P2))
             }
         )
-        
+
         phases:{
-        (phase "Movement"  (play 
-                (forEach Piece (or 
-                        ("HopSequence" (from)) 
-                        (move 
-                            Step 
-                            (to 
+        (phase "Movement"  (play
+                (forEach Piece (or
+                        ("HopSequence" (from))
+                        (move
+                            Step
+                            (to
                                 if:(and
                                     (is Empty (to))
                                     (or
                                         (not (is In (from) (sites Next)))
-                                        (is In (to) (sites Next)) 
+                                        (is In (to) (sites Next))
                                     )
                                 )
                             )
                         )
                     )
                 )
-            ) 
+            )
             (nextPhase (is Mover (next)) "MultiJump")
-        ) 
-        (phase "MultiJump" (play 
-                (or 
-                    ("HopSequence" (last To)) 
+        )
+        (phase "MultiJump" (play
+                (or
+                    ("HopSequence" (last To))
                     (move Pass)
                 )
-            ) 
+            )
             (nextPhase (not (is Mover (next))) "Movement")
-        ) 
+        )
         }
-        
+
         (end (if "RegionFilled" (result Mover Win) ) )
     )
 )
@@ -89,28 +89,28 @@
 
 (option "Board Size" <Board> args:{ <size> <home> }
     {
-    (item "8x8" 
+    (item "8x8"
         <(square 8)>
-        <  
+        <
         (regions "Home" P1 (expand origin:(coord "A1") steps:3 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "H8") steps:3 Orthogonal))
         >
         "The game is played on a board 8x8."
-    )*   
-    (item "10x10"    
+    )*
+    (item "10x10"
         <(square 10)>
-        <  
+        <
         (regions "Home" P1 (expand origin:(coord "A1") steps:4 Orthogonal))
         (regions "Home" P2 (expand origin:(coord "J10") steps:4 Orthogonal))
         >
         "The game is played on a board 10x10."
-    ) 
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Grasshopper is a Halma variant played with a draughts set and published in 1948.")
@@ -121,9 +121,9 @@
         (credit "Eric Piette")
         }
     )
-    
-    (ai 
+
+    (ai
         "Grasshopper_ai"
     )
-    
+
 )

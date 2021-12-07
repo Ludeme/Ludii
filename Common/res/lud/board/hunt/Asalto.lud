@@ -1,7 +1,7 @@
-(define "RememberSiteWithPossibleCapture"  
+(define "RememberSiteWithPossibleCapture"
     (forEach Site
         (sites From
-            (forEach Piece "Marker" 
+            (forEach Piece "Marker"
                 ("HopCapture")
             )
         )
@@ -11,33 +11,33 @@
 
 //------------------------------------------------------------------------------
 
-(game "Asalto"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge 
+(game "Asalto"
+    (players 2)
+    (equipment {
+        (board
+            (merge
                 (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
+                (shift 2 0 (rectangle 7 3 diagonals:Alternating) )
             )
             use:Vertex
         )
         (piece "Marker" P1 (or ("HopCapture") "StepToEmpty" ) )
-        (piece "Marker" P2 "StepToEmpty") 
-    })  
-    (rules 
+        (piece "Marker" P2 "StepToEmpty")
+    })
+    (rules
         (start {
             (place "Marker1" (sites {"C6" "E6"}))
             (place "Marker2" (union (expand (union (sites Right) (sites Left))) (expand (sites Bottom) steps:3)))
         })
-        
+
         (play
             (if (is Mover P1)
                 (do
-                    ("RememberSiteWithPossibleCapture") 
+                    ("RememberSiteWithPossibleCapture")
                     next:(forEach Piece)
-                    (then 
+                    (then
                         (and
-                            (if (!= 0 (count Sites in:(sites (values Remembered "From")))) 
+                            (if (!= 0 (count Sites in:(sites (values Remembered "From"))))
                                 (if (= 1 (count Steps (last From) (last To)))
                                     (and
                                         (forEach Site (sites (values Remembered "From"))
@@ -56,24 +56,24 @@
                 (forEach Piece)
             )
         )
-        
+
         (end {
             (if (no Pieces P2) (result P1 Win))
             (if
                 (or
                     (or (no Pieces P1) (no Moves P1))
-                    (= 0 (count Sites in:(difference (expand (sites Top) steps:2) (sites Occupied by:P2)))) 
+                    (= 0 (count Sites in:(difference (expand (sites Top) steps:2) (sites Occupied by:P2))))
                 )
                 (result P2 Win)
             )
-        }) 
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Asalto is a hunt game known from early modern Europe.")
@@ -86,12 +86,12 @@
         (origin  "This game was played in Europe, around 1891.")
         }
     )
-    
+
     (graphics {
-        
+
         (region Colour Edge {70 71 65 66 67 68 69 63 64 58 59 60 61 62 40 41} regionSiteType:Edge (colour Red))
     })
-    
+
     (ai
         "Asalto_ai"
     )

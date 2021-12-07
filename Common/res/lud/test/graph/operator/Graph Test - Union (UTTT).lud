@@ -1,15 +1,15 @@
-(game "Graph Test - Union (UTTT)"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Graph Test - Union (UTTT)"
+    (players 2)
+    (equipment {
+        (board
             (union (square 9) (scale 3 (square 3)))
             use:Cell
-        ) 
-        (piece "Disc"       P1) 
-        (piece "DiscLarge"  P1) 
-        (piece "Cross"      P2) 
-        (piece "CrossLarge" P2) 
-        
+        )
+        (piece "Disc"       P1)
+        (piece "DiscLarge"  P1)
+        (piece "Cross"      P2)
+        (piece "CrossLarge" P2)
+
         (regions "SubGames"  (sites { 0..80}))
         (regions "SubGame0"  (sites { 0..2   9..11 18..20}))
         (regions "SubGame1"  (sites { 3..5  12..14 21..23}))
@@ -25,90 +25,90 @@
             "SubToSuper"
             {0..80}
             {
-            81 81 81 82 82 82 83 83 83  
-            81 81 81 82 82 82 83 83 83  
-            81 81 81 82 82 82 83 83 83  
-            84 84 84 85 85 85 86 86 86  
-            84 84 84 85 85 85 86 86 86  
-            84 84 84 85 85 85 86 86 86  
-            87 87 87 88 88 88 89 89 89  
-            87 87 87 88 88 88 89 89 89  
-            87 87 87 88 88 88 89 89 89  
-            } 
+            81 81 81 82 82 82 83 83 83
+            81 81 81 82 82 82 83 83 83
+            81 81 81 82 82 82 83 83 83
+            84 84 84 85 85 85 86 86 86
+            84 84 84 85 85 85 86 86 86
+            84 84 84 85 85 85 86 86 86
+            87 87 87 88 88 88 89 89 89
+            87 87 87 88 88 88 89 89 89
+            87 87 87 88 88 88 89 89 89
+            }
         )
         (map
             "SubToSub"
             {0..80}
             {
-            0 1 2 0 1 2 0 1 2 
+            0 1 2 0 1 2 0 1 2
             3 4 5 3 4 5 3 4 5
-            6 7 8 6 7 8 6 7 8 
-            0 1 2 0 1 2 0 1 2 
+            6 7 8 6 7 8 6 7 8
+            0 1 2 0 1 2 0 1 2
             3 4 5 3 4 5 3 4 5
-            6 7 8 6 7 8 6 7 8 
-            0 1 2 0 1 2 0 1 2 
+            6 7 8 6 7 8 6 7 8
+            0 1 2 0 1 2 0 1 2
             3 4 5 3 4 5 3 4 5
-            6 7 8 6 7 8 6 7 8 
-            } 
+            6 7 8 6 7 8 6 7 8
+            }
         )
         }
-    )  
-    (rules 
-        (play 
+    )
+    (rules
+        (play
             (priority
                 {
-                // Move at any empty cell in the designated subgame 
+                // Move at any empty cell in the designated subgame
                 // whose supergame is undecided
                 (move
                     Add
                     (what (if (= (mover) P1) (id "Disc" P1) (id "Cross" P2)))
-                    (to 
-                        (if (= 0 (mapEntry "SubToSub" (last To))) 
+                    (to
+                        (if (= 0 (mapEntry "SubToSub" (last To)))
                             (sites "SubGame0")
-                            (if (= 1 (mapEntry "SubToSub" (last To))) 
+                            (if (= 1 (mapEntry "SubToSub" (last To)))
                                 (sites "SubGame1")
-                                (if (= 2 (mapEntry "SubToSub" (last To))) 
+                                (if (= 2 (mapEntry "SubToSub" (last To)))
                                     (sites "SubGame2")
-                                    (if (= 3 (mapEntry "SubToSub" (last To))) 
+                                    (if (= 3 (mapEntry "SubToSub" (last To)))
                                         (sites "SubGame3")
-                                        (if (= 4 (mapEntry "SubToSub" (last To))) 
+                                        (if (= 4 (mapEntry "SubToSub" (last To)))
                                             (sites "SubGame4")
-                                            (if (= 5 (mapEntry "SubToSub" (last To))) 
+                                            (if (= 5 (mapEntry "SubToSub" (last To)))
                                                 (sites "SubGame5")
-                                                (if (= 6 (mapEntry "SubToSub" (last To))) 
+                                                (if (= 6 (mapEntry "SubToSub" (last To)))
                                                     (sites "SubGame6")
-                                                    (if (= 7 (mapEntry "SubToSub" (last To))) 
+                                                    (if (= 7 (mapEntry "SubToSub" (last To)))
                                                         (sites "SubGame7")
-                                                        (if (= 8 (mapEntry "SubToSub" (last To))) 
+                                                        (if (= 8 (mapEntry "SubToSub" (last To)))
                                                             (sites "SubGame8")
-                                                        ) 
-                                                    ) 
-                                                ) 
-                                            ) 
-                                        ) 
-                                    ) 
-                                ) 
-                            ) 
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                         )
-                        if:(and 
-                            (is Empty (to)) 
+                        if:(and
+                            (is Empty (to))
                             (is Empty (mapEntry "SubToSuper" (to)))
                         )
                     )
                 )
-                
+
                 // Move at any empty cell whose supergame is undecided
-                (move Add 
+                (move Add
                     (what (if (= (mover) P1) (id "Disc1") (id "Cross2")))
-                    (to 
+                    (to
                         (intersection (sites "SubGames") (sites Empty))
                         if:(and (is Empty (to)) (is Empty (mapEntry "SubToSuper" (to))))
                     )
                 )
                 }
-                (then 
-                    (if (is Line 3)  // add a piece in the supergame                                    
-                        (add 
+                (then
+                    (if (is Line 3)  // add a piece in the supergame
+                        (add
                             (what (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")) )
                             (to (mapEntry "SubToSuper" (last To)))
                         )
@@ -116,9 +116,9 @@
                 )
             )
         )
-        (end 
-            (if 
-                (is Line 3 throughAny:(sites "SuperGame") Mover) 
+        (end
+            (if
+                (is Line 3 throughAny:(sites "SuperGame") Mover)
                 (result Mover Win)
             )
         )
@@ -127,7 +127,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata    
+(metadata
     (info
         {
         (description "Ultimate Tic-Tac-Toe is a board game composed of nine Tic-Tac-Toe boards arranged in a 3x3 grid.")
@@ -139,7 +139,7 @@
         (credit "Cameron Browne 16/5/2020")
         }
     )
-    (graphics 
+    (graphics
         {
         (board Style UltimateTicTacToe)
         (piece Scale "Disc"       0.8)

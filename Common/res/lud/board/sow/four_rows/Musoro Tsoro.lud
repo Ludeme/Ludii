@@ -8,7 +8,7 @@
 
 (define "PlayFromLastHole" (sites {(var)}))
 
-(define "AHoleHasMoreThanOneCounter" 
+(define "AHoleHasMoreThanOneCounter"
     (!= 0 (count Sites in:(forEach (sites Mover) if:(< 1 (count at:(site))))))
 )
 
@@ -16,12 +16,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Musoro Tsoro"  
-    (players 2)  
-    
-    (equipment { 
+(game "Musoro Tsoro"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
@@ -34,49 +34,49 @@
         (regions "Outer" P2 (sites Top))                                        // P2 outer Home
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start {
             (place "Seed" (intersection (sites Top) (sites Left)) counts:{3} state:2)
             (place "Seed" (intersection (sites Bottom) (sites Right)) counts:{3} state:1)
             (set Count 2 to:(union (difference (sites Top) (sites Left)) (difference (sites Bottom ) (sites Right))))
         })
-        
-        (play 
+
+        (play
             (or
                 (if (and (!= 0 (state at:(var))) (is Mover Prev))
                     (move Pass)
                 )
                 (move
                     Select
-                    (from 
-                        (if 
+                    (from
+                        (if
                             (is Mover Prev)
-                            "PlayFromLastHole" 
-                            (sites Mover "Home") 
-                        ) 
+                            "PlayFromLastHole"
+                            (sites Mover "Home")
+                        )
                         if:(if "AHoleHasMoreThanOneCounter"
                             (> (count at:(from)) 1)
-                            (and (= (count at:(from)) 1) (= 0 (count at:("NextHoleFrom" (from) Mover)))) 
+                            (and (= (count at:(from)) 1) (= 0 (count at:("NextHoleFrom" (from) Mover))))
                         )
                     )
-                    (then 
+                    (then
                         (and
                             (sow
                                 "Track"
                                 owner:(mover)
                                 apply:(if (= (count at:(to)) 1)
                                     (if (is In (to) (sites Mover "Inner"))
-                                        (if (> (count at:"OppositePit") 0) 
+                                        (if (> (count at:"OppositePit") 0)
                                             (and
-                                                (remove ("OppositePit")) 
-                                                (if 
-                                                    (> (count at:"OppositeOuterPit") 0) 
-                                                    (remove "OppositeOuterPit") 
-                                                ) 
-                                            ) 
-                                        ) 
+                                                (remove ("OppositePit"))
+                                                (if
+                                                    (> (count at:"OppositeOuterPit") 0)
+                                                    (remove "OppositeOuterPit")
+                                                )
+                                            )
+                                        )
                                     )
                                     (and
                                         (moveAgain)
@@ -92,7 +92,7 @@
                 )
             )
         )
-        
+
         (end
             (forEach NonMover
                 if:("NoPiece")
@@ -106,28 +106,28 @@
 
 (option "Board Size" <Row> args:{ <size> <track2>}
     {
-    (item "6"   <6>  <"12,E,N1,W">  "6 Holes per row.")   
-    (item "7"   <7>  <"14,E,N1,W">  "7 Holes per row.")   
-    (item "8"   <8>  <"16,E,N1,W">  "8 Holes per row.")**   
-    (item "9"   <9>  <"18,E,N1,W">  "9 Holes per row.")   
-    (item "10"  <10> <"20,E,N1,W"> "10 Holes per row.")   
-    (item "11"  <11> <"22,E,N1,W"> "11 Holes per row.")   
-    (item "12"  <12> <"24,E,N1,W"> "12 Holes per row.")*   
-    (item "13"  <13> <"26,E,N1,W"> "13 Holes per row.")   
-    (item "14"  <14> <"28,E,N1,W"> "14 Holes per row.")   
-    (item "15"  <15> <"30,E,N1,W"> "15 Holes per row.")*   
-    (item "16"  <16> <"32,E,N1,W"> "16 Holes per row.")  
-    (item "17"  <17> <"34,E,N1,W"> "17 Holes per row.")  
-    (item "18"  <18> <"36,E,N1,W"> "18 Holes per row.")*  
-    (item "19"  <19> <"38,E,N1,W"> "19 Holes per row.")  
-    (item "20"  <20> <"40,E,N1,W"> "20 Holes per row.")  
+    (item "6"   <6>  <"12,E,N1,W">  "6 Holes per row.")
+    (item "7"   <7>  <"14,E,N1,W">  "7 Holes per row.")
+    (item "8"   <8>  <"16,E,N1,W">  "8 Holes per row.")**
+    (item "9"   <9>  <"18,E,N1,W">  "9 Holes per row.")
+    (item "10"  <10> <"20,E,N1,W"> "10 Holes per row.")
+    (item "11"  <11> <"22,E,N1,W"> "11 Holes per row.")
+    (item "12"  <12> <"24,E,N1,W"> "12 Holes per row.")*
+    (item "13"  <13> <"26,E,N1,W"> "13 Holes per row.")
+    (item "14"  <14> <"28,E,N1,W"> "14 Holes per row.")
+    (item "15"  <15> <"30,E,N1,W"> "15 Holes per row.")*
+    (item "16"  <16> <"32,E,N1,W"> "16 Holes per row.")
+    (item "17"  <17> <"34,E,N1,W"> "17 Holes per row.")
+    (item "18"  <18> <"36,E,N1,W"> "18 Holes per row.")*
+    (item "19"  <19> <"38,E,N1,W"> "19 Holes per row.")
+    (item "20"  <20> <"40,E,N1,W"> "20 Holes per row.")
     (item "21"  <21> <"42,E,N1,W"> "21 Holes per row.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Musoro Tsoro (Observed)" {
         "Board Size/8"
         }
@@ -139,8 +139,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tsoro is a term used for several two-row mancala-style board games played in Zimbabwe. In this version, players choose a special hole, \"musoro,\" from which they may choose to end their turn when they would normally continue sowing, allowing them to accumulate counters there.")
@@ -153,12 +153,12 @@
         (origin  "This game was played in Zimbabwe, around 1964.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)
     })
-    
+
     (ai
         "Musoro Tsoro_ai"
     )

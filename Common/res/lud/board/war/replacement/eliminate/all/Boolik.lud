@@ -16,19 +16,19 @@
 
 (define "UnsetCapturingPiece" (set State #1 #2 0))
 
-(define "UnsetCapturingPieces" 
+(define "UnsetCapturingPieces"
     (forEach Level (last From) FromTop
         (if (is Friend (who at:(last From) level:(level)))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
-    ) 
+    )
 )
 
 (define "AtLeastAnEnemyPieceThere"
     (is In #1 (sites Occupied by:Enemy top:False))
 )
 
-(define "CaptureMove" 
+(define "CaptureMove"
     (forEach Level (last To) FromTop
         (and
             (if (is Enemy (who at:(last To) level:(level)))
@@ -38,7 +38,7 @@
                 ("SetCapturingPiece" at:(last To) level:(level))
             )
         )
-    ) 
+    )
 )
 
 (define "CapturingPiece" (= 1 #1))
@@ -47,14 +47,14 @@
 
 (define "FreePiece" (= 0 #1))
 
-(define "EnterAPiece" 
+(define "EnterAPiece"
     (move
         (from (handSite Mover))
         (to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1) ))
     )
 )
 
-(define "RemoveCapturedPieces" 
+(define "RemoveCapturedPieces"
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
             (remove (last From) level:(level))
@@ -71,12 +71,12 @@
 (define "CapturedPiecesFollowCapturingPiece"
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
-            (fromTo 
+            (fromTo
                 (from (last From) level:(level))
                 (to (last To))
             )
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -84,20 +84,20 @@
 (game "Boolik"
     (players <Player:num>)
     (equipment {
-        (board 
-            (rectangle 1 15) 
-            <Player:tracks> 
+        (board
+            (rectangle 1 15)
+            <Player:tracks>
             use:Edge
         )
         (piece "Stick" Each
             (or
                 (if ("FreePiece" (state at:(from) level:(level)))
-                    (move 
+                    (move
                         (from (from) level:(level))
-                        (to 
+                        (to
                             ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
                         )
-                        (then 
+                        (then
                             (if ("AtLeastAnEnemyPieceThere" (last To))
                                 ("CaptureMove")
                             )
@@ -106,12 +106,12 @@
                 )
                 (if ("CapturingPiece" (state at:(from) level:(level)))
                     (if (!= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue")))
-                        (move 
+                        (move
                             (from (from) level:(level))
-                            (to 
+                            (to
                                 ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue"))
                             )
-                            (then 
+                            (then
                                 (and
                                     ("CapturedPiecesFollowCapturingPiece")
                                     ("UnsetCapturingPieces")
@@ -122,7 +122,7 @@
                             (then
                                 (and {
                                     ("UnsetCapturingPieces")
-                                    ("RemoveCapturedPieces")	
+                                    ("RemoveCapturedPieces")
                                     ("RebirthCapturingPiece")
                                 })
                             )
@@ -134,9 +134,9 @@
         (regions "AllSites" (sites Board Vertex))
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (map "Entry" {
-            (pair 1 0) (pair 2 13) (pair 3 0) (pair 4 13) 
-            (pair 5 0) (pair 6 13) (pair 7 0) (pair 8 13) 
-            (pair 9 0) (pair 10 13) (pair 11 0) (pair 12 13) 
+            (pair 1 0) (pair 2 13) (pair 3 0) (pair 4 13)
+            (pair 5 0) (pair 6 13) (pair 7 0) (pair 8 13)
+            (pair 9 0) (pair 10 13) (pair 11 0) (pair 12 13)
             (pair 13 0) (pair 14 13) (pair 15 0) (pair 16 13)
         })
         (dice d:2 from:0 num:4)
@@ -146,8 +146,8 @@
         (start {
             <Player:teams>
         })
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(or {
                     (if (and ("NoPieceOnBoard") (not (is Empty (handSite Mover))))
                         ("EnterAPiece")
@@ -161,7 +161,7 @@
                 )
             )
         )
-        
+
         (end  (if (no Pieces Enemy) (result TeamMover Win)))
     )
 )
@@ -183,11 +183,11 @@
         (track "Track2" {13..0} loop:True P2)
         (track "CaptureTrack1" {13..0} P1 directed:True)
         (track "CaptureTrack2" {0..13} P2 directed:True)
-        } 
+        }
         >
-    "The game has 2 players.")  
-    
-    (item "4" <4> 
+    "The game has 2 players.")
+
+    (item "4" <4>
         <
         (set Team 1 {P1 P3})
         (set Team 2 {P2 P4})
@@ -206,11 +206,11 @@
         (track "Track4" {13..0} loop:True P4)
         (track "CaptureTrack3" {13..0} P3 directed:True)
         (track "CaptureTrack4" {0..13} P4 directed:True)
-        } 
+        }
         >
-    "The game has 4 players.")  
-    
-    (item "6" <6> 
+    "The game has 4 players.")
+
+    (item "6" <6>
         <
         (set Team 1 {P1 P3 P5})
         (set Team 2 {P2 P4 P6})
@@ -235,11 +235,11 @@
         (track "Track6" {13..0} loop:True P6)
         (track "CaptureTrack5" {13..0} P5 directed:True)
         (track "CaptureTrack6" {0..13} P6 directed:True)
-        } 
+        }
         >
-    "The game has 6 players.")*   
-    
-    (item "8" <8> 
+    "The game has 6 players.")*
+
+    (item "8" <8>
         <
         (set Team 1 {P1 P3 P5 P7})
         (set Team 2 {P2 P4 P6 P8})
@@ -270,11 +270,11 @@
         (track "Track8" {13..0} loop:True P8)
         (track "CaptureTrack7" {13..0} P7 directed:True)
         (track "CaptureTrack8" {0..13} P8 directed:True)
-        } 
+        }
         >
-    "The game has 8 players.")   
-    
-    (item "10" <10> 
+    "The game has 8 players.")
+
+    (item "10" <10>
         <
         (set Team 1 {P1 P3 P5 P7 P9})
         (set Team 2 {P2 P4 P6 P8 P10})
@@ -311,11 +311,11 @@
         (track "Track10" {13..0} loop:True P10)
         (track "CaptureTrack9" {13..0} P9 directed:True)
         (track "CaptureTrack10" {0..13} P10 directed:True)
-        } 
+        }
         >
-    "The game has 10 players.")   
-    
-    (item "12" <12> 
+    "The game has 10 players.")
+
+    (item "12" <12>
         <
         (set Team 1 {P1 P3 P5 P7 P9 P11})
         (set Team 2 {P2 P4 P6 P8 P10 P12})
@@ -358,11 +358,11 @@
         (track "Track12" {13..0} loop:True P12)
         (track "CaptureTrack11" {13..0} P11 directed:True)
         (track "CaptureTrack12" {0..13} P12 directed:True)
-        } 
+        }
         >
-    "The game has 12 players.")   
-    
-    (item "14" <14> 
+    "The game has 12 players.")
+
+    (item "14" <14>
         <
         (set Team 1 {P1 P3 P5 P7 P9 P11 P13})
         (set Team 2 {P2 P4 P6 P8 P10 P12 P14})
@@ -411,11 +411,11 @@
         (track "Track14" {13..0} loop:True P14)
         (track "CaptureTrack13" {13..0} P13 directed:True)
         (track "CaptureTrack14" {0..13} P14 directed:True)
-        } 
+        }
         >
-    "The game has 14 players.")   
-    
-    (item "16" <16> 
+    "The game has 14 players.")
+
+    (item "16" <16>
         <
         (set Team 1 {P1 P3 P5 P7 P9 P11 P13 P15})
         (set Team 2 {P2 P4 P6 P8 P10 P12 P14 P16})
@@ -470,17 +470,17 @@
         (track "Track16" {13..0} loop:True P16)
         (track "CaptureTrack15" {13..0} P15 directed:True)
         (track "CaptureTrack16" {0..13} P16 directed:True)
-        } 
+        }
         >
-    "The game has 16 players.")   
-    
+    "The game has 16 players.")
+
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
     (ruleset "Ruleset/Boolik (Observed)" {
-        "Players/6" 
+        "Players/6"
         }
         variations:{
         "Players/2" "Players/4" "Players/8" "Players/10"
@@ -491,8 +491,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Boolik is a capturing game played by the Qeqchi people of Guatemala. It is typically played on the floor of a house at night, with two teams of people. ")
@@ -504,7 +504,7 @@
         (origin  "This game was played in Guatemala, around 1899.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Stick" 0.5)
         (show Edges (colour Hidden))
@@ -529,5 +529,5 @@
         (stackType 16 Count)
         (piece Scale "Stick" 0.5)
     })
-    
+
 )

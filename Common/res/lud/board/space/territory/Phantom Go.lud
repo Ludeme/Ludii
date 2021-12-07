@@ -1,17 +1,17 @@
 (define "HasFreedom" (> (count Liberties Orthogonal) 0))
 
 (define "CaptureSurroundedPiece"
-    (enclose 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply             
-                (and 
-                    (addScore Mover 1) 
-                    (remove (between)) 
+    (enclose
+        (from (last To))
+        Orthogonal
+        (between
+            if:(is Enemy (who at:(between)))
+            (apply
+                (and
+                    (addScore Mover 1)
+                    (remove (between))
                 )
-            ) 
+            )
         )
     )
 )
@@ -26,11 +26,11 @@
 
 (define "NotEmpty" (not (is In (last To) (sites Empty))))
 
-(define "MadeALegalMove" 
+(define "MadeALegalMove"
     (do
-        (add 
+        (add
             (to (last To))
-            (then 
+            (then
                 (and {
                     "CaptureSurroundedPiece"
                     (set Hidden at:(last To) to:Next)
@@ -45,34 +45,34 @@
 
 //------------------------------------------------------------------------------
 
-(game "Phantom Go"  
-    (players 2) 
-    (equipment { 
-        (board <Board> use:Vertex) 
+(game "Phantom Go"
+    (players 2)
+    (equipment {
+        (board <Board> use:Vertex)
         (piece "Marker" Each)
     })
-    
-    (rules 
-        (play 
-            (or 
+
+    (rules
+        (play
+            (or
                 (move
                     Select
                     (from
-                        (union 
-                            (sites Empty) 
+                        (union
+                            (sites Empty)
                             (sites Hidden to:Mover)
                         )
                     )
-                    (then 
-                        (priority 
+                    (then
+                        (priority
                             {
-                            (if 
+                            (if
                                 ("NotEmpty")
                                 ("IllegalMove")
                             )
-                            
+
                             ("MadeALegalMove")
-                            
+
                             ("IllegalMove")
                             }
                         )
@@ -81,11 +81,11 @@
                 (move Pass)
             )
         )
-        
+
         (end
             (if (all Passed)
                 (byScore {
-                    (score P1 (+ (score P1) (size Territory P1))) 
+                    (score P1 (+ (score P1) (size Territory P1)))
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
             )
@@ -97,23 +97,23 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")**   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")   
+    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")**
+    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")
+    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")
+    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Phantom Go is a variant of Go for two players and a referee. The players only see their own stones, but they don't know where the opponent plays. The referee sees the moves of both players and takes care that they only play legal moves.")
         (rules "Each player has his own board, set up so that the opponent cannot see it. The referee has a board of his own on which he plays the moves of both players. He can see both player's boards.
-            
+
             To make a move, a player plays a stone on his own board. The referee then checks on his board whether the move is legal and informs both players about the tried move. How exactly the refereee comments on the move depends on the rule variant.
-            
+
         As long as a player tries to play an illegal move, it's still his turn and he may try another move. After the player has made a legal move, the referee copies the move to his own board. Then, it's the other player's turn.")
         (source "<a href=\"https://senseis.xmp.net/?PhantomGo\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />senseis.xmp.net</a>")
         (version "1.3.0")
@@ -121,14 +121,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (show Score AtEnd)
     })
-    
+
     (ai
         "Phantom Go_ai"
     )

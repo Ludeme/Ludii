@@ -3,7 +3,7 @@
     (equipment
         {
         (board (square 5))
-        (piece "Musketeer" P1 
+        (piece "Musketeer" P1
             (move Step Orthogonal (to if:(is Enemy (who at:(to))) (apply (remove (to)))))
         )
         (piece "Enemy" P2 (move Step Orthogonal (to if:(is Empty (to)))))
@@ -17,11 +17,11 @@
             }
         )
         (play (forEach Piece))
-        (end 
+        (end
             {
             (if (no Moves P1) (result P1 Win))
-            (if 
-                (and 
+            (if
+                (and
                     (is Mover P1)
                     (is Line 3 Orthogonal contiguous:False)
                 )
@@ -34,8 +34,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Invented in 1969 by Haar Hoolim and published in Sid Sackson's A Gamut of Games.")
@@ -48,10 +48,10 @@
         (date "1969")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
-        
+
     })
     (ai
         "Three Musketeers_ai"

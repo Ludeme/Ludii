@@ -9,9 +9,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Sungka" 
-    (players 2)  
-    (equipment { 
+(game "Sungka"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 "Columns"
             (track "Track" "7,W,WNW,ENE,E,ESE" loop:True)
         )
@@ -19,38 +19,38 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
-    
-    (rules 
-        (start (set Count "Columns" to:(union (sites P1) (sites P2))))		
-        
+    })
+
+    (rules
+        (start (set Count "Columns" to:(union (sites P1) (sites P2))))
+
         phases:{
         (phase "Sowing"
-            (play 
+            (play
                 (move
-                    Select 
-                    (from 
-                        (if 
-                            (and 
-                                (is Mover Prev) 
+                    Select
+                    (from
+                        (if
+                            (and
+                                (is Mover Prev)
                                 (not ("WasInStore"))
-                            ) 
-                            "PlayFromLastHole" 
+                            )
+                            "PlayFromLastHole"
                             (sites Mover)
                         )
                         if:(< 0 (count at:(from)))
                     )
-                    (then 
-                        (sow 
+                    (then
+                        (sow
                             apply:(if ("SowingEndInMyStore")
                                 (and
                                     (moveAgain)
                                     ("LastCounterInTheStore")
                                 )
                                 (if (and {(is In (to) (sites Mover)) (= (count at:(to)) 1) (< 0 (count at:"OppositePit"))})
-                                    (fromTo 
-                                        (from "OppositePit") 
-                                        (to (mapEntry (mover))) 
+                                    (fromTo
+                                        (from "OppositePit")
+                                        (to (mapEntry (mover)))
                                         count:(count at:"OppositePit")
                                     )
                                     (if (> (count at:(to)) 1)
@@ -87,14 +87,14 @@
             )
             (nextPhase (all Passed) "Sowing")
         )
-        
+
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Sungka is a two-row mancala-style board game from the Philippines. It is similar to many other games throughout Southeast Asia, which have similar playing mechanisms and similar names.")
@@ -105,7 +105,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

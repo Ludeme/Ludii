@@ -1,8 +1,8 @@
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
-(define "LeftMostEmpty" 
-    (trackSite FirstSite 
+(define "LeftMostEmpty"
+    (trackSite FirstSite
         "TrackCCW"
         from:(mapEntry Mover)
         if: (is Empty (to))
@@ -15,10 +15,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Laomuzhu"  
-    (players 2)  
-    
-    (equipment { 
+(game "Laomuzhu"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 5 store:None largeStack:True
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -32,15 +32,15 @@
         (regions P1 (sites Bottom))      // P1 home
         (regions P2 (sites Top))         // P2 home
         (map {(pair P1 0) (pair P2 9)})  // left most holes
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (place Stack "Seed" (union (sites Bottom) (sites Top)) count:5)
             (place Stack "Ball1" (handSite P1 1))
             (place Stack "Ball2" (handSite P2 1))
         })
-        
+
         phases:{
         (phase "Placement"
             (play
@@ -52,19 +52,19 @@
                     )
                 )
             )
-            
+
             (nextPhase Mover (is Empty Cell (handSite Mover 1)) "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (or {
                     (if (!= (var "Direction") 2)
                         (move Select
-                            (from 
+                            (from
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    (sites Mover) 
+                                    (sites Mover)
                                 )
                                 if:(!= 0 (size Stack at:(from)))
                             )
@@ -117,7 +117,7 @@
                                     (if (< (var "Direction") 1) (set Var "Direction" 1))
                                     (if (< (size Stack at:(last From)) 8)
                                         (if (!= 0 (size Stack at:("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From))))))
-                                            (and 
+                                            (and
                                                 (moveAgain)
                                                 (set Var "Replay" ("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From)))))
                                             )
@@ -143,11 +143,11 @@
                     )
                     (if (!= (var "Direction") 1)
                         (move Select
-                            (from 
+                            (from
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    (sites Mover) 
-                                ) 
+                                    (sites Mover)
+                                )
                                 if:(!= 0 (size Stack at:(from)))
                             )
                             (then
@@ -199,7 +199,7 @@
                                     (if (< (var "Direction") 1) (set Var "Direction" 2))
                                     (if (< (size Stack at:(last From)) 8)
                                         (if (!= 0 (size Stack at: ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From))))))
-                                            (and 
+                                            (and
                                                 (moveAgain)
                                                 (set Var "Replay" ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From)))))
                                             )
@@ -270,7 +270,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (and (> 5 (size Stack Cell at:(handSite P1))) (= 0 (size Stack Cell at:(handSite P1 1))))
@@ -284,9 +284,9 @@
             )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
-            (play 
+            (play
                 (or
                     (if (<= 5 (size Stack Cell at:(handSite Mover)))
                         (move Select
@@ -326,7 +326,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Laomuzhu is a two-row mancala-style board game from the Yunnan region of China. It is similar to other mancala games from Asia, but it has extra capturing rules determined by the movement of specialized stones.")
@@ -338,7 +338,7 @@
         (origin  "This game was played in Yunnan, around 1995.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (piece Scale "Ball" 1.3)

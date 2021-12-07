@@ -1,6 +1,6 @@
-(game "Bam Blang Beh Khla"  
-    (players 2)  
-    (equipment { 
+(game "Bam Blang Beh Khla"
+    (players 2)
+    (equipment {
         (board
             (add
                 (remove
@@ -19,14 +19,14 @@
         (piece "Tiger" P1 (or "HopCapture" "StepToEmpty"))
         (piece "Goat" P2 "StepToEmpty")
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (place "Tiger1" (sites Top))
             (place "Goat2" (sites Bottom))
         })
         (play (forEach Piece))
-        
+
         (end {
             (if (no Pieces P2) (result P1 Win))
             (if (no Moves P1) (result P2 Win))
@@ -36,8 +36,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Bam Bang Beh Khla (\"To eat goat, to drive tiger\") is a hunt game played in the Assam Region of India on a board not documented elsewhere.")
@@ -49,15 +49,15 @@
             (origin  "This game was played in India, around 1935.")
             }
         )
-        
+
         (graphics {
             (piece Families {"Abstract" "Themed"})
             (show Edges Diagonal Hidden)
-            
+
         })
-        
+
         (ai
             "Bam Blang Beh Khla_ai"
         )
     )
-    
+

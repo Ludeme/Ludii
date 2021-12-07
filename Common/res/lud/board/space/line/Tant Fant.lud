@@ -3,38 +3,38 @@
 //------------------------------------------------------------------------------
 
 (game "Tant Fant"
-    (players 2)  
-    (equipment 
-        { 
+    (players 2)
+    (equipment
+        {
         ("AlquerqueBoard" 3)
         (piece "Marker" Each "StepToEmpty")
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
-        (start { 
-            (place "Marker1" (sites P1)) 
-            (place "Marker2" (sites P2)) 
+    )
+    (rules
+        (start {
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
         })
         (play (forEach Piece) )
-        
-        (end 
-            (if 
-                (and 
+
+        (end
+            (if
+                (and
                     "NotAllPieceInHome"
                     (is Line 3)
-                ) 
+                )
                 (result Mover Win)
             )
-        )  
+        )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tant Fant is an alignment game documented in Bengal during the later eighteenth and early twentieth century, but is likely to be much older.")
@@ -46,13 +46,13 @@
         (origin  "This game was played in South Asia, from around 1863 to 1933.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Tant Fant_ai"
     )
-    
+
 )

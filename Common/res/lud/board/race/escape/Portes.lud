@@ -1,28 +1,28 @@
-(define "IfEnemyBlotIt"    
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo 
-            (from (to)) 
+(define "IfEnemyBlotIt"
+    (apply
+        if:(is Enemy (who at:(to)))
+        (fromTo
+            (from (to))
             (to (mapEntry (next)))
         )
     )
 )
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
 (define "BarEmpty" (= (what at:"Bar") 0))
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:(pips)
     )
 )
@@ -31,47 +31,47 @@
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "AllPieceInHome" 
-    ("NoSites" 
-        (difference 
-            (sites Occupied by:Mover) 
+(define "AllPieceInHome"
+    ("NoSites"
+        (difference
+            (sites Occupied by:Mover)
             (sites Mover)
         )
     )
 )
 
-(define "RemoveAPiece" 
+(define "RemoveAPiece"
     (move
         Remove
         (site)
-    )		
+    )
 )
 
-(define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
-    (and { 
-        ("DieNotUsed") 
-        (!= ("NextSiteFrom" (from)) Off) 
-        (!= ("NextSiteFrom" (from)) End) 
-    })		
+(define "DieNotUsedAndNoEscapeAndNotOffTheTrack"
+    (and {
+        ("DieNotUsed")
+        (!= ("NextSiteFrom" (from)) Off)
+        (!= ("NextSiteFrom" (from)) End)
+    })
 )
 
-(define "MoveAPiece" 
-    (move 
+(define "MoveAPiece"
+    (move
         (from #1)
-        (to 
-            ("NextSiteFrom" #1) 
-            if:("NotEnemyOrOnlyOne") 
+        (to
+            ("NextSiteFrom" #1)
+            if:("NotEnemyOrOnlyOne")
             ("IfEnemyBlotIt")
         )
     )
 )
 
-(define "MoveAPieceIf" 
-    (forEach Die 
-        replayDouble:True 
+(define "MoveAPieceIf"
+    (forEach Die
+        replayDouble:True
         if:#1
         ("MoveAPiece" #2)
-    )		
+    )
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
@@ -80,71 +80,71 @@
 
 (define "CanEscape" (= ("NextSiteFrom" (site)) End))
 
-(define "NotEmptyAndNotOffTheBoard" 
-    (and 
-        (!= (what at:(site)) 0) 
+(define "NotEmptyAndNotOffTheBoard"
+    (and
+        (!= (what at:(site)) 0)
         (!= ("NextSiteFrom" (site)) Off)
     )
 )
 
-(define "SetScoreOf" 
+(define "SetScoreOf"
     (score
-        #1 
-        (if (is Mover #1) 
-            (if 
-                (= ("NumPiece" #2) 15) 
-                2 
+        #1
+        (if (is Mover #1)
+            (if
+                (= ("NumPiece" #2) 15)
+                2
                 1
-            ) 
+            )
             0
         )
     )
 )
 
-(define "HaveAPieceAndCanEscape" 
-    (and 
-        (is Friend (who at:(site))) 
+(define "HaveAPieceAndCanEscape"
+    (and
+        (is Friend (who at:(site)))
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )
 
 //-----------------------------------------------------------------------------
 
-(game "Portes"  
-    (players 2)  
-    (equipment { 
+(game "Portes"
+    (players 2)
+    (equipment {
         (board (rectangle 2 13)
             {
             (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
             (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
-            } 
+            }
             use:Vertex
-        ) 
+        )
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home
         (map {(pair 1 6 ) (pair 2 19)}) // Bar
-        (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
+        (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from)))
     } )
-    
+
     (rules
-        (start { 
-            (place Stack "Disc1"  0 count:5) (place Stack "Disc1" 12 count:2) 
+        (start {
+            (place Stack "Disc1"  0 count:5) (place Stack "Disc1" 12 count:2)
             (place Stack "Disc1" 17 count:3) (place Stack "Disc1" 20 count:5)
-            (place Stack "Disc2"  4 count:3) (place Stack "Disc2"  7 count:5) 
+            (place Stack "Disc2"  4 count:3) (place Stack "Disc2"  7 count:5)
             (place Stack "Disc2" 13 count:5) (place Stack "Disc2" 25 count:2)
         })
-        
-        (play 
-            (do 
+
+        (play
+            (do
                 (if (not "SameTurn") (roll))
                 next:(if "AllPieceInHome"
-                    (forEach Die 
-                        replayDouble:True 
+                    (forEach Die
+                        replayDouble:True
                         if:("DieNotUsed")
-                        (forEach Site 
+                        (forEach Site
                             (sites Mover)
-                            (if ("NotEmptyAndNotOffTheBoard") 
+                            (if ("NotEmptyAndNotOffTheBoard")
                                 (if ("CanEscape")
                                     ("RemoveAPiece")
                                     ("MoveAPiece" (site))
@@ -155,7 +155,7 @@
                                     "RemoveAPiece"
                                 )
                             )
-                            (then 
+                            (then
                                 (if (not (all DiceUsed))
                                     (moveAgain)
                                 )
@@ -166,9 +166,9 @@
                         (if "BarEmpty"
                             (forEach Piece top:True)
                             ("MoveAPieceIf" ("DieNotUsed") ("Bar"))
-                            (then 
+                            (then
                                 (if (not (all DiceUsed))
-                                    (if (can Move 
+                                    (if (can Move
                                             (if "BarEmpty"
                                                 (forEach Piece top:True)
                                                 ("MoveAPieceIf" ("DieNotUsed") ("Bar"))
@@ -183,10 +183,10 @@
                 )
             )
         )
-        
-        (end 
+
+        (end
             (if ("AllPieceEscaped")
-                (byScore { 
+                (byScore {
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 } )
@@ -197,7 +197,7 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Portes is a game that is closely similar to Backgammon played in the eastern Mediterranean. It is frequently played as part of Tavli, where it is played in succession with Plakoto and Fevga.")
@@ -213,7 +213,7 @@
             (board Style backgammon)
             (stackType Backgammon)
         })
-        
+
         (ai
             "Portes_ai"
         )

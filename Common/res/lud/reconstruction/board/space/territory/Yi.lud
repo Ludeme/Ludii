@@ -1,20 +1,20 @@
-(game "Yi"  
-    (players 2) 
-    (equipment 
-        { 
-        (board (square 17) use:Vertex) 
+(game "Yi"
+    (players 2)
+    (equipment
+        {
+        (board (square 17) use:Vertex)
         (piece "Marker" Each)
         }
     )
-    
-    (rules 
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Yi is an ancient name for the game Weiqi. While they were probably used interchangeably at the time, this is the older version of the game, which was played on a 17x17 board.")
@@ -26,11 +26,11 @@
         (origin  "This game was played in China, from around 450BCE to 755.")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
     })
-    
+
 )

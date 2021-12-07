@@ -1,7 +1,7 @@
 (define "Placeable"
     (not
         (or {
-            (and 
+            (and
                 ("OpponentHas" E W)
                 ("OpponentHas" NNW SSE)
             )
@@ -22,7 +22,7 @@
         (min
             (count Sites
                 in:(if
-                    (< 0 
+                    (< 0
                         (count Sites
                             in:(intersection
                                 (sites Occupied by:Mover)
@@ -31,13 +31,13 @@
                                     #1
                                     stop:(= (mover) (who at:(to)))
                                     stopIncluded:True
-                                ) 
+                                )
                             )
                         )
                     )
                     (sites Direction
                         from:(to)
-                        #1 
+                        #1
                         stop:(= (mover) (who at:(to)))
                     )
                     (sites Board)
@@ -45,7 +45,7 @@
             )
             (count Sites
                 in:(if
-                    (< 0 
+                    (< 0
                         (count Sites
                             in:(intersection
                                 (sites Occupied by:Mover)
@@ -54,7 +54,7 @@
                                     #2
                                     stop:(= (mover) (who at:(to)))
                                     stopIncluded:True
-                                ) 
+                                )
                             )
                         )
                     )
@@ -70,7 +70,7 @@
         (min
             (count Sites
                 in:(if
-                    (< 0 
+                    (< 0
                         (count Sites
                             in:(intersection
                                 (sites Occupied by:Next)
@@ -79,13 +79,13 @@
                                     #1
                                     stop:(= (next) (who at:(to)))
                                     stopIncluded:True
-                                ) 
+                                )
                             )
                         )
                     )
                     (sites Direction
                         from:(to)
-                        #1 
+                        #1
                         stop:(= (next) (who at:(to)))
                     )
                     (sites Board)
@@ -93,7 +93,7 @@
             )
             (count Sites
                 in:(if
-                    (< 0 
+                    (< 0
                         (count Sites
                             in:(intersection
                                 (sites Occupied by:Next)
@@ -102,7 +102,7 @@
                                     #2
                                     stop:(= (next) (who at:(to)))
                                     stopIncluded:True
-                                ) 
+                                )
                             )
                         )
                     )
@@ -138,9 +138,9 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
+        (end
+            (if
+                (no Moves Next)
                 (result Mover Win)
             )
         )
@@ -152,20 +152,20 @@
 (option "Board Size" <Board> args:{ <size> }
     {
     (item "4"    <4>  "A size 4 board is currently selected")
-    (item "5"    <5>  "A size 5 board is currently selected")* 
+    (item "5"    <5>  "A size 5 board is currently selected")*
     (item "6"    <6>  "A size 6 board is currently selected")
     }
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Mity is a simple territory game of pure placement invented by Michael Amundsen in 2021.")
-        (rules "Players place one token of their color each turn and the first player unable to do so has lost. You may place on any empty cell unless your opponent has a token closer to that cell than you have along at least 2 of the 3 lines (axes) the cell is on. 
-            
+        (rules "Players place one token of their color each turn and the first player unable to do so has lost. You may place on any empty cell unless your opponent has a token closer to that cell than you have along at least 2 of the 3 lines (axes) the cell is on.
+
         The game uses the pie rule: One player chooses the first move and the other player chooses whose move it is.")
         (version "1.3.0")
         (classification "experimental")

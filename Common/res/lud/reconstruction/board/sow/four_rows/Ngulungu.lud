@@ -1,15 +1,15 @@
-(game "Ngulungu"  
-    (players 2)  
-    
-    (equipment { 
+(game "Ngulungu"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 7 store:None)
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (play (forEach Piece))
-        
+
         (end
             (if  (no Moves Next)
                 (result Mover Win)
@@ -20,7 +20,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Ngulungu is a mancala-stlye board game played in the Katanga province of the Democratic Republic of Congo.")
@@ -31,7 +31,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

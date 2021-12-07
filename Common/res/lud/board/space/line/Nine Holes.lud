@@ -1,21 +1,21 @@
 (game "Nine Holes"
-    (players 2)  
-    (equipment 
+    (players 2)
+    (equipment
         {
         (board (square 3) use:Vertex)
         (hand Each)
         (piece "Marker" Each (move (from) (to (sites Empty))))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Nine Holes is an alignment game played at least since the seventeenth century in Great Britain, but likely goes back to the Roman Empire.")
@@ -39,12 +39,12 @@
         (origin  "This game was played in Europe, around 1699.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Nine Holes_ai"
     )

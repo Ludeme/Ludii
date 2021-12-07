@@ -1,9 +1,9 @@
-(game "ConHex" 
+(game "ConHex"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rotate 45 (square 2)) 
+                (rotate 45 (square 2))
                 (shift -0.155 -0.155 (rotate 45 (scale 0.5 1 (hex 1))))
                 (shift 1.155 1.155 (rotate 45 (scale 0.5 1 (hex 1))))
                 //			(shift 1.155 -0.155 (rotate 135 (scale 0.5 1 (hex 1))))
@@ -19,15 +19,15 @@
 )
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         }
     )
-    
+
     (graphics {
-        
+
         (show Edges Diagonal Hidden)
     })
-    
+
 )

@@ -1,20 +1,20 @@
 (game "Hund efter Hare (Thy)"
     (players 2)
     (equipment {
-        (board 
+        (board
             (remove
                 (add
                     (merge {
-                        (rectangle 3 5) 
-                        (shift 1 0 (scale 0.5 (rectangle 5 1))) 
-                        (shift 3 0 (scale 0.5 (rectangle 5 1))) 
-                        (shift -1 1 (rectangle 1 7)) 
+                        (rectangle 3 5)
+                        (shift 1 0 (scale 0.5 (rectangle 5 1)))
+                        (shift 3 0 (scale 0.5 (rectangle 5 1)))
+                        (shift -1 1 (rectangle 1 7))
                     })
                     edges:{
-                    {0 15} {15 7} {7 18} {18 14} {17 4} {7 17} 
+                    {0 15} {15 7} {7 18} {18 14} {17 4} {7 17}
                     {7 16} {16 10} {19 10} {0 19} {20 14} {20 4}
                     {12 16} {16 5} {5 15} {15 2} {2 17} {17 9}
-                    {9 18} {18 12} 
+                    {9 18} {18 12}
                     }
                 )
                 edges:{{11 6} {6 1} {13 8} {8 3}}
@@ -24,7 +24,7 @@
         (piece "Hare" P1 "StepToEmpty")
         (piece "Dog" P2 E "StepForwardsToEmpty")
     })
-    (rules 
+    (rules
         (start {
             (place "Hare1" coord:"C3")
             (place "Dog2" (sites {"B3" "B1" "A3" "B5"}))
@@ -39,8 +39,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Hund efter Hare is a name applied to several blockade games played in Denmark. This game was played in Thy, Denmmark, on a more complex board than was common elsewhere.")
@@ -52,7 +52,7 @@
         (origin  "This game was played in Denmark, from around 1948 to 1968.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
@@ -60,9 +60,9 @@
         (show Line {{10 19}} curve:{0.1 0.67 0.0 0.62} Bezier)
         (show Line {{4 20}} curve:{0.9 0.33 1.0 0.38} Bezier)
         (show Line {{14 20}} curve:{0.9 0.67 1.0 0.62} Bezier)
-        
+
     })
-    
+
     (ai
         "Hund efter Hare (Thy)_ai"
     )

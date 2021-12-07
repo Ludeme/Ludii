@@ -6,8 +6,8 @@
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:(count Pips)))
 (define "SiteToMoveOnTrackForLion" (trackSite Move #1 steps:(mul (count Pips) 2)))
 (define "EmptyCentralSpaceReached"
-    (and 
-        (= ("SiteToMoveOnTrack") End) 
+    (and
+        (= ("SiteToMoveOnTrack") End)
         (= (what at:"BeginOuterTrack") 0)
     )
 )
@@ -16,23 +16,23 @@
 )
 (define "PieceNowMoveToTheEntry"
     (then
-        (and 
-            (remove (last To)) 
+        (and
+            (remove (last To))
             (add (piece (id "Marker" Mover)) (to 0))
         )
     )
 )
 (define "PromoteToLion"
-    (then 
-        (and 
-            (remove (last To)) 
+    (then
+        (and
+            (remove (last To))
             (add (piece (id "Lion" Mover)) (to (handSite Mover 1)))
         )
     )
 )
 
 (define "AdvanceOn"
-    (if (!= ("SiteToMoveOnTrack" #1) Off)  	 			
+    (if (!= ("SiteToMoveOnTrack" #1) Off)
         (if (is In ("SiteToMoveOnTrack" #1) (sites Empty))
             (move (from) (to ("SiteToMoveOnTrack" #1) ))
         )
@@ -40,10 +40,10 @@
 )
 
 (define "LionMoveOn"
-    (if (and 
-            (!= ("SiteToMoveOnTrackForLion" #1) Off)  
-            (!= ("SiteToMoveOnTrackForLion" #1) End) 
-        )			
+    (if (and
+            (!= ("SiteToMoveOnTrackForLion" #1) Off)
+            (!= ("SiteToMoveOnTrackForLion" #1) End)
+        )
         (if  (not (is Friend (who at:(trackSite Move #1  steps:(mul (count Pips) 2)))))
             (move (from) (to (trackSite Move #1 steps:(mul (count Pips) 2)) ))
         )
@@ -57,8 +57,8 @@
     (!= (what at:(handSite Mover)) 0)
 )
 (define "LetInDisc"
-    (move 
-        (from (handSite Mover)) 
+    (move
+        (from (handSite Mover))
         (to "Entry")
     )
 )
@@ -69,8 +69,8 @@
     (!= (what at:(handSite Mover 1)) 0)
 )
 (define "LetInLion"
-    (move 
-        (from (handSite Mover 1)) 
+    (move
+        (from (handSite Mover 1))
         (to "Entry")
     )
 )
@@ -79,40 +79,40 @@
 
 (game "Mehen"
     (players 2)
-    (equipment  { 
-        (board 
-            (spiral turns:5 sites:88) 
+    (equipment  {
+        (board
+            (spiral turns:5 sites:88)
             {
             (track "NormalTrack" {"Entry".."EndInnerTrack" End} directed:True)
             (track "OppositeTrack" {"BeginOuterTrack".."Entry" End} directed:True)
             }
             use:Vertex
-        ) 
+        )
         (dice d:2 from:0 num:4)
         (hand Each size:2)
-        
+
         (piece "Disc" Each // Piece moving from the hand to the central site.
-            (if ("EmptyCentralSpaceReached") 
+            (if ("EmptyCentralSpaceReached")
                 (move
                     Select
-                    (from) 
-                    ("PieceNowMoveToTheEntry") 
+                    (from)
+                    ("PieceNowMoveToTheEntry")
                 )
                 ("AdvanceOn" "NormalTrack")
             )
         )
-        
+
         (piece "Marker" Each // Piece moving from the central site to the entry of the spiral board.
             (if ("EntryReachedFromInside")
                 (move
                     Select
-                    (from) 
+                    (from)
                     ("PromoteToLion")
-                ) 
+                )
                 ("AdvanceOn" "OppositeTrack")
             )
         )
-        
+
         (piece "Lion" Each // Lion capturing the other pieces on the two sense of the spirale.
             (or
                 ("LionMoveOn" "OppositeTrack")
@@ -125,7 +125,7 @@
             (place "Disc1" (handSite P1) count:6)
             (place "Disc2" (handSite P2) count:6)
         })
-        (play 
+        (play
             (do (roll)
                 next:(or {
                     (if
@@ -133,7 +133,7 @@
                             (= (count Pips) 1)
                             ("EntryEmpty")
                             ("HaveDiscToPlace")
-                        }) 
+                        })
                         ("LetInDisc")
                     )
                     (if
@@ -148,7 +148,7 @@
                 })
             )
         )
-        
+
         (end (if (no Pieces Next) (result Mover Win)))
     )
 )
@@ -157,40 +157,40 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Kendall"   <>       "The rules are describing with the Kendall ruleset.")   
+    (item "Kendall"   <>       "The rules are describing with the Kendall ruleset.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Kendall (Scholarly)" {
         "Variant/Kendall"
     })*
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Mehen is a game dating to the late fourth millennium through the end of the third millennium in Egypt. It takes the form of a coiled snake that is segmented into spaces, and the board varies in the number of spaces that appear on it. According to a tomb painting from the Tomb of Hesy-Re, there could be up to six players, each playing with a set of six spherical pieces and one lion-shaped piece. Tomb reliefs also show four players playing mehen in some cases. Mehen was also played outside of Egypt, particularly in Cyprus and certain parts of the Levant, and was played in Cyprus for at least 1000 years after it became unpopular in Egypt.")
         (useFor "Ruleset/Historical Information (Incomplete)" (rules "Spiral shaped board. Up to six players. Each player has six round pieces and two lions. "))
         (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (useFor "Ruleset/Kendall (Scholarly)" (rules "6 spherical pieces and 6 lion or lioness pieces per player. Up to six players. 
-                Four throwing sticks as dice. 
-                Players enter their spherical pieces on the board with a throw of one. They then race to the center 
+        (useFor "Ruleset/Kendall (Scholarly)" (rules "6 spherical pieces and 6 lion or lioness pieces per player. Up to six players.
+                Four throwing sticks as dice.
+                Players enter their spherical pieces on the board with a throw of one. They then race to the center
                 of the spiral. The central space must be reached with an exact throw. To leave the central space,
-                the player must throw two ones. The player then races in the opposite direction to leave the 
-                board. 
-                When a piece leaves the board, that player introduces a lion piece, that player being the only one 
-                to introduce lion pieces. The player introduces more lions with each piece this player moves off the board. 
+                the player must throw two ones. The player then races in the opposite direction to leave the
+                board.
+                When a piece leaves the board, that player introduces a lion piece, that player being the only one
+                to introduce lion pieces. The player introduces more lions with each piece this player moves off the board.
         The lion races to the central spot, doubling the number of the throws. The lion attempts to capture the other player's pieces by landing on them."))
         (useFor "Ruleset/Kendall (Scholarly)" (source "Kendall 2007."))
         (version "1.3.0")
@@ -199,13 +199,13 @@
         (origin  "This game was played in Egypt, from around 3300BCE to 1225BCE.")
         }
     )
-    
+
     (graphics {
         (board Style Spiral)
     })
-    
-    (ai 
+
+    (ai
         "Mehen_ai"
     )
-    
+
 )

@@ -1,51 +1,51 @@
-(game "Haretavl"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Haretavl"
+    (players 2)
+    (equipment {
+        (board
             (merge {
-                (rectangle 3 3 diagonals:Alternating) 
-                (shift 1.5 0.5 (rotate -90 (wedge 2))) 
-                (shift -1.5 0.5 (rotate 90 (wedge 2))) 
+                (rectangle 3 3 diagonals:Alternating)
+                (shift 1.5 0.5 (rotate -90 (wedge 2)))
+                (shift -1.5 0.5 (rotate 90 (wedge 2)))
             })
             use:Vertex
         )
         (hand Each)
         (piece "Dog" P1 "StepToEmpty")
         (piece "Hare" P2 "StepToEmpty")
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (start {
             (place "Dog1" (handSite P1) count:3)
             (place "Hare2" (handSite P2))
         })
-        
+
         phases:{
         (phase "Placement"
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
-                ) 
+                )
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
         }
-        
+
         (end {
             (if (no Moves P2) (result P1 Win))
-        }) 
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Haretavl is a blockade game from Scandinavia. It is documented from the nineteenth century, but older boards which have the same design are known from the Middle Ages, and thus the game may be much older.")
@@ -59,12 +59,12 @@
         (origin  "This game was played in Scandinavia, from around 1833 to 1886.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
-        
+
     })
-    
+
     (ai
         "Haretavl_ai"
     )

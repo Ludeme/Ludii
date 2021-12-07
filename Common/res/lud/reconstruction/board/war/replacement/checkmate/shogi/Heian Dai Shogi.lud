@@ -1,6 +1,6 @@
 (game "Heian Dai Shogi"
-    (players 2) 
-    (equipment { 
+    (players 2)
+    (equipment {
         (board (square 13))
         (piece "Pawn" Each)
         (piece "King" Each)
@@ -26,16 +26,16 @@
             (place "IronGeneral1" (sites {"C1" "K1"})) (place "IronGeneral2" (sites {"C13" "K13"}))
             (place "Lance1" (sites {"B1" "L1"})) (place "Lance2" (sites {"B13" "L13"}))
             (place "Knight1" (sites {"A1" "M1"})) (place "Knight2" (sites {"A13" "M13"}))
-            
+
             // Row 2
             (place "SideMover1" (coord "G2")) (place "SideMover2" (coord "G12"))
             (place "SavageTiger1" (sites {"E2" "I2"})) (place "SavageTiger2" (sites {"E12" "I12"}))
             (place "FlyingDragon1" (sites {"A2" "M2"})) (place "FlyingDragon2" (sites {"A12" "M12"}))
             (place "RunningChariot1" (sites {"B2" "L2"})) (place "RunningChariot2" (sites {"B12" "L12"}))
-            
+
             // Row 3
             (place "Pawn1" (sites Row 2)) (place "Pawn2" (sites Row 10))
-            
+
             // Row 4
             (place "Chunin1" (coord "G4")) (place "Chunin2" (coord "G10"))
         })
@@ -46,8 +46,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dai Shogi is a large Shogi variant played throughout Japanese history. This version is the oldest, and was played during the Heian Period.")
@@ -59,7 +59,7 @@
         (origin  "This game was played in Japan, from around 1142 to 1230.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
@@ -68,5 +68,5 @@
         (piece Style ExtendedShogi)
         (piece Rotate P2 degrees:180)
     })
-    
+
 )

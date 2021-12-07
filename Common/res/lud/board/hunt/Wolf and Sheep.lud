@@ -1,37 +1,37 @@
-(game "Wolf and Sheep"  
-    (players 2)  
-    (equipment 
-        { 
-        (board (square 8)) 
-        (piece "Sheep" P1 N 
-            (move 
-                Step 
-                (directions {FR FL}) 
+(game "Wolf and Sheep"
+    (players 2)
+    (equipment
+        {
+        (board (square 8))
+        (piece "Sheep" P1 N
+            (move
+                Step
+                (directions {FR FL})
                 (to if:(is Empty (to)))
             )
-        ) 
+        )
         (piece "Wolf" P2 "StepDiagonalToEmpty")
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place "Wolf2" {"D8"})
             (place "Sheep1" {"A1" "C1" "E1" "G1"})
         })
-        
+
         (play (forEach Piece))
-        
+
         (end {
             (if (and (no Moves P2) (is Mover P2)) (result P1 Win) )
             (if (is In (where "Wolf" P2) (sites Bottom)) (result P2 Win) )
-        })  
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Wolf and Sheep is a hunt game, said to be originally derived from Scandinavian halatafl games. Played on an 8x8 checkerboard and only played on the dark squares.")
@@ -43,14 +43,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Abstract" "Themed"})
     })
-    
-    (ai 
+
+    (ai
         "Wolf and Sheep_ai"
     )
-    
+
 )

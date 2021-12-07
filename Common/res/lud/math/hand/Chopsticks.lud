@@ -1,44 +1,44 @@
 (game "Chopsticks"
-    (players 2)  
-    (equipment 
-        { 
+    (players 2)
+    (equipment
+        {
         (board (square 2))
         (piece "Hand" Each)
         (piece "HandFlip" Each)
         }
-    )  
-    (rules 
-        (start { 
-            (place "HandFlip1" coord:"A1" state:1) 
-            (place "Hand1" coord:"B1" state:1) 
-            (place "Hand2" coord:"A2" state:1) 
-            (place "HandFlip2" coord:"B2" state:1) 
+    )
+    (rules
+        (start {
+            (place "HandFlip1" coord:"A1" state:1)
+            (place "Hand1" coord:"B1" state:1)
+            (place "Hand2" coord:"A2" state:1)
+            (place "HandFlip2" coord:"B2" state:1)
         })
-        (play 
+        (play
             (move
                 Select
-                (from 
-                    (sites Occupied by:Mover) 
+                (from
+                    (sites Occupied by:Mover)
                     if:(!= (state at:(to)) 0)
                 )
-                (to 
-                    (sites Occupied by:Next) 
+                (to
+                    (sites Occupied by:Next)
                     if:(!= (state at:(to)) 0)
                 )
-                (then 
-                    (set State 
-                        at:(last To) 
+                (then
+                    (set State
+                        at:(last To)
                         (% (+ (state at:(last From)) (state at:(last To))) 5)
                     )
-                ) 
+                )
             )
         )
-        (end (if (no Moves Next) (result Mover Win))) 
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 (metadata
-    
+
     (info
         {
         (description "Chopsticks is a combinatorial hand game of uncertain origin. No equipment is required; people play by showing a number of fingers on their hands.")
@@ -49,7 +49,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour HumanLight))
         (player Colour P2 (colour HumanDark))
@@ -57,9 +57,9 @@
         (piece AddStateToName)
         (no Board)
     })
-    
-    (ai 
+
+    (ai
         "Chopsticks_ai"
     )
-    
+
 )

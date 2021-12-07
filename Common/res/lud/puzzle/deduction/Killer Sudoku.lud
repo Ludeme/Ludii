@@ -1,12 +1,12 @@
 (game "Killer Sudoku"
-    (players 1)  
-    (equipment { 
-        (board (square 9) (values Cell (range 1 9))) 
+    (players 1)
+    (equipment {
+        (board (square 9) (values Cell (range 1 9)))
         <Challenge>
         (regions {Columns Rows SubGrids})
         (regions "RegionHint" HintRegions)
-    } )  
-    (rules 
+    } )
+    (rules
         (play
             (satisfy {
                 (is Sum "RegionHint" (hint))
@@ -21,9 +21,9 @@
 
 (option "Challenge" <Challenge> args:{ <hints>  }
     {
-    (item "Wikipedia" 
+    (item "Wikipedia"
         <
-        (hints 
+        (hints
             {
             (hint {0 9 18 27} 27)
             (hint {1 10} 8)
@@ -31,7 +31,7 @@
             (hint {3 12 13 22} 10)
             (hint {4 5 6} 13)
             (hint {7 8} 17)
-            (hint {14 15} 15) 
+            (hint {14 15} 15)
             (hint {16 17 25 26} 14)
             (hint {19 20 29} 6)
             (hint {21 30 39} 20)
@@ -57,7 +57,7 @@
             }
         )>
         ""
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -76,7 +76,7 @@
         (date "2005")
         }
     )
-    
+
     (graphics {
         (board Style Sudoku)
     })

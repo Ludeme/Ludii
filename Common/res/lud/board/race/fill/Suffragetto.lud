@@ -52,7 +52,7 @@
 )
 
 (define "MinorPieceHopCondition"
-    (and 
+    (and
         ("MajorPieceHopCondition")
         (is In (between) (sites Around (from) Diagonal))
     )
@@ -77,7 +77,7 @@
         )
         (between
             if:(not (is Empty (between)))
-            (apply 
+            (apply
                 (if
                     (if (= ("MinorPiece") (state at: (from)))
                         ("MinorPieceHopCondition")
@@ -105,7 +105,7 @@
 (define "PieceCore"
     (piece #1 #2
         (or {
-            ("MoveStep" ("MiddleOfBoardPlusExtra" #4) ("MiddleOfBoardPlusExtra" #3)) 
+            ("MoveStep" ("MiddleOfBoardPlusExtra" #4) ("MiddleOfBoardPlusExtra" #3))
             ("MoveStep" (sites #3) (sites #3))
             ("MoveHop" ("MiddleOfBoardPlusExtra" #4) ("MiddleOfBoardPlusExtra" #3) #5 (then (moveAgain)))
             ("MoveHop" (sites #3) (sites #3) #5)
@@ -132,7 +132,7 @@
 
 // #1 - state
 (define "CanPieceBeReleasedByState"
-    (and 
+    (and
         (<= 1 ("NumberOfPiecesInRegionByState" "Prison" #1))
         (<= 1 ("NumberOfPiecesInRegionByState" "Hospital" #1))
     )
@@ -186,9 +186,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Suffragetto"  
+(game "Suffragetto"
     (players 2)
-    (equipment { 
+    (equipment {
         (board (square 17))
         (regions "House of Commons" Shared (sites {"H14" "I14" "J14" "H13" "I13" "J13"}))
         (regions "Albert Hall" Shared (sites {"H4" "I4" "J4" "H5" "I5" "J5"}))
@@ -204,16 +204,16 @@
                 (expand (sites { "B13" })steps:6 S)
                 (expand (sites { "C17" "D17" "N17" "O17" })steps:16 S)
             })
-        )	
-        (regions "Hospital Grounds" Shared (expand (sites {"P17"}) steps:5 S))			
-        (regions "Prison Yard" Shared (expand (sites {"B1"}) steps:5 N))			
-        (regions "Prison" Shared 
+        )
+        (regions "Hospital Grounds" Shared (expand (sites {"P17"}) steps:5 S))
+        (regions "Prison Yard" Shared (expand (sites {"B1"}) steps:5 N))
+        (regions "Prison" Shared
             (union
                 (expand (sites {"A1"}) steps:16 N)
                 (expand (sites {"B17"}) steps:3 S)
             )
-        )			
-        (regions "Hospital" Shared 
+        )
+        (regions "Hospital" Shared
             (union
                 (expand (sites {"Q1"}) steps:16 N)
                 (expand (sites {"P1"}) steps:3 N)
@@ -223,8 +223,8 @@
         ("PieceCore" "Policeman" P2 "Albert Hall" "Hospital Grounds" "Prison")
         ("PieceCore" "Leader" P1 "House of Commons" "Prison Yard" "Hospital")
         ("PieceCore" "Inspector" P2 "Albert Hall" "Hospital Grounds" "Prison")
-    })  
-    (rules 
+    })
+    (rules
         (start {
             (place "Suffragette1" {57 61 73 74 78 79 88 89 90 91 92 94 95 96 97 98} state:("MinorPiece"))
             (place "Policeman2" {227 231 209 210 214 215 196 197 198 199 200 194 193 192 191 190} state:("MinorPiece"))
@@ -233,7 +233,7 @@
         })
         (play
             (priority {
-                (if (< 0 (var "ReleaseCountdown")) 
+                (if (< 0 (var "ReleaseCountdown"))
                     (if (is Odd (var "ReleaseCountdown"))
                         (move (from ("ReleaseCandidatesByState" (var "LastState"))) (to ("ReleaseZone"))
                             (then
@@ -260,8 +260,8 @@
                                     )
                                 )
                             )
-                        )					
-                        
+                        )
+
                     )
                 )
                 (if (is Decided "Release")
@@ -273,13 +273,13 @@
                             )
                         )
                     )
-                )				
+                )
                 (if (is Proposed "Release")
                     (or
                         (move Vote "Release")
                         (move Vote "No")
                     )
-                )				
+                )
                 (if "SameTurn"
                     (or
                         (if (= (id P1) (id Mover))
@@ -327,18 +327,18 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Suffragetto is a contest of occupation between two opposing factions, the Suffragettes and the Police. The goal of the Suffragettes is to break past Police lines and enter the House of Commons. At the same  time, The  Suffragettes  must  also  prevent  the  Police  from  entering  Albert  Hall, an  oft-used meeting space of the Women’s Social and Political Union. It is the Police’s duty to break up a meeting of the Suffragettes, currently being held in Albert Hall, all the while, preventing the Suffragettes from entering the House of Commons. The game is won by whoever first succeeds in introducing six members into the building guarded by its opponents.")
         (rules "The game is for two players, each of who has 21 pieces — 5 large pieces [pawns] and 16 small pieces [discs], representing the Suffragettes and the Police. The Suffragettes are colored green, and the large pieces are distinguished as Leaders of the Suffragette Party. The Police Forceis colored dark blue, and the large pieces are distinguished as Inspectors of Police. The Suffragettes are placed on the squares marked ‘S’ near ‘Albert Hall.’ The leaders ofthe party are positioned as follows: One leader is placed in the middle of the front row, and the other four Leaders are placed at the ends of the front and second rows. The Police Force is placed upon the squares marked ‘P’ near the House of Commons. One Inspector is placed in the middle of the front row, and the remaining four Inspectors at the ends of the front and second rows.
-            
+
             Each player alternatively moves or hops one of his or her own pieces. Moving can result in moving to one space into a single adjacent square, hopping over your own pieces to move farther along the board, or hopping over an opponent’s piece to 'arrest' or 'disable' your opponent’s piece. A piece may move horizontally or diagonally one square a turn into any of the 8 adjoining squares, but that square must be unoccupied.  Pieces may freely move over any part of the board except:
-            
+
         a.) No piece can be moved (except when arrested or disabled) onto the spaces marked Prison, Prison Yard [PY], Hospital, or Hospital Grounds [HG].
-        
-    b.) A Suffragette cannot move onto the spaces marked Albert Hall [AH]. 
-    
+
+    b.) A Suffragette cannot move onto the spaces marked Albert Hall [AH].
+
 c.) A Policeman cannot move onto the spaces marked House of Commons [HC].
 
 On a player’s turn, they may hop a piece rather than move it a single square. Hopping means jumping over one of your own pieces into the unoccupied squareon the other side of the hopped over piece (as in Checkers). A player may string together hops into multiple jumps, provided that each jump lands in a permitted zone (as listed above) and there is a space in between each piece hopped over. If the square behind a piece is occupied, the hop cannot be completed. Any piece having gained entrance into their opponent’s House of Commons or Albert Hall may move about freely on the squares representing the building, but must not move or hop away from those squares. Moving within either the House of Commons or Albert Hall spends a player’s turn.
@@ -376,7 +376,7 @@ If at any point, the Prison andthe Hospital each contain 12 or more inmates, eit
     (region Colour "Hospital" Cell (colour "#b6b4cc"))
     (region Colour "Hospital" Edge (colour Black))
     (show Edges Thin (colour Black)) // doesn't work
-    // Arena 
+    // Arena
     (show Symbol "A" 142)
     (show Symbol "R" 143)
     (show Symbol "E" 144)
@@ -415,7 +415,7 @@ If at any point, the Prison andthe Hospital each contain 12 or more inmates, eit
     ("MinorPieceGraphics" "Policeman")
     ("MajorPieceGraphics" "Leader")
     ("MajorPieceGraphics" "Inspector")
-    
+
 })
 (ai
     "Suffragetto_ai"

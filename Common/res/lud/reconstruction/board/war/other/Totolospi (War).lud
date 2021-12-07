@@ -1,9 +1,9 @@
 (game "Totolospi (War)"
-    (players 2) 
-    (equipment { 
+    (players 2)
+    (equipment {
         (board
             (add
-                (square 11) 
+                (square 11)
                 edges:{
                 {10 20} {20 30} {30 40}
                 {40 50} {50 60} {60 70}
@@ -16,10 +16,10 @@
     })
     (rules
         (start {
-            (place "Marker1" 
+            (place "Marker1"
                 (expand (intersection (sites Bottom) (sites Left)) steps:9)
             )
-            (place "Marker2" 
+            (place "Marker2"
                 (expand (intersection (sites Top) (sites Right)) steps:9)
             )
         })
@@ -30,8 +30,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Totolóspi is the name used for at least two games played by the Hopi of Arizona. This game is poorly described, but it is played on a square board with 55 pieces per player, and appears to be a capturing game.")
@@ -44,11 +44,11 @@
         (origin  "This game was played in Arizona, from around 1889 to 1890.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
 )
 

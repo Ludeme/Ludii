@@ -1,14 +1,14 @@
-(game "Jeu de Renard (Two Foxes)" 
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
+(game "Jeu de Renard (Two Foxes)"
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Fox" P1
             (if (= (state at:(from)) 1)
                 (or
                     "StepDiagonalToEmpty"
                     "HopDiagonalCapture"
                 )
-                (then 
+                (then
                     (and
                         (forEach Site
                             (sites Occupied by:Mover)
@@ -20,24 +20,24 @@
             )
         )
         (piece "Hen" P2 N
-            (move 
-                Step 
-                (directions {FR FL}) 
+            (move
+                Step
+                (directions {FR FL})
                 (to if:(is Empty (to)))
-            )		
+            )
         )
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place "Fox1" (intersection (sites Top) (union (sites Left) (difference (expand (sites Right)) (sites Right)))) state:1)
             (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0) ) )
         })
-        
+
         phases:{
         (phase "Opening" P1
-            (play 
-                (forEach Piece 
+            (play
+                (forEach Piece
                     (or
                         "StepDiagonalToEmpty"
                         "HopDiagonalCapture"
@@ -47,12 +47,12 @@
             )
             (nextPhase "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
         }
-        
+
         (end {
             (if (no Moves P1) (result P2 Win) )
             (if (no Pieces P2) (result P1 Win) )
@@ -62,8 +62,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The Jeu de Renard is a hunt game from seventeenth century France. Players play as a fox or a group of hens. This version involves the use of two foxes instead of the customary one.")
@@ -76,13 +76,13 @@
         (origin  "This game was played in France, around 1668.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Abstract" "Themed"})
-        
+
     })
-    
+
     (ai
         "Jeu de Renard (Two Foxes)_ai"
     )

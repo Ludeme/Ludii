@@ -1,4 +1,4 @@
-(game "Tre Guti"  
+(game "Tre Guti"
     (players 2)
     (equipment
         {
@@ -7,41 +7,41 @@
         (piece "Marker" Each
             (or
                 (move Step
-                    (to if:(is Empty (to))) 
+                    (to if:(is Empty (to)))
                 )
                 (move Hop
-                    (between 
-                        if:(is Enemy (who at:(between))) 
+                    (between
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))
                 )
-            )	 
+            )
         )
         }
     )
-    (rules 
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
         }
-        
+
         (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tre Guti is a capturing game played on a small board. It was played by all ages and genders in the Mianwali district of Pakistan.")
@@ -53,12 +53,12 @@
         (origin  "This game was played in South Asia, around 1922.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Tre Guti_ai"
     )

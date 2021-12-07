@@ -1,22 +1,22 @@
-(define "Direction" 
+(define "Direction"
     (if (= 1 (value Piece at:#1)) Forward Backward)
 )
 
 (define "MoveAgainIsJumpEnemy"
-    (then 
+    (then
         (if (is Enemy (who at:(ahead (last To) ("Direction" (last To)))))
             (moveAgain)
         )
-    )    
+    )
 )
 
-(define "Slide" 
+(define "Slide"
     (move Slide
         ("Direction" (from))
         (between (exact #1))
         (to if:(is Empty (to)))
         #2
-    )    
+    )
 )
 
 (define "MoveThree"
@@ -52,11 +52,11 @@
 //------------------------------------------------------------------------------
 
 (game "Squadro"
-    (players {(player E) (player S)})  
+    (players {(player E) (player S)})
     (equipment {
-        (board 
-            (remove 
-                (square 7) 
+        (board
+            (remove
+                (square 7)
                 vertices:{0 6 42 48}
             )
             use:Vertex
@@ -79,7 +79,7 @@
             (pair 0 3) (pair 1 1) (pair 2 2) (pair 3 1) (pair 4 3)
         })
     })
-    (rules 
+    (rules
         (start {
             (place "Minus1" coord:"A2" state:3 value:1)
             (place "Minus1" coord:"A3" state:1 value:1)
@@ -92,18 +92,18 @@
             (place "Minus2" coord:"E7" state:3 value:1)
             (place "Minus2" coord:"F7" state:1 value:1)
         })
-        
-        (play 
-            (if ("SameTurn")    
+
+        (play
+            (if ("SameTurn")
                 (move Hop
                     (from (last To))
-                    (between 
-                        (range 1 (count Columns)) 
+                    (between
+                        (range 1 (count Columns))
                         if:(is Enemy (who at:(between)))
                         (apply
                             (fromTo
                                 (from (between))
-                                (to 
+                                (to
                                     (if (is Mover P1)
                                         (coord row:(if (= (value Piece at:(between)) 1) (- (count Rows) 1) 0) column:(column of:(between)))
                                         (coord row:(row of:(between)) column:(if (= (value Piece at:(between)) 1) 0 (- (count Columns) 1)))
@@ -115,7 +115,7 @@
                     (to if:(is Empty (to)))
                 )
                 (forEach Piece)
-                (then 
+                (then
                     (if (is In (last To) (sites Mover "OppositeHome"))
                         (and
                             (set Value at:(last To) 2)
@@ -128,7 +128,7 @@
                 )
             )
         )
-        
+
         (end (if (= (count Pieces Mover) 1) (result Mover Win)))
     )
 )
@@ -140,7 +140,7 @@
         {
         (description "Squadro is a strategy game for two players, conceptually very simple but extremely rich in depth. It was created by Adrián Jiménez Pascual in March 2015 and is published in 2018 by the company Gigamic.")
         (rules "Each player starts with their five pieces in troughs on their side of the game board, with players sitting perpendicular to one another. When you move a piece, you move it a distance based on the strength indicated in the trough that you're leaving. Once the piece has made its way across the board, you move it back based on the strength on the other side. If you pass over an opposing piece while moving, then that opposing piece must return to its last departing base and your moving piece advances one cell further than where the opposing piece was.
-            
+
         To win Squadro, you need to be the first player to make a return trip with four of your five pieces.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/245222/squadro\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (version "1.3.0")
@@ -151,9 +151,9 @@
         (date "2018")
         }
     )
-    
+
     (graphics {
-        
+
         (show Edges Hidden)
         (board Background image:"square.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:1.25)
         (show Symbol "Cross" (union (sites {"B6" "F6" "B2" "F2"}) (sites Inner)) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.8 rotation:45)
@@ -169,7 +169,7 @@
         (piece Foreground P2 "Minus" value:1 image:"Arrow" fillColour:(colour White) edgeColour:(colour Dark) scale:0.5 rotation:90)
         (piece Foreground P1 "Minus" value:2 image:"Arrow" fillColour:(colour White) edgeColour:(colour Dark) scale:0.5 rotation:180)
         (piece Foreground P2 "Minus" value:2 image:"Arrow" fillColour:(colour White) edgeColour:(colour Dark) scale:0.5 rotation:270)
-        
+
         // Left Point
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:0.38)
@@ -178,21 +178,21 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:0.29)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.50 offsetY:0.29)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.45 offsetY:0.29)
-        
+
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:0.22)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:0.13)
-        
+
         // 2 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:0.05)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:-0.04)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.50 offsetY:0.05)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.50 offsetY:-0.04)
-        
+
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:-0.12)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:-0.21)
-        
+
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:-0.29)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.50 offsetY:-0.29)
@@ -200,12 +200,12 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.55 offsetY:-0.38)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.50 offsetY:-0.38)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.45 offsetY:-0.38)
-        
+
         // Right Point
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:0.38)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:0.29)
-        
+
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:0.22)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.50 offsetY:0.22)
@@ -213,13 +213,13 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:0.13)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.50 offsetY:0.13)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.45 offsetY:0.13)
-        
+
         // 2 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:0.05)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:-0.04)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.50 offsetY:0.05)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.50 offsetY:-0.04)
-        
+
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:-0.12)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.50 offsetY:-0.12)
@@ -227,11 +227,11 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:-0.21)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.50 offsetY:-0.21)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.45 offsetY:-0.21)
-        
+
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:-0.29)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.55 offsetY:-0.38)
-        
+
         // Bottom Point
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.38 offsetY:0.55)
@@ -240,21 +240,21 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.29 offsetY:0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.29 offsetY:0.50)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.29 offsetY:0.45)
-        
+
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.22 offsetY:0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.13 offsetY:0.55)
-        
+
         // 2 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.04 offsetY:0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.05 offsetY:0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.04 offsetY:0.50)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.05 offsetY:0.50)
-        
+
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.12 offsetY:0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.21 offsetY:0.55)
-        
+
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.29 offsetY:0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.29 offsetY:0.50)
@@ -262,12 +262,12 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.38 offsetY:0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.38 offsetY:0.50)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.38 offsetY:0.45)
-        
+
         // Top Point
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.38 offsetY:-0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.29 offsetY:-0.55)
-        
+
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.22 offsetY:-0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.13 offsetY:-0.55)
@@ -275,13 +275,13 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.13 offsetY:-0.50)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.22 offsetY:-0.45)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.13 offsetY:-0.45)
-        
+
         // 2 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.04 offsetY:-0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.05 offsetY:-0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.04 offsetY:-0.50)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:-0.05 offsetY:-0.50)
-        
+
         // 1 point
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.12 offsetY:-0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.21 offsetY:-0.55)
@@ -289,7 +289,7 @@
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.21 offsetY:-0.50)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.12 offsetY:-0.45)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.21 offsetY:-0.45)
-        
+
         // 3 points
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.29 offsetY:-0.55)
         (board Background image:"Disc.svg" fillColour:(colour Grey) edgeColour:(colour Black) scale:0.03 offsetX:0.38 offsetY:-0.55)

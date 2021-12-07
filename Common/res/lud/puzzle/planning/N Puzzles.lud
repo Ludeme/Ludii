@@ -1,19 +1,19 @@
-(game "N Puzzles"  
-    (players 1)  
-    (equipment { 
-        (board (square <Version:boardSize>)) 
+(game "N Puzzles"
+    (players 1)
+    (equipment {
+        (board (square <Version:boardSize>))
         <Version:pieces>
-    })  
-    
+    })
+
     (rules
         (start {
             (place Random {<Version:random>})
-        }) 
-        
+        })
+
         (play (forEach Piece))
-        
-        (end 
-            (if 
+
+        (end
+            (if
                 (is Target {<Version:order>} ) (result P1 Win)
             )
         )
@@ -24,7 +24,7 @@
 
 (option "Board Size" <Version> args:{ <boardSize> <pieces> <random> <order>}
     {
-    (item "2x2"   
+    (item "2x2"
         <2>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -32,11 +32,11 @@
         (piece "3" P1 "StepOrthogonalToEmpty")
         >
         <"1" "2" "3">
-        <3 0 1 2> 
+        <3 0 1 2>
         ""
     )
-    
-    (item "3x3"   
+
+    (item "3x3"
         <3>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -52,8 +52,8 @@
         <7 8 0 4 5 6 1 2 3>
         ""
     )**
-    
-    (item "4x4"   
+
+    (item "4x4"
         <4>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -76,8 +76,8 @@
         <13 14 15 0 9 10 11 12 5 6 7 8 1 2 3 4>
         ""
     )
-    
-    (item "5x5"   
+
+    (item "5x5"
         <5>
         <
         (piece "1" P1 "StepOrthogonalToEmpty")
@@ -113,8 +113,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "N puzzles are played with tiles within a grid, with one empty space. For instance, in a 4x4 grid there are 15 tiles.")
@@ -127,13 +127,13 @@
         (date "1874")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
     })
-    
-    (ai 
+
+    (ai
         "N Puzzles_ai"
     )
-    
+
 )

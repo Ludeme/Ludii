@@ -4,10 +4,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lamlameta"  
-    (players 2)  
-    
-    (equipment { 
+(game "Lamlameta"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 12 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -15,14 +15,14 @@
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 2 to:(sites Track) ) )
-        
+
         phases:{
-        (phase "Opening" 
-            (play 
+        (phase "Opening"
+            (play
                 (if ("NewTurn")
                     (move Select
                         (from
@@ -50,7 +50,7 @@
                                 (sites {("NextHole" ("LastHoleSowed"))})
                             )
                             (then
-                                (and 
+                                (and
                                     (sow)
                                     (moveAgain)
                                 )
@@ -64,11 +64,11 @@
         (phase "Sowing"
             (play
                 (move Select
-                    (from 
+                    (from
                         (sites Mover)
                         if:(and (is Occupied (from)) (!= 2 (count at:(from))))
                     )
-                    (then 
+                    (then
                         (sow
                             skipIf:(= 2 (count at:(to)))
                         )
@@ -82,7 +82,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Lamlameta is a two-row mancala-style board game played by the Konso people of Ethiopia. It is played on a larger board than most other games played in Ethiopia, ")
@@ -95,7 +95,7 @@
         (origin  "This game was played in Ethiopia, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

@@ -1,17 +1,17 @@
 (define "HasFreedom" (> (count Liberties Orthogonal) 0))
 
 (define "CaptureSurroundedPiece"
-    (enclose 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply             
-                (and 
-                    (addScore Mover 1) 
-                    (remove (between)) 
+    (enclose
+        (from (last To))
+        Orthogonal
+        (between
+            if:(is Enemy (who at:(between)))
+            (apply
+                (and
+                    (addScore Mover 1)
+                    (remove (between))
                 )
-            ) 
+            )
         )
         numException:1
     )
@@ -29,7 +29,7 @@
     (rules
         phases:{
         (phase "MarkedPlacement"
-            (play 
+            (play
                 (move
                     Add
                     (to (intersection (sites Empty) (sites "MarkedSites")))
@@ -37,13 +37,13 @@
             )
             (nextPhase (= 0 (count Sites in:(intersection (sites "MarkedSites") (sites Empty)))) "Playing")
         )
-        (phase "Playing" 
+        (phase "Playing"
             (play
                 (do
                     (move
                         Add
                         (to (sites Empty))
-                        (then 
+                        (then
                             "CaptureSurroundedPiece"
                         )
                     )
@@ -53,7 +53,7 @@
             (end
                 (if (no Moves Next)
                     (byScore {
-                        (score P1 (+ (score P1) (size Territory P1))) 
+                        (score P1 (+ (score P1) (size Territory P1)))
                         (score P2 (+ (score P2) (size Territory P2)))
                     })
                 )
@@ -65,8 +65,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Patok is a game played in Korea that is very similar to Japanese Go and Chinese Wei-Qi. There is a customary opening phase, in which players place pieces on certain spaces before beginning.")
@@ -79,16 +79,16 @@
         (origin  "This game was played in Korea, around 1895.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
         (show Symbol "disc" Vertex {60 63 66 69 72 129 174 180 186 243 294 300} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:0.25 offsetY:0.25)
         (show Symbol "disc" Vertex {60 63 66 69 72 117 174 180 186 231 288 294} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:-0.25 offsetY:0.25)
         (show Symbol "disc" Vertex {60 66 117 174 180 186 231 288 291 294 297 300} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:-0.25 offsetY:-0.25)
         (show Symbol "disc" Vertex {66 72 129 174 180 186 243 288 291 294 297 300} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:0.25 offsetY:-0.25)
-        
+
     })
-    
+
     (ai
         "Patok_ai"
     )

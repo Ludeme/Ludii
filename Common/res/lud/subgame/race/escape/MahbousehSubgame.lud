@@ -1,62 +1,62 @@
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:(pips)
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "AllPieceInHome" 
-    ("NoSites" 
-        (difference 
-            (sites Occupied by:Mover) 
+(define "AllPieceInHome"
+    ("NoSites"
+        (difference
+            (sites Occupied by:Mover)
             (sites Mover "Home")
         )
     )
 )
 
-(define "RemoveAPiece" 
+(define "RemoveAPiece"
     (move
         Remove
-        (site) 
-    )		
+        (site)
+    )
 )
 
-(define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
-    (and { 
-        ("DieNotUsed") 
-        (!= ("NextSiteFrom" (from)) Off) 
-        (!= ("NextSiteFrom" (from)) End) 
-    })		
+(define "DieNotUsedAndNoEscapeAndNotOffTheTrack"
+    (and {
+        ("DieNotUsed")
+        (!= ("NextSiteFrom" (from)) Off)
+        (!= ("NextSiteFrom" (from)) End)
+    })
 )
 
-(define "MoveAPiece" 
-    (move 
+(define "MoveAPiece"
+    (move
         (from #1)
-        (to 
-            ("NextSiteFrom" #1) 
-            if:("NotEnemyOrOnlyOne") 
+        (to
+            ("NextSiteFrom" #1)
+            if:("NotEnemyOrOnlyOne")
         )
     )
 )
 
-(define "MoveAPieceIf" 
-    (forEach Die 
-        replayDouble:True 
+(define "MoveAPieceIf"
+    (forEach Die
+        replayDouble:True
         if:#1
         ("MoveAPiece" #2)
-    )		
+    )
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
@@ -65,36 +65,36 @@
 
 (define "CanEscape" (= ("NextSiteFrom" (site)) End))
 
-(define "NotEmptyAndNotOffTheBoard" 
-    (and 
-        (!= (what at:(site)) 0) 
+(define "NotEmptyAndNotOffTheBoard"
+    (and
+        (!= (what at:(site)) 0)
         (!= ("NextSiteFrom" (site)) Off)
     )
 )
 
-(define "SetScoreOf" 
-    (score 
+(define "SetScoreOf"
+    (score
         #1
         (size Stack in:(sites Occupied by:#2))
     )
 )
 
-(define "HaveAPieceAndCanEscape" 
-    (and 
-        (is Friend (who at:(site))) 
+(define "HaveAPieceAndCanEscape"
+    (and
+        (is Friend (who at:(site)))
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )
 
-(define "PieceInLastQuadrant" 
-    (!= 
-        (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "Home"))) 
+(define "PieceInLastQuadrant"
+    (!=
+        (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "Home")))
         0
-    ) 
+    )
 )
 
-(define "InTheStartingPosition" 
-    (= (from) (mapEntry (mover)))  
+(define "InTheStartingPosition"
+    (= (from) (mapEntry (mover)))
 )
 
 (define "Not14PiecesInThePosition"
@@ -103,39 +103,39 @@
 
 //-----------------------------------------------------------------------------
 
-(game "MahbousehSubgame"  
-    (players 2)  
-    (equipment { 
+(game "MahbousehSubgame"
+    (players 2)
+    (equipment {
         (board (rectangle 2 13)
             {
             (track "Track1" {12..7 5..0 13..18 20..25 End} P1 directed:True)
             (track "Track2" {25..20 18..13 0..5 7..12 End} P2 directed:True)
-            } 
+            }
             use:Vertex
-        ) 
+        )
         (dice num:2)
-        (regions "Home" P1 { 20..25 }) 
-        (regions "Home" P2 { 7..12 }) 
+        (regions "Home" P1 { 20..25 })
+        (regions "Home" P2 { 7..12 })
         (map {(pair 1 12) (pair 2 25)}) // The starting positions of each player.
-        (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
+        (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from)))
     } )
-    
+
     (rules
-        (start { 
+        (start {
             (place Stack "Disc1" 12 count:15)
             (place Stack "Disc2" 25 count:15)
         })
-        
-        (play 
-            (do 
+
+        (play
+            (do
                 (if (not "SameTurn") (roll))
                 next:(if "AllPieceInHome"
-                    (forEach Die 
-                        replayDouble:True 
+                    (forEach Die
+                        replayDouble:True
                         if:("DieNotUsed")
-                        (forEach Site 
+                        (forEach Site
                             (sites Mover "Home")
-                            (if ("NotEmptyAndNotOffTheBoard") 
+                            (if ("NotEmptyAndNotOffTheBoard")
                                 (if ("CanEscape")
                                     ("RemoveAPiece")
                                     ("MoveAPiece" (site))
@@ -146,7 +146,7 @@
                                     "RemoveAPiece"
                                 )
                             )
-                            (then 
+                            (then
                                 (if (not (all DiceUsed))
                                     (moveAgain)
                                 )
@@ -154,7 +154,7 @@
                         )
                     )
                     (forEach Piece top:True
-                        (then 
+                        (then
                             (if (not (all DiceUsed))
                                 (moveAgain)
                             )
@@ -163,10 +163,10 @@
                 )
             )
         )
-        
-        (end 
-            (if ("AllPieceEscaped") 
-                (byScore { 
+
+        (end
+            (if ("AllPieceEscaped")
+                (byScore {
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 } )
@@ -177,18 +177,18 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (version "1.1.0")
         (classification "")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType Backgammon)
     })
-    
+
 )

@@ -5,17 +5,17 @@
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 
 (define "OnlyHolesWithTwoOrThree"
-    (all Sites 
-        (intersection (sites Mover "Home") (sites Mover "ThreeLeftMost")) 
+    (all Sites
+        (intersection (sites Mover "Home") (sites Mover "ThreeLeftMost"))
         if:(or (= 2 (count at:(site))) (= 3 (count at:(site))))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Selus"  
-    (players 2)  
-    (equipment { 
+(game "Selus"
+    (players 2)
+    (equipment {
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
         )
@@ -25,15 +25,15 @@
         (regions "Home" P2 (union (intersection (sites Row 1) (expand (sites Left) steps:2)) (sites Top))) // P2 home
         (regions "ThreeLeftMost" P1 (intersection (sites Bottom) (expand (sites Left) steps:2))) // P1 ThreeLeftMost
         (regions "ThreeLeftMost" P2 (intersection (sites Top) (expand (sites Right) steps:2))) // P2 ThreeLeftMost
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 3 to:(sites Board) ))
-        
-        (play 
+
+        (play
             (priority {
                 (move Select
-                    (from 
+                    (from
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover)
@@ -45,7 +45,7 @@
                             next:(sow
                                 apply:(if (< 1 (count at:(to)))
                                     (if (and {
-                                            (= 0 (state at:(to))) 
+                                            (= 0 (state at:(to)))
                                             (= 4 (count at:(to)))
                                             ("NoNedf")
                                             (is In (to) (sites Next))
@@ -67,7 +67,7 @@
                 )
                 (if ("OnlyHolesWithTwoOrThree")
                     (move Select
-                        (from 
+                        (from
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
                                 (sites Mover)
@@ -79,7 +79,7 @@
                                 next:(sow
                                     apply:(if (< 1 (count at:(to)))
                                         (if (and {
-                                                (= 0 (state at:(to))) 
+                                                (= 0 (state at:(to)))
                                                 (= 4 (count at:(to)))
                                                 ("NoNedf")
                                                 (is In (to) (sites Next))
@@ -101,7 +101,7 @@
                     )
                 )
                 (move Select
-                    (from 
+                    (from
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover)
@@ -121,7 +121,7 @@
                             next:(sow
                                 apply:(if (< 1 (count at:(to)))
                                     (if (and {
-                                            (= 0 (state at:(to))) 
+                                            (= 0 (state at:(to)))
                                             (= 4 (count at:(to)))
                                             ("NoNedf")
                                             (is In (to) (sites Next))
@@ -142,7 +142,7 @@
                     )
                 )
                 (move Select
-                    (from 
+                    (from
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "ThreeLeftMost")
@@ -154,7 +154,7 @@
                             next:(sow
                                 apply:(if (< 1 (count at:(to)))
                                     (if (and {
-                                            (= 0 (state at:(to))) 
+                                            (= 0 (state at:(to)))
                                             (= 4 (count at:(to)))
                                             ("NoNedf")
                                             (is In (to) (sites Next))
@@ -175,7 +175,7 @@
                     )
                 )
                 (move Select
-                    (from 
+                    (from
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "ThreeLeftMost")
@@ -187,7 +187,7 @@
                             next:(sow
                                 apply:(if (< 1 (count at:(to)))
                                     (if (and {
-                                            (= 0 (state at:(to))) 
+                                            (= 0 (state at:(to)))
                                             (= 4 (count at:(to)))
                                             ("NoNedf")
                                             (is In (to) (sites Next))
@@ -208,7 +208,7 @@
                     )
                 )
                 (move Select
-                    (from 
+                    (from
                         (if ("SameTurn")
                             (sites {(var "Replay")})
                             (sites Mover "ThreeLeftMost")
@@ -220,7 +220,7 @@
                             next:(sow
                                 apply:(if (< 1 (count at:(to)))
                                     (if (and {
-                                            (= 0 (state at:(to))) 
+                                            (= 0 (state at:(to)))
                                             (= 4 (count at:(to)))
                                             ("NoNedf")
                                             (is In (to) (sites Next))
@@ -242,7 +242,7 @@
                 )
             })
         )
-        
+
         (end
             (if  (no Moves Next)
                 (result Mover Win)
@@ -253,7 +253,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Selus is a three-row mancala-style game played in Ethiopia since at least the nineteenth century. It is considered an aristocratic game, and was played by nobility in the Ethiopian Empire. It involves complex rules, and is said to have taken several hours to play.")
@@ -266,7 +266,7 @@
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)

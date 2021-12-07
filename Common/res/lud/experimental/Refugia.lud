@@ -1,12 +1,12 @@
 // Defines for Integers
 
-(define "TieBreaker" 
+(define "TieBreaker"
     (count Pieces #1)
 )
 
 (define "Unfriendlies" // Cannot use NonMover for this
-    (count Sites 
-        in:(intersection 
+    (count Sites
+        in:(intersection
             (sites Around #1)
             (union
                 (sites Occupied by:Next)
@@ -35,11 +35,11 @@
 // Functional defines
 
 (define "UpdateScore"
-    (set Score #1 
-        (/ 
-            (+ 
-                (results 
-                    from:(sites Occupied by:#1) 
+    (set Score #1
+        (/
+            (+
+                (results
+                    from:(sites Occupied by:#1)
                     to:(sites Around (from) if:(is #1 (who at:(to))))
                     1
                 )
@@ -51,8 +51,8 @@
 
 (define "Placement"
     (move Add (piece (id "Disc" Mover))
-        (to 
-            (sites Empty) 
+        (to
+            (sites Empty)
             if:"NonAdjacent"
         )
     )
@@ -61,7 +61,7 @@
 (define "StepMove"
     (forEach Piece
         (move Step
-            (to (sites Around (from)) 
+            (to (sites Around (from))
                 if:(and
                     (is Empty (to))
                     ("MoveAllowed")
@@ -76,17 +76,17 @@
 (define "HopNeutral"
     (forEach Piece
         (move Hop
-            (between 
+            (between
                 if:(is Next (who at:(between)))
-                (apply 
-                    (and 
+                (apply
+                    (and
                         (remove (between))
                         (add (piece (id "Fan" Neutral)) (to (between)))
                     )
                 )
             )
-            (to 
-                if:(and 
+            (to
+                if:(and
                     (is Empty (to))
                     ("MoveAllowed")
                 )
@@ -100,17 +100,17 @@
 (define "HopEnemy"
     (forEach Piece
         (move Hop
-            (between 
-                if:(is Within (id "Fan" Neutral) at:(between)) 
-                (apply 
-                    (and 
+            (between
+                if:(is Within (id "Fan" Neutral) at:(between))
+                (apply
+                    (and
                         (remove (between))
                         (add (piece (id "Disc" Mover)) (to (between)))
                     )
                 )
             )
-            (to 
-                if:(and 
+            (to
+                if:(and
                     (is Empty (to))
                     ("MoveAllowed")
                 )
@@ -123,7 +123,7 @@
 
 //-------------------------------------------
 
-(game "Refugia" 
+(game "Refugia"
     (players 2)
     (equipment
         {
@@ -133,7 +133,7 @@
         (piece "Fan"  Neutral)
         }
     )
-    (rules   
+    (rules
         (start (set Score Each 0))
         (play
             (or
@@ -142,27 +142,27 @@
                 ("HopEnemy")
                 ("HopNeutral")
                 ("Placement")
-                (move Pass) 
+                (move Pass)
                 }
             )
         )
-        (end 
-            (if 
+        (end
+            (if
                 (all Passed)
                 {
-                (if 
+                (if
                     (gt (score Mover) (score Next))
                     (result Mover Win)
                 )
-                (if 
+                (if
                     (lt (score Mover) (score Next))
                     (result Next Win)
                 )
-                (if 
+                (if
                     (gt ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Mover Win)
                 )
-                (if 
+                (if
                     (lt ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Next Win)
                 )
@@ -171,11 +171,11 @@
             )
         )
     )
-)           
+)
 
 //---------------------------------------
 
-(option "Board Size" <Board> args:{ <size> } 
+(option "Board Size" <Board> args:{ <size> }
     {
     (item "Hex  2-3" <{2 3 2 3 2}>  "Board & size: Hexhex (12) with edges alternating 2 and 3")
     (item "Hex  2-4" <{2 4 2 4 2}>  "Board & size: Hexhex (18) with edges alternating 2 and 4")
@@ -185,8 +185,8 @@
     (item "Hex  4-6" <{4 6 4 6 4}>  "Board & size: Hexhex (60) with edges alternating 4 and 6")
     (item "Hex  5-6" <{5 6 5 6 5}>  "Board & size: Hexhex (75) with edges alternating 5 and 6")
     (item "Hex  5-7" <{5 7 5 7 5}>  "Board & size: Hexhex (90) with edges alternating 5 and 7")
-    (item "Hex  6-7" <{6 7 6 7 6}>  "Board & size: Hexhex (108) with edges alternating 7 and 8") 
-    (item "Hex  6-8" <{6 8 6 8 6}>  "Board & size: Hexhex (126) with edges alternating 6 and 8") 
+    (item "Hex  6-7" <{6 7 6 7 6}>  "Board & size: Hexhex (108) with edges alternating 7 and 8")
+    (item "Hex  6-8" <{6 8 6 8 6}>  "Board & size: Hexhex (126) with edges alternating 6 and 8")
     }
 )
 
@@ -199,35 +199,35 @@
 
 //----------------------------------------------------------
 (metadata
-    
+
     (info
         {
         (description "Refugia is a modern experimental game with a goal of consolidating stones.
-            
-            Stones enter unconnected, and can only move by fleeing from concentrations of enemy stones. Thus it is a movement game with a territorial aspect.  
-            
-            The game includes capture-by-hopping moves, which create mutual-enemy stones as an intermediate stage before possible reconversion back to player's stones. This mechanism keeps the game provably finite. 
-            
-            The pseudo-territories formed by the clumps of stones, have boundaries that can erode and shift; so the game is more tactical than strategic. Shifts in strategic concerns do occur, however, as the game evolves from first mainly claiming territory by placement density, to a race to agglomerate or capture, to fights to recapture vs blocking to retain lead in a tactical end game. 
-            
+
+            Stones enter unconnected, and can only move by fleeing from concentrations of enemy stones. Thus it is a movement game with a territorial aspect.
+
+            The game includes capture-by-hopping moves, which create mutual-enemy stones as an intermediate stage before possible reconversion back to player's stones. This mechanism keeps the game provably finite.
+
+            The pseudo-territories formed by the clumps of stones, have boundaries that can erode and shift; so the game is more tactical than strategic. Shifts in strategic concerns do occur, however, as the game evolves from first mainly claiming territory by placement density, to a race to agglomerate or capture, to fights to recapture vs blocking to retain lead in a tactical end game.
+
         Because the effect of the mutual-enemy stones on movement is symmetrical but not the same for the two players, the game requires considerable mental concentration.")
-        (rules "2 players. Each plays Discs. - 
-            
-            --- Goal: Most friendly-stone adjacencies at the end of the game. Ties are broken by comparing piece counts. If it is still a tie, the last player to move loses. 
-            
+        (rules "2 players. Each plays Discs. -
+
+            --- Goal: Most friendly-stone adjacencies at the end of the game. Ties are broken by comparing piece counts. If it is still a tie, the last player to move loses.
+
             --- Play.
             On your turn you may do one of the following:
             1. Pass
-            
+
             2. Place one of your stones on an empty cell of the board is not adjacent to your existing stones.
-            
+
             3. Move to a location with fewer adjacent enemies than the starting location.
-            
+
             Moves are made in one of the following ways while keeping the above restriction:
             -- A. Step to an adjacent empty location.
             -- B. Hop your opponent's stone and replace it with a mutual enemy piece.
             -- C. Hop a mutual enemy piece and replace it with a stone from your supply.
-            
+
         Note that the number of enemies is based on a count of both the opponent's stones and the mutual-enemy stones combined.  ")
         (source "<a href=\"https://boardgamegeek.com/thread/2557883\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (version "1.3.0")
@@ -237,8 +237,8 @@
         (date "11-12-2020")
         }
     )
-    
-    (graphics 
+
+    (graphics
         {
         (board Colour Phase0 <CellBackground:color>)
         (board Colour InnerEdges (colour 62 72 55))

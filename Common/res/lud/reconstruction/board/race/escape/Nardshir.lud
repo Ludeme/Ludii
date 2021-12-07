@@ -1,9 +1,9 @@
-(game "Nardshir" 
+(game "Nardshir"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Nardshir is a game attested from Persia and Mesopotamia from the middle of the first century CE. It is the ancestor of the game Nard, and may be the ancestor of similar games such as Backgammon.")
@@ -37,12 +37,12 @@
         (origin  "This game was played in Persia, from around 500 to 651.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
         (stackType Backgammon)
     })
-    
+
 )
 

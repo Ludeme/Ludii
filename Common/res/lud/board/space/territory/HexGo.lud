@@ -1,17 +1,17 @@
 (define "HasFreedom" (> (count Liberties Orthogonal) 0))
 
 (define "CaptureSurroundedPiece"
-    (enclose 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply             
-                (and 
-                    (addScore Mover 1) 
-                    (remove (between)) 
+    (enclose
+        (from (last To))
+        Orthogonal
+        (between
+            if:(is Enemy (who at:(between)))
+            (apply
+                (and
+                    (addScore Mover 1)
+                    (remove (between))
                 )
-            ) 
+            )
         )
     )
 )
@@ -31,18 +31,18 @@
         (piece "Ball" P1)
         (piece "Ball" P2)
         }
-    )	
-    (rules 
+    )
+    (rules
         (meta
             (noRepeat)
         )
-        (play 
+        (play
             (or
                 (do
-                    (move 
+                    (move
                         Add
                         (to (sites Empty))
-                        (then 
+                        (then
                             "CaptureSurroundedPiece"
                         )
                     )
@@ -50,28 +50,28 @@
                 )
                 (move Pass)
             )
-        )        
+        )
         (end
             (if (all Passed)
                 (byScore {
-                    (score P1 (+ (score P1) (size Territory P1))) 
+                    (score P1 (+ (score P1) (size Territory P1)))
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
             )
         )
-    )	
-    
+    )
+
 )
 
 //------------------------------------------------------------------------------
 
-(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>} 
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>}
     {
     (item "Hex Grid" <"HexHex"> <Orthogonal>      <Hidden>   <Orthogonal>       "Hex Grid - Standard")
     }
 )
 
-(option "Board Size" <BoardSize> args:{ <numberOfVertices> } 
+(option "Board Size" <BoardSize> args:{ <numberOfVertices> }
     {
     (item "Order 3" <3> "Order 3 board")
     (item "Order 4" <4> "Order 4 board")
@@ -100,9 +100,9 @@
         (date "2021")
         }
     )
-    
-    (graphics 
-        {       
+
+    (graphics
+        {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (piece Scale 0.8)

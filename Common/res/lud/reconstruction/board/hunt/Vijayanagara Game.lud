@@ -1,7 +1,7 @@
 (game "Vijayanagara Game"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (add
                 (remove
                     (merge {
@@ -14,9 +14,9 @@
             )
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -24,8 +24,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The board for this game was found as graffiti at the site of Vijayanagara in India. The board resembles others that are used for hunt games in South Asia.")
@@ -36,10 +36,10 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal (colour Hidden))
-        
+
     })
-    
+
 )

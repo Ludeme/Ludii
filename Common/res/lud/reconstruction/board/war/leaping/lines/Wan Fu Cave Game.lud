@@ -1,10 +1,10 @@
 (game "Wan Fu Cave Game"
-    (players 2)  
-    (equipment { 
+    (players 2)
+    (equipment {
         ("AlquerqueBoard" 5 5)
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The board for this game was found in Wan Fu Cave, part of the Longmen cave-temples near Luoyang, China. The board is of a common type known throughout the world, but is not as commonly attested in China.")
@@ -25,9 +25,9 @@
         (origin  "This game was played in China, from around 680 to 2002.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
 )

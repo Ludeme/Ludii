@@ -1,66 +1,66 @@
 (define "CaptureAgainIn"
     (move
         Select
-        (from #1) 
-        (to 
-            (sites Around #1) 
-            if:(and { 
-                (not (is Visited (to))) 
-                (is Empty (to)) 
+        (from #1)
+        (to
+            (sites Around #1)
+            if:(and {
+                (not (is Visited (to)))
+                (is Empty (to))
                 (is Enemy (who at:(ahead #2 #3)))
             })
         )
     )
-)  
+)
 
 (define "EmptyButNotVisitedWithEnemyIn"
-    (and { 
-        (not (is Visited (to))) 
-        (is Empty (to)) 
+    (and {
+        (not (is Visited (to)))
+        (is Empty (to))
         (is Enemy (who at:(ahead #1 #2)))
     })
 )
 
 (define "EmptyWithEnemyIn"
-    (and 
-        (is Empty (to)) 
+    (and
+        (is Empty (to))
         (is Enemy (who at:(ahead #1 #2)))
     )
 )
 
 (define "RemoveEnemyPiece"
-    (to 
-        if:(is Enemy (who at:(to))) 
+    (to
+        if:(is Enemy (who at:(to)))
         (apply (remove (to)))
     )
 )
 
 (define "MoveThePiece"
-    (fromTo 
-        (from (last From)) 
+    (fromTo
+        (from (last From))
         (to (last To))
-    ) 
+    )
 )
 
 (define "MoveAgainIn"
     (move
         Select
-        (from #1) 
-        (to 
-            (sites Around #1) 
+        (from #1)
+        (to
+            (sites Around #1)
             if:("EmptyButNotVisitedWithEnemyIn" #2 #3)
-        ) 
-        (then 
+        )
+        (then
             (and {
-                "MoveThePiece" 
-                (directional 
-                    (from #4) 
+                "MoveThePiece"
+                (directional
+                    (from #4)
                     #5
                     "RemoveEnemyPiece"
-                ) 
-                (if 
+                )
+                (if
                     (can Move
-                        (or 
+                        (or
                             ("CaptureAgainIn" #1 (to) SameDirection)
                             ("CaptureAgainIn" #1 (from) OppositeDirection)
                         )
@@ -72,108 +72,108 @@
     )
 )
 
-(define "CaptureFromLast"  		
-    (or 
+(define "CaptureFromLast"
+    (or
         ("MoveAgainIn" #1 (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
         ("MoveAgainIn" #1 (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
     )
 )
 
-(define "MoveAgain" 
-    (then 
-        (if 
-            (can Move ("CaptureFromLast" (last To))) 
+(define "MoveAgain"
+    (then
+        (if
+            (can Move ("CaptureFromLast" (last To)))
             (moveAgain)
         )
-    ) 
+    )
 )
 
 (define "MoveIn"
-    (forEach Piece 
+    (forEach Piece
         (move
             Select
-            (from) 
-            (to 
-                (sites Around (from)) 
+            (from)
+            (to
+                (sites Around (from))
                 if:("EmptyWithEnemyIn" #1 #2)
-            ) 
-            (then 
-                (and 
-                    "MoveThePiece" 
-                    (directional 
-                        (from #3) 
+            )
+            (then
+                (and
+                    "MoveThePiece"
+                    (directional
+                        (from #3)
                         #4
                         "RemoveEnemyPiece"
                     )
-                ) 
+                )
             )
-        ) 
+        )
         #5
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Vela" 
-    (players 2)  
-    (equipment { 
+(game "Vela"
+    (players 2)
+    (equipment {
         ("AlquerqueBoard" 5 9)
         (piece "Marker" Each)
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Marker1" (union (expand (sites Bottom) ) (sites {"B3" "D3" "G3" "I3"})) )
             (place "Marker2" (union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top) ) ) )
         })
-        
+
         phases:{
         (phase "CapturingFirstPhase"
             (play
                 (priority {
                     (if (is Mover P1)
-                        (or 
+                        (or
                             ("MoveIn" (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)))
                             ("MoveIn" (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)))
                         )
                     )
                     (forEach Piece "StepToEmpty")
                 })
-            )	
+            )
             (nextPhase (<= (count Pieces P2) 5) "FanoronaPhase")
         )
-        
+
         (phase "FanoronaPhase"
             (play
                 (if "SameTurn"
-                    (or 
-                        (if 
-                            (!= (what at:(last To)) 0) 
-                            ("CaptureFromLast" (last To)) 
+                    (or
+                        (if
+                            (!= (what at:(last To)) 0)
+                            ("CaptureFromLast" (last To))
                             ("CaptureFromLast" (last From))
                         )
                         (move Pass)
                     )
                     (priority {
-                        (or 
+                        (or
                             ("MoveIn" (to) SameDirection (last To) (directions Vertex from:(last From) to:(last To)) "MoveAgain")
                             ("MoveIn" (from) OppositeDirection (last From) (directions Vertex from:(last To) to:(last From)) "MoveAgain")
                         )
                         (forEach Piece "StepToEmpty")
                     })
                 )
-            )	
+            )
             (end (if (no Pieces Mover) (result Next Win)))
         )
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Véla is a form of Fanorona played in Madagascar. This game is played when a player has lost at the standard game of Fanorona, and they may not play the standard game again until they either win at this game or admit inferiority to the winner.")
@@ -186,9 +186,9 @@
         (origin  "This game was played in Madagascar, around 1896.")
         }
     )
-    
+
     (graphics {
-        
+
     })
     (ai
         "Vela_ai"

@@ -1,128 +1,128 @@
 (define "CapturePiece"
-    (apply 
-        (add 
-            (piece (mapEntry "captured" (what at:(to)))) 
+    (apply
+        (add
+            (piece (mapEntry "captured" (what at:(to))))
             (to (mapEntry "where" (what at:(to))))
         )
     )
 )
 
 (define "CapturePiece"
-    (apply 
-        (add 
-            (piece (mapEntry "captured" (what at:(to)))) 
+    (apply
+        (add
+            (piece (mapEntry "captured" (what at:(to))))
             (to (mapEntry "where" (what at:(to))))
         )
     )
 )
 
 (define "InPromotionZone"
-    (is In #1 (sites Mover "Promotion") )	
+    (is In #1 (sites Mover "Promotion") )
 )
 
 (define "InLastRank"
-    (is In #1 (sites Mover "LastRank") )	
+    (is In #1 (sites Mover "LastRank") )
 )
 
 (define "InTwoFurthestRank"
-    (is In #1 (sites Mover "TwoFurthestRank") )	
+    (is In #1 (sites Mover "TwoFurthestRank") )
 )
 
 (define "Promote"
-    (move Promote (last To) (piece (mapEntry "promoted" (what at:(last To)))))	
+    (move Promote (last To) (piece (mapEntry "promoted" (what at:(last To)))))
 )
 
 (define "CanPromote"
-    (then 
-        (if 
-            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From)) ) 
-            (moveAgain) 
-        ) 
+    (then
+        (if
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From)) )
+            (moveAgain)
+        )
     )
 )
 
 (define "SlideMove"
     (move
         Slide
-        #1 
+        #1
         (to if:(is Enemy (who at:(to))) "CapturePiece")
-        #2 
-    )   	
+        #2
+    )
 )
 
 (define "StepMove"
     (move
         Step
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
-        #2 
-    )   	
+        (to if:(not (is Friend (who at:(to)))) "CapturePiece")
+        #2
+    )
 )
 
 (define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
 
 (define "KingCheck"
-    (is Threatened (id "Osho" #1) at:(where "Osho" #1)) 
+    (is Threatened (id "Osho" #1) at:(where "Osho" #1))
 )
 
 (define "NextCanNotMove"
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("KingCheck" Next))) ))
 )
 
-(define "OnePawnPerColumn" 
-    (= 
-        (count Sites in:(sites Occupied by:Mover container:"Board" component:"Fuhyo")) 
+(define "OnePawnPerColumn"
+    (=
+        (count Sites in:(sites Occupied by:Mover container:"Board" component:"Fuhyo"))
         (count Sites in:(difference (sites Occupied by:Mover container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
     )
 )
 
-(define "PlaceAKnight" 
-    (move 
-        (from (sites Occupied by:Mover container:"Hand" component:"Keima" )) 
+(define "PlaceAKnight"
+    (move
+        (from (sites Occupied by:Mover container:"Hand" component:"Keima" ))
         (to (difference (sites Empty) (sites Mover "TwoFurthestRank") ))
     )
 )
 
-(define "PlaceALance" 
-    (move 
-        (from (sites Occupied by:Mover container:"Hand" component:"Kyosha" )) 
+(define "PlaceALance"
+    (move
+        (from (sites Occupied by:Mover container:"Hand" component:"Kyosha" ))
         (to (difference (sites Empty) (sites Mover "LastRank") ))
     )
 )
 
-(define "PlaceAPawn" 
-    (do 
-        (move 
-            (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo")) 
-            (to (difference (sites Empty) (sites Mover "LastRank") ) 
+(define "PlaceAPawn"
+    (do
+        (move
+            (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo"))
+            (to (difference (sites Empty) (sites Mover "LastRank") )
                 if:"OnePawnPerColumn"
             )
-        ) 
+        )
         ifAfterwards:(not ("KingCheck" Next))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Shogi Puzzle"  
-    (players {(player N) (player S)}) 
-    
-    (equipment { 
+(game "Shogi Puzzle"
+    (players {(player N) (player S)})
+
+    (equipment {
         (board (square 9))
-        
+
         // King
         (piece "Osho" Each ("StepMove"))
-        //Pawn 
-        (piece "Fuhyo" Each 
-            ("StepMove" 
-                Forward 
-                (then 
+        //Pawn
+        (piece "Fuhyo" Each
+            ("StepMove"
+                Forward
+                (then
                     (if ("InPromotionZone" (last To))
-                        (if ("InLastRank" (last To)) 
-                            "Promote" 
-                            (moveAgain) 
-                        ) 
-                    ) 
+                        (if ("InLastRank" (last To))
+                            "Promote"
+                            (moveAgain)
+                        )
+                    )
                 )
             )
         )
@@ -133,23 +133,23 @@
         // Bishop
         (piece "Kakugyo" Each ("SlideMove" Diagonal "CanPromote"))
         // Knight
-        (piece "Keima" Each 
-            (forEach Direction 
-                Forward 
-                (to 
-                    if:True 
-                    (apply 
-                        (forEach Direction 
-                            (from (to)) 
-                            (directions {FR FL}) 
-                            (if (not (is Friend (who at:(to)))) 
-                                (move 
-                                    (from) 
-                                    (to 
-                                        (apply 
+        (piece "Keima" Each
+            (forEach Direction
+                Forward
+                (to
+                    if:True
+                    (apply
+                        (forEach Direction
+                            (from (to))
+                            (directions {FR FL})
+                            (if (not (is Friend (who at:(to))))
+                                (move
+                                    (from)
+                                    (to
+                                        (apply
                                             if:(is Enemy (who at:(to)))
-                                            (add 
-                                                (piece (mapEntry "Captured" (what at:(to)))) 
+                                            (add
+                                                (piece (mapEntry "Captured" (what at:(to))))
                                                 (to (mapEntry "Where" (what at:(to))))
                                             )
                                         )
@@ -158,30 +158,30 @@
                             )
                         )
                     )
-                ) 
-                (then 
+                )
+                (then
                     (if ("InPromotionZone" (last To))
-                        (if ("InTwoFurthestRank" (last To)) 
-                            "Promote" 
-                            (moveAgain) 
-                        ) 
-                    ) 
-                ) 
-            ) 
+                        (if ("InTwoFurthestRank" (last To))
+                            "Promote"
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
         )
         // Lance
         (piece "Kyosha" Each
-            ("SlideMove" 
-                Forward 
-                (then 
+            ("SlideMove"
+                Forward
+                (then
                     (if ("InPromotionZone" (last To))
-                        (if ("InLastRank" (last To)) 
-                            "Promote" 
-                            (moveAgain) 
-                        ) 
-                    ) 
+                        (if ("InLastRank" (last To))
+                            "Promote"
+                            (moveAgain)
+                        )
+                    )
                 )
-            ) 
+            )
         )
         // Gold General
         (piece "Kinsho" Each "GoldMove")
@@ -197,7 +197,7 @@
         (piece "Narikei" Each "GoldMove")
         // Promoted Lance
         (piece "Narikyo" Each "GoldMove")
-        
+
         (regions "LastRankP1" P1 (sites Top) )
         (regions "LastRankP2" P2 (sites Bottom) )
         (regions "TwoFurthestRankP1" P1 (expand (sites Top) ) )
@@ -207,44 +207,44 @@
         (map "where" { (pair 3 88) (pair 4 81) (pair 5 89) (pair 6 82) (pair 7 90) (pair 8 83) (pair 9 91) (pair 10 84) (pair 11 92) (pair 12 85) (pair 13 93) (pair 14 86) (pair 15 94) (pair 16 87) (pair 17 88) (pair 18 81) (pair 19 89) (pair 20 82) (pair 21 90) (pair 22 83) (pair 23 91) (pair 24 84) (pair 25 92) (pair 26 85) (pair 27 93) (pair 28 86)})
         (map "captured" { (pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11) (pair 13 14) (pair 14 13) (pair 15 16) (pair 16 15) (pair 17 4) (pair 18 3) (pair 19 6) (pair 20 5) (pair 21 8) (pair 22 7) (pair 23 10) (pair 24 9) (pair 25 12) (pair 26 11) (pair 27 14) (pair 28 13)})
         (map "promoted" { (pair 3 17) (pair 4 18) (pair 5 19) (pair 6 20) (pair 7 21) (pair 8 22) (pair 9 23) (pair 10 24) (pair 11 25) (pair 12 26) (pair 13 27) (pair 14 28)})
-        
+
         (hand Each size:7)
     })
-    
-    (rules 
-        (start { 
+
+    (rules
+        (start {
             <challenge:start>
         })
-        
+
         (play
             (if "SameTurn"
                 (or
                     "Promote"
                     (move Pass)
                 )
-                (do 
+                (do
                     (or {
-                        (move (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) (to (sites Empty))) 
+                        (move (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) (to (sites Empty)))
                         "PlaceAPawn"
                         "PlaceALance"
-                        "PlaceAKnight" 
-                        (forEach Piece) 
+                        "PlaceAKnight"
+                        (forEach Piece)
                     } )
                     ifAfterwards:(not ("KingCheck" Mover))
                 )
             )
         )
-        
+
         (end {
             (if (and {
                     ("KingCheck" Next)
                     "NextCanNotMove"
                     (<= (count Turns) <challenge:limit>)
-                }) 
+                })
                 (result P1 Win)
-            ) 
+            )
             (if (or (no Moves Next) (and (= <challenge:limit> (count Turns)) (not (is Mover Next)))) (result P1 Loss) )
-            }	
+            }
         )
     )
 )
@@ -253,10 +253,10 @@
 
 (option "Challenge" <challenge> args:{ <start> <limit> }
     {
-    (item "1 (1 Move)"   
+    (item "1 (1 Move)"
         <(place "Kinsho1" {"G7"}) (place "Kinsho1" 86)
         (place "Osho2" coord:"G9") >
-        <1> 
+        <1>
         ""
     )
     }
@@ -264,8 +264,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Shogi puzzles are known in some of the earliest texts about the game. The are similar to Chess puzzles, where players are given a scenario on the Shogi board to solve.")
@@ -276,7 +276,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
@@ -292,9 +292,9 @@
         (piece ExtendName P2 piece:"Osho" "1")
         (adversarialPuzzle)
     })
-    
-    (ai 
+
+    (ai
         "Shogi Puzzle_ai"
     )
-    
+
 )

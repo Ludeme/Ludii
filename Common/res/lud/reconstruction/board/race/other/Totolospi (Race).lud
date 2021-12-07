@@ -1,6 +1,6 @@
-(game "Totolospi (Race)"  
-    (players 4)  
-    (equipment { 
+(game "Totolospi (Race)"
+    (players 4)
+    (equipment {
         (board
             (add
                 (remove
@@ -19,10 +19,10 @@
                 cells:{{47 22 23 34 51}}
             )
         )
-        (hand Each) 
+        (hand Each)
         (piece "Pawn" Each) // 4 pieces per player
-    })  
-    (rules 
+    })
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -30,8 +30,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Totolóspi is a word referring to at least two games played by the Hopi in Arizona. This is a race game, which may be connected to games with similar shape in Mexico. The rules are incompletely reported from the nineteenth century.")
@@ -44,7 +44,7 @@
         (origin  "This game was played in Arizona, from around 1899 to 1901.")
         }
     )
-    
+
     (graphics {
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
@@ -53,5 +53,5 @@
         (show Symbol "disc" Cell (sites {22 23 24 9 0 3 5 7 14 18 21 19}) fillColour:(colour Brown) edgeColour:(colour Black) scale:0.6)
         (show Symbol "disc" Cell 25 fillColour:(colour Brown) edgeColour:(colour Black) scale:0.6 offsetX:0.1 offsetY:0.1)
     })
-    
+
 )

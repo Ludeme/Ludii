@@ -1,30 +1,30 @@
-(game "All Queens Chess"  
-    (players 2)  
-    (equipment { 
-        (board (square 5)) 
+(game "All Queens Chess"
+    (players 2)
+    (equipment {
+        (board (square 5))
         (piece "Queen" Each (move Slide))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
-            (place "Queen1" 
-                (union { 
-                    (difference (sites Bottom) (sites Phase 1)) 
+            {
+            (place "Queen1"
+                (union {
+                    (difference (sites Bottom) (sites Phase 1))
                     (intersection (sites Left) (sites Row (/ (count Rows) 2)))
-                    (difference (sites Top) (sites Phase 0)) 
-                }) 
+                    (difference (sites Top) (sites Phase 0))
+                })
             )
-            (place "Queen2" 
-                (union { 
-                    (difference (sites Bottom) (sites Phase 0)) 
+            (place "Queen2"
+                (union {
+                    (difference (sites Bottom) (sites Phase 0))
                     (intersection (sites Right) (sites Row (/ (count Rows) 2)))
-                    (difference (sites Top) (sites Phase 1)) 
-                }) 
+                    (difference (sites Top) (sites Phase 1))
+                })
             )
             }
         )
-        
+
         (play (forEach Piece))
         (end (if (is Line 4) (result Mover Win)))
     )
@@ -32,8 +32,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Designed in the early 2000s by Elliot Rudell and published by The Happy Puzzle Company and ThinkFun.")
@@ -48,13 +48,13 @@
         (date "2008")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
-    (ai 
+
+    (ai
         "All Queens Chess_ai"
     )
-    
+
 )

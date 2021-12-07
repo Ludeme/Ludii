@@ -6,7 +6,7 @@
                 (!= 1 (state at:(between)))
             )
         )
-        (to 
+        (to
             if:(is Empty (to))
             (apply
                 (if (is Even (count MovesThisTurn))
@@ -16,8 +16,8 @@
                             (addScore Mover 1)
                             (addScore Mover 2)
                         )
-                        (forEach Site (sites Board) 
-                            (if (= 1 (state at:(site))) 
+                        (forEach Site (sites Board)
+                            (if (= 1 (state at:(site)))
                                 (and
                                     (remove (site))
                                     (if (= (what at:(site)) (id "Marker" Shared))
@@ -30,21 +30,21 @@
                     })
                     (set State at:(between) 1)
                 )
-            )	
+            )
         )
         #2
     )
 )
 
 (define "CaptureAgain"
-    (then 
+    (then
         (if (and
                 (< (count MovesThisTurn) 6)
-                (can Move ("Move" (from (last To)))) 
+                (can Move ("Move" (from (last To))))
             )
             (moveAgain)
-            (forEach Site (sites Board) 
-                (if (= 1 (state at:(site))) 
+            (forEach Site (sites Board)
+                (if (= 1 (state at:(site)))
                     (set State at:(site) 0)
                 )
             )
@@ -55,24 +55,24 @@
 //------------------------------------------------------------------------------
 
 (game "Pasang"
-    (players <Players:num>)  
-    (equipment { 
-        (board 
+    (players <Players:num>)
+    (equipment {
+        (board
             (add
                 (remove
                     (square 11)
                     vertices:{48 49 50 59 60 61 70 71 72}
                 )
                 edges:{
-                {0 12} {12 24} {24 36} {10 20} {20 30} {30 40} {75 87} {87 99} {99 111} {71 81} {81 91} {91 101} 
+                {0 12} {12 24} {24 36} {10 20} {20 30} {30 40} {75 87} {87 99} {99 111} {71 81} {81 91} {91 101}
                 }
             )
             use:Vertex
-        ) 	
+        )
         (piece "Marker" Shared ("Move" (from) ("CaptureAgain")))
         (piece "Disc" Shared ("Move" (from) ("CaptureAgain")))
     })
-    (rules 
+    (rules
         (start {
             (place "Marker" (forEach (sites {0..47 56..63}) if:(is Even (site))))
             (place "Disc" (forEach (sites {0..47 56..63}) if:(is Odd (site))))
@@ -89,18 +89,18 @@
             )
             (nextPhase "MainPhase")
         )
-        
+
         (phase "MainPhase"
-            (play 
+            (play
                 (if ("SameTurn")
                     (and
                         (move Pass
                             (then
-                                (forEach Site (sites Board) 
-                                    (if (= 1 (state at:(site))) 
+                                (forEach Site (sites Board)
+                                    (if (= 1 (state at:(site)))
                                         (set State at:(site) 0)
                                     )
-                                )		
+                                )
                             )
                         )
                         ("Move" (from (last To)) ("CaptureAgain"))
@@ -118,15 +118,15 @@
 
 (option "Players" <Players> args:{ <num> }
     {
-    (item "2"   <2>  "2 Players.")*   
-    (item "3"   <3>  "3 Players.")   
-    (item "4"   <4>  "4 Players.")   
+    (item "2"   <2>  "2 Players.")*
+    (item "3"   <3>  "3 Players.")
+    (item "4"   <4>  "4 Players.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Broken into Pieces (Observed)" {
         "Players/2"
         }
@@ -135,13 +135,13 @@
         "Players/4"
         }
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pasang is a capturing game played in Brunei. The board is set up in a number of different common arrangements of pieces. It was generally played by women, and particularly when attending marriage, initiation, or circumcision ceremonies. The pieces were generally stores in a cup in the center of the board.")
@@ -153,11 +153,11 @@
         (origin  "This game was played in Brunei, around 1973.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal (colour Hidden))
         (piece Colour "Marker" fillColour:(colour Black))
         (piece Rename piece:"Disc" "Marker")
     })
-    
+
 )

@@ -18,7 +18,7 @@
             (to (intersection (sites Mover "Defence") (sites Empty)))
             (then
                 (do
-                    (forEach 
+                    (forEach
                         Site
                         (sites LargePiece at:(last To))
                         (remember Value (site))
@@ -62,7 +62,7 @@
         (set Var (id Mover)
             (then
                 (forEach Site (sites Board)
-                    (set Hidden at:(site) False to:Next)	
+                    (set Hidden at:(site) False to:Next)
                 )
             )
         )
@@ -71,7 +71,7 @@
 
 // #1 - P1/P2
 (define "DeclareVictory"
-    (if 
+    (if
         (= (id #1) (var))
         (result #1 Win)
     )
@@ -79,9 +79,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Battleships"  
-    (players 2)  
-    (equipment { 
+(game "Battleships"
+    (players 2)
+    (equipment {
         (board (rectangle 10 20))
         ("DefinePiece" "CarrierTemplate" { {F F F F} {L F F F F}} "Carrier")
         ("DefinePiece" "BattleshipTemplate" { {F F F} {L F F F}} "Battleship")
@@ -91,7 +91,7 @@
         (regions "Defence" P1 (expand (sites Left) steps:9))
         (regions "Defence" P2 (expand (sites Right) steps:9))
         (hand Each size:5)
-    })  
+    })
     (rules
         (start {
             (set Hidden (sites P1 "Defence") to:P2)
@@ -140,15 +140,15 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Battleships is a strategy type guessing game for two players. It is played on ruled grids (paper or board) on which each player's fleet of ships (including battleships) are marked. The locations of the fleets are concealed from the other player. Players alternate turns calling shots at the other player's ships, and the objective of the game is to destroy the opposing player's fleet.")
         (aliases {"Battleship" "Sea Battle"})
         (rules "The first player (Grey) has their home area on the left; the second player (Black) on the right.
-            
+
             In the initial setup phase players move their pieces from their hand to their home area. By default the pieces will be placed vertically. Press 'r' whilst moving it, to place one horizontally.
-            
+
         Finally the players take turns to guess spaces in their opponent's home area. These are revealed to be either water or a ship according to the following code: <b>C</b>arrier - 5 spaces; <b>B</b>attleship - 4 spaces; <b>D</b>estroyer - 3 spaces; <b>S</b>ubmarine - 3 spaces; <b>P</b>atrol Boat - 2 spaces.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Battleship_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (version "1.3.0")
@@ -157,7 +157,7 @@
         (date "1931")
         }
     )
-    
+
     (graphics {
         (piece Rename piece:"Carrier" state:0 "square")
         (piece Rename piece:"Battleship" state:0 "square")

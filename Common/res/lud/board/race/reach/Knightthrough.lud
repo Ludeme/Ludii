@@ -3,39 +3,39 @@
 //------------------------------------------------------------------------------
 
 (game "Knightthrough"
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Knight" Each 
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+        (piece "Knight" Each
             (move
                 Leap
                 "KnightWalk"
-                forward:True 
+                forward:True
                 (to if:(not (is Friend (who at:(to)))) (apply (remove (to)) ))
             )
         )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Knight1" (expand (sites Bottom)) )
             (place "Knight2" (expand (sites Top)) )
             }
         )
-        
+
         (play (forEach Piece) )
-        
+
         (end (if "RegionReached" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Knightthrough is a Chess variant similar to Breakthrough, using knights instead of pawns.")
@@ -47,13 +47,13 @@
         (date "01-01-2008")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
-    (ai 
+
+    (ai
         "Knightthrough_ai"
     )
-    
+
 )

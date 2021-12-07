@@ -1,33 +1,33 @@
 (define "LetADiscOnTheFromLocation"
-    (add 
-        (piece "Disc0") 
+    (add
+        (piece "Disc0")
         (to (last From))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Go with the Floe"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (keep 
-                (square 8) 
+(game "Go with the Floe"
+    (players 2)
+    (equipment {
+        (board
+            (keep
+                (square 8)
                 (poly { {-3 4} {4 -3} {11 4} {4 11} })
-            ) 
+            )
         )
-        (piece "Seal" P1 N (or 
+        (piece "Seal" P1 N (or
                 (move
                     Slide
-                    (between 
-                        (max 2) 
+                    (between
+                        (max 2)
                         trail:(id "Disc0")
-                    ) 
-                ) 
+                    )
+                )
                 (move
                     Hop
-                    (between if:(= (what at:(between)) (id "Disc0"))) 
-                    (to if:(is Empty (to))) 
+                    (between if:(= (what at:(between)) (id "Disc0")))
+                    (to if:(is Empty (to)))
                     (then "LetADiscOnTheFromLocation")
                 )
             )
@@ -35,26 +35,26 @@
         (piece "Bear" P2 (or {
                 (move
                     Slide
-                    (between 
-                        (max 2) 
+                    (between
+                        (max 2)
                         trail:(id "Disc0")
-                    ) 
-                ) 
+                    )
+                )
                 (move
                     Hop
-                    (between if:(= (what at:(between)) (id "Disc0"))) 
-                    (to if:(is Empty (to))) 
+                    (between if:(= (what at:(between)) (id "Disc0")))
+                    (to if:(is Empty (to)))
                     (then "LetADiscOnTheFromLocation")
                 )
                 (move
                     Step
-                    (to 
-                        if:(= (what at:(to)) (id "Seal1")) 
+                    (to
+                        if:(= (what at:(to)) (id "Seal1"))
                         (apply (remove (to)))
                     )
-                    (then 
-                        (and 
-                            (remove (last To)) 
+                    (then
+                        (and
+                            (remove (last To))
                             ("LetADiscOnTheFromLocation")
                         )
                     )
@@ -63,28 +63,28 @@
         )
         (piece "Disc" Neutral)
     })
-    
-    (rules 
-        (start { 
+
+    (rules
+        (start {
             (place "Bear2" {"G2" "G7"})
             (place "Seal1" {"B2" "B7"})
         })
-        
+
         (play (forEach Piece))
-        
+
         (end {
             (if ("NoSites" (sites Occupied by:All)) (result P2 Win))
-            (if 
-                (and 
-                    (no Moves P1) 
-                    (not (can Move 
-                            (forEach Piece "Bear" 
-                                (step 
+            (if
+                (and
+                    (no Moves P1)
+                    (not (can Move
+                            (forEach Piece "Bear"
+                                (step
                                     (to if:(= (what at:(to)) (id "Seal1")))
                                 )
                             )
                     ))
-                ) 
+                )
                 (result P1 Win)
             )
             (if (all Passed) (result P1 Win))
@@ -94,8 +94,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Go with the Floe was invented by Phil Leduc. It is a chase game in which a player has seals pursued by another player's polar bears.")
@@ -109,7 +109,7 @@
         (date "2014")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
@@ -119,9 +119,9 @@
         (board Colour Phase2 (colour Cyan))
         (board Colour OuterEdges (colour White))
     })
-    
-    (ai 
+
+    (ai
         "Go with the Floe_ai"
     )
-    
+
 )

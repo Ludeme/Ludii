@@ -4,14 +4,14 @@
 
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -58,10 +58,10 @@
             )
             (set Var "Direction" 0)
         )
-    )		
+    )
 )
 
-(define "AllRowsEmpty" 
+(define "AllRowsEmpty"
     (all Sites (union (sites (values Remembered "OwnedP1")) (sites (values Remembered "OwnedP2"))) if:(is Empty (site)))
 )
 
@@ -69,41 +69,41 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bay Khom"  
-    (players 2)  
-    
-    (equipment { 
+(game "Bay Khom"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 4
             {
             (track "TrackCW" "0,5,E,9,4,W" loop:True)
             (track "TrackCCW" "0,1,E,9,8,W" loop:True)
             }
         )
-        (piece "Seed" Shared) 
+        (piece "Seed" Shared)
         (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
         (regions P1 (sites Bottom))                    // P1 home
-        (regions P2 (sites Top))                       // P2 home 
+        (regions P2 (sites Top))                       // P2 home
         (hand Each)
-    })  
-    (rules 
-        
-        (start { 
-            (set Count 4 to:(union (sites P1)  (sites P2)) ) 
-            (set Count 5 at:(mapEntry 1) ) 
+    })
+    (rules
+
+        (start {
+            (set Count 4 to:(union (sites P1)  (sites P2)) )
+            (set Count 5 at:(mapEntry 1) )
             (set Count 5 at:(mapEntry 2) )
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
-        
+
         phases:{
         (phase "Sowing"
-            (play 
+            (play
                 (or
                     (if (or (<= (var "Direction") 0) (= (var "Direction") 1))
                         (move Select
-                            (from 
+                            (from
                                 (if (is Mover Prev)
-                                    ("PlayFromLastHole") 
+                                    ("PlayFromLastHole")
                                     ("OwnedHoles")
                                 )
                                 if:(is Occupied (from))
@@ -118,9 +118,9 @@
                     )
                     (if (or (<= (var "Direction") 0) (= (var "Direction") 2))
                         (move Select
-                            (from 
+                            (from
                                 (if (is Mover Prev)
-                                    ("PlayFromLastHole") 
+                                    ("PlayFromLastHole")
                                     ("OwnedHoles")
                                 )
                                 if:(is Occupied (from))
@@ -135,7 +135,7 @@
                     )
                     (then
                         (if ("AllRowsEmpty")
-                            (and { 
+                            (and {
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -171,7 +171,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 9 (count Cell at:(handSite P1))) (result P2 Win))
@@ -181,7 +181,7 @@
             )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (is Empty (mapEntry Mover))
@@ -191,16 +191,16 @@
                         count:5
                     )
                     (if (<= 4 (count Cell at:(handSite Mover)))
-                        (move 
-                            (from (handSite Mover))	
+                        (move
+                            (from (handSite Mover))
                             (to (sites Mover) if:(is Empty (to)))
                             count:4
                             (then
-                                ("RemmemberOwnedHoles" (last To))	
+                                ("RemmemberOwnedHoles" (last To))
                             )
                         )
                     )
-                )	
+                )
             )
             (nextPhase (all Passed) "Sowing")
         )
@@ -210,7 +210,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Bày Khòm is a two-row mancala-style board game from Cambodia. It was observed in the mid-twentieth century, but it is possible that Khmer texts from the middle ages mention it as \"khbal camuon.\"")
@@ -223,7 +223,7 @@
         (origin  "This game was played in Cambodia, from around 1940 to 1945.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

@@ -4,7 +4,7 @@
 (define "ActivatedPiece" (= (state at:(from)) 0))
 (define "InactivePiece" (= (state at:(from)) 1))
 (define "AllowToActivate" (= ("ThrowValue") 1))
-(define "AllowToReplay" 
+(define "AllowToReplay"
     (and
         (is In ("ThrowValue") (sites {1 4 6 5}))
         (!= 5 (count Pips))
@@ -14,9 +14,9 @@
 //------------------------------------------------------------------------------
 
 (game "Issiren"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (rectangle 4 12)
             {
             (track "Track1" "11,W,N1,E,N1,W,N1,E,S1,W,S1,E" loop:True P1)
@@ -25,10 +25,10 @@
         )
         (dice d:2 from:0 num:6)
         (piece "Marker" Each
-            (move 
+            (move
                 (from
                     (from)
-                    if:(if ("ActivatedPiece") 
+                    if:(if ("ActivatedPiece")
                         True
                         ("AllowToActivate")
                     )
@@ -42,7 +42,7 @@
                         )
                     )
                 )
-                (then 
+                (then
                     (if (= 1 (state at:(last To)))
                         ("ActivatePiece")
                     )
@@ -50,33 +50,33 @@
             )
         )
         (map {(pair 0 4) (pair 1 5) (pair 2 2) (pair 3 3) (pair 4 1) (pair 5 5) (pair 6 6)})
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Marker1" (sites Bottom) state:1)
             (place "Marker2" (sites Top) state:1)
         })
-        
-        (play 
+
+        (play
             (do (roll)
                 next:(forEach Piece)
                 (then
-                    (if ("AllowToReplay") 
+                    (if ("AllowToReplay")
                         (moveAgain)
                     )
                 )
             )
         )
-        
+
         (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Issiren is a capturing game with dice played in the Illizi region of Algeria by the Kel Ajjer Tuareg people. ")
@@ -89,12 +89,12 @@
         (origin  "This game was played in Algeria, around 1960.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (piece Colour "Die" state:1 fillColour:(colour Green))
     })
-    
+
 )

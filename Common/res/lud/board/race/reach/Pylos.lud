@@ -5,43 +5,43 @@
     )
 )
 
-(define "NothingOnTop" 
+(define "NothingOnTop"
     (and {
-        ("NothingOn" UNE) 
-        ("NothingOn" USE) 
-        ("NothingOn" USW) 
-        ("NothingOn" UNW) 
-    })		
+        ("NothingOn" UNE)
+        ("NothingOn" USE)
+        ("NothingOn" USW)
+        ("NothingOn" UNW)
+    })
 )
 
-(game "Pylos"  
-    (players 2)  
-    (equipment { 
-        (board (square 4 pyramidal:True) use:Vertex) 
-        (piece "Ball" Each) 
+(game "Pylos"
+    (players 2)
+    (equipment {
+        (board (square 4 pyramidal:True) use:Vertex)
+        (piece "Ball" Each)
         (hand Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Ball" "Hand" count:15))
-        
-        (play 
+
+        (play
             (if "SameTurn"
-                (move 
+                (move
                     (from (sites Occupied by:Mover) if:("NothingOnTop"))
                     (to (handSite Mover))
                     (then (if (= (var) 1) (and (set Var 0) (moveAgain))))
                 )
                 (or
                     (do
-                        (move 
+                        (move
                             (from
                                 (sites Occupied by:Mover)
                                 if:("NothingOnTop")
                             )
-                            (to 
-                                (sites Empty) 
-                                if:(and 
+                            (to
+                                (sites Empty)
+                                if:(and
                                     (is Flat)
                                     (< (layer of:(from)) (layer of:(to)))
                                 )
@@ -49,24 +49,24 @@
                         )
                         ifAfterwards:(is Flat (last To))
                     )
-                    (move 
-                        (from (sites Occupied by:Mover container:(mover))) 
-                        (to (sites Empty) 
+                    (move
+                        (from (sites Occupied by:Mover container:(mover)))
+                        (to (sites Empty)
                             if:(is Flat)
                         )
                     )
                     (then
-                        (if (is Pattern {F R F R F} whats:{(id "Ball" Mover)}) 
+                        (if (is Pattern {F R F R F} whats:{(id "Ball" Mover)})
                             (and (set Var 1) (moveAgain))
                         )
                     )
                 )
             )
         )
-        
-        (end 
-            (if 
-                (= (layer of:(last To)) 3) 
+
+        (end
+            (if
+                (= (layer of:(last To)) 3)
                 (result Mover Win)
             )
         )
@@ -75,8 +75,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pylos is a board game invented by David G. Royffe and published by Gigamic.")
@@ -91,12 +91,12 @@
         (date "1993")
         }
     )
-    
+
     (graphics {
         (piece Scale "Ball" 1.0)
         (board Style Shibumi)
     })
-    
+
     (ai
         "Pylos_ai"
     )

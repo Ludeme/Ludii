@@ -1,48 +1,48 @@
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            (max 1) 
-            if:(is Enemy (who at:(between))) 
+(define "Custodial"
+    (custodial
+        (from (last To))
+        Orthogonal
+        (between
+            (max 1)
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
         )
-        (to if:(is Friend (who at:(to)))) 
+        (to if:(is Friend (who at:(to))))
     )
 )
 
-(define "Surrounded" 
-    (surround 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:(and 
-                (is In (between) (sites Corners)) 
+(define "Surrounded"
+    (surround
+        (from (last To))
+        Orthogonal
+        (between
+            if:(and
+                (is In (between) (sites Corners))
                 (is Enemy (who at:(between)))
-            ) 
+            )
             (apply (remove (between)))
-        ) 
-        (to if:(is Friend (who at:(to)))) 
+        )
+        (to if:(is Friend (who at:(to))))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Dai Hasami Shogi"  
-    (players 2)  
-    
-    (equipment { 
+(game "Dai Hasami Shogi"
+    (players 2)
+
+    (equipment {
         (<Board>)
-        
-        (piece "Marker" Each 
-            (or 
-                (move Slide Orthogonal) 
+
+        (piece "Marker" Each
+            (or
+                (move Slide Orthogonal)
                 (move
                     Hop
-                    Orthogonal 
-                    (between if:(not (is Empty (between)))) 
+                    Orthogonal
+                    (between if:(not (is Empty (between))))
                     (to if:(is Empty (to)))
-                ) 
+                )
                 (then (or "Custodial" "Surrounded" ))
             )
         )
@@ -50,29 +50,29 @@
         (regions P2 (expand (sites Top)))
         }
     )
-    
-    (rules 
-        (start { 
+
+    (rules
+        (start {
             (place "Marker1" (sites P1))
             (place "Marker2" (sites P2))
         })
-        
+
         (play
             (forEach Piece)
         )
-        
+
         (end {
-            (if 
-                (is Line 5 Orthogonal if:(not (is In (to) (sites Mover)))) 
+            (if
+                (is Line 5 Orthogonal if:(not (is In (to) (sites Mover))))
                 (result Mover Win)
-            ) 
-            (if 
-                (and 
-                    (< (count Pieces P1) 5) 
-                    (< (count Pieces P2) 5) 
-                ) 
+            )
+            (if
+                (and
+                    (< (count Pieces P1) 5)
+                    (< (count Pieces P2) 5)
+                )
                 (result Mover Draw)
-            ) 
+            )
         })
     )
 )
@@ -88,8 +88,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dai Hasami Shogi is a Hasami Shogi variant played with Go pieces.")
@@ -100,14 +100,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (useFor {"Board/Shogi"} (board Style Shogi))
         (useFor {"Board/Go"} (board Style Go))
     })
-    
-    (ai 
+
+    (ai
         "Dai Hasami Shogi_ai"
     )
-    
+
 )

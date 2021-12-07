@@ -2,13 +2,13 @@
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
+            (sizes Group "ScoreConnectionDirection" #1 )
 )))
 
 //---------------------------
 // Defines for Tiebreaker scoring option
 
-(define "CascadeScore" 
+(define "CascadeScore"
     (max 0
         (max
             (difference
@@ -18,13 +18,13 @@
 
 (define "CascadeTie"
     (and
-        (set Score Mover (var "MoverScore")) 
-        (set Score Next  (var "NextScore")) 
+        (set Score Mover (var "MoverScore"))
+        (set Score Next  (var "NextScore"))
 ))
 
 (define "CascadeTiebreaker"
-    (if 
-        (= (var "MoverScore") (var "NextScore")) 
+    (if
+        (= (var "MoverScore") (var "NextScore"))
         (and
             (set Score Mover (* <Variant:tieFactor> ("CascadeScore" Mover Next)))
             (set Score Next (* <Variant:tieFactor> ("CascadeScore" Next Mover)))
@@ -47,18 +47,18 @@
                     (value Piece at:(handSite Next))
                     ("GroupCount" Next)
                 )
-                (then 
+                (then
                     ("CascadeTiebreaker")
 )))))
 
 //----------------------------
-(define "CapturingAtScoreWhat4Who"  
+(define "CapturingAtScoreWhat4Who"
     (forEach Value
         (array #1)
-        (if 
+        (if
             (> 2 (count Sites in:(sites Around (value) "ConnectionDirection" if:(is Empty (to)))))
             (if
-                (is #2 (who at:(value))) 
+                (is #2 (who at:(value)))
                 (remove (value)
                     (then
                         (if
@@ -79,7 +79,7 @@
     (all Sites
         #1
         if:(or
-            (and 
+            (and
                 (is Empty (site))
                 (is In (site) (sites Outer))
             )
@@ -109,42 +109,42 @@
         (start (set Score Each 0))
         (play
             (do
-                (move 
+                (move
                     Add
-                    (to 
-                        (sites Empty) 
-                        if:(< 1 
-                            (count Sites 
+                    (to
+                        (sites Empty)
+                        if:(< 1
+                            (count Sites
                                 in:(intersection
                                     (sites Around (to) "ConnectionDirection")
                                     (sites Empty)
                 )))))
-                ifAfterwards:("AllHave1Connection2Edge" 
-                    (intersection 
+                ifAfterwards:("AllHave1Connection2Edge"
+                    (intersection
                         (sites Around (last To) "ConnectionDirection")
                         (sites Empty)
-                )) 
+                ))
                 (then
                     (do
-                        ("CapturingAtScoreWhat4Who" 
-                            (intersection 
-                                (sites Occupied by:All) 
-                                (sites Around (last To) "ConnectionDirection") 
+                        ("CapturingAtScoreWhat4Who"
+                            (intersection
+                                (sites Occupied by:All)
+                                (sites Around (last To) "ConnectionDirection")
                             )
                             Next  // which pieces score: Mover, Next, All, None
                             <Variant:bonus2> // who gets their value
                         )
                         next:("Scoring")
         ))))
-        (end 
-            (if 
+        (end
+            (if
                 (no Moves Next)
                 {
-                (if 
+                (if
                     (= (score Mover) (score Next))
                     (result Mover Win)
                 )
-                (if 
+                (if
                     (!= (score Mover) (score Next))
                     (byScore)
                 )
@@ -162,7 +162,7 @@
 
 //-------------------------------------------------
 // Options
-(option "Board Size" <BoardSize> args:{<smallSide> <backgroundSize>} 
+(option "Board Size" <BoardSize> args:{<smallSide> <backgroundSize>}
     {
     (item "Order 5" <5> <1.4>  "Order 5 board")
     (item "Order 7" <7> <1.3> "Order 7 board")
@@ -173,62 +173,62 @@
     }
 )
 
-(option "Variant" <Variant> args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundColour> <bonus2> <tieFactor>} 
+(option "Variant" <Variant> args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundColour> <bonus2> <tieFactor>}
     {
-    
+
     (item "Plateau - Omni connectitvity - Orthogonal groups"
         <"SquareDiagonal"> <All> <ThinDotted> <Orthogonal> <(colour 156 130 126)> <Mover> <-1>
     "Watershed Plateau: Omni-Square Grid - Orthogonal group scoring, Bonus for opponent's capured, Largest group loses a tie.")
-    
+
     (item "Floodplains - Orthogonal connectivity - Omni groups"
         <"SquareDiagonal"> <Orthogonal> <Hidden> <All> <(colour 130 156 126)> <Next> <-1>
     "Watershed Floodplains: Square Grid - Omni directional group scoring, Bonus for sites you lost, Largest group loses in a tie.")
-    
+
     }
 )
 
 //---------------------------------------------
-(define "ColourBackground1" (colour 126 130 156)) 
-(define "ColourBackground2" (colour 156 130 126)) 
+(define "ColourBackground1" (colour 126 130 156))
+(define "ColourBackground2" (colour 156 130 126))
 (define "ColourBackground" <Variant:backgroundColour>)
 
 (metadata
     (info
         {
-        (description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter. 
-            
+        (description "Watershed is a square board placement game based on Branching Coral, with the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter.
+
             Scoring for the standard Plateau version is based on the size of the largest group plus a bonus factor for the number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.
-            
-            Ties are broken in favor of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins. 
-            
+
+            Ties are broken in favor of the underdog by considering only the largest group size as a negative score without including the capture bonus. Opponent-paired groups of the same size are excluded in this comparison. If all groups are paired in size with the opponent, last to play wins.
+
             Play is only on odd sized boards to avoid mirror strategy, since last to play also wins.
-            
+
         A Floodplain variant reverses the board connections, group connections, bonus attribution and tie-breaker rules.")
-        (rules "Goal: Score the most points: 
+        (rules "Goal: Score the most points:
             -- One point for each stone in one's largest group.
             -- Bonus points are also awarded for certain captured stones.
-            
+
             The board starts empty.
             Players take alternating turns placing one of their stones onto an empty site.
-            Directly after placement, every site of the board must remain connected to an empty perimeter site via a continuous path of empty sites, and the stone that was placed must be next to any 2 empty sites. 
-            
-            Capture 
+            Directly after placement, every site of the board must remain connected to an empty perimeter site via a continuous path of empty sites, and the stone that was placed must be next to any 2 empty sites.
+
+            Capture
             After placement, simultaneously remove all the stones adjacent to the placed stone that are no longer next to 2 empty sites.
-            
-            There is no passing. The game ends when no more placements can be made.  
-            
+
+            There is no passing. The game ends when no more placements can be made.
+
             Ties are broken in favor of the underdog by compairing cascading largest groups (excluding tied pairs) Tie breaker scores are negative, so largest group LOSES.
-            
+
             Plateau version (mauve background):
-            Connection to the edge is by omni-directional steps. Stone groups are orthogonal only. 
+            Connection to the edge is by omni-directional steps. Stone groups are orthogonal only.
             Players score one point for every stone in their largest group, plus a bonus point for each captured opponent's stone.
-            
-            The player with the higher score wins. 
-            
+
+            The player with the higher score wins.
+
             Floodplain version (green background):
-            Connection to the edge is by orthogonal steps. Stone groups are omni-directional adjacent. 
+            Connection to the edge is by orthogonal steps. Stone groups are omni-directional adjacent.
             Players score one point for every stone in their largest group, plus a bonus point for each of their stones that the opponent removed from the board.
-            
+
         The player with the higher score wins.")
         (version "1.3.0")
         (classification "experimental")
@@ -237,14 +237,14 @@
         (date "06-05-2021")
         }
     )
-    
-    (graphics 
+
+    (graphics
         {
         (player Colour P1 (colour 120 36 0))
         (player Colour P2 (colour Cream))
         (piece Scale "Ball" 0.95)
         (piece Scale "Disc" 0.70)
-        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 130) edgeColour:(colour 0 0 0 130)) 
+        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 130) edgeColour:(colour 0 0 0 130))
         (board Colour Phase0 "ColourBackground")
         (board StyleThickness InnerEdges 0.4)
         (board StyleThickness OuterEdges 0.6)
@@ -256,7 +256,7 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <Variant:diagShow> (colour DarkGrey))
         (show Piece Value "Disc" Middle)
-        (board Background image:"Square-alt1" fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80) scale:<BoardSize:backgroundSize>) 
+        (board Background image:"Square-alt1" fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80) scale:<BoardSize:backgroundSize>)
         }
     )
 )

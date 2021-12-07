@@ -1,7 +1,7 @@
 
 (game "TestHaretavl"
-    (players 2)  
-    (equipment 
+    (players 2)
+    (equipment
         {
         (board
             (splitCrossings
@@ -12,14 +12,14 @@
             )
             use:Vertex
         )
-        (piece "Hare" P1 "StepToEmpty") 
-        (piece "Dog" P2 "StepToEmpty") 
+        (piece "Hare" P1 "StepToEmpty")
+        (piece "Dog" P2 "StepToEmpty")
         (hand Each)
         }
-    )  
-    (rules 
-        (start 
-            { 
+    )
+    (rules
+        (start
+            {
             (place "Hare1" (handSite P1) count:1)
             (place "Dog2" (handSite P2) count:3)
             }
@@ -32,21 +32,21 @@
 
 (option "Play Rules" <Play> args:{ <rules> }
     {
-    (item "White moves only when all placed" 
+    (item "White moves only when all placed"
         <
         phases:{
         (phase "Placement"
-            (play 
-                (if (not ("HandEmpty" Mover)) 
-                    (move 
-                        (from (handSite Mover)) 
+            (play
+                (if (not ("HandEmpty" Mover))
+                    (move
+                        (from (handSite Mover))
                         (to (sites Empty))
-                    ) 
+                    )
                 )
             )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
             (end ("NoMoves" Loss) )
@@ -54,16 +54,16 @@
         }
         >
         "The First player moves only when all the pieces are placed."
-    )*   
-    (item "White moves only when his piece is placed"    
+    )*
+    (item "White moves only when his piece is placed"
         <
         phases:{
         (phase "Placement"
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
-                ) 
+                )
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
@@ -71,17 +71,17 @@
             (play (forEach Piece))
         )
         }
-        (end ("NoMoves" Loss) ) 
-        > 
+        (end ("NoMoves" Loss) )
+        >
         "The First player can move after placing his piece."
-    ) 
+    )
     }
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Haretavl is a game played in Central and Northern Europe. Many boards have been hypothesized as belonging to this game, but it is unclear to which games they belong and what the history of the game is, though it may go back to the medieval period.")
@@ -92,9 +92,9 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
     })
-    
+
 )

@@ -1,9 +1,9 @@
-(game "Pong Hau K'i"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Pong Hau K'i"
+    (players 2)
+    (equipment {
+        (board
             (remove
-                (add 
+                (add
                     (square 2)
                     vertices:{{0.5 0.5}}
                     edges:{{0 4} {1 4} {2 4} {3 4}}
@@ -15,12 +15,12 @@
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start <Rules:start>)
         <Rules:play>
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss))
     )
 )
 
@@ -28,29 +28,29 @@
 
 (option "Start Rules" <Rules> args:{ <start> <play> }
     {
-    (item "Placed"     
-        <{(place "Disc1" {2 3}) (place "Disc2" {0 1})}> 
-        <(play (forEach Piece) )> 
+    (item "Placed"
+        <{(place "Disc1" {2 3}) (place "Disc2" {0 1})}>
+        <(play (forEach Piece) )>
         "The piece are already placed on the board."
     )*
-    
-    (item "To place"     
-        <(place "Disc" "Hand" count:2)> 
+
+    (item "To place"
+        <(place "Disc" "Hand" count:2)>
         <phases:{
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+        (phase "Placement"
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
                 )
-            ) 
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
-        
-        (phase "Movement" 
+        )
+
+        (phase "Movement"
             (play (forEach Piece) )
         )
-        }>   
+        }>
         "The pieces have to place before to play."
     )
     }
@@ -58,8 +58,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pong Hau K'i is a blocking game documented during the nineteenth century East Asia, but medieval graffiti suggests that it may be even older.")
@@ -72,13 +72,13 @@
         (origin  "This game was played in Asia, around 1895.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Pong Hau K'i_ai"
     )
-    
+
 )

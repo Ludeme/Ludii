@@ -4,29 +4,29 @@
 
 //------------------------------------------------------------------------------
 
-(game "Fibonacci Nim"  
-    (players 2)  
-    (equipment { 
-        (board (square 1)) 
+(game "Fibonacci Nim"
+    (players 2)
+    (equipment {
+        (board (square 1))
         (piece "Marker" Neutral)
         }
-    )  
+    )
     (rules
-        (start (set Count <Size:pile> at:0)) 
-        
-        (play 
+        (start (set Count <Size:pile> at:0))
+
+        (play
             (if "SameTurn"
                 (or
                     (if (<= "NumRemove" "Max")
-                        (move 
-                            Select 
+                        (move
+                            Select
                             (from (last To))
-                            (then 
+                            (then
                                 (if (= (count at:(last To)) 1)
                                     (remove (last To))
-                                    (and (set Count at:(last To) (- (count at:(last To)) 1)) (moveAgain)) 
+                                    (and (set Count at:(last To) (- (count at:(last To)) 1)) (moveAgain))
                                 )
-                            ) 
+                            )
                         )
                     )
                     (move Pass (then (set Value Mover (- ("NumRemove") 1))))
@@ -34,18 +34,18 @@
                 (move
                     Select
                     (from (sites Occupied by:Neutral))
-                    (then 
+                    (then
                         (if (= (count at:(last To)) 1)
                             (remove (last To))
-                            (and 
-                                (set Count at:(last To) (- (count at:(last To)) 1)) 
+                            (and
+                                (set Count at:(last To) (- (count at:(last To)) 1))
                                 (moveAgain)
-                            ) 
+                            )
                         )
-                    ) 
+                    )
                 )
             )
-        ) 
+        )
         (end (if (no Moves Next) (result <Result> Win) ) )
     )
 )
@@ -54,8 +54,8 @@
 
 (option "End Rules" <Result> args:{ <type> }
     {
-    (item "Last Mover Loses"   <Next>     "The last mover loses.")   
-    (item "Last Mover Wins"    <Mover>    "The last mover wins.")*   
+    (item "Last Mover Loses"   <Next>     "The last mover loses.")
+    (item "Last Mover Wins"    <Mover>    "The last mover wins.")*
 })
 
 (option "Number Piles" <Size> args:{ <pile> }
@@ -86,7 +86,7 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Fibonacci Nim is a mathematical subtraction game, a variant of the game of Nim.")
@@ -99,7 +99,7 @@
         (date "1963")
         }
     )
-    
+
     (graphics {
         (no Board)
     })

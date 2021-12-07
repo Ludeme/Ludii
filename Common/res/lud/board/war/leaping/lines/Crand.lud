@@ -1,7 +1,7 @@
 (game "Crand"
     (players {(player N) (player S)})
-    (equipment { 
-        (board 
+    (equipment {
+        (board
             (add
                 (square 9)
                 edges:{
@@ -14,28 +14,28 @@
         (piece "Counter" Each
             (or
                 (move
-                    Step 
+                    Step
                     (difference Forwards Diagonal)
                     (to if:(is Empty (to)))
-                )	
+                )
                 "HopCapture"
                 (then
                     (if (is In (last To) (sites Next))
                         (move Promote (last To) (piece "DoubleCounter") Mover)
-                    )		
+                    )
                 )
             )
         )
         (piece "DoubleCounter" Each
             (or
-                (move Slide)	
+                (move Slide)
                 "HopCapture"
-            )		
+            )
         )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
-    (rules 
+    (rules
         (start {
             (place "Counter1" (union (sites {41..44}) (expand (sites Bottom) steps:3)))
             (place "Counter2" (union (sites {36..39}) (expand (sites Top) steps:3)))
@@ -47,8 +47,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Çrand is a capturing game played in Mauritania. It is generally played in the sand with camel droppings and sticks as playing pieces. ")
@@ -62,12 +62,12 @@
         (origin  "This game was played in Mauritania, around 1952.")
         }
     )
-    
+
     (graphics {
-        
+
         (show Edges Diagonal Hidden)
     })
-    
+
     (ai
         "Crand_ai"
     )

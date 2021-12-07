@@ -6,12 +6,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Nchayo"  
-    (players 2)  
-    
-    (equipment { 
+(game "Nchayo"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            <Board:tracks>	
+            <Board:tracks>
         )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
@@ -20,12 +20,12 @@
         (piece "Seed" Shared)
         (hand Each)
     })
-    (rules 
+    (rules
         (start (set Count 1 to:(sites Board)) )
-        
-        (play 
+
+        (play
             (move Select
-                (from 
+                (from
                     (if (is Mover Prev)
                         ("PlayFromLastHole")
                         (sites Mover "Home")
@@ -41,17 +41,17 @@
                             (if (is In (to) (sites Mover "Inner"))
                                 (if (is Occupied ("OppositePit"))
                                     (and
-                                        (fromTo 
+                                        (fromTo
                                             (from ("OppositePit"))
                                             (to (handSite Mover))
                                             count:(count at:("OppositePit"))
-                                        )	
+                                        )
                                         (if (is Occupied ("OppositeOuterPit"))
-                                            (fromTo 
+                                            (fromTo
                                                 (from ("OppositeOuterPit"))
                                                 (to (handSite Mover))
                                                 count:(count at:("OppositeOuterPit"))
-                                            )	
+                                            )
                                         )
                                     )
                                 )
@@ -61,11 +61,11 @@
                 )
             )
         )
-        
+
         (end
-            (if (no Moves Next) 
+            (if (no Moves Next)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -77,39 +77,39 @@
 
 (option "Board Size" <Board> args:{ <size> <tracks>}
     {
-    (item "5"    <5>  
+    (item "5"    <5>
         <
-        { 
+        {
         (track "Track1" "0,E,N1,W" loop:True P1)
         (track "Track2" "10,E,N1,W" loop:True P2)
-        }	
+        }
         >
-    "Each player has 6 holes per row.")*   
-    (item "8"    <8>  
+    "Each player has 6 holes per row.")*
+    (item "8"    <8>
         <
-        { 
+        {
         (track "Track1" "0,E,N1,W" loop:True P1)
         (track "Track2" "16,E,N1,W" loop:True P2)
-        }	
+        }
         >
-    "Each player has 8 holes per row.")   
+    "Each player has 8 holes per row.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Nchayo (Observed)" {
         "Board Size/5"
         }
         variations:{"Board Size/8"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Nchayo is a four-row mancala-style board game played by the Makonde people of Mozambique and Tanzania. The board is generally made of holes in the ground, and stones or fruit seeds are used as counters.")
@@ -121,7 +121,7 @@
         (origin  "This game was played in East Africa, around 1966.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

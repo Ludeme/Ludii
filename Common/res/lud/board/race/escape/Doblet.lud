@@ -16,9 +16,9 @@
 (game "Doblet"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -31,14 +31,14 @@
         )
         (dice d:6 num:3)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
                 if:("DieNotUsed")
                 (if (= "SiteToMoveOnTrack" End)
                     "RemoveAPiece"
-                    (move 
-                        (from) 
-                        (to 
-                            "SiteToMoveOnTrack" 
+                    (move
+                        (from)
+                        (to
+                            "SiteToMoveOnTrack"
                             if:"StackSizeLessThan2"
                             (apply (if (is Enemy (who at:(to))) (remove (to))))
                         )
@@ -48,23 +48,23 @@
         )
         (map "StartTrack" {(pair P1 0) (pair P2 12)})
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" (sites {0..5}) count:2 state:1)
             (place Stack "Disc2" (sites {12..17}) count:2 state:1)
         })
-        
+
         phases:{
-        (phase "UnStacking" 
-            (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
+        (phase "UnStacking"
+            (play
+                (do
+                    (if (not "SameTurn") (roll))
                     next:
-                    (forEach Die 
+                    (forEach Die
                         if:("DieNotUsed")
                         (if ("PieceStacked" "SiteToSelect")
                             (move Select (from ("SiteToSelect"))
-                                (then 
+                                (then
                                     (and {
                                         ("Unstack")
                                         (if (not (all DiceUsed))
@@ -80,24 +80,24 @@
             (nextPhase Mover (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) "BearingOff")
         )
         (phase "BearingOff"
-            (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
+            (play
+                (do
+                    (if (not "SameTurn") (roll))
                     next:(forEach Piece top:True)
                     (then (if (and (not (was Pass)) (not (all DiceUsed))) (moveAgain)))
                 )
             )
         )
         }
-        
+
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Doblet is a race game from medieval Spain that is related to other European Tables games. It is documented in Alfonso X's Libro de los Juegos.")
@@ -110,12 +110,12 @@
         (origin  "This game was played in Spain, around 1283.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
         (stackType state:0 Backgammon)
     })
-    
+
 )
 

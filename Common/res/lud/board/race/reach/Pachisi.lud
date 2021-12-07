@@ -2,14 +2,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pachisi"  
-    (players 4)  
-    (equipment { 
-        (board 
+(game "Pachisi"
+    (players 4)
+    (equipment {
+        (board
             (add
                 (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
+                    (merge
+                        (shift 0 8 (rectangle 3 19))
                         (shift 8 0 (rectangle 19 3))
                     )
                     (poly {{8 8} {8 11} {11 11} {11 8}})
@@ -23,7 +23,7 @@
             (track "Track4" "100,4,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,19,E8" P4 directed:True)
             }
         )
-        (hand Each) 
+        (hand Each)
         (dice d:2 from:0 num:6)
         (map "Die" {(pair 0 25) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5) (pair 6 6)})
         (map "Entry" {(pair 1 68) (pair 2 46) (pair 3 81) (pair 4 4)})
@@ -31,65 +31,65 @@
         (regions "Castle" {61 63 65 32 47 15 80 84 86 21 38 3})
         (regions "Grace" {0 1 6})
         (piece "Pawn" Each
-            (if (or 
-                    (= (trackSite Move steps:(count Pips)) ("Goal")) 
-                    (and 
-                        (is In (count Pips) (sites "Grace") ) 
+            (if (or
+                    (= (trackSite Move steps:(count Pips)) ("Goal"))
+                    (and
+                        (is In (count Pips) (sites "Grace") )
                         (= (from) (mapEntry "PreviousGoal" (mover)))
                     )
-                ) 
-                (move 
-                    Select 
-                    (from) 
-                    (to ("Goal")) 
+                )
+                (move
+                    Select
+                    (from)
+                    (to ("Goal"))
                     (then (remove (last From)))
                 )
-                (if (and 
-                        (not (= (trackSite Move steps:(mapEntry "Die" (count Pips))) ("Goal"))) 
-                        (not (= (trackSite Move steps:(mapEntry "Die" (count Pips))) Off)) 
+                (if (and
+                        (not (= (trackSite Move steps:(mapEntry "Die" (count Pips))) ("Goal")))
+                        (not (= (trackSite Move steps:(mapEntry "Die" (count Pips))) Off))
                     )
-                    (move 
-                        (from (from) level:(level)) 
-                        (to 
-                            (trackSite Move steps:(mapEntry "Die" (count Pips))) 
-                            (apply if:(or 
-                                    (not 
-                                        (is In 
-                                            (trackSite Move steps:(mapEntry "Die" (count Pips))) 
+                    (move
+                        (from (from) level:(level))
+                        (to
+                            (trackSite Move steps:(mapEntry "Die" (count Pips)))
+                            (apply if:(or
+                                    (not
+                                        (is In
+                                            (trackSite Move steps:(mapEntry "Die" (count Pips)))
                                             (sites "castle")
                                         )
-                                    ) 
-                                    (and 
-                                        (is In 
-                                            (trackSite Move steps:(mapEntry "Die" (count Pips))) 
+                                    )
+                                    (and
+                                        (is In
+                                            (trackSite Move steps:(mapEntry "Die" (count Pips)))
                                             (sites "Castle")
                                         )
-                                        (is Friend 
-                                            (who 
-                                                at:(trackSite 
-                                                    Move 
+                                        (is Friend
+                                            (who
+                                                at:(trackSite
+                                                    Move
                                                     steps:(mapEntry "Die" (count Pips))
                                                 )
                                             )
                                         )
                                     )
-                                ) 
-                                (if 
-                                    (is Enemy (who at:(to))) 
-                                    (fromTo 
-                                        (from (to)) 
+                                )
+                                (if
+                                    (is Enemy (who at:(to)))
+                                    (fromTo
+                                        (from (to))
                                         (to (handSite (who at:(to))))
                                     )
                                 )
                             )
                         )
-                    ) 
+                    )
                 )
             )
         )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (place Stack "Pawn1" (handSite P1) count:4)
             (place Stack "Pawn2" (handSite P2) count:4)
@@ -98,37 +98,37 @@
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
         })
-        
+
         phases:{
-        (phase "firstTurn" 
-            (play 
-                (do 
-                    (roll) 
+        (phase "firstTurn"
+            (play
+                (do
+                    (roll)
                     next:(move
-                        (from (handSite (mover))) 
-                        (to 
-                            (trackSite Move 
-                                from:(handSite (mover)) 
+                        (from (handSite (mover)))
+                        (to
+                            (trackSite Move
+                                from:(handSite (mover))
                                 steps:(mapEntry "Die" (count Pips))
                             )
                         )
-                    ) 
+                    )
                 )
-            ) 
+            )
             (nextPhase (> (count Moves) 3) "Movement")
         )
-        (phase "Movement" 
+        (phase "Movement"
             (play (do (roll)
                     next:(or
                         {
                         (forEach Piece)
-                        (if (and 
-                                (!= (what at:(handSite (mover))) 0) 
-                                (is In (count Pips) (sites "Grace") ) 
+                        (if (and
+                                (!= (what at:(handSite (mover))) 0)
+                                (is In (count Pips) (sites "Grace") )
                             )
                             (move
-                                (from 
-                                    (handSite Mover) 
+                                (from
+                                    (handSite Mover)
                                     level:(topLevel at:(handSite (mover)))
                                 )
                                 (to (mapEntry "Entry" (mover)))
@@ -136,12 +136,12 @@
                         )
                         (move Pass)
                         }
-                        (then 
-                            (if 
-                                (is In (count Pips) (sites "Grace") ) 
+                        (then
+                            (if
+                                (is In (count Pips) (sites "Grace") )
                                 (moveAgain)
-                            ) 
-                        ) 
+                            )
+                        )
                     )
                 )
             )
@@ -155,38 +155,38 @@
 
 (option "Variant" <Variant> args:{ <wikipedia> }
     {
-    (item  "Wikipedia"  <> "")* 
+    (item  "Wikipedia"  <> "")*
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Wikipedia (Described)" 
+(rulesets {
+
+    (ruleset "Ruleset/Wikipedia (Described)"
         {
         "Variant/Wikipedia"
         }
     )
-    
-    (ruleset "Ruleset/Pucheesee (Deccan seven cowries) (Observed)" 
+
+    (ruleset "Ruleset/Pucheesee (Deccan seven cowries) (Observed)"
         {
-        
+
         }
     )
-    
-    (ruleset "Ruleset/Pucheesee (Deccan six cowries) (Observed)" 
+
+    (ruleset "Ruleset/Pucheesee (Deccan six cowries) (Observed)"
         {
-        
+
         }
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pachisi is a race game and one of the longest-played games in South Asia. It is widely played throughout South Asia, and was transformed in the UK and US as Ludo and Parcheesi.")
@@ -204,7 +204,7 @@
         (origin  "This game was played in South Asia, around 1832.")
         }
     )
-    
+
     (graphics {
         (show Symbol "thinCross" {63 67 65 38 23 3 82 84 86 15 30 47} scale:0.9)
         (board Colour InnerEdges (colour Black))
@@ -218,7 +218,7 @@
         (stackType 4 Count)
         (piece Scale "Pawn" 0.5)
     })
-    
+
     (ai
         "Pachisi_ai"
     )

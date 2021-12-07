@@ -5,12 +5,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Makonn"  
-    (players 2)  
-    
-    (equipment { 
+(game "Makonn"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "20,E,N1,W" loop:True P2)
             }
@@ -20,22 +20,22 @@
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
         (piece "Seed" Shared)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 1 to:(union (sites P1 "Home") (sites P2 "Home"))))
-        
+
         phases:{
-        
+
         (phase "Rearrangement"
-            (play 
+            (play
                 (or
                     (move
                         (from (sites Mover "Home") if:(is Occupied (from)))
                         (to (sites Mover "Home") if:(!= (from) (to)))
                         (then
                             (and
-                                (if 
+                                (if
                                     (and {
                                         (!= 1 (value Player Mover))
                                         (is In (last To) (sites Mover "Inner"))
@@ -45,7 +45,7 @@
                                         (and {
                                             (set Value Mover 1)
                                             (remove ("OppositePit" (last To)))
-                                            (if (is Occupied ("OppositeOuterPit" (last To))) 
+                                            (if (is Occupied ("OppositeOuterPit" (last To)))
                                                 (remove ("OppositeOuterPit" (last To)))
                                             )
                                         })
@@ -60,14 +60,14 @@
             )
             (nextPhase Mover (was Pass) "Sowing")
         )
-        
-        (phase "Sowing" 
+
+        (phase "Sowing"
             (play
                 (move Select
-                    (from 
+                    (from
                         (if ("SameTurn")
                             (sites {(var "Replay")})
-                            (sites Mover "Home") 
+                            (sites Mover "Home")
                         )
                         if:(if ("SameTurn")
                             True
@@ -87,9 +87,9 @@
                                     (moveAgain)
                                 )
                                 (if (is Occupied ("OppositePit" (to)))
-                                    (and 
+                                    (and
                                         (remove ("OppositePit" (to)))
-                                        (if (is Occupied ("OppositeOuterPit" (to))) 
+                                        (if (is Occupied ("OppositeOuterPit" (to)))
                                             (remove ("OppositeOuterPit" (to)))
                                         )
                                     )
@@ -100,17 +100,17 @@
                 )
             )
         )
-        
+
         }
-        
+
         (end (if (= 0 (count in:(sites Next "Home"))) (result Next Loss)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Makonn is a four-row mancala-style board game played in the Seychelles. It was described to Alex de Voogt in the 2007, but the game is attested from at least the time of World War I by the presence of game boards in the National Historic Museum from that time.")
@@ -122,10 +122,10 @@
         (origin  "This game was played in Seychelles, around 2007.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

@@ -1,11 +1,11 @@
-(game "Graph Test - Hole (Poly in Square)"  
-    (players 2)  
-    (equipment { 
-        (board (hole (square 8) (poly { { 2.75 2.75 } { 2.75 5.25 } { 4.25 5.25 } { 4.25 4.25 } {5.25 4.25 } { 5.25 2.75 } } )) use:Cell) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+(game "Graph Test - Hole (Poly in Square)"
+    (players 2)
+    (equipment {
+        (board (hole (square 8) (poly { { 2.75 2.75 } { 2.75 5.25 } { 4.25 5.25 } { 4.25 4.25 } {5.25 4.25 } { 5.25 2.75 } } )) use:Cell)
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

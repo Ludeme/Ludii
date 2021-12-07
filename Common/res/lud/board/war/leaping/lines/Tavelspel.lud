@@ -1,25 +1,25 @@
-(game "Tavelspel" 
-    (players 2)  
-    (equipment { 
-        (board 
-            (square 13) 
+(game "Tavelspel"
+    (players 2)
+    (equipment {
+        (board
+            (square 13)
             use:Vertex
         )
         (piece "Marker" Each)
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Marker1" (expand (sites Bottom)))
             (place "Marker2" (expand (sites Top)))
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (or
                     ("HopSequenceCaptureAgain")
                     (move Pass)
                 )
-                (forEach Piece "Marker" 
+                (forEach Piece "Marker"
                     (or
                         ("HopSequenceCapture")
                         ("StepToEmpty")
@@ -27,15 +27,15 @@
                 )
             )
         )
-        
+
         (end (if (= 0 (count Pieces Next)) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tavelspel is a game played in northern Sweden during the nineteenth century. This version was documented among Swedish settlers to Dåres, but it was said to have  been much  older, and local to the village.")
@@ -47,7 +47,7 @@
         (origin  "This game was played in Sweden, from around 1859 to 1899.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
     })

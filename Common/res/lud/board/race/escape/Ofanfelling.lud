@@ -9,13 +9,13 @@
 (define "PieceUnstacked" (= (state at:#1) 1) )
 (define "PieceStacked" (= (state at:#1) 0) )
 
-(define "Unstack" 
+(define "Unstack"
     (forEach Level (last To)
         (set State at:(last To) level:(level) 1)
     )
 )
 
-(define "Stack" 
+(define "Stack"
     (forEach Level (last To)
         (set State at:(last To) level:(level) 0)
     )
@@ -26,7 +26,7 @@
 (game "Ofanfelling"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        (board (rectangle 2 13)
             {
             (track "Track1" {7..12} P1 directed:True)
             (track "Track2" {18..13} P2 directed:True)
@@ -35,14 +35,14 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
                 if:("DieNotUsed")
                 (if (= "SiteToMoveOnTrack" Off)
                     "RemoveAPiece"
-                    (move 
-                        (from) 
-                        (to 
-                            "SiteToMoveOnTrack" 
+                    (move
+                        (from)
+                        (to
+                            "SiteToMoveOnTrack"
                         )
                     )
                 )
@@ -50,21 +50,21 @@
         )
         (map "StartTrack" {(pair P1 7) (pair P2 18)})
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" (sites {7..12}) count:2)
             (place Stack "Disc2" (sites {13..18}) count:2)
         })
         phases:{
-        (phase "UnStacking" (play 
-                (do 
-                    (if (or (is Pending) (not "SameTurn")) (roll)) 
+        (phase "UnStacking" (play
+                (do
+                    (if (or (is Pending) (not "SameTurn")) (roll))
                     next:
-                    (forEach Die 
+                    (forEach Die
                         if:("DieNotUsed")
                         (if ("PieceStacked" "SiteToSelect")
                             (move Select (from ("SiteToSelect"))
-                                (then 
+                                (then
                                     (and {
                                         ("Unstack")
                                         (if (not (all DiceUsed))
@@ -80,15 +80,15 @@
             )
             (nextPhase Mover (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) "Stacking")
         )
-        (phase "Stacking" (play 
-                (do 
-                    (if (or (is Pending) (not "SameTurn")) (roll)) 
+        (phase "Stacking" (play
+                (do
+                    (if (or (is Pending) (not "SameTurn")) (roll))
                     next:
-                    (forEach Die 
+                    (forEach Die
                         if:("DieNotUsed")
                         (if ("PieceUnstacked" "SiteToSelect")
                             (move Select (from ("SiteToSelect"))
-                                (then 
+                                (then
                                     (and {
                                         ("Stack")
                                         (if (not (all DiceUsed))
@@ -104,9 +104,9 @@
             )
             (nextPhase Mover (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceUnstacked" (site))))) "BearingOff")
         )
-        (phase "BearingOff" (play 
-                (do 
-                    (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
+        (phase "BearingOff" (play
+                (do
+                    (if (or (all DiceEqual) (not "SameTurn")) (roll))
                     next:(forEach Piece top:True)
                     (then (if (or (not (all DiceUsed)) (all DiceEqual)) (moveAgain)))
                 )
@@ -119,8 +119,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ofanfelling is a race game played in Iceland. Though it is played on the same board as other European Tables Games, it is different from most of them in that all of the game play for each player takes place in separate quadrants of the board, and the players' pieces never interact with one another.")
@@ -133,12 +133,12 @@
         (origin  "This game was played in Iceland, around 1905.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style backgammon)
         (stackType state:1 Backgammon)
     })
-    
+
 )
 

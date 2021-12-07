@@ -1,35 +1,35 @@
 (define "CaptureToPiece"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
-            (remove 
-                (to) 
+            (remove
+                (to)
             )
         )
-    ) 
+    )
 )
 
 (define "KingNotCheckedAndToEmpty"
-    (and 
-        (is Empty (to)) 
+    (and
+        (is Empty (to))
         (not ("IsInCheck" "King_noCross" Mover at:(to)))
-    )   
+    )
 )
 
 (define "DoubleStep"
     (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
+        Slide
+        Forward
+        (between (exact 2) if:(is Empty (between)))
+        (to if:(is Empty (to)))
     )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
@@ -41,9 +41,9 @@
 
 (define "RemovePiecesIfCheckmate"
     (if (and (is Active #1) (not (is Mover #1)))
-        (if 
+        (if
             (or
-                (and 
+                (and
                     ("IsInCheck" "King_noCross" #1)
                     ("CanNotMove" #1 #2)
                 )
@@ -53,83 +53,83 @@
                 (remove (site))
             )
         )
-    )		
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Chatrang"  
-    (players {(player N) (player S) (player N) (player S)})  
-    (equipment { 
-        (board (square 8)) 
-        
-        (piece "Pawn" Each 
+(game "Chatrang"
+    (players {(player N) (player S) (player N) (player S)})
+    (equipment {
+        (board (square 8))
+
+        (piece "Pawn" Each
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
                     "DoubleStep"
                 )
-                "StepForwardToEmpty" 
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
             })
         )
-        
-        (piece "Rook" Each 
+
+        (piece "Rook" Each
             (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Orthogonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
-        (piece "King_noCross" Each 
+        (piece "King_noCross" Each
             (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Step
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
-        (piece "Elephant" Each 
+        (piece "Elephant" Each
             (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Diagonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
-        (piece "Knight" Each 
+        (piece "Knight" Each
             (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
-    })  
-    (rules 
-        
-        (start { 
+    })
+    (rules
+
+        (start {
             (place "Pawn1" (intersection (expand (sites Left) steps:3) (sites Row 1)))
             (place "Pawn2" (intersection (expand (sites Right) steps:3) (sites Row 6)))
             (place "Pawn3" (intersection (expand (sites Right) steps:3) (sites Row 1)))
             (place "Pawn4" (intersection (expand (sites Left) steps:3) (sites Row 6)))
-            (place "Rook1" {"A1"}) (place "Knight1" {"B1"}) (place "Elephant1" {"C1"}) (place "King_noCross1" coord:"D1") 
-            (place "Rook3" {"H1"}) (place "Knight3" {"G1"}) (place "Elephant3" {"F1"}) (place "King_noCross3" coord:"E1") 
-            (place "Rook2" {"H8"}) (place "Knight2" {"G8"}) (place "Elephant2" {"F8"}) (place "King_noCross2" coord:"E8") 
+            (place "Rook1" {"A1"}) (place "Knight1" {"B1"}) (place "Elephant1" {"C1"}) (place "King_noCross1" coord:"D1")
+            (place "Rook3" {"H1"}) (place "Knight3" {"G1"}) (place "Elephant3" {"F1"}) (place "King_noCross3" coord:"E1")
+            (place "Rook2" {"H8"}) (place "Knight2" {"G8"}) (place "Elephant2" {"F8"}) (place "King_noCross2" coord:"E8")
             (place "Rook4" {"A8"}) (place "Knight4" {"B8"}) (place "Elephant4" {"C8"}) (place "King_noCross4" coord:"D8")
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
         })
-        
-        (play 
-            (do 
+
+        (play
+            (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
                 (then
@@ -142,18 +142,18 @@
                 )
             )
         )
-        
+
         (end {
             (forEach NonMover
-                if:(= (where "King_noCross" Player) Off) 
+                if:(= (where "King_noCross" Player) Off)
                 (result Player Loss)
             )
-            (if 
+            (if
                 (and {
-                    (no Pieces Enemy "Pawn") 
-                    (no Pieces Enemy "Knight") 
-                    (no Pieces Enemy "Elephant") 
-                    (no Pieces Enemy "Rook") 
+                    (no Pieces Enemy "Pawn")
+                    (no Pieces Enemy "Knight")
+                    (no Pieces Enemy "Elephant")
+                    (no Pieces Enemy "Rook")
                 })
                 (result TeamMover Win)
             )
@@ -163,8 +163,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This version of Shatranj, which is played by four players, was played in the Punjab region of what is now Pakistan during the nineteenth century. Players play on two teams.")
@@ -176,12 +176,12 @@
         (origin  "This game was played in Pakistan, around 1900.")
         }
     )
-    
+
     (graphics {
         (show Check "King_noCross")
         (piece Scale "Pawn" 0.825)
         (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
         (board Style Chess)
     })
-    
+
 )

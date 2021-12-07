@@ -4,11 +4,11 @@
 
 (define "RemoveAPiece" (move Remove (from) ) )
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (fromTo (from (to)) (to (handSite Next)))
-    ) 
+    )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
@@ -18,9 +18,9 @@
 (game "Medio Emperador"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -34,41 +34,41 @@
         (dice d:6 num:<Dice:num>)
         (hand Each)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
                 if:("DieNotUsed")
                 (if (= "SiteToMoveOnTrack" Off)
                     "RemoveAPiece"
                     (if (or
                             (not (is Enemy (who at:"SiteToMoveOnTrack")))
-                            (and 
+                            (and
                                 (is Enemy (who at:"SiteToMoveOnTrack"))
                                 (= 1 (size Stack at:"SiteToMoveOnTrack"))
                             )
                         )
-                        (move 
-                            (from) 
-                            (to 
-                                "SiteToMoveOnTrack" 
-                                "CaptureEnemyPiece" 
+                        (move
+                            (from)
+                            (to
+                                "SiteToMoveOnTrack"
+                                "CaptureEnemyPiece"
                             )
                         )
                     )
-                )	
+                )
             )
         )
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" 0 count:15)
             (place Stack "Disc2" 12 count:15)
         })
         (play
-            (do 
-                (if (not "SameTurn") (roll)) 
-                next:(or 
-                    (forEach Piece top:True) 
+            (do
+                (if (not "SameTurn") (roll))
+                next:(or
+                    (forEach Piece top:True)
                     (forEach Piece container:(mover) top:True)
-                    (then 
+                    (then
                         (if (not (all DiceUsed))
                             (moveAgain)
                         )
@@ -94,8 +94,8 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Medio Emperador (Described)" {
         "Dice/3"
         }
@@ -105,8 +105,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Medio Emperador is a race game from medieval Spain that is related to other European Tables games. It is very similar to Emperador, using only half of the board and without a prime win.")
@@ -119,7 +119,7 @@
         (origin  "This game was played in Spain, around 1283.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
@@ -127,6 +127,6 @@
         (stackType 1 Count)
         (stackType 2 Count)
     })
-    
+
 )
 

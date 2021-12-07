@@ -1,15 +1,15 @@
-(define "HopMan" 
+(define "HopMan"
     (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
+        Hop
+        (from #1)
+        Diagonal
+        (between
             if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -18,67 +18,67 @@
 
 //------------------------------------------------------------------------------
 
-(game "Diagonal Draughts" 
-    (players 2)  
-    (equipment { 
-        (board (square 10)) 
-        (piece "Counter" Each) 
+(game "Diagonal Draughts"
+    (players 2)
+    (equipment {
+        (board (square 10))
+        (piece "Counter" Each)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (intersection (sites Right) (sites Bottom)) steps:8 Orthogonal) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
                         ("HopMan" (last To)
-                            (then 
-                                (if (can Move ("HopMan" (last To))) 
+                            (then
+                                (if (can Move ("HopMan" (last To)))
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                     )
                     (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
                 )
                 (priority {
                     (max Moves
-                        (or 
+                        (or
                             (forEach Piece "Counter"
-                                ("HopMan" (from) 
-                                    (then 
-                                        (if (can Move ("HopMan" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
+                                ("HopMan" (from)
+                                    (then
+                                        (if (can Move ("HopMan" (last To)))
+                                            (moveAgain)
+                                            (if "JumpToPromotionZone"
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
                                             )
-                                        ) 
-                                    ) 
-                                ) 
+                                        )
+                                    )
+                                )
                             )
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                         )
                     )
-                    (or  
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                Diagonal 
+                                Step
+                                Diagonal
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -88,16 +88,16 @@
                     )
                 })
             )
-        ) 
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+        )
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Diagonal Draughts is a type of Draughts game played at least as early as the nineteenth century. In it, the pieces are arranged such that the long diagonal of the board is unoccupied, rather than the central two rows of squares. ")
@@ -110,12 +110,12 @@
         (origin  "This game was played in England, around 1805.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "Diagonal Draughts_ai"
     )

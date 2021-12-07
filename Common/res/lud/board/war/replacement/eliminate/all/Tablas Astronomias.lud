@@ -1,6 +1,6 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:(pips)
     )
 )
@@ -9,12 +9,12 @@
 
 (define "AllPieceEscaped" ("NoSites" (sites Occupied by:#1 top:False)))
 
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
@@ -24,7 +24,7 @@
 (game "Tablas Astronomias"
     (players 7)
     (equipment {
-        (board 
+        (board
             (concentric {49})
             {
             (track "Track" {48 47 45 43 41 39 37 35 33 31 29 27 25 23 21 19 17 15 13 9 7 5 3 1 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46} loop:True)
@@ -34,44 +34,44 @@
         (dice d:7 num:3)
         (piece "Disc" Each)
     })
-    (rules 
+    (rules
         (start {
-            (place Stack "Disc1" 14 count:7) 
-            (place Stack "Disc2" 0 count:7) 
-            (place Stack "Disc3" 13 count:7) 
-            (place Stack "Disc4" 27 count:7) 
-            (place Stack "Disc5" 41 count:7) 
-            (place Stack "Disc6" 42 count:7) 
-            (place Stack "Disc7" 28 count:7) 
+            (place Stack "Disc1" 14 count:7)
+            (place Stack "Disc2" 0 count:7)
+            (place Stack "Disc3" 13 count:7)
+            (place Stack "Disc4" 27 count:7)
+            (place Stack "Disc5" 41 count:7)
+            (place Stack "Disc6" 42 count:7)
+            (place Stack "Disc7" 28 count:7)
         })
         (play
-            (do 
+            (do
                 (if (not "SameTurn") (roll))
                 next:(forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)
-                        (move 
+                        (move
                             (from (site))
                             (to ("NextSiteFrom" (site))
                                 if:("NotEnemyOrOnlyOne")
-                                (apply 
-                                    if:(is Enemy (who at:(to))) 
+                                (apply
+                                    if:(is Enemy (who at:(to)))
                                     (remove (to))
                                 )
                             )
                         )
                     )
-                    (then 
-                        (if 
-                            (not (all DiceUsed)) 
+                    (then
+                        (if
+                            (not (all DiceUsed))
                             (moveAgain)
                         )
                     )
                 )
             )
         )
-        (end 
+        (end
             (forEach NonMover if:("AllPieceEscaped" Player) (result Player Loss))
         )
     )
@@ -79,8 +79,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game, the original name for which has not survived, is a capturing game related to European Tables games, but for seven players. Each player represents one of the five Gallilean planets, the sun, or the moon, and they capture one another's pieces until one is left.")
@@ -92,7 +92,7 @@
         (origin  "This game was played in Spain, around 1283.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour Green))
@@ -107,8 +107,8 @@
         (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.02)
         (board Background image:"disc.svg" fillColour:(colour DarkBrown) edgeColour:(colour DarkBrown) scale:0.1)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.5)
-        
+
     })
-    
+
 )
 

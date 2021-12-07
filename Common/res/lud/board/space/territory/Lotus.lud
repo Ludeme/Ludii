@@ -1,39 +1,39 @@
 (define "HasFreedom" (> (count Liberties) 0))
 
 (define "CaptureSurroundedPiece"
-    (enclose 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply             
-                (and 
-                    (remove (between)) 
-                    (add (to (between))) 
+    (enclose
+        (from (last To))
+        Orthogonal
+        (between
+            if:(is Enemy (who at:(between)))
+            (apply
+                (and
+                    (remove (between))
+                    (add (to (between)))
                 )
-            ) 
+            )
         )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Lotus"  
-    (players 2) 
-    (equipment { 
+(game "Lotus"
+    (players 2)
+    (equipment {
         (board (rotate 90 (tiling T3464 2)) use:Vertex)
         (piece "Marker" Each)
         }
-    )  
-    
-    (rules 
-        (play 
+    )
+
+    (rules
+        (play
             (or
                 (do
                     (move
                         Add
                         (to (sites Empty))
-                        (then 
+                        (then
                             "CaptureSurroundedPiece"
                         )
                     )
@@ -42,12 +42,12 @@
                 (move Pass (then (addScore Mover 1)))
             )
         )
-        
+
         (end
             (if (all Passed)
-                (byScore 
+                (byScore
                     {
-                    (score P1 (+ {(score P1) (size Territory P1) (count Sites in:(sites Occupied by:P1))})) 
+                    (score P1 (+ {(score P1) (size Territory P1) (count Sites in:(sites Occupied by:P1))}))
                     (score P2 (+ {(score P2) (size Territory P2) (count Sites in:(sites Occupied by:P2)) }))
                     }
                 )
@@ -58,8 +58,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (rules "The game is played on the board of Kensington. It follows the rules of Go except when a capture is made, the pieces captured are flipped.")
@@ -69,15 +69,15 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Style Board)
     })
-    
-    (ai 
+
+    (ai
         "Lotus_ai"
     )
-    
+
 )

@@ -6,11 +6,11 @@
 
 //------------------------------------------------------------------------------
 
-(game "Okwe (Nigeria)"  
-    (players 2)  
-    
-    (equipment { 
-        
+(game "Okwe (Nigeria)"
+    (players 2)
+
+    (equipment {
+
         (mancalaBoard 2 "Columns" store:None
             {
             (track "Track" "0,E,N,W" loop:True)
@@ -23,15 +23,15 @@
         (map "LeftMost" {(pair P1 0) (pair P2 (- (* ("Columns") 2) 1))})
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
-    })  
-    (rules 
-        
-        <Board:start>	
-        
+    })
+    (rules
+
+        <Board:start>
+
         phases:
         {
         (phase "Opening"
-            (play 
+            (play
                 (move
                     (from (sites Mover "OpeningRegion") if:(is Occupied (from)))
                     (to (handSite Mover))
@@ -40,7 +40,7 @@
             )
             (nextPhase (all Sites (union (sites P1 "OpeningRegion") (sites P2 "OpeningRegion")) if:(is Empty (site))) "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (or
@@ -74,7 +74,7 @@
                                 (to (mapEntry "LeftMost" Mover))
                                 count:(count Cell at:(handSite Mover))
                                 (then
-                                    (and 
+                                    (and
                                         (sow
                                             count:(var "NumToSow")
                                             "TrackSpecialHome"
@@ -91,7 +91,7 @@
             )
         )
         }
-        
+
         (end (if (no Pieces in:(sites Board))
                 {
                 (if (is Empty (handSite P1)) (result P2 Win))
@@ -106,7 +106,7 @@
 
 (option "Board Size" <Board> args:{ <size> <start> <homeTracks> <openingRegions>}
     {
-    (item "10"   <10>  
+    (item "10"   <10>
         <
         (start {
             (set Count 5 to:((sites {0 1 4 19..18 15})))
@@ -122,7 +122,7 @@
         (regions "OpeningRegion" P2 (sites {2..4}))
         >
     "Each row has 10 holes.")*
-    (item "12"   <12>  
+    (item "12"   <12>
         <
         (start {
             (set Count 5 to:((sites {0..2 5 23..21 18})))
@@ -137,8 +137,8 @@
         (regions "OpeningRegion" P1 (sites {17..20}))
         (regions "OpeningRegion" P2 (sites {5..3}))
         >
-    "Each row has 12 holes.")  
-    (item "14"   <14> 
+    "Each row has 12 holes.")
+    (item "14"   <14>
         <
         (start {
             (set Count 5 to:((sites {0..3 6 27..24 21})))
@@ -153,8 +153,8 @@
         (regions "OpeningRegion" P1 (sites {20..23}))
         (regions "OpeningRegion" P2 (sites {6..4}))
         >
-    "Each row has 14 holes.")  
-    (item "16"   <16>  
+    "Each row has 14 holes.")
+    (item "16"   <16>
         <
         (start {
             (set Count 5 to:((sites {0..4 7 31..27 24})))
@@ -169,8 +169,8 @@
         (regions "OpeningRegion" P1 (sites {23..26}))
         (regions "OpeningRegion" P2 (sites {7..5}))
         >
-    "Each row has 16 holes.")  
-    (item "18"   <18>  
+    "Each row has 16 holes.")
+    (item "18"   <18>
         <
         (start {
             (set Count 5 to:((sites {0..5 8 35..30 27})))
@@ -185,8 +185,8 @@
         (regions "OpeningRegion" P1 (sites {26..29}))
         (regions "OpeningRegion" P2 (sites {6..8}))
         >
-    "Each row has 18 holes.")   
-    (item "20"   <20>  
+    "Each row has 18 holes.")
+    (item "20"   <20>
         <
         (start {
             (set Count 5 to:((sites {0..6 9 39..33 30})))
@@ -206,19 +206,19 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Basden (Described)" {
         "Board Size/10"
         }
         variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Okwe is the name for several mancala-style board games played in Nigeria. This version is a two-row board game played by the Igbo, Edo, Umon, Ibibio, and Owerri people during the early twentieth century.")
@@ -230,7 +230,7 @@
         (origin  "This game was played in Nigeria, around 1921.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

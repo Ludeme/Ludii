@@ -1,6 +1,6 @@
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
@@ -8,14 +8,14 @@
 )
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "RightMostEmpty" 
+(define "RightMostEmpty"
     (trackSite FirstSite "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -24,10 +24,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lam Waladach"  
-    (players 2)  
-    
-    (equipment { 
+(game "Lam Waladach"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6 store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -39,19 +39,19 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
-    (rules 
-        
-        (start { 
+    })
+    (rules
+
+        (start {
             (set Count 4 to:(sites Track) )
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
-        
+
         phases:{
         (phase "Opening"
             (play
-                (move Select 
+                (move Select
                     (from 11)
                     (then
                         (and
@@ -79,17 +79,17 @@
             )
             (nextPhase "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (or {
-                    (move Select 
-                        (from 
-                            (if 
+                    (move Select
+                        (from
+                            (if
                                 (and (not (is Pending)) (is Mover Prev))
                                 (sites {(var "Replay")})
-                                ("OwnedHoles") 
-                            ) 
+                                ("OwnedHoles")
+                            )
                             if:(> (count at:(from)) 0)
                         )
                         (then
@@ -102,7 +102,7 @@
                                             (moveAgain)
                                             (set Var "Replay" (to))
                                         )
-                                    )	
+                                    )
                                 )
                                 (then
                                     (and
@@ -130,7 +130,7 @@
                     }
                     (then
                         (if ("NoPieceOnBoard")
-                            (and  
+                            (and
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             )
@@ -138,7 +138,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
@@ -146,11 +146,11 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-            
+
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 3 (count Cell at:(handSite Mover)))
@@ -167,13 +167,13 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Lam Waladach is a two-row mancala-style board game played in central Ethiopia. It begins with a stylized move.")
@@ -186,7 +186,7 @@
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

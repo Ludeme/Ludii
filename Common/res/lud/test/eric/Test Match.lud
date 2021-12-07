@@ -1,13 +1,13 @@
 (match "Test Match"
     (players 2)
     (games
-        { 
+        {
         (subgame "Tic-Tac-Toe" next:1)
         (subgame "Yavalath" next:2)
         (subgame "Breakthrough" next:0)
         }
     )
-    (end { 
+    (end {
         (if (and (= (count Trials) 3) (> (matchScore P1) (matchScore P2)))  (result P1 Win))
         (if (and (= (count Trials) 3) (< (matchScore P1) (matchScore P2)))  (result P2 Win))
         (if (and (= (count Trials) 3) (= (matchScore P1) (matchScore P2)))  (result P1 Draw))

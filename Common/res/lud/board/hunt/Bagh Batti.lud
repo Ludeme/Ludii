@@ -1,6 +1,6 @@
-(game "Bagh Batti"  
-    (players 2)  
-    (equipment { 
+(game "Bagh Batti"
+    (players 2)
+    (equipment {
         ("AlquerqueBoard" 5 5)
         (piece "Goat" P1 "StepToEmpty")
         (piece "Tiger" P2
@@ -9,15 +9,15 @@
                 ("HopSequenceCapture")
             )
         )
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place Stack "Goat1" (sites {"B2" "D2" "B4" "D4"}) counts:{5 5 5 5})
             (place "Tiger2" (sites {"C1" "C5"}))
         })
-        
-        (play 
+
+        (play
             (if ("SameTurn")
                 (or
                     (move Pass)
@@ -25,19 +25,19 @@
                 )
                 (forEach Piece top:True)
             )
-            
+
         )
-        
-        (end { 
+
+        (end {
             (if (no Moves P2) (result P1 Win))
             (if (no Pieces P1) (result P2 Win))
-        })  
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Bagh Batti is a hunt game played in the Garhwal region of India. It it closely similar to the games Bagh Guti and Sher Bakar, in which the hunted goats begin in a stack.")
@@ -50,10 +50,10 @@
         (origin  "This game was played in India, around 1926.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
-        
+
     })
-    
+
 )

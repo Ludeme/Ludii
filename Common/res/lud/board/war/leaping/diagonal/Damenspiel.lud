@@ -1,27 +1,27 @@
-(define "HopDiagonalCounter" 
+(define "HopDiagonalCounter"
     (move Hop
         Diagonal
-        (between 
+        (between
             #1
             #2
-            if:(is Enemy (who at:(between))) 
+            if:(is Enemy (who at:(between)))
             (apply (remove (between) #3))
         )
         (to if:(is Empty (to)))
-        (then 
+        (then
             (if "JumpToPromotionZone"
                 (promote (last To) (piece "DoubleCounter") Mover)
-                (if (can Move 
-                        (hop 
-                            (from (last To)) 
+                (if (can Move
+                        (hop
+                            (from (last To))
                             Diagonal
-                            (between 
+                            (between
                                 if:(is Enemy (who at:(between)))
                                 (apply (remove (between)))
                             )
                             (to if:(is Empty (to)))
                         )
-                    ) 
+                    )
                     (moveAgain)
                 )
             )
@@ -29,32 +29,32 @@
     )
 )
 
-(define "HopDiagonalDoubleCounter" 
-    (move Hop 
+(define "HopDiagonalDoubleCounter"
+    (move Hop
         Diagonal
-        (between 
+        (between
             before:(count Rows)
             (range 1 (count Rows))
             after:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
+        (then
+            (if (can Move
+                    (hop
+                        (from (last To))
                         Diagonal
-                        (between 
+                        (between
                             before:(count Rows)
                             (range 1 (count Rows))
                             after:(count Rows)
-                            if:(is Enemy (who at:(between))) 
+                            if:(is Enemy (who at:(between)))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
                     )
-                ) 
+                )
                 (moveAgain)
             )
         )
@@ -67,80 +67,80 @@
 
 //------------------------------------------------------------------------------
 
-(game "Damenspiel" 
+(game "Damenspiel"
     (players {(player N) (player S)})
-    (equipment { 
-        (board (square 8)) 
+    (equipment {
+        (board (square 8))
         (piece "Counter" Each)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 0)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 0) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if	("SameTurn")
                 (if ("IsUnpromoted")
-                    (move Hop 
-                        (from (last To)) 
+                    (move Hop
+                        (from (last To))
                         Diagonal
-                        (between 
+                        (between
                             if:(is Enemy (who at:(between)))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
-                        (then 
+                        (then
                             (if "JumpToPromotionZone"
                                 (promote (last To) (piece "DoubleCounter") Mover)
-                                (if (can Move 
-                                        (hop 
-                                            (from (last To)) 
+                                (if (can Move
+                                        (hop
+                                            (from (last To))
                                             Diagonal
-                                            (between 
+                                            (between
                                                 if:(is Enemy (who at:(between)))
                                                 (apply (remove (between)))
                                             )
                                             (to if:(is Empty (to)))
                                         )
-                                    ) 
+                                    )
                                     (moveAgain)
                                 )
                             )
                         )
                     )
-                    (move Hop 
-                        (from (last To)) 
+                    (move Hop
+                        (from (last To))
                         Diagonal
-                        (between 
+                        (between
                             before:(count Rows)
                             (range 1 (count Rows))
                             after:(count Rows)
-                            if:(is Enemy (who at:(between))) 
+                            if:(is Enemy (who at:(between)))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
-                        (then 
-                            (if (can Move 
-                                    (hop 
-                                        (from (last To)) 
+                        (then
+                            (if (can Move
+                                    (hop
+                                        (from (last To))
                                         Diagonal
-                                        (between 
+                                        (between
                                             before:(count Rows)
                                             (range 1 (count Rows))
                                             after:(count Rows)
-                                            if:(is Enemy (who at:(between))) 
+                                            if:(is Enemy (who at:(between)))
                                             (apply (remove (between)))
                                         )
                                         (to if:(is Empty (to)))
                                     )
-                                ) 
+                                )
                                 (moveAgain)
                             )
                         )
@@ -152,11 +152,11 @@
                         (forEach Piece "DoubleCounter" "HopDiagonalDoubleCounter")
                     )
                     (or
-                        (forEach Piece "Counter" 
-                            (move Step 
+                        (forEach Piece "Counter"
+                            (move Step
                                 (directions {FR FL})
                                 (to if:(is Empty (to)))
-                                (then 
+                                (then
                                     (if "JumpToPromotionZone"
                                         (promote (last To) (piece "DoubleCounter") Mover)
                                     )
@@ -169,17 +169,17 @@
                     )
                 })
             )
-            
-        ) 
-        
-        (end (if (no Pieces Next) (result Mover Win))) 
+
+        )
+
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Damenspiel is a Draughts game palyed in Germany.")
@@ -191,14 +191,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 250 221 144))
         (board Colour Phase1 (colour 200 150 75))
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "Damenspiel_ai"
     )

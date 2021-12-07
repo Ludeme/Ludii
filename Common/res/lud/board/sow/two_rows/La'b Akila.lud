@@ -6,10 +6,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "La'b Akila"  
-    (players 2)  
-    
-    (equipment { 
+(game "La'b Akila"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "TrackCCW" "0,E,N,W" loop:True)
         )
@@ -17,12 +17,12 @@
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 7 to:(sites Track) ) )
-        
-        (play 
+
+        (play
             (move Select
                 (from
                     (sites Mover)
@@ -32,7 +32,7 @@
                     (sow
                         if:True
                         apply:(if
-                            (or 
+                            (or
                                 (= 2 (count at:(to)))
                                 (= 4 (count at:(to)))
                             )
@@ -51,19 +51,19 @@
                                 )
                             )
                         )
-                        backtracking:(or 
+                        backtracking:(or
                             (= 2 (count at:(to)))
                             (= 4 (count at:(to)))
                         )
                     )
                 )
-            )	
+            )
         )
-        
+
         (end
-            (if ("NoPieceOnBoard") 
+            (if ("NoPieceOnBoard")
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -73,7 +73,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "La'b Akila is a two-row mancala game played in Syria during the nineteenth century.")
@@ -85,7 +85,7 @@
         (origin  "This game was played in Egypt, around 1896.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

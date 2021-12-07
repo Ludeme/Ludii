@@ -2,16 +2,16 @@
 
 (define "EscapeAPiece" (move Remove (intersection (sites Occupied by:Mover) (sites Outer))))
 
-(define "PlaceAPiece" 
+(define "PlaceAPiece"
     (if (not (is Empty (handSite Mover)))
         (move
             (from (handSite Mover))
             (to (intersection (sites Centre) (sites Empty)))
         )
-    )		
+    )
 )
 
-(define "InnerRadial" 
+(define "InnerRadial"
     (sites {#1 (- #1 7) (- #1 14) (- #1 21)})
 )
 
@@ -23,25 +23,25 @@
                 (to ("JumpSite" #1))
             )
         )
-    )		
+    )
 )
 
 (define "JumpMove"
     (forEach Site (sites {21..27})
-        ("Jump" (site))	
+        ("Jump" (site))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Lisa" 
+(game "Lisa"
     (players 2)
     (equipment {
         (board (concentric {7 7 7 7 0 7 7 7}) use:Vertex)
-        (piece "Marker" Each 
-            (move Step 
+        (piece "Marker" Each
+            (move Step
                 (to
-                    if:(and 
+                    if:(and
                         (>= (to) (* 7 (/ (from) 7))) // No backward move
                         (is Empty (to))
                     )
@@ -50,7 +50,7 @@
         )
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             (place "Marker" "Hand" count:10)
         })
@@ -68,14 +68,14 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info {
-        
+
     })
-    
+
     (graphics {
         (no Sunken)
     })
-    
+
 )

@@ -1,6 +1,6 @@
 (game "Samoan Game"
-    (players 2) 
-    (equipment { 
+    (players 2)
+    (equipment {
         (board (rectangle 12 6))
         (piece "Marker" Each)
     })
@@ -16,8 +16,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game was documented in the nineteenth century in Samoa, but it was already falling out of fashion. The board was made in mats, and the board was not of a predetermined size.")
@@ -28,12 +28,12 @@
         (origin  "This game was played in Samoa, around 1899.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )
 

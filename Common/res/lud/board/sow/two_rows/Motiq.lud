@@ -7,14 +7,14 @@
         (no Pieces All in:(sites P2))
     )
 )
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -23,25 +23,25 @@
 
 //------------------------------------------------------------------------------
 
-(game "Motiq"  
-    (players 2)  
-    
-    (equipment { 
+(game "Motiq"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 7 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (regions "Home" P1 (sites Bottom)) 
-        (regions "Home" P2 (sites Top)) 
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    (rules 
+    })
+    (rules
         (start {
-            (set Count 4 to:(sites Track) ) 
+            (set Count 4 to:(sites Track) )
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
@@ -57,7 +57,7 @@
                         (then
                             (sow
                                 apply:(if (= 4 (count at:(to)))
-                                    (and 
+                                    (and
                                         (fromTo
                                             (from (to))
                                             (to (handSite Mover))
@@ -83,7 +83,7 @@
                     }
                     (then
                         (if ("OneRowIsEmpty")
-                            (and { 
+                            (and {
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -105,7 +105,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 4 (count Cell at:(handSite P1))) (result P2 Win))
@@ -113,16 +113,16 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 4 (count Cell at:(handSite Mover)))
                     (move
                         (from (handSite Mover))
-                        (to 
+                        (to
                             (if (all Sites (sites Mover) if:(is Occupied (site)))
                                 (sites Board)
                                 (sites Mover)
@@ -139,13 +139,13 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Motiq is a two-row mancala-style board game played by the Kédang people on the island of Lembata in Indonesia. ")
@@ -156,7 +156,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

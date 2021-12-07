@@ -1,9 +1,9 @@
-(game "Tabal" 
+(game "Tabal"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tabal is a game played in Malaysia in the nineteenth century. The board is the same as many race games played throughout Europe and Asia, though the specific rules were not documented.")
@@ -37,12 +37,12 @@
         (origin  "This game was played in Malaysia, from around 1886 to 1895.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table) // Temporary style until a more specific one exist for that game.
         (stackType Backgammon)
     })
-    
+
 )
 

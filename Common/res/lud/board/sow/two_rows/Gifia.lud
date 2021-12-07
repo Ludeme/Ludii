@@ -13,10 +13,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gifia"  
-    (players 2)  
-    
-    (equipment { 
+(game "Gifia"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 4
             {
             (track "TrackCCW" "1,E,N,W" loop:True)
@@ -27,22 +27,22 @@
         (regions P2 (difference (expand (sites Right) steps:2) (sites Right))) // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})                         // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 6 to:(sites Track)))
-        
+
         phases:{
         (phase "Sowing"
-            (play 
-                (if (is Mover Prev) 
+            (play
+                (if (is Mover Prev)
                     (or
-                        (move 
+                        (move
                             (from (ahead ("LastHole") W))
                             (to (mapEntry Mover))
                             count:(count at:(ahead ("LastHole") W))
                         )
-                        (move 
+                        (move
                             (from (ahead ("LastHole") E))
                             (to (mapEntry Mover))
                             count:(count at:(ahead ("LastHole") E))
@@ -57,7 +57,7 @@
                             (then
                                 (sow
                                     "TrackCCW"
-                                    apply:(if 
+                                    apply:(if
                                         (or
                                             (= 2 (count at:(to)))
                                             (= 4 (count at:(to)))
@@ -69,7 +69,7 @@
                                                 count:(count at:(to))
                                             )
                                             (if ("WestHoleExist")
-                                                (if 
+                                                (if
                                                     (or
                                                         (= 2 (count at:("WestHole")))
                                                         (= 4 (count at:("WestHole")))
@@ -82,7 +82,7 @@
                                                 )
                                             )
                                             (if ("EastHoleExist")
-                                                (if 
+                                                (if
                                                     (or
                                                         (= 2 (count at:("EastHole")))
                                                         (= 4 (count at:("EastHole")))
@@ -95,10 +95,10 @@
                                                 )
                                             )
                                         })
-                                        (if 
+                                        (if
                                             (and
                                                 (if ("WestHoleExist")
-                                                    (if 
+                                                    (if
                                                         (or
                                                             (= 2 (count at:("WestHole")))
                                                             (= 4 (count at:("WestHole")))
@@ -107,7 +107,7 @@
                                                     )
                                                 )
                                                 (if ("EastHoleExist")
-                                                    (if 
+                                                    (if
                                                         (or
                                                             (= 2 (count at:("EastHole")))
                                                             (= 4 (count at:("EastHole")))
@@ -130,7 +130,7 @@
                             (then
                                 (sow
                                     "TrackCW"
-                                    apply:(if 
+                                    apply:(if
                                         (or
                                             (= 2 (count at:(to)))
                                             (= 4 (count at:(to)))
@@ -142,7 +142,7 @@
                                                 count:(count at:(to))
                                             )
                                             (if ("WestHoleExist")
-                                                (if 
+                                                (if
                                                     (or
                                                         (= 2 (count at:("WestHole")))
                                                         (= 4 (count at:("WestHole")))
@@ -155,7 +155,7 @@
                                                 )
                                             )
                                             (if ("EastHoleExist")
-                                                (if 
+                                                (if
                                                     (or
                                                         (= 2 (count at:("EastHole")))
                                                         (= 4 (count at:("EastHole")))
@@ -168,10 +168,10 @@
                                                 )
                                             )
                                         })
-                                        (if 
+                                        (if
                                             (and
                                                 (if ("WestHoleExist")
-                                                    (if 
+                                                    (if
                                                         (or
                                                             (= 2 (count at:("WestHole")))
                                                             (= 4 (count at:("WestHole")))
@@ -180,7 +180,7 @@
                                                     )
                                                 )
                                                 (if ("EastHoleExist")
-                                                    (if 
+                                                    (if
                                                         (or
                                                             (= 2 (count at:("EastHole")))
                                                             (= 4 (count at:("EastHole")))
@@ -198,7 +198,7 @@
                     )
                     (then
                         (if ("OneSingleCounterPerPlayer")
-                            (and  
+                            (and
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -218,7 +218,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 6 (count at:(mapEntry P1))) (result P2 Win))
@@ -226,10 +226,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (not (all Sites (sites Mover) if:(is Occupied (site))))
@@ -245,13 +245,13 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Gifia is a two-row mancala-style board game that was played in the early twentieth century in Nigeria. ")
@@ -262,7 +262,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

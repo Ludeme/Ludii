@@ -1,34 +1,34 @@
 (define "StepForward" (move Step Forward (to if:(is Empty (to)))))
-(define "StepDiagonalForward" 
-    (move Step (directions {FR FL} of:All) 
-        (to if:(or 
-                (is Empty (to)) 
+(define "StepDiagonalForward"
+    (move Step (directions {FR FL} of:All)
+        (to if:(or
+                (is Empty (to))
                 (is Enemy (who at:(to)))
-            ) 
+            )
             (apply (remove (to)))
         )
-    )		
+    )
 )
 
 (define "ReachedTarget" (is In (last To) (sites Mover)) )
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough (Placement)" 
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8) use:Vertex) 
+(game "Breakthrough (Placement)"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8) use:Vertex)
         (piece "Pawn" Each (or ("StepForward") ("StepDiagonalForward")))
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Pawn" "Hand" count:18))
-        
+
         phases:{
         (phase "Placement"
-            (play 
+            (play
                 (move
                     (from (handSite Mover))
                     (to (expand (sites Next) steps:2) if:(is Empty (to)))
@@ -38,7 +38,7 @@
         )
         (phase "Move"
             (play (forEach Piece))
-            (end (if "ReachedTarget" (result Mover Win))) 
+            (end (if "ReachedTarget" (result Mover Win)))
         )
         }
     )
@@ -47,9 +47,9 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

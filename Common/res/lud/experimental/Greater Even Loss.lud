@@ -4,51 +4,51 @@
 
 //------------------------------------------------------------------------------
 
-(game "Greater Even Loss"  
-    (players 2)  
-    (equipment { 
-        (board (square 4)) 
-        (piece "Disc" Each) 
-    })  
-    (rules 
+(game "Greater Even Loss"
+    (players 2)
+    (equipment {
+        (board (square 4))
+        (piece "Disc" Each)
+    })
+    (rules
         (start {
-            (place "Disc1" {"A1"} state:1) 
-            (place "Disc1" {"B1"} state:2) 
-            (place "Disc1" {"C1"} state:3) 
-            (place "Disc1" {"D1"} state:4) 
-            (place "Disc1" {"A2"} state:5) 
-            (place "Disc1" {"B2"} state:6) 
-            (place "Disc1" {"C2"} state:7) 
-            (place "Disc1" {"D2"} state:8) 
-            (place "Disc2" {"A3"} state:5) 
-            (place "Disc2" {"B3"} state:6) 
-            (place "Disc2" {"C3"} state:7) 
-            (place "Disc2" {"D3"} state:8) 
-            (place "Disc2" {"A4"} state:1) 
-            (place "Disc2" {"B4"} state:2) 
-            (place "Disc2" {"C4"} state:3) 
-            (place "Disc2" {"D4"} state:4) 
+            (place "Disc1" {"A1"} state:1)
+            (place "Disc1" {"B1"} state:2)
+            (place "Disc1" {"C1"} state:3)
+            (place "Disc1" {"D1"} state:4)
+            (place "Disc1" {"A2"} state:5)
+            (place "Disc1" {"B2"} state:6)
+            (place "Disc1" {"C2"} state:7)
+            (place "Disc1" {"D2"} state:8)
+            (place "Disc2" {"A3"} state:5)
+            (place "Disc2" {"B3"} state:6)
+            (place "Disc2" {"C3"} state:7)
+            (place "Disc2" {"D3"} state:8)
+            (place "Disc2" {"A4"} state:1)
+            (place "Disc2" {"B4"} state:2)
+            (place "Disc2" {"C4"} state:3)
+            (place "Disc2" {"D4"} state:4)
         })
-        
-        (play 
-            (move Select 
-                (from 
-                    (forEach 
+
+        (play
+            (move Select
+                (from
+                    (forEach
                         (sites Occupied by:Mover)
                         if:(> (state at:(site)) ("LastStateRemove"))
                     )
                 )
                 (then
-                    (and 
+                    (and
                         ("StoreStateRemoved")
-                        (remove (last To))	
+                        (remove (last To))
                     )
-                )		
+                )
             )
-        ) 
-        
-        (end 
-            (if 
+        )
+
+        (end
+            (if
                 (is Even "LastStateRemove")
                 (result Mover Loss)
             )
@@ -58,7 +58,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Greater Even Loss is a theoretical game designed to demonstrate Monte Carlo resistance. Each turn there is one strategically optimal move against a competent opponent and many losing moves.")
@@ -70,7 +70,7 @@
         (date "2021")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour Blue))

@@ -10,7 +10,7 @@
 (game "Tamman"
     (players <Players:num>)
     (equipment {
-        (board 
+        (board
             (merge {
                 (add
                     (merge {
@@ -28,7 +28,7 @@
         )
         (dice d:2 from:0 num:4)
         (piece "Marker" Each
-            (move 
+            (move
                 (from (from) level:(level))
                 (to
                     ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
@@ -41,7 +41,7 @@
                                         (if (is Enemy (who at:(site) level:(level)))
                                             (fromTo
                                                 (from (site) level:(level))
-                                                (to 
+                                                (to
                                                     (mapEntry "Entry" (who at:(site) level:(level)))
                                                 )
                                             )
@@ -52,16 +52,16 @@
                         )
                     )
                 )
-            )	
+            )
         )
         (regions "SafeSites" (sites {2 6 14 20}))
         (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         <Players:entries>
     })
-    (rules 
+    (rules
         <Players:start>
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(forEach Piece)
                 (then
                     (if (and ("Throw4") (not ("SameTurn")))
@@ -77,11 +77,11 @@
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> <start> <tracks> <entries>} {
-    (item "2" <2> 
+    (item "2" <2>
         <
         (start {
-            (place Stack "Marker1" 2 count:4) 
-            (place Stack "Marker2" 20 count:4) 
+            (place Stack "Marker1" 2 count:4)
+            (place Stack "Marker2" 20 count:4)
         })
         >
         <
@@ -90,13 +90,13 @@
         >
         <(map "Entry" {(pair P1 2) (pair P2 20)})>
         "The game is played with 2 players."
-    )   
-    (item "3" <3> 
+    )
+    (item "3" <3>
         <
         (start {
-            (place Stack "Marker1" 2 count:4) 
-            (place Stack "Marker2" 6 count:4) 
-            (place Stack "Marker3" 20 count:4) 
+            (place Stack "Marker1" 2 count:4)
+            (place Stack "Marker2" 6 count:4)
+            (place Stack "Marker3" 20 count:4)
         })
         >
         <
@@ -106,14 +106,14 @@
         >
         <(map "Entry" {(pair P1 2) (pair P2 6) (pair P3 20)})>
         "The game is played with 3 players."
-    )   
-    (item "4" <4> 
+    )
+    (item "4" <4>
         <
         (start {
-            (place Stack "Marker1" 2 count:4) 
-            (place Stack "Marker2" 6 count:4) 
-            (place Stack "Marker3" 20 count:4) 
-            (place Stack "Marker4" 14 count:4) 
+            (place Stack "Marker1" 2 count:4)
+            (place Stack "Marker2" 6 count:4)
+            (place Stack "Marker3" 20 count:4)
+            (place Stack "Marker4" 14 count:4)
         })
         >
         <
@@ -124,12 +124,12 @@
         >
         <(map "Entry" {(pair P1 2) (pair P2 6) (pair P3 20) (pair P4 14)})>
         "The game is played with 4 players."
-    )*   
+    )*
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
     (ruleset "Ruleset/Tamman (Described)" {
         "Players/4"
         }
@@ -139,8 +139,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tamman is a race game with a spiralling track on a square board that was played in the coastal regions of Somaliland in the early twentieth century.")
@@ -152,7 +152,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (stackType site:8 Ring)
         (stackType 0 Ground)
@@ -161,6 +161,6 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )
 

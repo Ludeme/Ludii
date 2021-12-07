@@ -1,8 +1,8 @@
-(define "LastDirection" 
+(define "LastDirection"
     (directions Cell from:(last From) to:(last To))
 )
 
-(define "LastDistance" 
+(define "LastDistance"
     (count Steps (last From) (last To))
 )
 
@@ -13,22 +13,22 @@
     )
 )
 
-(define "AgressiveMoves" 
-    (forEach Piece 
+(define "AgressiveMoves"
+    (forEach Piece
         (if (is In (from) ("AgressiveRegion"))
             (or
-                (move Slide 
-                    "LastDirection" 
-                    (between 
+                (move Slide
+                    "LastDirection"
+                    (between
                         (exact "LastDistance")
                         if:(is Empty (between))
                     )
                     (to
-                        if:(or 
+                        if:(or
                             (is Empty (to))
-                            (and 
+                            (and
                                 (is Enemy (who at:(to)))
-                                (or 
+                                (or
                                     (is Empty (ahead (to) "LastDirection"))
                                     (= (ahead (to) "LastDirection") (to))
                                 )
@@ -38,7 +38,7 @@
                             (if (is Enemy (who at:(to)))
                                 (if (= (ahead (to) "LastDirection") (to))
                                     (remove (to))
-                                    (fromTo 
+                                    (fromTo
                                         (from (to))
                                         (to (ahead (to) "LastDirection"))
                                     )
@@ -48,7 +48,7 @@
                     )
                 )
                 (if (and {
-                        (= ("LastDistance") 2) 
+                        (= ("LastDistance") 2)
                         (is Enemy (who at:(ahead (from) "LastDirection")))
                         (is Empty (ahead (from) steps:2 "LastDirection"))
                         (if (= (from) (ahead (from) steps:3 "LastDirection"))
@@ -58,17 +58,17 @@
                     })
                     (move
                         (from (from))
-                        (to 
+                        (to
                             (ahead (from) steps:2 "LastDirection")
                         )
                         (then
                             (if (= (ahead (last To) "LastDirection") (last To))
                                 (remove (ahead (last From) "LastDirection"))
-                                (fromTo 
+                                (fromTo
                                     (from (ahead (last From) "LastDirection"))
                                     (to (ahead (last To) "LastDirection"))
                                 )
-                            )	
+                            )
                         )
                     )
                 )
@@ -77,16 +77,16 @@
     )
 )
 
-(define "NextNoPieceInRegion" 
+(define "NextNoPieceInRegion"
     (= 0 (count Sites in:(intersection (sites Occupied by:Next) #1)))
 )
 
 //-------------------------------------------------------------------------
 
-(game "Shobu" 
+(game "Shobu"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
                 (square 4)
                 (shift 5 0 (square 4))
@@ -111,12 +111,12 @@
         })
         phases:{
         (phase "Passive"
-            (play 
+            (play
                 (do
-                    (forEach Piece 
+                    (forEach Piece
                         (if (is In (from) (sites Mover "Home"))
-                            (move Slide 
-                                (between 
+                            (move Slide
+                                (between
                                     (max 2)
                                     if:(is Empty (between))
                                 )
@@ -130,20 +130,20 @@
             (nextPhase Mover "Agressive")
         )
         (phase "Agressive"
-            (play 
+            (play
                 ("AgressiveMoves")
             )
             (nextPhase Mover "Passive")
         )
         }
-        (end 
-            (if (or { 
+        (end
+            (if (or {
                     ("NextNoPieceInRegion" (sites "BottomDark"))
                     ("NextNoPieceInRegion" (sites "TopDark"))
                     ("NextNoPieceInRegion" (sites "BottomLight"))
                     ("NextNoPieceInRegion" (sites "TopLight"))
-                })  
-                (result Mover Win) 
+                })
+                (result Mover Win)
             )
         )
     )
@@ -151,7 +151,7 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Shobu is a beautifully crafted abstract strategy game for two players.")
@@ -165,7 +165,7 @@
         (date "2019")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

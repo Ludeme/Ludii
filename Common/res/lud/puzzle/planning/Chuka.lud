@@ -11,8 +11,8 @@
 (game "Chuka"
     (players 1)
     (equipment {
-        (board 
-            (concentric {5}) 
+        (board
+            (concentric {5})
             (track "Track" {0 1 3 4 2} loop:True)
             use:Vertex
         )
@@ -20,19 +20,19 @@
     })
     (rules
         (start (set Count 2 to:"AllSitesNotRumba"))
-        (play 
+        (play
             (move
                 Select
                 (from
-                    (if 
-                        (!= ("Rumba") (value Pending)) 
+                    (if
+                        (!= ("Rumba") (value Pending))
                         (sites {"LastHole"})
                         ("AllSitesNotRumba")
                     )
                     if:(!= 0 (count at:(from)))
                 )
                 (then
-                    (sow 
+                    (sow
                         apply:(if (> (count at:(to)) 1)
                             (set Pending (to))
                         )
@@ -42,8 +42,8 @@
         )
         (end {
             (if ("AllCountersInRumba") (result Mover Win))
-            (if 
-                (and (= 1 (count at:("LastHole"))) (!= ("LastHole") ("Rumba"))) 
+            (if
+                (and (= 1 (count at:("LastHole"))) (!= ("LastHole") ("Rumba")))
                 (result Mover Loss)
             )
         })
@@ -52,8 +52,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Chuka is a puzzle played in Russia. It contains the sowing mechanism seen in many mancala-style board games. ")
@@ -64,11 +64,11 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
     (ai
         "Chuka_ai"
     )

@@ -2,7 +2,7 @@
 (define "Die1" (face 97))
 (define "Die2" (face 98))
 (define "Die3" (face 99))
-(define "HasDouble" 
+(define "HasDouble"
     (or {
         (= ("Die1") ("Die2"))
         (= ("Die1") ("Die3"))
@@ -28,13 +28,13 @@
 (define "PieceMove"
     (or
         (if (and { (= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
-            (move 
+            (move
                 (from (from) level:(level))
                 (to ("TrackMove" from:(from) #1 (* 2 ("Die1"))))
-                (then 
+                (then
                     (forEach Level (last From) FromTop
                         (if (= (mover) (who at:(last From) level:(level)))
-                            (fromTo 
+                            (fromTo
                                 (from (last From) level:(level))
                                 (to (last To))
                             )
@@ -44,27 +44,27 @@
             )
         )
         (forEach Die
-            if:("DieNotUsed")	
+            if:("DieNotUsed")
             (if (= End ("TrackMove" from:(from) #1 (pips)))
                 (move Remove (from) level:(level))
-                (move 
+                (move
                     (from (from) level:(level))
                     (to ("TrackMove" from:(from) #1 (pips)))
                 )
             )
             (then
-                (if (not (all DiceUsed)) 
+                (if (not (all DiceUsed))
                     (moveAgain)
                 )
             )
         )
         (then
             (forEach Level (last To) FromTop
-                (if (and 
+                (if (and
                         (is Enemy (who at:(last To) level:(level)))
                         (= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
                     )
-                    (fromTo 
+                    (fromTo
                         (from (last To) level:(level))
                         (to (mapEntry "Start" (who at:(last To) level:(level))))
                     )
@@ -74,7 +74,7 @@
     )
 )
 
-(define "Move" 
+(define "Move"
     (if (no Pieces Mover)
         (if (is Mover P1)
             (forEach Piece ("PieceMove" "Track3") P3)
@@ -87,19 +87,19 @@
             )
         )
         (forEach Piece)
-    )		
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Chaupar"  
-    (players 4)  
-    (equipment { 
-        (board 
+(game "Chaupar"
+    (players 4)
+    (equipment {
+        (board
             (add
                 (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
+                    (merge
+                        (shift 0 8 (rectangle 3 19))
                         (shift 8 0 (rectangle 19 3))
                     )
                     (poly {{8 8} {8 11} {11 11} {11 8}})
@@ -116,33 +116,33 @@
         (dice d:4 faces:{1 2 5 6} num:3)
         (map "Start" {(pair P1 61) (pair P2 21) (pair P3 88) (pair P4 32)})
         (piece "Pawn" Each ("PieceMove" "Track"))
-    } )  
-    (rules 
+    } )
+    (rules
         (start {
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
-            
+
             // The normal pawns.
             (place Stack "Pawn1" (sites {61 58 59 56}))
             (place Stack "Pawn2" (sites {21 20 0 1}))
             (place Stack "Pawn3" (sites {91 88 93 90}))
             (place Stack "Pawn4" (sites {33 32 49 50}))
         })
-        
-        (play 
+
+        (play
             (do (if (not ("SameTurn")) (roll))
                 next:("Move")
             )
         )
-        
+
         (end  (if (no Pieces TeamMover) (result TeamMover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Chaupar is a very popular race game from South Asia that is related to similar games from the region. It has been documented since at least the sixteenth century, when the first description of the rules has been documented.")
@@ -155,7 +155,7 @@
         (origin  "This game was played in South Asia, around 1590.")
         }
     )
-    
+
     (graphics {
         (stackType 0 Ground)
         (stackType 1 Ground)
@@ -167,5 +167,5 @@
         (board Colour OuterEdges (colour Black))
         (piece Scale "Pawn" 0.5)
     })
-    
+
 )

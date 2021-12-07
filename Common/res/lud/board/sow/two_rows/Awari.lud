@@ -1,7 +1,7 @@
-(game "Awari"  
-    (players 2)  
-    
-    (equipment { 
+(game "Awari"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -10,31 +10,31 @@
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 4 to:(sites Track) ) )
-        
-        (play 
-            (do  
+
+        (play
+            (do
                 (move
-                    Select 
-                    (from 
-                        (sites Mover) 
+                    Select
+                    (from
+                        (sites Mover)
                         if:(< 0 (count at:(from)))
                     )
-                    (then 
-                        (sow  
-                            if:(and 
-                                (is In (to) (sites Next)) 
-                                (or 
-                                    (= (count at:(to)) 2) 
+                    (then
+                        (sow
+                            if:(and
+                                (is In (to) (sites Next))
+                                (or
+                                    (= (count at:(to)) 2)
                                     (= (count at:(to)) 3)
                                 )
-                            ) 
-                            apply:(fromTo 
-                                (from (to)) 
-                                (to (handSite Mover)) 
+                            )
+                            apply:(fromTo
+                                (from (to))
+                                (to (handSite Mover))
                                 count:(count at:(to))
                             )
                             includeSelf:False
@@ -45,11 +45,11 @@
                 ifAfterwards:(< 0 (count in:(sites Next)))
             )
         )
-        
-        (end 
+
+        (end
             (if (= 0 (count Sites in:(forEach (sites Track) if:(> (count at:(site)) 1))))
                 (byScore {
-                    (score P1 (count Cell at:(handSite P1))) 
+                    (score P1 (count Cell at:(handSite P1)))
                     (score P2 (count Cell at:(handSite P2)))
                 })
             )
@@ -59,7 +59,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Awari is a two-row mancala-style board game played by the Ndyuka people of Suriname. It is closely similar to other games found throughout West Africa and the Caribbean.")
@@ -71,7 +71,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

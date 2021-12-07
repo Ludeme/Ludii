@@ -1,14 +1,14 @@
-(game "Dablo (Large)"  
-    (players 2) 
-    (equipment { 
-        (board 
+(game "Dablo (Large)"
+    (players 2)
+    (equipment {
+        (board
             (square 7 diagonals:Solid)
             use:Vertex
         )
-        (piece "Disc" Each) 
+        (piece "Disc" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -16,7 +16,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Dablo is a word used by the Sámi people for capturing games. This version was played on a 7x7 board in Frostviken, Sweden.")
@@ -27,9 +27,9 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
 )

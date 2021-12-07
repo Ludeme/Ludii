@@ -6,62 +6,62 @@
 
 //------------------------------------------------------------------------------
 
-(game "Andot"  
-    (players 2)  
-    (equipment { 
+(game "Andot"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 6 store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
         )
-        (regions "Home" P1 (sites Bottom)) 
-        (regions "Home" P2 (sites Top))    
-        (regions "LeftThree" P1 (expand (intersection (sites Bottom) (sites Left)) steps:2 E)) 
-        (regions "LeftThree" P2 (expand (intersection (sites Top) (sites Right)) steps:2 W)) 
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
+        (regions "LeftThree" P1 (expand (intersection (sites Bottom) (sites Left)) steps:2 E))
+        (regions "LeftThree" P2 (expand (intersection (sites Top) (sites Right)) steps:2 W))
         (regions "RightThree" P1 (expand (intersection (sites Bottom) (sites Right)) steps:2 W))
         (regions "RightThree" P2 (expand (intersection (sites Top) (sites Left)) steps:2 E))
-        (regions "ExtremeHoles" P1 
+        (regions "ExtremeHoles" P1
             (intersection (union (sites Left) (sites Right)) (sites Bottom))
         )
-        (regions "ExtremeHoles" P2 
+        (regions "ExtremeHoles" P2
             (intersection (union (sites Left) (sites Right)) (sites Top))
         )
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 4 to:(sites Board)) )
-        
-        (play 
+
+        (play
             (or
-                (move 
-                    Select 
-                    (from 
-                        (sites Mover "LeftThree") 
+                (move
+                    Select
+                    (from
+                        (sites Mover "LeftThree")
                         if:(and
-                            (or 
-                                (and 
-                                    (= (count at:(from)) 1) 
+                            (or
+                                (and
+                                    (= (count at:(from)) 1)
                                     (and
                                         (!= (from) ("NextHoleFrom" (last From) "TrackCCW"))
                                         (if (is In ("NextHoleFrom" (from) "TrackCW") (sites Next "Home"))
                                             (!= (count at:("NextHoleFrom" (from) "TrackCW")) 3)
                                             True
-                                        ) 
+                                        )
                                     )
-                                ) 
+                                )
                                 (> (count at:(from)) 1)
                             )
                             (= 0 (state at:(from)))
                         )
                     )
-                    (then 
+                    (then
                         (sow
                             "TrackCW"
-                            apply:(if (and 
-                                    (= (count at:(to)) 4) 
+                            apply:(if (and
+                                    (= (count at:(to)) 4)
                                     (is In (to) (union (sites Mover "ExtremeHoles") (sites Next "Home")))
                                 )
                                 (set State at:(to) (mover))
@@ -69,32 +69,32 @@
                         )
                     )
                 )
-                (move 
-                    Select 
-                    (from 
-                        (sites Mover "RightThree") 
+                (move
+                    Select
+                    (from
+                        (sites Mover "RightThree")
                         if:(and
-                            (or 
-                                (and 
-                                    (= (count at:(from)) 1) 
+                            (or
+                                (and
+                                    (= (count at:(from)) 1)
                                     (and
                                         (!= (from) ("NextHoleFrom" (last From) "TrackCW"))
                                         (if (is In ("NextHoleFrom" (from) "TrackCCW") (sites Next "Home"))
                                             (!= (count at:("NextHoleFrom" (from) "TrackCCW")) 3)
                                             True
-                                        ) 
+                                        )
                                     )
-                                ) 
+                                )
                                 (> (count at:(from)) 1)
                             )
                             (= 0 (state at:(from)))
                         )
                     )
-                    (then 
+                    (then
                         (sow
                             "TrackCCW"
-                            apply:(if (and 
-                                    (= (count at:(to)) 4) 
+                            apply:(if (and
+                                    (= (count at:(to)) 4)
                                     (is In (to) (union (sites Mover "ExtremeHoles") (sites Next "Home")))
                                 )
                                 (set State at:(to) (mover))
@@ -104,11 +104,11 @@
                 )
             )
         )
-        
+
         (end
-            (if ("AllCountersInMarkedHoles") 
+            (if ("AllCountersInMarkedHoles")
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -118,8 +118,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Andot is a two-row mancala-style board game played by the Bega people of Sudan. The game is typically played using pieces of dried camel dung as counters in hole scooped out of the sand.")
@@ -131,12 +131,12 @@
         (origin  "This game was played in Sudan, around 1938.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)
     })
-    
+
     (ai
         "Andot_ai"
     )

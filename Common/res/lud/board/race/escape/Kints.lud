@@ -1,6 +1,6 @@
 (define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
 
-(define "ThrowValue" 
+(define "ThrowValue"
     (if (= (count Pips) 4)
         4
         (if (= (count Pips) 6)
@@ -13,8 +13,8 @@
                         10
                         (if (= (count Pips) 39)
                             5
-                            (if (or { 
-                                    (= (count Pips) 10) (= (count Pips) 18) (= (count Pips) 19) 
+                            (if (or {
+                                    (= (count Pips) 10) (= (count Pips) 18) (= (count Pips) 19)
                                     (= (count Pips) 20) (= (count Pips) 21) (= (count Pips) 29)
                                 })
                                 2
@@ -28,24 +28,24 @@
     )
 )
 
-(define "CaptureEnemyPiece" 
-    (apply 
+(define "CaptureEnemyPiece"
+    (apply
         if:(is Enemy (who at:(to)))
-        (fromTo (from (to)) (to (handSite Next))) 
-    ) 
+        (fromTo (from (to)) (to (handSite Next)))
+    )
 )
 
 (define "RemoveAPiece" (move Remove (from) ) )
 
-(define "Movement" 
+(define "Movement"
     (if (= ("SiteToMoveOnTrack") End)
         "RemoveAPiece"
-        (if (!= ("SiteToMoveOnTrack") Off) 	 			
+        (if (!= ("SiteToMoveOnTrack") Off)
             (if (or (is Enemy (who at:("SiteToMoveOnTrack"))) (is In ("SiteToMoveOnTrack") (sites Empty)))
-                (move 
+                (move
                     (from)
-                    (to 
-                        ("SiteToMoveOnTrack") 
+                    (to
+                        ("SiteToMoveOnTrack")
                         "CaptureEnemyPiece"
                     )
                 )
@@ -55,9 +55,9 @@
 )
 
 (define "PieceAlreadyEntered" (!= (from) (handSite Mover)))
-(define "PieceCanEnterOnlyIfNoPieceOnArc" 
-    (and 
-        (= (from) (handSite Mover)) 
+(define "PieceCanEnterOnlyIfNoPieceOnArc"
+    (and
+        (= (from) (handSite Mover))
         (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "Arc"))))
     )
 )
@@ -69,7 +69,7 @@
     (equipment {
         (board
             (add
-                (merge {  
+                (merge {
                     (shift -1.25 -0.34 (rotate 30 (rectangle 6 1)))
                     (rectangle 1 5)
                     (rectangle 5 1)
@@ -102,7 +102,7 @@
         )
         (hand Each)
     })
-    (rules 
+    (rules
         (start (place "Marker" "Hand" count:<Num:piece>))
         (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))) )
         (end (if (no Pieces Mover) (result Mover Win)))
@@ -113,27 +113,27 @@
 
 (option "Start Rules" <Num> args:{ <piece> }
     {
-    (item  "1"  <1> "Each player has 1 piece.")  
-    (item  "2"  <2> "Each player has 2 pieces.")**  
+    (item  "1"  <1> "Each player has 1 piece.")
+    (item  "2"  <2> "Each player has 2 pieces.")**
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Kints (Observed)" {
         "Start Rules/2"
         }
         variations:{"Start Rules/1"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Kints is a race game played by the Akimel O'odham people of Arizona. It is similar to other games known as Quince, which may be related to Mesoamerican Patolli.")
@@ -144,7 +144,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
@@ -155,9 +155,9 @@
         (piece Rename piece:"Die3" "KintsDice3")
         (piece Rename piece:"Die4" "KintsDice4")
         (piece Style "Die" NativeAmericanDice)
-        
+
     })
-    
+
     (ai
         "Kints_ai"
     )

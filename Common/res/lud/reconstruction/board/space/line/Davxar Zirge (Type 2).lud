@@ -1,9 +1,9 @@
 (game "Davxar Zirge (Type 2)"
     (players 2)
-    
-    (equipment 
-        { 
-        (board 
+
+    (equipment
+        {
+        (board
             (add
                 (merge {
                     (shift 7 7 (remove (square 3) vertices:{4}))
@@ -15,16 +15,16 @@
                 {30 22} {17 25}{19 27} {20 28} {22 13} {13 19} {19 8} {8 17} {17 10}
                 {10 20} {20 15} {15 22} {14 5} {5 11} {11 0} {0 9} {9 2} {2 12} {12 7} {7 14}
                 {6 14} {14 22} {3 11} {11 19} {1 9} {9 17} {4 12} {12 20} {13 21} {13 5}
-                {21 29} {0 8} {8 16} {16 24} {2 10} {10 18} {18 26} {31 23} {23 15} {15 7} 
+                {21 29} {0 8} {8 16} {16 24} {2 10} {10 18} {18 26} {31 23} {23 15} {15 7}
                 }
             )
             use:Vertex
-        ) 
+        )
         (hand Each)
-        (piece "Marker" Each) 
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -32,8 +32,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Davxar Zirge is an alignment game played on Mongolia on a complex board. ")
@@ -46,10 +46,10 @@
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal (colour Hidden))
-        
+
     })
-    
+
 )

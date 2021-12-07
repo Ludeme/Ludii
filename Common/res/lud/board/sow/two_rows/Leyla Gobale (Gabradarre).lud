@@ -24,10 +24,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Leyla Gobale (Gabradarre)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Leyla Gobale (Gabradarre)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6 store:None
             (track "TrackCCW" "0,E,N,W" loop:True)
         )
@@ -36,17 +36,17 @@
         (regions P2 (sites Top))                        // P2 home
         (hand Each)
         (map "CorrespondingHoles" {
-            (pair 0 11) (pair 1 10) (pair 2 9) (pair 3 8) (pair 4 7) (pair 5 6) 
+            (pair 0 11) (pair 1 10) (pair 2 9) (pair 3 8) (pair 4 7) (pair 5 6)
             (pair 6 5) (pair 7 4) (pair 8 3) (pair 9 2) (pair 10 1) (pair 11 0)
         })
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
-            (set Count 5 to:(sites Track) ) 
+            (set Count 5 to:(sites Track) )
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
@@ -55,10 +55,10 @@
                         (from
                             (if (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover) 
+                                (sites Mover)
                             )
                             if:(and {
-                                (is Occupied (from)) 
+                                (is Occupied (from))
                                 (= 0 (state at:(from)))
                                 (is In (from) ("PlayableSites"))
                             })
@@ -99,8 +99,8 @@
                     }
                     (then
                         (if ("APlayerCanNotMove")
-                            (and { 
-                                (forEach Site 
+                            (and {
+                                (forEach Site
                                     (sites P1)
                                     (if (= 0 (state at:(site)))
                                         (fromTo
@@ -110,7 +110,7 @@
                                         )
                                     )
                                 )
-                                (forEach Site 
+                                (forEach Site
                                     (sites P2)
                                     (if (= 0 (state at:(site)))
                                         (fromTo
@@ -120,7 +120,7 @@
                                         )
                                     )
                                 )
-                                (forEach Site 
+                                (forEach Site
                                     (sites Board)
                                     (if (= (state at:(site)) P1)
                                         (fromTo
@@ -146,8 +146,8 @@
                         )
                     )
                 )
-            )	
-            
+            )
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
@@ -155,20 +155,20 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-            
+
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (move
-                    (from (handSite Mover))  
-                    (to 
-                        (forEach (sites Mover) 
-                            if:(= (count at:(site)) 
-                                (min 
-                                    (results 
+                    (from (handSite Mover))
+                    (to
+                        (forEach (sites Mover)
+                            if:(= (count at:(site))
+                                (min
+                                    (results
                                         from:(sites Mover)
                                         to:(sites Mover)
                                         (count at:(to))
@@ -178,11 +178,11 @@
                         )
                     )
                     count:1
-                    (then 
+                    (then
                         (and
                             (remember Value "Playable" (last To) unique:True)
-                            (if 
-                                (< 0 (count Cell at:(handSite Mover))) 
+                            (if
+                                (< 0 (count Cell at:(handSite Mover)))
                                 (moveAgain)
                                 (forEach Site (sites Mover)
                                     (if (is Occupied (site))
@@ -196,18 +196,18 @@
                             )
                         )
                     )
-                ) 
+                )
             )
             (nextPhase (or (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
+
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Leyla Gobale is a name that refers to mancala-style board games in the Horn of Africa. This is a two-row game that was played in the Gabradarre area of Ethiopia.")
@@ -218,7 +218,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)

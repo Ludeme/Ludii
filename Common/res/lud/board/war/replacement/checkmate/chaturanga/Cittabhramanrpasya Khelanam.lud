@@ -1,17 +1,17 @@
 (define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
+    (apply
+        (remove
+            (to)
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
@@ -24,125 +24,125 @@
 //------------------------------------------------------------------------------
 
 (game "Cittabhramanrpasya Khelanam"
-    (players {(player S) (player N)})  
-    (equipment { 
+    (players {(player S) (player N)})
+    (equipment {
         (board (square 8))
-        
-        (piece "Pawn" P1 
-            (or 
-                "StepForwardToEmpty" 
+
+        (piece "Pawn" P1
+            (or
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
                 (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
+                    (if (is In (last To) (sites Mover "Promotion"))
                         (and
-                            (promote (last To) (piece "Ferz_noCross") Mover)	
+                            (promote (last To) (piece "Ferz_noCross") Mover)
                             (fromTo (from (last To)) (to (last From)))
                         )
                     )
                 )
             )
         )
-        (piece "Rook" P1 
+        (piece "Rook" P1
             (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Orthogonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "King_noCross" P1 
-            (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece" 
                 )
             )
         )
-        (piece "Elephant" P1 
+        (piece "King_noCross" P1
             (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Step
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPiece"
-                ) 
-            )
-        ) 
-        (piece "Knight" P1 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece"
-                ) 
+                )
             )
         )
-        (piece "Ferz_noCross" P1 
+        (piece "Elephant" P1
             (move
-                Slide 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Diagonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
-        (piece "King_noCross" P2 
+        (piece "Knight" P1
+            (move
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
+                    "CaptureToPiece"
+                )
+            )
+        )
+        (piece "Ferz_noCross" P1
+            (move
+                Slide
+                (to
+                    if:(is Enemy (who at:(to)))
+                    "CaptureToPiece"
+                )
+            )
+        )
+        (piece "King_noCross" P2
             (or
                 (move
-                    Leap 
-                    "KnightWalk" 
-                    (to 
+                    Leap
+                    "KnightWalk"
+                    (to
                         if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites Around (where "King-noCross" Next)))))
                         "CaptureToPiece"
-                    ) 
+                    )
                 )
-                
+
                 (move
-                    Slide 
-                    (to 
-                        if:(is Enemy (who at:(to))) 
-                        (apply 
+                    Slide
+                    (to
+                        if:(is Enemy (who at:(to)))
+                        (apply
                             if:(not (is In (to) (sites Around (where "King-noCross" Next))))
-                            (remove 
-                                (to) 
+                            (remove
+                                (to)
                             )
                         )
-                    ) 
+                    )
                 )
             )
         )
         (regions "Promotion" P1 (sites Bottom) )
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Pawn1" (sites Row 6))
-            (place "Rook1" {"A8" "H8"}) (place "Knight1" {"B8" "G8"}) (place "Elephant1" {"C8" "F8"}) (place "Ferz_noCross1" coord:"E8") (place "King_noCross1" coord:"D8") 
+            (place "Rook1" {"A8" "H8"}) (place "Knight1" {"B8" "G8"}) (place "Elephant1" {"C8" "F8"}) (place "Ferz_noCross1" coord:"E8") (place "King_noCross1" coord:"D8")
             (place "King_noCross2" coord:"E1")
         })
-        
-        (play 
+
+        (play
             (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
         )
-        
+
         (end {
-            (if (and 
+            (if (and
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
+            )
         })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Cittabhramanrpasya Khelanam is a game dervied from Chaturanga played in India during the nineteenth century. In it, one player plays as a single King, which can move like any of the other pieces, against the opponent who plays with their usual complement of pieces. It is described in the Kriddakausalya of Harikrishna.")
@@ -154,7 +154,7 @@
         (origin  "This game was played in India, around 1871.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.825)
         (show Check "King")
@@ -164,5 +164,5 @@
         (board Colour Phase0 (colour 222 173 123))
         (show Symbol "thinCross" {27 28 35 36} scale:0.9)
     })
-    
+
 )

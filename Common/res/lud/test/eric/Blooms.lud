@@ -1,7 +1,7 @@
 (define "Captured" 1)
 
 (define "CaptureMarkedPieces"
-    (forEach 
+    (forEach
         Site
         (sites Board)
         (if
@@ -18,7 +18,7 @@
         Cell
         Adjacent
         if:(= (id #1 Next) (what at:(to)))
-        (if 
+        (if
             (= 0 (count Liberties if:(= (id #1 Next) (what at:(to)))))
             (forEach
                 Site
@@ -35,36 +35,36 @@
 // #1 - colour string
 // #2 - side
 // #3,#4.#5 - colour
-(define "PieceColour" 
+(define "PieceColour"
     (piece Colour #2 #1 fillColour:(colour #3 #4 #5))
     (piece Rename #2 piece:#1 "disc")
 )
 
 //------------------------------------------------------------------------------
 
-(game "Blooms"  
-    (players 2) 
-    (equipment { 
-        (board <Board>) 
+(game "Blooms"
+    (players 2)
+    (equipment {
+        (board <Board>)
         (piece "A" Each)
         (piece "B" Each)
         (hand Each size:2)
     })
-    
-    (rules 
+
+    (rules
         (start {
             (place "A1" (handSite P1 0)) // Yellow
             (place "B1" (handSite P1 1)) // Red
             (place "A2" (handSite P2 0)) // Teal
             (place "B2" (handSite P2 1)) // Black
         })
-        (play 
-            (move 
+        (play
+            (move
                 (from (sites Hand Mover))
                 (to (sites Empty))
                 copy:True
                 //(then
-                    //(and 
+                    //(and
                         //("MarkSurroundedPiecesById" "A")
                         //("MarkSurroundedPiecesById" "B")
                         //(then
@@ -74,11 +74,11 @@
                 //)
             )
         )
-        
+
         (end
             (if (all Passed)
                 (byScore {
-                    (score P1 (+ (score P1) (size Territory P1))) 
+                    (score P1 (+ (score P1) (size Territory P1)))
                     (score P2 (+ (score P2) (size Territory P2)))
                 })
             )
@@ -90,13 +90,13 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4 spaces per side"      <(hex 4)>     "The game is played on a board with 4 spaces per side")**   
+    (item "4 spaces per side"      <(hex 4)>     "The game is played on a board with 4 spaces per side")**
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Also known as Weiqi in China, Go is one of the most popular board games, and one of the oldest continuously played games in the world. From an early date, it spread from China to Japan and Korea, and more recently it has become a popular game worldwide. It is a game of configuration, where the goal is to gain points by controlling territory on the board. ")
@@ -109,7 +109,7 @@
         (origin  "This game was played in China, from around 694CE to 710CE.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour White))
         (board Colour InnerEdges (colour Black))
@@ -122,5 +122,5 @@
         ("PieceColour" "B" P2 44 45 40)
         (show Piece State)
     })
-    
+
 )
