@@ -1,19 +1,19 @@
-(game "Order and Chaos"  
-    (players 2)  
-    (equipment { 
-        (board (square 6)) 
-        (piece "Disc" Shared) 
+(game "Order and Chaos"
+    (players 2)
+    (equipment {
+        (board (square 6))
+        (piece "Disc" Shared)
         (piece "Cross" Shared)
-        (hand Shared size:2) 
-    })  
-    (rules 
+        (hand Shared size:2)
+    })
+    (rules
         (start {
-            (place "Disc" (handSite Shared)) 
+            (place "Disc" (handSite Shared))
             (place "Cross" (handSite Shared 1))
         })
-        (play 
-            (move 
-                (from (sites Hand Shared)) 
+        (play
+            (move
+                (from (sites Hand Shared))
                 (to (sites Empty))
                 copy:True
             )
@@ -27,8 +27,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Order and Chaos is an asymmetric variant of the game tic-tac-toe on a 6×6 gameboard.")
@@ -42,7 +42,7 @@
         (date "1981")
         }
     )
-    
+
     (graphics {
         (player Name P1 "Order")
         (player Name P2 "Chaos")
@@ -50,7 +50,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
     (ai
         "Order and Chaos_ai"
     )

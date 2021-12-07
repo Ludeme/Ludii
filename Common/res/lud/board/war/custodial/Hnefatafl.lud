@@ -1,9 +1,9 @@
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
+(define "Custodial"
+    (custodial
+        (from (last To))
         Orthogonal
         (between (max 1) if:(= (what at:(between)) (id #1)) (apply (remove (between))))
-        (to if:"FriendOrCentreOrFortress") 
+        (to if:"FriendOrCentreOrFortress")
     )
 )
 
@@ -21,27 +21,27 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hnefatafl"  
-    (players 2)  
-    (equipment { 
-        (board (square 11)) 
+(game "Hnefatafl"
+    (players 2)
+    (equipment {
+        (board (square 11))
         (regions "Fortresses" (sites Corners))
-        
-        (piece "Thrall" P1 
+
+        (piece "Thrall" P1
             (move
                 Slide
-                Orthogonal 
+                Orthogonal
                 (between if:"EmptyButNotCentreOrFortress")
-                (then 
+                (then
                     (and {
                         ("Custodial" "Thrall2")
                         (<Capture:type>
                             (between
                                 <Capture:distance>
-                                if:(= (what at:(between)) (id "Jarl2")) 
+                                if:(= (what at:(between)) (id "Jarl2"))
                                 "JarlIsCaptured"
                             )
-                            (to 
+                            (to
                                 if:"FriendOrCentreOrFortress"
                             )
                         )
@@ -49,34 +49,34 @@
                 )
             )
         )
-        (piece "Thrall" P2 
+        (piece "Thrall" P2
             (move
                 Slide
-                Orthogonal 
-                (between if:"EmptyButNotCentreOrFortress") 
-                (then ("Custodial" "Thrall1") ) 
-            ) 
-        ) 
-        (piece "Jarl" P2 
+                Orthogonal
+                (between if:"EmptyButNotCentreOrFortress")
+                (then ("Custodial" "Thrall1") )
+            )
+        )
+        (piece "Jarl" P2
             (move
                 Slide
-                Orthogonal 
-                (then ("Custodial" "Thrall1") ) 
-            ) 
-        ) 
+                Orthogonal
+                (then ("Custodial" "Thrall1") )
+            )
+        )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Thrall1" {"D1" "E1" "F1" "G1" "H1" "F2" "A4" "A5" "A6" "A7" "A8" "B6" "K4" "K5" "K6" "K7" "K8" "J6" "F10" "D11" "E11" "F11" "G11" "H11" "F10"})
             (place "Thrall2" {"F4" "E5" "F5" "G5" "D6" "E6" "G6" "H6" "E7" "F7" "G7" "F8"})
             (place "Jarl2" (centrePoint))
             }
         )
-        
-        (play (forEach Piece)) 
-        
+
+        (play (forEach Piece))
+
         (end
             {
             (if (is Within (id "Jarl2") in:(sites "Fortresses") ) (result P2 Win))
@@ -90,36 +90,36 @@
 
 (option "Play Rules" <Capture> args:{ <type> <distance> }
     {
-    (item "Fetlar Common"   <surround (from (last To)) Orthogonal> <>       "The game is played with the common rules.")   
-    (item "Fetlar Latin"    <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the latin rules.")   
+    (item "Fetlar Common"   <surround (from (last To)) Orthogonal> <>       "The game is played with the common rules.")
+    (item "Fetlar Latin"    <custodial (from (last To)) Orthogonal> <(max 1)> "The game is played with the latin rules.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Fetlar (Suggested)" 
+(rulesets {
+
+    (ruleset "Ruleset/Fetlar (Suggested)"
         {
         "Play Rules/Fetlar Common"
         }
     )
-    
-    (ruleset "Ruleset/Copenhagen (Suggested)" 
+
+    (ruleset "Ruleset/Copenhagen (Suggested)"
         {
-        
+
         }
     )
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Hnefatafl is a Nordic game mentioned frequently in medieval texts from Scandinavia, Iceland, and the British Isles. Hnefatafl appears to be related to a range of other tafl games, in which on side has a king and a smaller number of pawns, situated in the center of the board, playing against an opponent with more pieces. The king's goal is largely thought to be to escape to one of the corners, and the opponent's goal is to capture the king.")
@@ -141,17 +141,17 @@
         (origin  "This game was played in Scandinavia, from around 790 to 1413.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Style Tafl)
-        (show Symbol "knotSquare" "Fortresses") 
+        (show Symbol "knotSquare" "Fortresses")
     })
-    
-    (ai 
+
+    (ai
         "Hnefatafl_ai"
     )
-    
+
 )
 

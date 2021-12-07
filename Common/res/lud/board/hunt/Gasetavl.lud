@@ -1,7 +1,7 @@
 (game "Gasetavl"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
                 (shift 0 2 (rectangle 3 7 diagonals:Solid))
                 (shift 2 0 (rectangle 7 3 diagonals:Solid))
@@ -9,18 +9,18 @@
             use:Vertex
         )
         (piece "Fox" P1 (or ("HopCapture") ("StepToEmpty")))
-        (piece "Geese" P2 N 
-            (move Step 
-                (directions {Rightward Forwards Leftward}) 
+        (piece "Geese" P2 N
+            (move Step
+                (directions {Rightward Forwards Leftward})
                 (to if:(is Empty (to)))
             )
         )
     })
-    (rules 
+    (rules
         (start {
             (place "Fox1" (sites {"G9" "I7"}))
-            (place "Geese2" 
-                (sites {"A3" "B2" "C1" "B4" "C3" "D2" "A7" "B6" "C5" "D4" 
+            (place "Geese2"
+                (sites {"A3" "B2" "C1" "B4" "C3" "D2" "A7" "B6" "C5" "D4"
                     "E3" "F2" "G1" "B8" "C7" "D6" "E5" "F4" "G3" "H2"
                     }
                 )
@@ -36,8 +36,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Gåsetavl is a hunt game played in Denmark since at least the nineteenth century. ")
@@ -50,13 +50,13 @@
         (origin  "This game was played in Denmark, from around 1843 to 1898.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Gasetavl_ai"
     )

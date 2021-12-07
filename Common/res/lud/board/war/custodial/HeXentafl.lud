@@ -1,13 +1,13 @@
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
+(define "Custodial"
+    (custodial
+        (from (last To))
         Orthogonal
-        (between 
-            (max 1) 
+        (between
+            (max 1)
             if:(and (!= (between) ("Throne")) (is Enemy (who at:(between))))
             (apply (remove (between)))
         )
-        (to if:(is Friend (who at:(to)))) 
+        (to if:(is Friend (who at:(to))))
     )
 )
 
@@ -16,12 +16,12 @@
         (count Sites
             in:(forEach
                 (sites Around (between) Own)
-                if:(!= 0 
-                    (count Sites 
-                        in:(sites 
-                            Around 
-                            (site) 
-                            Own 
+                if:(!= 0
+                    (count Sites
+                        in:(sites
+                            Around
+                            (site)
+                            Own
                             if:(is In (to) (sites Around (between) Own))
                         )
                     )
@@ -32,12 +32,12 @@
 )
 
 (define "SurroundCorners"
-    (surround 
+    (surround
         (from (last To))
         Orthogonal
-        (between 
+        (between
             if:(and {
-                (is In (between) (sites "Fortresses")) 
+                (is In (between) (sites "Fortresses"))
                 (is Enemy (who at:(between)))
                 ("PiecesSurroundingAreNotAdjacent")
                 }
@@ -50,12 +50,12 @@
 )
 
 (define "SurroundThrone"
-    (surround 
+    (surround
         (from (last To))
         Orthogonal
-        (between 
+        (between
             if:(and {
-                (= (between) ("Throne")) 
+                (= (between) ("Throne"))
                 (= (what at:(between)) (id "Jarl" P1))
                 ("PiecesSurroundingAreNotAdjacent")
                 }
@@ -73,31 +73,31 @@
 
 //----------------------------------------------------------------
 
-(game "HeXentafl"  
+(game "HeXentafl"
     (players 2)
     (equipment {
         (board (rotate 90 (hex <Board:size>)))
-        (piece "Thrall" P1 
-            (move Slide 
+        (piece "Thrall" P1
+            (move Slide
                 (between if:(and (!= (between) ("Throne")) (is Empty (between))))
                 (then (and ("SurroundCorners") ("Custodial")))
             )
         )
-        (piece "Thrall" P2 
-            (move Slide 
+        (piece "Thrall" P2
+            (move Slide
                 (between if:(and (!= (between) ("Throne")) (is Empty (between))))
                 (then (and { ("SurroundThrone") ("SurroundCorners") ("Custodial") }))
             )
         )
-        (piece "Jarl" P1 
-            (move 
-                <Board:kingMove> 
+        (piece "Jarl" P1
+            (move
+                <Board:kingMove>
                 (then (and ("SurroundCorners") ("Custodial")))
             )
         )
         (regions "Fortresses" (sites Corners))
     })
-    (rules 
+    (rules
         (start {
             (place "Jarl1" ("Throne"))
             <Board:start>
@@ -116,46 +116,46 @@
 
 (option "Board Size" <Board> args:{ <size> <start> <kingMove>}
     {
-    (item "4x4"   
-        <4> 
-        <				
+    (item "4x4"
+        <4>
+        <
         (place "Thrall2" (sites "Fortresses"))
         (place "Thrall1" {"D3" "C4" "E5"})
-        >       
+        >
         <Step (to if:(is Empty (to)))>
         "The game is played on a 4x4 hex board."
-    )*   
-    (item "5x5"   
-        <5> 
+    )*
+    (item "5x5"
+        <5>
         <
         (place "Thrall2" (union (sites {"B2" "B5" "E8" "H8" "E2" "H5"}) (sites "Fortresses")))
         (place "Thrall1" {"D4" "D5" "E4" "E6" "F5" "F6"})
-        > 
+        >
         <Slide>
         "The game is played on a 5x5 hex board. The King can slide."
-    )   
+    )
 })
 
 //-----------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "HeXentafl is an asymmetric abstract strategy game based on the ancient viking game Hnefatafl. One side (white) plays the attackers, and one side (black) plays the defenders.")
         (rules "HeXentafl can be played on a 4x4 or 5x5 hex grid.
-            
+
             For the 4x4 version:
             The King sits on the central space, the throne, surrounded by three defenders. Six attackers sit on the outer corners of the grid.
             The attackers must capture the King in order to win. The defenders must escort the King to any of the six corners of the board in order to win.
-            
+
             All pieces except the King move in a
             straight line, as many spaces as they like to an unoccupied space (like a rook in Chess). Only one piece at a time can occupy a space. A piece cannot jump over another piece.
             The King can move into any vacant adjacent space, moving one space at a time (similar to the king in Chess).
-            
+
             Pieces are captured by surrounding them on two sides. Except for the corners, the pieces can be captured by surrounding them with two pieces which are not adjacents. You cannot \"capture\" your own piece by moving between two enemy pieces.
-            
+
             The central space of the board is the throne. Only the King may occupy the throne. When the King is on the throne, he is harder to capture. He must be surrounded on three sides which are not adjacents each other.
-            
+
         HeXentafl on a 5x5 grid is almost identical to a 4x4 grid, except there are more attackers and defenders, and the King moves just like the other pieces. It is not limited to one space at a time.")
         (source "<a href=\"https://nxsgame.wordpress.com/2019/09/26/hexentafl/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nxsgame.wordpress.com</a>")
         (version "1.3.0")
@@ -166,7 +166,7 @@
         (date "2019")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

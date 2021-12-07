@@ -1,47 +1,47 @@
-(game "Pretwa"  
-    (players 2)  
-    (equipment { 
+(game "Pretwa"
+    (players 2)
+    (equipment {
         (board (concentric {1 6 6 6} ) use:Vertex)
-        (piece "Counter" Each 
-            (or 
-                ("HopRotationalSequenceCapture") 
-                ("StepRotationalToEmpty") 
+        (piece "Counter" Each
+            (or
+                ("HopRotationalSequenceCapture")
+                ("StepRotationalToEmpty")
             )
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (start {
             (place "Counter1" (sites {2..4 8..10 14..16})  )
             (place "Counter2" (sites {1 6 5 7 12 11 13 18 17}) )
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (or
-                    ("HopRotationalSequenceCaptureAgain")	
+                    ("HopRotationalSequenceCaptureAgain")
                     (move Pass)
                 )
                 (forEach Piece)
             )
         )
-        
-        (end <End>)  
+
+        (end <End>)
     )
-) 
+)
 
 //------------------------------------------------------------------------------
 
 (option "End Rules" <End> args:{ <rules> }
     {
-    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))>    "The player loses when he has no piece.")*   
-    (item "No Moves" <("NoMoves" Loss)>                             "A player loses when he can not move.")   
+    (item "No Pieces" <(if (no Pieces Next) (result Next Loss))>    "The player loses when he has no piece.")*
+    (item "No Moves" <("NoMoves" Loss)>                             "A player loses when he can not move.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pretwa is a game played in India by the same rules of Alquerque, but with a circular board.")
@@ -53,13 +53,13 @@
         (origin  "This game was played in South Asia, around 1951.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Pretwa_ai"
     )
-    
+
 )

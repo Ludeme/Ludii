@@ -1,11 +1,11 @@
-(game "Tic-Tac-Toe"  
-    (players 2)  
-    (equipment { 
-        //(board (square (poly { {0 0} {0 3} {4 3} {4 0} }))) 
-        (board (square (poly { {0 0} {0 (+ 1 2)} {4 3} {4 0} }))) 
-        (piece "Disc") 
-    })  
-    (rules 
+(game "Tic-Tac-Toe"
+    (players 2)
+    (equipment {
+        //(board (square (poly { {0 0} {0 3} {4 3} {4 0} })))
+        (board (square (poly { {0 0} {0 (+ 1 2)} {4 3} {4 0} })))
+        (piece "Disc")
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")
@@ -27,9 +27,9 @@
         (origin  "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
-    
-    (ai 
+
+    (ai
         "Tic-Tac-Toe_ai"
     )
-    
+
 )

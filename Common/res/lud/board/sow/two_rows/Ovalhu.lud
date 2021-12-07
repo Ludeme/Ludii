@@ -6,10 +6,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ovalhu"  
-    (players 2)  
-    
-    (equipment { 
+(game "Ovalhu"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns"
             {
             (track "Track1" "1,E,17,16,W" loop:True P1)
@@ -20,23 +20,23 @@
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
-            (set Count 8 to:(union (sites Bottom) (sites Top))) 
+            (set Count 8 to:(union (sites Bottom) (sites Top)))
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
                 (or {
                     (move Select
-                        (from 
+                        (from
                             (if (and (is Pending) (is Mover Prev))
                                 (sites {(var "Replay")})
-                                (sites Mover) 
+                                (sites Mover)
                             )
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
                         )
@@ -74,7 +74,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 8 (count at:(mapEntry P1))) (result P2 Win))
@@ -82,10 +82,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (not (all Sites (sites Mover) if:(is Occupied (site))))
@@ -101,15 +101,15 @@
             )
             (nextPhase (all Passed) "Sowing")
         )
-        
+
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Ovalhu is a two-row mancala-style board game played in the Maldives.")
@@ -121,7 +121,7 @@
         (origin  "This game was played in Maldives, around 2000.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

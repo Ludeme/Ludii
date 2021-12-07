@@ -1,11 +1,11 @@
-(game "Hashiwokakero" 
-    (players 1)   
+(game "Hashiwokakero"
+    (players 1)
     (equipment  {
-        (board (rect <Challenge:size>) (values Edge (range 0 2))) 
+        (board (rect <Challenge:size>) (values Edge (range 0 2)))
         (hints { <Challenge:hints> })
-    })  
+    })
     (rules
-        (play 
+        (play
             (satisfy {
                 (forAll Hint (= (hint) (edge)))
                 (allConnected Vertices)
@@ -20,40 +20,40 @@
 
 (option "Challenge" <Challenge> args:{ <size> <hints> }
     {
-    (item "1" 
+    (item "1"
         <3 3>
         <
-        (hint 0 3) 
-        (hint 3 3) 
-        (hint 5 3) 
-        (hint 7 3) 
-        (hint 6 1) 
-        (hint 8 1) 
-        (hint 1 6) 
+        (hint 0 3)
+        (hint 3 3)
+        (hint 5 3)
+        (hint 7 3)
+        (hint 6 1)
+        (hint 8 1)
+        (hint 1 6)
         (hint 2 2)
         (hint 4 8)
         >
         ""
-    )  
-    
-    (item "2" 
+    )
+
+    (item "2"
         <3 3>
         <(hint 0 4) (hint 1 6) (hint 2 4) (hint 3 3) (hint 5 3) (hint 6 2) (hint 7 3) (hint 8 1)>
         ""
-    ) 
-    
-    (item "Easy" 
+    )
+
+    (item "Easy"
         <9 9>
-        <(hint 0 3)  (hint 2 5)  (hint 4 3)  (hint 7 2)  (hint 12 4) (hint 14 5) (hint 17 3) (hint 18 3) 
+        <(hint 0 3)  (hint 2 5)  (hint 4 3)  (hint 7 2)  (hint 12 4) (hint 14 5) (hint 17 3) (hint 18 3)
         (hint 20 3) (hint 22 2) (hint 25 1) (hint 28 1) (hint 30 3) (hint 32 2) (hint 36 3) (hint 38 4)
         (hint 40 8) (hint 43 3) (hint 50 4) (hint 53 6) (hint 54 3) (hint 58 2) (hint 60 2) (hint 65 2)
         (hint 68 3) (hint 72 3) (hint 76 1) (hint 78 3) (hint 80 3)>
         ""
-    ) 
-    
-    (item "66 Hard" 
+    )
+
+    (item "66 Hard"
         <22 13>
-        <(hint 1 2)   (hint 3 3)   (hint 5 2)   (hint 7 2)   (hint 9 3)   (hint 11 3) 
+        <(hint 1 2)   (hint 3 3)   (hint 5 2)   (hint 7 2)   (hint 9 3)   (hint 11 3)
         (hint 15 2)  (hint 17 2)  (hint 21 4)  (hint 23 2)
         (hint 26 1)  (hint 29 2)  (hint 31 4)  (hint 33 1)  (hint 35 1)  (hint 38 2)
         (hint 40 1)  (hint 50 3)
@@ -76,13 +76,13 @@
         (hint 262 1) (hint 264 1) (hint 268 1) (hint 270 2)
         (hint 274 3) (hint 276 3) (hint 278 3) (hint 280 4) (hint 282 3) (hint 284 2)>
         ""
-    ) 
+    )
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
     (info {
-        
-    }) 
+
+    })
 )

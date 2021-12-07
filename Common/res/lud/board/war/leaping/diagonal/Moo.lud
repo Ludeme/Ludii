@@ -1,88 +1,88 @@
 
-(define "HopMan" 
+(define "HopMan"
     (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
+        Hop
+        (from #1)
+        Diagonal
+        (between
             if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)) )
 
-(define "HopKingAgain" 
+(define "HopKingAgain"
     (move Hop
-        (from (last To)) 
+        (from (last To))
         SameDirection
-        (between 
+        (between
             before:(count Rows)
             (range 1 9)
             after:(count Rows)
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between)))) 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
+        (then
+            (if (can Move
+                    (hop
                         (from (last To))
-                        SameDirection 
+                        SameDirection
                         (between
                             before:(count Rows)
                             (range 1 (count Rows))
                             after:(count Rows)
                             if:(and
-                                (not (is In (between) (sites ToClear))) 
+                                (not (is In (between) (sites ToClear)))
                                 (is Enemy (who at:(between)))
                             )
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
                     )
-                ) 
+                )
                 (moveAgain)
             )
         )
     )
 )
 
-(define "HopKing" 
+(define "HopKing"
     (move Hop
-        (from) 
+        (from)
         Diagonal
-        (between 
+        (between
             before:(count Rows)
             (range 1 9)
             after:(count Rows)
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between)))) 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
+        (then
+            (if (can Move
+                    (hop
                         (from (last To))
-                        SameDirection 
+                        SameDirection
                         (between
                             before:(count Rows)
                             (range 1 (count Rows))
                             after:(count Rows)
                             if:(and
-                                (not (is In (between) (sites ToClear))) 
+                                (not (is In (between) (sites ToClear)))
                                 (is Enemy (who at:(between)))
                             )
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
                     )
-                ) 
+                )
                 (moveAgain)
             )
         )
@@ -91,70 +91,70 @@
 
 //------------------------------------------------------------------------------
 
-(game "Moo" 
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
+(game "Moo"
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         (regions "MarkedCell" (sites Phase 0))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (or
                     (if "IsUnpromoted"
                         ("HopMan" (last To)
-                            (then 
-                                (if (can Move ("HopMan" (last To))) 
+                            (then
+                                (if (can Move ("HopMan" (last To)))
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                         ("HopKingAgain")
                     )
                     (move Pass)
                 )
-                (or 
+                (or
                     (forEach Piece "Counter"
                         (or
-                            ("HopMan" (from) 
-                                (then 
-                                    (if (can Move ("HopMan" (last To))) 
-                                        (moveAgain) 
-                                        (if "JumpToPromotionZone" 
+                            ("HopMan" (from)
+                                (then
+                                    (if (can Move ("HopMan" (last To)))
+                                        (moveAgain)
+                                        (if "JumpToPromotionZone"
                                             (move Promote (last To) (piece "DoubleCounter") Mover)
                                         )
-                                    ) 
-                                ) 
+                                    )
+                                )
                             )
                             (move
-                                Step 
-                                (directions {FR FL}) 
+                                Step
+                                (directions {FR FL})
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
                             )
                         )
                     )
-                    (forEach Piece "DoubleCounter" 
+                    (forEach Piece "DoubleCounter"
                         (or
                             ("HopKing")
                             (move Slide Diagonal)
@@ -162,16 +162,16 @@
                     )
                 )
             )
-        ) 
-        
-        (end (if (no Pieces Next) (result Mover Win))) 
+        )
+
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Moo is a game with leaping captured played in Hawai'i during the nineteenth century.")
@@ -184,7 +184,7 @@
         (origin  "This game was played in Hawai'i, around 1865.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Defined" "Isometric"})
         (show Symbol "thinCross" "MarkedCell" scale:0.9)
@@ -192,7 +192,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
     (ai
         "Moo_ai"
     )

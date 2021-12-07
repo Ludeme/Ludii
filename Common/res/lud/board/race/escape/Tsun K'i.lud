@@ -8,26 +8,26 @@
     )
 )
 
-(define "Double1" 
-    (and 
-        (= 2 (count Pips)) 
+(define "Double1"
+    (and
+        (= 2 (count Pips))
         (is AnyDie 1)
     )
 )
 
-(define "DoubleOfAnother" 
+(define "DoubleOfAnother"
     (= ("Die1") ("Die2"))
 )
 
-(define "ConsecutiveNumber" 
-    (or 
+(define "ConsecutiveNumber"
+    (or
         (= ("Die1") (- ("Die2") 1))
         (= ("Die1") (+ ("Die2") 1))
     )
 )
 
-(define "TrackMove" 
-    (trackSite Move 
+(define "TrackMove"
+    (trackSite Move
         #1
         #2
         steps:#3
@@ -35,26 +35,26 @@
 )
 
 (define "Double1Move"
-    (forEach Site (sites Occupied by:Mover top:False) 
-        (forEach Level (site) 
+    (forEach Site (sites Occupied by:Mover top:False)
+        (forEach Level (site)
             (if (is Friend (who at:(site) level:(level)))
                 (move Remove (site) level:(level))
             )
-        )	
-    )	
+        )
+    )
 )
 
-(define "MoveAPiece" 
-    (move 
-        (from (site) level:(level)) 
-        (to ("TrackMove" from:(site) "Track" #1)) 
+(define "MoveAPiece"
+    (move
+        (from (site) level:(level))
+        (to ("TrackMove" from:(site) "Track" #1))
         #2
-    )	
+    )
 )
 
 (define "NotReplayMove" (<= (var) 0))
 
-(define "ReplayConsequences" 
+(define "ReplayConsequences"
     (then
         (if ("NotReplayMove")
             (and
@@ -67,8 +67,8 @@
 )
 
 (define "DoubleOfAnotherMove"
-    (forEach Site (sites Occupied by:Mover top:False) 
-        (forEach Level (site) 
+    (forEach Site (sites Occupied by:Mover top:False)
+        (forEach Level (site)
             (or
                 (if (<= (var) 0) ("MoveAPiece" ("Die1")))
                 ("MoveAPiece" (count Pips) ("ReplayConsequences" 1))
@@ -78,8 +78,8 @@
 )
 
 (define "ConsecutiveNumberMove"
-    (forEach Site (sites Occupied by:Mover top:False) 
-        (forEach Level (site) 
+    (forEach Site (sites Occupied by:Mover top:False)
+        (forEach Level (site)
             (or
                 (if (!= (var) (- (count Pips) 1))
                     (or
@@ -97,17 +97,17 @@
 )
 
 (define "NonConsecutiveNumber"
-    (forEach Site (sites Occupied by:Mover top:False) 
-        (forEach Level (site) 
+    (forEach Site (sites Occupied by:Mover top:False)
+        (forEach Level (site)
             (or
                 (if (!= (var) ("Die1")) ("MoveAPiece" ("Die1") ("ReplayConsequences" ("Die1"))))
                 (if (!= (var) ("Die2")) ("MoveAPiece" ("Die2") ("ReplayConsequences" ("Die2"))))
             )
         )
-    )	
+    )
 )
 
-(define "Move" 
+(define "Move"
     (if ("Double1")
         ("Double1Move")
         (if ("DoubleOfAnother")
@@ -122,10 +122,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tsun K'i"  
+(game "Tsun K'i"
     (players 2)
     (equipment {
-        (board 
+        (board
             (scale 10 2 (rectangle 8 2))
             {
             (track "Track1" "1,N,W,S,N,E1,S" P1 directed:True)
@@ -142,7 +142,7 @@
             (place Stack "Stick1" (sites {"B1" "B2"}) count:8)
             (place Stack "Stick2" (sites {"A7" "A8"}) count:8)
         })
-        (play 
+        (play
             (do
                 (if ("NotReplayMove") (roll))
                 next:(if (can Move ("Move")) ("Move") (move Pass (then (set Var 0))))
@@ -159,8 +159,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tsun K'i is a race game played in seventeenth century China. It is described in De Ludibus Orientalibus, which is the only source mentioning this game.")
@@ -173,7 +173,7 @@
         (origin  "This game was played in China, around 1694.")
         }
     )
-    
+
     (graphics {
         (stackType FanAlternating)
         (piece Scale "Stick" 0.2)

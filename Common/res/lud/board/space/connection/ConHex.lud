@@ -1,5 +1,5 @@
-(define "CellOfLastVertex" 
-    (sites Incident Cell of:Vertex at:(last To)) 
+(define "CellOfLastVertex"
+    (sites Incident Cell of:Vertex at:(last To))
 )
 
 (define "AllHolesOfCell"
@@ -9,20 +9,20 @@
     )
 )
 
-(define "NumHolesCells" 
+(define "NumHolesCells"
     (count Sites in:("AllHolesOfCell"))
 )
 
 (define "NumOwnedHolesCells"
-    (count Sites 
+    (count Sites
         in:(intersection
             ("AllHolesOfCell")
             (sites Occupied by:Mover on:Vertex)
         )
-    )		
+    )
 )
 
-(define "MajorityOfEmptyCell" 
+(define "MajorityOfEmptyCell"
     (if (is In (site) (sites Centre))
         (>=
             (+ ("NumOwnedHolesCells") (if (= (mover) (who Vertex at:(centrePoint Vertex))) 1 0))
@@ -35,26 +35,26 @@
     )
 )
 
-(define "CaptureTheCell" 
+(define "CaptureTheCell"
     (claim
         (piece (id "Rectangle" Mover))
         (to
-            Cell 
-            (site) 
+            Cell
+            (site)
         )
-    ) 
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "ConHex" 
+(game "ConHex"
     (players 2)
     (equipment {
         (board
             (add
                 (keep
-                    (splitCrossings 
-                        (merge 
+                    (splitCrossings
+                        (merge
                             (rotate 45 (dual (square 12 diagonals:Concentric)))
                             (shift 3 3 (scale 6 (square 1)))
                         )
@@ -71,13 +71,13 @@
         (regions P2 { (sites Side W) (sites Side E) } )
     })
     (rules
-        
+
         (meta (swap) )
-        (play 
+        (play
             (move Add (to Vertex (sites Empty Vertex) if:(is In (to) (sites "Holes")))
-                (then 
+                (then
                     (forEach Site
-                        "CellOfLastVertex" 
+                        "CellOfLastVertex"
                         (if "MajorityOfEmptyCell"
                             "CaptureTheCell"
                         )
@@ -86,27 +86,27 @@
                                 (if (is Connected at:(site) Mover)
                                     (trigger "Connected" Mover)
                                 )
-                            )		
+                            )
                         )
                     )
-                )		
+                )
             )
         )
-        
+
         (end {
             (if (is Triggered "Connected" Mover) (result Mover Win))
             (if (<= 52 (count Moves)) (result Mover Draw))
-        }) 
+        })
     )
 )
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
         (show Symbol "disc" "Holes" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.333)
@@ -121,5 +121,5 @@
         (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:2.5 scaleY:0.5 offsetY:0.75)
         (piece Scale "Marker" 0.5)
     })
-    
+
 )

@@ -2,10 +2,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Obridje"  
-    (players 2)  
-    
-    (equipment { 
+(game "Obridje"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
@@ -13,30 +13,30 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
-    (rules 
+    })
+    (rules
         (start (set Count 4 to:(sites Track) ) )
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (if 
-                        (is Mover Prev) 
+                Select
+                (from
+                    (if
+                        (is Mover Prev)
                         (sites {(var "Replay")})
-                        (sites Mover) 
-                    ) 
+                        (sites Mover)
+                    )
                     if:(> (count at:(from)) 0)
                 )
                 (then
                     (do
                         (set Var "NumSowed" (count at:(last To)))
                         next:(sow
-                            apply:(if 
-                                (and 
-                                    (!= 4 (count at:(to))) 
+                            apply:(if
+                                (and
+                                    (!= 4 (count at:(to)))
                                     (< 1 (count at:(to)))
-                                ) 
+                                )
                                 (and
                                     (moveAgain)
                                     (set Var "Replay" (to))
@@ -61,11 +61,11 @@
                 )
             )
         )
-        
+
         (end
-            (if (no Moves Next) 
+            (if (no Moves Next)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -75,7 +75,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Obridje is a two-row mancala-style board game that was played in Ghana and among the Ijaw people of Nigeria in the early twentieth century.")
@@ -87,7 +87,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

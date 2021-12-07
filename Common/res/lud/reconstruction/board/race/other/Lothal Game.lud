@@ -1,7 +1,7 @@
 (game "Lothal Game"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (remove
                 (merge {
                     (rectangle 1 5)
@@ -12,9 +12,9 @@
                 cells:{6}
             )
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -22,8 +22,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This board comes from the Harappan site of Lothal in modern India.")
@@ -35,11 +35,11 @@
         (origin  "This game was played in India, from around 2125BCE to 1660BCE.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )

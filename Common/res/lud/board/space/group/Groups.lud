@@ -1,38 +1,38 @@
-(game "Groups"  
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
-        (piece "Disc" Each 
-            (or 
+(game "Groups"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Disc" Each
+            (or
                 "StepToEmpty"
                 (move
-                    Hop 
-                    (between if:(not (is Empty (between)))) 
-                    (to if:(is Empty (to))) 
+                    Hop
+                    (between if:(not (is Empty (between))))
+                    (to if:(is Empty (to)))
                 )
             )
         )
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start
-            { 
+            {
             (place "Disc1" {"D3" "C4" "E4" "D5" "F5" "E6"})
             (place "Disc2" {"E3" "D4" "F4" "C5" "E5" "D6"})
             }
         )
-        
+
         (play (forEach Piece))
-        
-        (end (if (= 1 (count Groups Orthogonal if:(= (who at:(to)) (mover)))) (result Mover Win) ) )  
+
+        (end (if (= 1 (count Groups Orthogonal if:(= (who at:(to)) (mover)))) (result Mover Win) ) )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Groups was created by Richard Hutnik in 1998. It is a connection game with the goal of creating an orthogonally connected group of six.")
@@ -44,13 +44,13 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
-    (ai 
+
+    (ai
         "Groups_ai"
     )
-    
+
 )

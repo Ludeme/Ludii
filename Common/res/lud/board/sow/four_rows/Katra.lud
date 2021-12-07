@@ -4,12 +4,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Katra"  
-    (players 2)  
-    
-    (equipment { 
+(game "Katra"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" <Board:CCW2> loop:True P2)
             (track "TrackCW1" <Board:CW1> loop:True P1)
@@ -22,21 +22,21 @@
         (regions "Outer" P2  (sites Top) )             // P2 outer Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
-        
+
         (play
             (or
                 (if (!= (value Player Mover) 2)
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
+                        (from
+                            (if
+                                (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover "Home") 
-                            ) 
+                                (sites Mover "Home")
+                            )
                             if:(> (count at:(from)) 0)
                         )
                         (then
@@ -82,15 +82,15 @@
                         )
                     )
                 )
-                
+
                 (if (!= (value Player Mover) 1)
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
+                        (from
+                            (if
+                                (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover "Home") 
-                            ) 
+                                (sites Mover "Home")
+                            )
                             if:(> (count at:(from)) 0)
                         )
                         (then
@@ -138,7 +138,7 @@
                 )
             )
         )
-        
+
         (end
             (forEach NonMover
                 if:(no Moves Player)
@@ -152,32 +152,32 @@
 
 (option "Board Size" <Board> args:{ <rowSize> <CCW2> <CW1> <CW2> }
     {
-    (item "6"   <6> <"12,E,N1,W"> <"5,W,N1,E"> <"18,E,S1,W"> "Each player has 6 holes on each row.")  
-    (item "8"   <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> "Each player has 8 holes on each row.")*   
-    (item "10"  <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> "Each player has 10 holes on each row.")  
+    (item "6"   <6> <"12,E,N1,W"> <"5,W,N1,E"> <"18,E,S1,W"> "Each player has 6 holes on each row.")
+    (item "8"   <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> "Each player has 8 holes on each row.")*
+    (item "10"  <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> "Each player has 10 holes on each row.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Sakalava (Described)" {
         "Board Size/8"
         }
         variations:{"Board Size/6" "Board Size/10"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Katra is a four-row mancala-style game board played in Madagascar. This version was observed being played by the Sakalava people in the early twentieth century.")
         (rules "4x6, 8, or 10 holes. Eight is most common. Two counters in each hole. Sowing begins from any hole on the player's side, in either direction, but the direction chosen on the first turn must be maintained throughout the game. If the final counter lands in an empty hole, the turn ends. If the final counter lands in the outer row in an occupied hole, these are picked up and sowing continues. If the final counter lands in an occupied hole in the inner row, and the opponent's inner row hole opposite contains more than one counter, these are captured and the sowing continues from the hole from which the capture was made using the captured counters and the final counter from the sowing that caused the capture. If the opponent has no counters in any of their inner row holes, the counters in their outer row holes can be captured, in the same manner.
-            
+
         Evidence Map")
         (source "Murray 1951: 214-215.")
         (version "1.3.0")
@@ -185,10 +185,10 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

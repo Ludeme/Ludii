@@ -5,21 +5,21 @@
 //------------------------------------------------------------------------------
 
 (game "Vignone Game"
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge 
+    (players 2)
+    (equipment {
+        (board
+            (merge
                 {
-                (rectangle 3 3 diagonals:Alternating) 
-                (shift 1.5 0.5 (scale 0.5 (rotate -90 (wedge 3)))) 
+                (rectangle 3 3 diagonals:Alternating)
+                (shift 1.5 0.5 (scale 0.5 (rotate -90 (wedge 3))))
                 (shift -1.5 0.5 (scale 0.5 (rotate 90 (wedge 3))))
                 }
             )
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -27,8 +27,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game is attested by the presence of boards which are carved into rocks near Vignone, Italy. The boards resemble games that are known throughout Europe which are a type of hunt game.")
@@ -39,10 +39,10 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
 )

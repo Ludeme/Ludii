@@ -1,11 +1,11 @@
 (game "Ngre E E"
-    (players 2)  
+    (players 2)
     (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each)
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))) )
         (end (if (is Line 3) (result Mover Win)))
@@ -14,8 +14,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ngré É É is an alignment game played in the Republic of Congo by children.")

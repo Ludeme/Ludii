@@ -1,10 +1,10 @@
 (game "Ngrin"
-    (players 2)  
+    (players 2)
     (equipment {
         (board (square 3 diagonals:Alternating) use:Vertex)
         (piece "Marker" Each)
-    })  
-    (rules 
+    })
+    (rules
         phases:{
         (phase "Opening" (play (move Add (to (centrePoint)))) (nextPhase "Playing") )
         (phase "Playing" (play (move Add (to (sites Empty)))))
@@ -15,8 +15,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ngrin is an alignment game played by children in the Republic of Congo.")
@@ -28,5 +28,5 @@
         (origin  "This game was played in Republic of Congo, around 1972.")
         }
     )
-    
+
 )

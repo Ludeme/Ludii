@@ -11,7 +11,7 @@
 (game "Deka"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
                 (rectangle 1 5)
                 (rectangle 3 1)
@@ -22,17 +22,17 @@
             (track "Track" "0,E,N,W,S1" loop:True)
             use:Vertex
         )
-        (regions P1 (sites {0..4 11})) 
-        (regions P2 (sites {5..10})) 
+        (regions P1 (sites {0..4 11}))
+        (regions P2 (sites {5..10}))
         (piece "Seed" Shared)
     })
     (rules
         (start (set Count 2 to:(difference (sites Board) 12)))
-        
-        (play 
+
+        (play
             (or {
                 (move Select
-                    (from 
+                    (from
                         (if (is Mover Prev)
                             (sites { (var "Replay") })
                             (sites Mover)
@@ -85,8 +85,8 @@
                 )
             )
         )
-        
-        (end { 
+
+        (end {
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         })
@@ -95,8 +95,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Deka is a two-row mancala-style board game played by the Yombe people in the Democratic Republic of Congo. It was documented by P. Townshend.")
@@ -108,11 +108,11 @@
         (origin  "This game was played in Democratic Republic of Congo., around 1977.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show AsHoles {12} Oval)
         (show LocalStateHoles)
     })
-    
+
 )

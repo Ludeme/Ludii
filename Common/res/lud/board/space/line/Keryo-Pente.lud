@@ -1,13 +1,13 @@
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
+(define "Custodial"
+    (custodial
+        (from (last To))
         All
-        (between 
+        (between
             if:(is Next (who at:(between)))
             (apply (remove (between)))
         )
-        (to if:(and 
-                (or (= 3 (count Steps Vertex All (last To) (to))) (= 4 (count Steps Vertex All (last To) (to)))) 
+        (to if:(and
+                (or (= 3 (count Steps Vertex All (last To) (to))) (= 4 (count Steps Vertex All (last To) (to))))
         (is Mover (who at:(to)))))
         (then (addScore Mover 1))
     )
@@ -15,39 +15,39 @@
 
 //------------------------------------------------------------------------------
 
-(game "Keryo-Pente"  
-    (players 2)  
-    (equipment 
-        { 
-        (board <Board> use:Vertex) 
-        (piece "Ball" Each) 
+(game "Keryo-Pente"
+    (players 2)
+    (equipment
+        {
+        (board <Board> use:Vertex)
+        (piece "Ball" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (set Score Each 0)
         })
         <Play>
-        (end 
+        (end
             {
             (if (is Line 5 All) (result Mover Win))
             (if (> (score Mover) 14) (result Mover Win))
             }
-        )  
+        )
     )
 )
 
 //-------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
-    {   
-    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")   
+    {
+    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")
     }
 )
 
 (option "Opening" <Play> args:{ <rules> }
     {
-    (item "Standard Pente"   
+    (item "Standard Pente"
         <
         phases:{
         (phase "Opening"
@@ -55,7 +55,7 @@
             (nextPhase "General")
         )
         (phase "General"
-            (play 
+            (play
                 (move Add (to (sites Empty))
                     (then "Custodial")
                 )
@@ -65,10 +65,10 @@
         >
         "Open at the centre point."
     )*
-    (item "Freestyle" 
+    (item "Freestyle"
         <
         (play (move Add (to (sites Empty))))
-        > 
+        >
         "Open anywhere."
     )
     }
@@ -76,8 +76,8 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Keryo-Pente was invented by Rollie Tesh in 1983, as an alternative way to mitigate the first-player advantage in Pente.  As in Pente, players compete to be the first to form an orthogonal or diagonal line of five stones.  However, in Keryo-Pente players may capture two or three opposing stones rather than only two; the threshold to win the game by capture also increases from 10 to 15 stones.  This variation reduces the first-player advantage by significantly increasing the second player's defensive options.")
@@ -90,14 +90,14 @@
         (date "1983")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour White))
         (player Colour P2 (colour Black))
     })
-    
+
     (ai
         "Keryo-Pente_ai"
     )
-) 
+)

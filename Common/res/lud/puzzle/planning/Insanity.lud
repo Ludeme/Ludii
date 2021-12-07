@@ -1,36 +1,36 @@
-(define "MoveOfThePiece" 
-    (or  
+(define "MoveOfThePiece"
+    (or
         (move
             Hop
-            (from) 
-            Forward 
-            (between if:(is Friend (who at:(between)))) 
-            (to if:(is Empty (to))) 
-        ) 
-        ("StepForwardToEmpty") 
-    ) 
+            (from)
+            Forward
+            (between if:(is Friend (who at:(between))))
+            (to if:(is Empty (to)))
+        )
+        ("StepForwardToEmpty")
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Insanity"  
-    (players 1)  
-    (equipment { 
-        (board (rectangle 1 10)) 
-        (piece "Marker1" P1 E "MoveOfThePiece") 
-        (piece "Marker2" P1 W "MoveOfThePiece") 
-    })  
+(game "Insanity"
+    (players 1)
+    (equipment {
+        (board (rectangle 1 10))
+        (piece "Marker1" P1 E "MoveOfThePiece")
+        (piece "Marker2" P1 W "MoveOfThePiece")
+    })
     (rules
         (start {
             (place "Marker1" (expand (sites Left) steps:3))
             (place "Marker2" (expand (sites Right) steps:3))
-        }) 
+        })
         (play (forEach Piece))
-        
-        (end 
-            (if 
-                (is Target {2 2 2 2 0 0 1 1 1 1} ) 
-                (result P1 Win) 
+
+        (end
+            (if
+                (is Target {2 2 2 2 0 0 1 1 1 1} )
+                (result P1 Win)
             )
         )
     )
@@ -38,8 +38,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Insanity is a small game played on a board with holes and pegs of two colors.")
@@ -51,14 +51,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Colour "Marker1" fillColour:(colour Red))
         (piece Colour "Marker2" fillColour:(colour Blue))
     })
-    
-    (ai 
+
+    (ai
         "Insanity_ai"
     )
-    
+
 )

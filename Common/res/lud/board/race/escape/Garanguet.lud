@@ -1,38 +1,38 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:(pips)
     )
 )
 
-(define "NextSiteFromDistTripleDice" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFromDistTripleDice"
+    (trackSite Move
+        from:#1
         steps:(/ (count Pips) 3)
     )
 )
 
-(define "NextSiteFromDistLower" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFromDistLower"
+    (trackSite Move
+        from:#1
         steps:("LowerValue")
     )
 )
 
-(define "NextSiteFromDistDouble" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFromDistDouble"
+    (trackSite Move
+        from:#1
         steps:("DoubleValue")
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "RemoveAPiece" 
+(define "RemoveAPiece"
     (move
         Remove
-        (site) 
-    )		
+        (site)
+    )
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
@@ -41,20 +41,20 @@
 
 (define "Bar" (mapEntry #1))
 
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
-(define "UpdateCounterTriplePlay" 
+(define "UpdateCounterTriplePlay"
     (if (< (value Player Mover) 8)
-        (and 
-            (moveAgain) 
+        (and
+            (moveAgain)
             (if (< (value Player Mover) 0)
                 (set Value Mover 1)
                 (set Value Mover (+ 1 (value Player Mover)))
@@ -64,10 +64,10 @@
     )
 )
 
-(define "UpdateCounterDoublePlay" 
-    (and 
+(define "UpdateCounterDoublePlay"
+    (and
         (if (< (count MovesThisTurn) 4)
-            (moveAgain) 
+            (moveAgain)
         )
         (if (< (value Player Mover) 3)
             (if (< (value Player Mover) 0)
@@ -107,72 +107,72 @@
     )
 )
 
-(define "CanStillPlayDouble" 
-    (not 
-        (and 
-            (= (value Player Mover) 0) 
+(define "CanStillPlayDouble"
+    (not
+        (and
+            (= (value Player Mover) 0)
             (!= (count MovesThisTurn) 0)
         )
-    )	
+    )
 )
 
-(define "CanStillLowerDie" 
-    (or 
-        (or 
-            (= (count MovesThisTurn) (value Player Mover)) 
-            (and 
-                (= (count MovesThisTurn) 0) 
+(define "CanStillLowerDie"
+    (or
+        (or
+            (= (count MovesThisTurn) (value Player Mover))
+            (and
+                (= (count MovesThisTurn) 0)
                 (< (value Player Mover) 0)
             )
         )
-        (and 
-            (!= (count MovesThisTurn) 0) 
+        (and
+            (!= (count MovesThisTurn) 0)
             (= (value Player Mover) 0)
         )
-    )	
+    )
 )
 
 //-----------------------------------------------------------------------------
 
-(game "Garanguet"  
-    (players 2)  
-    (equipment { 
-        (board (rectangle 2 13) 
+(game "Garanguet"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13)
             {
             (track "Track1" {6 12..7 5..0 13..18 20..25} P1 directed:True)
             (track "Track2" {19 25..20 18..13 0..5 7..12} P2 directed:True)
-            } 
+            }
             use:Vertex
-        ) 
+        )
         (dice num:3)
-        (piece "Disc" Each) 
+        (piece "Disc" Each)
         (map {(pair 1 6 ) (pair 2 19)}) // Bar
         (regions "Home" P1 { 7..12 }) // P1 Home (first quadrant)
         (regions "Home" P2 { 20..25 }) // P2 Home (first quadrant)
     } )
-    
+
     (rules
-        (start { 
+        (start {
             (place Stack "Disc1" 12 count:15)
             (place Stack "Disc2" 25 count:15)
         })
-        
-        (play 
-            (do 
+
+        (play
+            (do
                 (if (not "SameTurn") (roll))
                 next:(if (all DiceEqual)
                     (forEach Site
                         (sites Occupied by:Mover)
                         (if ("CanEscape" ("NextSiteFromDistTripleDice" (site)))
                             ("RemoveAPiece")
-                            (move 
+                            (move
                                 (from (site))
                                 (to ("NextSiteFromDistTripleDice" (site))
                                     if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        if:(is Enemy (who at:(to))) 
-                                        (fromTo 
-                                            (from (to)) 
+                                    (apply
+                                        if:(is Enemy (who at:(to)))
+                                        (fromTo
+                                            (from (to))
                                             (to ("Bar" (next)))
                                         )
                                     )
@@ -188,14 +188,14 @@
                                     (sites Occupied by:Mover)
                                     (if ("CanEscape" ("NextSiteFromDistDouble" (site)))
                                         ("RemoveAPiece")
-                                        (move 
+                                        (move
                                             (from (site))
                                             (to ("NextSiteFromDistDouble" (site))
                                                 if:("NotEnemyOrOnlyOne")
-                                                (apply 
-                                                    if:(is Enemy (who at:(to))) 
-                                                    (fromTo 
-                                                        (from (to)) 
+                                                (apply
+                                                    if:(is Enemy (who at:(to)))
+                                                    (fromTo
+                                                        (from (to))
                                                         (to ("Bar" (next)))
                                                     )
                                                 )
@@ -210,24 +210,24 @@
                                     (sites Occupied by:Mover)
                                     (if ("CanEscape" ("NextSiteFromDistLower" (site)))
                                         ("RemoveAPiece")
-                                        (move 
+                                        (move
                                             (from (site))
                                             (to ("NextSiteFromDistLower" (site))
                                                 if:("NotEnemyOrOnlyOne")
-                                                (apply 
-                                                    if:(is Enemy (who at:(to))) 
-                                                    (fromTo 
-                                                        (from (to)) 
+                                                (apply
+                                                    if:(is Enemy (who at:(to)))
+                                                    (fromTo
+                                                        (from (to))
                                                         (to ("Bar" (next)))
                                                     )
                                                 )
                                             )
                                         )
                                     )
-                                    (then 
-                                        (if 
+                                    (then
+                                        (if
                                             (< (count MovesThisTurn) 4) // Can play again, 5 moves are awaiting.
-                                            (moveAgain) 
+                                            (moveAgain)
                                             (set Value Mover 0) // Reset the value for triple and double.
                                         )
                                     )
@@ -240,14 +240,14 @@
                                 (sites Occupied by:Mover)
                                 (if ("CanEscape" ("NextSiteFrom" (site)))
                                     ("RemoveAPiece")
-                                    (move 
+                                    (move
                                         (from (site))
                                         (to ("NextSiteFrom" (site))
                                             if:("NotEnemyOrOnlyOne")
-                                            (apply 
-                                                if:(is Enemy (who at:(to))) 
-                                                (fromTo 
-                                                    (from (to)) 
+                                            (apply
+                                                if:(is Enemy (who at:(to)))
+                                                (fromTo
+                                                    (from (to))
                                                     (to ("Bar" (next)))
                                                 )
                                             )
@@ -255,9 +255,9 @@
                                     )
                                 )
                             )
-                            (then 
-                                (if 
-                                    (not (all DiceUsed)) 
+                            (then
+                                (if
+                                    (not (all DiceUsed))
                                     (moveAgain)
                                 )
                             )
@@ -266,8 +266,8 @@
                 )
             )
         )
-        
-        (end 
+
+        (end
             (if ("AllPieceEscaped")
                 (result Mover Win)
             )
@@ -277,8 +277,8 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Garanguet ius a European Tables game played in France using three dice. It was played since at least the nineteenth century.")
@@ -290,12 +290,12 @@
         (origin  "This game was played in France, around 1840.")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType 0 Backgammon)
         (stackType 1 Count)
         (stackType 2 Count)
     })
-    
+
 )

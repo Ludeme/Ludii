@@ -13,24 +13,24 @@
 (define "StartSitesTeam2" (union (sites P2) (sites P3)))
 
 (define "Team1OnlyOnStartSitesTeam2"
-    (= 0 
+    (= 0
         (count
             Sites
-            in:(difference 
+            in:(difference
                 ("SitesOccupiedTeam1")
-                ("StartSitesTeam2")  
+                ("StartSitesTeam2")
             )
         )
     )
 )
 
 (define "Team2OnlyOnStartSitesTeam1"
-    (= 0 
+    (= 0
         (count
             Sites
-            in:(difference 
+            in:(difference
                 ("SitesOccupiedTeam2")
-                ("StartSitesTeam1")  
+                ("StartSitesTeam1")
             )
         )
     )
@@ -42,23 +42,23 @@
 
 //--------------------------------------------------------------------------
 
-(game "Awithlaknakwe"  
-    (players {(player N) (player E) (player S) (player W)})  
-    (equipment 
+(game "Awithlaknakwe"
+    (players {(player N) (player E) (player S) (player W)})
+    (equipment
         {
-        (board 
+        (board
             (merge
                 (merge
                     (merge
                         (merge
-                            (square 13 diagonals:Solid) 
-                            (shift 3 -1 (rectangle 2 7 diagonals:Solid)) 
+                            (square 13 diagonals:Solid)
+                            (shift 3 -1 (rectangle 2 7 diagonals:Solid))
                         )
-                        (shift 3 12 (rectangle 2 7 diagonals:Solid)) 
+                        (shift 3 12 (rectangle 2 7 diagonals:Solid))
                     )
-                    (shift -3.5 5.5 (rotate 90 (rectangle 2 7 diagonals:Solid))) 
+                    (shift -3.5 5.5 (rotate 90 (rectangle 2 7 diagonals:Solid)))
                 )
-                (shift 9.5 5.5 (rotate 90 (rectangle 2 7 diagonals:Solid))) 
+                (shift 9.5 5.5 (rotate 90 (rectangle 2 7 diagonals:Solid)))
             )
             use:Vertex
         )
@@ -81,17 +81,17 @@
             (place "Counter4" (sites P4))
             (place "DoubleCounter" "Hand")
         })
-        (play 
+        (play
             (forEach Piece
-                (then     
-                    (custodial 
-                        (from (last To)) 
+                (then
+                    (custodial
+                        (from (last To))
                         Orthogonal
-                        (between 
-                            (max 1) 
-                            if:(is Enemy (who at:(between))) 
-                            (apply 
-                                (and 
+                        (between
+                            (max 1)
+                            if:(is Enemy (who at:(between)))
+                            (apply
+                                (and
                                     {
                                     (remove (between))
                                     (if ("LargePieveAvailable")
@@ -100,18 +100,18 @@
                                     (addScore Mover 1)
                                     }
                                 )
-                                
+
                             )
                         )
-                        (to if:(is Friend (who at:(to)))) 
+                        (to if:(is Friend (who at:(to))))
                     )
                 )
             )
-        ) 
-        
-        (end 
-            (if 
-                (and 	
+        )
+
+        (end
+            (if
+                (and
                     ("Team1OnlyOnStartSitesTeam2")
                     ("Team2OnlyOnStartSitesTeam1")
                 )
@@ -128,7 +128,7 @@
 //--------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Awithlaknakwe is a game with custodial captures played by the Zuni people of the southwest United States from the late nineteenth century.")
@@ -139,11 +139,11 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
     (ai
         "Awithlaknakwe_ai"
     )

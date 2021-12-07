@@ -1,26 +1,26 @@
 (define "IfCentreFull" (= (count Moves) 4) )
 
 (define "FreeCentreSites"
-    (to 
-        (difference 
-            (sites Centre) 
+    (to
+        (difference
+            (sites Centre)
             (sites Occupied by:All)
         )
-    ) 	
+    )
 )
 
-(define "AddPieceTo" 
-    (move 
-        (from (handSite Mover)) 
+(define "AddPieceTo"
+    (move
+        (from (handSite Mover))
         #1
         #2
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal exact:True) 
+(define "IfLine3MoveAgain"
+    (then
+        (if
+            (is Line 3 Orthogonal exact:True)
             (and
                 (moveAgain)
                 (addScore Mover 1)
@@ -29,11 +29,11 @@
     )
 )
 
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (move
         Remove
-        (sites Occupied by:Next container:"Board") 
-        (then 
+        (sites Occupied by:Next container:"Board")
+        (then
             (and
                 (set Score Mover (- (score Mover) 1))
                 (if (< 1 (score Mover)) (moveAgain))
@@ -42,7 +42,7 @@
     )
 )
 
-(define "CheckLine3LastFrom" 
+(define "CheckLine3LastFrom"
     (if (and (!= (last From) (ahead (last From) #1)) (= (mover) (who at:(ahead (last From) #1))))
         (if (is Line 3 Orthogonal through:(ahead (last From) #1) exact:True)
             (and
@@ -50,25 +50,25 @@
                 (addScore Mover 1)
             )
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Dala"
-    (players 2)  
-    
-    (equipment 
-        { 
+    (players 2)
+
+    (equipment
+        {
         (board (square 6))
         (hand Each)
-        (piece "Stick" Each 
+        (piece "Stick" Each
             (if (is Line 4 Orthogonal through:(from) exact:True)
                 (move
                     Step
-                    Orthogonal 
-                    (to 
-                        if:(is Empty (to)) 
+                    Orthogonal
+                    (to
+                        if:(is Empty (to))
                     )
                     (then
                         (and {
@@ -81,27 +81,27 @@
                 )
                 (move
                     Step
-                    Orthogonal 
-                    (to 
-                        if:(is Empty (to)) 
+                    Orthogonal
+                    (to
+                        if:(is Empty (to))
                     )
-                    "IfLine3MoveAgain" 
+                    "IfLine3MoveAgain"
                 )
             )
         )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Stick" "Hand" count:12))
-        
+
         phases:{
         (phase "PlacementCenter"
             (play ("AddPieceTo" "FreeCentreSites"))
             (nextPhase "IfCentreFull" "Placement")
-        )	
-        
+        )
+
         (phase "Placement"
-            (play 
+            (play
                 (if (!= 0 (score Mover))
                     "RemoveEnemyPiece"
                     ("AddPieceTo" (to (sites Empty)) "IfLine3MoveAgain")
@@ -109,15 +109,15 @@
             )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
-            (play         
+            (play
                 (if (!= 0 (score Mover))
                     "RemoveEnemyPiece"
-                    (forEach Piece) 
+                    (forEach Piece)
                 )
             )
-            
+
             (end (if (= (count Pieces Next) 2) (result Mover Win)))
         )
         }
@@ -126,8 +126,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dala is a game of alignment played by older children among the Baggara peoples in Sudan. These rules come from the Homr people, but Riziegat people were observed playing a similar game. Davies implies they played with the same rules.")
@@ -139,13 +139,13 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
     })
-    
-    (ai 
+
+    (ai
         "Dala_ai"
     )
-    
+
 )

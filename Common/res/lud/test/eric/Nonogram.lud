@@ -1,8 +1,8 @@
-(game "Nonogram"  
-    (players 1)  
-    (equipment { 
+(game "Nonogram"
+    (players 1)
+    (equipment {
         (board (rectangle 9 8) (values Cell (range 0 1)))
-        (hints { 
+        (hints {
             (hint {0..7} 2)
             (hint {8..15} 1)
             (hint {16..23} 6)
@@ -22,9 +22,9 @@
             (hint {7 15 23 31 39 47 55 63 71} 3)
         })
         (regions {Columns Rows})
-    })  
-    (rules 
-        (play 
+    })
+    (rules
+        (play
             (satisfy  {
                 True
             })
@@ -41,7 +41,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         //(show Edges Outer (colour Black))
         (drawHint NextTo)

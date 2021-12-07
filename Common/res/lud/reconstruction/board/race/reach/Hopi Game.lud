@@ -1,6 +1,6 @@
-(game "Hopi Game"  
-    (players 4)  
-    (equipment { 
+(game "Hopi Game"
+    (players 4)
+    (equipment {
         (board
             (add
                 (remove
@@ -14,9 +14,9 @@
                 cells:{{5 6 18 17}}
             )
         )
-        (hand Each) 
-    })  
-    (rules 
+        (hand Each)
+    })
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -24,8 +24,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game was played by the Hopi people living in Oraibi, Arizona at the turn of the twentieth century. Murray incorrectly names it Totolospi, though the name is unrecorded in its original publication.")
@@ -37,7 +37,7 @@
         (origin  "This game was played in Arizona, around 1901.")
         }
     )
-    
+
     (graphics {
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
@@ -49,5 +49,5 @@
         (show Symbol "disc" Cell 0 fillColour:(colour Brown) edgeColour:(colour Black) scale:0.3 offsetX:-0.18)
         (show Symbol "disc" Cell 9 fillColour:(colour Brown) edgeColour:(colour Black) scale:0.3 offsetX:0.18)
     })
-    
+
 )

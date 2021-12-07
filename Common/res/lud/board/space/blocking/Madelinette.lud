@@ -1,43 +1,43 @@
-(game "Madelinette"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (add 
+(game "Madelinette"
+    (players 2)
+    (equipment {
+        (board
+            (add
                 (merge
                     {
                     (rotate -90 (wedge 2))
                     (shift 1 0 (rotate 90 (wedge 2)))
                     }
                 )
-                edges:{ {3 4} } 
-            ) 
+                edges:{ {3 4} }
+            )
             use:Vertex
-        ) 
-        (piece "Counter" Each 
+        )
+        (piece "Counter" Each
             (move
-                Step 
+                Step
                 (to if:(is Empty (to)))
             )
         )
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start {
             (place "Counter1" (sites {"A1" "C2" "A3"}) )
             (place "Counter2" (sites {"C1" "A2" "C3"}) )
         })
-        
-        (play (forEach Piece) ) 
-        
-        (end ("NoMoves" Loss))  
+
+        (play (forEach Piece) )
+
+        (end ("NoMoves" Loss))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Madelinette is a game with uncertain history. It is similar to Asian blockade games, but has more pieces and playing spaces.")
@@ -48,13 +48,13 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Madelinette_ai"
     )
-    
+
 )

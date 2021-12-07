@@ -1,5 +1,5 @@
 (game "DirectionLudiiGuide"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)})
     (equipment {
         (board
             <Board:type>
@@ -28,18 +28,18 @@
 
 (option "Board" <Board> args:{ <type> <initPos>}
     {
-    (item "Tri 5"       <(tri 5)> <14> "")*   
-    (item "Hex 3"       <(rotate 90 (hex 3))> <9> "")   
-    (item "Square 3"    <(square 3)>  <4>"")  
+    (item "Tri 5"       <(tri 5)> <14> "")*
+    (item "Hex 3"       <(rotate 90 (hex 3))> <9> "")
+    (item "Square 3"    <(square 3)>  <4>"")
     }
 )
 
 (option "Direction" <Direction> args:{ <type>}
-    { 
-    //(item "All"              <All> "")*   
-    //(item "Orthogonal"       <Orthogonal> "") 
-    //(item "Diagonal"       <Diagonal> "")   
-    //(item "Adjacent"       <Adjacent> "")  
+    {
+    //(item "All"              <All> "")*
+    //(item "Orthogonal"       <Orthogonal> "")
+    //(item "Diagonal"       <Diagonal> "")
+    //(item "Adjacent"       <Adjacent> "")
     //(item "OffDiagonal"       <OffDiagonal> "")
     (item "Forward"       <Forward> "")
     (item "Backward"       <Backward> "")
@@ -58,11 +58,11 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (graphics {
-        (board Style Chess) 
+        (board Style Chess)
         (piece scale "Pawn" 0.8)
     })
-    
+
 )

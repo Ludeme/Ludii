@@ -31,7 +31,7 @@
 (game "Tablan"
     (players 2)
     (equipment {
-        (board (rectangle 4 12) 
+        (board (rectangle 4 12)
             {
             (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
             (track "Track2" "47,W,S1,E,S1,W,S1,E" P2 directed:True)
@@ -43,14 +43,14 @@
                 (or
                     (if (not ("PlayedHalfThrow"))
                         (move
-                            (from 
+                            (from
                                 (from)
                                 if:(if ("ActivatedPiece" (from))
                                     True
                                     ("ThrowToActivate")
-                                )	
+                                )
                             )
-                            (to 
+                            (to
                                 ("SiteToMoveOnTrack" ("ThrowValue"))
                                 if:(not (is Friend (who at:(to))))
                                 (apply "CaptureMove")
@@ -63,14 +63,14 @@
                         )
                     )
                     (move
-                        (from 
+                        (from
                             (from)
                             if:(if ("ActivatedPiece" (from))
                                 True
                                 ("ThrowToActivate")
-                            )	
+                            )
                         )
-                        (to 
+                        (to
                             ("SiteToMoveOnTrack" (/ ("ThrowValue") 2))
                             if:(not (is Friend (who at:(to))))
                             (apply "CaptureMove")
@@ -98,13 +98,13 @@
         (map "Throw" {(pair 0 8) (pair 1 0) (pair 2 0) (pair 3 2) (pair 4 12)})
         (dice d:2 from:0 num:4)
     })
-    (rules 
-        (start {  
+    (rules
+        (start {
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
-        (play 
-            (do 
+        (play
+            (do
                 (if (not ("PlayedHalfThrow")) (roll))
                 next:(if (can Move (forEach Piece))
                     (forEach Piece)
@@ -117,10 +117,10 @@
                 )
             )
         )
-        (end 
+        (end
             (if (and (= 0 ("NumPieceNotInEnemyHome" P1 P2)) (= 0 ("NumPieceNotInEnemyHome" P2 P1)))
                 (byScore {
-                    (score P1 ("PiecesOwnedOnEnemyHomedBy" P2 P1)) 
+                    (score P1 ("PiecesOwnedOnEnemyHomedBy" P2 P1))
                     (score P2 ("PiecesOwnedOnEnemyHomedBy" P1 P2))
                 })
             )
@@ -130,8 +130,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tablan is a game of captures played in southwest India. It is played similarly to Tab and similar games from North Africa and Southwest Asia, and they are probably related.")
@@ -143,14 +143,14 @@
         (origin  "This game was played in India, around 1979.")
         }
     )
-    
+
     (graphics {
-        (show Edges Hidden)    
+        (show Edges Hidden)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (piece Scale "Stick" 0.5)
-        
+
     })
-    
+
 )
 

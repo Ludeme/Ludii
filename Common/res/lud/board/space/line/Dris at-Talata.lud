@@ -8,39 +8,39 @@
         }
     )
     (rules
-        (start 
-            (place "Marker" "Hand" count:3) 
+        (start
+            (place "Marker" "Hand" count:3)
         )
-        
+
         phases:{
         (phase "Placement"
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
                 )
             )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
-            (play 
-                (move 
+            (play
+                (move
                     (from (sites Occupied by:Mover))
                     (to (sites Empty))
                 )
             )
         )
         }
-        
+
         (end (if (is Line 3 Orthogonal) (result Mover Win)))
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dris at-Talata is a simple game of alignment played in Egypt during the eighteenth century, but likely to be much older.")
@@ -53,13 +53,13 @@
         (origin  "This game was played in Egypt, around 1762.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
     (ai
         "Dris at-Talata_ai"
     )

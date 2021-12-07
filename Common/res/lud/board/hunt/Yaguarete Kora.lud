@@ -1,23 +1,23 @@
 (game "Yaguarete Kora"
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge 
-                (shift 0 -4 (square 5 diagonals:Alternating)) 
+    (players 2)
+    (equipment {
+        (board
+            (merge
+                (shift 0 -4 (square 5 diagonals:Alternating))
                 (rotate 180 (wedge 3))
-            ) 
+            )
             use:Vertex
-        ) 
+        )
         (piece "Jaguar" P1
-            (or 
-                ("StepToEmpty")	
+            (or
+                ("StepToEmpty")
                 ("HopCapture")
             )
         )
         (piece "Dog" P2 ("StepToEmpty"))
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (start {
             (place "Jaguar1" coord:"C6")
             (place "Dog2" (expand (sites Bottom) steps:2))
@@ -32,8 +32,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Yaguarete Kora is a hunt game played by the Mbya Guaraní people of South America. One player plays as one jaguar, and the other plays as fifteen dogs.")
@@ -46,10 +46,10 @@
         (origin  "This game was played in Argentina, from around 1960 to 2020.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
         (piece Families {"Abstract" "Themed"})
     })
-    
+
 )

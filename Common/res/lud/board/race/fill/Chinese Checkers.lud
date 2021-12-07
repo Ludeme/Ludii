@@ -2,30 +2,30 @@
 
 (define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
 
-(define "EmptyAndNotVisited"     							  
-    (and 
-        (is Empty (to)) 
-        (not (is Visited (to))) 
-    ) 
+(define "EmptyAndNotVisited"
+    (and
+        (is Empty (to))
+        (not (is Visited (to)))
+    )
 )
 
-(define "Hop" 
+(define "Hop"
     (move
         Hop
         (from #1)
         (between if:(not (is Empty (between))))
-        (to 
+        (to
             if:(and
                 "EmptyAndNotVisited"
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
-                    ("ToIsOnTheRegionToFill" (to)) 
+                    ("ToIsOnTheRegionToFill" (to))
                 )
             )
         )
-        #2		
+        #2
     )
-) 
+)
 
 (define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
 
@@ -36,23 +36,23 @@
 //------------------------------------------------------------------------------
 
 (game "Chinese Checkers"
-    (players <Players:num>)  
-    (equipment { 
+    (players <Players:num>)
+    (equipment {
         (board (hex Star ("Dim")))
-        (piece "Marker" Each) 
+        (piece "Marker" Each)
         <Players:home>
-    })  
-    (rules 
+    })
+    (rules
         <Players:start>
-        
+
         phases:{
-        (phase "Movement"  
-            (play 
-                (forEach Piece (or 
-                        ("HopSequence" (from)) 
+        (phase "Movement"
+            (play
+                (forEach Piece (or
+                        ("HopSequence" (from))
                         (move
                             Step
-                            (to 
+                            (to
                                 if:(and
                                     (is Empty (to))
                                     (or
@@ -64,19 +64,19 @@
                         )
                     )
                 )
-            ) 
+            )
             (nextPhase (is Mover (next)) "MultiJump")
-        ) 
-        (phase "MultiJump" (play 
-                (or 
-                    ("HopSequence" (last To)) 
+        )
+        (phase "MultiJump" (play
+                (or
+                    ("HopSequence" (last To))
                     (move Pass)
                 )
-            ) 
+            )
             (nextPhase (not (is Mover (next))) "Movement")
-        ) 
+        )
         }
-        
+
         (end  (if "RegionFilled" (result Mover Win) ))
     )
 )
@@ -84,24 +84,24 @@
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> <home> <start>} {
-    (item "2 (a)"    
-        <2> 
+    (item "2 (a)"
+        <2>
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
         (regions "Home" P2 (expand origin:(coord row:(* ("Dim") 4) column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
         (map {(pair 1 2) (pair 2 1) })
         >
         <
-        (start { 
+        (start {
             (place "Marker1" (sites P1) )
             (place "Marker2" (sites P2) )
         })
         >
         "Two players occupy home regions on opposite sides, four home regions are empty."
-    ) 
-    
-    (item "2 (b)"    
-        <2> 
+    )
+
+    (item "2 (b)"
+        <2>
         <
         (regions "Home" P1
             (union {
@@ -110,7 +110,7 @@
                 (expand origin:(coord row:(* ("Dim") 3) column:("Dim")) steps:(- ("Dim") 1))
             })
         )
-        (regions "Home" P2 
+        (regions "Home" P2
             (union {
                 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1))
                 (expand origin:(coord row:(* ("Dim") 4) column:(* ("Dim") 3)) steps:(- ("Dim") 1))
@@ -120,16 +120,16 @@
         (map {(pair 1 2) (pair 2 1) })
         >
         <
-        (start { 
+        (start {
             (place "Marker1" (sites P1) )
             (place "Marker2" (sites P2) )
         })
         >
         "Two players occupy three regions each, alternating around board, i.e. all six home regions start full."
-    )  
-    
-    (item "3"       
-        <3> 
+    )
+
+    (item "3"
+        <3>
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
         (regions "Home" P6 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
@@ -140,17 +140,17 @@
         (map {(pair 1 4) (pair 2 6) (pair 3 6) (pair 4 1) (pair 5 2) (pair 6 2)})
         >
         <
-        (start { 
+        (start {
             (place "Marker1" (sites P1) )
             (place "Marker2" (sites P2) )
             (place "Marker3" (sites P3) )
         })
         >
         "Three players occupy home regions equally spaced around board, three home regions are empty."
-    )   
-    
-    (item "4"        
-        <4>  
+    )
+
+    (item "4"
+        <4>
         <
         (regions "Home" P1 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
         (regions "Home" P2 (expand origin:(coord row:(* ("Dim") 3) column:(* ("Dim") 4)) steps:(- ("Dim") 1)))
@@ -159,7 +159,7 @@
         (map {(pair 1 3) (pair 2 4) (pair 3 1) (pair 4 2)})
         >
         <
-        (start { 
+        (start {
             (place "Marker1" (sites P1) )
             (place "Marker2" (sites P2) )
             (place "Marker3" (sites P3) )
@@ -167,10 +167,10 @@
         })
         >
         "Four players occupy home regions, two opposite home regions are empty."
-    )   
-    
-    (item "5"       
-        <5>    
+    )
+
+    (item "5"
+        <5>
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
         (regions "Home" P2 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
@@ -181,7 +181,7 @@
         (map {(pair 1 4) (pair 2 5) (pair 3 6) (pair 4 1) (pair 5 2) (pair 6 3)})
         >
         <
-        (start { 
+        (start {
             (place "Marker1" (sites P1) )
             (place "Marker2" (sites P2) )
             (place "Marker3" (sites P3) )
@@ -190,10 +190,10 @@
         })
         >
         "Five players occupy home regions, one is empty."
-    )   
-    
-    (item "6"       
-        <6>  
+    )
+
+    (item "6"
+        <6>
         <
         (regions "Home" P1 (expand origin:(coord row:0 column:("Dim")) steps:(- ("Dim") 1)))
         (regions "Home" P2 (expand origin:(coord row:("Dim") column:(* ("Dim") 3)) steps:(- ("Dim") 1)))
@@ -204,7 +204,7 @@
         (map {(pair 1 4) (pair 2 5) (pair 3 6) (pair 4 1) (pair 5 2) (pair 6 3)})
         >
         <
-        (start { 
+        (start {
             (place "Marker1" (sites P1) )
             (place "Marker2" (sites P2) )
             (place "Marker3" (sites P3) )
@@ -214,24 +214,24 @@
         })
         >
         "Six players occupy home regions (standard game)."
-    )**   
+    )**
 })
 
 (option "Board Size" <Board> args:{ <size> } {
-    (item "1"    <1>   "The game is played on a board of size 1.")  
-    (item "2"    <2>   "The game is played on a board of size 2.")  
-    (item "3"    <3>   "The game is played on a board of size 3.")   
-    (item "4"    <4>   "The game is played on a board of size 4.")**   
-    (item "5"    <5>   "The game is played on a board of size 5.")   
-    (item "6"    <6>   "The game is played on a board of size 6.")   
-    (item "7"    <7>   "The game is played on a board of size 7.")   
-    (item "8"    <8>   "The game is played on a board of size 8.")   
+    (item "1"    <1>   "The game is played on a board of size 1.")
+    (item "2"    <2>   "The game is played on a board of size 2.")
+    (item "3"    <3>   "The game is played on a board of size 3.")
+    (item "4"    <4>   "The game is played on a board of size 4.")**
+    (item "5"    <5>   "The game is played on a board of size 5.")
+    (item "6"    <6>   "The game is played on a board of size 6.")
+    (item "7"    <7>   "The game is played on a board of size 7.")
+    (item "8"    <8>   "The game is played on a board of size 8.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Chinese Checkers, originally known as \"Sternhalma,\" was invented in Germany in 1892 as a variant of the older American game Halma. It was called Chinese Checkers as a marketing ploy in the United States in 1928.")
@@ -243,7 +243,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Colour InnerEdges (colour 120 190 240))
         (board Colour OuterEdges (colour 120 190 240))
@@ -256,9 +256,9 @@
         (region Colour "Home" P5 (colour Black))
         (region Colour "Home" P6 (colour Red))
     })
-    
-    (ai 
+
+    (ai
         "Chinese Checkers_ai"
     )
-    
+
 )

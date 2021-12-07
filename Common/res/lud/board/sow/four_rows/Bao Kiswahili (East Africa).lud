@@ -61,17 +61,17 @@
 
 //------------------------------------------------------------------------------
 
-(game "Bao Kiswahili (East Africa)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Bao Kiswahili (East Africa)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 8 store:None
             {
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
             (track "TrackCW2" "23,W,N1,E" loop:True P2)
-            }		
+            }
         )
         (piece "Seed" Shared)
         (hand Each)
@@ -84,21 +84,21 @@
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
         (map "AdjacentRightMostInner" {(pair P1 14) (pair P2 17)})
-    })  
-    (rules 
+    })
+    (rules
         (start {
             (set Count 22 at:(handSite P1))
             (set Count 22 at:(handSite P2))
-            (set Count 2 to:(sites {"G2" "F2" "B3" "C3"}) ) 
-            (set Count 6 to:(sites {"E2" "D3"})) 
+            (set Count 2 to:(sites {"G2" "F2" "B3" "C3"}) )
+            (set Count 6 to:(sites {"E2" "D3"}))
         })
-        
-        (play 
+
+        (play
             (if ("SameTurn")
                 (if (is Pending) // If Pending = Seeds were captured.
                     (or
                         (if (or (= 1 (var "Side")) (= 0 (var "Side"))) // Sow capture pieces from the left.
-                            (do 
+                            (do
                                 (fromTo
                                     (from ("OppositePit" (last To afterConsequence:True)))
                                     (to (mapEntry "LeftMostInner" Mover))
@@ -111,7 +111,7 @@
                             )
                         )
                         (if (or (= 2 (var "Side")) (= 0 (var "Side"))) // Sow capture pieces from the right.
-                            (do 
+                            (do
                                 (fromTo
                                     (from ("OppositePit" (last To afterConsequence:True)))
                                     (to (mapEntry "RightMostInner" Mover))
@@ -124,7 +124,7 @@
                             )
                         )
                     )
-                    
+
                     // Continue to sow.
                     (or
                         (if (or (= (var "Direction") 1) (= (var "Direction") 3))
@@ -187,7 +187,7 @@
                                 )
                             )
                         )
-                        
+
                         (if (!= (value Player Mover) 1)
                             (move // If not possible just place then sow in any direction from the square hole.
                                 (from (handSite Mover))
@@ -205,9 +205,9 @@
                     })
                     // Sowing phase
                     (priority {
-                        (or 
+                        (or
                             (move Select
-                                (from 
+                                (from
                                     (sites Mover)
                                     if:(and (is Occupied (from))
                                         (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
@@ -256,7 +256,7 @@
                                 )
                             )
                             (move Select
-                                (from 
+                                (from
                                     (sites Mover)
                                     if:(and (is Occupied (from))
                                         (is Occupied ("OppositePit" ("NextHole" (from) "TrackCCW" (count at:(from)))))
@@ -305,9 +305,9 @@
                                 )
                             )
                         )
-                        (or 
+                        (or
                             (move Select
-                                (from 
+                                (from
                                     (if (!= (value Player Mover) 1)
                                         (sites Mover)
                                         (difference (sites Mover) (sites "SquaresHoles"))
@@ -357,7 +357,7 @@
                                 )
                             )
                             (move Select
-                                (from 
+                                (from
                                     (if (!= (value Player Mover) 1)
                                         (sites Mover)
                                         (difference (sites Mover) (sites "SquaresHoles"))
@@ -411,7 +411,7 @@
                 )
             )
         )
-        
+
         (end {
             (if ("NoPiecesInInner" P1) (result P2 Win))
             (if ("NoPiecesInInner" P2) (result P1 Win))
@@ -421,7 +421,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Bao Kiswahili is a four-row mancala-style game popular throughout East Africa. It is widely known as one of the more complex and difficult-to-master games in the world.")
@@ -433,7 +433,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show AsHoles {12 19} Square)

@@ -7,8 +7,8 @@
 (define "NoCounters" (no Pieces All in:(sites #1)))
 (define "EmptyBoardOrOne" (= 1 (count in:(sites Board))))
 
-(define "RightMostNotEmpty" 
-    (trackSite FirstSite 
+(define "RightMostNotEmpty"
+    (trackSite FirstSite
         "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(and (is In (to) (sites Mover)) (is Occupied (to)))
@@ -17,10 +17,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Li'b al-Ghashim"  
-    (players 2)  
-    
-    (equipment { 
+(game "Li'b al-Ghashim"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -32,17 +32,17 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Seed" (handSite P1) count:72))
-        
+
         phases:{
         (phase "Opening1"
-            (play 
+            (play
                 (or {
                     (if (is Occupied Cell (handSite P1))
                         (forEach Value min:1 max:(count Cell at:(handSite P1))
-                            (move 
+                            (move
                                 (from (handSite P1))
                                 (to (sites Board))
                                 count:(value)
@@ -65,17 +65,17 @@
             )
             (nextPhase (was Pass) "Opening2")
         )
-        
+
         (phase "Opening2"
             (play
-                (or 
+                (or
                     (move Pass (then (and (set Pending) (moveAgain))))
                     (move Swap Players P1 P2 (then (and (set NextPlayer (player 1)) (set Pending))))
                 )
             )
             (nextPhase "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (if (and ("NewTurn") ("NoCounters" Next))
@@ -84,12 +84,12 @@
                         (to ("RightMostNotEmpty"))
                     )
                     (move Select
-                        (from 
-                            (if 
+                        (from
+                            (if
                                 (and (not (is Pending)) (is Mover Prev))
                                 (sites { (var "Replay") })
-                                (sites Mover) 
-                            ) 
+                                (sites Mover)
+                            )
                             if:(is Occupied (from))
                         )
                         (then
@@ -141,8 +141,8 @@
                                             (to Cell (handSite P1))
                                             count:(count at:(site))
                                         )
-                                    )	
-                                )	
+                                    )
+                                )
                             })
                         )
                     )
@@ -151,7 +151,7 @@
             (nextPhase ("EmptyBoardOrOne") "Opening1")
         )
         }
-        
+
         (end
             (forEach Player
                 if:(<= 60 (score Player))
@@ -163,7 +163,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Li'b al-Ghashim (\"Game of the unlearned\") is a two-row mancala-style board game from Egypt. It begins with one player distributing the counters unequally in the holes, and the other player having the option to swap sides if they are not pleased with the distribution.")
@@ -176,7 +176,7 @@
         (origin  "This game was played in Egypt, around 1860.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

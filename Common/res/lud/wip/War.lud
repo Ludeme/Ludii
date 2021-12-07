@@ -1,36 +1,36 @@
 (define "ValueOf" (value Piece of:(what at:#1 level:(topLevel at:#1))))
-(define "MoveAllCardToBottom" 
-    (move 
-        (from #1) 
-        (to (handSite #2) level:0) 
+(define "MoveAllCardToBottom"
+    (move
+        (from #1)
+        (to (handSite #2) level:0)
         stack:True
     )
 )
 (define "MoveCardsOfP1To" ("MoveAllCardToBottom" 0 #1))
 (define "MoveCardsOfP2To" ("MoveAllCardToBottom" 1 #1))
-(define "PlayACard" 
-    (move 
+(define "PlayACard"
+    (move
         (from (handSite #1))
         (to #2)
         #3
         #4
-    )	
+    )
 )
 (define "P1PlayACard" ("PlayACard" P1 0 #1 #2))
 (define "P2PlayACard" ("PlayACard" P2 1 #1 #2))
 (define "MaskedCards" (set Masked (union (sites Hand P1) (sites Hand P2)) stack:True) )
 (define "MakeTopCardP1Visible" (then (set Visible 0 level:(topLevel at:0))))
 (define "MakeTopCardP2Visible" (then (set Visible 1 level:(topLevel at:1))))
-(define "TakeCards" 
-    (and 
+(define "TakeCards"
+    (and
         ("MoveCardsOfP1To" #1)
         ("MoveCardsOfP2To" #1)
     )
 )
 
-(define "PlayACardOfEachDeck" 
-    (and 
-        ("P2PlayACard") 
+(define "PlayACardOfEachDeck"
+    (and
+        ("P2PlayACard")
         ("P1PlayACard")
     )
 )
@@ -42,31 +42,31 @@
 
 //------------------------------------------------------------------------------
 
-(game "War"  
-    (players 2)  
-    (mode Simultaneous)  
-    (equipment { 
-        (board 
-            (union 
-                (square 1) 
+(game "War"
+    (players 2)
+    (mode Simultaneous)
+    (equipment {
+        (board
+            (union
+                (square 1)
                 (shift 2 0 (square 1))
             )
         )
         (deck)
         (hand Each)
     })
-    
+
     (rules
         (start (split Deck))
-        (play 
+        (play
             (if (is Odd (count Turns))
                 (or
                     ("P1PlayACard" P1 ("MakeTopCardP1Visible"))
                     ("P2PlayACard" P2 ("MakeTopCardP2Visible"))
                 )
                 (move Pass
-                    (then 
-                        (and 
+                    (then
+                        (and
                             (if ("CardOfP1isHigher")
                                 ("TakeCards" P1)
                                 (if ("CardOfP2isHigher")
@@ -80,15 +80,15 @@
                 )
             )
         )
-        
+
         (end {
-            (if 
+            (if
                 ("P1HasNoCard")
-                (result P2 Win) 
-            )   
-            (if 
+                (result P2 Win)
+            )
+            (if
                 ("P2HasNoCard")
-                (result P1 Win) 
+                (result P1 Win)
             )
         })
     )
@@ -110,8 +110,8 @@
         }
     )
     (graphics (no Board))
-    
-    (ai 
+
+    (ai
         "War_ai"
     )
 )

@@ -16,10 +16,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Li'b al-'Aqil"  
-    (players 2)  
-    
-    (equipment { 
+(game "Li'b al-'Aqil"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -28,17 +28,17 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 11)})
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Seed" (handSite P1) count:72))
-        
+
         phases:{
         (phase "Opening1"
-            (play 
+            (play
                 (or {
                     (if (is Occupied Cell (handSite P1))
                         (forEach Value min:1 max:(count Cell at:(handSite P1))
-                            (move 
+                            (move
                                 (from (handSite P1))
                                 (to (sites Board))
                                 count:(value)
@@ -61,10 +61,10 @@
             )
             (nextPhase (was Pass) "Opening2")
         )
-        
+
         (phase "Opening2"
             (play
-                (or 
+                (or
                     (move Pass (then (moveAgain)))
                     (move Swap Players P1 P2)
                     (then (set Pending))
@@ -72,7 +72,7 @@
             )
             (nextPhase "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (if (and ("NewTurn") ("NoCounters" Next))
@@ -81,12 +81,12 @@
                         (to (mapEntry "LeftMost" Next))
                     )
                     (move Select
-                        (from 
-                            (if 
+                        (from
+                            (if
                                 (and (not (is Pending)) (is Mover Prev))
                                 (sites { (var "Replay") })
-                                (sites Mover) 
-                            ) 
+                                (sites Mover)
+                            )
                             if:(is Occupied (from))
                         )
                         (then
@@ -138,7 +138,7 @@
             (nextPhase ("EmptyBoard") "Opening1")
         )
         }
-        
+
         (end
             (forEach Player
                 if:(<= 60 (score Player))
@@ -150,7 +150,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Li'b al-'Aqil (\"game of the wise\") is a two-row mancala-style board game from Egypt. It allows one player to distribute the counters as they wish, and the opponent to swap the board around if they do not like the result.")
@@ -163,7 +163,7 @@
         (origin  "This game was played in Egypt, around 1836.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

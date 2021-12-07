@@ -1,11 +1,11 @@
-(game "Graph Test - Tiling3464 (Dual x 3)"  
-    (players 2)  
-    (equipment { 
-        (board (dual (dual (dual (tiling T3464 Star 2))))) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+(game "Graph Test - Tiling3464 (Dual x 3)"
+    (players 2)
+    (equipment {
+        (board (dual (dual (dual (tiling T3464 Star 2)))))
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

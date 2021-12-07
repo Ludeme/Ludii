@@ -1,16 +1,16 @@
 (define "OrthogonalHopCaptureCounter"
     (do
         (move
-            Hop 
+            Hop
             #1
             Orthogonal
-            (between 
+            (between
                 before:2
                 after:2
                 if:(and (= 2 (count Steps (from) (between))) (is Enemy (who at:(between))))
                 (apply (remove (between)))
-            ) 
-            (to if:(is Empty (to))) 
+            )
+            (to if:(is Empty (to)))
         )
         ifAfterwards:(is In (last To) (sites Phase 1))
         #2
@@ -19,24 +19,24 @@
 
 (define "DiagonalHopCaptureCounter"
     (move
-        Hop 
+        Hop
         #1
         Diagonal
-        (between 
+        (between
             if:(is Enemy (who at:(between)))
             (apply (remove (between)))
-        ) 
+        )
         (to if:(is Empty (to)))
         #2
     )
 )
 
-(define "MoveAgainIfCanCaptureAgain" 
-    (then 
-        (if 
-            (can Move 
-                (or 
-                    ("DiagonalHopCaptureCounter" (from (last To)) ) 
+(define "MoveAgainIfCanCaptureAgain"
+    (then
+        (if
+            (can Move
+                (or
+                    ("DiagonalHopCaptureCounter" (from (last To)) )
                     ("OrthogonalHopCaptureCounter" (from (last To)))
                 )
             )
@@ -48,12 +48,12 @@
 (define "CounterMove"
     (or {
         (move
-            Step 
+            Step
             Diagonal
             (to if:(is Empty (to)))
         )
         (move
-            Hop 
+            Hop
             Orthogonal
             (between if:(is Empty (between)))
             (to if:(is Empty (to)))
@@ -66,24 +66,24 @@
 
 //------------------------------------------------------------------------------
 
-(game "The Babylonian" 
-    (players 2)  
-    (equipment { 
-        (board (square 10)) 
+(game "The Babylonian"
+    (players 2)
+    (equipment {
+        (board (square 10))
         (piece "Counter" Each "CounterMove")
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 0)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 0) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if ("SameTurn")
                 (or {
                     ("DiagonalHopCaptureCounter" (from (last To)) ("MoveAgainIfCanCaptureAgain"))
@@ -92,16 +92,16 @@
                 })
                 (forEach Piece)
             )
-        ) 
-        
-        (end (if (no Pieces Next) (result Mover Win))) 
+        )
+
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The Babylonian was a game that became popular in Paris around 1736, and continued to be played in the Netherlands into the nineteenth century. It was played on a Polish Draughts Board, but the pieces move as Chess queens.")
@@ -113,12 +113,12 @@
         (origin  "This game was played in France, from around 1736 to 1805.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "The Babylonian_ai"
     )

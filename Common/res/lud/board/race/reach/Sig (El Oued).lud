@@ -42,14 +42,14 @@
                 )
             )
         )
-    )		
+    )
 )
 
 (define "NextSite" (trackSite Move from:#1 #2 steps:1))
 
-(define "SigMove" 
-    (if 
-        (and { 
+(define "SigMove"
+    (if
+        (and {
             ("Sig")
             (= (from) #1)
             (if ("NewTurn")
@@ -63,7 +63,7 @@
                 #2
             )
         )
-    )	
+    )
 )
 
 (define "EnterToMinaret" ("SigMove" ("EnterMinaret") ("Minaret")))
@@ -96,7 +96,7 @@
                 (to
                     ("SiteToMoveOnTrack" "SecondTrack" #1)
                 )
-                
+
                 ("CaptureMove" "SecondTrack")
             )
         )
@@ -116,10 +116,10 @@
 //------------------------------------------------------------------------------
 
 (game "Sig (El Oued)"
-    (players <Player:num>) 
+    (players <Player:num>)
     (equipment {
         (board
-            (scale 2 1 
+            (scale 2 1
                 (merge {
                     (square 5)
                     (shift 4 5 (rectangle 3 1))
@@ -133,12 +133,12 @@
         )
         (dice d:2 from:0 num:6)
         (piece "Father" Each  ("Move" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))))
-        (piece "Djinn" Each  
+        (piece "Djinn" Each
             (if (= ("Mecca") (where "Father" Mover))
                 ("Move" (* 2 (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue"))) ("GoToStep1Djinn"))
             )
         )
-        (piece "Mother" Each 
+        (piece "Mother" Each
             (if (= ("Mecca") (where "Djinn" Mover))
                 ("Move" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue")))
             )
@@ -148,8 +148,8 @@
     })
     (rules
         <Player:start>
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(if (can Move (forEach Piece)) (forEach Piece) (move Pass))
                 (then
                     (if (!= 0 ("ExtraThrowValue"))
@@ -160,7 +160,7 @@
                                 )
                             )
                             (if (!= (mover) (prev))
-                                (and 
+                                (and
                                     (moveAgain)
                                     (if (!= 1 ("ThrowValue")) (set Var "SpecialSig" 1))
                                 )
@@ -196,8 +196,8 @@
             (place Stack "Mother2" 0)
         })
         >
-    "The game has 2 players.")   
-    (item "3" <3>  
+    "The game has 2 players.")
+    (item "3" <3>
         <
         (start {
             (place Stack "Father1" 0)
@@ -211,8 +211,8 @@
             (place Stack "Mother3" 0)
         })
         >
-    "The game has 3 players.")  
-    (item "4" <4>  
+    "The game has 3 players.")
+    (item "4" <4>
         <
         (start {
             (place Stack "Father1" 0)
@@ -229,8 +229,8 @@
             (place Stack "Mother4" 0)
         })
         >
-    "The game has 4 players.")*  
-    (item "5" <5>  
+    "The game has 4 players.")*
+    (item "5" <5>
         <
         (start {
             (place Stack "Father1" 0)
@@ -250,8 +250,8 @@
             (place Stack "Mother5" 0)
         })
         >
-    "The game has 5 players.")  
-    (item "6" <6>  
+    "The game has 5 players.")
+    (item "6" <6>
         <
         (start {
             (place Stack "Father1" 0)
@@ -274,8 +274,8 @@
             (place Stack "Mother6" 0)
         })
         >
-    "The game has 6 players.")  
-    (item "7" <7>  
+    "The game has 6 players.")
+    (item "7" <7>
         <
         (start {
             (place Stack "Father1" 0)
@@ -301,8 +301,8 @@
             (place Stack "Mother7" 0)
         })
         >
-    "The game has 7 players.")  
-    (item "8" <8>  
+    "The game has 7 players.")
+    (item "8" <8>
         <
         (start {
             (place Stack "Father1" 0)
@@ -331,24 +331,24 @@
             (place Stack "Mother8" 0)
         })
         >
-    "The game has 8 players.")  
+    "The game has 8 players.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Sig (El Oued) (Observed)" {
         "Players/4"
         }
         variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Sig is a name use for many different games in Saharan Africa. This version is played in El Oued, Algeria, and is a representation of the Hajj taken by a father, a mother, and a djinn.")
@@ -360,7 +360,7 @@
         (origin  "This game was played in Algeria, around 1964.")
         }
     )
-    
+
     (graphics {
         (show Symbol "disc" ("Minaret") scale:0.5)
         (board Colour Phase0 (colour 223 178 110))
@@ -374,5 +374,5 @@
         (piece Rename piece:"Djinn" "Stick")
         (stackType 0 Ground)
     })
-    
+
 )

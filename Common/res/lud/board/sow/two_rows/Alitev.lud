@@ -2,9 +2,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Alitev"  
-    (players 2)  
-    (equipment { 
+(game "Alitev"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -13,23 +13,23 @@
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 3 to:(sites Track)))
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (sites Mover) 
+                Select
+                (from
+                    (sites Mover)
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
                         if:(or (= (count at:(to)) 1) (= (count at:(to)) 3))
-                        apply:(fromTo (from (to)) 
-                            (to (handSite Mover)) 
+                        apply:(fromTo (from (to))
+                            (to (handSite Mover))
                             count:(count at:(to))
                         )
                         backtracking:True
@@ -37,11 +37,11 @@
                 )
             )
         )
-        
+
         (end
             (if (= 0 (count in:(union (sites P1) (sites P2))))
                 (byScore {
-                    (score P1 ("CapturedPiece" P1)) 
+                    (score P1 ("CapturedPiece" P1))
                     (score P2 ("CapturedPiece" P2))
                 })
             )
@@ -51,7 +51,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Alıtev is a two-row mancala-style board game played in Turkey. It is typically played in holes dug out of the earth.")
@@ -63,7 +63,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

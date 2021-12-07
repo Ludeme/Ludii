@@ -1,11 +1,11 @@
-(game "Graph Test - Subdivide (T3464, 1, Checkered)"  
-    (players 2)  
-    (equipment { 
-        (board <Board>) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+(game "Graph Test - Subdivide (T3464, 1, Checkered)"
+    (players 2)
+    (equipment {
+        (board <Board>)
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -15,7 +15,7 @@
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    
+
     (item "1"         <(subdivide (tiling T3464 1)) >  "")
     (item "1, Dual"   <(dual (subdivide (tiling T3464 1))) >  "")
     (item "1, Dualx2" <(dual (dual (subdivide (tiling T3464 1)))) >  "")
@@ -24,7 +24,7 @@
     (item "1, Dualx5" <(dual (dual (dual (dual (dual (subdivide (tiling T3464 1))))))) >  "")
     (item "1, Dualx6" <(dual (dual (dual (dual (dual (dual (subdivide (tiling T3464 1)))))))) >  "")
     (item "1, Dualx7" <(dual (dual (dual (dual (dual (dual (dual (subdivide (tiling T3464 1))))))))) >  "")
-    
+
     (item "2, Min 6"         <(subdivide (tiling T3464 2) min:6) >  "")
     (item "2, Min 6, Dual"   <(dual (subdivide (tiling T3464 2) min:6)) >  "")
     (item "2, Min 6, Dualx3" <(dual (dual (subdivide (tiling T3464 2) min:6))) >  "")
@@ -37,8 +37,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

@@ -1,49 +1,49 @@
-(define "PromotedHopOrthogonalSequenceCapture" 
+(define "PromotedHopOrthogonalSequenceCapture"
     (move Hop
         #1
         #2
-        (between 
-            before:(count Rows) 
+        (between
+            before:(count Rows)
             after:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
+        (then
+            (if (can Move
+                    (hop
+                        (from (last To))
                         (difference Orthogonal OppositeDirection)
-                        (between 
-                            before:(count Rows) 
+                        (between
+                            before:(count Rows)
                             after:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
+                            if:(and
+                                (not (is In (between) (sites ToClear)))
                                 (is Enemy (who at:(between)))
                             )
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
                     )
-                ) 
+                )
                 (moveAgain)
             )
         )
     )
 )
 
-(define "HopMan" 
+(define "HopMan"
     (move
-        Hop 
-        (from #1) 
-        (directions {Forward Rightward Leftward}) 
-        (between 
+        Hop
+        (from #1)
+        (directions {Forward Rightward Leftward})
+        (between
             if:(is Enemy (who at:(between)))
             (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -52,68 +52,68 @@
 
 //------------------------------------------------------------------------------
 
-(game "Dama"  
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
+(game "Dama"
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place "Counter1" (union (sites Row 1) (sites Row 2)))
             (place "Counter2" (union (sites Row 5) (sites Row 6)))
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
                         ("HopMan" (last To)
-                            (then 
-                                (if (can Move ("HopMan" (last To)) ) 
+                            (then
+                                (if (can Move ("HopMan" (last To)) )
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                     )
                     (max Moves ("PromotedHopOrthogonalSequenceCapture" (from (last To)) (difference Orthogonal OppositeDirection)) )
                 )
-                (priority 
+                (priority
                     {
                     (max Moves
-                        (or { 
-                            (forEach Piece "Counter" 
+                        (or {
+                            (forEach Piece "Counter"
                                 ("HopMan" (from)
-                                    (then 
-                                        (if (can Move ("HopMan" (last To)) ) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
+                                    (then
+                                        (if (can Move ("HopMan" (last To)) )
+                                            (moveAgain)
+                                            (if "JumpToPromotionZone"
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
                                             )
-                                        ) 
-                                    ) 
-                                ) 
+                                        )
+                                    )
+                                )
                             )
                             (forEach Piece "DoubleCounter" ("PromotedHopOrthogonalSequenceCapture" (from) Orthogonal))
                             }
                         )
                     )
-                    (or 
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions {Forward Rightward Leftward}) 
+                                Step
+                                (directions {Forward Rightward Leftward})
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -122,19 +122,19 @@
                         (forEach Piece "DoubleCounter" (move Slide Orthogonal))
                     )
                     }
-                    
+
                 )
             )
-        ) 
-        
-        (end (if (no Moves Next) (result Mover Win)))  
+        )
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Played in Turkey, Greece, Egypt, the Levant, and other places in Southwest Asia. The game is first documented during the late seventeenth century. It also is played among coastal communities in East Africa and Indian Ocean Islands (such as Comoros), probably through trade with the Ottoman Empire.")
@@ -147,16 +147,16 @@
         (origin  "This game was played in Southwest Asia, from around 1694 to 2018.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Defined" "Isometric"})
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
-    (ai 
+
+    (ai
         "Dama_ai"
     )
-    
+
 )

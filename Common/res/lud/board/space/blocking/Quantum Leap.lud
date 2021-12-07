@@ -1,8 +1,8 @@
 (define "DistanceToMove"
-    (count Sites 
-        in:(sites Around 
-            (from) 
-            Orthogonal 
+    (count Sites
+        in:(sites Around
+            (from)
+            Orthogonal
             if:(is Friend (who at:(to)))
         )
     )
@@ -10,43 +10,43 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quantum Leap"  
-    (players 2) 
-    (equipment { 
+(game "Quantum Leap"
+    (players 2)
+    (equipment {
         (board (hex 5))
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (move
-                Hop 
-                Orthogonal 
-                (between 
+                Hop
+                Orthogonal
+                (between
                     (exact (- "DistanceToMove" 1))
                     if:True
                 )
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                (to
+                    if:(is Enemy (who at:(to)))
                     (apply (remove (to)))
                 )
             )
         )
-    })  
-    (rules 
-        (meta 
+    })
+    (rules
+        (meta
             (swap)
         )
         (start {
             (place "Marker1" (centrePoint))
-            (place Random {"Marker1"} count:29) 
-            (place Random {"Marker2"} count:30) 
+            (place Random {"Marker1"} count:29)
+            (place Random {"Marker2"} count:30)
         })
         (play (forEach Piece))
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Quantum Leap was invented in 2013 by Néstor Romeral Andrés. It can be played on a hexagonal grid of any size.")
@@ -60,9 +60,9 @@
         (date "2013")
         }
     )
-    
-    (ai 
+
+    (ai
         "Quantum Leap_ai"
     )
-    
+
 )

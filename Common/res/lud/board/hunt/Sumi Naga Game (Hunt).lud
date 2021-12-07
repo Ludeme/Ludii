@@ -1,6 +1,6 @@
-(game "Sumi Naga Game (Hunt)"  
-    (players 2)  
-    (equipment { 
+(game "Sumi Naga Game (Hunt)"
+    (players 2)
+    (equipment {
         ("AlquerqueBoard" 5 5)
         (piece "Goat" P1 "StepToEmpty")
         (piece "Tiger" P2
@@ -10,32 +10,32 @@
             )
         )
         (hand P1)
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Goat1" (handSite P1) count:20)
             (place "Tiger2" (sites Corners))
         })
-        
+
         phases:{
-        (phase "Placement" P1 
+        (phase "Placement" P1
             (play (move (from (handSite P1)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Moving")
         )
         (phase "Moving" (play (forEach Piece)))
         }
-        
-        (end { 
+
+        (end {
             (if (no Moves P2) (result P1 Win))
             (if (no Pieces P1) (result P2 Win))
-        })  
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "This game, played by the Sümi Naga people of India, is a hunt game played with four tigers against twenty goats.")
@@ -48,11 +48,11 @@
         (origin  "This game was played in India, around 1921.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
     })
-    
+
     (ai
         "Sumi Naga Game (Hunt)_ai"
     )

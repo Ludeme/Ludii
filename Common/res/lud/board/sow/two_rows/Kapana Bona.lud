@@ -2,42 +2,42 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kapana Bona"  
-    (players 2)  
-    
-    (equipment { 
+(game "Kapana Bona"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 3 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
-        (start 
-            (set Count 8 to:(sites Track) ) 
+    )
+    (rules
+
+        (start
+            (set Count 8 to:(sites Track) )
         )
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (sites Board) 
+                Select
+                (from
+                    (sites Board)
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow origin:True
                         (then
-                            (forEach Site (sites Board) 
+                            (forEach Site (sites Board)
                                 (if (or {
                                         (= (count at:(site)) 2)
                                         (= (count at:(site)) 4)
                                         (= (count at:(site)) 6)
                                     })
-                                    (fromTo 
-                                        (from (site)) 
-                                        (to (handSite Mover)) 
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite Mover))
                                         count:(count at:(site))
                                     )
                                 )
@@ -47,11 +47,11 @@
                 )
             )
         )
-        
+
         (end
-            (if (= 0 (count Sites in:(forEach (sites Board) if:(< 1 (count at:(site))))) ) 
+            (if (= 0 (count Sites in:(forEach (sites Board) if:(< 1 (count at:(site))))) )
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -61,7 +61,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Kapana Bona is a two-row mancala-style board game played by the Gourounsi people in West Africa. Instead of being played on a board, the counters are placed in heaps on the ground.")
@@ -73,7 +73,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

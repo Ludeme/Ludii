@@ -5,9 +5,9 @@
 //------------------------------------------------------------------------------
 
 (game "Whyo"
-    (players 2)  
-    
-    (equipment { 
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6
             (track "TrackCCW" "1,E,N,W" loop:True)
         )
@@ -15,17 +15,17 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
-    })  
-    (rules 
+    })
+    (rules
         (start (set Count 4 to:(sites Track) ) )
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                Select
+                (from
+                    (if
+                        (is Mover Prev)
+                        "PlayFromLastHole"
                         (if (= (score P1) 1)
                             (if (is Mover P1)
                                 (union (sites Mover) (sites {12}))
@@ -42,12 +42,12 @@
                     )
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
                         apply:(if (= (count at:(to)) 4)
-                            (fromTo 
-                                (from (to)) 
-                                (to (mapEntry Mover)) 
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry Mover))
                                 count:(count at:(to))
                             )
                             (if (< (count at:(to)) 1)
@@ -56,12 +56,12 @@
                         )
                         (then
                             (if (no Moves Next)
-                                (and 
+                                (and
                                     (forEach Site (union (sites P1) (sites P2))
                                         (if (> (count at:(site)) 0)
-                                            (fromTo 
+                                            (fromTo
                                                 (from (site))
-                                                (to (mapEntry Mover)) 
+                                                (to (mapEntry Mover))
                                                 count:(count at:(site))
                                             )
                                         )
@@ -74,7 +74,7 @@
                                                     (addScore P1 1)
                                                 )
                                                 (if (< (var) 0)
-                                                    (and { 
+                                                    (and {
                                                         (forEach Site (sites Board)
                                                             (if (> (count at:(site)) 0)
                                                                 (remove (site))
@@ -94,9 +94,9 @@
                         )
                     )
                 )
-            )		
+            )
         )
-        
+
         (end
             (if  (= (var) 1)
                 (byScore)
@@ -107,7 +107,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Whyo is a two-row mancala-style board game played in Oron, Nigeria. The name is reportedly taken from the English \"Why oh!\", an exclamation made when referring to smart tricks.")
@@ -118,7 +118,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

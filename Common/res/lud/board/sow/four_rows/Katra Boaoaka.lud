@@ -4,12 +4,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Katra Boaoaka"  
-    (players 2)  
-    
-    (equipment { 
+(game "Katra Boaoaka"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
@@ -23,21 +23,21 @@
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
-        
+
         (play
             (or
                 (if (!= (value Player Mover) 2)
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
+                        (from
+                            (if
+                                (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover "Home") 
-                            ) 
+                                (sites Mover "Home")
+                            )
                             if:(> (count at:(from)) 0)
                         )
                         (then
@@ -53,8 +53,8 @@
                                             )
                                         )
                                         (if (is In (to) (sites Mover "Inner"))
-                                            (if (not 
-                                                    (and { 
+                                            (if (not
+                                                    (and {
                                                         (= 1 (count at:(to)))
                                                         (= 1 (count at:("OppositePit")))
                                                         (= 1 (count at:("OppositeOuterPit")))
@@ -66,7 +66,7 @@
                                                             (from ("OppositePit"))
                                                             (to (to))
                                                             count:(count at:("OppositePit"))
-                                                        )	
+                                                        )
                                                         (fromTo
                                                             (from ("OppositeOuterPit"))
                                                             (to (to))
@@ -91,15 +91,15 @@
                         )
                     )
                 )
-                
+
                 (if (!= (value Player Mover) 1)
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
+                        (from
+                            (if
+                                (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover "Home") 
-                            ) 
+                                (sites Mover "Home")
+                            )
                             if:(> (count at:(from)) 0)
                         )
                         (then
@@ -115,8 +115,8 @@
                                             )
                                         )
                                         (if (is In (to) (sites Mover "Inner"))
-                                            (if (not 
-                                                    (and { 
+                                            (if (not
+                                                    (and {
                                                         (= 1 (count at:(to)))
                                                         (= 1 (count at:("OppositePit")))
                                                         (= 1 (count at:("OppositeOuterPit")))
@@ -128,7 +128,7 @@
                                                             (from ("OppositePit"))
                                                             (to (to))
                                                             count:(count at:("OppositePit"))
-                                                        )	
+                                                        )
                                                         (fromTo
                                                             (from ("OppositeOuterPit"))
                                                             (to (to))
@@ -155,7 +155,7 @@
                 )
             )
         )
-        
+
         (end
             (forEach NonMover
                 if:(no Moves Player)
@@ -167,8 +167,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Katra Boaoaka is a four-row mancala-style board game played in Madagascar. It is typically played by women and older children.")
@@ -180,10 +180,10 @@
         (origin  "This game was played in Madagascar, from around 1926 to 1927.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

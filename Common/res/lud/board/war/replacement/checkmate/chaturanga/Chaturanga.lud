@@ -1,17 +1,17 @@
 (define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
+    (apply
+        (remove
+            (to)
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
@@ -23,89 +23,89 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chaturanga" 
-    (players {(player N) (player S)})  
-    (equipment { 
+(game "Chaturanga"
+    (players {(player N) (player S)})
+    (equipment {
         (board (square 8))
-        
-        (piece "Pawn" Each 
-            (or 
-                "StepForwardToEmpty" 
+
+        (piece "Pawn" Each
+            (or
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
                 (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
+                    (if (is In (last To) (sites Mover "Promotion"))
                         (moveAgain)
                     )
                 )
             )
         )
-        (piece "Rook" Each 
+        (piece "Rook" Each
             (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Orthogonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
-            )
-        )
-        (piece "King_noCross" Each 
-            (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece" 
                 )
             )
         )
-        (piece "Elephant" Each <Elephant>) 
-        (piece "Knight" Each 
+        (piece "King_noCross" Each
             (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Step
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
-        (piece "Ferz_noCross" Each 
+        (piece "Elephant" Each <Elephant>)
+        (piece "Knight" Each
             (move
-                Step 
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
+                    "CaptureToPiece"
+                )
+            )
+        )
+        (piece "Ferz_noCross" Each
+            (move
+                Step
                 Diagonal
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece" 
+                (to
+                    if:(not (is Friend (who at:(to))))
+                    "CaptureToPiece"
                 )
             )
         )
         (regions "Promotion" P1 (sites Top) )
         (regions "Promotion" P2 (sites Bottom) )
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
-            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
-            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"E8") (place "King_noCross2" coord:"D8") 
+            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1")
+            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"E8") (place "King_noCross2" coord:"D8")
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (move Promote (last To) (piece "Ferz_noCross") Mover)
                 (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
             )
         )
-        
+
         (end {
-            (if (and 
+            (if (and
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
-            (if (no Moves Mover) (result Mover Win)) 
-            (if (= (count Pieces Next) 1) (result Mover Win) ) 
+            )
+            (if (no Moves Mover) (result Mover Win))
+            (if (= (count Pieces Next) 1) (result Mover Win) )
         })
     )
 )
@@ -114,42 +114,42 @@
 
 (option "Play Rules" <Elephant> args:{ <move> }
     {
-    (item "Elephant Move is Orthogonal Jump"             
-        <(move Hop Orthogonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))) )>   
+    (item "Elephant Move is Orthogonal Jump"
+        <(move Hop Orthogonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))) )>
         "The elephants can jump only orthogonally."
     )
-    (item "Elephant Move is Diagonal Jump"             
-        <(move Hop Diagonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))) )>    
+    (item "Elephant Move is Diagonal Jump"
+        <(move Hop Diagonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))) )>
         "The elephants can jump only diagonally."
-    ) 
-    (item "Elephant Move is like a Silver in Shogi"             
-        <(move Step (directions {Forward BL BR FL FR}) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))>   
+    )
+    (item "Elephant Move is like a Silver in Shogi"
+        <(move Step (directions {Forward BL BR FL FR}) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))>
         "The elephants can move like a Silver in Shogi."
-    )     
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Manasollasa (Described)" {
         "Play Rules/Elephant Move is Orthogonal Jump"
     })*
-    
+
     (ruleset "Ruleset/Elephant Diagonal Move (Scholarly)" {
         "Play Rules/Elephant Move is Diagonal Jump"
     })
-    
+
     (ruleset "Ruleset/Elephant Diagonal Jump (Scholarly)" {
         "Play Rules/Elephant Move is like a Silver in Shogi"
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Chaturanga is believed to be the earliest ancestor of Chess, Shogi, and many other similar games throughout the world. It is first documented in India, and the pieces (infantry, horses, elephants, and chariots) reflect the four divisions of the Indian army, who protect the counselor and king. Various Indian texts discuss the rules and problems, and it is also a popular theme in Indian art and literature.")
@@ -165,7 +165,7 @@
         (origin  "This game was played in India, from around 621 to 1138.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.825)
         (show Check "King")
@@ -175,9 +175,9 @@
         (board Colour Phase0 (colour 222 173 123))
         (show Symbol "thinCross" {0 3 4 7 24 27 28 31 32 35 36 39 56 59 60 63} scale:0.9)
     })
-    
-    (ai 
+
+    (ai
         "Chaturanga_ai"
     )
-    
+
 )

@@ -1,42 +1,42 @@
-(game "Tobi Shogi"  
-    (players {(player N) (player S)})  
+(game "Tobi Shogi"
+    (players {(player N) (player S)})
     (equipment
         {
         (board (square 9))
-        (piece "Fuhyo" Each 
+        (piece "Fuhyo" Each
             (or
-                (move Step 
+                (move Step
                     (directions {Forward Rightward Leftward})
-                    (to if:(is Empty (to))) 
+                    (to if:(is Empty (to)))
                 )
-                (move Hop 
+                (move Hop
                     (directions {Forward Rightward Leftward})
-                    (between 
-                        if:(is Enemy (who at:(between))) 
+                    (between
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))
                 )
-            )	        	
+            )
         )
         }
     )
-    (rules 
-        (start { 
+    (rules
+        (start {
             (place "Fuhyo1" (expand (sites Bottom)))
             (place "Fuhyo2" (expand (sites Top)))
         })
-        
+
         (play (forEach Piece))
-        
+
         (end (if (= (count Pieces Next) 0) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
@@ -51,5 +51,5 @@
         (piece Colour "Narikyo" strokeColour:(colour Red))
         (piece ExtendName P2 piece:"Osho" "1")
     })
-    
+
 )

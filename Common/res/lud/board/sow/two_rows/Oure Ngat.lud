@@ -4,10 +4,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Oure Ngat"  
-    (players 2)  
-    
-    (equipment { 
+(game "Oure Ngat"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 4 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -16,24 +16,24 @@
         (regions "Home" P2 (sites Top))    // P2 home
         (hand Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (set Count 6 to:(sites Track) ) )
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (sites Mover "Home") 
+                Select
+                (from
+                    (sites Mover "Home")
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
                         origin:True
                         (then
                             (forEach Site (sites Track)
                                 (if (is In (count at:(site)) (sites {2 4 6}))
-                                    (fromTo 
+                                    (fromTo
                                         (from (site))
                                         (to (handSite Mover))
                                         count:(count at:(site))
@@ -43,13 +43,13 @@
                         )
                     )
                 )
-            )		
+            )
         )
-        
-        (end 
+
+        (end
             (if (= 0 ("NumPiecesOnBoard"))
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -59,8 +59,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
-    
+(metadata
+
     (info
         {
         (description "Ouré Ngat is a two-row mancala-style board game played in Senegal during the early twentieth century. It is not typically played on a board; instead, the counters are arranged in heaps on the ground.")
@@ -72,7 +72,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

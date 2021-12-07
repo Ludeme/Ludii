@@ -1,47 +1,47 @@
-(define "Step" 
-    (move 
-        Step 
-        #1 
-        (to 
-            if:(and 
-                (is In (from) (sites Occupied by:Mover)) 
+(define "Step"
+    (move
+        Step
+        #1
+        (to
+            if:(and
+                (is In (from) (sites Occupied by:Mover))
                 (is Empty (to))
             )
-        ) 
+        )
         stack:True
     )
 )
 
-(define "Hop" 
+(define "Hop"
     (move
-        Hop 
-        #1 
+        Hop
+        #1
         (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
-        (to if:(and 
-                (is In (from) (sites Occupied by:Mover)) 
+        (to if:(and
+                (is In (from) (sites Occupied by:Mover))
                 (is Empty (to))
             )
         )
-        stack:True 
-        (then 
-            (if 
-                (can Move 
-                    (hop 
-                        (from (last To)) 
-                        #1 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))     	
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
+        stack:True
+        (then
+            (if
+                (can Move
+                    (hop
+                        (from (last To))
+                        #1
+                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+                        (to if:(and
+                                (is In (from) (sites Occupied by:Mover))
                                 (is Empty (to))
                             )
                         )
                         stack:True
                     )
-                ) 
-                (moveAgain) 
-            ) 
+                )
+                (moveAgain)
+            )
         )
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To) level:(topLevel at:(last To))) (id "Counter" Mover)))
@@ -50,103 +50,103 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lasca"  
-    (players {(player N) (player S)}) 
-    (equipment { 
-        <Board:type> 
+(game "Lasca"
+    (players {(player N) (player S)})
+    (equipment {
+        <Board:type>
         (piece "Counter" Each)
         (piece "CounterStar" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Counter1" <Board:startP1> )
             (place "Counter2" <Board:startP2> )
         })
-        
+
         (play
             (if "SameTurn"
-                (if "IsUnpromoted" 
+                (if "IsUnpromoted"
                     (move
-                        Hop 
-                        (from (last To)) 
-                        (directions {FR FL}) 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
+                        Hop
+                        (from (last To))
+                        (directions {FR FL})
+                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+                        (to if:(and
+                                (is In (from) (sites Occupied by:Mover))
                                 (is Empty (to))
                             )
                         )
-                        stack:True 
-                        (then 
+                        stack:True
+                        (then
                             (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)
-                                (if 
-                                    (can Move 
-                                        (hop 
-                                            (from (last To)) 
-                                            (directions {FR FL}) 
-                                            (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 		
-                                            (to if:(and 
-                                                    (is In (from) (sites Occupied by:Mover)) 
+                                (if
+                                    (can Move
+                                        (hop
+                                            (from (last To))
+                                            (directions {FR FL})
+                                            (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+                                            (to if:(and
+                                                    (is In (from) (sites Occupied by:Mover))
                                                     (is Empty (to))
                                                 )
                                             )
                                             stack:True
                                         )
-                                    ) 
-                                    (moveAgain) 
+                                    )
+                                    (moveAgain)
                                 )
-                            ) 
+                            )
                         )
-                    ) 
+                    )
                     (move
                         Hop
-                        (from (last To)) 
-                        Diagonal 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
-                        (to if:(and 
-                                (is In (from) (sites Occupied by:Mover)) 
+                        (from (last To))
+                        Diagonal
+                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+                        (to if:(and
+                                (is In (from) (sites Occupied by:Mover))
                                 (is Empty (to))
                             )
-                        ) 
-                        stack:True 
-                        (then 
-                            (if 
-                                (can Move 
-                                    (hop 
-                                        (from (last To))  
-                                        Diagonal 
-                                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
-                                        (to if:(and 
-                                                (is In (from) (sites Occupied by:Mover)) 
+                        )
+                        stack:True
+                        (then
+                            (if
+                                (can Move
+                                    (hop
+                                        (from (last To))
+                                        Diagonal
+                                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+                                        (to if:(and
+                                                (is In (from) (sites Occupied by:Mover))
                                                 (is Empty (to))
                                             )
-                                        )  
+                                        )
                                         stack:True
                                     )
-                                ) 
-                                (moveAgain) 
-                            ) 
+                                )
+                                (moveAgain)
+                            )
                         )
-                    ) 
+                    )
                 )
                 (priority {
-                    (or { 
+                    (or {
                         (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))) )
                         (forEach Piece "CounterStar" ("Hop" Diagonal) top:True)
                     })
-                    
-                    (or { 
+
+                    (or {
                         (forEach Piece "Counter" ("Step" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)) ))
                         (forEach Piece "CounterStar" ("Step" Diagonal) top:True)
                     })
                 })
             )
-        ) 
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+        )
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
@@ -154,20 +154,20 @@
 
 (option "Board" <Board> args:{ <type> <startP1> <startP2> }
     {
-    (item "Chess"             
-        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1)  )> <(difference (expand (sites Top) steps:2) (sites Phase 1) ) >   
+    (item "Chess"
+        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1)  )> <(difference (expand (sites Top) steps:2) (sites Phase 1) ) >
         "The game is played in a Chess board."
-    )*   
-    (item "Lasca"             
-        <"LascaBoard">  < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>   
+    )*
+    (item "Lasca"
+        <"LascaBoard">  < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>
         "The game is played in the original lasca board."
-    )     
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Lasca was invented by Emanuel Lasker in 1911. It is a combination of American checkers and a Russian game Bashni.")
@@ -180,7 +180,7 @@
         (date "1911")
         }
     )
-    
+
     (graphics {
         (useFor {"Board/Chess"} (board Style Chess))
         (useFor {"Board/Lasca"} (board Style Lasca))
@@ -188,9 +188,9 @@
         (piece Colour P2 "CounterStar" fillColour:(colour Red))
         (piece Colour P1 "CounterStar" fillColour:(colour Green))
     })
-    
-    (ai 
+
+    (ai
         "Lasca_ai"
     )
-    
+
 )

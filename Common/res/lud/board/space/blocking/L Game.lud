@@ -1,24 +1,24 @@
-(define "CanNotMoveALPiece" 
-    (and 
-        (not (is Mover (next))) 
+(define "CanNotMoveALPiece"
+    (and
+        (not (is Mover (next)))
         (no Moves Next)
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "L Game"  
-    (players 2)  
-    (equipment 
-        { 
-        (board (square 4)) 
-        (piece "Dot" Neutral) 
-        (tile "L" Each "LWalk") 
+(game "L Game"
+    (players 2)
+    (equipment
+        {
+        (board (square 4))
+        (piece "Dot" Neutral)
+        (tile "L" Each "LWalk")
         }
-    )  
-    (rules 
-        (start 
-            { 
+    )
+    (rules
+        (start
+            {
             (place "Dot0" {"A4" "D1"})
             (place "L1" coord:"C1" state:0)
             (place "L2" coord:"B4" state:2)
@@ -28,32 +28,32 @@
             (if "SameTurn"
                 (or
                     (move Pass)
-                    (move 
-                        (from (sites Occupied by:Neutral)) 
+                    (move
+                        (from (sites Occupied by:Neutral))
                         (to (sites Empty))
                     )
                 )
                 (move
-                    (from (sites Occupied by:Mover)) 
-                    (to (union (sites Empty) (sites Occupied by:Mover))) 
+                    (from (sites Occupied by:Mover))
+                    (to (union (sites Empty) (sites Occupied by:Mover)))
                     (then (moveAgain))
                 )
             )
         )
-        
-        (end 
-            (if 
-                "CanNotMoveALPiece"  
-                (result Mover Win) 
-            ) 
-        ) 
-    )  
+
+        (end
+            (if
+                "CanNotMoveALPiece"
+                (result Mover Win)
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "L game was invented by Edward do Bono in 1967. It is a blocking game played by moving pieces which take up several spaces on a board.")
@@ -65,14 +65,14 @@
         (date "01-01-1967")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
     })
-    
-    (ai 
+
+    (ai
         "L Game_ai"
     )
-    
+
 )

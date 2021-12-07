@@ -1,26 +1,26 @@
 (define "NumCaptureDone" (value Player Mover))
 
-(define "Sow" 
-    (move 
-        Select 
-        (from 
-            (sites Mover) 
+(define "Sow"
+    (move
+        Select
+        (from
+            (sites Mover)
             if:(> (count at:(from)) 0)
         )
-        (then 
+        (then
             (sow
                 #1
                 if:(or {
                     (and { (<= (count at:(to)) 9) (is Odd (count at:(to))) (>= "NumCaptureDone" <Capture:doneSoFar>) }) // Two or more captures done so far
                     (and (= "NumCaptureDone" Off) (= (count at:(to)) <Capture:numCounters>)) // No capture done so far.
                     <Capture:ruleSecondCapture> // Only one capture done so far.
-                } ) 
-                apply:(fromTo (from (to)) (to (mapEntry (mover))) count:(count at:(to)) 
+                } )
+                apply:(fromTo (from (to)) (to (mapEntry (mover))) count:(count at:(to))
                     // We update the number of capture done so far for that player.
-                    (then (and 
-                            (if (= "NumCaptureDone" 1) (set Value Mover 2) ) 
+                    (then (and
+                            (if (= "NumCaptureDone" 1) (set Value Mover 2) )
                             (if (= "NumCaptureDone" Off) (set Value Mover 1) )
-                        ) 
+                        )
                     )
                 )
                 origin:True
@@ -33,11 +33,11 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ako Okwe"  
-    (players 2)  
-    (equipment { 
+(game "Ako Okwe"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 5
-            { 
+            {
             (track "TrackCCW" "1,E,N,W" loop:True)
             (track "TrackCW"  "6,E,S,W" loop:True)
             }
@@ -47,17 +47,17 @@
         (map {(pair P1 FirstSite) (pair P2 LastSite)}) // kalahs (storage pits)
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 10 to:(sites Track) ) )
-        
+
         (play (or ("Sow" "TrackCW") ("Sow" "TrackCCW") ) )
-        
+
         (end
-            (if (no Moves Mover) 
+            (if (no Moves Mover)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -69,14 +69,14 @@
 
 (option "Play Rules" <Capture> args:{ <doneSoFar> <numCounters> <ruleSecondCapture> }
     {
-    (item "First capture = 1"   
-        <1> 
+    (item "First capture = 1"
+        <1>
         <1>
         <>
         "The first capture must be of one counter."
-    )   
-    (item "First capture = 3, Second Capture = 1"   
-        <2> 
+    )
+    (item "First capture = 3, Second Capture = 1"
+        <2>
         <3>
         <(and (= "NumCaptureDone" 1) (= (count at:(to)) 1))>
         "The first capture must be of three counters, the second of one counter."
@@ -85,26 +85,26 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Umuahia (Observed)" 
+(rulesets {
+
+    (ruleset "Ruleset/Umuahia (Observed)"
         {
         "Play Rules/First capture = 3, Second Capture = 1"
         }
     )
-    
-    (ruleset "Ruleset/Murray (Observed)" 
+
+    (ruleset "Ruleset/Murray (Observed)"
         {
         "Play Rules/First capture = 1"
         }
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ako Okwe is a mancala-type board game documented in Nigeria during the twentieth century. The game is sometimes compared to marketing, and captures said to be placed in the nkuru (bank). The full name, in Umuahia, is Ezu Ahia Ako Okwe, which translates to \"buying market.\"")
@@ -119,14 +119,14 @@
         (origin  "This game was played in West Africa, around 1951.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
-    (ai 
+
+    (ai
         "Ako Okwe_ai"
     )
-    
+
 )
 

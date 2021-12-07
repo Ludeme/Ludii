@@ -1,31 +1,31 @@
-(game "Tuknanavuhpi" 
-    (players 2)  
-    (equipment { 
+(game "Tuknanavuhpi"
+    (players 2)
+    (equipment {
         (board (square 5 diagonals:Solid) use:Vertex)
-        (piece "Counter" Each 
-            (or 
+        (piece "Counter" Each
+            (or
                 ("HopCapture")
                 ("StepToEmpty")
             )
         )
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Counter1" (union (difference (expand (sites Bottom) steps:2) (sites {"E5" "G5" "I5"}) ) (sites {"B2" "B4" "D2" "D4" "F2" "F4" "H2" "H4"}) ))
             (place "Counter2" (union (difference (expand (sites Top) steps:2) (sites {"E5" "A5" "C5"}) ) (sites {"B6" "B8" "D6" "D8" "F6" "F8" "H6" "H8"}) ))
         })
-        
+
         (play (forEach Piece))
-        
+
         (end ("NoMoves" Loss))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tuknanavuhpi is a leaping capture game played by the Hopi in Arizona during at the turn of the twentieth century. It is similar to games derived from Alquerque, like other Native American games adapted from the Spanish.")
@@ -37,13 +37,13 @@
         (origin  "This game was played in Arizona, around 1901.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Tuknanavuhpi_ai"
     )
-    
+
 )

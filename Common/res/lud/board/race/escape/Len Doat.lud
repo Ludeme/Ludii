@@ -4,18 +4,18 @@
 
 (define "RemoveAPiece" (move Remove (from) ) )
 
-(define "CaptureEnemyPiece" 
-    (apply 
+(define "CaptureEnemyPiece"
+    (apply
         if:(is Enemy (who at:(to)))
-        (fromTo 
-            (from (to)) 
+        (fromTo
+            (from (to))
             (to (handSite Next))
             count:(count at:(to))
         )
-    ) 
+    )
 )
 
-(define "HasToThrow" 
+(define "HasToThrow"
     (< ("ThrowValue") 0)
 )
 
@@ -23,7 +23,7 @@
 (define "ThrowAgainAndPlay" (and (moveAgain) (set Value Mover -2)))
 (define "IfMoveAgain" (= (value Player Mover) -2) )
 
-(define "Move" 
+(define "Move"
     (if (and (= "ThrowValue" 1) (not ("HandEmpty" Mover)))
         (move (from (handSite Mover))
             (to (mapEntry "EntrySite" (mover)))
@@ -41,10 +41,10 @@
     )
 )
 
-(define "ThrowMove" 
+(define "ThrowMove"
     (if ("HasToThrow")
-        (do 
-            (roll) 
+        (do
+            (roll)
             next:(if ("IfMoveAgain")
                 (do (set Value Mover (count Pips)) next:("Move"))
                 (move Pass (then (set Value Mover (count Pips))))
@@ -59,14 +59,14 @@
 (game "Len Doat"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
                 (rectangle 3 5)
                 (shift 7.5 0 (rectangle 3 5))
                 (shift 0 3.5 (rectangle 3 5))
                 (shift 7.5 3.5 (rectangle 3 5))
             })
-            {    
+            {
             (track "Track1" "20,E,N,W,14,W,S,E,44,W,S,E,45,E,N,W,15,E,N1,W,End" P1 directed:True)
             (track "Track2" "39,W,S,E,45,E,N,W,15,E,N,W,14,W,S,E,44,W,S1,E,End" P2 directed:True)
             }
@@ -76,25 +76,25 @@
         (piece "Marker" Each
             (if (= "SiteToMoveOnTrack" End)
                 "RemoveAPiece"
-                (if (not (= "SiteToMoveOnTrack" Off))  	 			
+                (if (not (= "SiteToMoveOnTrack" Off))
                     (if (or
-                            (not (is Enemy (who at:"SiteToMoveOnTrack"))) 
-                            (and 
-                                (is Enemy (who at:"SiteToMoveOnTrack")) 
+                            (not (is Enemy (who at:"SiteToMoveOnTrack")))
+                            (and
+                                (is Enemy (who at:"SiteToMoveOnTrack"))
                                 (not (is In "SiteToMoveOnTrack" (sites "Protect")))
                             )
                         )
-                        (move 
-                            (from) 
-                            (to 
-                                "SiteToMoveOnTrack" 
+                        (move
+                            (from)
+                            (to
+                                "SiteToMoveOnTrack"
                                 "CaptureEnemyPiece"
                             )
-                            (then 
-                                (if 
+                            (then
+                                (if
                                     (or (= 1 (value Player Mover)) (= 5 (value Player Mover)))
                                     ("ThrowAgainAndPlay")
-                                ) 
+                                )
                             )
                         )
                     )
@@ -104,20 +104,20 @@
         (map "EntrySite" {(pair P1 (coord "F2")) (pair P2 (coord "E5"))})
         (regions "Protect" (sites {"A1" "A3" "A4" "A6" "J1" "J3" "J4" "J6"} ))
     })
-    (rules 
+    (rules
         (start {
             (place "Marker" "Hand" count:3)
         })
-        (play 
+        (play
             (if (can Move ("ThrowMove"))
                 ("ThrowMove")
-                (move Pass 
-                    (then 
-                        (and 
-                            (if 
+                (move Pass
+                    (then
+                        (and
+                            (if
                                 (or (= 1 (value Player Mover)) (= 5 (value Player Mover)))
                                 ("ThrowAgainAndPlay")
-                            ) 
+                            )
                             ("StopTurnIfNoMoveAgain")
                         )
                     )
@@ -130,8 +130,8 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Len Doat is a race game that was played in nineteenth century Thailand. ")
@@ -144,7 +144,7 @@
         (origin  "This game was played in THailand, around 1836.")
         }
     )
-    
+
     (graphics {
         (board Background image:"rectangle.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:1.05)
         (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour Black) scale:0.1)

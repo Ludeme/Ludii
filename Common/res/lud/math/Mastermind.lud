@@ -5,7 +5,7 @@
 (define "RowToPlace" (- "TopRow" (* 3 ("NumTry"))))
 (define "RowToCheck" (- "TopRow" (* 3 (- ("NumTry") 1))))
 
-(define "HintPositions" 
+(define "HintPositions"
     (union
         (sites Row (+ "RowToPlace" 1))
         (sites Row (- "RowToPlace" 1))
@@ -13,14 +13,14 @@
 )
 
 (define "RightPositionAndColor"
-    (= 
-        (what at:(regionSite (sites Row ("RowToPlace")) index:(value))) 
+    (=
+        (what at:(regionSite (sites Row ("RowToPlace")) index:(value)))
         (what at:(coord row:0 column:(value)))
     )
 )
 
 (define "ColorInSolution"
-    (is In (what at:(regionSite (sites Bottom) index:(value))) 
+    (is In (what at:(regionSite (sites Bottom) index:(value)))
         (results from:(sites Row ("RowToPlace")) to:0 (what at:(from)))
     )
 )
@@ -40,14 +40,14 @@
 (define "CombinationFound"
     (and
         (= 0 (count Sites in:(intersection (sites Empty) (sites Row ("RowToCheck")))))
-        (=  "NumColumn" 
+        (=  "NumColumn"
             (count Sites in:(forEach (sites Row ("RowToCheck")) if:("PositionAndColorOK")))
         )
     )
 )
 
-(define "AddHint" 
-    (add (piece #1) (to (regionSite ("HintPositions" ) index:(value))))		
+(define "AddHint"
+    (add (piece #1) (to (regionSite ("HintPositions" ) index:(value))))
 )
 
 (define "AddBlackHint"
@@ -66,9 +66,9 @@
         (board
             (merge {
                 (rectangle (+ 1 "NumRow") "NumColumn")
-                (shift "NumColumn" 0.75 
-                    (repeat "NumRow" 1 
-                        step:{{1 0} {0 1}} 
+                (shift "NumColumn" 0.75
+                    (repeat "NumRow" 1
+                        step:{{1 0} {0 1}}
                         (poly {{0 0} {0 0.5} {0.5 0.5} {0.5 0}})
                     )
                 )
@@ -83,10 +83,10 @@
         (piece "Marker6" Shared)
         (piece "Marker7" Shared)
         (piece "Marker8" Shared)
-        
+
         (piece "Disc1" Shared)
         (piece "Disc2" Shared)
-        
+
         (hand Shared size:8)
     })
     (rules
@@ -100,10 +100,10 @@
             (place "Marker7" (handSite Shared 6))
             (place "Marker8" (handSite Shared 7))
         })
-        
+
         phases:{
         (phase "Placement" P1
-            (play 
+            (play
                 (move
                     (from (sites Hand Shared))
                     (to (intersection (sites Empty) (sites Bottom)))
@@ -127,7 +127,7 @@
                     (to (intersection (sites Empty) (sites Row ("RowToPlace"))))
                     copy:True
                     (then
-                        (and 
+                        (and
                             (moveAgain)
                             (if ("CombinationPlaced")
                                 (and
@@ -143,9 +143,9 @@
                                     (then
                                         (if (or ("CombinationFound") (>= "NumTry" "NumRow"))
                                             (forEach Site (sites Bottom)
-                                                (set Hidden at:(site) False to:P2)	
+                                                (set Hidden at:(site) False to:P2)
                                             )
-                                        )		
+                                        )
                                     )
                                 )
                             )
@@ -165,26 +165,26 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Num> args:{ <row> } {
-    (item "4 Tries"    <4>   "P2 has 4 tries.")   
-    (item "6 Tries"    <6>   "The game is played on a 6x6 board.")   
-    (item "8 Tries"    <8>   "The game is played on a 8x8 board.")   
-    (item "10 Tries"  <10>  "The game is played on a 10x10 board.")   
-    (item "12 Tries"  <12>  "The game is played on a 12x12 board.")*   
-    (item "14 Tries"  <14>  "The game is played on a 14x14 board.")   
-    (item "16 Tries"  <16>  "The game is played on a 16x16 board.")   
-    (item "18 Tries"  <18>  "The game is played on a 18x18 board.")   
+    (item "4 Tries"    <4>   "P2 has 4 tries.")
+    (item "6 Tries"    <6>   "The game is played on a 6x6 board.")
+    (item "8 Tries"    <8>   "The game is played on a 8x8 board.")
+    (item "10 Tries"  <10>  "The game is played on a 10x10 board.")
+    (item "12 Tries"  <12>  "The game is played on a 12x12 board.")*
+    (item "14 Tries"  <14>  "The game is played on a 14x14 board.")
+    (item "16 Tries"  <16>  "The game is played on a 16x16 board.")
+    (item "18 Tries"  <18>  "The game is played on a 18x18 board.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Mastermind is a code-breaking game for two players.")
         (aliases {"Master Mind"})
         (rules "At the beginning of the game, the first player places 4 pieces of any colour in the bottom row. These pieces will be hidden to the second player during all the game.
-            
+
             The objective of the second player (called codebreaker) is to try to guess the pattern, in both order and color, within a specific number of tries (corresponding to the number of rows). Each guess is made by placing a row of code pegs on the board.
         Once placed, a feedback on his last try is provided by placing from zero to four key pegs in the small holes of the row with the guess. A black key peg is placed for each code peg from the guess which is correct in both color and position. A white key peg indicates the existence of a correct color code peg placed in the wrong position.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Mastermind_(board_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
@@ -195,7 +195,7 @@
         (date "1970")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (piece Colour "Marker1" fillColour:(colour White))
@@ -206,10 +206,10 @@
         (piece Colour "Marker6" fillColour:(colour Purple))
         (piece Colour "Marker7" fillColour:(colour Green))
         (piece Colour "Marker8" fillColour:(colour Orange))
-        
+
         (piece Colour "Disc1" fillColour:(colour White))
         (piece Colour "Disc2" fillColour:(colour Black))
-        
+
         (piece Scale "Marker" container:1 1)
         (piece Scale "Marker" 1.5)
         (board Colour InnerVertices (colour DarkGrey))
@@ -218,7 +218,7 @@
         (show Line {{3 6}} Edge (colour Black) scale:2.0)
         (show Symbol "disc" (expand (sites Bottom) steps:"NumRow") fillColour:(colour DarkGrey) edgeColour:(colour DarkGrey) scale:0.666)
         (hand Placement Shared scale:0.4 offsetX:0.75 offsetY:0.25 vertical:True)
-        
+
     })
-    
+
 )

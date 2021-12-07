@@ -1,62 +1,62 @@
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
     )
 )
 
-(define "CanCaptureHoles" 
+(define "CanCaptureHoles"
     (if (is Mover P1)
         (sites (values Remembered "CanCaptureP1"))
         (sites (values Remembered "CanCaptureP2"))
     )
 )
 
-(define "RemmemberCanCaptureHoles" 
+(define "RemmemberCanCaptureHoles"
     (if (is Mover P1)
         (remember Value "CanCaptureP1" #1)
         (remember Value "CanCaptureP2" #1)
     )
 )
 
-(define "OnlyPiecesInMarked" 
+(define "OnlyPiecesInMarked"
     (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
 )
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "RightMostEmpty" 
-    (trackSite FirstSite 
+(define "RightMostEmpty"
+    (trackSite FirstSite
         "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
     )
 )
 
-(define "RememberOwnedHolesRandom" 
+(define "RememberOwnedHolesRandom"
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
     )
 )
 
-(define "SitesMarkedBy" 
+(define "SitesMarkedBy"
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )
 
 //------------------------------------------------------------------------------
 
-(game "Mewegae"  
-    (players 2)  
-    
-    (equipment { 
+(game "Mewegae"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6 store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -68,32 +68,32 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
-            (set Count 4 to:(sites Track) ) 
+            (set Count 4 to:(sites Track) )
         })
-        
+
         phases:{
-        (phase "Sowing" 
+        (phase "Sowing"
             (play
                 (or {
                     (move Select
-                        (from 
+                        (from
                             (if (is Mover Prev)
                                 (sites {(var "Replay")})
-                                ("OwnedHoles") 
+                                ("OwnedHoles")
                             )
                             if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
                         )
                         (then
                             (sow
                                 "TrackCCW"
-                                apply:(if (and 
-                                        (= 0 (state at:(to))) 
+                                apply:(if (and
+                                        (= 0 (state at:(to)))
                                         (= 4 (count at:(to)))
                                     )
                                     (set State at:(to) (mover))
@@ -125,7 +125,7 @@
                     }
                     (then
                         (if ("OnlyPiecesInMarked")
-                            (and { 
+                            (and {
                                 (forEach Site ("SitesMarkedBy" 1)
                                     (fromTo
                                         (from (site))
@@ -150,7 +150,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (>= 1 (count Cell at:(handSite P1))) (result P2 Win))
@@ -158,10 +158,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 4 (count Cell at:(handSite Mover)))
@@ -176,12 +176,12 @@
                                     (moveAgain)
                                     (if (= 3 (count Cell at:(handSite Mover)))
                                         (and {
-                                            (fromTo 
+                                            (fromTo
                                                 (from (handSite Mover))
                                                 (to ("RightMostEmpty"))
                                                 count:3
                                             )
-                                            (fromTo 
+                                            (fromTo
                                                 (from (handSite Next))
                                                 (to ("RightMostEmpty"))
                                                 count:1
@@ -190,12 +190,12 @@
                                         })
                                         (if (= 2 (count Cell at:(handSite Mover)))
                                             (and {
-                                                (fromTo 
+                                                (fromTo
                                                     (from (handSite Mover))
                                                     (to ("RightMostEmpty"))
                                                     count:2
                                                 )
-                                                (fromTo 
+                                                (fromTo
                                                     (from (handSite Next))
                                                     (to ("RightMostEmpty"))
                                                     count:2
@@ -209,9 +209,9 @@
                         )
                     )
                     (then
-                        (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
+                        (if (and (is Empty (handSite P1)) (is Empty (handSite P2)))
                             (and
-                                (if 
+                                (if
                                     (is Even (var "Round"))
                                     (set NextPlayer (player 2))
                                     (set NextPlayer (player 1))
@@ -224,14 +224,14 @@
             )
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
-        
+
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Mewegae is a two-row mancala-style board game played in Eritrea. It contains a simultaneous opening move that is common in games from Eritrea and Ethiopia.")
@@ -244,7 +244,7 @@
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)

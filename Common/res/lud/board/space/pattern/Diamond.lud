@@ -3,8 +3,8 @@
 )
 
 (define "SquareFilled"
-    (= 
-        4 
+    (=
+        4
         (count Sites in:(forEach ("AllVerticesOfCell") if:(is Mover (who at:(site)))))
     )
 )
@@ -14,7 +14,7 @@
 )
 
 (define "TwoFriendPieces"
-    (= 2 (count Sites in:(forEach (sites Incident Vertex of:Cell at:(site)) if:(is Mover (who at:(site))))))	
+    (= 2 (count Sites in:(forEach (sites Incident Vertex of:Cell at:(site)) if:(is Mover (who at:(site))))))
 )
 
 (define "OneEnemyPiece"
@@ -25,7 +25,7 @@
     (and
         (remove (site))
         (add (piece (id "Disc" Neutral)) (to (site)))
-    )	
+    )
 )
 
 (define "TrianglesWithCaptures"
@@ -40,14 +40,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Diamond"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Diamond"
+    (players 2)
+    (equipment {
+        (board
             (rotate 90 (tiling T33434 3))
             use:Vertex
-        ) 
-        (piece "Disc" Each 
+        )
+        (piece "Disc" Each
             (move Step (to if:(is Empty (to)))
                 (then
                     (if (= 1 (count Sites in:("TrianglesWithCaptures")))
@@ -69,20 +69,20 @@
                     )
                 )
             )
-        ) 
+        )
         (piece "Disc" Neutral)
         (hand Each)
         (regions P1 { (sites Side W) (sites Side E) } )
         (regions P2 { (sites Side N) (sites Side S) } )
-    })  
+    })
     (rules
         (meta (swap))
-        
+
         (start (place "Disc" "Hand" count:12))
-        
+
         phases:{
         (phase "Placement"
-            (play 
+            (play
                 (move
                     (from (handSite Mover))
                     (to (sites Empty))
@@ -99,7 +99,7 @@
             (nextPhase Mover (is Empty (handSite Mover)) "Movement")
         )
         (phase "Movement"
-            (play 
+            (play
                 (or
                     (forEach Piece)
                     (move Remove (sites Occupied by:Neutral))
@@ -107,33 +107,33 @@
             )
         )
         }
-        (end { 
+        (end {
             (if (is Triggered "Win" Mover)
                 (result Mover Win)
             )
-            (if (or (no Moves Mover) (= (counter) 49)) (result Mover Draw)) 
-        }) 
+            (if (or (no Moves Mover) (= (counter) 49)) (result Mover Draw))
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         }
     )
-    
+
     (graphics {
         (player Colour Neutral (colour Red))
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Background image:"square.svg" fillColour:(colour 218 164 50) edgeColour:(colour Black) scale:1.3)
         (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black)) 
+        (board Colour OuterEdges (colour Black))
         (board Colour InnerVertices (colour Hidden))
-        (board Colour OuterVertices (colour Hidden)) 
+        (board Colour OuterVertices (colour Hidden))
         (show Edges Diagonal (colour Hidden))
     })
 )

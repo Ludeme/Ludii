@@ -1,31 +1,31 @@
 (define "NoNeighbour"
-    ("NoSites" 
-        (sites 
-            Around 
-            (to) 
-            Orthogonal 
+    ("NoSites"
+        (sites
+            Around
+            (to)
+            Orthogonal
             if:(is In (to) (sites Occupied by:Neutral))
         )
-    ) 
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Spots"  
-    (players 2)  
-    (equipment { 
+(game "Spots"
+    (players 2)
+    (equipment {
         (board (hex 5))
-        (piece "Marker" Neutral) 
+        (piece "Marker" Neutral)
         }
-    )  
-    
-    (rules 
-        (play 
-            (move 
-                Add 
-                (piece "Marker0") 
-                (to 
-                    (sites Empty) 
+    )
+
+    (rules
+        (play
+            (move
+                Add
+                (piece "Marker0")
+                (to
+                    (sites Empty)
                     if:"NoNeighbour"
                 )
             )
@@ -36,7 +36,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Spots was created by Cameron Browne for Ludii. It is played on a hexagonal board.")
@@ -49,8 +49,8 @@
         (date "2020")
         }
     )
-    (ai 
+    (ai
         "Spots_ai"
     )
-    
+
 )

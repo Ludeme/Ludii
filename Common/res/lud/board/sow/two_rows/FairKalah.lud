@@ -6,10 +6,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "FairKalah"  
-    (players 2)  
-    
-    (equipment { 
+(game "FairKalah"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns"
             (track "Track" "0,ESE,E,ENE,WNW,N,W" loop:True)
         )
@@ -17,41 +17,41 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             <Board:start>
         })
-        
-        (play 
-            (move 
-                Select 
-                (from 
-                    (sites Mover) 
+
+        (play
+            (move
+                Select
+                (from
+                    (sites Mover)
                     if:(> (count at:(from)) 0)
-                ) 
-                (then 
+                )
+                (then
                     (sow
                         apply:(if (= (to) (mapEntry (mover)))
                             (moveAgain)
-                            (if (and { 
-                                    (is In (to) (sites Mover)) 
-                                    (= (count at:(to)) 1) 
+                            (if (and {
+                                    (is In (to) (sites Mover))
+                                    (= (count at:(to)) 1)
                                     (>= (count at:"OppositePit") 0)
                                 })
-                                (and 
-                                    (fromTo 
-                                        (from (to)) 
-                                        (to (mapEntry (mover))) 
+                                (and
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry (mover)))
                                         count:(count at:(to))
-                                    ) 
-                                    (fromTo 
-                                        (from "OppositePit") 
-                                        (to (mapEntry (mover))) 
+                                    )
+                                    (fromTo
+                                        (from "OppositePit")
+                                        (to (mapEntry (mover)))
                                         count:(count at:"OppositePit")
-                                    ) 
-                                ) 
+                                    )
+                                )
                             )
                         )
                         skipIf:(= (to) (mapEntry (next)))
@@ -59,14 +59,14 @@
                 )
             )
         )
-        
+
         (end
-            (if (or 
+            (if (or
                     (= (count in:(sites Bottom)) 0)
                     (= (count in:(sites Top)) 0)
-                ) 
+                )
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -4909,8 +4909,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "FairKalah is a William Julius Champion's Kalah with fair initial states.")
@@ -4922,9 +4922,9 @@
         (date "1940")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )

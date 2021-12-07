@@ -1,27 +1,27 @@
 (define "CloserToCentre"
-    (>= (count Steps Orthogonal (from) (centrePoint)) 
-        (count Steps Orthogonal (to) (centrePoint)) 
+    (>= (count Steps Orthogonal (from) (centrePoint))
+        (count Steps Orthogonal (to) (centrePoint))
     )
 )
 
 (define "AllPawnsInInnerRing"
-    (all Sites 
+    (all Sites
         (difference (sites Around (sites Centre)) (sites Centre))
         if:(= (id "Pawn" Mover) (what at:(site)))
-    )	
+    )
 )
 
 (define "CapturePiece"
-    (custodial 
-        (from (last To)) 
+    (custodial
+        (from (last To))
         Orthogonal
         (between (max 1) if:(is Enemy (who at:(between))) (apply (set State at:(between) 1)))
-        (to if:(is Friend (who at:(to)))) 
+        (to if:(is Friend (who at:(to))))
     )
 )
 
 (define "ReleaseCapturePiece"
-    (forEach Site 
+    (forEach Site
         (forEach (sites Occupied by:Mover component:#1) if:(!= 0 (state at:(site))))
         (move
             (from (site))
@@ -30,17 +30,17 @@
                 (set State at:(last To) 0)
             )
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Agon"  
-    (players 2)  
-    (equipment { 
+(game "Agon"
+    (players 2)
+    (equipment {
         (board (hex 6))
-        (piece "Pawn" Each 
-            (move Step 
+        (piece "Pawn" Each
+            (move Step
                 (to if:(and {
                         (is Empty (to))
                         ("CloserToCentre")
@@ -49,50 +49,50 @@
                 )
                 (then ("CapturePiece"))
             )
-        ) 
+        )
         (piece "Queen" Each
-            (move Step 
-                (to if:(and 
+            (move Step
+                (to if:(and
                         (is Empty (to))
                         ("CloserToCentre")
                     )
                 )
                 (then ("CapturePiece"))
-            )		
-        ) 
-    })  
-    (rules 
+            )
+        )
+    })
+    (rules
         (start {
             (place "Pawn1" (sites {89 60 20 3 6 51}))
             (place "Pawn2" (sites {87 84 39 1 30 70}))
             (place "Queen1" 85)
             (place "Queen2" 5)
         })
-        (play 
+        (play
             (priority {
                 ("ReleaseCapturePiece" "Queen" Board)
                 ("ReleaseCapturePiece" "Pawn" Outer)
                 (do (forEach Piece)
                     ifAfterwards:(not (can Move
-                            (intervene 
-                                (from (last To)) 
+                            (intervene
+                                (from (last To))
                                 Orthogonal
                                 (to if:(is Enemy (who at:(to))))
                             )
                     ))
                 )
-                
+
                 }
             )
         )
-        (end 
+        (end
             (if ("AllPawnsInInnerRing")
                 {
-                (if 
+                (if
                     (= (id "Queen" Mover) (what at:(centrePoint)))
                     (result Mover Win)
                 )
-                (if 
+                (if
                     (!= (id "Queen" Mover) (what at:(centrePoint)))
                     (result Mover Loss)
                 )
@@ -104,23 +104,23 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (graphics {
         (piece Scale "Pawn" 0.75)
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
-        (show Symbol "star" (sites Centre) fillColour:(colour Red) edgeColour:(colour Red) scale:0.8) 
-        (region Colour 
-            (union 
-                (sites Outer) 
+        (show Symbol "star" (sites Centre) fillColour:(colour Red) edgeColour:(colour Red) scale:0.8)
+        (region Colour
+            (union
+                (sites Outer)
                 (sites {42 53 63 72 73 74 75 67 58 48 37 27 18 17 16 15 23 32 44 55 56 46 35 34})
             )
             (colour 255 205 1)
         )
-        (region Colour 
-            (union 
-                (sites Centre) 
+        (region Colour
+            (union
+                (sites Centre)
                 (sites {41 52 62 71 79 80 81 82 83 76 68 59 49 38 28 19 11 10 9 8 7 14 22 31 24 25 26 36 47 57 66 65 64 54 43 33})
             )
             (colour 192 64 64)

@@ -1,7 +1,7 @@
-(define "CompleteLineWithPieceTaken" 
-    (if 
-        (or 
-            (= (what at:(handSite (mover))) (id "Square0")) 
+(define "CompleteLineWithPieceTaken"
+    (if
+        (or
+            (= (what at:(handSite (mover))) (id "Square0"))
             (= (what at:(handSite (mover))) (mover))
         )
         (add (piece (mover)) (to (last To)))
@@ -10,16 +10,16 @@
     (remove (handSite (mover)))
 )
 
-(define "TakeAPieceInOuterSites" 
+(define "TakeAPieceInOuterSites"
     (move
-        Select 
-        (from (sites Outer) if:(or (is Mover (who at:(from))) (= (who at:(from)) 0))) 
-        (then 
-            (and 
-                (fromTo 
-                    (from (last To)) 
+        Select
+        (from (sites Outer) if:(or (is Mover (who at:(from))) (= (who at:(from)) 0)))
+        (then
+            (and
+                (fromTo
+                    (from (last To))
                     (to (handSite (mover)))
-                ) 
+                )
                 (moveAgain)
             )
         )
@@ -34,10 +34,10 @@
     (sites Column (column of:(last To)))
 )
 
-(define "From" 
+(define "From"
     (from
-        (difference 
-            (intersection 
+        (difference
+            (intersection
                 (sites #1)
                 #2
             )
@@ -46,13 +46,13 @@
     )
 )
 
-(define "Push" 
+(define "Push"
     (move
-        Select 
+        Select
         #1
         (then
             (and {
-                (push (from (last To)) #2) 
+                (push (from (last To)) #2)
                 "CompleteLineWithPieceTaken"
             })
         )
@@ -61,18 +61,18 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quixo"  
-    (players 2)  
-    (equipment { 
-        (board (square 5)) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
+(game "Quixo"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Disc" P1)
+        (piece "Cross" P2)
         (piece "Square" Neutral)
         (hand Each)
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start (place "Square0" (sites Board)))
         (play
             (if "SameTurn"
@@ -96,7 +96,7 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Quixo bears a superficial resemblance to Tic-Tac-Toe – with one player being crosses and the other circles, and with both trying to create a line of their symbol – but that's where the resemblance ends. The pieces in the game are cubes that have a circle on one side, a cross on another, and blank faces on the other four; to set up the game, players place the 25 cubes with blanks face-up on the 5x5 grid in the game board.")
@@ -111,7 +111,7 @@
         (date "1995")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Gold))
         (player Colour P2 (colour Dark))
@@ -121,7 +121,7 @@
         (board Colour OuterEdges (colour Dark))
         (board StyleThickness OuterEdges 0.0)
     })
-    
+
     (ai
         "Quixo_ai"
     )

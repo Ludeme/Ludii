@@ -1,8 +1,8 @@
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
+(define "Custodial"
+    (custodial
+        (from (last To))
         All
-        (between 
+        (between
             if:(is Next (who at:(between)))
             (apply (remove (between)))
         )
@@ -13,40 +13,40 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pente"  
-    (players 2)  
-    (equipment 
-        { 
-        (board <Board> use:Vertex) 
-        (piece "Ball" Each) 
+(game "Pente"
+    (players 2)
+    (equipment
+        {
+        (board <Board> use:Vertex)
+        (piece "Ball" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (set Score Each 0)
         })
         <Play>
-        (end 
+        (end
             {
             (if (is Line 5 All) (result Mover Win))
             (if (> (score Mover) 9) (result Mover Win))
             //(if (is Full) (result Draw))
             }
-        )  
+        )
     )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
-    {   
-    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")   
+    {
+    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")
     }
 )
 
 (option "Opening" <Play> args:{ <rules> }
     {
-    (item "Standard Pente"   
+    (item "Standard Pente"
         <
         phases:{
         (phase "Opening"
@@ -54,7 +54,7 @@
             (nextPhase "General")
         )
         (phase "General"
-            (play 
+            (play
                 (move Add (to (sites Empty))
                     (then "Custodial")
                 )
@@ -64,13 +64,13 @@
         >
         "Open at the centre point."
     )*
-    (item "Freestyle" 
+    (item "Freestyle"
         <
         (play (move Add (to (sites Empty))))
-        > 
+        >
         "Open anywhere."
     )
-    (item "Pro Pente" 
+    (item "Pro Pente"
         <
         phases:{
         (phase "First Move"
@@ -91,7 +91,7 @@
             (play (move Add (to (sites Empty))))
         )
         }
-        > 
+        >
         "White's second move must be 3 points away from the centre."
     )
     }
@@ -99,8 +99,8 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pente was invented by Gary Gabriel in 1983, and was inspired by Ninuki-Renju.  In Pente, players compete to be the first to form an orthogonal or diagonal line of five stones, or to capture ten opposing stones.  Pente does not have the complex opening protocol or specific positional restrictions of Ninuki-Renju.  The first player has a strong advantage, but the Pro Pente opening variation gives Black more even winning chances.")
@@ -113,14 +113,14 @@
         (date "1977")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour White))
         (player Colour P2 (colour Black))
     })
-    
+
     (ai
         "Pente_ai"
     )
-) 
+)

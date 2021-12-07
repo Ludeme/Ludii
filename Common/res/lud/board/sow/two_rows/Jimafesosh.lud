@@ -1,25 +1,25 @@
 (define "Columns" 6)
 (define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
-(define "OneOrLessPieceOnBoard" 
+(define "OneOrLessPieceOnBoard"
     (>= 1 (count Pieces All in:(sites Board)))
 )
 
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
     )
 )
 
-(define "RememberOwnedHolesRandom" 
+(define "RememberOwnedHolesRandom"
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -28,7 +28,7 @@
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "RightMostEmpty" 
+(define "RightMostEmpty"
     (trackSite FirstSite "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
@@ -37,10 +37,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Jimafesosh"  
-    (players 2)  
-    
-    (equipment { 
+(game "Jimafesosh"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -52,19 +52,19 @@
         (map "RightMost" {(pair P1 5) (pair P2 6)})
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
-            (set Count 4 to:(sites Track "TrackCCW" ) ) 
+            (set Count 4 to:(sites Track "TrackCCW" ) )
         })
-        
+
         phases:{
         (phase "Opening1"
             (play
-                (move Select 
+                (move Select
                     (from
                         (if (is Mover Prev)
                             (var "Replay")
@@ -90,7 +90,7 @@
         )
         (phase "Opening2"
             (play
-                (move Select 
+                (move Select
                     (from
                         (if (and (is Mover Prev) (!= Undefined (var "Replay")))
                             (var "Replay")
@@ -117,18 +117,18 @@
                     )
                 )
             )
-            
+
             (nextPhase (not (is Next Prev)) "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (or {
-                    (move Select 
+                    (move Select
                         (from
                             (if (is Mover Prev)
                                 (sites {(var "Replay")})
-                                ("OwnedHoles") 
+                                ("OwnedHoles")
                             )
                             if:(is Occupied (from))
                         )
@@ -154,7 +154,7 @@
                     }
                     (then
                         (if ("OneOrLessPieceOnBoard")
-                            (and { 
+                            (and {
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -183,10 +183,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 4 (count Cell at:(handSite Mover)))
@@ -199,12 +199,12 @@
                                 ("RemmemberOwnedHoles" (last To))
                                 (if (= 3 (count Cell at:(handSite Mover)))
                                     (and {
-                                        (fromTo 
+                                        (fromTo
                                             (from (handSite Mover))
                                             (to ("RightMostEmpty"))
                                             count:3
                                         )
-                                        (fromTo 
+                                        (fromTo
                                             (from (handSite Next))
                                             (to ("RightMostEmpty"))
                                             count:1
@@ -213,12 +213,12 @@
                                     })
                                     (if (= 2 (count Cell at:(handSite Mover)))
                                         (and {
-                                            (fromTo 
+                                            (fromTo
                                                 (from (handSite Mover))
                                                 (to ("RightMostEmpty"))
                                                 count:2
                                             )
-                                            (fromTo 
+                                            (fromTo
                                                 (from (handSite Next))
                                                 (to ("RightMostEmpty"))
                                                 count:2
@@ -240,7 +240,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Jimafesosh is a two-row mancala-style board game played in the Wollo region of Ethiopia.")
@@ -253,7 +253,7 @@
         (origin  "This game was played in Ethiopia, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

@@ -2,9 +2,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Waurie"  
-    (players 2)  
-    (equipment { 
+(game "Waurie"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 6
             (track "Track" "0,ESE,E,ENE,WNW,W" loop:True)
         )
@@ -13,19 +13,19 @@
         (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 4 to:(union (sites P1) (sites P2) )))
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (sites Mover) 
+                Select
+                (from
+                    (sites Mover)
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
                         apply:(if (= (to) (mapEntry Mover))
                             (moveAgain)
@@ -35,7 +35,7 @@
                 )
             )
         )
-        
+
         (end
             (if (= 0 (count in:(sites Mover)))
                 (result Mover Win)
@@ -46,8 +46,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Waurie is a two-row mancala-style board game from the Cayman Islands. This game does not involve captures, and players attempt to empty their row of holes to win.")
@@ -60,7 +60,7 @@
         (origin  "This game was played in Cayman Islands, from around 1985 to 1995.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

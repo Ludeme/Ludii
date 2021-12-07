@@ -4,12 +4,12 @@
 
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
-(define "CaptureMove" 
+(define "CaptureMove"
     (forEach Level (to) FromTop
         (if (is Enemy (who at:(to) level:(level)))
             (remove (to) level:(level))
         )
-    ) 
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -19,46 +19,46 @@
     (equipment {
         (board
             (rectangle 1 <Player:size>)
-            <Player:tracks> 
+            <Player:tracks>
             use:Edge
         )
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each
             (forEach Value (values Remembered "Throws")
                 (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
-                    (move 
+                    (move
                         (from (from) level:(level))
-                        (to 
+                        (to
                             (handSite Mover)
-                            (apply (forget Value "Throws" (value)))		
+                            (apply (forget Value "Throws" (value)))
                         )
                     )
-                    (move 
+                    (move
                         (from (from) level:(level)
                             if:(if (is In (from) (sites Hand Mover))
                                 ("NoPieceOnBoard")
                                 True
                             )
                         )
-                        (to 
+                        (to
                             ("SiteToMoveOnTrack" from:(from) "Track" (value))
                             (apply (and  ("CaptureMove") (forget Value "Throws" (value))))
                         )
                     )
                 )
-            )		
+            )
         )
         (dice d:2 from:0 num:4)
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             <Player:team>
         })
-        
+
         phases:{
-        (phase "ThrowPhase" 
-            (play 
+        (phase "ThrowPhase"
+            (play
                 (do (roll)
                     next:(move Pass
                         (then
@@ -76,12 +76,12 @@
                             )
                         )
                     )
-                )	
+                )
             )
             (nextPhase (is Pending) "MovePhase")
         )
-        (phase "MovePhase" 
-            (play 
+        (phase "MovePhase"
+            (play
                 (or (forEach Piece) (forEach Piece container:(mover))
                     (then
                         (if (< 0 (size Array (values Remembered "Throws")))
@@ -93,7 +93,7 @@
             (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
         )
         }
-        
+
         (end  (if (no Pieces Enemy) (result TeamMover Win)))
     )
 )
@@ -121,10 +121,10 @@
         (track "Track4" {22 18..0} P4 directed:True)
         (track "Track5" {23 18..0} P5 directed:True)
         (track "Track6" {24 18..0} P6 directed:True)
-        } 
+        }
         >
         "The game has 6 players."
-    )   
+    )
     (item "8" <8> <20>
         <
         (set Team 1 {P1 P2 P3 P4})
@@ -148,10 +148,10 @@
         (track "Track6" {24 18..0} P6 directed:True)
         (track "Track7" {25 18..0} P7 directed:True)
         (track "Track8" {26 18..0} P8 directed:True)
-        } 
+        }
         >
         "The game has 8 players."
-    )   
+    )
     (item "10" <10> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5})
@@ -179,10 +179,10 @@
         (track "Track8" {31 23..0} P8 directed:True)
         (track "Track9" {32 23..0} P9 directed:True)
         (track "Track10" {33 23..0} P10 directed:True)
-        } 
+        }
         >
         "The game has 10 players."
-    )   
+    )
     (item "12" <12> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6})
@@ -214,10 +214,10 @@
         (track "Track10" {33 23..0} P10 directed:True)
         (track "Track11" {34 23..0} P11 directed:True)
         (track "Track12" {35 23..0} P12 directed:True)
-        } 
+        }
         >
         "The game has 12 players."
-    )   
+    )
     (item "14" <14> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
@@ -253,10 +253,10 @@
         (track "Track12" {35 23..0} P12 directed:True)
         (track "Track13" {36 23..0} P13 directed:True)
         (track "Track14" {37 23..0} P14 directed:True)
-        } 
+        }
         >
         "The game has 14 players."
-    )   
+    )
     (item "16" <16> <30>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
@@ -296,28 +296,28 @@
         (track "Track14" {42 28..0} P14 directed:True)
         (track "Track15" {43 28..0} P15 directed:True)
         (track "Track16" {44 28..0} P16 directed:True)
-        } 
+        }
         >
         "The game has 16 players."
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Aj T'iwil (Observed)" {
         "Players/6"
         }
         variations:{"Players/8" "Players/10" "Players/12" "Players/14" "Players/16"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Aj T'iwil, \"The Eagle,\" is a game played by the Maya in Belize, as part of the game Bul. It is a race game with captures, and is played second in the order of games making up Bul.")
@@ -329,7 +329,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Scale "Stick" 0.5)
         (show Edges (colour Hidden))
@@ -354,6 +354,6 @@
         (stackType 16 Count)
         (piece Scale "Stick" 0.5)
     })
-    
+
 )
 

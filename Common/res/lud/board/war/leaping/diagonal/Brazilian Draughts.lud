@@ -1,18 +1,18 @@
-(define "HopCounter" 
-    (move 
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
-            if:(and 
-                (not (is In (between) (sites ToClear))) 
+(define "HopCounter"
+    (move
+        Hop
+        (from #1)
+        Diagonal
+        (between
+            if:(and
+                (not (is In (between) (sites ToClear)))
                 (is Enemy (who at:(between)))
             )
             (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -21,67 +21,67 @@
 
 //------------------------------------------------------------------------------
 
-(game "Brazilian Draughts" 
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
+(game "Brazilian Draughts"
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    
-    (rules 
-        (start { 
+    )
+
+    (rules
+        (start {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
                         ("HopCounter" (last To)
-                            (then 
-                                (if (can Move ("HopCounter" (last To))) 
+                            (then
+                                (if (can Move ("HopCounter" (last To)))
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (promote (last To) (piece "DoubleCounter") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                     )
                     (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
                 )
                 (priority {
                     (max Moves
-                        (or 
+                        (or
                             (forEach Piece "Counter"
-                                ("HopCounter" (from) 
-                                    (then 
-                                        (if (can Move ("HopCounter" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
+                                ("HopCounter" (from)
+                                    (then
+                                        (if (can Move ("HopCounter" (last To)))
+                                            (moveAgain)
+                                            (if "JumpToPromotionZone"
                                                 (promote (last To) (piece "DoubleCounter") Mover)
                                             )
-                                        ) 
-                                    ) 
-                                ) 
+                                        )
+                                    )
+                                )
                             )
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                         )
                     )
-                    (or  
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions {FR FL}) 
+                                Step
+                                (directions {FR FL})
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -92,15 +92,15 @@
                 })
             )
         )
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Brazilian Draughts is played in Brazil, and seems to have been invented and popularised in the late nineteenth or early twentieth century there, though its exact origins are not well documented.")
@@ -111,14 +111,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
-    (ai 
+
+    (ai
         "Brazilian Draughts_ai"
     )
-    
+
 )

@@ -1,8 +1,8 @@
-(game "Pancha Keliya (modern)"  
+(game "Pancha Keliya (modern)"
     (players 2)
     (equipment {
-        (board 
-            (union 
+        (board
+            (union
                 {
                 (remove
                     (merge {
@@ -21,14 +21,14 @@
                 (shift 6.44 15.34 (rotate 135.7 (scale 0.7 (brick Rectangle 1 3))))
                 (shift 1 13
                     (graph
-                        vertices:{ { 0 0 } { 0 1 } { 0.42 1 } { 1 0.42 } { 1 0 } } 
-                        edges:{ {0 1} {1 2}  {2 3} {3 4} {4 0}} 
+                        vertices:{ { 0 0 } { 0 1 } { 0.42 1 } { 1 0.42 } { 1 0 } }
+                        edges:{ {0 1} {1 2}  {2 3} {3 4} {4 0}}
                     )
                 )
                 (shift 11 13
                     (graph
-                        vertices:{ { 0 0 } { 0 0.52 } { 0.52 1 } { 1 1 } { 1 0 } } 
-                        edges:{ {0 1} {1 2}  {2 3} {3 4} {4 0}} 
+                        vertices:{ { 0 0 } { 0 0.52 } { 0.52 1 } { 1 1 } { 1 0 } }
+                        edges:{ {0 1} {1 2}  {2 3} {3 4} {4 0}}
                     )
                 )
                 }

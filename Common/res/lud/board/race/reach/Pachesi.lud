@@ -5,14 +5,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pachesi"  
-    (players 4)  
-    (equipment { 
-        (board 
+(game "Pachesi"
+    (players 4)
+    (equipment {
+        (board
             (add
                 (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
+                    (merge
+                        (shift 0 8 (rectangle 3 19))
                         (shift 8 0 (rectangle 19 3))
                     )
                     (poly {{8 8} {8 11} {11 11} {11 8}})
@@ -32,7 +32,7 @@
                 (move Remove (from) level:(level))
                 (if (and (= End ("SiteToMoveOnTrack" from:(from) 1)) ("IsSpecialThrow"))
                     (move Remove (from) level:(level))
-                    (move 
+                    (move
                         (from (from) level:(level))
                         (to
                             ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
@@ -55,18 +55,18 @@
         (hand Each)
         (regions "SafeSites" (sites {55 63 65 34 15 47 94 84 86 19 38 3}))
         (map "Throw" {(pair 0 7) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 30) (pair 7 12)})
-    })  
-    (rules 
+    })
+    (rules
         (start {
             (place Stack "Pawn1" (handSite P1) count:4)
             (place Stack "Pawn2" (handSite P2) count:4)
             (place Stack "Pawn3" (handSite P3) count:4)
             (place Stack "Pawn4" (handSite P4) count:4)
         })
-        
-        (play 
-            (do 
-                (roll) 
+
+        (play
+            (do
+                (roll)
                 next:(or
                     (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
                         (move
@@ -78,14 +78,14 @@
                 )
             )
         )
-        
+
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Pachesi is a race game played on a cross-shaped board, of which there are several versions in South Asia. This version is played near Chitrakoot Dham in central India.")
@@ -97,7 +97,7 @@
         (origin  "This game was played in India, from around 1904 to 1905.")
         }
     )
-    
+
     (graphics {
         (stackType site:96 Ring)
         (stackType 0 Ground)
@@ -111,5 +111,5 @@
         (board Colour OuterEdges (colour Black))
         (piece Scale "Pawn" 0.5)
     })
-    
+
 )

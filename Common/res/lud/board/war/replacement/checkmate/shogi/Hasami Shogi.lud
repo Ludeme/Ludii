@@ -1,57 +1,57 @@
-(define "CustodialCaptures" 
-    (custodial 
-        (from (last To)) 
+(define "CustodialCaptures"
+    (custodial
+        (from (last To))
         Orthogonal
-        (between 
-            (max 1) 
-            if:(is Enemy (who at:(between))) 
+        (between
+            (max 1)
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
         )
         (to if:(is Friend (who at:(to))))
     )
 )
 
-(define "SurroundCaptures" 
-    (surround 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:(and 
-                (is In (between) (sites Corners)) 
+(define "SurroundCaptures"
+    (surround
+        (from (last To))
+        Orthogonal
+        (between
+            if:(and
+                (is In (between) (sites Corners))
                 (is Enemy (who at:(between)))
-            ) 
+            )
             (apply (remove (between)))
-        ) 
-        (to if:(is Friend (who at:(to)))) 
+        )
+        (to if:(is Friend (who at:(to))))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Hasami Shogi"  
-    (players 2)  
-    
-    (equipment { 
+(game "Hasami Shogi"
+    (players 2)
+
+    (equipment {
         (board (square 9))
         (piece "Fuhyo" P1 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures" ))))
         (piece "Tokin" P2 (move Slide Orthogonal (then (or "CustodialCaptures" "SurroundCaptures" ))))
         }
     )
-    
-    (rules 
-        (start { 
+
+    (rules
+        (start {
             (place "Fuhyo1" (sites Bottom))
             (place "Tokin2" (sites Top))
         })
-        
+
         (play (forEach Piece))
-        
+
         (end (if (= (count Pieces Next) 1) (result Mover Win)) )
     )
 )
 
 (metadata
-    
+
     (info
         {
         (description "Hasami Shogi is a simplified version of Shogi, a Japanese game which is ultimately related to the Indian game Chaturanga. It is played only with the pawns on a 9x9 Shogi board.")
@@ -63,7 +63,7 @@
         (origin  "This game was played in Japan, around 1951.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
@@ -72,9 +72,9 @@
         (piece Rotate P2 degrees:180)
         (piece Colour "Tokin" strokeColour:(colour Red))
     })
-    
-    (ai 
+
+    (ai
         "Hasami Shogi_ai"
     )
-    
+
 )

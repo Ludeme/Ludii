@@ -1,15 +1,15 @@
-(game "SpanRups" 
+(game "SpanRups"
     (players 1)
-    (equipment 
-        { 
+    (equipment
+        {
         (board <Version:type> use:Edge)
         (piece "Marker" Each)
         }
-    )    
-    
-    (rules     	 
+    )
+
+    (rules
         <Play:play>
-        (end 	
+        (end
             <Version:result>
         )
     )
@@ -19,104 +19,104 @@
 
 (option "Version" <Version> args:{ <type> <result> }
     {
-    (item "SpanningTree1"             
+    (item "SpanningTree1"
         <
         (graph
-            vertices:{ 
-            {0 0} {0 1} {0 2} {0 3} {0 4} {1 0} {1 1} {1 2} {1 3} {1 4} 
-            {2 0} {2 1} {2 2} {2 3} {2 4} {3 0} {3 1} {3 2} {3 3} {3 4} 
+            vertices:{
+            {0 0} {0 1} {0 2} {0 3} {0 4} {1 0} {1 1} {1 2} {1 3} {1 4}
+            {2 0} {2 1} {2 2} {2 3} {2 4} {3 0} {3 1} {3 2} {3 3} {3 4}
             {4 0} {4 1} {4 2} {4 3} {4 4}}
-            edges:{ 
-            {0 1} {0 5} {0 6} {1 6} {1 2} {1 5} {2 7} {2 3} {3 8} {3 4} 
-            {3 9} {4 8} {4 9} {5 6} {5 10} {6 11} {6 7} {6 12} {7 12} {7 8} 
-            {8 13} {8 9} {9 14} {7 11} {7 13} {8 12} {10 11} {11 12} {12 13} 
-            {13 14} {10 15} {11 16} {11 17} {12 16} {12 17} {12 18} {13 17} 
-            {13 18} {14 19} {15 16} {15 20} {15 21} {16 20} {16 21} {20 21} 
-            {16 17} {17 22} {21 22} {17 18} {18 23} {22 23} {18 19} {18 24} 
+            edges:{
+            {0 1} {0 5} {0 6} {1 6} {1 2} {1 5} {2 7} {2 3} {3 8} {3 4}
+            {3 9} {4 8} {4 9} {5 6} {5 10} {6 11} {6 7} {6 12} {7 12} {7 8}
+            {8 13} {8 9} {9 14} {7 11} {7 13} {8 12} {10 11} {11 12} {12 13}
+            {13 14} {10 15} {11 16} {11 17} {12 16} {12 17} {12 18} {13 17}
+            {13 18} {14 19} {15 16} {15 20} {15 21} {16 20} {16 21} {20 21}
+            {16 17} {17 22} {21 22} {17 18} {18 23} {22 23} {18 19} {18 24}
             {19 23} {19 24} {23 24}}
         )
-        >   
+        >
         <
         {
-        (if (no Moves Mover) (result Mover Loss))    
+        (if (no Moves Mover) (result Mover Loss))
         (if (is SpanningTree Mover) (result Mover Win))
         }
-        >     
+        >
         "The game is played on the Graph1."
-    )* 
-    
-    (item "SpanningTree2"             
+    )*
+
+    (item "SpanningTree2"
         <
         (graph
-            vertices:{ 
-            {1 0} {3 0} {5 0} {6 0} {7 0} {8 0} {10 0} {11 0} {12 0} {0 2} {3 2} {5 2} 
-            {8 2} {11 2} {2 3} {7 3} {1 4} {12 4} {2 5} {5 5} {8 5} {10 5} {2 7} {6 7} 
-            {10 7}{1 8} {4 9} {7 9} {10 9} {1 10} {5 10} {10 10} {1 12} {4 12} {7 12} 
+            vertices:{
+            {1 0} {3 0} {5 0} {6 0} {7 0} {8 0} {10 0} {11 0} {12 0} {0 2} {3 2} {5 2}
+            {8 2} {11 2} {2 3} {7 3} {1 4} {12 4} {2 5} {5 5} {8 5} {10 5} {2 7} {6 7}
+            {10 7}{1 8} {4 9} {7 9} {10 9} {1 10} {5 10} {10 10} {1 12} {4 12} {7 12}
             {9 12}}
-            edges:{ 
-            {0 10} {1 10} {2 11} {3 11} {4 12} {5 12} {6 13} {7 13} {8 13} {10 19} {16 10} 
+            edges:{
+            {0 10} {1 10} {2 11} {3 11} {4 12} {5 12} {6 13} {7 13} {8 13} {10 19} {16 10}
             {9 10} {11 19} {15 20} {12 20} {13 20} {13 17} {14 10} {18 23} {19 23} {20 23}
             {20 24} {21 20} {23 26} {22 26} {26 33} {26 32} {26 29} {26 25} {23 27} {27 34}
-            {30 27} {27 35} {31 27} {27 28} {24 33} {2 3} {30 35} {34 31} {10 18} {28 34} 
+            {30 27} {27 35} {31 27} {27 28} {24 33} {2 3} {30 35} {34 31} {10 18} {28 34}
             {6 20} {27 24} {21 17} {23 31} {9 25} {20 31} {15 30} {32 22} {23 25} {19 26}
             {18 19} {0 16} {9 1} {1 11} {2 15} {5 11} {4 19} {12 21} {17 8}}
         )
-        >  
+        >
         <
         {
-        (if (no Moves Mover) (result Mover Loss))   
+        (if (no Moves Mover) (result Mover Loss))
         (if (is SpanningTree Mover) (result Mover Win))
         }
-        >      
+        >
         "The game is played on the Graph2."
-    ) 
-    
-    (item "CaterpillarTree1"             
+    )
+
+    (item "CaterpillarTree1"
         <
         (graph
-            vertices:{ 
+            vertices:{
             {6 0} {5 5} {9 5} {0 7} {2 7} {7 7} {12 7} {14 7} {5 9} {9 9} {6 14}}
-            edges:{ 
-            {0 1} {0 2} {0 3} {0 4} {0 5} {0 6} {0 7} {0 10} {3 4} {4 5} {5 6} 
+            edges:{
+            {0 1} {0 2} {0 3} {0 4} {0 5} {0 6} {0 7} {0 10} {3 4} {4 5} {5 6}
             {6 7} {1 4} {1 5} {2 5} {2 6} {4 8} {5 8} {5 9} {6 9} {3 10}
             {4 10} {8 10} {5 10} {9 10} {6 10} {7 10}}
         )
-        >   
+        >
         <
-        {            
-        (if (no Moves Mover) (result Mover Loss))      
+        {
+        (if (no Moves Mover) (result Mover Loss))
         (if (is CaterpillarTree Mover) (result Mover Win))
         }
-        >     
+        >
         "The game is played on the Graph3."
-    ) 
-    
-    (item "CaterpillarTree2"             
+    )
+
+    (item "CaterpillarTree2"
         <
         (graph
-            vertices:{ 
-            {3 0} {5 0} {7 0} {9 0} {11 0} {0 2} {2 2} {4 2} {6 2} {8 2} 
-            {10 2} {12 2} {14 2} {0 4} {2 4} {4 4} {6 4} {8 4} {10 4} {12 4} 
+            vertices:{
+            {3 0} {5 0} {7 0} {9 0} {11 0} {0 2} {2 2} {4 2} {6 2} {8 2}
+            {10 2} {12 2} {14 2} {0 4} {2 4} {4 4} {6 4} {8 4} {10 4} {12 4}
             {14 4} {3 6} {5 6} {7 6} {9 6} {11 6}}
-            edges:{ 
-            {0 1} {0 7} {0 15} {1 7} {1 15} {2 8} {2 23} {2 17} {2 9} {3 4} 
-            {3 10} {4 10} {3 18} {4 18} {5 6} {5 13} {5 14} {6 13} {13 14} {7 6} 
-            {6 15} {7 14} {15 14} {15 16} {7 16} {8 15} {16 17} {8 17} {9 16} 
-            {17 18} {9 18} {10 17} {7 8} {8 9} {9 10} {10 19} {11 18} {10 11} {18 19} 
-            {11 12} {11 20} {19 12} {19 20} {12 20} {21 22} {15 21} {15 22} 
+            edges:{
+            {0 1} {0 7} {0 15} {1 7} {1 15} {2 8} {2 23} {2 17} {2 9} {3 4}
+            {3 10} {4 10} {3 18} {4 18} {5 6} {5 13} {5 14} {6 13} {13 14} {7 6}
+            {6 15} {7 14} {15 14} {15 16} {7 16} {8 15} {16 17} {8 17} {9 16}
+            {17 18} {9 18} {10 17} {7 8} {8 9} {9 10} {10 19} {11 18} {10 11} {18 19}
+            {11 12} {11 20} {19 12} {19 20} {12 20} {21 22} {15 21} {15 22}
             {7 21} {7 22} {16 23} {8 23} {2 23} {17 23} {10 24} {24 25} {18 24}
             {18 25} {10 25} {7 15} {10 18}}
         )
-        >   
+        >
         <
-        {            
-        (if (no Moves Mover) (result Mover Loss))            
-        (if (is CaterpillarTree Mover) (result Mover Win)) 	
-        
+        {
+        (if (no Moves Mover) (result Mover Loss))
+        (if (is CaterpillarTree Mover) (result Mover Win))
+
         }
-        >      
+        >
         "The game is played on the Graph4."
-    )    
+    )
 })
 
 (option "Play" <Play> args:{ <play> }
@@ -125,16 +125,16 @@
         <
         (play
             (move Add
-                (to Edge (sites Empty Edge))	            
-            ) 
-        ) 
-        >    
+                (to Edge (sites Empty Edge))
+            )
+        )
+        >
         "The players play on Addition version."
-    )*  
+    )*
     (item "Deletion"
         <
         (start
-            (set P1 Edge (sites Board Edge))   
+            (set P1 Edge (sites Board Edge))
         )
         (play
             (move
@@ -142,14 +142,14 @@
                 (sites Occupied by:Mover on:Edge)
             )
         )
-        >        
+        >
         "The players play on Deletion version."
-    )  
+    )
 })
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "The SpanRups is a graph theory game that uses concepts of spanning tree, and spanning caterpillar tree. A spanning tree T of an undirected graph G is a subgraph that is a tree which includes all of the vertices of G.  The spanning caterpillar tree C is a spanning tree in which all the vertices are within distance 1 from a central path.")
@@ -161,14 +161,14 @@
         (date "22-05-2020")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour 0 127 255))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges ThinDotted (colour 127 127 127))
-        
+
     })
-    
+
     (ai
         "SpanRups_ai"
     )

@@ -1,96 +1,96 @@
 (define "CaptureToPiece"
-    (apply 
+    (apply
         (if (is Occupied (to))
-            (remove 
-                (to) 
+            (remove
+                (to)
             )
         )
-    ) 
+    )
 )
 
-(define "EmptySitesInHome" 
-    (intersection 
-        (sites Mover "Home") 
+(define "EmptySitesInHome"
+    (intersection
+        (sites Mover "Home")
         (sites Empty)
     )
 )
 
-(define "CubeInHand" 
+(define "CubeInHand"
     (sites Occupied by:Mover container:(mover))
 )
 
-(define "GoalReached" 
-    ("NoSites" 
-        (difference 
-            (sites Mover "Goal") 
+(define "GoalReached"
+    ("NoSites"
+        (difference
+            (sites Mover "Goal")
             (sites Occupied by:Mover)
         )
     )
 )
 
-(define "MoveForwards" 
+(define "MoveForwards"
     (move
         Step
         Forwards
-        (to 
+        (to
             if:True
             "CaptureToPiece"
-        ) 
+        )
     )
 )
 
-(define "SameValue" 
+(define "SameValue"
     (= (state at:(from)) (count Pips))
 )
 
-(define "ValueCloseToOne" 
+(define "ValueCloseToOne"
     (= 1 (abs (- (state at:(from)) (count Pips))))
 )
 
-(define "MoveAPieceOf" 
-    (forEach Piece       
-        (if 
+(define "MoveAPieceOf"
+    (forEach Piece
+        (if
             #1
             ("MoveForwards")
         )
     )
 )
 
-(define "PieceIsOnTheBoard" 
+(define "PieceIsOnTheBoard"
     (!= (where "Square" Mover state:(count Pips)) Off)
 )
 
 //------------------------------------------------------------------------------
 
-(game "EinStein Wurfelt Nicht"  
-    (players {(player SE) (player NW)})  
-    (equipment { 
-        (board (square <Board:size>)) 
-        (piece "Square" Each) 
+(game "EinStein Wurfelt Nicht"
+    (players {(player SE) (player NW)})
+    (equipment {
+        (board (square <Board:size>))
+        (piece "Square" Each)
         (hand Each size:<Board:numPieces>)
         (dice num:<Board:numDice>)
         (regions "Home" P1 (expand (intersection (sites Top) (sites Left)) steps:<Board:sizeHome> Orthogonal))
         (regions "Home" P2 (expand (intersection (sites Bottom) (sites Right)) steps:<Board:sizeHome> Orthogonal))
         (regions "Goal" P1 (intersection (sites Bottom) (sites Right)))
         (regions "Goal" P2 (intersection (sites Top) (sites Left)))
-    })  
-    (rules 
+    })
+    (rules
         (start {
             <Board:start>
         })
         phases:{
-        (phase "Placement" 	        
-            (play 
-                (move 
-                    (from ("CubeInHand")) 
+        (phase "Placement"
+            (play
+                (move
+                    (from ("CubeInHand"))
                     (to ("EmptySitesInHome"))
                 )
             )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 	        
-            (play 
-                (do 
+        (phase "Movement"
+            (play
+                (do
                     (roll)
                     next:(if ("PieceIsOnTheBoard")
                         ("MoveAPieceOf" ("SameValue"))
@@ -100,13 +100,13 @@
             )
         )
         }
-        
-        (end 
-            (if 
-                (or 
-                    (no Pieces Next) 
+
+        (end
+            (if
+                (or
+                    (no Pieces Next)
                     ("GoalReached")
-                ) 
+                )
                 (result Mover Win)
             )
         )
@@ -117,73 +117,73 @@
 
 (option "Board Size" <Board> args:{ <size> <numPieces> <numDice> <sizeHome> <start>}
     {
-    (item "5" 
+    (item "5"
         <5>
         <6>
         <1>
         <2>
-        <  
-        (place "Square1" (handSite P1) state:1) 
-        (place "Square1" (handSite P1 1) state:2) 
-        (place "Square1" (handSite P1 2) state:3) 
-        (place "Square1" (handSite P1 3) state:4) 
-        (place "Square1" (handSite P1 4) state:5) 
-        (place "Square1" (handSite P1 5) state:6) 
-        
-        (place "Square2" (handSite P2) state:1) 
-        (place "Square2" (handSite P2 1) state:2) 
-        (place "Square2" (handSite P2 2) state:3) 
-        (place "Square2" (handSite P2 3) state:4) 
-        (place "Square2" (handSite P2 4) state:5) 
-        (place "Square2" (handSite P2 5) state:6) 
+        <
+        (place "Square1" (handSite P1) state:1)
+        (place "Square1" (handSite P1 1) state:2)
+        (place "Square1" (handSite P1 2) state:3)
+        (place "Square1" (handSite P1 3) state:4)
+        (place "Square1" (handSite P1 4) state:5)
+        (place "Square1" (handSite P1 5) state:6)
+
+        (place "Square2" (handSite P2) state:1)
+        (place "Square2" (handSite P2 1) state:2)
+        (place "Square2" (handSite P2 2) state:3)
+        (place "Square2" (handSite P2 3) state:4)
+        (place "Square2" (handSite P2 4) state:5)
+        (place "Square2" (handSite P2 5) state:6)
         >
         "The version of the game played on 5x5 board."
-    )*   
-    (item "6"    
+    )*
+    (item "6"
         <6>
         <10>
         <2>
         <3>
-        <  
-        (place "Square1" (handSite P1) state:2) 
-        (place "Square1" (handSite P1 1) state:3) 
-        (place "Square1" (handSite P1 2) state:4) 
-        (place "Square1" (handSite P1 3) state:5) 
-        (place "Square1" (handSite P1 4) state:6) 
-        (place "Square1" (handSite P1 5) state:8) 
-        (place "Square1" (handSite P1 6) state:9) 
-        (place "Square1" (handSite P1 7) state:10) 
-        (place "Square1" (handSite P1 8) state:11) 
-        (place "Square1" (handSite P1 9) state:12) 
-        
-        (place "Square2" (handSite P2) state:2) 
-        (place "Square2" (handSite P2 1) state:3) 
-        (place "Square2" (handSite P2 2) state:4) 
-        (place "Square2" (handSite P2 3) state:5) 
-        (place "Square2" (handSite P2 4) state:6) 
-        (place "Square2" (handSite P2 5) state:8) 
-        (place "Square2" (handSite P2 6) state:9) 
-        (place "Square2" (handSite P2 7) state:10) 
-        (place "Square2" (handSite P2 8) state:11) 
-        (place "Square2" (handSite P2 9) state:12) 
+        <
+        (place "Square1" (handSite P1) state:2)
+        (place "Square1" (handSite P1 1) state:3)
+        (place "Square1" (handSite P1 2) state:4)
+        (place "Square1" (handSite P1 3) state:5)
+        (place "Square1" (handSite P1 4) state:6)
+        (place "Square1" (handSite P1 5) state:8)
+        (place "Square1" (handSite P1 6) state:9)
+        (place "Square1" (handSite P1 7) state:10)
+        (place "Square1" (handSite P1 8) state:11)
+        (place "Square1" (handSite P1 9) state:12)
+
+        (place "Square2" (handSite P2) state:2)
+        (place "Square2" (handSite P2 1) state:3)
+        (place "Square2" (handSite P2 2) state:4)
+        (place "Square2" (handSite P2 3) state:5)
+        (place "Square2" (handSite P2 4) state:6)
+        (place "Square2" (handSite P2 5) state:8)
+        (place "Square2" (handSite P2 6) state:9)
+        (place "Square2" (handSite P2 7) state:10)
+        (place "Square2" (handSite P2 8) state:11)
+        (place "Square2" (handSite P2 9) state:12)
         >
         "The version of the game played on 6x6 board."
-    ) 
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "EinStein Würfelt Nicht! (Einstein does not play dice) is a board game, designed by Ingo Althöfer, a professor of applied mathematics in Jena, Germany. It was the official game of an exhibition about Einstein in Germany during the Einstein Year (2005).
-            
+
         The name of the game in German has a double meaning. It is a play on Einstein's famous quote \"I am convinced that He (God) does not play dice\" and also refers to the fact that when a player has only one cube (ein Stein) remaining, they no longer need to \"play dice\", and may simply move the cube.")
         (aliases {"EinStein Würfelt Nicht"})
         (rules "The game is played on a square board with a 5×5 grid. Each player has six cubes, numbered one to six. During setup, each player can arrange the cubes as he or she sees fit within the triangular area of their own color.
-            
+
             The players take turns rolling a six-sided die and then moving the matching cube. If the matching cube is no longer on the board, the player moves a remaining cube whose number is next-higher or next-lower to the rolled number. The player starting in the top-left may move that cube one square to the right, down, or on the diagonal down and to the right; the player starting in the bottom-right may move that cube one square to the left, up, or on the diagonal up and to the left. Any cube which already lies in the target square is removed from the board.
-            
+
         The objective of the game is for a player to either get one of their cubes to the far corner square in the grid (where their opponent started) or to remove all of their opponent's cubes from the board.")
         (source "<a href=\"https://en.wikipedia.org/wiki/EinStein_würfelt_nicht!\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (version "1.3.0")
@@ -194,7 +194,7 @@
         (date "2004")
         }
     )
-    
+
     (graphics {
         (region Colour "Home" Edge)
         (player Colour P1 (colour Red))

@@ -1,24 +1,24 @@
-(game "Squava"  
-    (players 2) 
-    (equipment { 
-        (board (square 5)) 
-        (piece "Marker" Each) 
+(game "Squava"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (meta (swap) )
         (play (move Add (to (sites Empty))))
         (end {
             (if (is Line 4) (result Mover Win))
-            (if (is Line 3) (result Mover Loss)) 
-        })  
+            (if (is Line 3) (result Mover Loss))
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Squava is a Yavalath variant on a 5x5 board.")
@@ -32,9 +32,9 @@
         (date "2011")
         }
     )
-    
-    (ai 
+
+    (ai
         "Squava_ai"
     )
-    
+
 )

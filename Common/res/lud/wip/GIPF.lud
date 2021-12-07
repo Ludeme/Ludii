@@ -1,13 +1,13 @@
-(game "GIPF"  
-    (players 2)  
-    (equipment { 
-        (board (rotate 90 (tri Hexagon 5)) use:Vertex) 
+(game "GIPF"
+    (players 2)
+    (equipment {
+        (board (rotate 90 (tri Hexagon 5)) use:Vertex)
         (hand Each)
         (regions "OuterVertices" (sites Outer Vertex))
         //(regions "InnerCells" (sites Inner Cell))
         (piece "Disc" Each)
-    })  
-    (rules 
+    })
+    (rules
         (start {
             (place "Disc1" {"E3" "B12" "H12"})
             (place "Disc2" {"B6" "E15" "H6"})
@@ -16,10 +16,10 @@
         (play
             (if ("SameTurn")
                 (move
-                    Select 
+                    Select
                     (from (last To))
                     (then
-                        (push (from (last To)) N) 
+                        (push (from (last To)) N)
                     )
                 )
                 (move
@@ -29,20 +29,20 @@
                 )
             )
         )
-        (end 
+        (end
             (if (no Pieces Mover) (result Mover Loss))
         )
     )
 )
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (version "0.9.5")
         }
     )
-    
+
     (graphics {
         (show Edges Outer Hidden)
         (show Symbol "disc" "OuterVertices" Vertex fillColour:(colour Black) edgeColour:(colour Black) scale:0.4)

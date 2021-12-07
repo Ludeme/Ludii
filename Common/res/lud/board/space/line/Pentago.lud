@@ -1,4 +1,4 @@
-(define "CreateVariables" 
+(define "CreateVariables"
     (and {
         (set Var "TopLeft" (what at:(coord #1)))
         (set Var "TopRight" (what at:(coord #2)))
@@ -7,11 +7,11 @@
         (set Var "Bottom" (what at:(coord #5)))
         (set Var "Left" (what at:(coord #6)))
         (set Var "Top" (what at:(coord #7)))
-        (set Var "Right" (what at:(coord #8)))	
+        (set Var "Right" (what at:(coord #8)))
     })
 )
 
-(define "RemoveOccupiedSites" 
+(define "RemoveOccupiedSites"
     (if (!= 0 (var "TopLeft")) (remove (coord #1)))
     (if (!= 0 (var "TopRight")) (remove (coord #2)))
     (if (!= 0 (var "BottomRight")) (remove (coord #3)))
@@ -22,7 +22,7 @@
     (if (!= 0 (var "Right")) (remove (coord #8)))
 )
 
-(define "Rotation" 
+(define "Rotation"
     (if (!= 0 (var "TopLeft"))
         (add (piece (var "TopLeft")) (to (coord #1)))
     )
@@ -49,7 +49,7 @@
     )
 )
 
-(define "RegionToCheck" 
+(define "RegionToCheck"
     (if (is In (last To) (sites "BottomLeft"))
         (intersection (sites Occupied by:#1) (sites "BottomLeft"))
         (if (is In (last To) (sites "BottomRight"))
@@ -66,7 +66,7 @@
 
 (game "Pentago"
     (players 2)
-    (equipment { 
+    (equipment {
         (board (square 6) use:Vertex)
         (piece "Ball" Each)
         (regions "BottomLeft" (expand origin:(coord "A1") steps:3))
@@ -77,18 +77,18 @@
     (rules
         phases:{
         (phase "Place"
-            (play 
+            (play
                 (move Add (to (sites Empty)) (then (moveAgain)))
             )
             (end (if (is Line 5 All) (result Mover Win)))
             (nextPhase Mover "Rotate")
         )
-        
+
         (phase "Rotate"
-            (play 
+            (play
                 (or
                     (move Select (from (sites {"B2" "B5" "E2" "E5"}))
-                        (then 
+                        (then
                             (if (= (last To) (coord "E5"))
                                 (do ("CreateVariables" "D6" "F6" "F4" "D4" "E4" "D5" "E6" "F5")
                                     next:(and {
@@ -122,7 +122,7 @@
                         )
                     )
                     (move Select (from (sites {"B2" "B5" "E2" "E5"}))
-                        (then 
+                        (then
                             (if (= (last To) (coord "E5"))
                                 (do
                                     ("CreateVariables" "D6" "F6" "F4" "D4" "E4" "D5" "E6" "F5")
@@ -160,7 +160,7 @@
                 )
             )
             (end {
-                (if (and 
+                (if (and
                         (is Line 5 All throughAny:("RegionToCheck" Mover))
                         (is Line 5 All throughAny:("RegionToCheck" Next))
                     )
@@ -177,8 +177,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pentago is an abstract strategy game for two players with four 3×3 grids arranged into a larger 6×6 grid. ")
@@ -191,11 +191,11 @@
         (date "2005")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
-        (show Symbol "Disc" (sites Board) fillColour:(colour 175 8 63) edgeColour:(colour White)) 
+        (show Symbol "Disc" (sites Board) fillColour:(colour 175 8 63) edgeColour:(colour White))
         (board Background image:"square.svg" fillColour:(colour 175 8 63) edgeColour:(colour 175 8 63) scale:1.4)
     })
-    
+
 )

@@ -2,9 +2,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Unnee Tugalluulax" 
-    (players 2)  
-    (equipment { 
+(game "Unnee Tugalluulax"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 6 store:None
             (track "Track" "5,W,N,E" loop:True)
         )
@@ -12,23 +12,23 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    
-    (rules 
-        (start (set Count 6 to:(sites Track)))		  
-        (play 
-            (move 
-                Select 
-                (from 
-                    (sites Mover) 
+    })
+
+    (rules
+        (start (set Count 6 to:(sites Track)))
+        (play
+            (move
+                Select
+                (from
+                    (sites Mover)
                     if:(< 0 (count at:(from)))
                 )
-                (then 
-                    (sow 
+                (then
+                    (sow
                         if:(= (count at:(to)) 4)
-                        apply:(fromTo 
-                            (from (to)) 
-                            (to (handSite Mover)) 
+                        apply:(fromTo
+                            (from (to))
+                            (to (handSite Mover))
                             count:(count at:(to))
                         )
                     )
@@ -38,7 +38,7 @@
         (end
             (if <End:cond>
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -50,39 +50,39 @@
 
 (option "Ending Rules" <End> args:{<cond>}
     {
-    (item "No Moves" 
+    (item "No Moves"
         <
-        (no Moves Mover) 
-        >           
+        (no Moves Mover)
+        >
     "The game ends if no moves.")
     (item "No Moves Or Repeating positions"
         <
-        (or 
-            (no Moves Mover) 
+        (or
+            (no Moves Mover)
             (is Cycle)
         )
-        > 
+        >
     "The game ends if no moves or a repeating state is detected.")**
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Popova (Scholarly)" {
         "Ending Rules/No Moves"
     })
-    
+
     (ruleset "Ruleset/Mancala World (Suggested)" {
         "Ending Rules/No Moves Or Repeating positions"
     })*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Unnee Tugullalax is a two-row mancala-style board game from Mongolia. It is typically played with camel droppings on a board. The game is imbued with the symbolism of the cycle of reproduction of a cow, as a hole fills with counters it progresses along the cycle of reproduction until it has four counters, when the calve is produced and the four counters are captured.")
@@ -98,7 +98,7 @@
         (origin  "This game was played in Mongolia, around 1974.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

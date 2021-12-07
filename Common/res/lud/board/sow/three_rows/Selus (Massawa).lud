@@ -1,26 +1,26 @@
 (define "Columns" 6)
 
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
     )
 )
 
-(define "OnlyPiecesInMarked" 
+(define "OnlyPiecesInMarked"
     (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
 )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
-(define "SitesMarkedBy" 
+(define "SitesMarkedBy"
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )
 
@@ -29,9 +29,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Selus (Massawa)"  
-    (players 2)  
-    (equipment { 
+(game "Selus (Massawa)"
+    (players 2)
+    (equipment {
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
         )
@@ -40,34 +40,34 @@
         (regions P1 (union (sites Bottom) (difference (expand (sites Right) steps:2) (sites Top)))) // P1 Home
         (regions P2 (union (sites Top) (difference (expand (sites Left) steps:2) (sites Bottom))))  // P2 home
         (map "LeftMostHole" {(pair P1 0) (pair P2 17)})
-    })  
-    (rules 
-        
-        (start { 
+    })
+    (rules
+
+        (start {
             (set RememberValue "OwnedP1" (sites P1))
             (set RememberValue "OwnedP2" (sites P2))
             (set Count 3 to:(sites Track))
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
                 (or {
                     (move Select
-                        (from 
+                        (from
                             (if (and (not (is Pending)) (is Mover Prev))
-                                ("PlayFromLastHole") 
-                                ("OwnedHoles") 
+                                ("PlayFromLastHole")
+                                ("OwnedHoles")
                             )
                             if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
                         )
-                        
+
                         (then
                             (sow
                                 apply:(if (< 1 (count at:(to)))
                                     (if (and (!= (mapEntry "LeftMostHole" Mover) (to)) (!= 0 (state at:(to))))
                                         (and {
-                                            (if (or (= (mover) (state at:(to))) (= (mapEntry "LeftMostHole" Next) (to))) 
+                                            (if (or (= (mover) (state at:(to))) (= (mapEntry "LeftMostHole" Next) (to)))
                                                 (and
                                                     (moveAgain)
                                                     (set Pending)
@@ -81,7 +81,7 @@
                                             (set State at:(to) (state at:(to)))
                                         })
                                         (if (and { (< 2 (count Turns)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
-                                            (set State at:(to) (mover))	
+                                            (set State at:(to) (mover))
                                             (moveAgain)
                                         )
                                     )
@@ -92,7 +92,7 @@
                     }
                     (then
                         (if ("OnlyPiecesInMarked")
-                            (and { 
+                            (and {
                                 (forEach Site ("SitesMarkedBy" 1)
                                     (fromTo
                                         (from (site))
@@ -114,7 +114,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
@@ -124,7 +124,7 @@
             )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 3 (count Cell at:(handSite Mover)))
@@ -158,13 +158,13 @@
             (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
         )
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Selus is a three-row mancala-style board game played in Eritrea. It involves the capture of holes, which acumulate coutners, but players may also capture from these holes when sowing ends in that hole.")
@@ -177,7 +177,7 @@
         (origin  "This game was played in Eritrea, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)

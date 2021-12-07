@@ -1,18 +1,18 @@
 (game "Lian Qi (Bohai)"
-    (players 2)  
+    (players 2)
     (equipment {
-        (board (concentric Square rings:2 joinCorners:True) use:Vertex) 
-    })  
-    (rules 
+        (board (concentric Square rings:2 joinCorners:True) use:Vertex)
+    })
+    (rules
         (play (forEach Piece))
         (end (if (is Line 3) (result Mover Win)))
-    )		
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Lian Qi is a name used for alignment games in China. This versian, smaller than typically found in China, comes from the Bohai State period of Manchuria.")
@@ -24,5 +24,5 @@
         (origin  "This game was played in Manchuria, from around 800 to 925.")
         }
     )
-    
+
 )

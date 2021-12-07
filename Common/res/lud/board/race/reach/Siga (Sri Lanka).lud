@@ -22,7 +22,7 @@
             }
         )
         (piece "Marker" Each
-            (move 
+            (move
                 (from (from) level:(level))
                 (to
                     ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
@@ -41,7 +41,7 @@
                         )
                     )
                 )
-            )		
+            )
         )
         (hand Each)
         (dice d:2 from:0 num:4)
@@ -49,16 +49,16 @@
         (map "Entry" {(pair P1 2) (pair P2 22)})
         (regions "SafeSites" (sites {2 10 12 14 22}))
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Marker1" (handSite P1) count:2)
             (place Stack "Marker2" (handSite P2) count:2)
         })
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(or
                     (if (and (is Occupied (handSite Mover)) ("Throw1"))
-                        (move 
+                        (move
                             (from (handSite Mover))
                             (to (mapEntry "Entry" (mover)))
                         )
@@ -74,8 +74,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Siga, as played in Sri Lanka, is a race game similar to Saturankam, which is also played there. Typically, it is played on a cloth with pawns, or drawn on the ground with sticks as the pawns.")
@@ -87,7 +87,7 @@
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
     )
-    
+
     (graphics {
         (show Symbol "thinCross" {2 10 12 14 22} scale:0.9)
         (stackType 0 Ground)
@@ -98,5 +98,5 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )

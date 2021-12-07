@@ -2,7 +2,7 @@
 (define "GroupCount"
     (max 0
         (max
-            (sizes Group "ScoreConnectionDirection" #1 ) 
+            (sizes Group "ScoreConnectionDirection" #1 )
 )))
 
 //---------------------
@@ -13,45 +13,45 @@
         (then
             (set Var "NextScore"  ("GroupCount" Next)
                 (then
-                    <TieScoring:tiebreaker> 
+                    <TieScoring:tiebreaker>
 )))))
 
 (define "BonusMover"
     (set Var "MoverScore"
-        (+ 
+        (+
             ("GroupCount" Mover)
-            (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover))) 
+            (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover)))
         )
         (then
             (set Var "NextScore"
-                (+ 
+                (+
                     ("GroupCount" Next)
-                    (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next))) 
+                    (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next)))
                 )
                 (then
-                    <TieScoring:tiebreaker> 
+                    <TieScoring:tiebreaker>
 )))))
 
 (define "BonusOpponent"
     (set Var "MoverScore"
-        (+ 
+        (+
             ("GroupCount" Mover)
-            (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next))) 
+            (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (next)))
         )
         (then
-            (set Var "NextScore" 
-                (+ 
+            (set Var "NextScore"
+                (+
                     ("GroupCount" Next)
-                    (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover))) 
+                    (count Groups "ScoreConnectionDirection" if:(= (who at:(to)) (mover)))
                 )
                 (then
-                    <TieScoring:tiebreaker> 
+                    <TieScoring:tiebreaker>
 )))))
 
 //---------------------------
 // Defines for Tiebreaker scoring option
 
-(define "CascadeScore" 
+(define "CascadeScore"
     (max 0
         (max
             (difference
@@ -61,13 +61,13 @@
 
 (define "NoTiebreaker"
     (and
-        (set Score Mover (var "MoverScore")) 
-        (set Score Next  (var "NextScore")) 
+        (set Score Mover (var "MoverScore"))
+        (set Score Next  (var "NextScore"))
 ))
 
 (define "CascadeTiebreaker"
-    (if 
-        (= (var "MoverScore") (var "NextScore")) 
+    (if
+        (= (var "MoverScore") (var "NextScore"))
         (and
             (set Score Mover (* -1 ("CascadeScore" Mover Next)))
             (set Score Next (* -1 ("CascadeScore" Next Mover)))
@@ -80,7 +80,7 @@
     (all Sites
         #1
         if:(or
-            (and 
+            (and
                 (is Empty (site))
                 (is In (site) (sites Outer))
             )
@@ -109,22 +109,22 @@
         (start (set Score Each 0))
         (play
             (do
-                (move 
+                (move
                     Add
                     (to (sites Empty))
                 )
-                ifAfterwards:("AllHave1Connection2Edge" (sites Around (last To) "ConnectionDirection" includeSelf:True)) 
-                (then <Scoring:selScoring>)   
+                ifAfterwards:("AllHave1Connection2Edge" (sites Around (last To) "ConnectionDirection" includeSelf:True))
+                (then <Scoring:selScoring>)
         ))
-        (end 
-            (if 
+        (end
+            (if
                 (no Moves Next)
                 {
-                (if 
+                (if
                     (= (score Mover) (score Next))
                     <TieScoring:finalTie>
                 )
-                (if 
+                (if
                     (!= (score Mover) (score Next))
                     (byScore)
                 )
@@ -146,7 +146,7 @@
 //-------------------------------------------------
 // Options
 
-(option "Size" <BoardSize> args:{<smallSide>} 
+(option "Size" <BoardSize> args:{<smallSide>}
     {
     (item "3  (5 moves each)" <3> "Order 3 board - about 5 moves each")
     (item "4  (11 moves each)" <4> "Order 4 board - about 11 moves each")
@@ -159,122 +159,122 @@
     }
 )
 
-(option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundImage>} 
+(option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundImage>}
     {
-    
+
     (item "TriSquare connections to edge All directions - Orthogonal only form groups"
-        <"TriSquare"> <All> <ThinDotted> <Adjacent> <"Disc"> 
+        <"TriSquare"> <All> <ThinDotted> <Adjacent> <"Disc">
     "Triangle-Square N-2 all directions connect paths to edge - Orthogonal only form groups, about 10% more moves")
-    
+
     (item "TriSquare connections to edge orthogonal only - All directions form groups"
-        <"TriSquare"> <Adjacent> <Hidden> <All> <"Disc"> 
+        <"TriSquare"> <Adjacent> <Hidden> <All> <"Disc">
     "Triangle-Square N-2 Orthogonal connections to edge - ALl direction form groups")
-    
+
     (item "Hex Limping"
-        <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">
     "Hex N / N-1 Grid, about 20% less moves")*
-    
+
     (item "Hex Double Limping"
-        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">
     "Hex N+1 / N-1 Grid")
-    
+
     (item "Hex Grid"
-        <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> <"Disc"> 
+        <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">
     "Hex Grid - Standard")
-    
+
     }
 )
 
 (option "Scoring" <Scoring> args:{<selScoring>>}
     {
-    
+
     (item "Mover Bonus scoring"
-        <"BonusMover"> 
+        <"BonusMover">
         "Scoring Option: Score the size of your largest group, then score an additional point for every group you have on the board."
     )**
-    
+
     (item "Opponent Bonus scoring"
         <"BonusOpponent">
         "Scoring Option: Score the size of your largest group, then score an additional point for every opponent's group on the board."
     )
-    
+
     (item "Largest group only"
         <"GroupScore">
         "Scoring Option: No bonus. Score a point only for each piece in your largest group"
     )
-    
+
     }
 )
 
 (option "TieBreaker" <TieScoring> args:{<tiebreaker> <finalTie>}
     {
-    
+
     (item "A: Largest group, cascading LOSES"
-        <("CascadeTiebreaker")>  <(result Mover Win)> 
+        <("CascadeTiebreaker")>  <(result Mover Win)>
     "Tiebreaker is largest group (excluding tied pairs) LOSES.  If all are paired, last placement wins.")**
-    
+
     (item "B: Last to place"
-        <("NoTiebreaker")>  <(result Mover Win)> 
+        <("NoTiebreaker")>  <(result Mover Win)>
     "Tiebreaker is last to place wins." )
-    
+
     }
 )
 
 //---------------------------------------------
-//(define "ColourBackground" (colour 155 160 195)) 
-(define "ColourBackground" (colour 126 130 156)) 
+//(define "ColourBackground" (colour 155 160 195))
+(define "ColourBackground" (colour 126 130 156))
 
 (metadata
     (info
         {
-        (description "Brain Coral is a placement game based on the principle of placing pieces, such that afterwards, every site of the board remains connected to an empty site at the perimeter via a series of empty sites. 
-            
-            Scoring is based on the size of the largest group plus a bonus factor. 
-            
+        (description "Brain Coral is a placement game based on the principle of placing pieces, such that afterwards, every site of the board remains connected to an empty site at the perimeter via a series of empty sites.
+
+            Scoring is based on the size of the largest group plus a bonus factor.
+
             The standard bonus factor is the number of your own groups.
-            
-            Thus enlarging your largest group has the same value as creating a cloud of singletons, and anything else -- other than forcing your opponent to add to or join together non-largest groups, -- is a wasted opportunity. 
-            
+
+            Thus enlarging your largest group has the same value as creating a cloud of singletons, and anything else -- other than forcing your opponent to add to or join together non-largest groups, -- is a wasted opportunity.
+
             Basic strategy is either
             -- A: to form a defensive cloud to break opponent's efforts into multiple regions, and then, to connect your remaining dots into a single series; or else
-            -- B: to create a large group for as long as you can, then cloud the other areas in self-blocking ways. 
-            
+            -- B: to create a large group for as long as you can, then cloud the other areas in self-blocking ways.
+
             The other bonus options are simpler, and thus need larger boards to be interesting:
-            
+
             Bonus for number of opponent's groups, makes play highly cohesive -- you need to form one big group, -- but with an emphasis on controlling empty teritory, because the opponent is penalised when forced to place isolated pieces at the end.
-            
+
             Playing without any bonus play is similar, but decided earlier, as territory is not an issue, only main group size.
-            
+
             Tiebreakers:
-            The standard tiebreaker is for the underdog to win based on the largest cascading group size without bonus. 
-            If all groups are paired in size with the opponent, last to play wins. 
+            The standard tiebreaker is for the underdog to win based on the largest cascading group size without bonus.
+            If all groups are paired in size with the opponent, last to play wins.
         For informal play, the tie breaker simplified as last-to-place.")
-        (rules "Goal: Score the most points: 
+        (rules "Goal: Score the most points:
             -- One point for each stone in one's largest group.
             -- Bonus points are also added to the scores according to the selected option.
-            
-            The board starts empty. 
-            
-            Players take turns in alternation, placing one of their own stones onto an empty site. 
-            
+
+            The board starts empty.
+
+            Players take turns in alternation, placing one of their own stones onto an empty site.
+
             Restriction on placement:
             Every site of the board must remain connected to an empty perimeter site via a continuous path of empty sites.
-            
-            There is no passing. 
-            
-            The game ends when no more placements can be made.  
-            
+
+            There is no passing.
+
+            The game ends when no more placements can be made.
+
             Players score one point for every stone in their largest group, then, if applicable, score bonus points according to the selected option.
-            
+
             Bonus Options are:
             -- Count of one's own groups. Standard
             -- Count of the opponent's groups
             -- No Bonus
-            
-            The player with the higher score wins. 
-            
-            If the scores are tied, the game is decided by the tiebreaker option used: 
-            A: Cascading largest group LOSES -- i.e. negative scores -- This excludes tied pairs; If all groups are paired, last to place. 
+
+            The player with the higher score wins.
+
+            If the scores are tied, the game is decided by the tiebreaker option used:
+            A: Cascading largest group LOSES -- i.e. negative scores -- This excludes tied pairs; If all groups are paired, last to place.
         B: Last player to have placed a stone.")
         (version "1.3.0")
         (classification "experimental")
@@ -283,14 +283,14 @@
         (date "06-05-2021")
         }
     )
-    
-    (graphics 
+
+    (graphics
         {
         (player Colour P1 (colour 120 36 0))
         (player Colour P2 (colour Cream))
         (piece Scale "Ball" 0.95)
         (piece Scale "Disc" 0.70)
-        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 130) edgeColour:(colour 0 0 0 130)) 
+        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 130) edgeColour:(colour 0 0 0 130))
         (board Colour Phase0 "ColourBackground")
         (board StyleThickness InnerEdges 0.4)
         (board StyleThickness OuterEdges 0.6)
@@ -302,9 +302,9 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         (show Piece Value "Disc" Middle)
-        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 )
         }
     )
-    
+
 )
 

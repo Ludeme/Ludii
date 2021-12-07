@@ -1,12 +1,12 @@
 (game "Ludus Rebellionis (Asymmetric)"
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 	
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Queen" P1)
         (piece "King" P1)
         (piece "Pawn" P2)
     })
-    (rules 
+    (rules
         (start {
             (place "King1" coord:"H8")
             (place "Queen1" coord:"B8")
@@ -19,16 +19,16 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The Ludus Rebellionis appears in a sixteenth century Italian manuscript, with three different diagrams. This version is of an asymmetric game, where a King and Queen play against sixteen Pawns.")
@@ -40,11 +40,11 @@
         (origin  "This game was played in Italy, from around 1500 to 1599.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )

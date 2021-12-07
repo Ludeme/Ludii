@@ -204,15 +204,15 @@
 // For the initial move at distance 2 or 3 of the pawns
 (define "PawnHop"
     (move
-        Hop 
-        (from) 
-        Forward 
-        (between 
+        Hop
+        (from)
+        Forward
+        (between
             (range 1 #1)
-            if:(is Empty (between)) 
+            if:(is Empty (between))
             (apply (set Pending (between)))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         "SetEnPassantLocation"
     )
 )
@@ -262,7 +262,7 @@
                 cells:{0..5 85..90 84 77 69 60 50 39 29 20 12}
             )
         )
-        
+
         (piece "King" Each
             (or {
                 ("KingCaptureStep" All "History_SaveMovementChange")
@@ -289,7 +289,7 @@
                 )
             )
         )
-        
+
         (piece "Pawn" Each
             (or {
                 "StepForwardToEmpty"
@@ -317,26 +317,26 @@
                 )
             )
         )
-        
+
         (map "King"      {(pair 1 "A1") (pair 2 "J10")})
         (map "RookLeft"  {(pair 1 "A5") (pair 2 "F10")})
         (map "RookRight" {(pair 1 "E1") (pair 2 "J6")})
-        
+
         (regions "Pawn_Step2Cells" P1 (sites {"B5" "B4" "B3" "B2" "C2" "D2" "E2"}))
         (regions "Pawn_Step2Cells" P2 (sites {"F9" "G9" "H9" "I9" "I8" "I7" "I6"}))
-        
+
         (regions "Pawn_Step3Cells" P1 (sites             {"B3" "B2" "C2"}))
         (regions "Pawn_Step3Cells" P2 (sites             {"H9" "I9" "I8"}))
-        
+
         (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
         (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
-        
+
         (regions "Region-Dark"   (sites Phase 2))
         (regions "Region-Light"  (sites Phase 0))
         (regions "Region-Medium" (sites Phase 1))
         }
     )
-    
+
     (rules
         (start
             {
@@ -345,13 +345,13 @@
             (place "Rook1"   {"A5" "E1"} state:1)
             (place "Bishop1" {"A3" "B1" "D1"})
             (place "Knight1" {"A4" "C1"})
-            
+
             (place "King2"   coord:"J10" state:1)
             (place "Queen2"  coord:"J9")
             (place "Rook2"   {"F10" "J6"} state:1)
             (place "Bishop2" {"G10" "I10" "J8"})
             (place "Knight2" {"H10" "J7"})
-            
+
             (place "Pawn1" {"B6" "B5" "B4" "B3" "B2" "C2" "D2" "E2" "F2"})
             (place "Pawn2" {"E9" "F9" "G9" "H9" "I9" "I8" "I7" "I6" "I5"})
             }
@@ -390,13 +390,13 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "A chess variant played on a board made of hexagons invented by Isaak Grigorevich Shafran in 1939, and registered in 1956.")
         (aliases {"Shafran's Chess" "Hexagonal Chess"})
         (rules "Shafran Chess is played on a 'narrow' hexagonal board that can be thought of as a hexagonal board of size 6 with some outer spaces removed. The board has 70 spaces.
-            
+
             Piece Movement:
             * Queens, Rooks, Bishops, and Knights move as in Glinski Chess.
             - Queens slide in any of the 12 directions.
@@ -413,7 +413,7 @@
         (date "1939")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.7)
         (piece Scale "King" 0.8)
@@ -422,12 +422,12 @@
         (piece Scale "Bishop" 0.8)
         (piece Scale "Rook" 0.8)
         (board Style Chess)
-        
+
         (region Colour "Region-Dark"   (colour "#b5651d"))
         (region Colour "Region-Light"  (colour "#fff8dc"))
         (region Colour "Region-Medium" (colour "#daae7c"))
     })
-    
+
     (ai
         "Shafran Chess_ai"
     )

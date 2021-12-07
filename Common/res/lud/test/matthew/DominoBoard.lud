@@ -1,31 +1,31 @@
-(game "DominoBoard"  
-    (players 2)  
-    (equipment { 
-        (board (square 21)) 
+(game "DominoBoard"
+    (players 2)
+    (equipment {
+        (board (square 21))
         (hand Each size:21)
         (dominoes)
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
-            (place "Domino03" 242 state:1) 
-            (deal Dominoes 7) 
+            (place "Domino03" 242 state:1)
+            (deal Dominoes 7)
         })
         (play
-            (priority 
+            (priority
                 {
-                (do (move 
-                        (from (sites Occupied by:All container:(mover))) 
-                        (to (sites LineOfPlay)) 
+                (do (move
+                        (from (sites Occupied by:All container:(mover)))
+                        (to (sites LineOfPlay))
                         (then (set Hidden at:(last To) to:All))
-                    ) 
+                    )
                     ifAfterwards:(is PipsMatch)
                 )
-                (move Pass 
-                    (then 
-                        (if 
+                (move Pass
+                    (then
+                        (if
                             (!= (count Pieces "Bag") 0)
-                            (and 
+                            (and
                                 (take Domino)
                                 (moveAgain)
                             )
@@ -36,8 +36,8 @@
             )
         )
         (end {
-            (if ("HandEmpty" Mover) (result Mover Win) ) 
-            (if (all Passed) (result Mover Draw) ) 
-        })  
+            (if ("HandEmpty" Mover) (result Mover Win) )
+            (if (all Passed) (result Mover Draw) )
+        })
     )
 )

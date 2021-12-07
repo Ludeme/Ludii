@@ -3,14 +3,14 @@
         (sites Board)
         if:(if (= (what at:(site)) 0)
             True
-            (not 
-                (is In 
+            (not
+                (is In
                     (what at:(site))
                     (results
-                        from:(site) 
-                        to:(sites (site) "KnightWalk") 
+                        from:(site)
+                        to:(sites (site) "KnightWalk")
                         (what at:(to))
-                    )	
+                    )
                 )
             )
         )
@@ -19,16 +19,16 @@
 
 //------------------------------------------------------------------------------
 
-(game "Anti-Knight Sudoku"  
-    (players 1)  
-    (equipment { 
-        (board (square 9) (values Cell (range 1 9))) 
+(game "Anti-Knight Sudoku"
+    (players 1)
+    (equipment {
+        (board (square 9) (values Cell (range 1 9)))
         (regions {Columns Rows SubGrids})
-    })  
+    })
     (rules
         (start <Challenge>)
-        (play 
-            (satisfy { 
+        (play
+            (satisfy {
                 ("NoPairValuesEqualInKnightMove")
                 (all Different)
             })
@@ -41,19 +41,19 @@
 
 (option "Challenge" <Challenge> args:{ <start> }
     {
-    (item "1"   
-        <(set { 
+    (item "1"
+        <(set {
             {0 9} {8 7} {12 7} {14 8} {20 7} {24 8} {28 1} {30 8} {32 5}
             {34 7} {40 7} {46 8} {48 3} {50 2} {52 6} {56 6} {60 9}
             {66 6} {68 9} {72 3} {80 4}
         })>
         ""
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Anti-Knight Sudoku is a variant of Sudoku involving the concept of Chess knight move.")
@@ -63,7 +63,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Sudoku)
     })

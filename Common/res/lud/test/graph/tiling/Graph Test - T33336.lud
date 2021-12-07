@@ -1,10 +1,10 @@
-(game "Graph Test - T33336"  
-    (players 2)  
-    (equipment { 
-        (board <Board>) 
-        (piece "Marker") 
-    })  
-    (rules 
+(game "Graph Test - T33336"
+    (players 2)
+    (equipment {
+        (board <Board>)
+        (piece "Marker")
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -14,19 +14,19 @@
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item "2" <(tiling T33336 2)>    "")  
-    (item "3" <(tiling T33336 3)>    "")  
-    (item "4x4" <(tiling T33336 4 4)>    "")  
-    (item "4x3" <(tiling T33336 4 3)>    "")  
-    (item "Poly" <(tiling T33336 (poly {{1 0} {1 9} {9 0}}) )>    "")  
-    (item "2, Dual" <(dual (tiling T33336 2))>  "")  
-    (item "3, Dual" <(dual (tiling T33336 3))>  "")  
+    (item "2" <(tiling T33336 2)>    "")
+    (item "3" <(tiling T33336 3)>    "")
+    (item "4x4" <(tiling T33336 4 4)>    "")
+    (item "4x3" <(tiling T33336 4 3)>    "")
+    (item "Poly" <(tiling T33336 (poly {{1 0} {1 9} {9 0}}) )>    "")
+    (item "2, Dual" <(dual (tiling T33336 2))>  "")
+    (item "3, Dual" <(dual (tiling T33336 3))>  "")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

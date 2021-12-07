@@ -2,17 +2,17 @@
     (is Even (count Steps (from) (to)))
 )
 
-(define "BigHop" 
+(define "BigHop"
     (move
-        Hop 
-        (between 
+        Hop
+        (between
             (range 1 9)
             if:#1
             (apply (remove (between)))
-        )           
-        (to 
-            if:(and 
-                (is Empty (to)) 
+        )
+        (to
+            if:(and
+                (is Empty (to))
                 ("NumCapturedPiecesIsOdd")
             )
         )
@@ -21,48 +21,48 @@
 
 //-------------------------------------------------------------------------------
 
-(game "Rimau-Rimau (One Tiger)"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
+(game "Rimau-Rimau (One Tiger)"
+    (players 2)
+    (equipment {
+        (board
+            (merge
+                {
+                (shift 0 2 (square 5 diagonals:Alternating) )
+                (wedge 3)
+                (shift 0 6 (rotate 180 (wedge 3)))
+                }
+            )
             use:Vertex
         )
-        (hand Each) 
-        (piece "Tiger" P1 
+        (hand Each)
+        (piece "Tiger" P1
             (or {
                 ("StepToEmpty")
-                ("BigHop" (is Enemy (who at:(between)))) 
+                ("BigHop" (is Enemy (who at:(between))))
             })
-        ) 
-        (piece "human" P2 "StepToEmpty") 
-    })  
-    (rules 
+        )
+        (piece "human" P2 "StepToEmpty")
+    })
+    (rules
         (start {
             (place "human2" (expand (sites Centre)))
             (place "human2" (handSite P2) count:15)
             (place "Tiger1" (handSite P1))
         } )
-        
+
         phases:{
-        
+
         (phase "PlacementTiger" P1
             (play (move (from (handSite P1)) (to (sites {"C3" "C7"})) (then (moveAgain))))
             (nextPhase Mover "MoveHuman")
         )
-        
+
         (phase "MoveHuman" P1
-            (play 
-                (move 
-                    (from (intersection (expand (sites Centre)) (sites Occupied by:Next))) 
-                    (to (difference (sites Empty) (expand (sites Centre)))) 
-                    (then 
+            (play
+                (move
+                    (from (intersection (expand (sites Centre)) (sites Occupied by:Next)))
+                    (to (difference (sites Empty) (expand (sites Centre))))
+                    (then
                         (if (< 6 (count Sites in:(intersection (expand (sites Centre)) (sites Occupied by:Next))))
                             (moveAgain)
                         )
@@ -71,20 +71,20 @@
             )
             (nextPhase Mover (= 6 (count Sites in:(intersection (expand (sites Centre)) (sites Occupied by:Next)))) "Movement")
         )
-        
+
         (phase "PlacementHuman" P2
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
-                ) 
+                )
             )
-            (nextPhase 
-                ("HandEmpty" P2) 
+            (nextPhase
+                ("HandEmpty" P2)
                 "Movement"
             )
         )
-        
+
         (phase "Movement"
             (play (forEach Piece) )
             (end {
@@ -99,7 +99,7 @@
 //-------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Rimau-Rimau is a hunt game played in the late nineteenth century in Singapore. ")
@@ -111,13 +111,13 @@
         (origin  "This game was played in Singapore, around 1889.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Rimau-Rimau (One Tiger)_ai"
     )

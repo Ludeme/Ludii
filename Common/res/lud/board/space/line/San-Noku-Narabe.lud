@@ -1,21 +1,21 @@
 (game "San-Noku-Narabe"
-    (players 2)  
-    (equipment 
+    (players 2)
+    (equipment
         {
         (board (square 3) use:Vertex)
         (hand Each)
         (piece "Marker" Each (move (from) (to (sites Empty))))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "San-Noku-Narabe is a simple game of alignment played in Japan, typically in small villages and by children as well as adults. It is notably one of the only documented games played by the Ainu people.")
@@ -40,12 +40,12 @@
         (origin  "This game was played in Japan, around 1951.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "San-Noku-Narabe_ai"
     )

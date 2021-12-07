@@ -1,10 +1,10 @@
-(game "Graph Test - Quadhex"  
-    (players 2)  
-    (equipment { 
-        <Board> 
-        (piece "Disc") 
-    })  
-    (rules 
+(game "Graph Test - Quadhex"
+    (players 2)
+    (equipment {
+        <Board>
+        (piece "Disc")
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -21,22 +21,22 @@
     (item "5 Layers" <(board (quadhex 5))>  "5 Layers")
     (item "8 Layers" <(board (quadhex 8))>  "8 Layers")
     (item "16 Layers" <(board (quadhex 16))>  "16 Layers")
-    
+
     (item "3 Layers (Thirds)" <(board (quadhex 3 thirds:True))>  "3 Layers (Thirds)")
     (item "4 Layers (Thirds)" <(board (quadhex 4 thirds:True))>  "4 Layers (Thirds)")
     (item "5 Layers (Thirds)" <(board (quadhex 5 thirds:True))>  "5 Layers (Thirds)")
     (item "8 Layers (Thirds)" <(board (quadhex 8 thirds:True))>  "8 Layers (Thirds)")
-    
+
     (item "4 Layers (Vertex)" <(board (quadhex 4) use:Vertex)>  "4 Layers (Vertex)")
     (item "4 Layers (Thirds, Vertex)" <(board (quadhex 4 thirds:True) use:Vertex)>  "4 Layers (Thirds, Vertex)")
-    
+
     }
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")
@@ -49,7 +49,7 @@
         (origin  "This game was played in England, from around 1850CE to 1883CE.")
         }
     )
-    (graphics 
+    (graphics
         {
         //        (board Style Chess)
         }

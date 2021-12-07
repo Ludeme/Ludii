@@ -1,7 +1,7 @@
 (game "To Kinegi tou Lagou"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (add
                 (remove
                     (remove
@@ -24,14 +24,14 @@
                 )
                 edges:{
                 {15 8}  {22 6}  {4 12}  {19 2}  {18 36}  {38 20}  {40 14}  {16 26}
-                {28 24}  {23 32}  {31 11}  {10 34}  {5 30}  {3 35}  {39 1}  {27 7}              
+                {28 24}  {23 32}  {31 11}  {10 34}  {5 30}  {3 35}  {39 1}  {27 7}
                 }
             )
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -39,8 +39,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "To Kynégi tou Lagoú (\"Hare Hunt\") is a blockade game played by children in Greece. Played on a square board, the game is played by three people; one moving the hare, one moving the hunter, and the other moving the two hounds. ")
@@ -52,9 +52,9 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
 )

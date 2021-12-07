@@ -1,39 +1,39 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:(pips)
     )
 )
 
-(define "NextSiteFromDist6" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFromDist6"
+    (trackSite Move
+        from:#1
         steps:6
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "RemoveAPiece" 
+(define "RemoveAPiece"
     (move
         Remove
-        (site) 
-    )		
+        (site)
+    )
 )
 
 (define "Bar" (mapEntry (mover)))
 
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
+(define "NotEnemyOrOnlyOne"
+    (or
         (and
-            (or 
-                (not (is In (to) (sites Mover))) 
-                (and 
-                    (is In (to) (sites Mover)) 
+            (is Enemy (who at:(to)))
+            (= (topLevel at:(to)) 0)
+        )
+        (and
+            (or
+                (not (is In (to) (sites Mover)))
+                (and
+                    (is In (to) (sites Mover))
                     (= (size Stack at:(to)) 0)
                 )
             )
@@ -48,46 +48,46 @@
 
 //-----------------------------------------------------------------------------
 
-(game "Ludus Lombardorum"  
-    (players 2)  
-    (equipment { 
-        (board (rectangle 2 13) 
+(game "Ludus Lombardorum"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13)
             {
             (track "Track1" {6 0..5 18..12} P1 directed:True)
             (track "Track2" {19 12..18 5..0} P2 directed:True)
-            } 
+            }
             use:Vertex
-        ) 
+        )
         (dice num:3)
         (map {(pair 1 19 ) (pair 2 6)}) // Bar
-        (piece "Disc" Each) 
+        (piece "Disc" Each)
         (regions P1 { 0..5 }) // P1 Home
         (regions P2 { 13..18 })  // P2 Home
     } )
-    
+
     (rules
-        (start { 
+        (start {
             (place Stack "Disc1" 0 count:15)
             (place Stack "Disc2" 13 count:15)
         })
-        
-        (play 
-            (do 
+
+        (play
+            (do
                 (if (not "SameTurn") (roll))
                 next:(forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)
-                        (if ("CanEscape" ("NextSiteFrom" (site))) 
+                        (if ("CanEscape" ("NextSiteFrom" (site)))
                             ("RemoveAPiece")
-                            (move 
+                            (move
                                 (from (site))
                                 (to ("NextSiteFrom" (site))
                                     if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        if:(is Enemy (who at:(to))) 
-                                        (fromTo 
-                                            (from (to)) 
+                                    (apply
+                                        if:(is Enemy (who at:(to)))
+                                        (fromTo
+                                            (from (to))
                                             (to ("Bar"))
                                         )
                                     )
@@ -95,17 +95,17 @@
                             )
                         )
                     )
-                    (then 
-                        (if 
-                            (not (all DiceUsed)) 
+                    (then
+                        (if
+                            (not (all DiceUsed))
                             (moveAgain)
                         )
                     )
                 )
             )
         )
-        
-        (end 
+
+        (end
             (if ("AllPieceEscaped")
                 (result Mover Win)
             )
@@ -115,8 +115,8 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The Ludus Lombardorum is a European Tables game played in medieval England. It was described in a fourteenth century manuscript that also describes similar games.")
@@ -128,10 +128,10 @@
         (origin  "This game was played in England, from around 1300 to 1350.")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType Backgammon)
     })
-    
+
 )

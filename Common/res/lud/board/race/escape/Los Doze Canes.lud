@@ -2,11 +2,11 @@
 
 (define "RemoveAPiece" (move Remove (from) ) )
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (fromTo (from (to)) (to (handSite Next)))
-    ) 
+    )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
@@ -16,9 +16,9 @@
 (game "Los Doze Canes"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -31,20 +31,20 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
                 if:("DieNotUsed")
                 (if (or
                         (not (is Enemy (who at:"SiteToMoveOnTrack")))
-                        (and 
+                        (and
                             (is Enemy (who at:"SiteToMoveOnTrack"))
                             (= 1 (size Stack at:"SiteToMoveOnTrack"))
                         )
                     )
-                    (move 
-                        (from) 
-                        (to 
-                            "SiteToMoveOnTrack" 
-                            "CaptureEnemyPiece" 
+                    (move
+                        (from)
+                        (to
+                            "SiteToMoveOnTrack"
+                            "CaptureEnemyPiece"
                         )
                     )
                 )
@@ -52,18 +52,18 @@
         )
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" (handSite P1) count:12)
             (place Stack "Disc2" (handSite P2) count:12)
         })
         (play
-            (do 
-                (if (not "SameTurn") (roll)) 
-                next:(or 
-                    (forEach Piece top:True) 
+            (do
+                (if (not "SameTurn") (roll))
+                next:(or
+                    (forEach Piece top:True)
                     (forEach Piece container:(mover) top:True)
-                    (then 
+                    (then
                         (if (not (all DiceUsed))
                             (moveAgain)
                         )
@@ -83,7 +83,7 @@
                 })
                 (result Mover Win)
             )
-            (if (and 
+            (if (and
                     (< 2 (size Stack at:12))
                     (< 2 (size Stack at:0))
                 )
@@ -106,8 +106,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Los Doze Canes is a race game related to other European Tables games. It was played by children. It is described in the Libro de los Juegos of Alfonso X.")
@@ -120,7 +120,7 @@
             (origin  "This game was played in Spain, around 1283.")
             }
         )
-        
+
         (graphics {
             (show Edges Hidden)
             (board Style Table)
@@ -128,6 +128,6 @@
             (stackType 1 Count)
             (stackType 2 Count)
         })
-        
+
     )
-    
+

@@ -3,39 +3,39 @@
 )
 
 (define "CaptureToPieceAndResetCounter"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
-            (remove 
-                (to) 
+            (remove
+                (to)
                 (then (set Counter))
             )
         )
-    ) 
+    )
 )
 
 (define "KingNotCheckedAndToEmpty"
-    (and 
-        (is Empty (to)) 
+    (and
+        (is Empty (to))
         (or (not ("IsInCheck" "King" Mover at:(to))) (no Pieces Next "King" in:(sites Board)))
-    )   
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
 )
 
-(define "PlacePawn" 
+(define "PlacePawn"
     (do
-        (move 
-            (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
-            (to 
+        (move
+            (from (sites Occupied by:#1 container:"Hand" component:"Pawn"))
+            (to
                 (intersection (sites Empty) (sites #1 "PawnPlacementRows"))
             )
         )
@@ -45,19 +45,19 @@
 
 //------------------------------------------------------------------------------
 
-(game "Unachess"  
-    (players {(player N) (player S)})  
-    (equipment { 
-        (board (square 8)) 
-        
-        (piece "Pawn" Each 
+(game "Unachess"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+
+        (piece "Pawn" Each
             (or {
-                "StepForwardToEmpty" 
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
                 }
                 (then
                     (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
+                        (if (is In (last To) (sites Mover "Promotion"))
                             (moveAgain)
                         )
                         (set Counter)
@@ -65,56 +65,56 @@
                 )
             )
         )
-        
-        (piece "Rook" Each 
+
+        (piece "Rook" Each
             (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Orthogonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPieceAndResetCounter"
-                ) 
+                )
             )
         )
-        (piece "King" Each 
+        (piece "King" Each
             (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Step
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPieceAndResetCounter"
-                ) 
+                )
             )
         )
-        (piece "Bishop" Each 
+        (piece "Bishop" Each
             (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Diagonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPieceAndResetCounter"
-                ) 
+                )
             )
         )
-        (piece "Knight" Each 
+        (piece "Knight" Each
             (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPieceAndResetCounter"
-                ) 
+                )
             )
         )
-        (piece "Queen" Each 
+        (piece "Queen" Each
             (move
-                Slide 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPieceAndResetCounter"
-                ) 
-            ) 
+                )
+            )
         )
-        
+
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
@@ -123,25 +123,25 @@
         (regions "PawnPlacementRows" P1 (expand (sites Bottom) steps:3))
         (regions "PawnPlacementRows" P2 (expand (sites Top) steps:3))
         (hand Each size:6)
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Pawn1" (handSite P1 0) count:8)
             (place "Pawn2" (handSite P2 0) count:8)
-            (place "Rook1" (handSite P1 1) count:2 state:1) (place "Knight1" (handSite P1 2) count:2) (place "Bishop1" (handSite P1 3) count:2) (place "Queen1" (handSite P1 4)) (place "King1" (handSite P1 5) state:1) 
-            (place "Rook2" (handSite P2 1) count:2 state:1) (place "Knight2" (handSite P2 2) count:2) (place "Bishop2" (handSite P2 3) count:2) (place "Queen2" (handSite P2 4)) (place "King2" (handSite P2 5) state:1) 
+            (place "Rook1" (handSite P1 1) count:2 state:1) (place "Knight1" (handSite P1 2) count:2) (place "Bishop1" (handSite P1 3) count:2) (place "Queen1" (handSite P1 4)) (place "King1" (handSite P1 5) state:1)
+            (place "Rook2" (handSite P2 1) count:2 state:1) (place "Knight2" (handSite P2 2) count:2) (place "Bishop2" (handSite P2 3) count:2) (place "Queen2" (handSite P2 4)) (place "King2" (handSite P2 5) state:1)
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
-                (do 
+                (do
                     (or {
                         (do
-                            (move 
-                                (from (sites Occupied by:Mover container:"Hand" components:{"King" "Queen" "Rook" "Bishop" "Knight"})) 
+                            (move
+                                (from (sites Occupied by:Mover container:"Hand" components:{"King" "Queen" "Rook" "Bishop" "Knight"}))
                                 (to (sites Empty))
-                            ) 
+                            )
                             <PlacementConditions:PlacementConditions>
                         )
                         ("PlacePawn" Mover)
@@ -152,28 +152,28 @@
                 )
             )
         )
-        
+
         (end {
-            (if (and 
+            (if (and
                     (and ("IsInCheck" "King" Next) (= (count Pieces Mover "King" in:(sites Board)) 1))
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
-            (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
+            )
+            (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw))
         })
     )
 )
 
 (option "Setup" <PlacementConditions> args:{ <PlacementConditions> }
     {
-    (item "v1"    	
+    (item "v1"
         <
         ifAfterwards:True
         >
     "Original")**
-    
-    (item "v2"    	
+
+    (item "v2"
         <
         ifAfterwards:(not ("IsInCheck" "King" Next))
         >
@@ -182,8 +182,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "A version of Chess where all pieces start in reserve.")
@@ -204,12 +204,12 @@
         (date "1995")
         }
     )
-    
+
     (graphics {
         (show Check "King")
         (piece Scale "Pawn" 0.825)
         (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
         (board Style Chess)
     })
-    
+
 )

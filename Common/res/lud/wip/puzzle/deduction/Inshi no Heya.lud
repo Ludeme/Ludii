@@ -1,5 +1,5 @@
 (game "Inshi no Heya"
-    (players 1)  
+    (players 1)
     (equipment {
         (board (rectangle <Challenge:dim>) (values Cell (range 1 <Challenge:max>)))
         (hints { <Challenge:hints> })
@@ -21,8 +21,8 @@
 
 (option "Challenge" <Challenge> args:{ <dim> <max> <hints> }
     {
-    (item "Janko.at" 
-        <5 5> 
+    (item "Janko.at"
+        <5 5>
         <5>
         <
         (hint {0 5} 4)
@@ -40,10 +40,10 @@
         (hint {23} 1)
         >
         ""
-    )   
-    
-    (item "Wikipedia" 
-        <5 5> 
+    )
+
+    (item "Wikipedia"
+        <5 5>
         <5>
         <
         (hint {0 5} 4)
@@ -60,15 +60,15 @@
         (hint {23} 5)
         >
         ""
-    ) 
+    )
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
     (info {
-        
-    }) 
+
+    })
     (graphics {
         (board Style Graph)
         (show Edges Hidden)

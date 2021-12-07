@@ -1,7 +1,7 @@
 (game "Yut Nori"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (merge {
                 (rectangle 1 6)
                 (rectangle 6 1)
@@ -12,9 +12,9 @@
             })
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -22,32 +22,32 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Yut Nori is a race game played in Korea. Traditionally, it is played in the days following the Lunar New Year.")
         (aliases {"Yut" "Yunnori" "Nyout" "Yoot"})
         (rules "The game is played between two partners or two teams who play in turns, sometimes it is played with more teams. There is no limit in the number of participants in a game, which means that the game can be played by a considerable group. When played with large groups it is not uncommon for some group members never to cast the sticks: they still participate discussing the strategy.
-            
+
             The start of the game is determined by each team casting the yut-sticks. The team with the highest score starts first.
-            
+
             Each team then casts the sticks in turn, then moves a mal according to the score achieved. One turn usually consists of only one cast. However, a player achieving a yut or mo earns an extra cast for the turn; if he/she casts a yut or mo at the second cast, he/she earns an extra cast again, so there is no limit to the number of times a player can cast again before the end of a turn, provided he or she keeps casting yuts or mos. The respective scores can be played separately if wished, each given to another mal (or group of mals, see below), but a score earned from one cast cannot be split into two moves—for example, a geol (advance three steps) cannot be split into a do (one step) and a gae (two steps).
-            
+
             The four possible courses of the game of Yut
             As long as there are mals outside the board, a team can either put a new mal onto the board according to the scores it got, or move a mal already on the board. The mals travel around the board and can move forward only. However, when landing on one of the big stations (in the corner and the centre), the team can choose to take the shorter way should they wish to. There are four possible courses, the default course being longest one with no abbreviation (No. 4).
-            
+
             If a mal lands on a station occupied by the opponent's team, the opponent's mal is removed from the course and returned to the starting position, and the current player is allowed to cast again.
-            
+
             If a mal lands on a station occupied by the own team, these mals can form a group and travel together from that point on.  However, this bears a risk: If an opponent lands their mal on a station occupied by a group of mals of the opponent, all mals in the group are removed from the course.
-            
+
             For example, if one casts two yuts and one do at his/her first turn in the game, possible moves would include (see The Stations below for the station names):
-            
+
             Put a mal on the board at the yut station (uses the first yut score); advance to mo (uses the do score), then to sok-yut (uses the second yut).
             Put a mal on the board at the yut station (uses first yut score); put another mal on the board at the same yut station (uses the second yut score), causing the two mals to move together from then on; advance them to mo (uses the do).
             Put a mal on the board at the yut station (uses the first yut); advance to duet-geol (uses the second yut), then to duet-yut (uses the do).
             The game is won by the team who brings all their mals home first, that is complete the course with all their mals. A course is completed if a mal passes the station where the game is started (cham-meoki). Landing on cham-meoki is no finish, but any score going \"beyond\" this station completes a home run. Yut is often played for three or more wins.
-            
+
         ")
         (source "<a href=\"https://en.wikipedia.org/wiki/Yut\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (version "1.3.0")
@@ -55,11 +55,11 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
-        
+
         (show Edges Diagonal Hidden)
         (show Symbol "disc" Vertex (sites {10 15 0 5 22}) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.7)
     })
-    
+
 )

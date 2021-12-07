@@ -1,39 +1,39 @@
-(game "Block"  
-    (players 2)  
-    (equipment { 
-        (boardless Square) 
+(game "Block"
+    (players 2)
+    (equipment {
+        (boardless Square)
         (hand Each size:21)
         (dominoes)
-    })  
-    (rules 
+    })
+    (rules
         (start {
-            (deal Dominoes 7) 
+            (deal Dominoes 7)
             (set Hidden What (sites Hand P1) to:P2)
             (set Hidden What (sites Hand P2) to:P1)
         })
         (play
-            (priority 
+            (priority
                 {
-                (do (move 
-                        (from 
-                            (forEach 
-                                (sites Hand Mover) 
+                (do (move
+                        (from
+                            (forEach
+                                (sites Hand Mover)
                                 if:(is Occupied (site))
                             )
-                        ) 
-                        (to (sites LineOfPlay)) 
-                        (then 
+                        )
+                        (to (sites LineOfPlay))
+                        (then
                             (and
                                 (set Hidden What at:(last To) False to:P1)
                                 (set Hidden What at:(last To) False to:P2)
                             )
                         )
-                    ) 
+                    )
                     ifAfterwards:(is PipsMatch)
                 )
-                (move Pass 
-                    (then 
-                        (if 
+                (move Pass
+                    (then
+                        (if
                             (!= (count Pieces "Bag") 0)
                             (and {
                                 (take Domino)
@@ -47,15 +47,15 @@
             )
         )
         (end {
-            (if ("HandEmpty" Mover) (result Mover Win) ) 
-            (if (all Passed) (result Mover Draw) ) 
-        })  
+            (if ("HandEmpty" Mover) (result Mover Win) )
+            (if (all Passed) (result Mover Draw) )
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "One of the most commonly played Dominoes game, Block uses most of the rules shared by other Dominoes games worldwide.")
@@ -67,8 +67,8 @@
         (credit "Eric Piette")
         }
     )
-    
-    (ai 
+
+    (ai
         "Block_ai"
     )
 )

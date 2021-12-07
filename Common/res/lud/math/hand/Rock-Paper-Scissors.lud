@@ -1,42 +1,42 @@
-(game "Rock-Paper-Scissors"  
-    (players 2)  
-    (mode Simultaneous)  
-    (equipment { 
-        (board 
-            (union 
-                (square 1) 
+(game "Rock-Paper-Scissors"
+    (players 2)
+    (mode Simultaneous)
+    (equipment {
+        (board
+            (union
+                (square 1)
                 (shift 0 2 (square 1))
             )
         )
-        (hand Each size:3) 
+        (hand Each size:3)
         (piece "Rock" Each)
         (piece "Paper" Each)
         (piece "Scissors" Each)
         }
-    )  
-    (rules 
-        
-        (start { 
-            (place "Rock1" (handSite P1)) (place "Rock2" (handSite P2)) 
-            (place "Paper1" (handSite P1 1)) (place "Paper2" (handSite P2 1)) 
-            (place "Scissors1" (handSite P1 2)) (place "Scissors2" (handSite P2 2)) 
+    )
+    (rules
+
+        (start {
+            (place "Rock1" (handSite P1)) (place "Rock2" (handSite P2))
+            (place "Paper1" (handSite P1 1)) (place "Paper2" (handSite P2 1))
+            (place "Scissors1" (handSite P1 2)) (place "Scissors2" (handSite P2 2))
         })
-        
-        (play 
-            (or 
-                (move 
-                    (from (sites Occupied by:P1)) 
-                    (to 0) 
+
+        (play
+            (or
+                (move
+                    (from (sites Occupied by:P1))
+                    (to 0)
                     P1
-                ) 
-                (move 
-                    (from (sites Occupied by:P2)) 
-                    (to 1) 
+                )
+                (move
+                    (from (sites Occupied by:P2))
+                    (to 1)
                     P2
                 )
             )
         )
-        
+
         (end {
             (if
                 (or {
@@ -44,30 +44,30 @@
                     (and (= (what at:0) (id "Paper1")) (= (what at:1) (id "Paper2")))
                     (and (= (what at:0) (id "Scissors1")) (= (what at:1) (id "Scissors2")))
                 })
-                (result Mover Draw) 
-            ) 
-            (if 
+                (result Mover Draw)
+            )
+            (if
                 (or {
                     (and (= (what at:0) (id "Rock1")) (= (what at:1) (id "Scissors2")))
                     (and (= (what at:0) (id "Paper1")) (= (what at:1) (id "Rock2")))
                     (and (= (what at:0) (id "Scissors1")) (= (what at:1) (id "Paper2")))
                 })
-                (result P1 Win) 
-            ) 
-            (if 
+                (result P1 Win)
+            )
+            (if
                 (or {
                     (and (= (what at:0) (id "Paper1")) (= (what at:1) (id "Scissors2")))
                     (and (= (what at:0) (id "Scissors1")) (= (what at:1) (id "Rock2")))
                     (and (= (what at:0) (id "Rock1")) (= (what at:1) (id "Paper2")))
                 })
-                (result P2 Win) 
-            ) 
-        }) 
+                (result P2 Win)
+            )
+        })
     )
 )
 
 (metadata
-    
+
     (info
         {
         (description "Rock-paper-scissors is a hand game with its origins in East Asia. The names and actual gestures vary over time and place. Jan-Ken, a Japanese version, uses the hand gestures for rock, paper, and scissors, from the late nineteenth century. This version came to North America and Europe in the early twentieth century through contact with Japan.")
@@ -79,15 +79,15 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour HumanLight))
         (player Colour P2 (colour HumanDark))
         (no Board)
     })
-    
-    (ai 
+
+    (ai
         "Rock-Paper-Scissors_ai"
     )
-    
+
 )

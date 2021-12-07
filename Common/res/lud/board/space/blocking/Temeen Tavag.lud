@@ -5,22 +5,22 @@
         (hand Each)
         (piece "Disc" Each "StepToEmpty")
     })
-    (rules 
-        (start 
+    (rules
+        (start
             (place "Disc" "Hand" count:2)
         )
         phases:{
-        (phase "Placement" 
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+        (phase "Placement"
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
                 )
-            ) 
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )  
-        
-        (phase "Movement" 
+        )
+
+        (phase "Movement"
             (play (forEach Piece) )
         )
         }
@@ -32,23 +32,23 @@
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item "Circle"     
+    (item "Circle"
         <
-        (board 
+        (board
             (remove (rotate 45 (concentric {1 4})) edges:{{1 4}})
             use:Vertex
         )
-        > 
+        >
         "The board is a circle."
     )*
-    
-    (item "Square"     
+
+    (item "Square"
         <
-        (board 
+        (board
             (remove (square 2 diagonals:Solid) edges:{{0 3}})
             use:Vertex
         )
-        > 
+        >
         "The board is a square."
     )
     }
@@ -56,21 +56,21 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Temeen Tavag (Observed)" {
         "Board/Circle"
     })*
-    
+
     (ruleset "Ruleset/Dorvon Bux (Observed)" {
         "Board/Square"
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Temeen Tavag (\"Camel hoof\") is a blockade game played in Mongolia. It can also be played on a square board, when it is known as Dörvön Bux (the four bulls). ")
@@ -87,7 +87,7 @@
     )
     (graphics {
         (useFor "Ruleset/Temeen Tavag (Observed)" (board Background image:"disc.svg" edgeColour:(colour 90 90 90) scale:0.5 offsetX:-0.6))
-        
+
     })
     (ai
         "Temeen Tavag_ai"

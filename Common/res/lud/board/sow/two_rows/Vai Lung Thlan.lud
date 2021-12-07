@@ -2,9 +2,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Vai Lung Thlan" 
-    (players 2)  
-    (equipment { 
+(game "Vai Lung Thlan"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 6 store:None
             (track "Track" "5,W,N,E" loop:True)
         )
@@ -12,23 +12,23 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    
-    (rules 
-        (start (set Count 5 to:(sites Track)))		  
-        (play 
+    })
+
+    (rules
+        (start (set Count 5 to:(sites Track)))
+        (play
             (move
                 Select
-                (from 
-                    (sites Mover) 
+                (from
+                    (sites Mover)
                     if:(< 0 (count at:(from)))
                 )
-                (then 
-                    (sow 
+                (then
+                    (sow
                         if:(= (count at:(to)) 1)
-                        apply:(fromTo 
-                            (from (to)) 
-                            (to (handSite Mover)) 
+                        apply:(fromTo
+                            (from (to))
+                            (to (handSite Mover))
                             count:(count at:(to))
                         )
                         backtracking:True
@@ -39,7 +39,7 @@
         (end
             (if (no Moves Mover)
                 (byScore {
-                    (score P1 ("PiecesCaptured" P1)) 
+                    (score P1 ("PiecesCaptured" P1))
                     (score P2 ("PiecesCaptured" P2))
                 })
             )
@@ -49,7 +49,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Vai Lung Thlān is a two-row mancala-style board game played by the Mizo people of India, Bangladesh, and Myanmar.")
@@ -61,7 +61,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

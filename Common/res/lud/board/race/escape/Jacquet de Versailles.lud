@@ -1,74 +1,74 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:(pips)
     )
 )
 
-(define "StartPos" 
-    (trackSite Move 
-        from:("Bar" (mover)) 
+(define "StartPos"
+    (trackSite Move
+        from:("Bar" (mover))
         steps:1
     )
 )
 
-(define "NextSiteFromDistDoubleDice" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFromDistDoubleDice"
+    (trackSite Move
+        from:#1
         steps:(/ (count Pips) 2)
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "RemoveAPiece" 
+(define "RemoveAPiece"
     (move
         Remove
-        (site) 
-    )		
+        (site)
+    )
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
 
 (define "CanEscape" (= #1 Off))
 
-(define "PieceInOpponentQuadrantOrNoPieceInTheBoard" 
+(define "PieceInOpponentQuadrantOrNoPieceInTheBoard"
     (or {
-        (= 
-            (count Sites 
-                in:(intersection 
-                    (sites Occupied by:Mover) 
-                    (difference 
-                        (sites Board) 
+        (=
+            (count Sites
+                in:(intersection
+                    (sites Occupied by:Mover)
+                    (difference
+                        (sites Board)
                         "StartPos"
                     )
                 )
-            ) 
+            )
             0
         )
         (not (is Empty ("Bar" (mover))))
         (< (size Stack at:("StartPos")) 14)
-        (!= 
-            (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "OppositeQuadrant"))) 
+        (!=
+            (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "OppositeQuadrant")))
             0
-        ) 
+        )
     })
 )
 
-(define "NumSitesInFirstQuadrantWithMoreThan2Pieces" 
-    (count Sites 
-        in:(forEach 
-            (intersection (sites Occupied by:Mover) (sites Mover "Home")) 
-            if:(>= (size Stack at:(site)) 2) 
+(define "NumSitesInFirstQuadrantWithMoreThan2Pieces"
+    (count Sites
+        in:(forEach
+            (intersection (sites Occupied by:Mover) (sites Mover "Home"))
+            if:(>= (size Stack at:(site)) 2)
         )
     )
 )
 
 (define "AllPieceInOpponentSide"
-    (= 0 
-        (count Sites 
-            in:(difference 
-                (sites Occupied by:Mover) 
+    (= 0
+        (count Sites
+            in:(difference
+                (sites Occupied by:Mover)
                 (sites Mover "OppositeQuadrant")
             )
         )
@@ -77,36 +77,36 @@
 
 (define "Bar" (mapEntry #1))
 
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
 (define "NumPiece" (size Stack in:(sites Occupied by:#1)))
 
-(define "SetScoreOf" 
-    (score 
-        #1 
-        (if (is Mover #1) 
-            (if 
-                (= ("NumPiece" #2) 15) 
-                2 
+(define "SetScoreOf"
+    (score
+        #1
+        (if (is Mover #1)
+            (if
+                (= ("NumPiece" #2) 15)
+                2
                 1
-            ) 
+            )
             0
         )
     )
 )
 
-(define "UpdateCounterDoublePlay" 
+(define "UpdateCounterDoublePlay"
     (if (< (value Player Mover) (- (/ (count Pips) 2) 1))
-        (and 
-            (moveAgain) 
+        (and
+            (moveAgain)
             (if (< (value Player Mover) 0)
                 (set Value Mover 1)
                 (set Value Mover (+ 1 (value Player Mover)))
@@ -118,55 +118,55 @@
 
 //-----------------------------------------------------------------------------
 
-(game "Jacquet de Versailles"  
-    (players 2)  
-    (equipment { 
-        (board (rectangle 2 13) 
+(game "Jacquet de Versailles"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13)
             {
             (track "Track1" {6 13..18 20..25 12..7 5..0} P1 directed:True)
             (track "Track2" {19 12..7 5..0 13..18 20..25} P2 directed:True)
-            } 
+            }
             use:Vertex
-        ) 
+        )
         (dice num:2)
-        (piece "Disc" Each) 
+        (piece "Disc" Each)
         (map {(pair 1 6 ) (pair 2 19)}) // Bar
         (regions "Home" P1 { 13..18 }) // P1 Home (first quadrant)
         (regions "Home" P2 { 12..7 }) // P2 Home (first quadrant)
         (regions "OppositeQuadrant" P1 { 0..5 }) // Opposite Quadrant of P1
         (regions "OppositeQuadrant" P2 { 20..25 }) // Opposite Quadrant of P2
     } )
-    
+
     (rules
-        (start { 
+        (start {
             (place Stack "Disc1" 13 count:15)
             (place Stack "Disc2" 12 count:15)
         })
-        
-        (play 
+
+        (play
             (do
-                (do 
+                (do
                     (if (not "SameTurn") (roll))
                     next:(if (all DiceEqual)
                         (forEach Site
                             (sites Occupied by:Mover)
                             (if (and ("CanEscape" ("NextSiteFromDistDoubleDice" (site))) ("AllPieceInOpponentSide"))
                                 ("RemoveAPiece")
-                                (if (or 
+                                (if (or
                                         (!= (site) "StartPos")
-                                        (and 
+                                        (and
                                             (= (site) "StartPos")
                                             ("PieceInOpponentQuadrantOrNoPieceInTheBoard")
                                         )
                                     )
-                                    (move 
+                                    (move
                                         (from (site))
                                         (to ("NextSiteFromDistDoubleDice" (site))
                                             if:("NotEnemyOrOnlyOne")
-                                            (apply 
-                                                if:(is Enemy (who at:(to))) 
-                                                (fromTo 
-                                                    (from (to)) 
+                                            (apply
+                                                if:(is Enemy (who at:(to)))
+                                                (fromTo
+                                                    (from (to))
                                                     (to ("Bar" (next)))
                                                 )
                                             )
@@ -182,21 +182,21 @@
                                 (sites Occupied by:Mover)
                                 (if (and ("CanEscape" ("NextSiteFrom" (site))) ("AllPieceInOpponentSide"))
                                     ("RemoveAPiece")
-                                    (if (or 
+                                    (if (or
                                             (!= (site) "StartPos")
-                                            (and 
+                                            (and
                                                 (= (site) "StartPos")
                                                 ("PieceInOpponentQuadrantOrNoPieceInTheBoard")
                                             )
                                         )
-                                        (move 
+                                        (move
                                             (from (site))
                                             (to ("NextSiteFrom" (site))
                                                 if:("NotEnemyOrOnlyOne")
-                                                (apply 
-                                                    if:(is Enemy (who at:(to))) 
-                                                    (fromTo 
-                                                        (from (to)) 
+                                                (apply
+                                                    if:(is Enemy (who at:(to)))
+                                                    (fromTo
+                                                        (from (to))
                                                         (to ("Bar" (next)))
                                                     )
                                                 )
@@ -205,9 +205,9 @@
                                     )
                                 )
                             )
-                            (then 
-                                (if 
-                                    (not (all DiceUsed)) 
+                            (then
+                                (if
+                                    (not (all DiceUsed))
                                     (moveAgain)
                                 )
                             )
@@ -217,10 +217,10 @@
                 ifAfterwards:(<= ("NumSitesInFirstQuadrantWithMoreThan2Pieces") 2)
             )
         )
-        
+
         (end {
             (if ("AllPieceEscaped")
-                (byScore { 
+                (byScore {
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 } )
@@ -231,8 +231,8 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Jacquet de Versailles is a European Tables game played in France in the nineteenth century.")
@@ -244,12 +244,12 @@
         (origin  "This game was played in France, around 1840.")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType 0 Backgammon)
         (stackType 1 Count)
         (stackType 2 Count)
     })
-    
+
 )

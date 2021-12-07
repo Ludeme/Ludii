@@ -1,19 +1,19 @@
 // Version of the game without the simultaneous phase.
 
 (define "CaptureEnemyToPiece"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
             (remove (to))
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Santaraj"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)})
     (equipment {
         (board (square 8) )
         (hand Each size:5)
@@ -35,106 +35,106 @@
                 (to if:(not (is Friend (who at:(to))))
                     ("CaptureEnemyToPiece")
                 )
-            )		
+            )
         )
         (piece "Castle" Each
             (move
-                Slide 
+                Slide
                 Orthogonal
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureEnemyToPiece"
-                ) 
-            )		
+                )
+            )
         )
         (piece "Ferz_noCross" Each
-            (move Hop Diagonal 
-                (between (exact 2) if:True) 
+            (move Hop Diagonal
+                (between (exact 2) if:True)
                 (to
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not (is Friend (who at:(to))))
                     ("CaptureEnemyToPiece")
-                ) 
-            )		
+                )
+            )
         )
         (piece "Knight" Each
             (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureEnemyToPiece"
-                ) 
-            )		
+                )
+            )
         )
         (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
+            (or
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
                 (then
                     (if (is In (last To) (sites Mover "Promotion"))
                         (promote (last To) (piece "Queen") Mover)
                     )
                 )
-            )		
-        ) 
+            )
+        )
         (piece "Queen" Each
             (move Step
                 Diagonal
                 (to if:(not (is Friend (who at:(to))))
                     ("CaptureEnemyToPiece")
                 )
-            )		
+            )
         )
         (regions "Promotion" P1 (sites Top) )
         (regions "Promotion" P2 (sites Bottom) )
     })
-    (rules 
-        (start {   
+    (rules
+        (start {
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
-            (place "Castle1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Ferz_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
-            (place "Castle2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Ferz_noCross2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King_noCross2" coord:"E8") 
+            (place "Castle1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Ferz_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1")
+            (place "Castle2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Ferz_noCross2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King_noCross2" coord:"E8")
         })
-        (play 
+        (play
             (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-                (then 
+                (then
                     (if
                         (and
-                            (> (count Pieces P1) 1) 
-                            (> (count Pieces P2) 1) 
-                        )	
+                            (> (count Pieces P1) 1)
+                            (> (count Pieces P2) 1)
+                        )
                         (set Counter)
                     )
                 )
-            )		
+            )
         )
         (end {
-            (if (and 
+            (if (and
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
-            (if 
-                (and 
+            )
+            (if
+                (and
                     (or
-                        (= (count Pieces P1) 1) 
-                        (= (count Pieces P2) 1) 
-                    )	
+                        (= (count Pieces P1) 1)
+                        (= (count Pieces P2) 1)
+                    )
                     (= (counter) 20)
-                ) 
+                )
                 (result Mover Draw)
-            ) 
+            )
         })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Säntäräj is a capturing game played in Ethiopia since at least the seventeenth century, among the ruling classes. It is very similar to Shatranj, though it begins with an opening phase known as Wärära (\"marshalling of troops\"), where players make their moves simultaneously without regard to alternating turns, until the first piece is captured.")
@@ -147,7 +147,7 @@
         (origin  "This game was played in Ethiopia., from around 1892 to 1971.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.825)
         (show Check "King_noCross")
@@ -155,6 +155,6 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )
 

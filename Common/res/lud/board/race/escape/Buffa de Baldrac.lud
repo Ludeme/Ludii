@@ -1,23 +1,23 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:#2
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
+(define "NotEnemyOrOnlyOne"
+    (or
         (not (is Enemy (who at:(to))))
         (= (topLevel at:(to)) 0)
     )
 )
 
-(define "AllPiecesInLastQuadrant" 
-    ("NoSites" 
-        (difference 
-            (sites Occupied by:Mover) 
+(define "AllPiecesInLastQuadrant"
+    ("NoSites"
+        (difference
+            (sites Occupied by:Mover)
             (sites Mover "LastQuadrant")
         )
     )
@@ -28,9 +28,9 @@
 (game "Buffa de Baldrac"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -44,20 +44,20 @@
         (dice d:6 num:3)
         (piece "Disc" Each
             (or
-                (forEach Die 
-                    combined:True 
+                (forEach Die
+                    combined:True
                     if:(and
                         ("DieNotUsed")
                         (<= 0 ("NextSiteFrom" (from) (pips)))
                     )
-                    (move 
+                    (move
                         (from (from))
-                        (to 
+                        (to
                             ("NextSiteFrom" (from) (pips))
                             if:("NotEnemyOrOnlyOne")
-                            (apply 
+                            (apply
                                 (if (is Enemy (who at:(to)))
-                                    (fromTo 
+                                    (fromTo
                                         (from (to))
                                         (to (handSite Next))
                                     )
@@ -65,21 +65,21 @@
                             )
                         )
                     )
-                    (then 
+                    (then
                         (if (not (all DiceUsed))
                             (moveAgain)
                         )
                     )
                 )
                 (if ("AllPiecesInLastQuadrant")
-                    (forEach Die 
-                        combined:True 
+                    (forEach Die
+                        combined:True
                         if:(and
                             ("DieNotUsed")
                             (= End ("NextSiteFrom" (from) (pips)))
                         )
                         (move Remove (from))
-                        (then 
+                        (then
                             (if (not (all DiceUsed))
                                 (moveAgain)
                             )
@@ -95,30 +95,30 @@
         (map "StartTrack" {(pair P1 0) (pair P2 12)})
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" (handSite P1) count:15)
             (place Stack "Disc2" (handSite P2) count:15)
         })
-        (play 
-            (max Moves 
+        (play
+            (max Moves
                 (do (if (not "SameTurn") (roll))
                     next:
                     (if (not (is Empty (handSite Mover)))
-                        (forEach Die 
-                            combined:True 
+                        (forEach Die
+                            combined:True
                             if:(and
                                 ("DieNotUsed")
                                 (is In ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1)) (sites Mover "FirstQuadrant"))
                             )
-                            (move 
+                            (move
                                 (from (handSite Mover))
-                                (to 
+                                (to
                                     ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1))
                                     if:("NotEnemyOrOnlyOne")
                                 )
                             )
-                            (then 
+                            (then
                                 (if (not (all DiceUsed))
                                     (moveAgain)
                                 )
@@ -135,8 +135,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Buf de Baldriac is a European Tables game played in Spain in the thirteenth century. It is recorded in Alfonso X's Libro de los Juegos.")
@@ -149,7 +149,7 @@
         (origin  "This game was played in Spain, around 1283.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
@@ -157,6 +157,6 @@
         (stackType 1 Count)
         (stackType 2 Count)
     })
-    
+
 )
 

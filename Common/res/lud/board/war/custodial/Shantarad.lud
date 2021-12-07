@@ -1,6 +1,6 @@
 (define "EnemyOutsideCentre"
-    (and 
-        (is Enemy (who at:(between))) 
+    (and
+        (is Enemy (who at:(between)))
         (not (= (centrePoint) (between)))
     )
 )
@@ -14,30 +14,30 @@
     })
 )
 
-(define "CaptureAndMoveAgain" 
-    (apply 
-        (and 
-            (remove (between)) 
-            (if 
+(define "CaptureAndMoveAgain"
+    (apply
+        (and
+            (remove (between))
+            (if
                 "FlankFromOrthogonalStep"
                 (moveAgain)
-                (if (no Moves Next) 
-                    (and 
-                        (set Pending) 
-                        (moveAgain) 
+                (if (no Moves Next)
+                    (and
+                        (set Pending)
+                        (moveAgain)
                     )
                 )
-            ) 
+            )
         )
     )
 )
 
 (define "Custodial"
-    (custodial 
+    (custodial
         #1
         Orthogonal
-        (between 
-            (max 1) 
+        (between
+            (max 1)
             if:"EnemyOutsideCentre"
             #2
         )
@@ -47,60 +47,60 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shantarad"  
-    (players 2)  
-    (equipment { 
-        (board (square 5)) 
-        (hand Each) 
-        
-        (piece "Marker" Each 
+(game "Shantarad"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (hand Each)
+
+        (piece "Marker" Each
             (move
                 Step
-                Orthogonal 
+                Orthogonal
                 (to if:(is Empty (to)))
                 (then
                     ("Custodial" (from (last To)) "CaptureAndMoveAgain")
                 )
             )
         )
-    }) 
-    
-    (rules 
+    })
+
+    (rules
         (start (place "Marker" "Hand" count:12))
         phases:{
         (phase "Placement"
-            (play 
+            (play
                 (if (= (count Moves) 24)
                     (forEach Piece)
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (difference (sites Empty) (centrePoint))) 
-                        (then 
-                            (if 
+                    (move
+                        (from (handSite Mover))
+                        (to (difference (sites Empty) (centrePoint)))
+                        (then
+                            (if
                                 (or (= (count Moves) 24) (not "SameTurn") )
                                 (moveAgain)
                             )
                         )
-                    ) 
+                    )
                 )
-            ) 
+            )
             (nextPhase (= (count Moves) 25) "Movement")
         )
-        (phase "Movement" 
-            (play 
+        (phase "Movement"
+            (play
                 (if "SameTurn"
                     (move
                         Step
-                        (from (last To)) 
-                        Orthogonal 
-                        (to if:(and 
-                                (is Empty (to)) 
+                        (from (last To))
+                        Orthogonal
+                        (to if:(and
+                                (is Empty (to))
                                 (or {
-                                    (and (is Enemy (who at:(ahead (to) W))) (is Friend (who at:(ahead (ahead (to) W) W))) )  
-                                    (and (is Enemy (who at:(ahead (to) E))) (is Friend (who at:(ahead (ahead (to) E) E))) )  
-                                    (and (is Enemy (who at:(ahead (to) N))) (is Friend (who at:(ahead (ahead (to) N) N))) )  
-                                    (and (is Enemy (who at:(ahead (to) S))) (is Friend (who at:(ahead (ahead (to) S) S))) )  
-                                }) 
+                                    (and (is Enemy (who at:(ahead (to) W))) (is Friend (who at:(ahead (ahead (to) W) W))) )
+                                    (and (is Enemy (who at:(ahead (to) E))) (is Friend (who at:(ahead (ahead (to) E) E))) )
+                                    (and (is Enemy (who at:(ahead (to) N))) (is Friend (who at:(ahead (ahead (to) N) N))) )
+                                    (and (is Enemy (who at:(ahead (to) S))) (is Friend (who at:(ahead (ahead (to) S) S))) )
+                                })
                             )
                         )
                         (then
@@ -108,21 +108,21 @@
                         )
                     )
                     (do
-                        (forEach Piece) 
+                        (forEach Piece)
                         ifAfterwards:(not (no Moves Next))
                     )
                 )
             )
         )
         }
-        
+
         (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Shantarad is a game with captures played in Somaliland. It is closely related to the game Seega, and is typically played with stones on a board made from lines drawn in the sand.")
@@ -136,7 +136,7 @@
         (origin  "This game was played in Somaliland, around 1931.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))

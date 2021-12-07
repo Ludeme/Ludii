@@ -1,31 +1,31 @@
-(game "Feed the Ducks"  
-    (players 2) 
-    (equipment { 
-        (board (hex 5)) 
+(game "Feed the Ducks"
+    (players 2)
+    (equipment {
+        (board (hex 5))
         (piece "Marker" Each)
         (piece "Disc" Neutral)
-    })  
-    (rules 
+    })
+    (rules
         (start {
-            (place "Marker1" {"A5" "C7" "D8" "F9" "H9" "I9" "I7" "I5" "F2" "C1" "A1" "A2"}) 
+            (place "Marker1" {"A5" "C7" "D8" "F9" "H9" "I9" "I7" "I5" "F2" "C1" "A1" "A2"})
             (place "Marker2" {"A4" "A3" "B1" "D1" "E1" "G3" "H4" "I6" "I8" "G9" "E9" "B6" })
         })
         phases:{
-        (phase "Throw Bread" 
-            (play 
-                (move 
-                    Add 
+        (phase "Throw Bread"
+            (play
+                (move
+                    Add
                     (piece "Disc0")
-                    (to (sites Empty)) 
+                    (to (sites Empty))
                     (then (attract (from (last To))))
                 )
-            ) 
+            )
             (nextPhase "Move Bread")
         )
-        (phase "Move Bread" 
-            (play 
-                (move 
-                    (from (sites Occupied by:Neutral)) 
+        (phase "Move Bread"
+            (play
+                (move
+                    (from (sites Occupied by:Neutral))
                     (to (difference (sites Empty) (sites Direction from:(last To))))
                     (then (attract (from (last To))))
                 )
@@ -33,16 +33,16 @@
         )
         }
         (end {
-            (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win) ) 
+            (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win) )
             (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win) )
-        })  
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Feed the Ducks was invented in 2011 by Néstor Romeral Andrés.
@@ -57,13 +57,13 @@
         (date "2011")
         }
     )
-    
+
     (graphics {
         (player Colour Neutral (colour Yellow))
     })
-    
-    (ai 
+
+    (ai
         "Feed the Ducks_ai"
     )
-    
+
 )

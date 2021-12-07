@@ -2,26 +2,26 @@
 // Moves
 
 (define "Move"
-    (move 
-        (from 
+    (move
+        (from
             (from)
-            if:(> (state at:(from)) 1)	
-        ) 
-        (to 
-            (sites Distance 
+            if:(> (state at:(from)) 1)
+        )
+        (to
+            (sites Distance
                 (step
                     Orthogonal
-                    (to 
+                    (to
                         if:(#1)
                     )
-                ) 
-                from:(from) 
+                )
+                from:(from)
                 (range 1 #2)
             )
-            if:(is Empty (to)) 
-            (apply 
+            if:(is Empty (to))
+            (apply
                 (set State at:(from) #3)
-            ) 
+            )
         )
     )
 )
@@ -64,16 +64,16 @@
     (union (sites Empty) (sites (values Remembered "Occupied Mover")))
 )
 
-(define "ForbiddenSpotsBoat" 
-    (union 
-        (sites "Mountain") 
-        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater")) ) 
+(define "ForbiddenSpotsBoat"
+    (union
+        (sites "Mountain")
+        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater")) )
     )
 )
 
 (define "BoatMoveSpots"
-    (difference 
-        (union (sites Empty) (sites (values Remembered "Occupied Mover"))) 
+    (difference
+        (union (sites Empty) (sites (values Remembered "Occupied Mover")))
         ("ForbiddenSpotsBoat")
     )
 )
@@ -96,21 +96,21 @@
 (define "GroundAttackCheck"
     (if ("GroundAttackFrom")
         (is In (to) (union (sites (values Remembered "Enemy Ground")) (sites (values Remembered "Occupied Neutral"))))
-        (is In (to) (union (sites (values Remembered "Occupied Enemy")) (sites (values Remembered "Occupied Neutral")))) 
+        (is In (to) (union (sites (values Remembered "Occupied Enemy")) (sites (values Remembered "Occupied Neutral"))))
     )
 )
 
 (define "BoatAttackCheck"
     (if ("BoatAttackFrom")
         (is In (to) (sites (values Remembered "Enemy Boats")))
-        (is In (to) (union (sites (values Remembered "Occupied Enemy")) (sites (values Remembered "Occupied Neutral")))) 
+        (is In (to) (union (sites (values Remembered "Occupied Enemy")) (sites (values Remembered "Occupied Neutral"))))
     )
 )
 
 (define "AircraftAttackCheck"
     (if ("AircraftAttackFrom")
         (is In (to) (sites (values Remembered "Enemy Aircrafts")))
-        (is In (to) (union (sites (values Remembered "Occupied Enemy")) (sites (values Remembered "Occupied Neutral")))) 
+        (is In (to) (union (sites (values Remembered "Occupied Enemy")) (sites (values Remembered "Occupied Neutral"))))
     )
 )
 
@@ -124,21 +124,21 @@
 (define "GroundCounterAttackCheck"
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (union (sites Occupied #4 components:{"Soldier" "Motorbike" "Tank" "Speeder" "Shooter" "Launcher" "Antiair" "Boss" "Battleship" "Artillery" "Base" "Town" "Factory" "Dock" "Airport" "Cruiser" "Submarine"}) (sites (values Remembered "Occupied Neutral"))))
-        (is In (#3) (union (sites Occupied #4) (sites (values Remembered "Occupied Neutral")))) 
+        (is In (#3) (union (sites Occupied #4) (sites (values Remembered "Occupied Neutral"))))
     )
 )
 
 (define "BoatCounterAttackCheck"
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (sites Occupied #4 components:{"Submarine" "Battleship" "Cruiser"}))
-        (is In (#3) (union (sites Occupied #4) (sites (values Remembered "Occupied Neutral")))) 
+        (is In (#3) (union (sites Occupied #4) (sites (values Remembered "Occupied Neutral"))))
     )
 )
 
 (define "AircraftCounterAttackCheck"
     (if ("CounterAttackCheckFrom" #1 #2 #5)
         (is In (#3) (sites Occupied #4 components:{"Fighter" "Helicopter" "Bomber"}))
-        (is In (#3) (union (sites Occupied #4) (sites (values Remembered "Occupied Neutral")))) 
+        (is In (#3) (union (sites Occupied #4) (sites (values Remembered "Occupied Neutral"))))
     )
 )
 
@@ -159,16 +159,16 @@
                 ("BoatAttackCheck")
             })
         )
-        (then 
+        (then
             (do
-                (and 
+                (and
                     (set Value at:(last To) (max 0 (- (value Piece at:(last To)) ("AttackerDamage" (last From) (last To) False))))
                     (set State at:(last From) 0)
                 )
                 next:(if (and (= 8 (state at:(last To))) (!= (mover) (who at:(last To))))  	// state = 8, means its a building
                     // Attacking a building
                     "AttackBuilding"
-                    
+
                     // Attacking a unit
                     (if (= (value Piece at:(last To)) 0)
                         (remove (last To))
@@ -179,13 +179,13 @@
                                 ("AircraftCounterAttackCheck" (last To) by:Enemy (last From) by:Mover {"Antiair" "Fighter"})
                                 ("BoatCounterAttackCheck" (last To) by:Enemy (last From) by:Mover {"Submarine"})
                             })
-                            (if (<= (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)) 0)							
+                            (if (<= (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)) 0)
                                 (remove (last From))
-                                (set Value at:(last From) (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)))			
-                            ) 
+                                (set Value at:(last From) (- (value Piece at:(last From)) ("AttackerDamage" (last To) (last From) True)))
+                            )
                             (set Value at:(last From) (value Piece at:(last From)))
                         )
-                    ) 
+                    )
                 )
             )
         )
@@ -203,7 +203,7 @@
     (/
         (*
             (if (is In (#2) "AircraftSites" )
-                ("DamageMultiply" (* (value Piece at:(#1)) 4) #1 )								// Planes are never affected by terrain									
+                ("DamageMultiply" (* (value Piece at:(#1)) 4) #1 )								// Planes are never affected by terrain
                 (if (and
                         (is In (#2) "HumanSites")
                         (is In (#1) (sites Occupied by:All component:"Shooter") )					// Shooter does double damage against humans
@@ -224,8 +224,8 @@
                     )
                 )
             )
-            ("DoctrineMultiply" #1 #2 #3) 
-        ) 
+            ("DoctrineMultiply" #1 #2 #3)
+        )
         128000				// (4x4x4x5x100x4)
     )
 )
@@ -244,7 +244,7 @@
             (set Value at:(last To) (/ (mapEntry "MaxHealth" (what at:(last To))) 2) )
         })
         (set Value at:(last To) (value Piece at:(last To)))
-    )  
+    )
 )
 
 (define "CloseCombatAttack"
@@ -263,16 +263,16 @@
 // #3 If this is a counter Attack (boolean)
 (define "DoctrineMultiply"
     (* {
-        (if (is In (#1) "HumanSites" ) 
-            ("GetDoctrineValue" (who at:(#1)) 1) 
-            (if (is In (#1) "DirectVehicleSites" ) 
-                ("GetDoctrineValue" (who at:(#1)) 2) 
-                (if (is In (#1) "RangedVehicleSites" ) 
-                    ("GetDoctrineValue" (who at:(#1)) 3) 
-                    (if (is In (#1) "AircraftSites" ) 
-                        ("GetDoctrineValue" (who at:(#1)) 4) 
-                        (if (is In (#1) "BoatSites" ) 
-                            ("GetDoctrineValue" (who at:(#1)) 5) 
+        (if (is In (#1) "HumanSites" )
+            ("GetDoctrineValue" (who at:(#1)) 1)
+            (if (is In (#1) "DirectVehicleSites" )
+                ("GetDoctrineValue" (who at:(#1)) 2)
+                (if (is In (#1) "RangedVehicleSites" )
+                    ("GetDoctrineValue" (who at:(#1)) 3)
+                    (if (is In (#1) "AircraftSites" )
+                        ("GetDoctrineValue" (who at:(#1)) 4)
+                        (if (is In (#1) "BoatSites" )
+                            ("GetDoctrineValue" (who at:(#1)) 5)
                             4
                         )
                     )
@@ -280,7 +280,7 @@
             )
         )
         (if (and (= 8 (state at:(#2))) (!= (mover) (who at:(#2)))) 			// state = 8, means its a building
-            ("GetDoctrineValue" (who at:(#1)) 6) 5 
+            ("GetDoctrineValue" (who at:(#1)) 6) 5
         )
         (if (> (who at:(#2)) 0) ("GetDoctrineValue" (who at:(#2)) 8) 4)
         (if #3 ("GetDoctrineValue" (who at:(#1)) 10) ("GetDoctrineValue" (who at:(#1)) 9))
@@ -301,21 +301,21 @@
                 (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))) )
             )
         )
-        (to 
+        (to
             (sites Around (from) Orthogonal
-                if:(is In (to) "MoverBuildingSites") 		
+                if:(is In (to) "MoverBuildingSites")
             )
         )
-        (then 
+        (then
             (and {
-                (set Value at:(last From) 
-                    (min 
-                        (mapEntry "MaxHealth" (what at:(last From))) 
+                (set Value at:(last From)
+                    (min
+                        (mapEntry "MaxHealth" (what at:(last From)))
                         (- (+ (value Piece at:(last From)) (value Piece at:(last To))) 1)
                     )
                 )
-                (set Value at:(last To) 
-                    (max 
+                (set Value at:(last To)
+                    (max
                         (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From)) ))
                         1
                     )
@@ -331,22 +331,22 @@
 
 (define "BuyMove"
     (forEach Site (sites Occupied by:Mover container:(mover) #1)
-        (move 
-            (from (site)) 
-            (to 
+        (move
+            (from (site))
+            (to
                 #2
-                if:(and 
+                if:(and
                     (is Empty (to))
                     (<= (/ (* (count at:(site)) ("GetDoctrineValue" (who at:(site)) 7)) 4) (score Mover))
                 )
             )
             copy:True
-            (then 
+            (then
                 (and
-                    (addScore 
-                        Mover 
+                    (addScore
+                        Mover
                         (- (/  (* (count at:(last From)) ("GetDoctrineValue" (who at:(last From)) 7)) 4))
-                    )	
+                    )
                     (set State at:(last To) 0)
                 )
             )
@@ -354,33 +354,33 @@
     )
 )
 
-(define "BuyHumanMove" 
-    ("BuyMove" components:{"Soldier" "Motorbike"} 
-        (difference 
+(define "BuyHumanMove"
+    ("BuyMove" components:{"Soldier" "Motorbike"}
+        (difference
             (sites Around (sites Occupied by:Mover component:"Town") Orthogonal)
             "ForbiddenSpotsHuman"
         )
     )
 )
 
-(define "BuyVehicleMove" 
-    ("BuyMove" components:{"Speeder" "Shooter" "Tank" "Boss" "Antiair" "Launcher" "Artillery"} 
-        (difference 
+(define "BuyVehicleMove"
+    ("BuyMove" components:{"Speeder" "Shooter" "Tank" "Boss" "Antiair" "Launcher" "Artillery"}
+        (difference
             (sites Around (sites Occupied by:Mover component:"Factory") Orthogonal)
             "ForbiddenSpotsVehicle"
         )
     )
 )
 
-(define "BuyAircraftMove" 
-    ("BuyMove" components:{"Helicopter" "Fighter" "Bomber"} 
+(define "BuyAircraftMove"
+    ("BuyMove" components:{"Helicopter" "Fighter" "Bomber"}
         (sites Around (sites Occupied by:Mover component:"Airport") Orthogonal)
     )
 )
 
-(define "BuyBoatMove" 
-    ("BuyMove" components:{"Cruiser" "Submarine" "Battleship"} 
-        (difference 
+(define "BuyBoatMove"
+    ("BuyMove" components:{"Cruiser" "Submarine" "Battleship"}
+        (difference
             (sites Around (sites Occupied by:Mover component:"Dock") Orthogonal)
             "ForbiddenSpotsBoat"
         )
@@ -425,13 +425,13 @@
 //------------------------------------------------------------------------------\
 // Player removal
 
-(define "RemovePiecesIfPlayerHasLost" 
-    (if 
+(define "RemovePiecesIfPlayerHasLost"
+    (if
         (and {
-            (is Active #1) 
+            (is Active #1)
             (> (count Active) 2)
             (= (where "Base" #1) Off)
-        }) 
+        })
         (forEach Site (sites Occupied by:#1 )
             (if (is In (site) (sites Occupied by:#1 components:{"Town" "Base" "Factory" "Dock" "Airport"}))
                 (take Control of:All by:Neutral at:(site))
@@ -478,45 +478,45 @@
 
 (define "TwoPlayerMaps"
     // state (movement)
-    (map "Movement" { 
-        (pair 1 8) (pair 2 8) (pair 3 8) (pair 4 8) (pair 5 8) (pair 6 8) (pair 7 8) (pair 8 8) (pair 9 8) (pair 10 8)  
-        (pair 11 4) (pair 12 4) (pair 13 6) (pair 14 6) 
+    (map "Movement" {
+        (pair 1 8) (pair 2 8) (pair 3 8) (pair 4 8) (pair 5 8) (pair 6 8) (pair 7 8) (pair 8 8) (pair 9 8) (pair 10 8)
+        (pair 11 4) (pair 12 4) (pair 13 6) (pair 14 6)
         (pair 15 7) (pair 16 7) (pair 17 5) (pair 18 5) (pair 19 5) (pair 20 5) (pair 21 3) (pair 22 3)
         (pair 23 5) (pair 24 5) (pair 25 4) (pair 26 4) (pair 27 4) (pair 28 4)
         (pair 29 5) (pair 30 5) (pair 31 7) (pair 32 7) (pair 33 6) (pair 34 6)
         (pair 35 6) (pair 36 6) (pair 37 6) (pair 38 6) (pair 39 5) (pair 40 5)
-        (pair 41 8) (pair 42 8) (pair 43 8) (pair 44 8) (pair 45 8) (pair 46 8) (pair 47 8) (pair 48 8) (pair 49 8) (pair 50 8)   
+        (pair 41 8) (pair 42 8) (pair 43 8) (pair 44 8) (pair 45 8) (pair 46 8) (pair 47 8) (pair 48 8) (pair 49 8) (pair 50 8)
     })
-    
+
     // value (health)
-    (map "MaxHealth" { 
-        (pair 1 100) (pair 2 100) (pair 3 100) (pair 4 100) (pair 5 100) (pair 6 100) (pair 7 100) (pair 8 100) (pair 9 100) (pair 10 100) 
-        (pair 11 30) (pair 12 30) (pair 13 40) (pair 14 40) 
+    (map "MaxHealth" {
+        (pair 1 100) (pair 2 100) (pair 3 100) (pair 4 100) (pair 5 100) (pair 6 100) (pair 7 100) (pair 8 100) (pair 9 100) (pair 10 100)
+        (pair 11 30) (pair 12 30) (pair 13 40) (pair 14 40)
         (pair 15 60) (pair 16 60) (pair 17 60) (pair 18 60) (pair 19 80) (pair 20 80) (pair 21 150) (pair 22 150)
         (pair 23 50) (pair 24 50) (pair 25 50) (pair 26 50) (pair 27 40) (pair 28 40)
         (pair 29 40) (pair 30 40) (pair 31 100) (pair 32 100) (pair 33 100) (pair 34 100)
         (pair 35 70) (pair 36 70) (pair 37 100) (pair 38 100) (pair 39 120) (pair 40 120)
-        (pair 41 100) (pair 42 100) (pair 43 100) (pair 44 100) (pair 45 100) (pair 46 100) (pair 47 100) (pair 48 100) (pair 49 100) (pair 50 100)   
+        (pair 41 100) (pair 42 100) (pair 43 100) (pair 44 100) (pair 45 100) (pair 46 100) (pair 47 100) (pair 48 100) (pair 49 100) (pair 50 100)
     })
-    
-    (map "DamageMultiplier" { 
-        (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 0) (pair 6 0) (pair 7 0) (pair 8 0) (pair 9 0) (pair 10 0)  
-        (pair 11 50) (pair 12 50) (pair 13 50) (pair 14 50) 
+
+    (map "DamageMultiplier" {
+        (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 0) (pair 6 0) (pair 7 0) (pair 8 0) (pair 9 0) (pair 10 0)
+        (pair 11 50) (pair 12 50) (pair 13 50) (pair 14 50)
         (pair 15 40) (pair 16 40) (pair 17 40) (pair 18 40) (pair 19 50) (pair 20 50) (pair 21 50) (pair 22 50)
         (pair 23 100) (pair 24 100) (pair 25 50) (pair 26 50) (pair 27 100) (pair 28 100)
         (pair 29 70) (pair 30 70) (pair 31 100) (pair 32 100) (pair 33 80) (pair 34 80)
         (pair 35 50) (pair 36 50) (pair 37 80) (pair 38 80) (pair 39 50) (pair 40 50)
-        (pair 41 0) (pair 42 0) (pair 43 0) (pair 44 0) (pair 45 0) (pair 46 0) (pair 47 0) (pair 48 0) (pair 49 0) (pair 50 0)   
+        (pair 41 0) (pair 42 0) (pair 43 0) (pair 44 0) (pair 45 0) (pair 46 0) (pair 47 0) (pair 48 0) (pair 49 0) (pair 50 0)
     })
 )
 
 (define "FourPlayerMaps"
     // state (movement)
-    (map "Movement" { 
-        (pair 1 8) (pair 2 8) (pair 3 8) (pair 4 8) (pair 5 8) (pair 6 8) (pair 7 8) (pair 8 8) (pair 9 8) (pair 10 8) 
-        (pair 11 8) (pair 12 8) (pair 13 8) (pair 14 8) (pair 15 8) (pair 16 8) (pair 17 8) (pair 18 8) (pair 19 8) (pair 20 8) 
-        (pair 21 4) (pair 22 4) (pair 23 4) (pair 24 4) 
-        (pair 25 6) (pair 26 6) (pair 27 6) (pair 28 6) 
+    (map "Movement" {
+        (pair 1 8) (pair 2 8) (pair 3 8) (pair 4 8) (pair 5 8) (pair 6 8) (pair 7 8) (pair 8 8) (pair 9 8) (pair 10 8)
+        (pair 11 8) (pair 12 8) (pair 13 8) (pair 14 8) (pair 15 8) (pair 16 8) (pair 17 8) (pair 18 8) (pair 19 8) (pair 20 8)
+        (pair 21 4) (pair 22 4) (pair 23 4) (pair 24 4)
+        (pair 25 6) (pair 26 6) (pair 27 6) (pair 28 6)
         (pair 29 7) (pair 30 7) (pair 31 7) (pair 32 7) (pair 33 5) (pair 34 5) (pair 35 5) (pair 36 5)
         (pair 37 5) (pair 38 5) (pair 39 5) (pair 40 5) (pair 41 3) (pair 42 3) (pair 43 3) (pair 44 3)
         (pair 45 5) (pair 46 5) (pair 47 5) (pair 48 5) (pair 49 4) (pair 50 4)
@@ -526,11 +526,11 @@
         (pair 69 6) (pair 70 6) (pair 71 6) (pair 72 6) (pair 73 6) (pair 74 6)
         (pair 75 6) (pair 76 6) (pair 77 5) (pair 78 5) (pair 79 5) (pair 80 5)
         (pair 81 8) (pair 82 8) (pair 83 8) (pair 84 8) (pair 85 8) (pair 86 8) (pair 87 8) (pair 88 8) (pair 89 8) (pair 90 8)
-        (pair 91 8) (pair 92 8) (pair 93 8) (pair 94 8) (pair 95 8) (pair 96 8) (pair 97 8) (pair 98 8) (pair 99 8) (pair 100 8)  
+        (pair 91 8) (pair 92 8) (pair 93 8) (pair 94 8) (pair 95 8) (pair 96 8) (pair 97 8) (pair 98 8) (pair 99 8) (pair 100 8)
     })
-    
+
     // value (health)
-    (map "MaxHealth" { 
+    (map "MaxHealth" {
         (pair 1 100) (pair 2 100) (pair 3 100) (pair 4 100) (pair 5 100) (pair 6 100) (pair 7 100) (pair 8 100) (pair 9 100) (pair 10 100)
         (pair 11 100) (pair 12 100) (pair 13 100) (pair 14 100) (pair 15 100) (pair 16 100) (pair 17 100) (pair 18 100) (pair 19 100) (pair 20 100)
         (pair 21 30) (pair 22 30) (pair 23 30) (pair 24 30)
@@ -546,8 +546,8 @@
         (pair 81 100) (pair 82 100) (pair 83 100) (pair 84 100) (pair 85 100) (pair 86 100) (pair 87 100) (pair 88 100) (pair 89 100) (pair 90 100)
         (pair 91 100) (pair 92 100) (pair 93 100) (pair 94 100) (pair 95 100) (pair 96 100) (pair 97 100) (pair 98 100) (pair 99 100) (pair 100 100)
     })
-    
-    (map "DamageMultiplier" { 
+
+    (map "DamageMultiplier" {
         (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 0) (pair 6 0) (pair 7 0) (pair 8 0) (pair 9 0) (pair 10 0)
         (pair 11 0) (pair 12 0) (pair 13 0) (pair 14 0) (pair 15 0) (pair 16 0) (pair 17 0) (pair 18 0) (pair 19 0) (pair 20 0)
         (pair 21 50) (pair 22 50) (pair 23 50) (pair 24 50)
@@ -569,144 +569,144 @@
 // Doctrines
 
 (define "DoctrineSetup"
-    (map "NoDoctrine" { 
-        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5) 
+    (map "NoDoctrine" {
+        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "SpecialForces" { 
-        (pair 1 6) (pair 2 3) (pair 3 3) (pair 4 3) (pair 5 3) (pair 6 5) 
+
+    (map "SpecialForces" {
+        (pair 1 6) (pair 2 3) (pair 3 3) (pair 4 3) (pair 5 3) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "BruteStrength" { 
-        (pair 1 3) (pair 2 6) (pair 3 3) (pair 4 3) (pair 5 3) (pair 6 5) 
+
+    (map "BruteStrength" {
+        (pair 1 3) (pair 2 6) (pair 3 3) (pair 4 3) (pair 5 3) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "Sharpshooter" { 
-        (pair 1 3) (pair 2 3) (pair 3 6) (pair 4 3) (pair 5 3) (pair 6 5) 
+
+    (map "Sharpshooter" {
+        (pair 1 3) (pair 2 3) (pair 3 6) (pair 4 3) (pair 5 3) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "AcePilot" { 
-        (pair 1 3) (pair 2 3) (pair 3 3) (pair 4 6) (pair 5 3) (pair 6 5) 
+
+    (map "AcePilot" {
+        (pair 1 3) (pair 2 3) (pair 3 3) (pair 4 6) (pair 5 3) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "SeaDog" { 
-        (pair 1 3) (pair 2 3) (pair 3 3) (pair 4 3) (pair 5 6) (pair 6 5) 
+
+    (map "SeaDog" {
+        (pair 1 3) (pair 2 3) (pair 3 3) (pair 4 3) (pair 5 6) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "GuerrillaWarfare" { 
-        (pair 1 3) (pair 2 3) (pair 3 3) (pair 4 3) (pair 5 3) (pair 6 10) 
+
+    (map "GuerrillaWarfare" {
+        (pair 1 3) (pair 2 3) (pair 3 3) (pair 4 3) (pair 5 3) (pair 6 10)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "ForeignInvader" { 
-        (pair 1 5) (pair 2 5) (pair 3 5) (pair 4 5) (pair 5 5) (pair 6 2) 
+
+    (map "ForeignInvader" {
+        (pair 1 5) (pair 2 5) (pair 3 5) (pair 4 5) (pair 5 5) (pair 6 2)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "Conscription" { 
-        (pair 1 2) (pair 2 2) (pair 3 2) (pair 4 2) (pair 5 2) (pair 6 5) 
+
+    (map "Conscription" {
+        (pair 1 2) (pair 2 2) (pair 3 2) (pair 4 2) (pair 5 2) (pair 6 5)
         (pair 7 2) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "EliteTraining" { 
-        (pair 1 6) (pair 2 6) (pair 3 6) (pair 4 6) (pair 5 6) (pair 6 5) 
+
+    (map "EliteTraining" {
+        (pair 1 6) (pair 2 6) (pair 3 6) (pair 4 6) (pair 5 6) (pair 6 5)
         (pair 7 6) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "GlassCannon" { 
-        (pair 1 6) (pair 2 6) (pair 3 6) (pair 4 6) (pair 5 6) (pair 6 5) 
+
+    (map "GlassCannon" {
+        (pair 1 6) (pair 2 6) (pair 3 6) (pair 4 6) (pair 5 6) (pair 6 5)
         (pair 7 4) (pair 8 6) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "HardenedResolve" { 
-        (pair 1 2) (pair 2 2) (pair 3 2) (pair 4 2) (pair 5 2) (pair 6 5) 
+
+    (map "HardenedResolve" {
+        (pair 1 2) (pair 2 2) (pair 3 2) (pair 4 2) (pair 5 2) (pair 6 5)
         (pair 7 4) (pair 8 2) (pair 9 4) (pair 10 4) (pair 11 100) (pair 12 100)
     })
-    
-    (map "PreemptiveStrike" { 
-        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5) 
+
+    (map "PreemptiveStrike" {
+        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 6) (pair 10 0) (pair 11 100) (pair 12 100)
     })
-    
-    (map "Retaliation" { 
-        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5) 
+
+    (map "Retaliation" {
+        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 2) (pair 10 8) (pair 11 100) (pair 12 100)
     })
-    
-    (map "LadyLuck" { 
-        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5) 
+
+    (map "LadyLuck" {
+        (pair 1 4) (pair 2 4) (pair 3 4) (pair 4 4) (pair 5 4) (pair 6 5)
         (pair 7 4) (pair 8 4) (pair 9 4) (pair 10 4) (pair 11 50) (pair 12 150)
     })
-    
+
 )
 
 //------------------------------------------------------------------------------
 
-(game "Mini Wars (remember)"  
-    (players <Scenario:numPlayers>)  
-    (equipment { 
+(game "Mini Wars (remember)"
+    (players <Scenario:numPlayers>)
+    (equipment {
         (board <Scenario:boardShape>)
-        
+
         <Scenario:boardRegins>
-        
+
         (hand Each size:<Scenario:handSize>)
-        
-        (piece "Base" Each) 
-        (piece "Factory" Each) 
-        (piece "Town" Each) 
-        (piece "Airport" Each) 
-        (piece "Dock" Each)         
-        
+
+        (piece "Base" Each)
+        (piece "Factory" Each)
+        (piece "Town" Each)
+        (piece "Airport" Each)
+        (piece "Dock" Each)
+
         (piece "Soldier" Each (or {"HumanMove" "CloseCombatAttack" "HealMove"}))
         (piece "Motorbike" Each (or {"HumanMove" "CloseCombatAttack" "HealMove"}))
-        
-        (piece "Speeder" Each (or {("VehicleMove" 1) "CloseCombatAttack" "HealMove"}))  
-        (piece "Shooter" Each (or {("VehicleMove" 1) "CloseCombatAttack" "HealMove"}))  
-        (piece "Tank" Each (or {("VehicleMove" 1) "CloseCombatAttack" "HealMove"}))  
+
+        (piece "Speeder" Each (or {("VehicleMove" 1) "CloseCombatAttack" "HealMove"}))
+        (piece "Shooter" Each (or {("VehicleMove" 1) "CloseCombatAttack" "HealMove"}))
+        (piece "Tank" Each (or {("VehicleMove" 1) "CloseCombatAttack" "HealMove"}))
         (piece "Boss" Each (or {("VehicleMove" 1) "CloseCombatAttack" "HealMove"}))
-        
-        (piece "Antiair" Each (or {("VehicleMove" 1) ("RangedAttack" 1 2) "HealMove"}))  
+
+        (piece "Antiair" Each (or {("VehicleMove" 1) ("RangedAttack" 1 2) "HealMove"}))
         (piece "Launcher" Each (or {("VehicleMove" 1) ("RangedAttack" 2 3) "HealMove"}))
         (piece "Artillery" Each (or {("VehicleMove" 0) ("RangedAttack" 3 5) "HealMove"}))
-        
+
         (piece "Helicopter" Each (or {"AircraftMove" "CloseCombatAttack" "HealMove"}))
         (piece "Fighter" Each (or {"AircraftMove" "CloseCombatAttack" "HealMove"}))
         (piece "Bomber" Each (or {"AircraftMove" "CloseCombatAttack" "HealMove"}))
-        
+
         (piece "Cruiser" Each (or {"BoatMove" "CloseCombatAttack" "HealMove"}))
         (piece "Submarine" Each (or {"BoatMove" "CloseCombatAttack" "HealMove"}))
         (piece "Battleship" Each (or {"BoatMove" ("RangedAttack" 2 4) "HealMove"}))
-        
-        (piece "Base" Neutral) 
+
+        (piece "Base" Neutral)
         (piece "Factory" Neutral)
         (piece "Town" Neutral)
         (piece "Airport" Neutral)
         (piece "Dock" Neutral)
-        
+
         <Scenario:playerMaps>
-        
+
         "DoctrineSetup"
-    })  
-    (rules 
+    })
+    (rules
         (meta (passEnd NoEnd))
-        (start {     
+        (start {
             <Scenario:buildingSetup>
             <Scenario:pieceSetup>
             <Scenario:shopSetup>
             <Scenario:teams>
             (set Score Each <Scenario:startingMoney>)
         })
-        
-        (play 
-            (or 
-                (or { 
-                    (do 
+
+        (play
+            (or
+                (or {
+                    (do
                         (and {
                             (forEach Site (sites Occupied by:Mover container:"Board")
                                 (remember Value "Occupied Mover" (site))
@@ -764,15 +764,15 @@
                             )
                         })
                         next:(forEach Piece)
-                        (then (forget Value All))	
+                        (then (forget Value All))
                     )
-                    ("BuyHumanMove") 
-                    ("BuyBoatMove") 
-                    ("BuyAircraftMove") 
-                    ("BuyVehicleMove") 
+                    ("BuyHumanMove")
+                    ("BuyBoatMove")
+                    ("BuyAircraftMove")
+                    ("BuyVehicleMove")
                     }
-                    (then 
-                        (and 
+                    (then
+                        (and
                             (forEach Player
                                 ("RemovePiecesIfPlayerHasLost" Player)
                             )
@@ -786,7 +786,7 @@
                             (forEach Site (sites Occupied by:Mover container:"Board")
                                 (set State at:(site) (mapEntry "Movement" (what at:(site))))
                             )
-                            (set Score 
+                            (set Score
                                 Mover
                                 (+ (* (count Sites in:(sites Occupied by:Mover component:"Town")) 10) (score Mover) )
                             )
@@ -798,9 +798,9 @@
                 )
             )
         )
-        
-        (end 
-            (forEach NonMover 
+
+        (end
+            (forEach NonMover
                 if:(= (where "Base" Player) Off) (result Player Loss)
             )
         )
@@ -811,7 +811,7 @@
 
 (option "Scenario" <Scenario> args:{<playerMaps> <numPlayers> <handSize> <boardShape> <boardRegins> <buildingSetup> <pieceSetup> <shopSetup> <startingMoney> <handPlacement> <teams> <pieceFlip> <terrainScale>}
     {
-    
+
     (item "Battle Royale (4-player, hexagon)"
         <
         "FourPlayerMaps"
@@ -826,15 +826,15 @@
         (hex 8)
         >
         <
-        (regions "ShallowWater" (sites {"G6" "G5" "G4" "F3" "E2" "E1" "D2" "C2" "B1"}))  
-        (regions "DeepWater" (sites {"I10" "H10" "I11" "H11" "I12" "J12" "K13" "J13" "K14" "J14"}))  
-        (regions "Forest" (sites {"A8" "B9" "C9" "B8" "A7" "D8" "D9" "C8" "B7" "C7" "G9" "F8" "F7" "H6" "I7" "I6" "J7" "K8" "L8" "M9" "A1" "B2" "A2" "A3" "O15" "N14" "O14" "N15" "C1" "D1" "F1" "G1" "H1" "D7" "F9"}))  
-        (regions "Mountain" (sites {"H8" "G7" "G8" "H9" "I9" "I8" "H7" "L15" "K15" "J15" "O10" "O9" "N8" "O8" "N7" "M6" "L5" "N9" "J9" "J8" "I15"}))  
-        > 
+        (regions "ShallowWater" (sites {"G6" "G5" "G4" "F3" "E2" "E1" "D2" "C2" "B1"}))
+        (regions "DeepWater" (sites {"I10" "H10" "I11" "H11" "I12" "J12" "K13" "J13" "K14" "J14"}))
+        (regions "Forest" (sites {"A8" "B9" "C9" "B8" "A7" "D8" "D9" "C8" "B7" "C7" "G9" "F8" "F7" "H6" "I7" "I6" "J7" "K8" "L8" "M9" "A1" "B2" "A2" "A3" "O15" "N14" "O14" "N15" "C1" "D1" "F1" "G1" "H1" "D7" "F9"}))
+        (regions "Mountain" (sites {"H8" "G7" "G8" "H9" "I9" "I8" "H7" "L15" "K15" "J15" "O10" "O9" "N8" "O8" "N7" "M6" "L5" "N9" "J9" "J8" "I15"}))
+        >
         <
-        (place "Base1" (sites {"C5"}) state:8 value:100) 
+        (place "Base1" (sites {"C5"}) state:8 value:100)
         (place "Base2" (sites {"M11"}) state:8 value:100)
-        (place "Base3" (sites {"J5"}) state:8 value:100) 
+        (place "Base3" (sites {"J5"}) state:8 value:100)
         (place "Base4" (sites {"G12"}) state:8 value:100)
         (place "Airport0" (sites {"F4" "K11"}) state:8 value:100)
         (place "Dock0" (sites {"F2" "I13"}) state:8 value:100)
@@ -844,16 +844,16 @@
         (place "Town4" (sites {"G14" "F13" "H15"}) state:8 value:100)
         (place "Town0" (sites {"F6" "G10" "K9" "M7" "D4" "C10" "M15" "K7"}) state:8 value:100)
         (place "Factory0" (sites {"B3" "E11" "M13" "H3"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Soldier3" (handSite 3 0) count:30 state:1 value:30 ) (place "Soldier4" (handSite 4 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
         (place "Motorbike3" (handSite 3 1) count:50 state:1 value:40 ) (place "Motorbike4" (handSite 4 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Speeder3" (handSite 3 2) count:60 state:1 value:60 ) (place "Speeder4" (handSite 4 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
@@ -862,21 +862,21 @@
         (place "Tank3" (handSite 3 4) count:100 state:1 value:80 ) (place "Tank4" (handSite 4 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
         (place "Boss3" (handSite 3 5) count:150 state:1 value:150 ) (place "Boss4" (handSite 4 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Antiair3" (handSite 3 6) count:80 state:1 value:50 ) (place "Antiair4" (handSite 4 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Launcher3" (handSite 3 7) count:80 state:1 value:50 ) (place "Launcher4" (handSite 4 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
         (place "Artillery3" (handSite 3 8) count:100 state:1 value:40 ) (place "Artillery4" (handSite 4 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Helicopter3" (handSite 3 9) count:60 state:1 value:40 ) (place "Helicopter4" (handSite 4 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Fighter3" (handSite 3 10) count:100 state:1 value:100 ) (place "Fighter4" (handSite 4 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
         (place "Bomber3" (handSite 3 11) count:100 state:1 value:100 ) (place "Bomber4" (handSite 4 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Cruiser3" (handSite 3 12) count:60 state:1 value:70 ) (place "Cruiser4" (handSite 4 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
@@ -886,12 +886,12 @@
         >
         <
         100
-        >                  
+        >
         <
-        
-        >     
+
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -905,7 +905,7 @@
         >
         "Basic Scenario"
     )**
-    
+
     (item "Open Plains (2-player, hexagon)"
         <
         "TwoPlayerMaps"
@@ -920,55 +920,55 @@
         (hex 7)
         >
         <
-        (regions "ShallowWater" (sites {"B1" "C2" "D3" "E4" "F4" "F3" "F2" "F1"}))  
-        (regions "DeepWater" (sites {"D1" "C1" "E1" "E2" "D2" "E3"}))  
-        (regions "Forest" (sites {"H13" "H12" "H11" "H10" "I10" "J11" "K12" "L13"}))  
-        (regions "Mountain" (sites {"I11" "I12" "J12" "J13" "I13" "K13"}))  
-        > 
+        (regions "ShallowWater" (sites {"B1" "C2" "D3" "E4" "F4" "F3" "F2" "F1"}))
+        (regions "DeepWater" (sites {"D1" "C1" "E1" "E2" "D2" "E3"}))
+        (regions "Forest" (sites {"H13" "H12" "H11" "H10" "I10" "J11" "K12" "L13"}))
+        (regions "Mountain" (sites {"I11" "I12" "J12" "J13" "I13" "K13"}))
+        >
         <
-        (place "Town1" (sites {"A2" "F12"}) state:8 value:100) 
+        (place "Town1" (sites {"A2" "F12"}) state:8 value:100)
         (place "Town2" (sites {"M12" "H2"}) state:8 value:100)
         (place "Town0" (sites {"E5" "G5" "G9" "I9" "D7" "J7"}) state:8 value:100)
-        (place "Factory1" (sites {"A4" "D10"}) state:8 value:100) 
+        (place "Factory1" (sites {"A4" "D10"}) state:8 value:100)
         (place "Factory2" (sites {"J4" "M10"}) state:8 value:100)
         (place "Airport0" (sites {"K11" "G11"}) state:8 value:100)
-        (place "Dock0" (sites {"C3" "G3"}) state:8 value:100) 
-        (place "Base1" (sites {"A7"}) state:8 value:100) 
+        (place "Dock0" (sites {"C3" "G3"}) state:8 value:100)
+        (place "Base1" (sites {"A7"}) state:8 value:100)
         (place "Base2" (sites {"M7"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
         (place "Battleship1" (handSite 1 14) count:100 state:1 value:120 ) (place "Battleship2" (handSite 2 14) count:100 state:1 value:120)
         >
         <
         100
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.92)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.11)
-        >     
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -981,7 +981,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Close Quarters (2-player, hexagon)"
         <
         "TwoPlayerMaps"
@@ -999,42 +999,42 @@
         )
         >
         <
-        
-        > 
+
+        >
         <
-        (place "Town1" (sites {"E5" "A1" "C5" "C1"}) state:8 value:100) 
+        (place "Town1" (sites {"E5" "A1" "C5" "C1"}) state:8 value:100)
         (place "Town2" (sites {"G1" "G5" "I5" "E1"}) state:8 value:100)
-        (place "Factory0" (sites {"E3"}) state:8 value:100) 
-        (place "Factory1" (sites {"C3"}) state:8 value:100) 
+        (place "Factory0" (sites {"E3"}) state:8 value:100)
+        (place "Factory1" (sites {"C3"}) state:8 value:100)
         (place "Factory2" (sites {"G3"}) state:8 value:100)
-        (place "Base1" (sites {"A3"}) state:8 value:100) 
+        (place "Base1" (sites {"A3"}) state:8 value:100)
         (place "Base2" (sites {"I3"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
         >
         <
         100
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.22 offsetY:0.8)
         (hand Placement P2 scale:0.9 offsetX:0.22 offsetY:0.23)
-        >     
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -1047,7 +1047,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Diamond City (2-player, hexagon)"
         <
         "TwoPlayerMaps"
@@ -1062,55 +1062,55 @@
         (hex Diamond 8)
         >
         <
-        (regions "DeepWater" (sites {"A5" "B5" "B4" "A4" "B3" "A3" "B2" "A1" "B1" "A2"}))  
-        (regions "Forest" (sites {"H8" "G8" "G7" "H7" "H6" "G6" "H5" "G5" "H4" "G4"}))  
-        (regions "Mountain" (sites {"A8" "A7" "B8" "H1" "G1" "H2"}))  
-        > 
+        (regions "DeepWater" (sites {"A5" "B5" "B4" "A4" "B3" "A3" "B2" "A1" "B1" "A2"}))
+        (regions "Forest" (sites {"H8" "G8" "G7" "H7" "H6" "G6" "H5" "G5" "H4" "G4"}))
+        (regions "Mountain" (sites {"A8" "A7" "B8" "H1" "G1" "H2"}))
+        >
         <
-        (place "Town1" (sites {"C5" "F6"}) state:8 value:100) 
+        (place "Town1" (sites {"C5" "F6"}) state:8 value:100)
         (place "Town2" (sites {"C3" "F4"}) state:8 value:100)
         (place "Town0" (sites {"C4" "F5"}) state:8 value:100)
-        (place "Factory1" (sites {"D7"}) state:8 value:100) 
+        (place "Factory1" (sites {"D7"}) state:8 value:100)
         (place "Factory2" (sites {"E2"}) state:8 value:100)
         (place "Airport0" (sites {"F8"}) state:8 value:100)
-        (place "Dock0" (sites {"C1"}) state:8 value:100) 
-        (place "Base1" (sites {"C8"}) state:8 value:100) 
+        (place "Dock0" (sites {"C1"}) state:8 value:100)
+        (place "Base1" (sites {"C8"}) state:8 value:100)
         (place "Base2" (sites {"F1"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
         (place "Battleship1" (handSite 1 14) count:100 state:1 value:120 ) (place "Battleship2" (handSite 2 14) count:100 state:1 value:120)
         >
         <
         100
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.83)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.2)
-        >   
+        >
         <
-        
-        >  
+
+        >
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1122,7 +1122,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "River Crossing (2-player, hexagon)"
         <
         "TwoPlayerMaps"
@@ -1140,56 +1140,56 @@
         )
         >
         <
-        (regions "ShallowWater" (sites {"H5" "H4" "I4" "I5" "G5" "H6" "G6" "I6" "G4" }))  
-        (regions "DeepWater" (sites {"L5" "D5" "E5" "F5" "J5" "K5" "K4" "L6" "E6" "D4" "E4" "F4" "J4" "K6" "J6" "F6"}))  
-        (regions "Forest" (sites {"K7" "L7" "L8" "M8" "M9" "N9" "D3" "C2" "B1" "E3" "D2" "C1"}))  
-        (regions "Mountain" (sites {"E9" "F9" "G9" "H9" "H1" "I1" "J1" "K1"}))  
-        > 
+        (regions "ShallowWater" (sites {"H5" "H4" "I4" "I5" "G5" "H6" "G6" "I6" "G4" }))
+        (regions "DeepWater" (sites {"L5" "D5" "E5" "F5" "J5" "K5" "K4" "L6" "E6" "D4" "E4" "F4" "J4" "K6" "J6" "F6"}))
+        (regions "Forest" (sites {"K7" "L7" "L8" "M8" "M9" "N9" "D3" "C2" "B1" "E3" "D2" "C1"}))
+        (regions "Mountain" (sites {"E9" "F9" "G9" "H9" "H1" "I1" "J1" "K1"}))
+        >
         <
-        (place "Town1" (sites {"A3" "A4" "A5" "B6" "C7" "C4" "D6"}) state:8 value:100) 
+        (place "Town1" (sites {"A3" "A4" "A5" "B6" "C7" "C4" "D6"}) state:8 value:100)
         (place "Town2" (sites {"O5" "O6" "O7" "N4" "M3" "M6" "L4"}) state:8 value:100)
-        (place "Factory1" (sites {"K9"}) state:8 value:100) 
+        (place "Factory1" (sites {"K9"}) state:8 value:100)
         (place "Factory2" (sites {"E1"}) state:8 value:100)
-        (place "Dock1" (sites {"C5"}) state:8 value:100) 
+        (place "Dock1" (sites {"C5"}) state:8 value:100)
         (place "Dock2" (sites {"M5"}) state:8 value:100)
-        (place "Base1" (sites {"B2" "E8"}) state:8 value:100) 
+        (place "Base1" (sites {"B2" "E8"}) state:8 value:100)
         (place "Base2" (sites {"K2" "N8"}) state:8 value:100)
         (place "Airport0" (sites {"I9" "G1"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
         (place "Battleship1" (handSite 1 14) count:100 state:1 value:120 ) (place "Battleship2" (handSite 2 14) count:100 state:1 value:120)
         >
         <
         100
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.8)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.23)
-        >    
+        >
         <
-        
-        > 
+
+        >
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1201,7 +1201,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Fortress Assault (4-player, hexagon)"
         <
         "FourPlayerMaps"
@@ -1217,22 +1217,22 @@
         >
         <
         (regions "ShallowWater" (sites {"M19" "M18" "M17" "M16" "M15" "M14" "M13"
-        "D1" "E2" "F3" "G4" "H5" "I6" "J7"}))  
+        "D1" "E2" "F3" "G4" "H5" "I6" "J7"}))
         (regions "DeepWater" (sites {"B1" "C2" "D3" "E4" "F5" "G6" "H7"
                 "C1" "D2" "E3" "F4" "G5" "H6" "I7"
                 "K19" "K18" "K17" "K16" "K15" "K14" "K13"
-        "L19" "L18" "L17" "L16" "L15" "L14" "L13"}))  
+        "L19" "L18" "L17" "L16" "L15" "L14" "L13"}))
         (regions "Forest" (sites {"H8" "I8" "J8" "K8" "J12" "K12" "L12" "M12" "C9" "D10" "D11"
-        "C6" "B5" "G14" "G15" "B9" "C10" "C11"}))  
-        (regions "Mountain" (sites {"A1" "B2" "C3" "D4" "E5" "F6" "G7" 
+        "C6" "B5" "G14" "G15" "B9" "C10" "C11"}))
+        (regions "Mountain" (sites {"A1" "B2" "C3" "D4" "E5" "F6" "G7"
                 "J19" "J18" "J17" "J16" "J15" "J14" "J13"
                 "D7" "E8" "F9" "G10" "G11" "G12" "G13"
         "D13" "D12" "A7" "B8"}))
-        > 
+        >
         <
-        (place "Base1" (sites {"A10"}) state:8 value:100) 
+        (place "Base1" (sites {"A10"}) state:8 value:100)
         (place "Base2" (sites {"S15"}) state:8 value:100)
-        (place "Base3" (sites {"S10"}) state:8 value:100) 
+        (place "Base3" (sites {"S10"}) state:8 value:100)
         (place "Base4" (sites {"N5"}) state:8 value:100)
         (place "Airport0" (sites {"S19" "J1"}) state:8 value:100)
         (place "Dock0" (sites {"G3" "N17"}) state:8 value:100)
@@ -1243,20 +1243,20 @@
         (place "Factory1" (sites {"E14" "A6"}) state:8 value:100)
         (place "Town0" (sites {"J4" "P16" "M8" "O12" "N10" "I2" "G1" "Q18" "P19"}) state:8 value:100)
         (place "Factory0" (sites {"O9" "P11" "O14" "K6"}) state:8 value:100)
-        >       
+        >
         <
         (place "Artillery1" (sites {"F10" "D8" "F12"}) state:3 value:40 )
         (place "Antiair1" (sites {"F11" "E9"}) state:4 value:50 )
         (place "Launcher1" (sites {"I13" "I15" "F7" "D5"}) state:3 value:50 )
         (place "Boss1" (sites {"E6" "I14"}) state:2 value:150 )
         (place "Tank1" (sites {"C4" "I16"}) state:4 value:80 )
-        >      
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Soldier3" (handSite 3 0) count:30 state:1 value:30 ) (place "Soldier4" (handSite 4 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
         (place "Motorbike3" (handSite 3 1) count:50 state:1 value:40 ) (place "Motorbike4" (handSite 4 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Speeder3" (handSite 3 2) count:60 state:1 value:60 ) (place "Speeder4" (handSite 4 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
@@ -1265,21 +1265,21 @@
         (place "Tank3" (handSite 3 4) count:100 state:1 value:80 ) (place "Tank4" (handSite 4 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
         (place "Boss3" (handSite 3 5) count:150 state:1 value:150 ) (place "Boss4" (handSite 4 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Antiair3" (handSite 3 6) count:80 state:1 value:50 ) (place "Antiair4" (handSite 4 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Launcher3" (handSite 3 7) count:80 state:1 value:50 ) (place "Launcher4" (handSite 4 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
         (place "Artillery3" (handSite 3 8) count:100 state:1 value:40 ) (place "Artillery4" (handSite 4 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Helicopter3" (handSite 3 9) count:60 state:1 value:40 ) (place "Helicopter4" (handSite 4 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Fighter3" (handSite 3 10) count:100 state:1 value:100 ) (place "Fighter4" (handSite 4 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
         (place "Bomber3" (handSite 3 11) count:100 state:1 value:100 ) (place "Bomber4" (handSite 4 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Cruiser3" (handSite 3 12) count:60 state:1 value:70 ) (place "Cruiser4" (handSite 4 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
@@ -1289,10 +1289,10 @@
         >
         <
         200
-        >                  
+        >
         <
-        
-        >     
+
+        >
         <
         (set Team 1 {P1})
         (set Team 2 {P2 P3 P4})
@@ -1310,7 +1310,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Canyon Pass (2-player, square)"
         <
         "TwoPlayerMaps"
@@ -1325,44 +1325,44 @@
         (rectangle 8 14)
         >
         <
-        (regions "Forest" (sites {"B3" "D1" "E1" "J1" "K1" "M3" "E8" "F8" "G8" "H8" "I8" "J8"}))  
-        (regions "Mountain" (sites {"D3" "D4" "D5" "D6" "D7" "D8" "F1" "G1" "G2" "G3" "G4" "G5" "I1" "H1" "H2" "H3" "H4" "H5" "K3" "K4" "K5" "K6" "K7" "K8"}))  
-        > 
+        (regions "Forest" (sites {"B3" "D1" "E1" "J1" "K1" "M3" "E8" "F8" "G8" "H8" "I8" "J8"}))
+        (regions "Mountain" (sites {"D3" "D4" "D5" "D6" "D7" "D8" "F1" "G1" "G2" "G3" "G4" "G5" "I1" "H1" "H2" "H3" "H4" "H5" "K3" "K4" "K5" "K6" "K7" "K8"}))
+        >
         <
-        (place "Town1" (sites {"A1" "B1" "A7" "B7" "F2" "F4"}) state:8 value:100) 
+        (place "Town1" (sites {"A1" "B1" "A7" "B7" "F2" "F4"}) state:8 value:100)
         (place "Town2" (sites {"I2" "I4" "M1" "N1" "M7" "N7"}) state:8 value:100)
         (place "Town0" (sites {"E7" "F7" "G7" "H7" "I7" "J7"}) state:8 value:100)
-        (place "Factory1" (sites {"A3" "C5" "A6"}) state:8 value:100) 
+        (place "Factory1" (sites {"A3" "C5" "A6"}) state:8 value:100)
         (place "Factory2" (sites {"N3" "N6" "L5"}) state:8 value:100)
-        (place "Base1" (sites {"A4"}) state:8 value:100) 
+        (place "Base1" (sites {"A4"}) state:8 value:100)
         (place "Base2" (sites {"N4"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >    
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        >  
+        >
         <
         100
-        >      
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.83)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.2)
-        >   
+        >
         <
-        
-        >       
+
+        >
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1371,10 +1371,10 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >            
+        >
         "Basic Scenario"
     )
-    
+
     (item "Gridlock (2-player, square)"
         <
         "TwoPlayerMaps"
@@ -1389,43 +1389,43 @@
         (rectangle 9 14)
         >
         <
-        
-        > 
+
+        >
         <
-        (place "Factory1" (sites {"B7" "C8"}) state:8 value:100) 
+        (place "Factory1" (sites {"B7" "C8"}) state:8 value:100)
         (place "Factory2" (sites {"L2" "M3"}) state:8 value:100)
         (place "Factory0" (sites {"B2" "M8"}) state:8 value:100)
         (place "Town0" (sites {"B4" "B6" "C2" "C4" "C6" "D2" "D4" "D6" "D8" "E2" "E4" "E6" "E8" "J2" "J4" "J6" "J8" "K2" "K4" "K6" "K8"
-        "L4" "L6" "L8" "M4" "M6" "G2" "G4" "G6" "G8" "H2" "H4" "H6" "H8" "F2" "F4" "F6" "F8" "I2" "I4" "I6" "I8"}) state:8 value:100) 
-        (place "Base1" (sites {"B8"}) state:8 value:100) 
+        "L4" "L6" "L8" "M4" "M6" "G2" "G4" "G6" "G8" "H2" "H4" "H6" "H8" "F2" "F4" "F6" "F8" "I2" "I4" "I6" "I8"}) state:8 value:100)
+        (place "Base1" (sites {"B8"}) state:8 value:100)
         (place "Base2" (sites {"M2"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
         >
         <
         100
-        >      
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.85)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.18)
-        >     
+        >
         <
-        
-        >      
+
+        >
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1434,10 +1434,10 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >           
+        >
         "Basic Scenario"
     )
-    
+
     (item "Tiny Island (2-player, square)"
         <
         "TwoPlayerMaps"
@@ -1452,30 +1452,30 @@
         (rectangle 8 13)
         >
         <
-        (regions "ShallowWater" (sites {"C7" "D7" "E7" "F7" "G7" "H7" "I7" "J7" "K7" 
+        (regions "ShallowWater" (sites {"C7" "D7" "E7" "F7" "G7" "H7" "I7" "J7" "K7"
                 "C2" "D2" "E2" "F2" "G2" "H2" "I2" "J2" "K2"
-                "B2" "B3" "B4" "B5" "B6" "B7" 
-                "L2" "L3" "L4" "L5" "L6" "L7"  
-        })) 
-        
+                "B2" "B3" "B4" "B5" "B6" "B7"
+                "L2" "L3" "L4" "L5" "L6" "L7"
+        }))
+
         (regions "DeepWater" (sites {"A1" "A2" "A3" "A4" "A5" "A6" "A7" "A8" "B8" "L8"
-                "M1" "M2" "M3" "M4" "M5" "M6" "M7" "M8" "B1" "L1" 
+                "M1" "M2" "M3" "M4" "M5" "M6" "M7" "M8" "B1" "L1"
                 "C8" "D8" "E8" "F8" "G8" "H8" "I8" "J8" "K8"
-                "C1" "D1" "E1" "F1" "G1" "H1" "I1" "J1" "K1" 
-        }))  
-        > 
+                "C1" "D1" "E1" "F1" "G1" "H1" "I1" "J1" "K1"
+        }))
+        >
         <
-        (place "Town0" (sites {"E5" "E4" "G5" "G4" "I5" "I4" "F5" "F4" "H5" "H4"}) state:8 value:100) 
-        (place "Town1" (sites {"C4"}) state:8 value:100) 
-        (place "Town2" (sites {"K5"}) state:8 value:100) 
-        (place "Base1" (sites {"C5"}) state:8 value:100) 
+        (place "Town0" (sites {"E5" "E4" "G5" "G4" "I5" "I4" "F5" "F4" "H5" "H4"}) state:8 value:100)
+        (place "Town1" (sites {"C4"}) state:8 value:100)
+        (place "Town2" (sites {"K5"}) state:8 value:100)
+        (place "Base1" (sites {"C5"}) state:8 value:100)
         (place "Base2" (sites {"K4"}) state:8 value:100)
-        (place "Dock1" (sites {"C3" "C6"}) state:8 value:100) 
+        (place "Dock1" (sites {"C3" "C6"}) state:8 value:100)
         (place "Dock2" (sites {"K3" "K6"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
@@ -1485,14 +1485,14 @@
         >
         <
         100
-        >      
+        >
         <
         (hand Placement P1 scale:0.4 offsetX:0.3 offsetY:0.83)
         (hand Placement P2 scale:0.4 offsetX:0.3 offsetY:0.2)
-        >      
+        >
         <
-        
-        >    
+
+        >
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1501,10 +1501,10 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >            
+        >
         "Basic Scenario"
     )
-    
+
     (item "Aerial Assault (2-player, square)"
         <
         "TwoPlayerMaps"
@@ -1518,21 +1518,21 @@
         <
         (rectangle 8 13)
         >
-        <										 
-        (regions "DeepWater" (sites {"G1" "G2" "G3" "G4" "G5" "G6" "G7" "G8"}))  
-        > 
         <
-        (place "Town1" (sites {"A2" "A7" "C1" "C8"}) state:8 value:100) 
-        (place "Town2" (sites {"M2" "M7" "K1" "K8"}) state:8 value:100) 
-        (place "Town0" (sites {"I2" "I4" "I5" "I7" "E2" "E4" "E5" "E7"}) state:8 value:100) 
-        (place "Base1" (sites {"A5"}) state:8 value:100) 
+        (regions "DeepWater" (sites {"G1" "G2" "G3" "G4" "G5" "G6" "G7" "G8"}))
+        >
+        <
+        (place "Town1" (sites {"A2" "A7" "C1" "C8"}) state:8 value:100)
+        (place "Town2" (sites {"M2" "M7" "K1" "K8"}) state:8 value:100)
+        (place "Town0" (sites {"I2" "I4" "I5" "I7" "E2" "E4" "E5" "E7"}) state:8 value:100)
+        (place "Base1" (sites {"A5"}) state:8 value:100)
         (place "Base2" (sites {"M4"}) state:8 value:100)
-        (place "Airport1" (sites {"C3" "C6"}) state:8 value:100) 
+        (place "Airport1" (sites {"C3" "C6"}) state:8 value:100)
         (place "Airport2" (sites {"K3" "K6"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
@@ -1542,14 +1542,14 @@
         >
         <
         100
-        >      
+        >
         <
         (hand Placement P1 scale:0.5 offsetX:0.29 offsetY:0.83)
         (hand Placement P2 scale:0.5 offsetX:0.29 offsetY:0.2)
-        >     
+        >
         <
-        
-        > 
+
+        >
         <
         (piece ExtendName P2 "Flip")
         >
@@ -1558,10 +1558,10 @@
         (show Symbol "waves" (sites "ShallowWater"))
         (show Symbol "waves" (sites "DeepWater"))
         (show Symbol "mountain" (sites "Mountain"))
-        >                
+        >
         "Basic Scenario"
     )
-    
+
     (item "Sudden Death (4-player, square)"
         <
         "FourPlayerMaps"
@@ -1577,34 +1577,34 @@
         >
         <
         (regions "Forest" (sites {"D7" "E8" "G8" "H7" "H5" "E11" "G11" "E1" "G1"
-        "G4" "E4" "D5" "A7" "A5" "K5" "K7"}))  
+        "G4" "E4" "D5" "A7" "A5" "K5" "K7"}))
         (regions "Mountain" (sites {"B6" "B5" "B7" "C3" "C9" "I9" "I3" "E10" "F10" "G10" "J7"
-        "J6" "J5" "G2" "F2" "E2" "F6"})) 
-        > 
+        "J6" "J5" "G2" "F2" "E2" "F6"}))
+        >
         <
-        (place "Town1" (sites {"A1" "A2" "B1"}) state:8 value:100) 
+        (place "Town1" (sites {"A1" "A2" "B1"}) state:8 value:100)
         (place "Town2" (sites {"K11" "J11" "K10"}) state:8 value:100)
         (place "Town3" (sites {"A11" "A10" "B11"}) state:8 value:100)
-        (place "Town4" (sites {"K1" "K2" "J1"}) state:8 value:100) 
-        (place "Town0" (sites {"F3" "D4" "C6" "D8" "F9" "H8" "I6" "H4"}) state:8 value:100) 
-        (place "Factory1" (sites {"A3" "C1"}) state:8 value:100) 
+        (place "Town4" (sites {"K1" "K2" "J1"}) state:8 value:100)
+        (place "Town0" (sites {"F3" "D4" "C6" "D8" "F9" "H8" "I6" "H4"}) state:8 value:100)
+        (place "Factory1" (sites {"A3" "C1"}) state:8 value:100)
         (place "Factory2" (sites {"K9" "I11"}) state:8 value:100)
-        (place "Factory3" (sites {"A9" "C11"}) state:8 value:100) 
+        (place "Factory3" (sites {"A9" "C11"}) state:8 value:100)
         (place "Factory4" (sites {"K3" "I1"}) state:8 value:100)
-        (place "Base1" (sites {"E6"}) state:8 value:100) 
+        (place "Base1" (sites {"E6"}) state:8 value:100)
         (place "Base2" (sites {"G6"}) state:8 value:100)
-        (place "Base3" (sites {"F7"}) state:8 value:100) 
+        (place "Base3" (sites {"F7"}) state:8 value:100)
         (place "Base4" (sites {"F5"}) state:8 value:100)
-        >       
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Soldier3" (handSite 3 0) count:30 state:1 value:30 ) (place "Soldier4" (handSite 4 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
         (place "Motorbike3" (handSite 3 1) count:50 state:1 value:40 ) (place "Motorbike4" (handSite 4 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Speeder3" (handSite 3 2) count:60 state:1 value:60 ) (place "Speeder4" (handSite 4 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
@@ -1613,7 +1613,7 @@
         (place "Tank3" (handSite 3 4) count:100 state:1 value:80 ) (place "Tank4" (handSite 4 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
         (place "Boss3" (handSite 3 5) count:150 state:1 value:150 ) (place "Boss4" (handSite 4 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Antiair3" (handSite 3 6) count:80 state:1 value:50 ) (place "Antiair4" (handSite 4 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
@@ -1623,12 +1623,12 @@
         >
         <
         100
-        >                  
+        >
         <
-        
-        >     
+
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -1642,7 +1642,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Random Small Map (2-player, hexagon)"
         <
         "TwoPlayerMaps"
@@ -1663,93 +1663,93 @@
         (regions "BaseP2" (sites Random (union (sites Side SE) (sites Side NE)) num:1))
         (regions "TownP1" (sites Random (difference (sites "BuildingsP1Area") (sites "BaseP1")) num:2))
         (regions "TownP2" (sites Random (difference (sites "BuildingsP2Area") (sites "BaseP2")) num:2))
-        
+
         (regions "TownP01" (sites Random (difference (sites "BuildingsP1Area") (union (sites "BaseP1") (sites "TownP1"))) num:1))
         (regions "TownP02" (sites Random (difference (sites "BuildingsP2Area") (union (sites "BaseP2") (sites "TownP2"))) num:1))
         (regions "TownP00" (sites Random (difference (sites Empty) (union {(sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:3))
-        
+
         (regions "BuildingsTowns" (union {(sites "BaseP1") (sites "BaseP2") (sites "TownP1") (sites "TownP2") (sites "TownP01") (sites "TownP02") (sites "TownP00")}))
-        
+
         (regions "Factory1" (sites Random (difference (sites "BuildingsP1Area") (sites "BuildingsTowns")) num:1))
         (regions "Factory2" (sites Random (difference (sites "BuildingsP2Area") (sites "BuildingsTowns")) num:1))
-        
+
         (regions "Airport" (sites Random (difference (sites Empty) (union {(sites "Factory1") (sites "Factory2") (sites "BuildingsTowns") (sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:1))
-        
+
         (regions "Buildings" (union {(sites "BuildingsTowns") (sites "Factory1") (sites "Factory2") (sites "Airport") }))
         (regions "SitesAroundBuildings" (expand (sites "Buildings")))
-        
+
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
-        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1")}) )) num:1))
-        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2")}))) num:1))
-        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3")}))) num:1))
-        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4")}))) num:1))
-        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5")}))) num:1))
-        
-        (regions "FirstRiver" (union {(sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") }))		
-        
+
+        (regions "FirstRiver" (union {(sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") }))
+
         (regions "DeepWater" (union {(sites "FirstRiver")}))
-        
+
         (regions "Docks1" (sites Random (difference (expand (sites "FirstRiver")) (union (sites "Buildings") (sites "DeepWater"))) num:1))
         (regions "Docks" (union {(sites "Docks1") }))
-        
+
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
-        
+
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
         (regions "Mountain" (sites Random (sites "MountainArea") num:5))
-        
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:8))     
-        > 
+
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:8))
+        >
         <
-        (place "Base1" (sites "BaseP1") state:8 value:100) 
-        (place "Base2" (sites "BaseP2") state:8 value:100) 
-        (place "Town1" (sites "TownP1") state:8 value:100) 
-        (place "Town2" (sites "TownP2") state:8 value:100) 
+        (place "Base1" (sites "BaseP1") state:8 value:100)
+        (place "Base2" (sites "BaseP2") state:8 value:100)
+        (place "Town1" (sites "TownP1") state:8 value:100)
+        (place "Town2" (sites "TownP2") state:8 value:100)
         (place "Town0" (sites "TownP01") state:8 value:100)
-        (place "Town0" (sites "TownP02") state:8 value:100) 
-        (place "Town0" (sites "TownP00") state:8 value:100)  
-        (place "Factory0" (sites "Factory1") state:8 value:100) 
-        (place "Factory0" (sites "Factory2") state:8 value:100) 
-        (place "Dock0" (sites "Docks") state:8 value:100) 
-        (place "Airport0" (sites "Airport") state:8 value:100) 
-        >       
+        (place "Town0" (sites "TownP02") state:8 value:100)
+        (place "Town0" (sites "TownP00") state:8 value:100)
+        (place "Factory0" (sites "Factory1") state:8 value:100)
+        (place "Factory0" (sites "Factory2") state:8 value:100)
+        (place "Dock0" (sites "Docks") state:8 value:100)
+        (place "Airport0" (sites "Airport") state:8 value:100)
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
         (place "Battleship1" (handSite 1 14) count:100 state:1 value:120 ) (place "Battleship2" (handSite 2 14) count:100 state:1 value:120)
         >
         <
         150
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.92)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.11)
-        >     
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -1762,7 +1762,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Random Small Map (2-player, square)"
         <
         "TwoPlayerMaps"
@@ -1783,93 +1783,93 @@
         (regions "BaseP2" (sites Random (sites Right) num:1))
         (regions "TownP1" (sites Random (difference (sites "BuildingsP1Area") (sites "BaseP1")) num:2))
         (regions "TownP2" (sites Random (difference (sites "BuildingsP2Area") (sites "BaseP2")) num:2))
-        
+
         (regions "TownP01" (sites Random (difference (sites "BuildingsP1Area") (union (sites "BaseP1") (sites "TownP1"))) num:1))
         (regions "TownP02" (sites Random (difference (sites "BuildingsP2Area") (union (sites "BaseP2") (sites "TownP2"))) num:1))
         (regions "TownP00" (sites Random (difference (sites Empty) (union {(sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:3))
-        
+
         (regions "BuildingsTowns" (union {(sites "BaseP1") (sites "BaseP2") (sites "TownP1") (sites "TownP2") (sites "TownP01") (sites "TownP02") (sites "TownP00")}))
-        
+
         (regions "Factory1" (sites Random (difference (sites "BuildingsP1Area") (sites "BuildingsTowns")) num:1))
         (regions "Factory2" (sites Random (difference (sites "BuildingsP2Area") (sites "BuildingsTowns")) num:1))
-        
+
         (regions "Airport" (sites Random (difference (sites Empty) (union {(sites "Factory1") (sites "Factory2") (sites "BuildingsTowns") (sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:1))
-        
+
         (regions "Buildings" (union {(sites "BuildingsTowns") (sites "Factory1") (sites "Factory2") (sites "Airport") }))
         (regions "SitesAroundBuildings" (expand (sites "Buildings")))
-        
+
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
-        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1")}) )) num:1))
-        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2")}))) num:1))
-        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3")}))) num:1))
-        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4")}))) num:1))
-        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5")}))) num:1))
-        
-        (regions "FirstRiver" (union {(sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") }))		
-        
+
+        (regions "FirstRiver" (union {(sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") }))
+
         (regions "DeepWater" (union {(sites "FirstRiver")}))
-        
+
         (regions "Docks1" (sites Random (difference (expand (sites "FirstRiver")) (union (sites "Buildings") (sites "DeepWater"))) num:1))
         (regions "Docks" (union {(sites "Docks1") }))
-        
+
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
-        
+
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
         (regions "Mountain" (sites Random (sites "MountainArea") num:5))
-        
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:8))     
-        > 
+
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:8))
+        >
         <
-        (place "Base1" (sites "BaseP1") state:8 value:100) 
-        (place "Base2" (sites "BaseP2") state:8 value:100) 
-        (place "Town1" (sites "TownP1") state:8 value:100) 
-        (place "Town2" (sites "TownP2") state:8 value:100) 
+        (place "Base1" (sites "BaseP1") state:8 value:100)
+        (place "Base2" (sites "BaseP2") state:8 value:100)
+        (place "Town1" (sites "TownP1") state:8 value:100)
+        (place "Town2" (sites "TownP2") state:8 value:100)
         (place "Town0" (sites "TownP01") state:8 value:100)
-        (place "Town0" (sites "TownP02") state:8 value:100) 
-        (place "Town0" (sites "TownP00") state:8 value:100)  
-        (place "Factory0" (sites "Factory1") state:8 value:100) 
-        (place "Factory0" (sites "Factory2") state:8 value:100) 
-        (place "Dock0" (sites "Docks") state:8 value:100) 
-        (place "Airport0" (sites "Airport") state:8 value:100) 
-        >       
+        (place "Town0" (sites "TownP02") state:8 value:100)
+        (place "Town0" (sites "TownP00") state:8 value:100)
+        (place "Factory0" (sites "Factory1") state:8 value:100)
+        (place "Factory0" (sites "Factory2") state:8 value:100)
+        (place "Dock0" (sites "Docks") state:8 value:100)
+        (place "Airport0" (sites "Airport") state:8 value:100)
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
         (place "Battleship1" (handSite 1 14) count:100 state:1 value:120 ) (place "Battleship2" (handSite 2 14) count:100 state:1 value:120)
         >
         <
         150
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.88)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.14)
-        >     
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -1882,7 +1882,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Random Large Map (2-player, hexagon)"
         <
         "TwoPlayerMaps"
@@ -1903,47 +1903,47 @@
         (regions "BaseP2" (sites Random (union (sites Side SE) (sites Side NE)) num:1))
         (regions "TownP1" (sites Random (difference (sites "BuildingsP1Area") (sites "BaseP1")) num:4))
         (regions "TownP2" (sites Random (difference (sites "BuildingsP2Area") (sites "BaseP2")) num:4))
-        
+
         (regions "TownP01" (sites Random (difference (sites "BuildingsP1Area") (union (sites "BaseP1") (sites "TownP1"))) num:2))
         (regions "TownP02" (sites Random (difference (sites "BuildingsP2Area") (union (sites "BaseP2") (sites "TownP2"))) num:2))
         (regions "TownP00" (sites Random (difference (sites Empty) (union {(sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:5))
-        
+
         (regions "BuildingsTowns" (union {(sites "BaseP1") (sites "BaseP2") (sites "TownP1") (sites "TownP2") (sites "TownP01") (sites "TownP02") (sites "TownP00")}))
-        
+
         (regions "Factory1" (sites Random (difference (sites "BuildingsP1Area") (sites "BuildingsTowns")) num:1))
         (regions "Factory2" (sites Random (difference (sites "BuildingsP2Area") (sites "BuildingsTowns")) num:1))
-        
+
         (regions "Airport" (sites Random (difference (sites Empty) (union {(sites "Factory1") (sites "Factory2") (sites "BuildingsTowns") (sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:1))
-        
+
         (regions "Buildings" (union {(sites "BuildingsTowns") (sites "Factory1") (sites "Factory2") (sites "Airport") }))
         (regions "SitesAroundBuildings" (expand (sites "Buildings")))
-        
+
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
-        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1")}) )) num:1))
-        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2")}))) num:1))
-        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3")}))) num:1))
-        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4")}))) num:1))
-        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5")}))) num:1))
-        (regions "River7" (sites Random (intersection (expand (sites "River6") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River7" (sites Random (intersection (expand (sites "River6") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6")}))) num:1))
-        (regions "River8" (sites Random (intersection (expand (sites "River7") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River8" (sites Random (intersection (expand (sites "River7") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7")}))) num:1))
-        (regions "River9" (sites Random (intersection (expand (sites "River8") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River9" (sites Random (intersection (expand (sites "River8") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7") (sites "River8")}))) num:1))
-        (regions "River10" (sites Random (intersection (expand (sites "River9") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River10" (sites Random (intersection (expand (sites "River9") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7") (sites "River8") (sites "River9")}))) num:1))
-        (regions "River11" (sites Random (intersection (expand (sites "River10") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River11" (sites Random (intersection (expand (sites "River10") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7") (sites "River8") (sites "River9") (sites "River10")}))) num:1))
-        
+
         (regions "FirstRiver" (union {(sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7")
-        (sites "River8") (sites "River9") (sites "River10") (sites "River11") }))		
+        (sites "River8") (sites "River9") (sites "River10") (sites "River11") }))
         (regions "FirstRiverArea" (expand (sites "FirstRiver") steps:3))
-        
+
         (regions "Riverx1" (sites Random (difference (sites Board) (union (sites "SitesAroundBuildings") (sites "FirstRiverArea"))) num:1))
         (regions "Riverx2" (sites Random (intersection (expand (sites "Riverx1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
         (sites "Riverx1")}) )) num:1))
@@ -1955,68 +1955,68 @@
         (sites "Riverx1") (sites "Riverx2") (sites "Riverx3") (sites "Riverx4")}))) num:1))
         (regions "Riverx6" (sites Random (intersection (expand (sites "Riverx5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
         (sites "Riverx1") (sites "Riverx2") (sites "Riverx3") (sites "Riverx4") (sites "Riverx5")}))) num:1))
-        
+
         (regions "SecondRiver" (union {(sites "Riverx1") (sites "Riverx2") (sites "Riverx3") (sites "Riverx4") (sites "Riverx5") (sites "Riverx6")}))
-        
+
         (regions "DeepWater" (union {(sites "FirstRiver") (sites "SecondRiver")}))
-        
+
         (regions "Docks1" (sites Random (difference (expand (sites "FirstRiver")) (union (sites "Buildings") (sites "DeepWater"))) num:1))
         (regions "Docks2" (sites Random (difference (expand (sites "SecondRiver")) (union (sites "Buildings") (sites "DeepWater"))) num:1))
         (regions "Docks" (union {(sites "Docks1") (sites "Docks2")}))
-        
+
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
-        
+
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
         (regions "Mountain" (sites Random (sites "MountainArea") num:14))
-        
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:20))     
-        > 
+
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:20))
+        >
         <
-        (place "Base1" (sites "BaseP1") state:8 value:100) 
-        (place "Base2" (sites "BaseP2") state:8 value:100) 
-        (place "Town1" (sites "TownP1") state:8 value:100) 
-        (place "Town2" (sites "TownP2") state:8 value:100) 
+        (place "Base1" (sites "BaseP1") state:8 value:100)
+        (place "Base2" (sites "BaseP2") state:8 value:100)
+        (place "Town1" (sites "TownP1") state:8 value:100)
+        (place "Town2" (sites "TownP2") state:8 value:100)
         (place "Town0" (sites "TownP01") state:8 value:100)
-        (place "Town0" (sites "TownP02") state:8 value:100) 
-        (place "Town0" (sites "TownP00") state:8 value:100)  
-        (place "Factory0" (sites "Factory1") state:8 value:100) 
-        (place "Factory0" (sites "Factory2") state:8 value:100) 
-        (place "Dock0" (sites "Docks") state:8 value:100) 
-        (place "Airport0" (sites "Airport") state:8 value:100) 
-        >       
+        (place "Town0" (sites "TownP02") state:8 value:100)
+        (place "Town0" (sites "TownP00") state:8 value:100)
+        (place "Factory0" (sites "Factory1") state:8 value:100)
+        (place "Factory0" (sites "Factory2") state:8 value:100)
+        (place "Dock0" (sites "Docks") state:8 value:100)
+        (place "Airport0" (sites "Airport") state:8 value:100)
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
         (place "Battleship1" (handSite 1 14) count:100 state:1 value:120 ) (place "Battleship2" (handSite 2 14) count:100 state:1 value:120)
         >
         <
         200
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.92)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.11)
-        >     
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -2029,7 +2029,7 @@
         >
         "Basic Scenario"
     )
-    
+
     (item "Random Large Map (2-player, square)"
         <
         "TwoPlayerMaps"
@@ -2050,47 +2050,47 @@
         (regions "BaseP2" (sites Random (sites Right) num:1))
         (regions "TownP1" (sites Random (difference (sites "BuildingsP1Area") (sites "BaseP1")) num:4))
         (regions "TownP2" (sites Random (difference (sites "BuildingsP2Area") (sites "BaseP2")) num:4))
-        
+
         (regions "TownP01" (sites Random (difference (sites "BuildingsP1Area") (union (sites "BaseP1") (sites "TownP1"))) num:2))
         (regions "TownP02" (sites Random (difference (sites "BuildingsP2Area") (union (sites "BaseP2") (sites "TownP2"))) num:2))
         (regions "TownP00" (sites Random (difference (sites Empty) (union {(sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:5))
-        
+
         (regions "BuildingsTowns" (union {(sites "BaseP1") (sites "BaseP2") (sites "TownP1") (sites "TownP2") (sites "TownP01") (sites "TownP02") (sites "TownP00")}))
-        
+
         (regions "Factory1" (sites Random (difference (sites "BuildingsP1Area") (sites "BuildingsTowns")) num:1))
         (regions "Factory2" (sites Random (difference (sites "BuildingsP2Area") (sites "BuildingsTowns")) num:1))
-        
+
         (regions "Airport" (sites Random (difference (sites Empty) (union {(sites "Factory1") (sites "Factory2") (sites "BuildingsTowns") (sites "BuildingsP1Area") (sites "BuildingsP2Area")})) num:1))
-        
+
         (regions "Buildings" (union {(sites "BuildingsTowns") (sites "Factory1") (sites "Factory2") (sites "Airport") }))
         (regions "SitesAroundBuildings" (expand (sites "Buildings")))
-        
+
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
-        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1")}) )) num:1))
-        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2")}))) num:1))
-        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3")}))) num:1))
-        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River5" (sites Random (intersection (expand (sites "River4") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4")}))) num:1))
-        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River6" (sites Random (intersection (expand (sites "River5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5")}))) num:1))
-        (regions "River7" (sites Random (intersection (expand (sites "River6") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River7" (sites Random (intersection (expand (sites "River6") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6")}))) num:1))
-        (regions "River8" (sites Random (intersection (expand (sites "River7") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River8" (sites Random (intersection (expand (sites "River7") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7")}))) num:1))
-        (regions "River9" (sites Random (intersection (expand (sites "River8") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River9" (sites Random (intersection (expand (sites "River8") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7") (sites "River8")}))) num:1))
-        (regions "River10" (sites Random (intersection (expand (sites "River9") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River10" (sites Random (intersection (expand (sites "River9") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7") (sites "River8") (sites "River9")}))) num:1))
-        (regions "River11" (sites Random (intersection (expand (sites "River10") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
+        (regions "River11" (sites Random (intersection (expand (sites "River10") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings")
         (sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7") (sites "River8") (sites "River9") (sites "River10")}))) num:1))
-        
+
         (regions "FirstRiver" (union {(sites "River1") (sites "River2") (sites "River3") (sites "River4") (sites "River5") (sites "River6") (sites "River7")
-        (sites "River8") (sites "River9") (sites "River10") (sites "River11") }))		
+        (sites "River8") (sites "River9") (sites "River10") (sites "River11") }))
         (regions "FirstRiverArea" (expand (sites "FirstRiver") steps:3))
-        
+
         (regions "Riverx1" (sites Random (difference (sites Board) (union (sites "SitesAroundBuildings") (sites "FirstRiverArea"))) num:1))
         (regions "Riverx2" (sites Random (intersection (expand (sites "Riverx1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
         (sites "Riverx1")}) )) num:1))
@@ -2102,68 +2102,68 @@
         (sites "Riverx1") (sites "Riverx2") (sites "Riverx3") (sites "Riverx4")}))) num:1))
         (regions "Riverx6" (sites Random (intersection (expand (sites "Riverx5") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
         (sites "Riverx1") (sites "Riverx2") (sites "Riverx3") (sites "Riverx4") (sites "Riverx5")}))) num:1))
-        
+
         (regions "SecondRiver" (union {(sites "Riverx1") (sites "Riverx2") (sites "Riverx3") (sites "Riverx4") (sites "Riverx5") (sites "Riverx6")}))
-        
+
         (regions "DeepWater" (union {(sites "FirstRiver") (sites "SecondRiver")}))
-        
+
         (regions "Docks1" (sites Random (difference (expand (sites "FirstRiver")) (union (sites "Buildings") (sites "DeepWater"))) num:1))
         (regions "Docks2" (sites Random (difference (expand (sites "SecondRiver")) (union (sites "Buildings") (sites "DeepWater"))) num:1))
         (regions "Docks" (union {(sites "Docks1") (sites "Docks2")}))
-        
+
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
-        
+
         (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
         (regions "Mountain" (sites Random (sites "MountainArea") num:14))
-        
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:20))     
-        > 
+
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:20))
+        >
         <
-        (place "Base1" (sites "BaseP1") state:8 value:100) 
-        (place "Base2" (sites "BaseP2") state:8 value:100) 
-        (place "Town1" (sites "TownP1") state:8 value:100) 
-        (place "Town2" (sites "TownP2") state:8 value:100) 
+        (place "Base1" (sites "BaseP1") state:8 value:100)
+        (place "Base2" (sites "BaseP2") state:8 value:100)
+        (place "Town1" (sites "TownP1") state:8 value:100)
+        (place "Town2" (sites "TownP2") state:8 value:100)
         (place "Town0" (sites "TownP01") state:8 value:100)
-        (place "Town0" (sites "TownP02") state:8 value:100) 
-        (place "Town0" (sites "TownP00") state:8 value:100)  
-        (place "Factory0" (sites "Factory1") state:8 value:100) 
-        (place "Factory0" (sites "Factory2") state:8 value:100) 
-        (place "Dock0" (sites "Docks") state:8 value:100) 
-        (place "Airport0" (sites "Airport") state:8 value:100) 
-        >       
+        (place "Town0" (sites "TownP02") state:8 value:100)
+        (place "Town0" (sites "TownP00") state:8 value:100)
+        (place "Factory0" (sites "Factory1") state:8 value:100)
+        (place "Factory0" (sites "Factory2") state:8 value:100)
+        (place "Dock0" (sites "Docks") state:8 value:100)
+        (place "Airport0" (sites "Airport") state:8 value:100)
+        >
         <
-        
-        >      
+
+        >
         <
         (place "Soldier1" (handSite 1 0) count:30 state:1 value:30 ) (place "Soldier2" (handSite 2 0) count:30 state:1 value:30)
         (place "Motorbike1" (handSite 1 1) count:50 state:1 value:40 ) (place "Motorbike2" (handSite 2 1) count:50 state:1 value:40)
-        
+
         (place "Speeder1" (handSite 1 2) count:60 state:1 value:60 ) (place "Speeder2" (handSite 2 2) count:60 state:1 value:60)
         (place "Shooter1" (handSite 1 3) count:80 state:1 value:60 ) (place "Shooter2" (handSite 2 3) count:80 state:1 value:60)
         (place "Tank1" (handSite 1 4) count:100 state:1 value:80 ) (place "Tank2" (handSite 2 4) count:100 state:1 value:80)
         (place "Boss1" (handSite 1 5) count:150 state:1 value:150 ) (place "Boss2" (handSite 2 5) count:150 state:1 value:150)
-        
+
         (place "Antiair1" (handSite 1 6) count:80 state:1 value:50 ) (place "Antiair2" (handSite 2 6) count:80 state:1 value:50)
         (place "Launcher1" (handSite 1 7) count:80 state:1 value:50 ) (place "Launcher2" (handSite 2 7) count:80 state:1 value:50)
         (place "Artillery1" (handSite 1 8) count:100 state:1 value:40 ) (place "Artillery2" (handSite 2 8) count:100 state:1 value:40)
-        
+
         (place "Helicopter1" (handSite 1 9) count:60 state:1 value:40 ) (place "Helicopter2" (handSite 2 9) count:60 state:1 value:40)
         (place "Fighter1" (handSite 1 10) count:100 state:1 value:100 ) (place "Fighter2" (handSite 2 10) count:100 state:1 value:100)
         (place "Bomber1" (handSite 1 11) count:100 state:1 value:100 ) (place "Bomber2" (handSite 2 11) count:100 state:1 value:100)
-        
+
         (place "Cruiser1" (handSite 1 12) count:60 state:1 value:70 ) (place "Cruiser2" (handSite 2 12) count:60 state:1 value:70)
         (place "Submarine1" (handSite 1 13) count:100 state:1 value:100 ) (place "Submarine2" (handSite 2 13) count:100 state:1 value:100)
         (place "Battleship1" (handSite 1 14) count:100 state:1 value:120 ) (place "Battleship2" (handSite 2 14) count:100 state:1 value:120)
         >
         <
         200
-        >                  
+        >
         <
         (hand Placement P1 scale:0.9 offsetX:0.05 offsetY:0.85)
         (hand Placement P2 scale:0.9 offsetX:0.05 offsetY:0.17)
-        >     
+        >
         <
-        
+
         >
         <
         (piece ExtendName P2 "Flip")
@@ -2176,7 +2176,7 @@
         >
         "Basic Scenario"
     )
-    
+
     }
 )
 
@@ -2261,74 +2261,74 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Mini Wars is a simplified war game.")
-        
+
         (rules " <br>
             //------------------------------------------------------------------------------
             <b>General Rules:</b>
-            
+
             <u>The following rules apply to all units, unless stated otherwise in their description:</u>
-            
+
             - All units move and measure distance orthogonally.
             - Units may move up to their maximum movement limit and can then attack an adjacent site.
-            
+
             - Attacking a unit will deal damage to it (see damage calculation section).
             - If an attacked unit's health reaches zero, it will be removed from the battlefield.
             - Defending units that survive an attack, will then deal counter damage to their attacker.
-            
+
             <u>The following rules apply to all buildings:</u>
-            
+
             - There are five types of building: Town, Factory, Airport, Dock and Base.
-            
+
             - Attacking a building will deal damage to it (see damage calculation section).
-            - If an attacked building's health reaches zero, it will change ownership to the player who attacked it and receive 50 health. 
+            - If an attacked building's health reaches zero, it will change ownership to the player who attacked it and receive 50 health.
             - Buildings that are attacked, will not deal counter damage.
-            
+
             - Units can heal at an adjacent building, instead of attacking.
             - Healing at a building, will convert health from the building to the unit, transferring as much health as possible.
-            
+
             - Additional units can be purchased using gold at their corresponding production building.
             - To purchase a unit, drag it from your hand to an available site next to a production building.
             - Each player's gold is represented by their score.
             - The cost of purchasing a unit is represented by its count.
             - Purchased units cannot move, attack or heal on the same turn they are purchased.
-            
+
             - A player can only use a building (to produce or heal units) if they own it.
             - Each player receives one gold for every Town they own, at the start of their turn.
             - Buildings gain 10 health at the start of the owning player's turn, up to a maximum of 100.
             - Grey buildings are neutral, and are not owned by any player.
-            
+
             - If a player loses ownership of all their Bases, they lose the game.
-            
+
             //------------------------------------------------------------------------------
             <b>Units:</b>
-            
+
             <u>Human</u> (Purchased from Towns)
-            
+
             Soldier
             Move: 3
             Health: 30
             Cost: 30
             Damage Factor: 50%
-            
+
             Motorbike
             Move: 5
             Health: 40
             Cost: 50
             Damage Factor: 50%
-            
+
             <u>Vehicle</u> (Purchased from Factories)
-            
+
             Speeder
             Move: 6
             Health: 60
             Cost: 60
             Damage Factor: 40%
             Purchased from: Factory
-            
+
             Shooter
             Move: 4
             Health: 60
@@ -2336,14 +2336,14 @@
             Damage Factor: 40%
             Purchased from: Factory
             - Deals double damage against Humans.
-            
+
             Tank
             Move: 4
             Health: 80
             Cost: 100
             Damage Factor: 50%
             Purchased from: Factory
-            
+
             Boss
             Move: 2
             Health: 150
@@ -2351,7 +2351,7 @@
             Damage Factor: 50%
             Purchased from: Factory
             - Cannot attack Aircraft.
-            
+
             Anti-Aircraft
             Move: 4
             Health: 50
@@ -2361,7 +2361,7 @@
             - Can only attack Aircraft.
             - Can attack units 1-2 spaces away.
             - Does not deal or receive counter damage during an attack.
-            
+
             Missile Launcher
             Move: 3
             Health: 50
@@ -2371,7 +2371,7 @@
             - Cannot attack Aircraft.
             - Can only attack units 2-3 spaces away.
             - Does not deal or receive counter damage during an attack.
-            
+
             Artillery
             Move: 3
             Health: 40
@@ -2382,16 +2382,16 @@
             - Can only attack units 3-5 spaces away.
             - Does not deal or receive counter damage during an attack.
             - Cannot attack or heal in the same turn that it moved.
-            
+
             <u>Aircraft</u> (Purchased from Airports)
-            
+
             Helicopter
             Move: 4
             Health: 40
             Cost: 60
             Damage Factor: 70%
             Purchased from: Airport
-            
+
             Fighter Jet
             Move: 6
             Health: 100
@@ -2399,7 +2399,7 @@
             Damage Factor: 100%
             Purchased from: Airport
             - Can only attack Aircraft.
-            
+
             Bomber
             Move: 5
             Health: 100
@@ -2407,16 +2407,16 @@
             Damage Factor: 80%
             Purchased from: Airport
             - Cannot attack Aircraft.
-            
+
             <u>Boat</u> (Purchased from Docks)
-            
+
             Cruiser
             Move: 5
             Health: 70
             Cost: 60
             Damage Factor: 50%
             Purchased from: Dock
-            
+
             Submarine
             Move: 5
             Health: 100
@@ -2424,7 +2424,7 @@
             Damage Factor: 80%
             Purchased from: Dock
             - Can only attack Boats.
-            
+
             Battleship
             Move: 4
             Health: 120
@@ -2434,32 +2434,32 @@
             - Cannot attack Aircraft.
             - Can only attack units 2-4 spaces away.
             - Does not deal or receive counter damage during an attack.
-            
+
             //------------------------------------------------------------------------------
             <b>Movement Restrictions:</b>
-            
+
             Humans may travel across plains, forests, and shallow water.
             Vehicles may travel across plains. They may also move 1 space into forests instead of their regular movement.
             Aircraft may travel across all spaces.
             Boats may travel across shallow and deep water.
             Buildings cannot move (obviously).
             Units cannot move over enemy or neutral occupied spaces.
-            
+
             //------------------------------------------------------------------------------
             <b>Damage Calculation:</b>
-            
-            An attacking unit deals damage equal to its health, multiplied by its damage factor. 
+
+            An attacking unit deals damage equal to its health, multiplied by its damage factor.
             For example, A submarine has a damage factor of 80%, so a submarine with 20 health will deal 16 damage when it attacks (20 x 0.8).
             If the defending unit is in shallow or deep water, it takes 25% more damage.
             If the defending unit is in a forest, it takes 25% less damage.
             Aircraft are unaffected by terrain when calculating damage against them.
             All damage values are rounded down to the nearest whole number.
-            
+
             //------------------------------------------------------------------------------
             <b>Army Doctrine:</b>
-            
+
             At the start of the game (selected via the game options) you may pick a doctrine for your army.
-            
+
             None - No effect.
             Special Forces - Human units do 50% more damage, all other units do 25% less damage.
             Brute Strength - Direct Vehicle units (no range on their attack distance) do 50% more damage, all other units do 25% less damage.
@@ -2475,16 +2475,16 @@
             Preemptive Strike - Units do 50% more damage when attacking, but never deal counter damage.
             Retaliation - Units do 50% less damage when attacking, but deal 100% more counter damage.
             Lady Luck - All attack damage is randomly selected between 50% and 150% of the normal amount.
-            
+
             //------------------------------------------------------------------------------
         ")
-        
+
         (version "1.1.14")
         (classification "board/war/other")
         (credit "Matthew Stephenson and Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Yellow))
@@ -2492,39 +2492,39 @@
         (player Colour P4 (colour Green))
         (piece Colour P1 state:0 fillColour:(colour 139 0 0))
         (piece Colour P2 state:0 fillColour:(colour 155 135 12))
-        
+
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
         (piece Background image:"square" fillColour:(colour 255 255 255 1) edgeColour:(colour 255 255 255 1) )
         (show Piece Value Top offsetImage:true valueOutline:true)
-        
+
         <Scenario:pieceFlip>
-        
+
         <Scenario:handPlacement>
-        
+
         (piece Scale "Factory" 0.55)
         (piece Scale "Base" 0.55)
         (piece Scale "Town" 0.55)
         (piece Scale "Dock" 0.55)
         (piece Scale "Airport" 0.55)
-        
+
         (piece Scale "Antiair" 0.7)
         (piece Scale "Cruiser" 0.7)
         (piece Scale "Motorbike" 0.7)
         (piece Scale "Soldier" 0.6)
         (piece Scale 0.8)
-        
+
         <Scenario:terrainScale>
-        
+
         (board Colour Phase0 (colour 208 240 192))
         (region Colour (sites Occupied by:All components:{"Town" "Dock" "Base" "Factory" "Airport"}) (colour Grey))
         (region Colour "Forest" (colour 0 100 0))
         (region Colour "ShallowWater" (colour 173 216 230))
         (region Colour "DeepWater" (colour 28 98 215))
         (region Colour "Mountain" (colour 195 155 119))
-        
+
         (autoPass False)
     })
-    
+
 )

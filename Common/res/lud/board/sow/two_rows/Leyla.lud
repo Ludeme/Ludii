@@ -15,10 +15,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Leyla"  
-    (players 2)  
-    
-    (equipment { 
+(game "Leyla"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "5,W,N,E" loop:True)
         )
@@ -26,11 +26,11 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (hand Each)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 4 to:(sites Track) ))
-        
+
         phases:{
         (phase "Sowing"
             (play
@@ -39,7 +39,7 @@
                         (from
                             (if (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover) 
+                                (sites Mover)
                             )
                             if:(and (is Occupied (from)) (= 0 (state at:(from))))
                         )
@@ -56,7 +56,7 @@
                                             (set State at:(to) (next))
                                         )
                                     )
-                                    (if (and 
+                                    (if (and
                                             (is In (to) (sites Next))
                                             (= 4 (count at:(to)))
                                         )
@@ -78,8 +78,8 @@
                     }
                     (then
                         (if ("APlayerCanNotMove")
-                            (and { 
-                                (forEach Site 
+                            (and {
+                                (forEach Site
                                     (sites P1)
                                     (if (= 0 (state at:(site)))
                                         (fromTo
@@ -89,7 +89,7 @@
                                         )
                                     )
                                 )
-                                (forEach Site 
+                                (forEach Site
                                     (sites P2)
                                     (if (= 0 (state at:(site)))
                                         (fromTo
@@ -99,7 +99,7 @@
                                         )
                                     )
                                 )
-                                (forEach Site 
+                                (forEach Site
                                     (sites Board)
                                     (if (= (state at:(site)) P1)
                                         (and
@@ -126,8 +126,8 @@
                         )
                     )
                 )
-            )	
-            
+            )
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
@@ -135,11 +135,11 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-            
+
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 4 (count Cell at:(handSite Mover)))
@@ -173,28 +173,28 @@
                     )
                 )
             )
-            (nextPhase 
+            (nextPhase
                 (and
-                    (= 
-                        (count Sites in:(forEach (sites P1) if:(is Occupied (site)))) 
+                    (=
+                        (count Sites in:(forEach (sites P1) if:(is Occupied (site))))
                         (count Sites in:(forEach (sites P2) if:(is Occupied (site))))
                     )
                     (or
                         (is Empty (handSite P1))
                         (is Empty (handSite P2))
                     )
-                )		
+                )
             "Sowing")
         )
-        
+
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Leyla is a two-row mancala-style game board played near Jigjiga, Ethiopia. It involves the capturing of holes, into which counters accumulate.")
@@ -207,7 +207,7 @@
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)

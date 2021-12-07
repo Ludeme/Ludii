@@ -12,10 +12,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kanji Guti"  
-    (players 2)  
-    
-    (equipment { 
+(game "Kanji Guti"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -24,46 +24,46 @@
         (regions "Home" P1 (expand (sites Left) steps:2))    // P1 Home
         (regions "Home" P2 (expand (sites Right) steps:2))   // P2 home
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start {
-            (set Count 1 at:(coord "D1") ) 
-            (set Count 12 to:(difference (sites Track) (sites Centre)) ) 
+            (set Count 1 at:(coord "D1") )
+            (set Count 12 to:(difference (sites Track) (sites Centre)) )
         })
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (if 
-                        (is Mover Prev) 
+                Select
+                (from
+                    (if
+                        (is Mover Prev)
                         (sites {("NextHole" "LastHolePlayed")})
-                        (sites Mover) 
-                    ) 
+                        (sites Mover)
+                    )
                     if:(< 0 (count at:(from)))
                 )
-                (then 
-                    (sow  
+                (then
+                    (sow
                         apply:(if (> (count at:("NextHole" (to))) 0)
                             (moveAgain)
                             (if (> (count at:("OppositePit" ("NextHole" (to)))) 0)
-                                (fromTo 
-                                    (from ("OppositePit" ("NextHole" (to)))) 
-                                    (to (handSite Mover)) 
+                                (fromTo
+                                    (from ("OppositePit" ("NextHole" (to))))
+                                    (to (handSite Mover))
                                     count:(count at:("OppositePit" ("NextHole" (to))))
                                 )
                             )
                         )
                     )
                 )
-            )		
+            )
         )
-        
-        (end 
+
+        (end
             (if (= 0 ("NumPiecesOnBoard"))
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -73,8 +73,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
-    
+(metadata
+
     (info
         {
         (description "Kanji Guti is a two-row mancala-style board game that is played in the Orissa region of India. Is was documented in the early twentieth century.")
@@ -85,7 +85,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

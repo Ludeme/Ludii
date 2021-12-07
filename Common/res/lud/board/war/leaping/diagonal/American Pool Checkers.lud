@@ -1,15 +1,15 @@
-(define "HopCounter" 
+(define "HopCounter"
     (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
+        Hop
+        (from #1)
+        Diagonal
+        (between
             if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -23,57 +23,57 @@
     (equipment {
         (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
-    (rules 
-        (start { 
+    (rules
+        (start {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
         })
-        (play 
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     ("HopCounter" (last To)
-                        (then 
-                            (if (can Move ("HopCounter" (last To))) 
+                        (then
+                            (if (can Move ("HopCounter" (last To)))
                                 (moveAgain)
-                                (if "JumpToPromotionZone" 
+                                (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
-                            ) 
-                        ) 
+                            )
+                        )
                     )
                     (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
                 )
                 (priority {
-                    (or 
+                    (or
                         (forEach Piece "Counter"
-                            ("HopCounter" (from) 
-                                (then 
-                                    (if (can Move ("HopCounter" (last To))) 
-                                        (moveAgain) 
-                                        (if "JumpToPromotionZone" 
+                            ("HopCounter" (from)
+                                (then
+                                    (if (can Move ("HopCounter" (last To)))
+                                        (moveAgain)
+                                        (if "JumpToPromotionZone"
                                             (move Promote (last To) (piece "DoubleCounter") Mover)
                                         )
-                                    ) 
-                                ) 
-                            ) 
+                                    )
+                                )
+                            )
                         )
-                        (max Moves 
+                        (max Moves
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                         )
                     )
-                    (or  
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions {FR FL}) 
+                                Step
+                                (directions {FR FL})
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -83,15 +83,15 @@
                     )
                 })
             )
-        ) 
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "American Pool Checkers is a game with leaping captured played primarily in Black communities in the United States.")
@@ -104,7 +104,7 @@
         (origin  "This game was played in United States of America, around 1947.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Defined" "Isometric"})
         (player Colour P2 (colour Red))
@@ -112,7 +112,7 @@
         (board Colour Phase0 (colour Green))
         (board Colour Phase1 (colour Yellow))
     })
-    
+
     (ai
         "American Pool Checkers_ai"
     )

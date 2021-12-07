@@ -5,27 +5,27 @@
 //------------------------------------------------------------------------------
 
 (game "Knight Moves 19"
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Knight" Each 
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+        (piece "Knight" Each
             (or {
-                (forEach Direction 
-                    N 
-                    (to 
+                (forEach Direction
+                    N
+                    (to
                         if:True
-                        (apply 
-                            (forEach Direction 
+                        (apply
+                            (forEach Direction
                                 (from (to))
                                 NE
                                 (to
                                     if:True
-                                    (apply 
+                                    (apply
                                         (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
                                                         if:(is Enemy (who at:(to)))
                                                         (remove (to))
                                                     )
@@ -38,22 +38,22 @@
                         )
                     )
                 )
-                (forEach Direction 
-                    N 
-                    (to 
+                (forEach Direction
+                    N
+                    (to
                         if:True
-                        (apply 
-                            (forEach Direction 
+                        (apply
+                            (forEach Direction
                                 (from (to))
                                 NW
                                 (to
                                     if:True
-                                    (apply 
+                                    (apply
                                         (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
                                                         if:(is Enemy (who at:(to)))
                                                         (remove (to))
                                                     )
@@ -66,50 +66,22 @@
                         )
                     )
                 )
-                (forEach Direction 
-                    E 
-                    (to 
-                        if:True
-                        (apply 
-                            (forEach Direction 
-                                (from (to))
-                                NE
-                                (to
-                                    if:True
-                                    (apply 
-                                        (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
-                                                        if:(is Enemy (who at:(to)))
-                                                        (remove (to))
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-                (forEach Direction 
+                (forEach Direction
                     E
-                    (to 
+                    (to
                         if:True
-                        (apply 
-                            (forEach Direction 
+                        (apply
+                            (forEach Direction
                                 (from (to))
-                                SE
+                                NE
                                 (to
                                     if:True
-                                    (apply 
+                                    (apply
                                         (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
                                                         if:(is Enemy (who at:(to)))
                                                         (remove (to))
                                                     )
@@ -122,22 +94,50 @@
                         )
                     )
                 )
-                (forEach Direction 
-                    W 
-                    (to 
+                (forEach Direction
+                    E
+                    (to
                         if:True
-                        (apply 
-                            (forEach Direction 
+                        (apply
+                            (forEach Direction
+                                (from (to))
+                                SE
+                                (to
+                                    if:True
+                                    (apply
+                                        (if (not (is Friend (who at:(to))))
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
+                                                        if:(is Enemy (who at:(to)))
+                                                        (remove (to))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (forEach Direction
+                    W
+                    (to
+                        if:True
+                        (apply
+                            (forEach Direction
                                 (from (to))
                                 NW
                                 (to
                                     if:True
-                                    (apply 
+                                    (apply
                                         (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
                                                         if:(is Enemy (who at:(to)))
                                                         (remove (to))
                                                     )
@@ -150,22 +150,22 @@
                         )
                     )
                 )
-                (forEach Direction 
-                    W 
-                    (to 
+                (forEach Direction
+                    W
+                    (to
                         if:True
-                        (apply 
-                            (forEach Direction 
+                        (apply
+                            (forEach Direction
                                 (from (to))
                                 SW
                                 (to
                                     if:True
-                                    (apply 
+                                    (apply
                                         (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
                                                         if:(is Enemy (who at:(to)))
                                                         (remove (to))
                                                     )
@@ -178,22 +178,22 @@
                         )
                     )
                 )
-                (forEach Direction 
-                    S 
-                    (to 
+                (forEach Direction
+                    S
+                    (to
                         if:True
-                        (apply 
-                            (forEach Direction 
+                        (apply
+                            (forEach Direction
                                 (from (to))
                                 SW
                                 (to
                                     if:True
-                                    (apply 
+                                    (apply
                                         (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
                                                         if:(is Enemy (who at:(to)))
                                                         (remove (to))
                                                     )
@@ -206,22 +206,22 @@
                         )
                     )
                 )
-                (forEach Direction 
-                    S 
-                    (to 
+                (forEach Direction
+                    S
+                    (to
                         if:True
-                        (apply 
-                            (forEach Direction 
+                        (apply
+                            (forEach Direction
                                 (from (to))
                                 SE
                                 (to
                                     if:True
-                                    (apply 
+                                    (apply
                                         (if (not (is Friend (who at:(to))))
-                                            (move 
-                                                (from) 
-                                                (to 
-                                                    (apply 
+                                            (move
+                                                (from)
+                                                (to
+                                                    (apply
                                                         if:(is Enemy (who at:(to)))
                                                         (remove (to))
                                                     )
@@ -239,32 +239,32 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Knight1" (expand (sites Bottom)) )
             (place "Knight2" (expand (sites Top)) )
             }
         )
-        
+
         (play (forEach Piece) )
-        
+
         (end (if "RegionReached" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

@@ -1,14 +1,14 @@
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (move
         Remove
-        (sites Occupied by:Next container:"Board") 
+        (sites Occupied by:Next container:"Board")
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3) 
+(define "IfLine3MoveAgain"
+    (then
+        (if
+            (is Line 3)
             (moveAgain)
         )
     )
@@ -18,44 +18,44 @@
 
 (game "Mulabalaba"
     (players 2)
-    
-    (equipment { 
-        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+
+    (equipment {
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex)
         (hand Each)
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (if (is In (from) (sites Corners))
                 (move
                     (from (from))
                     (to (sites Empty))
                 )
-                (move 
-                    Step 
-                    (to if:(is Empty (to))) 
+                (move
+                    Step
+                    (to if:(is Empty (to)))
                 )
-                "IfLine3MoveAgain" 
+                "IfLine3MoveAgain"
             )
-        ) 
-    })  
-    (rules 
+        )
+    })
+    (rules
         (start (place "Marker" "Hand" count:12))
-        
+
         phases:{
         (phase "Placement"
             (play
                 (if "SameTurn"
                     "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
-                    )  
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Empty))
+                        "IfLine3MoveAgain"
+                    )
                 )
-            ) 
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        
-        (phase "Movement" 
-            (play 
+
+        (phase "Movement"
+            (play
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (forEach Piece)
@@ -63,7 +63,7 @@
             )
         )
         }
-        
+
         (end
             (forEach NonMover
                 if:(no Pieces Player)
@@ -75,8 +75,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Mulabalaba is an alignment game played in the Livingtone distric tof Zambia.")
@@ -88,6 +88,6 @@
         (origin  "This game was played in Zambia, around 1956.")
         }
     )
-    
+
 )
 

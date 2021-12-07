@@ -1,9 +1,9 @@
-(game "Notakto"  
-    (players 2)  
-    (equipment { 
+(game "Notakto"
+    (players 2)
+    (equipment {
         (board
             (union {
-                (square 3) 
+                (square 3)
                 (shift 0 4 (square 3))
                 (shift 0 8 (square 3))
                 (shift 0 12 (square 3))
@@ -19,19 +19,19 @@
                 (shift 12 4 (square 3))
                 (shift 12 8 (square 3))
                 (shift 12 12 (square 3))
-            })		
+            })
         )
-        (piece "Marker" Each) 
-    })  
-    (rules 
-        (play 
-            (move Add 
-                (to 
+        (piece "Marker" Each)
+    })
+    (rules
+        (play
+            (move Add
+                (to
                     (sites Empty)
                     if:(= 0 (state at:(to)))
                 )
                 (then
-                    (if (is Line 3) 
+                    (if (is Line 3)
                         (forEach Site (expand origin:(last To) steps:2) (set State at:(site) 1))
                     )
                 )
@@ -43,17 +43,17 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Notakto is a misere 3-in-a-row game for two players. It's played on the squares of a finite number of initially empty 3x3 boards. All pieces are exactly the same and are shared by both players.")
         (rules "A board is dead if it contains at least one set of three stones in a straight orthogonal or diagonal line.
-            
+
             A board that is not dead is alive.
-            
+
             On their turn, a player must place a piece on an empty square of a living board.
-            
+
         When all boards are dead, the player who made the last placement loses.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/204185/notakto\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>
         ")
@@ -63,5 +63,5 @@
         (date "2010")
         }
     )
-    
+
 )

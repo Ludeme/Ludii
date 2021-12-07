@@ -1,12 +1,12 @@
 (define "ValueYellowDice" (face 65))
 
-(define "Sohatara" 
+(define "Sohatara"
     (and (= ("ThrowValue") 3) (= 0 ("ValueYellowDice")))
 )
 
 (define "ThrowValue" (count Pips))
 
-(define "SpecialThrows" 
+(define "SpecialThrows"
     (or
         ("Sohatara")
         (is In ("ThrowValue") (sites {1 5}))
@@ -17,36 +17,36 @@
 
 (define "SiteToMoveOnTrack" (trackSite Move steps:#1))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (fromTo (from (to)) (to (handSite (who at:(to)))))
-    ) 
+    )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "Move" 
+(define "Move"
     (if (= ("SiteToMoveOnTrack" #1) End)
         "RemoveAPiece"
-        (if (!= ("SiteToMoveOnTrack" #1) Off) 	 			
+        (if (!= ("SiteToMoveOnTrack" #1) Off)
             (if (or
                     (is In ("SiteToMoveOnTrack" #1) (sites Empty))
-                    (and 
+                    (and
                         (is Enemy (who at:("SiteToMoveOnTrack" #1)))
                         (not (is In ("SiteToMoveOnTrack" #1) (sites "SafeSites")))
                     )
                 )
-                (move 
+                (move
                     (from)
-                    (to 
-                        ("SiteToMoveOnTrack" #1) 
+                    (to
+                        ("SiteToMoveOnTrack" #1)
                         "CaptureEnemyPiece"
                     )
                 )
             )
         )
-    )			
+    )
 )
 
 (define "PlayingSohatara" (is Pending))
@@ -80,7 +80,7 @@
             (track "Track2" "7,11,W,S1,E3,S1,E1,S,E,N3,E1,N1,E,N,W3,N,W1,N,W2,S3,W1,S1,W,S1,E3,End" P2 directed:True)
             (track "Track3" "17,39,N,W1,S3,W1,S1,W,S,E3,S1,E1,S,E,N3,E,N1,E,N,W3,N,W1,N,W1,S3,End" P3 directed:True)
             (track "Track4" "21,26,E,N1,W3,N1,W1,N,W,S3,W1,S1,W,S,E3,S1,E1,S,E,N3,E1,N1,E,N1,W3,End" P4 directed:True)
-            } 
+            }
         )
         (piece "Marker" Each ("Move" ("ThrowValue")))
         (hand Each)
@@ -88,29 +88,29 @@
         (map {(pair P1 6) (pair P2 7) (pair P3 17) (pair P4 21)})
         (regions "SafeSites" (sites {3 19 16 34}))
     })
-    (rules 
+    (rules
         (start {
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
             (place "Marker" "Hand" count:4)
         })
-        (play 
+        (play
             (do (if (not ("PlayingSohatara")) (roll))
-                next:(or 
+                next:(or
                     (if ("SpecialThrows")
                         (move
                             (from (handSite Mover))
-                            (to 
+                            (to
                                 (mapEntry (mover))
                                 if:(is Empty (mapEntry (mover)))
                             )
                         )
                     )
                     (if (or ("PlayingSohatara") ("Sohatara"))
-                        (forEach Die 
+                        (forEach Die
                             if:("DieNotUsed")
                             (forEach Piece ("Move" (pips)))
-                            (then 
+                            (then
                                 (if (not (all DiceUsed))
                                     (and
                                         (set Pending)
@@ -122,7 +122,7 @@
                         (forEach Piece)
                     )
                 )
-                (then 
+                (then
                     (if ("SpecialThrows")
                         (moveAgain)
                     )
@@ -135,8 +135,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Asi Keliya is a race game played in Sri Lanka in the early twentieth century. It is related to other race games played on a cross-shaped board in South Asia, but its board is smaller than others. ")
@@ -150,7 +150,7 @@
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
         (player Colour P1 (colour Red))
@@ -162,5 +162,5 @@
         (board Colour OuterEdges (colour Black))
         (piece Colour "Die6" fillColour:(colour Yellow))
     })
-    
+
 )

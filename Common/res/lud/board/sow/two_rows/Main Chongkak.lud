@@ -9,8 +9,8 @@
     )
 )
 
-(define "RightMostEmpty" 
-    (trackSite FirstSite 
+(define "RightMostEmpty"
+    (trackSite FirstSite
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
     )
@@ -18,10 +18,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Main Chongkak"  
-    (players 2)  
-    
-    (equipment { 
+(game "Main Chongkak"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns"
             (track "Track" "0,ENE,E,ESE,WSW,W" loop:True)
         )
@@ -30,25 +30,25 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (map "RightMost" {(pair P1 ("Columns")) (pair P2 (+ ("Columns") 1))})
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
             (set Count "Columns" to:(union (sites Bottom) (sites Top)) )
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
                 (or {
                     (move Select
                         (from
-                            (if 
-                                (and (not (is Pending)) (is Mover Prev)) 
-                                (sites {(var "Replay")}) 
-                                (sites Mover) 
-                            ) 
+                            (if
+                                (and (not (is Pending)) (is Mover Prev))
+                                (sites {(var "Replay")})
+                                (sites Mover)
+                            )
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
                         )
                         (then
@@ -81,7 +81,7 @@
                     }
                     (then
                         (if ("OneRowIsEmpty")
-                            (and { 
+                            (and {
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -102,7 +102,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> ("Columns") (count at:(mapEntry P1))) (result P2 Win))
@@ -110,10 +110,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (not (all Sites (sites Mover) if:(is Occupied (site))))
@@ -137,27 +137,27 @@
 
 (option "Board Size" <Board> args:{ <size>}
     {
-    (item "6"   <6>  "Each player has 6 holes.")*  
-    (item "7"   <7>  "Each player has 7 holes.")   
-    (item "8"   <8>  "Each player has 8 holes.")   
-    (item "9"   <9>  "Each player has 9 holes.")   
+    (item "6"   <6>  "Each player has 6 holes.")*
+    (item "7"   <7>  "Each player has 7 holes.")
+    (item "8"   <8>  "Each player has 8 holes.")
+    (item "9"   <9>  "Each player has 9 holes.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Skeat (Observed)" {
         "Board Size/6"
         }
         variations:{"Board Size/7" "Board Size/8" "Board Size/9"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Main Chongkak is a two-row mancala-style board game that has been played since at least the nineteeenth century in Malaysia. It is typically played by women.")
@@ -168,7 +168,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

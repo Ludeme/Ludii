@@ -1,33 +1,33 @@
-(define "PromoteIfBorderReached"  
+(define "PromoteIfBorderReached"
     (if (is In (last To) (sites Next))
         (move Promote (last To) (piece "DiscDouble") Mover)
     )
 )
 
-(define "HopDisc" 
+(define "HopDisc"
     (move
-        Hop 
-        (between 
+        Hop
+        (between
             if:(is Enemy (who at:(between)))
             (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         (then
-            (and 
+            (and
                 ("PromoteIfBorderReached")
                 ("HasCaptured")
             )
         )
-    ) 
+    )
 )
 
-(define "HopDiscDouble" 
+(define "HopDiscDouble"
     (move
         Hop
-        (between 
+        (between
             before:9
             after:9
-            if:(is Enemy (who at:(between))) 
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -38,20 +38,20 @@
 (define "HasCaptured"  (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
 (define "DidNotCaptured"  (= (value Player Prev) 1) )
-(define "RememberSiteWithPossibleCapture"  
-    (set Pending 
+(define "RememberSiteWithPossibleCapture"
+    (set Pending
         (sites From
-            (or 
-                (forEach Piece "Disc" 
+            (or
+                (forEach Piece "Disc"
                     ("HopDisc")
-                ) 
-                (forEach Piece "DiscDouble" 
+                )
+                (forEach Piece "DiscDouble"
                     (move
                         Hop
-                        (between 
+                        (between
                             before:9
                             after:9
-                            if:(is Enemy (who at:(between))) 
+                            if:(is Enemy (who at:(between)))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -64,41 +64,41 @@
 
 (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
 
-(define "HuffOnePieceOf" 
+(define "HuffOnePieceOf"
     (move
-        Select 
+        Select
         (from #1
             if:(!= (what at:(from)) 0)
         )
-        (then 
+        (then
             (and  {
-                (remove (last To)) 
-                (moveAgain) 
+                (remove (last To))
+                (moveAgain)
                 (set Value Prev 0)
             })
         )
     )
 )
 
-(define "ShouldCapturedButMoved" 
-    (and 
-        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+(define "ShouldCapturedButMoved"
+    (and
+        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))
         (is In (last From) (sites Empty))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Zamma"  
+(game "Zamma"
     (players {(player N) (player S)})
-    (equipment { 
+    (equipment {
         ("AlquerqueBoard" 9 9)
-        (piece "Disc" Each 
+        (piece "Disc" Each
             (or
-                ("HopDisc") 
+                ("HopDisc")
                 (move
-                    Step 
-                    Forwards 
+                    Step
+                    Forwards
                     (to if:(is Empty (to)))
                     (then ("HasNotCaptured"))
                 )
@@ -107,45 +107,45 @@
         )
         (piece "DiscDouble" Each
             (or
-                ("HopDiscDouble") 
+                ("HopDiscDouble")
                 (move Slide (then ("HasNotCaptured")))
             )
         )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
             (place "Disc2" (forEach (sites Board) if:(> (site) (centrePoint)) ))
         })
-        
-        (play 
+
+        (play
             (or
                 (if ("DidNotCaptured")
                     (or
-                        (if ("ShouldCapturedButMoved") 
+                        (if ("ShouldCapturedButMoved")
                             ("HuffOnePieceOf" (last To))
                         )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
                     )
                 )
-                (do 
-                    ("RememberSiteWithPossibleCapture") 
+                (do
+                    ("RememberSiteWithPossibleCapture")
                     next:(forEach Piece)
                 )
             )
-        ) 
-        
-        (end (if (no Moves Mover) (result Next Win))) 
+        )
+
+        (end (if (no Moves Mover) (result Next Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Zamma is a leaping capture game played in North Africa. It has been documented since at least the twentieth century, but is probably much older. It is related to other similar games from the area such as Draughts and Alquerque.")
@@ -158,16 +158,16 @@
         (origin  "This game was played in North Africa, around 1950.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour VeryDarkGrey))
         (player Colour P2 (colour White))
         (piece ExtendName P2 "Stick")
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Zamma_ai"
     )
-    
+
 )

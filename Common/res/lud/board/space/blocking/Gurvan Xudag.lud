@@ -5,14 +5,14 @@
 (game "Gurvan Xudag"
     (players 2)
     (equipment {
-        (board 
+        (board
             (remove (square 3) edges:{{0 1}{1 2}})
             use:Vertex
         )
         (piece "Human" P1 "StepToEmpty")
         (piece "Cow" P2 "StepToEmpty")
     })
-    (rules 
+    (rules
         (start {
             (place "Human1" (sites Left))
             (place "Cow2" (sites Right))
@@ -27,7 +27,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Gurvan Xudag is a blockade game played in Mongolia. Three guardians attempt to herd three calves into their pens.")
@@ -43,7 +43,7 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
+
     })
     (ai
         "Gurvan Xudag_ai"

@@ -1,7 +1,7 @@
-(define "BigHop" 
+(define "BigHop"
     (move
-        Hop 
-        (between 
+        Hop
+        (between
             (range 1 9)
             if:#1
             (apply (remove (between)))
@@ -12,64 +12,64 @@
 
 //-------------------------------------------------------------------------------
 
-(game "Merimueng-rimueng"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-            }) 
+(game "Merimueng-rimueng"
+    (players 2)
+    (equipment {
+        (board
+            (merge {
+                (shift 0 2 (square 5 diagonals:Alternating) )
+                (wedge 3)
+                (shift 0 6 (rotate 180 (wedge 3)))
+            })
             use:Vertex
         )
-        (hand P2) 
-        (piece "Tiger" P1 
+        (hand P2)
+        (piece "Tiger" P1
             (or {
                 ("StepToEmpty")
-                ("BigHop" (is Enemy (who at:(between)))) 
+                ("BigHop" (is Enemy (who at:(between))))
             })
-        ) 
-        (piece "Sheep" P2 "StepToEmpty") 
-    })  
-    (rules 
+        )
+        (piece "Sheep" P2 "StepToEmpty")
+    })
+    (rules
         (start {
             (place "Sheep2" (difference (expand (sites Centre)) (centrePoint)))
             (place Stack "Sheep2" (handSite P2) count:15)
             (place Stack "Tiger1" (sites Centre) counts:{2})
         } )
-        
+
         phases:{
         (phase "Movement"
             (play (forEach Piece top:True))
-            
+
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (no Pieces P2)  (result P1 Win))
             })
-            
-            (nextPhase 
-                (and 
-                    (not ("HandEmpty" P2)) 
+
+            (nextPhase
+                (and
+                    (not ("HandEmpty" P2))
                     (< (count Sites in:(sites Occupied by:P2 container:"Board")) 8)
-                ) 
+                )
                 "Placement"
             )
         )
-        
+
         (phase "Placement"
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
                     (then (moveAgain))
-                ) 
+                )
             )
-            (nextPhase 
-                (or 
-                    ("HandEmpty" P2) 
+            (nextPhase
+                (or
+                    ("HandEmpty" P2)
                     (= (count Sites in:(sites Occupied by:P2 container:"Board")) 8)
-                ) 
+                )
                 "Movement"
             )
         )
@@ -92,13 +92,13 @@
         (origin  "This game was played in Sumatra, around 1906.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
         (stackType 1 Count)
         (stackType 2 Count)
-        
+
     })
-    
+
 )

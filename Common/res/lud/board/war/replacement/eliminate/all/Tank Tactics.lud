@@ -7,12 +7,12 @@
     (move Select
         (from)
         (to
-            (intersection 
+            (intersection
                 (sites Occupied by:Enemy container:"Board")
                 (sites Distance from:(from) (range 1 (state at:(from))))
             )
         )
-        (then 
+        (then
             (and
                 (if	(= (value Piece at:(last To)) 1)
                     (remove (last To))
@@ -28,12 +28,12 @@
     (move Select
         (from)
         (to
-            (intersection 
+            (intersection
                 (sites Occupied by:Enemy container:"Board")
                 (sites Distance from:(from) (range 1 (state at:(from))))
             )
         )
-        (then 
+        (then
             (and
                 (addScore (player (who at:(last To))) 1)
                 "PostActionUpdate"
@@ -46,7 +46,7 @@
     (move Select
         (from)
         (to)
-        (then 
+        (then
             (and
                 (if (< (state at:(last To)) 100)
                     (set State at:(last To) (+ 1 (state at:(last To))))
@@ -70,7 +70,7 @@
 
 (define "PostActionUpdate"
     (if (> (score Mover) 1)
-        (and 
+        (and
             (addScore
                 Mover
                 -1
@@ -82,39 +82,39 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tank Tactics"  
-    (players <Players:numPlayers>)  
-    (equipment { 
-        (board (rectangle <Board:size>)) 
+(game "Tank Tactics"
+    (players <Players:numPlayers>)
+    (equipment {
+        (board (rectangle <Board:size>))
         (hand Each)
         (piece "Tank" Each (or {"Move" "Shoot" "Trade" "Upgrade"}) maxState:100)
-    })  
-    (rules 
+    })
+    (rules
         (meta (passEnd NoEnd))
-        (start { 
+        (start {
             (set Score Each 1)
             <Players:setupRules>
         })
         phases:{
         (phase "Placement"
             (play
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
-                )  
-            ) 
+                (move
+                    (from (handSite Mover))
+                    (to (sites Empty))
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 
-            (play 
-                (or 
+        (phase "Movement"
+            (play
+                (or
                     (forEach Piece)
                     "Pass"
                 )
             )
         )}
-        (end 
-            (forEach NonMover 
+        (end
+            (forEach NonMover
                 if:(no Pieces Player) (result Player Loss)
             )
         )
@@ -125,39 +125,39 @@
 
 (option "Number of Players" <Players> args:{<numPlayers> <setupRules>}
     {
-    (item "2 Players" 
-        <2> 
+    (item "2 Players"
+        <2>
         <
-        (place "Tank1" (handSite P1) state:2 value:3) 
+        (place "Tank1" (handSite P1) state:2 value:3)
         (place "Tank2" (handSite P2) state:2 value:3)
-        > 
+        >
         "2 players."
     )**
-    (item "3 Players" 
-        <3> 
+    (item "3 Players"
+        <3>
         <
-        (place "Tank1" (handSite P1) state:2 value:3) 
+        (place "Tank1" (handSite P1) state:2 value:3)
         (place "Tank2" (handSite P2) state:2 value:3)
         (place "Tank3" (handSite P3) state:2 value:3)
-        > 
+        >
         "3 players."
     )
-    (item "12 Players" 
-        <12> 
+    (item "12 Players"
+        <12>
         <
-        (place "Tank1" (handSite P1) state:2 value:3) 
+        (place "Tank1" (handSite P1) state:2 value:3)
         (place "Tank2" (handSite P2) state:2 value:3)
         (place "Tank3" (handSite P3) state:2 value:3)
-        (place "Tank4" (handSite P4) state:2 value:3) 
+        (place "Tank4" (handSite P4) state:2 value:3)
         (place "Tank5" (handSite P5) state:2 value:3)
         (place "Tank6" (handSite P6) state:2 value:3)
-        (place "Tank7" (handSite P7) state:2 value:3) 
+        (place "Tank7" (handSite P7) state:2 value:3)
         (place "Tank8" (handSite P8) state:2 value:3)
         (place "Tank9" (handSite P9) state:2 value:3)
-        (place "Tank10" (handSite P10) state:2 value:3) 
+        (place "Tank10" (handSite P10) state:2 value:3)
         (place "Tank11" (handSite P11) state:2 value:3)
         (place "Tank12" (handSite P12) state:2 value:3)
-        > 
+        >
         "12 players."
     )
     }
@@ -171,13 +171,13 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Inspired by a prototype game idea presented at GDC13.")
-        (rules "Each player controls a tank with three health and an initial shooting range of two spaces. 
-            Each player gains one action point at the start of their turn. 
+        (rules "Each player controls a tank with three health and an initial shooting range of two spaces.
+            Each player gains one action point at the start of their turn.
             Players may use an action point during their turn to perform one of four actions:
             - Move their tank to an adjacent space.
             - Shoot at another tank within shooting range, deducting one point of health.
@@ -192,10 +192,10 @@
         (credit "Matthew Stephenson")
         }
     )
-    
+
     (graphics {
         (show Piece Value CornerLeft offsetImage:true valueOutline:true)
         (show Piece State CornerRight offsetImage:true valueOutline:true)
     })
-    
+
 )

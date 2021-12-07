@@ -5,15 +5,15 @@
 //------------------------------------------------------------------------------
 
 (game "Knight Moves 20"
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Knight" Each 
-            (move 
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+        (piece "Knight" Each
+            (move
                 (from)
-                (to 
-                    (sites Around 
-                        (sites To (hop Orthogonal (between if:True) (to if:True))) 
+                (to
+                    (sites Around
+                        (sites To (hop Orthogonal (between if:True) (to if:True)))
                         Orthogonal
                         if:(not (is Friend (who at:(to))))
                     )
@@ -24,32 +24,32 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Knight1" (expand (sites Bottom)) )
             (place "Knight2" (expand (sites Top)) )
             }
         )
-        
+
         (play (forEach Piece) )
-        
+
         (end (if "RegionReached" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )
