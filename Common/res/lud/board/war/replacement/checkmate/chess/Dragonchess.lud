@@ -237,7 +237,7 @@
         
         (play 
             (if "SameTurn"
-                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
+                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook" "Dragon"}) Mover)
                 (do 
                     (or 
                         (forEach Piece)
