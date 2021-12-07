@@ -1,0 +1,63 @@
+(define "P1IsCooperating" (set Var "Choice1" 0))
+(define "P1IsDefecting" (set Var "Choice1" 1))
+(define "P2IsCooperating" (set Var "Choice2" 0))
+(define "P2IsDefecting" (set Var "Choice2" 1))
+
+(define "CooperateP1" (= 0 (var "Choice1")))
+(define "DefectP1" (= 1 (var "Choice1")))
+(define "CooperateP2" (= 0 (var "Choice2")))
+(define "DefectP2" (= 1 (var "Choice2")))
+
+//------------------------------------------------------------------------------
+
+(game "Iterated Prisoners Dilemma"
+    (players 2)
+    (mode Simultaneous)  
+    (equipment {
+        (board (square 2))
+    })
+    (rules
+        (play 
+            (or { 
+                (move Select (from 0) P1 (then ("P1IsCooperating")))
+                (move Select (from 1) P1 (then ("P1IsDefecting")))
+                (move Select (from 2) P2 (then ("P2IsCooperating")))
+                (move Select (from 3) P2 (then ("P2IsDefecting")))
+                }
+                (then
+                    (if (and ("CooperateP1") ("CooperateP2")) 
+                        (and (addScore P1 3) (addScore P2 3))
+                        (if (and ("DefectP1") ("DefectP2")) 
+                            (and (addScore P1 1) (addScore P2 1))
+                            (if (and ("CooperateP1") ("DefectP2")) 
+                                (and (addScore P1 0) (addScore P2 5))
+                                (and (addScore P1 5) (addScore P2 0))
+                            )
+                        )
+                    )
+                    applyAfterAllMoves:True
+                )
+            )
+        )
+        (end (if (= (counter) 8) (byScore)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board colour Phase0 (colour Hidden))
+        (board colour OuterEdges (colour Black))
+        (board colour InnerEdges (colour Black))
+        (show Symbol "C" (sites {0 2})) 
+        (show Symbol "D" (sites {1 3})) 
+    })
+    
+)
