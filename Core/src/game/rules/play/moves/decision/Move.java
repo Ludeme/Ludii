@@ -533,6 +533,7 @@ public final class Move extends Decision
 	 * @param moveType The type of move.
 	 * @param from     Describes the ``from'' location to select [(from)].
 	 * @param to       Describes the ``to'' location to select.
+	 * @param mover    The mover of the move.
 	 * @param then     The moves applied after that move is applied.
 	 * 
 	 * @example (move Select (from) (then (remove (last To))))
@@ -548,6 +549,7 @@ public final class Move extends Decision
 		     final MoveSelectType moveType,
 			 final From           from,
 		@Opt final To             to,
+		@Opt final RoleType       mover,
 		@Opt final Then           then
 	)
 	{
@@ -556,7 +558,7 @@ public final class Move extends Decision
 		switch (moveType)
 		{
 		case Select:
-			moves = new Select(from, to, then);
+			moves = new Select(from, to, mover, then);
 			break;
 		default:
 			break;

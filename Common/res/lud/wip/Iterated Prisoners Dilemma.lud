@@ -1,12 +1,35 @@
 (game "Iterated Prisoners Dilemma"
 	(players 2)
+    (mode Simultaneous)  
 	(equipment {
-		(board (square 2))
+		(board (rectangle 1 2))
 	})
 	(rules
 		(play 
-			(move Select (from (sites Board)))
+			(or 
+				(move Select (from (sites Board)) P1)
+				(move Select (from (sites Board)) P2)
+			)
 		)
 		(end (if (no Moves Next) (result Mover Win)))
 	)
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+  
+  (info
+      {
+      }
+  )
+  
+  (graphics {
+      (board colour Phase0 (colour Hidden))
+      (board colour OuterEdges (colour Black))
+      (board colour InnerEdges (colour Black))
+      (show Symbol "C" (sites {0})) 
+      (show Symbol "D" (sites {1})) 
+  })
+  
 )

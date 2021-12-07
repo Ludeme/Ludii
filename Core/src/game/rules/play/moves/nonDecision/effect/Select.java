@@ -7,9 +7,11 @@ import game.Game;
 import game.functions.booleans.BooleanConstant;
 import game.functions.booleans.BooleanFunction;
 import game.functions.ints.IntFunction;
+import game.functions.ints.board.Id;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import game.types.play.RoleType;
 import game.types.state.GameType;
 import game.util.moves.From;
 import game.util.moves.To;
@@ -63,13 +65,17 @@ public final class Select extends Effect
 
 	/** Does our game involve stacking? */
 	private boolean gameUsesStacking = false;
+	
+	/** The mover of this moves for simultaneous game (e.g. Rock-Paper-Scissors). */
+	private final RoleType mover;
 
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param from Describes the ``from'' location to select [(from)].
-	 * @param to   Describes the ``to'' location to select.
-	 * @param then The moves applied after that move is applied.
+	 * @param from  Describes the ``from'' location to select [(from)].
+	 * @param to    Describes the ``to'' location to select.
+	 * @param mover The mover of the move.
+	 * @param then  The moves applied after that move is applied.
 	 * 
 	 * @example (select (from) (then (remove (last To))))
 	 * 
@@ -80,9 +86,10 @@ public final class Select extends Effect
 	 */
 	public Select
 	(
-			 final From from,
-		@Opt final To   to,
-		@Opt final Then then
+			 final From     from,
+		@Opt final To       to,
+		@Opt final RoleType mover,
+		@Opt final Then     then
 	) 
 	{ 
 		super(then);
@@ -104,6 +111,7 @@ public final class Select extends Effect
 		typeTo = (to != null) ? to.type() : null;
 		levelToFn = (to != null && to.level() != null) ? to.level() : null;
 		levelFromFn = (from.level() != null) ? from.level() : null;
+		this.mover = mover;
 	}
  
 	//-------------------------------------------------------------------------
@@ -211,8 +219,11 @@ public final class Select extends Effect
 				
 		context.setTo(origTo);
 		context.setFrom(origFrom);
+
+		// We set the mover to the move.
+		final int moverToSet = (mover == null) ? context.state().mover() : new Id(null, mover).eval(context);
 		
-		MoveUtilities.setGeneratedMovesData(moves.moves(), this);
+		MoveUtilities.setGeneratedMovesData(moves.moves(), this, moverToSet);
 
 		return moves;
 	}
