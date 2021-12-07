@@ -1,14 +1,14 @@
-(define "RemoveEnemyPieceNotInLine3" 
+(define "RemoveEnemyPieceNotInLine3"
     (move
         Remove
         (forEach (sites Occupied by:Next) if:(not (is Line 3 Orthogonal through:(site))))
     )
 )
 
-(define "IfLine3OrthogonalMoveAgain" 
-    (then 
-        (if 
-            (is Line 3 Orthogonal) 
+(define "IfLine3OrthogonalMoveAgain"
+    (then
+        (if
+            (is Line 3 Orthogonal)
             (moveAgain)
         )
     )
@@ -23,32 +23,32 @@
         (board (rectangle 5 6))
         (hand Each)
         (piece "Marker" Each
-            (move 
+            (move
                 Step Orthogonal
-                (to if:(is Empty (to))) 
-                "IfLine3OrthogonalMoveAgain" 
+                (to if:(is Empty (to)))
+                "IfLine3OrthogonalMoveAgain"
             )
         )
         }
     )
     (rules
-        (start 
+        (start
             {
-            (place "Marker" "Hand" count:12) 
+            (place "Marker" "Hand" count:12)
             }
         )
-        
+
         phases:{
         (phase "Placement"
             <Rules>
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
-            (play 
+            (play
                 (if "SameTurn"
                     "RemoveEnemyPieceNotInLine3"
-                    (do 
+                    (do
                         (forEach Piece)
                         ifAfterwards:(not (is Line 4 Orthogonal))
                     )
@@ -56,9 +56,9 @@
             )
         )
         }
-        
+
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -72,8 +72,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dara is a game that is said to be played in West Africa, particularly among the Dakarkari people of Nigeria and the Zarma of Niger. It is also known as \"dill,\" \"doki\" (horse), or \"derrah.\" It is described on Wikipedia and other websites, but without reference to where the cultural information was obtained.")
@@ -85,7 +85,7 @@
         (credit "Matthew Stephenson")
         }
     )
-    
+
     (ai
         "Dara_ai"
     )

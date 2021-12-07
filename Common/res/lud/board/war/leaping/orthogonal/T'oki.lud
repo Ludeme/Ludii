@@ -1,23 +1,23 @@
 (game "T'oki"
     (players 2)
     (equipment {
-        (board (square 5) ) 
+        (board (square 5) )
         (piece "Marker" Each
             (or
                 ("StepOrthogonalToEmpty")
-                (move Hop 
+                (move Hop
                     Orthogonal
-                    (between 
+                    (between
                         (range 1 (count Rows))
-                        if:(is Enemy (who at:(between))) 
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
-                    (to 
-                        if:(or 
-                            (and 
-                                (is In (to) (sites Outer)) 
+                    (to
+                        if:(or
+                            (and
+                                (is In (to) (sites Outer))
                                 (is Enemy (who at:(to)))
-                            ) 
+                            )
                             (is Empty (to))
                         )
                     )
@@ -26,17 +26,17 @@
         )
         (hand Each)
     })
-    (rules 
-        (start { 
+    (rules
+        (start {
             (place "Marker" "Hand" count:20)
         })
         (play
             (or
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
+                (move
+                    (from (handSite Mover))
+                    (to (sites Empty))
                     count:2
-                )  
+                )
                 (forEach Piece)
             )
         )
@@ -46,8 +46,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "T'oki is a capturing game played by the Fula and Tukulor people of Mali. It combines the typical placement and movement phases into a single phase, with captures made by hopping over opponent's pieces. Typically played by men, it is a complex  game unique among games with this type of capture because multiple pieces may occupy one spot. It was primarily a game played by chiefs.")
@@ -60,7 +60,7 @@
         (origin  "This game was played in Mali, around 1955.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))

@@ -1,7 +1,7 @@
 (define "Columns" 8)
 (define "NumSeed" <Sow:numSeed>)
-(define "LeftMost" 
-    (trackSite FirstSite 
+(define "LeftMost"
+    (trackSite FirstSite
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
         if:(is Mover (who at:(to)))
     )
@@ -9,25 +9,25 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quendo"  
-    (players 4)  
-    
-    (equipment { 
+(game "Quendo"
+    (players 4)
+
+    (equipment {
         <Board:board>
         (piece "Seed" Each)
         (hand Each)
-    }) 
-    
-    (rules 
-        
+    })
+
+    (rules
+
         <Board:start>
-        
-        (play 
+
+        (play
             (if (!= 1 (count Pieces Mover))
                 (move
-                    Select 
-                    (from 
-                        ("LeftMost") 
+                    Select
+                    (from
+                        ("LeftMost")
                     )
                     (then
                         (sow
@@ -36,28 +36,28 @@
                                     (remove (to) count:(count at:(to)))
                                     (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
                                 )
-                            )		
+                            )
                         )
                     )
                 )
                 (move
                     (from ("LeftMost"))
-                    (to 
+                    (to
                         (trackSite FirstSite from:(from) if:(is Enemy (who at:(to))))
                         (apply
                             (and
                                 (remove (to) count:(count at:(to)))
                                 (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
-                            )	
-                        )	
+                            )
+                        )
                     )
                 )
             )
         )
-        
-        (end 
-            (forEach NonMover 
-                if:(no Pieces Player) 
+
+        (end
+            (forEach NonMover
+                if:(no Pieces Player)
                 (result Player Loss)
             )
         )
@@ -77,14 +77,14 @@
 
 (option "Board" <Board> args:{<board> <start>}
     {
-    (item "4x8" 
+    (item "4x8"
         <
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track" "0,E,N,W,S2" loop:True)
             }
         )
-        > 
+        >
         <
         (start {
             (place "Seed1" (sites {0..4}) counts:{"NumSeed"})
@@ -92,20 +92,20 @@
             (place "Seed3" (sites {31..27}) counts:{"NumSeed"})
             (place "Seed4" (sites {26..24 16 8}) counts:{"NumSeed"})
         })
-        >   
+        >
         "The board is a 4x8."
     )**
-    
-    (item "Circular" 
+
+    (item "Circular"
         <
-        (board 
-            (concentric {20}) 
-            { 
+        (board
+            (concentric {20})
+            {
             (track "Track" "0,2,4,6,8,10,12,14,16,18,19,17,15,13,11,9,7,5,3,1" loop:True)
             }
             use:Vertex
         )
-        > 
+        >
         <
         (start {
             (place "Seed1" (sites {0 2 4 6 8}) counts:{"NumSeed"})
@@ -113,35 +113,35 @@
             (place "Seed3" (sites {19 17 15 13 11}) counts:{"NumSeed"})
             (place "Seed4" (sites {9 7 5 3 1}) counts:{"NumSeed"})
         })
-        >   
+        >
         "The board is circular."
     )
-    
+
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Quendo (Observed)" {
         "Start Rules/4" "Board/4x8"
         }
         variations:{"Start Rules/1" "Start Rules/2" "Start Rules/3"}
     )*
-    
+
     (ruleset "Ruleset/Circular Board (Observed)" {
         "Start Rules/4" "Board/Circular"
         }
         variations:{"Start Rules/1" "Start Rules/2" "Start Rules/3"}
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Quendo is a game played by children of the Lunda-Quioco people of Angola. It involves the sowing mechanism of mancala games, but differs from others in that the holes which a player controls are those in which their counters are located, rather than determined by the placement of the holes on the board.")
@@ -155,7 +155,7 @@
         (origin  "This game was played in Angola, around 1995.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (player Colour P1 (colour White))
@@ -163,6 +163,6 @@
         (player Colour P3 (colour Red))
         (player Colour P4 (colour Green))
     })
-    
+
 )
 

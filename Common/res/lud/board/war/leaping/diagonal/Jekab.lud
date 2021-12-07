@@ -1,15 +1,15 @@
-(define "HopMan" 
+(define "HopMan"
     (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
+        Hop
+        (from #1)
+        Diagonal
+        (between
             if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -23,67 +23,67 @@
     (equipment {
         (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
-    (rules 
-        (start { 
+    (rules
+        (start {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
         })
-        (play 
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     ("HopMan" (last To)
-                        (then 
-                            (if "JumpToPromotionZone" 
-                                (and 
-                                    (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)) 
-                                        (moveAgain) 
+                        (then
+                            (if "JumpToPromotionZone"
+                                (and
+                                    (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                                        (moveAgain)
                                     )
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
-                                (if (can Move ("HopMan" (last To))) 
-                                    (moveAgain) 
-                                    
-                                ) 
+                                (if (can Move ("HopMan" (last To)))
+                                    (moveAgain)
+
+                                )
                             )
-                        ) 
+                        )
                     )
                     (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
                 )
                 (priority {
-                    (or 
+                    (or
                         (forEach Piece "Counter"
-                            ("HopMan" (from) 
-                                (then 
-                                    (if "JumpToPromotionZone" 
-                                        (and 
-                                            (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)) 
-                                                (moveAgain) 
+                            ("HopMan" (from)
+                                (then
+                                    (if "JumpToPromotionZone"
+                                        (and
+                                            (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                                                (moveAgain)
                                             )
                                             (move Promote (last To) (piece "DoubleCounter") Mover)
                                         )
-                                        (if (can Move ("HopMan" (last To))) 
-                                            (moveAgain) 
-                                            
-                                        ) 
+                                        (if (can Move ("HopMan" (last To)))
+                                            (moveAgain)
+
+                                        )
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                         (max Moves (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn)))
                     )
-                    (or  
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions {FR FL}) 
+                                Step
+                                (directions {FR FL})
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -100,8 +100,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Jekab is a Draughts game played in the Marshall Islands. It appears to be a derivative of American Pool Checkers, which is identical except for the promotion of the king.")
@@ -114,12 +114,12 @@
         (origin  "This game was played in Mershall islands, from around 2017 to 2018.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "Jekab_ai"
     )

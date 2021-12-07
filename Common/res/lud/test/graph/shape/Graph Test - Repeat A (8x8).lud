@@ -1,8 +1,8 @@
-(game "Graph Test - Repeat A (8x8)"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (repeat 8 8 step:{{4.3301 -1.5}{-.866 4.5}} 
+(game "Graph Test - Repeat A (8x8)"
+    (players 2)
+    (equipment {
+        (board
+            (repeat 8 8 step:{{4.3301 -1.5}{-.866 4.5}}
                 {
                 (poly {{0 0} {1.732 1} {1.732 2} {2.598 2.5} {2.598 .5} {.866 -.5} {.866 -1.5} {0 -2}})
                 (poly {{1.732 2} {2.598 2.5} {1.732 3} {.866 2.5}})
@@ -15,11 +15,11 @@
                 (poly {{0.866 -2.5} {.866 -3.5} {1.732 -3} {1.732 -2}})
                 }
             )
-        ) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+        )
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -27,8 +27,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")
@@ -44,5 +44,5 @@
     (graphics {
         (board Style Chess)
     })
-    
+
 )

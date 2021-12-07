@@ -1,22 +1,22 @@
-(define "Sow" 
+(define "Sow"
     (move
-        Select 
-        (from 
-            #1 
+        Select
+        (from
+            #1
             if:(> (count at:(from)) 1)
         )
-        (then 
+        (then
             (sow
                 #2
-                if:(and 
-                    (= (count at:(to)) 2) 
+                if:(and
+                    (= (count at:(to)) 2)
                     (is In (to) (sites Next))
                 )
-                apply:(fromTo 
-                    (from (to)) 
-                    (to (handSite Mover)) 
+                apply:(fromTo
+                    (from (to))
+                    (to (handSite Mover))
                     count:(count at:(to))
-                ) 
+                )
                 backtracking:True
             )
         )
@@ -27,9 +27,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Um el Tuweisat"  
-    (players 2)  
-    (equipment { 
+(game "Um el Tuweisat"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 3 store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -44,12 +44,12 @@
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 3 to:(sites Track) ))
-        
-        (play 
+
+        (play
             (or {
                 ("Sow" (mapEntry "RightHole" (mover)) "TrackCCW")
                 ("Sow" (mapEntry "LeftHole" (mover)) "TrackCW")
@@ -57,11 +57,11 @@
                 ("Sow" (mapEntry "CenterHole" (mover)) "TrackCW")
             })
         )
-        
+
         (end
-            (if (and (no Moves P1) (no Moves P2)) 
+            (if (and (no Moves P1) (no Moves P2))
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -71,8 +71,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Um el Tuweisat (\"The Little Goat Game\") is a small two-row mancala-style board game played by children in Sudan.")
@@ -84,11 +84,11 @@
         (origin  "This game was played in Sudan, around 1925.")
         }
     )
-    
-    (graphics { 
+
+    (graphics {
         (board Style Mancala)
     })
-    
+
     (ai
         "Um el Tuweisat_ai"
     )

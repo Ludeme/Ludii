@@ -1,25 +1,25 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:#2
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
 (define "NoGoBack" ("NoSites" (difference (sites #1 "StartQuadrant") (union (sites {(to)}) (sites Occupied by:Mover)))))
 
-(define "GoBack" 
+(define "GoBack"
     (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:0))
             (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:0))))
         )
@@ -58,9 +58,9 @@
 (game "Fallas"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -73,23 +73,23 @@
         )
         (dice d:6 num:3)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
                 if:("DieNotUsed")
                 (if (= Off ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
-                    (move 
+                    (move
                         (from (from))
-                        (to 
+                        (to
                             ("NextSiteFrom" (from) (pips))
                             if:("NotEnemyOrOnlyOne")
-                            (apply 
+                            (apply
                                 (if (is Enemy (who at:(to)))
                                     (if ("NoGoBack" Next)
                                         (and
                                             (remove (to))
                                             (trigger "StartQuadrantFull" Next)
                                         )
-                                        (fromTo 
+                                        (fromTo
                                             (from (to))
                                             (to ("GoBack" Next))
                                         )
@@ -99,24 +99,24 @@
                         )
                     )
                 )
-                (then 
+                (then
                     (if (not (all DiceUsed))
                         (moveAgain)
                     )
                 )
-            )		
+            )
         )
         (regions "StartQuadrant" P1 (sites {6..11}))
         (regions "StartQuadrant" P2 (sites {18..23}))
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" 7 count:13)
             (place Stack "Disc1" 11 count:2)
             (place Stack "Disc2" 19 count:13)
             (place Stack "Disc2" 23 count:2)
         })
-        (play 
+        (play
             (do (if (not "SameTurn") (roll))
                 next:(forEach Piece)
             )
@@ -132,8 +132,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Fallas is a race game from Spain that is related to other European Tables games. It is documented in Alfonso X's Libro de los Juegos.")
@@ -146,12 +146,12 @@
         (origin  "This game was played in Spain, from around 1283 to 1399.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
         (stackType Backgammon)
     })
-    
+
 )
 

@@ -39,9 +39,9 @@
             (place "Marker3" 30)
             (place "Marker4" 31)
         })
-        
+
         phases:{
-        
+
         (phase "Hiding"
             (play
                 (move Add
@@ -52,7 +52,7 @@
             )
             (nextPhase "Guessing")
         )
-        
+
         (phase "Guessing"
             (play
                 (move Select
@@ -61,7 +61,7 @@
                         (and
                             (if (is Empty (last To))
                                 (and
-                                    (fromTo 
+                                    (fromTo
                                         (from (where "Marker" Prev))
                                         (to ("NextSitePrev"))
                                     )
@@ -71,7 +71,7 @@
                                 )
                                 (and {
                                     (moveAgain)
-                                    (fromTo 
+                                    (fromTo
                                         (from (where "Marker" Mover))
                                         (to ("NextSite" from:(where "Marker" Mover)))
                                     )
@@ -84,18 +84,18 @@
             )
             (nextPhase "Hiding")
         )
-        
+
         }
-        
-        (end  
+
+        (end
             (if (!= (- (count Players) (count Active)) (count Sites in:(difference (sites Centre) (sites Empty))))
                 {
                 (if (and (is Active P1) (is In (where "Marker" P1) (sites Centre))) (result P1 Win))
-                
+
                 (if (and (is Active P2) (is In (where "Marker" P2) (sites Centre))) (result P2 Win))
-                
+
                 (if (and (is Active P3) (is In (where "Marker" P3) (sites Centre))) (result P3 Win))
-                
+
                 (if (and (is Active P4) (is In (where "Marker" P4) (sites Centre))) (result P4 Win))
                 }
             )
@@ -105,8 +105,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ashere is a simple race game played by Yoruba children in the twentieth century.")
@@ -118,7 +118,7 @@
         (origin  "This game was played in Nigeria, around 1951.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Colour OuterVertices (colour Hidden))
@@ -139,5 +139,5 @@
         (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.17)
         (board Placement scale:1.2)
     })
-    
+
 )

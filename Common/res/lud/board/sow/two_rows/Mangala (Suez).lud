@@ -4,23 +4,23 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mangala (Suez)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Mangala (Suez)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-        (regions P1 (sites Bottom)) 
-        (regions P2 (sites Top)) 
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
         (hand Each)
-    })  
-    (rules 
+    })
+    (rules
         (start (set Count 8 to:(sites Track) ) )
-        
+
         phases:{
-        
+
         (phase "Opening"
             (play
                 (move Remove
@@ -30,7 +30,7 @@
             )
             (nextPhase (<= 3 (count Turns)) "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (move Select
@@ -66,11 +66,11 @@
                     )
                 )
             )
-            
+
             (end
-                (if (no Moves Next) 
+                (if (no Moves Next)
                     (byScore {
-                        (score P1 ("PiecesOwnedBy" P1)) 
+                        (score P1 ("PiecesOwnedBy" P1))
                         (score P2 ("PiecesOwnedBy" P2))
                     })
                 )
@@ -82,7 +82,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Mangala is the name of many mancala-style board games throughout Southwest Asia and North Africa. This particular one is a two-row game that was played in the Suez Peninsula during the early twentieth century.")
@@ -93,7 +93,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

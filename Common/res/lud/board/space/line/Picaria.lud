@@ -1,30 +1,30 @@
-(game "Picaria" 
-    (players 2)  
-    (equipment { 
+(game "Picaria"
+    (players 2)
+    (equipment {
         <Board>
         (hand Each)
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (move
-                Step 
+                Step
                 All
                 (to if:(is Empty (to)))
             )
         )
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to <To>)
-                ) 
+                )
             )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -52,25 +52,25 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Zaslavsky 1 (Suggested)" {
         "Board/9 Holes" "Play/Anywhere"
     })*
-    
+
     (ruleset "Ruleset/Zaslavsky 2 (Suggested)" {
         "Board/13 Sites" "Play/Not Middle"
     })
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Picaria is a game played by the people of Isleta Pueblo in New Mexico in the early twentieth century, but likely to be older. This version is played on a smaller board.")
@@ -88,11 +88,11 @@
         (origin  "This game was played in Southwest United States, around 1907.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
     (ai
         "Picaria_ai"
     )

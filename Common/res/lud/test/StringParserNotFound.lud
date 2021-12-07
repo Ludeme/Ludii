@@ -1,6 +1,6 @@
 (define "Deploy"
     (move Add (piece (id "Hex" Mover))
-        (to 
+        (to
             (union
                 (sites Mover)
                 (sites Around
@@ -28,11 +28,11 @@
 )
 
 (define "Capture"
-    (move 
-        (from) 
+    (move
+        (from)
         (to
             ("CaptureRange")
-            (apply 
+            (apply
                 (and
                     (if (= 0 (count MovesThisTurn))
                         (and
@@ -53,12 +53,12 @@
     (count Stack
         at:#1
         if:(or
-            (= 
-                (id "Disc" Next) 
+            (=
+                (id "Disc" Next)
                 (what at:(to) level:(level))
             )
-            (= 
-                (id "Disc" Mover) 
+            (=
+                (id "Disc" Mover)
                 (what at:(to) level:(level))
             )
         )
@@ -72,8 +72,8 @@
                 (is Odd ("StackSize" (from)))
                 Forwards
                 Backwards
-            ) 
-            (to 
+            )
+            (to
                 if:(= 0 ("StackSize" (to)))
             )
         )
@@ -84,10 +84,10 @@
 
 (define "StepsTaken"
     (count Steps
-        //(step 
-            //    (to 
-                //        if:(or 
-                    //            (= (last To) (to)) 
+        //(step
+            //    (to
+                //        if:(or
+                    //            (= (last To) (to))
                     //            (= 0 ("StackSize" (to)))
                 //        )
             //    )
@@ -95,16 +95,16 @@
         (last From)
         (last To)
     )
-    
+
 )
 
 (define "Promotes"
     (=
         (+
             (* 1 (% ("StackSize" #1) 2))
-            (% 
-                (mover) 
-                (- 
+            (%
+                (mover)
+                (-
                     3
                     (% ("StackSize" #1) 2)
                 )
@@ -115,12 +115,12 @@
             (count Stack
                 at:#1
                 if:(or
-                    (= 
-                        (id "Hex" Next) 
+                    (=
+                        (id "Hex" Next)
                         (what at:(to) level:(level))
                     )
-                    (= 
-                        (id "Hex" Mover) 
+                    (=
+                        (id "Hex" Mover)
                         (what at:(to) level:(level))
                     )
                 )
@@ -132,7 +132,7 @@
 (define "Reachable"
     (sites Distance
         (step
-            (to 
+            (to
                 if:(= 0 ("StackSize" (to)))
             )
         )
@@ -146,9 +146,9 @@
         (> ("StackSize" (from)) 1)
         (intersection
             (sites Around
-                (intersection 
+                (intersection
                     ("Reachable" ("StackSize" (from)))
-                    (sites Around 
+                    (sites Around
                         (sites Occupied by:Enemy component:"Disc")
                     )
                 )
@@ -156,7 +156,7 @@
             (sites Occupied by:Enemy component:"Disc")
         )
         (intersection
-            (sites Around (from)) 
+            (sites Around (from))
             (sites Occupied by:Enemy component:"Disc")
         )
     )
@@ -177,18 +177,18 @@
         (play
             (if
                 (can Move
-                    (forEach Piece "Disc" 
+                    (forEach Piece "Disc"
                         ("Capture")
                         top:True
                     )
                 )
-                (forEach Piece "Disc" 
+                (forEach Piece "Disc"
                     ("Capture")
                     top:True
                 )
                 (or
                     ("Deploy")
-                    (forEach Piece "Disc" 
+                    (forEach Piece "Disc"
                         ("Step")
                         top:True
                     )
@@ -207,9 +207,9 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
+        (end
+            (if
+                (no Moves Next)
                 (result Next Loss)
             )
         )
@@ -220,7 +220,7 @@
     {
     (item "4"    <4>  "A base 4 board is currently selected")*
     (item "5"    <5>  "A base 5 board is currently selected")
-    (item "6"    <6>  "A base 6 board is currently selected") 
+    (item "6"    <6>  "A base 6 board is currently selected")
     }
 )
 

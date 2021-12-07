@@ -4,21 +4,21 @@
 
 (define "NextSite" (trackSite Move from:#1 #2 steps:1))
 
-(define "MadeACompleteCircuit" 
+(define "MadeACompleteCircuit"
     (is In (mapEntry "Start" Mover) (sites Track Mover "Track" from:("NextSite" (last From) "Track") to:(last To)))
 )
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (fromTo (from (to)) (to (mapEntry "Start" (who at:(to)))))
-    ) 
+    )
 )
 
-(define "Move" 
+(define "Move"
     (move
         (from (from) level:(level))
-        (to 
+        (to
             ("SiteToMoveOnTrack" ("ThrowValue"))
             if:True
             "CaptureEnemyPiece"
@@ -45,7 +45,7 @@
     (equipment {
         (board
             (add
-                (remove 
+                (remove
                     (concentric {44})
                     vertices:{43 21 0 22}
                 )
@@ -60,18 +60,18 @@
         (piece "Stick" Each ("Move"))
         (dice d:2 from:0 num:3)
     })
-    (rules 
+    (rules
         <Player:start>
-        (play 
-            (do 
-                (roll) 
+        (play
+            (do
+                (roll)
                 next:(forEach Piece)
-                (then 
+                (then
                     (do
-                        (if ("MadeACompleteCircuit") 
-                            (addScore Mover 1) 
-                            (then 
-                                (if (= (score Mover) 3) 
+                        (if ("MadeACompleteCircuit")
+                            (addScore Mover 1)
+                            (then
+                                (if (= (score Mover) 3)
                                     (remove (last To))
                                 )
                             )
@@ -89,7 +89,7 @@
 
 (option "Players" <Player> args:{ <num> <start> <track>}
     {
-    (item "2" <2>   
+    (item "2" <2>
         <
         (start {
             (set Team 1 {P1})
@@ -104,8 +104,8 @@
         (track "Track2" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True P2)
         }
         >
-    "The game has 2 players.")   
-    (item "3" <3>   
+    "The game has 2 players.")
+    (item "3" <3>
         <
         (start {
             (set Team 1 {P1 P3})
@@ -122,8 +122,8 @@
         (track "Track3" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True P3)
         }
         >
-    "The game has 3 players.")  
-    (item "4" <4>   
+    "The game has 3 players.")
+    (item "4" <4>
         <
         (start {
             (set Team 1 {P1 P3})
@@ -142,25 +142,25 @@
         (track "Track4" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True P4)
         }
         >
-    "The game has 4 players.")*  
+    "The game has 4 players.")*
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Set Dilth' (Described)" {
         "Players/4"
         }
         variations:{"Players/2" "Players/3"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Set Dilth' is a race game played by White Mountain Apache women of Arizona. While it is similar to other race games in the region, in this game players must circle the board three times in order to win.")

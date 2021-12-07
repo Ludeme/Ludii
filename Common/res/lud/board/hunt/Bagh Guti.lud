@@ -1,23 +1,23 @@
-(game "Bagh Guti"  
-    (players 2)  
-    (equipment { 
+(game "Bagh Guti"
+    (players 2)
+    (equipment {
         <Board:type>
         (piece "Goat" P1 "StepToEmpty")
         (piece "Tiger" P2 <Tiger:move>)
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place Stack "Goat1" (sites {"B2" "D2" "B4" "D4"}) counts:{5 5 5 5})
             (place "Tiger2" <Start:tigerSites>)
         })
-        
+
         (play <Tiger:playMove>)
-        
-        (end { 
+
+        (end {
             (if (no Moves P2) (result P1 Win))
             (if (no Pieces P1) (result P2 Win))
-        })  
+        })
     )
 )
 
@@ -25,16 +25,16 @@
 
 (option "Start Rules" <Start> args:{ <tigerSites> }
     {
-    (item "Opposite" <(sites {"C1" "C5"})> "Initiallly, the tigers are placed at opposite sites of the top and the bottom of the board.")*   
-    (item "Center and Top" <(sites {"C3" "C5"})> "Initiallly, the tigers are placed at the center and at the middle of the top of the board.")  
+    (item "Opposite" <(sites {"C1" "C5"})> "Initiallly, the tigers are placed at opposite sites of the top and the bottom of the board.")*
+    (item "Center and Top" <(sites {"C3" "C5"})> "Initiallly, the tigers are placed at the center and at the middle of the top of the board.")
 })
 
 (option "Board" <Board> args:{ <type> }
     {
-    (item "With Diamond" 
-        <(board 
+    (item "With Diamond"
+        <(board
             (makeFaces
-                (remove 
+                (remove
                     (square 5 diagonals:Alternating)
                     edges:{
                     { {0 0} {1 1} }
@@ -47,24 +47,24 @@
                     { {1 3} {0 4} }
                     }
                 )
-            ) 
+            )
             use:Vertex
-        )> 
+        )>
         "Played on a board with the diagonals forming a diamond."
-    )* 
-    (item "Alquerque" <("AlquerqueBoard" 5 5)> "Played on a Alquerque board.")   
-    (item "No diagonal" <(board (square 5) use:Vertex)> "Played on a board with no diagonal.")  
+    )*
+    (item "Alquerque" <("AlquerqueBoard" 5 5)> "Played on a Alquerque board.")
+    (item "No diagonal" <(board (square 5) use:Vertex)> "Played on a board with no diagonal.")
 })
 
 (option "Play Rules" <Tiger> args:{ <move> <playMove>}
     {
-    (item "Multiple hops"    
+    (item "Multiple hops"
         <
         (or
             ("StepToEmpty")
             ("HopSequenceCapture")
         )
-        > 
+        >
         <
         (if ("SameTurn")
             (or
@@ -76,41 +76,41 @@
         >
         "The tiger can jump a sequence of pieces to capture."
     )*
-    
-    (item "No Multiple hops"    
+
+    (item "No Multiple hops"
         <
         (or
             ("StepToEmpty")
             ("HopCapture")
         )
-        > 
+        >
         <(forEach Piece top:True)>
         "The tiger can not jump a sequence of pieces to capture."
-    ) 
+    )
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Karwi (Described)" {
         "Start Rules/Opposite" "Board/With Diamond" "Play Rules/Multiple hops"
     })*
-    
+
     (ruleset "Ruleset/Cyningstan (Suggested)" {
         "Start Rules/Center and Top" "Board/Alquerque" "Play Rules/No Multiple hops"
     })
-    
+
     (ruleset "Ruleset/Murray (Suggested)" {
         "Start Rules/Center and Top" "Board/No diagonal" "Play Rules/Multiple hops"
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Bagh Guti is a hunt game from South Asia similar to others throughout the region. It is unique, though, because the goat pieces can be stacked on one another.")
@@ -128,11 +128,11 @@
         (origin  "This game was played in South Asia, from around 1906 to 1933.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
+
     })
     (ai
         "Bagh Guti_ai"

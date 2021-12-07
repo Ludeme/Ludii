@@ -1,29 +1,29 @@
-(game "Graph Test - Scale (Terhuchu)"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Graph Test - Scale (Terhuchu)"
+    (players 2)
+    (equipment {
+        (board
             (renumber
-                (merge 
-                    { 
-                    (shift  2 2 (square 5 diagonals:Alternating)) 
-                    (shift  2.2 0.0             (scale .9 1 (wedge 3))) 
-                    (shift  5.2 3.0 (rotate  90 (scale .9 1 (wedge 3)))) 
-                    (shift  2.2 6.0 (rotate 180 (scale .9 1 (wedge 3)))) 
-                    (shift -0.8 3.0 (rotate 270 (scale .9 1 (wedge 3)))) 
-                    
+                (merge
+                    {
+                    (shift  2 2 (square 5 diagonals:Alternating))
+                    (shift  2.2 0.0             (scale .9 1 (wedge 3)))
+                    (shift  5.2 3.0 (rotate  90 (scale .9 1 (wedge 3))))
+                    (shift  2.2 6.0 (rotate 180 (scale .9 1 (wedge 3))))
+                    (shift -0.8 3.0 (rotate 270 (scale .9 1 (wedge 3))))
+
                     (shift  0.09 0.79 (rotate  -45 (scale .707 .707 (wedge 3))))
                     (shift  5.09 0.79 (rotate   45 (scale .707 .707 (wedge 3))))
                     (shift  0.09 5.79 (rotate -135 (scale .707 .707 (wedge 3))))
                     (shift  5.09 5.79 (rotate  135 (scale .707 .707 (wedge 3))))
-                    } 
-                ) 
+                    }
+                )
             )
             use:Vertex
-        ) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+        )
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -31,8 +31,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

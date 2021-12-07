@@ -1,6 +1,6 @@
 (game "Gioco dell'Orso"
-    (players 2)  
-    (equipment { 
+    (players 2)
+    (equipment {
         (board
             (add
                 (concentric {1 4 12})
@@ -11,18 +11,18 @@
         (piece "Human" Each ("StepToEmpty"))
         (piece "Bear" Each ("StepToEmpty"))
         (hand Each)
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (start {
             (place "Human1" (handSite P1) count:3)
             (place "Bear2" (sites Centre))
-        })	
-        
+        })
+
         phases:{
-        (phase "PlacementP1" 
+        (phase "PlacementP1"
             (play
-                (move 
+                (move
                     (from (handSite P1))
                     (to (intersection (sites Empty) (sites {1..4})))
                     (then (if (not ("HandEmpty" P1)) (moveAgain)))
@@ -30,13 +30,13 @@
             )
             (nextPhase ("HandEmpty" P1) "HuntingP2")
         )
-        (phase "HuntingP2" 
-            (play 
+        (phase "HuntingP2"
+            (play
                 (forEach Piece
-                    (then 
-                        (if (not 
-                                (can Move 
-                                    (step 
+                    (then
+                        (if (not
+                                (can Move
+                                    (step
                                         (from (where "Bear" P2))
                                         (to if:(is Empty (to)))
                                     )
@@ -54,9 +54,9 @@
             )
             (nextPhase (= 1 (count Sites in:(sites Occupied by:All container:"Board"))) "PlacementP2")
         )
-        (phase "PlacementP2" 
+        (phase "PlacementP2"
             (play
-                (move 
+                (move
                     (from (handSite P2))
                     (to (intersection (sites Empty) (sites {1..4})))
                     (then (if (not ("HandEmpty" P2)) (moveAgain)))
@@ -64,13 +64,13 @@
             )
             (nextPhase ("HandEmpty" P2) "HuntingP1")
         )
-        (phase "HuntingP1" 
-            (play 
+        (phase "HuntingP1"
+            (play
                 (forEach Piece
-                    (then 
-                        (if (not 
-                                (can Move 
-                                    (step 
+                    (then
+                        (if (not
+                                (can Move
+                                    (step
                                         (from (where "Bear" P1))
                                         (to if:(is Empty (to)))
                                     )
@@ -84,13 +84,13 @@
             (end (if (!= 0 (score P1)) (byScore)))
         )
         }
-        
-    )		
+
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Gioco dell'Orso is a game that was played in Piedmont, Northern Italy. It was documented in the twentieth century, but graffiti in the region suggests that the game could be much older.")
@@ -107,9 +107,9 @@
         (show Line {{9 11}} curve:{0.4 0.2 0.6 0.2} Bezier)
         (show Line {{12 14}} curve:{0.8 0.4 0.8 0.6} Bezier)
         (show Line {{5 15}} curve:{0.4 0.8 0.6 0.8} Bezier)
-        
+
     })
-    
+
     (ai
         "Gioco dell'Orso_ai"
     )

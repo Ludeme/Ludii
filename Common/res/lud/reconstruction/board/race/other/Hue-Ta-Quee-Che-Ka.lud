@@ -1,9 +1,9 @@
 (game "Hue-Ta-Quee-Che-Ka"
-    (players 2) 
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (add
-                (remove 
+                (remove
                     (concentric {60}) // Be careful we are not sure of the number of stones for that game.
                     vertices:{57..59}
                 )
@@ -21,8 +21,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Hue-Ta-Quee-Che-Ka is a race game played by the Havasupai people of Arizona.")
@@ -34,10 +34,10 @@
         (origin  "This game was played in Arizona, around 1898.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
-        
+
     })
-    
+
 )

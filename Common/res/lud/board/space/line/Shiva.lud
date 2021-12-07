@@ -5,13 +5,13 @@
         (board (rectangle <Board:size>))
         (hand Each)
         (piece "Marker" Each
-            (if 
+            (if
                 (not (is Line 3 Orthogonal through:(from)))
-                (move 
+                (move
                     Step Orthogonal
-                    (to if:(is Empty (to))) 
-                    (then 
-                        (if 
+                    (to if:(is Empty (to)))
+                    (then
+                        (if
                             (is Line 3 Orthogonal)
                             (if (= (value Player Mover) Off)
                                 (set Value Mover 1)
@@ -25,35 +25,35 @@
         }
     )
     (rules
-        (start 
+        (start
             {
-            (place "Marker" "Hand" count:12) 
+            (place "Marker" "Hand" count:12)
             }
         )
-        
+
         phases:{
         (phase "Placement"
-            (play 
-                (do 
-                    (move (from (handSite Mover)) (to (sites Empty))) 
+            (play
+                (do
+                    (move (from (handSite Mover)) (to (sites Empty)))
                     ifAfterwards:(not (is Line 3 Orthogonal))
                 )
             )
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
         )
-        
+
         (phase "Movement"
-            (play 
-                (do 
+            (play
+                (do
                     (forEach Piece)
                     ifAfterwards:(not (is Line 4 Orthogonal))
                 )
             )
         )
         }
-        
+
         (end (if (= (value Player Mover) 3) (result Mover Win)))
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -67,7 +67,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Shiva is a game of alignment played by the Tiv people of Nigeria. It's a rare game of alignment that only allows rows of no more than three pieces.")
@@ -81,7 +81,7 @@
         (origin  "This game was played in Nigeria, around 1951.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))

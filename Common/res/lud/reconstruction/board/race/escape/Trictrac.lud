@@ -1,16 +1,16 @@
-(game "Trictrac" 
+(game "Trictrac"
     (players 2)
     (equipment {
-        (board 
-            (rectangle 2 13) 
+        (board
+            (rectangle 2 13)
             use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each)
     })
     (rules
-        (start 
-            { 
+        (start
+            {
             (place Stack "Disc1"  12 count:15)
             (place Stack "Disc2"  25 count:15)
             }
@@ -22,8 +22,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Trictrac is the name of a game played on a Backgammon board which has been played in France since the Middle Ages. The game as it is played today refers to Grand Trictrac, which became popular during the seventeenth century. This game, however, is the older version, for which the rules are incompletely understood. ")
@@ -36,11 +36,11 @@
         (origin  "This game was played in Europe, from around 1674 to 1696.")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType Backgammon)
     })
-    
+
 )
 

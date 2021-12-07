@@ -1,4 +1,4 @@
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (do
         (if
             (or {
@@ -12,22 +12,22 @@
             })
             (add (piece (id "General" Mover)) (to (handSite Mover)))
         )
-        next:(remove 
-            (to) 
+        next:(remove
+            (to)
             (then (addScore Mover 1))
         )
     )
 )
 
 (define "CaptureToPiece"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
             ("RemoveEnemyPiece")
         )
     )
 )
 
-(define "NotaKing" 
+(define "NotaKing"
     (!= (who at:#1) Shared)
     (!= (what at:#1) (id "Diplomat" P1))
     (!= (what at:#1) (id "Diplomat" P2))
@@ -40,26 +40,26 @@
 
 (define "EnemyNotKing"
     (and {
-        (is Enemy (who at:#1)) 
+        (is Enemy (who at:#1))
         ("NotaKing" #1)
     })
 )
 
 (define "EmptyNotKing"
     (and {
-        (is Empty #1) 
+        (is Empty #1)
         ("NotaKing" #1)
     })
 )
 
 (define "CaptureGeneralOf" (= (where "General" #1) Off))
 
-(define "RemovePiecesIfPlayerHasLost" 
-    (if 
-        (and 
-            (is Active #1) 
+(define "RemovePiecesIfPlayerHasLost"
+    (if
+        (and
+            (is Active #1)
             (or (<= (count Pieces #1 in:(sites Board)) 7) ("CaptureGeneralOf" #1))
-        ) 
+        )
         (remove (sites Occupied by:#1 container:"Board"))
     )
 )
@@ -79,135 +79,135 @@
         (piece "King" Shared)
         (piece "General" Each
             (move
-                Slide 
+                Slide
                 All
                 (between
                     if:("EmptyNotKing" (between))
                 )
-                (to 
+                (to
                     if:("EnemyNotKing" (to))
                     "CaptureToPiece"
-                ) 
-            ) 
+                )
+            )
         )
         (piece "Deputy General" Each
             (move
-                Slide 
+                Slide
                 Orthogonal
                 (between
                     if:("EmptyNotKing" (between))
                 )
-                (to 
+                (to
                     if:("EnemyNotKing" (to))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         (piece "Officer" Each
             (move
-                Slide 
+                Slide
                 Diagonal
                 (between
                     if:("EmptyNotKing" (between))
                 )
-                (to 
+                (to
                     if:("EnemyNotKing" (to))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         (piece "Diplomat" Each (move Slide All))
         (piece "Archer" Each
-            (move 
-                Hop 
-                All 
-                (between (exact 3) if:(is Empty (between))) 
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+            (move
+                Hop
+                All
+                (between (exact 3) if:(is Empty (between)))
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         (piece "CrossBow" Each
-            (move 
-                Hop 
-                All 
-                (between (exact 4) if:(is Empty (between))) 
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+            (move
+                Hop
+                All
+                (between (exact 4) if:(is Empty (between)))
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         (piece "Knife" Each
-            (move 
-                Step 
+            (move
+                Step
                 Diagonal
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to)))
                     "CaptureToPiece"
                 )
             )
         )
         (piece "Broadsword" Each
-            (move 
-                Step 
+            (move
+                Step
                 Orthogonal
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to)))
                     "CaptureToPiece"
                 )
             )
         )
         (piece "Catapult" Each
-            (or 
-                (move Slide Orthogonal) 
-                (move Hop 
-                    Orthogonal 
-                    (between 
-                        before:(count Rows)  
-                        after:(count Rows)  
+            (or
+                (move Slide Orthogonal)
+                (move Hop
+                    Orthogonal
+                    (between
+                        before:(count Rows)
+                        after:(count Rows)
                         if:(is Friend (who at:(between)))
                     )
-                    (to 
-                        if:(is Empty (to)) 
-                        (apply 
-                            if:("EnemyNotKing" (to)) 
+                    (to
+                        if:(is Empty (to))
+                        (apply
+                            if:("EnemyNotKing" (to))
                             ("RemoveEnemyPiece")
                         )
-                    )  
-                ) 
+                    )
+                )
             )
         )
-        (piece "Knight" Each 
-            (forEach Direction 
-                Orthogonal 
-                (to 
-                    if:(is Empty (to)) 
-                    (apply 
-                        (forEach Direction 
-                            (from (to)) 
-                            (directions {FR FL} of:All) 
+        (piece "Knight" Each
+            (forEach Direction
+                Orthogonal
+                (to
+                    if:(is Empty (to))
+                    (apply
+                        (forEach Direction
+                            (from (to))
+                            (directions {FR FL} of:All)
                             (between (exact 3) if:(is Empty (between)))
-                            (if (or (is Empty (to)) ("EnemyNotKing" (to))) 
-                                (move 
-                                    (from) 
-                                    (to 
-                                        (apply 
+                            (if (or (is Empty (to)) ("EnemyNotKing" (to)))
+                                (move
+                                    (from)
+                                    (to
+                                        (apply
                                             if:(is Enemy (who at:(to)))
                                             ("RemoveEnemyPiece")
                                         )
                                     )
                                 )
                             )
-                        ) 
+                        )
                     )
                 )
             )
         )
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             (place "King" (centrePoint))
             (place "General1" coord:"A10") (place "General2" coord:"F1") (place "General3" coord:"N1")
@@ -241,9 +241,9 @@
             (place "Diplomat4" coord:"O6") (place "Diplomat5" coord:"O14") (place "Diplomat6" coord:"N15")
             (place "Diplomat7" coord:"F15")
         })
-        (play 
+        (play
             (forEach Piece
-                (then 
+                (then
                     (and {
                         ("RemovePiecesIfPlayerHasLost" P1)
                         ("RemovePiecesIfPlayerHasLost" P2)
@@ -256,7 +256,7 @@
                 )
             )
         )
-        (end { 
+        (end {
             ("PlayerLoseIfNoPiece" P1)
             ("PlayerLoseIfNoPiece" P2)
             ("PlayerLoseIfNoPiece" P3)
@@ -274,7 +274,7 @@
 //---------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Qi Guo Xiangxi (\"Xiangxi of the Seven Kingdoms\") is a seven-player Xiangqi game from eleventh century China. Its invention is attributed to the official Sima Guan, and is meant to be a representation of the conflict during the Warring States Period of Chinese history.")
@@ -286,7 +286,7 @@
         (origin  "This game was played in China, from around 1039 to 1647.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
         (player Colour P1 (colour White))
@@ -306,7 +306,7 @@
         (piece ExtendName P6 piece:"General" " Magenta")
         (piece ExtendName P7 piece:"General" " Grey")
         (piece Families {"Defined" "Western"})
-        
+
     })
     (ai
         "Qi Guo Xiangxi_ai"

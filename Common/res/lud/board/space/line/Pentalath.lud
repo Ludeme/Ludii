@@ -1,32 +1,32 @@
 (define "HasFreedom" (> (count Liberties Orthogonal) 0))
 
 (define "CaptureSurroundedPiece"
-    (enclose 
-        (from (last To)) 
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between) ) ) 
+    (enclose
+        (from (last To))
+        (between
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between) ) )
         )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Pentalath"  
-    (players 2) 
-    (equipment { 
-        (board 
+(game "Pentalath"
+    (players 2)
+    (equipment {
+        (board
             <Board:type>
         )
         (piece "Marker" Each)
         }
-    )  
-    
-    (rules 
-        (play 
+    )
+
+    (rules
+        (play
             (do
-                (move  
-                    Add 
+                (move
+                    Add
                     (to (sites Empty))
                     (then "CaptureSurroundedPiece")
                 )
@@ -41,15 +41,15 @@
 
 (option "Board" <Board> args:{<type>}
     {
-    (item "HalfHexHexBoard"    
+    (item "HalfHexHexBoard"
         <
-        (intersect 
-            { 
-            (hex 7) 
-            (shift -5.20 0 (hex Rectangle 7 14)) 
-            } 
+        (intersect
+            {
+            (hex 7)
+            (shift -5.20 0 (hex Rectangle 7 14))
+            }
         )
-        >  
+        >
         "The game is played on the half of a HexHex board of size 7."
     )*
     (item "HexHexBoard"  <(hex 5)> "The game is played on a HexHex board of size 5.")
@@ -58,8 +58,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pentalath was invented by Cameron Browne in 2009. It is a connection game with the goal of creating a group of five in a row, but with complications.")
@@ -73,9 +73,9 @@
         (date "2009")
         }
     )
-    
-    (ai 
+
+    (ai
         "Pentalath_ai"
     )
-    
+
 )

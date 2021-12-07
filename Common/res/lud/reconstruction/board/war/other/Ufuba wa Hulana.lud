@@ -1,6 +1,6 @@
 (game "Ufuba wa Hulana"
-    (players 2) 
-    (equipment { 
+    (players 2)
+    (equipment {
         (board (square 5))
         (piece "Marker" Each)
         (hand Each)
@@ -14,8 +14,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ufuba wa Hulana is a game that was played in Comoros during the seventeenth century. ")
@@ -28,12 +28,12 @@
         (origin  "This game was played in Comoros, around 1694.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )
 

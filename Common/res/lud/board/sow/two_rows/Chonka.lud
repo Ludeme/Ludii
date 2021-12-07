@@ -7,63 +7,63 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chonka"  
-    (players 2)  
-    
-    (equipment { 
+(game "Chonka"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns"
             {
             (track "Track1" <Track:directionP1> loop:True P1)
             (track "Track2" <Track:directionP2> loop:True P2)
             }
         )
-        (piece "Seed" Shared) 
+        (piece "Seed" Shared)
         (regions P1 (sites Bottom))                    // P1 home
-        (regions P2 (sites Top))                       // P2 home   
+        (regions P2 (sites Top))                       // P2 home
         <Track:stores>  // kalahs (storage pits)
-    })  
-    (rules 
-        
-        (start { 
-            (set Count 7 to:(union (sites P1)  (sites P2)) ) 
+    })
+    (rules
+
+        (start {
+            (set Count 7 to:(union (sites P1)  (sites P2)) )
         })
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
-                        (sites Mover) 
-                    ) 
+                Select
+                (from
+                    (if
+                        (is Mover Prev)
+                        "PlayFromLastHole"
+                        (sites Mover)
+                    )
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
                         apply:(if (!= (to) (mapEntry Mover))
                             (if (> (count at:(to)) 1)
                                 (moveAgain)
                                 (and
-                                    (fromTo 
-                                        (from "OppositePit") 
-                                        (to (mapEntry Mover)) 
+                                    (fromTo
+                                        (from "OppositePit")
+                                        (to (mapEntry Mover))
                                         count:(count at:"OppositePit" )
-                                    ) 
-                                    (fromTo 
-                                        (from (to)) 
-                                        (to (mapEntry Mover)) 
+                                    )
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry Mover))
                                         count:(count at:(to))
                                     )
                                 )
                             )
                         )
-                        
+
                     )
                 )
             )
         )
-        
+
         (end
             (if (<= ("GoalNumCapturedCounters") (count at:(mapEntry Mover)))
                 (result Mover Win)
@@ -76,25 +76,25 @@
 
 (option "Direction" <Track> args:{ <directionP1> <directionP2> <stores> }
     {
-    (item "CCW" <"1,E,ENE,WNW,W"> <"1,E,N,W,WSW"> <(map {(pair P1 LastSite) (pair P2 FirstSite)})> "Sowing occurs in CCW.")*   
+    (item "CCW" <"1,E,ENE,WNW,W"> <"1,E,N,W,WSW"> <(map {(pair P1 LastSite) (pair P2 FirstSite)})> "Sowing occurs in CCW.")*
     (item "CW"  <"7,W,WNW,ENE,E"> <"7,W,N,E,ESE"> <(map {(pair P1 FirstSite) (pair P2 LastSite)})> "Sowing occurs in CW.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Chonka (Described)" {
         "Direction/CCW"
         }
         variations:{"Direction/CW"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Chonka is a two-row mancala-style board game played in Colombo in Sri Lanka, and known by Tamil-speaking people as Pallankuli, though it is different from the Pallankuli known from India. It is typically played on a board with cowrie shells or tamarind seeds as counters.")
@@ -108,7 +108,7 @@
         (origin  "This game was played in Sri Lanka., around 1909.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

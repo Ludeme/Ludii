@@ -1,15 +1,15 @@
-(game "Test - Site Range"  
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
-        (piece "Marker" Each) 
-    })  
-    (rules 
+(game "Test - Site Range"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Marker" Each)
+    })
+    (rules
         (start {
-            (place "Marker1" <Start:range1>) 
+            (place "Marker1" <Start:range1>)
             (place "Marker2" <Start:range2>)
         })
-        
+
         (play (move Add (to (sites Empty))))
         (end (if (is Line 6) (result Mover Win)))
     )
@@ -29,8 +29,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

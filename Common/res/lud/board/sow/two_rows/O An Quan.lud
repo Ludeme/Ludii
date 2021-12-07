@@ -1,18 +1,18 @@
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
     )
 )
 
-(define "RemmemberOpponentOwnedHoles" 
+(define "RemmemberOpponentOwnedHoles"
     (if (is Mover P2)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -22,16 +22,16 @@
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
-(define "LeftMostEmpty" 
-    (trackSite FirstSite 
+(define "LeftMostEmpty"
+    (trackSite FirstSite
         "TrackCCW"
         from:(mapEntry Mover)
         if:(and (not (is In (to) (sites "EndHoles"))) (is Empty (to)))
     )
 )
 
-(define "NextLeftMostEmpty" 
-    (trackSite FirstSite 
+(define "NextLeftMostEmpty"
+    (trackSite FirstSite
         "TrackCCW"
         from:("LeftMostEmpty")
         if:(and {(not (is In (to) (sites "EndHoles"))) (is Empty (to)) (!= (("LeftMostEmpty") (to)))})
@@ -40,14 +40,14 @@
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "NoPieceOnOwnedHoles" 
+(define "NoPieceOnOwnedHoles"
     (if (= 1 #1)
         (no Pieces All in:(sites (values Remembered "OwnedP1")))
         (no Pieces All in:(sites (values Remembered "OwnedP2")))
     )
 )
 
-(define "NumOwnedHoles" 
+(define "NumOwnedHoles"
     (if (= 1 #1)
         (count Sites in:(sites (values Remembered "OwnedP1")))
         (count Sites in:(sites (values Remembered "OwnedP2")))
@@ -56,10 +56,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "O An Quan"  
-    (players 2)  
-    
-    (equipment { 
+(game "O An Quan"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 5 largeStack:True
             {
             (track "TrackCCW" "0,1,E,11,10,W" loop:True)
@@ -73,16 +73,16 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (regions "EndHoles" (sites {"A1" "G1"}))
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (place Stack "Seed" (union (sites Bottom) (sites Top)) count:5)
             (place Stack "Ball" (sites {"A1" "G1"}))
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
-        
+
         phases:
         {
         (phase "Sowing"
@@ -90,10 +90,10 @@
                 (or {
                     (if (!= (var "Direction") 2)
                         (move Select
-                            (from 
+                            (from
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    ("OwnedHoles") 
+                                    ("OwnedHoles")
                                 )
                                 if:(!= 0 (size Stack at:(from)))
                             )
@@ -139,11 +139,11 @@
                     )
                     (if (!= (var "Direction") 1)
                         (move Select
-                            (from 
+                            (from
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    ("OwnedHoles") 
-                                ) 
+                                    ("OwnedHoles")
+                                )
                                 if:(!= 0 (size Stack at:(from)))
                             )
                             (then
@@ -266,7 +266,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (>= 9 (size Stack Cell at:(handSite P1))) // 9 captured seeds are not enough to fill enough holes.
@@ -280,7 +280,7 @@
             )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 5 (size Stack Cell at:(handSite Mover)))
@@ -324,7 +324,7 @@
                         )
                     )
                     (then
-                        (if (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2))) 
+                        (if (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2)))
                             (if (= (size Stack Cell at:(handSite P1 1)) 2)
                                 (and
                                     (fromTo
@@ -377,7 +377,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "O An Quan is a two-row mancala-style board game played by children in Vietnam.")
@@ -388,7 +388,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (piece Scale "Ball" 1.3)

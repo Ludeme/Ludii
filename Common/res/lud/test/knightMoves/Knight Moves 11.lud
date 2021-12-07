@@ -5,13 +5,13 @@
 //------------------------------------------------------------------------------
 
 (game "Knight Moves 11"
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Knight" Each 
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+        (piece "Knight" Each
             (move
                 (from)
-                (to 
+                (to
                     (sites { {F F R F} {F F L F} })
                     if: (not (is Friend (who at:(to))))
                 )
@@ -20,32 +20,32 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Knight1" (expand (sites Bottom)) )
             (place "Knight2" (expand (sites Top)) )
             }
         )
-        
+
         (play (forEach Piece) )
-        
+
         (end (if "RegionReached" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

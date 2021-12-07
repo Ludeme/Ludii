@@ -1,6 +1,6 @@
 (game "Wa Shogi"
-    (players 2) 
-    (equipment { 
+    (players 2)
+    (equipment {
         (board (square 11))
         // We know: 17 piece types exist and 54 pieces in total.
     })
@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Wa Shogi is a large version of Shogi played in Japan. ")
@@ -24,7 +24,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
@@ -32,5 +32,5 @@
         (board Style Shogi)
         (piece Rotate P2 degrees:180)
     })
-    
+
 )

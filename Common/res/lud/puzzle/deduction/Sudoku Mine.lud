@@ -1,24 +1,24 @@
-(game "Sudoku Mine"  
-    (players 1)  
-    (equipment { 
+(game "Sudoku Mine"
+    (players 1)
+    (equipment {
         (board (square <Challenge:size>) (values Cell (range 0 1)))
         (hints { <Challenge:hints> })
         (regions {Columns Rows})
         (piece "Bomb" P1)
-    })  
-    (rules 
-        (play 
+    })
+    (rules
+        (play
             (satisfy  {
                 (forAll
-                    Hint 
-                    (is Count 
-                        (sites Around (from)) 
+                    Hint
+                    (is Count
+                        (sites Around (from))
                         of:1
                         (hint)
                     )
                 )
                 (forAll
-                    Hint 
+                    Hint
                     (= (what at:(from)) 0)
                 )
                 (is Sum 3)
@@ -32,10 +32,10 @@
 
 (option "Challenge" <Challenge> args:{ <size> <hints> }
     {
-    (item "1" 
+    (item "1"
         <9>
         <
-        (hint 5 1) (hint 7 2) (hint 8 1) 
+        (hint 5 1) (hint 7 2) (hint 8 1)
         (hint 10 3) (hint 19 1) (hint 24 3)
         (hint 29 3) (hint 35 4) (hint 39 3)
         (hint 41 3) (hint 45 4) (hint 51 2)
@@ -43,7 +43,7 @@
         (hint 72 1) (hint 73 1) (hint 75 1)
         >
         ""
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Grey))
         (piece Rename piece:"1" "Bomb")

@@ -8,12 +8,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Muvalavala (Quioco)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Muvalavala (Quioco)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track1" "0,E,N1,W" loop:True P1)
             <Board:track2>
             }
@@ -26,58 +26,58 @@
         (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
         (regions "Outer" P2 (sites Top) )                                          // P2 outer Home
         }
-    )  
-    (rules 
-        
-        (start { 
-            (set Count 1 
-                to:(union { 
-                    (difference (sites P1 "Home") (sites Left) ) 
-                    (difference (sites P2 "Home") (sites Right) ) 
-                }) 
-            ) 
-            (set Count (- (- (* 4 "Columns") 2) (* 2  (- "Columns" 1))) 
-                to:(union 
+    )
+    (rules
+
+        (start {
+            (set Count 1
+                to:(union {
+                    (difference (sites P1 "Home") (sites Left) )
+                    (difference (sites P2 "Home") (sites Right) )
+                })
+            )
+            (set Count (- (- (* 4 "Columns") 2) (* 2  (- "Columns" 1)))
+                to:(union
                     (intersection (sites Left) (sites P1 "Outer"))
                     (intersection (sites Right) (sites P2 "Outer"))
                 )
             )
         })
-        
-        (play 
+
+        (play
             (move
                 Select
-                (from 
-                    (if (is Mover Prev) 
+                (from
+                    (if (is Mover Prev)
                         ("PlayFromLastHole")
-                        (sites Mover "Home") 
-                    ) 
+                        (sites Mover "Home")
+                    )
                     if:(> (count at:(from)) 1)
                 )
-                (then 
+                (then
                     (sow
                         "Track"
                         owner:(mover)
                         apply:(if (and {
                                 (> (count at:(to)) 1)
-                                (is In (to) (sites Mover "Inner")) 
-                                (> (count at:"OppositePit") 0) 
+                                (is In (to) (sites Mover "Inner"))
+                                (> (count at:"OppositePit") 0)
                             })
                             (and
                                 {
-                                (fromTo 
-                                    (from "OppositePit") 
-                                    (to (to)) 
+                                (fromTo
+                                    (from "OppositePit")
+                                    (to (to))
                                     count:(count at:"OppositePit")
-                                ) 
+                                )
                                 (if (> (count at:"OppositeOuterPit") 0)
-                                    (fromTo 
-                                        (from "OppositeOuterPit") 
-                                        (to (to)) 
+                                    (fromTo
+                                        (from "OppositeOuterPit")
+                                        (to (to))
                                         count:(count at:"OppositeOuterPit")
                                     )
                                 )
-                                (sow 
+                                (sow
                                     (to)
                                     count:(+ (count at:"OppositePit") (count at:"OppositeOuterPit"))
                                     "Track"
@@ -91,9 +91,9 @@
                 )
             )
         )
-        
+
         (end
-            (if  
+            (if
                 (no Moves Next)
                 (result Mover Win)
             )
@@ -105,27 +105,27 @@
 
 (option "Board Size" <Board> args:{ <size> <track2>}
     {
-    (item "6"   <6> <(track "Track2" "12,E,N1,W" loop:True P2)>   "Each row has 6 holes.") 
-    (item "7"   <7> <(track "Track2" "14,E,N1,W" loop:True P2)>   "Each row has 7 holes.")  
-    (item "8"   <8> <(track "Track2" "16,E,N1,W" loop:True P2)>   "Each row has 8 holes.") 
-    (item "9"   <9> <(track "Track2" "18,E,N1,W" loop:True P2)>   "Each row has 9 holes.") 
-    (item "10"   <10> <(track "Track2" "20,E,N1,W" loop:True P2)> "Each row has 10 holes.") 
-    (item "11"   <11> <(track "Track2" "22,E,N1,W" loop:True P2)> "Each row has 11 holes.") 
-    (item "12"   <12> <(track "Track2" "24,E,N1,W" loop:True P2)> "Each row has 12 holes.") 
-    (item "13"   <13> <(track "Track2" "26,E,N1,W" loop:True P2)> "Each row has 13 holes.") 
-    (item "14"   <14> <(track "Track2" "28,E,N1,W" loop:True P2)> "Each row has 14 holes.")  
-    (item "15"   <15> <(track "Track2" "30,E,N1,W" loop:True P2)> "Each row has 15 holes.")  
-    (item "16"   <16> <(track "Track2" "32,E,N1,W" loop:True P2)> "Each row has 16 holes.")  
+    (item "6"   <6> <(track "Track2" "12,E,N1,W" loop:True P2)>   "Each row has 6 holes.")
+    (item "7"   <7> <(track "Track2" "14,E,N1,W" loop:True P2)>   "Each row has 7 holes.")
+    (item "8"   <8> <(track "Track2" "16,E,N1,W" loop:True P2)>   "Each row has 8 holes.")
+    (item "9"   <9> <(track "Track2" "18,E,N1,W" loop:True P2)>   "Each row has 9 holes.")
+    (item "10"   <10> <(track "Track2" "20,E,N1,W" loop:True P2)> "Each row has 10 holes.")
+    (item "11"   <11> <(track "Track2" "22,E,N1,W" loop:True P2)> "Each row has 11 holes.")
+    (item "12"   <12> <(track "Track2" "24,E,N1,W" loop:True P2)> "Each row has 12 holes.")
+    (item "13"   <13> <(track "Track2" "26,E,N1,W" loop:True P2)> "Each row has 13 holes.")
+    (item "14"   <14> <(track "Track2" "28,E,N1,W" loop:True P2)> "Each row has 14 holes.")
+    (item "15"   <15> <(track "Track2" "30,E,N1,W" loop:True P2)> "Each row has 15 holes.")
+    (item "16"   <16> <(track "Track2" "32,E,N1,W" loop:True P2)> "Each row has 16 holes.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
     (ruleset "Ruleset/Quiocos (Described)" {
         "Board Size/6"
         }
         variations:{
-        "Board Size/7" "Board Size/8" "Board Size/9" "Board Size/10" "Board Size/11" 
+        "Board Size/7" "Board Size/8" "Board Size/9" "Board Size/10" "Board Size/11"
         "Board Size/12" "Board Size/13" "Board Size/14" "Board Size/15" "Board Size/16"
         }
     )*
@@ -133,8 +133,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Muvalavala is a four-row mancala-style board game that is played in different ways in what is now Angola. This version is played by the Quioco people.")
@@ -145,11 +145,11 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
     (ai
         "Muvalavala (Quioco)_ai"
     )

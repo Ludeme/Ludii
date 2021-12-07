@@ -5,12 +5,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Otep"  
-    (players 2)  
-    
-    (equipment { 
+(game "Otep"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
@@ -23,13 +23,13 @@
         (map "SecondRightOuter" {(pair P1 14) (pair P2 17)})
         (map "RightOuter" {(pair P1 15) (pair P2 16)})
         (hand Each)
-    })  
-    (rules 
-        
-        (start 
-            (set Count 2 to:(sites Board )) 
+    })
+    (rules
+
+        (start
+            (set Count 2 to:(sites Board ))
         )
-        
+
         phases:{
         (phase "Opening1"
             (play
@@ -40,12 +40,12 @@
                             "Track"
                             owner:(mover)
                             apply:(and
-                                (fromTo 
+                                (fromTo
                                     (from ("OppositePit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
                                 )
-                                (fromTo 
+                                (fromTo
                                     (from ("OppositeOuterPit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
@@ -66,12 +66,12 @@
                             "Track"
                             owner:(mover)
                             apply:(and
-                                (fromTo 
+                                (fromTo
                                     (from ("OppositePit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
                                 )
-                                (fromTo 
+                                (fromTo
                                     (from ("OppositeOuterPit" (last From)))
                                     (to (mapEntry "RightOuter" Mover))
                                     count:2
@@ -86,13 +86,13 @@
         (phase "Opening3"
             (play
                 (move Select
-                    (from 
-                        (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
-                            (sites {(mapEntry "RightOuter" Mover)}) 
-                        ) 
-                        
+                    (from
+                        (if
+                            (is Mover Prev)
+                            "PlayFromLastHole"
+                            (sites {(mapEntry "RightOuter" Mover)})
+                        )
+
                     )
                     (then
                         (sow
@@ -107,29 +107,29 @@
             )
             (nextPhase Mover (not (is Next Prev)) "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (move Select
-                    (from 
-                        (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
-                            (sites Mover) 
-                        ) 
+                    (from
+                        (if
+                            (is Mover Prev)
+                            "PlayFromLastHole"
+                            (sites Mover)
+                        )
                         if:(> (count at:(from)) 1)
                     )
                     (then
                         (sow
                             "Track"
                             owner:(mover)
-                            apply:(if 
+                            apply:(if
                                 (and {
                                     (is In (to) (sites Mover "Inner"))
                                     (< 1 (count at:(to)))
                                     (is Occupied ("OppositeOuterPit" (to)))
                                     (is Occupied ("OppositePit" (to)))
-                                })	
+                                })
                                 (and {
                                     (fromTo
                                         (from ("OppositeOuterPit" (to)))
@@ -145,7 +145,7 @@
                                         (last From)
                                         count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
                                         "Track"
-                                        owner:(mover)	
+                                        owner:(mover)
                                     )
                                 })
                                 (if (< 1 (count at:(to)))
@@ -158,7 +158,7 @@
             )
         )
         }
-        
+
         (end {
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
@@ -168,8 +168,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Otep is a four-row mancala-style board game played by the Bari people of South Sudan. The holes are scooped out of the ground, and the counters are pebbles or seeds which represent cows.")
@@ -183,9 +183,9 @@
         (origin  "This game was played in South Sudan, around 1939.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )

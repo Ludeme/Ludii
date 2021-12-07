@@ -1,28 +1,28 @@
-(define "ThrowValue" 
-    (if (= (count Pips) 0) 
+(define "ThrowValue"
+    (if (= (count Pips) 0)
         8
         (count Pips)
     )
 )
 
-(define "Grace" 
+(define "Grace"
     (or (= (count Pips) 0) (= (count Pips) 4))
 )
 
 (define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(and (not (is In (to) (sites "ProtectedSites"))) (is Enemy (who at:(to)))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(and (not (is In (to) (sites "ProtectedSites"))) (is Enemy (who at:(to))))
         (and
-            (fromTo 
+            (fromTo
                 (from (to))
                 (to (handSite (who at:(to))))
                 stack:True
             )
             (moveAgain)
         )
-    ) 
+    )
 )
 
 (define "Goal" 24)
@@ -34,7 +34,7 @@
 (game "Ashta-kashte"
     (players <Player:num>)
     (equipment {
-        (board 
+        (board
             (square 7)
             {
             (track "Track1" "27,N,W,S,E,N2,SW1,W4,N4,E4,S3,W3,N2,E2,S1,W1" P1 directed:True)
@@ -45,50 +45,50 @@
         )
         (piece "Paddle" Each
             (if (and (is In (from) (sites Board)) (!= "SiteToMoveOnTrack" Off))
-                (move 
+                (move
                     (from (from) level:(level))
-                    (to 
-                        "SiteToMoveOnTrack" 
+                    (to
+                        "SiteToMoveOnTrack"
                         "CaptureEnemyPiece"
                     )
                 )
-                (then 
+                (then
                     (if (= "Goal" (last To))
                         (remove (last To))
                     )
                 )
-            )	
+            )
         )
         (hand Each)
         (dice d:2 from:0 num:4)
         (map {(pair 1 "G4") (pair 2 "A4") (pair 3 "D1") (pair 4 "D7")})
         (regions "ProtectedSites" (sites {0 3 6 21 27 3 45 42 48 24}))
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Paddle1" (handSite P1) count:4)
             (place Stack "Paddle2" (handSite P2) count:4)
             <Player:startP3>
             <Player:startP4>
         })
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(or {
                     (forEach Piece)
                     (move Pass)
                     (if (and ("Grace") (!= 0 (who at:(handSite Mover))))
-                        (move 
+                        (move
                             (from (handSite Mover))
                             (to (mapEntry Mover))
                         )
                     )
                 })
-                (then 
+                (then
                     (if ("Grace") (moveAgain) )
                 )
-            )		
+            )
         )
-        
+
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
@@ -96,38 +96,38 @@
 
 (option "Players" <Player> args:{ <num> <startP3> <trackP3> <startP4> <trackP4> }
     {
-    (item  "2"  <2> <> <> <> <> "The game involves 2 players.")* 
-    (item  "3"  <3> 
-        <(place Stack "Paddle3" (handSite P3) count:4)> 
-        <(track "Track3" "3,E,N,W,S,E2,NW1,N4,E4,S4,W3,N3,E2,S2,W1,N1" P3 directed:True)> 
-        <> 
-        <> 
+    (item  "2"  <2> <> <> <> <> "The game involves 2 players.")*
+    (item  "3"  <3>
+        <(place Stack "Paddle3" (handSite P3) count:4)>
+        <(track "Track3" "3,E,N,W,S,E2,NW1,N4,E4,S4,W3,N3,E2,S2,W1,N1" P3 directed:True)>
+        <>
+        <>
     "The game involves 3 players.")
-    (item  "4"  <4> 
-        <(place Stack "Paddle3" (handSite P3) count:4)> 
-        <(track "Track3" "3,E,N,W,S,E2,NW1,N4,E4,S4,W3,N3,E2,S2,W1,N1" P3 directed:True)> 
-        <(place Stack "Paddle4" (handSite P4) count:4)> 
-        <(track "Track4" "45,W,S,E,N,W2,SE1,S4,W4,N4,E3,S3,W2,N2,E1,S1" P4 directed:True)> 
-    "The game involves 4 players.")  
+    (item  "4"  <4>
+        <(place Stack "Paddle3" (handSite P3) count:4)>
+        <(track "Track3" "3,E,N,W,S,E2,NW1,N4,E4,S4,W3,N3,E2,S2,W1,N1" P3 directed:True)>
+        <(place Stack "Paddle4" (handSite P4) count:4)>
+        <(track "Track4" "45,W,S,E,N,W2,SE1,S4,W4,N4,E3,S3,W2,N2,E1,S1" P4 directed:True)>
+    "The game involves 4 players.")
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Falkener (Described)" {
         "Players/2"
         }
         variations:{"Players/3" "Players/4"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ashta-kashte is a race game that was documented in India during the nineteenth century. The exact location of this version of the game was not recorded, but it is similar to other race games that mimic Pachisi and similar games, but on a square board.")
@@ -138,7 +138,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (stackType 0 Ground)
         (stackType 1 Count)
@@ -153,5 +153,5 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )

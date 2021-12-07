@@ -1,9 +1,9 @@
-(game "Sugoroku" 
+(game "Sugoroku"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Sugoroku. is a race game that was played in Japan from the eighth century CE. Early boards are similar to boards for Chinese Shuanglu, and the games are probably related. By the nineteenth century, the game had largely become unpopular, and the rules for it are largely unreported, except for being similar to Backgammon.")
@@ -37,12 +37,12 @@
         (origin  "This game was played in Japan, from around 710 to 1599.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table) // Temporary style until a more specific one exist for that game.
         (stackType Backgammon)
     })
-    
+
 )
 

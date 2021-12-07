@@ -5,7 +5,7 @@
 
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
 
-(define "OneRowIsEmpty" 
+(define "OneRowIsEmpty"
     (or
         (all Sites (sites P1) if:(is Empty (site)))
         (all Sites (sites P2) if:(is Empty (site)))
@@ -14,28 +14,28 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mangala (Bedouin)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Mangala (Bedouin)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "5,W,N,E" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
         (hand Shared)
-        (regions P1 (sites Bottom)) 
-        (regions P2 (sites Top)) 
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
         (map "FourthHole" {(pair P1 3) (pair P2 8)})
     })
-    
-    (rules 
-        
+
+    (rules
+
         (start (place "Seed" (handSite Shared) count:17))
-        
+
         phases:{
         (phase "OpeningP1"
-            (play 
+            (play
                 (move
                     (from (handSite Shared))
                     (to (sites Centre))
@@ -44,13 +44,13 @@
             )
             (nextPhase (is Empty (handSite Shared)) "OpeningP2")
         )
-        
+
         (phase "OpeningP2"
-            (play 
+            (play
                 (or
                     (move Pass)
-                    (if (is Mover P2) 
-                        (move Pass 
+                    (if (is Mover P2)
+                        (move Pass
                             (then
                                 (and {
                                     (remove (sites Centre))
@@ -64,10 +64,10 @@
                     )
                 )
             )
-            
+
             (nextPhase (all Passed) "SowingRestricted")
         )
-        
+
         (phase "SowingRestricted"
             (play
                 (move Select
@@ -79,17 +79,17 @@
             )
             (nextPhase Mover "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (move Select
                     (from
-                        (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
-                            (sites Mover) 
-                        ) 
-                        if:(> (count at:(from)) 0)		
+                        (if
+                            (is Mover Prev)
+                            "PlayFromLastHole"
+                            (sites Mover)
+                        )
+                        if:(> (count at:(from)) 0)
                     )
                     (then
                         (sow
@@ -112,7 +112,7 @@
                                         (moveAgain)
                                     )
                                 )
-                            )		
+                            )
                         )
                     )
                 )
@@ -120,7 +120,7 @@
             (end
                 (if ("OneRowIsEmpty")
                     (byScore {
-                        (score P1 ("PiecesOwnedBy" P1)) 
+                        (score P1 ("PiecesOwnedBy" P1))
                         (score P2 ("PiecesOwnedBy" P2))
                     })
                 )
@@ -132,7 +132,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Mangala is a word which refers to many two-row mancala-style board games throughout Western Asia and North Africa. This game was played by the Bedouin of the Arabian Peninsula in the early twentieth century.")
@@ -143,7 +143,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

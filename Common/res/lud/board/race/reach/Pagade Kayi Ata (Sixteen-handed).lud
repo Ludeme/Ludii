@@ -10,10 +10,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pagade Kayi Ata (Sixteen-handed)"  
-    (players <Player:num>)  
-    (equipment { 
-        (board 
+(game "Pagade Kayi Ata (Sixteen-handed)"
+    (players <Player:num>)
+    (equipment {
+        (board
             (add
                 (merge
                     {
@@ -40,46 +40,46 @@
                 {224 287} {260 323} {296 359} {332 395} {368 431} {404 467}
                 {440 503} {476 539} {512 575} {548 35}
                 }
-                cells:{ 
+                cells:{
                 { 35 26 17 8 71 62 53 44 107 98 89 80
                 143 134 125 116 179 170 161 152 215 206 197 188
                 251 242 233 224 287 278 269 260 323 314 305 296
                 359 350 341 332 395 386 377 368 431 422 413 404
                 467 458 449 440 503 494 485 476 539 530 521 512
                 575 566 557 548
-                } 
+                }
                 }
             )
             {
-            (track 
-                "Track1" 
-                "384,15,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S1,End" 
-                P1 
+            (track
+                "Track1"
+                "384,15,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S1,End"
+                P1
                 directed:True
             )
-            (track 
-                "Track2" 
-                "384,39,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE1,End" 
-                P2 
+            (track
+                "Track2"
+                "384,39,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE1,End"
+                P2
                 directed:True
             )
-            (track 
-                "Track3" 
-                "384,63,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE1,End" 
-                P3 
+            (track
+                "Track3"
+                "384,63,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE1,End"
+                P3
                 directed:True
             )
-            (track 
-                "Track4" 
-                "384,87,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE1,End" 
-                P4 
+            (track
+                "Track4"
+                "384,87,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE1,End"
+                P4
                 directed:True
             )
             <Player:track58>
             <Player:track916>
             }
         )
-        (map "Start" { 
+        (map "Start" {
             (pair 1 15) (pair 2 39) (pair 3 63) (pair 4 87)
             (pair 5 111) (pair 6 135) (pair 7 159) (pair 8 183)
             (pair 9 207) (pair 10 231) (pair 11 255) (pair 12 279)
@@ -87,50 +87,50 @@
             }
         )
         (piece "Disc" Each
-            (if (and 
-                    (!= (pips) 0) 
+            (if (and
+                    (!= (pips) 0)
                     (!= ("SiteToMoveOnTrack" (from)) Off)
                 )
                 (if (= ("SiteToMoveOnTrack" (from)) End)
                     ("RemoveAPiece" (from))
-                    (move 
-                        (from (from) level:(level)) 
-                        (to 
-                            ("SiteToMoveOnTrack" (from)) 
-                            if:(and 
-                                (or 
+                    (move
+                        (from (from) level:(level))
+                        (to
+                            ("SiteToMoveOnTrack" (from))
+                            if:(and
+                                (or
                                     (not (is In (to) (sites "Castle")))
                                     (and
                                         (is In (to) (sites "Castle"))
-                                        (not (is Enemy (who at:(to)))) 
+                                        (not (is Enemy (who at:(to))))
                                     )
                                 )
-                                (not 
-                                    (and 
-                                        (is Enemy (who at:(to))) 
+                                (not
+                                    (and
+                                        (is Enemy (who at:(to)))
                                         (> (count at:(to)) 1)
                                     )
                                 )
                             )
-                            (apply 
-                                if:(and 
-                                    (is Enemy (who at:(to))) 
+                            (apply
+                                if:(and
+                                    (is Enemy (who at:(to)))
                                     (= (count at:(to)) 1)
                                 )
                                 (and
-                                    (fromTo 
-                                        (from (to)) 
+                                    (fromTo
+                                        (from (to))
                                         (to ("Center"))
                                     )
                                     ("HasCapturedAnEnemy")
                                 )
                             )
-                        ) 
+                        )
                     )
                 )
-            )	
-        ) 
-        
+            )
+        )
+
         (hand Each)
         (dice d:8 faces:{1 3 4 6 8 10 12 16} num:2)
         (regions "Castle" {
@@ -141,7 +141,7 @@
             91 75 115 99 139 123 82 106
             130 112 88 72 96 136 120
             166 150 190 174 214 198 238 222 157 181 205 229
-            163 147 187 171 211 195 235 219 154 178 202 226 
+            163 147 187 171 211 195 235 219 154 178 202 226
             160 144 232 184 168 232 216 208 192
             262 246 253 286 270 277 310 294 301 334
             318 325 358 342 349 366 382 373 331 315 322 312 328
@@ -149,40 +149,40 @@
             264 307 291 298 304 288 355 339 346 352 360 336
         })
         (regions "DiceHand" <Player:diceHand>)
-    })  
-    (rules 
+    })
+    (rules
         <Player:start>
         (play
             (if ("CanThrowAgain")
                 (move Select (from (sites "DiceHand")) (then (and (roll) (moveAgain))))
                 (do (if (not "SameTurn") (roll))
-                    next:(forEach Die 
-                        combined:True 
-                        replayDouble:True 
+                    next:(forEach Die
+                        combined:True
+                        replayDouble:True
                         (or
-                            (if 
-                                (and 
+                            (if
+                                (and
                                     (not ("HandEmpty" Mover))
                                     (= (pips) "ValueToEnter")
                                 )
                                 (move
-                                    (from (handSite Mover)) 
+                                    (from (handSite Mover))
                                     (to (mapEntry "Start" (mover)))
                                 )
                             )
                             (or (forEach Piece) (forEach Piece container:(mover)))
                         )
-                        (then (if (can Move 
-                                    (forEach Die 
-                                        combined:True 
+                        (then (if (can Move
+                                    (forEach Die
+                                        combined:True
                                         (or
-                                            (if 
-                                                (and 
+                                            (if
+                                                (and
                                                     (not ("HandEmpty" Mover))
                                                     (= (pips) "ValueToEnter")
                                                 )
-                                                (fromTo 
-                                                    (from (handSite Mover)) 
+                                                (fromTo
+                                                    (from (handSite Mover))
                                                     (to (mapEntry "Start" (mover)))
                                                 )
                                             )
@@ -205,8 +205,8 @@
 
 (option "Players" <Player> args:{ <num> <start> <diceHand> <track58> <track916>}
     {
-    (item  "4"  
-        <4> 
+    (item  "4"
+        <4>
         <
         (start {
             (place Stack "Disc1" (handSite P1) count:4)
@@ -218,9 +218,9 @@
         <{389 390}>
         <>
         <>
-    "The game involves 4 players.")  
-    (item  "8"  
-        <8>  
+    "The game involves 4 players.")
+    (item  "8"
+        <8>
         <
         (start {
             (place Stack "Disc1" (handSite P1) count:4)
@@ -235,35 +235,35 @@
         >
         <{393 394}>
         <
-        (track 
-            "Track5" 
-            "384,111,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E1,End" 
-            P5 
+        (track
+            "Track5"
+            "384,111,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E1,End"
+            P5
             directed:True
         )
-        (track 
-            "Track6" 
-            "384,135,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE1,End" 
-            P6 
+        (track
+            "Track6"
+            "384,135,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE1,End"
+            P6
             directed:True
         )
-        (track 
-            "Track7" 
-            "384,159,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE1,End," 
-            P7 
+        (track
+            "Track7"
+            "384,159,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE1,End,"
+            P7
             directed:True
         )
-        (track 
-            "Track8" 
-            "384,183,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE1,End," 
-            P8 
+        (track
+            "Track8"
+            "384,183,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE1,End,"
+            P8
             directed:True
         )
         >
         <>
-    "The game involves 8 players.")  
-    (item  "16" 
-        <16> 
+    "The game involves 8 players.")
+    (item  "16"
+        <16>
         <
         (start {
             (place Stack "Disc1" (handSite P1) count:4)
@@ -286,101 +286,101 @@
         >
         <{401 402}>
         <
-        (track 
-            "Track5" 
-            "384,111,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E1,End" 
-            P5 
+        (track
+            "Track5"
+            "384,111,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E1,End"
+            P5
             directed:True
         )
-        (track 
-            "Track6" 
-            "384,135,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE1,End" 
-            P6 
+        (track
+            "Track6"
+            "384,135,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE1,End"
+            P6
             directed:True
         )
-        (track 
-            "Track7" 
-            "384,159,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE1,End," 
-            P7 
+        (track
+            "Track7"
+            "384,159,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE1,End,"
+            P7
             directed:True
         )
-        (track 
-            "Track8" 
-            "384,183,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE1,End," 
-            P8 
+        (track
+            "Track8"
+            "384,183,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE1,End,"
+            P8
             directed:True
         )
         >
         <
-        (track 
-            "Track9" 
-            "384,207,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N1,End" 
-            P9 
+        (track
+            "Track9"
+            "384,207,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N1,End"
+            P9
             directed:True
         )
-        (track 
-            "Track10" 
-            "384,231,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW1,End" 
-            P10 
+        (track
+            "Track10"
+            "384,231,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW1,End"
+            P10
             directed:True
         )
-        (track 
-            "Track11" 
-            "384,255,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW1,End" 
-            P11 
+        (track
+            "Track11"
+            "384,255,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW1,End"
+            P11
             directed:True
         )
-        (track 
-            "Track12" 
-            "384,279,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW1,End" 
-            P12 
+        (track
+            "Track12"
+            "384,279,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW1,End"
+            P12
             directed:True
         )
-        (track 
-            "Track13" 
-            "384,303,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W1,End" 
-            P13 
+        (track
+            "Track13"
+            "384,303,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W1,End"
+            P13
             directed:True
         )
-        (track 
-            "Track14" 
-            "384,327,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW1,End" 
-            P14 
+        (track
+            "Track14"
+            "384,327,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW1,End"
+            P14
             directed:True
         )
-        (track 
-            "Track15" 
-            "384,351,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW1,End" 
-            P15 
+        (track
+            "Track15"
+            "384,351,NW,SW,SE7,383,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW1,End"
+            P15
             directed:True
         )
-        (track 
-            "Track16" 
-            "384,375,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW1,End" 
-            P16 
+        (track
+            "Track16"
+            "384,375,WNW,SSW,ESE7,23,W,S,E7,47,WSW,SSE,ENE7,71,SW,SE,NE7,95,SSW,ESE,NNE7,119,S,E,N7,143,SSE,ENE,NNW7,167,SE,NE,NW7,191,ESE,NNE,WNW7,215,E,N,W7,239,ENE,NNW,WSW7,263,NE,NW,SW7,287,NNE,WNW,SSW7,311,N,W,S7,335,NNW,WSW,SSE7,359,NW,SW,SE7,383,WNW,SSW1,End"
+            P16
             directed:True
         )
         >
-    "The game involves 16 players.")*  
+    "The game involves 16 players.")*
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/SIxteen-handed (Described)" {
         "Players/16"
         }
         variations:{"Players/4" "Players/8"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pagade Kayi Ata was a version of Pachisi invented by Maharaja Krishnaraja Wadiyar III of Mysore. This game can be played by up to sixteen players.")
@@ -393,7 +393,7 @@
         (origin  "This game was played in Mysore, around 1858.")
         }
     )
-    
+
     (graphics {
         (stackType 0 site:384 Ring)
         (stackType 0 Ground)
@@ -413,10 +413,10 @@
         (stackType 14 Ground)
         (stackType 15 Ground)
         (stackType 16 Ground)
-        (show Symbol "disc" "Castle" fillColour:(colour White) scale:0.5) 
+        (show Symbol "disc" "Castle" fillColour:(colour White) scale:0.5)
         (board Colour Phase0 (colour 180 70 0))
         (board Colour InnerEdges (colour 220 190 50))
         (board Colour OuterEdges (colour 220 190 50))
     })
-    
+
 )

@@ -4,7 +4,7 @@
     (is Connected { (sites Side #1) (sites Side #2) #3})
 )
 
-(define "WhiteVC" 
+(define "WhiteVC"
     (or {
         ("IsSidesConnected" S N)
         ("IsSidesConnected" SW NE)
@@ -12,7 +12,7 @@
     })
 )
 
-(define "BlackVC" 
+(define "BlackVC"
     (or
         ("IsSidesConnected" S NW (sites Side NE))
         ("IsSidesConnected" N SW (sites Side SE))
@@ -21,13 +21,13 @@
 
 (define "IsPlayingPhase" (= 1 (var)) )
 
-(game "Unlur"  
-    (players 2)  
-    (equipment { 
-        (board (hex <Board:size>)) 
-        (piece "Disc" Each) 
-    })  
-    (rules 
+(game "Unlur"
+    (players 2)
+    (equipment {
+        (board (hex <Board:size>))
+        (piece "Disc" Each)
+    })
+    (rules
         phases: {
         (phase "Opening"
             (play
@@ -69,10 +69,10 @@
         )
         }
         (end {
-            (if (and {("IsPlayingPhase") (= (id P1) (mover)) ("BlackVC") (not ("WhiteVC"))}) (result P1 Loss)) 
-            (if (and {("IsPlayingPhase") (= (id P2) (mover)) ("WhiteVC") (not ("BlackVC"))}) (result P2 Loss)) 
-            (if (and {("IsPlayingPhase") (= (id P1) (mover)) ("WhiteVC")}) (result P1 Win)) 
-            (if (and {("IsPlayingPhase") (= (id P2) (mover)) ("BlackVC")}) (result P2 Win)) 
+            (if (and {("IsPlayingPhase") (= (id P1) (mover)) ("BlackVC") (not ("WhiteVC"))}) (result P1 Loss))
+            (if (and {("IsPlayingPhase") (= (id P2) (mover)) ("WhiteVC") (not ("BlackVC"))}) (result P2 Loss))
+            (if (and {("IsPlayingPhase") (= (id P1) (mover)) ("WhiteVC")}) (result P1 Win))
+            (if (and {("IsPlayingPhase") (= (id P2) (mover)) ("BlackVC")}) (result P2 Win))
         })
     )
 )
@@ -93,12 +93,12 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Unlur is a game between two people taking turns placing tiles on a hexagonal board. Each player has a different objective to achieve victory. It is classified as an abstract, connecting and unequal forces board game.
-            
+
             This game was the winner of the second Annual Game Design Competition in 2002, whose theme that year was the design of games of unequal forces (organized by Abstract Games magazine, About Board Games, and the Strategy Gaming Society). The name came from a symmetric ancestor game called 'Lur'. When the game was supported on Ludoteka, the Edge rule was added because placing on the edge is usually bad for Black. More information about the origins of the game can be found in Spanish on the designer's blog:
             <a href=\"http://mesadejuegos.blogspot.com/2005/12/unlur.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mesadejuegos.blogspot.com</a>
         ")
@@ -111,13 +111,13 @@
         (date "2002")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
     (ai
         "Unlur_ai"
     )

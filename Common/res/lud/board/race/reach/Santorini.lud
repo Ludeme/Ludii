@@ -1,33 +1,33 @@
 (define "LevelBetweenGroundAndDestinationPlusOne"
-    (<= 
-        (- 
+    (<=
+        (-
             (size Stack at:(to))
-            (topLevel at:(from)) 
+            (topLevel at:(from))
         )
         1
-    ) 
+    )
 )
 
 (define "EmptyOrNeutralPiece"
-    (= (who at:(to)) 0) 
+    (= (who at:(to)) 0)
 )
 
 //-------------------------------------------------------------------------
 
-(game "Santorini"  
-    (players 2)  
-    (equipment 
-        { 
-        (board (square 5)) 
+(game "Santorini"
+    (players 2)
+    (equipment
+        {
+        (board (square 5))
         (hand Each)
         // Map between level and each piece to build the building.
         (map { (pair 0 "SquareLarge0") (pair 1 "SquareSmall0") (pair 2 "Octagon0") (pair 3 "Marker0")})
-        (piece "Pawn3d" Each 
+        (piece "Pawn3d" Each
             (move
                 Step
-                (to 
-                    if:(and 
-                        ("LevelBetweenGroundAndDestinationPlusOne") 
+                (to
+                    if:(and
+                        ("LevelBetweenGroundAndDestinationPlusOne")
                         ("EmptyOrNeutralPiece")
                     )
                 )
@@ -39,49 +39,49 @@
         (piece "Octagon" Neutral)
         (piece "Marker" Neutral)
         }
-    )  
-    (rules 
-        (start 
+    )
+    (rules
+        (start
             {
             (place Stack "Pawn3d1" (handSite P1) count:2)
             (place Stack "Pawn3d2" (handSite P2) count:2)
             }
         )
-        
+
         phases:{
         (phase "Placement"
             (play
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
-                    (then 
-                        (if 
-                            (not ("HandEmpty" Mover)) 
+                (move
+                    (from (handSite Mover))
+                    (to (sites Empty))
+                    (then
+                        (if
+                            (not ("HandEmpty" Mover))
                             (moveAgain)
                         )
                     )
-                )  
-            ) 
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        (phase "Movement" 
-            (play 
+        (phase "Movement"
+            (play
                 (if ("SameTurn")
                     (move
-                        Select 
+                        Select
                         (from
-                            (sites Around 
-                                (last To) 
-                                if:(and 
-                                    (< (size Stack at:(to)) 4) 
+                            (sites Around
+                                (last To)
+                                if:(and
+                                    (< (size Stack at:(to)) 4)
                                     ("EmptyOrNeutralPiece")
                                 )
-                            ) 
+                            )
                         )
-                        (then 
-                            (add 
-                                (piece (mapEntry (size Stack at:(last To)))) 
-                                (to (last To)) 
+                        (then
+                            (add
+                                (piece (mapEntry (size Stack at:(last To))))
+                                (to (last To))
                                 stack:True
                             )
                         )
@@ -91,22 +91,22 @@
             )
         )
         }
-        
+
         (end {
-            (if 
-                (and 
-                    (= 3 
+            (if
+                (and
+                    (= 3
                         (topLevel at:(last To))
                     )
-                    (= 
-                        (what 
-                            at:(last To) 
+                    (=
+                        (what
+                            at:(last To)
                             level:(topLevel at:(last To))
-                        ) 
+                        )
                         (id "Pawn3d" Mover)
                     )
                 )
-                (result Mover Win) 
+                (result Mover Win)
             )
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
@@ -123,10 +123,10 @@
         (description "Santorini is an accessible strategy game, simple enough for an elementary school classroom while aiming to provide gameplay depth and content for hardcore gamers to explore.")
         (aliases {"산토리니"})
         (rules "The game is played on a 5x5 grid where each turn players build a town by placing building pieces up to four levels high. To win the game, players must move one of their two workers to the third level of the town.
-            
+
             Beginning turns :
             The first player places his two workers on the board, then the second does the same.
-            
+
             Normal turns :
             Each turn, the current player moves one of his two workers in an adjacent position (in horizontal, vertical or diagonal, i.e. king chess move) then he places a building tile adjacent to the moved worker (in a horizontal, vertical or diagonal adjacent position). The level of a position (i.e. a grid square) is the number of tiles.
             Workers can move onto a position with zero, one, two, or three tiles (but not with four tiles) only if the level of the destination position is less than or equal to the level of departure destination plus one. There can be no more than 4 tiles per position.
@@ -140,8 +140,8 @@
         (date "2004")
         }
     )
-    
-    (graphics 
+
+    (graphics
         {
         (piece Scale "SquareLarge" 1.0)
         (piece Scale "SquareSmall" 0.85)

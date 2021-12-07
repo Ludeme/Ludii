@@ -14,19 +14,19 @@
 
 (define "UnsetCapturingPiece" (set State #1 #2 0))
 
-(define "UnsetCapturingPieces" 
+(define "UnsetCapturingPieces"
     (forEach Level (last From) FromTop
         (if (is Friend (who at:(last From) level:(level)))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
-    ) 
+    )
 )
 
 (define "AtLeastAnEnemyPieceThere"
     (is In #1 (sites Occupied by:Enemy top:False))
 )
 
-(define "CaptureMove" 
+(define "CaptureMove"
     (forEach Level (last To) FromTop
         (and
             (if (is Enemy (who at:(last To) level:(level)))
@@ -36,7 +36,7 @@
                 ("SetCapturingPiece" at:(last To) level:(level))
             )
         )
-    ) 
+    )
 )
 
 (define "CapturingPiece" (= 1 #1))
@@ -45,14 +45,14 @@
 
 (define "FreePiece" (= 0 #1))
 
-(define "EnterAPiece" 
+(define "EnterAPiece"
     (move
         (from (handSite Mover))
         (to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1) ))
     )
 )
 
-(define "RemoveCapturedPieces" 
+(define "RemoveCapturedPieces"
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
             (remove (last From) level:(level))
@@ -69,23 +69,23 @@
 (define "CapturedPiecesFollowCapturingPiece"
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
-            (fromTo 
+            (fromTo
                 (from (last From) level:(level))
                 (to (last To))
             )
         )
-    )	
+    )
 )
 
 (define "CapturedPiecesFollowCapturingPiece"
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
-            (fromTo 
+            (fromTo
                 (from (last From) level:(level))
                 (to (last To))
             )
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -93,25 +93,25 @@
 (game "Puluc"
     (players 2)
     (equipment {
-        (board 
-            (rectangle 1 10) 
+        (board
+            (rectangle 1 10)
             {
             (track "Track1" {0..8} loop:True P1)
             (track "Track2" {8..0} loop:True P2)
             (track "CaptureTrack1" {8..0} P1 directed:True)
             (track "CaptureTrack2" {0..8} P2 directed:True)
-            } 
+            }
             use:Edge
         )
         (piece "Marker" Each
             (or
                 (if ("FreePiece" (state at:(from) level:(level)))
-                    (move 
+                    (move
                         (from (from) level:(level))
-                        (to 
+                        (to
                             ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
                         )
-                        (then 
+                        (then
                             (if ("AtLeastAnEnemyPieceThere" (last To))
                                 ("CaptureMove")
                             )
@@ -120,12 +120,12 @@
                 )
                 (if ("CapturingPiece" (state at:(from) level:(level)))
                     (if (!= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue")))
-                        (move 
+                        (move
                             (from (from) level:(level))
-                            (to 
+                            (to
                                 ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue"))
                             )
-                            (then 
+                            (then
                                 (and
                                     ("CapturedPiecesFollowCapturingPiece")
                                     ("UnsetCapturingPieces")
@@ -136,14 +136,14 @@
                             (then
                                 (and {
                                     ("UnsetCapturingPieces")
-                                    ("RemoveCapturedPieces")	
+                                    ("RemoveCapturedPieces")
                                     ("RebirthCapturingPiece")
                                 })
                             )
                         )
                     )
                 )
-            )		
+            )
         )
         (regions "AllSites" (sites Board Vertex))
         (map "Throw" {(pair 0 5) (pair 1 3) (pair 2 2) (pair 3 3) (pair 4 4)})
@@ -158,8 +158,8 @@
             (place Stack "Marker1" (handSite P1) count:5)
             (place Stack "Marker2" (handSite P2) count:5)
         })
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(or {
                     (if (not (is Empty (handSite Mover)))
                         ("EnterAPiece")
@@ -182,8 +182,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Puluc is a capturing game played by the Qeqchi people of Guatemala. Opponent's pieces arre captured and dragged back to the point where a player starts.")
@@ -195,7 +195,7 @@
         (origin  "This game was played in Guatemala, around 1906.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Stick" 0.5)
         (show Edges (colour Hidden))
@@ -206,5 +206,5 @@
         (stackType 1 Count)
         (stackType 2 Count)
     })
-    
+
 )

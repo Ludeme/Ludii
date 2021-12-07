@@ -1,15 +1,15 @@
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (move
         Remove
-        (sites Occupied by:Next container:"Board") 
+        (sites Occupied by:Next container:"Board")
     )
 )
 
-(define "PlaceOnTop" 
+(define "PlaceOnTop"
     (move
         (from (handSite Mover))
         (to
-            (forEach 
+            (forEach
                 (sites Occupied by:Next container:"Board")
                 if:(= (size Stack at:(site)) 1)
             )
@@ -18,18 +18,18 @@
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 if:(= 1 (size Stack at:(to)))) 
+(define "IfLine3MoveAgain"
+    (then
+        (if
+            (is Line 3 if:(= 1 (size Stack at:(to))))
             (moveAgain)
         )
     )
 )
 
-(define "RemoveDeadPieces" 
+(define "RemoveDeadPieces"
     (forEach Site
-        (forEach 
+        (forEach
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
         )
@@ -41,53 +41,53 @@
 
 (game "Sam K'i"
     (players 2)
-    
-    (equipment { 
-        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+
+    (equipment {
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex)
         (hand Each)
-        (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+        (piece "Marker" Each
+            (move
+                Step
+                (to if:(is Empty (to)))
+                "IfLine3MoveAgain"
             )
-        ) 
-    })  
-    (rules 
+        )
+    })
+    (rules
         (start {
             (place Stack "Marker1" (handSite P1) count:12)
             (place Stack "Marker2" (handSite P2) count:12)
         })
-        
+
         phases:{
         (phase "Placement"
             (play
                 (if "SameTurn"
                     "PlaceOnTop"
                     (if (not ("HandEmpty" Mover))
-                        (move 
-                            (from (handSite Mover)) 
-                            (to (sites Empty)) 
-                            "IfLine3MoveAgain" 
-                        )  
+                        (move
+                            (from (handSite Mover))
+                            (to (sites Empty))
+                            "IfLine3MoveAgain"
+                        )
                     )
-                    (then 
+                    (then
                         (if (and (not (is Next Mover)) (and ("HandEmpty" P1) ("HandEmpty" P2)))
                             (and ("RemoveDeadPieces" P1) ("RemoveDeadPieces" P2))
                         )
                     )
                 )
-            ) 
+            )
             (nextPhase (and (not (is Next Mover)) (and ("HandEmpty" P1) ("HandEmpty" P2))) "Movement")
         )
-        
-        (phase "Movement" 
-            (play 
+
+        (phase "Movement"
+            (play
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (if (> (count Pieces Mover) 3)
                         (forEach Piece)
-                        (move 
+                        (move
                             (from (sites Occupied by:Mover))
                             (to (sites Empty))
                         )
@@ -102,8 +102,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Sam K'i is an alignment game played in China since at least the nineteenth century. It differs from some other games of this type during the placement phase, when a player can place another piece on top of a piece they capture from the opponent. ")
@@ -115,12 +115,12 @@
         (origin  "This game was played in China, around 1895.")
         }
     )
-    
+
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)
-        
+
     })
-    
+
 )
 

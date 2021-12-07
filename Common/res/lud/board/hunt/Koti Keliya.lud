@@ -6,49 +6,49 @@
         (piece "Leopard" P1
             (move
                 Slide Diagonal
-                (between (max 2)) 
-            ) 
+                (between (max 2))
+            )
         )
-        (piece "Cow" P2 N 
-            (move 
-                Step 
-                (directions {FR FL}) 
+        (piece "Cow" P2 N
+            (move
+                Step
+                (directions {FR FL})
                 (to if:(is Empty (to)))
             )
-        ) 
+        )
         }
     )
     (rules
-        (start 
+        (start
             {
             (place "Cow2" (difference (sites Bottom) (sites Phase 0)))
             }
         )
-        
+
         phases:{
         (phase "Placement"
             (play (move Add (to (intersection (sites Phase 1) (sites Empty)))))
             (nextPhase (not (no Pieces P1)) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
         }
-        
+
         (end
             {
             (if (and (no Moves P1) (is Mover P1)) (result P2 Win) )
             (if (= 0 (count Sites in:(forEach (sites Occupied by:P2) if:(< (row of:(site)) (row of:(where "Leopard" P1)) ) ))) (result P1 Win))
             }
-        ) 
-    )	
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Koti Keliya is a blocking game played in Sri Lanka. In contrast to many other hunt games in South Asia, it is played on a board of 12x12 squares.")
@@ -60,12 +60,12 @@
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (board Style Chess)
     })
-    
+
     (ai
         "Koti Keliya_ai"
     )

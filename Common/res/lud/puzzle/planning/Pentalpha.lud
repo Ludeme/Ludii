@@ -1,38 +1,38 @@
 (game "Pentalpha"
-    (players 1)  
-    (equipment { 
-        (board 
+    (players 1)
+    (equipment {
+        (board
             (splitCrossings (regular Star 5))
             use:Vertex
         )
-        (hand Each) 
+        (hand Each)
         (piece "Marker" P1
-            (move Hop 
-                (between 
+            (move Hop
+                (between
                     if:(is Friend (who at:(between)))
                     (apply (remove (between)))
                 )
                 (to if:(is Empty (to)))
             )
-        ) 
+        )
         }
-    )  
-    (rules 
-        (start 
+    )
+    (rules
+        (start
             (place "Marker" (handSite P1) count:9)
         )
-        
-        (play 
+
+        (play
             (if (is Even (count Moves))
-                (move 
-                    (from (handSite Mover)) 
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
                     (then (moveAgain))
-                ) 
+                )
                 (forEach Piece
                     (if (= (from) (last To))
-                        (move Hop 
-                            (between 
+                        (move Hop
+                            (between
                                 if:(or (is Friend (who at:(between))) (is Empty (between)))
                             )
                             (to if:(is Empty (to)))
@@ -41,17 +41,17 @@
                 )
             )
         )
-        (end { 
+        (end {
             (if (and (is Even (count Moves)) ("HandEmpty" Mover)) (result Mover Win))
             (if (no Moves Next) (result Mover Loss))
         })
-    )		
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Pentalpha is a solitaire game played on Crete in the early twentieth century. ")
@@ -64,12 +64,12 @@
         (origin  "This game was played in Greece, around 1938.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Pentalpha_ai"
     )

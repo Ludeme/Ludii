@@ -1,6 +1,6 @@
 (game "Panjikent Game"
-    (players 2) 
-    (equipment { 
+    (players 2)
+    (equipment {
         (board
             (add
                 (merge {
@@ -12,7 +12,7 @@
                     (shift 10 8 (rectangle 1 6))
                 })
                 edges:{
-                {7 28} {35 56} {13 34} {41 62} {21 42} 
+                {7 28} {35 56} {13 34} {41 62} {21 42}
                 {49 70} {27 48} {55 76} {6 14} {69 77}
                 }
                 cells:{
@@ -34,8 +34,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game is depicted in a fresco from the Sogdian city of Panjikent. The board as depicted consists of three rows of twelve squares, which are divided in half by a wide rectangle.")
@@ -47,11 +47,11 @@
         (origin  "This game was played in Sogdia, around 740.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )

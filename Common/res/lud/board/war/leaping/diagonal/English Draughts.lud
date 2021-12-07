@@ -1,15 +1,15 @@
-(define "HopMan" 
+(define "HopMan"
     (move
-        Hop 
-        (from #1) 
-        (directions {FR FL}) 
-        (between 
-            if:(is Enemy (who at:(between))) 
+        Hop
+        (from #1)
+        (directions {FR FL})
+        (between
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -18,61 +18,61 @@
 
 //------------------------------------------------------------------------------
 
-(game "English Draughts" 
-    (players 2)  
-    (equipment { 
-        (board (square 8)) 
+(game "English Draughts"
+    (players 2)
+    (equipment {
+        (board (square 8))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
-                    ("HopMan" (last To) 
-                        (then 
-                            (if "JumpToPromotionZone" 
+                    ("HopMan" (last To)
+                        (then
+                            (if "JumpToPromotionZone"
                                 (move Promote (last To) (piece "DoubleCounter") Mover)
-                                (if (can Move ("HopMan" (last To))) (moveAgain) ) 
-                            ) 
-                        ) 
+                                (if (can Move ("HopMan" (last To))) (moveAgain) )
+                            )
+                        )
                     )
                     ("HopDiagonalSequenceCaptureAgain")
                 )
                 (priority {
-                    (or  
-                        (forEach Piece "Counter" 
-                            ("HopMan" (from) 
-                                (then 
+                    (or
+                        (forEach Piece "Counter"
+                            ("HopMan" (from)
+                                (then
                                     (if "JumpToPromotionZone"
-                                        (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                        (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
-                                    ) 
-                                ) 
-                            ) 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                        (if (can Move ("HopMan" (last To)) ) (moveAgain) )
+                                    )
+                                )
+                            )
                         )
                         (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture") )
                     )
-                    
-                    (or  
-                        (forEach Piece "Counter" 
+
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions {FR FL}) 
+                                Step
+                                (directions {FR FL})
                                 (to if:(is Empty (to)))
-                            ) 
-                            (then 
+                            )
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -82,16 +82,16 @@
                     )
                 })
             )
-        ) 
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+        )
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "One of the most popular versions of Draughts, derived from the medieval game of Draughts but with the difference of the forced capture, hence its early name \"Forçat.\" It probably originated in France, but it gained greater popularity in Britain, and spread from there to the American colonies and to some Native American populations. It remains a popular game today.")
@@ -104,14 +104,14 @@
         (origin  "This game was played in France, around 1534.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
-    (ai 
+
+    (ai
         "English Draughts_ai"
     )
-    
+
 )

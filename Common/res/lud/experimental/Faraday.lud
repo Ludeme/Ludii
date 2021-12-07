@@ -1,43 +1,43 @@
 (define "SimpleScoring"
-    (set Score Mover 
+    (set Score Mover
         (max (sizes Group <BoardShape:directionsUsed> Mover))
 ))
 
 (define "SimpleOrthoScoring"
-    (set Score Mover 
+    (set Score Mover
         (max (sizes Group Orthogonal Mover))
 ))
 
 (define "SpecialScoring"
     (and
-        (set Score Mover 
-            (* 
+        (set Score Mover
+            (*
                 (max (sizes Group <BoardShape:directionsUsed> Mover))
                 (count Pieces Next)
         ))
-        (set Score Next 
-            (* 
+        (set Score Next
+            (*
                 (max (sizes Group <BoardShape:directionsUsed> Next))
                 (count Pieces Mover)
 ))))
 
 (define "SpecialOrthoScoring"
     (and
-        (set Score Mover 
-            (* 
+        (set Score Mover
+            (*
                 (max (sizes Group Orthogonal Mover))
                 (count Pieces Next)
         ))
-        (set Score Next 
-            (* 
+        (set Score Next
+            (*
                 (max (sizes Group Orthogonal Next))
                 (count Pieces Mover)
 ))))
 
 (define "PiePhase"
     (phase "Pie"
-        (play 
-            (if 
+        (play
+            (if
                 (is Mover P1)
                 (or
                     {
@@ -46,23 +46,23 @@
                     (move Pass)
                     }
                     (then
-                        (if 
-                            (< 0 (counter)) 
+                        (if
+                            (< 0 (counter))
                             (set NextPlayer (player (next)))
                             (moveAgain)
                 )))
-                (or 
-                    (move Propose "Accept Pie Offer and Move" 
+                (or
+                    (move Propose "Accept Pie Offer and Move"
                         (then (set NextPlayer (player (mover))))
                     )
-                    (move Propose "Swap Pieces" 
-                        (then 
-                            (do 
-                                (forEach Site 
-                                    (sites Occupied by:Mover) 
-                                    (remember Value (site)) 
-                                ) 
-                                next:(forEach Site 
+                    (move Propose "Swap Pieces"
+                        (then
+                            (do
+                                (forEach Site
+                                    (sites Occupied by:Mover)
+                                    (remember Value (site))
+                                )
+                                next:(forEach Site
                                     (sites Occupied by:Next)
                                     (and
                                         (remove (site))
@@ -74,13 +74,13 @@
                                             (remove (value))
                                             (add (piece (next)) (to (value)))
                                         )
-                                        (then 
-                                            (and 
+                                        (then
+                                            (and
                                                 (forget Value All)
                                                 (set NextPlayer (player (next)))
-        )))))))))) 
-        (nextPhase 
-            (or 
+        ))))))))))
+        (nextPhase
+            (or
                 (is Proposed "Swap Pieces")
                 (is Proposed "Accept Pie Offer and Move")
             )
@@ -115,21 +115,21 @@
     (rules
         (meta (noRepeat Positional))
         (start (set Score Each 0))
-        phases:{ 
+        phases:{
         "PiePhase"
-        (phase "Placement" 
+        (phase "Placement"
             (play
-                (move Add 
+                (move Add
                     (piece (mover))
-                    (to (sites Empty) 
+                    (to (sites Empty)
                         if:(or
                             (<= <BoardShape:ForcedFillLevel> (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>)))
-                            (< 0 
-                                (- 
+                            (< 0
+                                (-
                                     (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>))
                                     (count Pieces Mover in:(sites Around (to) <BoardShape:directionsUsed>))
                     ))))
-                    (then 
+                    (then
                         (and
                             {
                             (<Scoring:calculation>)
@@ -137,26 +137,26 @@
                             (if (not (no Moves Mover)) (moveAgain))
                             }
             ))))
-            (end 
-                (if 
+            (end
+                (if
                     (or
                         {
                         (all Passed)
                         }
                     )
                     {
-                    (if 
+                    (if
                         (!= (score Mover) (score Next))
                         (byScore)
                     )
-                    (if 
+                    (if
                         (and
                             (= (score Mover) (score Next))
                             (= (var "Last2Move") (mover))
                         )
                         (result Mover Loss)
                     )
-                    (if 
+                    (if
                         (and
                             (= (score Mover) (score Next))
                             (!= (var "Last2Move") (mover))
@@ -172,7 +172,7 @@
 //-------------------------------------------------
 // Options
 
-(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <ForcedFillLevel>} 
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <ForcedFillLevel>}
     {
     (item "TriSquare Omni" <"TriSquare"> <All> <ThinDashed> <4> "Triangle-Square Omni-Grid - Recommended Variant")**
     (item "TriSquare Grid" <"TriSquare"> <Orthogonal> <Hidden> <3> "Triangle-Square Grid")
@@ -183,7 +183,7 @@
     }
 )
 
-(option "Board Size" <BoardSize> args:{ <smallSide> } 
+(option "Board Size" <BoardSize> args:{ <smallSide> }
     {
     (item "Order 4" <4> "Order 4 board")
     (item "Order 5" <5> "Order 5 board")
@@ -209,29 +209,29 @@
     (info
         {
         (description "'Faraday' is a two-player, maximal-group-connection game that can be played on a variety of grids but is best on a hexagonal grid, or on a semiregular triangle-square grid with diagonals.
-            
-            The gist of this placement game is that pieces, like localized electric charges, attract opposites and repel similar charges, so placement can only be on cells surrounded by excess of the opposite charge; or else, where at least half of the surounding cells are oppositely charged. 
-            
+
+            The gist of this placement game is that pieces, like localized electric charges, attract opposites and repel similar charges, so placement can only be on cells surrounded by excess of the opposite charge; or else, where at least half of the surounding cells are oppositely charged.
+
         The result is a conflict between attempting to connect your pieces together, but to do so, needing the opponent's pieces near at hand where they may also obstruct.")
         (rules "Goal: End the game with the highest scoring group. A group scores one point for each stone it contains.
-            
+
             Definitions: A group, as in Go, is every stone that can be reached from a selected stone through a series of adjacent stones of the same color.
-            
+
             Play:
             Start with a pie offer of 1 to 3 stones of any color combination. (Player 1 does this by making 3 placements, or passes; after which Player 2 may choose to play, or to have the pieces exchanged with the opposite colors)
-            
+
             Turns alternate.
-            
+
             On a turn, a player places a series of stones, one at a time, (as described below) until no more placements are possible, and then passes. Order of placement matters.
-            
+
             Placements are made to empty cells that:
         -- 1) have more neighbors that are oppositely charged than similarly charged, or
     -- 2) have 3 or more oppositely charged neighbors.
-    
+
     The game ends when neither player can play.
-    The largest group for each player is then scored. In case of a tie the last to place a stone loses. 
-    
-    Variants: 
+    The largest group for each player is then scored. In case of a tie the last to place a stone loses.
+
+    Variants:
     Exception for Surplus Charge
 Immediately after placing to a cell with 4 or more oppositely charged neighbors, the player MUST, if possible, place the next stone on an otherwise unplayable empty cell with an equal number of both types of charge around it.")
 (version "1.3.0")
@@ -242,7 +242,7 @@ Immediately after placing to a cell with 4 or more oppositely charged neighbors,
 }
 )
 
-(graphics 
+(graphics
     {
     (no Sunken)
     (player Colour P1 (colour Black))

@@ -7,8 +7,8 @@
         (no Pieces All in:(sites Top))
     )
 )
-(define "LeftMostEmpty" 
-    (trackSite FirstSite 
+(define "LeftMostEmpty"
+    (trackSite FirstSite
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
     )
@@ -17,10 +17,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Pallankuli"  
-    (players 2)  
-    
-    (equipment { 
+(game "Pallankuli"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 7 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -29,35 +29,35 @@
         (regions P2 (sites Top))                        // P2 home
         (map "LeftMost" {(pair P1 0) (pair P2 13)})
         (hand Each)
-    })  
-    (rules 
-        (start { 
-            (set Count 6 to:(sites Track) ) 
+    })
+    (rules
+        (start {
+            (set Count 6 to:(sites Track) )
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
                 (or {
-                    (move Select 
-                        (from 
-                            (if 
-                                (is Mover Prev) 
+                    (move Select
+                        (from
+                            (if
+                                (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover) 
-                            ) 
+                                (sites Mover)
+                            )
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
                         )
                         (then
                             (do
                                 (set Var "NumSowed" (count at:(last To)))
                                 next:(sow
-                                    apply:(if 
-                                        (and 
-                                            (!= 4 (count at:(to))) 
+                                    apply:(if
+                                        (and
+                                            (!= 4 (count at:(to)))
                                             (< 1 (count at:(to)))
-                                        ) 
+                                        )
                                         (and
                                             (moveAgain)
                                             (set Var "Replay" (to))
@@ -94,7 +94,7 @@
                     }
                     (then
                         (if ("OneRowIsEmpty")
-                            (and { 
+                            (and {
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -115,7 +115,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 6 (count Cell at:(handSite P1))) (result P2 Win))
@@ -123,11 +123,11 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-            
+
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 6 (count Cell at:(handSite Mover)))
@@ -143,15 +143,15 @@
             )
             (nextPhase (all Passed) "Sowing")
         )
-        
+
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Pallankuli is a two-row mancala-style board game played primarily by women in South India. Men do play the game, but typically gambled when playing.")
@@ -163,7 +163,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

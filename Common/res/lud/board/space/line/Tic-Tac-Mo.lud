@@ -1,13 +1,13 @@
-(game "Tic-Tac-Mo"  
-    (players 3)  
-    (equipment { 
-        (board (rectangle 3 5)) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-        (piece "Y" P3) 
+(game "Tic-Tac-Mo"
+    (players 3)
+    (equipment {
+        (board (rectangle 3 5))
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+        (piece "Y" P3)
         }
-    )  
-    (rules 
+    )
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -15,8 +15,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Mo is a three player version of Tic-Tac-Toe using \"X,\" \"O,\" and \"Y\". It is played on a grid of 3x5.")
@@ -28,7 +28,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics
         {
         (player Name P1 "O")
@@ -36,9 +36,9 @@
         (player Name P3 "Y")
         }
     )
-    
-    (ai 
+
+    (ai
         "Tic-Tac-Mo_ai"
     )
-    
+
 )

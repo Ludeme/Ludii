@@ -10,26 +10,26 @@
     (if (is Mover P1) (sites P2) (sites P1))
 )
 
-(define "NotOwnBase"     							  
-    (not (is In (to) (sites Mover "Base"))) 
+(define "NotOwnBase"
+    (not (is In (to) (sites Mover "Base")))
 )
 
-(define "CaptureToPiece"     							  
+(define "CaptureToPiece"
     if:(and
         (is Enemy (who at:(to)))
         (not (is In (to) ("EnemyBase")))
     )
-    (apply (remove (to))) 
+    (apply (remove (to)))
 )
 
-(define "EmptyAndNotVisited"     							  
-    (and 
-        (is Empty (to)) 
-        (not (is Visited (to))) 
-    ) 
+(define "EmptyAndNotVisited"
+    (and
+        (is Empty (to))
+        (not (is Visited (to)))
+    )
 )
 
-(define "Hop" 
+(define "Hop"
     (move
         Hop
         (from #1)
@@ -38,11 +38,11 @@
                 (is In (between) (sites Mover "Base"))
             )
         )
-        (to 
+        (to
             if:("EmptyAndNotVisited")
-            // can I insert conditional if: here so "PieceIsStone" allows check for "NotOwnBase" and "PieceIsColumn" allows "CaptureToPiece" and move end?          
+            // can I insert conditional if: here so "PieceIsStone" allows check for "NotOwnBase" and "PieceIsColumn" allows "CaptureToPiece" and move end?
         )
-        #2		
+        #2
     )
 )
 
@@ -50,7 +50,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Batalo"  
+(game "Batalo"
     (players 2)
     (equipment {
         (board (hex 7))
@@ -58,57 +58,57 @@
         (regions "Base" P2 {66})
         (piece "Stone" Each
             (move
-                Step 
-                (to 
+                Step
+                (to
                     if:(and
                         (is Empty (to))
                         ("NotOwnBase")
                     )
-                ) 
+                )
             )
         )
         (piece "Column" Each
             (move
-                Slide 
-                (to "CaptureToPiece") 
-            ) 
+                Slide
+                (to "CaptureToPiece")
+            )
         )
     })
-    
-    (rules 
-        (start { 
+
+    (rules
+        (start {
             (place "Column1" {60})
             (place "Column2" {66})
             (place "Stone1" {47 48 59 61 72 73})
             (place "Stone2" {53 54 65 67 78 79})
         })
-        
+
         phases:{
-        (phase "Movement"  
+        (phase "Movement"
             (play
-                (or 
-                    (forEach Piece) 
+                (or
+                    (forEach Piece)
                     (forEach Piece ("HopSequence" (from)))
                 )
-            ) 
+            )
             (nextPhase (is Mover (next)) "MultiJump")
-        ) 
-        (phase "MultiJump" 
-            (play 
-                (or 
-                    ("HopSequence" (last To)) 
+        )
+        (phase "MultiJump"
+            (play
+                (or
+                    ("HopSequence" (last To))
                     (move Pass)
                 )
-            ) 
+            )
             (nextPhase (not (is Mover (next))) "Movement")
-        ) 
+        )
         }
-        
+
         // (end (if (is In (last To) ("EnemyBase")) (result Mover Win)))
         (end (if (or
                     (is In (last To) ("EnemyBase"))
                     (no Moves Next )
-                ) 
+                )
                 (result Mover Win)
             )
         )
@@ -117,22 +117,22 @@
 
 //------------------------------------------------------------------------------
 
-(metadata       
+(metadata
     (info {
         (description "A mash-up of Chess, Chinese Checkers, and Capture the Flag.")
         (aliases {"BattleStones (iPad/iPhone/Mac app)"})
         (rules "Played on a 7x7x7 hex board containing two player Bases.
             Each player has one Column piece placed on their Base, surrounded by six Stone pieces.
-            
+
             Stones can move one space in any direction.
             Columns can move any number of spaces in any direction.
             Alternately, all pieces can hop over team pieces (and their own Base) multiple times.
-            
+
             Players may capture pieces by moving their Column onto a space occupied by an opponent's piece.
-            
+
             Stones may not move onto their own Base.
             Columns can not be captured while occupying their own Base.
-            
+
         Players win by moving a piece onto the opponent's Base, or capturing all the opponent's pieces.")
         (source "<a href=\"https://www.digitalharmonics.org/harmonygames.html\" target=\"_blank\" />archived web site</a>")
         (version "1.2.11")

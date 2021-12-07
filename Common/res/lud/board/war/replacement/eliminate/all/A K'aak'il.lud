@@ -16,12 +16,12 @@
 
 (define "UnsetCapturingPiece" (set State #1 #2 0))
 
-(define "UnsetCapturingPieces" 
+(define "UnsetCapturingPieces"
     (forEach Level (last From) FromTop
         (if (is Friend (who at:(last From) level:(level)))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
-    ) 
+    )
 )
 
 (define "CapturingPiece" (= 1 #1))
@@ -34,7 +34,7 @@
     (is In #1 (sites Occupied by:Enemy top:False))
 )
 
-(define "CaptureMove" 
+(define "CaptureMove"
     (forEach Level (last To) FromTop
         (and
             (if (is Enemy (who at:(last To) level:(level)))
@@ -44,10 +44,10 @@
                 ("SetCapturingPiece" at:(last To) level:(level))
             )
         )
-    ) 
+    )
 )
 
-(define "RemoveCapturedPieces" 
+(define "RemoveCapturedPieces"
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
             (remove (last From) level:(level))
@@ -65,12 +65,12 @@
 (define "CapturedPiecesFollowCapturingPiece"
     (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
-            (fromTo 
+            (fromTo
                 (from (last From) level:(level))
                 (to (last To))
             )
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@
     (equipment {
         (board
             (rectangle 1 <Player:size>)
-            <Player:tracks> 
+            <Player:tracks>
             use:Edge
         )
         (regions "AllSites" (sites Board Vertex))
@@ -89,25 +89,25 @@
                 (or
                     (if ("FreePiece" (state at:(from) level:(level)))
                         (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
-                            (move 
+                            (move
                                 (from (from) level:(level))
-                                (to 
+                                (to
                                     (handSite Mover)
-                                    (apply (forget Value "Throws" (value)))		
+                                    (apply (forget Value "Throws" (value)))
                                 )
                             )
-                            (move 
+                            (move
                                 (from (from) level:(level)
                                     if:(if (is In (from) (sites Hand Mover))
                                         ("NoPieceOnBoard")
                                         True
                                     )
                                 )
-                                (to 
+                                (to
                                     ("SiteToMoveOnTrack" from:(from) "Track" (value))
                                     (apply (forget Value "Throws" (value)))
                                 )
-                                (then 
+                                (then
                                     (if ("AtLeastAnEnemyPieceThere" (last To))
                                         ("CaptureMove")
                                     )
@@ -122,19 +122,19 @@
                                     (then
                                         (and {
                                             ("UnsetCapturingPieces")
-                                            ("RemoveCapturedPieces")	
+                                            ("RemoveCapturedPieces")
                                             ("RebirthCapturingPiece")
                                         })
                                     )
                                 )
                             )
-                            (move 
+                            (move
                                 (from (from) level:(level))
-                                (to 
+                                (to
                                     ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value))
                                     (apply (forget Value "Throws" (value)))
                                 )
-                                (then 
+                                (then
                                     (and
                                         ("CapturedPiecesFollowCapturingPiece")
                                         ("UnsetCapturingPieces")
@@ -144,19 +144,19 @@
                         )
                     )
                 )
-            )		
+            )
         )
         (dice d:2 from:0 num:4)
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             <Player:team>
         })
-        
+
         phases:{
-        (phase "ThrowPhase" 
-            (play 
+        (phase "ThrowPhase"
+            (play
                 (do (roll)
                     next:(move Pass
                         (then
@@ -174,12 +174,12 @@
                             )
                         )
                     )
-                )	
+                )
             )
             (nextPhase (is Pending) "MovePhase")
         )
-        (phase "MovePhase" 
-            (play 
+        (phase "MovePhase"
+            (play
                 (or (forEach Piece) (forEach Piece container:(mover))
                     (then
                         (and
@@ -200,7 +200,7 @@
             (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
         )
         }
-        
+
         (end  (if (no Pieces Enemy) (result TeamMover Win)))
     )
 )
@@ -234,10 +234,10 @@
         (track "CaptureTrack4" {0..18} P4 directed:True)
         (track "CaptureTrack5" {0..18} P5 directed:True)
         (track "CaptureTrack6" {0..18} P6 directed:True)
-        } 
+        }
         >
         "The game has 6 players."
-    )   
+    )
     (item "8" <8> <20>
         <
         (set Team 1 {P1 P2 P3 P4})
@@ -269,10 +269,10 @@
         (track "CaptureTrack6" {0..18} P6 directed:True)
         (track "CaptureTrack7" {0..18} P7 directed:True)
         (track "CaptureTrack8" {0..18} P8 directed:True)
-        } 
+        }
         >
         "The game has 8 players."
-    )   
+    )
     (item "10" <10> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5})
@@ -310,10 +310,10 @@
         (track "CaptureTrack8" {0..23} P8 directed:True)
         (track "CaptureTrack9" {0..23} P9 directed:True)
         (track "CaptureTrack10" {0..23} P10 directed:True)
-        } 
+        }
         >
         "The game has 10 players."
-    )   
+    )
     (item "12" <12> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6})
@@ -357,10 +357,10 @@
         (track "CaptureTrack10" {0..23} P10 directed:True)
         (track "CaptureTrack11" {0..23} P11 directed:True)
         (track "CaptureTrack12" {0..23} P12 directed:True)
-        } 
+        }
         >
         "The game has 12 players."
-    )   
+    )
     (item "14" <14> <25>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
@@ -410,10 +410,10 @@
         (track "CaptureTrack12" {0..23} P12 directed:True)
         (track "CaptureTrack13" {0..23} P13 directed:True)
         (track "CaptureTrack14" {0..23} P14 directed:True)
-        } 
+        }
         >
         "The game has 14 players."
-    )   
+    )
     (item "16" <16> <30>
         <
         (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
@@ -469,28 +469,28 @@
         (track "CaptureTrack14" {0..28} P14 directed:True)
         (track "CaptureTrack15" {0..28} P15 directed:True)
         (track "CaptureTrack16" {0..28} P16 directed:True)
-        } 
+        }
         >
         "The game has 16 players."
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/A K'aak'il (Observed)" {
-        "Players/6" 
+        "Players/6"
         }
         variations:{"Players/8" "Players/10" "Players/12" "Players/14" "Players/16"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "A K'aak'il, \"The Fire,\" is one of the constituent games of Bul. It is the last game played in the sequence, and is a race game with captures and stacking.")
@@ -502,7 +502,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Scale "Stick" 0.5)
         (show Edges (colour Hidden))
@@ -527,6 +527,6 @@
         (stackType 16 Count)
         (piece Scale "Stick" 0.5)
     })
-    
+
 )
 

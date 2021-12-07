@@ -1,26 +1,26 @@
 (define "CaptureToPieceAndAddScore"
     (apply
         (if (not (is Empty (to)))
-            (and 
-                (addScore Mover (value Piece at:(to))) 
-                (remove (to)) 
+            (and
+                (addScore Mover (value Piece at:(to)))
+                (remove (to))
             )
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             "CaptureToPieceAndAddScore"
         )
     )
 )
 
-(define "PromoteTo" 
+(define "PromoteTo"
     (if (= (where #1 Mover) Off) (move Promote (last To) (piece #1) Mover (then #2)))
 )
 
@@ -43,15 +43,15 @@
 
 //------------------------------------------------------------------------------
 
-(game "Chaturaji"  
-    (players {(player N) (player W) (player S) (player E)})  
-    (equipment { 
+(game "Chaturaji"
+    (players {(player N) (player W) (player S) (player E)})
+    (equipment {
         (board (square 8))
         (dice d:4 from:2 num:1)
-        
+
         (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
+            (or
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
                 (then
                     (if (is In (last To) (sites Mover "Promotion"))
@@ -62,41 +62,41 @@
         )
         (piece "Boat" Each
             (move
-                Hop 
-                Diagonal 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Hop
+                Diagonal
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPieceAndAddScore"
                 )
             )
         )
         (piece "Knight" Each
             (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPieceAndAddScore"
-                ) 
+                )
             )
         )
         (piece "Elephant" Each
             (move
-                Slide 
-                Orthogonal 
-                (between if:(is Empty (between))) 
-                (to 
-                    if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndAddScore" 
+                Slide
+                Orthogonal
+                (between if:(is Empty (between)))
+                (to
+                    if:(is Enemy (who at:(to)))
+                    "CaptureToPieceAndAddScore"
                 )
             )
-        ) 
+        )
         (piece "King_noCross" Each
             (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndAddScore" 
+                Step
+                (to
+                    if:(not (is Friend (who at:(to))))
+                    "CaptureToPieceAndAddScore"
                 )
             )
         )
@@ -104,20 +104,20 @@
         (regions "Promotion" P2 (sites Left) )
         (regions "Promotion" P3 (sites Bottom) )
         (regions "Promotion" P4 (sites Right) )
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
             (place "Pawn2" {"G1" "G2" "G3" "G4"} value:1)
             (place "Pawn3" {"H7" "G7" "E7" "F7"} value:1)
             (place "Pawn4" {"B5" "B6" "B7" "B8"} value:1)
-            (place "Boat1" coord:"A1" value:2) (place "Boat2" coord:"H1" value:2) (place "Boat3" coord:"H8" value:2) (place "Boat4" coord:"A8" value:2) 
-            (place "Knight1" coord:"B1" value:3) (place "Knight2" coord:"H2" value:3) (place "Knight3" coord:"G8" value:3) (place "Knight4" coord:"A7" value:3) 
-            (place "Elephant1" coord:"C1" value:4) (place "Elephant2" coord:"H3" value:4) (place "Elephant3" coord:"F8" value:4) (place "Elephant4" coord:"A6" value:4) 
-            (place "King_noCross1" coord:"D1" value:5) (place "King_noCross2" coord:"H4" value:5) (place "King_noCross3" coord:"E8" value:5) (place "King_noCross4" coord:"A5" value:5) 
+            (place "Boat1" coord:"A1" value:2) (place "Boat2" coord:"H1" value:2) (place "Boat3" coord:"H8" value:2) (place "Boat4" coord:"A8" value:2)
+            (place "Knight1" coord:"B1" value:3) (place "Knight2" coord:"H2" value:3) (place "Knight3" coord:"G8" value:3) (place "Knight4" coord:"A7" value:3)
+            (place "Elephant1" coord:"C1" value:4) (place "Elephant2" coord:"H3" value:4) (place "Elephant3" coord:"F8" value:4) (place "Elephant4" coord:"A6" value:4)
+            (place "King_noCross1" coord:"D1" value:5) (place "King_noCross2" coord:"H4" value:5) (place "King_noCross3" coord:"E8" value:5) (place "King_noCross4" coord:"A5" value:5)
         })
-        
-        (play 
+
+        (play
             (do (if (not "SameTurn") (roll))
                 next:(if (and ("SameTurn") (is Pending) )
                     (or {
@@ -127,8 +127,8 @@
                         ("PromoteTo" "King_noCross" (set Value at:(last To) 5))
                     })
                     "PlayAPiece"
-                    (then 
-                        (if 
+                    (then
+                        (if
                             (can Move "PlayAPiece")
                             (moveAgain)
                         )
@@ -136,10 +136,10 @@
                 )
             )
         )
-        
+
         (end
-            (if (= 
-                    (count Pieces Mover) 
+            (if (=
+                    (count Pieces Mover)
                     (- (count Pieces All) 1) // We remove the dice
                 )
                 (byScore)
@@ -152,27 +152,27 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Wikipedia"   <>       "The rules are describing with the Wikipedia ruleset.")   
+    (item "Wikipedia"   <>       "The rules are describing with the Wikipedia ruleset.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Wikipedia (Suggested)" {
-        "Variant/Wikipedia" 
+        "Variant/Wikipedia"
     })*
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Chaturaji is a four-player game similar in some ways to Chaturanga, the Indian game from which Chess, Shogi, and other similar games are derived. Dice are used to determine which piece is moved. Several texts give many details of the game, but are not sufficient to provide all of the rules of play.")
@@ -188,7 +188,7 @@
         (origin  "This game was played in India, from around 1490 to 1580.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.825)
         (player Colour P1 (colour Green))
@@ -201,9 +201,9 @@
         (board Colour Phase0 (colour 222 173 123))
         (show Symbol "thinCross" {0 3 4 7 24 27 28 31 32 35 36 39 56 59 60 63} scale:0.9)
     })
-    
-    (ai 
+
+    (ai
         "Chaturaji_ai"
     )
-    
+
 )

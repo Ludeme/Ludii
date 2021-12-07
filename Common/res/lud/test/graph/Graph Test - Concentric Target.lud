@@ -1,10 +1,10 @@
-(game "Graph Test - Concentric Target"  
-    (players 2)  
-    (equipment { 
-        (<Board>) 
-        (piece "Marker") 
-    })  
-    (rules 
+(game "Graph Test - Concentric Target"
+    (players 2)
+    (equipment {
+        (<Board>)
+        (piece "Marker")
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -16,7 +16,7 @@
     {
     (item "Target 4 (single cell per ring)"  <
         (board (concentric Target rings:4))
-    > "") 
+    > "")
     (item "Target 4 (0)"  <
         (board (concentric Target rings:4 steps:0))
     > "")
@@ -73,13 +73,13 @@
 
 //------------------------------------------------------------
 
-(metadata     
+(metadata
     (info {
         (description "Test harness for concentric board tilings.")
         (credit "Cameron Browne 13/3/2021")
     })
     (graphics {
-        
+
         (board Colour InnerEdges (colour 127 191 255))
         (board Colour OuterEdges (colour   0 127 255))
         (board StyleThickness InnerEdges 4)

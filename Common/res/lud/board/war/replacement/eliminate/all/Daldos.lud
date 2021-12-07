@@ -1,17 +1,17 @@
-(define "MoveAPiece" 
+(define "MoveAPiece"
     (if (or
-            (= (state at:(from)) 1) 
+            (= (state at:(from)) 1)
             (and (= (state at:(from)) 0) (= 1 (pips)))
         )
         (move
             Slide
-            #1 
-            (between 
+            #1
+            (between
                 (exact (pips))
                 if:(is Empty (between))
-            ) 
-            (to 
-                if:(is Enemy (who at:(to))) 
+            )
+            (to
+                if:(is Enemy (who at:(to)))
                 (apply if:(not (is Friend (who at:(to)))) (remove (to)))
             )
             (then
@@ -28,7 +28,7 @@
 (game "Daldos"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
                 (rectangle 1 16)
                 (shift -1 1 (rectangle 1 17) )
@@ -45,20 +45,20 @@
         (piece "Minus" P1 ("MoveAPiece" "Track1"))
         (piece "Minus" P2 ("MoveAPiece" "Track2"))
     })
-    (rules 
+    (rules
         (start {
             (place "Minus1" (sites Bottom))
             (place "Minus2" (sites Top))
         })
-        (play 
-            (do 
-                (if (not "SameTurn") 
-                    (roll) 
+        (play
+            (do
+                (if (not "SameTurn")
+                    (roll)
                 )
-                next:(forEach Die 
+                next:(forEach Die
                     replayDouble:(and (= (face 36) 1) (= (face 37) 1))
                     (forEach Piece
-                        (then 
+                        (then
                             (if (not (all DiceUsed))
                                 (if (can Move (forEach Die (forEach Piece)))
                                     (moveAgain)
@@ -75,27 +75,27 @@
 //------------------------------------------------------------------------------
 
 (option "Variant" <Variant> args:{ <name> } {
-    (item "Ostergaard and Gaston"    <>   "")   
+    (item "Ostergaard and Gaston"    <>   "")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Ostergaard and Gaston (Scholarly)" {
         "Variant/Ostergaard and Gaston"
     })*
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Daldøs is a capturing game played in Scandinavia. Though it was on the wane in the nineteenth and twentieth centuries, it had somewhat of a revival when it was sold commercially. It was likely to have been much more widespread, as evidenced by its persistence in regional Danish dialects and its similarity to games games in Norway and Finland. It is remarkably similar to the game Tab, played in North Africa and Southwest Asia.")
@@ -110,14 +110,14 @@
         (origin  "This game was played in Scandinavia, from around 1831 to 1927.")
         }
     )
-    
+
     (graphics {
-        (show Edges Hidden)  
+        (show Edges Hidden)
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (piece Foreground "Die" state:0 image:"A" fillColour:(colour White) scale:0.2)
-        
+
     })
-    
+
     (ai
         "Daldos_ai"
     )

@@ -1,19 +1,19 @@
 (game "Tsoro Yemutatu"
-    (players 2)  
+    (players 2)
     (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each (move (from) (to (sites Empty))))
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -24,8 +24,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tsoro Yemutatu is an alignment game from Zimbabwe. This version, played on a square board, is played by boys and young men, but sometimes adults and is usually scratched on the ground and played with stones.")
@@ -38,5 +38,5 @@
         (origin  "This game was played in Zimbabwe, around 1964.")
         }
     )
-    
+
 )

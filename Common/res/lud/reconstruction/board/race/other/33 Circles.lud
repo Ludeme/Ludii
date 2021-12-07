@@ -1,12 +1,12 @@
 (game "33 Circles"
-    (players 2)  
-    (equipment { 
-        (board (rectangle 3 11)   
+    (players 2)
+    (equipment {
+        (board (rectangle 3 11)
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -14,8 +14,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "33 Circles is a board game found in Late Period Egypt. It is frequently found on the opposite side of late Senet boards. Decoration on the board suggest an origin outside Egypt, particularly in Southwest Asia, but boards have not been found from there.")
@@ -27,12 +27,12 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour Black) scale:0.9)
         (show Symbol "flower" Vertex (sites Centre) fillColour:(colour Brown) edgeColour:(colour Brown) scale:0.7)
-        
+
     })
-    
+
 )

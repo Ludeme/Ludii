@@ -1,9 +1,9 @@
-(game "Sujiken"  
-    (players 1)  
-    (equipment { 
-        (board 
+(game "Sujiken"
+    (players 1)
+    (equipment {
+        (board
             (remove
-                (square 9) 
+                (square 9)
                 cells:{
                 73 74 75 76 77 78 79 80
                 65 66 67 68 69 70 71
@@ -16,7 +16,7 @@
                 }
             )
             (values Cell (range 1 9))
-        ) 
+        )
         (regions {Columns Rows})
         (regions {39 43})
         (regions {35 40})
@@ -45,7 +45,7 @@
         (regions {24 25 26 30 31 32 35 36 37})
         (regions {27 28 29 33 34 38})
         (regions {39 40 41 42 43 44})
-    })  
+    })
     (rules
         (start <Challenge>)
         (play (satisfy (all Different)))
@@ -57,17 +57,17 @@
 
 (option "Challenge" <Challenge> args:{ <start> }
     {
-    (item "1"   
-        <(set { {0 6} {1 9} {3 2} {5 8} {7 7} {9 2} {10 1} {12 5} {14 9} {16 3} 
+    (item "1"
+        <(set { {0 6} {1 9} {3 2} {5 8} {7 7} {9 2} {10 1} {12 5} {14 9} {16 3}
             {20 3} {24 9} {25 3} {26 1} {28 8} {33 9} {34 5} {35 4} {36 8} {42 3} {43 4}
         })>
         ""
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Sujiken (from Japanese \"sujikai\", literally \"diagonal\") is a variation of Sudoku.")
@@ -79,7 +79,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Line {{60 63} {63 3} {30 36} {36 6}} (colour Black) scale:2)
     })

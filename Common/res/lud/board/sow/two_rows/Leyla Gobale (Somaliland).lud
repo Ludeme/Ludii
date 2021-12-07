@@ -15,35 +15,35 @@
 
 //------------------------------------------------------------------------------
 
-(game "Leyla Gobale (Somaliland)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Leyla Gobale (Somaliland)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 <Board:size> store:None
             (track "Track" <Board:track> loop:True)
         )
         (piece "Seed" Shared)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-        (hand Each)        
-    })  
-    (rules 
-        
+        (hand Each)
+    })
+    (rules
+
         (start (set Count 4 to:(sites Track) ) )
-        
+
         (play
             (or {
                 (move Select
                     (from
-                        (if (= 0 (count Moves)) 
+                        (if (= 0 (count Moves))
                             (sites {5})
                             (if (is Mover Prev)
                                 (sites {(var "Replay")})
-                                (sites Mover) 
+                                (sites Mover)
                             )
                         )
-                        if:(and 
-                            (is Occupied (from)) 
+                        if:(and
+                            (is Occupied (from))
                             (= 0 (state at:(from)))
                         )
                     )
@@ -83,8 +83,8 @@
                 }
                 (then
                     (if ("APlayerCanNotMove")
-                        (and { 
-                            (forEach Site 
+                        (and {
+                            (forEach Site
                                 (sites P1)
                                 (if (= 0 (state at:(site)))
                                     (fromTo
@@ -94,7 +94,7 @@
                                     )
                                 )
                             )
-                            (forEach Site 
+                            (forEach Site
                                 (sites P2)
                                 (if (= 0 (state at:(site)))
                                     (fromTo
@@ -104,7 +104,7 @@
                                     )
                                 )
                             )
-                            (forEach Site 
+                            (forEach Site
                                 (sites Board)
                                 (if (= (state at:(site)) P1)
                                     (fromTo
@@ -125,11 +125,11 @@
                     )
                 )
             )
-        )	
-        
+        )
+
         (end (if ("NoPieceOnBoard")
                 (byScore {
-                    (score P1 (count Cell at:(handSite P1))) 
+                    (score P1 (count Cell at:(handSite P1)))
                     (score P2 (count Cell at:(handSite P2)))
                 })
             )
@@ -141,14 +141,14 @@
 
 (option "Board Size" <Board> args:{ <size> <track> }
     {
-    (item "6"   <6> <"5,W,N,E"> "Each player has 6 holes.")  
-    (item "8"   <8> <"7,W,N,E"> "Each player has 8 holes.")   
-    (item "12"  <12> <"11,W,N,E"> "Each player has 12 holes.")   
+    (item "6"   <6> <"5,W,N,E"> "Each player has 6 holes.")
+    (item "8"   <8> <"7,W,N,E"> "Each player has 8 holes.")
+    (item "12"  <12> <"11,W,N,E"> "Each player has 12 holes.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Leyla Gobale is a name for mancala-style games in the Horn of Africa. This game was played in Somaliland in the early twentieth century and is a two-row game.")
@@ -160,7 +160,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

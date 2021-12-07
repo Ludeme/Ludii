@@ -2,11 +2,11 @@
 
 (define "SiteToMoveOnTrack" (trackSite Move steps:#1))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (remove (to))
-    ) 
+    )
 )
 
 (define "ActivatePiece" (set State at:#1 1))
@@ -19,33 +19,33 @@
     (count Pieces Mover in:(difference (sites Board) (sites Mover "Home")))
 )
 
-(define "OnlyOnePieceMovingOutOfHome" 
+(define "OnlyOnePieceMovingOutOfHome"
     (if (not ("SiteInHome" (from)))
         True
         (if ("SiteInHome" ("SiteToMoveOnTrack" ("ThrowValue")))
             True
             (= ("CountOwnPiecesOutHome") 0)
         )
-    )	
+    )
 )
 
 (define "Move"
-    (if 
+    (if
         (and {
             (if ("PieceActivated" (from))
                 True
-                (= 1 ("ThrowValue")) 
+                (= 1 ("ThrowValue"))
             )
             #1
         })
-        (if (and 
+        (if (and
                 (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
                 ("OnlyOnePieceMovingOutOfHome")
             )
-            (move 
+            (move
                 (from)
-                (to 
-                    ("SiteToMoveOnTrack" ("ThrowValue")) 
+                (to
+                    ("SiteToMoveOnTrack" ("ThrowValue"))
                     "CaptureEnemyPiece"
                 )
                 (then
@@ -54,7 +54,7 @@
                     )
                 )
             )
-        )	
+        )
     )
 )
 
@@ -75,14 +75,14 @@
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
     })
-    (rules 
-        (start { 
+    (rules
+        (start {
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
-        (play 
-            (do 
-                (roll) 
+        (play
+            (do
+                (roll)
                 next:(if (= 1 ("ThrowValue"))
                     (priority {
                         (forEach Piece
@@ -92,7 +92,7 @@
                     })
                     (forEach Piece)
                 )
-                (then 
+                (then
                     (if (= 1 ("ThrowValue"))
                         (moveAgain)
                     )
@@ -105,8 +105,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Bheri Bakhri (\"Sheep and Goat\") is a capturing game played in the Garhwal region of India. It is plated similarly to Tablan and other games throughout Southwest Asia and North Africa. ")
@@ -118,12 +118,12 @@
         (origin  "This game was played in India, around 1926.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )
 

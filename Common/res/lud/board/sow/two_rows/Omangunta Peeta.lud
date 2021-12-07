@@ -9,9 +9,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Omangunta Peeta"  
-    (players 2)  
-    (equipment { 
+(game "Omangunta Peeta"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 "Columns" store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -19,18 +19,18 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (set Count 6 to:(difference (sites Track) (sites Centre)))
             (set Count 1 to:(sites Centre))
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
-        
+
         phases:{
         (phase "Sowing"
-            (play 
+            (play
                 (or {
                     (move Select
                         (from
@@ -40,7 +40,7 @@
                             )
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
                         )
-                        (then 
+                        (then
                             (sow
                                 apply:(if (is Occupied ("NextHole" (to) 1))
                                     (and
@@ -49,7 +49,7 @@
                                     )
                                     (if (is In ("NextHole" (to) 2) (sites Centre))
                                         (set Value Mover 1)
-                                        (and 
+                                        (and
                                             (if (is Occupied ("NextHole" (to) 2))
                                                 (fromTo
                                                     (from ("NextHole" (to) 2))
@@ -79,34 +79,34 @@
                                     (if (and (= 1 (value Player P1)) (= 1 (value Player P2)))
                                         (if (is Even ("SumCentreSites"))
                                             (and {
-                                                (fromTo 
+                                                (fromTo
                                                     (from ("BottomCentre"))
                                                     (to Cell (handSite P1))
                                                     count:(- (count at:("BottomCentre")) 1)
                                                 )
-                                                (fromTo 
+                                                (fromTo
                                                     (from ("TopCentre"))
                                                     (to Cell (handSite P1))
                                                     count:(- (count at:("TopCentre")) 1)
                                                 )
-                                                (fromTo 
+                                                (fromTo
                                                     (from Cell (handSite P1))
                                                     (to Cell (handSite P2))
                                                     count:(/ (- ("SumCentreSites") 2) 2)
                                                 )
                                             })
                                             (and {
-                                                (fromTo 
+                                                (fromTo
                                                     (from ("BottomCentre"))
                                                     (to Cell (handSite P1))
                                                     count:(- (count at:("BottomCentre")) 1)
                                                 )
-                                                (fromTo 
+                                                (fromTo
                                                     (from ("TopCentre"))
                                                     (to Cell (handSite P1))
                                                     count:(count at:("TopCentre"))
                                                 )
-                                                (fromTo 
+                                                (fromTo
                                                     (from Cell (handSite P1))
                                                     (to Cell (handSite P2))
                                                     count:(/ (- ("SumCentreSites") 1) 2)
@@ -115,12 +115,12 @@
                                         )
                                         (if (= 1 (value Player P1))
                                             (and
-                                                (fromTo 
+                                                (fromTo
                                                     (from ("BottomCentre"))
                                                     (to Cell (handSite P1))
                                                     count:(- (count at:("BottomCentre")) 1)
                                                 )
-                                                (fromTo 
+                                                (fromTo
                                                     (from ("TopCentre"))
                                                     (to Cell (handSite P1))
                                                     count:(- (count at:("TopCentre")) 1)
@@ -128,12 +128,12 @@
                                             )
                                             (if (= 1 (value Player P2))
                                                 (and
-                                                    (fromTo 
+                                                    (fromTo
                                                         (from ("BottomCentre"))
                                                         (to Cell (handSite P2))
                                                         count:(- (count at:("BottomCentre")) 1)
                                                     )
-                                                    (fromTo 
+                                                    (fromTo
                                                         (from ("TopCentre"))
                                                         (to Cell (handSite P2))
                                                         count:(- (count at:("TopCentre")) 1)
@@ -148,7 +148,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPiecesOnBoardExceptCentre")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
@@ -156,10 +156,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPiecesOnBoardExceptCentre") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (not (all Sites (difference (sites Mover) (sites Centre)) if:(is Occupied (site))))
@@ -181,13 +181,13 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Omangunta Peeta is a two-row mancala-style board game from southern India. It was played in the Madras Presidency during the early twentieth century.")
         (aliases {"Palanguli"})
-        (rules "2x7 board. Six counters in each hole, except the central hole in each row, which contains one counter. Sowing occurs in an anti-clockwise direction. When the last counter is sown, the player picks up the counters in the next hole in the direction of the sowing and continues sowing with those counters. When the hole after the hole in which the final counter is sown is empty, the counters in the next hole are captured, as well as the counters in the hole opposite this hole, and the turn ends. Sowing cannot begin from the central hole of either row. When a capture would occur from one of these central holes, the counters are not captured until the end of the round. At the end of the round, if both players are eligible to capture from the hole, they split the counters, leaving one in the hole if it is an odd number, or two if it is an even number. If only one player captured from the holes, they leave one counter in each hole. If neither player made a capture from the hole, the counters remain in the hole. 
-            
+        (rules "2x7 board. Six counters in each hole, except the central hole in each row, which contains one counter. Sowing occurs in an anti-clockwise direction. When the last counter is sown, the player picks up the counters in the next hole in the direction of the sowing and continues sowing with those counters. When the hole after the hole in which the final counter is sown is empty, the counters in the next hole are captured, as well as the counters in the hole opposite this hole, and the turn ends. Sowing cannot begin from the central hole of either row. When a capture would occur from one of these central holes, the counters are not captured until the end of the round. At the end of the round, if both players are eligible to capture from the hole, they split the counters, leaving one in the hole if it is an odd number, or two if it is an even number. If only one player captured from the holes, they leave one counter in each hole. If neither player made a capture from the hole, the counters remain in the hole.
+
         When the players can no longer play, a new round begins. Each player then fills up as many holes, not counting the central holes, on their side of the board with six counters if possible. Any holes that do not contain counters are out of play. Play continues until one player captures all the counters, and is the winner.")
         (source "Das Gupta 1923: 73-74.")
         (version "1.3.0")
@@ -196,7 +196,7 @@
         (origin  "This game was played in India, around 1923.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

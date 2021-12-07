@@ -9,7 +9,7 @@
         (start {
             <Board:placement>
         })
-        (play 
+        (play
             (if
                 (is Even (count Moves))
                 (forEach Piece)
@@ -29,8 +29,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Blocking game played on a 6x8 or 7x7 board.")

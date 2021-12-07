@@ -2,7 +2,7 @@
 
 (define "RegionReached" (is In (last To) (sites Mover)) )
 
-(define "RightIndexSite" 
+(define "RightIndexSite"
     (or {
         (= (site) (- (from) 10))
         (= (site) (- (from) 17))
@@ -12,19 +12,19 @@
         (= (site) (+ (from) 6))
         (= (site) (+ (from) 15))
         (= (site) (+ (from) 17))
-    }) 
+    })
 )
 
 //------------------------------------------------------------------------------
 
 (game "Knight Moves 13"
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Knight" Each 
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+        (piece "Knight" Each
             (move
                 (from)
-                (to 
+                (to
                     (forEach
                         (sites Board)
                         if:(and {
@@ -39,32 +39,32 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Knight1" (expand (sites Bottom)) )
             (place "Knight2" (expand (sites Top)) )
             }
         )
-        
+
         (play (forEach Piece) )
-        
+
         (end (if "RegionReached" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

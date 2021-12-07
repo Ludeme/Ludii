@@ -1,16 +1,16 @@
-(game "Graph Test - Repeat B"  
-    (players 2)  
-    (equipment { 
-        (board <Board>) 
-        (piece "Marker" P1) 
-        (piece "Marker" P2) 
-    })  
-    (rules 
+(game "Graph Test - Repeat B"
+    (players 2)
+    (equipment {
+        (board <Board>)
+        (piece "Marker" P1)
+        (piece "Marker" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end {
             (if (is Line 4 Orthogonal) (result Mover Win))
-            (if (is Line 3 Orthogonal) (result Mover Loss)) 
-        })  
+            (if (is Line 3 Orthogonal) (result Mover Loss))
+        })
     )
 )
 
@@ -18,9 +18,9 @@
 
 (option "Board" <Board> args:{ <board> }
     {
-    (item "1x1" 
-        <   
-        (repeat 1 1 step:{{2 1} {-1 2}} 
+    (item "1x1"
+        <
+        (repeat 1 1 step:{{2 1} {-1 2}}
             {
             (poly {{0 0} { 0  1} {  .5  1.5} { 1  1} { 1  0}})
             (poly {{0 0} { 1  0} { 1.5  -.5}   { 1 -1} { 0 -1}})
@@ -30,9 +30,9 @@
         )
         >  "Test."
     )
-    (item "2x2" 
-        <   
-        (repeat 2 2 step:{{2 1} {-1 2}} 
+    (item "2x2"
+        <
+        (repeat 2 2 step:{{2 1} {-1 2}}
             {
             (poly {{0 0} { 0  1} {  .5  1.5} { 1  1} { 1  0}})
             (poly {{0 0} { 1  0} { 1.5  -.5}   { 1 -1} { 0 -1}})
@@ -42,9 +42,9 @@
         )
         >  "Test."
     )*
-    (item "4x4" 
-        <   
-        (repeat 4 4 step:{{2 1} {-1 2}} 
+    (item "4x4"
+        <
+        (repeat 4 4 step:{{2 1} {-1 2}}
             {
             (poly {{0 0} { 0  1} {  .5  1.5} { 1  1} { 1  0}})
             (poly {{0 0} { 1  0} { 1.5  -.5}   { 1 -1} { 0 -1}})
@@ -54,9 +54,9 @@
         )
         >  "Test."
     )
-    (item "8x8" 
-        <   
-        (repeat 8 8 step:{{2 1} {-1 2}} 
+    (item "8x8"
+        <
+        (repeat 8 8 step:{{2 1} {-1 2}}
             {
             (poly {{0 0} { 0  1} {  .5  1.5} { 1  1} { 1  0}})
             (poly {{0 0} { 1  0} { 1.5  -.5}   { 1 -1} { 0 -1}})
@@ -66,10 +66,10 @@
         )
         >  "Test."
     )
-    (item "6x6, Dual" 
-        <   
+    (item "6x6, Dual"
+        <
         (dual
-            (repeat 6 6 step:{{2 1} {-1 2}} 
+            (repeat 6 6 step:{{2 1} {-1 2}}
                 {
                 (poly {{0 0} { 0  1} {  .5  1.5} { 1  1} { 1  0}})
                 (poly {{0 0} { 1  0} { 1.5  -.5}   { 1 -1} { 0 -1}})
@@ -85,8 +85,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")
@@ -102,5 +102,5 @@
     (graphics {
         (board Style Chess)
     })
-    
+
 )

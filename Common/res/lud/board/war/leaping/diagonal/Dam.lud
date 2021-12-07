@@ -2,32 +2,32 @@
 
 (define "JumpToPromotionZone" (is In (last To) (sites Next)) )
 
-(define "HopDistance" 
+(define "HopDistance"
     (move Hop
         #1
         #2
-        (between 
+        (between
             before:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
+        (then
+            (if (can Move
+                    (hop
+                        (from (last To))
                         (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
-                        (between 
+                        (between
                             before:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
+                            if:(and
+                                (not (is In (between) (sites ToClear)))
                                 (is Enemy (who at:(between)))
                             )
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
                     )
-                ) 
+                )
                 (moveAgain)
             )
         )
@@ -35,35 +35,35 @@
 )
 
 (define "DoubleCounterHop" ("HopDistance" Diagonal))
-(define "DoubleCounterHopAgain" 
-    ("HopDistance" 
-        (from (last To)) 
+(define "DoubleCounterHopAgain"
+    ("HopDistance"
+        (from (last To))
         (if (is In (last To) (sites Outer)) (difference Diagonal OppositeDirection) SameDirection)
     )
 )
 
 //------------------------------------------------------------------------------
-(game "Dam"  
+(game "Dam"
     (players 2)
-    (equipment 
-        { 
-        (board (square 12)) 
+    (equipment
+        {
+        (board (square 12))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 0)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 0) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (or
                     (if "IsUnpromoted"
@@ -72,12 +72,12 @@
                     )
                     (move Pass)
                 )
-                (or 
-                    (forEach Piece "Counter" 
+                (or
+                    (forEach Piece "Counter"
                         (or
-                            ("HopDiagonalSequenceCapture") 
+                            ("HopDiagonalSequenceCapture")
                             (move
-                                Step 
+                                Step
                                 Diagonal
                                 (to if:(is Empty (to)))
                             )
@@ -87,28 +87,28 @@
                         (or
                             ("DoubleCounterHop")
                             (move
-                                Slide 
-                                (directions Diagonal) 
-                            ) 
+                                Slide
+                                (directions Diagonal)
+                            )
                         )
                     )
                 )
-                (then 
+                (then
                     (if (and "IsUnpromoted" "JumpToPromotionZone")
                         (move Promote (last To) (piece "DoubleCounter") Mover)
                     )
-                )	
+                )
             )
-        ) 
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+        )
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dam is a game with leaping captures that was played at least since the early twentieth century in Sri Lanka. It is closely related to Draughts games known throughout the world.")
@@ -119,12 +119,12 @@
         (credit "Matthew Stephenson and Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "Dam_ai"
     )

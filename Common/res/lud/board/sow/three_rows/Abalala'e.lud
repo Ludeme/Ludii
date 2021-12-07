@@ -9,10 +9,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Abalala'e"  
+(game "Abalala'e"
     // THIS IS JUST FOR ONE ROUND FOR NOW
-    (players 2)  
-    (equipment { 
+    (players 2)
+    (equipment {
         (mancalaBoard 3 "Columns" store:None
             {
             (track "Track" "0,E,N1,W5,N1,E" loop:True P1)
@@ -28,23 +28,23 @@
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
-                        (sites Mover "Home") 
-                    ) 
+                Select
+                (from
+                    (if
+                        (is Mover Prev)
+                        "PlayFromLastHole"
+                        (sites Mover "Home")
+                    )
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
                         count:(if ("HasCaptured") 1 (count at:(last To))) // If has captured we sow only one seed.
                         "Track"
@@ -52,51 +52,51 @@
                         apply:(if (> (count at:(to)) 1)
                             (moveAgain)
                             (if (is In (to) (sites Mover "Home"))
-                                (if (is In (to) (sites "MiddleRow")) 
-                                    (if (> (count at:"NextRowPit") 0) 
-                                        (and { 
-                                            (fromTo 
-                                                (from "NextRowPit") 
-                                                (to (handSite Mover)) 
+                                (if (is In (to) (sites "MiddleRow"))
+                                    (if (> (count at:"NextRowPit") 0)
+                                        (and {
+                                            (fromTo
+                                                (from "NextRowPit")
+                                                (to (handSite Mover))
                                                 count:(count at:"NextRowPit")
-                                            ) 
-                                            (moveAgain) 
+                                            )
+                                            (moveAgain)
                                             ("StoreLastPitSowed")
                                         })
                                     )
                                     (if (is In (to) (sites Mover "LeftPart"))
                                         (and {
-                                            (if (> (count at:"NextRowPit") 0) 
+                                            (if (> (count at:"NextRowPit") 0)
                                                 (and {
-                                                    (fromTo 
-                                                        (from "NextRowPit") 
-                                                        (to (handSite Mover)) 
+                                                    (fromTo
+                                                        (from "NextRowPit")
+                                                        (to (handSite Mover))
                                                         count:(count at:"NextRowPit")
                                                     )
-                                                    (moveAgain) 
+                                                    (moveAgain)
                                                     ("StoreLastPitSowed")
                                                 })
                                             )
-                                            (if (> (count at:"OppositePit") 0) 
+                                            (if (> (count at:"OppositePit") 0)
                                                 (and {
-                                                    (fromTo 
-                                                        (from "OppositePit") 
-                                                        (to (handSite Mover)) 
+                                                    (fromTo
+                                                        (from "OppositePit")
+                                                        (to (handSite Mover))
                                                         count:(count at:"OppositePit")
                                                     )
-                                                    (moveAgain) 
+                                                    (moveAgain)
                                                     ("StoreLastPitSowed")
                                                 })
                                             )
                                         })
-                                        (if (> (count at:"OppositePit") 0) 
+                                        (if (> (count at:"OppositePit") 0)
                                             (and {
-                                                (fromTo 
-                                                    (from "OppositePit") 
-                                                    (to (handSite Mover)) 
+                                                (fromTo
+                                                    (from "OppositePit")
+                                                    (to (handSite Mover))
                                                     count:(count at:"OppositePit")
                                                 )
-                                                (moveAgain) 
+                                                (moveAgain)
                                                 ("StoreLastPitSowed")
                                             })
                                         )
@@ -108,14 +108,14 @@
                 )
             )
         )
-        
+
         (end
             (if (or {
-                    (= (count in:(sites P1 "Home")) 0)  
+                    (= (count in:(sites P1 "Home")) 0)
                     (= (count in:(sites P2 "Home")) 0)
                 })
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -125,7 +125,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Abalala'e is a three-row mancala-style game from the central highlands of Eritrea. It was taught to R. Pankhurst by Abba Pawlos Tzadua, Abba Zacharias, Michael Yaqob, and Gabra Sellasé Gabra Amlak, who were all from towns in that region. It is also known in the eastern lowlands of Eritrea as Gabata.")
@@ -139,7 +139,7 @@
         (origin  "This game was played in Eritrea, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

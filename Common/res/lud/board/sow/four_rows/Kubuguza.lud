@@ -5,12 +5,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kubuguza"  
-    (players 2)  
-    
-    (equipment { 
+(game "Kubuguza"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             (track "TrackCW1"  "7,W,N1,E" loop:True P1)
@@ -25,22 +25,22 @@
         (regions "HolesCW" P2 (sites {16 23 25 30}))
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    (rules 
-        
-        (start 
+    })
+    (rules
+
+        (start
             (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner") ) )
         )
-        
-        (play 
+
+        (play
             (or
                 (move Select
-                    (from 
-                        (if 
-                            (is Mover Prev) 
+                    (from
+                        (if
+                            (is Mover Prev)
                             (sites {(var "Replay")})
-                            (sites Mover "Home") 
-                        ) 
+                            (sites Mover "Home")
+                        )
                         if:(> (count at:(from)) 1)
                     )
                     (then
@@ -54,7 +54,7 @@
                                             (is In (to) (sites Mover "Inner"))
                                             (is Occupied ("OppositeOuterPit" (to)))
                                             (is Occupied ("OppositePit" (to)))
-                                        })	
+                                        })
                                         (and {
                                             (fromTo
                                                 (from ("OppositeOuterPit" (to)))
@@ -77,12 +77,12 @@
                     )
                 )
                 (move Select
-                    (from 
-                        (if 
-                            (is Mover Prev) 
+                    (from
+                        (if
+                            (is Mover Prev)
                             (sites {(var "Replay")})
-                            (sites Mover "HolesCW") 
-                        ) 
+                            (sites Mover "HolesCW")
+                        )
                         if:(and {
                             (> (count at:(from)) 1)
                             (is In (from) (sites Mover "HolesCW"))
@@ -106,7 +106,7 @@
                                             (is In (to) (sites Mover "Inner"))
                                             (is Occupied ("OppositeOuterPit" (to)))
                                             (is Occupied ("OppositePit" (to)))
-                                        })	
+                                        })
                                         (and {
                                             (fromTo
                                                 (from ("OppositeOuterPit" (to)))
@@ -130,7 +130,7 @@
                 )
             )
         )
-        
+
         (end {
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
@@ -140,8 +140,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Kubuguza is a four-row mancala-style board game played by the Abatutsi people of Rwanda. It is unique in only allowing captured when the opponent's inner and outer rows contain counters.")
@@ -153,10 +153,10 @@
         (origin  "This game was played in Rwanda, around 1953.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

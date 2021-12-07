@@ -7,12 +7,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Spreta"  
-    (players 2)  
-    
-    (equipment { 
+(game "Spreta"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Board:CCW2> loop:True P2)
             }
@@ -25,35 +25,35 @@
         (regions "Outer" P2  (sites Top) )                                             // P2 outer Home
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
-        (start { 
-            (set Count 1 
-                to:(union { 
-                    (sites P1 "Outer") 
-                    (sites P2 "Outer") 
-                    (difference (sites P1 "Inner") (sites { <Board:thirdHoleInnerP1> <Board:rightMostInnerHoleP1>})) 
+    )
+    (rules
+
+        (start {
+            (set Count 1
+                to:(union {
+                    (sites P1 "Outer")
+                    (sites P2 "Outer")
+                    (difference (sites P1 "Inner") (sites { <Board:thirdHoleInnerP1> <Board:rightMostInnerHoleP1>}))
                     (difference (sites P2 "Inner") (sites { <Board:thirdHoleInnerP2> <Board:rightMostInnerHoleP2>}))
-                } ) 
+                } )
             )
-            (set Count 2 to:(sites { <Board:thirdHoleInnerP1> <Board:thirdHoleInnerP2>})) 
-            
+            (set Count 2 to:(sites { <Board:thirdHoleInnerP1> <Board:thirdHoleInnerP2>}))
+
         })
-        
+
         phases:{
         (phase "Opening"
-            (play 
+            (play
                 (move
                     Select
-                    (from 
-                        (sites Mover) 
+                    (from
+                        (sites Mover)
                         if:(= 2 (count at:(from)))
-                    )	
+                    )
                     (then
                         (sow
                             "Track"
-                            owner:(mover)		
+                            owner:(mover)
                         )
                     )
                 )
@@ -61,14 +61,14 @@
             (nextPhase Mover "Playing")
         )
         (phase "Playing"
-            (play 
+            (play
                 (if (or (= 1 (var "ExtraCapture")) (= 2 (var "ExtraCapture")))
                     (move Remove
                         (difference (sites Next "Home") (sites Empty))
                         count:(count at:(to))
                         (then
                             (if (= 1 (var "ExtraCapture"))
-                                (and 
+                                (and
                                     (moveAgain)
                                     (set Var "ExtraCapture" 2)
                                 )
@@ -79,15 +79,15 @@
                     (priority {
                         (move
                             Select
-                            (from 
-                                (if 
-                                    (is Mover Prev) 
-                                    "PlayFromLastHole" 
-                                    (sites Mover) 
-                                ) 
+                            (from
+                                (if
+                                    (is Mover Prev)
+                                    "PlayFromLastHole"
+                                    (sites Mover)
+                                )
                                 if:(< 1 (count at:(from)))
                             )
-                            (then 
+                            (then
                                 (sow
                                     "Track"
                                     owner:(mover)
@@ -95,11 +95,11 @@
                                         (moveAgain)
                                         (if (is In (to) (sites Mover "Inner"))
                                             (and {
-                                                (if (> (count at:"OppositePit") 0) 
-                                                    (remove "OppositePit" count:(count at:"OppositePit")) 
+                                                (if (> (count at:"OppositePit") 0)
+                                                    (remove "OppositePit" count:(count at:"OppositePit"))
                                                 )
-                                                (if (> (count at:"OppositeOuterPit") 0) 
-                                                    (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit")) 
+                                                (if (> (count at:"OppositeOuterPit") 0)
+                                                    (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit"))
                                                 )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)
@@ -111,18 +111,18 @@
                         )
                         (move
                             Select
-                            (from 
-                                (if 
-                                    (is Mover Prev) 
-                                    "PlayFromLastHole" 
-                                    (sites Mover) 
-                                ) 
+                            (from
+                                (if
+                                    (is Mover Prev)
+                                    "PlayFromLastHole"
+                                    (sites Mover)
+                                )
                                 if:(and
                                     (= 1 (count at:(from)))
                                     (= 0 (count at:("NextSite" from:(from))))
                                 )
                             )
-                            (then 
+                            (then
                                 (sow
                                     "Track"
                                     owner:(mover)
@@ -130,11 +130,11 @@
                                         (moveAgain)
                                         (if (is In (to) (sites Mover "Inner"))
                                             (and {
-                                                (if (> (count at:"OppositePit") 0) 
-                                                    (remove "OppositePit" count:(count at:"OppositePit")) 
+                                                (if (> (count at:"OppositePit") 0)
+                                                    (remove "OppositePit" count:(count at:"OppositePit"))
                                                 )
-                                                (if (> (count at:"OppositeOuterPit") 0) 
-                                                    (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit")) 
+                                                (if (> (count at:"OppositeOuterPit") 0)
+                                                    (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit"))
                                                 )
                                                 (set Var "ExtraCapture" 1)
                                                 (moveAgain)
@@ -149,7 +149,7 @@
             )
         )
         }
-        
+
         (end
             (if  (= 0 ("PiecesOwnedBy" Next))
                 (result Mover Win)
@@ -162,14 +162,14 @@
 
 (option "Board Size" <Board> args:{ <size> <CCW2> <thirdHoleInnerP1> <rightMostInnerHoleP1> <thirdHoleInnerP2> <rightMostInnerHoleP2>}
     {
-    (item "10"   <10>  <"20,E,N1,W"> <12> <19> <27> <20> "Each player has 10 holes by row.")*  
-    (item "12"   <12>  <"24,E,N1,W"> <14> <23> <33> <24> "Each player has 12 holes by row.") 
+    (item "10"   <10>  <"20,E,N1,W"> <12> <19> <27> <20> "Each player has 10 holes by row.")*
+    (item "12"   <12>  <"24,E,N1,W"> <14> <23> <33> <24> "Each player has 12 holes by row.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Spreta is a four-row mancala-style game board played by the Chikunda people of Malawi. ")
@@ -181,10 +181,10 @@
         (origin  "This game was played in Malawi, around 1913.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

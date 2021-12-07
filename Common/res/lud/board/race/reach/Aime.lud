@@ -68,9 +68,9 @@
             (place "Marker4" 31)
             (place "Ball" (sites {32..34}))
         })
-        
+
         phases:{
-        
+
         (phase "Hiding"
             (play
                 (move Add
@@ -81,7 +81,7 @@
             )
             (nextPhase "Guessing")
         )
-        
+
         (phase "Guessing"
             (play
                 (move Select
@@ -90,7 +90,7 @@
                         (and
                             (if (is Empty (last To))
                                 (and
-                                    (fromTo 
+                                    (fromTo
                                         (from (where "Marker" Prev))
                                         (to ("NextSitePrev"))
                                     )
@@ -101,7 +101,7 @@
                                 )
                                 (and {
                                     (moveAgain)
-                                    (fromTo 
+                                    (fromTo
                                         (from (where "Marker" Mover))
                                         (to ("NextSite" from:(where "Marker" Mover)))
                                     )
@@ -117,18 +117,18 @@
             )
             (nextPhase "Hiding")
         )
-        
+
         }
-        
-        (end  
+
+        (end
             (if (!= (- (count Players) (count Active)) (count Sites in:(difference ("Centre") (sites Empty))))
                 {
                 (if (and (is Active P1) (is In (where "Marker" P1) ("Centre"))) (result P1 Win))
-                
+
                 (if (and (is Active P2) (is In (where "Marker" P2) ("Centre"))) (result P2 Win))
-                
+
                 (if (and (is Active P3) (is In (where "Marker" P3) ("Centre"))) (result P3 Win))
-                
+
                 (if (and (is Active P4) (is In (where "Marker" P4) ("Centre"))) (result P4 Win))
                 }
             )
@@ -138,8 +138,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "A'imé is a simple race game played by children in what is now Benin. The game represents people going to the market (located in the center of the board) to buy afiti fruits.")
@@ -152,7 +152,7 @@
         (origin  "This game was played in Benin, around 1955.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Colour OuterVertices (colour Hidden))
@@ -174,5 +174,5 @@
         (board Placement scale:1.2)
         (player Colour Shared (colour Yellow))
     })
-    
+
 )

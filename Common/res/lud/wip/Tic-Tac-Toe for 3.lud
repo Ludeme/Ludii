@@ -1,10 +1,10 @@
-(game "Tic-Tac-Toe for 3"  
-    (players 3)  
-    (equipment { 
-        (board (tri 3)) 
-        (piece "Disc") 
-    })  
-    (rules 
+(game "Tic-Tac-Toe for 3"
+    (players 3)
+    (equipment {
+        (board (tri 3))
+        (piece "Disc")
+    })
+    (rules
         (play (add to:(sites Empty)))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe for thee players on a triangular grid.")

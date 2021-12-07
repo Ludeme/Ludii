@@ -1,21 +1,21 @@
 (game "Smasandyutakankarikrida"
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
+    (players 2)
+    (equipment {
+        (board
+            (merge
+                {
+                (shift 0 2 (square 5 diagonals:Alternating) )
+                (wedge 3)
+                (shift 0 6 (rotate 180 (wedge 3)))
+                }
+            )
             use:Vertex
         )
         (piece "Marker" Each)
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
             (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
         })
@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Smasandyutakankarikrida is a game with leaping captures played in India. It was forbidden to be played in the home, and only was played in lonely places like a cemetery or forest.")
@@ -39,10 +39,10 @@
         (origin  "This game was played in India, around 1871.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
 )

@@ -26,9 +26,9 @@
 )
 
 (define "MaximumOfTwoHolesInInner"
-    (>= 2 
-        (count Sites 
-            in:(forEach (sites Mover "Inner") 
+    (>= 2
+        (count Sites
+            in:(forEach (sites Mover "Inner")
                 if:(= 1 (count at:(site)))
             )
         )
@@ -45,12 +45,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Quiela"  
-    (players 2)  
-    
-    (equipment { 
+(game "Quiela"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "14,E,N1,W" loop:True P2)
             }
@@ -64,18 +64,18 @@
         (piece "Seed" Shared)
         (map "LeftMost" {(pair P1 0) (pair P2 27)})
         (hand Each)
-    })  
-    (rules 
-        
-        (start 
+    })
+    (rules
+
+        (start
             (set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer") ) )
         )
-        
+
         phases:{
         (phase "Rearrangement"
             (play
                 (or
-                    (move 
+                    (move
                         (from (sites Mover "Home") if:(is Occupied (from)))
                         (to (difference (sites Mover) (from)))
                     )
@@ -86,16 +86,16 @@
             )
             (nextPhase (all Passed) "InitialPhase")
         )
-        
+
         (phase "InitialPhase"
             (play
                 (move Select
-                    (from 
-                        (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
-                            (sites Mover "Home") 
-                        ) 
+                    (from
+                        (if
+                            (is Mover Prev)
+                            "PlayFromLastHole"
+                            (sites Mover "Home")
+                        )
                         if:(is Occupied (from))
                     )
                     (then
@@ -127,19 +127,19 @@
                     )
                 )
             )
-            
+
             (nextPhase Mover ("OneCounterInEachHole") "MainPhase")
         )
-        
+
         (phase "MainPhase"
             (play
                 (move Select
-                    (from 
-                        (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
-                            (sites Mover "Home") 
-                        ) 
+                    (from
+                        (if
+                            (is Mover Prev)
+                            "PlayFromLastHole"
+                            (sites Mover "Home")
+                        )
                         if:(if (< 1 (count at:(from)))
                             True
                             (if (= 1 (count at:(from))) (is Empty ("NextHole" (from) 1)))
@@ -176,7 +176,7 @@
             )
         )
         }
-        
+
         (end
             (forEach NonMover
                 if:("NoPiece")
@@ -188,8 +188,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Quiela is a four-row mancala-style board game played by the Jinga people of Angola.")
@@ -200,10 +200,10 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

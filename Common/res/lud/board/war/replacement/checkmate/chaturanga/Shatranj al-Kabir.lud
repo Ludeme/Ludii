@@ -3,17 +3,17 @@
 )
 
 (define "CaptureToPiece"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
             (remove (to))
         )
-    ) 
+    )
 )
 
-(define "EnemyNotImmumned" 
+(define "EnemyNotImmumned"
     (and (is Enemy (who at:(to)))
-        (not 
-            (and { 
+        (not
+            (and {
                 (= (what at:(to)) (id "Pawn" Next))
                 (is In (to) (sites Mover))
             })
@@ -23,42 +23,42 @@
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:("EnemyNotImmumned") 
+        Step
+        (directions {FR FL})
+        (to
+            if:("EnemyNotImmumned")
             (apply (remove (to)))
         )
     )
 )
 
-(define "NotSpecialPawn" 
+(define "NotSpecialPawn"
     (and {
-        (> (value Piece at:(last To)) 2) 
+        (> (value Piece at:(last To)) 2)
         (is In (last To) (sites Next))
         (= 0 (state at:(last To)))
-    })	
+    })
 )
 
-(define "PromoteToAssignedPiece" 
-    (promote (last To) (piece (value Piece at:(last To))))	
+(define "PromoteToAssignedPiece"
+    (promote (last To) (piece (value Piece at:(last To))))
 )
 
 (define "ValueOfPawnKingPower" 23)
 
-(define "HasToDoThirdPromotion" 
-    (and 
+(define "HasToDoThirdPromotion"
+    (and
         (is In (last To) (sites Next))
         (= 2 (state at:(last To)))
     )
 )
 
-(define "ThirdPromotionOfSpecialPawn" 
+(define "ThirdPromotionOfSpecialPawn"
     (and {
         (set Value at:(last To) "ValueOfPawnKingPower")
         (set State at:(last To) 0)
-        (forEach Site 
-            (sites Board) 
+        (forEach Site
+            (sites Board)
             (if (= (if (is Mover P1) 11 12) (value Piece at:(site)))
                 (set Value at:(site) "ValueOfPawnKingPower")
             )
@@ -66,7 +66,7 @@
     })
 )
 
-(define "SitePawnCanCaptureTwice" 
+(define "SitePawnCanCaptureTwice"
     (forEach
         (sites Empty)
         if:(if (is Mover P1)
@@ -76,47 +76,47 @@
     )
 )
 
-(define "SiteWithSpecialPawnAndFirstPromotion" 
-    (forEach 
-        (sites Next) 
-        if:(and 
-            (= (what at:(site)) (id "Pawn" Mover)) 
+(define "SiteWithSpecialPawnAndFirstPromotion"
+    (forEach
+        (sites Next)
+        if:(and
+            (= (what at:(site)) (id "Pawn" Mover))
             (<= (value Piece at:(site)) 2)
         )
     )
 )
 
-(define "MakePawnReadyForSecondPromotion" 
+(define "MakePawnReadyForSecondPromotion"
     (and
         (set Value at:(last To) (if (is Mover P1) 11 12))
         (set State at:(last To) 1)
     )
 )
 
-(define "SiteWithSpecialPawnAndSecondPromotion" 
-    (forEach 
-        (sites Next) 
+(define "SiteWithSpecialPawnAndSecondPromotion"
+    (forEach
+        (sites Next)
         if:(and {
-            (= (what at:(site)) (id "Pawn" Mover)) 
+            (= (what at:(site)) (id "Pawn" Mover))
             (or (= (value Piece at:(site)) 11) (= (value Piece at:(site)) 12))
             (= (state at:(site)) 1)
         })
     )
 )
 
-(define "ToEmptyInitSiteShahPawn" 
-    (to 
+(define "ToEmptyInitSiteShahPawn"
+    (to
         (mapEntry "InitShahPawn" Mover)
         if:(is Empty (to))
     )
 )
 
-(define "MakePawnReadyForThirdPromotion" 
+(define "MakePawnReadyForThirdPromotion"
     (set State at:(last To) 2)
 )
 
 (define "AnyOwnedSitesOnBoardExceptKing"
-    (difference 
+    (difference
         (sites Occupied by:Mover container:"Board")
         (sites Occupied by:Mover container:"Board" component:"King_noCross")
     )
@@ -125,9 +125,9 @@
 //------------------------------------------------------------------------------
 
 (game "Shatranj al-Kabir"
-    (players {(player N) (player S)}) 
+    (players {(player N) (player S)})
     (equipment {
-        (board 
+        (board
             (merge {
                 (square 11)
                 (shift 11 1 (square 1))
@@ -137,16 +137,16 @@
         (piece "Pawn" Each
             (if (= "ValueOfPawnKingPower" (value Piece at:(from)))
                 (move
-                    Step 
-                    (to 
-                        if:(not (is Friend (who at:(to)))) 
+                    Step
+                    (to
+                        if:(not (is Friend (who at:(to))))
                         "CaptureToPiece"
-                    ) 
+                    )
                 )
                 (or
-                    "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"	
-                    (then 
+                    "StepForwardToEmpty"
+                    "CaptureForwardDiagonal"
+                    (then
                         (if ("NotSpecialPawn")
                             ("PromoteToAssignedPiece")
                             (if ("HasToDoThirdPromotion")
@@ -157,106 +157,106 @@
                 )
             )
         )
-        
+
         (piece "Wazir" Each
-            (move Hop Orthogonal 
-                (between (exact 2) if:True) 
-                (to 
-                    if:(or 
-                        (is Empty (to)) 
+            (move Hop Orthogonal
+                (between (exact 2) if:True)
+                (to
+                    if:(or
+                        (is Empty (to))
                         ("EnemyNotImmumned")
-                    ) 
+                    )
                     (apply (remove (to)))
-                ) 
-            )		
+                )
+            )
         )
-        
+
         (piece "Knight_rotated" Each
             (move
-                Leap 
-                { {F F F R F F} {F F F L F F} } 
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                Leap
+                { {F F F R F F} {F F F L F F} }
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotImmumned"))
                     "CaptureToPiece"
-                ) 
-            )		
+                )
+            )
         )
-        
+
         (piece "Elephant" Each
-            (move Hop Diagonal 
-                (between (exact 2) if:True) 
-                (to 
-                    if:(or 
-                        (is Empty (to)) 
+            (move Hop Diagonal
+                (between (exact 2) if:True)
+                (to
+                    if:(or
+                        (is Empty (to))
                         ("EnemyNotImmumned")
-                    ) 
+                    )
                     (apply (remove (to)))
-                ) 
-            )		
+                )
+            )
         )
-        
+
         (piece "Queen" Each
             (move
-                Step 
+                Step
                 Diagonal
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotImmumned"))
                     "CaptureToPiece"
-                ) 
-            )		
+                )
+            )
         )
-        
+
         (piece "King_noCross" Each
             (move
-                Step 
-                (to 
-                    if:(or 
-                        (is Empty (to)) 
+                Step
+                (to
+                    if:(or
+                        (is Empty (to))
                         (and
                             ("EnemyNotImmumned")
-                            (or 
+                            (or
                                 (!= (to) (mapEntry "ExtraSquare" Next))
-                                (and 
+                                (and
                                     (= (to) (mapEntry "ExtraSquare" Next))
                                     (< (value Piece at:(to)) 23)
                                 )
                             )
                         )
-                    ) 
+                    )
                     "CaptureToPiece"
-                ) 
-            )		
+                )
+            )
         )
-        
+
         (piece "Amazon" Each
             (move
-                Step 
+                Step
                 Orthogonal
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotImmumned"))
                     "CaptureToPiece"
-                ) 
-            )		
+                )
+            )
         )
-        
+
         (piece "Giraffe" Each
-            (forEach Direction 
-                Diagonal 
-                (to 
-                    if:(is Empty (to)) 
-                    (apply 
+            (forEach Direction
+                Diagonal
+                (to
+                    if:(is Empty (to))
+                    (apply
                         (and {
                             (move (from)
-                                (to 
+                                (to
                                     (sites To
-                                        (slide 
+                                        (slide
                                             (from (to))
                                             Orthogonal
                                             (between (min 3))
-                                            (to 
+                                            (to
                                                 if:("EnemyNotImmumned")
                                                 "CaptureToPiece"
-                                            ) 
+                                            )
                                         )
                                     )
                                 )
@@ -268,43 +268,43 @@
         )
         (piece "Bishop_noCross" Each
             (move
-                Slide 
+                Slide
                 Diagonal
                 (between (min 2))
-                (to 
+                (to
                     if:("EnemyNotImmumned")
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
-        
+
         (piece "Knight" Each
             (move
-                Leap 
-                { {F F F F R F F} {F F F F L F F} } 
-                (to 
-                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                Leap
+                { {F F F F R F F} {F F F F L F F} }
+                (to
+                    if:(or (is Empty (to)) ("EnemyNotImmumned"))
                     "CaptureToPiece"
-                ) 
-            )		
+                )
+            )
         )
-        
+
         (piece "Rook" Each
             (move
-                Slide 
+                Slide
                 Orthogonal
-                (to 
-                    if:("EnemyNotImmumned") 
+                (to
+                    if:("EnemyNotImmumned")
                     "CaptureToPiece"
-                ) 
-            )		
+                )
+            )
         )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         (map "InitShahPawn" {(pair P1 "G3") (pair P2 "G9")})
         (map "ExtraSquare" {(pair P1 "M2") (pair P2 "A10")})
     })
-    (rules 
+    (rules
         (start {
             (place "Pawn1" coord:"B3" value:1) // Baidaq al-Bayadiq in the rules.
             (place "Pawn2" coord:"L9" value:2) // Baidaq al-Bayadiq in the rules.
@@ -353,7 +353,7 @@
                         (then ("MakePawnReadyForThirdPromotion"))
                     )
                     (if (and (!= (value Player Mover) 1)
-                            ("IsInCheck" "King_noCross" Mover)	
+                            ("IsInCheck" "King_noCross" Mover)
                         )
                         (forEach Site ("AnyOwnedSitesOnBoardExceptKing")
                             (move Swap Pieces (where "King_noCross" Mover) (site) (then (set Value Mover 1)))
@@ -364,19 +364,19 @@
                 ifAfterwards:(and (not ("NextCanNotMove")) (not ("IsInCheck" "King_noCross" Mover)))
             )
         )
-        (end {    
-            (if  
+        (end {
+            (if
                 (no Moves Next)
                 (result Mover Win)
             )
-            (if (and 
+            (if (and
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
             )
-            (if 
-                (or 
+            (if
+                (or
                     (= (what at:(mapEntry "ExtraSquare" P1)) (id "King_noCross" P2))
                     (= (what at:(mapEntry "ExtraSquare" P2)) (id "King_noCross" P1))
                 )
@@ -388,8 +388,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Shatranj al-Kabir is a type of Shatranj that is described in several manuscripts from medieval Southwest Asia. They agree that this was a favorite game of Timur, also known as Tamerlane. It is a larger version of Shatranj with more pieces, a larger board, and the use of citadels to force a draw.")
@@ -402,12 +402,12 @@
         (origin  "This game was played in Southwest Asia, from around 1352 to 1657.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.825)
         (board Style Chess)
     })
-    
+
     (ai
         "Shatranj al-Kabir_ai"
     )

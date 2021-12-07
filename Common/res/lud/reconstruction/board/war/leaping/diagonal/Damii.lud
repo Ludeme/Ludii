@@ -1,10 +1,10 @@
 (game "Damii"
-    (players 2)  
-    (equipment { 
+    (players 2)
+    (equipment {
         (board (square 10))
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Damii is a game with leaping captures played in Ghana.")
@@ -24,9 +24,9 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

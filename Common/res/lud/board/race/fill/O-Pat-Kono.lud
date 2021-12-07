@@ -2,30 +2,30 @@
 
 //------------------------------------------------------------------------------
 
-(game "O-Pat-Kono"  
-    (players 2)  
-    (equipment { 
-        (board (rectangle 5 5) use:Vertex) 
-        (piece "Marker" Each "StepDiagonalToEmpty") 
-        (regions "Home" P1 (union (sites Bottom) (sites {"A2" "E2"}))) 
-        (regions "Home" P2 (union (sites Top) (sites {"A4" "E4"}))) 
+(game "O-Pat-Kono"
+    (players 2)
+    (equipment {
+        (board (rectangle 5 5) use:Vertex)
+        (piece "Marker" Each "StepDiagonalToEmpty")
+        (regions "Home" P1 (union (sites Bottom) (sites {"A2" "E2"})))
+        (regions "Home" P2 (union (sites Top) (sites {"A4" "E4"})))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (place "Marker1" (sites P1))
             (place "Marker2" (sites P2))
         })
         (play (forEach Piece))
-        
+
         (end (if "RegionFilled" (result Mover Win) ) )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "O-Pat-Kono is a two-player game of alignment played since at least the late nineteenth century in Korea.")
@@ -38,13 +38,13 @@
         (origin  "This game was played in Korea, from around 1893 to 1895.")
         }
     )
-    
+
     (graphics {
         (board Style Graph)
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "O-Pat-Kono_ai"
     )

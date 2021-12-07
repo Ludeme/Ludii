@@ -1,36 +1,36 @@
-(game "Boseog Gonu"  
+(game "Boseog Gonu"
     (players 2)
-    
+
     (equipment {
         (board
             (remove
-                (merge 
-                    { 
+                (merge
+                    {
                     (rectangle 3 3 diagonals:Alternating)
-                    (shift 0 -1 (rotate 180 (wedge 2))) 
-                    (shift 0 2 (wedge 2)) 
-                    (shift -1.5 0.5 (rotate 90 (wedge 2))) 
-                    (shift 1.5 0.5 (rotate -90 (wedge 2))) 
+                    (shift 0 -1 (rotate 180 (wedge 2)))
+                    (shift 0 2 (wedge 2))
+                    (shift -1.5 0.5 (rotate 90 (wedge 2)))
+                    (shift 1.5 0.5 (rotate -90 (wedge 2)))
                     }
                 )
-                edges:{ 
-                {{1 1} {0 0}} 
-                {{1 1} {2 2}} 
-                {{1 1} {2 0}} 
+                edges:{
+                {{1 1} {0 0}}
+                {{1 1} {2 2}}
+                {{1 1} {2 0}}
                 {{1 1} {0 2}}
-                } 
+                }
             )
             use:Vertex
         )
         (piece "Disc" Each <Disc>)
     })
-    
-    (rules 
+
+    (rules
         (start {
             (place "Disc1" {"A3" "B3" "B4" "B2" })
             (place "Disc2" {"D2" "D3" "E3" "D4" })
         })
-        (play (forEach Piece)) 
+        (play (forEach Piece))
         (end (if (= (count Pieces Next) 1) (result Mover Win)) )
     )
 )
@@ -39,73 +39,73 @@
 
 (option "Variant" <Disc> args:{ <move> }
     {
-    (item "Original"         
+    (item "Original"
         <
         (move
             Step
-            (to if:(is Empty (to))) 
-            (then 
-                (custodial 
-                    (from (last To)) 
-                    (between 
-                        (max 1) 
-                        if:(is Enemy (who at:(between))) 
+            (to if:(is Empty (to)))
+            (then
+                (custodial
+                    (from (last To))
+                    (between
+                        (max 1)
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
-                    (to if:(= (what at:(to)) (what at:(last To)))) 
-                )	  
+                    (to if:(= (what at:(to)) (what at:(last To))))
+                )
             )
-        ) 
+        )
         >
         "The game is played according to the rules of the source."
-    )** 
-    
-    (item "No diagonal capture"         
+    )**
+
+    (item "No diagonal capture"
         <
         (move
             Step
-            (to if:(is Empty (to))) 
-            (then 
-                (custodial 
-                    (from (last To)) 
-                    Axial 
-                    (between 
-                        (max 1) 
-                        if:(is Enemy (who at:(between))) 
+            (to if:(is Empty (to)))
+            (then
+                (custodial
+                    (from (last To))
+                    Axial
+                    (between
+                        (max 1)
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
-                    (to if:(= (what at:(to)) (what at:(last To)))) 
-                )	  
+                    (to if:(= (what at:(to)) (what at:(last To))))
+                )
             )
-        ) 
+        )
         >
         "The game is played according to the rules of the source but the capture is allowed only horizontally and vertically."
-    )*   
-    (item "No diagonal capture and slide"    
+    )*
+    (item "No diagonal capture and slide"
         <
         (move
             Slide
-            (then 
-                (custodial 
-                    (from (last To)) 
-                    Axial 
-                    (between 
-                        (max 1) 
-                        if:(is Enemy (who at:(between))) 
+            (then
+                (custodial
+                    (from (last To))
+                    Axial
+                    (between
+                        (max 1)
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
-                    (to if:(= (what at:(to)) (what at:(last To)))) 
+                    (to if:(= (what at:(to)) (what at:(last To))))
                 )
-            ) 
+            )
         )
-        >  
-    "The game is played according to the rules described in Youtube. The two differences with the source is: Capture possible only horizontally and vertically and the pieces can slide.")   
+        >
+    "The game is played according to the rules described in Youtube. The two differences with the source is: Capture possible only horizontally and vertically and the pieces can slide.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Boseog Gonu is a Korean game of capture of uncertain history.")
@@ -120,14 +120,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Graph)
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Boseog Gonu_ai"
     )
-    
+
 )

@@ -1,7 +1,7 @@
-(game "Xiangqi (Trigault)"  
-    (players 2) 
-    (equipment 
-        { 
+(game "Xiangqi (Trigault)"
+    (players 2)
+    (equipment
+        {
         (board (scale 2 1 (rectangle 8 5)))
         (piece "King" Each)
         (piece "Pawn" Each)
@@ -10,8 +10,8 @@
         (piece "Rook" Each)
         }
     )
-    
-    (rules 
+
+    (rules
         (start {
             (place "King1" coord:"C1")
             (place "King2" coord:"C8")
@@ -29,8 +29,8 @@
     )
 )
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game, a version of Xiangqi played in China in the early seventeenth century, was described by the Jesuit missionary Nicholas Trigault.")
@@ -42,12 +42,12 @@
         (origin  "This game was played in China, from around 1611 to 1628.")
         }
     )
-    
+
     (graphics {
         (piece Scale 0.6)
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )

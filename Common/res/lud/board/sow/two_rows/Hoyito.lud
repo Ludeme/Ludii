@@ -4,10 +4,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hoyito"  
-    (players 2)  
-    
-    (equipment { 
+(game "Hoyito"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 <Board> store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -16,38 +16,38 @@
         (piece "Seed" Shared)
         (hand Each)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 4 to:(sites Track) ) )
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
-                        (sites Mover) 
-                    ) 
+                Select
+                (from
+                    (if
+                        (is Mover Prev)
+                        "PlayFromLastHole"
+                        (sites Mover)
+                    )
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
                         apply:(if (= (count at:(to)) 4)
                             (if (<= (count in:(sites Board)) 8)
                                 (forEach Site (sites Board)
                                     (if (> (count at:(site)) 0)
-                                        (fromTo 
+                                        (fromTo
                                             (from (site))
-                                            (to (handSite Mover)) 
+                                            (to (handSite Mover))
                                             count:(count at:(site))
                                         )
                                     )
                                 )
-                                (fromTo 
-                                    (from (to)) 
-                                    (to (handSite Mover)) 
+                                (fromTo
+                                    (from (to))
+                                    (to (handSite Mover))
                                     count:(count at:(to))
                                 )
                             )
@@ -59,11 +59,11 @@
                 )
             )
         )
-        
+
         (end
-            (if (no Moves Mover) 
+            (if (no Moves Mover)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -75,30 +75,30 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6"   <6>  "Each player has 6 holes.")*  
-    (item "7"   <7>  "Each player has 7 holes.")   
-    (item "8"   <8>  "Each player has 8 holes.")   
-    (item "9"   <9>  "Each player has 9 holes.")   
-    (item "10"   <10>  "Each player has 10 holes.")    
-    (item "11"   <11>  "Each player has 11 holes.")   
-    (item "12"   <12>  "Each player has 12 holes.")   
+    (item "6"   <6>  "Each player has 6 holes.")*
+    (item "7"   <7>  "Each player has 7 holes.")
+    (item "8"   <8>  "Each player has 8 holes.")
+    (item "9"   <9>  "Each player has 9 holes.")
+    (item "10"   <10>  "Each player has 10 holes.")
+    (item "11"   <11>  "Each player has 11 holes.")
+    (item "12"   <12>  "Each player has 12 holes.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
+(rulesets {
     (ruleset "Ruleset/Hoyito I (Described)" {
         "Board Size/6"
         }
-        variations:{"Board Size/7" "Board Size/8" "Board Size/9" 
-        "Board Size/10" "Board Size/11"  "Board Size/12" 
+        variations:{"Board Size/7" "Board Size/8" "Board Size/9"
+        "Board Size/10" "Board Size/11"  "Board Size/12"
         }
     )*
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Hoyito is a two-row mancala-style board game that is played in the Dominican Republic. It is similar to other games from the Caribbean, which were likely brought to the region by enslaved African people during European colonisation.")
@@ -110,12 +110,12 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         }
     )
-    
+
     (ai
         "Hoyito_ai"
     )

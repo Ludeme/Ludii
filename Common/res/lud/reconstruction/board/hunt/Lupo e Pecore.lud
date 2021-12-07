@@ -1,16 +1,16 @@
 (game "Lupo e Pecore"
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge 
+    (players 2)
+    (equipment {
+        (board
+            (merge
                 (shift 0 3 (rectangle 3 9 diagonals:Alternating) )
-                (shift 3 0 (rectangle 9 3 diagonals:Alternating) ) 
+                (shift 3 0 (rectangle 9 3 diagonals:Alternating) )
             )
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -18,8 +18,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Lupo e Pecore is a game which is included in  a sixteenth century compendium of games from Venice.")
@@ -31,10 +31,10 @@
         (origin  "This game was played in Italy, from around 1500 to 1599.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
 )

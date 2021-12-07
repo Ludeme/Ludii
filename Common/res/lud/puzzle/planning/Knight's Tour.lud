@@ -1,48 +1,48 @@
-(game "Knight's Tour"  
-    (players 1)  
-    (equipment { 
-        (board (square 8)) 
+(game "Knight's Tour"
+    (players 1)
+    (equipment {
+        (board (square 8))
         (piece "Knight" P1)
         }
-    )  
-    (rules 
-        phases:{    
-        (phase "Placement" 
-            (play (move Add (to (sites Empty)))) 
+    )
+    (rules
+        phases:{
+        (phase "Placement"
+            (play (move Add (to (sites Empty))))
             (nextPhase "Movement")
         )
-        (phase "Movement" 
-            (play 
+        (phase "Movement"
+            (play
                 (move
                     Leap
-                    (from (last To)) 
-                    "KnightWalk" 
+                    (from (last To))
+                    "KnightWalk"
                     (to if:(is Empty (to)))
-                    (then 
+                    (then
                         (add (to (last From)))
                     )
-                ) 
+                )
             )
         )
         }
-        
+
         (end {
-            (if 
-                (>= (count Moves) (count Sites "Board")) 
-                (result P1 Win) 
+            (if
+                (>= (count Moves) (count Sites "Board"))
+                (result P1 Win)
             )
-            (if 
-                (no Moves P1) 
-                (result P1 Loss) 
-            )  
+            (if
+                (no Moves P1)
+                (result P1 Loss)
+            )
         } )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Knight's tour is a puzzle by which a Chess knight is moved on a board so that is is placed in every square on the board only once. It has been documented in India, where the movement of the horse piece in Chaturanga has the same movement as the Chess knight.")
@@ -54,14 +54,14 @@
         (origin  "This game was played in India, from around 1500 to 1550.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour DarkGrey))
         (board Style Chess)
     })
-    
-    (ai 
+
+    (ai
         "Knight's Tour_ai"
     )
-    
+
 )

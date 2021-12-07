@@ -1,9 +1,9 @@
-(game "Mysore Tiger Game"  
-    (players 2)  
-    (equipment { 
+(game "Mysore Tiger Game"
+    (players 2)
+    (equipment {
         (board
             (add
-                (remove 
+                (remove
                     (scale 1 2 (wedge 3))
                     vertices:{5}
                 )
@@ -11,26 +11,26 @@
             )
             use:Vertex
         )
-        (hand P1) 
+        (hand P1)
         (piece "Human" P1
             ("StepToEmpty")
         )
         (piece "Tiger" P2
-            (or 
+            (or
                 ("StepToEmpty")
                 ("HopCapture")
             )
         )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (place "Human1" (handSite P1) count:3)
             (place "Tiger2" (sites Top))
         })
-        
+
         phases:{
-        (phase "Opening" P1 
+        (phase "Opening" P1
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Playing")
         )
@@ -38,7 +38,7 @@
             (play (forEach Piece))
         )
         }
-        
+
         (end {
             (if (no Moves P2) (result P1 Win))
             (if (< (count Pieces P1) 3) (result P2 Win))
@@ -48,8 +48,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game is presented in a group of manuscripts from the Maharaja Krishnaraja Wadiyar III of Mysore. Three people attempt to trap a tiger, and the tiger attempts to eat the people.")
@@ -61,13 +61,13 @@
         (origin  "This game was played in India, from around 1794 to 1868.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Mysore Tiger Game_ai"
     )

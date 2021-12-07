@@ -10,12 +10,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mwambulula"  
-    (players 2)  
-    
-    (equipment { 
+(game "Mwambulula"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" "16,E,N1,W" loop:True P2)
             }
@@ -26,15 +26,15 @@
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
-        
+
         phases:{
         (phase "Opening"
             (play
-                (move 
+                (move
                     (from (sites Mover "Inner") if:(is Occupied (from)))
                     (to Cell (handSite Mover))
                     count:2
@@ -42,17 +42,17 @@
             )
             (nextPhase Mover "NoSeedsInInner" "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
                 (or
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
-                                (sites Mover "Home") 
-                            ) 
+                        (from
+                            (if
+                                (is Mover Prev)
+                                "PlayFromLastHole"
+                                (sites Mover "Home")
+                            )
                             if:(> (count at:(from)) 0)
                         )
                         (then
@@ -128,9 +128,9 @@
                 )
             )
         )
-        
+
         }
-        
+
         (end
             (forEach NonMover
                 if:(no Moves Player)
@@ -142,8 +142,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Mwambulula is a four-row mancala-style board game played by the Bemba people of Zambia. It is notable because it begins immediately by holding counters in reserved to be entered into the board on a later turn.")
@@ -154,10 +154,10 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

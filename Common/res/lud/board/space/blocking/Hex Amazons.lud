@@ -1,8 +1,8 @@
 (define "NumPiecesBetweenDiagonalStep"
-    (count Sites 
-        in:(forEach 
-            (intersection 
-                (sites Incident Cell of:Cell at:(if (!= (between) Off) (between) (from))) 
+    (count Sites
+        in:(forEach
+            (intersection
+                (sites Incident Cell of:Cell at:(if (!= (between) Off) (between) (from)))
                 (sites Incident Cell of:Cell at:(to))
             )
             if:(not (is Empty (site)))
@@ -11,7 +11,7 @@
 )
 
 (define "ToEmptyAndBlocked"
-    (and 
+    (and
         (is Empty (to))
         (= 2 ("NumPiecesBetweenDiagonalStep"))
     )
@@ -19,13 +19,13 @@
 
 (define "NotBlockedOrNotMaxSlide"
     (or
-        (= (between) (to)) 
+        (= (between) (to))
         (!= 2 ("NumPiecesBetweenDiagonalStep"))
     )
 )
 
 (define "ToEmptyAndNotBlocked"
-    (and 
+    (and
         (is Empty (to))
         (!= 2 ("NumPiecesBetweenDiagonalStep"))
     )
@@ -36,7 +36,7 @@
         (move Slide)
         (move Slide Diagonal
             (between if:(is Empty (between)))
-            (to 
+            (to
                 if:("ToEmptyAndBlocked")
                 (apply if:("NotBlockedOrNotMaxSlide"))
             )
@@ -47,27 +47,27 @@
 
 //------------------------------------------------------------------------------
 
-(game "Hex Amazons"  
-    (players 2)  
-    (equipment { 
-        (board (hex 7)) 
+(game "Hex Amazons"
+    (players 2)
+    (equipment {
+        (board (hex 7))
         (piece "Queen" Each ("QueenMove" (then (moveAgain))))
         (piece "Dot" Neutral)
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place "Queen1" {"B2" "G2" "E5" "B7"})
             (place "Queen2" {"L12" "G12" "L7" "I9"})
         })
-        
+
         phases:{
         (phase "Opening" P1
             (play (forEach Piece "QueenMove"))
             (nextPhase Mover "Playing")
         )
-        (phase "Playing" 
-            (play 
+        (phase "Playing"
+            (play
                 (if ("SameTurn")
                     (or
                         (move Shoot (piece "Dot0"))
@@ -81,24 +81,24 @@
             )
         )
         }
-        
-        (end (if (no Moves Next)  (result Mover Win) ) )  
+
+        (end (if (no Moves Next)  (result Mover Win) ) )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "A variant of Amazons played on a hex board.")
         (rules "Movement is the same as regular amazons. You can move or shoot as many spaces as you want in any orthogonal or diagonal direction. With a hex board you have 6 orthogonal lines of movement (green) as well as 6 diagonal lines of movement (blue).
-            
+
             Like in the original, Amazons still cannot move or shoot through other arrows or other amazons. However the diagonals are a little bit more tricky than the original. If the two orthogonal spaces next to the diagonal line are blocked, than the amazon can no longer use (or continue along) this diagonal. This is important because it reduces the movement capabilities of the amazons and allows a wall of connected arrows to become impenetrable.
-            
+
             One final rule, in order to balance the game (white has first move advantage). On whites first turn he/she can only move an amazon but not shoot an arrow afterwards. This prevents potential too strong opening moves.
-            
+
         The first player to block the opponent wins.")
         (source "<a href=\"https://boardgamegeek.com/thread/2501354/hex-amazons\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (version "1.3.0")
@@ -108,12 +108,12 @@
         (date "11-09-2020")
         }
     )
-    
+
     (graphics {
         (piece Scale "Dot" 0.333)
         (board Style Chess)
     })
-    
+
     (ai
         "Hex Amazons_ai"
     )

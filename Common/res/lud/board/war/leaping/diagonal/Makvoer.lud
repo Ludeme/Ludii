@@ -2,15 +2,15 @@
 
 //------------------------------------------------------------------------------
 
-(game "Makvoer" 
+(game "Makvoer"
     (players {(player N) (player S)})
-    (equipment { 
-        (board (square 8)) 
-        (piece "Counter" Each 
-            (or 
-                "StepDiagonalToEmpty" 
+    (equipment {
+        (board (square 8))
+        (piece "Counter" Each
+            (or
+                "StepDiagonalToEmpty"
                 "HopDiagonalCapture"
-                (then 
+                (then
                     (if "JumpToPromotionZone"
                         (promote (last To) (piece "DoubleCounter") Mover)
                     )
@@ -20,12 +20,12 @@
         (piece "DoubleCounter" Each
             (or
                 (move Slide Diagonal)
-                (move Hop 
+                (move Hop
                     (directions {FR FL})
-                    (between 
-                        before:(count Rows) 
+                    (between
+                        before:(count Rows)
                         after:(count Rows)
-                        if:(is Enemy (who at:(between))) 
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))
@@ -34,24 +34,24 @@
         )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)))
             (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)))
         })
-        
-        (play (forEach Piece)) 
-        
-        (end (if (no Pieces Next) (result Mover Win))) 
+
+        (play (forEach Piece))
+
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Makvœr is a form of Draughts played in Denmark, known since the seventeenth century. It features orthogonal and diagonal movement, and the name suggests a relationship to Molkwerums Dans, or Frisian Draughts, in which pieces move similarly.")
@@ -64,12 +64,12 @@
         (origin  "This game was played in Denmark, around 1802.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "Makvoer_ai"
     )

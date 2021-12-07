@@ -1,30 +1,30 @@
 (game "Nei-Pat-Kono"
-    (players 2)  
-    (equipment 
-        { 
-        (board <Board> use:Vertex) 
-        (piece "Marker" Each 
-            (or 
+    (players 2)
+    (equipment
+        {
+        (board <Board> use:Vertex)
+        (piece "Marker" Each
+            (or
                 ("StepOrthogonalToEmpty")
                 (move
                     Hop
-                    Orthogonal 
+                    Orthogonal
                     (between if:(is Friend (who at:(between))))
-                    (to if:(is Enemy (who at:(to)))) 
-                ) 
-            ) 
+                    (to if:(is Enemy (who at:(to))))
+                )
+            )
         )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start { <Start> })
         (play (forEach Piece) )
-        (end 
-            (if 
-                (or 
-                    (no Moves Next) 
+        (end
+            (if
+                (or
+                    (no Moves Next)
                     (<= (count Pieces Next) 1)
-                ) 
+                )
                 (result Mover Win)
             )
         )
@@ -35,25 +35,25 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4"   <(square 4)>  "The game is played on a 4x4 board.")*   
-    (item "6x6"   <(square 6)>  "The game is played on a 6x6 board.")  
-    (item "8x8"   <(square 8)>  "The game is played on a 8x8 board.")  
-    (item "10x10" <(square 10)> "The game is played on a 10x10 board.")  
-    (item "12x12" <(square 12)> "The game is played on a 12x12 board.")  
-    (item "14x14" <(square 14)> "The game is played on a 14x14 board.")  
-    (item "16x16" <(square 16)> "The game is played on a 16x16 board.") 
+    (item "4x4"   <(square 4)>  "The game is played on a 4x4 board.")*
+    (item "6x6"   <(square 6)>  "The game is played on a 6x6 board.")
+    (item "8x8"   <(square 8)>  "The game is played on a 8x8 board.")
+    (item "10x10" <(square 10)> "The game is played on a 10x10 board.")
+    (item "12x12" <(square 12)> "The game is played on a 12x12 board.")
+    (item "14x14" <(square 14)> "The game is played on a 14x14 board.")
+    (item "16x16" <(square 16)> "The game is played on a 16x16 board.")
 })
 
 (option "Start Rules" <Start> args:{ <rules> }
     {
-    (item "Half"       <(place "Marker1" (expand (sites Bottom) steps:(- (/ (count Rows) 2) 1))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 1)))>                 "The game starts with half the board owned by each player.")*   
-    (item "Empty Line" <(place "Marker1" (expand  (sites Bottom) steps:(- (/ (count Rows) 2) 2))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 2)))>    "The game starts with half the board owned by each player but with the two middle lines empty.")     
+    (item "Half"       <(place "Marker1" (expand (sites Bottom) steps:(- (/ (count Rows) 2) 1))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 1)))>                 "The game starts with half the board owned by each player.")*
+    (item "Empty Line" <(place "Marker1" (expand  (sites Bottom) steps:(- (/ (count Rows) 2) 2))) (place "Marker2" (expand (sites Top) steps:(- (/ (count Rows) 2) 2)))>    "The game starts with half the board owned by each player but with the two middle lines empty.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Nei-Pat-Kono is a game played in Korea at least since the end of the nineteenth century, and likely earlier. It is a game of leaping captures similar to others common around the world.")
@@ -66,13 +66,13 @@
         (origin  "This game was played in Korea, around 1895.")
         }
     )
-    
+
     (graphics {
         (board Style Graph)
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Nei-Pat-Kono_ai"
     )

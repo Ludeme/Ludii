@@ -1,5 +1,5 @@
 (game "Nawabari"
-    (players 1)  
+    (players 1)
     (equipment {
         (board (square <Challenge:size>) (values Edge (range 0 1)) use:Edge)
         (hints {<Challenge:hints>} Cell)
@@ -7,9 +7,9 @@
     (rules
         (play
             (satisfy {
-                (forAll Cell 
-                    (or 
-                        (= (hint Cell at:(from)) Off) 
+                (forAll Cell
+                    (or
+                        (= (hint Cell at:(from)) Off)
                         (is Count Edge (sites Incident Edge of:Cell at:(from)) (hint Cell at:(from)))
                     )
                 )
@@ -25,7 +25,7 @@
 
 (option "Challenge" <Challenge> args:{ <size> <hints> }
     {
-    (item "Janko.at #1" 
+    (item "Janko.at #1"
         <9>
         <
         (hint {0} 4)
@@ -49,15 +49,15 @@
         (hint {58} 1)
         >
         ""
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
     (info {
-        
-    }) 
+
+    })
     (graphics {
         (board Style PenAndPaper)
         (show Edges Diagonal Hidden)

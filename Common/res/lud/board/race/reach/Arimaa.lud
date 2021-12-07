@@ -1,23 +1,23 @@
 (define "NotFrozen"
-    ("NoSites" 
-        (sites Around 
-            (from) 
-            Orthogonal 
-            if:(and 
-                (is Enemy (who at:(to))) 
-                (> (value Piece at:(to)) (value Piece at:(from))) 
+    ("NoSites"
+        (sites Around
+            (from)
+            Orthogonal
+            if:(and
+                (is Enemy (who at:(to)))
+                (> (value Piece at:(to)) (value Piece at:(from)))
             )
         )
-    ) 
+    )
 )
 
 (define "Frozen" (not "NotFrozen") )
 
-(define "NotProtectedBy" 
-    ("NoSites" 
-        (sites Around 
+(define "NotProtectedBy"
+    ("NoSites"
+        (sites Around
             #1
-            Orthogonal 
+            Orthogonal
             if:(= (who at:(to)) #2)
         )
     )
@@ -27,31 +27,31 @@
 
 (define "NotMyLastMove" (< (count MovesThisTurn) 3))
 
-(define "WillPushAPiece" 
-    (and { 
+(define "WillPushAPiece"
+    (and {
         "NotMyLastMove"
-        (not ("NoSites" (sites Around (to) Orthogonal if:(is Empty (to))))) // Not if the to location is orthogonally surrounded 
+        (not ("NoSites" (sites Around (to) Orthogonal if:(is Empty (to))))) // Not if the to location is orthogonally surrounded
         (is Enemy (who at:(to))) // if on the to location, an enemy is there
         (< (value Piece at:(to)) (value Piece at:(from))) // Only if the from value is higher to the to value
     })
 )
 
-(define "PieceMove" 
+(define "PieceMove"
     (move
         Step
-        #1 
-        (to if:(and (or 
+        #1
+        (to if:(and (or
                     "NotFrozen"
                     (and ("Frozen") ("ProtectedBy" Mover))
                 )
-                (or 
-                    (is Empty (to)) 
+                (or
+                    (is Empty (to))
                     "WillPushAPiece"
-                ) 
+                )
             )
             (apply // We store the piece pushed to place it somewhere around in the next move.
-                (fromTo 
-                    (from (to)) 
+                (fromTo
+                    (from (to))
                     (to (handSite Mover))
                 )
             )
@@ -59,29 +59,29 @@
     )
 )
 
-(define "AllPieceInATrapAreRemoved" 
-    (forEach Site (sites "Traps") 
-        (if 
-            (or 
+(define "AllPieceInATrapAreRemoved"
+    (forEach Site (sites "Traps")
+        (if
+            (or
                 (and (= (who at:(to)) P1) ("NotProtectedBy" (site) P1))
                 (and (= (who at:(to)) P2) ("NotProtectedBy" (site) P2))
             )
-            (do (set Pending (value Piece at:(to))) next:(remove (to))) 
+            (do (set Pending (value Piece at:(to))) next:(remove (to)))
         )
     )
 )
 
 (define "HasToPushAPiece" (!= (what at:(handSite Mover)) 0))
 
-(define "PushThePiece" 
-    (move 
-        (from (handSite Mover)) 
+(define "PushThePiece"
+    (move
+        (from (handSite Mover))
         (to (sites Around (last To) Orthogonal if:(and (!= (last From) (to)) (is Empty (to)) ) )) // Any empty site around but not the previous position of the piece pushing.
-        (then 
+        (then
             (and
                 "AllPieceInATrapAreRemoved"
-                (if "NotMyLastMove" 
-                    (moveAgain) 
+                (if "NotMyLastMove"
+                    (moveAgain)
                     (remember State)
                 )
             )
@@ -89,13 +89,13 @@
     )
 )
 
-(define "PullAPiece" 
-    (move 
+(define "PullAPiece"
+    (move
         (from
-            (sites Around 
-                (last From) 
-                Orthogonal 
-                if:(and 
+            (sites Around
+                (last From)
+                Orthogonal
+                if:(and
                     (is Enemy (who at:(to))) // An enemy piece.
                     (if (and (is In (last To) (sites "Traps")) (is Pending))
                         (< (value Piece at:(to)) (value Pending)) // With a lower value of mine.
@@ -103,61 +103,61 @@
                     )
                 )
             )
-        ) 
-        (to (last From)) 
+        )
+        (to (last From))
     )
 )
 
 (define "FinishMyTurn" (move Pass (then (remember State))))
 
-(define "RabbitReachedGoal" 
-    (if 
-        (!= 0 
-            (count Sites 
-                in:(forEach 
-                    (sites Occupied by:#1 component:"Rabbit") 
+(define "RabbitReachedGoal"
+    (if
+        (!= 0
+            (count Sites
+                in:(forEach
+                    (sites Occupied by:#1 component:"Rabbit")
                     if:(is In (site) (sites #1 "Goal"))
                 )
             )
-        ) 
+        )
         (result #1 #2)
-    ) 
+    )
 )
 
-(define "NoRabbit" 
-    (if 
-        (and 
-            (!= (what at:(handSite #2)) (id "Rabbit" #1)) 
+(define "NoRabbit"
+    (if
+        (and
+            (!= (what at:(handSite #2)) (id "Rabbit" #1))
             ("NoSites" (sites Occupied by:#1 component:"Rabbit"))
-        ) 
+        )
         (result #2 #3)
-    ) 
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Arimaa" 
-    (players {(player N) (player S)}) 
-    (equipment { 
+(game "Arimaa"
+    (players {(player N) (player S)})
+    (equipment {
         (board (square 8))
-        (hand Each size:6) 
-        
+        (hand Each size:6)
+
         (piece "Rabbit" Each ("PieceMove" (directions {Forward Rightward Leftward})))
         (piece "Cat" Each ("PieceMove" Orthogonal))
         (piece "Dog" Each ("PieceMove" Orthogonal))
         (piece "Horse" Each ("PieceMove" Orthogonal))
         (piece "Camel" Each ("PieceMove" Orthogonal))
         (piece "Elephant" Each ("PieceMove" Orthogonal))
-        
+
         (regions "Traps" (sites {"C3" "C6" "F3" "F6"}))
         (regions "Home" P1 (expand (sites Bottom)))
         (regions "Home" P2 (expand (sites Top)))
         (regions "Goal" P1 (sites Top))
         (regions "Goal" P2 (sites Bottom))
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place "Rabbit" "Hand" count:8 value:1)
             (place "Cat" "Hand" count:2 value:2)
             (place "Dog" "Hand" count:2 value:3)
@@ -165,51 +165,51 @@
             (place "Camel" "Hand" count:1 value:5)
             (place "Elephant" "Hand" count:1 value:6)
         })
-        
+
         phases:{
-        
+
         (phase "PlacementP1"
-            (play 
-                (move 
+            (play
+                (move
                     (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P1.
-                    (to (intersection (sites Mover "Home") (sites Empty))) 
-                    (then (if (not ("HandEmpty" P1)) (moveAgain) )) 
-                ) 
-            ) 
+                    (to (intersection (sites Mover "Home") (sites Empty)))
+                    (then (if (not ("HandEmpty" P1)) (moveAgain) ))
+                )
+            )
             (nextPhase ("HandEmpty" P1) "PlacementP2")
         )
-        
+
         (phase "PlacementP2"
-            (play 
-                (move 
+            (play
+                (move
                     (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P2.
-                    (to (intersection (sites Mover "Home") (sites Empty))) 
-                    (then (if ("HandEmpty" P2) (remember State) (moveAgain))) 
-                ) 
-            ) 
+                    (to (intersection (sites Mover "Home") (sites Empty)))
+                    (then (if ("HandEmpty" P2) (remember State) (moveAgain)))
+                )
+            )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
-        (phase "Movement"  
+
+        (phase "Movement"
             (play
                 (avoidStoredState
                     (if "HasToPushAPiece"
                         "PushThePiece"
-                        (or 
+                        (or
                             (or
-                                (if 
-                                    (and 
-                                        "SameTurn" 
+                                (if
+                                    (and
+                                        "SameTurn"
                                         (is In (last From) (sites Board))
-                                    ) 
+                                    )
                                     "PullAPiece"
                                 )
                                 (forEach Piece)
-                                (then 
+                                (then
                                     (and
                                         "AllPieceInATrapAreRemoved"
-                                        (if "NotMyLastMove" 
-                                            (moveAgain) 
+                                        (if "NotMyLastMove"
+                                            (moveAgain)
                                             (remember State)
                                         )
                                     )
@@ -219,15 +219,15 @@
                         )
                     )
                 )
-            ) 
-            
-            (end 
+            )
+
+            (end
                 (if (not (is Next Mover))
                     {
-                    ("RabbitReachedGoal" P1 Win) 
-                    ("RabbitReachedGoal" P2 Win) 
-                    ("NoRabbit" P1 P2 Win) 
-                    ("NoRabbit" P2 P1 Win) 
+                    ("RabbitReachedGoal" P1 Win)
+                    ("RabbitReachedGoal" P2 Win)
+                    ("NoRabbit" P1 P2 Win)
+                    ("NoRabbit" P2 P1 Win)
                     ("NoMoves" Loss)
                     }
                 )
@@ -239,8 +239,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Invented in 2003 by Omar Syed, Arimaa was invented as a Chess variant to be difficult for computers to learn, but easy for humans.")
@@ -253,7 +253,7 @@
         (date "2003")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Gold))
         (player Colour P2 (colour LightGrey))
@@ -262,7 +262,7 @@
         (board Colour OuterEdges (colour Black))
         (board Colour Phase0 (colour LightGrey))
     })
-    
+
     (ai
         "Arimaa_ai"
     )

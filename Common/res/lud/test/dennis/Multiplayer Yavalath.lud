@@ -1,16 +1,16 @@
-(game "Multiplayer Yavalath"  
-    (players <Version:numPlayers>) 
-    (equipment { 
-        (board (rotate 90 (hex 5))) 
-        (piece "Marker" Each) 
+(game "Multiplayer Yavalath"
+    (players <Version:numPlayers>)
+    (equipment {
+        (board (rotate 90 (hex 5)))
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (play <Swap:playRules>)
         (end {
             (if (is Line 4 Mover) (result Mover Win))
-            (if (is Line 3 Mover) (result Mover Loss)) 
-        })  
+            (if (is Line 3 Mover) (result Mover Loss))
+        })
     )
 )
 
@@ -25,19 +25,19 @@
 
 (option "Swap Rule" <Swap> args:{ <playRules> }
     {
-    (item "No Swap" 
-        <(priority { 
-            (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) 
-            (move Add (to (sites Empty))) 
-        })> 
+    (item "No Swap"
+        <(priority {
+            (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty)))))))
+            (move Add (to (sites Empty)))
+        })>
         "No swap rule."
     )*
-    (item "In-place Previous" 
+    (item "In-place Previous"
         <(or {
             (priority {
-                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) 
-                (move Add (to (sites Empty))) 
-            })				
+                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty)))))))
+                (move Add (to (sites Empty)))
+            })
             (if (and {
                     (> (count Moves) 0) 					// No swapping for first player in first turn
                     (<= (count Turns) (count Players))		// No swapping after everyone's had a turn
@@ -45,33 +45,33 @@
                 })
                 (swap Players Mover Prev)		// Mover swaps with previous player
             )
-        })> 
+        })>
         "In-place swap with previous."
     )
-    (item "In-place Any" 
+    (item "In-place Any"
         <(or {
             (priority {
-                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) 
-                (move Add (to (sites Empty))) 
+                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty)))))))
+                (move Add (to (sites Empty)))
             })
             (if (and {
                     (> (count Moves) 0) 					// No swapping for first player in first turn
                     (<= (count Turns) (count Players))		// No swapping after everyone's had a turn
                     (not (= (mover) (prev)))			// No swapping if we just got swapped into our current role
                 })
-                (select 
+                (select
                     (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
                     (then (swap Players Mover (last To)))										// Swap mover with selected index
                 )
             )
-        })> 
+        })>
         "In-place swap with any player with a lower index."
     )
-    (item "Shift Previous" 
+    (item "Shift Previous"
         <(or {
             (priority {
-                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) 
-                (move Add (to (sites Empty))) 
+                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty)))))))
+                (move Add (to (sites Empty)))
             })
             (if (and {
                     (> (count Moves) 0) 					// No swapping for first player in first turn
@@ -79,32 +79,32 @@
                 })
                 (shiftPlayers Mover (- (mover) 1))		// Mover ''shift-swaps'' with index 1 lower than his own
             )
-        })> 
+        })>
         "Move into previous position, move previous player to last spot, and shift all the players in between."
     )
-    (item "Shift Any" 
+    (item "Shift Any"
         <(or {
             (priority {
-                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) 
-                (move Add (to (sites Empty))) 
+                (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty)))))))
+                (move Add (to (sites Empty)))
             })
             (if (and {
                     (> (count Moves) 0) 					// No swapping for first player in first turn
                     (< (count Moves) (count Players))		// No swapping after everyone's had a move
                 })
-                (select 
+                (select
                     (from (forEach (sites Board) if:(and (< (to) (mover)) (>= (to) 1)))) 		// Select Player index lower than Mover index
                     (then (shiftPlayers Mover (last To)))										// "Shift-swap" mover with selected index
                 )
             )
-        })> 
+        })>
         "Move into any lower-index position, move that player to last spot, and shift all the players in between."
     )
     }
 )
 
 (metadata
-    
+
     (info
         {
         (description "Yavalath was invented by Cameron Browne in 2007. It is played on a hexagonal board with five spaces per side. It can be played by two or three players.")
@@ -117,5 +117,5 @@
         (date "01-10-2011")
         }
     )
-    
+
 )

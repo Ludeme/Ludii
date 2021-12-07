@@ -1,13 +1,13 @@
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            (max 1) 
-            if:(= (what at:(between)) (id #1)) 
+(define "Custodial"
+    (custodial
+        (from (last To))
+        Orthogonal
+        (between
+            (max 1)
+            if:(= (what at:(between)) (id #1))
             (apply (remove (between)))
         )
-        (to if:"FriendOrCentreOrFortress") 
+        (to if:"FriendOrCentreOrFortress")
     )
 )
 
@@ -23,23 +23,23 @@
 
 //------------------------------------------------------------------------------
 
-(game "Tawlbwrdd"  
-    (players 2)  
-    (equipment { 
-        (board (square 11)) 
+(game "Tawlbwrdd"
+    (players 2)
+    (equipment {
+        (board (square 11))
         (regions "Fortresses" (sites Corners))
-        
-        (piece "Thrall" P1 
+
+        (piece "Thrall" P1
             (move
                 Slide
-                Orthogonal 
+                Orthogonal
                 (between if:"EmptyButNotCentreOrFortress")
-                (then 
+                (then
                     (or {
                         ("Custodial" "Thrall2")
-                        (custodial 
-                            (from (last To)) 
-                            Orthogonal 
+                        (custodial
+                            (from (last To))
+                            Orthogonal
                             (between (max 1) if:(= (what at:(between)) (id "Jarl2")) "CaptureJarl")
                             (to if:"FriendOrCentreOrFortress")
                         )
@@ -48,34 +48,34 @@
                 )
             )
         )
-        (piece "Thrall" P2 
+        (piece "Thrall" P2
             (move
                 Slide
-                Orthogonal 
+                Orthogonal
                 (between if:"EmptyButNotCentreOrFortress")
-                (then ("Custodial" "Thrall1") ) 
-            ) 
-        ) 
-        (piece "Jarl" P2 
+                (then ("Custodial" "Thrall1") )
+            )
+        )
+        (piece "Jarl" P2
             (move
                 Slide
-                Orthogonal 
-                (then ("Custodial" "Thrall1") ) 
-            ) 
-        ) 
+                Orthogonal
+                (then ("Custodial" "Thrall1") )
+            )
+        )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Thrall1" {"D1" "E1" "F1" "G1" "H1" "F2" "A4" "A5" "A6" "A7" "A8" "B6" "K4" "K5" "K6" "K7" "K8" "J6" "F10" "D11" "E11" "F11" "G11" "H11" "F10"})
             (place "Thrall2" {"F3" "F4" "F5" "C6" "D6" "E6" "G6" "H6" "I6" "F7" "F8" "F9"})
             (place "Jarl2" (centrePoint))
             }
         )
-        
-        (play (forEach Piece)) 
-        
+
+        (play (forEach Piece))
+
         (end
             {
             (if (is Within (id "Jarl2") in:(sites Outer) ) (result P2 Win))
@@ -89,27 +89,27 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Cyningstan"   <>       "The rules are describing with the Cyningstan ruleset.")   
+    (item "Cyningstan"   <>       "The rules are describing with the Cyningstan ruleset.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Cyningstan (Suggested)" {
         "Variant/Cyningstan"
     })*
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Tawlbwrdd is a game in the tafl family mentioned in Peniarth Manuscript 158, describing a portion of the game as played in Wales during the sixteenth century.")
@@ -124,16 +124,16 @@
         (origin  "This game was played in Wales, from around 1587 to 1857.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Style Tafl)
-        (show Symbol "knotSquare" "Fortresses") 
+        (show Symbol "knotSquare" "Fortresses")
     })
-    
-    (ai 
+
+    (ai
         "Tawlbwrdd_ai"
     )
-    
+
 )

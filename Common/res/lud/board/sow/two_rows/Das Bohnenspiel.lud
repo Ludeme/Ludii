@@ -2,9 +2,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Das Bohnenspiel"  
-    (players 2)  
-    (equipment { 
+(game "Das Bohnenspiel"
+    (players 2)
+    (equipment {
         (mancalaBoard 2 6
             (track "Track" "1,E,N,W" loop:True)
         )
@@ -13,36 +13,36 @@
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 6 to:(sites Track) ))
-        
-        (play 
-            (move 
-                Select 
+
+        (play
+            (move
+                Select
                 (from
-                    (sites Mover) 
+                    (sites Mover)
                     if:(> (count at:(from)) 0)
                 )
-                (then 
+                (then
                     (sow
-                        if:(is In (count at:(to)) (sites {2 4 6})) 
-                        apply:(fromTo 
-                            (from (to)) 
-                            (to (mapEntry (mover))) 
+                        if:(is In (count at:(to)) (sites {2 4 6}))
+                        apply:(fromTo
+                            (from (to))
+                            (to (mapEntry (mover)))
                             count:(count at:(to))
-                        ) 
+                        )
                         backtracking:True
                     )
                 )
             )
         )
-        
+
         (end
-            (if (no Moves Mover) 
+            (if (no Moves Mover)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -52,7 +52,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Das Bohnenspiel is a two-row mancala-style game described by Fritz Jahn, who described the game and two boards, one said to be a duplicate of one used by Catherina II of Russia to play with the Persian Shah 100 years before, and a another from the wife of the Oberpresident of Waldow, who played it during her childhood in Sczeczin. The game was popular among German-Baltic and Prussian royal families during the 19th century, but was popularized with Jahn's book. It continued play through at least the 1980s, as several East German books were published about it.")
@@ -64,13 +64,13 @@
         (origin  "This game was played in Russia? Iran?, from around 1908 to 1923.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
-    (ai 
+
+    (ai
         "Das Bohnenspiel_ai"
     )
-    
+
 )

@@ -1,23 +1,23 @@
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (move
         Remove
-        (sites Occupied by:Enemy container:"Board") 
+        (sites Occupied by:Enemy container:"Board")
         (then (moveAgain))
     )
 )
 
-(define "IfLine3MoveAgainPlacement" 
-    (then 
-        (if 
+(define "IfLine3MoveAgainPlacement"
+    (then
+        (if
             (and (is Line 3) (not ("HandEmpty" Mover)))
             (moveAgain)
         )
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
+(define "IfLine3MoveAgain"
+    (then
+        (if
             (is Line 3)
             (moveAgain)
         )
@@ -28,51 +28,51 @@
 
 (game "Nerenchi Keliya"
     (players 2)
-    
-    (equipment 
-        { 
-        (board (concentric Square rings:3) use:Vertex) 
+
+    (equipment
+        {
+        (board (concentric Square rings:3) use:Vertex)
         (hand Each)
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+                Step
+                (to if:(is Empty (to)))
+                "IfLine3MoveAgain"
             )
-        ) 
+        )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:9))
-        
+
         phases:
         {
         (phase "Placement"
             (play
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
-                    "IfLine3MoveAgainPlacement" 
-                )  
-            ) 
+                (move
+                    (from (handSite Mover))
+                    (to (sites Empty))
+                    "IfLine3MoveAgainPlacement"
+                )
+            )
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
         )
-        
-        (phase "Movement" 
-            (play 
+
+        (phase "Movement"
+            (play
                 (forEach Piece)
             )
             (nextPhase Mover (is Line 3) "Capture")
         )
-        
-        (phase "Capture" 
-            (play 
+
+        (phase "Capture"
+            (play
                 "RemoveEnemyPiece"
             )
             (nextPhase Mover "Movement")
         )
         }
-        
+
         (end {
             (if (<= (count Pieces P1) 2) (result P2 Win))
             (if (<= (count Pieces P2) 2) (result P1 Win))
@@ -82,7 +82,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Nerenchi Keliya is an alignment game played in Sri Lanka. Graffiti on earlier monuments may suggest the game has a certain degree of antiquity on the island.")
@@ -94,9 +94,9 @@
         (origin  "This game was played in Sri Lanka, around 1909.")
         }
     )
-    
+
     (graphics {
-        
+
     })
     (ai
         "Nerenchi Keliya_ai"

@@ -1,7 +1,7 @@
-(define "EdgeInCommon" 
-    (intersection (sites Incident Edge of:Cell at:#1) 
+(define "EdgeInCommon"
+    (intersection (sites Incident Edge of:Cell at:#1)
         (sites Incident Edge of:Cell at:#2)
-    ) 
+    )
 )
 
 (define "NoEdgeBetweenCells"
@@ -10,27 +10,27 @@
 
 (define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover)) ))
 
-(define "SizePath" 
+(define "SizePath"
     (count Steps
         (step
             Orthogonal
-            (to 
-                if:(and 
-                    (is Empty (to)) 
+            (to
+                if:(and
+                    (is Empty (to))
                     ("NoEdgeBetweenCells" (from) (to))
                 )
             )
         )
         (where "Pawn" #1)
         (sites #1)
-    )	
+    )
 )
 
 (define "NumPlayers" <Players:num>)
 
 //------------------------------------------------------------------------------
 
-(game "Quoridor" 
+(game "Quoridor"
     (players "NumPlayers")
     (equipment {
         (board (square 9))
@@ -39,14 +39,14 @@
                 (move
                     Step
                     Orthogonal
-                    (to 
-                        if:(and 
-                            (is Empty (to)) 
+                    (to
+                        if:(and
+                            (is Empty (to))
                             ("NoEdgeBetweenCells" (from) (to))
                         )
                     )
                 )
-                (move 
+                (move
                     Hop
                     Orthogonal
                     (between if:(is Enemy (who at:(between))))
@@ -63,14 +63,14 @@
         (hand Each)
         <Players:regions>
     })
-    (rules 
+    (rules
         <Players:start>
-        (play 
+        (play
             (or
                 (do
                     (if (is Occupied (handSite Mover))
-                        (move 
-                            (from (handSite Mover)) 
+                        (move
+                            (from (handSite Mover))
                             (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
                         )
                     )
@@ -79,14 +79,14 @@
                 (forEach Piece)
             )
         )
-        (end (if "ReachedTarget" (result Mover Win))) 
+        (end (if "ReachedTarget" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Players " <Players> args:{ <num> <regions> <start> <pathRule>} {
-    (item "2" <2> 
+    (item "2" <2>
         <
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
@@ -105,8 +105,8 @@
             (!= Infinity ("SizePath" P2))
         })
         >
-    "The game has 2 players")*   
-    (item "4" <4> 
+    "The game has 2 players")*
+    (item "4" <4>
         <
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
@@ -133,13 +133,13 @@
             (!= Infinity ("SizePath" P4))
         })
         >
-    "The game has 4 players.")   
+    "The game has 4 players.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Quoridor is a 2 or 4-player intuitive strategy game designed by Mirko Marchesi and published by Gigamic Games. Quoridor received the Mensa Mind Game award in 1997 and the Game Of The Year in the USA, France, Canada and Belgium")
@@ -153,14 +153,14 @@
         (date "1997")
         }
     )
-    
+
     (graphics {
         (player Colour Shared (colour Yellow))
         (board Style PenAndPaper replaceComponentsWithFilledCells:False)
         (board Colour InnerVertices (colour Hidden))
         (board Colour OuterVertices (colour Hidden))
-        (show Symbol "Square" (sites Board) fillColour:(colour 110 52 52) scale:0.9) 
-        
+        (show Symbol "Square" (sites Board) fillColour:(colour 110 52 52) scale:0.9)
+
         (piece Scale "Pawn" 0.825)
         (board Placement scale:0.9)
         (hand Placement P1 scale:0.1 offsetX:0.45 offsetY:0.1)

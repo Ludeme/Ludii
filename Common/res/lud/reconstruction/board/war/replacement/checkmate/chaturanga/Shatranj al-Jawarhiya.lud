@@ -1,10 +1,10 @@
 (game "Shatranj al-Jawarhiya"
-    (players 2)  
-    (equipment { 
-        (board (rectangle 8 7)) 		
+    (players 2)
+    (equipment {
+        (board (rectangle 8 7))
         // We know: the game has 6 piece types
     })
-    (rules 
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -12,8 +12,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Shatranj al-Jawarhiya is an incompleterly explained game from Al-Masudi's Murūj aḏ-Ḏahab wa-Maʿādin al-Jawhar (Meadows of Gold and Mines of Gems), where it is described alongside other games similar to Shatranj.")
@@ -25,9 +25,9 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

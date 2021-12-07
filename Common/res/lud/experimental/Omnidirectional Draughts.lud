@@ -1,15 +1,15 @@
-(define "HopCounter" 
+(define "HopCounter"
     (move
-        Hop 
-        (from #1) 
+        Hop
+        (from #1)
         All
-        (between 
+        (between
             if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
             (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -18,67 +18,67 @@
 
 //------------------------------------------------------------------------------
 
-(game "Omnidirectional Draughts" 
-    (players 2)  
-    (equipment { 
-        (board (square <Board>))        
+(game "Omnidirectional Draughts"
+    (players 2)
+    (equipment {
+        (board (square <Board>))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
-    
-    (rules 
-        
+    })
+
+    (rules
+
         (start {
-            (place "Counter1" (expand (sites Bottom) steps: (- (/ <Board> 2) 2) ) ) 
-            (place "Counter2" (expand (sites Top) steps: (- (/ <Board> 2) 2) ) )              
+            (place "Counter1" (expand (sites Bottom) steps: (- (/ <Board> 2) 2) ) )
+            (place "Counter2" (expand (sites Top) steps: (- (/ <Board> 2) 2) ) )
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
                         ("HopCounter" (last To)
-                            (then 
-                                (if (can Move ("HopCounter" (last To))) 
+                            (then
+                                (if (can Move ("HopCounter" (last To)))
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                     )
                     (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
                 )
                 (priority {
                     (max Moves
-                        (or 
+                        (or
                             (forEach Piece "Counter"
-                                ("HopCounter" (from) 
-                                    (then 
-                                        (if (can Move ("HopCounter" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
+                                ("HopCounter" (from)
+                                    (then
+                                        (if (can Move ("HopCounter" (last To)))
+                                            (moveAgain)
+                                            (if "JumpToPromotionZone"
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
                                             )
-                                        ) 
-                                    ) 
-                                ) 
+                                        )
+                                    )
+                                )
                             )
                             (forEach Piece "DoubleCounter" ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                         )
                     )
-                    (or  
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             (move
-                                Step 
-                                (directions Forwards) 
+                                Step
+                                (directions Forwards)
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -88,9 +88,9 @@
                     )
                 })
             )
-        ) 
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+        )
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
@@ -105,8 +105,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "A draughts variant with both orthogonal and diagonal movement and capture.")
@@ -118,12 +118,12 @@
         (date "2021")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
     (ai
         "Omnidirectional Draughts_ai"
     )

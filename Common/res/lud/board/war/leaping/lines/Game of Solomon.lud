@@ -1,9 +1,9 @@
-(define "HopCaptureForwards" 
+(define "HopCaptureForwards"
     (move
         Hop
-        (directions {Forwards Rightward Leftward} bySite:True) 
-        (between 
-            if:(is Enemy (who at:(between))) 
+        (directions {Forwards Rightward Leftward} bySite:True)
+        (between
+            if:(is Enemy (who at:(between)))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -12,19 +12,19 @@
 
 (define "StepToEmptyForwards"
     (move
-        Step 
+        Step
         (directions {Forwards Rightward Leftward} bySite:True)
         (to if:(is Empty (to)))
     )
 )
 
-(define "MoveChoice" 
-    (or  
+(define "MoveChoice"
+    (or
         (forEach Piece "Counter" #1
-            (then 
-                (if (is In (last To) (sites Mover)) 
+            (then
+                (if (is In (last To) (sites Mover))
                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                ) 
+                )
             )
         )
         (forEach Piece "DoubleCounter" #2)
@@ -33,53 +33,53 @@
 
 //------------------------------------------------------------------------------
 
-(game "Game of Solomon"  
-    (players {(player N) (player S)})  
-    (equipment { 
+(game "Game of Solomon"
+    (players {(player N) (player S)})
+    (equipment {
         (board
-            (renumber 
+            (renumber
                 (splitCrossings (add (regular Star 6) edges:{{0 5} {1 4} {2 3}}))
             )
             use:Vertex
-        ) 
-        (piece "Counter" Each)  
+        )
+        (piece "Counter" Each)
         (piece "DoubleCounter" Each)
-        (regions "Palace1" P1 (sites {"E7"})) 
-        (regions "Palace2" P2 (sites {"E1"})) 
-    })  
-    
-    (rules 
+        (regions "Palace1" P1 (sites {"E7"}))
+        (regions "Palace2" P2 (sites {"E1"}))
+    })
+
+    (rules
         (start {
             (place "Counter1" (sites {"E1" "A2" "D2" "E2" "F2" "I2"}))
             (place "Counter2" (sites {"E7" "A6" "D6" "E6" "F6" "I6"}))
         })
-        
+
         (play
             (priority {
                 ("MoveChoice" "HopCaptureForwards" "HopCapture")
                 ("MoveChoice" "StepToEmptyForwards" "StepToEmpty")
             })
         )
-        
+
         (end {
             (if (no Moves Next) (result Mover Win))
-            (if 
+            (if
                 (and {
-                    (= 1 (count Pieces P1)) 
-                    (= 1 (count Pieces P2)) 
-                    (= 1 (count Pieces P1 "DoubleCounter")) 
-                    (= 1 (count Pieces P2 "DoubleCounter")) 
-                }) 
+                    (= 1 (count Pieces P1))
+                    (= 1 (count Pieces P2))
+                    (= 1 (count Pieces P1 "DoubleCounter"))
+                    (= 1 (count Pieces P2 "DoubleCounter"))
+                })
                 (result Mover Draw)
             )
-        }) 
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Small draughts-like game invented by Martin Gardner on an unusual board.")
@@ -92,13 +92,13 @@
         (date "1985")
         }
     )
-    
+
     (graphics {
         (show RegionOwner)
         (show Edges Diagonal Hidden)
-        
-    })      
-    
+
+    })
+
     (ai
         "Game of Solomon_ai"
     )

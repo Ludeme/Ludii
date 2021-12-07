@@ -1,5 +1,5 @@
 // --------------------------------------
-(define "IsControlledBy" 
+(define "IsControlledBy"
     (<=
         (+ <Control:surplus> (count Pieces in:(sites Around (#2) "LoSDirection" if:(!= 0 (who at:(to))))))
         (* 2 (count Pieces #1 in:(sites Around (#2) "LoSDirection")))
@@ -10,20 +10,20 @@
         (+
             (results
                 from:(forEach
-                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))    
+                    (difference (difference (sites Board) (sites Occupied by:#1)) (sites Occupied by:Neutral))
                     if:("IsControlledBy" #1 (site))
                 )
-                to:(from) 
+                to:(from)
                 (if (is Empty (to)) 1 2)
 ))))
 
-(define "MoveTwiceThenScore" 
+(define "MoveTwiceThenScore"
     (if
         (is Prev Next)
         (moveAgain)
-        (and 
+        (and
             ("ScoreFor" Mover)
-            ("ScoreFor" Next)  
+            ("ScoreFor" Next)
 )))
 
 //-----------------------------------------------
@@ -48,18 +48,18 @@
                     (= -1 (var "DoubleTurnPhase"))
                     (= 1 (mover))
                 )
-                
+
                 (or
                     (move Pass)
                     (move Add
-                        (piece "X0") 
+                        (piece "X0")
                         (to (sites Empty))
                         (then
                             (if
                                 (> 2 (count Pieces in:(sites Occupied by:Neutral)))
                                 (moveAgain)
                 ))))
-                
+
                 (or
                     {
                     (move Add
@@ -73,10 +73,10 @@
                                 (set Var "DoubleTurnPhase" 1)
                                 ("MoveTwiceThenScore")
                     )))
-                    (move Remove 
+                    (move Remove
                         (forEach
                             (sites Occupied by:Next)
-                            if:("IsControlledBy" Mover (site)) 
+                            if:("IsControlledBy" Mover (site))
                         )
                         (then ("MoveTwiceThenScore"))
                     )
@@ -85,13 +85,13 @@
                 (then
                     (if
                         (no Moves Next)
-                        (and 
+                        (and
                             ("ScoreFor" Mover)
-                            ("ScoreFor" Next)  
+                            ("ScoreFor" Next)
         )))))
-        
-        (end 
-            (if 
+
+        (end
+            (if
                 (no Moves Mover)
                 (result Mover Loss) //last to place wins a tie
 ))))
@@ -109,7 +109,7 @@
 //-------------------------------------------------
 // Options
 
-(option "Board Size" <BoardSize> args:{<smallSide>} 
+(option "Board Size" <BoardSize> args:{<smallSide>}
     {
     (item "XSmall" <4> "Order 2 board")
     (item "S" <6> "Order 3 board")**
@@ -117,11 +117,11 @@
     (item "L" <10> "Order 5 board")
     (item "XL" <12> "Order 6 board")
     (item "XXL" <14> "Order 7 board")
-    
+
     }
 )
 
-(option "Board Grid" <Grid> args:{<selected> <connectivity> <diagShow>} 
+(option "Board Grid" <Grid> args:{<selected> <connectivity> <diagShow>}
     {
     (item "Hex Grid" <"Hex2Limp"> <Orthogonal> <Hidden>  "Hex N/N+2 grid w/even nodes, no center")**
     (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden>  "Square 2N grid w/even nodes, no center")
@@ -143,41 +143,41 @@
 // Main routine
 
 //---------------------------------------------
-// (define "ColourBackground" (colour 155 160 195)) 
-// (define "ColourBackground" (colour 126 130 156)) 
-(define "ColourBackground" (colour 135 170 130)) 
+// (define "ColourBackground" (colour 155 160 195))
+// (define "ColourBackground" (colour 126 130 156))
+(define "ColourBackground" (colour 135 170 130))
 
 (metadata
     (info
         {
-        (description "'Dogtown Clans' is a simplification of Double-move Situ and resembles Ki, as well. 
+        (description "'Dogtown Clans' is a simplification of Double-move Situ and resembles Ki, as well.
             Differences from Ki include double moves, individual captures requiring a separate move without replacement, a last-able-to-move goal, preference for hex grid, and a parameter to define control.
             Difference from Situ is that control is based on adjacency.
-            
+
             Like Situ, the game is based on the choice of placing one's own piece or removing an opponent's piece.
-            
+
             It can be played on hex grids, square grids or square grids with diagonals.
-            
-            Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls. 
-            
-            This control is determined by the difference in quantity of the two player's pieces that are adjacent to the given node. 
+
+            Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls.
+
+            This control is determined by the difference in quantity of the two player's pieces that are adjacent to the given node.
             This difference is a parameter for the game, and when the value of the parameter is met or exceded, the player with the excess LoS pieces controls the site.
         The default for the parameter is 3.")
         (rules "Structure of Play:
             There is no passing.
-            Maroon chooses to remove up to two nodes of the board before passing to White. 
+            Maroon chooses to remove up to two nodes of the board before passing to White.
             Then White places an initial stone onto a remaining node on the board.
-            
+
             After this play alternates, two turns per player, until one player cannot complete both turns. That player loses
-            
+
             On each of the turns, the current player must either:
             - - place a stone on an empty node that the opponent does not control, or
             - - remove an opponent's stone that the current player controls.
-            
+
             A player controls a node and any stone on it when the count of his stones that are adjacent to the node, exceed those of his opponent by the node-control value chosen for the game, or more. (default is 3)
-            
+
             -- For example 4 is 3 greater than 1, so a node surrounded by 4 White and 1 Maroon is controlled by White if 3 was chosen as the game parameter (also if 1 or 2 were chosen).
-            
+
         There are options for the board size and type, and the number of surplus stones needed to control a node.")
         (version "1.3.0")
         (classification "experimental")
@@ -186,15 +186,15 @@
         (date "14-10-2021")
         }
     )
-    (graphics 
+    (graphics
         {
         (player Colour P1 (colour 120 36 0))
         (player Colour P2 (colour Cream))
         (piece Scale P1 "Counter" 0.98)
         (piece Scale P2 "Counter" 0.98)
-        //    (piece Colour P1 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) ) 
-        //    (piece Colour P2 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) ) 
-        (piece Colour Neutral "X" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) ) 
+        //    (piece Colour P1 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) )
+        //    (piece Colour P2 "Counter" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) )
+        (piece Colour Neutral "X" fillColour:(colour 0 0 0 0) strokeColour:(colour 0 0 0 0) )
         (board Colour Phase0 "ColourBackground")
         (board StyleThickness InnerEdges 0.4)
         (board StyleThickness OuterEdges 0.6)
@@ -205,7 +205,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
-    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3 )// offsetX:0.021 offsetY:-0.015 )   
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3 )// offsetX:0.021 offsetY:-0.015 )
     //    (piece Foreground P1 "Counter" image:"Counter" fillColour:(colour 120 36 0) edgeColour:(colour Black) scale:0.98)
     //    (piece Foreground P2 "Counter" image:"Counter" fillColour:(colour Cream) edgeColour:(colour VeryDarkGrey) scale:0.98)
     (piece Foreground P1 "Counter" image:"Hyena" fillColour:(colour 240	240	170 60) edgeColour:(colour Black)  scale:0.43 offsetY:0.1)

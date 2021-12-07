@@ -1,6 +1,6 @@
 (game "Slitherlink"
-    (players 1)  
-    (equipment  
+    (players 1)
+    (equipment
         {
         (board (rectangle <Challenge:size>) (values Edge (range 0 1)) use:Edge)
         (hints { <Challenge:hints> } Cell)
@@ -9,14 +9,14 @@
     (rules
         (play
             (satisfy {
-                (forAll Cell 
-                    (or 
-                        (= (hint Cell at:(from)) Off) 
+                (forAll Cell
+                    (or
+                        (= (hint Cell at:(from)) Off)
                         (is Count Edge (sites Incident Edge of:Cell at:(from)) (hint Cell at:(from)))
                     )
                 )
-                (forAll Vertex 
-                    (or 
+                (forAll Vertex
+                    (or
                         (is Count Edge (sites Incident Edge of:Vertex at:(from)) 0)
                         (is Count Edge (sites Incident Edge of:Vertex at:(from)) 2)
                     )
@@ -32,21 +32,21 @@
 
 (option "Challenge" <Challenge> args:{ <size> <hints> }
     {
-    (item "test" 
+    (item "test"
         <5 5>
         <
-        (hint {1} 2) 
-        (hint {2} 3) 
-        (hint {4} 1) 
-        (hint {6} 2) 
-        (hint {7} 1) 
-        (hint {12} 1) 
+        (hint {1} 2)
+        (hint {2} 3)
+        (hint {4} 1)
+        (hint {6} 2)
+        (hint {7} 1)
+        (hint {12} 1)
         (hint {15} 0)
         >
         ""
-    )   
-    
-    (item "Janko.at" 
+    )
+
+    (item "Janko.at"
         <7 7>
         <
         (hint {1} 2)
@@ -70,8 +70,8 @@
         >
         ""
     )
-    
-    (item "Nikoli Example" 
+
+    (item "Nikoli Example"
         <8 8>
         <
         (hint {0} 3)
@@ -95,8 +95,8 @@
         >
         ""
     )*
-    
-    (item "Janko.at Extreme" 
+
+    (item "Janko.at Extreme"
         <31 46>
         <
         (hint {3} 1)
@@ -121,7 +121,7 @@
         (hint {40} 3)
         (hint {42} 2)
         (hint {43} 1)
-        
+
         (hint {45} 2)
         (hint {46} 2)
         (hint {48} 1)
@@ -140,7 +140,7 @@
         (hint {78} 2)
         (hint {84} 1)
         (hint {88} 2)
-        
+
         (hint {90} 2)
         (hint {93} 0)
         (hint {94} 1)
@@ -163,7 +163,7 @@
         (hint {129} 3)
         (hint {132} 3)
         (hint {133} 2)
-        
+
         (hint {135} 1)
         (hint {137} 3)
         (hint {140} 2)
@@ -183,7 +183,7 @@
         (hint {174} 1)
         (hint {175} 1)
         (hint {176} 3)
-        
+
         (hint {180} 1)
         (hint {187} 3)
         (hint {188} 3)
@@ -207,7 +207,7 @@
         (hint {222} 1)
         (hint {223} 2)
         (hint {224} 2)
-        
+
         (hint {225} 1)
         (hint {229} 1)
         (hint {235} 2)
@@ -223,7 +223,7 @@
         (hint {266} 2)
         (hint {267} 3)
         (hint {269} 2)
-        
+
         (hint {271} 2)
         (hint {275} 2)
         (hint {276} 2)
@@ -246,7 +246,7 @@
         (hint {309} 3)
         (hint {310} 2)
         (hint {313} 1)
-        
+
         (hint {315} 3)
         (hint {318} 2)
         (hint {319} 1)
@@ -265,7 +265,7 @@
         (hint {353} 2)
         (hint {354} 3)
         (hint {359} 3)
-        
+
         (hint {361} 3)
         (hint {363} 1)
         (hint {364} 0)
@@ -289,7 +289,7 @@
         (hint {400} 1)
         (hint {401} 3)
         (hint {403} 2)
-        
+
         (hint {408} 1)
         (hint {410} 2)
         (hint {411} 0)
@@ -312,7 +312,7 @@
         (hint {447} 1)
         (hint {448} 1)
         (hint {449} 2)
-        
+
         (hint {450} 1)
         (hint {454} 1)
         (hint {458} 0)
@@ -335,7 +335,7 @@
         (hint {487} 1)
         (hint {489} 0)
         (hint {491} 1)
-        
+
         (hint {496} 2)
         (hint {499} 1)
         (hint {501} 1)
@@ -355,7 +355,7 @@
         (hint {536} 2)
         (hint {538} 2)
         (hint {539} 1)
-        
+
         (hint {540} 3)
         (hint {541} 2)
         (hint {544} 1)
@@ -375,7 +375,7 @@
         (hint {577} 2)
         (hint {579} 2)
         (hint {583} 3)
-        
+
         (hint {586} 2)
         (hint {589} 3)
         (hint {590} 3)
@@ -398,7 +398,7 @@
         (hint {625} 2)
         (hint {626} 3)
         (hint {629} 3)
-        
+
         (hint {632} 2)
         (hint {639} 3)
         (hint {642} 2)
@@ -418,7 +418,7 @@
         (hint {671} 2)
         (hint {673} 2)
         (hint {674} 3)
-        
+
         (hint {678} 0)
         (hint {680} 2)
         (hint {683} 2)
@@ -438,7 +438,7 @@
         (hint {715} 3)
         (hint {716} 2)
         (hint {717} 2)
-        
+
         (hint {720} 2)
         (hint {721} 1)
         (hint {722} 3)
@@ -460,7 +460,7 @@
         (hint {759} 1)
         (hint {763} 2)
         (hint {764} 2)
-        
+
         (hint {767} 1)
         (hint {769} 3)
         (hint {772} 3)
@@ -482,7 +482,7 @@
         (hint {805} 2)
         (hint {806} 3)
         (hint {809} 3)
-        
+
         (hint {810} 1)
         (hint {812} 2)
         (hint {813} 0)
@@ -504,7 +504,7 @@
         (hint {852} 1)
         (hint {853} 1)
         (hint {854} 2)
-        
+
         (hint {861} 2)
         (hint {863} 2)
         (hint {865} 1)
@@ -525,7 +525,7 @@
         (hint {894} 3)
         (hint {895} 0)
         (hint {897} 3)
-        
+
         (hint {902} 2)
         (hint {903} 1)
         (hint {904} 1)
@@ -545,7 +545,7 @@
         (hint {938} 0)
         (hint {941} 1)
         (hint {942} 2)
-        
+
         (hint {945} 1)
         (hint {946} 2)
         (hint {949} 1)
@@ -565,7 +565,7 @@
         (hint {985} 2)
         (hint {988} 3)
         (hint {989} 1)
-        
+
         (hint {990} 2)
         (hint {992} 1)
         (hint {995} 1)
@@ -586,7 +586,7 @@
         (hint {1026} 1)
         (hint {1031} 1)
         (hint {1032} 1)
-        
+
         (hint {1037} 3)
         (hint {1039} 2)
         (hint {1041} 1)
@@ -607,7 +607,7 @@
         (hint {1073} 3)
         (hint {1074} 2)
         (hint {1078} 3)
-        
+
         (hint {1081} 2)
         (hint {1083} 2)
         (hint {1084} 0)
@@ -625,7 +625,7 @@
         (hint {1118} 3)
         (hint {1119} 2)
         (hint {1122} 0)
-        
+
         (hint {1127} 1)
         (hint {1129} 1)
         (hint {1131} 3)
@@ -647,7 +647,7 @@
         (hint {1158} 1)
         (hint {1165} 2)
         (hint {1169} 2)
-        
+
         (hint {1171} 2)
         (hint {1177} 2)
         (hint {1179} 3)
@@ -670,7 +670,7 @@
         (hint {1211} 1)
         (hint {1212} 0)
         (hint {1214} 3)
-        
+
         (hint {1215} 3)
         (hint {1216} 2)
         (hint {1217} 2)
@@ -693,7 +693,7 @@
         (hint {1256} 2)
         (hint {1257} 2)
         (hint {1258} 3)
-        
+
         (hint {1262} 2)
         (hint {1268} 2)
         (hint {1269} 3)
@@ -713,7 +713,7 @@
         (hint {1295} 1)
         (hint {1300} 1)
         (hint {1303} 3)
-        
+
         (hint {1306} 2)
         (hint {1307} 3)
         (hint {1309} 3)
@@ -759,6 +759,6 @@
     (graphics {
         (board Style PenAndPaper)
         (player Colour P1 (colour Black))
-        
+
     })
 )

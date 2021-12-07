@@ -6,15 +6,15 @@
 
 (define "DistInNWSE"   (count Sites in:(difference (sites Direction from:(from) (directions {NW SE}) included:True) (sites Empty))))
 
-(define "MoveTo" 
+(define "MoveTo"
     (move
         Hop
-        #1 
-        (between 
+        #1
+        (between
             (exact (- #2 1))
             if:(not (is Enemy (who at:(between))))
         )
-        (to 
+        (to
             if:(not (is Friend (who at:(to))))
             (apply (if (is Enemy (who at:(to))) (remove (to))))
         )
@@ -23,12 +23,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lines of Action"  
-    (players 2)  
-    
-    (equipment { 
-        (board (square 8)) 
-        (piece "Disc" Each 
+(game "Lines of Action"
+    (players 2)
+
+    (equipment {
+        (board (square 8))
+        (piece "Disc" Each
             (or {
                 ("MoveTo" (directions {N S}) "DistInColumn")
                 ("MoveTo" (directions {W E}) "DistInRow")
@@ -37,23 +37,23 @@
             })
         )
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start
-            { 
+            {
             (place "Disc1" (difference (union (sites Top) (sites Bottom)) (sites Corners)))
             (place "Disc2" (difference (union (sites Right) (sites Left)) (sites Corners)))
             }
         )
-        
+
         (play (forEach Piece))
-        
-        (end { 
-            (if (and (= 1 (count Groups if:(= (who at:(to)) P1))) (= 1 (count Groups if:(= (who at:(to)) P2)))) (result Mover <End:result>) ) 
-            (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win) ) 
-            (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win) ) 
-        })  
+
+        (end {
+            (if (and (= 1 (count Groups if:(= (who at:(to)) P1))) (= 1 (count Groups if:(= (who at:(to)) P2)))) (result Mover <End:result>) )
+            (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win) )
+            (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win) )
+        })
     )
 )
 
@@ -61,14 +61,14 @@
 
 (option "End rules" <End> args:{ <result> }
     {
-    (item "Simultaneous Group = Draw"    <Draw>    "If the two players make a group in the same turn, the game ends in a draw.")*  
-    (item "Simultaneous Group = Mover Win"    <Win>    "If the two players make a group in the same turn, the mover wins.") 
+    (item "Simultaneous Group = Draw"    <Draw>    "If the two players make a group in the same turn, the game ends in a draw.")*
+    (item "Simultaneous Group = Mover Win"    <Win>    "If the two players make a group in the same turn, the mover wins.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Lines of Action was invented by Claude Soucie in 1969. It is played on an 8x8 board with twelve pieces per player.")
@@ -81,13 +81,13 @@
         (date "1988")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
-    (ai 
+
+    (ai
         "Lines of Action_ai"
     )
-    
+
 )

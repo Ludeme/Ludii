@@ -1,17 +1,17 @@
 (game "Futoshiki"
-    (players 1)  
-    (equipment { 
-        (board 
-            (square <Challenge:size>) 
-            (values Vertex (range 1 <Challenge:size>)) 
+    (players 1)
+    (equipment {
+        (board
+            (square <Challenge:size>)
+            (values Vertex (range 1 <Challenge:size>))
             use:Vertex
-        ) 
+        )
         <Challenge:hints>
         (regions {Columns Rows})
-    } )  
-    (rules 
+    } )
+    (rules
         (start <Challenge:start> )
-        (play 
+        (play
             (satisfy {
                 (forAll Hint (< (from) (to)))
                 (all Different)
@@ -25,10 +25,10 @@
 
 (option "Challenge" <Challenge> args:{ <size> <hints> <start> }
     {
-    (item "1" 
+    (item "1"
         <5>
         <
-        (hints 
+        (hints
             {
             (hint {0 1})
             (hint {1 2})
@@ -41,21 +41,21 @@
         )
         >
         <
-        (set 
-            { 
-            {9 4} 
+        (set
+            {
+            {9 4}
             {12 4}
             {15 4}
-            {19 2} 
+            {19 2}
             }
         )
         >
         ""
-    )   
-    (item "2" 
+    )
+    (item "2"
         <5>
         <
-        (hints 
+        (hints
             {
             (hint {0 1})
             (hint {6 7})
@@ -70,16 +70,16 @@
         )
         >
         <
-        (set 
-            { 
-            {0 4} 
+        (set
+            {
+            {0 4}
             {16 2}
             {18 4}
             }
         )
         >
         ""
-    ) 
+    )
 })
 
 //------------------------------------------------------------------------------

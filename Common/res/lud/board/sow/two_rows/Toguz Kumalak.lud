@@ -4,7 +4,7 @@
 
 (define "Tuz" (value Player #1))
 
-(define "CaptureFromTuzOf" 
+(define "CaptureFromTuzOf"
     (if (and (> ("Tuz" #1) 0) (> (count at:("Tuz" #1)) 0))
         (fromTo (from ("Tuz" #1)) (to (mapEntry #1)) count:(count at:("Tuz" #1)))
     )
@@ -14,10 +14,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Toguz Kumalak"  
-    (players 2) 
-    
-    (equipment { 
+(game "Toguz Kumalak"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
         )
@@ -25,44 +25,44 @@
         (regions P2 (sites Top))                          // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})    // kalahs (storage pits)
         (piece "Seed" Shared)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 9 to:(sites Track)) )
-        
-        (play 
+
+        (play
             (move
-                Select 
-                (from 
-                    (sites Mover) 
+                Select
+                (from
+                    (sites Mover)
                     if:(> (count at:(from)) 0)
                 )
-                (then 
-                    (sow 
-                        apply:(if 
-                            (and 
-                                (is In (to) (sites Next)) 
+                (then
+                    (sow
+                        apply:(if
+                            (and
+                                (is In (to) (sites Next))
                                 (is Even (count at:(to)))
-                            ) 
-                            (fromTo 
-                                (from (to)) 
-                                (to (mapEntry (mover))) 
+                            )
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry (mover)))
                                 count:(count at:(to))
                             )
-                            (if (and { 
-                                    (is In (to) (sites Next)) 
-                                    (= (count at:(to)) 3) 
-                                    (< ("Tuz" Mover) 0) 
+                            (if (and {
+                                    (is In (to) (sites Next))
+                                    (= (count at:(to)) 3)
+                                    (< ("Tuz" Mover) 0)
                                     (if (< ("Tuz" Next) 0)
                                         True
                                         (!= (+ (to) ("Tuz" Next)) 19)
                                     )
-                                })  
+                                })
                                 (and
                                     (set Value Mover (to))
-                                    (fromTo 
-                                        (from (to)) 
-                                        (to (mapEntry (mover))) 
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry (mover)))
                                         count:(count at:(to))
                                     )
                                 )
@@ -79,11 +79,11 @@
                 )
             )
         )
-        
+
         (end
-            (if (no Moves Mover) 
+            (if (no Moves Mover)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -93,8 +93,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Toguz Kumalak is a two-row mancala-style game board from Central Asia, and particularly popular in Kazakhstan and Kyrgyzstan. In Kyrgyzstand, in the early twentieth century, it was mostly played by older people, and was particularly popular during the warm season, when people would gather to play it in the hills. It could be played either on wooden boards or in holes dug into the ground. It is a well-known game throughout the region, and tournament play is becoming increasingly popular. ")
@@ -107,14 +107,14 @@
         (origin  "This game was played in Central Asia, from around 1500 to 2000.")
         }
     )
-    
+
     (graphics {
         (show PlayerHoles)
         (board Style Mancala)
     })
-    
-    (ai 
+
+    (ai
         "Toguz Kumalak_ai"
     )
-    
+
 )

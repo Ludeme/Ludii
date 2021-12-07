@@ -3,8 +3,8 @@
 
 //------------------------------------------------------------------------------
 
-(game "Wouri" 
-    (players 2)  
+(game "Wouri"
+    (players 2)
     (equipment {
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
@@ -13,46 +13,46 @@
         (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    
-    (rules 
-        (start (set Count 4 to:(sites Track)))		  
-        (play 
-            (do 
+    })
+
+    (rules
+        (start (set Count 4 to:(sites Track)))
+        (play
+            (do
                 (move
-                    Select 
-                    (from 
-                        (if 
-                            (is Mover Prev) 
-                            "PlayFromLastHole" 
+                    Select
+                    (from
+                        (if
+                            (is Mover Prev)
+                            "PlayFromLastHole"
                             (sites Mover)
-                        ) 
+                        )
                         if:(< 0 (count at:(from)))
                     )
-                    (then 
-                        (sow  
-                            apply:(if (and 
-                                    (is In (to) (sites Next)) 
+                    (then
+                        (sow
+                            apply:(if (and
+                                    (is In (to) (sites Next))
                                     (= (count at:(to)) 4)
-                                ) 
-                                (fromTo 
-                                    (from (to)) 
-                                    (to (handSite Mover)) 
+                                )
+                                (fromTo
+                                    (from (to))
+                                    (to (handSite Mover))
                                     count:(count at:(to))
-                                    (then 
+                                    (then
                                         (forEach Site
                                             (if (is Mover P1) (sites P2) (sites P1))
                                             (if (= (count at:(site)) 4)
-                                                (fromTo 
-                                                    (from (site)) 
-                                                    (to (handSite Mover)) 
+                                                (fromTo
+                                                    (from (site))
+                                                    (to (handSite Mover))
                                                     count:(count at:(site))
                                                 )
                                             )
                                         )
                                     )
                                 )
-                                (if (< 1 (count at:(to))) 
+                                (if (< 1 (count at:(to)))
                                     (moveAgain)
                                 )
                             )
@@ -66,7 +66,7 @@
         (end
             (if (no Moves Mover)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -76,7 +76,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Wouri is a two-row mancala-style board game observed in Mopti, Mali in the early twentieth century. ")

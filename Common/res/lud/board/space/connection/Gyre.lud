@@ -11,12 +11,12 @@
         (play
             (move Add
                 (to (sites Empty))
-            )        
+            )
         )
-        (end 
-            (if 
+        (end
+            (if
                 (>=
-                    (count Sites 
+                    (count Sites
                         in:(union
                             (sites Outer)
                             (sites {(centrePoint)})
@@ -28,7 +28,7 @@
                                 (sites Board)
                                 (sites Group at:(last To))
                             )
-                            to:2 
+                            to:2
                             (* (to)
                                 (count Sites
                                     in:(intersection
@@ -46,7 +46,7 @@
                                         )
                                     )
                                 )
-                            )   
+                            )
                         )
                     )
                 )

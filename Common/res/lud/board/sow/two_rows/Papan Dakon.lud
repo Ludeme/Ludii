@@ -2,8 +2,8 @@
 (define "Columns" 7)
 (define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-(define "RightMostEmpty" 
-    (trackSite FirstSite 
+(define "RightMostEmpty"
+    (trackSite FirstSite
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
     )
@@ -13,10 +13,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Papan Dakon"  
-    (players 2)  
-    
-    (equipment { 
+(game "Papan Dakon"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 "Columns"
             {
             (track "Track1" "0,8,E,S,W" loop:True P1)
@@ -28,24 +28,24 @@
         (regions P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (map "RightMost" {(pair P1 7) (pair P2 8)})
-    })  
-    (rules 
+    })
+    (rules
         (start {
             (set Count 7 to:(union (sites P1) (sites P2)) )
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
                 (or
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
-                                (sites Mover) 
-                            ) 
+                        (from
+                            (if
+                                (is Mover Prev)
+                                "PlayFromLastHole"
+                                (sites Mover)
+                            )
                             if:(and (> (count at:(from)) 0) (is In (from) ("PlayableSites")))
                         )
                         (then
@@ -78,7 +78,7 @@
                     (then (if ("NoPieceOnBoard") (forget Value "Playable" All)))
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 7 (count at:(mapEntry P1))) (result P2 Win))
@@ -88,7 +88,7 @@
             )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (not (all Sites (sites Mover) if:(is Occupied (site))))
@@ -105,13 +105,13 @@
             (nextPhase (all Passed) "Sowing")
         )
         }
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Papan Dakon is a two-row mancala-style board game from Borneo. It is one of many games that are similar throughout southeast Asia.")
@@ -122,7 +122,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

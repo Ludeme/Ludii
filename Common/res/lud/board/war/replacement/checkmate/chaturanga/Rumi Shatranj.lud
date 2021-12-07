@@ -1,17 +1,17 @@
 (define "CaptureToPiece"
-    (apply 
-        (remove 
-            (to) 
+    (apply
+        (remove
+            (to)
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
@@ -24,117 +24,117 @@
 //------------------------------------------------------------------------------
 
 (game "Rumi Shatranj"
-    (players {(player N) (player S)}) 
+    (players {(player N) (player S)})
     (equipment {
         (board (square 8) )
         (hand Each size:5)
         (piece "King_noCross" Each
             (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece" 
+                Step
+                (to
+                    if:(not (is Friend (who at:(to))))
+                    "CaptureToPiece"
                 )
             )
         )
         (piece "Rook" Each
             (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Orthogonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         (piece "Elephant" Each
-            (move Hop Diagonal 
-                (between if:True) 
-                (to 
-                    if:(or 
-                        (is Empty (to)) 
+            (move Hop Diagonal
+                (between if:True)
+                (to
+                    if:(or
+                        (is Empty (to))
                         (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "Elephant" Next)))
-                    ) 
+                    )
                     (apply (remove (to)))
-                ) 
+                )
             )
         )
         (piece "Knight" Each
-            (move 
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+            (move
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         (piece "Pawn" Each
-            (or 
-                "StepForwardToEmpty" 
+            (or
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
                 (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
+                    (if (is In (last To) (sites Mover "Promotion"))
                         (moveAgain)
                     )
                 )
             )
-        ) 
+        )
         (piece "Ferz_noCross" Each
             (move
-                Step 
+                Step
                 Diagonal
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece" 
+                (to
+                    if:(not (is Friend (who at:(to))))
+                    "CaptureToPiece"
                 )
             )
         )
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })
-    (rules 
-        (start {   
+    (rules
+        (start {
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
-            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
-            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
+            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1")
+            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8")
         })
-        
+
         phases:{
-        (phase "OpeningCounselor" 
-            (play 
+        (phase "OpeningCounselor"
+            (play
                 (forEach Piece "Ferz_noCross"
-                    (move Hop Forward 
-                        (between if:True) 
-                        (to 
-                            if:(is Empty (to)) 
+                    (move Hop Forward
+                        (between if:True)
+                        (to
+                            if:(is Empty (to))
                             (apply (remove (to)))
-                        ) 
+                        )
                     )
                 )
             )
             (nextPhase Mover "OpeningSoldier")
         )
-        (phase "OpeningSoldier" 
-            (play 
+        (phase "OpeningSoldier"
+            (play
                 (forEach Piece "Pawn"
-                    (if 
+                    (if
                         (is In (from) (sites {"D2" "D7"}))
-                        (move Hop Forward 
-                            (between if:True) 
-                            (to 
-                                if:(is Empty (to)) 
+                        (move Hop Forward
+                            (between if:True)
+                            (to
+                                if:(is Empty (to))
                                 (apply (remove (to)))
-                            ) 
+                            )
                         )
                     )
                 )
             )
             (nextPhase Mover "Playing")
         )
-        (phase "Playing" 
-            (play 
+        (phase "Playing"
+            (play
                 (if "SameTurn"
                     (move Promote (last To) (piece "Ferz_noCross") Mover)
                     (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
@@ -144,14 +144,14 @@
         }
         (end
             {
-            (if 
-                (and 
+            (if
+                (and
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
-            (if (no Moves Next) (result Mover Win)) 
+            )
+            (if (no Moves Next) (result Mover Win))
             }
         )
     )
@@ -159,8 +159,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Rumi Shatranj is a variation of Shatranj played in India. \"Rumi\" is a term referring to the belief that this game originated in Western Asia. The Counselor has a special opening move, and the kings are placed facing each other.")
@@ -172,13 +172,13 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.825)
         (show Check "King_noCross")
         (board Style Chess)
     })
-    
+
     (ai
         "Rumi Shatranj_ai"
     )

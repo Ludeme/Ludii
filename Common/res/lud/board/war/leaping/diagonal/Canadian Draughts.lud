@@ -1,18 +1,18 @@
-(define "HopCounter" 
+(define "HopCounter"
     (move
-        Hop 
-        (from #1) 
-        Diagonal 
-        (between 
-            if:(and 
-                (not (is In (between) (sites ToClear))) 
+        Hop
+        (from #1)
+        Diagonal
+        (between
+            if:(and
+                (not (is In (between) (sites ToClear)))
                 (is Enemy (who at:(between)))
             )
             (apply (remove (between) at:EndOfTurn))
-        ) 
-        (to if:(is Empty (to))) 
+        )
+        (to if:(is Empty (to)))
         #2
-    ) 
+    )
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
@@ -21,69 +21,69 @@
 
 //------------------------------------------------------------------------------
 
-(game "Canadian Draughts" 
-    (players 2)  
-    (equipment { 
-        (board (square 12)) 
+(game "Canadian Draughts"
+    (players 2)
+    (equipment {
+        (board (square 12))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start
-            { 
+            {
             (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1) ) )
             }
         )
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves
                         ("HopCounter" (last To)
-                            (then 
-                                (if (can Move ("HopCounter" (last To))) 
+                            (then
+                                (if (can Move ("HopCounter" (last To)))
                                     (moveAgain)
-                                    (if "JumpToPromotionZone" 
+                                    (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
                                     )
-                                ) 
-                            ) 
+                                )
+                            )
                         )
                     )
                     (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
                 )
                 (priority {
                     (max Moves
-                        (or 
+                        (or
                             (forEach Piece "Counter"
-                                ("HopCounter" (from) 
-                                    (then 
-                                        (if (can Move ("HopCounter" (last To))) 
-                                            (moveAgain) 
-                                            (if "JumpToPromotionZone" 
+                                ("HopCounter" (from)
+                                    (then
+                                        (if (can Move ("HopCounter" (last To)))
+                                            (moveAgain)
+                                            (if "JumpToPromotionZone"
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)
                                             )
-                                        ) 
-                                    ) 
-                                ) 
+                                        )
+                                    )
+                                )
                             )
                             (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                         )
                     )
-                    (or  
-                        (forEach Piece "Counter" 
-                            (move 
-                                Step 
-                                (directions {FR FL}) 
+                    (or
+                        (forEach Piece "Counter"
+                            (move
+                                Step
+                                (directions {FR FL})
                                 (to if:(is Empty (to)))
                             )
-                            (then 
+                            (then
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
@@ -94,15 +94,15 @@
                 })
             )
         )
-        
-        (end (if (no Moves Next) (result Mover Win))) 
+
+        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Canadian Draughts is played on a 12x12 checker board and is popular in Canada (particularly Quebec) and was also known to be played in New England. Anecdotally, it is said to have been invented by French settlers to Quebec, but 12x12 boards are known from Europe before this. Played on a 12x12 board with 30 pieces per player. Otherwise, follows the rules of International Draughts.")
@@ -114,14 +114,14 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
-    (ai 
+
+    (ai
         "Canadian Draughts_ai"
     )
-    
+
 )

@@ -2,7 +2,7 @@
     (players 2)
     (equipment {
         (board
-            (remove 
+            (remove
                 (concentric {61})
                 vertices:{8 6 4 2 0 1 3 5 7 9}
             )
@@ -11,7 +11,7 @@
         (piece "Marker" Each)
         (dice d:2 from:0 num:3)
     })
-    (rules 
+    (rules
         (start {
             (place "Marker1" (sites {0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48}))
             (place "Marker2" (sites {1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49}))
@@ -22,8 +22,8 @@
 )
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tawfa is a game that was played by the Hualapai people in the nineteenth century. While it was said to be going out of fashion at the time, it may have a very long history, as similar boards have been found from 2900 BCE in Mexico.")
@@ -35,13 +35,13 @@
         (origin  "This game was played in Arizona, around 1907.")
         }
     )
-    
+
     (graphics {
         (show Edges (colour Hidden))
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (show Symbol "disc" Vertex 50 fillColour:(colour Grey) edgeColour:(colour Black) scale:1)
-        
+
     })
-    
+
 )
 

@@ -10,13 +10,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Connect Four"  
-    (players 2)  
-    (equipment { 
+(game "Connect Four"
+    (players 2)
+    (equipment {
         <Model:board>
         (piece "Disc" Each)
-    }) 
-    
+    })
+
     (rules
         <Model:rules>
     )
@@ -26,17 +26,17 @@
 
 (option "Modelisation" <Model> args:{ <board> <rules> }
     {
-    (item "1D"      
+    (item "1D"
         <(board (rectangle 1 7))>
-        <    
-        (play 
-            (move 
-                Add 
-                (to 
-                    (forEach 
-                        (sites Board) 
+        <
+        (play
+            (move
+                Add
+                (to
+                    (forEach
+                        (sites Board)
                         if:(< (size Stack at:(site)) "ColumnSize")
-                    ) 
+                    )
                 )
                 stack:True
             )
@@ -44,15 +44,15 @@
         (end (if (is Line 4 byLevel:True) (result Mover Win)))
         >
         ""
-    )**   
-    (item "2D"         
+    )**
+    (item "2D"
         <(board (rectangle 6 7))>
         <
-        (play 
-            (move 
-                Add 
-                (to 
-                    ("EmptyTop") 
+        (play
+            (move
+                Add
+                (to
+                    ("EmptyTop")
                 )
                 (then "Drop")
             )
@@ -60,11 +60,11 @@
         (end (if (is Line 4 through:(last To afterConsequence:True)) (result Mover Win)))
         >
         ""
-    )   
+    )
 })
 
 (metadata
-    
+
     (info
         {
         (description "Connect Four is a two-player connection game that was designed by Howard Wexler and Ned Strongin, and was first sold under this name by Milton Bradley in 1974.")
@@ -79,7 +79,7 @@
         (date "1974")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Yellow))
         (player Colour P2 (colour Red))
@@ -87,9 +87,9 @@
         (useFor {"Modelisation/1D"} (board Style Connect4))
         (no Animation)
     })
-    
-    (ai 
+
+    (ai
         "Connect Four_ai"
     )
-    
+
 )

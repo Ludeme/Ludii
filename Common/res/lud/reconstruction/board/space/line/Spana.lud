@@ -1,14 +1,14 @@
 (game "Spana"
     (players 2)
-    
-    (equipment 
-        { 
-        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+
+    (equipment
+        {
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex)
         (hand Each)
-        (piece "Marker" Each) 
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -16,8 +16,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Špana is an alignment game played in the former Yugoslavia. ")
@@ -29,9 +29,9 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
 )

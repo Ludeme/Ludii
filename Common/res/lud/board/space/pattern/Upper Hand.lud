@@ -13,8 +13,8 @@
 (define "PossibleSquareFromBottomRight" ("PossibleSquareFrom" N W))
 (define "SquareFromBottomRight" ("SquareFrom" N W))
 
-(define "EnoughOwnedInSquare" 
-    (and 
+(define "EnoughOwnedInSquare"
+    (and
         (= 0 (count Sites in:(intersection (sites Empty) (#2))))
         (<= 3 (count Sites in:(intersection (sites Occupied by:#1) (#2))))
     )
@@ -29,7 +29,7 @@
     )
 )
 
-(define "AddOnTopSquareIfLegal" 
+(define "AddOnTopSquareIfLegal"
     (and {
         (if (and ("TopExistAndEmptySite" UNE) ("PossibleSquareFromBottomLeft"))
             (if ("EnoughOwnedInSquare" #1 "SquareFromBottomLeft")
@@ -51,29 +51,29 @@
                 ("AddOnTopSquare" #1 UNE)
             )
         )
-    })		
+    })
 )
 
-(define "APieceCanGoOnTop" 
-    (!= 0 
-        (count Sites in:(forEach (sites Board) 
-                if:(can Move 
-                    (or 
+(define "APieceCanGoOnTop"
+    (!= 0
+        (count Sites in:(forEach (sites Board)
+                if:(can Move
+                    (or
                         ("AddOnTopSquareIfLegal" P1)
                         ("AddOnTopSquareIfLegal" P2)
                     )
                 )
             )
         )
-    )		
+    )
 )
 
-(define "PutOnTop" 
-    (while 
+(define "PutOnTop"
+    (while
         ("APieceCanGoOnTop")
-        (forEach Site 
+        (forEach Site
             (sites Board)
-            (and 
+            (and
                 ("AddOnTopSquareIfLegal" P1)
                 ("AddOnTopSquareIfLegal" P2)
             )
@@ -86,26 +86,26 @@
 (game "Upper Hand"
     (players 2)
     (equipment {
-        (board (square 5 pyramidal:True) use:Vertex) 
-        (piece "Ball" Each) 
+        (board (square 5 pyramidal:True) use:Vertex)
+        (piece "Ball" Each)
         (piece "Ball" Neutral)
     })
-    (rules 
-        (start 
+    (rules
+        (start
             (place "Ball0" (centrePoint))
         )
-        (play 
-            (move 
-                Add 
-                (to (sites Empty) 
+        (play
+            (move
+                Add
+                (to (sites Empty)
                     if:(is Flat)
                 )
                 (then ("PutOnTop"))
             )
         )
-        (end 
-            (if 
-                (<= 27 (count Sites in:(sites Occupied by:Mover))) 
+        (end
+            (if
+                (<= 27 (count Sites in:(sites Occupied by:Mover)))
                 (result Mover Win)
             )
         )
@@ -114,14 +114,14 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "A 3 dimensional game of skill and strategy for two players.")
         (aliases {"Pyramids" "Use Your Marbles" "Au sommet de la pyramide"})
         (rules "Each player in turn places one of his marbles in an open space on the board, on top of a square (i.e. 4 marbles next to each other). After the placement of each marble, check to see if a square or marbles have been formed. If at least 3 of the 4 marbles that form a square are of the same color, a piece of that color go on top of that square. If as a result other squares are formed, the same rule is applied. The winner is the first player to have at least 27 marbles of his colour on the board.
-            
+
         ")
         (source "<a href=\"https://boardgamegeek.com/boardgame/4545/upper-hand\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (version "1.3.0")
@@ -132,7 +132,7 @@
         (date "1992")
         }
     )
-    
+
     (graphics {
         (piece Scale "Ball" 1.0)
         (board Style Shibumi)

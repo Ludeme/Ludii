@@ -1,17 +1,17 @@
 (define "RemoveAllTigersWithNoMove"
-    (then 
+    (then
         (forEach Site
             (sites Occupied by:Next)
             (if
-                (not 
-                    (can Move 
+                (not
+                    (can Move
                         (or
                             (step (from (site)) Orthogonal (to if:(is Empty (to))))
-                            (hop 
+                            (hop
                                 (from (site))
                                 Orthogonal
-                                (between 
-                                    if:(= (who at:(between)) P1) 
+                                (between
+                                    if:(= (who at:(between)) P1)
                                     (apply (remove (between)))
                                 )
                                 (to if:(is Empty (to)))
@@ -22,12 +22,12 @@
                 (remove (site))
             )
         )
-    )		
+    )
 )
 
-(define "MinDistanceWithCorners" 
-    (min 
-        (results 
+(define "MinDistanceWithCorners"
+    (min
+        (results
             from:(last To)
             to:(sites Corners)
             (count Steps (from) (to))
@@ -37,43 +37,43 @@
 
 //------------------------------------------------------------------------------
 
-(game "Len Cua Kin Ngoa"  
-    (players 2)  
-    (equipment { 
+(game "Len Cua Kin Ngoa"
+    (players 2)
+    (equipment {
         (board (square 4))
         (hand P1)
         (piece "Ox" P1 (or ("HopDiagonalCapture") "StepOrthogonalToEmpty" ) )
-        (piece "Tiger" P2 (or ("HopOrthogonalCapture") "StepOrthogonalToEmpty" )) 
+        (piece "Tiger" P2 (or ("HopOrthogonalCapture") "StepOrthogonalToEmpty" ))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Ox1" (handSite P1) count:12)
             (place "Tiger2" (sites Corners))
             }
         )
-        
-        phases:{ 
-        (phase "Placement" P1 
-            (play 
-                (move 
-                    (from (handSite P1)) 
+
+        phases:{
+        (phase "Placement" P1
+            (play
+                (move
+                    (from (handSite P1))
                     (to (sites Empty))
                     ("RemoveAllTigersWithNoMove")
                 )
-            ) 
+            )
             (nextPhase ("HandEmpty" P1) "MovementP1")
         )
         (phase "MovementP1" P1
-            (play 
+            (play
                 (forEach Piece ("RemoveAllTigersWithNoMove"))
             )
         )
-        (phase "FirstTigerMovement" P2 
-            (play 
+        (phase "FirstTigerMovement" P2
+            (play
                 (forEach Piece
-                    (if (= 
+                    (if (=
                             (count Steps (from) (last To))
                             ("MinDistanceWithCorners")
                         )
@@ -84,23 +84,23 @@
             (nextPhase Mover "MovementP2")
         )
         (phase "MovementP2" P2
-            (play 
+            (play
                 (forEach Piece)
             )
         )
         }
-        
+
         (end {
             (if (no Pieces P1) (result P2 Win))
             (if (>= 2 (count Pieces P2)) (result P1 Win))
-        }) 
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Len Cúa Kín Ngoa is a capturing game played in Thailand in the early nineteenth century. It is somewhat of a combination of a hunt and a capturing game, where one player plays as tigers and the other as cattle, but both are able to capture via different methods.")
@@ -113,15 +113,15 @@
         (origin  "This game was played in Thailand, around 1836.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
-        
+
     })
-    
+
     (ai
         "Len Cua Kin Ngoa_ai"
     )

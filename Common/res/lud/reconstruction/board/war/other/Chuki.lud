@@ -1,30 +1,30 @@
-(define "InitSitesP1" 
+(define "InitSitesP1"
     (union {
         (expand (intersection (sites Bottom) (sites Left)) steps:8)
         (expand (intersection (sites Top) (sites Right)) steps:8)
         (difference (expand (sites Centre)) (sites Centre))
-    })		
+    })
 )
 
 //------------------------------------------------------------------------------
 
 (game "Chuki"
-    (players 2) 
-    (equipment { 
+    (players 2)
+    (equipment {
         (board (square 13) use:Vertex)
         (dice num:3) // Be careful: the number of sides of the dice is not specific!
         (piece "Marker" Each)
     })
     (rules
         (start {
-            (place "Marker1" 
-                (difference 
+            (place "Marker1"
+                (difference
                     ("InitSitesP1")
                     (sites Outer)
                 )
             )
-            (place "Marker2" 
-                (difference 
+            (place "Marker2"
+                (difference
                     (sites Board)
                     (union
                         ("InitSitesP1")
@@ -40,8 +40,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Chuki is a game that was played in Malaysia during the nineteenth century, but there are references to a game with this name dating back to the seventeenth century. The rules are poorly understood, as the only description known does not function well as a game.")
@@ -52,7 +52,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board style Board)
         (show Edges Diagonal Hidden)
@@ -60,6 +60,6 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )
 

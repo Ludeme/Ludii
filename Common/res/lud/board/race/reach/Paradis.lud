@@ -6,7 +6,7 @@
 (game "Paradis"
     (players <Player:num>)
     (equipment {
-        (board 
+        (board
             (concentric {<Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num> <Player:num>})
             <Player:tracks>
             use:Vertex
@@ -16,7 +16,7 @@
             (move
                 (from (from))
                 (to ("SiteToMoveOnTrack" ("ThrowValue"))
-                    (apply 
+                    (apply
                         (if (or
                                 (and (= 1 ("ThrowValue")) (= (mapEntry "Center" Mover) (to)))
                                 (and (= 2 ("ThrowValue")) (or (= (mapEntry "Center" Mover) (to)) (= (mapEntry "Center" Mover) ("SiteToMoveOnTrack" 1))))
@@ -32,7 +32,7 @@
     })
     (rules
         <Player:start>
-        (play 
+        (play
             (do (roll)
                 next:(if (!= ("ThrowValue") 0) (forEach Piece))
             )
@@ -45,23 +45,23 @@
 
 (option "Players" <Player> args:{ <num> <start> <center> <tracks> }
     {
-    (item "2" <2> 
+    (item "2" <2>
         <
         (start {
             (place "Marker1" 18)
             (place "Marker2" 19)
         })
-        > 
+        >
         <(map "Center" {(pair P1 0) (pair P2 1)})>
-        <           
+        <
         {
         (track "Track1" {18 16 14 12 10 8 6 4 2 0 2 4 6 8 10 12 14 16 18 16 14 12 10 8 6 4 2 0 2 4 6 8 10 12 14 16 18 16 14 12 10 8 6 4 2 0 2 4 6 8 10 12 14 16} P1 directed:True)
         (track "Track2" {19 17 15 13 11 9 7 5 3 1 3 5 7 9 11 13 15 17 19 17 15 13 11 9 7 5 3 1 3 5 7 9 11 13 15 17 19 17 15 13 11 9 7 5 3 1 3 5 7 9 11 13 15 17} P2 directed:True)
         }
         >
-    "The game involves 2 players.")  
-    
-    (item "4" <4> 
+    "The game involves 2 players.")
+
+    (item "4" <4>
         <
         (start {
             (place "Marker1" 36)
@@ -69,9 +69,9 @@
             (place "Marker3" 38)
             (place "Marker4" 39)
         })
-        > 
+        >
         <(map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) })>
-        <           
+        <
         {
         (track "Track1" {36 32 28 24 20 16 12 8 4 0 4 8 12 16 20 24 28 32 36 32 28 24 20 16 12 8 4 0 4 8 12 16 20 24 28 32 36 32 28 24 20 16 12 8 4 0 4 8 12 16 20 24 28 32} P1 directed:True)
         (track "Track2" {37 33 29 25 21 17 13 9 5 1 5 9 13 17 21 25 29 33 37 33 29 25 21 17 13 9 5 1 5 9 13 17 21 25 29 33 37 33 29 25 21 17 13 9 5 1 5 9 13 17 21 25 29 33} P2 directed:True)
@@ -79,9 +79,9 @@
         (track "Track4" {39 35 31 27 23 19 15 11 7 3 7 11 15 19 23 27 31 35 39 35 31 27 23 19 15 11 7 3 7 11 15 19 23 27 31 35 39 35 31 27 23 19 15 11 7 3 7 11 15 19 23 27 31 35} P4 directed:True)
         }
         >
-    "The game involves 4 players.")  
-    
-    (item "6" <6> 
+    "The game involves 4 players.")
+
+    (item "6" <6>
         <
         (start {
             (place "Marker1" 54)
@@ -91,9 +91,9 @@
             (place "Marker5" 58)
             (place "Marker6" 59)
         })
-        > 
+        >
         <(map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) (pair P5 4) (pair P6 5) })>
-        <           
+        <
         {
         (track "Track1" {54 48 42 36 30 24 18 12 6 0 6 12 18 24 30 36 42 48 54 48 42 36 30 24 18 12 6 0 6 12 18 24 30 36 42 48 54 48 42 36 30 24 18 12 6 0 6 12 18 24 30 36 42 48} P1 directed:True)
         (track "Track2" {55 49 43 37 31 25 19 13 7 1 7 13 19 25 31 37 43 49 55 49 43 37 31 25 19 13 7 1 7 13 19 25 31 37 43 49 55 49 43 37 31 25 19 13 7 1 7 13 19 25 31 37 43 49} P2 directed:True)
@@ -103,9 +103,9 @@
         (track "Track6" {59 53 47 41 35 29 23 17 11 5 11 17 23 29 35 41 47 53 59 53 47 41 35 29 23 17 11 5 11 17 23 29 35 41 47 53 59 53 47 41 35 29 23 17 11 5 11 17 23 29 35 41 47 53} P6 directed:True)
         }
         >
-    "The game involves 6 players.") 
-    
-    (item "8" <8> 
+    "The game involves 6 players.")
+
+    (item "8" <8>
         <
         (start {
             (place "Marker1" 72)
@@ -117,7 +117,7 @@
             (place "Marker7" 78)
             (place "Marker8" 79)
         })
-        > 
+        >
         <(map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) (pair P5 4) (pair P6 5) (pair P7 6) (pair P8 7)})>
         <
         {
@@ -131,9 +131,9 @@
         (track "Track8" {79 71 63 55 47 39 31 23 15 7 15 23 31 39 47 55 63 71 79 71 63 55 47 39 31 23 15 7 15 23 31 39 47 55 63 71 79 71 63 55 47 39 31 23 15 7 15 23 31 39 47 55 63 71} P8 directed:True)
         }
         >
-    "The game involves 8 players.")*  
-    
-    (item "10" <10> 
+    "The game involves 8 players.")*
+
+    (item "10" <10>
         <
         (start {
             (place "Marker1" 90)
@@ -147,9 +147,9 @@
             (place "Marker9" 98)
             (place "Marker10" 99)
         })
-        > 
+        >
         <(map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) (pair P5 4) (pair P6 5) (pair P7 6) (pair P8 7) (pair P9 8) (pair P10 9)})>
-        <           
+        <
         {
         (track "Track1" {90 80 70 60 50 40 30 20 10 0 10 20 30 40 50 60 70 80 90 80 70 60 50 40 30 20 10 0 10 20 30 40 50 60 70 80 90 80 70 60 50 40 30 20 10 0 10 20 30 40 50 60 70 80} P1 directed:True)
         (track "Track2" {91 81 71 61 51 41 31 21 11 1 11 21 31 41 51 61 71 81 91 81 71 61 51 41 31 21 11 1 11 21 31 41 51 61 71 81 91 81 71 61 51 41 31 21 11 1 11 21 31 41 51 61 71 81} P2 directed:True)
@@ -163,14 +163,14 @@
         (track "Track10" {99 89 79 69 59 49 39 29 19 9 19 29 39 49 59 69 79 89 99 89 79 69 59 49 39 29 19 9 19 29 39 49 59 69 79 89 99 89 79 69 59 49 39 29 19 9 19 29 39 49 59 69 79 89} P10 directed:True)
         }
         >
-    "The game involves 10 players.")  
-    
+    "The game involves 10 players.")
+
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Paradis (Observed)" {
         "Players/8"
         }
@@ -178,13 +178,13 @@
         "Players/6" "Players/10"
         }
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Paradis is a race game played by boys, men, and married women in Mali. Players attempt to reach Paradise, in the center of the board, three times.")
@@ -196,7 +196,7 @@
         (origin  "This game was played in Mali, around 1955.")
         }
     )
-    
+
     (graphics {
         (hand Placement Shared scale:0.2 offsetX:0.05 offsetY:0.95)
         (show Edges Hidden)
@@ -222,5 +222,5 @@
         (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.15)
         (board Placement scale:1.2)
     })
-    
+
 )

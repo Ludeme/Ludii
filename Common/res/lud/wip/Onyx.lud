@@ -1,15 +1,15 @@
-(game "Onyx"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Onyx"
+    (players 2)
+    (equipment {
+        (board
             (keep
                 (rotate -45 (subdivide (tiling T33434 7 7) min:4))
-                (poly {{-6.5 1.75} {-6.5 12.75} {4.5 12.75} {4.5 1.75}}) 
-            ) 
+                (poly {{-6.5 1.75} {-6.5 12.75} {4.5 12.75} {4.5 1.75}})
+            )
             use:Vertex
-        ) 
-        (piece "Disc") 
-    })  
+        )
+        (piece "Disc")
+    })
     (rules
         (start {
             (place "Disc1" (sites {15 24 119 128}))
@@ -22,8 +22,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Onyx is a connection game with capture.")
@@ -32,11 +32,11 @@
         (version "0.9.4")
         (classification "board/space/line")
         (author "Larry Back")
-        (date "2000") 
+        (date "2000")
         (credit "Cameron Browne 4/7/2020")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))

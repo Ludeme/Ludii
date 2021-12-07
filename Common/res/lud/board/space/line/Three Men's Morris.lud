@@ -1,19 +1,19 @@
 (game "Three Men's Morris"
-    (players 2)  
+    (players 2)
     (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each <Piece>)
-    })  
-    (rules 
+    })
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -33,8 +33,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Three Men's Morris is a simple alignment game that is still played today, that has been played in Europe for centuries. It may also appear in  Roman sources, and similar boards have been found as graffiti at Roman sites.")
@@ -47,9 +47,9 @@
         (origin  "This game was played in Unknown, from around 122 to 350.")
         }
     )
-    
-    (ai 
+
+    (ai
         "Three Men's Morris_ai"
     )
-    
+
 )

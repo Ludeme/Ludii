@@ -3,7 +3,7 @@
     (equipment {
         (board
             (add
-                (remove 
+                (remove
                     (concentric {44})
                     vertices:{43 21 0 22}
                 )
@@ -19,8 +19,8 @@
         (piece "Stick" Each)
         (dice d:2 from:0 num:3)
     })
-    (rules 
-        (start 
+    (rules
+        (start
             (place Stack items:<Player:init> Edge 36)
         )
         (play (do (roll) next:(forEach Piece)))
@@ -31,15 +31,15 @@
 
 (option "Players" <Player> args:{ <num> <init>}
     {
-    (item "2" <2> <{"Stick2" "Stick1"}>  "The game has 2 players.")  
-    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}>  "The game has 3 players.")  
-    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 4 players.")  
+    (item "2" <2> <{"Stick2" "Stick1"}>  "The game has 2 players.")
+    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}>  "The game has 3 players.")
+    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 4 players.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tugea is a race game played by the people of Nambé Oweenge Pueblo in New Mexico. Each player plays as a horse around a circular board, attempting to complete a circuit of the board without getting sent back to start by the opponent. ")
@@ -52,13 +52,13 @@
         (origin  "This game was played in New Mexico, around 1907.")
         }
     )
-    
+
     (graphics {
         (show Edges (colour Hidden))
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (board Background image:"disc" edgeColour:(colour Black) scale:0.1)
-        
+
     })
-    
+
 )
 

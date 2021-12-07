@@ -6,7 +6,7 @@
                     (sites Occupied by:Mover)
                     if:(=
                         (size Stack at:(site))
-                        (max 
+                        (max
                             (results
                                 from:(sites Occupied by:Mover)
                                 to:0
@@ -42,12 +42,12 @@
     (move
         (from)
         (to
-            (sites Around 
-                (from) 
-                Empty 
+            (sites Around
+                (from)
+                Empty
                 distance:(size Stack at:(from))
             )
-            (apply 
+            (apply
                 (if
                     (and {
                         (= 1 (state at:(from)))
@@ -69,12 +69,12 @@
     (move
         (from)
         (to
-            (sites Around 
-                (from) 
-                Enemy 
+            (sites Around
+                (from)
+                Enemy
                 distance:(size Stack at:(from))
             )
-            (apply 
+            (apply
                 (and {
                     (if
                         (= 1 (state at:(to)))
@@ -87,10 +87,10 @@
         )
         count:(size Stack at:(from))
         stack:True
-        (then 
-            (if 
+        (then
+            (if
                 (< 1 (size Stack at:(last To)))
-                (and 
+                (and
                     (remove (last To) count:(- (size Stack at:(last To)) 1))
                     (set State at:(last To) (var))
                 )
@@ -100,8 +100,8 @@
 )
 
 (define "Move"
-    (or 
-        ("MoveToEmpty") 
+    (or
+        ("MoveToEmpty")
         ("Capture")
         #1
     )
@@ -117,18 +117,18 @@
     })
     (rules
         (start {
-            (place "Disc1" 
+            (place "Disc1"
                 (difference
-                    (difference 
+                    (difference
                         (expand (sites Bottom) steps:2)
                         (expand (sites Bottom) steps:1)
                     )
                     (sites Outer)
                 )
             )
-            (place "Disc2" 
+            (place "Disc2"
                 (difference
-                    (difference 
+                    (difference
                         (expand (sites Top) steps:2)
                         (expand (sites Top) steps:1)
                     )
@@ -141,8 +141,8 @@
                 ("Move")
                 Mover
                 top:True
-                (then 
-                    (and 
+                (then
+                    (and
                         (remove (sites Outer) count:(size Stack at:(last To)))
                         ("UpdateKing")
                     )
@@ -150,12 +150,12 @@
             )
         )
         (end {
-            (if 
-                (= 1 (var "MoverHasLost")) 
+            (if
+                (= 1 (var "MoverHasLost"))
                 (result Mover Loss)
             )
-            (if 
-                (= 1 (var "MoverHasWon")) 
+            (if
+                (= 1 (var "MoverHasWon"))
                 (result Mover Win)
             )
         })
@@ -173,13 +173,13 @@
             If it lands on an enemy, the enemy is removed and your stack shrinks down to size 1.
             It is not legal to land on a friendly stack.
             Jumping over stacks is allowed.
-            Stacks may also jump off the board, removing themselves from the game. 
+            Stacks may also jump off the board, removing themselves from the game.
             Passing is not allowed.
-            
+
             Definitions for crown and king: In this implementation, the king-stack will have a red stroke color. This red ring is the crown. Which stack has the crown is determined like this: After your move, if there is, among your stacks, a unique stack of the biggest size, the crown will be on that stack. There is no other way the crown can change heads. The piece with a crown on it is the king.
-            
+
             Goal: If the enemy king is removed from the game, you win.
-            
+
         Note: In this implementation, jumping off the board is only possible if the stack can reach exactly 1 row or column beyond the perimeter. But it seems to always be the case that it is possible to jump off the board when a stack is big enough. Please let Michael know if you encounter a scenario where a piece is stuck. This should not be allowed according to the rules of the game.")
         (version "1.3.0")
         (classification "experimental")
