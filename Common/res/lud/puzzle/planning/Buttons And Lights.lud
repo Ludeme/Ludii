@@ -1,0 +1,55 @@
+(define "LightOn" (= 1 (state at:(site))))
+(define "FirstButton" (= (last To) 0))
+(define "SecondButton" (= (last To) 1))
+(define "ToggleLight" (set State at:3 (abs (- (state at:3) 1))))
+(define "SwapTwoFirstLights" (swap Pieces 3 4))
+(define "SwapTwoLastLights" (swap Pieces 4 5))
+
+//------------------------------------------------------------------------------
+
+(game "Buttons And Lights"  
+    (players 1)  
+    (equipment { 
+        (board (rectangle 2 3)) 
+        (piece "Light" Shared)
+    })  
+    (rules
+    	(start (place "Light" (sites Top)))
+        (play
+            (move Select 
+            	(from (sites Bottom))
+            	(then
+            		(if ("FirstButton")
+            			("ToggleLight")
+            			(if ("SecondButton")
+            				("SwapTwoFirstLights")
+            				("SwapTwoLastLights")
+            			)
+            		)
+            	)
+            )
+        )
+        (end { 
+        	(if (all Sites (sites Top) if:("LightOn")) (result Mover Win))
+        	(if (= 4 (counter)) (result Mover Loss))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+    (info
+        {
+        
+        }
+    )
+    
+    (graphics {
+    	(piece Colour "Light" state:0 fillColour:(colour White))
+    	(piece Colour "Light" state:1 fillColour:(colour Yellow))
+    	(show Symbol "Disc" (sites Bottom) fillColour:(colour Black) scale:0.5)
+    	(show Symbol "Disc" (sites Bottom) fillColour:(colour White) scale:0.25)
+    })
+)
