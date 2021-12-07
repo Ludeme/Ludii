@@ -1,9 +1,9 @@
 (define "SlideMove"
-		(move Slide #1
-        		(to
-        			(apply if:(all Sites (sites Around (to)) if:(!= (what at:(site)) (id #2 Next))))
-        		)
-        	)	
+    (move Slide #1
+        (to
+            (apply if:(all Sites (sites Around (to)) if:(!= (what at:(site)) (id #2 Next))))
+        )
+    )	
 )
 (define "MouseMove" ("SlideMove" Orthogonal "Lion"))
 (define "ElephantMove" ("SlideMove" All "Mouse"))
@@ -25,24 +25,24 @@
         (regions "Water" (sites {"D4" "D7" "G4" "G7"}))
     })  
     (rules
-    	(start {
-    		(place "Elephant1" (sites {"E1" "F1"}))
-    		(place "Lion1" (sites {"D2" "G2"}))
-    		(place "Mouse1" (sites {"E2" "F2"}))
-    		(place "Elephant2" (sites {"E10" "F10"}))
-    		(place "Lion2" (sites {"D9" "G9"}))
-    		(place "Mouse2" (sites {"E9" "F9"}))
-    	})
-    	
+        (start {
+            (place "Elephant1" (sites {"E1" "F1"}))
+            (place "Lion1" (sites {"D2" "G2"}))
+            (place "Mouse1" (sites {"E2" "F2"}))
+            (place "Elephant2" (sites {"E10" "F10"}))
+            (place "Lion2" (sites {"D9" "G9"}))
+            (place "Mouse2" (sites {"E9" "F9"}))
+        })
+        
         (play
-        	(priority {
-        		(and {
-        			(forEach Piece "Mouse" (if ("IsAround" "Lion") ("MouseMove")))
-        			(forEach Piece "Elephant" (if ("IsAround" "Mouse") ("ElephantMove")))
-        			(forEach Piece "Lion" (if ("IsAround" "Elephant") ("LionMove")))
-        		})
-        		(forEach Piece)
-        	})
+            (priority {
+                (and {
+                    (forEach Piece "Mouse" (if ("IsAround" "Lion") ("MouseMove")))
+                    (forEach Piece "Elephant" (if ("IsAround" "Mouse") ("ElephantMove")))
+                    (forEach Piece "Lion" (if ("IsAround" "Elephant") ("LionMove")))
+                })
+                (forEach Piece)
+            })
         )
         
         (end (if ("ThreePiecesInWater") (result Mover Win)))
@@ -52,7 +52,7 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-		
+    
     (info
         {
         
@@ -63,8 +63,8 @@
         (board Checkered)
         (board Colour Phase0 (colour White))
         (board Colour Phase1 (colour Blue))
-    	(board Colour OuterEdges (colour Black))
-    	(board Colour InnerEdges (colour Hidden))
-    	(show Symbol "Disc" "Water" fillColour:(colour Blue))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Hidden))
+        (show Symbol "Disc" "Water" fillColour:(colour Blue))
     })
 )

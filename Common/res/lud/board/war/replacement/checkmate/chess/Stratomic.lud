@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next ("CastingAndMovingPieces"))))) )
 )
 
 (define "HasNeverMoved"
@@ -22,9 +22,14 @@
 (define "CaptureToPieceAndResetCounter"
     (apply 
         (if (is Enemy (who at:(to)))
-            (remove 
-                (to) 
-                (then (set Counter))
+            (and
+                (if (and (not ("AuthorisedToLaunch")) (!= (id "Pawn" Next) (what at:(to))))
+                    (set Var "NonPawnPieceCapture" 1)
+                )
+                (remove 
+                    (to) 
+                    (then (set Counter))
+                )
             )
         )
     ) 
@@ -33,7 +38,7 @@
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
-        (not ("IsInCheck" "King" Mover at:(to)))
+        (not (is Threatened (id "King" Mover) at:(to) (forEach Piece)) )
     )   
 )
 
@@ -106,8 +111,13 @@
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
-            (remove 
-                (ahead (last To) Backward)
+            (and
+                (if (and (not ("AuthorisedToLaunch")) (!= (id "Pawn" Next) (what at:(ahead (last To) Backward))))
+                    (set Var "NonPawnPieceCapture" 1)
+                )
+                (remove 
+                    (ahead (last To) Backward)
+                )
             )
         )
     )
@@ -119,9 +129,45 @@
         (directions {FR FL}) 
         (to 
             if:(is Enemy (who at:(to))) 
-            (apply (remove (to)))
+            (apply
+                (and
+                    (if (and (not ("AuthorisedToLaunch")) (!= (id "Pawn" Next) (what at:(to))))
+                        (set Var "NonPawnPieceCapture" 1)
+                    )
+                    (remove (to))
+                )
+            )
         )
     )
+)
+
+(define "CastingAndMovingPieces"
+    (or
+        (forEach Piece)
+        (if (and 
+                ("HasNeverMoved" "King")
+                (not ("IsInCheck" "King" Mover (forEach Piece))) 
+            )
+            (or
+                (if (and 
+                        ("HasNeverMoved" "RookLeft")
+                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                    )
+                    "BigCastling"
+                )
+                (if (and 
+                        ("HasNeverMoved" "RookRight")
+                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                    )
+                    "SmallCastling"
+                )
+            )
+        )
+    )
+)
+
+(define "AuthorisedToLaunch" 
+    (= (var "NonPawnPieceCapture") 1)
 )
 
 //------------------------------------------------------------------------------
@@ -203,13 +249,13 @@
         )
         
         (piece "NuclearBomb" Each
-        		(move
-                        Step 
-                        (to 
-                            if:(not (is Friend (who at:(to)))) 
-                            "CaptureToPieceAndResetCounter"
-                        ) 
-                    )
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndResetCounter"
+                ) 
+            )
         )
         
         (map "King" {(pair 1 "F2") (pair 2 "E9")})
@@ -230,50 +276,33 @@
             (if "SameTurn"
                 (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook" "NuclearBomb"}) Mover)
                 (do 
-                    (or { 
-                    	(move Select
-                            	(from (sites Occupied by:Mover component:"NuclearBomb"))
+                    (or 
+                        (if ("AuthorisedToLaunch")
+                            (move Select
+                                (from (sites Occupied by:Mover component:"NuclearBomb") if:(not (is Threatened (id "NuclearBomb" Mover) at:(from) (forEach Piece)) ))
                                 (to (sites Board))
                                 (then
-                                		(and
+                                    (and
                                         (forEach Site (sites Around (last To) includeSelf:True)
                                             (if (and { (is Occupied (site)) (!= (what at:(site)) (id "King" P1)) (!= (what at:(site)) (id "King" P2)) })
                                                 (remove (site))
                                             )
                                         )
                                         (remove (last From))
-                                        )
+                                    )
                                 )
                             ) 
-                        (forEach Piece)
-                        (if (and 
-                                ("HasNeverMoved" "King")
-                                (not ("IsInCheck" "King" Mover)) 
-                            )
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-                                    )
-                                    "BigCastling"
-                                )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-                                    )
-                                    "SmallCastling"
-                                )
-                            )
                         )
-                    })
-                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                        ("CastingAndMovingPieces")
+                    )
+                    ifAfterwards:(not ("IsInCheck" "King" Mover ("CastingAndMovingPieces")))
                 )
             )
         )
         
         (end {
             (if (and 
-                    ("IsInCheck" "King" Next)
+                    ("IsInCheck" "King" Next ("CastingAndMovingPieces"))
                     ("NextCanNotMove")
                 ) 
                 (result Mover Win)
