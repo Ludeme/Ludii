@@ -1,3 +1,20 @@
+(define "Boom"
+        (forEach Site (sites Around #1 includeSelf:True)
+                (if (and { 
+	                	(is Occupied (site)) 
+	                	(if (= (site) #1)
+	                		True
+	                		(and
+			                	(!= (what at:(site)) (id "Pawn" P1)) 
+			                	(!= (what at:(site)) (id "Pawn" P2)) 
+		                	)
+	                	)
+                	})
+                    (remove (site))
+                )
+            )		
+)
+
 (define "NextCanNotMove"
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
 )
@@ -11,20 +28,23 @@
 )
 
 (define "RememberPieceHasMoved"
-    (then 
+		(then
         (if 
             (= (state at:(last To)) 1) 
             ("PieceHasMoved" (last To))
         ) 
-    ) 
+        )
 )
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
         (if (is Enemy (who at:(to)))
+        	(and
             (remove 
                 (to) 
                 (then (set Counter))
+            )
+            ("Boom" (to))
             )
         )
     ) 
@@ -106,8 +126,11 @@
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
+        	(and
             (remove 
                 (ahead (last To) Backward)
+            )
+        	("Boom" (ahead (last To) Backward))
             )
         )
     )
@@ -119,7 +142,12 @@
         (directions {FR FL}) 
         (to 
             if:(is Enemy (who at:(to))) 
-            (apply (remove (to)))
+            (apply
+            	(and
+            	(remove (to))
+            	("Boom" (to))
+            	)
+            )
         )
     )
 )
@@ -159,17 +187,16 @@
                     if:(is Enemy (who at:(to))) 
                     "CaptureToPieceAndResetCounter"
                 ) 
-                "RememberPieceHasMoved"
+                		("RememberPieceHasMoved")
             )
         )
         (piece "King" Each 
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndResetCounter"
+                    if:(is Empty (to))
                 ) 
-                "RememberPieceHasMoved"
+                ("RememberPieceHasMoved")
             )
         )
         (piece "Bishop" Each 
@@ -178,7 +205,7 @@
                 Diagonal 
                 (to 
                     if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndResetCounter"
+                    ("CaptureToPieceAndResetCounter")
                 ) 
             )
         )
@@ -188,7 +215,7 @@
                 "KnightWalk" 
                 (to 
                     if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndResetCounter"
+                    ("CaptureToPieceAndResetCounter")
                 ) 
             )
         )
@@ -197,7 +224,7 @@
                 Slide 
                 (to 
                     if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndResetCounter"
+                    ("CaptureToPieceAndResetCounter")
                 ) 
             ) 
         )
@@ -242,16 +269,22 @@
                             )
                         )
                     )
-                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    ifAfterwards:(and
+                    		(not ("IsInCheck" "King" Mover))
+                    		(!= Off (where "King" Mover))
+                    		)
                 )
             )
         )
         
         (end {
-            (if (and 
-                    ("IsInCheck" "King" Next)
-                    ("NextCanNotMove")
-                ) 
+            (if (or
+	            	(and 
+	                    ("IsInCheck" "King" Next)
+	                    ("NextCanNotMove")
+	                ) 
+	            	(= Off (where "King" Next))
+	            )
                 (result Mover Win)
             ) 
             (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
