@@ -3,9 +3,9 @@
 //------------------------------------------------------------------------------
 
 (game "Qelat (Beni Amir-Mensa)"
-    (players 2)  
-    
-    (equipment { 
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6 store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -17,12 +17,12 @@
         (regions "Left"  P2 (intersection (expand (sites Right) steps:2) (sites Top)))    // P2 home left
         (regions "Right" P1 (intersection (expand (sites Right) steps:2) (sites Bottom))) // P1 home right
         (regions "Right" P2 (intersection (expand (sites Left) steps:2) (sites Top)))     // P2 home right
-    })  
-    (rules 
+    })
+    (rules
         (start (set Count 4 to:(sites Track) ) )
-        
-        (play 
-            (or 
+
+        (play
+            (or
                 (move Select
                     (from (sites Mover "Left") if:(and (= 0 (state at:(from))) (is Occupied (from))))
                     (then
@@ -55,11 +55,11 @@
                 )
             )
         )
-        
+
         (end
             (if  (and (no Moves P1) (no Moves P2))
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" 1)) 
+                    (score P1 ("PiecesOwnedBy" 1))
                     (score P2 ("PiecesOwnedBy" 2))
                 })
             )
@@ -69,7 +69,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Qelat is a two-row mancala-style board game played by the Beni Amir and Mensa people of Eritrea. This game is typically played by older men, and is played for large stakes. Instead of capturing counters, players create \"walda,\" captured holes in which counters accumulate throughout the game.")
@@ -81,7 +81,7 @@
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)

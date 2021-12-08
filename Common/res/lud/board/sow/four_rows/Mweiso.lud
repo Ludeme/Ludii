@@ -6,12 +6,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Mweiso"  
-    (players 2)  
-    
-    (equipment { 
+(game "Mweiso"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
@@ -28,26 +28,26 @@
         (map "SecondLeftInner" {(pair P1 9) (pair P2 22)})
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
-        
+
         phases:{
         (phase "OuterPhase"
             (play
                 (move Select
-                    (from 
+                    (from
                         (if ("SameTurn")
                             (sites {(var "Replay")})
-                            (sites Mover "Outer") 
+                            (sites Mover "Outer")
                         )
                         if:(if ("SameTurn")
                             (< 0 (count at:(from)))
                             (< 1 (count at:(from)))
                         )
                     )
-                    (then 
+                    (then
                         (sow
                             "TrackCCW"
                             owner:(mover)
@@ -81,18 +81,18 @@
                     )
                 )
             )
-            
+
             (nextPhase Mover (= 1 (count at:(last To afterConsequence:True))) "MainPhase")
         )
-        
+
         (phase "MainPhase"
             (play
                 (or
                     (move Select
-                        (from 
+                        (from
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
-                                (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}) 
+                                (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)})
                             )
                             if:(and {
                                 if:(if ("SameTurn")
@@ -105,7 +105,7 @@
                                 (is Occupied ("OuterOppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })
                         )
-                        (then 
+                        (then
                             (sow
                                 "TrackCW"
                                 owner:(mover)
@@ -139,17 +139,17 @@
                         )
                     )
                     (move Select
-                        (from 
+                        (from
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
-                                (sites Mover) 
+                                (sites Mover)
                             )
                             if:(if ("SameTurn")
                                 (< 0 (count at:(from)))
                                 (< 1 (count at:(from)))
                             )
                         )
-                        (then 
+                        (then
                             (sow
                                 "TrackCCW"
                                 owner:(mover)
@@ -184,18 +184,18 @@
                     )
                 )
             )
-            
+
             (end (if (no Moves Next) (result Mover Win)))
         )
-        
+
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Mweiso is a four-row mancala-style board game commonly played in the Kagera province of Tanzania.")
@@ -208,10 +208,10 @@
         (origin  "This game was played in African Great Lakes, around 1951.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

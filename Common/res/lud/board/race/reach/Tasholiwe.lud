@@ -2,17 +2,17 @@
 
 (define "TrackMove" (trackSite Move #1 steps:("ThrowValue")))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (fromTo (from (to)) (to (mapEntry "Start" (who at:(to)))))
-    ) 
+    )
 )
 
-(define "Move" 
+(define "Move"
     (move
         (from (from) level:(level))
-        (to 
+        (to
             (trackSite Move #1 steps:("ThrowValue"))
             if:(not (is Friend (who at:(to))))
             "CaptureEnemyPiece"
@@ -22,7 +22,7 @@
 
 (define "NextSite" (trackSite Move from:#1 #2 steps:1))
 
-(define "MadeACompleteCircuit" 
+(define "MadeACompleteCircuit"
     (if (or (is Mover P1) (is Mover P2))
         (is In (mapEntry "Start" Mover) (sites Track "TrackCCW" from:("NextSite" (last From) "TrackCCW") to:(last To)))
         (is In (mapEntry "Start" Mover) (sites Track "TrackCW" from:("NextSite" (last From) "TrackCW") to:(last To)))
@@ -36,7 +36,7 @@
     (equipment {
         (board
             (add
-                (remove 
+                (remove
                     (concentric {44})
                     vertices:{43 21 0 22}
                 )
@@ -55,23 +55,23 @@
         (dice d:2 from:0 num:3)
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             <Player:init>
         })
-        (play 
-            (do 
-                (roll) 
+        (play
+            (do
+                (roll)
                 next:(if (or (is Mover P1) (is Mover P2))
                     (forEach Piece ("Move" "TrackCCW"))
                     (forEach Piece ("Move" "TrackCW"))
                 )
-                (then 
+                (then
                     (do
-                        (if ("MadeACompleteCircuit") 
-                            (addScore Mover 1) 
-                            (then 
-                                (if (= (score Mover) 4) 
+                        (if ("MadeACompleteCircuit")
+                            (addScore Mover 1)
+                            (then
+                                (if (= (score Mover) 4)
                                     (remove (last To))
                                 )
                             )
@@ -89,40 +89,40 @@
 
 (option "Players" <Player> args:{ <num> <startPos> <init>}
     {
-    (item "2" <2> 
+    (item "2" <2>
         <(map "Start" {(pair 1 39) (pair 2 37)})>
         <
         (place "Stick1" Edge (mapEntry "Start" P1))
         (place "Stick2" Edge (mapEntry "Start" P2))
-        >  
-    "The game has 2 players.")   
-    (item "4" <4> 
+        >
+    "The game has 2 players.")
+    (item "4" <4>
         <(map "Start" {(pair 1 39) (pair 2 36) (pair 3 37) (pair 4 38)})>
         <
         (place "Stick1" Edge (mapEntry "Start" P1))
         (place "Stick2" Edge (mapEntry "Start" P2))
         (place "Stick3" Edge (mapEntry "Start" P3))
         (place "Stick4" Edge (mapEntry "Start" P4))
-        >  
-    "The game has 4 players.")*  
+        >
+    "The game has 4 players.")*
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Tasholiwe (Observed)" {
         "Players/4"
         }
         variations:{"Players/2"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tasholiwe is a race game played by the Zuni people of the southwest United States. Two or four people play, each player playing a sa piece representing the four directions and seasons.")
@@ -134,7 +134,7 @@
         (origin  "This game was played in Southwest United States, around 1898.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Yellow))
         (player Colour P2 (colour Blue))
@@ -147,6 +147,6 @@
         (piece Colour "Die" state:0 fillColour:(colour Red))
         (piece Colour "Die" state:1 fillColour:(colour Black))
     })
-    
+
 )
 

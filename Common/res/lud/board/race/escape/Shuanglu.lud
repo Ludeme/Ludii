@@ -1,18 +1,18 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:#2
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
@@ -21,14 +21,14 @@
     (if (is Occupied (handSite Mover))
         (forEach Die
             if:("DieNotUsed")
-            (move 
+            (move
                 (from (handSite Mover))
-                (to 
+                (to
                     ("NextSiteFrom" (handSite Mover) (pips))
                     if:(< (size Stack at:(to)) 2)
-                    (apply 
+                    (apply
                         (if (is Enemy (who at:(to)))
-                            (fromTo 
+                            (fromTo
                                 (from (to))
                                 (to (handSite Next))
                             )
@@ -36,8 +36,8 @@
                     )
                 )
             )
-            
-            (then 
+
+            (then
                 (if (not (all DiceUsed))
                     (moveAgain)
                 )
@@ -55,9 +55,9 @@
 (game "Shuanglu"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -76,14 +76,14 @@
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
                     )
-                    (move 
+                    (move
                         (from (from))
-                        (to 
+                        (to
                             ("NextSiteFrom" (from) (pips))
                             if:("NotEnemyOrOnlyOne")
-                            (apply 
+                            (apply
                                 (if (is Enemy (who at:(to)))
-                                    (fromTo 
+                                    (fromTo
                                         (from (to))
                                         (to (handSite Next))
                                     )
@@ -92,7 +92,7 @@
                         )
                     )
                 )
-                (then 
+                (then
                     (if (not (all DiceUsed))
                         (moveAgain)
                     )
@@ -103,14 +103,14 @@
         (regions "FinalQuadrant" P1 (sites {18..23}))
         (regions "FinalQuadrant" P2 (sites {6..11}))
     })
-    (rules 
+    (rules
         (start {
-            (place Stack "Disc1"  6 count:5) (place Stack "Disc1" 4 count:3) 
+            (place Stack "Disc1"  6 count:5) (place Stack "Disc1" 4 count:3)
             (place Stack "Disc1" 12 count:5) (place Stack "Disc1" 23 count:2)
-            (place Stack "Disc2"  18 count:5) (place Stack "Disc2" 16 count:3) 
+            (place Stack "Disc2"  18 count:5) (place Stack "Disc2" 16 count:3)
             (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 11 count:2)
         })
-        (play 
+        (play
             (do (if (not "SameTurn") (roll))
                 next:(priority {
                     ("EnterPieces")
@@ -124,8 +124,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Shuanglu is a race game known from East Asia that is similar to European Backgammon. References to it in Chinese sources date to the first millennium CE.")
@@ -139,7 +139,7 @@
         (origin  "This game was played in East Asia, around 1895.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
@@ -147,6 +147,6 @@
         (stackType 2 Count)
         (stackType 0 Backgammon)
     })
-    
+
 )
 

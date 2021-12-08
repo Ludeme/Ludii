@@ -5,32 +5,32 @@
 (define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
 (define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
 
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
+(define "Custodial"
+    (custodial
+        (from (last To))
         Orthogonal
-        (between 
-            (max 1) 
-            if:(= (what at:(between)) (id #1)) 
+        (between
+            (max 1)
+            if:(= (what at:(between)) (id #1))
             (apply (remove (between)))
         )
-        (to if:("FriendOrCentre")) 
+        (to if:("FriendOrCentre"))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Tablut"  
-    (players 2)  
-    (equipment { 
-        (board (square 9)) 
-        
-        (piece "Thrall" P1 
+(game "Tablut"
+    (players 2)
+    (equipment {
+        (board (square 9))
+
+        (piece "Thrall" P1
             (move
                 Slide
-                Orthogonal 
+                Orthogonal
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
-                (then 
+                (then
                     (or {
                         ("Custodial" "Thrall2")
                         <Jarl:captureType>
@@ -38,41 +38,41 @@
                 )
             )
         )
-        
-        (piece "Thrall" P2 
+
+        (piece "Thrall" P2
             (move
                 Slide
-                Orthogonal 
+                Orthogonal
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
-                (then ("Custodial" "Thrall1") ) 
-            ) 
-        ) 
-        
-        (piece "Jarl" P2 
-            (move
-                Slide
-                Orthogonal 
-                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1") )
             )
         )
-        
-        (regions "OrthogonalSitesCentre" 
+
+        (piece "Jarl" P2
+            (move
+                Slide
+                Orthogonal
+                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                (then ("Custodial" "Thrall1") )
+            )
+        )
+
+        (regions "OrthogonalSitesCentre"
             (difference
-                (expand origin:("Castle") Orthogonal) 
+                (expand origin:("Castle") Orthogonal)
                 ("Castle")
             )
         )
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Thrall1" {"D1" "E1" "F1" "E2" "A4" "A5" "A6" "B5" "I4" "I5" "I6" "H5" "E8" "D9" "E9" "F9" "E8"})
             (place "Thrall2" {"E3" "E4" "E6" "E7" "C5" "D5" "F5" "G5"})
             (place "Jarl2" (centrePoint))
         })
-        
-        (play (forEach Piece)) 
-        
+
+        (play (forEach Piece))
+
         (end {
             (if (is In (where "Jarl" P2) (sites Outer) ) (result P2 Win))
             (if "JarlWasCaptured" (result P1 Win))
@@ -83,70 +83,70 @@
 //------------------------------------------------------------------------------
 
 (option "Play Rules" <Jarl> args:{ <captureType> }
-    {   
-    (item "King Flanked"    
+    {
+    (item "King Flanked"
         <
-        (surround 
-            (from (last To)) 
+        (surround
+            (from (last To))
             Orthogonal
-            (between 
-                if:"JarlAndExpandedCentre" 
+            (between
+                if:"JarlAndExpandedCentre"
                 "CaptureJarl"
             )
             (to if:"FriendOrCentre")
         )
-        (custodial 
-            (from (last To)) 
-            Orthogonal 
-            (between 
-                (max 1) 
-                if:"JarlButNotTheExpandedCentre" 
-                "CaptureJarl" 
+        (custodial
+            (from (last To))
+            Orthogonal
+            (between
+                (max 1)
+                if:"JarlButNotTheExpandedCentre"
+                "CaptureJarl"
             )
             (to if:(is Friend (who at:(to))))
         )>
         "The king is captured if the enemy flanks him, except on the castle where he should be surrounded."
     )*
-    
-    (item "King Surrounded"   
-        <(surround 
+
+    (item "King Surrounded"
+        <(surround
             (from (last To))
             Orthogonal
-            (between 
-                if:(= (what at:(between)) (id "Jarl2")) 
+            (between
+                if:(= (what at:(between)) (id "Jarl2"))
                 "CaptureJarl"
             )
-            (to 
+            (to
                 if:("FriendOrCentre")
             )
-        )>     
+        )>
         "The king is captured if the enemy surrounds him."
-    )  
+    )
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/Linnaeus (Observed)" 
+(rulesets {
+
+    (ruleset "Ruleset/Linnaeus (Observed)"
         {
         "Play Rules/King Flanked"
         }
     )
-    
-    (ruleset "Ruleset/Smith (Suggested)" 
+
+    (ruleset "Ruleset/Smith (Suggested)"
         {
         "Play Rules/King Surrounded"
         }
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Tablut is a game documented in Lapland during the 18th century. Judging from the form and rules, it is thought to be the latest surviving member of the tafl family. It is also currently the only tafl game to have a fully documented ruleset.")
@@ -161,15 +161,15 @@
         (origin  "This game was played in Lapland, around 1732.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Style Tafl)
     })
-    
-    (ai 
+
+    (ai
         "Tablut_ai"
     )
-    
+
 )

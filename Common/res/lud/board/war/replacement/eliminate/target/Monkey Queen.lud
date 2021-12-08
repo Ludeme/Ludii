@@ -5,9 +5,9 @@
         (piece "Marker"
             (or {
                 (move Slide
-                    (to 
+                    (to
                         if:(is Enemy (who at:(to))) // Capturing Queen Move and Capturing Baby Monkey Move
-                        (apply 
+                        (apply
                             if:(is Enemy (who at:(to)))
                             (remove (to) count:(size Stack at:(to)))
                         )
@@ -35,7 +35,7 @@
                 )
                 (if (= 1 (size Stack at:(from))) // Non capturing Baby Monkey Move
                     (move Slide
-                        (between 
+                        (between
                             if:(and
                                 (< (count Steps (to) (value Player Next)) (count Steps (from) (value Player Next)))
                                 (is Empty (between))
@@ -53,11 +53,11 @@
             (place Stack "Marker2" 137 count:20)
         })
         (play (forEach Piece top:True))
-        (end 
-            (if 
+        (end
+            (if
                 (or
                     (all Sites (sites Occupied by:Next) if:(= 1 (size Stack at:(site))))
-                    (no Moves Next) 
+                    (no Moves Next)
                 )
                 (result Mover Win)
             )
@@ -67,8 +67,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (graphics {
         (player Colour P2 (colour Brown))
         (board Style Chess)

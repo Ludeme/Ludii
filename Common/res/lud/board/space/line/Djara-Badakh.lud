@@ -1,40 +1,40 @@
 (game "Djara-Badakh"
-    (players 2)  
-    
-    (equipment { 
-        (board (square 3) use:Vertex) 
+    (players 2)
+
+    (equipment {
+        (board (square 3) use:Vertex)
         (hand Each)
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (move
-                Step 
-                (to if:(is Empty (to))) 
+                Step
+                (to if:(is Empty (to)))
             )
-        ) 
+        )
     })
-    
-    (rules 
+
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty)) 
-                )  
-            ) 
+                (move
+                    (from (handSite Mover))
+                    (to (sites Empty))
+                )
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        
-        (phase "Movement" 
-            (play 
+
+        (phase "Movement"
+            (play
                 (forEach Piece)
             )
         )
         }
-        
-        (end 
-            (if 
+
+        (end
+            (if
                 (is Line 3)
                 (result Mover Win)
             )
@@ -44,8 +44,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Djara-Badakh is a simple game of alignment played by children in Somalia.")
@@ -57,10 +57,10 @@
         (origin  "This game was played in Horn of Africa, around 1931.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
     (ai
         "Djara-Badakh_ai"

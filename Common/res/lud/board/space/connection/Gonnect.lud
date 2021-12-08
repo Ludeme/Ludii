@@ -1,35 +1,35 @@
 (define "HasFreedom" (> (count Liberties Orthogonal) 0))
 
 (define "CaptureSurroundedPiece"
-    (enclose 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between) ) ) 
+    (enclose
+        (from (last To))
+        Orthogonal
+        (between
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between) ) )
         )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Gonnect"  
-    (players 2) 
-    (equipment { 
-        (board <Board> use:Vertex) 
+(game "Gonnect"
+    (players 2)
+    (equipment {
+        (board <Board> use:Vertex)
         (piece "Marker" Each)
         (regions P1 { (sites Side N) (sites Side S) } )
         (regions P2 { (sites Side W) (sites Side E) } )
     })
-    
-    (rules 
+
+    (rules
         (meta {
             (swap)
             (noRepeat)
         })
-        (play 
+        (play
             (do
-                (move 
+                (move
                     Add
                     (to (sites Empty))
                     (then "CaptureSurroundedPiece")
@@ -37,11 +37,11 @@
                 ifAfterwards:"HasFreedom"
             )
         )
-        
+
         (end {
             (if (is Connected Mover) (result Mover Win))
             (if (no Moves Next) (result Mover Win))
-        }) 
+        })
     )
 )
 
@@ -49,16 +49,16 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")**   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")   
+    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")
+    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")**
+    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")
+    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Gonnect was invented by João Pedro Neto in 2000. It is played with a Go board and pieces, with the goal of creating a group that connects two opposite sides of the board.")
@@ -71,15 +71,15 @@
         (date "2000")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
     })
-    
-    (ai 
+
+    (ai
         "Gonnect_ai"
     )
-    
+
 )

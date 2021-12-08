@@ -1,19 +1,19 @@
-(game "Sai"  
-    (players 2)  
-    
-    (equipment { 
+(game "Sai"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 7 store:None
-            (track "Track" "0,E,N,W" loop:True)		
+            (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 4 to:(sites Track) ) )
-        
+
         (play (forEach Piece))
-        
+
         (end
             (if  (no Moves Next)
                 (result Mover Win)
@@ -24,7 +24,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Sai is a two-row mancala-style board game played on the island of Flores in Indonesia.")
@@ -35,7 +35,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

@@ -1,12 +1,12 @@
-(define "ReverseBoundedPieces" 
+(define "ReverseBoundedPieces"
     (custodial
         (from (site))
-        (between 
-            if:(is Enemy (state at:(between))) 
-            (apply 
-                (allCombinations 
-                    (add (piece "Disc0" state:(mover)) (to (site))) 
-                    (flip (between)) 
+        (between
+            if:(is Enemy (state at:(between)))
+            (apply
+                (allCombinations
+                    (add (piece "Disc0" state:(mover)) (to (site)))
+                    (flip (between))
                 )
             )
         )
@@ -16,32 +16,32 @@
 
 //------------------------------------------------------------------------------
 
-(game "Reversi"  
-    (players 2)  
-    (equipment { 
+(game "Reversi"
+    (players 2)
+    (equipment {
         (board (square <Board:size>))
         (piece "Disc" Neutral (flips 1 2))
         }
-    )  
-    (rules 
-        
-        <Rules:start> 
-        
-        phases:{ 
+    )
+    (rules
+
+        <Rules:start>
+
+        phases:{
         <Rules:play>
-        (phase "Playing" 
-            (play (forEach Site 
+        (phase "Playing"
+            (play (forEach Site
                     (sites Empty)
-                    (append 
-                        "ReverseBoundedPieces" 
+                    (append
+                        "ReverseBoundedPieces"
                         (then
                             (and
-                                (set Score 
-                                    P1 
+                                (set Score
+                                    P1
                                     (count Sites in:(sites State 1))
                                 )
-                                (set Score 
-                                    P2 
+                                (set Score
+                                    P2
                                     (count Sites in:(sites State 2))
                                 )
                             )
@@ -51,7 +51,7 @@
             )
         )
         }
-        
+
         (end
             (if (all Passed)
                 (byScore)
@@ -64,17 +64,17 @@
 
 (option "Start Rules" <Rules> args:{ <start> <play> }
     {
-    (item "Fixed Start"      
-        <   (start { 
+    (item "Fixed Start"
+        <   (start {
             (place "Disc0" (difference (sites Centre) (sites Phase 1)) state:1)
             (place "Disc0" (difference (sites Centre) (sites Phase 0)) state:2)
         } )
         >
         <>
         "The pieces are placed on the board."
-    )**   
-    
-    (item "Not Fixed Start" 
+    )**
+
+    (item "Not Fixed Start"
         <>
         <
         (phase "Placement"
@@ -82,46 +82,46 @@
                 (move
                     Add
                     (piece
-                        "Disc0" 
+                        "Disc0"
                         state:(mover)
                     )
-                    (to 
-                        (intersection 
-                            (sites Empty) 
+                    (to
+                        (intersection
+                            (sites Empty)
                             (sites Centre)
                         )
                     )
                 )
-            ) 
+            )
             (nextPhase Mover (>= (count Moves) 3) "Playing")
         )
         >
         "The pieces are placed on the board."
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "4x4" <4> "The board is a square board of size 4x4.") 
-    (item "6x6" <6> "The board is a square board of size 6x6.") 
-    (item "8x8" <8> "The board is a square board of size 8x8.")**  
-    (item "10x10" <10> "The board is a square board of size 10x10.")  
-    (item "12x12" <12> "The board is a square board of size 12x12.")  
-    (item "14x14" <14> "The board is a square board of size 14x14.")  
-    (item "16x16" <16> "The board is a square board of size 16x16.")  
-    (item "18x18" <18> "The board is a square board of size 18x18.")  
-    (item "20x20" <20> "The board is a square board of size 20x20.")  
-    (item "22x22" <22> "The board is a square board of size 22x22.")  
-    (item "24x24" <24> "The board is a square board of size 24x24.")  
+    (item "4x4" <4> "The board is a square board of size 4x4.")
+    (item "6x6" <6> "The board is a square board of size 6x6.")
+    (item "8x8" <8> "The board is a square board of size 8x8.")**
+    (item "10x10" <10> "The board is a square board of size 10x10.")
+    (item "12x12" <12> "The board is a square board of size 12x12.")
+    (item "14x14" <14> "The board is a square board of size 14x14.")
+    (item "16x16" <16> "The board is a square board of size 16x16.")
+    (item "18x18" <18> "The board is a square board of size 18x18.")
+    (item "20x20" <20> "The board is a square board of size 20x20.")
+    (item "22x22" <22> "The board is a square board of size 22x22.")
+    (item "24x24" <24> "The board is a square board of size 24x24.")
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Reversi is a game purportedly invented in the early nineteenth century by either Lewis Waterman or John W. Mollett, but may actually be an older game. It is currently sold and marketed as Othello worldwide.")
@@ -133,7 +133,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Colour state:1 fillColour:(colour Black))
         (piece Colour state:2 fillColour:(colour White))
@@ -156,9 +156,9 @@
         (useFor "Board Size/22x22" (show Symbol "dot" Vertex {462 48 480 66} scale:0.2))
         (useFor "Board Size/24x24" (show Symbol "dot" Vertex {552 572 72 52} scale:0.2))
     })
-    
-    (ai 
+
+    (ai
         "Reversi_ai"
     )
-    
+
 )

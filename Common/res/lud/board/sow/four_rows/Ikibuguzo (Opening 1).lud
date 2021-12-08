@@ -6,12 +6,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ikibuguzo (Opening 1)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Ikibuguzo (Opening 1)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "TrackCCW1" "0,E,N1,W" loop:True P1)
             (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             (track "TrackCW1" "7,W,N1,E" loop:True P1)
@@ -29,19 +29,19 @@
         (map "SecondLeftInner" {(pair P1 9) (pair P2 22)})
         (piece "Seed" Shared)
         (hand Each)
-    })  
-    (rules 
-        
-        (start { 
+    })
+    (rules
+
+        (start {
             (set Count 6 to:(sites {"G4" "B1"}))
             (set Count 17 to:(sites {"H1" "A4"}))
             (set Count 3 to:(sites {"G2" "E2" "C2" "B3" "D3" "F3"}))
         })
-        
+
         phases:{
         (phase "FirstMove"
             (play
-                (move 
+                (move
                     (from (mapEntry "FirstMove" Mover))
                     (to ("NextHole" (from) "TrackCCW" 1))
                     count:2
@@ -58,7 +58,7 @@
         )
         (phase "SecondMove"
             (play
-                (move 
+                (move
                     (from (mapEntry "SecondMove" Mover))
                     (to ("NextHole" (from) "TrackCCW" 1))
                     count:2
@@ -75,7 +75,7 @@
         )
         (phase "ThirdMove"
             (play
-                (move 
+                (move
                     (from (mapEntry "ThirdMove" Mover))
                     (to ("NextHole" (from) "TrackCCW" 1))
                     count:2
@@ -90,15 +90,15 @@
             )
             (nextPhase Mover "MainPhase")
         )
-        
+
         (phase "MainPhase"
             (play
                 (or
                     (move Select
-                        (from 
+                        (from
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
-                                (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)}) 
+                                (sites {(mapEntry "LeftMostOuter" Mover) (mapEntry "SecondLeftInner" Mover)})
                             )
                             if:(and {
                                 if:(if ("SameTurn")
@@ -111,7 +111,7 @@
                                 (is Occupied ("OuterOppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })
                         )
-                        (then 
+                        (then
                             (sow
                                 "TrackCW"
                                 owner:(mover)
@@ -145,17 +145,17 @@
                         )
                     )
                     (move Select
-                        (from 
+                        (from
                             (if ("SameTurn")
                                 (sites {(var "Replay")})
-                                (sites Mover) 
+                                (sites Mover)
                             )
                             if:(if ("SameTurn")
                                 (< 0 (count at:(from)))
                                 (< 1 (count at:(from)))
                             )
                         )
-                        (then 
+                        (then
                             (sow
                                 "TrackCCW"
                                 owner:(mover)
@@ -190,18 +190,18 @@
                     )
                 )
             )
-            
+
             (end (if (no Moves Next) (result Mover Win)))
         )
-        
+
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ikibuguzo is a four-row mancala-style board game from the Great Lakes Region of Africa. It  is closely related to other games in the region, but with different opening positions and the possibility of winning by making a specific capture.")
@@ -214,10 +214,10 @@
         (origin  "This game was played in African Great Lakes, around 1952.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
 )
 

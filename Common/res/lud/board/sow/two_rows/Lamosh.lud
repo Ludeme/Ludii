@@ -1,5 +1,5 @@
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
-(define "OwnedHoles" 
+(define "OwnedHoles"
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
         (sites (values Remembered "OwnedP2"))
@@ -8,14 +8,14 @@
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "RightMostEmpty" 
+(define "RightMostEmpty"
     (trackSite FirstSite "TrackCW"
         from:(mapEntry "RightMost" Mover)
         if:(is Empty (to))
     )
 )
 
-(define "RemmemberOwnedHoles" 
+(define "RemmemberOwnedHoles"
     (if (is Mover P1)
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -33,10 +33,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Lamosh"  
-    (players 2)  
-    
-    (equipment { 
+(game "Lamosh"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6 store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
@@ -48,15 +48,15 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (map "RightMost" {(pair P1 5) (pair P2 6)})
-    })  
-    (rules 
-        
-        (start { 
-            (set Count 4 to:(sites Track) ) 
+    })
+    (rules
+
+        (start {
+            (set Count 4 to:(sites Track) )
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
-        
+
         phases:{
         (phase "Opening1"
             (play
@@ -66,9 +66,9 @@
                             (var "Replay")
                             11
                         )
-                    )	
+                    )
                     (to
-                        ("NextHole" (from) 1)	
+                        ("NextHole" (from) 1)
                     )
                     (then
                         (if (!= ("NextHole" (last To) 1) 11)
@@ -89,16 +89,16 @@
             )
             (nextPhase (not (is Next Mover)) "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
-                (or 
+                (or
                     {
-                    (move Select 
+                    (move Select
                         (from
                             (if (is Mover Prev)
                                 (sites {(var "Replay")})
-                                ("OwnedHoles") 
+                                ("OwnedHoles")
                             )
                             if:(is Occupied (from))
                         )
@@ -141,7 +141,7 @@
                     }
                     (then
                         (if ("APlayerCanNotMove")
-                            (and { 
+                            (and {
                                 (if (no Moves P1)
                                     (forEach Site (sites Board)
                                         (if (is Occupied (site))
@@ -169,7 +169,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
@@ -177,10 +177,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 3 (count Cell at:(handSite Mover)))
@@ -202,7 +202,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Lamosh is a two-row mancala-style board game played in Ethiopia. It is similar to the many other games played in the area.")
@@ -216,7 +216,7 @@
         (origin  "This game was played in Ethiopia, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

@@ -1,16 +1,16 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "SpecialThrows" 
+(define "SpecialThrows"
     (is In ("ThrowValue") (sites {1 4 6}))
 )
 
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (remove (to))
-    ) 
+    )
 )
 
 (define "ActivatePiece" (set State at:#1 1))
@@ -24,20 +24,20 @@
 )
 
 (define "Move"
-    (if 
+    (if
         (and {
             (if ("PieceActivated" (from))
                 True
-                ("Tab") 
+                ("Tab")
             )
             #1
         })
         (if (is In (from) (sites Mover "Home"))
             (if (not (is Friend (who at:("SiteToMoveOnTrack" "Track" ("ThrowValue")))))
-                (move 
+                (move
                     (from)
-                    (to 
-                        ("SiteToMoveOnTrack" "Track" ("ThrowValue")) 
+                    (to
+                        ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
                         "CaptureEnemyPiece"
                     )
                     (then
@@ -48,10 +48,10 @@
                 )
             )
             (if (not (is Friend (who at:("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")))))
-                (move 
+                (move
                     (from)
-                    (to 
-                        ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
+                    (to
+                        ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue"))
                         "CaptureEnemyPiece"
                     )
                 )
@@ -65,7 +65,7 @@
 (game "Kioz"
     (players 2)
     (equipment {
-        (board 
+        (board
             (rectangle 4 22)
             {
             (track "Track1" "0,E,N1,W," P1 directed:True)
@@ -80,16 +80,16 @@
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
     })
-    (rules 
-        (start { 
+    (rules
+        (start {
             (place "Marker1" (intersection (sites Bottom) (expand (sites Left) steps:17)))
             (place "King1" (intersection (sites Bottom) (expand (sites Right) steps:3)))
             (place "Marker2" (intersection (sites Top) (expand (sites Right) steps:17)))
             (place "King2" (intersection (sites Top) (expand (sites Left) steps:3)))
         })
-        (play 
-            (do 
-                (roll) 
+        (play
+            (do
+                (roll)
                 next:(if ("Tab")
                     (priority {
                         (forEach Piece ("Move" (not ("PieceActivated" (from)))))
@@ -97,7 +97,7 @@
                     })
                     (forEach Piece ("Move"))
                 )
-                (then 
+                (then
                     (if ("SpecialThrows")
                         (moveAgain)
                     )
@@ -110,8 +110,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Kiôz is a capturing game played in the Levant in the seventeenth century. It is closely related to the game of Tab, which is still played in the region.")
@@ -124,13 +124,13 @@
         (origin  "This game was played in Levant, around 1694.")
         }
     )
-    
+
     (graphics {
         (piece Colour "Die" state:0 fillColour:(colour Black))
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )
 

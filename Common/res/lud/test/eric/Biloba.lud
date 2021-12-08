@@ -1,35 +1,35 @@
 (game "Biloba"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (merge {
                 (shift 0 2 (rectangle 5 9))
                 (shift 2 0 (rectangle 9 5))
                 (shift 1 1 (square 7))
             })
-        ) 
+        )
         (piece "Disc" Each)
         }
-    ) 
+    )
     (rules
         (start {
-            (place "Disc1" (difference 
-                    (expand (sites Bottom) steps:3) 
+            (place "Disc1" (difference
+                    (expand (sites Bottom) steps:3)
                     (sites {"A3" "A4" "B2" "B3" "C1" "C2" "D1" "F1" "G1" "G2" "H2" "H3" "I3" "I4"})
             ))
-            (place "Disc2" (difference 
-                    (expand (sites Top) steps:3) 
+            (place "Disc2" (difference
+                    (expand (sites Top) steps:3)
                     (sites {"A6" "A7" "B7" "B8" "C8" "C9" "D9" "F9" "G9" "G8" "H8" "H7" "I7" "I6"})
             ))
         })
         (play
             (and
                 (forEach Site (sites Occupied by:Mover)
-                    (custodial 
-                        (from (site)) 
-                        (between 
-                            (max 1) 
-                            if:(is Enemy (who at:(between))) 
+                    (custodial
+                        (from (site))
+                        (between
+                            (max 1)
+                            if:(is Enemy (who at:(between)))
                             (apply (and
                                     (remove (between))
                                     (or
@@ -58,13 +58,13 @@
                             )
                         )
                         (or
-                            (move Step 
-                                (to if:(is Empty (to))) 
+                            (move Step
+                                (to if:(is Empty (to)))
                                 (then (moveAgain))
                             )
-                            (move Hop 
+                            (move Hop
                                 (between if:(not (is Empty (between))))
-                                (to if:(is Empty (to))) 
+                                (to if:(is Empty (to)))
                                 (then (moveAgain))
                             )
                         )

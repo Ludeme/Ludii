@@ -1,10 +1,10 @@
-(game "Edris a Jin"  
-    (players 4)  
-    (equipment { 
-        (board 
+(game "Edris a Jin"
+    (players 4)
+    (equipment {
+        (board
             (add
                 (merge {
-                    (shift 0 8 (rectangle 4 20)) 
+                    (shift 0 8 (rectangle 4 20))
                     (shift 8 0 (rectangle 20 4))
                     (shift 12 3.5 (rotate 45 (scale 1.4 1 (rectangle 1 6))))
                     (shift -0.5 3.5 (rotate -45 (scale 1.4 1 (rectangle 1 6))))
@@ -33,11 +33,11 @@
                 }
             )
         )
-        (hand Each) 
+        (hand Each)
         (dice d:2 from:0 num:6)
         (piece "Pawn" Each) // 4 pieces per player
-    })  
-    (rules 
+    })
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -45,8 +45,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Edris a Jin was a game played by the Druze people of Lebanon during the nineteenth century. It was played on a cruciform board, with diagonals connecting the arms of the cross, resulting in an octagonal board.")
@@ -58,12 +58,12 @@
         (origin  "This game was played in Lebanon, around 1898.")
         }
     )
-    
+
     (graphics {
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
         (board Colour Phase0 (colour 222 173 123))
     })
-    
+
 )

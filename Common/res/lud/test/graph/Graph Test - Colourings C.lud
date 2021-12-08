@@ -1,16 +1,16 @@
-(game "Graph Test - Colourings"  
-    (players 2) 
-    (equipment { 
+(game "Graph Test - Colourings"
+    (players 2)
+    (equipment {
         (board <Board> use:Edge)
-        (piece "Marker" Each) 
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (play (move Add (to (sites Empty))))
         (end {
             (if (is Line 4) (result Mover Win))
-            (if (is Line 3) (result Mover Loss)) 
-        })  
+            (if (is Line 3) (result Mover Loss))
+        })
     )
 )
 
@@ -29,19 +29,19 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (graphics {
         (player Colour Neutral (colour 255 0 0))
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
-        
+
         (show Edges Orthogonal ThinDotted (colour 127 0 0))
         (board Colour InnerVertices (colour Red))
         (board Colour OuterVertices (colour Red))
-        (board StyleThickness InnerVertices 1.0) 
+        (board StyleThickness InnerVertices 1.0)
         (board StyleThickness InnerVertices 1.0)
         //(show Vertices (colour 255 0 0))
     })
-    
+
 )

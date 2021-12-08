@@ -1,42 +1,42 @@
 (game "Lam Turki"
-    (players 1)  
-    (equipment { 
-        (board 
+    (players 1)
+    (equipment {
+        (board
             (splitCrossings (regular Star 5))
             use:Vertex
         )
-        (hand Each) 
+        (hand Each)
         (piece "Marker" P1
-            (move Hop 
-                (between 
+            (move Hop
+                (between
                     if:(is Friend (who at:(between)))
                     (apply (remove (between)))
                 )
                 (to if:(is Empty (to)))
             )
-        ) 
+        )
         }
-    )  
-    (rules 
-        (start 
+    )
+    (rules
+        (start
             {
             (place "Marker" (handSite P1) count:9)
             }
         )
-        
+
         phases:{
         (phase "Placement"
-            (play 
+            (play
                 (if (is Even (count Moves))
-                    (move 
-                        (from (handSite Mover)) 
+                    (move
+                        (from (handSite Mover))
                         (to (sites Empty))
                         (then (moveAgain))
-                    ) 
+                    )
                     (forEach Piece
                         (if (= (from) (last To))
-                            (move Hop 
-                                (between 
+                            (move Hop
+                                (between
                                     if:(or (is Friend (who at:(between))) (is Empty (between)))
                                 )
                                 (to if:(is Empty (to)))
@@ -45,12 +45,12 @@
                     )
                 )
             )
-            (end 
+            (end
                 (if (no Moves Next) (result Mover Loss))
             )
             (nextPhase Mover (and (is Even (count Moves)) ("HandEmpty" Mover)) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
             (end {
@@ -59,13 +59,13 @@
             })
         )
         }
-    )		
+    )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Lam Turki is a solitaire game played in India. Played on a board shaped like a five-pointed star, the player attempts to remove all of the pieces from the board,")
@@ -77,12 +77,12 @@
         (origin  "This game was played in India, around 1933.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Lam Turki_ai"
     )

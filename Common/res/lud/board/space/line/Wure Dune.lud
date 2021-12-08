@@ -5,37 +5,37 @@
         (board (square 3) use:Vertex)
         (hand Each)
         (piece "Marker" Each
-            (move 
+            (move
                 Step All
-                (to if:(is Empty (to))) 
+                (to if:(is Empty (to)))
             )
         )
         }
     )
     (rules
-        (start 
+        (start
             {
-            (place "Marker" "Hand" count:3) 
+            (place "Marker" "Hand" count:3)
             }
         )
-        
+
         phases:{
         (phase "Placement"
-            (play 
-                (move (from (handSite Mover)) (to (sites Empty))) 
+            (play
+                (move (from (handSite Mover)) (to (sites Empty)))
             )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
-            (play 
+            (play
                 (forEach Piece)
             )
         )
         }
-        
+
         (end (if (is Line 3 Orthogonal) (result Mover Win)))
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------

@@ -4,42 +4,42 @@
 
 //------------------------------------------------------------------------------
 
-(game "58 Holes"  
-    (players 2) 
-    (equipment { 
+(game "58 Holes"
+    (players 2)
+    (equipment {
         "HoundsAndJackalsBoard"
-        (hand Each) 
+        (hand Each)
         (dice d:2 from:0 num:4)
         (regions "Replay" {14 24 43 53})
-        
+
         (piece "Marker" Each
             (if (= "SiteToMoveOnTrack" (trackSite EndSite))
                 "RemovePiece"
-                (if (not (= "SiteToMoveOnTrack" Off))  	 			
+                (if (not (= "SiteToMoveOnTrack" Off))
                     (if (is In "SiteToMoveOnTrack" (sites Empty))
                         (move (from) (to "SiteToMoveOnTrack")
-                            (then 
-                                (if (is In (last To) (sites "Replay")) 
-                                    (moveAgain) 
-                                ) 
+                            (then
+                                (if (is In (last To) (sites "Replay"))
+                                    (moveAgain)
+                                )
                             )
                         )
                     )
                 )
             )
         )
-        
+
         // Connected sites.
         (map { (pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) } )
-    })  
-    (rules 
-        (start 
+    })
+    (rules
+        (start
             {
             (place "Marker1" (handSite P1) count:5)
             (place "Marker2" (handSite P2) count:5)
             }
         )
-        
+
         (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))))
         (end (if (no Pieces Mover) (result Mover Win)))
     )
@@ -49,94 +49,94 @@
 
 (option "Variant" <Variant> args:{ <carnarvon> }
     {
-    (item  "Carnarvon and Carter"  <> "Rules from Carnarvon and Carter.")* 
+    (item  "Carnarvon and Carter"  <> "Rules from Carnarvon and Carter.")*
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Labyrinth (Incomplete)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 4 (Incomplete)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 3 (Incomplete)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 2 (Incomplete)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 1 (Incomplete)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Marked Holes (Incomplete)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Unmarked (Incomplete)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Parallel Connections (Incomplete)" {
-        
+
     })
-    
-    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
+
+    (ruleset "Ruleset/Carnarvon and Carter (Suggested)"
         {
         "Variant/Carnarvon and Carter"
         }
     )
-    
+
     (ruleset "Ruleset/Labyrinth (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 4 (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 3 (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 2 (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Crossover 1 (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Marked Holes (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Unmarked (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Parallel Connections (Reconstructed)" {
-        
+
     })
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "58 holes was a game popular in ancient Southwest Asia from the second and first millennia BCE. The earliest known board comes from Egypt, but it appears very quickly in widely dispersed places throughout the region very quickly, so an origin somewhere else cannot be ruled out. After the middle of the second millennium BCE, it was mostly played only in Mesopotamia, the Levant, and Iran. The ancient name for the game is unknown. In the center of the board are two parallel lines of ten holes, which are surrounded by an arc of 39-41 holes, typically with a larger or marked square at the apex. Pieces are typically pegs to be inserted into the holes, but in some cases discs, stones, or seeds may be used.")
@@ -166,16 +166,16 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Grey))
         (player Colour P2 (colour Brown))
         (board Style HoundsAndJackals)
     })
-    
-    (ai 
+
+    (ai
         "58 Holes_ai"
     )
-    
+
 )
 

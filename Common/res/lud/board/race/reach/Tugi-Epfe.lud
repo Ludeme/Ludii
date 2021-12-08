@@ -1,6 +1,6 @@
 (define "ThrowValue" (mapEntry "ThrowDiceValue" (count Pips)))
 
-(define "SiteToMoveOnSelectedTrack" 
+(define "SiteToMoveOnSelectedTrack"
     (if (= (value Player Mover) 2)
         (trackSite Move "TrackCCW" steps:("ThrowValue"))
         (trackSite Move "TrackCW" steps:("ThrowValue"))
@@ -10,18 +10,18 @@
 (define "SiteToMoveOnTrackCW" (trackSite Move "TrackCW" steps:("ThrowValue")))
 (define "SiteToMoveOnTrackCCW" (trackSite Move "TrackCCW" steps:("ThrowValue")))
 
-(define "SelectCW" 
+(define "SelectCW"
     (set Value Mover 1)
 )
 
-(define "SelectCCW" 
+(define "SelectCCW"
     (set Value Mover 2)
 )
 
 (define "RememberSelectedTrack"
-    (then 
-        (if 
-            (= (value Player Mover) Off) 
+    (then
+        (if
+            (= (value Player Mover) Off)
             #1
         )
     )
@@ -29,29 +29,29 @@
 
 (define "Goal" 0)
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
+(define "CaptureEnemyPiece"
+    (apply
+        if:(is Enemy (who at:(to)))
         (and (fromTo (from (to)) (to "Goal")) (set Value (player (who at:(to))) Off))
-    ) 
+    )
 )
 
-(define "MoveOn" 
+(define "MoveOn"
     (if (!= #1 Off)
         (if (or
                 (is In #1 (sites Empty))
-                (and 
+                (and
                     (is Enemy (who at:#1))
-                    (or 
-                        (= (value Player Mover) (value Player (who at:#1))) 
+                    (or
+                        (= (value Player Mover) (value Player (who at:#1)))
                         (= (value Player Mover) Off)
-                    ) 
+                    )
                 )
             )
-            (move 
-                (from (from) level:(level)) 
-                (to 
-                    #1 
+            (move
+                (from (from) level:(level))
+                (to
+                    #1
                     "CaptureEnemyPiece"
                 )
             )
@@ -65,7 +65,7 @@
 (game "Tugi-Epfe"
     (players <Player:num>)
     (equipment {
-        (board 
+        (board
             (merge {
                 (rectangle 1 11)
                 (rectangle 11 1)
@@ -77,7 +77,7 @@
             (track "TrackCCW"  {0..9 30..39 29..20 19..10 0} directed:True)
             }
             use:Edge
-        ) 
+        )
         (dice d:2 facesByDie:{{0 10} {0 1} {0 1}} num:3) // 10 is the notched stick
         (map "ThrowDiceValue" {
             (pair 0 5) // All flat sides up
@@ -88,7 +88,7 @@
         })
         (piece "Horse" Each
             (if (= Off (value Player Mover))
-                (or 
+                (or
                     ("MoveOn" ("SiteToMoveOnTrackCW") ("RememberSelectedTrack" ("SelectCW")))
                     ("MoveOn" ("SiteToMoveOnTrackCCW") ("RememberSelectedTrack" ("SelectCCW")))
                 )
@@ -97,15 +97,15 @@
         )
         (regions "AllSites" (sites Board))
     })
-    (rules 
-        (start 
+    (rules
+        (start
             (place Stack items:{<Player:initHorse>} 0)
         )
-        (play 
-            (do (roll) 
+        (play
+            (do (roll)
                 next:(forEach Piece)
-                (then 
-                    (if 
+                (then
+                    (if
                         (= (last To) ("Goal"))
                         (remove (last To))
                     )
@@ -120,26 +120,26 @@
 
 (option "Players" <Player> args:{ <num> <initHorse>}
     {
-    (item "2" <2> <"Horse2" "Horse1">  "The game has 2 players.")   
-    (item "3" <3> <"Horse3" "Horse2" "Horse1">  "The game has 3 players.")  
-    (item "4" <4> <"Horse4" "Horse3" "Horse2" "Horse1">  "The game has 4 players.")  
-    (item "5" <5> <"Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 5 players.")  
-    (item "6" <6> <"Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 6 players.")  
-    (item "7" <7> <"Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 7 players.")  
-    (item "8" <8> <"Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 8 players.")  
-    (item "9" <9> <"Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 9 players.")  
-    (item "10" <10> <"Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 10 players.")  
-    (item "11" <11> <"Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 11 players.")  
-    (item "12" <12> <"Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 12 players.")  
-    (item "13" <13> <"Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 13 players.")  
-    (item "14" <14> <"Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 14 players.")  
-    (item "15" <15> <"Horse15" "Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 15 players.")  
-    (item "16" <16> <"Horse16" "Horse15" "Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 16 players.")  
+    (item "2" <2> <"Horse2" "Horse1">  "The game has 2 players.")
+    (item "3" <3> <"Horse3" "Horse2" "Horse1">  "The game has 3 players.")
+    (item "4" <4> <"Horse4" "Horse3" "Horse2" "Horse1">  "The game has 4 players.")
+    (item "5" <5> <"Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 5 players.")
+    (item "6" <6> <"Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 6 players.")
+    (item "7" <7> <"Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 7 players.")
+    (item "8" <8> <"Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 8 players.")
+    (item "9" <9> <"Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 9 players.")
+    (item "10" <10> <"Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 10 players.")
+    (item "11" <11> <"Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 11 players.")
+    (item "12" <12> <"Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 12 players.")
+    (item "13" <13> <"Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 13 players.")
+    (item "14" <14> <"Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 14 players.")
+    (item "15" <15> <"Horse15" "Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 15 players.")
+    (item "16" <16> <"Horse16" "Horse15" "Horse14" "Horse13" "Horse12" "Horse11" "Horse10" "Horse9" "Horse8" "Horse7" "Horse6" "Horse5" "Horse4" "Horse3" "Horse2" "Horse1">  "The game has 16 players.")
 })
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tugi-Épfe is a race game played by Tewa speaking Puebloan people of New Mexico around the turn of the twentieth century. The pieces represent horses, which race around the board, and may send one another back to start.")
@@ -152,15 +152,15 @@
         (origin  "This game was played in New Mexico., around 1907.")
         }
     )
-    
+
     (graphics {
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.3)
         (piece Families {"Abstract" "Themed"})
         (piece Scale "Horse" 0.4)
         (stackType 0 Ring 0.5)
         (show Edges Hidden)
-        
+
     })
-    
+
 )
 

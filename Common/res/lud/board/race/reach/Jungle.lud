@@ -1,32 +1,32 @@
 (define "StepMove"
     (move
-        Step 
-        Orthogonal 
-        (to 
-            if:(and 
-                (is In (to) (difference (union (sites Occupied by:Next) (sites Empty)) (union (sites "Water") (sites Mover)))) 
-                (<= (state at:(to)) (state at:(from))) 
-            ) 
-            (apply (remove (to))) 
+        Step
+        Orthogonal
+        (to
+            if:(and
+                (is In (to) (difference (union (sites Occupied by:Next) (sites Empty)) (union (sites "Water") (sites Mover))))
+                (<= (state at:(to)) (state at:(from)))
+            )
+            (apply (remove (to)))
         )
     )
 )
 
 (define "HopTheWater"
     (move
-        Hop 
-        #1 
-        (between 
-            #2 
-            if:(is In (between) (difference (sites "Water") (sites Occupied by:All))) 
+        Hop
+        #1
+        (between
+            #2
+            if:(is In (between) (difference (sites "Water") (sites Occupied by:All)))
             (apply (remove (between)))
-        ) 
-        (to if:(and { 
-                (not (is In (to) (sites "Water"))) 
-                (not (is Friend (who at:(to)))) 
-                (<= (state at:(to)) (state at:(from))) 
+        )
+        (to if:(and {
+                (not (is In (to) (sites "Water")))
+                (not (is Friend (who at:(to))))
+                (<= (state at:(to)) (state at:(from)))
             })
-        )  
+        )
     )
 )
 
@@ -38,61 +38,61 @@
 
 //------------------------------------------------------------------------------
 
-(game "Jungle"  
-    (players 2)  
-    (equipment { 
+(game "Jungle"
+    (players 2)
+    (equipment {
         (board (rectangle 9 7))
-        
-        (piece "Elephant" Each "StepMove")  
-        (piece "Lion" Each 
-            (or {
-                "StepMove" 
-                ("HopTheWater" (directions {W E}) (max 2))
-                ("HopTheWater" (directions {N S}) (max 3))
-            })
-        )     
-        (piece "Tiger" Each 
+
+        (piece "Elephant" Each "StepMove")
+        (piece "Lion" Each
             (or {
                 "StepMove"
                 ("HopTheWater" (directions {W E}) (max 2))
                 ("HopTheWater" (directions {N S}) (max 3))
             })
-        )     
-        (piece "Leopard" Each "StepMove")  
-        (piece "Dog" Each "StepMove")  
-        (piece "Wolf" Each "StepMove")  
-        (piece "Cat" Each "StepMove")  
-        (piece "Rat" Each 
+        )
+        (piece "Tiger" Each
+            (or {
+                "StepMove"
+                ("HopTheWater" (directions {W E}) (max 2))
+                ("HopTheWater" (directions {N S}) (max 3))
+            })
+        )
+        (piece "Leopard" Each "StepMove")
+        (piece "Dog" Each "StepMove")
+        (piece "Wolf" Each "StepMove")
+        (piece "Cat" Each "StepMove")
+        (piece "Rat" Each
             (move
-                Step 
-                Orthogonal 
-                (to 
-                    if:(and 
-                        (is In (to) (difference (union (sites Occupied by:Next) (sites Empty)) (sites Mover))) 
-                        (or 
-                            (<= (state at:(to)) (state at:(from))) 
+                Step
+                Orthogonal
+                (to
+                    if:(and
+                        (is In (to) (difference (union (sites Occupied by:Next) (sites Empty)) (sites Mover)))
+                        (or
+                            (<= (state at:(to)) (state at:(from)))
                             // A rat can capture an elephant if it is not in the water first.
-                            (and 
-                                (not (is In (from) (sites "Water"))) 
+                            (and
+                                (not (is In (from) (sites "Water")))
                                 (= (what at:(to)) (id "Elephant" Next))
                             )
-                        ) 
-                    ) 
+                        )
+                    )
                     (apply (remove (to)))
                 )
             )
-        )  
-        
-        (regions "Water" (sites {"B4" "C4" "B5" "C5" "B6" "C6" "E4" "F4" "E5" "F5" "E6" "F6"}))  
-        (regions "Trap" (sites {"C1" "E1" "D2" "D8" "C9" "E9"}))  
+        )
+
+        (regions "Water" (sites {"B4" "C4" "B5" "C5" "B6" "C6" "E4" "F4" "E5" "F5" "E6" "F6"}))
+        (regions "Trap" (sites {"C1" "E1" "D2" "D8" "C9" "E9"}))
         (regions "Den" P1 (sites {"D1"}))  // The goal of P1
         (regions "Den" P2 (sites {"D9"}))  // The goal of P2
-        
+
         // The original value of each piece (index/value)
-        (map { (pair 1 8) (pair 2 8) (pair 3 7) (pair 4 7) (pair 5 6) (pair 6 6) (pair 7 5) (pair 8 5) (pair 9 4) (pair 10 4) (pair 11 3) (pair 12 3) (pair 13 2) (pair 14 2) (pair 15 1) (pair 16 1)})  
+        (map { (pair 1 8) (pair 2 8) (pair 3 7) (pair 4 7) (pair 5 6) (pair 6 6) (pair 7 5) (pair 8 5) (pair 9 4) (pair 10 4) (pair 11 3) (pair 12 3) (pair 13 2) (pair 14 2) (pair 15 1) (pair 16 1)})
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (place "Rat1" coord:"G3" state:1) (place "Rat2" coord:"A7" state:1)
             (place "Cat1" coord:"B2" state:2) (place "Cat2" coord:"F8" state:2)
@@ -103,30 +103,30 @@
             (place "Lion1" coord:"G1" state:7) (place "Lion2" coord:"A9" state:7)
             (place "Elephant1" coord:"A3" state:8) (place "Elephant2" coord:"G7" state:8)
         })
-        
-        (play 
-            (forEach Piece 
-                (then 
-                    (and 
+
+        (play
+            (forEach Piece
+                (then
+                    (and
                         (if
-                            (is In (last From) (sites "Trap")) 
+                            (is In (last From) (sites "Trap"))
                             "RestoredPower"
-                        ) 
-                        (if 
-                            (is In (last To) (sites "Trap")) 
+                        )
+                        (if
+                            (is In (last To) (sites "Trap"))
                             "LosePower"
                         )
                     )
                 )
             )
         )
-        
+
         (end (if "GoalReached" (result Mover Win)) )
     )
 )
 
 (metadata
-    
+
     (info
         {
         (description "Jungle is a modern game played in China and Southeast Asia and popular with children. Its origins are not well understood.")
@@ -138,7 +138,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
@@ -161,9 +161,9 @@
         (show Symbol "tiger" {0 62} scale:0.65)
         (show Symbol "waves" {22 23 29 30 36 37 25 26 32 33 39 40} scale:0.95)
     })
-    
-    (ai 
+
+    (ai
         "Jungle_ai"
     )
-    
+
 )

@@ -3,7 +3,7 @@
 (define "NotThrow0" (!= 0 ("ThrowValue")))
 (define "Centre" 12)
 
-(define "NearestHomeWithStick" 
+(define "NearestHomeWithStick"
     (if (= #1 P1)
         (if (= (id "Stick" Neutral) (what at:1))
             1
@@ -91,7 +91,7 @@
         )
         (dice d:2 from:0 num:4)
         (piece "Stick" Each
-            (move 
+            (move
                 (from (from) level:(level))
                 (to
                     ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
@@ -124,15 +124,15 @@
         (regions "Side" P1 (sites {0..11}))
         (regions "Side" P2 (sites {13..23}))
     })
-    (rules 
+    (rules
         (start {
-            (place Stack "Stick1" 0) 
+            (place Stack "Stick1" 0)
             (place Stack "Stick2" 23)
             (place Stack "Stick0" (sites {1..11 13..22}))
         })
-        (play 
-            (do (roll) 
-                next:(if ("NotThrow0") 
+        (play
+            (do (roll)
+                next:(if ("NotThrow0")
                     (forEach Piece)
                     (if (= ("Centre") (where "Stick" Mover))
                         (if (!= Off ("NearestHomeWithStick" (mover)))
@@ -140,7 +140,7 @@
                                 (from (where "Stick" Mover))
                                 (to ("NearestHomeWithStick" (mover)))
                             )
-                            (if 
+                            (if
                                 (and
                                     (= Off ("NearestHomeWithStick" (mover)))
                                     (= Off ("NearestHomeWithStick" (next)))
@@ -150,8 +150,8 @@
                         )
                     )
                 )
-                (then 
-                    (if ("NotThrow0") 
+                (then
+                    (if ("NotThrow0")
                         (moveAgain)
                     )
                 )
@@ -166,8 +166,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Chukaray is a game known among several different indigenous populations in the Gran Chaco region of South America. It is a race game that requires a player to land on every space on the opponent's side of the board before attaining the goal. It is game of pure chance.")
@@ -179,7 +179,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Colour OuterVertices (colour Hidden))
@@ -192,5 +192,5 @@
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
     })
-    
+
 )

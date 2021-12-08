@@ -10,7 +10,7 @@
         phases:{
         (phase "Opening"
             (play
-                (move Add 
+                (move Add
                     (to
                         (if
                             (< 0 (count Sites in:(sites Occupied by:Mover)))
@@ -21,9 +21,9 @@
                                         (count Pieces Mover in:(sites LineOfSight at:(site)))
                                         0
                                     )
-                                    (= 
+                                    (=
                                         (count Sites in:(sites Around (site) Own))
-                                        0 
+                                        0
                                     )
                                 )
                             )
@@ -36,8 +36,8 @@
         )
         (phase "Play"
             (play
-                (move Add 
-                    (to 
+                (move Add
+                    (to
                         (forEach
                             (sites Empty)
                             if:(>
@@ -47,13 +47,13 @@
                         )
                     )
                     (then
-                        (forEach Group 
-                            (if 
+                        (forEach Group
+                            (if
                                 (all Sites
                                     (sites)
                                     if:(=
                                         0
-                                        (count Sites 
+                                        (count Sites
                                             in:(difference
                                                 (intersection
                                                     (sites Occupied by:Mover)
@@ -70,15 +70,15 @@
                                 )
                                 (remove (sites))
                             )
-                        ) 
+                        )
                     )
                 )
             )
         )
         }
-        (end 
-            (if 
-                (and 
+        (end
+            (if
+                (and
                     (< 4 (count Moves))
                     (or
                         (= 0
@@ -87,7 +87,7 @@
                         (= 0
                             (count Sites in:(sites Occupied by:P2))
                         )
-                    ) 
+                    )
                 )
                 (result Mover Loss)
             )
@@ -115,17 +115,17 @@
             Group: like-colored stones adjacent to each other. Singletons are considered groups of size 1.
             Path: an empty point, or an uninterrupted straight line of empty points that have a pair of like-colored stones on both ends, which are not part of the same group. Such a pair is said to have a path.
             Dead group: a group in which all stones belonging to it have no path. If any stone belonging to a group has a path, the group is said to have a path.
-            
+
             GAME PLAY (Overview)
             Decide which player plays as which color (Light or Dark) in any adequate way.
             Light goes first, then alternate turns.
             On each player's first turn, players place a stone of their own color on any empty point.
             On each player's second turn, players place another stone of their color so that their own two stones have a path.
-            
+
             Then players take actions below on each turn, in this order.
             1. Remove all opponent’s dead groups. This happens automatically in Ludii.
             2. Place a stone of their own color on an empty point that is on at least one same straight line with an existing friendly stone, and no opponent's stone in between. Passing is not allowed.
-            
+
         After the second turn, the player with no stones of their color on the board at the beginning of their turn loses.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/333775/meridians\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>
         ")
@@ -136,13 +136,13 @@
         (date "2021")
         }
     )
-    
+
     (graphics {
         (region Colour (sites Board) (colour 0 0 0 0))
         (show Symbol "Dot" (sites Board) edgeColour:(colour Black) scale:0.2)
         (board Background image:"square.svg" fillColour:(colour 238 227 209) edgeColour:(colour 238 227 209) scale:1.2)
-        (board Colour InnerEdges (colour Black))    
-        (board Colour OuterEdges (colour Black))    
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
         (board StyleThickness InnerEdges 0.2)
         (board StyleThickness OuterEdges 0.2)
     })

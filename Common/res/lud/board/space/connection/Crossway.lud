@@ -3,30 +3,30 @@
 
 //------------------------------------------------------------------------------
 
-(game "Crossway"  
-    (players 2) 
-    (equipment { 
-        (board <Board> use:Vertex) 
+(game "Crossway"
+    (players 2)
+    (equipment {
+        (board <Board> use:Vertex)
         (piece "Marker" Each)
         (regions P1 { (sites Side N) (sites Side S) } )
         (regions P2 { (sites Side W) (sites Side E) } )
     })
-    
-    (rules 
+
+    (rules
         (meta (swap))
-        (play 
+        (play
             (do
-                (move 
+                (move
                     Add
                     (to (sites Empty))
                 )
                 ifAfterwards:"IsNotCut"
             )
         )
-        
+
         (end {
             (if (is Connected All Mover) (result Mover Win))
-        }) 
+        })
     )
 )
 
@@ -34,16 +34,16 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")*   
+    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")
+    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")
+    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")
+    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")*
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The most elegant drawless square connection game. Stones possess orthodiagonal connectivity, and crosscuts are disallowed.")
@@ -56,12 +56,12 @@
         (date "2007")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
-    })   
+    })
     (ai
         "Crossway_ai"
     )

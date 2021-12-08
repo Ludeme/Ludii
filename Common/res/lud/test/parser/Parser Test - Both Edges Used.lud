@@ -1,18 +1,18 @@
-(game "Parser Test - Both Edges Used"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (add 
-                (square 5) 
-                edges:{ {1 1 2 2} } 
-                edges:{ {1 7} {2 11} } 
+(game "Parser Test - Both Edges Used"
+    (players 2)
+    (equipment {
+        (board
+            (add
+                (square 5)
+                edges:{ {1 1 2 2} }
+                edges:{ {1 7} {2 11} }
             )
             use:Vertex
-        ) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+        )
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (add to:(sites Empty)))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -20,8 +20,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

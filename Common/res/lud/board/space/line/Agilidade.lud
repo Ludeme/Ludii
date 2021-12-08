@@ -1,26 +1,26 @@
 (game "Agilidade"
-    (players 2)  
-    (equipment { 
-        (board (skew .5 (scale 1 .5 
+    (players 2)
+    (equipment {
+        (board (skew .5 (scale 1 .5
                     (merge {
                         (wedge 2 2)
                         (shift 0 1 (rotate 180 (wedge 2 2)))
                 }))
-            ) 
-        use:Vertex) 
+            )
+        use:Vertex)
         (piece "discFlat" Each)
         (hand Each)
         }
-    ) 
+    )
     (rules
         (start {
             (place Stack "discFlat1" (handSite P1) count:7)
             (place Stack "discFlat2" (handSite P2) count:7)
         })
-        (play 
-            (move 
-                (from (handSite Mover)) 
-                (to (sites Board)) 
+        (play
+            (move
+                (from (handSite Mover))
+                (to (sites Board))
                 stack:True
             )
         )
@@ -30,7 +30,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "3D version of Tic-Tac-Toe on a 5 spaces board.")
@@ -43,7 +43,7 @@
         (date "2006")
         }
     )
-    
+
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)

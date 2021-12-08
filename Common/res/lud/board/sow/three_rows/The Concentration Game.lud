@@ -1,21 +1,21 @@
 (define "Columns" 4)
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
-(define "NumToCapture" 
+(define "NumToCapture"
     (if (is Mover P1)
         (sites (values Remembered "NumToCaptureP1"))
         (sites (values Remembered "NumToCaptureP2"))
     )
 )
 
-(define "UpdateNumToCapture" 
+(define "UpdateNumToCapture"
     (if (is Mover P1)
         (and
             (forget Value "NumToCaptureP1" All)
-            (if (is In <ToCapture:num> ("NumToCapture")) 
+            (if (is In <ToCapture:num> ("NumToCapture"))
                 (remember Value "NumToCaptureP1" 1)
-                (if (is In 1 ("NumToCapture")) 
+                (if (is In 1 ("NumToCapture"))
                     (remember Value "NumToCaptureP1" 3)
-                    (if (is In 5 ("NumToCapture")) 
+                    (if (is In 5 ("NumToCapture"))
                         (remember Value "NumToCaptureP1" 1)
                         (remember Value "NumToCaptureP1" 5)
                     )
@@ -24,11 +24,11 @@
         )
         (and
             (forget Value "NumToCaptureP2" All)
-            (if (is In <ToCapture:num> ("NumToCapture")) 
+            (if (is In <ToCapture:num> ("NumToCapture"))
                 (remember Value "NumToCaptureP2" 1)
-                (if (is In 1 ("NumToCapture")) 
+                (if (is In 1 ("NumToCapture"))
                     (remember Value "NumToCaptureP2" 3)
-                    (if (is In 5 ("NumToCapture")) 
+                    (if (is In 5 ("NumToCapture"))
                         (remember Value "NumToCaptureP2" 1)
                         (remember Value "NumToCaptureP2" 5)
                     )
@@ -39,16 +39,16 @@
 )
 
 (define "NumCountersToCapture"
-    (if (is In <ToCapture:num> ("NumToCapture")) 
+    (if (is In <ToCapture:num> ("NumToCapture"))
         (+ 1 <ToCapture:num>)
-        (if (is In 1 ("NumToCapture")) 
+        (if (is In 1 ("NumToCapture"))
             2
-            (if (is In 3 ("NumToCapture")) 
+            (if (is In 3 ("NumToCapture"))
                 4
                 6
             )
         )
-    )		
+    )
 )
 
 (define "UpdateNumCaptureTwo"
@@ -57,9 +57,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "The Concentration Game"  
-    (players 2)  
-    (equipment { 
+(game "The Concentration Game"
+    (players 2)
+    (equipment {
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,N,E,S,W2" loop:True)
         )
@@ -67,9 +67,9 @@
         (regions P1 (union (sites {4}) (sites Bottom)))                     // P1 home
         (regions P2 (union (sites {7}) (sites Top)))                        // P2 home
         (map {(pair P1 5) (pair P2 6)})  // kalahs (storage pits)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
             (set Count 10 to:(sites Board) )
             (set RememberValue "NumToCaptureP1" <ToCapture:num>)
@@ -77,23 +77,23 @@
             (set RememberValue "NumCaptureTwoP1" 0)
             (set RememberValue "NumCaptureTwoP2" 0)
         })
-        
-        (play 
-            (move Select 
-                (from 
-                    (sites Mover) 
+
+        (play
+            (move Select
+                (from
+                    (sites Mover)
                     if:(< 1 (count at:(from)))
                 )
-                (then 
-                    (sow  
-                        if:(= (count at:(to)) ("NumCountersToCapture")) 
+                (then
+                    (sow
+                        if:(= (count at:(to)) ("NumCountersToCapture"))
                         apply:(and
-                            (fromTo 
-                                (from (to)) 
-                                (to (mapEntry (mover))) 
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry (mover)))
                                 count:(count at:(to))
                             )
-                            (if	(< (value Player Mover) <Sequence:length>) 
+                            (if	(< (value Player Mover) <Sequence:length>)
                                 ("UpdateNumCaptureTwo")
                                 ("UpdateNumToCapture")
                             )
@@ -101,13 +101,13 @@
                         origin:True
                     )
                 )
-            )		
+            )
         )
-        
+
         (end
             (if (no Moves Next)
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
@@ -119,43 +119,43 @@
 
 (option "Num Initial Seed To Capture" <ToCapture> args:{ <num> }
     {
-    (item "2"   <2>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*   
-    (item "3"   <3>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")   
-    (item "4"   <4>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")   
+    (item "2"   <2>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 2.")*
+    (item "3"   <3>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 3.")
+    (item "4"   <4>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 4.")
     (item "5"   <5>  "The number of counters to have in the hole to capture in the initial captures before the sequence is 5.")
 })
 
 (option "Num Initial Capture" <Sequence> args:{ <length> }
     {
-    (item "3"   <1>  "The number of initial captures before the sequence is 3.")   
-    (item "7"   <5>  "The number of initial captures before the sequence is 7.")*   
+    (item "3"   <1>  "The number of initial captures before the sequence is 3.")
+    (item "7"   <5>  "The number of initial captures before the sequence is 7.")*
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Two Counters (Described)" {
         "Num Initial Seed To Capture/2" "Num Initial Capture/7"
     })*
-    
+
     (ruleset "Ruleset/Three Counters (Described)" {
         "Num Initial Seed To Capture/3" "Num Initial Capture/3"
     })
-    
+
     (ruleset "Ruleset/Four Counters (Described)" {
         "Num Initial Seed To Capture/4" "Num Initial Capture/3"
     })
-    
+
     (ruleset "Ruleset/Five Counters (Described)" {
         "Num Initial Seed To Capture/5" "Num Initial Capture/3"
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "The Concentration Game is a game that was played in Benin. The description of the rules are unclear, but it appears to have been the game that was played on a bronze gaming table looted from Benin City. The counters for this game were usually cowrie shells.")
@@ -174,7 +174,7 @@
         (origin  "This game was played in Nigeria, around 1948.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

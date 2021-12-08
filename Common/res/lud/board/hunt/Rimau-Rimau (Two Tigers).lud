@@ -1,26 +1,26 @@
-(game "Rimau-Rimau (Two Tigers)"  
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
+(game "Rimau-Rimau (Two Tigers)"
+    (players 2)
+    (equipment {
+        (board
+            (merge
+                {
+                (shift 0 2 (square 5 diagonals:Alternating) )
+                (wedge 3)
+                (shift 0 6 (rotate 180 (wedge 3)))
+                }
+            )
             use:Vertex
         )
-        (hand Each) 
-        (piece "Tiger" P1 
+        (hand Each)
+        (piece "Tiger" P1
             (or {
                 ("StepToEmpty")
-                ("HopCapture") 
+                ("HopCapture")
             })
-        ) 
-        (piece "human" P2 "StepToEmpty") 
-    })  
-    (rules 
+        )
+        (piece "human" P2 "StepToEmpty")
+    })
+    (rules
         <Start:start>
         <Start:play>
     )
@@ -30,24 +30,24 @@
 
 (option "Start Rules" <Start> args:{ <start> <play> }
     {
-    (item "Tigers Start in hand"       
+    (item "Tigers Start in hand"
         <
         (start {
             (place "human2" (difference (expand (sites Centre)) (centrePoint)))
             (place "human2" (handSite P2) count:16)
             (place "Tiger1" (handSite P1) count:2)
         } )
-        > 
+        >
         <
         phases:{
-        
+
         (phase "PlacementFirstTiger" P1
             (play (move (from (handSite P1)) (to (sites Empty)) (then (moveAgain))))
             (nextPhase Mover "RemoveHuman")
         )
-        
+
         (phase "RemoveHuman" P1
-            (play 
+            (play
                 (move
                     Remove
                     (intersection (sites Board) (sites Occupied by:Next))
@@ -56,25 +56,25 @@
             )
             (nextPhase Mover "PlacementSecondTiger")
         )
-        
+
         (phase "PlacementSecondTiger" P1
             (play (move (from (handSite P1)) (to (sites Empty))))
             (nextPhase Mover "Movement")
         )
-        
+
         (phase "PlacementHuman" P2
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
-                ) 
+                )
             )
-            (nextPhase 
-                ("HandEmpty" P2) 
+            (nextPhase
+                ("HandEmpty" P2)
                 "Movement"
             )
         )
-        
+
         (phase "Movement"
             (play (forEach Piece) )
             (end {
@@ -83,31 +83,31 @@
             })
         )
         }
-        > 
-    "The two tigers start in the hand.")*   
-    (item "Tigers start at the centre" 
+        >
+    "The two tigers start in the hand.")*
+    (item "Tigers start at the centre"
         <
         (start {
             (place "human2" (difference (expand (sites Centre)) (centrePoint)))
             (place "human2" (handSite P2) count:15)
             (place "Tiger1" (centrePoint) count:2)
         } )
-        > 
+        >
         <
         phases:{
         (phase "PlacementHuman" P2
-            (play 
-                (move 
-                    (from (handSite Mover)) 
+            (play
+                (move
+                    (from (handSite Mover))
                     (to (sites Empty))
-                ) 
+                )
             )
-            (nextPhase 
-                ("HandEmpty" P2) 
+            (nextPhase
+                ("HandEmpty" P2)
                 "Movement"
             )
         )
-        
+
         (phase "Movement"
             (play (forEach Piece) )
             (end {
@@ -116,19 +116,19 @@
             })
         )
         }
-        > 
-    "The two tigers start in the centre.") 
+        >
+    "The two tigers start in the centre.")
     }
 )
 
 //-------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Rimau-Rimau (Two Tigers) (Observed)" {
         "Start Rules/Tigers Start in hand"
     })*
-    
+
     (ruleset "Ruleset/Tigers on Central Point (Observed)" {
         "Start Rules/Tigers start at the centre"
     })
@@ -137,7 +137,7 @@
 //-------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Rimau-Rimau is a kind of hunt game played in Singapore during the nineteenth century. In this version, two tigers play against 23 people.")
@@ -152,13 +152,13 @@
         (origin  "This game was played in Singapore, around 1889.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Rimau-Rimau (Two Tigers)_ai"
     )

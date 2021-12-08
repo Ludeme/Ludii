@@ -3,44 +3,44 @@
 )
 
 (define "HasNeverMoved"
-    (= (state at:(from)) 1) 
+    (= (state at:(from)) 1)
 )
 
 (define "PieceHasMoved"
-    (set State at:(last To) 0) 
+    (set State at:(last To) 0)
 )
 
 (define "RememberPieceHasMoved"
-    (then 
-        (if 
-            (= (state at:(last To)) 1) 
+    (then
+        (if
+            (= (state at:(last To)) 1)
             "PieceHasMoved"
-        ) 
-    ) 
+        )
+    )
 )
 
 (define "CaptureEnemyPiece"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
-            (remove 
-                (to) 
+            (remove
+                (to)
             )
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
 )
 
-(define "PromotedPiece" 
+(define "PromotedPiece"
     (if (is In (last To) (sites Corners))
         (id "Rook" Mover)
         (if (or (= (column of:(last To)) 1) (= (column of:(last To)) 10))
@@ -59,73 +59,73 @@
     )
 )
 
-(define "RhinoMovement" 
+(define "RhinoMovement"
     (sites To
         (if (!= (ahead (from) #1) Off)
-            (slide 
+            (slide
                 (from (ahead (from) #1))
-                #2 
-                (to 
-                    if:(is Enemy (who at:(to))) 
-                ) 
-            )
-        )
-    )
-)
-
-(define "EagleMovement" 
-    (sites To
-        (if (and (!= (ahead (from) #1) Off) (not (is Friend (who at:(ahead (from) #1)))))
-            (or
-                (fromTo (from) (to (ahead (from) #1)))
-                (slide 
-                    (from (ahead (from) #1))
-                    #2 
-                    (to 
-                        if:(is Enemy (who at:(to))) 
-                    ) 
+                #2
+                (to
+                    if:(is Enemy (who at:(to)))
                 )
             )
         )
     )
 )
 
-(define "LeapMove" 
-    (move
-        Leap 
-        #1 
-        (to 
-            if:(not (is Friend (who at:(to)))) 
-            "CaptureEnemyPiece"
-        ) 
+(define "EagleMovement"
+    (sites To
+        (if (and (!= (ahead (from) #1) Off) (not (is Friend (who at:(ahead (from) #1)))))
+            (or
+                (fromTo (from) (to (ahead (from) #1)))
+                (slide
+                    (from (ahead (from) #1))
+                    #2
+                    (to
+                        if:(is Enemy (who at:(to)))
+                    )
+                )
+            )
+        )
     )
 )
 
-(define "SlideMove" 
+(define "LeapMove"
     (move
-        Slide 
-        #1 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Leap
+        #1
+        (to
+            if:(not (is Friend (who at:(to))))
             "CaptureEnemyPiece"
-        ) 
+        )
+    )
+)
+
+(define "SlideMove"
+    (move
+        Slide
+        #1
+        (to
+            if:(is Enemy (who at:(to)))
+            "CaptureEnemyPiece"
+        )
     )
 )
 
 //----------------------------------------------------------------
 
-(game "Grande Acedrex"  
+(game "Grande Acedrex"
     (players {(player N) (player S)})
     (equipment {
         (board (square 12))
         <Variant:dice>
         (piece "Pawn" Each
             (or {
-                "StepForwardToEmpty" 
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
                 }
                 (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
+                    (if (is In (last To) (sites Mover "Promotion"))
                         (promote (last To) (piece "PromotedPiece"))
                     )
                 )
@@ -134,34 +134,34 @@
         (piece "Crocodile" Each ("SlideMove" Diagonal))
         (piece "Eagle" Each
             (move (from)
-                (to 
+                (to
                     (union {
                         ("EagleMovement" NW (directions {N W}))
                         ("EagleMovement" NE (directions {N E}))
                         ("EagleMovement" SW (directions {S W}))
                         ("EagleMovement" SE (directions {E S}))
                     })
-                    (apply 
+                    (apply
                         if:(is Enemy (who at:(to)))
                         (remove (to))
-                    ) 
+                    )
                 )
             )
         )
-        (piece "Rhino" Each 
-            (move 
+        (piece "Rhino" Each
+            (move
                 (from)
                 (to
                     (union {
-                        ("RhinoMovement" N (directions  {NE NW})) 
-                        ("RhinoMovement" W (directions  {NW SW})) 
-                        ("RhinoMovement" S (directions  {SW SE})) 
-                        ("RhinoMovement" E (directions  {SE NE})) 
+                        ("RhinoMovement" N (directions  {NE NW}))
+                        ("RhinoMovement" W (directions  {NW SW}))
+                        ("RhinoMovement" S (directions  {SW SE}))
+                        ("RhinoMovement" E (directions  {SE NE}))
                     })
-                    (apply 
+                    (apply
                         if:(is Enemy (who at:(to)))
                         (remove (to))
-                    ) 
+                    )
                 )
             )
         )
@@ -171,11 +171,11 @@
         (piece "King" Each
             (or
                 (move
-                    Step 
-                    (to 
-                        if:(not (is Friend (who at:(to)))) 
+                    Step
+                    (to
+                        if:(not (is Friend (who at:(to))))
                         "CaptureEnemyPiece"
-                    ) 
+                    )
                 )
                 (if "HasNeverMoved"
                     (move
@@ -183,7 +183,7 @@
                         Forwards
                         (between if:True)
                         (to
-                            if:(not (is Friend (who at:(to)))) 
+                            if:(not (is Friend (who at:(to))))
                             "CaptureEnemyPiece"
                         )
                     )
@@ -200,7 +200,7 @@
             (place "Lion1" (sites {"B1" "K1"})) (place "Rhino1" (sites {"C1" "J1"}))
             (place "Giraffe1" (sites {"D1" "I1"})) (place "Crocodile1" (sites {"E1" "H1"}))
             (place "Eagle1" coord:"F1") (place "King1" coord:"G1" state:1)
-            
+
             (place "Pawn2" (sites Row 8)) (place "Rook2" (sites {"A12" "L12"}))
             (place "Lion2" (sites {"B12" "K12"})) (place "Rhino2" (sites {"C12" "J12"}))
             (place "Giraffe2" (sites {"D12" "I12"})) (place "Crocodile2" (sites {"E12" "H12"}))
@@ -209,13 +209,13 @@
         (play
             <Variant:movement>
         )
-        (end             
-            (if (and 
+        (end
+            (if (and
                     ("IsInCheck" "King" Next (forEach Piece))
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
+            )
         )
     )
 )
@@ -224,7 +224,7 @@
 
 (option "Play Rules" <Variant> args:{ <dice> <movement>}
     {
-    (item "Without Dice" <> 
+    (item "Without Dice" <>
         <
         (do
             (or {
@@ -239,16 +239,16 @@
             })
             ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
-        > 
-    "The rules of Alfonso X without dice.")*   
-    (item "With Dice" 
+        >
+    "The rules of Alfonso X without dice.")*
+    (item "With Dice"
         <
-        (dice d:8 num:1) 
-        > 
+        (dice d:8 num:1)
+        >
         <
-        
+
         (do
-            (do (roll) 
+            (do (roll)
                 next:(if (= 1 (count Pips))
                     (forEach Piece "Pawn")
                     (if (= 2 (count Pips))
@@ -274,17 +274,17 @@
             )
             ifAfterwards:(not ("IsInCheck" "King" Mover (forEach Piece)))
         )
-        > 
-    "The rules of Alfonso X with a die.")   
+        >
+    "The rules of Alfonso X with a die.")
 })
 
 //------------------------------------------------
 
-(rulesets { 
+(rulesets {
     (ruleset "Ruleset/Alfonso X (Described)" {
         "Play Rules/Without Dice"
     })*
-    
+
     (ruleset "Ruleset/Dice (Described)" {
         "Play Rules/With Dice"
     })
@@ -292,8 +292,8 @@
 
 //------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Murray 1913:348")
@@ -306,7 +306,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })

@@ -1,10 +1,10 @@
-(define "MoveVertexToVertex" 
-    (move Step 
+(define "MoveVertexToVertex"
+    (move Step
         (from Vertex)
         (to if:(is Empty Vertex (to)))
-        (then 
-            (forEach Site 
-                (intersection 
+        (then
+            (forEach Site
+                (intersection
                     (sites Incident Edge of:Vertex at:(last From))
                     (sites Incident Edge of:Vertex at:(last To))
                 )
@@ -16,10 +16,10 @@
     )
 )
 
-(define "MoveVertexToCell" 
-    (move 
+(define "MoveVertexToCell"
+    (move
         (from Vertex)
-        (to Cell 
+        (to Cell
             (intersection
                 (sites Empty Cell)
                 (sites Incident Cell of:Vertex at:(from))
@@ -28,16 +28,16 @@
     )
 )
 
-(define "MoveLastCellToEmptyCellOverEmptyEdge" 
-    (move 
+(define "MoveLastCellToEmptyCellOverEmptyEdge"
+    (move
         (from Cell (last To))
-        (to Cell 
+        (to Cell
             (intersection (sites Empty Cell)
                 (sites Incident Cell of:Cell at:(from))
             )
             if:(and
                 (= 1
-                    (count Sites 
+                    (count Sites
                         in:(intersection {
                             (sites Empty Edge)
                             (sites Incident Edge of:Cell at:(from))
@@ -51,13 +51,13 @@
     )
 )
 
-(define "MoveEdgetoEdge" 
-    (move Step 
+(define "MoveEdgetoEdge"
+    (move Step
         (from Edge)
         (to if:(is Empty Edge (to)))
-        (then 
-            (forEach Site 
-                (intersection 
+        (then
+            (forEach Site
+                (intersection
                     (sites Incident Vertex of:Edge at:(last From))
                     (sites Incident Vertex of:Edge at:(last To))
                 )
@@ -69,10 +69,10 @@
     )
 )
 
-(define "MoveEdgetoCell" 
-    (move 
+(define "MoveEdgetoCell"
+    (move
         (from Edge)
-        (to Cell 
+        (to Cell
             (intersection
                 (sites Empty Cell)
                 (sites Incident Cell of:Edge at:(from))
@@ -81,18 +81,18 @@
     )
 )
 
-(define "MoveCellToEmptyCellOverEdge" 
-    (move 
+(define "MoveCellToEmptyCellOverEdge"
+    (move
         (from Cell)
-        (to Cell 
+        (to Cell
             (intersection
                 (sites Empty Cell)
                 (sites Incident Cell of:Cell at:(from))
             )
         )
-        (then 
-            (forEach Site 
-                (intersection 
+        (then
+            (forEach Site
+                (intersection
                     (sites Incident Edge of:Cell at:(last From))
                     (sites Incident Edge of:Cell at:(last To))
                 )
@@ -104,15 +104,15 @@
     )
 )
 
-(define "MoveCellToEnemyCellOverEmptyEdge" 
-    (move 
+(define "MoveCellToEnemyCellOverEmptyEdge"
+    (move
         (from Cell)
-        (to Cell 
+        (to Cell
             (sites Incident Cell of:Cell at:(from))
-            if:(and 
+            if:(and
                 (is Enemy (who Cell at:(to)))
                 (= 1
-                    (count Sites 
+                    (count Sites
                         in:(intersection {
                             (sites Empty Edge)
                             (sites Incident Edge of:Cell at:(from))
@@ -121,7 +121,7 @@
                     )
                 )
             )
-            (apply 
+            (apply
                 (remove Cell (to))
             )
         )
@@ -129,14 +129,14 @@
     )
 )
 
-(define "MoveCellToEmptyCellOverVertex" 
-    (move 
+(define "MoveCellToEmptyCellOverVertex"
+    (move
         (from Cell)
-        (to Cell 
+        (to Cell
             (forEach (sites Empty Cell)
-                if:(= 1 
-                    (count Sites 
-                        in:(intersection 
+                if:(= 1
+                    (count Sites
+                        in:(intersection
                             (sites Incident Vertex of:Cell at:(from))
                             (sites Incident Vertex of:Cell at:(site))
                         )
@@ -144,9 +144,9 @@
                 )
             )
         )
-        (then 
-            (forEach Site 
-                (intersection 
+        (then
+            (forEach Site
+                (intersection
                     (sites Incident Vertex of:Cell at:(last From))
                     (sites Incident Vertex of:Cell at:(last To))
                 )
@@ -158,10 +158,10 @@
     )
 )
 
-(define "MoveCellToEdge" 
-    (move 
+(define "MoveCellToEdge"
+    (move
         (from Cell)
-        (to Edge 
+        (to Edge
             (intersection
                 (sites Empty Edge)
                 (sites Incident Edge of:Cell at:(from))
@@ -170,10 +170,10 @@
     )
 )
 
-(define "MoveCellToVertex" 
-    (move 
+(define "MoveCellToVertex"
+    (move
         (from Cell)
-        (to Vertex 
+        (to Vertex
             (intersection
                 (sites Empty Vertex)
                 (sites Incident Vertex of:Cell at:(from))
@@ -186,7 +186,7 @@
     (forEach Site (sites Occupied by:#1 container:"Board" on:#2) (remove #2 (site)))
 )
 
-(define "CountPiecesAllSiteTypes" 
+(define "CountPiecesAllSiteTypes"
     (+ {
         (count Pieces Vertex #1)
         (count Pieces Edge #1)
@@ -194,57 +194,57 @@
     })
 )
 
-(define "RemovePlayerLastPiece" 
-    (if 
+(define "RemovePlayerLastPiece"
+    (if
         (= 1 ("CountPiecesAllSiteTypes" #1))
         (and {
             ("RemoveSiteTypeOccupiedPiece" #1 Vertex)
             ("RemoveSiteTypeOccupiedPiece" #1 Cell)
             ("RemoveSiteTypeOccupiedPiece" #1 Edge)
         })
-    )		
+    )
 )
 
-(define "RemoveLastPiece" 
+(define "RemoveLastPiece"
     (and {
-        ("RemovePlayerLastPiece" P1)	
+        ("RemovePlayerLastPiece" P1)
         ("RemovePlayerLastPiece" P2)
         ("RemovePlayerLastPiece" P3)
-    })	
+    })
 )
 
 //------------------------------------------------------------------------------
 
-(game "Triple Tangle"  
-    (players <Players:num>) 
-    (equipment { 
+(game "Triple Tangle"
+    (players <Players:num>)
+    (equipment {
         (board (tiling T3464 1) use:Vertex)
         (piece "Disc" Each)
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         <Players:start>
-        
-        (play 
+
+        (play
             (if ("SameTurn")
                 ("MoveLastCellToEmptyCellOverEmptyEdge")
                 (or {
-                    (forEach Piece on:Vertex 
+                    (forEach Piece on:Vertex
                         (or
                             ("MoveVertexToVertex")
                             ("MoveVertexToCell")
                         )
                     )
-                    
-                    (forEach Piece on:Edge 
+
+                    (forEach Piece on:Edge
                         (or
                             ("MoveEdgetoEdge")
                             ("MoveEdgetoCell")
                         )
                     )
-                    
-                    (forEach Piece on:Cell 
+
+                    (forEach Piece on:Cell
                         (or {
                             ("MoveCellToEmptyCellOverEdge")
                             ("MoveCellToEnemyCellOverEmptyEdge" )
@@ -257,7 +257,7 @@
                 <Players:removeLastPiece>
             )
         )
-        
+
         <Players:end>
     )
 )
@@ -266,7 +266,7 @@
 
 (option "Players" <Players> args:{ <num> <start> <removeLastPiece> <end>} {
     (item "2"
-        <2>  
+        <2>
         <
         (start {
             (place "Disc1" (sites {4 5 0 1}))
@@ -281,9 +281,9 @@
         < (end (if (>= 1 ("CountPiecesAllSiteTypes" Next)) (result Mover Win))) >
         "The game is played with 2 players."
     )*
-    
+
     (item "3"
-        <3>  
+        <3>
         <
         (start {
             (place "Disc1" (sites {2 4 6 8}))
@@ -297,47 +297,47 @@
         <
         (then ("RemoveLastPiece") )
         >
-        < 
+        <
         (end {
             (if (= ("CountPiecesAllSiteTypes" P1) 0) (result P1 Loss))
             (if (= ("CountPiecesAllSiteTypes" P2) 0) (result P2 Loss))
             (if (= ("CountPiecesAllSiteTypes" P3) 0) (result P3 Loss))
-        } ) 
+        } )
         >
-    "The game is played with 3 players.") 
+    "The game is played with 3 players.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "An abstract board game played on the vertices, edges and cells of the board.")
         (rules "Players take turns moving a piece of their colour as follows:
-            
+
             1. A piece on a vertex can move either:
-            
+
             1a. To an adjacent empty vertex. The edge it travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
-            
+
             1b. To an empty cell that vertex is part of.
-            
+
             2. A piece on an edge can move either:
-            
+
             2a. To a connected empty edge. The vertex it travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
-            
+
             2b. To an empty cell that edge is part of.
-            
+
             3. A piece in a cell can move either:
-            
+
             3a. To a neighbouring empty cell which may be connected by an edge or a vertex. The connecting edge or vertex that the piece travels over may be empty or occupied (if occupied by an enemy piece, that piece is captured and removed).
-            
+
             3b. To step over one of its empty edges into an adjacent cell containing an enemy piece (which is captured), then step out over a different empty edge to another empty cell.
-            
+
             3c. To an empty vertex or edge belonging to that cell.
-            
+
             Aim: A player wins if their opponent is reduced to a single piece. An empty edge has no piece on its midpoint. An empty cell has no piece on its centroid.
-            
+
             Three Player Version:
         In the three player version, any player reduced to a single piece is removed from the game (along with their piece). Last remaining player wins.")
         (source "<a href=\"http://cambolbro.com/games/triple-tangle-rules-1.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cambolbro.com</a>")
@@ -348,16 +348,16 @@
         (date "2020")
         }
     )
-    
+
     (graphics {
         (player Colour P3 (colour Grey))
         (show Edges Diagonal Hidden)
         (board Colour InnerEdges (colour 120 190 240))
         (board Colour OuterEdges (colour 120 190 240))
         (piece Scale "Disc" 0.4)
-        
+
     })
-    
+
     (ai
         "Triple Tangle_ai"
     )

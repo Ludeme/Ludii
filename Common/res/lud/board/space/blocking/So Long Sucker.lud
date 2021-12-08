@@ -1,12 +1,12 @@
-(define "OwnerInLastStack" 
-    (results 
-        from:(last To) 
-        to:(forEach Level at:(last To)) 
+(define "OwnerInLastStack"
+    (results
+        from:(last To)
+        to:(forEach Level at:(last To))
         (who at:(last To) level:(to))
-    )		
+    )
 )
 
-(define "AllActivePlayersInLastStack" 
+(define "AllActivePlayersInLastStack"
     (and {
         (or (not (is Active P1)) (is In 1 ("OwnerInLastStack")))
         (or (not (is Active P2)) (is In 2 ("OwnerInLastStack")))
@@ -16,14 +16,14 @@
 )
 
 (define "MostRecentPlayedChip"
-    (results 
-        from:(last To) 
-        to:(forEach Level at:(last To) FromBottom 
-            if:(not 
-                (is In 
+    (results
+        from:(last To)
+        to:(forEach Level at:(last To) FromBottom
+            if:(not
+                (is In
                     (who at:(last To) level:(level))
-                    (results 
-                        from:(last To) 
+                    (results
+                        from:(last To)
                         to:(forEach Level at:(last To) FromBottom startAt:(+ 1 (level)))
                         (who at:(last To) level:(to))
                     )
@@ -31,11 +31,11 @@
             )
         )
         (who at:(last To) level:(to))
-    )		
+    )
 )
 
 (define "PlayerInMostRecentPlayedChip"
-    (arrayValue 
+    (arrayValue
         ("MostRecentPlayedChip")
         index:#1
     )
@@ -57,11 +57,11 @@
 (define "ACaptureIsMade"
     (and
         (> (size Stack at:(last To)) 1)
-        (= 
+        (=
             (who at:(last To) level:(- (size Stack at:(last To)) 1))
             (who at:(last To) level:(- (size Stack at:(last To)) 2))
         )
-    )	
+    )
 )
 
 (define "ACaptureWasMade"
@@ -78,7 +78,7 @@
     })
 )
 
-(define "APlayerCanLose" 
+(define "APlayerCanLose"
     (and
         (!= Undefined (var "CanBeDefeated"))
         (not (is Mover (var "CanBeDefeated")))
@@ -87,13 +87,13 @@
 
 //-------------------------------------------------------------------------
 
-(game "So Long Sucker"  
-    (players 4)  
-    (equipment { 
+(game "So Long Sucker"
+    (players 4)
+    (equipment {
         (board (rectangle 4 7))
         (hand Each size:5)
         (piece "Marker" Each)
-    })  
+    })
     (rules
         (start {
             (place Stack "Marker1" (handSite P1) count:7)
@@ -101,15 +101,15 @@
             (place Stack "Marker3" (handSite P3) count:7)
             (place Stack "Marker4" (handSite P4) count:7)
         })
-        
-        (play 
+
+        (play
             (if ("APlayerCanLose")
-                (or 
+                (or
                     (move Set NextPlayer (player (next)) (then (note "Fuck You Buddy!")))
                     (move
                         (from
-                            (forEach (sites Hand Mover) 
-                                if:(and 
+                            (forEach (sites Hand Mover)
+                                if:(and
                                     (!= (site) (handSite Mover 0))
                                     (is Occupied (site))
                                 )
@@ -119,7 +119,7 @@
                         (then
                             (and {
                                 (set NextPlayer (player (var "CanBeDefeated")))
-                                (set Var "CanBeDefeated" Undefined)		
+                                (set Var "CanBeDefeated" Undefined)
                                 (set Var "PrevWas" Undefined)
                             })
                         )
@@ -133,7 +133,7 @@
                                 (forEach Level (last To)
                                     (fromTo
                                         (from (last To) level:(level))
-                                        (to 
+                                        (to
                                             (if (is Mover (who at:(last To) level:(level)))
                                                 (handSite Mover 0)
                                                 (handSite Mover (who at:(last To) level:(level)))
@@ -159,7 +159,7 @@
                         )
                         (if ("NoChip")
                             (if (= Undefined (var "CanBeDefeated"))
-                                (move Pass 
+                                (move Pass
                                     (then
                                         (and
                                             (set Var "CanBeDefeated" (mover))
@@ -167,8 +167,8 @@
                                         )
                                     )
                                 )
-                                (move Pass 
-                                    (then 
+                                (move Pass
+                                    (then
                                         (and {
                                             (set Var "Defeat" (mover))
                                             (set Var "CanBeDefeated" Undefined)
@@ -182,7 +182,7 @@
                                 )
                             )
                             (or {
-                                (move 
+                                (move
                                     (from (sites Hand Mover))
                                     (to (sites Board))
                                     stack:True
@@ -204,21 +204,21 @@
                                             (moveAgain)
                                         )
                                     )
-                                ) 
+                                )
                                 (move Remove
-                                    (forEach (sites Hand Mover) 
-                                        if:(and 
+                                    (forEach (sites Hand Mover)
+                                        if:(and
                                             (!= (site) (handSite Mover 0))
                                             (is Occupied (site))
                                         )
                                     )
                                 )
-                                (forEach Player 
+                                (forEach Player
                                     (if (not (is Mover Player))
                                         (move
                                             (from
-                                                (forEach (sites Hand Mover) 
-                                                    if:(and 
+                                                (forEach (sites Hand Mover)
+                                                    if:(and
                                                         (!= (site) (handSite Mover 0))
                                                         (is Occupied (site))
                                                     )
@@ -234,8 +234,8 @@
                 )
             )
         )
-        
-        (end 
+
+        (end
             (if (is Mover (var "Defeat")) (result Mover Loss))
         )
     )
@@ -245,9 +245,9 @@
 
 (metadata
     (info {
-        
+
     })
-    
+
     (graphics {
         (no Board)
         (stackType 0 Default 0.5)
@@ -256,5 +256,5 @@
         (stackType 3 Count)
         (stackType 4 Count)
     })
-    
+
 )

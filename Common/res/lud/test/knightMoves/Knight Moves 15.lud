@@ -5,16 +5,16 @@
 //------------------------------------------------------------------------------
 
 (game "Knight Moves 15"
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Knight" Each 
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+        (piece "Knight" Each
             (move
                 (from)
-                (to 
+                (to
                     (forEach
                         (sites Distance from:(from) (exact 2))
-                        if:(and 
+                        if:(and
                             (!= (phase of:(from)) (phase of:(site)))
                             (or (is Empty (site)) (is Enemy (who at:(site))))
                         )
@@ -25,32 +25,32 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Knight1" (expand (sites Bottom)) )
             (place "Knight2" (expand (sites Top)) )
             }
         )
-        
+
         (play (forEach Piece) )
-        
+
         (end (if "RegionReached" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

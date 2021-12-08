@@ -1,11 +1,11 @@
-(define "ReverseBoundedPieces" 
+(define "ReverseBoundedPieces"
     (custodial
         (from (site))
-        (between 
-            if:(is Enemy (state at:(between))) 
-            (apply 
-                (allCombinations 
-                    (add (piece "Ball0" state:(mover)) (to (site))) 
+        (between
+            if:(is Enemy (state at:(between)))
+            (apply
+                (allCombinations
+                    (add (piece "Ball0" state:(mover)) (to (site)))
                     (set State at:(between) (mover))
                 )
             )
@@ -22,36 +22,36 @@
         (board (square 8))
         (piece "Ball" Neutral)
     })
-    (rules 
-        
+    (rules
+
         (start {
             (place "Ball0" coord:"D5" state:1)
             (place "Ball0" coord:"E5" state:2)
             (place "Ball0" coord:"E4" state:3)
             (place "Ball0" coord:"D4" state:4)
         })
-        
+
         (play
-            (priority 
-                (forEach Site 
+            (priority
+                (forEach Site
                     (sites Empty)
-                    (append 
-                        "ReverseBoundedPieces" 
+                    (append
+                        "ReverseBoundedPieces"
                     )
                 )
                 (move Add (piece "Ball0" state:(mover))
                     (to (sites Around (sites Occupied by:Neutral) Empty))
                 )
                 (then
-                    (forEach Player 
-                        (set Score Player 
+                    (forEach Player
+                        (set Score Player
                             (count Sites in:(sites State (player)))
-                        )	
+                        )
                     )
                 )
             )
         )
-        
+
         (end
             (if (all Passed)
                 (byScore)
@@ -63,15 +63,15 @@
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num>} {
-    (item "2" <2>  "The game is playing with two players.")   
-    (item "3" <3>  "The game is playing with three players.")  
-    (item "4" <4>  "The game is playing with four players.")*   
+    (item "2" <2>  "The game is playing with two players.")
+    (item "3" <3>  "The game is playing with three players.")
+    (item "4" <4>  "The game is playing with four players.")*
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Rolit is an easy to learn strategy game that’s fun for the whole family. The aim of the game is to capture your opponent’s Rolit balls and turn balls to make them your color. The player with the most Rolit balls of their color wins!")
@@ -85,7 +85,7 @@
         (date "1997")
         }
     )
-    
+
     (graphics {
         (piece Colour state:1 fillColour:(colour Red))
         (piece Colour state:2 fillColour:(colour Yellow))
@@ -102,5 +102,5 @@
         (show Symbol "Disc" (sites Board) scale:0.9)
         (board Background image:"square.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:1.15)
     })
-    
+
 )

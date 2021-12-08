@@ -1,16 +1,16 @@
 (game "Sig (Dguache)"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (merge {
                 (rectangle 6 3)
                 (shift 1 -6 (rectangle 12 1))
             })
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -18,8 +18,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game, known as Sig like many other games in North Africa, was played in Dguache, Tunisia. It was played on holes made in the sand instead of a board.")
@@ -31,11 +31,11 @@
         (origin  "This game was played in Tunisia, around 1990.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" Vertex (sites Board Vertex) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
-        
+
     })
-    
+
 )

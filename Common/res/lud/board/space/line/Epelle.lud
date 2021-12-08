@@ -3,38 +3,38 @@
 //------------------------------------------------------------------------------
 
 (game "Epelle"
-    (players 2)  
-    (equipment 
-        { 
+    (players 2)
+    (equipment
+        {
         ("AlquerqueBoard" 3)
         (piece "Marker" Each "StepToEmpty")
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         }
-    )  
-    (rules 
-        (start { 
-            (place "Marker1" (sites P1)) 
-            (place "Marker2" (sites P2)) 
+    )
+    (rules
+        (start {
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
         })
         (play (forEach Piece) )
-        
-        (end 
-            (if 
-                (and 
+
+        (end
+            (if
+                (and
                     "NotAllPieceInHome"
                     (is Line 3)
-                ) 
+                )
                 (result Mover Win)
             )
-        )  
+        )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Epelle is a simple game of alignment played by the Urhobo people of Nigeria.")
@@ -46,7 +46,7 @@
         (origin  "This game was played in Nigeria, around 1951.")
         }
     )
-    
+
     (ai
         "Epelle_ai"
     )

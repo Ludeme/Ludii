@@ -9,9 +9,9 @@
 (game "Laquet"
     (players 2)
     (equipment {
-        (board 
+        (board
             (merge {
-                (rectangle 1 6) 
+                (rectangle 1 6)
                 (shift 7 0 (rectangle 1 6) )
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
@@ -21,15 +21,15 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
                 if:("DieNotUsed")
                 (if (= "SiteToMoveOnTrack" Off)
                     "RemoveAPiece"
                     (if (not (is Enemy (who at:"SiteToMoveOnTrack")))
-                        (move 
-                            (from) 
-                            (to 
-                                "SiteToMoveOnTrack" 
+                        (move
+                            (from)
+                            (to
+                                "SiteToMoveOnTrack"
                             )
                         )
                     )
@@ -37,7 +37,7 @@
             )
         )
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" 11 count:14)
             (place Stack "Disc1" 23)
@@ -45,13 +45,13 @@
             (place Stack "Disc2" 6 count:2)
             (place Stack "Disc2" 12)
         })
-        (play 
-            (do 
-                (if (and (not (is Pending)) (not "SameTurn")) (roll)) 
+        (play
+            (do
+                (if (and (not (is Pending)) (not "SameTurn")) (roll))
                 next:(if (can Move (forEach Piece))
-                    (forEach Piece 
+                    (forEach Piece
                         top:True
-                        (then 
+                        (then
                             (if (not (all DiceUsed))
                                 (moveAgain)
                             )
@@ -67,8 +67,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Laquet is a race game from medieval Spain that is similar to other European Tables games. It is documented in the Libro de los Juegos of Alfonso X.")
@@ -80,12 +80,12 @@
         (origin  "This game was played in Spain, around 1283.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (board Style Table)
         (stackType Backgammon)
     })
-    
+
 )
 

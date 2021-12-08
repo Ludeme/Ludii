@@ -1,11 +1,11 @@
-(game "Flowers"  
-    (players 2)  
-    (equipment { 
-        (board (dual (tiling T33336 3))) 
-        (piece "Marker" P1) 
-        (piece "Marker" P2) 
-    })  
-    (rules 
+(game "Flowers"
+    (players 2)
+    (equipment {
+        (board (dual (tiling T33336 3)))
+        (piece "Marker" P1)
+        (piece "Marker" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 4 Orthogonal) (result Mover Win)))
     )
@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "A simple 4-in-a-row game played on an unusual board, which is the dual of the semi-regular 3.3.3.3.6 tiling.")

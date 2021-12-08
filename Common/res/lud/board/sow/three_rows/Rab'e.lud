@@ -1,22 +1,22 @@
 (define "Columns" 6)
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-(define "OneHomeEmpty" 
+(define "OneHomeEmpty"
     (or
-        (all Sites (sites P1) if:(is Empty (site)))  
-        (all Sites (sites P2) if:(is Empty (site)))  
+        (all Sites (sites P1) if:(is Empty (site)))
+        (all Sites (sites P2) if:(is Empty (site)))
     )
 )
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
-(define "NumCapturedPieces" 
-    (+ 
+(define "NumCapturedPieces"
+    (+
         (count Cell at:(handSite #1))
         (count in:(sites #1))
     )
 )
 
-(define "LeftMostEmpty" 
-    (trackSite FirstSite 
+(define "LeftMostEmpty"
+    (trackSite FirstSite
         from:(mapEntry "LeftMost" Mover)
         if:(is Empty (to))
     )
@@ -24,9 +24,9 @@
 
 //------------------------------------------------------------------------------
 
-(game "Rab'e"  
-    (players 2)  
-    (equipment { 
+(game "Rab'e"
+    (players 2)
+    (equipment {
         (mancalaBoard 3 "Columns" store:None
             (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
         )
@@ -34,25 +34,25 @@
         (regions P1 (union (sites Bottom) (difference (expand (sites Right) steps:2) (sites Top)))) // P1 Home
         (regions P2 (union (sites Top) (difference (expand (sites Left) steps:2) (sites Bottom))))  // P2 home
         (hand Each)
-        (map "LeftMost" {(pair P1 0) (pair P2 17)})   
+        (map "LeftMost" {(pair P1 0) (pair P2 17)})
         (map "CorrespondingHoles" {
-            (pair 0 17) (pair 1 16) (pair 2 15) (pair 3 14) (pair 4 13) (pair 5 12) (pair 11 6) (pair 10 7) (pair 9 8) 
+            (pair 0 17) (pair 1 16) (pair 2 15) (pair 3 14) (pair 4 13) (pair 5 12) (pair 11 6) (pair 10 7) (pair 9 8)
             (pair 8 9) (pair 7 10) (pair 6 11) (pair 12 5) (pair 13 4) (pair 14 3) (pair 15 2) (pair 16 1) (pair 17 0)
         })
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 4 to:(sites Track) ))
-        
+
         phases:{
         (phase "Sowing"
             (play
                 (or {
                     (move Select
-                        (from 
+                        (from
                             (if (is Mover Prev)
-                                ("PlayFromLastHole") 
-                                (sites Mover) 
+                                ("PlayFromLastHole")
+                                (sites Mover)
                             )
                             if:(< 0 (count at:(from)))
                         )
@@ -82,7 +82,7 @@
                     }
                     (then
                         (if ("OneHomeEmpty")
-                            (and { 
+                            (and {
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -106,7 +106,7 @@
                     )
                 )
             )
-            
+
             (end (if ("NoPieceOnBoard")
                     {
                     (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
@@ -114,10 +114,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (<= 4 (count Cell at:(handSite Mover)))
@@ -160,14 +160,14 @@
             )
             (nextPhase (= 0 (count Cell at:(handSite Mover))) "Sowing")
         )
-        
+
         }
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Rab'e is a three-row mancala-style board game played in Eritrea. It is different from other three-row games because captures may happen at any time during the player's move.")
@@ -180,7 +180,7 @@
         (origin  "This game was played in Horn of Africa, around 1971.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

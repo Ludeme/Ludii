@@ -18,8 +18,8 @@
 )
 
 (define "OntoEmptyOrIceberg"
-    (step 
-        (to 
+    (step
+        (to
             if:(or
                 (= (id Neutral) (who at:(to)))
                 (is Empty (to))
@@ -35,7 +35,7 @@
         (board (hex 5))
         (piece "Disc" Each
             (move Step
-                (to 
+                (to
                     if:(and
                         (or
                             (= (id Neutral) (who at:(to)))
@@ -56,7 +56,7 @@
                             )
                         )
                     )
-                    (apply 
+                    (apply
                         (if
                             (= (id Neutral) (who at:(to)))
                             (and
@@ -90,16 +90,16 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Pieces Neutral) 
+        (end
+            (if
+                (no Pieces Neutral)
                 (byScore)
             )
         )
     )
 )
 
-(metadata 
+(metadata
     (graphics {
         (player Colour Neutral (colour White))
         (player Colour P1 (colour Red))

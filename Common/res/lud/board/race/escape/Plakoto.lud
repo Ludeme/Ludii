@@ -1,62 +1,62 @@
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:(pips)
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "AllPieceInHome" 
-    ("NoSites" 
-        (difference 
-            (sites Occupied by:Mover) 
+(define "AllPieceInHome"
+    ("NoSites"
+        (difference
+            (sites Occupied by:Mover)
             (sites Mover)
         )
     )
 )
 
-(define "RemoveAPiece" 
+(define "RemoveAPiece"
     (move
         Remove
-        (site) 
-    )		
+        (site)
+    )
 )
 
-(define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
-    (and { 
-        ("DieNotUsed") 
-        (!= ("NextSiteFrom" (from)) Off) 
-        (!= ("NextSiteFrom" (from)) End) 
-    })		
+(define "DieNotUsedAndNoEscapeAndNotOffTheTrack"
+    (and {
+        ("DieNotUsed")
+        (!= ("NextSiteFrom" (from)) Off)
+        (!= ("NextSiteFrom" (from)) End)
+    })
 )
 
-(define "MoveAPiece" 
-    (move 
+(define "MoveAPiece"
+    (move
         (from #1)
-        (to 
-            ("NextSiteFrom" #1) 
-            if:("NotEnemyOrOnlyOne") 
+        (to
+            ("NextSiteFrom" #1)
+            if:("NotEnemyOrOnlyOne")
         )
     )
 )
 
-(define "MoveAPieceIf" 
-    (forEach Die 
-        replayDouble:True 
+(define "MoveAPieceIf"
+    (forEach Die
+        replayDouble:True
         if:#1
         ("MoveAPiece" #2)
-    )		
+    )
 )
 
 (define "AllPieceEscaped" (no Pieces Mover))
@@ -65,82 +65,82 @@
 
 (define "CanEscape" (= ("NextSiteFrom" (site)) End))
 
-(define "NotEmptyAndNotOffTheBoard" 
-    (and 
-        (!= (what at:(site)) 0) 
+(define "NotEmptyAndNotOffTheBoard"
+    (and
+        (!= (what at:(site)) 0)
         (!= ("NextSiteFrom" (site)) Off)
     )
 )
 
-(define "SetScoreOf" 
-    (score 
-        #1 
-        (if (is Mover #1) 
-            (if 
-                (= ("NumPiece" #2) 15) 
-                2 
+(define "SetScoreOf"
+    (score
+        #1
+        (if (is Mover #1)
+            (if
+                (= ("NumPiece" #2) 15)
+                2
                 1
-            ) 
+            )
             0
         )
     )
 )
 
-(define "HaveAPieceAndCanEscape" 
-    (and 
-        (is Friend (who at:(site))) 
+(define "HaveAPieceAndCanEscape"
+    (and
+        (is Friend (who at:(site)))
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )
 
-(define "MotherCheckerP1Pinned" 
-    (and 
-        (= (id "Disc1") (what at:12 level:0)) 
+(define "MotherCheckerP1Pinned"
+    (and
+        (= (id "Disc1") (what at:12 level:0))
         (= (id "Disc2") (what at:12 level:1))
     )
-) 
+)
 
-(define "MotherCheckerP2Pinned" 
-    (and 
-        (= (id "Disc2") (what at:25 level:0)) 
+(define "MotherCheckerP2Pinned"
+    (and
+        (= (id "Disc2") (what at:25 level:0))
         (= (id "Disc1") (what at:25 level:1))
     )
 )
 
 //-----------------------------------------------------------------------------
 
-(game "Plakoto"  
-    (players 2)  
-    (equipment { 
+(game "Plakoto"
+    (players 2)
+    (equipment {
         (board (rectangle 2 13)
             {
             (track "Track1" {12..7 5..0 13..18 20..25 End} P1 directed:True)
             (track "Track2" {25..20 18..13 0..5 7..12 End} P2 directed:True)
-            } 
+            }
             use:Vertex
-        ) 
+        )
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home
-        (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
+        (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from)))
     } )
-    
+
     (rules
-        (start { 
+        (start {
             (place Stack "Disc1" 12 count:15)
             (place Stack "Disc2" 25 count:15)
         })
-        
-        (play 
-            (do 
+
+        (play
+            (do
                 (if (not "SameTurn") (roll))
                 next:(if "AllPieceInHome"
-                    (forEach Die 
-                        replayDouble:True 
+                    (forEach Die
+                        replayDouble:True
                         if:("DieNotUsed")
-                        (forEach Site 
+                        (forEach Site
                             (sites Mover)
-                            (if ("NotEmptyAndNotOffTheBoard") 
+                            (if ("NotEmptyAndNotOffTheBoard")
                                 (if ("CanEscape")
                                     ("RemoveAPiece")
                                     ("MoveAPiece" (site))
@@ -151,7 +151,7 @@
                                     "RemoveAPiece"
                                 )
                             )
-                            (then 
+                            (then
                                 (if (not (all DiceUsed))
                                     (moveAgain)
                                 )
@@ -159,8 +159,8 @@
                         )
                     )
                     (max Distance "Track" Mover
-                        (forEach Piece top:True                
-                            (then 
+                        (forEach Piece top:True
+                            (then
                                 (if (not (all DiceUsed))
                                     (moveAgain)
                                 )
@@ -170,22 +170,22 @@
                 )
             )
         )
-        
+
         (end {
             (if ("AllPieceEscaped")
-                (byScore { 
+                (byScore {
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
                 } )
             )
             (if ("MotherCheckerP1Pinned")
-                (byScore { 
+                (byScore {
                     (score P1 0)
                     (score P2 2)
                 } )
             )
             (if ("MotherCheckerP2Pinned")
-                (byScore { 
+                (byScore {
                     (score P1 2)
                     (score P2 0)
                 } )
@@ -196,17 +196,17 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Plakoto is a game related to Backgammon that is typically played as part of Tavli, along with Fevga and Portes, in the eastern Mediterranean.")
         (aliases {"Tsiliton" "Mahbooseh"})
-        (rules "Played on a standard Backgammon board. Each player starts with fifteen pieces on the starting point of their track.  The pieces move around the board in opposite directions. 
+        (rules "Played on a standard Backgammon board. Each player starts with fifteen pieces on the starting point of their track.  The pieces move around the board in opposite directions.
             The object of the game is to bring all of one's checkers around to one's own home board
             and then bear them off. The first player to bear off all of his or her checkers wins the game.
             Each player rolls one die. The player who rolls highest goes first. The player then rolls two die to begin play. After the first game, the winner of the previous game goes first. The roll of the dice indicates how many pips the player must move their pieces.
-            The numbers on the two dice constitute separate moves. Doubles are played twice. A player must use both numbers of a roll if possible, or all four numbers in the case of doubles. A piece may not be moved to a point occupied by two or more of the opponent's pieces.. The player cannot move a piece to a point where the opponent has trapped another of the player's pieces. 
+            The numbers on the two dice constitute separate moves. Doubles are played twice. A player must use both numbers of a roll if possible, or all four numbers in the case of doubles. A piece may not be moved to a point occupied by two or more of the opponent's pieces.. The player cannot move a piece to a point where the opponent has trapped another of the player's pieces.
             If a player lands on a point
             occupied by a single opposing piece, the opponent’s piece is trapped until the trapping player removes their piece. If the last piece remaining in the starting position gets pinned by the opponent before
             it has left the starting position, the game is over and the player loses two points. The only exception is if
@@ -224,12 +224,12 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType Backgammon)
     })
-    
+
     (ai
         "Plakoto_ai"
     )

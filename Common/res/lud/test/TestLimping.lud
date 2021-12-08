@@ -1,10 +1,10 @@
-(game "TestLimping"  
-    (players 2)  
-    (equipment { 
-        (board <Board> use:Vertex) 
-        (piece "Disc") 
-    })  
-    (rules 
+(game "TestLimping"
+    (players 2)
+    (equipment {
+        (board <Board> use:Vertex)
+        (piece "Disc")
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -23,7 +23,7 @@
     (item  "T7"  <(tri Limping 7)> "")
     (item  "T8"  <(tri Limping 8)> "")
     (item  "T9"  <(tri Limping 9)> "")
-    
+
     (item  "H1"  <(hex Limping 1)> "")
     (item  "H2"  <(hex Limping 2)> "")
     (item  "H3"  <(hex Limping 3)> "")

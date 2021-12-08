@@ -6,11 +6,11 @@
 
 (define "NoPiece" (= (count in:(sites Player "Home")) 0))
 
-(define "HaveHolesWithMoreThanOneCounter" 
-    (!= 0 
-        (count Sites 
-            in:(forEach 
-                (sites Mover "Home") 
+(define "HaveHolesWithMoreThanOneCounter"
+    (!= 0
+        (count Sites
+            in:(forEach
+                (sites Mover "Home")
                 if:(< 1 (count at:(site)))
             )
         )
@@ -23,12 +23,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Msuwa"  
-    (players 2)  
-    
-    (equipment { 
+(game "Msuwa"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 4 "Columns" store:None
-            { 
+            {
             (track "Track1" "0,E,N1,W" loop:True P1)
             (track "Track2" <Row:track2> loop:True P2)
             }
@@ -39,47 +39,47 @@
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
         (piece "Seed" Shared)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start {
-            (set Count 2 to:(difference (sites Board) (sites {<Row:specialHoles>}))) 
-            (set Count 1 to:(sites {<Row:singleHoles>})) 
+            (set Count 2 to:(difference (sites Board) (sites {<Row:specialHoles>})))
+            (set Count 1 to:(sites {<Row:singleHoles>}))
         })
-        
-        (play 
-            (if (and 
-                    (is Mover Prev) 
+
+        (play
+            (if (and
+                    (is Mover Prev)
                     (< 0 (var))
                 )
-                (move 
-                    Remove 
+                (move
+                    Remove
                     (forEach
                         (sites Next "Home")
                         if:(< 0 (count at:(site)))
                     )
-                    (then 
+                    (then
                         (and
                             (if (> (var) 1)
                                 (moveAgain)
                             )
                             (set Var (- (var) 1))
                         )
-                        
+
                     )
                 )
-                (if ("HaveHolesWithMoreThanOneCounter") 
+                (if ("HaveHolesWithMoreThanOneCounter")
                     (move
                         Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
-                                (sites Mover "Home") 
-                            ) 
+                        (from
+                            (if
+                                (is Mover Prev)
+                                "PlayFromLastHole"
+                                (sites Mover "Home")
+                            )
                             if:(< 1 (count at:(from)))
                         )
-                        (then 
+                        (then
                             (sow
                                 "Track"
                                 owner:(mover)
@@ -99,20 +99,20 @@
                                             )
                                         )
                                     )
-                                ) 
+                                )
                             )
                         )
                     )
                     (move
                         Select
-                        (from 
-                            (sites Mover "Home") 
+                        (from
+                            (sites Mover "Home")
                             if:(and
                                 (= 1 (count at:(from)))
                                 (= 0 (count at:("NextHoleFrom" (from))))
                             )
                         )
-                        (then 
+                        (then
                             (sow
                                 "Track"
                                 owner:(mover)
@@ -137,7 +137,7 @@
                 )
             )
         )
-        
+
         (end
             (forEach NonMover
                 if:("NoPiece")
@@ -151,30 +151,30 @@
 
 (option "Board Size" <Row> args:{ <size> <track2> <specialHoles> <singleHoles> }
     {
-    (item "10"   <10> <"20,E,N1,W"> <18..21> <18 21> "Each row has 10 holes.")*   
-    (item "12"   <12> <"24,E,N1,W"> <22..25> <22 25> "Each row has 12 holes.")   
-    (item "14"   <14> <"28,E,N1,W"> <26..29> <26 29> "Each row has 14 holes.")   
-    (item "16"   <16> <"32,E,N1,W"> <30..33> <30 33> "Each row has 16 holes.")   
-    (item "18"   <18> <"36,E,N1,W"> <34..37> <34 37> "Each row has 18 holes.")   
+    (item "10"   <10> <"20,E,N1,W"> <18..21> <18 21> "Each row has 10 holes.")*
+    (item "12"   <12> <"24,E,N1,W"> <22..25> <22 25> "Each row has 12 holes.")
+    (item "14"   <14> <"28,E,N1,W"> <26..29> <26 29> "Each row has 14 holes.")
+    (item "16"   <16> <"32,E,N1,W"> <30..33> <30 33> "Each row has 16 holes.")
+    (item "18"   <18> <"36,E,N1,W"> <34..37> <34 37> "Each row has 18 holes.")
     (item "20"   <20> <"40,E,N1,W"> <38..41> <38 41> "Each row has 20 holes.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Msuwa (Observed)" {
         "Board Size/10"
         }
         variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Msuwa is a four-row mancala-style board game played by the Nyanja people of East Africa.")
@@ -186,11 +186,11 @@
         (origin  "This game was played in East Africa, around 1913.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
     (ai
         "Msuwa_ai"
     )

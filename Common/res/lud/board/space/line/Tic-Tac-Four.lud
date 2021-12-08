@@ -1,14 +1,14 @@
-(game "Tic-Tac-Four"  
-    (players 4)  
-    (equipment { 
-        (board (square 5)) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-        (piece "Y" P3) 
-        (piece "Z" P4) 
+(game "Tic-Tac-Four"
+    (players 4)
+    (equipment {
+        (board (square 5))
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+        (piece "Y" P3)
+        (piece "Z" P4)
         }
-    )  
-    (rules 
+    )
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -16,8 +16,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Four is a Tic-Tac-Toe variant invented by Matthew Stephenson for Ludii.")
@@ -29,7 +29,7 @@
         (date "2020")
         }
     )
-    
+
     (graphics
         {
         (player Name P1 "O")
@@ -38,9 +38,9 @@
         (player Name P4 "Z")
         }
     )
-    
-    (ai 
+
+    (ai
         "Tic-Tac-Four_ai"
     )
-    
+
 )

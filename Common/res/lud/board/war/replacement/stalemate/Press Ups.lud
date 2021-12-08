@@ -2,56 +2,56 @@
 
 //------------------------------------------------------------------------------
 
-(game "Press Ups"  
-    (players 2)  
-    (equipment { 
-        (board (square 7)) 
-        (piece "Disc" Each) 
-        (piece "Disc" Neutral) 
+(game "Press Ups"
+    (players 2)
+    (equipment {
+        (board (square 7))
+        (piece "Disc" Each)
+        (piece "Disc" Neutral)
         (regions P1 (difference (union (sites Bottom) (sites Top)) (union (sites Right) (sites Left))))
         (regions P2 (difference (union (sites Right) (sites Left)) (union (sites Bottom) (sites Top))))
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start {
             (place "Disc1" (sites P1) )
             (place "Disc2" (sites P2) )
             (place "Disc0" "AllSitesWithoutOwnedPiece" )
         })
-        
+
         phases:{
-        (phase "Init" 
-            (play 
+        (phase "Init"
+            (play
                 (move
                     Select
-                    (from "AllSitesWithoutOwnedPiece") 
+                    (from "AllSitesWithoutOwnedPiece")
                     (then (remove (last To)))
                 )
-            ) 
+            )
             (nextPhase "Remove")
         )
-        (phase "Remove" 
-            (play 
+        (phase "Remove"
+            (play
                 (move
                     Select
-                    (from 
-                        (sites Around (last To)) 
+                    (from
+                        (sites Around (last To))
                         if:(not (is Empty (from)))
-                    ) 
+                    )
                     (then (remove (last To)))
                 )
             )
         )
         }
-        
-        (end 
+
+        (end
             {
             (if (no Pieces P1) (result P1 Win))
             (if (no Pieces P2) (result P2 Win))
             (if (no Moves Next)
                 (byScore {
-                    (score P1 (count Pieces P1)) 
+                    (score P1 (count Pieces P1))
                     (score P2 (count Pieces P2))
                 })
             )
@@ -62,8 +62,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Press Ups was invented in 1974 by Yigal Bogoslavski.")
@@ -78,15 +78,15 @@
         (date "1974")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
         (player Colour Neutral (colour Yellow))
     })
-    
-    (ai 
+
+    (ai
         "Press Ups_ai"
     )
-    
+
 )

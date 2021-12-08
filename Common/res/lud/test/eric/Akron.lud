@@ -1,26 +1,26 @@
-(game "Akron"  
-    (players 2)  
-    (equipment { 
-        (board (square 4 pyramidal:True) use:Vertex) 
-        (piece "Ball" Each) 
+(game "Akron"
+    (players 2)
+    (equipment {
+        (board (square 4 pyramidal:True) use:Vertex)
+        (piece "Ball" Each)
         (regions P1 { (sites Side N) (sites Side S) } )
         (regions P2 { (sites Side W) (sites Side E) } )
         }
-    )  
-    (rules 
+    )
+    (rules
         (meta {
             (gravity)
             (pin SupportMultiple)
         })
-        (play 
+        (play
             (or
-                (move 
-                    Add 
-                    (to (sites Empty) 
+                (move
+                    Add
+                    (to (sites Empty)
                         if:(is Flat)
                     )
                 )
-                (move Remove 
+                (move Remove
                     (sites Occupied by:All)
                 )
             )
@@ -31,8 +31,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (graphics {
         (piece Scale "Marker" 1.0)
         (board Style Shibumi)

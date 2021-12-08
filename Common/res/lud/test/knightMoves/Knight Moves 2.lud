@@ -5,30 +5,30 @@
 //------------------------------------------------------------------------------
 
 (game "Knight Moves 1"
-    (players {(player N) (player S)}) 
-    (equipment { 
-        (board (square 8)) 
-        (piece "Knight" Each 
-            (forEach Direction 
-                Orthogonal 
-                (to 
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+        (piece "Knight" Each
+            (forEach Direction
+                Orthogonal
+                (to
                     if:True
-                    (apply 
-                        (forEach Direction 
-                            (from (to)) 
-                            (directions {FR FL} of:All) 
-                            (if (not (is Friend (who at:(to)))) 
-                                (move 
-                                    (from) 
-                                    (to 
-                                        (apply 
+                    (apply
+                        (forEach Direction
+                            (from (to))
+                            (directions {FR FL} of:All)
+                            (if (not (is Friend (who at:(to))))
+                                (move
+                                    (from)
+                                    (to
+                                        (apply
                                             if:(is Enemy (who at:(to)))
                                             (remove (to))
                                         )
                                     )
                                 )
                             )
-                        ) 
+                        )
                     )
                 )
             )
@@ -36,32 +36,32 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Knight1" (expand (sites Bottom)) )
             (place "Knight2" (expand (sites Top)) )
             }
         )
-        
+
         (play (forEach Piece) )
-        
+
         (end (if "RegionReached" (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

@@ -3,21 +3,21 @@
 )
 
 (define "CaptureToPiece"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
-            (remove 
-                (to) 
+            (remove
+                (to)
             )
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(is Enemy (who at:(to)))
             (apply (remove (to)))
         )
     )
@@ -25,103 +25,103 @@
 
 //------------------------------------------------------------------------------
 
-(game "Saxun"  
-    (players {(player N) (player S)})  
-    (equipment { 
-        (board (square 8)) 
-        
+(game "Saxun"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+
         // Layakúcan
-        (piece "Pawn" Each 
-            (or 
-                "StepForwardToEmpty" 
+        (piece "Pawn" Each
+            (or
+                "StepForwardToEmpty"
                 "CaptureForwardDiagonal"
             )
         )
         // Lúdkax
-        (piece "Rook" Each 
+        (piece "Rook" Each
             (move
-                Slide Orthogonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide Orthogonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         // Alyx
-        (piece "King_noCross" Each 
+        (piece "King_noCross" Each
             (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Step
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         // Slúnax
-        (piece "Bishop_noCross" Each 
+        (piece "Bishop_noCross" Each
             (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                Diagonal
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         // Kúnax
-        (piece "Knight" Each 
+        (piece "Knight" Each
             (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
+                Leap
+                "KnightWalk"
+                (to
+                    if:(not (is Friend (who at:(to))))
                     "CaptureToPiece"
-                ) 
+                )
             )
         )
         // Férsix
-        (piece "Queen" Each 
+        (piece "Queen" Each
             (move
-                Slide 
-                (to 
-                    if:(is Enemy (who at:(to))) 
+                Slide
+                (to
+                    if:(is Enemy (who at:(to)))
                     "CaptureToPiece"
-                ) 
-            ) 
+                )
+            )
         )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Pawn1" {"F4" "G4" "H4" "B3" "C3" "D3" "E3" "A2"})
             (place "Pawn2" {"H7" "H6" "G6" "F6" "E6" "A5" "B5" "C5"})
-            (place "Rook1" {"C2" "D1"}) (place "Knight1" {"B1" "H2"}) (place "Bishop_noCross1" {"E1" "F1"}) (place "Queen1" coord:"D2") (place "King_noCross1" coord:"C1") 
-            (place "Rook2" {"C7" "B8"}) (place "Knight2" {"A7" "H8"}) (place "Bishop_noCross2" {"F7" "G7"}) (place "Queen2" coord:"B7") (place "King_noCross2" coord:"C8") 
+            (place "Rook1" {"C2" "D1"}) (place "Knight1" {"B1" "H2"}) (place "Bishop_noCross1" {"E1" "F1"}) (place "Queen1" coord:"D2") (place "King_noCross1" coord:"C1")
+            (place "Rook2" {"C7" "B8"}) (place "Knight2" {"A7" "H8"}) (place "Bishop_noCross2" {"F7" "G7"}) (place "Queen2" coord:"B7") (place "King_noCross2" coord:"C8")
             }
         )
-        
-        (play 
-            (do 
+
+        (play
+            (do
                 (forEach Piece)
                 ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
             )
         )
-        
+
         (end
-            (if (and 
+            (if (and
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
+            )
         )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Sáxun is a game played by the Aleut peoples in what is now Alaska. Judging from the names of the pieces, it appears that the game was adopted from the Russians. It employs a unique starting position.")
@@ -133,7 +133,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Check "King_noCross")
         (piece Scale "Pawn" 0.825)

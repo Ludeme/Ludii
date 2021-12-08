@@ -5,22 +5,22 @@
             (square 9)
             use:Vertex
         )
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (or
                 (if (= 1 (+ (count Cell at:(handSite Mover)) (count Pieces Mover)))
                     ("HopCapture")
                 )
                 (move Slide
-                    (then 
-                        (custodial 
+                    (then
+                        (custodial
                             (from (last To))
-                            (between 
+                            (between
                                 (range 1 (count Rows))
                                 if:(is Enemy (who at:(between)))
                                 (apply
                                     (and
                                         (remove (between))
-                                        (fromTo 
+                                        (fromTo
                                             (from (handSite Mover))
                                             (to (between))
                                         )
@@ -35,7 +35,7 @@
         )
         (hand Each)
     })
-    (rules 
+    (rules
         (start {
             (place "Marker" "Hand" count:16)
             (place "Marker1" (union (sites Top) (difference (sites Right) (sites Bottom))))
@@ -48,8 +48,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Gundru is a capturing game played in Tibet by adults. It employs the custodial capturing mechanism.")
@@ -61,14 +61,14 @@
         (origin  "This game was played in Tibet, around 1926.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Gundru_ai"
     )

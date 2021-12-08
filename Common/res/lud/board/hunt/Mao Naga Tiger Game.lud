@@ -1,27 +1,27 @@
 (game "Mao Naga Tiger Game"
-    (players 2)  
-    (equipment { 
-        (board 
-            (merge { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-            }) 
+    (players 2)
+    (equipment {
+        (board
+            (merge {
+                (shift 0 2 (square 5 diagonals:Alternating) )
+                (wedge 3)
+                (shift 0 6 (rotate 180 (wedge 3)))
+            })
             use:Vertex
         )
         (piece "Human" P1 "StepToEmpty")
         (piece "Tiger" P2 (or "StepToEmpty" "HopCapture"))
-    })  
-    (rules 
+    })
+    (rules
         (start {
             (place Stack "Human1" (sites {"B4" "B6" "D4" "D6"}) count:5)
             (place "Tiger2" (sites {"A5" "E5"}))
         })
-        
-        (play 
+
+        (play
             (forEach Piece top:True)
         )
-        
+
         (end {
             (if (no Pieces P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
@@ -31,8 +31,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game is a hunt game played by the Mao Naga people of Manipur, India in the early twentieth century.")
@@ -44,11 +44,11 @@
         (origin  "This game was played in India, around 1911.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
         (stackType Count)
-        
+
     })
-    
+
 )

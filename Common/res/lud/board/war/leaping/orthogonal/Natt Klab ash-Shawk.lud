@@ -1,7 +1,7 @@
 (game "Natt Klab ash-Shawk"
     (players 2)
     (equipment {
-        (board (square 5) ) 
+        (board (square 5) )
         (piece "Marker" Each
             (or
                 ("StepOrthogonalToEmpty")
@@ -9,8 +9,8 @@
             )
         )
     })
-    (rules 
-        (start { 
+    (rules
+        (start {
             (place "Marker1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ) )
             (place "Marker2" (union { (sites {"A3" "B3"}) (expand (sites Top)) } ) )
         })
@@ -21,8 +21,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Natt Klab ash-Shawk is a capturing game that was played in Palestine. ")
@@ -34,14 +34,14 @@
         (origin  "This game was played in Palestine, around 1951.")
         }
     )
-    
+
     (graphics {
         (show Symbol "thinCross" 12 scale:0.9)
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
     (ai
         "Natt Klab ash-Shawk_ai"
     )

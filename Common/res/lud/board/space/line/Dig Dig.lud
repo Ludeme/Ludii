@@ -1,31 +1,31 @@
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (move
         Remove
         (forEach
-            (sites Occupied by:Next container:"Board") 
+            (sites Occupied by:Next container:"Board")
             if:(= 1 (size Stack at:(site)))
         )
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3 if:(= 1 (size Stack at:(to)))) 
+(define "IfLine3MoveAgain"
+    (then
+        (if
+            (is Line 3 if:(= 1 (size Stack at:(to))))
             (moveAgain)
         )
     )
 )
 
-(define "RemoveDeadPieces" 
+(define "RemoveDeadPieces"
     (forEach Site
-        (forEach 
+        (forEach
             (sites Occupied by:#1 container:"Board")
             if:(= (size Stack at:(site)) 2)
         )
-        (and  
-            (remove (site)) 
-            (remove (site)) 
+        (and
+            (remove (site))
+            (remove (site))
         )
     )
 )
@@ -34,61 +34,61 @@
 
 (game "Dig Dig"
     (players 2)
-    
-    (equipment { 
-        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+
+    (equipment {
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex)
         (hand Each)
-        (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+        (piece "Marker" Each
+            (move
+                Step
+                (to if:(is Empty (to)))
+                "IfLine3MoveAgain"
             )
-        ) 
-    } )  
-    
-    (rules 
+        )
+    } )
+
+    (rules
         (start {
             (place Stack "Marker1" (handSite P1))
             (place Stack "Marker2" (handSite P2))
         })
-        
+
         phases:{
         (phase "Placement"
             (play
                 (if "SameTurn"
                     "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to 
-                            (union 
+                    (move
+                        (from (handSite Mover))
+                        (to
+                            (union
                                 (forEach
-                                    (sites Occupied by:Next container:"Board") 
+                                    (sites Occupied by:Next container:"Board")
                                     if:(= 1 (size Stack at:(site)))
                                 )
                                 (sites Empty)
                             )
                         )
                         copy:True
-                        "IfLine3MoveAgain" 
+                        "IfLine3MoveAgain"
                     )
-                    (then 
-                        (if 
-                            (and (not (is Next Mover)) (is Full))	
+                    (then
+                        (if
+                            (and (not (is Next Mover)) (is Full))
                             (and {
-                                ("RemoveDeadPieces" P1) 
+                                ("RemoveDeadPieces" P1)
                                 ("RemoveDeadPieces" P2)
                                 (set Pending)
                             })
-                        )		
+                        )
                     )
                 )
-            ) 
+            )
             (nextPhase (is Pending) "Movement")
         )
-        
-        (phase "Movement" 
-            (play 
+
+        (phase "Movement"
+            (play
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (forEach Piece)
@@ -102,8 +102,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dig Dig is an alignment game played by Teochew Chinese people in Malaysia during the twentieth century. One player generally plays with twigs, and the other as pieces of grass.")
@@ -115,12 +115,12 @@
         (origin  "This game was played in Malaysia, around 1959.")
         }
     )
-    
+
     (graphics {
         (stackType 1 Count)
         (stackType 2 Count)
-        
+
     })
-    
+
 )
 

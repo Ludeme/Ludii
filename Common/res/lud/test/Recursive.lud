@@ -11,8 +11,8 @@
     (rules
         (play
             (forEach Site (sites Empty)
-                (move Select 
-                    (from (site)) 
+                (move Select
+                    (from (site))
                     (then
                         ("MyMove")
                     )

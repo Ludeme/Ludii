@@ -1,11 +1,11 @@
-(game "Graph Test - T33344"  
-    (players 2)  
-    (equipment { 
-        (board <Board>) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+(game "Graph Test - T33344"
+    (players 2)
+    (equipment {
+        (board <Board>)
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -15,18 +15,18 @@
 
 (option "Tiling Type" <Board> args:{ <type> }
     {
-    (item "2" <(tiling T33344 2)>    "")  
-    (item "3" <(tiling T33344 3)>    "")  
-    (item "5x6" <(tiling T33344 5 6)>    "")  
-    (item "4x4" <(tiling T33344 4 4)>    "")  
-    (item "Poly" <(tiling T33344 (poly {{1 0} {1 9} {9 0}}) )>    "")  
-    (item "5, Dual" <(dual (tiling T33344 5))>  "")  
+    (item "2" <(tiling T33344 2)>    "")
+    (item "3" <(tiling T33344 3)>    "")
+    (item "5x6" <(tiling T33344 5 6)>    "")
+    (item "4x4" <(tiling T33344 4 4)>    "")
+    (item "Poly" <(tiling T33344 (poly {{1 0} {1 9} {9 0}}) )>    "")
+    (item "5, Dual" <(dual (tiling T33344 5))>  "")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

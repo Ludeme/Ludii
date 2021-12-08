@@ -1,10 +1,10 @@
-(game "Graph Test - Circle"  
-    (players 2)  
-    (equipment { 
-        <Board> 
-        (piece "Disc") 
-    })  
-    (rules 
+(game "Graph Test - Circle"
+    (players 2)
+    (equipment {
+        <Board>
+        (piece "Disc")
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )

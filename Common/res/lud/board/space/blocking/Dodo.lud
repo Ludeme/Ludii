@@ -14,9 +14,9 @@
         (play
             (forEach Piece)
         )
-        (end 
-            (if 
-                (no Moves Mover) 
+        (end
+            (if
+                (no Moves Mover)
                 (result Mover Win)
             )
         )

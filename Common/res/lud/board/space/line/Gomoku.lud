@@ -1,14 +1,14 @@
-(game "Gomoku"  
-    (players 2)  
-    (equipment 
-        { 
-        (board <Board> use:Vertex) 
-        (piece "Marker" Each) 
+(game "Gomoku"
+    (players 2)
+    (equipment
+        {
+        (board <Board> use:Vertex)
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
-        <Play> 
-        (end (if (is Line 5 All <Exact>) (result Mover Win)))  
+    )
+    (rules
+        <Play>
+        (end (if (is Line 5 All <Exact>) (result Mover Win)))
     )
 )
 
@@ -16,22 +16,22 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"    <(square  9)>  "Played on a 9x9 board.")   
-    (item "13x13"  <(square 13)>  "Played on a 13x13 board.")   
-    (item "15x15"  <(square 15)>  "Played on a 15x15 board.")*   
-    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")   
+    (item "9x9"    <(square  9)>  "Played on a 9x9 board.")
+    (item "13x13"  <(square 13)>  "Played on a 13x13 board.")
+    (item "15x15"  <(square 15)>  "Played on a 15x15 board.")*
+    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")
     }
 )
 
 (option "Opening" <Play> args:{ <rules> }
     {
-    (item "Standard"   
+    (item "Standard"
         <
         (play (move Add (to (sites Empty))))
-        > 
+        >
         "Open anywhere."
     )*
-    (item "Open-Outer" 
+    (item "Open-Outer"
         <
         phases:{
         (phase "Opening"
@@ -42,7 +42,7 @@
             (play (move Add (to (sites Empty))))
         )
         }
-        > 
+        >
         "Cannot open on outer two rows or columns."
     )
     }
@@ -50,12 +50,12 @@
 
 (option "End Rules" <Exact> args:{ <exact> }
     {
-    (item "Standard"    
-        <exact:True>  
+    (item "Standard"
+        <exact:True>
         "Win with a line of exactly five stones."
     )*
-    (item "Free-style"  
-        <>         
+    (item "Free-style"
+        <>
         "Win with a line of five or more stones."
     )
     }
@@ -63,8 +63,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Gomoku (\"Five Pieces\") has been played in Japan since at least the Meiji Restoration. It is also popular in Korea, where it is called \"Omok.\" It was introduced to nineteenth century Britain as Go Bang.")
@@ -77,15 +77,15 @@
         (origin  "This game was played in Japan, around 1905.")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
     })
-    
-    (ai 
+
+    (ai
         "Gomoku_ai"
     )
-    
+
 )

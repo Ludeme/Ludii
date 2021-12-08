@@ -4,10 +4,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Gabata (Oromo)"  
-    (players 2)  
-    
-    (equipment { 
+(game "Gabata (Oromo)"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -15,15 +15,15 @@
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 4 to:(sites Track) ) )
-        
+
         phases:{
         (phase "Opening1"
             (play
-                (move Select 
+                (move Select
                     (from
                         (if (is Mover Prev)
                             (var "Replay")
@@ -46,10 +46,10 @@
             )
             (nextPhase (= Undefined (var "Replay")) "Opening2")
         )
-        
+
         (phase "Opening2"
             (play
-                (move Select 
+                (move Select
                     (from
                         (if (and (is Mover Prev) (!= Undefined (var "Replay")))
                             (var "Replay")
@@ -85,13 +85,13 @@
                     )
                 )
             )
-            
+
             (nextPhase (not (is Next Prev)) "Sowing")
         )
-        
+
         (phase "Sowing"
             (play
-                (move Select 
+                (move Select
                     (from
                         (if (and (is Mover Prev) (!= Undefined (var "Replay")))
                             (sites {(var "Replay")})
@@ -129,24 +129,24 @@
                 )
             )
         )
-        
+
         }
-        
+
         (end
-            (if ("NoPieceOnBoard") 
+            (if ("NoPieceOnBoard")
                 (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P1 ("PiecesOwnedBy" P1))
                     (score P2 ("PiecesOwnedBy" P2))
                 })
             )
         )
-        
+
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Gabata is a term used to refer to several mancala-style games in the Horn of Africa. This version is a two-row game played by an Oromo woman in Addis Ababa.")
@@ -157,7 +157,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

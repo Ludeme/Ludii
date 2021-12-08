@@ -1,11 +1,11 @@
-(game "Tic-Tac-Toe Misere"  
-    (players 2)  
-    (equipment { 
-        (board (square 3)) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+(game "Tic-Tac-Toe Misere"
+    (players 2)
+    (equipment {
+        (board (square 3))
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Next Win)))
     )
@@ -13,8 +13,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe Misere is played as per Tic-Tac-Toe, except that a player loses by making three-in-a-line of their colour.")

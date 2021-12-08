@@ -18,11 +18,11 @@
             (place "Marker1" (handSite P1 1) count:144)
             (place "Marker2" (handSite P2 1) count:144)
         })
-        
+
         phases:{
         (phase "BullPlacement"
-            (play 
-                (move 
+            (play
+                (move
                     (from (handSite Mover))
                     (to (intersection (sites Empty) (sites Mover)))
                 )
@@ -30,17 +30,17 @@
             (nextPhase Mover (= 6 (count Sites in:(intersection (sites Board) (sites Occupied by:Mover)))) "MarkerPlacementAroundBull")
         )
         (phase "MarkerPlacementAroundBull"
-            (play 
-                (move 
+            (play
+                (move
                     (from (handSite Mover 1))
                     (to (intersection (sites Empty) (sites Around (sites Mover) All)))
-                )	
+                )
             )
             (nextPhase Mover (= 54 (count Sites in:(intersection (sites Board) (sites Occupied by:Mover)))) "Playing")
         )
-        (phase "Playing" 
+        (phase "Playing"
             (play
-                (move 
+                (move
                     (from (handSite Mover 1))
                     (to (sites Empty))
                 )
@@ -60,8 +60,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Dörvölz is a game played in Mongolia, in which players attempt to enclose the largest number of empty spaces.")
@@ -74,13 +74,13 @@
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
         (show Symbol "disc" "BullSites" P1 Vertex fillColour:(colour Black) edgeColour:(colour Black) scale:0.5)
         (show Symbol "disc" "BullSites" P2 Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
     })
-    
+
     (ai
         "Dorvolz_ai"
     )

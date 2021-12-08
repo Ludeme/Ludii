@@ -1,21 +1,21 @@
 (game "Driesticken"
-    (players 2)  
-    (equipment 
+    (players 2)
+    (equipment
         {
         (board (square 3) use:Vertex)
         (hand Each)
         (piece "Marker" Each (move (from) (to (sites Empty))))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Driesticken is a simple game of alignment played in the Netherlands in the seventeenth century. ")
@@ -40,12 +40,12 @@
         (origin  "This game was played in Netherlands, around 1694.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Driesticken_ai"
     )

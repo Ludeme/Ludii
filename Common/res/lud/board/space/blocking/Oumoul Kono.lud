@@ -1,42 +1,42 @@
-(game "Oumoul Kono"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Oumoul Kono"
+    (players 2)
+    (equipment {
+        (board
             (square 2 diagonals:Solid)
             use:Vertex
         )
         (hand Each)
         (piece "Disc" Each
-            (move Step 
-                (to 
+            (move Step
+                (to
                     if:(and {
                         (or {
                             (and (!= (from) (coord "A3")) (!= (from) (coord "C3")))
                             (and (= (from) (coord "C3")) (!= (to) (coord "A3")))
                             (and (= (from) (coord "A3")) (!= (to) (coord "C3")))
-                        }) 
+                        })
                         (is Empty (to))
                     })
                 )
             )
         )
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start {
-            (place "Disc1" (sites Bottom)) 
+            (place "Disc1" (sites Bottom))
             (place "Disc2" (sites Top))
         })
         (play (forEach Piece) )
-        (end ("NoMoves" Loss))  
+        (end ("NoMoves" Loss))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Oumoul Kono is a blockage game played in Korean during the nineteenth century.")
@@ -48,13 +48,13 @@
         (origin  "This game was played in Korea, around 1895.")
         }
     )
-    
+
     (graphics {
         (show Symbol "disc" Edge 7 edgeColour:(colour Black) scale:0.4)
         (piece Scale "Disc" 0.5)
-        
+
     })
-    
+
     (ai
         "Oumoul Kono_ai"
     )

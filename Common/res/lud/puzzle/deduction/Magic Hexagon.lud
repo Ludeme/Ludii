@@ -1,10 +1,10 @@
-(game "Magic Hexagon"  
-    
-    (players 1)  
-    
-    (equipment { 
-        (board (hex 3) (values Cell (range 1 19))) 
-        (regions { 
+(game "Magic Hexagon"
+
+    (players 1)
+
+    (equipment {
+        (board (hex 3) (values Cell (range 1 19)))
+        (regions {
             (sites {0 1 2})
             (sites {3 4 5 6})
             (sites {7 8 9 10 11})
@@ -21,17 +21,17 @@
             (sites {6 10 14 17})
             (sites {11 15 18})
         })
-        (regions HintRegions) 
+        (regions HintRegions)
     })
-    
-    (rules   
-        (play 
+
+    (rules
+        (play
             (satisfy {
                 (all Different (sites Board))
                 (is Sum 38)
             })
         )
-        
+
         (end (if (is Solved) (result P1 Win)))
     )
 )

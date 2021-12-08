@@ -1,6 +1,6 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:#2
     )
 )
@@ -9,12 +9,12 @@
 
 (define "DieValue" (face 28))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
@@ -26,17 +26,17 @@
 (define "EnterPieces"
     (if (is Occupied (handSite Mover))
         (forEach Die
-            replayDouble:True 
+            replayDouble:True
             if:("DieNotUsed")
-            (move 
+            (move
                 (from (handSite Mover))
-                (to 
+                (to
                     ("NextSiteFrom" (mapEntry "Entry" Mover) (- (pips) 1))
                     if:(is Empty (to))
                 )
             )
-            
-            (then 
+
+            (then
                 (if (not (all DiceUsed))
                     (moveAgain)
                 )
@@ -45,17 +45,17 @@
     )
 )
 
-(define "Move" 
+(define "Move"
     (forEach Die
-        replayDouble:True 
+        replayDouble:True
         if:("DieNotUsed")
         (if (= End ("NextSiteFrom" (from) (pips)))
             (if ("AllPiecesInFinalQuadrant")
                 (move Remove (from))
             )
-            (move 
+            (move
                 (from (from))
-                (to 
+                (to
                     ("NextSiteFrom" (from) (pips))
                     if:(and {
                         ("NotEnemyOrOnlyOne")
@@ -68,9 +68,9 @@
                             (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
                         )
                     })
-                    (apply 
+                    (apply
                         (if (is Enemy (who at:(to)))
-                            (fromTo 
+                            (fromTo
                                 (from (to))
                                 (to (handSite Next))
                             )
@@ -79,22 +79,22 @@
                 )
             )
         )
-        (then 
+        (then
             (if (not (all DiceUsed))
                 (moveAgain)
             )
         )
-    )		
+    )
 )
 
-(define "SpecialMove" 
+(define "SpecialMove"
     (if (= End ("NextSiteFrom" (from) #1))
         (if ("AllPiecesInFinalQuadrant")
             (move Remove (from))
         )
-        (move 
+        (move
             (from (from))
-            (to 
+            (to
                 ("NextSiteFrom" (from) #1)
                 if:(and {
                     ("NotEnemyOrOnlyOne")
@@ -107,9 +107,9 @@
                         (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
                     )
                 })
-                (apply 
+                (apply
                     (if (is Enemy (who at:(to)))
-                        (fromTo 
+                        (fromTo
                             (from (to))
                             (to (handSite Next))
                         )
@@ -117,14 +117,14 @@
                 )
             )
         )
-    )		
+    )
 )
 
 (define "SpecialEnterPieces"
     (if (is Occupied (handSite Mover))
-        (move 
+        (move
             (from (handSite Mover))
-            (to 
+            (to
                 ("NextSiteFrom" (mapEntry "Entry" Mover) (- #1 1))
                 if:(is Empty (to))
             )
@@ -132,14 +132,14 @@
     )
 )
 
-(define "PlayMove" 
+(define "PlayMove"
     (if (>= 0 (value Player Mover))
         (do (if (not "SameTurn") (roll))
             next:(if (all DiceEqual)
                 (or
                     ("SpecialEnterPieces" ("DieValue"))
                     (forEach Piece ("SpecialMove" ("DieValue")) top:True)
-                    (then 
+                    (then
                         (and {
                             (moveAgain)
                             (set Var "FirstPlay" 1)
@@ -157,7 +157,7 @@
         (or
             ("SpecialEnterPieces" (var "DoubleToPlay"))
             (forEach Piece ("SpecialMove" (var "DoubleToPlay")) top:True)
-            (then 
+            (then
                 (and {
                     (if (or (= (value Player Mover) 1) (= (value Player Mover) 5))
                         (if (!= (var "FirstPlay") 1)
@@ -175,7 +175,7 @@
                                     (set Value Mover 0)
                                 )
                             )
-                        )	
+                        )
                         (if (!= (var "FirstPlay") 1)
                             (and
                                 (set Var "DoubleToPlay" (var "DoubleToPlay"))
@@ -200,7 +200,7 @@
         (then
             (if (no Pieces Mover) (set Score Mover 2))
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -208,7 +208,7 @@
 (game "Piprjall"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        (board (rectangle 2 13)
             {
             (track "Track1" {25..20 18..13 0..5 7..12 End} P1 directed:True)
             (track "Track2" {0..5 7..12 25..20 18..13 End} P2 directed:True)
@@ -216,7 +216,7 @@
             use:Vertex
         )
         (dice d:6 num:2)
-        (piece "Disc" Each ("Move")) 
+        (piece "Disc" Each ("Move"))
         (hand Each)
         (regions "FinalQuadrant" P1 (sites {7..12}))
         (regions "FinalQuadrant" P2 (sites {13..18}))
@@ -226,16 +226,16 @@
         (regions "AfterPenultimate" P2 (sites {13}))
         (map "Entry" {(pair P1 25) (pair P2 0)})
     })
-    (rules 
+    (rules
         (start {
             (place Stack "Disc1" 25 count:15)
             (place Stack "Disc2" 0 count:15)
         })
-        (play 
+        (play
             (if (can Move ("PlayMove"))
-                ("PlayMove") 
-                (move Pass 
-                    (then 
+                ("PlayMove")
+                (move Pass
+                    (then
                         (and {
                             (set Value Mover 0)
                             (set Var "FirstPlay" 0)
@@ -251,8 +251,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Piprjall is a European Tables game played in Iceland. It has a unique method of playing when doubles are thrown on the dice. ")
@@ -265,11 +265,11 @@
         (origin  "This game was played in Iceland, from around 1888 to 1892.")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType Backgammon)
     })
-    
+
 )
 

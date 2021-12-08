@@ -1,17 +1,17 @@
 (define "CaptureEnemyToPiece"
-    (apply 
+    (apply
         (if (is Enemy (who at:(to)))
             (remove (to))
         )
-    ) 
+    )
 )
 
 (define "CaptureForwardDiagonal"
     (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(and (is Enemy (who at:(to))) 
+        Step
+        (directions {FR FL})
+        (to
+            if:(and (is Enemy (who at:(to)))
                 (if (not (is In (to) (sites Next "Promotion")) )
                     True
                     (!= (what at:(to)) (id "Pawn" Next))
@@ -24,10 +24,10 @@
 
 (define "DoubleStep"
     (move
-        Slide 
-        Forward 
-        (between (exact 2) if:(is Empty (between))) 
-        (to if:(is Empty (to))) 
+        Slide
+        Forward
+        (between (exact 2) if:(is Empty (between)))
+        (to if:(is Empty (to)))
     )
 )
 
@@ -40,7 +40,7 @@
 //------------------------------------------------------------------------------
 
 (game "Welschschach"
-    (players {(player N) (player S)})  
+    (players {(player N) (player S)})
     (equipment {
         (board (square 8) )
         (piece "King_noCross"
@@ -53,7 +53,7 @@
                     )
                     ("CaptureEnemyToPiece")
                 )
-            )			
+            )
         )
         (piece "Queen"
             (move Step
@@ -66,11 +66,11 @@
                     )
                     ("CaptureEnemyToPiece")
                 )
-            )	
+            )
         )
         (piece "Bishop_noCross"
-            (move Hop Diagonal 
-                (between if:True) 
+            (move Hop Diagonal
+                (between if:True)
                 (to if:(and (not (is Friend (who at:(to))))
                         (if (not (is In (to) (sites Next "Promotion")) )
                             True
@@ -79,13 +79,13 @@
                     )
                     ("CaptureEnemyToPiece")
                 )
-            )		
+            )
         )
         (piece "Knight"
             (move
-                Leap 
-                "KnightWalk" 
-                (to 
+                Leap
+                "KnightWalk"
+                (to
                     if:(and (not (is Friend (who at:(to))))
                         (if (not (is In (to) (sites Next "Promotion")) )
                             True
@@ -93,14 +93,14 @@
                         )
                     )
                     "CaptureEnemyToPiece"
-                ) 
-            )		
+                )
+            )
         )
         (piece "Rook"
             (move
-                Slide 
+                Slide
                 Orthogonal
-                (to 
+                (to
                     if:(and (not (is Friend (who at:(to))))
                         (if (not (is In (to) (sites Next "Promotion")) )
                             True
@@ -108,13 +108,13 @@
                         )
                     )
                     "CaptureEnemyToPiece"
-                ) 
-            )		
+                )
+            )
         )
         (piece "Pawn"
             (if (= 0 (state at:(from)))
-                (or 
-                    "StepForwardToEmpty" 
+                (or
+                    "StepForwardToEmpty"
                     "CaptureForwardDiagonal"
                     (then (if (is In (last To) (sites Mover "Promotion")) (set State at:(last To) 1)))
                 )
@@ -128,27 +128,27 @@
                     )
                 )
             )
-        ) 
+        )
         (regions "Promotion" P1 (sites Top) )
         (regions "Promotion" P2 (sites Bottom) )
     })
-    (rules 
-        (start {   
+    (rules
+        (start {
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
-            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
-            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Queen2" coord:"E8") (place "King_noCross2" coord:"D8") 
+            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1")
+            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Queen2" coord:"E8") (place "King_noCross2" coord:"D8")
         })
-        
+
         phases:
         {
-        (phase "Opening" 
+        (phase "Opening"
             (play
                 (or {
-                    (forEach Piece "Queen" 
+                    (forEach Piece "Queen"
                         (if (is In (from) (sites Start (piece (what at:(from)))))
-                            (move Hop Diagonal 
-                                (between (exact 1) if:True) 
+                            (move Hop Diagonal
+                                (between (exact 1) if:True)
                                 (to if:(and (not (is Friend (who at:(to))))
                                         (if (not (is In (to) (sites Next "Promotion")) )
                                             True
@@ -157,11 +157,11 @@
                                     )
                                     ("CaptureEnemyToPiece")
                                 )
-                            )	
+                            )
                         )
                         Mover
                     )
-                    (forEach Piece "Pawn" 
+                    (forEach Piece "Pawn"
                         (if (is In (from) (intersection ("SpecialStartingPawns") (sites Start (piece (what at:(from))))))
                             "DoubleStep"
                         )
@@ -172,7 +172,7 @@
             (nextPhase (= 8 (count Moves)) "Playing")
         )
         (phase "Playing"
-            (play 
+            (play
                 (do
                     (forEach Piece)
                     ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
@@ -180,22 +180,22 @@
             )
         )
         }
-        
+
         (end {
-            (if (and 
+            (if (and
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
-                ) 
+                )
                 (result Mover Win)
-            ) 
+            )
         })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Welschschach is a German Chess game played in the village of Ströbeck, and played by people who traveled to the village because of its reputation for Chess games.")
@@ -207,12 +207,12 @@
         (origin  "This game was played in Germany, around 1661.")
         }
     )
-    
+
     (graphics {
         (piece Scale "Pawn" 0.825)
         (show Check "King")
         (board Style Chess)
     })
-    
+
 )
 

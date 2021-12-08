@@ -1,9 +1,9 @@
 (game "Gala (Chess Variant)"
-    (players 2)  
-    (equipment { 
-        (board (square 10)) 		
+    (players 2)
+    (equipment {
+        (board (square 10))
     })
-    (rules 
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -11,8 +11,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Gala is a Chess variant known from Germany, which was largely abandoned.")
@@ -22,9 +22,9 @@
         (classification "board/war/replacement/checkmate/chaturanga/reconstruction")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
     })
-    
+
 )

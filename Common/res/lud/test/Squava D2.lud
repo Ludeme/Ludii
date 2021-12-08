@@ -1,4 +1,4 @@
-(game "Squava D2" 
+(game "Squava D2"
     (players 2)
     (equipment {
         (board (square 5))
@@ -6,13 +6,13 @@
         (dice d:2 num:1)
     })
     (rules
-        (play 
-            (move Add 
-                (piece (id "Marker" Mover)) 
+        (play
+            (move Add
+                (piece (id "Marker" Mover))
                 (to (sites Empty))
                 (then
                     (if (is Line 3)
-                        (roll) 
+                        (roll)
                     )
                 )
             )
@@ -28,8 +28,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Squava D2 is an experimental game to test the detection of randomness versus skill. Winning and losing moves only have a 50% chance of succeeding.")
@@ -40,9 +40,9 @@
         (date "19-05-2021")
         }
     )
-    
+
     (graphics {
         (piece Rename piece:"Die" "Square")
     })
-    
+
 )

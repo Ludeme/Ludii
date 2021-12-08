@@ -1,13 +1,13 @@
 (game "Alquerque de Tres"
-    (players 2)  
-    (equipment 
+    (players 2)
+    (equipment
         {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:3))
         (play (move (from (handSite Mover)) (to (sites Empty))) )
         (end (if (is Line 3) (result Mover Win)))
@@ -16,7 +16,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Alquerque de Tres is a simple alignment game described in the Libro de los Juegos of Alfonso X. The board on which it is played is found at Roman sites, and so it is possible that the game is much older. It is depicted as played by children.")
@@ -27,7 +27,7 @@
         (credit "Matthew Stephenson")
         }
     )
-    
+
     (ai
         "Alquerque de Tres_ai"
     )

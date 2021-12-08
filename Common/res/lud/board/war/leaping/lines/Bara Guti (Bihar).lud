@@ -1,33 +1,33 @@
-(game "Bara Guti (Bihar)"  
-    (players 2)  
-    (equipment { 
+(game "Bara Guti (Bihar)"
+    (players 2)
+    (equipment {
         (board (concentric {1 8 8 8}) use:Vertex)
-        (piece "Counter" Each 
-            (or 
-                ("HopRotationalCapture") 
-                ("StepRotationalToEmpty") 
+        (piece "Counter" Each
+            (or
+                ("HopRotationalCapture")
+                ("StepRotationalToEmpty")
             )
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (start {
             (place "Counter1" (sites {2..5 10..13 18..21})  )
             (place "Counter2" (sites {1 9 17 6..8 14..16 22..24}) )
         })
-        
-        (play 
+
+        (play
             (forEach Piece)
         )
-        
-        (end (if (no Pieces Next) (result Next Loss)))  
+
+        (end (if (no Pieces Next) (result Next Loss)))
     )
-) 
+)
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Bara Guti is a term used for a couple of different board games in India. In the Bihar region, it is used for this circular game. ")
@@ -39,11 +39,11 @@
         (origin  "This game was played in India, around 1935.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
     (ai
         "Bara Guti (Bihar)_ai"
     )

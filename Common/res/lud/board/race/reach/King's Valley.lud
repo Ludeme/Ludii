@@ -9,7 +9,7 @@
         (piece "Disc" Each "Move")
         (piece "King" Each "Move")
     })
-    (rules 
+    (rules
         (start {
             (place "King1" (intersection (sites Bottom) (sites Column 2)))
             (place "King2" (intersection (sites Top) (sites Column 2)))
@@ -23,8 +23,8 @@
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "The game is played on a 5x5 board with the center square representing the King's Valley. Players start with 5 pieces on opposites sites of the board, with the center pieces being the kings.")
@@ -39,15 +39,15 @@
         (date "2006")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (board Colour Phase0 (colour White))
         (board Colour Phase1 (colour VeryLightBlue))
         (board Colour OuterEdges (colour Yellow))
-        (show Symbol "sun" (sites Centre) fillColour:(colour Yellow)) 
+        (show Symbol "sun" (sites Centre) fillColour:(colour Yellow))
     })
-    
+
     (ai
         "King's Valley_ai"
     )

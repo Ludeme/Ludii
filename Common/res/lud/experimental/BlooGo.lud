@@ -4,29 +4,29 @@
 
 //------------------------------------------------------------------------------
 
-(game "BlooGo"  
-    (players 2) 
-    (equipment 
-        { 
-        (board <Board> use:Vertex) 
+(game "BlooGo"
+    (players 2)
+    (equipment
+        {
+        (board <Board> use:Vertex)
         (piece "Ball" Each)
         }
     )
-    
-    (rules 
+
+    (rules
         (meta
             (noRepeat)
         )
-        (play 
-            (move 
+        (play
+            (move
                 Add
                 (to (sites Empty))
-                (then 
+                (then
                     "RemoveSurrounded"
                 )
             )
         )
-        
+
         (end
             {
             (if
@@ -42,38 +42,38 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")**   
-    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")   
-    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
-    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")   
+    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")**
+    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")
+    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")
+    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")
 })
 
 (option "Capture Threshold" <CapThreshold> args:{ <size> }
     {
-    (item "1"    <1>     "1 capture to win.")   
+    (item "1"    <1>     "1 capture to win.")
     (item "2"    <2>    "2 captures to win.")
-    (item "3"    <3>    "2 captures to win.")    
-    (item "4"    <4>    "4 captures to win.")   
-    (item "5"    <5>    "5 captures to win.")** 
+    (item "3"    <3>    "2 captures to win.")
+    (item "4"    <4>    "4 captures to win.")
+    (item "5"    <5>    "5 captures to win.")**
     (item "6"    <6>    "6 captures to win.")
     (item "7"    <7>    "7 captures to win.")
     (item "8"    <8>    "8 captures to win.")
-    (item "9"    <9>    "9 captures to win.") 
-    (item "10"    <10>    "10 captures to win.")  
-    (item "15"    <15>    "15 captures to win.") 
-    (item "20"    <20>    "20 captures to win.") 
-    (item "25"    <25>    "25 captures to win.") 
-    (item "30"    <30>    "30 captures to win.") 
-    (item "35"    <35>    "35 captures to win.") 
-    (item "40"    <40>    "40 captures to win.") 
-    (item "45"    <45>    "45 captures to win.") 
-    (item "50"    <50>    "50 captures to win.")   
+    (item "9"    <9>    "9 captures to win.")
+    (item "10"    <10>    "10 captures to win.")
+    (item "15"    <15>    "15 captures to win.")
+    (item "20"    <20>    "20 captures to win.")
+    (item "25"    <25>    "25 captures to win.")
+    (item "30"    <30>    "30 captures to win.")
+    (item "35"    <35>    "35 captures to win.")
+    (item "40"    <40>    "40 captures to win.")
+    (item "45"    <45>    "45 captures to win.")
+    (item "50"    <50>    "50 captures to win.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "BlooGo is a Go variant inspired by the game Blooms by Nick Bentley.  In BlooGo, suicide is allowed, no passing is allowed, and the first player to capture a certain number of enemy stones wins.")
@@ -86,7 +86,7 @@
         (date "2021")
         }
     )
-    
+
     (graphics {
         (board Style Go)
         (player Colour P1 (colour Black))

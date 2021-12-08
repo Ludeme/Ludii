@@ -26,26 +26,26 @@
     (rules
         (start (set Score Each 0))
         (play
-            (move Add 
+            (move Add
                 (piece (mover))
-                (to (sites Empty) 
+                (to (sites Empty)
                     if:(<= 0
-                        (- 
+                        (-
                             (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>))
                             (count Pieces Mover in:(sites Around (to) <BoardShape:directionsUsed>))
                 )))
-                (then 
-                    (if 
+                (then
+                    (if
                         (not
-                            (all Sites 
-                                (sites Occupied by:Mover) 
+                            (all Sites
+                                (sites Occupied by:Mover)
                                 if:(can Move (step (from (site)) <BoardShape:directionsWin> (to if:(is Empty (to)))))
                         ))
                         (trigger "End" Mover)
-                        (if 
+                        (if
                             (not
-                                (all Sites 
-                                    (sites Occupied by:Next) 
+                                (all Sites
+                                    (sites Occupied by:Next)
                                     if:(can Move (step (from (site)) <BoardShape:directionsWin> (to if:(is Empty (to)))))
                             ))
                             (trigger "End" Next)
@@ -54,10 +54,10 @@
                 )
             )
         )
-        (end 
-            (if 
+        (end
+            (if
                 (or (is Triggered "End" Mover) (is Triggered "End" Next))
-                (if 
+                (if
                     (is Triggered "End" Mover)
                     (result Mover Loss)
                 )
@@ -67,7 +67,7 @@
 //-------------------------------------------------
 // Options
 
-(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>} 
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>}
     {
     (item "TriSquare Grid" <"TriSquare"> <Orthogonal> <Hidden> <Orthogonal> "Triangle-Square Grid")
     (item "TriSquare Omni" <"TriSquare"> <All> <ThinDashed> <All> "Triangle-Square Omni-Grid")
@@ -83,7 +83,7 @@
     }
 )
 
-(option "Board Size" <BoardSize> args:{ <smallSide> } 
+(option "Board Size" <BoardSize> args:{ <smallSide> }
     {
     (item "Order 3" <3> "Order 3 board")
     (item "Order 4" <4> "Order 4 board")**
@@ -100,8 +100,8 @@
     (info
         {
         (description "Claustro is a proximity restricted pure placement game in whcih a player loses as soon as one of there pieces is fully surrounded on their turn. The game is 'cold' and can work on multiple types of grids with the same principle.")
-        (rules "Board starts empty. 
-            Place on an empty location, unless it is next to more of your own pieces. 
+        (rules "Board starts empty.
+            Place on an empty location, unless it is next to more of your own pieces.
             Passing is not allowed.
         You lose if at the end of your turn, one of your stones is surrounded.")
         (version "1.3.0")
@@ -111,9 +111,9 @@
         (date "26-03-2021")
         }
     )
-    (graphics 
+    (graphics
         {
-        
+
         (player Colour P1 (colour 229 92 0))
         (player Colour P2 (colour Cream))
         (piece Scale 0.96)

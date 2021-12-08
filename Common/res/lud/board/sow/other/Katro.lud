@@ -13,7 +13,7 @@
 (define "OneSingePieceInTheMiddle" (and (= (count in:(sites Mover "Home")) 1) (= (count in:(sites Mover "Middle")) 1)))
 (define "OneSingePieceInTheOuter" (and (= (count in:(sites Mover "Home")) 1) (= (count in:(sites Mover "Outer")) 1)))
 
-(define "OuterMostRowWithPieces" 
+(define "OuterMostRowWithPieces"
     (if (!= 0 (count in:(sites Mover "Outer")))
         (sites Mover "Outer")
         (if (!= 0 (count in:(sites Mover "Middle")))
@@ -25,12 +25,12 @@
 
 //------------------------------------------------------------------------------
 
-(game "Katro"  
-    (players 2)  
-    
-    (equipment { 
+(game "Katro"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 6 "Columns" store:None
-            <Row:tracks>	
+            <Row:tracks>
         )
         (piece "Seed" Shared)
         (regions "Home" P1 (sites Track "TrackCCW1"))   // P1 Home
@@ -42,22 +42,22 @@
         (regions "Outer" P1 (sites Bottom))             // P1 inner Home
         (regions "Outer" P2 (sites Top))                // P2 inner Home
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         (start (set Count 2 to:(sites Board)) )
-        
-        (play 
+
+        (play
             (or {
                 (if (or (= (value Player Mover) 1) (<= (value Player Mover) 0) )
                     (move
                         Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
-                                ("OuterMostRowWithPieces") 
-                            ) 
+                        (from
+                            (if
+                                (is Mover Prev)
+                                "PlayFromLastHole"
+                                ("OuterMostRowWithPieces")
+                            )
                             if:(> (count at:(from)) 0)
                         )
                         (then
@@ -103,15 +103,15 @@
                 (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0) )
                     (move
                         Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
-                                ("OuterMostRowWithPieces") 
-                            ) 
+                        (from
+                            (if
+                                (is Mover Prev)
+                                "PlayFromLastHole"
+                                ("OuterMostRowWithPieces")
+                            )
                             if:(> (count at:(from)) 0)
                         )
-                        (then 
+                        (then
                             (sow
                                 "TrackCW"
                                 owner:(mover)
@@ -153,7 +153,7 @@
                 )
                 (if ("OneSingePieceInTheOuter")
                     (move
-                        (from 
+                        (from
                             (sites Mover "Outer")
                             if:(> (count at:(from)) 0)
                         )
@@ -167,9 +167,9 @@
                 )
                 (if ("OneSingePieceInTheMiddle")
                     (move
-                        (from 
+                        (from
                             (sites Mover "Middle")
-                            if:(and 
+                            if:(and
                                 (> (count at:(from)) 0)
                                 (< 1 (count in:(sites Column (column of:(from)))))
                             )
@@ -180,7 +180,7 @@
                                 (ahead (from) S)
                             )
                         )
-                        (then 
+                        (then
                             (and
                                 (if (!= 0 (count at:("OppositePit" (last To))))
                                     (fromTo
@@ -210,7 +210,7 @@
                 )
             })
         )
-        
+
         (end
             (forEach NonMover
                 if:("NoPiece")
@@ -224,8 +224,8 @@
 
 (option "Board Size" <Row> args:{ <size> <tracks>}
     {
-    (item "3"   
-        <3>  
+    (item "3"
+        <3>
         <
         {
         (track "TrackCCW1" "0,E,N1,W,N1,E" loop:True P1)
@@ -234,9 +234,9 @@
         (track "TrackCCW2" "11,W,N1,E,N1,W" loop:True P2)
         }
         >
-    "3 Holes per row.")   
-    (item "6"   
-        <6>  
+    "3 Holes per row.")
+    (item "6"
+        <6>
         <
         {
         (track "TrackCCW1" "0,E,N1,W,N1,E" loop:True P1)
@@ -245,25 +245,25 @@
         (track "TrackCCW2" "23,W,N1,E,N1,W" loop:True P2)
         }
         >
-    "6 Holes per row.")**   
+    "6 Holes per row.")**
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Katro (Observed)" {
         "Board Size/6"
         }
         variations:{"Board Size/3"}
     )*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Katro is a unique six-row mancala-style board game played in Madagascar.")
@@ -275,11 +275,11 @@
         (origin  "This game was played in Madagascar, around 1998.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })
-    
+
     (ai
         "Katro_ai"
     )

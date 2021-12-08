@@ -1,12 +1,12 @@
-(define "ReverseBoundedPieces" 
+(define "ReverseBoundedPieces"
     (custodial
         (from (site))
-        (between 
-            if:(is Enemy (state at:(between))) 
-            (apply 
-                (allCombinations 
-                    (add (piece "Disc0" state:(mover)) (to (site))) 
-                    (flip (between)) 
+        (between
+            if:(is Enemy (state at:(between)))
+            (apply
+                (allCombinations
+                    (add (piece "Disc0" state:(mover)) (to (site)))
+                    (flip (between))
                 )
             )
         )
@@ -16,10 +16,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "MacBeth"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "MacBeth"
+    (players 2)
+    (equipment {
+        (board
             (remove
                 (hex 6)
                 cells:{7 9 11 22 24 26 28 41 43 45 47 49 62 64 66 68 79 81 83}
@@ -27,26 +27,26 @@
         )
         (piece "Disc" Neutral (flips 1 2))
         }
-    )  
-    (rules 
-        
-        <Rules:start> 
-        
-        phases:{ 
+    )
+    (rules
+
+        <Rules:start>
+
+        phases:{
         <Rules:play>
-        (phase "Playing" 
-            (play (forEach Site 
+        (phase "Playing"
+            (play (forEach Site
                     (sites Empty)
-                    (append 
-                        "ReverseBoundedPieces" 
+                    (append
+                        "ReverseBoundedPieces"
                         (then
                             (and
-                                (set Score 
-                                    P1 
+                                (set Score
+                                    P1
                                     (count Sites in:(sites State 1))
                                 )
-                                (set Score 
-                                    P2 
+                                (set Score
+                                    P2
                                     (count Sites in:(sites State 2))
                                 )
                             )
@@ -56,7 +56,7 @@
             )
         )
         }
-        
+
         (end
             (if (all Passed)
                 (byScore)
@@ -69,17 +69,17 @@
 
 (option "Start Rules" <Rules> args:{ <start> <play> }
     {
-    (item "Othello Mode"      
-        <   (start { 
+    (item "Othello Mode"
+        <   (start {
             (place "Disc0" {27 36 43} state:1)
             (place "Disc0" {28 35 44} state:2)
         } )
         >
         <>
         "The pieces are placed on the board."
-    )  
-    
-    (item "Reversi Mode" 
+    )
+
+    (item "Reversi Mode"
         <>
         <
         (phase "Placement"
@@ -87,29 +87,29 @@
                 (move
                     Add
                     (piece
-                        "Disc0" 
+                        "Disc0"
                         state:(mover)
                     )
-                    (to 
-                        (intersection 
-                            (sites Empty) 
+                    (to
+                        (intersection
+                            (sites Empty)
                             (sites Centre)
                         )
                     )
                 )
-            ) 
+            )
             (nextPhase Mover (>= (count Moves) 5) "Playing")
         )
         >
         "The pieces are placed on the board."
     )**
-    
+
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "MacBeth is a hexagonal translation of Reversi/Othello.  Players alternately place stones of their colour so as to cause custodial capture of lines of opposing pieces, which then flip to the player's colour.  The player who has the most stones on the board when no more moves are possible wins the game.")
@@ -121,7 +121,7 @@
         (credit "Eric Silverman")
         }
     )
-    
+
     (graphics {
         (piece Colour state:1 fillColour:(colour Black))
         (piece Colour state:2 fillColour:(colour White))
@@ -133,7 +133,7 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
     })
-    
+
     (ai
         "MacBeth_ai"
     )

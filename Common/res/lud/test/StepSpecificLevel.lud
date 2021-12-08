@@ -1,5 +1,5 @@
 (define "MoveWithinBoard"
-    (move Step 
+    (move Step
         (from (from) level:(level))
         (to if:(is In (to) (sites Outer)))
     )
@@ -22,19 +22,19 @@
             //            (place Stack items:{"Cross2"} coord:"A3")
             //            (place Stack items:{"Cross1"} coord:"B1")
         })
-        
-        (play 
+
+        (play
             (forEach Piece)
         )
-        
+
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 //-------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "TBD")
@@ -44,7 +44,7 @@
         (credit "Nicholas Bamber")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Yellow))
         (player Colour P2 (colour DarkBlue))
@@ -52,6 +52,6 @@
         (piece ExtendName P2 "_blue")
         }
     )
-    
+
 )
 

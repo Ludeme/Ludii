@@ -1,17 +1,17 @@
-(game "Fill A Pix"  
-    (players 1)  
-    (equipment { 
+(game "Fill A Pix"
+    (players 1)
+    (equipment {
         (board (square <Challenge:size>) (values Cell (range 0 1)))
         (hints { <Challenge:hints> })
         (piece "Square" P1)
-    })  
-    (rules 
-        (play 
+    })
+    (rules
+        (play
             (satisfy  {
                 (forAll
-                    Hint 
-                    (is Count 
-                        (sites Around (from) includeSelf:True) 
+                    Hint
+                    (is Count
+                        (sites Around (from) includeSelf:True)
                         of:1
                         (hint)
                     )
@@ -26,7 +26,7 @@
 
 (option "Challenge" <Challenge> args:{ <size> <hints> }
     {
-    (item "1" 
+    (item "1"
         <10>
         <
         (hint 1 0)  (hint 3 3)  (hint 5 3)  (hint 7 3)  (hint 9 0)  (hint 13 6) (hint 16 6) (hint 21 4) (hint 22 5)
@@ -36,7 +36,7 @@
         (hint 96 1) (hint 98 4) (hint 99 4)
         >
         ""
-    )   
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (piece Rename piece:"0" "x")
         (piece Colour "x" strokeColour:(colour 100 100 100 100))

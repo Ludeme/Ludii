@@ -1,7 +1,7 @@
 (game "Ix Buga"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (merge {
                 (shift 0.67 -1.32 (scale 0.66 (wedge 3)))
                 (shift 4.67 -1.32 (scale 0.66 (wedge 3)))
@@ -11,9 +11,9 @@
             })
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -21,8 +21,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Ix Buga (the large deer) is a hunt game played in Mongolia played with eight deer against 80 hunters.")
@@ -35,10 +35,10 @@
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
 )

@@ -1,13 +1,13 @@
 (game "Sakko"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (rectangle 3 13)
             use:Vertex
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -15,8 +15,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Sakko is a board game that was played in Svalbard in the nineteenth century.")
@@ -27,10 +27,10 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
 )

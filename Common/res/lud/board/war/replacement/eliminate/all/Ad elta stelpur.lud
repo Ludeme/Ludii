@@ -1,35 +1,35 @@
-(define "DieIs6Or1" 
-    (or 
-        (= 6 (pips)) 
+(define "DieIs6Or1"
+    (or
+        (= 6 (pips))
         (= 1 (pips))
     )
 )
 
-(define "AnyDieIs6Or1" 
-    (or 
-        (is AnyDie 6) 
+(define "AnyDieIs6Or1"
+    (or
+        (is AnyDie 6)
         (is AnyDie 1)
     )
 )
 
-(define "DieIs1" 
+(define "DieIs1"
     (= 1 (pips))
 )
 
-(define "NextSiteFrom" 
-    (trackSite Move 
+(define "NextSiteFrom"
+    (trackSite Move
         #2
         steps:#1
     )
 )
 
-(define "UseADie6" 
-    (set Pending 
+(define "UseADie6"
+    (set Pending
         (if (all DiceEqual)
-            12 
+            12
             6
         )
-    ) 
+    )
 )
 
 (define "UsedADie6" (is Pending))
@@ -40,39 +40,39 @@
 
 (define "WithDie6" (if (all DiceEqual) 12 6))
 
-(define "MoveAPiece" 
-    (or 
-        (move 
+(define "MoveAPiece"
+    (or
+        (move
             (from)
-            (to 
-                ("NextSiteFrom" #1) 
-                if:(and 
+            (to
+                ("NextSiteFrom" #1)
+                if:(and
                     (not (is Friend (who at:(to))))
-                    (if (>= (count Turns) 2) 
+                    (if (>= (count Turns) 2)
                         True
-                        (if (and 
-                                (or (= 6 #1) (= 12 #1)) 
+                        (if (and
+                                (or (= 6 #1) (= 12 #1))
                                 (!= 0 (count in:(sites Mover)))
-                            ) 
+                            )
                             (is In (from) (sites Mover))
                             True
                         )
                     )
                 )
-                (apply 
-                    if:(is Enemy (who at:(to))) 
+                (apply
+                    if:(is Enemy (who at:(to)))
                     (remove (to))
                 )
             )
         )
         (if (= 1 (count Pieces Mover))
-            (move 
+            (move
                 (from)
-                (to 
-                    ("NextSiteFrom" (if (= #1 12) 4 (if (= #1 6) 2 #1)) "CornerTrack") 
+                (to
+                    ("NextSiteFrom" (if (= #1 12) 4 (if (= #1 6) 2 #1)) "CornerTrack")
                     if:(not (is Friend (who at:(to))))
-                    (apply 
-                        if:(is Enemy (who at:(to))) 
+                    (apply
+                        if:(is Enemy (who at:(to)))
                         (remove (to))
                     )
                 )
@@ -83,69 +83,69 @@
 
 //------------------------------------------------------------------------------
 
-(game "Ad elta stelpur"  
-    (players 2)  
-    (equipment 
-        { 
-        (board (rectangle 2 13) 
+(game "Ad elta stelpur"
+    (players 2)
+    (equipment
+        {
+        (board (rectangle 2 13)
             {
             (track "NormalTrack" {0..5 7..12 25..20 18..13} loop:True)
             (track "CornerTrack" {0 5 7 12 25 20 18 13} loop:True)
             }
             use:Vertex
-        ) 
+        )
         (regions "LeftMost" P1 {0 1})
         (regions "LeftMost" P2 {24 25})
         (dice num:2)
-        (piece "Disc" Each) 
-        } 
+        (piece "Disc" Each)
+        }
     )
-    
+
     (rules
-        (start 
-            { 
+        (start
+            {
             (place "Disc1" {0..5})
             (place "Disc2" {20..25})
             }
         )
-        
-        (play 
-            (do 
-                (if 
-                    (not "SameTurn") 
+
+        (play
+            (do
+                (if
+                    (not "SameTurn")
                     (roll)
-                    (if 
-                        (and 
-                            (not ("UsedADie6") ) 
+                    (if
+                        (and
+                            (not ("UsedADie6") )
                             (not ("AnyDieIs6Or1"))
-                        ) 
+                        )
                         (roll)
                     )
                 )
                 next:(if ("UsedADie6")
-                    (forEach Piece 
+                    (forEach Piece
                         ("MoveAPiece" ("WithDie6Again"))
                     )
-                    (forEach Die 
+                    (forEach Die
                         if:("DieIs6Or1")
                         (if ("DieIs1")
-                            (forEach Piece 
+                            (forEach Piece
                                 ("MoveAPiece" ("WithDie1"))
                             )
-                            (forEach Piece 
-                                ("MoveAPiece" ("WithDie6")) 
-                                (then 
-                                    (and 
-                                        ("UseADie6") 
+                            (forEach Piece
+                                ("MoveAPiece" ("WithDie6"))
+                                (then
+                                    (and
+                                        ("UseADie6")
                                         (moveAgain)
                                     )
                                 )
                             )
                         )
-                    ) 
-                    (then 
-                        (if (or 
-                                ("AnyDieIs6Or1") 
+                    )
+                    (then
+                        (if (or
+                                ("AnyDieIs6Or1")
                                 (all DiceEqual)
                             )
                             (moveAgain)
@@ -154,8 +154,8 @@
                 )
             )
         )
-        
-        (end 
+
+        (end
             (if (no Pieces Next)
                 (result Mover Win)
             )
@@ -165,7 +165,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Að Elta Stelpur (\"Chasing the Girls\") is an Icelandic game played on a Backgammon board. It is known since the late nineteenth century, but earlier references in literature may allude to the game.")
@@ -178,7 +178,7 @@
         (origin  "This game was played in Iceland, from around 1888 to 1892.")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
     })

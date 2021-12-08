@@ -1,12 +1,12 @@
 // Only one instance, not the full match.
-(game "Belote"  
-    (players 4)  
-    (equipment { 
-        (cardBoard size:4) 
-        (board 
-            (union 
+(game "Belote"
+    (players 4)
+    (equipment {
+        (cardBoard size:4)
+        (board
+            (union
                 {
-                (square 1) 
+                (square 1)
                 (shift 2 0 (square 1))
                 (shift 2 2 (square 1))
                 (shift 0 2 (square 1))
@@ -14,42 +14,42 @@
             )
         )
         (deck  {
-            (card Seven rank:0 value:0 trumpRank:0 trumpValue:0) 
+            (card Seven rank:0 value:0 trumpRank:0 trumpValue:0)
             (card Eight rank:1 value:0 trumpRank:1 trumpValue:0)
-            (card Nine rank:2 value:0 trumpRank:6 trumpValue:14) 
-            (card Ten rank:3 value:10 trumpRank:4 trumpValue:10) 
-            (card Jack rank:4 value:2 trumpRank:7 trumpValue:20) 
-            (card Queen rank:5 value:3 trumpRank:2 trumpValue:3) 
-            (card King rank:6 value:4 trumpRank:3 trumpValue:4) 
-            (card Ace rank:7 value:11 trumpRank:5 trumpValue:11) 
+            (card Nine rank:2 value:0 trumpRank:6 trumpValue:14)
+            (card Ten rank:3 value:10 trumpRank:4 trumpValue:10)
+            (card Jack rank:4 value:2 trumpRank:7 trumpValue:20)
+            (card Queen rank:5 value:3 trumpRank:2 trumpValue:3)
+            (card King rank:6 value:4 trumpRank:3 trumpValue:4)
+            (card Ace rank:7 value:11 trumpRank:5 trumpValue:11)
         })
         (hand Each)
-    })  
+    })
     (rules
-        (start {	
+        (start {
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
-            (deal Cards 5) 
+            (deal Cards 5)
             //            (set Visible at:(handSite All))
         })
-        
+
         phases:{
         (phase "Contract"
-            (play 
-                (or 
-                    (if (<= (count Turns) (count Players)) 
-                        (set TrumpSuit (card Suit at:(handSite All)) ) 
+            (play
+                (or
+                    (if (<= (count Turns) (count Players))
+                        (set TrumpSuit (card Suit at:(handSite All)) )
                         (set TrumpSuit
-                            (difference 
+                            (difference
                                 {1 2 3 4} // Need to be improved with a IntArrayFunction in entry... But compiler breaks for it...
                                 (card Suit at:(handSite All))
                             )
                         )
-                        (then 
-                            (and 
+                        (then
+                            (and
                                 //(deal Cards 3 beginWith:(mover))
                                 (deal Cards 3)
-                                (set NextPlayer 1) 
+                                (set NextPlayer 1)
                             )
                         )
                     )
@@ -59,29 +59,29 @@
             (nextPhase (not (was Pass)) "PlayCard")
         )
         (phase "PlayCard"
-            (play 
-                (playCard 
+            (play
+                (playCard
                     (then (set Visible (last To)))
                 )
             )
         )
         }
-        
+
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
 (metadata
     (info {
-        
+
     })
-    
+
     (graphics {
         (no Board)
         (stackType P1 Fan )
         (stackType P2 Fan )
         (stackType P3 Fan )
-        (stackType P4 Fan ) 
+        (stackType P4 Fan )
     })
-    
+
 )

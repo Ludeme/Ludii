@@ -1,7 +1,7 @@
 (match "Mughrabieh"
     (players 2)
     (games (subgame "MughrabiehSubgame" result:(score Mover)))
-    (end { 
+    (end {
         (if (>= (matchScore P1) 31)  (result P1 Win))
         (if (>= (matchScore P2) 31)  (result P2 Win))
     })

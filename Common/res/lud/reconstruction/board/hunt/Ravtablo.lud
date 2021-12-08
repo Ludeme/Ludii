@@ -1,26 +1,26 @@
-(game "Ravtablo"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Ravtablo"
+    (players 2)
+    (equipment {
+        (board
             (rectangle 9 5 diagonals:Alternating)
             use:Vertex
         )
         (hand P1)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (play (forEach Piece))
-        
-        (end 
+
+        (end
             ("NoMoves" Loss)
-        ) 
+        )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Rävtablo (\"Fox Game\") is a game that was played by the Sámi people of northern Sweden in the twentieth century.")
@@ -31,10 +31,10 @@
         (classification "board/hunt/reconstruction")
         }
     )
-    
+
     (graphics {
         (board Style Graph)
         (piece Families {"Abstract" "Themed"})
     })
-    
+
 )

@@ -1,6 +1,6 @@
 (game "Bagha Guti"
-    (players 2)  
-    (equipment { 
+    (players 2)
+    (equipment {
         ("AlquerqueBoard" 5 5)
         (piece "Goat" P2 "StepToEmpty")
         (piece "Tiger" P1
@@ -10,29 +10,29 @@
             )
         )
         (hand P1)
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place Stack "Goat2" 12 count:21)
             (place "Tiger1" (handSite P1))
         })
-        
+
         phases:{
         (phase "Opening" P1 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase "Playing"))
         (phase "Playing"  (play (forEach Piece top:True)))
         }
-        
-        (end { 
+
+        (end {
             (if (no Moves P1) (result P2 Win))
             (if (no Pieces P2) (result P1 Win))
-        })  
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Bagha Guti is a hunt game played in the Bihar region of India. The tiger attempts to eat all the goats, and the goats try to trap the tiger. All of the goats begin on the same spot in this game.")
@@ -45,10 +45,10 @@
         (origin  "This game was played in India, around 1935.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (stackType Count)
     })
-    
+
 )

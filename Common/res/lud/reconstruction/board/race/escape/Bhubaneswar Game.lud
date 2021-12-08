@@ -1,15 +1,15 @@
 (game "Bhubaneswar Game"
-    (players 2)  
-    (equipment { 
-        (board 
+    (players 2)
+    (equipment {
+        (board
             (merge {
                 (rectangle 6 3)
                 (shift 1 0 (rectangle 12 1))
             })
         )
-    })  
-    
-    (rules 
+    })
+
+    (rules
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -17,8 +17,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game board was found at the Kedaresvara temple at Bhubaneswar in Orissa, India. The game is similar, but not identical, to other games from India which themselves resemble the ancient game 20 Squares. The temple dates to the eleventh century CE, but the board could have been made at any time after that.")
@@ -29,12 +29,12 @@
         (credit "Eric Piette")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Line {{9 6} {5 10}})
     })
-    
+
 )

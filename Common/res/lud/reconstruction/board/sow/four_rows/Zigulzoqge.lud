@@ -1,29 +1,29 @@
-(game "Zigulzoqge"  
-    (players <Board:players>)  
-    
-    (equipment { 
+(game "Zigulzoqge"
+    (players <Board:players>)
+
+    (equipment {
         (mancalaBoard <Board:players> <Board:size> store:None)
         (piece "Seed" Shared)
         (hand Each)
         <Board:regions>
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start (set Count 5 to:(sites Board) ))
-        
-        (play 
-            (or 
+
+        (play
+            (or
                 (if (!= 2 (var "MainDirection"))
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
+                        (from
+                            (if
+                                (is Mover Prev)
                                 (sites {(last To)})
-                                (sites Mover) 
-                            ) 
+                                (sites Mover)
+                            )
                             if:(> (count at:(from)) 0)
                         )
-                        (to 
+                        (to
                             (if (is In (from) (sites Right))
                                 (if (and (is In (last To) (sites Right)) (is In (last From) (sites Right)))
                                     (if (is In (from) (sites Top))
@@ -52,7 +52,7 @@
                                 (if (is Prev Mover)
                                     (and
                                         (set Var "Count" (- (var "Count") 1))
-                                        (if (< 1 (var "Count")) 
+                                        (if (< 1 (var "Count"))
                                             (and
                                                 (moveAgain)
                                                 (if (is In (last To) (sites Right))
@@ -93,15 +93,15 @@
                 )
                 (if (!= 1 (var "MainDirection"))
                     (move Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
+                        (from
+                            (if
+                                (is Mover Prev)
                                 (sites {(last To)})
-                                (sites Mover) 
-                            ) 
+                                (sites Mover)
+                            )
                             if:(> (count at:(from)) 0)
                         )
-                        (to 
+                        (to
                             (if (is In (from) (sites Left))
                                 (if (and (is In (last To) (sites Left)) (is In (last From) (sites Left)))
                                     (if (is In (from) (sites Bottom))
@@ -130,7 +130,7 @@
                                 (if (is Prev Mover)
                                     (and
                                         (set Var "Count" (- (var "Count") 1))
-                                        (if (< 1 (var "Count")) 
+                                        (if (< 1 (var "Count"))
                                             (and
                                                 (moveAgain)
                                                 (if (is In (last To) (sites Left))
@@ -156,7 +156,7 @@
                                                 )
                                             )
                                             (set Var "CurrentDirection" 0)
-                                        )	
+                                        )
                                     )
                                 )
                                 (fromTo
@@ -171,7 +171,7 @@
                 )
             )
         )
-        
+
         (end
             (if  (no Moves Next)
                 (result Mover Win)
@@ -184,52 +184,52 @@
 
 (option "Row Size and Players" <Board> args:{ <players> <size> <regions>}
     {
-    (item "2 Players and 4 Holes per row" <2>  <4> 
+    (item "2 Players and 4 Holes per row" <2>  <4>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         >
-    "2 players and each row has 4 holes.") 
-    
-    (item "2 Players and 5 Holes per row" <2>  <5> 
+    "2 players and each row has 4 holes.")
+
+    (item "2 Players and 5 Holes per row" <2>  <5>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         >
-    "2 players and each row has 5 holes.") 
-    
-    (item "2 Players and 6 Holes per row" <2>  <6> 
+    "2 players and each row has 5 holes.")
+
+    (item "2 Players and 6 Holes per row" <2>  <6>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         >
-    "2 players and each row has 6 holes.") 
-    
-    (item "3 Players and 4 Holes per row" <3>  <4> 
-        <
-        (regions P1 (sites Row 0)) // P1 home
-        (regions P2 (sites Row 1)) // P2 home
-        (regions P3 (sites Row 2)) // P3 home
-        >
-    "3 players and each row has 4 holes.") 
-    
-    (item "3 Players and 5 Holes per row" <3>  <5> 
+    "2 players and each row has 6 holes.")
+
+    (item "3 Players and 4 Holes per row" <3>  <4>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         (regions P3 (sites Row 2)) // P3 home
         >
-    "3 players and each row has 5 holes.") 
-    
-    (item "3 Players and 6 Holes per row" <3>  <6> 
+    "3 players and each row has 4 holes.")
+
+    (item "3 Players and 5 Holes per row" <3>  <5>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         (regions P3 (sites Row 2)) // P3 home
         >
-    "3 players and each row has 6 holes.") 
-    
-    (item "4 Players and 4 Holes per row" <4>  <4> 
+    "3 players and each row has 5 holes.")
+
+    (item "3 Players and 6 Holes per row" <3>  <6>
+        <
+        (regions P1 (sites Row 0)) // P1 home
+        (regions P2 (sites Row 1)) // P2 home
+        (regions P3 (sites Row 2)) // P3 home
+        >
+    "3 players and each row has 6 holes.")
+
+    (item "4 Players and 4 Holes per row" <4>  <4>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -237,17 +237,17 @@
         (regions P4 (sites Row 3)) // P4 home
         >
     "4 players and each row has 4 holes.")
-    
-    (item "4 Players and 5 Holes per row" <4>  <5> 
+
+    (item "4 Players and 5 Holes per row" <4>  <5>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
         (regions P3 (sites Row 2)) // P3 home
         (regions P4 (sites Row 3)) // P4 home
         >
-    "4 players and each row has 5 holes.") 
-    
-    (item "4 Players and 6 Holes per row" <4>  <6> 
+    "4 players and each row has 5 holes.")
+
+    (item "4 Players and 6 Holes per row" <4>  <6>
         <
         (regions P1 (sites Row 0)) // P1 home
         (regions P2 (sites Row 1)) // P2 home
@@ -259,21 +259,21 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })*
-    
+
     (ruleset "Ruleset/Ziguloqge (Described)" {
-        
+
     })*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Ziguloqge is a mancala-style board game played by the Hani people of Yunnan, China. It is unique among mancala games because the number of row is detemined by the number of players, and players can choose which rows to sow their counters along, rather than sticking to a predetermined track.")
@@ -286,7 +286,7 @@
         (origin  "This game was played in China, around 1992.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
     })

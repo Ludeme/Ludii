@@ -1,5 +1,5 @@
-(define "PromotionIfOppositeSideReached"  
-    (then 
+(define "PromotionIfOppositeSideReached"
+    (then
         (if (is In (last To) (sites Next))
             (move Promote (last To) (piece "DoubleCounter") Mover)
         )
@@ -12,7 +12,7 @@
     (players {(player S) (player N)})
     (equipment {
         (board (square 5 diagonals:Solid) use:Vertex)
-        (piece "Counter" Each 
+        (piece "Counter" Each
             (or
                 ("StepForwardsToEmpty")
                 ("HopCapture")
@@ -22,11 +22,11 @@
         (piece "DoubleCounter" Each
             (or
                 (move
-                    Hop 
-                    (between 
-                        before:9 
-                        after:9 
-                        if:(is Enemy (who at:(between))) 
+                    Hop
+                    (between
+                        before:9
+                        after:9
+                        if:(is Enemy (who at:(between)))
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))
@@ -37,21 +37,21 @@
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     })
-    
-    (rules 
-        (start { 
+
+    (rules
+        (start {
             (place "Counter1" (forEach (sites Board) if:(> (site) (centrePoint)) ))
             (place "Counter2" (forEach (sites Board) if:(< (site) (centrePoint)) ))
         })
-        (play (forEach Piece)) 
-        (end (if (no Moves Mover) (result Next Win))) 
+        (play (forEach Piece))
+        (end (if (no Moves Mover) (result Next Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Kharbaga is a game played in North Africa, and is related to similar games played there that are similar to Alquerque. The board is a five by five grid.")
@@ -63,14 +63,14 @@
         (origin  "This game was played in North Africa, from around 1952 to 2012.")
         }
     )
-    
+
     (graphics {
         (piece Families {"Defined" "Isometric"})
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Kharbaga_ai"
     )
-    
+
 )

@@ -23,8 +23,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Huairu is a race game played in Ecuador during the mid-twentieth century. It utilizes a die that is similar to Inka die, so it is possible that the game is related to much older ones. It appears to be similar to other race games documented in the Andes region.")
@@ -36,12 +36,12 @@
         (origin  "This game was played in Ecuador, from around 1964 to 1965.")
         }
     )
-    
+
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" Vertex (sites {1..4 6..9 21..28 11..14 16..19}) fillColour:(colour 223 178 110) edgeColour:(colour Black) scale:0.6)
         (show Symbol "disc" Vertex (sites {0 5 10 15 20}) fillColour:(colour 223 178 110) edgeColour:(colour Black) scale:1)
-        
+
     })
-    
+
 )

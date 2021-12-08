@@ -1,19 +1,19 @@
-(game "Alquerque" 
-    (players 2)  
-    (equipment { 
+(game "Alquerque"
+    (players 2)
+    (equipment {
         ("AlquerqueBoard" 5 5)
         (piece "Counter" Each)
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ) )
             (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) } ) )
         })
-        
+
         <Play>
-        
-        (end ("NoMoves" Loss))  
+
+        (end ("NoMoves" Loss))
     )
 )
 
@@ -21,115 +21,115 @@
 
 (option "Play Rules" <Play> args:{ <rules> }
     {
-    (item "No force capture no sequence" 
+    (item "No force capture no sequence"
         <
-        (play 
-            (forEach Piece 
-                "Counter" 
-                (or 
-                    ("HopCapture") 
+        (play
+            (forEach Piece
+                "Counter"
+                (or
+                    ("HopCapture")
                     ("StepToEmpty")
                 )
             )
         )
-        > 
+        >
         "No force capture, no sequence."
-    )* 
-    
-    (item "No force capture sequence allowed" 
+    )*
+
+    (item "No force capture sequence allowed"
         <
-        (play 
+        (play
             (if ("SameTurn")
                 (or
-                    ("HopSequenceCaptureAgain")	
+                    ("HopSequenceCaptureAgain")
                     (move Pass)
                 )
-                (forEach Piece 
-                    "Counter" 
-                    (or 
-                        ("HopSequenceCapture") 
+                (forEach Piece
+                    "Counter"
+                    (or
+                        ("HopSequenceCapture")
                         ("StepToEmpty")
                     )
                 )
             )
         )
-        > 
+        >
         "No force capture, sequence allowed."
     )
-    
-    (item "Force capture in sequence and huff rule" 
+
+    (item "Force capture in sequence and huff rule"
         <
         (define "HasCaptured"  (set Value Mover 0))
         (define "HasNotCaptured" (set Value Mover 1))
         (define "DidNotCaptured"  (= (value Player Prev) 1) )
         (define "HasHuffed"  (= (last To) (last From)) )
-        
-        (define "HopCounter" 
+
+        (define "HopCounter"
             (move
-                Hop 
-                (between 
+                Hop
+                (between
                     if:(is Enemy (who at:(between)))
                     (apply (remove (between)))
-                ) 
-                (to if:(is Empty (to))) 
+                )
+                (to if:(is Empty (to)))
                 (then
                     (and
-                        (if (can Move 
+                        (if (can Move
                                 (hop
-                                    (from (last To)) 
-                                    (between 
+                                    (from (last To))
+                                    (between
                                         if:(is Enemy (who at:(between)))
                                         (apply (remove (between)))
                                     )
                                     (to if:(is Empty (to)))
                                 )
-                            ) 
+                            )
                             (moveAgain)
                         )
                         ("HasCaptured")
                     )
                 )
-            ) 
+            )
         )
-        
-        (define "RememberSiteWithPossibleCapture"  
-            (set Pending 
+
+        (define "RememberSiteWithPossibleCapture"
+            (set Pending
                 (sites From
-                    (forEach Piece "Counter" 
+                    (forEach Piece "Counter"
                         ("HopCounter")
                     )
                 )
             )
         )
         (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
-        (define "HuffOnePieceOf" 
+        (define "HuffOnePieceOf"
             (move
-                Select 
+                Select
                 (from #1
                     if:(!= (what at:(from)) 0)
                 )
-                (then 
+                (then
                     (and  {
-                        (remove (last To)) 
-                        (moveAgain) 
+                        (remove (last To))
+                        (moveAgain)
                         (set Value Prev 0)
                     })
                 )
             )
         )
-        (define "ShouldCapturedButMoved" 
-            (and 
-                (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+        (define "ShouldCapturedButMoved"
+            (and
+                (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))
                 (is In (last From) (sites Empty))
             )
         )
-        
-        (define "MoveOrCapture" 
-            (do 
-                ("RememberSiteWithPossibleCapture") 
-                next:(forEach Piece "Counter" 
-                    (or 
-                        ("HopCounter") 
+
+        (define "MoveOrCapture"
+            (do
+                ("RememberSiteWithPossibleCapture")
+                next:(forEach Piece "Counter"
+                    (or
+                        ("HopCounter")
                         (move
                             Step
                             (to if:(is Empty (to)))
@@ -139,12 +139,12 @@
                 )
             )
         )
-        
-        (play 
+
+        (play
             (or
                 (if (and (not "SameTurn") ("DidNotCaptured"))
                     (or
-                        (if ("ShouldCapturedButMoved") 
+                        (if ("ShouldCapturedButMoved")
                             ("HuffOnePieceOf" (last To))
                         )
                         ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
@@ -154,13 +154,13 @@
                     (if ("HasHuffed")
                         ("MoveOrCapture")
                         (move
-                            Hop 
+                            Hop
                             (from (last To))
-                            (between 
+                            (between
                                 if:(is Enemy (who at:(between)))
                                 (apply (remove (between)))
-                            ) 
-                            (to if:(is Empty (to))) 
+                            )
+                            (to if:(is Empty (to)))
                             (then
                                 ("HasCaptured")
                             )
@@ -170,7 +170,7 @@
                 )
             )
         )
-        > 
+        >
         "Force capture in sequence and huff rule."
     )
     }
@@ -178,28 +178,28 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Alfonso X (Described)" {
         "Play Rules/No force capture no sequence"
     })*
-    
+
     (ruleset "Ruleset/Murray (Suggested)" {
-        
+
         "Play Rules/No force capture sequence allowed"
     })
-    
+
     (ruleset "Ruleset/Covarrubias (Described)" {
-        
+
         "Play Rules/Force capture in sequence and huff rule"
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "First mentioned in the tenth century by the Persian historian Abu al-Faraj al-Isfahani, who calls it \"Qirq,\" a term for merels games. The first description of rules are found in Alfonso X's Libro de los Juegos in 13th century Spain. Many historians consider Alquerque to be an ancestor of Draughts and many other games in cultures that interacted with Islamic peoples or the Spanish.")
@@ -216,13 +216,13 @@
         (origin  "This game was played in Islamic World, from around 1221 to 1674.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Alquerque_ai"
     )
-    
+
 )

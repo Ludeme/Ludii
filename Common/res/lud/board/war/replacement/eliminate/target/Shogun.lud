@@ -1,18 +1,18 @@
 (define "SlideStep"
-    (slide 
-        (from #1)	 
+    (slide
+        (from #1)
         Orthogonal
         (between (range 1 3) if:(is Empty (between)))
         (to if:(is Enemy (who at:(to))) #2)
-    ) 	
+    )
 )
 
 (define "Move"
-    (move 
-        (from 
+    (move
+        (from
             (from)
-        ) 
-        (to 
+        )
+        (to
             (intersection
                 (sites To
                     (if (= 1 (value Piece at:(from)))
@@ -25,10 +25,10 @@
                 )
                 (sites Distance Orthogonal from:(from) (exact (value Piece at:(from))))
             )
-            if:(not (is Friend (who at:(to)))) 
-            (apply 
+            if:(not (is Friend (who at:(to))))
+            (apply
                 (set Value at:(from) (value Random (range 1 #1)))
-            ) 
+            )
         )
     )
 )
@@ -39,21 +39,21 @@
 
 //------------------------------------------------------------------------------
 
-(game "Shogun"  
-    (players {(player N) (player S)})  
-    (equipment { 
-        (board (square 8)) 
-        
-        (piece "Pawn" Each 
+(game "Shogun"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (square 8))
+
+        (piece "Pawn" Each
             ("Move" 4)
         )
-        
-        (piece "King" Each 
+
+        (piece "King" Each
             ("Move" 2)
         )
-    })  
-    (rules 
-        (start { 
+    })
+    (rules
+        (start {
             (place "Pawn1" coord:"A1" value:(value Random (range 1 4)))
             (place "Pawn1" coord:"B1" value:(value Random (range 1 4)))
             (place "Pawn1" coord:"C1" value:(value Random (range 1 4)))
@@ -61,7 +61,7 @@
             (place "Pawn1" coord:"F1" value:(value Random (range 1 4)))
             (place "Pawn1" coord:"G1" value:(value Random (range 1 4)))
             (place "Pawn1" coord:"H1" value:(value Random (range 1 4)))
-            (place "King1" coord:"E1" value:(value Random (range 1 2))) 
+            (place "King1" coord:"E1" value:(value Random (range 1 2)))
             (place "Pawn2" coord:"A8" value:(value Random (range 1 4)))
             (place "Pawn2" coord:"B8" value:(value Random (range 1 4)))
             (place "Pawn2" coord:"C8" value:(value Random (range 1 4)))
@@ -69,21 +69,21 @@
             (place "Pawn2" coord:"F8" value:(value Random (range 1 4)))
             (place "Pawn2" coord:"G8" value:(value Random (range 1 4)))
             (place "Pawn2" coord:"H8" value:(value Random (range 1 4)))
-            (place "King2" coord:"D8" value:(value Random (range 1 2))) 
+            (place "King2" coord:"D8" value:(value Random (range 1 2)))
         })
-        
-        (play 
+
+        (play
             <CheckmateRule:Move>
         )
-        
+
         (end
-            (if 
+            (if
                 (or
                     <CheckmateRule:Ending>
                     (<= (count Pieces Next) 2)
                 )
                 (result Mover Win)
-            ) 
+            )
         )
     )
 )
@@ -92,7 +92,7 @@
 
 (option "Shogun Capture" <CheckmateRule> args:{ <Move> <Ending> }
     {
-    (item "Allowed"    	
+    (item "Allowed"
         <
         (forEach Piece)
         >
@@ -100,27 +100,27 @@
         (no Pieces Next "King")
         >
     "1976 version")**
-    
-    (item "Not Allowed"    	
+
+    (item "Not Allowed"
         <
-        (do 
+        (do
             (forEach Piece)
             ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
         >
         <
-        (and 
+        (and
             ("IsInCheck" "King" Next)
             ("NextCanNotMove")
-        ) 
+        )
         >
     "1979 version. Same as 1976 version but the Shogun cannot be captured and must instead be put in checkmate.")
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "This game plays on a 8x8 grid, with each player having 7 pawns and 1 King, which start lined up on opposite sides of the board. Each player can remove the other's pieces by moving onto them, as in chess.")
@@ -133,7 +133,7 @@
         (date "1976")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour Red))
@@ -144,5 +144,5 @@
         (board Style Chess)
         (show Piece Value Middle)
     })
-    
+
 )

@@ -1,6 +1,6 @@
 (define "Place"
     (move Add
-        (to 
+        (to
             (sites Around (sites Occupied by:Mover) Empty Orthogonal)
         )
     )
@@ -8,7 +8,7 @@
 
 (define "Remove"
     (move Select
-        (from 
+        (from
             (sites Occupied by:Enemy)
         )
         (then (forEach Site (sites Group at:(last From) Orthogonal) (remove (site))))
@@ -29,7 +29,7 @@
         (start {
             (place "Disc1" (forEach (sites Phase 0) if:(is Odd (site))))
             (place "Disc2" (forEach (sites Phase 0) if:(is Even (site))))
-            
+
         })
         (play
             (or
@@ -38,14 +38,14 @@
             )
         )
         (end {
-            (if 
+            (if
                 (= 1 (count Groups Orthogonal if:(= 1 (who at:(to)))))
                 (result P1 Win)
-            ) 
-            (if 
+            )
+            (if
                 (= 1 (count Groups Orthogonal if:(= 2 (who at:(to)))))
                 (result P2 Win)
-            ) 
+            )
         })
     )
 )
@@ -67,11 +67,11 @@
     (info
         {
         (description "Gygoreg is a deceptively simple unification game invented by Mike Zapawa in 2020.")
-        (rules "Each turn you must perform exactly one of the following two actions: 
-            
-            1. Add a friendly piece orthogonally adjacent to one of your pieces. 
+        (rules "Each turn you must perform exactly one of the following two actions:
+
+            1. Add a friendly piece orthogonally adjacent to one of your pieces.
             2. Remove an enemy group.
-            
+
         As soon as one player only has 1 group, the game is over and that player is the winner.")
         (version "1.3.0")
         (classification "board/space/group")
@@ -80,7 +80,7 @@
         (date "2020")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))

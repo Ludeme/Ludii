@@ -1,31 +1,31 @@
-(define "HopCounter" 
+(define "HopCounter"
     (or
         (do
             (move
-                Hop 
-                (from #1) 
-                Orthogonal 
-                (between 
+                Hop
+                (from #1)
+                Orthogonal
+                (between
                     before:1
                     after:1
                     if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
                     (apply (remove (between) at:EndOfTurn))
-                ) 
-                (to if:(is Empty (to))) 
+                )
+                (to if:(is Empty (to)))
                 #2
             )
             ifAfterwards:(is In (last To) (sites Phase 0))
         )
-        
+
         (move
-            Hop 
-            (from #1) 
-            Diagonal 
+            Hop
+            (from #1)
+            Diagonal
             (between
                 if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
                 (apply (remove (between) at:EndOfTurn))
-            ) 
-            (to if:(is Empty (to))) 
+            )
+            (to if:(is Empty (to)))
             #2
         )
     )
@@ -46,7 +46,7 @@
                 (apply (remove (between) #3))
             )
             (to if:(is Empty (to)))
-            (then	
+            (then
                 (and
                     (if (can Move
                             (do
@@ -126,15 +126,15 @@
     )
 )
 
-(define "CounterSimpleMove" 
+(define "CounterSimpleMove"
     (move
-        Step 
-        (directions {FR FL}) 
+        Step
+        (directions {FR FL})
         (to if:(is Empty (to)))
-    )		
+    )
 )
 
-(define "TwoKingsMoverOneKingEnemy" 
+(define "TwoKingsMoverOneKingEnemy"
     (and {
         (= Off (where "Counter" P1))
         (= Off (where "Counter" P2))
@@ -145,60 +145,60 @@
 
 //------------------------------------------------------------------------------
 
-(game "Frisian Draughts" 
-    (players 2)  
-    (equipment { 
-        (board (square <Tag:boardSize>)) 
+(game "Frisian Draughts"
+    (players 2)
+    (equipment {
+        (board (square <Tag:boardSize>))
         (piece "Counter" P1 N)
-        (piece "Counter" P2 S) 
+        (piece "Counter" P2 S)
         (piece "DoubleCounter" Each maxState:128)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Counter1" (difference (expand (sites Bottom) steps: (- <Tag:pieceNumber> 1)) (sites Phase 1)) value:10)
             (place "Counter2" (difference (expand (sites Top) steps: (- <Tag:pieceNumber> 1)) (sites Phase 1)) value:10)
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves withValue:True
                         ("HopCounter" (last To)
-                            (then 
+                            (then
                                 (and
-                                    (if (can Move ("HopCounter" (last To))) 
+                                    (if (can Move ("HopCounter" (last To)))
                                         (moveAgain)
-                                        (if "JumpToPromotionZone" 
+                                        (if "JumpToPromotionZone"
                                             (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
                                         )
-                                    ) 
+                                    )
                                     (forEach Site (sites Occupied by:Mover)
                                         (if (!= 0 (state at:(site)))
                                             (set State at:(site) 0)
                                         )
                                     )
                                 )
-                            ) 
+                            )
                         )
                     )
                     (max Moves withValue:True
-                        ("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) 
+                        ("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
                     )
                 )
                 (priority {
                     (max Moves withValue:True
-                        (or { 
-                            (forEach Piece "DoubleCounter" ("HopFrisianSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))					
+                        (or {
+                            (forEach Piece "DoubleCounter" ("HopFrisianSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
                             (forEach Piece "Counter"
-                                ("HopCounter" (from) 
-                                    (then 
+                                ("HopCounter" (from)
+                                    (then
                                         (and
-                                            (if (can Move ("HopCounter" (last To))) 
-                                                (moveAgain) 
-                                                (if "JumpToPromotionZone" 
+                                            (if (can Move ("HopCounter" (last To)))
+                                                (moveAgain)
+                                                (if "JumpToPromotionZone"
                                                     (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
                                                 )
                                             )
@@ -208,15 +208,15 @@
                                                 )
                                             )
                                         )
-                                    ) 
-                                ) 
+                                    )
+                                )
                             )
                         })
                     )
-                    (or  
-                        (forEach Piece "Counter" 
+                    (or
+                        (forEach Piece "Counter"
                             ("CounterSimpleMove")
-                            (then 
+                            (then
                                 (and
                                     (if "JumpToPromotionZone"
                                         (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
@@ -229,8 +229,8 @@
                                 )
                             )
                         )
-                        (forEach Piece "DoubleCounter" 
-                            (if (if (> 2 (state at:(from))) 
+                        (forEach Piece "DoubleCounter"
+                            (if (if (> 2 (state at:(from)))
                                     True
                                     (not (can Move (forEach Piece "Counter" ("CounterSimpleMove"))))
                                 )
@@ -263,12 +263,12 @@
                 )
             )
         )
-        
+
         (end {
             (if (no Moves Next) (result Mover Win))
             (if (= 7 (value Player Mover)) (result Mover Draw))
         })
-        
+
     )
 )
 
@@ -284,18 +284,18 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Frisian Draughts (Described)" {
         "Variant/Frisian"
     })*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Frisian Draughts is a game from the Draughts/Checkers family that was particularly popular in Friesland, in the Netherlands.")
@@ -308,11 +308,11 @@
         (origin  "This game was played in Netherlands, around 1725.")
         }
     )
-    
+
     (graphics {
         (board Style Chess)
         (piece Families {"Defined" "Isometric"})
     })
-    
+
 )
 

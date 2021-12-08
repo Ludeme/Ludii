@@ -1,27 +1,27 @@
-(define "RemoveEnemyPieceNotInLine3" 
+(define "RemoveEnemyPieceNotInLine3"
     (move
         Remove
-        (forEach 
-            (sites Occupied by:Next container:"Board") 
+        (forEach
+            (sites Occupied by:Next container:"Board")
             if:(not (is Line 3 Orthogonal through:(site)))
         )
     )
 )
 
-(define "RemoveEnemyPiece" 
+(define "RemoveEnemyPiece"
     (if (can Move ("RemoveEnemyPieceNotInLine3"))
-        ("RemoveEnemyPieceNotInLine3") 
+        ("RemoveEnemyPieceNotInLine3")
         (move
             Remove
-            (sites Occupied by:Next container:"Board") 
+            (sites Occupied by:Next container:"Board")
         )
     )
 )
 
-(define "IfLine3MoveAgain" 
-    (then 
-        (if 
-            (is Line 3) 
+(define "IfLine3MoveAgain"
+    (then
+        (if
+            (is Line 3)
             (moveAgain)
         )
     )
@@ -31,43 +31,43 @@
 
 (game "Twelve Men's Morris"
     (players 2)
-    
-    (equipment { 
-        (board <Board> use:Vertex) 
+
+    (equipment {
+        (board <Board> use:Vertex)
         (hand Each)
-        (piece "Marker" Each 
-            (move 
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
+        (piece "Marker" Each
+            (move
+                Step
+                (to if:(is Empty (to)))
+                "IfLine3MoveAgain"
             )
-        ) 
-    })  
-    (rules 
+        )
+    })
+    (rules
         (start (place "Marker" "Hand" count:12))
-        
+
         phases:{
         (phase "Placement"
             (play
                 (if "SameTurn"
                     "RemoveEnemyPiece"
-                    (move 
-                        (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        "IfLine3MoveAgain" 
-                    )  
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Empty))
+                        "IfLine3MoveAgain"
+                    )
                 )
-            ) 
+            )
             (nextPhase Mover ("HandEmpty" Mover) "Movement")
         )
-        
-        (phase "Movement" 
-            (play 
+
+        (phase "Movement"
+            (play
                 (if "SameTurn"
                     "RemoveEnemyPiece"
                     (if (> (count Pieces Mover) 3)
                         (forEach Piece)
-                        (move 
+                        (move
                             (from (sites Occupied by:Mover))
                             (to (sites Empty))
                         )
@@ -76,7 +76,7 @@
             )
         )
         }
-        
+
         (end (if (<= (count Pieces Next) 2) (result Mover Win)))
     )
 )
@@ -92,26 +92,26 @@
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
-    (ruleset "Ruleset/With Diagonal (Suggested)" 
+(rulesets {
+
+    (ruleset "Ruleset/With Diagonal (Suggested)"
         {
         "Board/With Diagonal"
         }
     )
-    
-    (ruleset "Ruleset/Board Game Geek (Suggested)" 
+
+    (ruleset "Ruleset/Board Game Geek (Suggested)"
         {
         "Board/Without Diagonal"
         }
     )
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Twelve Men's Morris is a game of alignment known since at least the seventh century. It is played on a Nine Men's Morris board with corners of the concentric squares connected with diagonals.")
@@ -127,7 +127,7 @@
         (origin  "This game was played in Unknown, from around 600 to 799.")
         }
     )
-    
+
     (ai
         "Twelve Men's Morris_ai"
     )

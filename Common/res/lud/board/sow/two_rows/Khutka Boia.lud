@@ -7,10 +7,10 @@
 
 //------------------------------------------------------------------------------
 
-(game "Khutka Boia"  
-    (players 2)  
-    
-    (equipment { 
+(game "Khutka Boia"
+    (players 2)
+
+    (equipment {
         (mancalaBoard 2 5 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
@@ -18,14 +18,14 @@
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
         (hand Each)
-    })  
-    (rules 
-        
+    })
+    (rules
+
         (start {
-            (set Count 5 to:(sites Track) ) 
+            (set Count 5 to:(sites Track) )
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
-        
+
         phases:{
         (phase "Sowing"
             (play
@@ -33,11 +33,11 @@
                     (or {
                         (move Select
                             (from
-                                (if 
-                                    (is Mover Prev) 
-                                    "PlayFromNextLastHole" 
-                                    (sites Mover) 
-                                ) 
+                                (if
+                                    (is Mover Prev)
+                                    "PlayFromNextLastHole"
+                                    (sites Mover)
+                                )
                                 if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
                             )
                             (then
@@ -87,10 +87,10 @@
                                                 (from (site))
                                                 (to (handSite Player))
                                                 count:(count at:(site))
-                                            )	
+                                            )
                                             (set State at:(site) 1)
                                         )
-                                    )	
+                                    )
                                 )
                                 (forEach Site (sites P2)
                                     (if (and (is Occupied (site)) (= 2 (state at:(site))))
@@ -99,10 +99,10 @@
                                                 (from (site))
                                                 (to (handSite Player))
                                                 count:(count at:(site))
-                                            )	
+                                            )
                                             (set State at:(site) 2)
                                         )
-                                    )	
+                                    )
                                 )
                             })
                         )
@@ -110,7 +110,7 @@
                     }
                     (then
                         (if ("OneSeedOnBoard")
-                            (and { 
+                            (and {
                                 (forEach Site (sites P1)
                                     (fromTo
                                         (from (site))
@@ -145,10 +145,10 @@
                     }
                 )
             )
-            
+
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
+
         (phase "BetweenRounds"
             (play
                 (if (not (all Sites (sites Mover) if:(is Occupied (site))))
@@ -164,7 +164,7 @@
             )
             (nextPhase (all Passed) "DecisionForNextRound")
         )
-        
+
         (phase "DecisionForNextRound"
             (play
                 (if (> 5 ("DifferenceCapturedStone"))
@@ -198,7 +198,7 @@
                         next:(if (= (var "Bha") P1)
                             (move Select
                                 (from (intersection (union (sites Left) (sites Right)) (sites P1)))
-                                (then 
+                                (then
                                     (and
                                         (set State at:(last To) 1)
                                         (set Var "Bha" 0)
@@ -230,7 +230,7 @@
 
 //------------------------------------------------------------------------------
 
-(metadata  
+(metadata
     (info
         {
         (description "Khutka Boia is a two-row mancala-style board game played in the Mianwali district of Pakistan in the early twentieth century. It was played by all ages and genders, and generally played on holes made one a stone surface.")
@@ -243,7 +243,7 @@
         (origin  "This game was played in South Asia, around 1925.")
         }
     )
-    
+
     (graphics {
         (board Style Mancala)
         (show LocalStateHoles)

@@ -1,42 +1,42 @@
-(game "Meurimueng-rimueng Peuet Ploh"  
+(game "Meurimueng-rimueng Peuet Ploh"
     (players 2)
-    (equipment { 
+    (equipment {
         ("AlquerqueBoard" 9 9)
-        (piece "Marker" Each 
-            (or 
+        (piece "Marker" Each
+            (or
                 ("HopSequenceCapture")
                 ("StepToEmpty")
             )
         )
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Marker1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
             (place "Marker2" (forEach (sites Board) if:(> (site) (centrePoint)) ))
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (or
-                    ("HopSequenceCaptureAgain")	
+                    ("HopSequenceCaptureAgain")
                     (move Pass)
                 )
                 (forEach Piece)
             )
         )
-        
+
         (end {
             (if (no Pieces P1) (result P2 Win))
             (if (no Pieces P2) (result P1 Win))
-        }) 
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Merimuëng-rimuëng Peuët Ploh is a capturing game played by the Acehnese people of Sumatra.")
@@ -49,9 +49,9 @@
         (origin  "This game was played in Sumatra, around 1906.")
         }
     )
-    
+
     (graphics {
-        
+
     })
     (ai
         "Meurimueng-rimueng Peuet Ploh_ai"

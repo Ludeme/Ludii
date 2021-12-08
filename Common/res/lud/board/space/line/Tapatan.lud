@@ -1,21 +1,21 @@
 (game "Tapatan"
-    (players 2)  
-    (equipment 
+    (players 2)
+    (equipment
         {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each "StepToEmpty")
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Marker" "Hand" count:3))
-        
+
         phases:{
         (phase "Placement"
             (play (move (from (handSite Mover)) (to (sites Empty))) )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
-        
+
         (phase "Movement"
             (play (forEach Piece))
         )
@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tapatan is a very popular simple alignment game played in the Philippines. It was played during the nineteenth century, and probably is much older.")
@@ -40,7 +40,7 @@
         (origin  "This game was played in Philippines, around 1892.")
         }
     )
-    
+
     (ai
         "Tapatan_ai"
     )

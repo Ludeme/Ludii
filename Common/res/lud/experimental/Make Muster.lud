@@ -2,13 +2,13 @@
     (= 0 (count Sites in:(forEach (sites Empty) if:(no Pieces Mover in:(sites Around (site) All)))))
 )
 
-(define "MJump" 
-    (move Hop 
-        (between 
-            (range 0 Infinity) 
+(define "MJump"
+    (move Hop
+        (between
+            (range 0 Infinity)
             if:(is Occupied (between))
-        ) 
-        (to 
+        )
+        (to
             if:(is Empty (to))
         )
     )
@@ -18,13 +18,13 @@
 (game "Make Muster"
     (players 2)
     (equipment {
-        (board 
+        (board
             (rotate (- 90 <Orient:amount>)
                 (square <Board:poly> )
-            ) 
+            )
         use:Cell )
         (piece "Disc" Each
-            (move Step 
+            (move Step
                 (to if:(is Empty (to)))
         ))
     } )
@@ -40,13 +40,13 @@
                 (forEach Piece)
             )
         )
-        (end 
-            (if 
+        (end
+            (if
                 (or
-                    (and { 
-                        (= 1 (count Groups All if:(= (mover) (who at:(to))))) 
+                    (and {
+                        (= 1 (count Groups All if:(= (mover) (who at:(to)))))
                         (< 1 (count Pieces Mover))
-                        // Original rules disqualified winning condition if a placement could be made in the following turn. 
+                        // Original rules disqualified winning condition if a placement could be made in the following turn.
                         //            ("NoPlacementAvailable")
                     })
                     (< 1 (count Groups All if:(!= (mover) (who at:(to)))))
@@ -59,7 +59,7 @@
 
 //---------------------------------------------
 
-(option "Board Size" <Board> args:{ <poly> <limit> } 
+(option "Board Size" <Board> args:{ <poly> <limit> }
     {
     (item "Muster 2" <"Order2"> <{0..19}> "Board: Muster order 2 board - 20 positions")
     (item "Muster 3" <"Order3"> <{0..44}> "Board: Muster order 3 board - 45 positions")**
@@ -69,7 +69,7 @@
     }
 )
 
-(define "Order2" (poly { { 1 4 } { 2 3 } { 6 1 } { 7 2 } { 9 6 } { 8 7 } { 4 9 } { 3 8 } } )) 
+(define "Order2" (poly { { 1 4 } { 2 3 } { 6 1 } { 7 2 } { 9 6 } { 8 7 } { 4 9 } { 3 8 } } ))
 (define "Order3" (poly { { 1 5 } { 2 4 } { 8 1 } { 9 2 } { 12 8 } { 11 9 } { 5 12 } { 4 11 } } ))
 (define "Order4" (poly { { 1 6 } { 2 5 } { 10 1 } { 11 2 } { 15 10 } { 14 11 } { 6 15 } { 5 14 } } ))
 (define "Order5" (poly { { 1 7 } { 2 6 } { 12 1 } { 13 2 } { 18 12 } { 17 13 } { 7 18 } { 6 17 } } ))
@@ -79,7 +79,7 @@
     {
     (item "Orthogonal" <0> "Orthogonal")
     (item "Angled" <62>  "Angled cells")**
-    } 
+    }
 )
 
 //------------------------------------------------------
@@ -88,9 +88,9 @@
         {
         (description "Make Muster is one of several unification games that can be played on the Muster board. The Muster board is a rotated square board with ragged edges and 8 directions of connectivity. Standard sizes are order 2 through order 6. Each order board has 5 x the order squared playing positions.")
         (rules "On your turn, place a single piece of your color on an empty position that is not next to another friendly piece. This is compulsory whenever it is possible to do so.
-            
-            When it is not possible to place a piece; then instead, step one of your pieces to an adjacent empty position. 
-            
+
+            When it is not possible to place a piece; then instead, step one of your pieces to an adjacent empty position.
+
             You win either:
             -- when all your pieces become connected, or
         -- when you cut-off your opponent from being able to connect theirs.")
@@ -101,18 +101,18 @@
         (date "13-01-2020")
         }
     )
-    (graphics 
+    (graphics
         {
         (board Colour Phase0 (colour 232 229 212))
         (board Colour InnerEdges (colour 232 229 212))
     (board Colour OuterEdges (colour 232 229 212)) //(colour 157 155 141))
     (board StyleThickness OuterEdges 8)
     (show Edges All Adjacent connection:true Thick (colour 157 155 141))
-    (show Symbol "square-alt1.svg" 
-        <Board:limit> 
-        fillColour:(colour 218 215 200 180) 
-        edgeColour:(colour 157 155 141) 
-        scale:0.80 
+    (show Symbol "square-alt1.svg"
+        <Board:limit>
+        fillColour:(colour 218 215 200 180)
+        edgeColour:(colour 157 155 141)
+        scale:0.80
         rotation:<Orient:amount>
     )
     (player Colour P1 (colour DarkBlue))

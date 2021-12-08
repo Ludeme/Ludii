@@ -1,56 +1,56 @@
 (define "AdjacentNotEmptySites"
-    (sites 
-        Around 
-        (to) 
+    (sites
+        Around
+        (to)
         if:(not (is In (to) (sites Empty) ))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Blue Nile" 
-    (players 2)  
-    (equipment { 
-        (board (hex 5)) 
-        (piece "Marker" Neutral) 
+(game "Blue Nile"
+    (players 2)
+    (equipment {
+        (board (hex 5))
+        (piece "Marker" Neutral)
         }
-    )  
-    
-    (rules 
-        
+    )
+
+    (rules
+
         phases:{
-        (phase "start" P1 
-            (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
+        (phase "start" P1
+            (play (move Add (piece (id "Marker0")) (to (sites Empty))))
             (nextPhase "play")
         )
-        
-        (phase "play"     
-            (play 
-                (move 
-                    Add 
-                    (piece "Marker0") 
-                    (to 
-                        (sites Around 
-                            (last To) 
-                            if:(and 
-                                (is Empty (to))  
+
+        (phase "play"
+            (play
+                (move
+                    Add
+                    (piece "Marker0")
+                    (to
+                        (sites Around
+                            (last To)
+                            if:(and
+                                (is Empty (to))
                                 // not adjacent to any other piece except the last one placed.
                                 ("NoSites" (difference ("AdjacentNotEmptySites") (last To)))
-                            ) 
+                            )
                         )
                     )
                 )
             )
         )
         }
-        
-        (end ("NoMoves" Loss) )  
+
+        (end ("NoMoves" Loss) )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Invented by William Daniel Troyka in 2002, Blue Nile is a modern game played on a hexagonal board.")
@@ -63,9 +63,9 @@
         (date "2002")
         }
     )
-    
-    (ai 
+
+    (ai
         "Blue Nile_ai"
     )
-    
+
 )

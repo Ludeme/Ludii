@@ -1,23 +1,23 @@
-(game "Graph Test - Add (Curved Edges)"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Graph Test - Add (Curved Edges)"
+    (players 2)
+    (equipment {
+        (board
             (rotate
-                60 
-                (add 
-                    edges:{ {{0 0} {1 2}} {{1 2} {2 0}} } 
-                    edgesCurved:{ 
-                    {{0 0} {2 0} {.5  1} {-.5  1}} 
-                    {{0 0} {2 0} {.5 -1} {-.5 -1}} 
-                    } 
+                60
+                (add
+                    edges:{ {{0 0} {1 2}} {{1 2} {2 0}} }
+                    edgesCurved:{
+                    {{0 0} {2 0} {.5  1} {-.5  1}}
+                    {{0 0} {2 0} {.5 -1} {-.5 -1}}
+                    }
                 )
-            )  
+            )
             use:Vertex
-        ) 
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+        )
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -25,8 +25,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

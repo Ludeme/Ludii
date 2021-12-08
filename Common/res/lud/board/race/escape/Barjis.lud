@@ -2,19 +2,19 @@
 
 (define "SiteToMoveOnTrack" (trackSite Move steps:#1))
 
-(define "EnterAPiece" 
+(define "EnterAPiece"
     (move
         (from (handSite Mover))
         (to (centrePoint)
             if:(not (is Friend (who at:(to))))
-            (apply 
+            (apply
                 (if (is Enemy (who at:(to)))
-                    (fromTo 
+                    (fromTo
                         (from (to))
                         (to (handSite (who at:(to))))
                     )
                 )
-            )		
+            )
         )
     )
 )
@@ -23,14 +23,14 @@
 
 //------------------------------------------------------------------------------
 
-(game "Barjis"  
-    (players 4)  
-    (equipment { 
-        (board 
+(game "Barjis"
+    (players 4)
+    (equipment {
+        (board
             (add
                 (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
+                    (merge
+                        (shift 0 8 (rectangle 3 19))
                         (shift 8 0 (rectangle 19 3))
                     )
                     (poly {{8 8} {8 11} {11 11} {11 8}})
@@ -42,60 +42,60 @@
             (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
             (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
             (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
-            } 
+            }
         )
-        (hand Each) 
+        (hand Each)
         (dice d:2 from:0 num:6)
         (piece "Pawn" Each
             (if (= Off ("SiteToMoveOnTrack" ("ThrowValue")))
                 (move Remove (from))
-                (move 
+                (move
                     (from (from))
-                    (to 
+                    (to
                         ("SiteToMoveOnTrack" ("ThrowValue"))
                         if:(or (is Empty (to))
-                            (and 
+                            (and
                                 (is Enemy (who at:(to)))
-                                (not (is In (to) (sites "SafeSites")))	
+                                (not (is In (to) (sites "SafeSites")))
                             )
                         )
-                        (apply 
+                        (apply
                             (if (is Enemy (who at:(to)))
-                                (fromTo 
+                                (fromTo
                                     (from (to))
                                     (to (handSite (who at:(to))))
                                 )
                             )
                         )
                     )
-                )	
+                )
             )
         )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start (place "Pawn" "Hand" count:4))
-        (play 
-            (do (roll) 
-                next:(or 
-                    (forEach Piece) 
+        (play
+            (do (roll)
+                next:(or
+                    (forEach Piece)
                     (if (and ("IsSpecialThrow") (not (is Empty (handSite Mover))))
                         ("EnterAPiece")
                     )
                 )
             )
         )
-        
+
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Barjis is a race game that was played by Arab residents of Palestine in the early twentieth century. Played exclusively by women and children, it is very similar to other cross-shaped race games that were particularly popular in South and Southeast Asia.")
@@ -107,7 +107,7 @@
         (origin  "This game was played in Palestine, around 1951.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Green))
@@ -118,5 +118,5 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
-    
+
 )

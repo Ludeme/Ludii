@@ -1,6 +1,6 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "SiteToMoveOnTrack" 
+(define "SiteToMoveOnTrack"
     (if (= (state at:(from)) 0)
         (trackSite Move "Track" steps:("ThrowValue"))
         (if (= (state at:(from)) 1)
@@ -10,7 +10,7 @@
     )
 )
 
-(define "UpdateState" 
+(define "UpdateState"
     (if (and (= (state at:(last To)) 0) (is In (last To) (sites "CentralTrack")))
         (if (or (is Mover P1) (is Mover P2))
             (set State at:(last To) 2)
@@ -21,57 +21,57 @@
 
 //------------------------------------------------------------------------------
 
-(game "Los Palos" 
+(game "Los Palos"
     (players 4)
     (equipment {
-        (board 
+        (board
             (merge {
                 (shift 11.3 -3.7
-                    (graph 
+                    (graph
                         vertices:{ {0 0} {1.3 -1} {2 0} {1.1 0.6} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
                     )
                 )
                 (shift 10.4 -2.4
-                    (graph 
+                    (graph
                         vertices:{ {0 0} {0.9 -1.3} {2 -0.7} {1 0.4} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
                     )
                 )
                 (shift 10.1 -1.1
-                    (graph 
+                    (graph
                         vertices:{ {0 0} {0.3 -1.3} {1.3 -0.9} {1 0.2} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
                     )
                 )
-                (shift 10 0 
-                    (graph 
+                (shift 10 0
+                    (graph
                         vertices:{ {0 0} {0.1 -1.1} {1.1 -0.9} {1 0} }
                         edges:{{0 1} {1 2} {2 3} {3 0}}
                     )
                 )
-                (shift 11 1.87 
-                    (graph 
+                (shift 11 1.87
+                    (graph
                         vertices:{ {0 0} {0.5 0.5} {0 1} }
                         edges:{{0 1} {1 2} {2 0}}
                     )
                 )
-                (shift 10 1.87 
-                    (graph 
+                (shift 10 1.87
+                    (graph
                         vertices:{ {0 0} {-0.5 0.5} {0 1} }
                         edges:{{0 1} {1 2} {2 0}}
                     )
                 )
                 (shift 10 1.87 (square 1))
                 (shift 10 1 (tri 1))
-                (shift 1 2 
-                    (graph 
+                (shift 1 2
+                    (graph
                         vertices:{ {1 0} {-0.5 0.87} {0 0} }
                         edges:{{0 1} {1 2} {2 0}}
                     )
                 )
-                (shift 0 2 
-                    (graph 
+                (shift 0 2
+                    (graph
                         vertices:{ {-1 0} {0.5 0.87} {0 0} }
                         edges:{{0 1} {1 2} {2 0}}
                     )
@@ -94,9 +94,9 @@
         (piece "Marker" Each
             (move
                 (from (from))
-                (to 
+                (to
                     ("SiteToMoveOnTrack")
-                    if:(or 
+                    if:(or
                         (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
                         (is Empty (to))
                     )
@@ -105,7 +105,7 @@
                         )
                     )
                 )
-                (then 
+                (then
                     ("UpdateState")
                 )
             )
@@ -115,7 +115,7 @@
         (regions "SafeSites" (sites {4 14 23}))
         (regions "CentralTrack" (sites {4 5 14 15 19 21..26}))
     })
-    (rules 
+    (rules
         (start {
             (place "Marker1" (mapEntry "EntryPoint" P1) count:3)
             (place "Marker2" (mapEntry "EntryPoint" P2) count:3)
@@ -124,8 +124,8 @@
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
         })
-        (play 
-            (do 
+        (play
+            (do
                 (roll) next:(forEach Piece)
             )
         )
@@ -135,8 +135,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Los Palos is a capturing game played by the Chinantec people of Oaxaca, Mexico. Played by two teams, two teams move their pieces along a track in an attempt to capture all of the opponent's pieces. ")
@@ -149,12 +149,12 @@
         (origin  "This game was played in Mexico, from around 1943 to 1953.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Line {{26 25} {24 27} {31 40} {39 32} {8 17} {16 9}} scale:2)
     })
-    
+
 )

@@ -1,16 +1,16 @@
-(game "Yavalath"  
-    (players <Version:numPlayers>) 
-    (equipment { 
-        (board (rotate 90 (hex <Board>))) 
-        (piece "Marker" Each) 
+(game "Yavalath"
+    (players <Version:numPlayers>)
+    (equipment {
+        (board (rotate 90 (hex <Board>)))
+        (piece "Marker" Each)
         }
-    )  
-    (rules 
+    )
+    (rules
         <Version:playRules>
         (end {
             (if (is Line 4) (result Mover Win))
-            (if (is Line 3) (result Mover Loss)) 
-        })  
+            (if (is Line 3) (result Mover Loss))
+        })
     )
 )
 
@@ -37,7 +37,7 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Yavalath was invented by Cameron Browne in 2007. It is played on a hexagonal board with five spaces per side. It can be played by two or three players.")
@@ -51,9 +51,9 @@
         (date "01-10-2011")
         }
     )
-    
-    (ai 
+
+    (ai
         "Yavalath_ai"
     )
-    
+
 )

@@ -1,31 +1,31 @@
-(game "Bis Gutiya"  
+(game "Bis Gutiya"
     (players 2)
-    (equipment { 
+    (equipment {
         (board (square 5 diagonals:Solid) use:Vertex)
-        (piece "Marker" Each 
+        (piece "Marker" Each
             (or
-                ("StepToEmpty") 
-                ("HopCapture") 
+                ("StepToEmpty")
+                ("HopCapture")
             )
         )
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Marker1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
             (place "Marker2" (forEach (sites Board) if:(> (site) (centrePoint)) ))
         })
-        
-        (play (forEach Piece)) 
-        
-        (end (if (no Pieces Next) (result Mover Win))) 
+
+        (play (forEach Piece))
+
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Bis Gutiya is a game with leaping captures played in the Bihar region of India. ")
@@ -37,11 +37,11 @@
         (origin  "This game was played in India, around 1935.")
         }
     )
-    
+
     (graphics {
-        
+
     })
-    
+
     (ai
         "Bis Gutiya_ai"
     )

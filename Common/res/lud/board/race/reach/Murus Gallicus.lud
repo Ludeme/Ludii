@@ -7,24 +7,24 @@
         Hop
         (from if:(and (is Mover (who at:(from)))
                 ((= (size Stack at:(from)) 2))
-            )  
+            )
         )
-        (between  if:(or 
+        (between  if:(or
                 (is Empty (between))
-                (and 
+                (and
                     (is Mover (who at:(between)))
-                    ((< (size Stack at:(between)) <Stack:limit>)) 
-                )  
-            ) 
+                    ((< (size Stack at:(between)) <Stack:limit>))
+                )
+            )
             (apply (fromTo (from) (to (between))))
         )
-        
-        (to if:(or 
+
+        (to if:(or
                 (is Empty (to))
                 (and (is Mover (who at:(to)))
                     ((< (size Stack at:(to)) <Stack:limit>))
-                )  
-            ) 
+                )
+            )
         )
         stack:True
     )
@@ -36,9 +36,9 @@
         Step
         (from if:(and (is Mover (who at:(from)))
                 ((= (size Stack at:(from)) 2))
-            )  
+            )
         )
-        (to 
+        (to
             if:(and (is Enemy (who at:(to))) ((= (size Stack at:(to)) 1))  )
             (apply  (remove (to)) )   // This removes the only enemy piece in the 'to' cell.
         )
@@ -50,21 +50,21 @@
                     (to (last From))
                     stack: True
                 )
-                (remove (last To))        
-            ) 
+                (remove (last To))
+            )
         )
     )
 )
-// Sacrifice a tower piece or two in order to remove one or two enemy stones 
+// Sacrifice a tower piece or two in order to remove one or two enemy stones
 // from a 3-stack/catapult.
 (define "SacrificeCaptureCatapult"
     (move
         Step
         (from if:(and (is Mover (who at:(from)))
                 ((= (size Stack at:(from)) 2))
-            )  
+            )
         )
-        (to 
+        (to
             if:(and (is Enemy (who at:(to))) ((= (size Stack at:(to)) 3))  )
             (apply  (remove (to)) )   // This removes one enemy piece in the 'to' cell.
         )
@@ -76,10 +76,10 @@
                     (to (last From))
                     stack: True
                 )
-                (remove (last To)) 
-                (moveAgain) 
-                }      
-            ) 
+                (remove (last To))
+                (moveAgain)
+                }
+            )
         )
     )
 )
@@ -91,14 +91,14 @@
         Hop
         (from if:(and (is Mover (who at:(from)))
                 ((= (size Stack at:(from)) 3))
-            )   
-        )                                       
+            )
+        )
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
             (and
-                (not (is Enemy (who at:(to))) )  
-                (not (is Mover (who at:(to))) )  
+                (not (is Enemy (who at:(to))) )
+                (not (is Mover (who at:(to))) )
             )
         )
     )
@@ -111,12 +111,12 @@
         Hop
         (from if:(and (is Mover (who at:(from)))
                 ((= (size Stack at:(from)) 3))
-            )   
-        )                                       
+            )
+        )
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
-            (is Enemy (who at:(to)) )  
+            (is Enemy (who at:(to)) )
         )
         (then
             (and
@@ -129,44 +129,44 @@
 
 //**************************************************************************************************
 
-(game "Murus Gallicus"  
-    (players {(player N) (player S)})  
-    (equipment { 
-        (board (<Board:shape>)) 
-        (piece "Counter_isometric" Each) 
-        
+(game "Murus Gallicus"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (<Board:shape>))
+        (piece "Counter_isometric" Each)
+
         (regions "RomanGoal1" P1 (sites Top))
         (regions "GaulGoal2" P2 (sites Bottom))
-        
-    })  
+
+    })
     (rules
         (start {
             (place Stack "Counter_isometric1" (sites {<Board:rangeP1>}) count:2)
             (place Stack "Counter_isometric2" (sites {<Board:rangeP2>}) count:2)
-        }) 
-        
+        })
+
         (play
             (if (is Prev Mover)
                 (or
                     (move
                         (from (last From) )
-                        (to (last To)) 
-                        stack: True               
-                        (then 
-                            (and 
-                                (remove (last To)) 
-                                (remove (last To)) 
+                        (to (last To))
+                        stack: True
+                        (then
+                            (and
+                                (remove (last To))
+                                (remove (last To))
                             )
-                        )                
-                    )                
+                        )
+                    )
                     (move Pass)
                 )
                 (forEach Piece "Counter_isometric"
-                    (or     
+                    (or
                         {
                         "MoveTower"
                         "SacrificeCaptureWall"
-                        
+
                         "SacrificeCaptureCatapult"
                         "ThrowStonetoEmpty"
                         "ThrowStonetoEnemy"
@@ -174,9 +174,9 @@
                     )
                     top:True
                 )
-            )            
+            )
         )
-        
+
         (end {
             (if (no Moves Next) (result Mover Win))
             <End:event>
@@ -204,71 +204,71 @@
 
 (option "End Game" <End> args:{ <event> }
     {
-    (item "Immediate"        
+    (item "Immediate"
         <
-        (if 
-            (and 
+        (if
+            (and
                 {
-                (is In (last To) (sites Mover)) 
+                (is In (last To) (sites Mover))
                 (not (is Enemy (who at:(last To))) )
                 (is Mover (who at:(last To)) )
-                } 
+                }
             )
             (result Mover Win)
         )
-        >    
-        "Immediately after reaching goal."    
-    )*    
-    (item "Delayed"      
+        >
+        "Immediately after reaching goal."
+    )*
+    (item "Delayed"
         <
         (if (= 1 (count Sites in:(intersection (sites Occupied by:Next)  (sites Next)  )     ))
             (result Next Win)
         )
-        >    
-        "After opponent's last chance to remove invader."    
-    )    
+        >
+        "After opponent's last chance to remove invader."
+    )
     }
 )
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Murus Galicus (Described)" {
-        "Board/Rectangle 7 x 8 1r" 
+        "Board/Rectangle 7 x 8 1r"
         "Stacking Limit/Standard"
         "End Game/Immediate"
     })*
-    
+
     (ruleset "Ruleset/Advanced Murus Galicus (Described)" {
-        "Board/Rectangle 7 x 8 1r" 
+        "Board/Rectangle 7 x 8 1r"
         "Stacking Limit/Advanced"
         "End Game/Delayed"
     })
-    
+
 })
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Murus Gallicus is a breakthrough game of material balance, tactics, area control, and timing.")
         (useFor "Ruleset/Murus Galicus (Described)" (rules "On a player's turn he or she must perform one of the following actions:
-            1) Move a tower (2-stack) by distributing its two stones into the two nearest cells in any one direction. Each destination cell must be empty or contain a single friendly stone. 
+            1) Move a tower (2-stack) by distributing its two stones into the two nearest cells in any one direction. Each destination cell must be empty or contain a single friendly stone.
         2) Sacrifice a single tower stone to remove an adjacent enemy wall (1-stack). Sacrifice is not forced.
 Goal: A player wins immediately by reaching any cell of his or her opponent's home row, or by stalemating his or her opponent."))
 (useFor "Ruleset/Advanced Murus Galicus (Described)" (rules "On a player's turn he or she must perform one of the following actions:
-    1) Move a tower (2-stack) by distributing its two stones into the two nearest cells in any one direction. Each destination cell must be empty or contain one or two friendly stones. 
+    1) Move a tower (2-stack) by distributing its two stones into the two nearest cells in any one direction. Each destination cell must be empty or contain one or two friendly stones.
 2) Catapults (3-stack) may throw a stone, in a forward, diagonally forward, or lateral direction, two or three cells/spaces.
 3) Sacrifice a single tower stone to remove an adjacent enemy wall (1-stack). Sacrifice is not forced.
 4) Sacrifice one or two tower stones to remove one or two stones from an enemy catapult (3-stack). NOTE: A player may pass after sacrificing just one stone against a catapult.
 Goal: A player wins by reaching any cell of his or her opponent's home row and the stone survives until the player next turn, or by stalemating his or her opponent."))
 (source "<a href=\"https://boardgamegeek.com/boardgame/55131/murus-gallicus\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>
-    
+
     <a href=\"https://sites.google.com/site/theowlsnest02/home/murus-gallicus\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The Owl's Nest - Murus Gallicus</a>
-    
+
 <a href=\"https://nestorgames.com/rulebooks/MURUSGALLICUS_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Nestor Games</a>")
 (version "1.3.0")
 (classification "board/race/reach")
@@ -284,10 +284,10 @@ Goal: A player wins by reaching any cell of his or her opponent's home row and t
     (board Colour OuterEdges (colour 0 0 0))
     (board Colour Phase0 (colour "#FCFCE1"))
     (board Colour Phase1 (colour "#FCFCE1"))
-    
+
     (player Colour P1 (colour HumanLight))
     (player Colour P2 (colour Brown))
-})        
+})
 
 )
 

@@ -1,32 +1,32 @@
-(game "Sim" 
+(game "Sim"
     (players 2)
-    (equipment { 
-        (board 
+    (equipment {
+        (board
             (complete (regular Star 6))
             use:Edge
-        )         
-    })    
-    (rules 
-        (play 
-            (move 
+        )
+    })
+    (rules
+        (play
+            (move
                 Add
                 (to
-                    Edge 
+                    Edge
                     (sites Empty Edge)
                 )
             )
-        ) 
-        (end 
-            (if 
-                (is Path Edge Mover length:(exact 3) closed:True) 
+        )
+        (end
+            (if
+                (is Path Edge Mover length:(exact 3) closed:True)
                 (result Mover Loss)
             )
-        ) 
+        )
     )
 )
 
 //------------------------------------------------------------------------------
-(metadata    
+(metadata
     (info
         {
         (description "Sim is a pencil-and-paper game played by two players.")
@@ -39,14 +39,14 @@
         (date "1969")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
         (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Edges Orthogonal ThinDotted)
-        
-    })    
+
+    })
     (ai
         "Sim_ai"
     )

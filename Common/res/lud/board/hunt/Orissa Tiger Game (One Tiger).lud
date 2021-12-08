@@ -1,29 +1,29 @@
-(game "Orissa Tiger Game (One Tiger)"  
+(game "Orissa Tiger Game (One Tiger)"
     (players 2)
-    (equipment { 
-        (board 
-            (merge 
+    (equipment {
+        (board
+            (merge
                 (square 5 diagonals:Alternating)
                 (shift 0 4 (rotate 180 (wedge 3)))
-            ) 
+            )
             use:Vertex
-        ) 
+        )
         (piece "Tiger" P1 (or ("StepToEmpty") ("HopCapture")))
         (piece "Goat" P2 ("StepToEmpty"))
-    })  
-    
-    (rules 
-        (start { 
+    })
+
+    (rules
+        (start {
             (place "Tiger1" (sites {"C6"}))
             (place "Goat2" (union (expand (sites Bottom)) (sites {"A3" "E3"})))
         })
-        
-        (play (forEach Piece)) 
-        
+
+        (play (forEach Piece))
+
         (end {
             (if (no Pieces P2) (result P1 Win))
             (if (no Moves P1) (result P2 Win))
-        }) 
+        })
     )
 )
 
@@ -44,9 +44,9 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
+
     })
-    
+
     (ai
         "Orissa Tiger Game (One Tiger)_ai"
     )

@@ -7,36 +7,36 @@
 )
 
 (define "HexFilled"
-    (= 
-        6 
+    (=
+        6
         (count Sites in:"AllVerticesOfCell")
     )
 )
 
 (define "SquareFilled"
-    (= 
-        4 
+    (=
+        4
         (count Sites in:"AllVerticesOfCell")
     )
 )
 
 (define "CellFilled"
-    (= 
-        (count Sites in:(intersection "AllVerticesOfCell" (sites Occupied by:Mover))) 
+    (=
+        (count Sites in:(intersection "AllVerticesOfCell" (sites Occupied by:Mover)))
         (count Sites in:"AllVerticesOfCell")
     )
 )
 
 (define "MoveAnEnemyPiece"
-    (move 
-        (from (sites Occupied by:Next container:"Board")) 
-        (to (sites Empty) (apply if:"OneMoreToMove" (moveAgain))) 
+    (move
+        (from (sites Occupied by:Next container:"Board"))
+        (to (sites Empty) (apply if:"OneMoreToMove" (moveAgain)))
     )
 )
 
 (define "PlaceAPiece"
-    (move 
-        (from (handSite Mover)) 
+    (move
+        (from (handSite Mover))
         (to (sites Empty))
     )
 )
@@ -55,48 +55,48 @@
 
 //------------------------------------------------------------------------------
 
-(game "Kensington"  
-    (players 2)  
-    (equipment { 
+(game "Kensington"
+    (players 2)
+    (equipment {
         (board (rotate 90 (tiling T3464 2)) use:Vertex)
         (hand Each)
-        (piece "Marker" Each "StepToEmpty") 
-        (regions "HexA" P1 (sites Cell "E4"))    
-        (regions "HexB" P1 (sites Cell "I4"))   
-        (regions "HexA" P2 (sites Cell "E12"))  
-        (regions "HexB" P2 (sites Cell "I12"))   
-        (regions "HexNeutral1" (sites Cell "C8"))   
-        (regions "HexNeutral2" (sites Cell "G8"))   
-        (regions "HexNeutral3" (sites Cell "K8"))   
-    })  
-    (rules 
+        (piece "Marker" Each "StepToEmpty")
+        (regions "HexA" P1 (sites Cell "E4"))
+        (regions "HexB" P1 (sites Cell "I4"))
+        (regions "HexA" P2 (sites Cell "E12"))
+        (regions "HexB" P2 (sites Cell "I12"))
+        (regions "HexNeutral1" (sites Cell "C8"))
+        (regions "HexNeutral2" (sites Cell "G8"))
+        (regions "HexNeutral3" (sites Cell "K8"))
+    })
+    (rules
         (start (place "Marker" "Hand" count:15))
-        
+
         (play
             (if "SameTurn"
                 "MoveAnEnemyPiece"
-                (if 
+                (if
                     ("HandEmpty" Mover)
                     (forEach Piece)
                     "PlaceAPiece"
-                    (then 
-                        (forEach Site 
+                    (then
+                        (forEach Site
                             "AllCellOfLastVertex"
                             (if "CellFilled"
                                 (if "HexFilled"
-                                    (if 
+                                    (if
                                         (or {
-                                            (= "AllVerticesOfCell" (sites Mover "HexA")) 
+                                            (= "AllVerticesOfCell" (sites Mover "HexA"))
                                             (= "AllVerticesOfCell" (sites Mover "HexB"))
                                             (= "AllVerticesOfCell" (sites "HexNeutral1"))
                                             (= "AllVerticesOfCell" (sites "HexNeutral2"))
                                             (= "AllVerticesOfCell" (sites "HexNeutral3"))
-                                        }) 
+                                        })
                                         "NextPlayerLose"
                                     )
-                                    (and 
+                                    (and
                                         (if "SquareFilled"
-                                            "TwoPieceToMove" 
+                                            "TwoPieceToMove"
                                         )
                                         (moveAgain)
                                     )
@@ -106,20 +106,20 @@
                     )
                 )
             )
-        ) 
-        (end (if "NextPlayerHasLost" (result Mover Win) ) )  
+        )
+        (end (if "NextPlayerHasLost" (result Mover Win) ) )
     )
 )
 
 (metadata
-    
+
     (info
         {
         (description "Kensington is an abstract strategy board game devised by Brian Taylor and Peter Forbes in 1979, named after London's Kensington Gardens, which contains the mosaic upon which the gameboard is patterned. It is played on a geometrical board based on the rhombitrihexagonal tiling pattern.")
         (rules "The two players, Red and Blue, alternately place tokens on the intersections of the board until each has placed fifteen. Thereafter they alternate turns sliding a single token along a line to an adjacent vertex.
-            
+
             A player who occupies the three vertices of any triangle has formed a mill and may relocate one enemy token. Occupying the four vertices of a square (forming a double mill) allows the player to relocate two enemy tokens. No more than two tokens may be relocated in a single turn, even if a player completes a mill and double mill with the same move.
-            
+
         The winner is the first player to occupy all six vertices of either any neutral hexagon or one of his/her own color. A win can be achieved during either the placement or movement phases of the game.")
         (version "1.3.0")
         (classification "board/space/pattern")
@@ -128,7 +128,7 @@
         (date "1979")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
@@ -140,9 +140,9 @@
         (show Symbol "Hex" Cell {52 30 8} edgeColour:(colour White) scale:1.8)
         (board Style Board)
     })
-    
-    (ai 
+
+    (ai
         "Kensington_ai"
     )
-    
+
 )

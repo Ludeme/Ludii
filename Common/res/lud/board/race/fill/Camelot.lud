@@ -14,41 +14,41 @@
 
 (define "OnAnEnemy" (between if:(is Enemy (who at:(between))) (apply (remove (between)))))
 
-(define "Step" 
+(define "Step"
     (move
         Step
         (to if:(if ("InTheGoal" (from))
-                (and 
-                    (is Empty (to)) 
+                (and
+                    (is Empty (to))
                     ("InTheGoal" (to))
-                ) 
+                )
                 (is In (to) "EmptyButNotEnemyGoal")
             )
         )
     )
 )
 
-(define "Hop" 
-    (move 
-        Hop 
+(define "Hop"
+    (move
+        Hop
         (from #1)
         #2
         (to if:(and (is In (to) "EmptyButNotEnemyGoal") (not (is Visited (to)))))
-        #3		
+        #3
     )
-) 
+)
 
-(define "HopSequence" 
-    ("Hop" 
-        #1 
+(define "HopSequence"
+    ("Hop"
+        #1
         #2
-        (then 
-            (if 
-                (and 
-                    (not ("InTheGoal" (last To))) 
+        (then
+            (if
+                (and
+                    (not ("InTheGoal" (last To)))
                     (can Move ("Hop" (last To) #2))
-                ) 
-                #3  
+                )
+                #3
             )
         )
     )
@@ -62,13 +62,13 @@
 
 //------------------------------------------------------------------------------
 
-(game "Camelot"  
-    (players 2) 
-    (equipment { 
-        (board 
-            (keep 
-                (rectangle 12 16) 
-                (poly { {0 7} {1 10} {4 13} {12 13} {15 10} {16 7} 
+(game "Camelot"
+    (players 2)
+    (equipment {
+        (board
+            (keep
+                (rectangle 12 16)
+                (poly { {0 7} {1 10} {4 13} {12 13} {15 10} {16 7}
                 {16 5} {15 2} {13 0} {3 0} {1 2} {0 5} })
             )
         )
@@ -78,27 +78,27 @@
                 "Step"
             )
         )
-        
-        (piece "Knight" Each 
+
+        (piece "Knight" Each
             (or
                 (if (not ("InTheGoal" (from))) ("HopSequence" (from) "OnAFriend" "MoveAgainAfterJumpingFriend"))
                 "Step"
             )
         )
-        
-        (regions P1 (sites {"A6" "A7"})) 
-        (regions P2 (sites {"P6" "P7"})) 
+
+        (regions P1 (sites {"A6" "A7"}))
+        (regions P2 (sites {"P6" "P7"}))
         }
-    )  
-    (rules 
+    )
+    (rules
         (start {
             (place "Pawn1" {"F4" "F5" "F6" "F7" "F8" "F9" "G5" "G6" "G7" "G8"})
             (place "Knight1" {"F3" "G4" "G9" "F10"})
             (place "Pawn2" {"K4" "K5" "K6" "K7" "K8" "K9" "J5" "J6" "J7" "J8"})
             (place "Knight2" {"K3" "J4" "J9" "K10"})
         })
-        
-        (play 
+
+        (play
             (if "SameTurn"
                 (if "WasJumpingAFriend"
                     (if "WasAKnight"
@@ -117,7 +117,7 @@
                     )
                     ("HopSequence" (last To) "OnAnEnemy" "MoveAgainAfterJumpingEnemy")
                 )
-                
+
                 (priority {
                     // If one of our piece is on the goal of the enemy we have to move it.
                     (forEach Site
@@ -133,55 +133,55 @@
                         )
                     )
                     // If a piece can jump an enemy it has to.
-                    (forEach Piece 
-                        (move 
-                            Hop 
+                    (forEach Piece
+                        (move
+                            Hop
                             "OnAnEnemy"
-                            (to 
-                                if:(if 
+                            (to
+                                if:(if
                                     ("InTheGoal" (from))
-                                    (and 
-                                        (is Empty (to)) 
+                                    (and
+                                        (is Empty (to))
                                         ("InTheGoal" (to))
-                                    ) 
+                                    )
                                     (is In (to) "EmptyButNotEnemyGoal")
                                 )
-                            ) 
-                            (then 
-                                (if 
-                                    (and 
-                                        (not ("InTheGoal" (last To))) 
-                                        (can Move 
-                                            (hop 
-                                                (from (last To)) 
+                            )
+                            (then
+                                (if
+                                    (and
+                                        (not ("InTheGoal" (last To)))
+                                        (can Move
+                                            (hop
+                                                (from (last To))
                                                 "OnAnEnemy"
-                                                (to if:(is Empty (to))) 
-                                            ) 
-                                        ) 
-                                    ) 
-                                    "MoveAgainAfterJumpingEnemy" 
-                                ) 
-                            ) 
-                        ) 
+                                                (to if:(is Empty (to)))
+                                            )
+                                        )
+                                    )
+                                    "MoveAgainAfterJumpingEnemy"
+                                )
+                            )
+                        )
                     )
                     (forEach Piece)
                 })
             )
         )
-        
+
         (end {
             (if ("GoalFilledby" P1 P2) (result P1 Win))
             (if ("GoalFilledby" P2 P1) (result P2 Win))
-            (if "NotEnoughPieceForTheMover" (result Mover Win)) 
-            (if "NotEnoughPieceForBothPlayer" (result Mover Draw)) 
-        })  
+            (if "NotEnoughPieceForTheMover" (result Mover Win))
+            (if "NotEnoughPieceForBothPlayer" (result Mover Draw))
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Camelot is a Chess variant invented by George Parker in the late nineteenth century and published by Parker Brothers.")
@@ -196,7 +196,7 @@
         (date "1930")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Yellow))
         (player Colour P2 (colour Red))
@@ -208,9 +208,9 @@
         (show Symbol "star" Cell {64 80 79 95} scale:0.4)
         (board Checkered)
     })
-    
-    (ai 
+
+    (ai
         "Camelot_ai"
     )
-    
+
 )

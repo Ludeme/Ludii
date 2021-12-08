@@ -4,11 +4,11 @@
 (define "Bange" (= ("ThrowValue") 25))
 (define "Dust" (= ("ThrowValue") 11))
 
-(define "Move" 
+(define "Move"
     (or {
-        (if (and { 
+        (if (and {
                 (>= 0 (var "EnteredPiece"))
-                (is Occupied (handSite Mover)) 
+                (is Occupied (handSite Mover))
                 ("Bange")
             })
             (move
@@ -17,9 +17,9 @@
                 (then (set Var "EnteredPiece" 1))
             )
         )
-        (if (and { 
+        (if (and {
                 (>= 0 (var "EnteredPiece"))
-                (is Occupied (handSite Mover)) 
+                (is Occupied (handSite Mover))
                 ("Dust")
             })
             (move
@@ -28,9 +28,9 @@
                 (then (set Var "EnteredPiece" 1))
             )
         )
-        (if (and { 
+        (if (and {
                 (>= 0 (var "EnteredPiece"))
-                (is Occupied (handSite Mover)) 
+                (is Occupied (handSite Mover))
                 ("Dust")
             })
             (move
@@ -39,19 +39,19 @@
             )
         )
         (forEach Piece)
-    })		
+    })
 )
 
 //------------------------------------------------------------------------------
 
-(game "Bargese"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Bargese"
+    (players 2)
+    (equipment {
+        (board
             (add
                 (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
+                    (merge
+                        (shift 0 8 (rectangle 3 19))
                         (shift 8 0 (rectangle 19 3))
                     )
                     (poly {{8 8} {8 11} {11 11} {11 8}})
@@ -63,26 +63,26 @@
             (track "Track2" "27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P2 directed:True)
             }
         )
-        (hand Each) 
+        (hand Each)
         (dice d:2 from:0 num:6)
         (piece "Pawn" Each
             (if (and {
                     (>= 0 (var "EnteredPiece"))
-                    (= End ("SiteToMoveOnTrack" from:(from) 1)) 
+                    (= End ("SiteToMoveOnTrack" from:(from) 1))
                     (or ("Bange") ("Dust"))
                 })
                 (move Remove (from) level:(level)
                     (then (set Var "EnteredPiece" 1))
                 )
-                (if (and 
+                (if (and
                         (>= 0 (var "EnteredPiece"))
-                        (= End ("SiteToMoveOnTrack" from:(from) 2)) 
+                        (= End ("SiteToMoveOnTrack" from:(from) 2))
                     )
                     (move
                         (from (from))
                         (to ("SiteToMoveOnTrack" from:(from) 1))
                     )
-                    (move 
+                    (move
                         (from (from) level:(level))
                         (to
                             ("SiteToMoveOnTrack" from:(from) (if (< 0 (var "EnteredPiece")) (- ("ThrowValue") 1) ("ThrowValue")))
@@ -101,38 +101,38 @@
                         (then (set Var "EnteredPiece" 0))
                     )
                 )
-            )		
+            )
         )
         (map "Throw" {(pair 0 6) (pair 1 11) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (map "DefaultEntry" {(pair P1 26) (pair P2 27)})
         (map "XEntry" {(pair P1 2) (pair P2 48)})
         (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
         }
-    )  
-    (rules 
-        (start { 
+    )
+    (rules
+        (start {
             (place Stack "Pawn1" (handSite P1) count:4)
             (place Stack "Pawn2" (handSite P2) count:4)
         })
-        
-        (play 
+
+        (play
             (do (if (>= 0 (var "EnteredPiece")) (roll))
                 next:(if (can Move ("Move")) ("Move") (move Pass (then (set Var "EnteredPiece" 0))))
-                (then 
+                (then
                     (if ("IsSpecialThrow")
                         (moveAgain)
                     )
                 )
             )
         )
-        
+
         (end  (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Bargese is a race game played by Syrian women. Typically played on velveteen cloth with the game board embroidered, and metal pieces which take the shape of soldiers and horses. The throws of the cowrie shells have Persian names, suggesting that the game came to Syria through Iran.")
@@ -145,7 +145,7 @@
         (origin  "This game was played in Syria, around 2002.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Green))
@@ -161,5 +161,5 @@
         (show Line {{84 81} {138 143}})
         (piece Scale "Pawn" 0.5)
     })
-    
+
 )

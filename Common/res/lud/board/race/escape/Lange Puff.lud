@@ -1,37 +1,37 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
+(define "NextSiteFrom"
+    (trackSite Move
+        from:#1
         steps:#2
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
+(define "NotEnemyOrOnlyOne"
+    (or
+        (and
+            (is Enemy (who at:(to)))
             (= (topLevel at:(to)) 0)
-        ) 
+        )
         (not (is Enemy (who at:(to))))
     )
 )
 
 (define "DoubleDieValue" (face 28))
 
-(define "MoveOppositeDice" 
+(define "MoveOppositeDice"
     (forEach Value (values Remembered "Opposite")
         (if (= Off ("NextSiteFrom" (from) (value)))
             (move Remove (from))
-            (move 
+            (move
                 (from (from))
-                (to 
+                (to
                     ("NextSiteFrom" (from) (value))
                     if:("NotEnemyOrOnlyOne")
-                    (apply 
+                    (apply
                         (and
                             (if (is Enemy (who at:(to)))
-                                (fromTo 
+                                (fromTo
                                     (from (to))
                                     (to (handSite Next))
                                 )
@@ -41,18 +41,18 @@
                     )
                 )
             )
-            (then 
+            (then
                 (if (!= 0 (size Array (values Remembered "Opposite")))
                     (moveAgain)
-                    (and { 
-                        (set Var "PlayOpposite" 0) 
+                    (and {
+                        (set Var "PlayOpposite" 0)
                         (set Pending)
                         (moveAgain)
                     })
                 )
             )
         )
-    )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -60,28 +60,28 @@
 (game "Lange Puff"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        (board (rectangle 2 13)
             {
             (track "Track1" {26 25..20 18..13 0..5 7..12} P1 directed:True)
             (track "Track2" {27 25..20 18..13 0..5 7..12} P2 directed:True)
-            } 
+            }
             use:Vertex
-        ) 
+        )
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
-                replayDouble:(= 1 (value Player Mover))  
+                replayDouble:(= 1 (value Player Mover))
                 if:("DieNotUsed")
                 (if (= Off ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
-                    (move 
+                    (move
                         (from (from))
-                        (to 
+                        (to
                             ("NextSiteFrom" (from) (pips))
                             if:("NotEnemyOrOnlyOne")
-                            (apply 
+                            (apply
                                 (if (is Enemy (who at:(to)))
-                                    (fromTo 
+                                    (fromTo
                                         (from (to))
                                         (to (handSite Next))
                                     )
@@ -90,13 +90,13 @@
                         )
                     )
                 )
-                (then 
+                (then
                     (if (not (all DiceUsed))
                         (moveAgain)
                         (if (= 1 (value Player Mover))
-                            (if (and (all DiceEqual) (= 0 (size Array (values Remembered)))) 
-                                (and 
-                                    (moveAgain) 
+                            (if (and (all DiceEqual) (= 0 (size Array (values Remembered))))
+                                (and
+                                    (moveAgain)
                                     (set Var "PlayOpposite" 1)
                                 )
                             )
@@ -104,42 +104,42 @@
                         )
                     )
                 )
-            )			
+            )
         )
         (hand Each)
     })
-    
-    (rules 
+
+    (rules
         (start {
             (place Stack "Disc1" (handSite P1) count:15)
             (place Stack "Disc2" (handSite P2) count:15)
         })
-        
-        (play 
+
+        (play
             (do (if (or (is Pending) (not "SameTurn")) (roll))
                 next:(if (= 1 (var "PlayOpposite"))
-                    (or { 
-                        (forEach Piece ("MoveOppositeDice") top:True) 
+                    (or {
+                        (forEach Piece ("MoveOppositeDice") top:True)
                         (forEach Piece container:(mover) ("MoveOppositeDice") top:True)
-                        (move Pass 
-                            (then 
-                                (and { 
-                                    (forget Value "Opposite" All) 
-                                    (set Var "PlayOpposite" 0) 
-                                    (set Pending) 
+                        (move Pass
+                            (then
+                                (and {
+                                    (forget Value "Opposite" All)
+                                    (set Var "PlayOpposite" 0)
+                                    (set Pending)
                                     (moveAgain)
                                 })
                             )
                         )
                     })
-                    //(max Distance "Track" Mover 
-                        (do (if (and { 
-                                    (= 0 (count MovesThisTurn)) 
+                    //(max Distance "Track" Mover
+                        (do (if (and {
+                                    (= 0 (count MovesThisTurn))
                                     (all DiceEqual)
                                     (= 1 (value Player Mover))
                                 })
-                                (and 
-                                    (remember Value "Opposite" (- 7 ("DoubleDieValue"))) 
+                                (and
+                                    (remember Value "Opposite" (- 7 ("DoubleDieValue")))
                                     (remember Value "Opposite" (- 7 ("DoubleDieValue")))
                                 )
                             )
@@ -149,15 +149,15 @@
                 )
             )
         )
-        
+
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Lange Puff is a European Tables game played in Germany. Its rules have been documented since the nineteenth century, but it may be related to other games with similar names that are much older. ")
@@ -169,13 +169,13 @@
         (origin  "This game was played in Germany, around 1853.")
         }
     )
-    
+
     (graphics {
         (board Style backgammon)
         (stackType 0 Backgammon)
         (stackType 1 Count)
         (stackType 2 Count)
     })
-    
+
 )
 

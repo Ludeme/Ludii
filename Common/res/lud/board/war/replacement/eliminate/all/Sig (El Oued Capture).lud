@@ -15,16 +15,16 @@
     )
 )
 
-(define "MoveToActivate" 
+(define "MoveToActivate"
     (move
-        (from 
+        (from
             (from)
-            if:(and 
+            if:(and
                 (not ("ActivatedPiece" (from)))
                 (or ("Sig") (= 1 (var "SpecialSig")))
-            )	
+            )
         )
-        (to 
+        (to
             ("SiteToMoveOnTrack" 1)
             if:(not (is Friend (who at:(to))))
             (apply "CaptureMove")
@@ -32,8 +32,8 @@
         (then
             (and
                 ("ActivePiece" (last To))
-                (if 
-                    (= 1 (var "SpecialSig")) 
+                (if
+                    (= 1 (var "SpecialSig"))
                     (and {
                         (moveAgain)
                         (set Var (+ (var) 1))
@@ -41,21 +41,21 @@
                 )
             )
         )
-    )	
+    )
 )
 
 (define "Move"
     (move
-        (from 
+        (from
             (from)
             if:("ActivatedPiece" (from))
         )
-        (to 
+        (to
             ("SiteToMoveOnTrack" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue")))
             if:(not (is Friend (who at:(to))))
             (apply "CaptureMove")
         )
-    )	
+    )
 )
 
 //--------------------------------------
@@ -76,13 +76,13 @@
         (map "ExtraThrow" {(pair 0 3) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 1)})
     })
     (rules
-        (start { 
+        (start {
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
-        (play 
+        (play
             (do (roll)
-                next:(priority 
+                next:(priority
                     (forEach Piece ("MoveToActivate"))
                     (forEach Piece ("Move"))
                 )
@@ -95,7 +95,7 @@
                                 )
                             )
                             (if (!= (mover) (prev))
-                                (and 
+                                (and
                                     (moveAgain)
                                     (if (!= 1 ("ThrowValue")) (set Var "SpecialSig" 1))
                                 )
@@ -113,12 +113,12 @@
             )
         )
         (end (if (no Pieces Next) (result Mover Win)))
-    )	
+    )
 )
 
 //--------------------------------------
 
-(metadata 
+(metadata
     (info
         {
         (description "Sig is a word used for many different games throughout Saharan Africa. This game, a capturing game played in El Oued, Algeria, was played by children.")
@@ -130,7 +130,7 @@
         (origin  "This game was played in Algeria, around 1964.")
         }
     )
-    
+
     (graphics {
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))

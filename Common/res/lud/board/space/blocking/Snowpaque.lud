@@ -1,8 +1,8 @@
 (define "NumNeighbour"
     (count Sites
-        in:(sites Around 
-            (to) 
-            Orthogonal 
+        in:(sites Around
+            (to)
+            Orthogonal
             if:(is In (to) (sites Occupied by:Neutral))
         )
     )
@@ -10,27 +10,27 @@
 
 //------------------------------------------------------------------------------
 
-(game "Snowpaque"  
-    (players 2)  
-    (equipment { 
-        (board (hex 5)) 
-        (piece "Marker" Neutral) 
+(game "Snowpaque"
+    (players 2)
+    (equipment {
+        (board (hex 5))
+        (piece "Marker" Neutral)
         }
-    )  
-    (rules 
-        
+    )
+    (rules
+
         phases:{
-        (phase "start" P1 
-            (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
+        (phase "start" P1
+            (play (move Add (piece (id "Marker0")) (to (sites Empty))))
             (nextPhase "play")
         )
-        (phase "play"   
-            (play 
-                (move 
-                    Add 
-                    (piece "Marker0") 
-                    (to 
-                        (sites Empty) 
+        (phase "play"
+            (play
+                (move
+                    Add
+                    (piece "Marker0")
+                    (to
+                        (sites Empty)
                         if:(= "NumNeighbour" 1)
                     )
                 )
@@ -43,8 +43,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Snopaque was creeted from the software AiAi. It is played on a hexagonal board.")
@@ -57,9 +57,9 @@
         (date "2015")
         }
     )
-    
-    (ai 
+
+    (ai
         "Snowpaque_ai"
     )
-    
+
 )

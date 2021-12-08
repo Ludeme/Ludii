@@ -1,27 +1,27 @@
-(game "Graph Test - Conhex C (Dual)"  
-    (players 2)  
-    (equipment { 
+(game "Graph Test - Conhex C (Dual)"
+    (players 2)
+    (equipment {
         (board
-            (dual   
-                (add 
-                    (square 6) 
-                    edges:{ 
+            (dual
+                (add
+                    (square 6)
+                    edges:{
                     {1 7} {2 8} {3 9} {3 11} {4 12} {5 13}
                     {8 14} {9 15} {10 16} {10 18} {11 19} {12 20}
                     {15 21} {16 22} {17 23} {17 25} {18 26} {19 27}
                     {21 29} {22 30} {23 31} {25 31} {26 32} {27 33}
                     {28 36} {29 37} {30 38} {32 38} {33 39} {34 40}
-                    {35 43} {36 44} {37 45} {39 45} {40 46} {41 47} 
+                    {35 43} {36 44} {37 45} {39 45} {40 46} {41 47}
                     }
                     updateFaces:True
-                ) 
+                )
             )
             //use:Vertex
-        )  
-        (piece "Disc" P1) 
-        (piece "Cross" P2) 
-    })  
-    (rules 
+        )
+        (piece "Disc" P1)
+        (piece "Cross" P2)
+    })
+    (rules
         (play (move Add (to (sites Empty))))
         (end (if (is Line 3) (result Mover Win)))
     )
@@ -29,8 +29,8 @@
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Tic-Tac-Toe is a game of alignment popular among children. It is known from the nineteenth century in England and the United States, but may be older.")

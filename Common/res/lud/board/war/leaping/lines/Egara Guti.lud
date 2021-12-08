@@ -1,7 +1,7 @@
-(game "Egara Guti"  
-    (players 2)  
-    (equipment { 
-        (board 
+(game "Egara Guti"
+    (players 2)
+    (equipment {
+        (board
             (graph
                 vertices:{ {0 0} {2 0} {4 0} {6 0} {8 0} {2 2} {4 2} {6 2} {3 3} {4 3} {5 3} {4 4} {3 5} {4 5} {5 5} {2 6} {4 6} {6 6} {0 8} {2 8} {4 8} {6 8} {8 8}}
                 edges:{ {0 1} {0 5} {1 2} {1 5} {2 3} {2 6} {3 4} {3 7} {4 7} {5 6} {5 8} {5 15} {6 7} {6 9} {7 10} {7 17} {8 9} {8 11}
@@ -10,31 +10,31 @@
             )
             use:Vertex
         )
-        (piece "Counter" Each 
-            (or 
+        (piece "Counter" Each
+            (or
                 ("HopCapture")
                 ("StepToEmpty")
             )
         )
         }
-    )  
-    
-    (rules 
+    )
+
+    (rules
         (start {
             (place "Counter1" (union (expand (sites Bottom)) (sites Row 2) ) )
             (place "Counter2" (union (expand (sites Top)) (sites Row 4) ) )
         })
-        
+
         (play (forEach Piece))
-        
+
         (end ("NoMoves" Loss))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(metadata 
-    
+(metadata
+
     (info
         {
         (description "Egara Guti was documented in India during the early twentieth century. It is similar to other games found in India which seem to be related to alquerque games on various board configurations. The board is laid out like a Lau Kata Kati board, but with the second lines of each triangle connected on each side.")
@@ -46,14 +46,14 @@
         (origin  "This game was played in India, around 1926.")
         }
     )
-    
+
     (graphics {
         (show Edges Diagonal Hidden)
-        
+
     })
-    
-    (ai 
+
+    (ai
         "Egara Guti_ai"
     )
-    
+
 )

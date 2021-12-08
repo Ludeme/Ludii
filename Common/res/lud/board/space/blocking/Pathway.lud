@@ -9,7 +9,7 @@
             (move Add
                 (to
                     (sites Empty)
-                    if:(or 
+                    if:(or
                         (= 0
                             (count Sites
                                 in:(sites Around
@@ -30,11 +30,11 @@
                         )
                     )
                 )
-            )        
+            )
         )
-        (end 
-            (if 
-                (no Moves Next) 
+        (end
+            (if
+                (no Moves Next)
                 (result Next Win)
             )
         )
@@ -45,7 +45,7 @@
 
 (option "Board Size" <Board> args:{ <size> }
     {
-    (item "6"    <6>  "A 6x6 board is currently selected")* 
+    (item "6"    <6>  "A 6x6 board is currently selected")*
     (item "8"    <8>  "A 8x8 board is currently selected")
     }
 )

@@ -6,13 +6,13 @@
     })
     (rules
         (play
-            (if 
+            (if
                 (= 0 (count Moves))
                 (move Add (to (sites Empty)))
                 (move Add
                     (to
                         (sites Empty)
-                        if:(and 
+                        if:(and
                             (= 0
                                 (count Sites
                                     in:(sites Around
@@ -34,9 +34,9 @@
                 )
             )
         )
-        (end 
-            (if 
-                (no Moves Next) 
+        (end
+            (if
+                (no Moves Next)
                 (result Next Loss)
             )
         )

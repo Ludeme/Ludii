@@ -1,19 +1,19 @@
-(define "Custodial" 
-    (custodial 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            (max 1) 
-            if:(= (what at:(between)) (id #1)) 
-            (apply (remove (between))) 
+(define "Custodial"
+    (custodial
+        (from (last To))
+        Orthogonal
+        (between
+            (max 1)
+            if:(= (what at:(between)) (id #1))
+            (apply (remove (between)))
         )
-        (to 
+        (to
             if:(or {
-                (is Friend (who at:(to))) 
-                (is In (to) (sites "Fortresses")) 
+                (is Friend (who at:(to)))
+                (is In (to) (sites "Fortresses"))
                 "EmptyCentre"
             })
-        ) 
+        )
     )
 )
 
@@ -35,29 +35,29 @@
 
 //------------------------------------------------------------------------------
 
-(game "Brandub"  
-    (players 2)  
-    (equipment { 
-        (board (square 7)) 
+(game "Brandub"
+    (players 2)
+    (equipment {
+        (board (square 7))
         (regions "Fortresses" (sites Corners))
-        
-        (piece "Thrall" P1 
+
+        (piece "Thrall" P1
             (move
                 Slide
-                Orthogonal 
+                Orthogonal
                 (to (apply if:(not "CentreOrFortress")))
-                (then 
+                (then
                     (or {
                         ("Custodial" "Thrall2")
-                        (surround 
+                        (surround
                             (from (last To))
                             Orthogonal
                             (between if:"JarlAndExpandedCentre" "JarlIsCaptured")
                             (to if:"FriendOrCentre")
                         )
-                        (custodial 
-                            (from (last To)) 
-                            Orthogonal 
+                        (custodial
+                            (from (last To))
+                            Orthogonal
                             (between (max 1) if:"JarlButNotTheExpandedCentre" "JarlIsCaptured" )
                             (to if:"FriendOrFortress")
                         )
@@ -65,35 +65,35 @@
                 )
             )
         )
-        (piece "Thrall" P2 
+        (piece "Thrall" P2
             (move
                 Slide
-                Orthogonal 
-                (to (apply if:(not "CentreOrFortress"))) 
-                (then ("Custodial" "Thrall1") ) 
-            ) 
-        ) 
-        (piece "Jarl" P2 
+                Orthogonal
+                (to (apply if:(not "CentreOrFortress")))
+                (then ("Custodial" "Thrall1") )
+            )
+        )
+        (piece "Jarl" P2
             (move
                 Slide
-                Orthogonal 
-                (to (apply if:(not (= (to) (centrePoint))))) 
-                (then ("Custodial" "Thrall1") ) 
+                Orthogonal
+                (to (apply if:(not (= (to) (centrePoint)))))
+                (then ("Custodial" "Thrall1") )
             )
         )
         }
-    )  
-    (rules 
+    )
+    (rules
         (start
-            { 
+            {
             (place "Thrall1" {"D1" "D2" "A4" "B4" "F4" "G4" "D6" "D7"})
             (place "Thrall2" {"D3" "C4" "E4" "D5"})
             (place "Jarl2" (centrePoint))
             }
         )
-        
-        (play (forEach Piece)) 
-        
+
+        (play (forEach Piece))
+
         (end
             {
             (if (is Within (id "Jarl2") in:(sites "Fortresses") ) (result P2 Win))
@@ -107,27 +107,27 @@
 
 (option "Variant" <Variant> args:{ <type> }
     {
-    (item "Nielsen"   <>       "The rules are describing with the Nielsen ruleset.")   
+    (item "Nielsen"   <>       "The rules are describing with the Nielsen ruleset.")
 })
 
 //------------------------------------------------------------------------------
 
-(rulesets { 
-    
+(rulesets {
+
     (ruleset "Ruleset/Nielsen (Suggested)" {
         "Variant/Nielsen"
     })
-    
+
     (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
+
     })*
-    
+
 })
 
 //------------------------------------------------------------------------------
 
 (metadata
-    
+
     (info
         {
         (description "Brandub is a game from medieval Ireland that is mentioned in several Irish texts. These documents seem to outline an asymmetrical game with a special piece in the center, similar to other tafl games such as Tablut. It is uncertain what the size of the board was, or what form the pieces took.")
@@ -143,16 +143,16 @@
         (origin  "This game was played in Ireland, from around 1200 to 1640.")
         }
     )
-    
+
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (board Style Tafl)
-        (show Symbol "knotSquare" "Fortresses") 
+        (show Symbol "knotSquare" "Fortresses")
     })
-    
-    (ai 
+
+    (ai
         "Brandub_ai"
     )
-    
+
 )
