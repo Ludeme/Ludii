@@ -217,78 +217,78 @@
         })
         
         phases:{
-    		(phase "Bomb"
-    			(play 
-    				(forEach Site (sites Occupied by:Mover)
-    					(if (!= (what at:(site)) (id "King" Mover))
-    						(move Select 
-    							(from (site))
-    							(then
-    								(and
-	    								(set Value at:(last To) 1)
-	    								(set Hidden Value at:(last To) to:Next)
-    								)
-    							)
-    						)
-    					)
-    				)
-    			)
-    			(nextPhase Mover "Play")
-    		)
-    		(phase "Play"
-		        (play 
-		            (if "SameTurn"
-		                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
-		            	(or
-			                (do 
-			                    (or 
-			                        (forEach Piece)
-			                        (if (and 
-			                                ("HasNeverMoved" "King")
-			                                (not ("IsInCheck" "King" Mover)) 
-			                            )
-			                            (or
-			                                (if (and 
-			                                        ("HasNeverMoved" "RookLeft")
-			                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-			                                    )
-			                                    "BigCastling"
-			                                )
-			                                (if (and 
-			                                        ("HasNeverMoved" "RookRight")
-			                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-			                                    )
-			                                    "SmallCastling"
-			                                )
-			                            )
-			                        )
-			                    )
-			                    ifAfterwards:(not ("IsInCheck" "King" Mover))
-			                )
-			                (move Select
-			                	(from (sites Occupied by:Mover) if:(= 1 (value Piece at:(from))))
-			                	(then
-			                			 (forEach Site (sites Around (last To) includeSelf:True)
-			                		                (if (is Occupied (site)) 
-			                		                    (remove (site))
-			                		                )
-			                		            )		
-			                	)
-			                )
-		                )
-		            )
-		        )
-	        )
-    	}
+        (phase "Bomb"
+            (play 
+                (forEach Site (sites Occupied by:Mover)
+                    (if (!= (what at:(site)) (id "King" Mover))
+                        (move Select 
+                            (from (site))
+                            (then
+                                (and
+                                    (set Value at:(last To) 1)
+                                    (set Hidden Value at:(last To) to:Next)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover "Play")
+        )
+        (phase "Play"
+            (play 
+                (if "SameTurn"
+                    (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
+                    (or
+                        (do 
+                            (or 
+                                (forEach Piece)
+                                (if (and 
+                                        ("HasNeverMoved" "King")
+                                        (not ("IsInCheck" "King" Mover)) 
+                                    )
+                                    (or
+                                        (if (and 
+                                                ("HasNeverMoved" "RookLeft")
+                                                (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                                            )
+                                            "BigCastling"
+                                        )
+                                        (if (and 
+                                                ("HasNeverMoved" "RookRight")
+                                                (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                                            )
+                                            "SmallCastling"
+                                        )
+                                    )
+                                )
+                            )
+                            ifAfterwards:(not ("IsInCheck" "King" Mover))
+                        )
+                        (move Select
+                            (from (sites Occupied by:Mover) if:(= 1 (value Piece at:(from))))
+                            (then
+                                (forEach Site (sites Around (last To) includeSelf:True)
+                                    (if (is Occupied (site)) 
+                                        (remove (site))
+                                    )
+                                )		
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
         
         (end {
             (if (or
-	            	(and 
-	                    ("IsInCheck" "King" Next)
-	                    ("NextCanNotMove")
-	                )
-	            	(= Off (where "King" Next))
-            	)
+                    (and 
+                        ("IsInCheck" "King" Next)
+                        ("NextCanNotMove")
+                    )
+                    (= Off (where "King" Next))
+                )
                 (result Mover Win)
             ) 
             (if (= Off (where "King" Mover)) (result Mover Loss))
