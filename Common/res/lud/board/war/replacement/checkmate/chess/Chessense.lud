@@ -1,0 +1,133 @@
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+)
+
+(define "CaptureToPiece"
+	    (apply 
+	    	if:(not (is In (to) (sites "BlackenedSquares")))
+	        (if (is Enemy (who at:(to)))
+	            (remove 
+	                (to) 
+	            )
+	        )
+	    ) 
+	)
+
+//------------------------------------------------------------------------------
+
+(game "Chessence"  
+    (players 2)  
+    (equipment { 
+        (board (rectangle 9 6)) 
+        (piece "Pawn" Each
+        	(or {
+	        	(if (not (all Sites (sites Around (from) Orthogonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
+	        		(move
+	                        Slide 
+	                        Orthogonal 
+	                        (between
+	                        	if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
+	                        )
+	                        (to 
+	                            if:(is Enemy (who at:(to))) 
+	                            "CaptureToPiece"
+	                        ) 
+	                    )
+	        	)
+	        	(if (not (all Sites (sites Around (from) Diagonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
+	        		(move
+	                        Slide 
+	                        Diagonal 
+	                        (between
+		                        	if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
+		                        )
+	                        (to 
+	                            if:(is Enemy (who at:(to))) 
+	                            "CaptureToPiece"
+	                        ) 
+	                    )
+	        	)
+	        	
+	        	(if (not 
+	        			(all Sites
+	        				(forEach
+		        			(sites Around 
+		        			        (sites To (hop Orthogonal (between if:True) (to if:True))) 
+		        			        Orthogonal
+		        			    )
+		        			if:(= 2 (count Steps (from) (site)))
+		        			)
+		        			if:(!= (what at:(site)) (id "Pawn" Mover))
+	        			)
+	        		)
+	                (move
+	                        Leap 
+	                        "KnightWalk" 
+	                        (to 
+	                            if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites "BlackenedSquares"))))
+	                            "CaptureToPiece"
+	                        ) 
+	                    )
+	        	)
+        	})
+        )
+        (piece "King" Each)
+        (hand Each)
+        (regions "BlackenedSquares" (sites {"A2" "B3" "B5" "C6" "D4" "E5" "E7" "F8"}))
+        (regions "PawnStart" P1 (sites {"E1" "E2" "F2" "D2" "D3" "E3"}))
+        (regions "PawnStart" P2 (sites {"B9" "B8" "A8" "C8" "C7" "B7"}))
+    })  
+    (rules 
+        (start { 
+            (place "Pawn" "Hand" count:3)
+            (place "Pawn1" (sites P1 "PawnStart"))
+            (place "Pawn2" (sites P2 "PawnStart"))
+            (place "King1" coord:"F1") 
+            (place "King2" coord:"A9") 
+        })
+        
+        (play 
+        	(or
+	            (do 
+	                (forEach Piece)
+	                ifAfterwards:(not ("IsInCheck" "King" Mover))
+	            )
+	            (if (is Occupied (handSite Mover))
+		            (move
+		            	(from (sites Hand))
+		            	(to (sites Mover "PawnStart") if:(is Empty (to)))
+		            )
+	            )
+            )
+        )
+        
+        (end {
+            (if  (and 
+                    ("IsInCheck" "King" Next)
+                    ("NextCanNotMove")
+                )
+                (result Mover Win)
+            ) 
+            (if (no Moves Mover) (result Mover Loss)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Check "King")
+        (piece Scale "Pawn" 0.825)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+        (board Style Chess)
+        (show Symbol "Square" "BlackenedSquares" fillColour:(colour Black))
+    })
+    
+)
