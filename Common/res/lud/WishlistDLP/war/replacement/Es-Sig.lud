@@ -1,0 +1,269 @@
+(define "ExternalSite" 50)
+
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+(define "KillingSite" 19)
+(define "FinalSite" 14)
+(define "BeforeFinalSite" 12)
+(define "TopRightSquare" 49)
+(define "NextTopRightSquare" 48)
+(define "CentralSquare" 31)
+(define "NextCentralSquare" 32)
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "GhoulaOnTrack" (trackSite Move from:(where "Ghoula" Neutral) #1 steps:#2))
+
+(define "Sig" (= ("ThrowValue") 1))
+
+(define "ActivatedPiece" (<= 1 (state at:#1 level:#2)))
+
+(define "ActivePiece" (set State at:#1 level:#2 1))
+
+(define "GhoulaPhaseDone" (and (= 1 (size Stack at:(where "Ghoula" Neutral))) (= ("BeforeFinalSite") (where "Ghoula" Neutral))))
+
+(define "MoveGhoula"
+    (if (= 1 (size Stack at:(where "Ghoula" Neutral)))
+        (move
+            (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
+            (to ("GhoulaOnTrack" "GhoulaTrack" 1))
+        )
+        (move
+            (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
+            (to ("GhoulaOnTrack" "ReverseGhoulaTrack" 1))
+            (then
+                (if (= (last From) ("KillingSite"))
+                    (forEach Level (last From) FromTop
+                        (remove (last From) level:(level))
+                    )
+                    (forEach Level (last From) FromTop
+                        (fromTo
+                            (from (last From) level:(level))
+                            (to (last To))
+                        )
+                    )
+                )
+            )
+        )
+        (then
+            (if ("GhoulaPhaseDone") 
+                (set Var 0)
+                (and
+                    (if (> (var) 1) (moveAgain))
+                    (set Var (- (var) 1))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Es-Sig"
+    (players <Player:num>)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 8 1)
+                (square 7)
+                (shift 8 0 (square 1))
+            })
+            {
+            (track "Track" "50,19,W,N1,E,N1,W,N1,E,N1,W,N1,E,N1,W4" directed:True)
+            (track "ExtensionTrack" "45,W,N" directed:True)
+            (track "GhoulaTrack" "50,19,W,N1,E,N1,W,N1,E,N1,W,N1,E,N1,W,N" directed:True)
+            (track "ReverseGhoulaTrack" "50,12,E,S1,W,S1,E,S1,W,S1,E,S1,W,S1,E" directed:True)
+            }
+        )
+        (piece "Ghoula" Neutral)
+        (piece "Stick" Each
+            (if (= (from) ("TopRightSquare"))
+                (if (= (state at:(from) level:(level)) 6)
+                    (move 
+                        (from (from) level:(level))
+                        (to ("NextTopRightSquare"))
+                        (then
+                        	(set State at:(last To) level:(last LevelTo) 0)
+                        )
+                    )
+                    (if ("Sig")
+                        (move Select
+                            (from (from) level:(level))
+                            (then 
+                                (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
+                            )
+                        )
+                    )
+                )
+                (if (= (from) ("CentralSquare"))
+                    (if (= (state at:(from) level:(level)) 11)
+                        (move 
+                            (from (from) level:(level))
+                            (to ("NextCentralSquare"))
+                            (then
+                                	(set State at:(last To) level:(last LevelTo) 0)
+                               )
+                        )
+                        (if ("Sig")
+                            (move Select
+                                (from (from) level:(level))
+                                (then 
+                                    (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
+                                )
+                            )
+                        )
+                    )
+	                (if (is In (from) (sites Track "Track"))
+	                    (move
+	                        (from (from) level:(level)
+	                            if:(if ("ActivatedPiece" (from) (level))
+	                                True
+	                                ("Sig")
+	                            )
+	                        )
+	                        (to
+	                            ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
+	                            if:True
+	                        )
+	                        (then
+	                            (if (not ("ActivatedPiece" (last To) (topLevel at:(last To))))
+	                                ("ActivePiece" (last To) (topLevel at:(last To)))
+	                            )
+	                        )
+	                    )
+	                    (if (is In (from) (sites Track "ExtensionTrack"))
+	                        (or {
+	                            (if (and (!= (from) ("FinalSite")) ("Sig"))
+	                                (move
+	                                    (from (from) level:(level))
+	                                    (to ("SiteToMoveOnTrack" "ExtensionTrack" 1))
+	                                )
+	                            )
+	                            (if (= (from) ("FinalSite"))
+	                                (move Pass
+	                                    (then
+	                                    	(if (!= 1 (count Pips))
+		                                        (and
+		                                            (if (= 3 (count Pips))
+		                                                (set Var 2)
+		                                                (if (= 2 (count Pips))
+			                                                (set Var 5)
+			                                                (if (= 0 (count Pips))
+				                                                (set Var 4)
+					                                            (set Var 6)
+			                                                )
+		                                                )
+		                                            )
+		                                            (moveAgain)
+		                                        )
+		                                    )
+	                                    )
+	                                )
+	                            )
+	                        })
+	                    )
+	                )
+                )
+            )
+            maxState:8
+        )
+        (dice d:2 from:0 num:4)
+        (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
+    })
+    (rules 
+        (start <Player:start>)
+        (play 
+            (do (if (<= (var) 0) (roll)) 
+                next:(if (> (var) 0)
+                    ("MoveGhoula")
+                    (if (!= 0 ("ThrowValue")) (forEach Piece))
+                )
+            )
+        )
+        (end {
+            (forEach Player
+                if:(no Pieces Player) 
+                (result Player Loss)
+            )
+            (forEach Player
+                if:("GhoulaPhaseDone")
+                (result Player Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <start>}
+    {
+    (item "2" <2>
+        <
+        (place Stack items:{"Ghoula0" "Stick2" "Stick1"} ("ExternalSite"))
+        >
+    "The game has 2 players.")   
+    (item "3" <3>  
+        <
+        (place Stack items:{"Ghoula0" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
+        >
+    "The game has 3 players.")  
+    (item "4" <4>  
+        <
+        (place Stack items:{"Ghoula0""Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
+        >
+    "The game has 4 players.")*  
+    (item "5" <5>  
+        <
+        (place Stack items:{"Ghoula0" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
+        >
+    "The game has 5 players.")  
+    (item "6" <6>  
+        <
+        (place Stack items:{"Ghoula0" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
+        >
+    "The game has 6 players.")  
+    (item "7" <7>  
+        <
+        (place Stack items:{"Ghoula0" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
+        >
+    "The game has 7 players.")  
+    (item "8" <8>  
+        <
+        (place Stack items:{"Ghoula0" "Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} ("ExternalSite"))
+        >
+    "The game has 8 players.")  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Es-Sig (Described)" {
+        "Players/4"
+        }
+        variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (piece Colour "Die" state:1 fillColour:(colour Green))
+        (stackType 0 Ground)
+        (piece Scale "Stick" 0.5)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (piece Rename piece:"Ghoula" "Marker")
+        (player Colour Neutral (colour Black))
+    })
+    
+)
+
