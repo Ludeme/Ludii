@@ -3,15 +3,15 @@
 )
 
 (define "CaptureToPiece"
-	    (apply 
-	    	if:(not (is In (to) (sites "BlackenedSquares")))
-	        (if (is Enemy (who at:(to)))
-	            (remove 
-	                (to) 
-	            )
-	        )
-	    ) 
-	)
+    (apply 
+        if:(not (is In (to) (sites "BlackenedSquares")))
+        (if (is Enemy (who at:(to)))
+            (remove 
+                (to) 
+            )
+        )
+    ) 
+)
 
 //------------------------------------------------------------------------------
 
@@ -20,56 +20,56 @@
     (equipment { 
         (board (rectangle 9 6)) 
         (piece "Pawn" Each
-        	(or {
-	        	(if (not (all Sites (sites Around (from) Orthogonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
-	        		(move
-	                        Slide 
-	                        Orthogonal 
-	                        (between
-	                        	if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
-	                        )
-	                        (to 
-	                            if:(is Enemy (who at:(to))) 
-	                            "CaptureToPiece"
-	                        ) 
-	                    )
-	        	)
-	        	(if (not (all Sites (sites Around (from) Diagonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
-	        		(move
-	                        Slide 
-	                        Diagonal 
-	                        (between
-		                        	if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
-		                        )
-	                        (to 
-	                            if:(is Enemy (who at:(to))) 
-	                            "CaptureToPiece"
-	                        ) 
-	                    )
-	        	)
-	        	
-	        	(if (not 
-	        			(all Sites
-	        				(forEach
-		        			(sites Around 
-		        			        (sites To (hop Orthogonal (between if:True) (to if:True))) 
-		        			        Orthogonal
-		        			    )
-		        			if:(= 2 (count Steps (from) (site)))
-		        			)
-		        			if:(!= (what at:(site)) (id "Pawn" Mover))
-	        			)
-	        		)
-	                (move
-	                        Leap 
-	                        "KnightWalk" 
-	                        (to 
-	                            if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites "BlackenedSquares"))))
-	                            "CaptureToPiece"
-	                        ) 
-	                    )
-	        	)
-        	})
+            (or {
+                (if (not (all Sites (sites Around (from) Orthogonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
+                    (move
+                        Slide 
+                        Orthogonal 
+                        (between
+                            if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
+                        )
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureToPiece"
+                        ) 
+                    )
+                )
+                (if (not (all Sites (sites Around (from) Diagonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
+                    (move
+                        Slide 
+                        Diagonal 
+                        (between
+                            if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
+                        )
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureToPiece"
+                        ) 
+                    )
+                )
+                
+                (if (not 
+                        (all Sites
+                            (forEach
+                                (sites Around 
+                                    (sites To (hop Orthogonal (between if:True) (to if:True))) 
+                                    Orthogonal
+                                )
+                                if:(= 2 (count Steps (from) (site)))
+                            )
+                            if:(!= (what at:(site)) (id "Pawn" Mover))
+                        )
+                    )
+                    (move
+                        Leap 
+                        "KnightWalk" 
+                        (to 
+                            if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites "BlackenedSquares"))))
+                            "CaptureToPiece"
+                        ) 
+                    )
+                )
+            })
         )
         (piece "King" Each)
         (hand Each)
@@ -87,17 +87,17 @@
         })
         
         (play 
-        	(or
-	            (do 
-	                (forEach Piece)
-	                ifAfterwards:(not ("IsInCheck" "King" Mover))
-	            )
-	            (if (is Occupied (handSite Mover))
-		            (move
-		            	(from (sites Hand))
-		            	(to (sites Mover "PawnStart") if:(is Empty (to)))
-		            )
-	            )
+            (or
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                )
+                (if (is Occupied (handSite Mover))
+                    (move
+                        (from (sites Hand))
+                        (to (sites Mover "PawnStart") if:(is Empty (to)))
+                    )
+                )
             )
         )
         
