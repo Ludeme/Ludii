@@ -1,0 +1,32 @@
+(game "Al-Andalus Game"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 4)
+        (piece "Seed" Shared)
+    })  
+    (rules 
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+
