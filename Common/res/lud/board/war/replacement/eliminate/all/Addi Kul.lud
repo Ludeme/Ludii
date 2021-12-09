@@ -1,7 +1,7 @@
 (game "Addi Kul"
 	(players {(player N) (player S)})
 	(equipment {
-		(board (rectangle 7 6))
+		(board (square 7))
 		(piece "Marker" Each
 			(or
 			(move Step 
