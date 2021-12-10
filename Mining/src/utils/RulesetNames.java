@@ -69,7 +69,8 @@ public class RulesetNames
 							(gameNames.get(i) + "_" + rulesetNames.get(i))
 							.replaceAll(Pattern.quote(" "), "_")
 							.replaceAll(Pattern.quote("("), "")
-							.replaceAll(Pattern.quote(")"), "");
+							.replaceAll(Pattern.quote(")"), "")
+							.replaceAll(Pattern.quote("'"), "");
 		}
 		else
 		{
@@ -82,7 +83,8 @@ public class RulesetNames
 					(game.name() + "_" + nameRulesetCSV)
 					.replaceAll(Pattern.quote(" "), "_")
 					.replaceAll(Pattern.quote("("), "")
-					.replaceAll(Pattern.quote(")"), "");
+					.replaceAll(Pattern.quote(")"), "")
+					.replaceAll(Pattern.quote("'"), "");
 		}
 		
 		return null;

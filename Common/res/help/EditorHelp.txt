@@ -1526,6 +1526,13 @@ PARAM JAVADOC: [<direction>]: The direction.
 EXAMPLE: (ahead (centrePoint) E)
 EXAMPLE: (ahead (last To) steps:3 N)
 REMARKS: If there is no site in the specified direction, then the index of the source site is returned.
+TYPE: game.functions.ints.board.ArrayValue
+TYPE JAVADOC: Returns one value of an array.
+NEW CTOR
+(arrayValue <intArrayFunction> index:<int>)
+PARAM JAVADOC: <intArrayFunction>: The array.
+PARAM JAVADOC: index:<int>: The index of the site in the region.
+EXAMPLE: (arrayValue (results from:(last To) to:(sites Empty) (who at:(to))) index:(value))
 TYPE: game.functions.ints.board.CentrePoint
 TYPE JAVADOC: Returns the index of the central board site.
 NEW CTOR
@@ -2170,6 +2177,14 @@ PARAM JAVADOC: <int>: Lower extent of range (inclusive).
 EXAMPLE: (min 4)
 TYPE: game.functions.region.foreach.ForEach
 TYPE JAVADOC: Returns a region filtering with a condition or build according to different player indices.
+NEW CTOR
+(forEach Level [<siteType>] at:<int> [<stackDirection>] [If:<boolean>] [startAt:<int>])
+PARAM JAVADOC: [<siteType>]: 
+PARAM JAVADOC: at:<int>: The site.
+PARAM JAVADOC: [<stackDirection>]: The direction to count in the stack [FromTop].
+PARAM JAVADOC: [If:<boolean>]: The condition to satisfy.
+PARAM JAVADOC: [startAt:<int>]: The level to start to look at.
+EXAMPLE: (forEach Level at:(site))
 NEW CTOR
 (forEach Team <region>)
 PARAM JAVADOC: <region>: The region.
@@ -2836,9 +2851,10 @@ PARAM JAVADOC: [<to>]: The condition on the ``to'' location to allow shooting [(
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (move Shoot (piece "Dot0"))
 NEW CTOR
-(move Select <from> [<to>] [<then>])
+(move Select <from> [<to>] [<roleType>] [<then>])
 PARAM JAVADOC: <from>: Describes the ``from'' location to select [(from)].
 PARAM JAVADOC: [<to>]: Describes the ``to'' location to select.
+PARAM JAVADOC: [<roleType>]: The mover of the move.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (move Select (from) (then (remove (last To))))
 EXAMPLE: (move Select (from (sites Occupied by:Mover) if:(!= (state at:(to)) 0) ) (to (sites Occupied by:Next) if:(!= (state at:(to)) 0) ) (then (set State at:(last To) (% (+ (state at:(last From)) (state at:(last To))) 5) ) ) )
@@ -3282,9 +3298,10 @@ REMARKS: This ludeme applies to deduction puzzles.
 TYPE: game.rules.play.moves.nonDecision.effect.Select
 TYPE JAVADOC: Selects either a site or a pair of ``from'' and ``to'' locations.
 NEW CTOR
-(select <from> [<to>] [<then>])
+(select <from> [<to>] [<roleType>] [<then>])
 PARAM JAVADOC: <from>: Describes the ``from'' location to select [(from)].
 PARAM JAVADOC: [<to>]: Describes the ``to'' location to select.
+PARAM JAVADOC: [<roleType>]: The mover of the move.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (select (from) (then (remove (last To))))
 EXAMPLE: (select (from (sites Occupied by:Mover) if:(!= (state at:(to)) 0) ) (to (sites Occupied by:Next) if:(!= (state at:(to)) 0) ) (then (set State at:(last To) (% (+ (state at:(last From)) (state at:(last To))) 5) ) ) )
@@ -3651,7 +3668,7 @@ NEW CTOR
 (forEach Level [<siteType>] <int> [<stackDirection>] <moves> [<then>])
 PARAM JAVADOC: [<siteType>]: The type of the graph elements of the group [default SiteType of the board].
 PARAM JAVADOC: <int>: The site to iterate through.
-PARAM JAVADOC: [<stackDirection>]: The direction to count in the stack [FromBottom].
+PARAM JAVADOC: [<stackDirection>]: The direction to count in the stack [FromTop].
 PARAM JAVADOC: <moves>: The moves.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (forEach Level (last To) (if (= (id "King" Mover) (what at:(last To) level:(level))) (addScore Mover 1)))
