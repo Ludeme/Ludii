@@ -272,7 +272,7 @@ public final class AddScore extends Effect
 			{
 				final int indexOwnerPhase = role.owner();
 
-				if (role.equals(RoleType.Mover) || role.equals(RoleType.Next) || role.equals(RoleType.Prev))
+				if (role.equals(RoleType.Mover) || role.equals(RoleType.Next) || role.equals(RoleType.Prev) || role.equals(RoleType.Player))
 					continue;
 
 				if (indexOwnerPhase < 1 || indexOwnerPhase > game.players().count())
