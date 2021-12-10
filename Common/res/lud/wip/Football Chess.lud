@@ -1,4 +1,100 @@
-
+(define "KickTheBall"
+    (if (and (= (what at:#1) (id "Knight" Mover)) (is In (where "Ball" Shared) (sites Around #1)))
+        (move
+            (from (where "Ball" Shared))
+            (to
+                (sites To
+                    (leap
+                        (from (where "Ball" Shared))
+                        "KnightWalk" 
+                        (to 
+                            if:(is Empty (to))
+                        ) 
+                    )		
+                )
+                if:(not (is In (to) (sites Around #1)))
+            )
+        )
+        (if (and (= (what at:#1) (id "King" Mover)) (is In (where "Ball" Shared) (sites Around #1)))
+            (move
+                (from (where "Ball" Shared))
+                (to
+                    (sites To
+                        (step
+                            (from (where "Ball" Shared))
+                            (directions Cell from:#1 to:(where "Ball" Shared))
+                            (to 
+                                if:(is Empty (to))
+                            ) 
+                        )
+                    )
+                    if:(if (is In #1 (union (sites Row 0) (sites Row 8)))
+                        (not (is In (to) (sites "Goals")))
+                        True
+                    )
+                )
+            )
+            (if (and (= (what at:#1) (id "Queen" Mover)) (is In (where "Ball" Shared) (sites Around #1)))
+                (move
+                    (from (where "Ball" Shared))
+                    (to
+                        (sites To
+                            (slide
+                                (from (where "Ball" Shared))
+                                (directions Cell from:#1 to:(where "Ball" Shared))
+                                (between
+                                    if:(if (is In #1 (union (sites Row 0) (sites Row 8)))
+                                        (and (is Empty (between)) (not (is In (between) (sites "Goals"))))
+                                        (is Empty (between))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (if (and (= (what at:#1) (id "Rook" Mover)) (is In (where "Ball" Shared) (sites Around #1 Orthogonal)))
+                    (move
+                        (from (where "Ball" Shared))
+                        (to
+                            (sites To
+                                (slide
+                                    (from (where "Ball" Shared))
+                                    (directions Cell from:#1 to:(where "Ball" Shared))
+                                    (between
+                                        if:(if (is In #1 (union (sites Row 0) (sites Row 8)))
+                                            (and (is Empty (between)) (not (is In (between) (sites "Goals"))))
+                                            (is Empty (between))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (if (and (= (what at:#1) (id "Bishop" Mover)) (is In (where "Ball" Shared) (sites Around #1 Diagonal)))
+                        (move
+                            (from (where "Ball" Shared))
+                            (to
+                                (sites To
+                                    (slide
+                                        (from (where "Ball" Shared))
+                                        (directions Cell from:#1 to:(where "Ball" Shared))
+                                        (between
+                                            if:(if (is In #1 (union (sites Row 0) (sites Row 8)))
+                                                (and (is Empty (between)) (not (is In (between) (sites "Goals"))))
+                                                (is Empty (between))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        #2
+    )		
+)
 
 //------------------------------------------------------------------------------
 
@@ -12,12 +108,9 @@
                 Slide 
                 Orthogonal 
                 (to
-                	(apply
-                		if:(not (is In (to) (sites "Goals")))
-                	)
-                )
-                (then
-                	(if (is In (where "Ball" Shared) (sites Around (last To) Orthogonal)) (moveAgain))
+                    (apply
+                        if:(not (is In (to) (sites "Goals")))
+                    )
                 )
             )
         )
@@ -27,9 +120,6 @@
                 (to 
                     if:(and (is Empty (to)) (not (is In (to) (sites "Goals"))))
                 ) 
-                (then
-                    	(if (is In (where "Ball" Shared) (sites Around (last To) Orthogonal)) (moveAgain))
-                    )
             )
         )
         (piece "Bishop" Each 
@@ -37,13 +127,10 @@
                 Slide 
                 Diagonal 
                 (to
-                    	(apply
-                    		if:(not (is In (to) (sites "Goals")))
-                    	)
+                    (apply
+                        if:(not (is In (to) (sites "Goals")))
                     )
-                (then
-                    	(if (is In (where "Ball" Shared) (sites Around (last To) Diagonal)) (moveAgain))
-                    )
+                )
             )
         )
         (piece "Knight" Each 
@@ -53,37 +140,21 @@
                 (to 
                     if:(and (is Empty (to)) (not (is In (to) (sites "Goals"))))
                 ) 
-                (then
-                    	(if (is In 
-                    			(where "Ball" Shared) 
-                                (forEach
-                                        (sites Around 
-                                            (sites To (hop (from (last To)) Orthogonal (between if:True) (to if:True))) 
-                                            Orthogonal
-                                        )
-                                        if:(= 2 (count Steps (last To) (site)))
-                                    )
-                    		)
-                    		(moveAgain)
-                    	)
-                    )
             )
         )
         (piece "Queen" Each 
             (move
                 Slide
                 (to
-                    	(apply
-                    		if:(not (is In (to) (sites "Goals")))
-                    	)
+                    (apply
+                        if:(not (is In (to) (sites "Goals")))
                     )
-                (then
-                    	(if (is In (where "Ball" Shared) (sites Around (last To))) (moveAgain))
-                    )
+                )
             ) 
         )
         (piece "Ball" Shared)
         (regions "Goals" (sites {"E1" "E9"}))
+        (map "Goal" {(pair P1 "E9") (pair P2 "E1")})
     })  
     (rules 
         (start { 
@@ -93,11 +164,32 @@
         })
         
         (play 
-           (forEach Piece)
+            (if (is Prev Mover)
+                (or
+                    (if (is Pending)
+                        (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site))
+                                (then (if (can Move (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site)))) (and (set Pending) (moveAgain))))		
+                            )
+                        ("KickTheBall" (last To) 
+                            (then (if (can Move (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site)))) (and (set Pending) (moveAgain))))
+                        )
+                    )
+                    (move Pass)
+                )
+                (or 
+                    (forEach Piece (then (if (can Move ("KickTheBall" (last To))) (moveAgain))))
+                    (forEach Site 
+                    	(sites Around (where "Ball" Shared)) 
+                    	("KickTheBall" (site))
+                        (then (if (can Move (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site)))) (and (set Pending) (moveAgain))))		
+                    )
+                )
+            )
         )
         
         (end {
-            (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
+            (if (= (where "Ball" Shared) (mapEntry P1)) (result P1 Win))
+            (if (= (where "Ball" Shared) (mapEntry P2)) (result P2 Win))
         })
     )
 )
