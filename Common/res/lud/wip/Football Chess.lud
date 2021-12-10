@@ -1,4 +1,5 @@
 
+
 //------------------------------------------------------------------------------
 
 (game "Football Chess"  
@@ -15,6 +16,9 @@
                 		if:(not (is In (to) (sites "Goals")))
                 	)
                 )
+                (then
+                	(if (is In (where "Ball" Shared) (sites Around (last To) Orthogonal)) (moveAgain))
+                )
             )
         )
         (piece "King" Each 
@@ -23,6 +27,9 @@
                 (to 
                     if:(and (is Empty (to)) (not (is In (to) (sites "Goals"))))
                 ) 
+                (then
+                    	(if (is In (where "Ball" Shared) (sites Around (last To) Orthogonal)) (moveAgain))
+                    )
             )
         )
         (piece "Bishop" Each 
@@ -34,6 +41,9 @@
                     		if:(not (is In (to) (sites "Goals")))
                     	)
                     )
+                (then
+                    	(if (is In (where "Ball" Shared) (sites Around (last To) Diagonal)) (moveAgain))
+                    )
             )
         )
         (piece "Knight" Each 
@@ -43,6 +53,20 @@
                 (to 
                     if:(and (is Empty (to)) (not (is In (to) (sites "Goals"))))
                 ) 
+                (then
+                    	(if (is In 
+                    			(where "Ball" Shared) 
+                                (forEach
+                                        (sites Around 
+                                            (sites To (hop (from (last To)) Orthogonal (between if:True) (to if:True))) 
+                                            Orthogonal
+                                        )
+                                        if:(= 2 (count Steps (last To) (site)))
+                                    )
+                    		)
+                    		(moveAgain)
+                    	)
+                    )
             )
         )
         (piece "Queen" Each 
@@ -52,6 +76,9 @@
                     	(apply
                     		if:(not (is In (to) (sites "Goals")))
                     	)
+                    )
+                (then
+                    	(if (is In (where "Ball" Shared) (sites Around (last To))) (moveAgain))
                     )
             ) 
         )
