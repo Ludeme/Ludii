@@ -72,6 +72,12 @@ public class ExperienceIQRTreeLearner
 				final FeatureVector[] featureVectors = sample.generateFeatureVectors(featureSet);
 				final float[] logits = new float[featureVectors.length];
 				
+				final float maxLogit = ArrayUtils.max(logits);
+				final float minLogit = ArrayUtils.min(logits);
+				
+				if (maxLogit == minLogit)
+					continue;		// Nothing to learn from this, just skip it
+				
 				for (int i = 0; i < featureVectors.length; ++i)
 				{
 					final FeatureVector featureVector = featureVectors[i];
@@ -80,13 +86,11 @@ public class ExperienceIQRTreeLearner
 				}
 				
 				// Maximise logits for winning moves and minimise for losing moves
-				final float maxLogit = ArrayUtils.max(logits);
 				for (int i = sample.winningMoves().nextSetBit(0); i >= 0; i = sample.winningMoves().nextSetBit(i + 1))
 				{
 					logits[i] = maxLogit;
 				}
 				
-				final float minLogit = ArrayUtils.min(logits);
 				for (int i = sample.losingMoves().nextSetBit(0); i >= 0; i = sample.losingMoves().nextSetBit(i + 1))
 				{
 					logits[i] = minLogit;
@@ -118,20 +122,44 @@ public class ExperienceIQRTreeLearner
 				final int numTop25 = numBottom25;
 				final int numIQR = featureVectors.length - numBottom25 - numTop25;
 				
+				float lowestTop25Logit = Float.POSITIVE_INFINITY;
+				float highestBottom25Logit = Float.NEGATIVE_INFINITY;
+				
 				final IQRClass[] classes = new IQRClass[sortedIndices.size()];
-				for (int i = 0; i < sortedIndices.size(); ++i)
+				for (int i = 0; i < numBottom25; ++i)
 				{
-					if (i < numBottom25)
-					{
-						classes[sortedIndices.get(i).intValue()] = IQRClass.Bottom25;
-					}
-					else if (i < numBottom25 + numIQR)
-					{
-						classes[sortedIndices.get(i).intValue()] = IQRClass.IQR;
-					}
-					else
-					{
+					final float logit = logits[sortedIndices.get(i).intValue()];
+					classes[sortedIndices.get(i).intValue()] = IQRClass.Bottom25;
+					highestBottom25Logit = Math.max(highestBottom25Logit, logit);
+				}
+				
+				for (int i = sortedIndices.size() - 1; i >= numBottom25 + numIQR; --i)
+				{
+					final float logit = logits[sortedIndices.get(i).intValue()];
+					classes[sortedIndices.get(i).intValue()] = IQRClass.Top25;
+					lowestTop25Logit = Math.min(lowestTop25Logit, logit);
+				}
+				
+				for (int i = numBottom25; i < numBottom25 + numIQR; ++i)
+				{
+					final float logit = logits[sortedIndices.get(i).intValue()];
+					if (logit == lowestTop25Logit)
 						classes[sortedIndices.get(i).intValue()] = IQRClass.Top25;
+					else if (logit == highestBottom25Logit)
+						classes[sortedIndices.get(i).intValue()] = IQRClass.Bottom25;
+					else
+						classes[sortedIndices.get(i).intValue()] = IQRClass.IQR;
+				}
+				
+				if (lowestTop25Logit == highestBottom25Logit)
+				{
+					// Top 25% and Bottom 25% logits overlap, so shrink those two buckets
+					// and instead have a greater IQR
+					for (int i = 0; i < sortedIndices.size(); ++i)
+					{
+						final float logit = logits[sortedIndices.get(i).intValue()];
+						if (logit == lowestTop25Logit)
+							classes[sortedIndices.get(i).intValue()] = IQRClass.IQR;
 					}
 				}
 				
