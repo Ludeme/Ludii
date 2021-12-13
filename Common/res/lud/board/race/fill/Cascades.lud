@@ -1,0 +1,74 @@
+(define "PlaceStone"
+    (move Add
+        (to
+            (union
+                (sites Around (sites Occupied by:Mover) SSW)
+                (sites Around (sites Occupied by:Mover) SSE)
+            )
+            if:(is Empty (to))
+        )
+        #1
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Cascades"
+    (players 2)
+    (equipment {
+        (board (remove (hex Triangle 15) cells:{92..119} vertices:{223..285}))
+        (piece "Ball" Each)
+        (hand Each)
+    })
+    (rules
+        (start {
+            (place "Ball1" (forEach (sites Top) if:(is Even (site))))
+            (place "Ball2" (forEach (sites Top) if:(is Odd (site))))
+        })
+        phases:{
+        (phase "FirstMove"
+            (play ("PlaceStone"))
+            (nextPhase "Main")
+        )
+        (phase "Main"
+            (play 
+                (or 
+                    ("PlaceStone"
+                        (then
+                            (if (not (is Prev Mover)) (moveAgain))
+                        )
+                    )
+                    (if (is Prev Mover) (move Pass))
+                )
+            )
+        )
+        }
+        (end 
+            (if 
+                (and (no Moves P1) (no Moves P2)) 
+                (byScore
+                    {		
+                    (score P1 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P1))))
+                    (score P2 (count Sites in:(forEach (sites Bottom) if:(= (who at:(site)) P2))))
+                    }
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+    })
+    
+)
