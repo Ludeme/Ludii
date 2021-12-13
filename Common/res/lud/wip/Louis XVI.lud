@@ -1,0 +1,56 @@
+(game "Louis XVI"
+    (players 2)
+    (equipment {
+        (board 
+        	(remove
+        	(hex 7)
+        	cells:{
+        		0 1 2 4 5 6 7 8 9 12 13 14 15 16 22 23
+        		57 45 70 34 58 82 46 71 69 81 56 44 68 92 55 80
+        		120 121 122 124 125 126 112 113 114 117 118 119 103 104 110 111
+        	}
+        	)
+        )
+        (piece "Pawn" Each)
+        (piece "King" P2)
+        (regions "GoalKing" (difference (sites Corners) (expand (sites Centre) steps:4)))
+    })
+    (rules
+        (start {
+            (place "Pawn1" (difference (expand (sites Centre) steps:4) (expand (sites Centre) steps:3)))
+            (place "Pawn2" (difference (expand (sites Centre) steps:2) (sites Centre)))
+            (place "Pawn1" (difference (expand (sites Centre) steps:4) (expand (sites Centre) steps:3)))
+            (place "King2" (sites Centre))
+        })
+    	(play (forEach Piece))
+        (end 
+            (if 
+                (no Moves Mover)
+            	(result Next Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+    	(piece Colour "King2" fillColour:(colour Yellow))
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (board Colour Phase0 (colour White))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Background image:"square.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:1)
+        (region Colour "GoalKing" (colour Yellow))
+        (region Colour (sites Centre) (colour Grey))
+    })
+    
+)
