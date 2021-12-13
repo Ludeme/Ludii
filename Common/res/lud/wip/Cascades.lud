@@ -1,0 +1,27 @@
+(game "Cascades"
+    (players 2)
+    (equipment {
+        (board (remove (hex Triangle 15) cells:{92..119} vertices:{223..285}))
+        (piece "Ball" Each)
+        (hand Each)
+    })
+    (rules
+        (start {
+            (place "Ball1" (forEach (sites Top) if:(is Even (site))))
+            (place "Ball2" (forEach (sites Top) if:(is Odd (site))))
+        })
+        (play (forEach Piece))
+        (end (if (is Line 3 All) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
