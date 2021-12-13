@@ -3,8 +3,8 @@ package metadata.ai.features.trees.classifiers;
 import annotations.Name;
 
 /**
- * Describes a leaf node in a decision tree for features; it contains predicted
- * probabilities for the Bottom25, IQR, and Top25 classes.
+ * Describes a leaf node in a binary classification tree for features; it contains
+ * only a predicted probability for "best move".
  * 
  * @author Dennis Soemers
  */
