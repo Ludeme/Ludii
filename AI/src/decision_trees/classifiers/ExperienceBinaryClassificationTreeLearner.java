@@ -298,7 +298,7 @@ public class ExperienceBinaryClassificationTreeLearner
 			}
 		}
 
-		if (bestIdx == -1)
+		if (bestIdx == -1 || minSumSquaredErrors == 0.0)
 		{
 			// No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
 			return new BinaryLeafNode(remainingTargetLabels.sum() / remainingTargetLabels.size());
