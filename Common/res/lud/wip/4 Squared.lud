@@ -1,0 +1,42 @@
+(game "4 Squared"
+	(players 2)
+	(equipment {
+		(board 
+			(merge {
+				(square 5)
+				(shift 5 0 (square 5))
+				(shift 0 5 (square 5))
+				(shift 5 5 (square 5))
+			})
+			use:Vertex
+		)
+		(piece "Marker" Each)
+		(hand Each)
+	})
+	(rules
+		(start (place "Marker" "Hand" count:15))
+		(play (forEach Piece))
+		(end (if (no Moves Next) (result Mover Win)))
+	)
+)
+//------------------------------------------------------------------------------
+
+(metadata 
+  
+  (info
+      {
+      }
+  )
+  
+  (graphics {
+	  (show Edges Diagonal (colour Hidden))
+	  (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+	  (board Colour OuterEdges (colour Black))
+	  (board Colour InnerEdges (colour Black))
+	  (board Colour OuterVertices (colour Hidden))
+	  (board Colour InnerVertices (colour Hidden))
+	  (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+	  (show Symbol "disc" (sites {"C3" "C8" "H3" "H8"}) fillColour:(colour Red) edgeColour:(colour Red) scale:0.3)
+  })
+  
+)
