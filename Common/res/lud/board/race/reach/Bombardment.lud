@@ -1,0 +1,51 @@
+(define "ReachedTarget" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Bombardment"
+    (players {(player N) (player S)}) 
+    (equipment {
+        (board (square 8))
+        (piece "NuclearBomb" Each
+            (or
+                ("StepForwardsToEmpty") 
+                (move Select
+                    (from (from))
+                    (then
+                        (forEach Site (sites Around (last To) includeSelf:True)
+                            (if (is Occupied (site)) (remove (site)))
+                        )
+                    )
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+    })
+    (rules
+        (start { 
+            (place "NuclearBomb1" (expand (sites Bottom)))
+            (place "NuclearBomb2" (expand (sites Top)))
+        })
+        
+        (play (forEach Piece))
+        
+        (end (if (or ("ReachedTarget") (no Pieces Next)) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Rotate "NuclearBomb1" degrees:180)
+    })
+    
+)
