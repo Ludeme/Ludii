@@ -71,6 +71,12 @@ public class ExperienceIQRTreeLearner
 			{
 				final FeatureVector[] featureVectors = sample.generateFeatureVectors(featureSet);
 				final float[] logits = new float[featureVectors.length];
+
+				for (int i = 0; i < featureVectors.length; ++i)
+				{
+					final FeatureVector featureVector = featureVectors[i];
+					logits[i] = oracleWeightVector.dot(featureVector);
+				}
 				
 				final float maxLogit = ArrayUtils.max(logits);
 				final float minLogit = ArrayUtils.min(logits);
@@ -82,7 +88,6 @@ public class ExperienceIQRTreeLearner
 				{
 					final FeatureVector featureVector = featureVectors[i];
 					allFeatureVectors.add(featureVector);
-					logits[i] = oracleWeightVector.dot(featureVector);
 				}
 				
 				// Maximise logits for winning moves and minimise for losing moves
