@@ -1,0 +1,101 @@
+(define "AttackByAtLeast3"
+    (<= 3 
+        (count Sites 
+            in:(forEach 
+                (sites LineOfSight at:(site))
+                if:(= (who at:(site)) Mover)
+            )
+        )
+    )		
+)
+
+(define "CapturingPortNotAttacked"
+    (> 3 
+        (count Sites 
+            in:(forEach 
+                (sites LineOfSight at:(if (is Mover P1) (mapEntry "Port" P2) (mapEntry "Port" P1)))
+                if:(if (is Mover P1) (= (who at:(site)) P1) (= (who at:(site)) P2)) 
+            )
+        )
+    )	
+)
+
+(define "CanMoveANewShip"
+    (not (all Sites 
+            (difference (expand origin:(mapEntry "Port" P1)) (mapEntry "Port" Mover))
+            if:(is Occupied (site))
+    ))	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Archimedes"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Ball" Each (move Slide (between if:(and (is Empty (between)) (!= (between) (mapEntry "Port" Mover))))))
+        (map "Port" {(pair P1 "H8") (pair P2 "A1")})
+        (hand Each)
+    })
+    (rules
+        (start {
+            (place "Ball1" (difference (expand origin:(mapEntry "Port" P1) steps:4 Orthogonal) (sites {"D8" "H4" "H8"})))
+            (place "Ball2" (difference (expand origin:(mapEntry "Port" P2) steps:4 Orthogonal) (sites {"A5" "A1" "E1"})))
+        })
+        (play
+            (if (is Prev Mover)
+                (move Slide
+                    (from (mapEntry "Port" Mover))
+                )
+                (or
+                    (forEach Piece
+                        (then
+                            (forEach Site
+                                (sites Occupied by:Next)
+                                (if 
+                                    ("AttackByAtLeast3")
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite Next))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (if
+                        (and {
+                            (is Occupied (handSite Mover))
+                            (is Empty (mapEntry "Port" Mover))
+                            ("CanMoveANewShip")
+                        })
+                        (move (from (handSite Mover)) (to (mapEntry "Port" Mover)) (then (moveAgain)))
+                    )
+                )
+            )
+        )
+        (end 
+            (if 
+                (and
+                    (is Friend (who at:(if (is Mover P1) (mapEntry "Port" P2) (mapEntry "Port" P1)))) 
+                    ("CapturingPortNotAttacked")
+                )
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)
