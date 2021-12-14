@@ -1,0 +1,44 @@
+(define "ProductBiggestGroups"
+    (* 
+        (max (sizes Group #1))
+        (max (difference (sizes Group #1) (max (sizes Group #1))))
+    )		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Product"  
+    (players 2)  
+    (equipment { 
+        (board (hex 5))
+        (piece "Marker" Each) 
+    })  
+    (rules 
+        (play 
+            (move 
+                Add 
+                (to (sites Empty)) 
+            )
+        ) 
+        
+        (end
+            (if (is Full)
+                (byScore {
+                    (score P1 ("ProductBiggestGroups" P1))
+                    (score P2 ("ProductBiggestGroups" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
