@@ -74,6 +74,9 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	/** Epsilon for epsilon-greedy playouts */
 	protected double epsilon = 0.0;
 	
+	/** Do we want to play greedily? */
+	protected boolean greedy = false;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -231,9 +234,9 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		if (epsilon < 1.0)
 		{
 			if (epsilon <= 0.0)
-				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots);
+				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy);
 			else
-				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots), epsilon);
+				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy), epsilon);
 		}
 		else
 		{
@@ -299,6 +302,10 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 			{
 				epsilon = Double.parseDouble(input.substring("epsilon=".length()));
 			}
+			else if (input.toLowerCase().startsWith("greedy="))
+			{
+				greedy = Boolean.parseBoolean(input.substring("greedy=".length()));
+			}
 		}
 		
 		if (policyTreesFilepath != null)
@@ -363,20 +370,23 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		{
 			featureSet = featureSets[context.state().mover()];
 		}
-
-		return actions.moves().get
+		
+		final FVector distribution =
+				computeDistribution
 				(
-					computeDistribution
+					featureSet.computeFeatureVectors
 					(
-						featureSet.computeFeatureVectors
-						(
-							context, 
-							actions.moves(), 
-							true
-						), 
-						context.state().mover()
-					).sampleFromDistribution()
+						context, 
+						actions.moves(), 
+						true
+					), 
+					context.state().mover()
 				);
+
+		if (greedy)
+			return actions.moves().get(distribution.argMaxRand());
+		else
+			return actions.moves().get(distribution.sampleFromDistribution());
 	}
 	
 	//-------------------------------------------------------------------------

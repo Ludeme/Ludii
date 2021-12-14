@@ -26,21 +26,27 @@ public class LogitTreeMoveSelector extends PlayoutMoveSelector
 	/** Regression tree root nodes (one per player, or just a shared one at index 0) */
 	protected final LogitTreeNode[] rootNodes;
 	
+	/** Do we want to play greedily? */
+	protected final boolean greedy;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
 	 * Constructor
 	 * @param featureSets Feature sets (one per player, or just a shared one at index 0)
 	 * @param rootNodes Regression tree root nodes (one per player, or just a shared one at index 0)
+	 * @param greedy Do we want to play greedily?
 	 */
 	public LogitTreeMoveSelector
 	(
 		final BaseFeatureSet[] featureSets, 
-		final LogitTreeNode[] rootNodes
+		final LogitTreeNode[] rootNodes,
+		final boolean greedy
 	)
 	{
 		this.featureSets = featureSets;
 		this.rootNodes = rootNodes;
+		this.greedy = greedy;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -85,7 +91,7 @@ public class LogitTreeMoveSelector extends PlayoutMoveSelector
 		{
 			--numLegalMoves;	// We're trying a move; if this one fails, it's actually not legal
 			
-			final int n = distribution.sampleFromDistribution();
+			final int n = greedy ? distribution.argMaxRand() : distribution.sampleFromDistribution();
 			final Move move = maybeLegalMoves.get(n);
 			
 			if (isMoveReallyLegal.checkMove(move))
