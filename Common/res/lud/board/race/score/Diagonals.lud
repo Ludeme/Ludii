@@ -1,0 +1,59 @@
+(define "DiagonalNESW"
+    (union (sites Direction from:(last To) NE included:True) (sites Direction from:(last To) SW))
+)
+
+(define "DiagonalSENW"
+    (union (sites Direction from:(last To) SE included:True) (sites Direction from:(last To) NW))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Diagonals"
+    (players 2)
+    (equipment {
+        (board (square 8) use:Vertex)
+        (piece "Ball" Each)
+    })
+    (rules
+        (play 
+            (move Add (to (sites Empty))
+                (then
+                    (and
+                        (if (not (is In (last To) (sites {"A8" "H1"})))
+                            (if (all Sites ("DiagonalNESW") if:(is Occupied (site)))
+                                (addScore Mover (count Sites in:(forEach ("DiagonalNESW") if:(is Friend (who at:(site))))))
+                            )
+                        )
+                        (if (not (is In (last To) (sites {"A1" "H8"})))
+                            (if (all Sites ("DiagonalSENW") if:(is Occupied (site)))
+                                (addScore Mover (count Sites in:(forEach ("DiagonalSENW") if:(is Friend (who at:(site))))))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end (if (is Full) (byScore))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+    
+)

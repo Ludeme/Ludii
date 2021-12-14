@@ -62,8 +62,8 @@ public final class SitesDirection extends BaseRegionFunction
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param locn         The origin location.
-	 * @param region       The origin region location.
+	 * @param from         The origin location.
+	 * @param From         The origin region location.
 	 * @param directions   The directions of the move [Adjacent].
 	 * @param included     True if the origin is included in the result [False].
 	 * @param stop         When the condition is true in one specific direction,
@@ -75,8 +75,8 @@ public final class SitesDirection extends BaseRegionFunction
 	 */
 	public SitesDirection
 	(
-			       @Or    final IntFunction                    locn,
-			       @Or    final RegionFunction                 region,
+			  @Or  @Name  final IntFunction                    from,
+			  @Or  @Name  final RegionFunction                 From,
 		@Opt              final game.util.directions.Direction directions,
 		@Opt @Name        final BooleanFunction                included,
 		@Opt @Name        final BooleanFunction                stop, 
@@ -86,7 +86,7 @@ public final class SitesDirection extends BaseRegionFunction
 	)
 	{
 
-		regionFn = new IntArrayFromRegion(locn, region);
+		regionFn = new IntArrayFromRegion(from, From);
 
 		// Directions
 		dirnChoice = (directions != null) 
