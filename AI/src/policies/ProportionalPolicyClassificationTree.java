@@ -212,9 +212,9 @@ public class ProportionalPolicyClassificationTree extends Policy
 		if (epsilon < 1.0)
 		{
 			if (epsilon <= 0.0)
-				playoutMoveSelector = new DecisionTreeMoveSelector(featureSets, decisionTreeRoots);
+				playoutMoveSelector = new DecisionTreeMoveSelector(featureSets, decisionTreeRoots, greedy);
 			else
-				playoutMoveSelector = new EpsilonGreedyWrapper(new DecisionTreeMoveSelector(featureSets, decisionTreeRoots), epsilon);
+				playoutMoveSelector = new EpsilonGreedyWrapper(new DecisionTreeMoveSelector(featureSets, decisionTreeRoots, greedy), epsilon);
 		}
 		else
 		{

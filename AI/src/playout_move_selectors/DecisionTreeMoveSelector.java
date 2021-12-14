@@ -26,21 +26,27 @@ public class DecisionTreeMoveSelector extends PlayoutMoveSelector
 	/** Classification tree root nodes (one per player, or just a shared one at index 0) */
 	protected final DecisionTreeNode[] rootNodes;
 	
+	/** Do we want to play greedily? */
+	protected final boolean greedy;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
 	 * Constructor
 	 * @param featureSets Feature sets (one per player, or just a shared one at index 0)
 	 * @param rootNodes Classification tree root nodes (one per player, or just a shared one at index 0)
+	 * @param greedy Do we want to play greedily?
 	 */
 	public DecisionTreeMoveSelector
 	(
 		final BaseFeatureSet[] featureSets, 
-		final DecisionTreeNode[] rootNodes
+		final DecisionTreeNode[] rootNodes,
+		final boolean greedy
 	)
 	{
 		this.featureSets = featureSets;
 		this.rootNodes = rootNodes;
+		this.greedy = greedy;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -85,7 +91,7 @@ public class DecisionTreeMoveSelector extends PlayoutMoveSelector
 		{
 			--numLegalMoves;	// We're trying a move; if this one fails, it's actually not legal
 			
-			final int n = distribution.sampleFromDistribution();
+			final int n = (greedy) ? distribution.argMaxRand() : distribution.sampleFromDistribution();
 			final Move move = maybeLegalMoves.get(n);
 			
 			if (isMoveReallyLegal.checkMove(move))
