@@ -1,0 +1,43 @@
+(game "Lewthwaite's Game"  
+    (players 2)  
+    (equipment { 
+        (board (square 5) use:Vertex)
+        (piece "Ball" Each (move Slide)) 
+    })  
+    (rules 
+        (start {
+            (place "Ball1" (sites Phase 1))
+            (place "Ball2" (difference (sites Phase 0) (sites Centre)))
+        })
+        (play 
+            (forEach Piece)
+        ) 
+        
+        (end 
+            (if (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.4)
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+    
+)
