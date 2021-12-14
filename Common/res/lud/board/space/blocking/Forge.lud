@@ -1,0 +1,59 @@
+(game "Forge"  
+    (players {(player N) (player S)})  
+    (equipment { 
+        (board (rectangle 8 6) use:Vertex)
+        (piece "Ball" Each (move Slide (directions Forwards of:All))) 
+    })  
+    (rules 
+        (start {
+            (place "Ball1" (expand (sites Bottom)))
+            (place "Ball2" (expand (sites Top)))
+        })
+        phases:{
+        (phase "Opening"
+            (play (forEach Piece))
+            (nextPhase "Main")
+        )
+        (phase "Main"
+            (play
+                (priority {
+                    (forEach Piece
+                        (move Slide 
+                            (from (from) if:(is In (from) (sites Around (last To) All)))
+                            (directions Forwards of:All)
+                        )
+                    )
+                    (forEach Piece)
+                })	
+            )
+        )
+        }
+        
+        (end 
+            (if (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+    
+)
