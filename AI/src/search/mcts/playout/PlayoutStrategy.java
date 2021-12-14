@@ -8,7 +8,7 @@ import game.Game;
 import other.context.Context;
 import other.trial.Trial;
 import policies.GreedyPolicy;
-import policies.softmax.ProportionalPolicyClassificationTree;
+import policies.ProportionalPolicyClassificationTree;
 import policies.softmax.SoftmaxPolicyLinear;
 import policies.softmax.SoftmaxPolicyLogitTree;
 import search.mcts.MCTS;

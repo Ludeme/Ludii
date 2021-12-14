@@ -1,4 +1,4 @@
-package policies.softmax;
+package policies;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +30,6 @@ import other.playout.PlayoutMoveSelector;
 import other.trial.Trial;
 import playout_move_selectors.DecisionTreeMoveSelector;
 import playout_move_selectors.EpsilonGreedyWrapper;
-import policies.Policy;
 import search.mcts.MCTS;
 
 /**
