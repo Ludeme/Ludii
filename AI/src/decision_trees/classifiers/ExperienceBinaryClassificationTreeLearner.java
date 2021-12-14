@@ -27,7 +27,7 @@ public class ExperienceBinaryClassificationTreeLearner
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Builds an exact logit tree node for given feature set and experience buffer
+	 * Builds a binary classification tree node for given feature set and experience buffer
 	 * @param featureSet
 	 * @param linFunc
 	 * @param buffer
@@ -147,8 +147,6 @@ public class ExperienceBinaryClassificationTreeLearner
 		
 		if (remainingFeatureVectors.isEmpty())
 		{
-			// This should probably never happen
-			System.err.println("Empty list of remaining feature vectors!");
 			return new BinaryLeafNode(0.5f);
 		}
 

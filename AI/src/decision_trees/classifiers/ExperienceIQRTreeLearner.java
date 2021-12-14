@@ -45,7 +45,7 @@ public class ExperienceIQRTreeLearner
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Builds an exact logit tree node for given feature set and experience buffer
+	 * Builds an IQR classification tree node for given feature set and experience buffer
 	 * @param featureSet
 	 * @param linFunc
 	 * @param buffer

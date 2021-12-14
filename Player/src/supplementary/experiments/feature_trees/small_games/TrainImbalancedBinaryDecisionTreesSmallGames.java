@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.regex.Pattern;
 
 import decision_trees.classifiers.DecisionTreeNode;
-import decision_trees.classifiers.ExperienceBinaryClassificationTreeLearner;
+import decision_trees.classifiers.ExperienceImbalancedBinaryClassificationTreeLearner;
 import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
 import game.Game;
@@ -22,11 +22,11 @@ import utils.data_structures.experience_buffers.PrioritizedReplayBuffer;
 import utils.data_structures.experience_buffers.UniformExperienceBuffer;
 
 /**
- * Train binary classification feature trees for our small games.
+ * Train imbalanced binary classification feature trees for our small games.
  * 
  * @author Dennis Soemers
  */
-public class TrainBinaryDecisionTreesSmallGames
+public class TrainImbalancedBinaryDecisionTreesSmallGames
 {
 
 	//-------------------------------------------------------------------------
@@ -34,7 +34,7 @@ public class TrainBinaryDecisionTreesSmallGames
 	/**
 	 * Private constructor
 	 */
-	private TrainBinaryDecisionTreesSmallGames()
+	private TrainImbalancedBinaryDecisionTreesSmallGames()
 	{
 		// Do nothing
 	}
@@ -188,7 +188,7 @@ public class TrainBinaryDecisionTreesSmallGames
 						
 						// Generate decision tree for Player p
 						final DecisionTreeNode root = 
-								ExperienceBinaryClassificationTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, depth, 5);
+								ExperienceImbalancedBinaryClassificationTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, depth, 5);
 						
 						// Convert to metadata structure
 						final metadata.ai.features.trees.classifiers.DecisionTreeNode metadataRoot = root.toMetadataNode();
@@ -196,7 +196,7 @@ public class TrainBinaryDecisionTreesSmallGames
 					}
 					
 					final String outFile = RESULTS_DIR + cleanGameName + "_" + cleanRulesetName + 
-							"/BinaryClassificationTree_" + POLICY_WEIGHT_TYPES[j] + "_" + depth + ".txt";
+							"/ImbalancedBinaryClassificationTree_" + POLICY_WEIGHT_TYPES[j] + "_" + depth + ".txt";
 					System.out.println("Writing Binary Classification tree to: " + outFile);
 					
 					try (final PrintWriter writer = new PrintWriter(outFile))
@@ -220,7 +220,7 @@ public class TrainBinaryDecisionTreesSmallGames
 	 */
 	public static void main(final String[] args)
 	{
-		final TrainBinaryDecisionTreesSmallGames task = new TrainBinaryDecisionTreesSmallGames();
+		final TrainImbalancedBinaryDecisionTreesSmallGames task = new TrainImbalancedBinaryDecisionTreesSmallGames();
 		task.run();
 	}
 	
