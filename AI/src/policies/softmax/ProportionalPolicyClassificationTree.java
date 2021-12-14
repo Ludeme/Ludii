@@ -171,30 +171,6 @@ public class ProportionalPolicyClassificationTree extends Policy
 	}
 	
 	/**
-	 * @param context
-	 * @param move
-	 * @return Probability estimate (unnormalised) that given move should be played.
-	 */
-	public float computeUnnormalisedProbability(final Context context, final Move move)
-	{
-		final BaseFeatureSet featureSet;
-		
-		if (featureSets.length == 1)
-			featureSet = featureSets[0];
-		else
-			featureSet = featureSets[context.state().mover()];
-		
-		final DecisionTreeNode decisionTreeRoot;
-		
-		if (decisionTreeRoots.length == 1)
-			decisionTreeRoot = decisionTreeRoots[0];
-		else
-			decisionTreeRoot = decisionTreeRoots[context.state().mover()];
-		
-		return decisionTreeRoot.predict(featureSet.computeFeatureVector(context, move, true));
-	}
-	
-	/**
 	 * @param featureVectors
 	 * @param player
 	 * @return Probability distribution over actions implied by a list of sparse 
