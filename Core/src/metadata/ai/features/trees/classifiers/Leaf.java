@@ -1,5 +1,7 @@
 package metadata.ai.features.trees.classifiers;
 
+import java.util.Set;
+
 import annotations.Name;
 
 /**
@@ -42,6 +44,40 @@ public class Leaf extends DecisionTreeNode
 		bottom25Prob = bottom25.floatValue();
 		iqrProb = iqr.floatValue();
 		top25Prob = top25.floatValue();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void collectFeatureStrings(final Set<String> outFeatureStrings)
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Predicted probability for the bottom-25% class
+	 */
+	public float bottom25Prob()
+	{
+		return bottom25Prob;
+	}
+	
+	/**
+	 * @return Predicted probability for the IQR class
+	 */
+	public float iqrProb()
+	{
+		return iqrProb;
+	}
+	
+	/**
+	 * @return Predicted probability for the top-25% class
+	 */
+	public float top25Prob()
+	{
+		return top25Prob;
 	}
 	
 	//-------------------------------------------------------------------------

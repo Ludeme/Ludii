@@ -1,5 +1,7 @@
 package metadata.ai.features.trees.classifiers;
 
+import java.util.Set;
+
 import metadata.ai.AIItem;
 
 /**
@@ -10,6 +12,14 @@ import metadata.ai.AIItem;
  */
 public abstract class DecisionTreeNode implements AIItem
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Collect strings for all features under this node.
+	 * @param outFeatureStrings Set to put all the feature strings in.
+	 */
+	public abstract void collectFeatureStrings(final Set<String> outFeatureStrings);
 	
 	//-------------------------------------------------------------------------
 	

@@ -53,6 +53,7 @@ public class If extends LogitNode
 	@Override
 	public void collectFeatureStrings(final Set<String> outFeatureStrings)
 	{
+		outFeatureStrings.add(feature);
 		thenNode.collectFeatureStrings(outFeatureStrings);
 		elseNode.collectFeatureStrings(outFeatureStrings);
 	}

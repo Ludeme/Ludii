@@ -1,5 +1,6 @@
 package supplementary.experiments.feature_trees.small_games;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Pattern;
@@ -195,9 +196,10 @@ public class TrainImbalancedBinaryDecisionTreesSmallGames
 						metadataTrees[p - 1] = new metadata.ai.features.trees.classifiers.DecisionTree(RoleType.roleForPlayerId(p), metadataRoot);
 					}
 					
-					final String outFile = RESULTS_DIR + cleanGameName + "_" + cleanRulesetName + 
+					final String outFile = RESULTS_DIR + "Trees/" + cleanGameName + "_" + cleanRulesetName + 
 							"/ImbalancedBinaryClassificationTree_" + POLICY_WEIGHT_TYPES[j] + "_" + depth + ".txt";
 					System.out.println("Writing Binary Classification tree to: " + outFile);
+					new File(outFile).getParentFile().mkdirs();
 					
 					try (final PrintWriter writer = new PrintWriter(outFile))
 					{

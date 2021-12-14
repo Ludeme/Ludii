@@ -1,5 +1,7 @@
 package metadata.ai.features.trees.classifiers;
 
+import java.util.Set;
+
 import annotations.Name;
 import main.StringRoutines;
 
@@ -44,6 +46,42 @@ public class If extends DecisionTreeNode
 		this.feature = feature;
 		this.thenNode = then;
 		this.elseNode = Else;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void collectFeatureStrings(final Set<String> outFeatureStrings)
+	{
+		outFeatureStrings.add(feature);
+		thenNode.collectFeatureStrings(outFeatureStrings);
+		elseNode.collectFeatureStrings(outFeatureStrings);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return String of our feature
+	 */
+	public String featureString()
+	{
+		return feature;
+	}
+	
+	/**
+	 * @return Node we traverse to if condition holds
+	 */
+	public DecisionTreeNode thenNode()
+	{
+		return thenNode;
+	}
+	
+	/**
+	 * @return Node we traverse to if condition does not hold
+	 */
+	public DecisionTreeNode elseNode()
+	{
+		return elseNode;
 	}
 	
 	//-------------------------------------------------------------------------

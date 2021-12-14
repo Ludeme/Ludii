@@ -8,6 +8,7 @@ import game.Game;
 import other.context.Context;
 import other.trial.Trial;
 import policies.GreedyPolicy;
+import policies.softmax.ProportionalPolicyClassificationTree;
 import policies.softmax.SoftmaxPolicyLinear;
 import policies.softmax.SoftmaxPolicyLogitTree;
 import search.mcts.MCTS;
@@ -96,6 +97,11 @@ public interface PlayoutStrategy
 		else if (inputs[0].endsWith("softmaxlogittree"))
 		{
 			playout = new SoftmaxPolicyLogitTree();
+			playout.customise(inputs);
+		}
+		else if (inputs[0].endsWith("classificationtreepolicy"))
+		{
+			playout = new ProportionalPolicyClassificationTree();
 			playout.customise(inputs);
 		}
 		else if (inputs[0].endsWith("greedy"))

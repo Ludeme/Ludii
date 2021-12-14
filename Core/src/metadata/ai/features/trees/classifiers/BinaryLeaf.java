@@ -1,5 +1,7 @@
 package metadata.ai.features.trees.classifiers;
 
+import java.util.Set;
+
 /**
  * Describes a leaf node in a binary classification tree for features; it contains
  * only a predicted probability for "top move".
@@ -28,6 +30,24 @@ public class BinaryLeaf extends DecisionTreeNode
 	)
 	{
 		this.prob = prob.floatValue();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void collectFeatureStrings(final Set<String> outFeatureStrings)
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Move probability predicted by this leaf.
+	 */
+	public float prob()
+	{
+		return prob;
 	}
 	
 	//-------------------------------------------------------------------------

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import decision_trees.logits.LogitTreeNode;
+import decision_trees.classifiers.DecisionTreeNode;
 import features.Feature;
 import features.FeatureVector;
 import features.aspatial.AspatialFeature;
@@ -23,34 +23,33 @@ import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.grammar.Report;
 import metadata.ai.features.trees.FeatureTrees;
-import metadata.ai.features.trees.logits.LogitNode;
-import metadata.ai.features.trees.logits.LogitTree;
+import metadata.ai.features.trees.classifiers.DecisionTree;
 import other.context.Context;
 import other.move.Move;
 import other.playout.PlayoutMoveSelector;
 import other.trial.Trial;
+import playout_move_selectors.DecisionTreeMoveSelector;
 import playout_move_selectors.EpsilonGreedyWrapper;
-import playout_move_selectors.LogitTreeMoveSelector;
+import policies.Policy;
 import search.mcts.MCTS;
 
 /**
- * A policy that uses a Logit (Regression) Tree to compute logits per move,
- * and then a probabilitity distribution over those moves using a softmax.
+ * A policy that uses a Classification Tree to compute probabilities per move.
  * 
  * @author Dennis Soemers
  */
-public class SoftmaxPolicyLogitTree extends SoftmaxPolicy 
+public class ProportionalPolicyClassificationTree extends Policy 
 {
 
 	//-------------------------------------------------------------------------
 	
 	/** 
-	 * Roots of regression trees that can output logits (one per legal move). 
+	 * Roots of decision trees that can output probability estimates (one per legal move). 
 	 * 
 	 * If it contains only one root, it will be shared across all
 	 * players. Otherwise, it will contain one root per player.
 	 */
-	protected LogitTreeNode[] regressionTreeRoots;
+	protected DecisionTreeNode[] decisionTreeRoots;
 	
 	/** 
 	 * Feature Sets to use to generate feature vectors for state+action pairs.
@@ -61,7 +60,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	protected BaseFeatureSet[] featureSets;
 	
 	/** 
-	 * If >= 0, we'll only actually use this softmax policy in MCTS play-outs
+	 * If >= 0, we'll only actually use this policy in MCTS play-outs
 	 * for up to this many actions. If a play-out still did not terminate
 	 * after this many play-out actions, we revert to a random play-out
 	 * strategy as fallback
@@ -80,29 +79,29 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	 * Default constructor. Will initialise important parts to null and break 
 	 * down if used directly. Should customise() it first!
 	 */
-	public SoftmaxPolicyLogitTree()
+	public ProportionalPolicyClassificationTree()
 	{
-		regressionTreeRoots = null;
+		decisionTreeRoots = null;
 		featureSets = null;
 	}
 	
 	/**
-	 * Constructs a softmax policy with regression tree(s) for logits
-	 * @param regressionTreeRoots
+	 * Constructs a policy with classification tree(s) for probabilities
+	 * @param decisionTreeRoots
 	 * @param featureSets
 	 */
-	public SoftmaxPolicyLogitTree
+	public ProportionalPolicyClassificationTree
 	(
-		final LogitTreeNode[] regressionTreeRoots, 
+		final DecisionTreeNode[] decisionTreeRoots, 
 		final BaseFeatureSet[] featureSets
 	)
 	{
-		this.regressionTreeRoots = regressionTreeRoots;
+		this.decisionTreeRoots = decisionTreeRoots;
 		this.featureSets = Arrays.copyOf(featureSets, featureSets.length);
 	}
 	
 	/**
-	 * Constructs a softmax policy with regression tree(s) for logits,
+	 * Constructs a policy with classification tree(s) for probabilities,
 	 * and a limit on the number of play-out actions to run with this policy
 	 * plus a fallback Play-out strategy to use afterwards.
 	 * 
@@ -110,42 +109,42 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	 * @param featureSets
 	 * @param playoutActionLimit
 	 */
-	public SoftmaxPolicyLogitTree
+	public ProportionalPolicyClassificationTree
 	(
-		final LogitTreeNode[] regressionTreeRoots, 
+		final DecisionTreeNode[] decisionTreeRoots, 
 		final BaseFeatureSet[] featureSets,
 		final int playoutActionLimit
 	)
 	{
-		this.regressionTreeRoots = regressionTreeRoots;
+		this.decisionTreeRoots = decisionTreeRoots;
 		this.featureSets = Arrays.copyOf(featureSets, featureSets.length);
 		this.playoutActionLimit = playoutActionLimit;
 	}
 	
 	/**
-	 * Constructs a softmax policy from a given set of feature trees as created
-	 * by the compiler, using the Selection weights.
+	 * Constructs a policy from a given set of feature trees as created
+	 * by the compiler, using classification trees
 	 * 
 	 * @param featureTrees
 	 * @param epsilon Epsilon for epsilon-greedy playouts
 	 */
-	public static SoftmaxPolicyLogitTree constructPolicy(final FeatureTrees featureTrees, final double epsilon)
+	public static ProportionalPolicyClassificationTree constructPolicy(final FeatureTrees featureTrees, final double epsilon)
 	{
-		final SoftmaxPolicyLogitTree softmax = new SoftmaxPolicyLogitTree();
+		final ProportionalPolicyClassificationTree softmax = new ProportionalPolicyClassificationTree();
 		
 		final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
-		final List<LogitTreeNode> roots = new ArrayList<LogitTreeNode>();
+		final List<DecisionTreeNode> roots = new ArrayList<DecisionTreeNode>();
 				
-		for (final LogitTree logitTree : featureTrees.logitTrees())
+		for (final DecisionTree classificationTree : featureTrees.decisionTrees())
 		{
-			if (logitTree.role() == RoleType.Shared || logitTree.role() == RoleType.Neutral)
-				addFeatureSetRoot(0, logitTree.root(), featureSetsList, roots);
+			if (classificationTree.role() == RoleType.Shared || classificationTree.role() == RoleType.Neutral)
+				addFeatureSetRoot(0, classificationTree.root(), featureSetsList, roots);
 			else
-				addFeatureSetRoot(logitTree.role().owner(), logitTree.root(), featureSetsList, roots);
+				addFeatureSetRoot(classificationTree.role().owner(), classificationTree.root(), featureSetsList, roots);
 		}
 		
 		softmax.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
-		softmax.regressionTreeRoots = roots.toArray(new LogitTreeNode[roots.size()]);
+		softmax.decisionTreeRoots = roots.toArray(new DecisionTreeNode[roots.size()]);
 		softmax.epsilon = epsilon;
 		
 		return softmax;
@@ -171,8 +170,12 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		return computeDistribution(featureSet.computeFeatureVectors(context, actions, thresholded), context.state().mover());
 	}
 	
-	@Override
-	public float computeLogit(final Context context, final Move move)
+	/**
+	 * @param context
+	 * @param move
+	 * @return Probability estimate (unnormalised) that given move should be played.
+	 */
+	public float computeUnnormalisedProbability(final Context context, final Move move)
 	{
 		final BaseFeatureSet featureSet;
 		
@@ -181,14 +184,14 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		else
 			featureSet = featureSets[context.state().mover()];
 		
-		final LogitTreeNode regressionTreeRoot;
+		final DecisionTreeNode decisionTreeRoot;
 		
-		if (regressionTreeRoots.length == 1)
-			regressionTreeRoot = regressionTreeRoots[0];
+		if (decisionTreeRoots.length == 1)
+			decisionTreeRoot = decisionTreeRoots[0];
 		else
-			regressionTreeRoot = regressionTreeRoots[context.state().mover()];
+			decisionTreeRoot = decisionTreeRoots[context.state().mover()];
 		
-		return regressionTreeRoot.predict(featureSet.computeFeatureVector(context, move, true));
+		return decisionTreeRoot.predict(featureSet.computeFeatureVector(context, move, true));
 	}
 	
 	/**
@@ -204,20 +207,20 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	)
 	{
 		final float[] logits = new float[featureVectors.length];
-		final LogitTreeNode regressionTreeRoot;
+		final DecisionTreeNode decisionTreeRoot;
 		
-		if (regressionTreeRoots.length == 1)
-			regressionTreeRoot = regressionTreeRoots[0];
+		if (decisionTreeRoots.length == 1)
+			decisionTreeRoot = decisionTreeRoots[0];
 		else
-			regressionTreeRoot = regressionTreeRoots[player];
+			decisionTreeRoot = decisionTreeRoots[player];
 		
 		for (int i = 0; i < featureVectors.length; ++i)
 		{
-			logits[i] = regressionTreeRoot.predict(featureVectors[i]);
+			logits[i] = decisionTreeRoot.predict(featureVectors[i]);
 		}
 		
 		final FVector distribution = FVector.wrap(logits);
-		distribution.softmax();
+		distribution.normalise();
 		
 		return distribution;
 	}
@@ -231,9 +234,9 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		if (epsilon < 1.0)
 		{
 			if (epsilon <= 0.0)
-				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots);
+				playoutMoveSelector = new DecisionTreeMoveSelector(featureSets, decisionTreeRoots);
 			else
-				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots), epsilon);
+				playoutMoveSelector = new EpsilonGreedyWrapper(new DecisionTreeMoveSelector(featureSets, decisionTreeRoots), epsilon);
 		}
 		else
 		{
@@ -304,7 +307,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		if (policyTreesFilepath != null)
 		{
 			final List<BaseFeatureSet> featureSetsList = new ArrayList<BaseFeatureSet>();
-			final List<LogitTreeNode> roots = new ArrayList<LogitTreeNode>();
+			final List<DecisionTreeNode> roots = new ArrayList<DecisionTreeNode>();
 			
 			try 
 			{
@@ -317,16 +320,16 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 							new Report()
 						);
 						
-				for (final LogitTree logitTree : featureTrees.logitTrees())
+				for (final DecisionTree decisionTree : featureTrees.decisionTrees())
 				{
-					if (logitTree.role() == RoleType.Shared || logitTree.role() == RoleType.Neutral)
-						addFeatureSetRoot(0, logitTree.root(), featureSetsList, roots);
+					if (decisionTree.role() == RoleType.Shared || decisionTree.role() == RoleType.Neutral)
+						addFeatureSetRoot(0, decisionTree.root(), featureSetsList, roots);
 					else
-						addFeatureSetRoot(logitTree.role().owner(), logitTree.root(), featureSetsList, roots);
+						addFeatureSetRoot(decisionTree.role().owner(), decisionTree.root(), featureSetsList, roots);
 				}
 				
 				this.featureSets = featureSetsList.toArray(new BaseFeatureSet[featureSetsList.size()]);
-				this.regressionTreeRoots = roots.toArray(new LogitTreeNode[roots.size()]);
+				this.decisionTreeRoots = roots.toArray(new DecisionTreeNode[roots.size()]);
 			} 
 			catch (final IOException e) 
 			{
@@ -336,7 +339,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		}
 		else
 		{
-			System.err.println("Cannot construct Softmax Policy Logit Tree from: " + Arrays.toString(inputs));
+			System.err.println("Cannot construct Proportional Policy Classification Tree from: " + Arrays.toString(inputs));
 		}		
 	}
 	
@@ -436,11 +439,11 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	
 	/**
 	 * @param lines
-	 * @return A softmax logit tree policy constructed from a given array of input lines
+	 * @return A classification tree policy constructed from a given array of input lines
 	 */
-	public static SoftmaxPolicyLogitTree fromLines(final String[] lines)
+	public static ProportionalPolicyClassificationTree fromLines(final String[] lines)
 	{
-		SoftmaxPolicyLogitTree policy = null;
+		ProportionalPolicyClassificationTree policy = null;
 		
 //		for (final String line : lines)
 //		{
@@ -452,7 +455,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 //		}
 //		
 //		if (policy == null)
-			policy = new SoftmaxPolicyLogitTree();
+			policy = new ProportionalPolicyClassificationTree();
 
 		policy.customise(lines);
 		return policy;
@@ -472,9 +475,9 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	protected static void addFeatureSetRoot
 	(
 		final int playerIdx, 
-		final LogitNode rootNode,
+		final metadata.ai.features.trees.classifiers.DecisionTreeNode rootNode,
 		final List<BaseFeatureSet> outFeatureSets, 
-		final List<LogitTreeNode> outRoots
+		final List<DecisionTreeNode> outRoots
 	)
 	{
 		while (outFeatureSets.size() <= playerIdx)
@@ -505,7 +508,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		
 		final BaseFeatureSet featureSet = JITSPatterNetFeatureSet.construct(aspatialFeatures, spatialFeatures);
 		outFeatureSets.set(playerIdx, featureSet);
-		outRoots.set(playerIdx, LogitTreeNode.fromMetadataNode(rootNode, featureSet));
+		outRoots.set(playerIdx, DecisionTreeNode.fromMetadataNode(rootNode, featureSet));
 	}
 
 	//-------------------------------------------------------------------------

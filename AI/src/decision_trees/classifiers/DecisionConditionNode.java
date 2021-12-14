@@ -1,6 +1,8 @@
 package decision_trees.classifiers;
 
 import features.Feature;
+import features.FeatureVector;
+import features.aspatial.AspatialFeature;
 import metadata.ai.features.trees.classifiers.If;
 
 /**
@@ -22,6 +24,9 @@ public class DecisionConditionNode extends DecisionTreeNode
 	/** Node we should traverse to if feature is false */
 	protected final DecisionTreeNode falseNode;
 	
+	/** Index of the feature we look at in our feature set (may index into either aspatial or spatial features list) */
+	protected int featureIdx = -1;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -40,6 +45,48 @@ public class DecisionConditionNode extends DecisionTreeNode
 		this.feature = feature;
 		this.trueNode = trueNode;
 		this.falseNode = falseNode;
+	}
+	
+	/**
+	 * Constructor
+	 * @param feature
+	 * @param trueNode Node we should traverse to if feature is true
+	 * @param falseNode Node we should traverse to if feature is false
+	 * @param featureIdx Index of the feature
+	 */
+	public DecisionConditionNode
+	(
+		final Feature feature, 
+		final DecisionTreeNode trueNode, 
+		final DecisionTreeNode falseNode,
+		final int featureIdx
+	)
+	{
+		this.feature = feature;
+		this.trueNode = trueNode;
+		this.falseNode = falseNode;
+		this.featureIdx = featureIdx;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public float predict(final FeatureVector featureVector)
+	{
+		if (feature instanceof AspatialFeature)
+		{
+			if (featureVector.aspatialFeatureValues().get(featureIdx) != 0.f)
+				return trueNode.predict(featureVector);
+			else
+				return falseNode.predict(featureVector);
+		}
+		else
+		{
+			if (featureVector.activeSpatialFeatureIndices().contains(featureIdx))
+				return trueNode.predict(featureVector);
+			else
+				return falseNode.predict(featureVector);
+		}
 	}
 	
 	//-------------------------------------------------------------------------

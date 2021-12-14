@@ -1,5 +1,7 @@
 package decision_trees.classifiers;
 
+import features.FeatureVector;
+
 /**
  * Leaf node in a feature-based decision tree, with probabilities for classes.
  * 
@@ -25,6 +27,14 @@ public class BinaryLeafNode extends DecisionTreeNode
 	)
 	{
 		this.prob = prob;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public float predict(final FeatureVector featureVector)
+	{
+		return prob;
 	}
 	
 	//-------------------------------------------------------------------------
