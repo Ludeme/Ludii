@@ -1,0 +1,63 @@
+(game "Fission"  
+    (players 2)  
+    (equipment { 
+        (board (square 8))
+        (piece "Ball" Each
+            (move 
+                (from (from))
+                (to (sites LineOfSight Farthest at:(from))
+                    if:(not (is In (to) (sites Around (from))))		
+                )
+                (then
+                    (if (!= (ahead (last To) (directions Cell from:(last From) to:(last To))) (last To))
+                        (remove
+                            (sites Around (last To) includeSelf:True)
+                        )
+                    )
+                )
+            )
+        ) 
+    })  
+    (rules 
+        (start {
+            (place "Ball1" (intersection (sites Phase 1) (expand (sites Centre) steps:2 Orthogonal)))
+            (place "Ball2" (intersection (sites Phase 0) (expand (sites Centre) steps:2 Orthogonal)))
+        })
+        (play 
+            (forEach Piece)
+        ) 
+        
+        (end {
+            (if (and (not (no Pieces Mover)) (no Pieces Next))
+                (result Mover Win)
+            )
+            (if 
+                (or 
+                    (no Moves Next)
+                    (and
+                        (= 1 (count Pieces P1))
+                        (= 1 (count Pieces P2))
+                    )
+                )
+                (result Mover Draw)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+    })
+    
+)
