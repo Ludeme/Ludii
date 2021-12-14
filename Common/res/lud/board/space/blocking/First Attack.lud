@@ -1,0 +1,39 @@
+(game "First Attack"  
+    (players 2)  
+    (equipment { 
+        (board (square 8))
+        (piece "Ball" Shared) 
+    })  
+    (rules 
+        (play 
+            (move Add
+                (piece "Ball")
+                (to (sites Empty)
+                    if:(all Sites (sites Direction from:(to) Adjacent) if:(is Empty (site)))		
+                )
+                
+            )
+        ) 
+        
+        (end 
+            (if (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)
