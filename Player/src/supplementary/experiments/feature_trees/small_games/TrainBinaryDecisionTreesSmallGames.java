@@ -187,7 +187,8 @@ public class TrainBinaryDecisionTreesSmallGames
 						}
 						
 						// Generate decision tree for Player p
-						final DecisionTreeNode root = ExperienceBinaryClassificationTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, depth);
+						final DecisionTreeNode root = 
+								ExperienceBinaryClassificationTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, depth, 5);
 						
 						// Convert to metadata structure
 						final metadata.ai.features.trees.classifiers.DecisionTreeNode metadataRoot = root.toMetadataNode();

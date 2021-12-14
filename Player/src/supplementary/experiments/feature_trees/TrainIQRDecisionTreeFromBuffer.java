@@ -106,7 +106,8 @@ public class TrainIQRDecisionTreeFromBuffer
 		final Game game = GameLoader.loadGameFromName(gameName);
 		playoutSoftmax.initAI(game, -1);
 		
-		final metadata.ai.features.trees.classifiers.DecisionTree[] metadataTrees = new metadata.ai.features.trees.classifiers.DecisionTree[featureSets.length - 1];
+		final metadata.ai.features.trees.classifiers.DecisionTree[] metadataTrees = 
+				new metadata.ai.features.trees.classifiers.DecisionTree[featureSets.length - 1];
 		
 		for (int p = 1; p < featureSets.length; ++p)
 		{
@@ -133,7 +134,7 @@ public class TrainIQRDecisionTreeFromBuffer
 			}
 			
 			// Generate decision tree for Player p
-			final DecisionTreeNode root = ExperienceIQRTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, 10);
+			final DecisionTreeNode root = ExperienceIQRTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, 10, 5);
 			
 			// Convert to metadata structure
 			final metadata.ai.features.trees.classifiers.DecisionTreeNode metadataRoot = root.toMetadataNode();

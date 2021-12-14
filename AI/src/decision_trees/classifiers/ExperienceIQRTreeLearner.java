@@ -50,6 +50,7 @@ public class ExperienceIQRTreeLearner
 	 * @param linFunc
 	 * @param buffer
 	 * @param maxDepth
+	 * @param minSamplesPerLeaf
 	 * @return Root node of the generated tree
 	 */
 	public static DecisionTreeNode buildTree
@@ -57,7 +58,8 @@ public class ExperienceIQRTreeLearner
 		final BaseFeatureSet featureSet, 
 		final LinearFunction linFunc, 
 		final ExperienceBuffer buffer, 
-		final int maxDepth
+		final int maxDepth,
+		final int minSamplesPerLeaf
 	)
 	{
 		final WeightVector oracleWeightVector = linFunc.effectiveParams();
@@ -182,7 +184,8 @@ public class ExperienceIQRTreeLearner
 					allTargetClasses, 
 					new BitSet(), new BitSet(), 
 					featureSet.getNumAspatialFeatures(), featureSet.getNumSpatialFeatures(),
-					maxDepth
+					maxDepth,
+					minSamplesPerLeaf
 				);
 	}
 	
@@ -197,6 +200,7 @@ public class ExperienceIQRTreeLearner
 	 * @param numAspatialFeatures
 	 * @param numSpatialFeatures
 	 * @param allowedDepth
+	 * @param minSamplesPerLeaf
 	 * @return Newly built node for decision tree, for given data
 	 */
 	private static DecisionTreeNode buildNode
@@ -208,9 +212,13 @@ public class ExperienceIQRTreeLearner
 		final BitSet alreadyPickedSpatials,
 		final int numAspatialFeatures,
 		final int numSpatialFeatures,
-		final int allowedDepth
+		final int allowedDepth,
+		final int minSamplesPerLeaf
 	)
 	{
+		if (minSamplesPerLeaf <= 0)
+			throw new IllegalArgumentException("minSamplesPerLeaf must be greater than 0");
+		
 		if (remainingFeatureVectors.isEmpty())
 		{
 			// This should probably never happen
@@ -249,6 +257,7 @@ public class ExperienceIQRTreeLearner
 		
 		// Find feature with maximum information gain
 		double maxInformationGain = Double.NEGATIVE_INFINITY;
+		double minInformationGain = Double.POSITIVE_INFINITY;
 		int bestIdx = -1;
 		boolean bestFeatureIsAspatial = true;
 		
@@ -309,7 +318,7 @@ public class ExperienceIQRTreeLearner
 			final int totalNumFalse = numBottom25IfFalse + numIQRIfFalse + numTop25IfFalse;
 			final int totalNumTrue = numBottom25IfTrue + numIQRIfTrue + numTop25IfTrue;
 			
-			if (totalNumFalse == 0 || totalNumTrue == 0)
+			if (totalNumFalse < minSamplesPerLeaf || totalNumTrue < minSamplesPerLeaf)
 				continue;
 			
 			final double probBottom25IfFalse = ((double)numBottom25IfFalse) / totalNumFalse;
@@ -345,6 +354,11 @@ public class ExperienceIQRTreeLearner
 			{
 				maxInformationGain = informationGain;
 				bestIdx = i;
+			}
+			
+			if (informationGain < minInformationGain)
+			{
+				minInformationGain = informationGain;
 			}
 		}
 		
@@ -405,7 +419,7 @@ public class ExperienceIQRTreeLearner
 			final int totalNumFalse = numBottom25IfFalse + numIQRIfFalse + numTop25IfFalse;
 			final int totalNumTrue = numBottom25IfTrue + numIQRIfTrue + numTop25IfTrue;
 			
-			if (totalNumFalse == 0 || totalNumTrue == 0)
+			if (totalNumFalse < minSamplesPerLeaf || totalNumTrue < minSamplesPerLeaf)
 				continue;
 			
 			final double probBottom25IfFalse = ((double)numBottom25IfFalse) / totalNumFalse;
@@ -443,9 +457,14 @@ public class ExperienceIQRTreeLearner
 				bestIdx = i;
 				bestFeatureIsAspatial = false;
 			}
+			
+			if (informationGain < minInformationGain)
+			{
+				minInformationGain = informationGain;
+			}
 		}
 
-		if (bestIdx == -1 || maxInformationGain == 0.0)
+		if (bestIdx == -1 || maxInformationGain == 0.0 || minInformationGain == maxInformationGain)
 		{
 			// No point in making any split at all, so just make leaf
 			return new DecisionLeafNode(probBottom25, probIQR, probTop25);
@@ -526,7 +545,8 @@ public class ExperienceIQRTreeLearner
 						newAlreadyPickedSpatials,
 						numAspatialFeatures,
 						numSpatialFeatures,
-						allowedDepth - 1
+						allowedDepth - 1,
+						minSamplesPerLeaf
 					);
 		}
 		
@@ -543,7 +563,8 @@ public class ExperienceIQRTreeLearner
 						newAlreadyPickedSpatials,
 						numAspatialFeatures,
 						numSpatialFeatures,
-						allowedDepth - 1
+						allowedDepth - 1,
+						minSamplesPerLeaf
 					);
 		}
 		

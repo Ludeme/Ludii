@@ -32,6 +32,7 @@ public class ExperienceBinaryClassificationTreeLearner
 	 * @param linFunc
 	 * @param buffer
 	 * @param maxDepth
+	 * @param minSamplesPerLeaf
 	 * @return Root node of the generated tree
 	 */
 	public static DecisionTreeNode buildTree
@@ -39,7 +40,8 @@ public class ExperienceBinaryClassificationTreeLearner
 		final BaseFeatureSet featureSet, 
 		final LinearFunction linFunc, 
 		final ExperienceBuffer buffer, 
-		final int maxDepth
+		final int maxDepth,
+		final int minSamplesPerLeaf
 	)
 	{
 		final WeightVector oracleWeightVector = linFunc.effectiveParams();
@@ -108,7 +110,8 @@ public class ExperienceBinaryClassificationTreeLearner
 					allTargetLabels, 
 					new BitSet(), new BitSet(), 
 					featureSet.getNumAspatialFeatures(), featureSet.getNumSpatialFeatures(),
-					maxDepth
+					maxDepth,
+					minSamplesPerLeaf
 				);
 	}
 	
@@ -123,6 +126,7 @@ public class ExperienceBinaryClassificationTreeLearner
 	 * @param numAspatialFeatures
 	 * @param numSpatialFeatures
 	 * @param allowedDepth
+	 * @param minSamplesPerLeaf
 	 * @return Newly built node for decision tree, for given data
 	 */
 	private static DecisionTreeNode buildNode
@@ -134,9 +138,13 @@ public class ExperienceBinaryClassificationTreeLearner
 		final BitSet alreadyPickedSpatials,
 		final int numAspatialFeatures,
 		final int numSpatialFeatures,
-		final int allowedDepth
+		final int allowedDepth,
+		final int minSamplesPerLeaf
 	)
 	{
+		if (minSamplesPerLeaf <= 0)
+			throw new IllegalArgumentException("minSamplesPerLeaf must be greater than 0");
+		
 		if (remainingFeatureVectors.isEmpty())
 		{
 			// This should probably never happen
@@ -240,12 +248,13 @@ public class ExperienceBinaryClassificationTreeLearner
 
 		// Find feature that maximally reduces sum of squared errors
 		double minSumSquaredErrors = Double.POSITIVE_INFINITY;
+		double maxSumSquaredErrors = Double.NEGATIVE_INFINITY;
 		int bestIdx = -1;
 		boolean bestFeatureIsAspatial = true;
 
 		for (int i = 0; i < numAspatialFeatures; ++i)
 		{
-			if (numFalseAspatial[i] == 0 || numTrueAspatial[i] == 0)
+			if (numFalseAspatial[i] < minSamplesPerLeaf || numTrueAspatial[i] < minSamplesPerLeaf)
 				continue;
 
 			double sumSquaredErrors = 0.0;
@@ -268,11 +277,16 @@ public class ExperienceBinaryClassificationTreeLearner
 				minSumSquaredErrors = sumSquaredErrors;
 				bestIdx = i;
 			}
+			
+			if (sumSquaredErrors > maxSumSquaredErrors)
+			{
+				maxSumSquaredErrors = sumSquaredErrors;
+			}
 		}
 
 		for (int i = 0; i < numSpatialFeatures; ++i)
 		{
-			if (numFalseSpatial[i] == 0 || numTrueSpatial[i] == 0)
+			if (numFalseSpatial[i] < minSamplesPerLeaf || numTrueSpatial[i] < minSamplesPerLeaf)
 				continue;
 
 			double sumSquaredErrors = 0.0;
@@ -296,9 +310,14 @@ public class ExperienceBinaryClassificationTreeLearner
 				bestIdx = i;
 				bestFeatureIsAspatial = false;
 			}
+			
+			if (sumSquaredErrors > maxSumSquaredErrors)
+			{
+				maxSumSquaredErrors = sumSquaredErrors;
+			}
 		}
 
-		if (bestIdx == -1 || minSumSquaredErrors == 0.0)
+		if (bestIdx == -1 || minSumSquaredErrors == 0.0 || minSumSquaredErrors == maxSumSquaredErrors)
 		{
 			// No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
 			return new BinaryLeafNode(remainingTargetLabels.sum() / remainingTargetLabels.size());
@@ -379,7 +398,8 @@ public class ExperienceBinaryClassificationTreeLearner
 						newAlreadyPickedSpatials,
 						numAspatialFeatures,
 						numSpatialFeatures,
-						allowedDepth - 1
+						allowedDepth - 1,
+						minSamplesPerLeaf
 					);
 		}
 
@@ -396,7 +416,8 @@ public class ExperienceBinaryClassificationTreeLearner
 						newAlreadyPickedSpatials,
 						numAspatialFeatures,
 						numSpatialFeatures,
-						allowedDepth - 1
+						allowedDepth - 1,
+						minSamplesPerLeaf
 					);
 		}
 		
