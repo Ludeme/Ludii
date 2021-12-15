@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Pattern;
 
-import decision_trees.classifiers.DecisionTreeNode;
-import decision_trees.classifiers.ExperienceImbalancedBinaryClassificationTreeLearner;
+import decision_trees.logits.ExperienceLogitTreeLearner;
+import decision_trees.logits.LogitTreeNode;
 import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
 import game.Game;
@@ -23,11 +23,11 @@ import utils.data_structures.experience_buffers.PrioritizedReplayBuffer;
 import utils.data_structures.experience_buffers.UniformExperienceBuffer;
 
 /**
- * Train imbalanced binary classification feature trees for our small games.
+ * Train logit regression feature trees for our small games.
  * 
  * @author Dennis Soemers
  */
-public class TrainImbalancedBinaryDecisionTreesSmallGames
+public class TrainLogitTreesSmallGames
 {
 
 	//-------------------------------------------------------------------------
@@ -35,7 +35,7 @@ public class TrainImbalancedBinaryDecisionTreesSmallGames
 	/**
 	 * Private constructor
 	 */
-	private TrainImbalancedBinaryDecisionTreesSmallGames()
+	private TrainLogitTreesSmallGames()
 	{
 		// Do nothing
 	}
@@ -152,8 +152,8 @@ public class TrainImbalancedBinaryDecisionTreesSmallGames
 				
 				for (final int depth : TREE_DEPTHS)
 				{
-					final metadata.ai.features.trees.classifiers.DecisionTree[] metadataTrees = 
-							new metadata.ai.features.trees.classifiers.DecisionTree[featureSets.length - 1];
+					final metadata.ai.features.trees.logits.LogitTree[] metadataTrees = 
+							new metadata.ai.features.trees.logits.LogitTree[featureSets.length - 1];
 					
 					for (int p = 1; p < featureSets.length; ++p)
 					{
@@ -188,22 +188,22 @@ public class TrainImbalancedBinaryDecisionTreesSmallGames
 						}
 						
 						// Generate decision tree for Player p
-						final DecisionTreeNode root = 
-								ExperienceImbalancedBinaryClassificationTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, depth, 5);
+						final LogitTreeNode root = 
+								ExperienceLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, depth, 5);
 						
 						// Convert to metadata structure
-						final metadata.ai.features.trees.classifiers.DecisionTreeNode metadataRoot = root.toMetadataNode();
-						metadataTrees[p - 1] = new metadata.ai.features.trees.classifiers.DecisionTree(RoleType.roleForPlayerId(p), metadataRoot);
+						final metadata.ai.features.trees.logits.LogitNode metadataRoot = root.toMetadataNode();
+						metadataTrees[p - 1] = new metadata.ai.features.trees.logits.LogitTree(RoleType.roleForPlayerId(p), metadataRoot);
 					}
 					
 					final String outFile = RESULTS_DIR + "Trees/" + cleanGameName + "_" + cleanRulesetName + 
-							"/ImbalancedBinaryClassificationTree_" + POLICY_WEIGHT_TYPES[j] + "_" + depth + ".txt";
-					System.out.println("Writing Imbalanced Binary Classification tree to: " + outFile);
+							"/LogitRegressionTree_" + POLICY_WEIGHT_TYPES[j] + "_" + depth + ".txt";
+					System.out.println("Writing Logit Regression tree to: " + outFile);
 					new File(outFile).getParentFile().mkdirs();
 					
 					try (final PrintWriter writer = new PrintWriter(outFile))
 					{
-						writer.println(new FeatureTrees(null, metadataTrees));
+						writer.println(new FeatureTrees(metadataTrees, null));
 					}
 					catch (final IOException e)
 					{
@@ -222,7 +222,7 @@ public class TrainImbalancedBinaryDecisionTreesSmallGames
 	 */
 	public static void main(final String[] args)
 	{
-		final TrainImbalancedBinaryDecisionTreesSmallGames task = new TrainImbalancedBinaryDecisionTreesSmallGames();
+		final TrainLogitTreesSmallGames task = new TrainLogitTreesSmallGames();
 		task.run();
 	}
 	
