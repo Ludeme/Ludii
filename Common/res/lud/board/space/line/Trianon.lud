@@ -1,0 +1,70 @@
+(define "ThreeStones"
+    (or {
+        (= 3 (count Sites in:
+                (forEach
+                    (sites Row (row of:(last To)))
+                    if:(is Friend (who at:(site)))
+                )
+            )
+        )
+        (= 3 (count Sites in:
+                (forEach
+                    (sites Column (column of:(last To)))
+                    
+                    if:(is Friend (who at:(site)))
+                )
+            )
+        )
+        (= 3 (count Sites in:
+                (forEach
+                    (union (sites Direction from:(last To) NE included:True) (sites Direction from:(last To) SW)) 
+                    if:(is Friend (who at:(site)))
+                )
+            )
+        )
+        (= 3 (count Sites in:
+                (forEach
+                    (union (sites Direction from:(last To) NW included:True) (sites Direction from:(last To) SE)) 
+                    if:(is Friend (who at:(site)))
+                )
+            )
+        )
+    })
+)
+
+//------------------------------------------------------------------------------
+
+(game "Trianon"
+    (players 2)
+    (equipment {
+        (board (square 5)
+            use:Vertex
+        )
+        (piece "Ball" Each)
+    })
+    (rules
+        (play (move Add (to (sites Empty))))
+        (end (if ("ThreeStones") (result Mover Loss)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+    
+)
