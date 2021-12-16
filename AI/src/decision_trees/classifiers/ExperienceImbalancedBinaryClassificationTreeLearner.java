@@ -240,6 +240,7 @@ public class ExperienceImbalancedBinaryClassificationTreeLearner
 		// Find feature that maximally reduces squared errors for true branch
 		double minTrueBranchSquaredErrors = Double.POSITIVE_INFINITY;
 		double maxTrueBranchSquaredErrors = Double.NEGATIVE_INFINITY;
+		int bestTrueBranchNumSamples = -1;
 		int bestIdx = -1;
 		boolean bestFeatureIsAspatial = true;
 
@@ -267,6 +268,12 @@ public class ExperienceImbalancedBinaryClassificationTreeLearner
 			{
 				minTrueBranchSquaredErrors = trueBranchSquaredErrors;
 				bestIdx = i;
+				bestTrueBranchNumSamples = numTrueAspatial[i];
+			}
+			else if (trueBranchSquaredErrors == minTrueBranchSquaredErrors && numTrueAspatial[i] > bestTrueBranchNumSamples)
+			{
+				bestIdx = i;
+				bestTrueBranchNumSamples = numTrueAspatial[i];
 			}
 			
 			if (trueBranchSquaredErrors > maxTrueBranchSquaredErrors)
@@ -299,7 +306,13 @@ public class ExperienceImbalancedBinaryClassificationTreeLearner
 			{
 				minTrueBranchSquaredErrors = trueBranchSquaredErrors;
 				bestIdx = i;
+				bestTrueBranchNumSamples = numTrueSpatial[i];
 				bestFeatureIsAspatial = false;
+			}
+			else if (trueBranchSquaredErrors == minTrueBranchSquaredErrors && numTrueSpatial[i] > bestTrueBranchNumSamples)
+			{
+				bestIdx = i;
+				bestTrueBranchNumSamples = numTrueSpatial[i];
 			}
 			
 			if (trueBranchSquaredErrors > maxTrueBranchSquaredErrors)
