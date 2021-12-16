@@ -24,7 +24,9 @@ import org.json.JSONTokener;
 import game.Game;
 import other.AI;
 import policies.GreedyPolicy;
+import policies.ProportionalPolicyClassificationTree;
 import policies.softmax.SoftmaxPolicyLinear;
+import policies.softmax.SoftmaxPolicyLogitTree;
 import search.flat.FlatMonteCarlo;
 import search.flat.HeuristicSampling;
 import search.flat.OnePlyNoHeuristic;
@@ -373,6 +375,14 @@ public class AIFactory
 			)
 			{
 				return GreedyPolicy.fromLines(lines);
+			}
+			else if (algName.equalsIgnoreCase("ProportionalPolicyClassificationTree"))
+			{
+				return ProportionalPolicyClassificationTree.fromLines(lines);
+			}
+			else if (algName.equalsIgnoreCase("SoftmaxPolicyLogitTree"))
+			{
+				return SoftmaxPolicyLogitTree.fromLines(lines);
 			}
 			else if (algName.equalsIgnoreCase("Random"))
 			{
