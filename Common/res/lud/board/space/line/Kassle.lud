@@ -150,6 +150,9 @@
             })
         )
         (end {
+            (if (and ("IsLine" P1) ("IsLine" P2)) 
+                (result Mover Win)
+            )
             (if ("IsLine" P1) 
                 (result P1 Win)
             )
