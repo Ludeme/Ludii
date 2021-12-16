@@ -4552,6 +4552,7 @@ SUBCLASS: metadata.ai.Ai
 SUBCLASS: metadata.ai.AIItem
 SUBCLASS: metadata.ai.features.Features
 SUBCLASS: metadata.ai.features.FeatureSet
+SUBCLASS: metadata.ai.features.trees.classifiers.BinaryLeaf
 SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTree
 SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTreeNode
 SUBCLASS: metadata.ai.features.trees.classifiers.If
@@ -4637,6 +4638,7 @@ TYPE: metadata.ai.AIItem
 TYPE JAVADOC: General function hint for this game.Metadata containing hints for AI agents for this game.
 SUBCLASS: metadata.ai.features.Features
 SUBCLASS: metadata.ai.features.FeatureSet
+SUBCLASS: metadata.ai.features.trees.classifiers.BinaryLeaf
 SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTree
 SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTreeNode
 SUBCLASS: metadata.ai.features.trees.classifiers.If
@@ -4710,6 +4712,12 @@ NEW CTOR
 PARAM JAVADOC: [{<featureSet>}]: A sequence of multiple feature sets (typically each applying to a different player).
 EXAMPLE: (features { (featureSet P1 { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) }) (featureSet P2 { (pair "rel:to=<{}>:pat=<els=[-{}]>" -1.0) }) })
 REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70–75).
+TYPE: metadata.ai.features.trees.classifiers.BinaryLeaf
+TYPE JAVADOC: Describes a leaf node in a binary classification tree for features; it contains  only a predicted probability for "top move".
+NEW CTOR
+(binaryLeaf <float>)
+PARAM JAVADOC: <float>: Predicted probability of being a top move
+EXAMPLE: (binaryLeaf 0.6)
 TYPE: metadata.ai.features.trees.classifiers.DecisionTree
 TYPE JAVADOC: Describes a Decision Tree for features (a decision tree representation of a feature set,  which outputs class predictions).
 NEW CTOR
@@ -4719,6 +4727,7 @@ PARAM JAVADOC: <decisionTreeNode>: The root node of the tree.
 EXAMPLE: (decisionTree P1 (if "rel:to=<{}>:pat=<els=[f{0}]>" then:(leaf bottom25:0.0 iqr:0.2 top25:0.8) else:(leaf bottom25:0.6 iqr:0.35 top25:0.05)))
 TYPE: metadata.ai.features.trees.classifiers.DecisionTreeNode
 TYPE JAVADOC: Describes a node in a decision tree for features. May either be a condition  node (internal node), or a node with class predictions (leaf node).
+SUBCLASS: metadata.ai.features.trees.classifiers.BinaryLeaf
 SUBCLASS: metadata.ai.features.trees.classifiers.If
 SUBCLASS: metadata.ai.features.trees.classifiers.Leaf
 TYPE: metadata.ai.features.trees.classifiers.If
@@ -4730,7 +4739,7 @@ PARAM JAVADOC: then:<decisionTreeNode>: The branch to take if the feature is act
 PARAM JAVADOC: Else:<decisionTreeNode>: The branch to take if the feature is not active.
 EXAMPLE: (if "rel:to=<{}>:pat=<els=[f{0}]>" then:(leaf bottom25:0.0 iqr:0.2 top25:0.8) else:(leaf bottom25:0.6 iqr:0.35 top25:0.05))
 TYPE: metadata.ai.features.trees.classifiers.Leaf
-TYPE JAVADOC: Describes a leaf node in a decision tree for features; it contains predicted  probabilities for the Bottom25, IQR, and Top25 classes.
+TYPE JAVADOC: Describes a leaf node in a binary classification tree for features; it contains  only a predicted probability for "best move".
 NEW CTOR
 (leaf bottom25:<float> iqr:<float> top25:<float>)
 PARAM JAVADOC: bottom25:<float>: Predicted probability of being a bottom-25% move
