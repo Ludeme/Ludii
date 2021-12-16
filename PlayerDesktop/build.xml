@@ -375,6 +375,7 @@
 	        	<formatter type="plain" usefile="false"/>
 	        	<!-- Quick tests first. --> 
 				<test name="travis.quickTests.AllDifferentIdConceptEnum" todir="${junit.output.dir}"/>
+	        	<test name="other.TestMath" todir="${junit.output.dir}"/>
 				<test name="travis.quickTests.FVectorTests" todir="${junit.output.dir}"/>
 	        	<test name="travis.quickTests.TestJNIClasses" todir="${junit.output.dir}"/>
 	        	<test name="travis.quickTests.TestDemos" todir="${junit.output.dir}"/>
