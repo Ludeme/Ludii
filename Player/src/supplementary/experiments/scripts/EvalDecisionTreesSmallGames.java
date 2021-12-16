@@ -37,7 +37,7 @@ public class EvalDecisionTreesSmallGames
 	private static final int MAX_WALL_TIME = 10080;
 	
 	/** Num trials per matchup */
-	private static final int NUM_TRIALS = 25;
+	private static final int NUM_TRIALS = 50;
 	
 	/** Games we want to run */
 	private static final String[] GAMES = 
@@ -195,6 +195,7 @@ public class EvalDecisionTreesSmallGames
 			}
 		}
 		
+		int callIdx = 0;
 		for (int processIdx = 0; processIdx < processDataList.size(); ++processIdx)
 		{
 			// Start a new job script
@@ -295,6 +296,8 @@ public class EvalDecisionTreesSmallGames
 								"--thinking-time 1",
 								"--agents",
 								StringRoutines.join(" ", agentStrings),
+								"--warming-up-secs",
+								String.valueOf(0),
 								"--game-length-cap",
 								String.valueOf(250),
 								"--out-dir",
@@ -303,6 +306,7 @@ public class EvalDecisionTreesSmallGames
 									"/home/" + 
 									userName + 
 									"/projects/ludi/Out/Evals/" + 
+									processData.experimentType + "/" +
 									cleanGameName +
 									"_" +
 									cleanRulesetName
@@ -315,10 +319,11 @@ public class EvalDecisionTreesSmallGames
 								"--max-wall-time",
 								String.valueOf(MAX_WALL_TIME),
 								">",
-								"/home/" + userName + "/projects/ludi/Out/Evals/Out_" + processIdx + ".out"
+								"/home/" + userName + "/projects/ludi/Out/Evals/Out_" + callIdx + ".out"
 							);
 					
 					writer.println(javaCall);
+					callIdx++;
 				}
 
 				jobScriptNames.add(jobScriptFilename);
