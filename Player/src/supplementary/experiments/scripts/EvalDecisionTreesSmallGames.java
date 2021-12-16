@@ -349,8 +349,9 @@ public class EvalDecisionTreesSmallGames
 			{
 				for (final String jobScriptName : jobScriptsLists.get(i))
 				{
-					writer.println("bash " + jobScriptName);
+					writer.println("bash " + jobScriptName + " &");
 				}
+				writer.println("wait");
 			}
 			catch (final FileNotFoundException | UnsupportedEncodingException e)
 			{
