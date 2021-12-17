@@ -77,8 +77,8 @@ public class GenerateLudiiDocXML
 				//"-verbose"
 				);
 		
-		System.out.println("where javadoc:");
-		new ProcessBuilder("where javadoc".split(Pattern.quote(" "))).inheritIO().start().waitFor();
+//		System.out.println("where javadoc:");
+//		new ProcessBuilder("where javadoc".split(Pattern.quote(" "))).inheritIO().start().waitFor();
 		
 		System.out.println("Executing command: " + command);
 		new ProcessBuilder(command.split(Pattern.quote(" "))).inheritIO().start().waitFor();
