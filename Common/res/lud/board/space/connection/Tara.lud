@@ -1,0 +1,83 @@
+(define "ConnectedEdges"
+    (!= 0 (count Sites in:(forEach (sites Occupied by:#1) if:(is Connected at:(site) All #1))))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tara"
+    (players 2)
+    (equipment {
+        (board (square 5) use:Vertex)
+        (piece "Ball" Each)
+        (regions P1 { (sites Top) (sites Bottom) } )
+        (regions P2 { (sites Left) (sites Right) } )
+    })
+    (rules
+        phases:{
+        (phase "Opening"
+            (play 
+                (move Add
+                    (to (intersection (sites Top) (sites Left)))
+                )
+            )
+            (nextPhase "Main")
+        )
+        (phase "Main"
+            (play 
+                (if (is Mover P1)
+                    (move Select (from (sites Top) if:(not (is In (column of:(from)) (sites Pending))))
+                        (then
+                            (and {
+                                (if (is Enemy (who at:(coord row:0 column:(column of:(last From)))))
+                                    (set Pending (row of:(coord row:0 column:(column of:(last From)))))
+                                )
+                                (push (from (last To)) S)
+                                (add (piece (id "Ball" Mover)) (to (last To)))
+                            })
+                        )
+                    )
+                    (move Select (from (sites Left) if:(not (is In (row of:(from)) (sites Pending))))
+                        (then
+                            (and {
+                                (if (is Enemy (who at:(coord row:(row of:(last From)) column:(- (count Columns) 1))))
+                                    (set Pending (column of:(coord row:(row of:(last From)) column:(- (count Columns) 1))))
+                                )
+                                (push (from (last To)) E)
+                                (add (piece (id "Ball" Mover)) (to (last To)))
+                            })
+                        )	   
+                    )
+                )
+            )
+        )
+        }
+        
+        (end {
+            (if ("ConnectedEdges" P1) (result P1 Win))
+            (if ("ConnectedEdges" P2) (result P2 Win))
+        }) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour VeryDarkGrey))
+        (player Colour P2 (colour White))
+        (show Edges Diagonal (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+    
+)
