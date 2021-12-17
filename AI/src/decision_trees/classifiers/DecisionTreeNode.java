@@ -64,7 +64,7 @@ public abstract class DecisionTreeNode
 				feature = featureSet.spatialFeatures()[featureIdx];
 			}
 			
-			return new DecisionConditionNode(feature, thenBranch, elseBranch);
+			return new DecisionConditionNode(feature, thenBranch, elseBranch, featureIdx);
 		}
 		else if (metadataNode instanceof metadata.ai.features.trees.classifiers.BinaryLeaf)
 		{

@@ -61,7 +61,7 @@ public abstract class LogitTreeNode
 				feature = featureSet.spatialFeatures()[featureIdx];
 			}
 			
-			return new LogitDecisionNode(feature, thenBranch, elseBranch);
+			return new LogitDecisionNode(feature, thenBranch, elseBranch, featureIdx);
 		}
 		else
 		{
