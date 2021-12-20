@@ -42,7 +42,7 @@
                     )
                 )
             )
-            (piece "Gnome" P2 (move Step Forwards (to if:(is Empty (to)))))
+            (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
             (hand P1)
             (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
             (regions "Home" P1 (sites Top))
@@ -101,7 +101,7 @@
                 )
                 
                 (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step Forwards (to if:(is Empty (to)))))
+                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
                 (hand P1)
                 (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
                 (regions "Home" P1 (sites Top))
@@ -160,7 +160,7 @@
                 )
                 
                 (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step Forwards (to if:(is Empty (to)))))
+                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
                 (hand P1)
                 (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
                 (regions "Home" P1 (sites Top))
@@ -219,7 +219,7 @@
                 )
                 
                 (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step Forwards (to if:(is Empty (to)))))
+                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
                 (hand P1)
                 (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
                 (regions "Home" P1 (sites Top))
@@ -272,7 +272,7 @@
                 )
                 
                 (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step Forwards (to if:(is Empty (to)))))
+                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
                 (hand P1)
                 (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
                 (regions "Home" P1 (sites Top))
@@ -305,6 +305,77 @@
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
+            }) 
+            >
+            "The rules of the game V."
+        )
+    
+    (item "Game VI" 
+            <
+            (equipment {
+                (board
+                            (merge 
+                                {
+                                (rectangle 3 3 diagonals:Alternating) 
+                                (shift 0 2 (wedge 2)) 
+                                (shift 0 -1 (rotate 180 (wedge 2))) 
+                                }
+                            )
+                    use:Vertex
+                )
+                
+                (piece "Foot" P1 (move Step Adjacent (to if:(is Empty (to)))))
+                (piece "Gnome" P2 
+                	(move Step 
+                		(from (from) if:(= 0 (state at:(from))))
+                		(directions {Forwards Rightward Leftward})
+                		(to if:(is Empty (to)))
+                		(then
+                			(if (all Sites (difference (sites Occupied by:Mover) (last To)) if:(!= 0 (state at:(site))))
+                				(forEach Site
+                					(sites Occupied by:Mover)
+                					(set State at:(site) 0)
+                				)
+                				(and
+                					(set State at:(last To) 1)
+                					(moveAgain)
+                				)
+                			)
+                		)
+                	)
+                )
+                (hand P1)
+                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+                (regions "Home" P1 (sites Top))
+            })
+            > 
+            <
+            (start {
+                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+                (place "Foot1" (handSite P1))
+            })
+            >
+            <
+            phases:{
+            (phase "Opening"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (union (sites Centre) (intersection (sites Board) (expand (sites Bottom))))))
+                        (then (moveAgain))
+                    )
+                )
+                (nextPhase "Main")
+            )
+            (phase "Main"
+                (play (forEach Piece))
+            )
+            }
+            >
+            <
+            (end {
+                (if (and (= (count MovesThisTurn) 2) (no Moves Next)) (result P2 Win))
+                (if (or (no Moves P2) (is In (where "Foot" P1) (sites P2))) (result P1 Win))
             }) 
             >
             "The rules of the game V."
