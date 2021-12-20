@@ -1,0 +1,37 @@
+(game "Snort"
+    (players 2)
+    (equipment {
+        (board  (square 8))
+        (piece "Cat" P1)
+        (piece "Dog" P2)
+    })
+    (rules
+        (play
+            (move Add
+                (to 
+                    (difference (sites Empty) (sites Around (sites Occupied by:Next) Orthogonal))
+                )
+            )
+        )
+        (end (if (no Moves Next) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (board Colour Phase0 (colour Brown))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour InnerEdges (colour Hidden))
+    })
+    
+)
