@@ -41,6 +41,7 @@ public final class ActionRemoveNonApplied extends BaseAction
 		final int to 
 	)
 	{
+		this.type = type;
 		this.to = to;
 	}
 
