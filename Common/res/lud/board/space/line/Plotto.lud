@@ -1,0 +1,81 @@
+(define "CheckEndLine"
+    (and {
+        (is Occupied (ahead (last To) steps:1 #1))
+        (is Occupied (ahead (last To) steps:2 #1))
+        (= (what at:(last To)) (what at:(ahead (last To) steps:3 #1)))
+    })	
+)
+
+(define "IsLine4WithEndSameColour"
+    (and
+        (is Line 4 whats:{(id "Hex" P1) (id "Hex" P2) (id "SecondHex" P1) (id "SecondHex" P2)})
+        (or {
+            ("CheckEndLine" W)
+            ("CheckEndLine" E)
+            ("CheckEndLine" NNW)
+            ("CheckEndLine" SSW)
+            ("CheckEndLine" SSE)
+            ("CheckEndLine" NNE)
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Plotto"  
+    (players 2)  
+    (equipment { 
+        (boardless Hexagonal) 
+        (tile "Hex" Each numSides:6) 
+        (tile "SecondHex" Each numSides:6) 
+        (hand Each size:2)
+    })  
+    
+    (rules 
+        (start {
+            (place "Hex1" (centrePoint)) 
+            (place "Hex2" (ahead (centrePoint) E))
+            (place "Hex1" (handSite P1 0))
+            (place "Hex2" (handSite P2 0))
+            (place "SecondHex1" (handSite P1 1))
+            (place "SecondHex2" (handSite P2 1))
+        })
+        
+        (play 
+            (move 
+                (from (sites Hand Mover))
+                (to 
+                    (sites Playable) 
+                    if:(and
+                        (<= 2 (count Sites in:(sites Around (to) NotEmpty)))
+                        (not (is In (what at:(from)) (results from:(last From) to:(sites Around (to)) (what at:(to)))))
+                    )
+                )
+                copy:True
+            )
+        )
+        
+        (end (if ("IsLine4WithEndSameColour") (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour LightGrey))
+        (piece Colour P1 "SecondHex1"  fillColour:(colour Blue))
+        (piece Colour P2 "SecondHex2"  fillColour:(colour Red))
+        (piece Rename P1 piece:"SecondHex" "Hex")
+        (piece Rename P2 piece:"SecondHex" "Hex")
+        (piece Colour P1 "Hex1"  fillColour:(colour Black))
+        (piece Colour P2 "Hex2"  fillColour:(colour LightGrey))
+    })
+    
+)
