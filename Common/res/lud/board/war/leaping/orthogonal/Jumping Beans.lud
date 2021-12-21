@@ -1,0 +1,99 @@
+(game "Jumping Beans"
+    (players 2)
+    (equipment {
+        (board (square 7))
+        (piece "Bean" Each
+            (move Step (to if:(is Empty (to))))
+        )
+    })
+    (rules
+        (start {
+            (place "Bean1" (forEach (sites Board) if:(< (site) (centrePoint))))
+            (place "Bean2" (forEach (sites Board) if:(> (site) (centrePoint))))
+        })
+        
+        (play 
+            (if (is Prev Mover)
+                (max Moves
+                    (move Hop
+                        (from (last To))
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply 
+                                (remove (between))
+                            )
+                        )
+                        (then
+                            (if (can Move
+                                    (hop
+                                        (from (last To))
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))
+                                    )
+                                )
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                (priority {
+                    (max Moves
+                        (forEach Piece
+                            (move Hop
+                                (between if:(is Enemy (who at:(between))))
+                                (to if:(is Empty (to))
+                                    (apply 
+                                        (remove (between))
+                                    )
+                                )
+                                (then
+                                    (if (can Move
+                                            (hop
+                                                (from (last To))
+                                                (between if:(is Enemy (who at:(between))))
+                                                (to if:(is Empty (to)))
+                                            )
+                                        )
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (forEach Piece)
+                })
+            )
+        )
+        
+        (end (if (or
+                    (no Pieces Next) 
+                    (and
+                        (= 1 (count Pieces Mover))
+                        (= (centrePoint) (where "Bean" Mover))
+                    )
+                )
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Green))
+        (player Colour P2 (colour Red))
+        (board Colour Phase0 (colour 223 178 110))
+        (show Symbol "Atom" (sites Centre) fillColour:(colour Yellow) edgeColour:(colour Black))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour InnerEdges (colour Black))
+    })
+    
+)
