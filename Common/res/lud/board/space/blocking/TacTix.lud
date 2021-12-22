@@ -1,0 +1,77 @@
+(game "TacTix"  
+    (players 2)  
+    (equipment { 
+        (board (square 4))
+        (piece "Ball" Shared) 
+    })  
+    
+    (rules 
+        (start (place "Ball" (sites Board)))
+        
+        (play 
+            (if (is Prev Mover)
+                (or
+                    (if (= 1 (count MovesThisTurn))
+                        (move Select
+                            (from (last To))
+                            (to (intersection (sites Around (last To) Orthogonal) (sites Occupied by:Shared)))
+                            (then
+                                (and
+                                    (remove (last To))
+                                    (if 
+                                        (and
+                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To))) ) 
+                                            (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                                        )
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                        (move Select
+                            (from (last To))
+                            (to (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                            (then 
+                                (and
+                                    (remove (last To))
+                                    (if  (and
+                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To))) ) 
+                                            (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
+                                        )
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (move Pass)
+                )
+                (move Remove
+                    (sites Board)
+                    (then (if (not (all Sites (sites Around (last To) Orthogonal) if:(is Empty (site)))) (moveAgain)))
+                )
+            )
+        )
+        
+        (end (if (no Moves Next) (result Next Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (no Sunken)
+        (board Colour Phase0 (colour DarkBrown))
+        (board Colour OuterEdges (colour VeryDarkBrown))
+        (board Colour InnerEdges (colour VeryDarkBrown))
+        (player Colour Shared (colour VeryDarkBrown))
+        (show Symbol "disc" (sites Board) fillColour:(colour Brown) edgeColour:(colour Brown) scale:0.9)
+    })
+    
+)
