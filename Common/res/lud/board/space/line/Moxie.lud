@@ -1,0 +1,83 @@
+(game "Moxie"
+    (players 2)
+    (equipment {
+        (board (square 4))
+        (piece "Pawn" Each)
+        (hand Each)
+    })
+    (rules
+        (start (place "Pawn" "Hand" count:8))
+        (play 
+            (if (is Prev Mover)
+                (move Hop 
+                    (from (last To))
+                    (between if:(is Enemy (who at:(between)))) 
+                    (to if:(is Empty (to)) (apply (remove (between))))
+                    (then
+                        (if (can Move 
+                                (hop 
+                                    (from (last To))
+                                    (between if:(is Enemy (who at:(between)))) 
+                                    (to if:(is Empty (to)) (apply (remove (between))))
+                                )
+                            )
+                            (moveAgain)
+                        )
+                    )
+                )
+                (priority {
+                    (forEach Piece 
+                        (move Hop 
+                            (between if:(is Enemy (who at:(between)))) 
+                            (to if:(is Empty (to)) (apply (remove (between))))
+                            (then
+                                (if (can Move 
+                                        (hop 
+                                            (from (last To))
+                                            (between if:(is Enemy (who at:(between)))) 
+                                            (to if:(is Empty (to)) (apply (remove (between))))
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    (or
+                        (if (is Occupied (handSite Mover))
+                            (move (from (handSite Mover)) (to (sites Empty)))
+                        )
+                        (forEach Piece (move Step (to if:(is Empty (to)))))
+                    )
+                    
+                })
+            )
+        )
+        (end {
+            (forEach NonMover
+                if:(<= (count Pieces Player) 2)
+                (result Player Loss)
+            )
+            (if (is Line 3 All) (result Mover Win))
+        }) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour Black))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour InnerEdges (colour 223 178 110))
+        (player Colour P2 (colour Red))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.2)
+    })
+    
+)
