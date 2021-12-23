@@ -1,0 +1,88 @@
+(define "CanMoveAnotherStone"
+    (can Move
+        (do
+            (set Var #2)
+            next:(forEach Site (difference (sites Occupied by:Mover) #1)
+                (step 
+                    (from (site))
+                    (directions Cell from:#1 to:(var))
+                    (to 
+                        if:(and 
+                            (is Empty (to))
+                            (not (is In (to) (sites "RedDots")))
+                        )		
+                    )
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tandems"
+    (players 2)
+    (equipment {
+        (board  (square 5))
+        (piece "Pawn" Each
+            (move Step
+                (to
+                    if:(and {
+                        (is Empty (to))
+                        (not (is In (to) (sites "RedDots")))
+                        ("CanMoveAnotherStone" (from) (to))
+                    })
+                )
+                (then (moveAgain))
+            )
+        )
+        (regions "RedDots" (sites {"B2" "B4" "D2" "D4"}))
+    })
+    (rules
+        (start {
+            (place "Pawn1" (sites Bottom))
+            (place "Pawn2" (sites Top))
+        })
+        (play
+            (if (is Prev Mover)
+                (forEach Site (difference (sites Occupied by:Mover) (last To))
+                    (move Step 
+                        (from (site))
+                        (directions Cell from:(last From) to:(last To))
+                        (to 
+                            if:(and 
+                                (is Empty (to))
+                                (not (is In (to) (sites "RedDots")))
+                            )		
+                        )
+                    )
+                )
+                (forEach Piece)
+            )
+        )
+        (end {
+            (if (and (is Mover P1) (all Sites (sites Occupied by:P1) if:(is In (site) (sites Top)))) (result P1 Win))
+            (if (and (is Mover P2) (all Sites (sites Occupied by:P2) if:(is In (site) (sites Bottom)))) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Green))
+        (player Colour P2 (colour Red))
+        (board Colour Phase0 (colour White))
+        (board Colour OuterEdges (colour Blue))
+        (board Colour InnerEdges (colour Blue))
+        (show Symbol "square" (sites {"B2" "B4" "D2" "D4"}) fillColour:(colour Red) edgeColour:(colour Red) scale:1)
+    })
+    
+)
