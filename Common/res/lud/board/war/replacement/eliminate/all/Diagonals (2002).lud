@@ -1,0 +1,60 @@
+(game "Diagonals (2002)"
+    (players 2)
+    (equipment {
+        (board (rectangle 5 10) use:Vertex)
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+    })
+    (rules
+        (start {
+            (place "Ball1" (intersection (expand (sites Bottom)) (sites Right)))
+            (place "Ball2" (intersection (expand (sites Top)) (sites Left)))
+        })
+        (play 
+            (or
+                (move Add (to (intersection (sites Direction from:(sites Occupied by:Mover) Diagonal stop:(is Occupied (to))) (sites Empty))))
+                (move Select
+                    (from
+                        (forEach (sites Occupied by:Next)
+                            if:(!= 0 (count Sites in:(intersection (sites LineOfSight at:(site) Diagonal) (sites Occupied by:Mover))))
+                        )
+                    )
+                    (then
+                        (and
+                            (remove (last To))
+                            (add (piece (id "Ball" Neutral)) (to (last To)))
+                        )
+                    )
+                )
+            )
+        )
+        (end (if (and (no Moves P1) (no Moves P2))
+                (byScore {
+                    (score P1 (count Pieces P1))
+                    (score P2 (count Pieces P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (player Colour Neutral (colour Red))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+    
+)
