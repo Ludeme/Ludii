@@ -1,0 +1,73 @@
+(game "Quad Wrangle"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Ball" Each
+            (move Slide
+                (then
+                    (forEach Site
+                        (sites Around (last To))
+                        (if (is Enemy (who at:(site)))
+                            (and
+                                (remove (site))
+                                (add (piece (id "Ball" Mover)) (to (site)))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    })
+    (rules
+        (start {
+            (place "Ball1" (difference (union (sites Top) (sites Right)) (union {(sites Left) (sites Bottom) (intersection (sites Top) (sites Right))})))
+            (place "Ball2" (difference (union (sites Bottom) (sites Left)) (union {(sites Right) (sites Top) (intersection (sites Bottom) (sites Left))})))
+        })
+        
+        (play
+            (or {
+                (move Add
+                    (to (sites Around (sites Occupied by:Mover) Empty))
+                    (then
+                        (forEach Site
+                            (sites Around (last To))
+                            (if (is Enemy (who at:(site)))
+                                (and
+                                    (remove (site))
+                                    (add (piece (id "Ball" Mover)) (to (site)))
+                                )
+                            )
+                        )
+                    )
+                )
+                (forEach Piece)
+                (move Add
+                    (to (difference (sites Empty) (sites Around (sites Occupied by:Mover) Empty)))
+                )
+            })
+        )
+        
+        (end (if (is Full)
+                (byScore {
+                    (score P1 (count Pieces P1))
+                    (score P2 (count Pieces P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)
