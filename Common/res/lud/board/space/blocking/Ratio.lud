@@ -81,1212 +81,1212 @@
     )*  
     
     (item "Game II" 
-            <
-            (equipment {
-                (board
-                		(add
-                        (remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
-                            )
-                            vertices:{3 5}
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
                         )
-                        edges:{{0 4} {2 6}}
-                        )
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        vertices:{3 5}
                     )
+                    edges:{{0 4} {2 6}}
                 )
-                (nextPhase "Main")
+                use:Vertex
             )
-            (phase "Main"
-                (play (forEach Piece))
+            
+            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P1) (result P2 Win))
-                (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
-            }) 
-            >
-            "The rules of the game II."
-        ) 
+            (nextPhase "Main")
+        )
+        (phase "Main"
+            (play (forEach Piece))
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
+        }) 
+        >
+        "The rules of the game II."
+    ) 
     
     (item "Game III" 
-            <
-            (equipment {
-                (board
-                		(add
-                        (remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
-                            )
-                            vertices:{1}
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
                         )
-                        edges:{{0 1} {3 9}}
-                        )
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        vertices:{1}
                     )
+                    edges:{{0 1} {3 9}}
                 )
-                (nextPhase "Main")
+                use:Vertex
             )
-            (phase "Main"
-                (play (forEach Piece))
+            
+            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P1) (result P2 Win))
-                (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
-            }) 
-            >
-            "The rules of the game III."
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play (forEach Piece))
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
+        }) 
+        >
+        "The rules of the game III."
+    )
     
     (item "Game IV" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
-                            )
-                            vertices:{7}
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
                         )
-                		edges:{{6 7} {8 4}}
-                		)
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        vertices:{7}
                     )
+                    edges:{{6 7} {8 4}}
                 )
-                (nextPhase "Main")
+                use:Vertex
             )
-            (phase "Main"
-                (play (forEach Piece))
+            
+            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P1) (result P2 Win))
-                (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
-            }) 
-            >
-            "The rules of the game IV."
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play (forEach Piece))
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
+        }) 
+        >
+        "The rules of the game IV."
+    )
     
     (item "Game V" 
-            <
-            (equipment {
-                (board
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
-                            )
-                    use:Vertex
+        <
+        (equipment {
+            (board
+                (merge 
+                    {
+                    (rectangle 3 3 diagonals:Alternating) 
+                    (shift 0 2 (wedge 2)) 
+                    (shift 0 -1 (rotate 180 (wedge 2))) 
+                    }
                 )
-                
-                (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
-                (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
-                    )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 (move Step Adjacent  (to if:(is Empty (to)))))
+            (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play (forEach Piece))
-            )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P1) (result P2 Win))
-                (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
-            }) 
-            >
-            "The rules of the game V."
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play (forEach Piece))
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if (is In (where "Foot" P1) (sites P2)) (result P1 Win))
+        }) 
+        >
+        "The rules of the game V."
+    )
     
     (item "Game VI" 
-            <
-            (equipment {
-                (board
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (merge 
+                    {
+                    (rectangle 3 3 diagonals:Alternating) 
+                    (shift 0 2 (wedge 2)) 
+                    (shift 0 -1 (rotate 180 (wedge 2))) 
+                    }
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 (move Step Adjacent (to if:(is Empty (to)))))
+            (piece "Gnome" P2 
+                (move Step 
+                    (from (from) if:(= 0 (state at:(from))))
+                    (directions {Forwards Rightward Leftward})
+                    (to if:(is Empty (to)))
+                    (then
+                        (if (all Sites (difference (sites Occupied by:Mover) (last To)) if:(!= 0 (state at:(site))))
+                            (forEach Site
+                                (sites Occupied by:Mover)
+                                (set State at:(site) 0)
                             )
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 (move Step Adjacent (to if:(is Empty (to)))))
-                (piece "Gnome" P2 
-                	(move Step 
-                		(from (from) if:(= 0 (state at:(from))))
-                		(directions {Forwards Rightward Leftward})
-                		(to if:(is Empty (to)))
-                		(then
-                			(if (all Sites (difference (sites Occupied by:Mover) (last To)) if:(!= 0 (state at:(site))))
-                				(forEach Site
-                					(sites Occupied by:Mover)
-                					(set State at:(site) 0)
-                				)
-                				(and
-                					(set State at:(last To) 1)
-                					(moveAgain)
-                				)
-                			)
-                		)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (union (sites Centre) (intersection (sites Board) (expand (sites Bottom))))))
-                        (then (moveAgain))
+                            (and
+                                (set State at:(last To) 1)
+                                (moveAgain)
+                            )
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play (forEach Piece))
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (union (sites Centre) (intersection (sites Board) (expand (sites Bottom))))))
+                    (then (moveAgain))
+                )
             )
-            }
-            >
-            <
-            (end {
-                (if (and (= (count MovesThisTurn) 2) (no Moves Next)) (result P2 Win))
-                (if (or (no Moves P2) (is In (where "Foot" P1) (sites P2))) (result P1 Win))
-            }) 
-            >
-            "The rules of the game VI."
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play (forEach Piece))
+        )
+        }
+        >
+        <
+        (end {
+            (if (and (= (count MovesThisTurn) 2) (no Moves Next)) (result P2 Win))
+            (if (or (no Moves P2) (is In (where "Foot" P1) (sites P2))) (result P1 Win))
+        }) 
+        >
+        "The rules of the game VI."
+    )
     
     (item "Game VII" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
-                            )
-                            vertices:{1 3 5 7}
-                            )
-                	    edges:{{0 3} {1 4} {2 6} {2 5} {0 1} {3 4}}
-                		)
-                    use:Vertex
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
+                        )
+                        vertices:{1 3 5 7}
+                    )
+                    edges:{{0 3} {1 4} {2 6} {2 5} {0 1} {3 4}}
                 )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent  (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {Forwards Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent  (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play (forEach Piece))
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {Forwards Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
+                )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game VII."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play (forEach Piece))
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game VII."
+    )
     
     (item "Game VIII" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
+                        )
+                        vertices:{7 3 5}
+                    )
+                    edges:{{0 4} {2 5} {4 5} {3 6}}
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                        (then
+                            (if 
+                                (can Move
+                                    (hop 
+                                        (from (last To))
+                                        Adjacent
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))	
+                                    )
+                                )
+                                (moveAgain)
                             )
-                            vertices:{7 3 5}
-                            )
-                		edges:{{0 4} {2 5} {4 5} {3 6}}
-                	     )
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                		(then
-                			(if 
-                				(can Move
-                					(hop 
-                							(from (last To))
-                							Adjacent
-                							(between if:(is Enemy (who at:(between))))
-                	                		(to if:(is Empty (to)))	
-                					)
-                					)
-                					(moveAgain)
-                			)
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {Forwards Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play 
-                	(if (and (!= 1 (count Turns)) (is Prev Mover))
-                		(or
-    					(move Hop 
-    							(from (last To))
-    							Adjacent
-    							(between if:(is Enemy (who at:(between))))
-    	                		(to if:(is Empty (to)) (apply (remove (between))))	
-    	                		(then
-    	                    			(if 
-    	                    				(can Move
-    	                    					(hop 
-    	                    							(from (last To))
-    	                    							Adjacent
-    	                    							(between if:(is Enemy (who at:(between))))
-    	                    	                		(to if:(is Empty (to)))	
-    	                    					)
-    	                    					)
-    	                    					(moveAgain)
-    	                    			)
-    	                    		)
-    					)
-    					(move Pass)
-    					)
-                		(forEach Piece)
-                	)
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {Forwards Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
                 )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game VIII."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play 
+                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                    (or
+                        (move Hop 
+                            (from (last To))
+                            Adjacent
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)) (apply (remove (between))))	
+                            (then
+                                (if 
+                                    (can Move
+                                        (hop 
+                                            (from (last To))
+                                            Adjacent
+                                            (between if:(is Enemy (who at:(between))))
+                                            (to if:(is Empty (to)))	
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game VIII."
+    )
     
     (item "Game IX" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
+                        )
+                        vertices:{1 3 5}
+                    )
+                    edges:{{0 3} {1 5} {7 2} {0 1}}
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                        (then
+                            (if 
+                                (can Move
+                                    (hop 
+                                        (from (last To))
+                                        Adjacent
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))	
+                                    )
+                                )
+                                (moveAgain)
                             )
-                            vertices:{1 3 5}
-                            )
-                		edges:{{0 3} {1 5} {7 2} {0 1}}
-                		)
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                		(then
-                			(if 
-                				(can Move
-                					(hop 
-                							(from (last To))
-                							Adjacent
-                							(between if:(is Enemy (who at:(between))))
-                	                		(to if:(is Empty (to)))	
-                					)
-                					)
-                					(moveAgain)
-                			)
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {BR BL Forwards Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play 
-                	(if (and (!= 1 (count Turns)) (is Prev Mover))
-                		(or
-    					(move Hop 
-    							(from (last To))
-    							Adjacent
-    							(between if:(is Enemy (who at:(between))))
-    	                		(to if:(is Empty (to)) (apply (remove (between))))	
-    	                		(then
-    	                    			(if 
-    	                    				(can Move
-    	                    					(hop 
-    	                    							(from (last To))
-    	                    							Adjacent
-    	                    							(between if:(is Enemy (who at:(between))))
-    	                    	                		(to if:(is Empty (to)))	
-    	                    					)
-    	                    					)
-    	                    					(moveAgain)
-    	                    			)
-    	                    		)
-    					)
-    					(move Pass)
-    					)
-                		(forEach Piece)
-                	)
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {BR BL Forwards Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
                 )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game IX."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play 
+                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                    (or
+                        (move Hop 
+                            (from (last To))
+                            Adjacent
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)) (apply (remove (between))))	
+                            (then
+                                (if 
+                                    (can Move
+                                        (hop 
+                                            (from (last To))
+                                            Adjacent
+                                            (between if:(is Enemy (who at:(between))))
+                                            (to if:(is Empty (to)))	
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game IX."
+    )
     
     (item "Game X" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
+                        )
+                        vertices:{3 5}
+                    )
+                    edges:{{0 4} {2 6}}
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                        (then
+                            (if 
+                                (can Move
+                                    (hop 
+                                        (from (last To))
+                                        Adjacent
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))	
+                                    )
+                                )
+                                (moveAgain)
                             )
-                            vertices:{3 5}
-                            )
-                		edges:{{0 4} {2 6}}
-                		)
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                		(then
-                			(if 
-                				(can Move
-                					(hop 
-                							(from (last To))
-                							Adjacent
-                							(between if:(is Enemy (who at:(between))))
-                	                		(to if:(is Empty (to)))	
-                					)
-                					)
-                					(moveAgain)
-                			)
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {Forwards Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play 
-                	(if (and (!= 1 (count Turns)) (is Prev Mover))
-                		(or
-    					(move Hop 
-    							(from (last To))
-    							Adjacent
-    							(between if:(is Enemy (who at:(between))))
-    	                		(to if:(is Empty (to)) (apply (remove (between))))	
-    	                		(then
-    	                    			(if 
-    	                    				(can Move
-    	                    					(hop 
-    	                    							(from (last To))
-    	                    							Adjacent
-    	                    							(between if:(is Enemy (who at:(between))))
-    	                    	                		(to if:(is Empty (to)))	
-    	                    					)
-    	                    					)
-    	                    					(moveAgain)
-    	                    			)
-    	                    		)
-    					)
-    					(move Pass)
-    					)
-                		(forEach Piece)
-                	)
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {Forwards Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
                 )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game X."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play 
+                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                    (or
+                        (move Hop 
+                            (from (last To))
+                            Adjacent
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)) (apply (remove (between))))	
+                            (then
+                                (if 
+                                    (can Move
+                                        (hop 
+                                            (from (last To))
+                                            Adjacent
+                                            (between if:(is Enemy (who at:(between))))
+                                            (to if:(is Empty (to)))	
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game X."
+    )
     
     (item "Game XI" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
+                        )
+                        vertices:{3 5}
+                    )
+                    edges:{{0 4} {2 6}}
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                        (then
+                            (if 
+                                (can Move
+                                    (hop 
+                                        (from (last To))
+                                        Adjacent
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))	
+                                    )
+                                )
+                                (moveAgain)
                             )
-                            vertices:{3 5}
-                            )
-                		edges:{{0 4} {2 6}}
-                		)
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                		(then
-                			(if 
-                				(can Move
-                					(hop 
-                							(from (last To))
-                							Adjacent
-                							(between if:(is Enemy (who at:(between))))
-                	                		(to if:(is Empty (to)))	
-                					)
-                					)
-                					(moveAgain)
-                			)
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {BR BL FL FR Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play 
-                	(if (and (!= 1 (count Turns)) (is Prev Mover))
-                		(or
-    					(move Hop 
-    							(from (last To))
-    							Adjacent
-    							(between if:(is Enemy (who at:(between))))
-    	                		(to if:(is Empty (to)) (apply (remove (between))))	
-    	                		(then
-    	                    			(if 
-    	                    				(can Move
-    	                    					(hop 
-    	                    							(from (last To))
-    	                    							Adjacent
-    	                    							(between if:(is Enemy (who at:(between))))
-    	                    	                		(to if:(is Empty (to)))	
-    	                    					)
-    	                    					)
-    	                    					(moveAgain)
-    	                    			)
-    	                    		)
-    					)
-    					(move Pass)
-    					)
-                		(forEach Piece)
-                	)
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {BR BL FL FR Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
                 )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game XI."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play 
+                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                    (or
+                        (move Hop 
+                            (from (last To))
+                            Adjacent
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)) (apply (remove (between))))	
+                            (then
+                                (if 
+                                    (can Move
+                                        (hop 
+                                            (from (last To))
+                                            Adjacent
+                                            (between if:(is Enemy (who at:(between))))
+                                            (to if:(is Empty (to)))	
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game XI."
+    )
     
     (item "Game XII" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
+                        )
+                        vertices:{7}
+                    )
+                    edges:{{4 8} {6 7}}
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                        (then
+                            (if 
+                                (can Move
+                                    (hop 
+                                        (from (last To))
+                                        Adjacent
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))	
+                                    )
+                                )
+                                (moveAgain)
                             )
-                            vertices:{7}
-                		)
-                		edges:{{4 8} {6 7}}
-                		)
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                		(then
-                			(if 
-                				(can Move
-                					(hop 
-                							(from (last To))
-                							Adjacent
-                							(between if:(is Enemy (who at:(between))))
-                	                		(to if:(is Empty (to)))	
-                					)
-                					)
-                					(moveAgain)
-                			)
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {BR BL FL FR Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play 
-                	(if (and (!= 1 (count Turns)) (is Prev Mover))
-                		(or
-    					(move Hop 
-    							(from (last To))
-    							Adjacent
-    							(between if:(is Enemy (who at:(between))))
-    	                		(to if:(is Empty (to)) (apply (remove (between))))	
-    	                		(then
-    	                    			(if 
-    	                    				(can Move
-    	                    					(hop 
-    	                    							(from (last To))
-    	                    							Adjacent
-    	                    							(between if:(is Enemy (who at:(between))))
-    	                    	                		(to if:(is Empty (to)))	
-    	                    					)
-    	                    					)
-    	                    					(moveAgain)
-    	                    			)
-    	                    		)
-    					)
-    					(move Pass)
-    					)
-                		(forEach Piece)
-                	)
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {BR BL FL FR Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
                 )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game XII."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play 
+                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                    (or
+                        (move Hop 
+                            (from (last To))
+                            Adjacent
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)) (apply (remove (between))))	
+                            (then
+                                (if 
+                                    (can Move
+                                        (hop 
+                                            (from (last To))
+                                            Adjacent
+                                            (between if:(is Enemy (who at:(between))))
+                                            (to if:(is Empty (to)))	
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game XII."
+    )
     
     (item "Game XIII" 
-            <
-            (equipment {
-                (board
-                		(add
-                		(remove
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (add
+                    (remove
+                        (merge 
+                            {
+                            (rectangle 3 3 diagonals:Alternating) 
+                            (shift 0 2 (wedge 2)) 
+                            (shift 0 -1 (rotate 180 (wedge 2))) 
+                            }
+                        )
+                        vertices:{1}
+                    )
+                    edges:{{0 1} {3 9}}
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                        (then
+                            (if 
+                                (can Move
+                                    (hop 
+                                        (from (last To))
+                                        Adjacent
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))	
+                                    )
+                                )
+                                (moveAgain)
                             )
-                            vertices:{1}
-                		)
-                		edges:{{0 1} {3 9}}
-                		)
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                		(then
-                			(if 
-                				(can Move
-                					(hop 
-                							(from (last To))
-                							Adjacent
-                							(between if:(is Enemy (who at:(between))))
-                	                		(to if:(is Empty (to)))	
-                					)
-                					)
-                					(moveAgain)
-                			)
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {Forward Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play 
-                	(if (and (!= 1 (count Turns)) (is Prev Mover))
-                		(or
-    					(move Hop 
-    							(from (last To))
-    							Adjacent
-    							(between if:(is Enemy (who at:(between))))
-    	                		(to if:(is Empty (to)) (apply (remove (between))))	
-    	                		(then
-    	                    			(if 
-    	                    				(can Move
-    	                    					(hop 
-    	                    							(from (last To))
-    	                    							Adjacent
-    	                    							(between if:(is Enemy (who at:(between))))
-    	                    	                		(to if:(is Empty (to)))	
-    	                    					)
-    	                    					)
-    	                    					(moveAgain)
-    	                    			)
-    	                    		)
-    					)
-    					(move Pass)
-    					)
-                		(forEach Piece)
-                	)
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {Forward Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
                 )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game XIII."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play 
+                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                    (or
+                        (move Hop 
+                            (from (last To))
+                            Adjacent
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)) (apply (remove (between))))	
+                            (then
+                                (if 
+                                    (can Move
+                                        (hop 
+                                            (from (last To))
+                                            Adjacent
+                                            (between if:(is Enemy (who at:(between))))
+                                            (to if:(is Empty (to)))	
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game XIII."
+    )
     
     (item "Game XIV" 
-            <
-            (equipment {
-                (board
-                            (merge 
-                                {
-                                (rectangle 3 3 diagonals:Alternating) 
-                                (shift 0 2 (wedge 2)) 
-                                (shift 0 -1 (rotate 180 (wedge 2))) 
-                                }
+        <
+        (equipment {
+            (board
+                (merge 
+                    {
+                    (rectangle 3 3 diagonals:Alternating) 
+                    (shift 0 2 (wedge 2)) 
+                    (shift 0 -1 (rotate 180 (wedge 2))) 
+                    }
+                )
+                use:Vertex
+            )
+            
+            (piece "Foot" P1 
+                (or
+                    (move Step Adjacent (to if:(is Empty (to))))
+                    (move Hop Adjacent
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                        (then
+                            (if 
+                                (can Move
+                                    (hop 
+                                        (from (last To))
+                                        Adjacent
+                                        (between if:(is Enemy (who at:(between))))
+                                        (to if:(is Empty (to)))	
+                                    )
+                                )
+                                (moveAgain)
                             )
-                    use:Vertex
-                )
-                
-                (piece "Foot" P1 
-                	(or
-                	(move Step Adjacent (to if:(is Empty (to))))
-                	(move Hop Adjacent
-                		(between if:(is Enemy (who at:(between))))
-                		(to if:(is Empty (to))
-                			(apply (remove (between)))
-                		)
-                		(then
-                			(if 
-                				(can Move
-                					(hop 
-                							(from (last To))
-                							Adjacent
-                							(between if:(is Enemy (who at:(between))))
-                	                		(to if:(is Empty (to)))	
-                					)
-                					)
-                					(moveAgain)
-                			)
-                		)
-                	)
-                	)
-                )
-                (piece "Gnome" P2
-                	(or
-                	(move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
-                	(move Hop 
-                			(directions {Forward Rightward Leftward})
-                    		(between if:(is Enemy (who at:(between))))
-                    		(to if:(is Empty (to))
-                        		(apply (remove (between)))
-                    		)
-                    	)
-                	)
-                )
-                (hand P1)
-                (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
-                (regions "Home" P1 (sites Top))
-            })
-            > 
-            <
-            (start {
-                (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
-                (place "Foot1" (handSite P1))
-            })
-            >
-            <
-            phases:{
-            (phase "Opening"
-                (play
-                    (move 
-                        (from (handSite Mover))
-                        (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
-                        (then (moveAgain))
+                        )
                     )
                 )
-                (nextPhase "Main")
             )
-            (phase "Main"
-                (play 
-                	(if (and (!= 1 (count Turns)) (is Prev Mover))
-                		(or
-    					(move Hop 
-    							(from (last To))
-    							Adjacent
-    							(between if:(is Enemy (who at:(between))))
-    	                		(to if:(is Empty (to)) (apply (remove (between))))	
-    	                		(then
-    	                    			(if 
-    	                    				(can Move
-    	                    					(hop 
-    	                    							(from (last To))
-    	                    							Adjacent
-    	                    							(between if:(is Enemy (who at:(between))))
-    	                    	                		(to if:(is Empty (to)))	
-    	                    					)
-    	                    					)
-    	                    					(moveAgain)
-    	                    			)
-    	                    		)
-    					)
-    					(move Pass)
-    					)
-                		(forEach Piece)
-                	)
+            (piece "Gnome" P2
+                (or
+                    (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
+                    (move Hop 
+                        (directions {Forward Rightward Leftward})
+                        (between if:(is Enemy (who at:(between))))
+                        (to if:(is Empty (to))
+                            (apply (remove (between)))
+                        )
+                    )
                 )
             )
-            }
-            >
-            <
-            (end {
-                (if (no Moves P2) (result P1 Win))
-                (if (= Off (where "Foot" P1)) (result P2 Win))
-            }) 
-            >
-            "The rules of the game XIV."
+            (hand P1)
+            (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+            (regions "Home" P1 (sites Top))
+        })
+        > 
+        <
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        >
+        <
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (intersection (sites Outer) (expand (sites Bottom)))))
+                    (then (moveAgain))
+                )
+            )
+            (nextPhase "Main")
         )
+        (phase "Main"
+            (play 
+                (if (and (!= 1 (count Turns)) (is Prev Mover))
+                    (or
+                        (move Hop 
+                            (from (last To))
+                            Adjacent
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)) (apply (remove (between))))	
+                            (then
+                                (if 
+                                    (can Move
+                                        (hop 
+                                            (from (last To))
+                                            Adjacent
+                                            (between if:(is Enemy (who at:(between))))
+                                            (to if:(is Empty (to)))	
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        >
+        <
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= Off (where "Foot" P1)) (result P2 Win))
+        }) 
+        >
+        "The rules of the game XIV."
+    )
 })
 
 //------------------------------------------------------------------------------
