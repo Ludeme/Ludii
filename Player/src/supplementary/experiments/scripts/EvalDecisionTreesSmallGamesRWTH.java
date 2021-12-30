@@ -276,12 +276,15 @@ public class EvalDecisionTreesSmallGamesRWTH
 								"=/work/" + 
 								userName + 
 								"/SmallGames/Out/" + 
-								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
+								cleanGameName + "_" + cleanRulesetName +
 								"_" + (String)agent + 
 								"/" + weightsFileName + p + "_00201.txt"
 							);
 						}
 						policyStrParts.add("friendly_name=" + s);
+						
+						if (s.equals("TSPG"))
+							policyStrParts.add("boosted=true");
 						
 						agentStr = 
 								StringRoutines.join
