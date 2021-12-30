@@ -277,7 +277,6 @@ public class EvalDecisionTreesSmallGamesRWTH
 								userName + 
 								"/SmallGames/Out/" + 
 								cleanGameName + "_" + cleanRulesetName +
-								"_" + (String)agent + 
 								"/" + weightsFileName + p + "_00201.txt"
 							);
 						}
