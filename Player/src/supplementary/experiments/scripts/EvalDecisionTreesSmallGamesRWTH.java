@@ -303,10 +303,9 @@ public class EvalDecisionTreesSmallGamesRWTH
 									StringRoutines.join
 									(
 										"/", 
-										"home",
+										"work",
 										userName,
-										"projects",
-										"ludi",
+										"SmallGames",
 										"Out",
 										"Trees",
 										cleanGameName + "_" + cleanRulesetName,
@@ -327,10 +326,9 @@ public class EvalDecisionTreesSmallGamesRWTH
 									StringRoutines.join
 									(
 										"/", 
-										"home",
+										"work",
 										userName,
-										"projects",
-										"ludi",
+										"SmallGames",
 										"Out",
 										"Trees",
 										cleanGameName + "_" + cleanRulesetName,
