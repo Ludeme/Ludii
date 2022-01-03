@@ -127,8 +127,7 @@ public final class UCB1 implements SelectionStrategy
 				}
 				else
 				{
-					System.err.println("UCB1 ignores unknown customization: "
-							+ input);
+					System.err.println("UCB1 ignores unknown customisation: " + input);
 				}
 			}
 		}

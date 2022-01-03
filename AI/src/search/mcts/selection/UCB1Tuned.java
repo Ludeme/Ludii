@@ -136,7 +136,7 @@ public final class UCB1Tuned implements SelectionStrategy
 				}
 				else
 				{
-					System.err.println("UCB1Tuned ignores unknown customization: " + input);
+					System.err.println("UCB1Tuned ignores unknown customisation: " + input);
 				}
 			}
 		}

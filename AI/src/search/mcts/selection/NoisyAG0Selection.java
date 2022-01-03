@@ -140,7 +140,7 @@ public final class NoisyAG0Selection implements SelectionStrategy
 				}
 				else
 				{
-					System.err.println("NoisyAG0Selection ignores unknown customization: " + input);
+					System.err.println("NoisyAG0Selection ignores unknown customisation: " + input);
 				}
 			}
 		}

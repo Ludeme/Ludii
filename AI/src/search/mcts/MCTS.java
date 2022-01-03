@@ -36,7 +36,9 @@ import policies.softmax.SoftmaxPolicyLinear;
 import policies.softmax.SoftmaxPolicyLogitTree;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.BackpropagationStrategy;
+import search.mcts.backpropagation.HeuristicBackprop;
 import search.mcts.backpropagation.MonteCarloBackprop;
+import search.mcts.backpropagation.QualitativeBonus;
 import search.mcts.finalmoveselection.FinalMoveSelectionStrategy;
 import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
@@ -50,8 +52,12 @@ import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
 import search.mcts.selection.NoisyAG0Selection;
+import search.mcts.selection.ProgressiveBias;
+import search.mcts.selection.ProgressiveHistory;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
+import search.mcts.selection.UCB1GRAVE;
+import search.mcts.selection.UCB1Tuned;
 import training.expert_iteration.ExItExperience;
 import training.expert_iteration.ExpertPolicy;
 import utils.AIUtils;
@@ -135,7 +141,7 @@ public class MCTS extends ExpertPolicy
 	protected FinalMoveSelectionStrategy finalMoveSelectionStrategy;
 	
 	/** Strategy for init of Q-values for unvisited nodes. */
-	protected QInit qInit = QInit.PARENT; // TODO allow customisation
+	protected QInit qInit = QInit.PARENT;
 	
 	/** Flags indicating what data needs to be backpropagated */
 	protected int backpropFlags = 0;
@@ -1319,7 +1325,9 @@ public class MCTS extends ExpertPolicy
 		int numThreads = 1;
 		SoftmaxPolicy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
+		QInit qinit = QInit.PARENT;
 		String friendlyName = "MCTS";
+		double playoutValueWeight = 1.0;
 
 		for (String line : lines)
 		{
@@ -1353,6 +1361,26 @@ public class MCTS extends ExpertPolicy
 					selection = new NoisyAG0Selection();
 					selection.customise(lineParts);
 				}
+				else if (lineParts[0].toLowerCase().endsWith("progressivebias"))
+				{
+					selection = new ProgressiveBias();
+					selection.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("progressivehistory"))
+				{
+					selection = new ProgressiveHistory();
+					selection.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("ucb1grave"))
+				{
+					selection = new UCB1GRAVE();
+					selection.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("ucb1tuned"))
+				{
+					selection = new UCB1Tuned();
+					selection.customise(lineParts);
+				}
 				else
 				{
 					System.err.println("Unknown selection strategy: " + line);
@@ -1361,6 +1389,25 @@ public class MCTS extends ExpertPolicy
 			else if (lineParts[0].toLowerCase().startsWith("playout="))
 			{
 				playout = PlayoutStrategy.constructPlayoutStrategy(lineParts);
+			}
+			else if (lineParts[0].toLowerCase().startsWith("backprop="))
+			{
+				if (lineParts[0].toLowerCase().endsWith("alphago"))
+				{
+					backprop = new AlphaGoBackprop();
+				}
+				else if (lineParts[0].toLowerCase().endsWith("heuristic"))
+				{
+					backprop = new HeuristicBackprop();
+				}
+				else if (lineParts[0].toLowerCase().endsWith("montecarlo"))
+				{
+					backprop = new MonteCarloBackprop();
+				}
+				else if (lineParts[0].toLowerCase().endsWith("qualitativebonus"))
+				{
+					backprop = new QualitativeBonus();
+				}
 			}
 			else if (lineParts[0].toLowerCase().startsWith("final_move="))
 			{
@@ -1454,6 +1501,14 @@ public class MCTS extends ExpertPolicy
 			{
 				heuristics = Heuristics.fromLines(lineParts);
 			}
+			else if (lineParts[0].toLowerCase().startsWith("qinit="))
+			{
+				qinit = QInit.valueOf(lineParts[0].substring("qinit=".length()).toUpperCase());
+			}
+			else if (lineParts[0].toLowerCase().startsWith("playout_value_weight="))
+			{
+				playoutValueWeight = Double.parseDouble(lineParts[0].substring("playout_value_weight=".length()));
+			}
 			else if (lineParts[0].toLowerCase().startsWith("friendly_name="))
 			{
 				friendlyName = lineParts[0].substring("friendly_name=".length());
@@ -1467,6 +1522,8 @@ public class MCTS extends ExpertPolicy
 		mcts.setNumThreads(numThreads);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
 		mcts.setHeuristics(heuristics);
+		mcts.setQInit(qinit);
+		mcts.setPlayoutValueWeight(playoutValueWeight);
 		mcts.friendlyName = friendlyName;
 
 		return mcts;

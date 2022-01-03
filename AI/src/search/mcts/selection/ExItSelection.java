@@ -150,7 +150,7 @@ public final class ExItSelection implements SelectionStrategy
 				}
 				else
 				{
-					System.err.println("ExItSelection ignores unknown customization: " + input);
+					System.err.println("ExItSelection ignores unknown customisation: " + input);
 				}
 			}
 		}

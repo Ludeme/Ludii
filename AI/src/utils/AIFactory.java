@@ -354,6 +354,10 @@ public class AIFactory
 			{
 				return AlphaBetaSearch.fromLines(lines);
 			}
+			else if (algName.equalsIgnoreCase("BRS+"))
+			{
+				return BRSPlus.fromLines(lines);
+			}
 			else if (algName.equalsIgnoreCase("HeuristicSampling"))
 			{
 				return HeuristicSampling.fromLines(lines);

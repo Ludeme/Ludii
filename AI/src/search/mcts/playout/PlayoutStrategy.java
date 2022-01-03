@@ -89,6 +89,16 @@ public interface PlayoutStrategy
 			playout = new RandomPlayout();
 			playout.customise(inputs);
 		}
+		else if (inputs[0].endsWith("mast"))
+		{
+			playout = new MAST();
+			playout.customise(inputs);
+		}
+		else if (inputs[0].endsWith("nst"))
+		{
+			playout = new NST();
+			playout.customise(inputs);
+		}
 		else if (inputs[0].endsWith("softmax") || inputs[0].endsWith("softmaxplayout") || inputs[0].endsWith("softmaxlinear"))
 		{
 			playout = new SoftmaxPolicyLinear();

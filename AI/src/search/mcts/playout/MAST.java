@@ -85,7 +85,19 @@ public class MAST implements PlayoutStrategy
 	@Override
 	public void customise(final String[] inputs)
 	{
-		// TODO
+		for (int i = 1; i < inputs.length; ++i)
+		{
+			final String input = inputs[i];
+			
+			if (input.toLowerCase().startsWith("playoutturnlimit="))
+			{
+				playoutTurnLimit = 
+						Integer.parseInt
+						(
+							input.substring("playoutturnlimit=".length())
+						);
+			}
+		}
 	}
 	
 	/**
