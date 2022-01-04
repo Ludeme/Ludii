@@ -677,7 +677,7 @@ public class FindBestBaseAgentScriptsGen
 								}
 								
 								// and finally add the eval agent
-								String evalAgentCommandString = StringRoutines.quote(relevantMCTSStrings[evalAgentIdxMCTS]);
+								String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
 								
 								if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
 								{
@@ -688,10 +688,12 @@ public class FindBestBaseAgentScriptsGen
 									}
 									else
 									{
-										// Our MCTS requires heuristics but we dont have any, so skip
+										// Our MCTS requires heuristics but we don't have any, so skip
 										continue;
 									}
 								}
+								
+								evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
 								
 								agentStrings[numPlayers - 1] = evalAgentCommandString;
 								
@@ -751,7 +753,7 @@ public class FindBestBaseAgentScriptsGen
 									final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
 									final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
 									ListUtils.removeSwap(sampleIndices, randIdx);
-									String agentCommandString = StringRoutines.quote(relevantMCTSStrings[otherMCTSIdx]);
+									String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
 									
 									if (relevantMCTSHeuristicRequirements[otherMCTSIdx])
 									{
@@ -763,7 +765,7 @@ public class FindBestBaseAgentScriptsGen
 										}
 										else
 										{
-											// Our MCTS requires heuristics but we dont have any, so try again
+											// Our MCTS requires heuristics but we don't have any, so try again
 											//System.out.println("no heuristics in game: " + dbGameName);
 											//System.out.println("picked index " + otherMCTSIdx + " out of " + relevantMCTSNames.length + " options");
 											continue;
@@ -773,6 +775,8 @@ public class FindBestBaseAgentScriptsGen
 									{
 										success = true;
 									}
+									
+									agentCommandString = StringRoutines.quote(agentCommandString);
 									
 									agentStrings[i] = agentCommandString;
 								}
@@ -785,7 +789,7 @@ public class FindBestBaseAgentScriptsGen
 							}
 							
 							// add the eval agent
-							String evalAgentCommandString = StringRoutines.quote(relevantMCTSStrings[evalAgentIdxMCTS]);
+							String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
 							if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
 							{
 								if (abHeuristicEntry != null)
@@ -799,6 +803,8 @@ public class FindBestBaseAgentScriptsGen
 									continue;
 								}
 							}
+							
+							evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
 							
 							agentStrings[numPlayers - 1] = evalAgentCommandString;
 							
