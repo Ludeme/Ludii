@@ -125,6 +125,22 @@ public class ListUtils
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param maxExclusive
+	 * @return Exactly like python's range() function, generates a list from 0 to maxExclusive
+	 */
+	public static TIntArrayList range(final int maxExclusive)
+	{
+		final TIntArrayList list = new TIntArrayList(maxExclusive);
+		for (int i = 0; i < maxExclusive; ++i)
+		{
+			list.add(i);
+		}
+		return list;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * @param list
 	 * @return Index of maximum entry in the list
 	 * 	(breaks ties by taking the lowest index).
