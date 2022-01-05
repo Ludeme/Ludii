@@ -645,7 +645,7 @@ public class MCTS extends ExpertPolicy
 								catch (final ArrayIndexOutOfBoundsException e)
 								{
 									System.err.println(describeMCTS());
-									e.printStackTrace();
+									throw e;
 								}
 								finally
 								{
