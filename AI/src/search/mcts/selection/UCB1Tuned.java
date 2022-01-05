@@ -9,7 +9,7 @@ import search.mcts.nodes.BaseNode;
 /**
  * UCB1-Tuned Selection strategy. The original paper by Auer et al. used 1/4 as the
  * upper bound on the variance of a Bernoulli random variable. We expect values
- * ranging in the [-1, 1] range, rather than the [0, 1] range in our MCTS, so
+ * in the [-1, 1] range, rather than the [0, 1] range in our MCTS, so
  * we use 1 as an upper bound on the variance of this random variable.
  * 
  * @author Dennis Soemers

@@ -326,11 +326,11 @@ public abstract class BaseNode
     
     /**
      * @param player Player index
-     * @return Sum of squared scores backpropagated into this node for player
+     * @return Sum of squared scores backpropagated into this node for player. NOTE: also adds virtual losses.
      */
     public double sumSquaredScores(final int player)
     {
-    	return sumSquaredScores[player];
+    	return sumSquaredScores[player] + numVirtualVisits.get();
     }
     
     /**
