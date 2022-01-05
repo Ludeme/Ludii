@@ -642,6 +642,11 @@ public class MCTS extends ExpertPolicy
 									current.addVirtualVisit();
 									current.updateContextRef();
 								}
+								catch (final ArrayIndexOutOfBoundsException e)
+								{
+									System.err.println(describeMCTS());
+									e.printStackTrace();
+								}
 								finally
 								{
 									prevNode.getLock().unlock();
@@ -1527,6 +1532,30 @@ public class MCTS extends ExpertPolicy
 		mcts.friendlyName = friendlyName;
 
 		return mcts;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return A string describing our MCTS configuration
+	 */
+	public String describeMCTS()
+	{
+		final StringBuilder sb = new StringBuilder();
+		
+		sb.append("Selection = " + selectionStrategy + "\n");
+		sb.append("Playout = " + playoutStrategy + "\n");
+		sb.append("Backprop = " + backpropagationStrategy + "\n");
+		sb.append("friendly name = " + friendlyName + "\n");
+		sb.append("tree reuse = " + treeReuse + "\n");
+		sb.append("use score bounds = " + useScoreBounds + "\n");
+		sb.append("qinit = " + qInit + "\n");
+		sb.append("playout value weight = " + playoutValueWeight + "\n");
+		sb.append("final move selection = " + finalMoveSelectionStrategy + "\n");
+		sb.append("heuristics:\n");
+		sb.append(heuristicFunction + "\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------
