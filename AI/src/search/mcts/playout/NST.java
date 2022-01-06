@@ -66,7 +66,10 @@ public class NST implements PlayoutStrategy
 	{
 		final NSTMoveSelector nst = moveSelector.get();
 		nst.mcts = mcts;
-		return context.game().playout(context, null, 1.0, new EpsilonGreedyWrapper(nst, epsilon), -1, playoutTurnLimit, ThreadLocalRandom.current());
+		final Trial trial =
+				context.game().playout(context, null, 1.0, new EpsilonGreedyWrapper(nst, epsilon), -1, playoutTurnLimit, ThreadLocalRandom.current());
+		nst.mcts = null;
+		return trial;
 	}
 	
 	@Override
