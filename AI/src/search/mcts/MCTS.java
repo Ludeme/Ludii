@@ -1,8 +1,11 @@
 package search.mcts;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -528,20 +531,38 @@ public class MCTS extends ExpertPolicy
 		if (globalActionStats != null)
 		{
 			// Decay global action statistics
-			for (final ActionStatistics stats : globalActionStats.values())
+			final Set<Entry<MoveKey, ActionStatistics>> entries = globalActionStats.entrySet();
+			final Iterator<Entry<MoveKey, ActionStatistics>> it = entries.iterator();
+			
+			while (it.hasNext())
 			{
-				stats.accumulatedScore *= globalActionDecayFactor;
+				final Entry<MoveKey, ActionStatistics> entry = it.next();
+				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
+				
+				if (stats.visitCount < 1.0)
+					it.remove();
+				else
+					stats.accumulatedScore *= globalActionDecayFactor;
 			}
 		}
 		
 		if (globalNGramActionStats != null)
 		{
 			// Decay global N-gram action statistics
-			for (final ActionStatistics stats : globalNGramActionStats.values())
+			final Set<Entry<NGramMoveKey, ActionStatistics>> entries = globalNGramActionStats.entrySet();
+			final Iterator<Entry<NGramMoveKey, ActionStatistics>> it = entries.iterator();
+			
+			while (it.hasNext())
 			{
-				stats.accumulatedScore *= globalActionDecayFactor;
+				final Entry<NGramMoveKey, ActionStatistics> entry = it.next();
+				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
+				
+				if (stats.visitCount < 1.0)
+					it.remove();
+				else
+					stats.accumulatedScore *= globalActionDecayFactor;
 			}
 		}
 		
