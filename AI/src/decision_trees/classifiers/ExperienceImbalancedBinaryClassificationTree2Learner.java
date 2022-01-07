@@ -321,6 +321,7 @@ public class ExperienceImbalancedBinaryClassificationTree2Learner
 			{
 				bestIdx = i;
 				bestTrueBranchNumSamples = numTrueSpatial[i];
+				bestFeatureIsAspatial = false;
 			}
 			
 			if (sumSquaredErrors > maxSumSquaredErrors)
