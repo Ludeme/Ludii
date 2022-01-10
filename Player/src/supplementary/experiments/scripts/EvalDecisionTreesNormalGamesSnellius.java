@@ -7,11 +7,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import game.Game;
-import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
@@ -24,33 +22,33 @@ import supplementary.experiments.analysis.RulesetConceptsUCT;
 import utils.RulesetNames;
 
 /**
- * Script to generate scripts for evaluation of training runs with vs. without
- * conf intervals on correlations for feature discovery.
+ * Script to generate scripts for evaluation of training runs
  *
  * @author Dennis Soemers
  */
-public class EvalTrainedFeaturesSnellius4
+public class EvalDecisionTreesNormalGamesSnellius
 {
-	/** Don't submit more than this number of jobs at a single time */
-	private static final int MAX_JOBS_PER_BATCH = 800;
-
+	
 	/** Memory to assign to JVM, in MB (2 GB per core --> we take 2 cores per job, 4GB per job, use 3GB for JVM) */
 	private static final String JVM_MEM = "3072";
 	
 	/** Memory to assign per process (in GB) */
 	private static final int MEM_PER_PROCESS = 4;
 	
+	/** Max wall time (in minutes) */
+	private static final int MAX_WALL_TIME = 600;
+	
+	/** Don't submit more than this number of jobs at a single time */
+	private static final int MAX_JOBS_PER_BATCH = 200;
+	
+	/** Num trials per matchup */
+	private static final int NUM_TRIALS = 50;
+	
 	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
 	private static final int MEM_PER_NODE = 256;
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 234;
-	
-	/** Max number of self-play trials */
-	private static final int NUM_TRIALS = 100;
-	
-	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 2880;
 	
 	/** Number of cores per node (this is for Thin nodes on Snellius) */
 	private static final int CORES_PER_NODE = 128;
@@ -106,32 +104,31 @@ public class EvalTrainedFeaturesSnellius4
 				"Yavalath.lud"
 			};
 	
-	/** Descriptors of several variants we want to test */
-	private static final String[] VARIANTS =
+	private static final String[] TREE_TYPES =
 			new String[]
 			{
-				"Baseline",
-				//"TournamentMode",
-				//"ReinforceGamma1",
-				//"ReinforceGamma099",
-				//"ReinforceGamma09",
-				"SpecialMovesExpander",
-				"SpecialMovesExpanderSplit",
-				//"SignCorrelationExpander",
-				//"RandomExpander",
-				//"All"
-				"NoHandleAliasing",
-				"HandleAliasingPlayouts",
-				"NoWED",
-				"NoPER"
+				"BinaryClassificationTree_Playout",
+				"BinaryClassificationTree_TSPG",
+				"ImbalancedBinaryClassificationTree_Playout",
+				"ImbalancedBinaryClassificationTree_TSPG",
+				"ImbalancedBinaryClassificationTree2_Playout",
+				"ImbalancedBinaryClassificationTree2_TSPG",
+				"IQRTree_Playout",
+				"IQRTree_TSPG",
+				"LogitRegressionTree_Playout",
+				"LogitRegressionTree_TSPG"
 			};
+	
+	private static final int[] TREE_DEPTHS = new int[] {1, 2, 3, 4, 5, 10};
+	
+	private static final String[] EXPERIMENT_TYPES = new String[] {"Greedy", "Sampling"};
 	
 	//-------------------------------------------------------------------------
 	
 	/**
 	 * Constructor (don't need this)
 	 */
-	private EvalTrainedFeaturesSnellius4()
+	private EvalDecisionTreesNormalGamesSnellius()
 	{
 		// Do nothing
 	}
@@ -188,12 +185,27 @@ public class EvalTrainedFeaturesSnellius4
 
 		});
 		
-		final List<Object[][]> matchupsPerPlayerCount = new ArrayList<Object[][]>();
+		// All the "algorithms" we want to evaluate
+		final List<String> algorithms = new ArrayList<String>();
+		algorithms.add("Random");
+		algorithms.add("CE");
+		algorithms.add("TSPG");
+		//algorithms.add("UCT");
 		
-		final int maxMatchupsPerGame = ListUtils.numCombinationsWithReplacement(VARIANTS.length, 3);
+		for (final String treeType : TREE_TYPES)
+		{
+			for (final int treeDepth : TREE_DEPTHS)
+			{
+				algorithms.add(treeType + "_" + treeDepth);
+			}
+		}
+		
+		final List<Object[][]> matchupsPerPlayerCount = new ArrayList<Object[][]>();
 
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
+		final List<ProcessData> processDataListUCT = new ArrayList<ProcessData>();
+		
 		for (int idx : sortedGameIndices)
 		{
 			final Game game = compiledGames[idx];
@@ -208,51 +220,60 @@ public class EvalTrainedFeaturesSnellius4
 			}
 			
 			if (matchupsPerPlayerCount.get(numPlayers) == null)
-				matchupsPerPlayerCount.set(numPlayers, ListUtils.generateCombinationsWithReplacement(VARIANTS, numPlayers));
+				matchupsPerPlayerCount.set(numPlayers, ListUtils.generateCombinationsWithReplacement(algorithms.toArray(), numPlayers));
 			
-			if (matchupsPerPlayerCount.get(numPlayers).length > maxMatchupsPerGame)
+			// We already ran most matchups on another cluster, only still need to do the ones
+			// that contain at least one ImbalancedBinaryClassificationTree2 agent
+			for (final Object[] matchup : matchupsPerPlayerCount.get(numPlayers))
 			{
-				// Too many matchups: remove some of them
-				final TIntArrayList indicesToKeep = new TIntArrayList(matchupsPerPlayerCount.get(numPlayers).length);
-				for (int i = 0; i < matchupsPerPlayerCount.get(numPlayers).length; ++i)
+				boolean keep = false;
+				boolean includesUCT = false;
+				for (final Object obj : matchup)
 				{
-					indicesToKeep.add(i);
+					final String s = (String) obj;
+					if (s.contains("ImbalancedBinaryClassificationTree2"))
+					{
+						keep = true;
+					}
+					
+					includesUCT = includesUCT || s.equals("UCT");
 				}
 				
-				while (indicesToKeep.size() > maxMatchupsPerGame)
+				if (keep)
 				{
-					ListUtils.removeSwap(indicesToKeep, ThreadLocalRandom.current().nextInt(indicesToKeep.size()));
+					if (includesUCT)
+					{
+						for (final String experimentType : EXPERIMENT_TYPES)
+						{
+							processDataListUCT.add(new ProcessData(gameName, matchup, experimentType, numPlayers));
+						}
+					}
+					else
+					{
+						for (final String experimentType : EXPERIMENT_TYPES)
+						{
+							processDataList.add(new ProcessData(gameName, matchup, experimentType, numPlayers));
+						}
+					}
 				}
-				
-				final Object[][] newMatchups = new Object[maxMatchupsPerGame][numPlayers];
-				for (int i = 0; i < newMatchups.length; ++i)
-				{
-					newMatchups[i] = matchupsPerPlayerCount.get(numPlayers)[indicesToKeep.getQuick(i)];
-				}
-				matchupsPerPlayerCount.set(numPlayers, newMatchups);
-			}
-			
-			for (int i = 0; i < matchupsPerPlayerCount.get(numPlayers).length; ++i)
-			{
-				processDataList.add(new ProcessData(gameName, numPlayers, matchupsPerPlayerCount.get(numPlayers)[i]));
 			}
 		}
 		
-		long totalRequestedCoreHours = 0L;
+		processDataList.addAll(0, processDataListUCT);
 		
 		int processIdx = 0;
 		while (processIdx < processDataList.size())
 		{
 			// Start a new job script
-			final String jobScriptFilename = "EvalFeatures_" + jobScriptNames.size() + ".sh";
+			final String jobScriptFilename = "EvalDecisionTrees_" + jobScriptNames.size() + ".sh";
 					
 			try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8"))
 			{
 				writer.println("#!/bin/bash");
-				writer.println("#SBATCH -J EvalFeatures");
+				writer.println("#SBATCH -J EvalDecisionTrees");
 				writer.println("#SBATCH -p thin");
-				writer.println("#SBATCH -o /home/" + userName + "/EvalFeaturesSnellius4/Out/Out_%J.out");
-				writer.println("#SBATCH -e /home/" + userName + "/EvalFeaturesSnellius4/Out/Err_%J.err");
+				writer.println("#SBATCH -o /home/" + userName + "/EvalDecisionTrees/Out/Out_%J.out");
+				writer.println("#SBATCH -e /home/" + userName + "/EvalDecisionTrees/Out/Err_%J.err");
 				writer.println("#SBATCH -t " + MAX_WALL_TIME);
 				writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
 				
@@ -267,13 +288,9 @@ public class EvalTrainedFeaturesSnellius4
 				
 				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
-				
-				totalRequestedCoreHours += (CORES_PER_NODE * (MAX_WALL_TIME / 60));
-				
+								
 				if (exclusive)
 					writer.println("#SBATCH --exclusive");
-				else
-					writer.println("#SBATCH --exclusive");	// Just making always exclusive for now because otherwise taskset doesn't work
 				
 				// load Java modules
 				writer.println("module load 2021");
@@ -284,67 +301,102 @@ public class EvalTrainedFeaturesSnellius4
 				while (numJobProcesses < PROCESSES_PER_JOB && processIdx < processDataList.size())
 				{
 					final ProcessData processData = processDataList.get(processIdx);
+					final String cleanGameName = StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), ""));
 					
 					final List<String> agentStrings = new ArrayList<String>();
 					for (final Object agent : processData.matchup)
 					{
-						final List<String> playoutStrParts = new ArrayList<String>();
-						playoutStrParts.add("playout=softmax");
-						for (int p = 1; p <= processData.numPlayers; ++p)
-						{
-							playoutStrParts.add
-							(
-								"policyweights" + 
-								p + 
-								"=/home/" + 
-								userName + 
-								"/TrainFeaturesSnellius4/Out/" + 
-								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
-								"_" + (String)agent + 
-								"/PolicyWeightsPlayout_P" + p + "_00201.txt"
-							);
-						}
+						final String s = (String) agent;
 						
-						final List<String> learnedSelectionStrParts = new ArrayList<String>();
-						learnedSelectionStrParts.add("learned_selection_policy=softmax");
-						for (int p = 1; p <= processData.numPlayers; ++p)
-						{
-							learnedSelectionStrParts.add
-							(
-								"policyweights" + 
-								p + 
-								"=/home/" + 
-								userName + 
-								"/TrainFeaturesSnellius4/Out/" + 
-								StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + 
-								"_" + (String)agent + 
-								"/PolicyWeightsSelection_P" + p + "_00201.txt"
-							);
-						}
+						final String agentStr;
 						
-						final String agentStr = 
-								StringRoutines.join
+						if (s.equals("Random"))
+						{
+							agentStr = "Random";
+						}
+						else if (s.equals("UCT"))
+						{
+							agentStr = "UCT";
+						}
+						else if (s.equals("CE") || s.equals("TSPG"))
+						{
+							final String algName = (processData.experimentType.equals("Greedy")) ? "Greedy" : "Softmax";
+							final String weightsFileName = (s.equals("CE")) ? "PolicyWeightsPlayout_P" : "PolicyWeightsTSPG_P";
+							
+							final List<String> policyStrParts = new ArrayList<String>();
+							policyStrParts.add("algorithm=" + algName);
+							for (int p = 1; p <= processData.numPlayers; ++p)
+							{
+								policyStrParts.add
 								(
-									";", 
-									"algorithm=MCTS",
-									"selection=noisyag0selection",
-									StringRoutines.join
-									(
-										",", 
-										playoutStrParts
-									),
-									"tree_reuse=true",
-									"use_score_bounds=true",
-									"num_threads=2",
-									"final_move=robustchild",
-									StringRoutines.join
-									(
-										",", 
-										learnedSelectionStrParts
-									),
-									"friendly_name=" + (String)agent
+									"policyweights" + 
+									p + 
+									"=/home/" + 
+									userName + 
+									"/TrainFeaturesSnellius4/Out/" + 
+									cleanGameName + "_Baseline" +
+									"/" + weightsFileName + p + "_00201.txt"
 								);
-						
+							}
+							policyStrParts.add("friendly_name=" + s);
+							
+							if (s.equals("TSPG"))
+								policyStrParts.add("boosted=true");
+							
+							agentStr = 
+									StringRoutines.join
+									(
+										";", 
+										policyStrParts
+									);
+						}
+						else if (s.startsWith("LogitRegressionTree"))
+						{
+							agentStr = 
+									StringRoutines.join
+									(
+										";", 
+										"algorithm=SoftmaxPolicyLogitTree",
+										"policytrees=/" + 
+										StringRoutines.join
+										(
+											"/", 
+											"home",
+											userName,
+											"TrainFeaturesSnellius4",
+											"Out",
+											"Trees",
+											cleanGameName,
+											s + ".txt"
+										),
+										"friendly_name=" + s,
+										"greedy=" + ((processData.experimentType.equals("Greedy")) ? "true" : "false")
+									);
+						}
+						else
+						{
+							agentStr = 
+									StringRoutines.join
+									(
+										";", 
+										"algorithm=ProportionalPolicyClassificationTree",
+										"policytrees=/" + 
+										StringRoutines.join
+										(
+											"/", 
+											"home",
+											userName,
+											"TrainFeaturesSnellius4",
+											"Out",
+											"Trees",
+											cleanGameName,
+											s + ".txt"
+										),
+										"friendly_name=" + s,
+										"greedy=" + ((processData.experimentType.equals("Greedy")) ? "true" : "false")
+									);
+						}
+	
 						agentStrings.add(StringRoutines.quote(agentStr));
 					}
 					
@@ -352,9 +404,6 @@ public class EvalTrainedFeaturesSnellius4
 					final String javaCall = StringRoutines.join
 							(
 								" ", 
-								"taskset",			// Assign specific cores to each process
-								"-c",
-								StringRoutines.join(",", String.valueOf(numJobProcesses * 2), String.valueOf(numJobProcesses * 2 + 1)),
 								"java",
 								"-Xms" + JVM_MEM + "M",
 								"-Xmx" + JVM_MEM + "M",
@@ -363,7 +412,7 @@ public class EvalTrainedFeaturesSnellius4
 								"-dsa",
 								"-XX:+UseStringDeduplication",
 								"-jar",
-								StringRoutines.quote("/home/" + userName + "/EvalFeaturesSnellius4/Ludii.jar"),
+								StringRoutines.quote("/home/" + userName + "/EvalDecisionTrees/Ludii.jar"),
 								"--eval-agents",
 								"--game",
 								StringRoutines.quote("/" + processData.gameName),
@@ -371,13 +420,19 @@ public class EvalTrainedFeaturesSnellius4
 								"--thinking-time 1",
 								"--agents",
 								StringRoutines.join(" ", agentStrings),
+								"--warming-up-secs",
+								String.valueOf(0),
+								"--game-length-cap",
+								String.valueOf(1000),
 								"--out-dir",
 								StringRoutines.quote
 								(
-									"/home/" + 
+									"/work/" + 
 									userName + 
-									"/EvalFeaturesSnellius4/Out/" + 
-									StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "/" + 
+									"/EvalSmallGames/Out/" + 
+									processData.experimentType + "/" +
+									cleanGameName +
+									"/" +
 									StringRoutines.join("_", processData.matchup)
 								),
 								"--output-summary",
@@ -385,7 +440,7 @@ public class EvalTrainedFeaturesSnellius4
 								"--max-wall-time",
 								String.valueOf(MAX_WALL_TIME),
 								">",
-								"/home/" + userName + "/EvalFeaturesSnellius4/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
+								"/home/" + userName + "/EvalDecisionTrees/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
 								"&"		// Run processes in parallel
 							);
 					
@@ -404,8 +459,6 @@ public class EvalTrainedFeaturesSnellius4
 				e.printStackTrace();
 			}
 		}
-		
-		System.out.println("Total requested core hours = " + totalRequestedCoreHours);
 		
 		final List<List<String>> jobScriptsLists = new ArrayList<List<String>>();
 		List<String> remainingJobScriptNames = jobScriptNames;
@@ -457,20 +510,23 @@ public class EvalTrainedFeaturesSnellius4
 	private static class ProcessData
 	{
 		public final String gameName;
-		public final int numPlayers;
 		public final Object[] matchup;
+		public final String experimentType;
+		public final int numPlayers;
 		
 		/**
 		 * Constructor
 		 * @param gameName
-		 * @param numPlayers
 		 * @param matchup
+		 * @param experimentType
+		 * @param numPlayers
 		 */
-		public ProcessData(final String gameName, final int numPlayers, final Object[] matchup)
+		public ProcessData(final String gameName, final Object[] matchup, final String experimentType, final int numPlayers)
 		{
 			this.gameName = gameName;
-			this.numPlayers = numPlayers;
 			this.matchup = matchup;
+			this.experimentType = experimentType;
+			this.numPlayers = numPlayers;
 		}
 	}
 	

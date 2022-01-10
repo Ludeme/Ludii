@@ -26,7 +26,7 @@ import utils.RulesetNames;
  *
  * @author Dennis Soemers
  */
-public class EvalDecisionTreesSmallGamesRWTH
+public class EvalDecisionTreesSmallGamesRWTH2
 {
 	
 	/** Memory to assign to JVM */
@@ -89,6 +89,8 @@ public class EvalDecisionTreesSmallGamesRWTH
 				"BinaryClassificationTree_TSPG",
 				"ImbalancedBinaryClassificationTree_Playout",
 				"ImbalancedBinaryClassificationTree_TSPG",
+				"ImbalancedBinaryClassificationTree2_Playout",
+				"ImbalancedBinaryClassificationTree2_TSPG",
 				"IQRTree_Playout",
 				"IQRTree_TSPG",
 				"LogitRegressionTree_Playout",
@@ -104,7 +106,7 @@ public class EvalDecisionTreesSmallGamesRWTH
 	/**
 	 * Constructor (don't need this)
 	 */
-	private EvalDecisionTreesSmallGamesRWTH()
+	private EvalDecisionTreesSmallGamesRWTH2()
 	{
 		// Do nothing
 	}
@@ -198,14 +200,14 @@ public class EvalDecisionTreesSmallGamesRWTH
 				matchupsPerPlayerCount.set(numPlayers, ListUtils.generateCombinationsWithReplacement(algorithms.toArray(), numPlayers));
 			
 			// We already ran most matchups on another cluster, only still need to do the ones
-			// that contain at least one out of UCT, CE and TSPG
+			// that contain at least one ImbalancedBinaryClassificationTree2 agent
 			for (final Object[] matchup : matchupsPerPlayerCount.get(numPlayers))
 			{
 				boolean keep = false;
 				for (final Object obj : matchup)
 				{
 					final String s = (String) obj;
-					if (s.equals("UCT") || s.equals("CE") || s.equals("TSPG"))
+					if (s.contains("ImbalancedBinaryClassificationTree2"))
 					{
 						keep = true;
 						break;
@@ -353,7 +355,7 @@ public class EvalDecisionTreesSmallGamesRWTH
 							"-dsa",
 							"-XX:+UseStringDeduplication",
 							"-jar",
-							StringRoutines.quote("/home/" + userName + "/SmallGames/Ludii.jar"),
+							StringRoutines.quote("/home/" + userName + "/SmallGames2/Ludii.jar"),
 							"--eval-agents",
 							"--game",
 							StringRoutines.quote("/" + processData.gameName),
