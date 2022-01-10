@@ -47,12 +47,10 @@
 
 (game "HexTrike"
     (players 2)
-    (equipment 
-        {
+    (equipment {
         (board (hex <Boundary:shape> <Board>))
         (piece "Ball" Each)
-        }
-    )
+    })
     
     (rules
         (meta (swap))
