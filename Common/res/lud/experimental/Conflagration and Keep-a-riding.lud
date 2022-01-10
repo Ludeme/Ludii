@@ -174,28 +174,28 @@
         <"PriorityMoveOverCaptureByPiece"> 
         <"Shakattrition"> <"Last2MoveEnd"> 
         <"Motorbike"> 
-        "Shakattrition - Pieces can slide to Capture when they can't step to join larger group - Last to move"
+        "Keep-a-riding"
     )
     
     (item "Conflagration, Win when extinguished or contained, Step to group or Slide-capture" 
         <"MoveOrLOSCapture"> 
         <"Shakattrition"> <"AMSEnd"> 
         <"Fire"> 
-        "Conflagration, A piece can either take a single step to join a larger group, or slide to capture an opponent's piece - A misere game, meaning you win when your fires are all contained or extinguished (that is, when you can't move on your turn.)"
+        "Conflagration Standard version"
     )***
     
     (item "Conflagration, Firestorm Variant (longer), Step to group (else Slide-capture)"
         <"PriorityMoveOverCaptureByPiece"> 
         <"Shakattrition"> <"AMSEnd"> 
         <"Fire"> 
-        "Conflagration, Firestorm Variant (longer), A piece can only slide to capture when it cannot step to join a larger group. - Misere = Win when your fire(s) are all contained or extinguished (i.e. you can't move)"
+        "Conflagration, Firestorm Variant (longer)"
     )
     
     (item "Conflagration, Backfire Variant (shorter), Slide-caputure (else step to group)"
         <"PriorityCaptureOverMoveByPiece"> 
         <"Shakattrition"> <"AMSEnd"> 
         <"Fire"> 
-        "Conflagration, Backfire Variant (shorter), A piece can only step to join a larger group when it cannot slide to capture. - Misere = Win when your fire(s) are all contained or extinguished (i.e. you can't move)"
+        "Conflagration, Backfire Variant"
     )  
     }
 )
@@ -233,55 +233,39 @@
 (metadata
     (info
         {
-        (description "Games inspired by Kanare Kato's 'Squish'
-            
-            'Mosey' and 'Don't Mosey' are based on Kanare Kato's work developing 'Advanced Squish'.
+        (description "Two of several Games inspired by Kanare Kato's 'Squish'
             
             Originally 'Squish' was a unification game with step movement toward a friendly piece in-line, possibly involving a capture.  'Advanced Squish' added a requirement on non-capturing steps for the piece to become part of a larger group. (Singletons were exempted.)
             
-            -- 'Keep-a-Riding' and 'Conflagration' differ by being explicitly stalemate games: Last to move wins or loses depending on the game.  They also differ by using slide captures, and by not including the core principle of moving toward a friendly piece in line, but instead requiring the step move to bring the moving piece into new contact with another friendly piece.
-            
+            -- 'Keep-a-Riding' and 'Conflagration' differ from 'Squish' by being explicitly stalemate games: Last to move wins or loses, respectively.  
+            They also differ by using slide captures, and by not including the 'Squish' core principle that requires movement toward in-line friendly pieces. 
+            Instead, they require the step move to bring the moving piece into new contact with another friendly piece.            
             They typically end with only a few pieces on the board, and one player may be entirely eliminated.
-            'Keep-a-Riding' is themed as a 'last man standing' team demolition derby.
             
-            In Conflagration, the theme is 'fighting fire with fire': Getting eliminated is a win. Containment, where non of your flamepieces can move, is also a win.
-        Conflagration has 2 subvariants 'Firestorm' and 'BackFire' in which the choice of moves that each flame piece can take are prioritized. BackFire is the shorter, more aggressive, because a flame piece must capture (become a 'backfire') if it can. In Firestorm, a flame piece must join its kind if they can, leading to slower elimination of the flames in the end game.")
+            'Keep-a-Riding' is themed as a 'last man standing' team demolition derby. But, knocking out an opponent's piece can only be done with pieces that cannot step to become part of a larger group.
+            
+            'Conflagration', is themed 'fighting fire with fire': Getting eliminated is a win. Containment, where none of your flame pieces can move, is also a win.
+            
+            Conflagration has 2 subvariants 'Firestorm' and 'BackFire' in which the choice of moves that each flame piece can take are prioritized.
+            - BackFire is shorter, more aggressive, because a flame piece must capture (become a 'backfire') if it can. 
+        - Firestorm requires a flame piece to step to join its own kind if it can, leading to a slower elimination of the flames in the end game.")
         (rules "Setup: Pieces of each color are distributed symmetrically on every 3rd cell of the board.
             (For a game on an order 4 board, the outer cells are not used.)
+            Four game options are provided:
             
-            Goal: Last to move wins or loses, depending on the game chosen.
+            1. Keep-a-riding - Goal: Last to move. 
+            Play: No passing. Pieces step to join larger group. When they can't step to join larger group, they can slide to capture.
             
-            -- 'Mosey' and 'Shakattrition': Last to move wins.
-            -- 'Don't Mosey' and 'Shakattrition (Misere)': Last to move loses.
+            2. Conflagration, - Goal: Win when you you have no fire left or can't make a move. 
+            Play: No passing. A piece can either take a single step to join a larger group, or slide to capture an opponent's piece.
             
-            Play    
-            - Decide which player will play with which color (Dark or Light). 
-            - Light is the first player to play.
-            - Follow the movement rules for the chosen game.
+            3. Conflagration, - Firestorm Variant (longer)
+            Rule restriction: A piece can only slide to capture when it cannot step to join a larger group.
             
-            Passing is not allowed.
-            The game ends when a player cannot move. 
+            4. Conflagration, - Backfire Variant (shorter), 
+            Rule restriction: A piece can only step to join a larger group when it cannot slide to capture.
             
-            Movement rules for 'Mosey' and 'Don't Mosey':
-            
-            On each turn, the mover choses a piece and slides it over empty cells towards a friendly piece in the same line (but not necesarily visible from the moving piece's point of view.) 
-            
-            Restrictions:
-            The sliding piece must either:
-            - stop on an empty cell next to a friendly piece to form a group of friendly pieces that is larger than the group it started in, or 
-            - stop on the cell of an enemy piece and remove it.  
-            - A piece cannot capture another piece of the same color.
-            
-            Play for Shakattrition  
-            
-            On each turn, the mover choses a piece and slides it along a line of empty cells in one of the 6 directions. 
-            It must either:
-            --  become part of a group of friendly pieces that is larger than the group it started in, if this is possible; 
-            
-            or, if this is not possible for the chosen piece, it must
-            -- capture an enemy piece by replacement.
-            
-        A piece cannot capture another piece of the same color.")
+        ")
         (version "1.3.0")
         (classification "experimental")
         (author "Dale W. Walton")
@@ -314,3 +298,4 @@
         }
     )
 )
+
