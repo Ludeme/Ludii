@@ -50,7 +50,7 @@
         (to
             if:(and
                 (is Empty (to))
-                (gt (count Pieces Next in:(sites Around (from)))
+                (> (count Pieces Next in:(sites Around (from)))
                     (count Pieces Next in:(sites Around (to)))
         )))
         (then 
@@ -135,14 +135,14 @@
             (if 
                 (and
                     (all Passed)
-                    (gt (score Mover) (score Next))
+                    (> (score Mover) (score Next))
                 )
                 (result Mover Win)
             )
             (if 
                 (and
                     (all Passed)
-                    (le (score Mover) (score Next))
+                    (<= (score Mover) (score Next))
                 )
                 (result  Next Win)
             )
