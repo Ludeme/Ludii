@@ -36,10 +36,10 @@ public class EvalDecisionTreesNormalGamesSnellius
 	private static final int MEM_PER_PROCESS = 4;
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 600;
+	private static final int MAX_WALL_TIME = 1200;
 	
 	/** Don't submit more than this number of jobs at a single time */
-	private static final int MAX_JOBS_PER_BATCH = 200;
+	private static final int MAX_JOBS_PER_BATCH = 100;
 	
 	/** Num trials per matchup */
 	private static final int NUM_TRIALS = 50;
@@ -62,8 +62,11 @@ public class EvalDecisionTreesNormalGamesSnellius
 	/** If we have more processes than this in a job, we get billed for the entire node anyway, so should request exclusive  */
 	private static final int EXCLUSIVE_PROCESSES_THRESHOLD = EXCLUSIVE_CORES_THRESHOLD / CORES_PER_PROCESS;
 	
-	/**Number of processes we can put in a single job (on a single node) */
-	private static final int PROCESSES_PER_JOB = CORES_PER_NODE / CORES_PER_PROCESS;
+	/** How many processes are we happy to run "simultaneously" on a single core? */
+	private static final int PROCESSES_PER_CORE = 2;
+	
+	/** Number of processes we can put in a single job (on a single node) */
+	private static final int PROCESSES_PER_JOB = (PROCESSES_PER_CORE * CORES_PER_NODE) / CORES_PER_PROCESS;
 	
 	/** Games we want to run */
 	private static final String[] GAMES = 
@@ -278,7 +281,7 @@ public class EvalDecisionTreesNormalGamesSnellius
 				writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
 				
 				// Compute memory and core requirements
-				final int numProcessesThisJob = Math.min(processDataList.size() - processIdx, PROCESSES_PER_JOB);
+				final int numProcessesThisJob = Math.min(processDataList.size() - processIdx, (PROCESSES_PER_JOB / PROCESSES_PER_CORE));
 				final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
 				final int jobMemRequestGB;
 				if (exclusive)
@@ -286,7 +289,10 @@ public class EvalDecisionTreesNormalGamesSnellius
 				else
 					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
 				
-				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
+				if (exclusive)		// We're requesting full node anyway, might as well take all the cores
+					writer.println("#SBATCH --cpus-per-task=" + CORES_PER_NODE);
+				else
+					writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
 								
 				if (exclusive)
@@ -427,9 +433,9 @@ public class EvalDecisionTreesNormalGamesSnellius
 								"--out-dir",
 								StringRoutines.quote
 								(
-									"/work/" + 
+									"/home/" + 
 									userName + 
-									"/EvalSmallGames/Out/" + 
+									"/EvalDecisionTrees/Out/" + 
 									processData.experimentType + "/" +
 									cleanGameName +
 									"/" +
