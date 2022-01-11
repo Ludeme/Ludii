@@ -28,6 +28,7 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Constants;
 import main.collections.FastTIntArrayList;
+import other.context.Context;
 import other.state.container.ContainerState;
 import other.state.container.ContainerStateFactory;
 import other.state.owned.Owned;
@@ -2129,4 +2130,19 @@ public class State implements Serializable
 
 	//-------------------------------------------------------------------------
 
+	/**
+	 * @param context The current context.
+	 * @return The concepts involved in this specific state.
+	 */
+	public BitSet concepts(final Context context)
+	{
+		final Game game = context.game();
+		final BitSet concepts = new BitSet();
+
+		// Accumulate concepts over the players.
+		concepts.or(game.players().concepts(game));
+		
+		return concepts;
+	}
+	
 }
