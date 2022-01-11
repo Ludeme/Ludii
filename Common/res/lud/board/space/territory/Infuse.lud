@@ -28,7 +28,7 @@
 
 (define "StepIteration"
     (if 
-        (le #2 (count Pieces Next in:(sites Around (from))))
+        (<= #2 (count Pieces Next in:(sites Around (from))))
         (move
             (from (from))
             (to (#1))
@@ -108,7 +108,7 @@
             (if 
                 (and
                     (all Passed)
-                    (le (score Mover) (score Next))
+                    (<= (score Mover) (score Next))
                 )
                 (result  Next Win)
             )

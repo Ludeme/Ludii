@@ -180,7 +180,7 @@
     (move Claim
         (to 
             (sites Empty) 
-            if:(le 2 ("InfluenceAt" (to)))
+            if:(<= 2 ("InfluenceAt" (to)))
         )
         (then 
             (do
@@ -203,7 +203,7 @@
     (forEach Site
         (sites Occupied by:Next)
         (if 
-            (le 2 ("InfluenceAt" (site)))
+            (<= 2 ("InfluenceAt" (site)))
             (move Remove (site)
                 (then
                     (claim
@@ -231,7 +231,7 @@
     (do
         (forEach Piece
             (if 
-                (lt 0 (("InfluenceAt" (from))))
+                (< 0 (("InfluenceAt" (from))))
                 (move Remove
                     (from)
                     (then
@@ -289,7 +289,7 @@
 (define "EnemyPlacedAfterPass" (!= (value Player Next) (count Pieces Mover)))
 
 (define "TheMove"
-    (if (lt 0 (var "PowerLeft")) 
+    (if (< 0 (var "PowerLeft")) 
         ("CompleteTheMove")
         (or
             {
@@ -307,7 +307,7 @@
         )
         (then 
             (if 
-                (lt 0 (var "PowerLeft"))
+                (< 0 (var "PowerLeft"))
                 (moveAgain)
                 (and
                     {
@@ -335,7 +335,7 @@
                 (if 
                     (and
                         ("NotAfterPreviousPass")
-                        (gt 1 (var "PowerLeft")) // i.e. = 0
+                        (> 1 (var "PowerLeft")) // i.e. = 0
                     )
                     ("PassAndEnemyMustIncreaseScore")
         )))
@@ -350,7 +350,7 @@
                 (if 
                     (and
                         ("NotAfterPreviousPass")
-                        (gt 1 (var "PowerLeft")) // i.e. = 0
+                        (> 1 (var "PowerLeft")) // i.e. = 0
                     )
                     (move Pass (then (set Var "MovePhase" 2)))
         )))

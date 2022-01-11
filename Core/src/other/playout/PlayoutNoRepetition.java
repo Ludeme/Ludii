@@ -5,7 +5,7 @@ import java.util.Random;
 
 import game.Game;
 import game.functions.ints.IntConstant;
-import game.rules.meta.NoRepeat;
+import game.rules.meta.no.repeat.NoRepeat;
 import game.rules.phase.Phase;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.decision.MoveSwapType;

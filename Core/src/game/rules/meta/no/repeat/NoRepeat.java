@@ -1,9 +1,11 @@
-package game.rules.meta;
+package game.rules.meta.no.repeat;
 
 import java.util.BitSet;
 
+import annotations.Hide;
 import annotations.Opt;
 import game.Game;
+import game.rules.meta.MetaRule;
 import game.types.play.RepetitionType;
 import game.types.state.GameType;
 import other.MetaRules;
@@ -20,6 +22,7 @@ import other.move.Move;
  *          sequences of moves that would lead to the same state twice, which
  *          would indicate the start of an infinite cycle of moves.
  */
+@Hide
 public class NoRepeat extends MetaRule
 {
 	private static final long serialVersionUID = 1L;

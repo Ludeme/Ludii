@@ -5,7 +5,7 @@ import java.util.function.BiPredicate;
 
 import annotations.Opt;
 import game.Game;
-import game.rules.meta.NoRepeat;
+import game.rules.meta.no.repeat.NoRepeat;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.state.GameType;
 import main.collections.FastArrayList;

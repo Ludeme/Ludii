@@ -16,7 +16,7 @@ import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
-import game.rules.meta.NoRepeat;
+import game.rules.meta.no.repeat.NoRepeat;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.util.equipment.Region;

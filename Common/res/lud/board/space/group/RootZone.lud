@@ -46,7 +46,7 @@
                             )
                             if:(and
                                 (is Empty (to))  // place on empty location
-                                (ge              // with a limit on friendly neighbors
+                                (>=              // with a limit on friendly neighbors
                                     <PlaceBy:qtyMax>  
                                     (count Pieces Mover in:(sites Around (to))) 
                                 )
@@ -70,7 +70,7 @@
 (define "SitesTooDense"
     (forEach 
         (sites Occupied by:Mover) 
-        if:(le 
+        if:(<= 
             <NeighborsOf:nbrMax> 
             (count Pieces Mover in:(sites Around (site))) 
         )
@@ -79,9 +79,9 @@
 
 (define "ScoreUpdate"
     (if 
-        (gt (* 2 (size Group at:(last To))) (score Mover) )
+        (> (* 2 (size Group at:(last To))) (score Mover) )
         (if 
-            (gt (* 2 (size Group at:(last To))) (score Next))
+            (> (* 2 (size Group at:(last To))) (score Next))
             (set Score Mover (+ 1 (* 2 (size Group at:(last To)))))
             (set Score Mover (* 2 (size Group at:(last To)))) 
         )

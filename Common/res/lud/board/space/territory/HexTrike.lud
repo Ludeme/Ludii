@@ -87,11 +87,11 @@
             (if 
                 (no Moves Next) {
                 (if
-                    (gt ("Nbors" (last To) P1) ("Nbors" (last To) P2)) (result P1 Win)
+                    (> ("Nbors" (last To) P1) ("Nbors" (last To) P2)) (result P1 Win)
                 )
                 
                 (if
-                    (gt ("Nbors" (last To) P2) ("Nbors" (last To) P1)) (result P2 Win)
+                    (> ("Nbors" (last To) P2) ("Nbors" (last To) P1)) (result P2 Win)
                 )
                 
                 (if

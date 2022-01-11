@@ -32,7 +32,7 @@
                     (or
                         (move 
                             Add (piece (id "Disc" P2)) (to (sites Empty))
-                        (then (if (lt (count MovesThisTurn) 2) (moveAgain))))
+                        (then (if (< (count MovesThisTurn) 2) (moveAgain))))
                         "Skip"
                     )
                     (if (= (count MovesThisTurn) 0)

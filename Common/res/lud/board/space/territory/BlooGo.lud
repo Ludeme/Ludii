@@ -13,7 +13,7 @@
     
     (rules 
         (meta
-            (noRepeat)
+            (no Repeat)
         )
         (play 
             (move 
@@ -27,10 +27,10 @@
         
         (end {
             (if
-                (ge (score Mover) <CapThreshold>)
+                (>= (score Mover) <CapThreshold>)
                 (result Mover Win)
             )
-       })
+        })
     )
 )
 

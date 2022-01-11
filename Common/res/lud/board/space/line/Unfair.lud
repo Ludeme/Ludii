@@ -21,7 +21,7 @@
                 (move Add (to (sites Empty) if:(= (id P2) (mover)))
                     (then 
                         (if 
-                            (lt (count MovesThisTurn) 3) 
+                            (< (count MovesThisTurn) 3) 
                             (moveAgain)
                         )
                     )

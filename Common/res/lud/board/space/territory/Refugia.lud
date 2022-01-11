@@ -20,7 +20,7 @@
 // Defines for Booleans
 
 (define "MoveAllowed"
-    (lt ("Unfriendlies" (to)) ("Unfriendlies" (from)))
+    (< ("Unfriendlies" (to)) ("Unfriendlies" (from)))
 )
 
 (define "NonAdjacent"
@@ -151,19 +151,19 @@
                 (all Passed)
                 {
                 (if 
-                    (gt (score Mover) (score Next))
+                    (> (score Mover) (score Next))
                     (result Mover Win)
                 )
                 (if 
-                    (lt (score Mover) (score Next))
+                    (< (score Mover) (score Next))
                     (result Next Win)
                 )
                 (if 
-                    (gt ("TieBreaker" Mover) ("TieBreaker" Next))
+                    (> ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Mover Win)
                 )
                 (if 
-                    (lt ("TieBreaker" Mover) ("TieBreaker" Next))
+                    (< ("TieBreaker" Mover) ("TieBreaker" Next))
                     (result Next Win)
                 )
                 }

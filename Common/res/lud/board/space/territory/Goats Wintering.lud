@@ -38,7 +38,7 @@
         (to  
             if:(and
                 (is Empty (to))
-                (lt (count Pieces Mover in:(sites Around (from)))
+                (< (count Pieces Mover in:(sites Around (from)))
                     (- (count Pieces Mover in:(sites Around (to))) 1)
         )))
         (then 

@@ -100,7 +100,7 @@
             (if 
                 (is Proposed "Conclude") 
                 (if 
-                    (le (score Mover) (score Next))
+                    (<= (score Mover) (score Next))
                     (result Mover Win)
                 )
                 (result Next Win)
