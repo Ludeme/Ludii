@@ -2136,11 +2136,57 @@ public class State implements Serializable
 	 */
 	public BitSet concepts(final Context context)
 	{
+		// TODO CHECK LEGAL MOVES CONCEPT, CHECK ONLY PIECES CONCEPT ON BOARD, BUT NEED TO DISCUSS WITH MATTHEW BEFORE TO FINISH THAT CODE.
+		
 		final Game game = context.game();
 		final BitSet concepts = new BitSet();
 
 		// Accumulate concepts over the players.
 		concepts.or(game.players().concepts(game));
+		
+		// Accumulate concepts for all the containers.
+		for (int i = 0; i < game.equipment().containers().length; i++)
+			concepts.or(game.equipment().containers()[i].concepts(game));
+		
+		// Accumulate concepts for all the components.
+		for (int i = 1; i < game.equipment().components().length; i++)
+			concepts.or(game.equipment().components()[i].concepts(game));
+		
+//		// Accumulate concepts for all the regions.
+//		for (int i = 0; i < equipment().regions().length; i++)
+//			concept.or(equipment().regions()[i].concepts(this));
+//
+//		// Accumulate concepts for all the maps.
+//		for (int i = 0; i < equipment().maps().length; i++)
+//			concept.or(equipment().maps()[i].concepts(this));
+//
+//		// Look if the game uses hints.
+//		if (equipment().vertexHints().length != 0 || equipment().cellsWithHints().length != 0
+//			|| equipment().edgesWithHints().length != 0)
+//			concept.set(Concept.Hints.id(), true);
+//
+//		// Check if some regions are defined.
+//		if (equipment().regions().length != 0)
+//			concept.set(Concept.Region.id(), true);
+//		
+//		// Accumulate concepts over meta rules
+//		if (rules.meta() != null)
+//			for (final MetaRule meta : rules.meta().rules())
+//				concept.or(meta.concepts(this));
+//		
+//		// Accumulate concepts over the ending rules.
+//		if (rules.end() != null)
+//			concept.or(rules.end().concepts(this));
+//
+//		// Look if the game uses a stack state.
+//		if (isStacking())
+//		{
+//			concept.set(Concept.StackState.id(), true);
+//			concept.set(Concept.Stack.id(), true);
+//		}
+//
+//		// Look the graph element types used.
+//		concept.or(SiteType.concepts(board().defaultSite()));
 		
 		return concepts;
 	}
