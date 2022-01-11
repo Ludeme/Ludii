@@ -4,6 +4,7 @@ import annotations.Opt;
 import game.Game;
 import game.rules.meta.MetaRule;
 import game.rules.meta.no.repeat.NoRepeat;
+import game.rules.meta.no.simple.NoSuicide;
 import game.types.play.RepetitionType;
 import other.context.Context;
 
@@ -43,6 +44,30 @@ public final class No extends MetaRule
 
 		// We should never reach that except if we forget some codes.
 		throw new IllegalArgumentException("No(): A NoRepeatType is not implemented.");
+	}
+	
+	/**
+	 * For specifying that a move leading to a direct loss is forbidden in the game.
+	 * 
+	 * @param type Type of suicide.
+	 * 
+	 * @example (no Suicide)
+	 */
+	public static MetaRule construct
+	(
+		final NoSimpleType    type	
+    )
+	{
+		switch (type)
+		{
+		case Suicide:
+			return new NoSuicide();
+		default:
+			break;
+		}
+
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("No(): A NoSimpleType is not implemented.");
 	}
 	
 	//-------------------------------------------------------------------------

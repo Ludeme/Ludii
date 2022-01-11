@@ -6,6 +6,7 @@ import java.util.function.BiPredicate;
 import annotations.Opt;
 import game.Game;
 import game.rules.meta.no.repeat.NoRepeat;
+import game.rules.meta.no.simple.NoSuicide;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.state.GameType;
 import main.collections.FastArrayList;
@@ -318,6 +319,11 @@ public abstract class Moves extends BaseLudeme implements GameType
 	public boolean canMove(final Context context)
 	{
 		return movesIterator(context).canMoveConditionally(
-				(final Context c, final Move m) -> { return NoRepeat.apply(c, m); });
+				(final Context c, final Move m) -> 
+				{ 
+					final boolean noRepeat = NoRepeat.apply(c, m);
+					final boolean noSuicide = NoSuicide.apply(c, m);
+					return noRepeat && noSuicide; 
+				});
 	}
 }

@@ -1,108 +1,16 @@
-(define "DistanceToNearestIceberg"
-    (count Steps
-        ("OntoEmptyOrIceberg")
-        (from)
-        (sites Occupied by:Neutral)
-    )
-)
-
-(define "NearestIcebergs"
-    (intersection
-        (sites Occupied by:Neutral)
-        (sites Distance
-            ("OntoEmptyOrIceberg")
-            from:(from)
-            (exact ("DistanceToNearestIceberg"))
-        )
-    )
-)
-
-(define "OntoEmptyOrIceberg"
-    (step 
-        (to 
-            if:(or
-                (= (id Neutral) (who at:(to)))
-                (is Empty (to))
-            )
-        )
-    )
-)
-
-(game "Icebreaker"
-    (players 2)
-    (equipment
-        {
-        (board (hex 5))
-        (piece "Disc" Each
-            (move Step
-                (to 
-                    if:(and
-                        (or
-                            (= (id Neutral) (who at:(to)))
-                            (is Empty (to))
-                        )
-                        (= 1
-                            (-
-                                (count Steps
-                                    ("OntoEmptyOrIceberg")
-                                    (from)
-                                    ("NearestIcebergs")
-                                )
-                                (count Steps
-                                    ("OntoEmptyOrIceberg")
-                                    (to)
-                                    ("NearestIcebergs")
-                                )
-                            )
-                        )
-                    )
-                    (apply 
-                        (if
-                            (= (id Neutral) (who at:(to)))
-                            (and
-                                (remove (to))
-                                (addScore Mover 1)
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        (piece "Disc" Neutral)
-        }
-    )
-    (rules
-        (start {
-            (place "Disc0" (difference (sites Board) (sites Corners)))
-            (place "Disc1" (intersection (sites Corners) (sites Phase 0)))
-            (place "Disc2" (intersection (sites Corners) (sites Phase 1)))
-        })
-        (play
-            (forEach Piece Mover
-                (then
-                    (note
-                        (sites Distance
-                            (step (to if:(= (id Neutral) (who at:(to)))))
-                            from:(centrePoint)
-                            (range 2)
-                        )
-                    )
-                )
-            )
-        )
-        (end 
-            (if 
-                (no Pieces Neutral) 
-                (byScore)
-            )
-        )
-    )
-)
-
-(metadata 
-    (graphics {
-        (player Colour Neutral (colour White))
-        (player Colour P1 (colour Red))
-        (player Colour P2 (colour Black))
-    })
+(game "Test2"
+	(players 2)
+	(equipment {
+		(board (square 5))
+		(piece "Ball" Each)
+	})
+	(rules
+		(meta (no Suicide))
+		(play 
+			(move Add (to (sites Empty)))
+		)
+		(end
+			(if (is Line 3) (result Mover Loss))
+		)
+	)
 )

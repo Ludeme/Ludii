@@ -17,6 +17,7 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
 import game.rules.meta.no.repeat.NoRepeat;
+import game.rules.meta.no.simple.NoSuicide;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.util.equipment.Region;
@@ -285,12 +286,12 @@ public class Trial implements Serializable
 	 */
 	public void setLegalMoves(final Moves legalMoves, final Context context)
 	{		
-		// Remove moves that don't satisfy state repetition restrictions
+		// Remove moves that don't satisfy meta rules
 		for (int i = 0; i < legalMoves.moves().size(); i++)
 		{
 			final Move m = legalMoves.moves().get(i);
 			
-			if (!NoRepeat.apply(context, m))
+			if (!NoRepeat.apply(context, m) || !NoSuicide.apply(context, m))
 				legalMoves.moves().removeSwap(i--);
 		}
 		

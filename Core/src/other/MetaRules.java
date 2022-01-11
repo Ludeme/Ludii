@@ -25,6 +25,9 @@ public class MetaRules
 
 	/** To know if a metarule about repetition is activated. */
 	private RepetitionType repetitionType = null;
+	
+	/** To know if the metarule no suicide is on. */
+	private boolean usesNoSuicide = false;
 
 	//-------------------------------------------------------------------------
 
@@ -124,5 +127,25 @@ public class MetaRules
 	public PinType pinType()
 	{
 		return pinType;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * To set the no suicide meta rule.
+	 * 
+	 * @param value The no suicide value.
+	 */
+	public void setNoSuicide(final boolean value)
+	{
+		usesNoSuicide = value;
+	}
+
+	/**
+	 * @return The value of the no suicide meta rule.
+	 */
+	public boolean usesNoSuicide()
+	{
+		return usesNoSuicide;
 	}
 }

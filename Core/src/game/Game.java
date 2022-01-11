@@ -2774,7 +2774,7 @@ public class Game extends BaseLudeme implements API, Serializable
 
 			// Meta-rule: We apply the gravity rules if existing.
 			Gravity.apply(context,move);
-	
+			
 			// If a decision was done previously we reset it.
 			if (context.state().isDecided() != Constants.UNDEFINED)
 				context.state().setIsDecided(Constants.UNDEFINED);

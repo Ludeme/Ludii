@@ -35,8 +35,6 @@ public class NoRepeat extends MetaRule
 
 	/**
 	 * @param type Type of repetition to forbid [Positional].
-	 * 
-	 * @example (noRepeat PositionalInTurn)
 	 */
 	public NoRepeat
 	(
