@@ -78,6 +78,7 @@ import other.action.state.ActionSetValue;
 import other.action.state.ActionSetVar;
 import other.action.state.ActionStoreStateInContext;
 import other.action.state.ActionTrigger;
+import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;
 import other.location.FullLocation;
@@ -1637,6 +1638,36 @@ public class Move extends BaseAction
 		for (final Action action : getActionsWithConsequences(context))
 			moveConcepts.or(action.concepts(context, movesLudeme));
 		return moveConcepts;
+	}
+	
+	/**
+	 * @param context The Context.
+	 * @return The values associated with the Moves concepts computed thanks to the action/move concepts.
+	 */
+	public TIntArrayList moveConceptsValue(final Context context)
+	{
+		final TIntArrayList moveConceptsValues = new TIntArrayList();
+		
+		for(int i = 0; i < Concept.values().length; i++)
+			moveConceptsValues.add(0);
+		
+		for (final Action action : getActionsWithConsequences(context))
+		{
+			BitSet actionConcepts = action.concepts(context, movesLudeme);
+			for(int i = 0; i < Concept.values().length; i++)
+				if(actionConcepts.get(i))
+					moveConceptsValues.set(i, moveConceptsValues.get(i) + 1);
+		}
+//		
+//		System.out.println("Move is " + this);
+//
+//		for(int i = 0; i < Concept.values().length; i++)
+//			if(moveConceptsValues.get(i) != 0)
+//				System.out.println("Concept = " + Concept.values()[i] + " value = " + moveConceptsValues.get(i));
+//		
+//		System.out.println();
+		
+		return moveConceptsValues;
 	}
 
 	/**
