@@ -225,38 +225,28 @@ public class EvalDecisionTreesNormalGamesSnellius
 			if (matchupsPerPlayerCount.get(numPlayers) == null)
 				matchupsPerPlayerCount.set(numPlayers, ListUtils.generateCombinationsWithReplacement(algorithms.toArray(), numPlayers));
 			
-			// We already ran most matchups on another cluster, only still need to do the ones
-			// that contain at least one ImbalancedBinaryClassificationTree2 agent
 			for (final Object[] matchup : matchupsPerPlayerCount.get(numPlayers))
 			{
-				boolean keep = false;
 				boolean includesUCT = false;
 				for (final Object obj : matchup)
 				{
 					final String s = (String) obj;
-					if (s.contains("ImbalancedBinaryClassificationTree2"))
-					{
-						keep = true;
-					}
 					
 					includesUCT = includesUCT || s.equals("UCT");
 				}
 				
-				if (keep)
+				if (includesUCT)
 				{
-					if (includesUCT)
+					for (final String experimentType : EXPERIMENT_TYPES)
 					{
-						for (final String experimentType : EXPERIMENT_TYPES)
-						{
-							processDataListUCT.add(new ProcessData(gameName, matchup, experimentType, numPlayers));
-						}
+						processDataListUCT.add(new ProcessData(gameName, matchup, experimentType, numPlayers));
 					}
-					else
+				}
+				else
+				{
+					for (final String experimentType : EXPERIMENT_TYPES)
 					{
-						for (final String experimentType : EXPERIMENT_TYPES)
-						{
-							processDataList.add(new ProcessData(gameName, matchup, experimentType, numPlayers));
-						}
+						processDataList.add(new ProcessData(gameName, matchup, experimentType, numPlayers));
 					}
 				}
 			}
