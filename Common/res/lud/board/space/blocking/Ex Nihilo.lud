@@ -359,15 +359,15 @@
             
             Note that nothing special happens to the cell you moved the 0-stack from – it still contains a 0-stack.
             
-            Capturing – overview:
+            Capturing - overview:
             Flanked enemy stacks are captured by being taken hostage for a move. Capturing is obligatory: If a capturing move is available, a capturing move must be made.
             
-            Capturing – details:
+            Capturing - details:
             If (and only if) the top piece of a stack is of your color, it is said to partake in flanking an enemy stack if (i) this enemy stack is exactly in the middle of a line of otherwise empty cells going from the flanking stack to another one of your stacks, and (ii) all three of these stacks are of the same size.
             
         If, after you have moved a stack, it partakes in flanking one or more enemy stacks, you must immediately move one of these enemy stacks. Except for the obvious difference that you are moving an enemy stack, all normal rules apply to this move. For example: If the captured stack grows (if you move it farther away from the center cell, that is), it grows by the addition of pieces of your color, so situations where this hostage move must itself be a capturing move are possible. Such chaining of captures must continue until you capture a stack that is not in a position to continue the chain. Growing captured stacks is the only way to take ownership of them more permanently.")
         (version "1.3.0")
-        (classification "experimental")
+        (classification "board/space/blocking")
         (author "Michael Amundsen")
         (publisher "Michael Amundsen")
         (credit "Designed and implemented by Michael Amundsen.")

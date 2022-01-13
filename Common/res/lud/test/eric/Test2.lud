@@ -1,16 +1,16 @@
 (game "Test2"
-	(players 2)
-	(equipment {
-		(board (square 5))
-		(piece "Ball" Each)
-	})
-	(rules
-		(meta (no Suicide))
-		(play 
-			(move Add (to (sites Empty)))
-		)
-		(end
-			(if (is Line 3) (result Mover Loss))
-		)
-	)
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Ball" Each)
+    })
+    (rules
+        (meta (no Suicide))
+        (play 
+            (move Add (to (sites Empty)))
+        )
+        (end
+            (if (is Line 3) (result Mover Loss))
+        )
+    )
 )
