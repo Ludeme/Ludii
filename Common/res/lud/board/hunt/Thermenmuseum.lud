@@ -595,6 +595,35 @@
     )		
 )
 
+//Janes Soppi game equipment and rules.
+
+(define "JanesSoppiGameEquipment"
+   (hand Each)
+   (piece "Hound" P1 "StepToEmpty")
+   (piece "Hare" P2 "StepToEmpty")
+)
+
+(define "JanesSoppiGameRules"
+	    (rules 
+	            (start {
+	                (place "Hound1" (handSite P1) count:3)
+	                (place "Hare2" (handSite P2) count:3)
+	            })
+	            
+	            phases:{
+	            (phase "Placement"
+	                (play (move (from (handSite Mover)) (to (sites Empty))) )
+	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+	            )
+	            
+	            (phase "Movement"
+	                (play (forEach Piece))
+	            )
+	            }
+	            (end (if (no Moves Next) (result Mover Win)))
+	        )		
+)
+
 //------------------------------------------------------------------------------
 
 (game "Thermenmuseum"
@@ -1318,6 +1347,80 @@
         >  
         "The board has no extension and joined diagonals. Jeu Miliaire rules Switch Players."
     )
+    
+    //-------------------------- Janes Soppi ---------------------------------------------------
+    
+    (item "Janes Soppi - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("JanesSoppiGameEquipment")
+        })
+        ("JanesSoppiGameRules")
+        >  
+        "The board has no extension and joined diagonals. Janes Soppi rules."
+    )
+    
+    (item "Janes Soppi - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("JanesSoppiGameEquipment")
+        })
+        ("JanesSoppiGameRules")
+        >  
+        "The board has an extension at the top and joined diagonals. Janes Soppi rules."
+    )
+    
+    (item "Janes Soppi - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("JanesSoppiGameEquipment")
+        })
+        ("JanesSoppiGameRules")
+        >  
+        "The board has two extensions and joined diagonals. Janes Soppi rules."
+    )
+    
+    (item "Janes Soppi - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("JanesSoppiGameEquipment")
+        })
+        ("JanesSoppiGameRules")
+        >  
+        "The board has no extension and no joined diagonals. Janes Soppi rules."
+    )
+    
+    (item "Janes Soppi - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("JanesSoppiGameEquipment")
+        })
+        ("JanesSoppiGameRules")
+        >  
+        "The board has an extension at the top and no joined diagonals. Janes Soppi rules."
+    )
+    
+    (item "Janes Soppi - Both Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("JanesSoppiGameEquipment")
+        })
+        ("JanesSoppiGameRules")
+        >  
+        "The board has two extensions and no joined diagonals. Janes Soppi rules."
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -1377,30 +1480,6 @@
     })
     
     (ruleset "Ruleset/Haretavl Four Dogs Two Hares Starting Position 1- No Extension Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Janes Soppi - Top Extension No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Janes Soppi - Top Extension, Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Janes Soppi - Both Extensions No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Janes Soppi - Both Extensions Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Janes Soppi - No Extension No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Janes Soppi - No Extension Joined Diagonal (Suggested)" {
         
     })
     
@@ -1634,6 +1713,30 @@
     
     (ruleset "Ruleset/Jeu Militaire Switch Players - No Extension No Joined Diagonal (Suggested)" {
         "Variant/Jeu Militaire Switch Players - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Janes Soppi - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Janes Soppi - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Janes Soppi - Top Extension, Joined Diagonal (Suggested)" {
+    	"Variant/Janes Soppi - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Janes Soppi - Both Extensions Joined Diagonal (Suggested)" {
+    	"Variant/Janes Soppi - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Janes Soppi - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Janes Soppi - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Janes Soppi - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Janes Soppi - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Janes Soppi - Both Extensions No Joined Diagonal (Suggested)" {
+    	"Variant/Janes Soppi - Both Extension No Joined Diagonal"
     })
 })
 
