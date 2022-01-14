@@ -1026,4 +1026,13 @@ public class Trial implements Serializable
 	{
 		RNGStates.remove(RNGStates.size()-1);
 	}
+	
+	/**
+	 * Sets any data only required for undo() operations to null
+	 */
+	public void nullUndoData()
+	{
+		endData = null;
+		RNGStates = null;
+	}
 }

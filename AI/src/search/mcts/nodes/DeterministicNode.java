@@ -31,6 +31,9 @@ public abstract class DeterministicNode extends BaseNode
     /** Indices of relevant children (for deterministic game, every child is always relevant) */
     protected final int[] childIndices;
     
+    /** Number of (potential) children that we've never visited */
+    protected int numUnvisitedChildren = -1;
+    
     //-------------------------------------------------------------------------
     
     /**
@@ -76,6 +79,8 @@ public abstract class DeterministicNode extends BaseNode
     	{
     		childIndices[i] = i;
     	}
+    	
+    	numUnvisitedChildren = children.length;
     }
     
     //-------------------------------------------------------------------------
@@ -84,6 +89,10 @@ public abstract class DeterministicNode extends BaseNode
     public void addChild(final BaseNode child, final int moveIdx)
     {
     	children[moveIdx] = (DeterministicNode) child;
+    	--numUnvisitedChildren;
+    	
+    	if (numUnvisitedChildren == 0)
+    		context.trial().nullUndoData();		// Clear a bunch of memory we no longer need
     }
     
     @Override
