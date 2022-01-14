@@ -2654,17 +2654,10 @@ TYPE: game.rules.meta.MetaRule
 TYPE JAVADOC: Metarule defined before play that supercedes all other rules.
 SUBCLASS: game.rules.meta.Automove
 SUBCLASS: game.rules.meta.Gravity
-SUBCLASS: game.rules.meta.NoRepeat
+SUBCLASS: game.rules.meta.no.No
 SUBCLASS: game.rules.meta.PassEnd
 SUBCLASS: game.rules.meta.Pin
 SUBCLASS: game.rules.meta.Swap
-TYPE: game.rules.meta.NoRepeat
-TYPE JAVADOC: Specifies a particular type of repetition that is forbidden in the game.
-NEW CTOR
-(noRepeat [<repetitionType>])
-PARAM JAVADOC: [<repetitionType>]: Type of repetition to forbid [Positional].
-EXAMPLE: (noRepeat PositionalInTurn)
-REMARKS: The Infinite option disallows players from making consecutive sequences of moves that would lead to the same state twice, which would indicate the start of an infinite cycle of moves.
 TYPE: game.rules.meta.PassEnd
 TYPE JAVADOC: To apply a certain end result to all players if all players pass their turns.
 NEW CTOR
@@ -2681,6 +2674,17 @@ TYPE JAVADOC: To activate the swap rule.
 NEW CTOR
 (swap)
 EXAMPLE: (swap)
+TYPE: game.rules.meta.no.No
+TYPE JAVADOC: Defines a decision move.
+NEW CTOR
+(no)
+NEW CTOR
+(no Repeat [<repetitionType>])
+PARAM JAVADOC: [<repetitionType>]: Type of repetition to forbid [Positional].
+EXAMPLE: (no Repeat PositionalInTurn)
+NEW CTOR
+(no Suicide)
+EXAMPLE: (no Suicide)
 TYPE: game.rules.phase.NextPhase
 TYPE JAVADOC: Enables a player or all the players to proceed to another phase of the game.
 NEW CTOR
