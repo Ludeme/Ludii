@@ -99,6 +99,17 @@ public class FindBestBaseAgentScriptsGen
 				{false, false, false, false, false},
 				{false, false},
 			};
+			
+	/**
+	 * Games we should skip since they never end anyway (in practice), but do
+	 * take a long time.
+	 */
+	private static final String[] SKIP_GAMES = new String[]
+			{
+				"Chinese Checkers.lud",
+				"Li'b al-'Aqil.lud",
+				"Li'b al-Ghashim.lud"
+			};
 	
 	//-------------------------------------------------------------------------
 	
@@ -406,6 +417,20 @@ public class FindBestBaseAgentScriptsGen
 		for (final String fullGamePath : allGameNames)
 		{
 			final String[] gamePathParts = fullGamePath.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
+			
+			boolean skipGame = false;
+			for (final String game : SKIP_GAMES)
+			{
+				if (gamePathParts[gamePathParts.length - 1].endsWith(game))
+				{
+					skipGame = true;
+					break;
+				}
+			}
+			
+			if (skipGame)
+				continue;
+			
 			final String gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
 			final Game gameNoRuleset = GameLoader.loadGameFromName(gameName + ".lud");
 			final List<Ruleset> gameRulesets = new ArrayList<Ruleset>(gameNoRuleset.description().rulesets());
@@ -922,6 +947,7 @@ public class FindBestBaseAgentScriptsGen
 					String.valueOf(numTrialsPerOpponent),
 					"--game-length-cap 1000",
 					"--thinking-time 1",
+					"--iteration-limit 100000",				// 100K iterations per move should be good enough
 					"--warming-up-secs 30",
 					"--out-dir",
 					StringRoutines.quote
