@@ -337,7 +337,7 @@ public class SettingsDialog extends JDialog
 			{
 
 				// AI type for all
-				if (comboBoxAgentAll.getSelectedIndex() != aiStringsBlank.size() - 1)
+				if (comboBoxAgentAll.isEnabled() && comboBoxAgentAll.getSelectedIndex() != aiStringsBlank.size() - 1)
 				{
 					// set AI name/type
 					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
@@ -345,18 +345,21 @@ public class SettingsDialog extends JDialog
 				}
 
 				// AI search time for all
-				try
+				if (textFieldThinkingTimeAll.isEnabled())
 				{
-					double allSearchTimeValue = Double.valueOf(textFieldThinkingTimeAll.getText()).doubleValue();
-					if (allSearchTimeValue <= 0)
-						allSearchTimeValue = 1.0;
-
-					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-						playerThinkTimesArray[i].setSelectedItem(Double.valueOf(allSearchTimeValue));
-				}
-				catch (final Exception E)
-				{
-					// invalid think time
+					try
+					{
+						double allSearchTimeValue = Double.valueOf(textFieldThinkingTimeAll.getText()).doubleValue();
+						if (allSearchTimeValue <= 0)
+							allSearchTimeValue = 1.0;
+	
+						for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
+							playerThinkTimesArray[i].setSelectedItem(Double.valueOf(allSearchTimeValue));
+					}
+					catch (final Exception E)
+					{
+						// invalid think time
+					}
 				}
 
 				applyPlayerDetails(app, context);
