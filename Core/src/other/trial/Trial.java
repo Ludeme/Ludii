@@ -364,6 +364,18 @@ public class Trial implements Serializable
 	}
 	
 	/**
+	 * Generates a complete list of all the real moves that were made
+	 * @return Complete list of real moves
+	 */
+	public List<Move> generateRealMovesList()
+	{
+		final List<Move> realMoves = new ArrayList<>();
+		for (int i = numInitialPlacementMoves(); i < numMoves(); i++)
+			realMoves.add(moves.getMove(i));
+		return realMoves;
+	}
+	
+	/**
 	 * @return An iterator that iterates through all the moves in reverse order
 	 */
 	public Iterator<Move> reverseMoveIterator()

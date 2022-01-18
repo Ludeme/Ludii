@@ -45,7 +45,7 @@ public class Utils
 	public static Context setupTrialContext(final Game game, final RandomProviderState rngState, final Trial trial)
 	{
 		final Context context = setupNewContext(game, rngState);
-		for (final Move m : trial.generateCompleteMovesList())
+		for (final Move m : trial.generateRealMovesList())
 			game.apply(context, m);
 		return context;
 	}
