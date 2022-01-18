@@ -109,9 +109,9 @@ public class Info implements MetadataItem, Serializable
 	/**
 	 * @return The ruleset database table Id.
 	 */
-	public ArrayList<Integer> getId()
+	public ArrayList<String> getId()
 	{
-		final ArrayList<Integer> ids = new ArrayList<>();
+		final ArrayList<String> ids = new ArrayList<>();
 		for (final InfoItem infoItem : items)
 			if (infoItem instanceof Id)
 				ids.add(((Id) infoItem).id());

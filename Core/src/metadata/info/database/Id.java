@@ -13,7 +13,7 @@ public class Id implements InfoItem
 {
 	
 	/** Ruleset Database Id. */
-	private final Integer id;
+	private final String id;
 
 	//-------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ public class Id implements InfoItem
 	 * 
 	 * @example (id 35)
 	 */
-	public Id(final Integer id)
+	public Id(final String id)
 	{
 		this.id = id;
 	}
@@ -44,7 +44,7 @@ public class Id implements InfoItem
 	/**
 	 * @return The ruleset database table Id.
 	 */
-	public Integer id()
+	public String id()
 	{
 		return id;
 	}
