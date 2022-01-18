@@ -210,7 +210,7 @@ public class ContainerComponents
 							}
 						}
 						
-						if (component.isTile() && !HiddenUtil.siteHidden(context, cs, site, level, mover, type))
+						if (component.isTile() && container.index() == 0 && !HiddenUtil.siteHidden(context, cs, site, level, mover, type))
 							for (final Integer cellIndex : ContainerUtil.cellsCoveredByPiece(context, container, component, site, localState))
 								drawTilePiece(g2d, context, component, cellIndex.intValue(), stackOffset.x, stackOffset.y, container, localState, value, imageSize);
 						
