@@ -67,6 +67,10 @@ public class ClarityNarrowness extends Metric
 				for (final Move m : context.game().moves(context).moves())
 					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, m));
 				
+//				System.out.println(context.trial().over());
+//				System.out.println(context.game().moves(context).moves().size());
+//				System.out.println(trial.getMove(i));
+				
 				moveEvaluations.measure();
 				
 				final double maxEvaluation = moveEvaluations.max();

@@ -57,7 +57,7 @@ public class Evaluation
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
+		protected boolean removeEldestEntry(final Map.Entry<Long, Double> eldest) 
 		{
 			return size() > MAX_ENTRIES;
 	    }
@@ -68,7 +68,7 @@ public class Evaluation
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
+		protected boolean removeEldestEntry(final Map.Entry<Long, Double> eldest) 
 		{
 			return size() > MAX_ENTRIES;
 		}
@@ -89,6 +89,7 @@ public class Evaluation
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
+		//dialogMetrics.add(new ClarityNarrowness());
 	}
 	
 	private final List<Metric> conceptMetrics = new ArrayList<>();

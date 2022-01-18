@@ -211,6 +211,30 @@ public class EvalGames
 				aiAlgorihtm, thinkingTime[1], game.getMaxTurnLimit(), 
 				game.description().raw().hashCode()
 			);
+			
+			// Load files from a specific directory instead.
+//			final String dirName = "/home/matthew/Downloads/Banqi";
+//			final File dir = new File(dirName);
+//			final File[] allFiles = dir.listFiles();
+//			for(final File file : allFiles)
+//			{
+//				String totalContents = "";
+//				BufferedReader br;
+//				try
+//				{
+//					br = new BufferedReader(new FileReader(file));
+//					String line = null;
+//				    while ((line = br.readLine()) != null) 
+//				    {
+//				    	totalContents += line + "\n";
+//				    }
+//				}
+//				catch (final IOException e)
+//				{
+//					e.printStackTrace();
+//				} 
+//				databaseTrials.add(totalContents);
+//			}
 		}
 
 		// Generate trials and print generic results.
