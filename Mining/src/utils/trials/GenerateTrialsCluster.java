@@ -141,6 +141,7 @@ public class GenerateTrialsCluster
 						final Trial trial = new Trial(rulesetGame);
 						final Context context = new Context(rulesetGame, trial);
 	
+						final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
 						rulesetGame.start(context);
 							
 						// Init the ais.
@@ -154,7 +155,7 @@ public class GenerateTrialsCluster
 							
 						try
 						{
-							trial.saveTrialToTextFile(trialFile, gamePath, rulesetGame.getOptions(), (RandomProviderDefaultState) context.rng().saveState());
+							trial.saveTrialToTextFile(trialFile, gamePath, rulesetGame.getOptions(), new RandomProviderDefaultState(startRNGState));
 							System.out.println("Saved trial for " + rulesetGame.name() + "|" + rulesetGame.getRuleset().heading().replace("/", "_") +" to file: " + trialFilepath);
 						}
 						catch (final IOException e)
@@ -186,6 +187,7 @@ public class GenerateTrialsCluster
 				final Trial trial = new Trial(game);
 				final Context context = new Context(game, trial);
 
+				final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
 				game.start(context);
 					
 				// Init the ais.
@@ -199,7 +201,7 @@ public class GenerateTrialsCluster
 					
 				try
 				{
-					trial.saveTrialToTextFile(trialFile, gamePath, new ArrayList<String>(), (RandomProviderDefaultState) context.rng().saveState());
+					trial.saveTrialToTextFile(trialFile, gamePath, new ArrayList<String>(), new RandomProviderDefaultState(startRNGState));
 					System.out.println("Saved trial for " + game.name() +" to file: " + trialFilepath);
 				}
 				catch (final IOException e)
