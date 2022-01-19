@@ -10,9 +10,7 @@ import java.util.ArrayList;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The id is for the moment the ordinal until the concepts are more
- * stable to replace it with the id in the constructor of each concept which
- * will be fixed.
+ * Remarks: The next id in case of a new concept is the id 779.
  * 
  * @author Eric.Piette
  */
@@ -11048,7 +11046,7 @@ public enum Concept
 	 */
 	public int id()
 	{
-		return this.ordinal() + 1;
+		return id; //this.ordinal() + 1;
 	}
 	
 	/**
