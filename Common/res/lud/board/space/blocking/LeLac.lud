@@ -63,11 +63,11 @@
         (date "2020")
         }
     )
-        (graphics {
-    (piece Scale "Square" 0.4)
-    (show Edges Hidden)
-    (board Colour OuterVertices (colour Hidden))
-    (show Symbol "disc" (sites Board) fillColour:(colour Hidden) edgeColour:(colour Brown))
-    (hand Placement Shared scale:0.1 offsetX:0.45 offsetY:0.5)
-})
+    (graphics {
+        (piece Scale "Square" 0.4)
+        (show Edges Hidden)
+        (board Colour OuterVertices (colour Hidden))
+        (show Symbol "disc" (sites Board) fillColour:(colour Hidden) edgeColour:(colour Brown))
+        (hand Placement Shared scale:0.1 offsetX:0.45 offsetY:0.5)
+    })
 )
