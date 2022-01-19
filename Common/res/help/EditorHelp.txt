@@ -4630,6 +4630,7 @@ SUBCLASS: metadata.info.database.Classification
 SUBCLASS: metadata.info.database.Credit
 SUBCLASS: metadata.info.database.Date
 SUBCLASS: metadata.info.database.Description
+SUBCLASS: metadata.info.database.Id
 SUBCLASS: metadata.info.database.Origin
 SUBCLASS: metadata.info.database.Publisher
 SUBCLASS: metadata.info.database.Rules
@@ -5642,6 +5643,7 @@ SUBCLASS: metadata.info.database.Classification
 SUBCLASS: metadata.info.database.Credit
 SUBCLASS: metadata.info.database.Date
 SUBCLASS: metadata.info.database.Description
+SUBCLASS: metadata.info.database.Id
 SUBCLASS: metadata.info.database.Origin
 SUBCLASS: metadata.info.database.Publisher
 SUBCLASS: metadata.info.database.Rules
@@ -5686,6 +5688,12 @@ NEW CTOR
 (description <string>)
 PARAM JAVADOC: <string>: An English description of the game.
 EXAMPLE: (description "A traditional game that comes from Egypt.")
+TYPE: metadata.info.database.Id
+TYPE JAVADOC: Specifies the database Id for the currently chosen ruleset.
+NEW CTOR
+(id <string>)
+PARAM JAVADOC: <string>: The ruleset database table Id.
+EXAMPLE: (id 35)
 TYPE: metadata.info.database.Origin
 TYPE JAVADOC: Specifies the location of the earliest known origin for this game.
 NEW CTOR
