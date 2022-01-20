@@ -1108,13 +1108,6 @@ public class ExportDbCsvConcepts
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final Moves legalMoves = context.game().moves(context);
-				if(trialIndex == 6)
-				{
-					System.out.println(context.trial().over());
-					System.out.println(legalMoves.moves().size());
-					System.out.println(trial.getMove(i));
-				}
-				
 				final TIntArrayList frenquencyTurn = new TIntArrayList();
 				for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 					frenquencyTurn.add(0);
@@ -1225,10 +1218,6 @@ public class ExportDbCsvConcepts
 						break;
 					}
 				}
-			}
-			if(trialIndex == 6)
-			{
-				System.exit(1);
 			}
 		}
 
