@@ -27,13 +27,15 @@ public class CreateClusterConceptScript
 		final int maxTimeMinutesCluster = 6000; // 6000
 		final int numPlayout = 100;
 		final int maxTime = 175000;
-		final int maxMove = 5000; //250; //250; //5000; // Constants.DEFAULT_MOVES_LIMIT;
+		final int maxMove = 250; //250; //5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
-		final String folder = "/../Trials/TrialsRandom"; //""; //"/../Trials/TrialsAll";
+		final String folder = ""; // "/../Trials/TrialsRandom"; //""; //"/../Trials/TrialsAll";
 		final String mainScriptName = "StateConcepts.sh";
+		final String folderName = "ConceptsWalterAB";
+		final String jobName = "ABWalterConcept";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
 		{
 			final String[] gameNames = FileHandling.listGames();
@@ -87,7 +89,7 @@ public class CreateClusterConceptScript
 					try (final PrintWriter writer = new UnixPrintWriter(new File(scriptName), "UTF-8"))
 					{
 						writer.println("#!/usr/local_rwth/bin/zsh");
-						writer.println("#SBATCH -J MoveConcepts" + fileName);
+						writer.println("#SBATCH -J " + jobName + fileName);
 						writer.println("#!/usr/local_rwth/bin/zsh");
 						writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "_%J.out");
 						writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "_%J.err");
@@ -96,7 +98,7 @@ public class CreateClusterConceptScript
 						writer.println("#SBATCH -A um_dke");
 						writer.println("unset JAVA_TOOL_OPTIONS");
 						writer.println(
-								"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
+								"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/" + folderName + "/ludii.jar\" --export-moveconcept-db "
 										+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " "  + "\"" + agentName + "\"" + " " + "\"" + folder  + "\"" + " " + "\"" + gameName.substring(1) + "\"");
 						mainWriter.println("sbatch " + scriptName);
 					}
@@ -112,7 +114,7 @@ public class CreateClusterConceptScript
 						try (final PrintWriter writer = new UnixPrintWriter(new File(scriptName), "UTF-8"))
 						{
 							writer.println("#!/usr/local_rwth/bin/zsh");
-							writer.println("#SBATCH -J MoveConcepts" + fileName);
+							writer.println("#SBATCH -J " + jobName + fileName);
 							writer.println("#!/usr/local_rwth/bin/zsh");
 							writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "_%J.out");
 							writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "_%J.err");
@@ -121,7 +123,7 @@ public class CreateClusterConceptScript
 							writer.println("#SBATCH -A um_dke");
 							writer.println("unset JAVA_TOOL_OPTIONS");
 							writer.println(
-									"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
+									"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/" + folderName + "/ludii.jar\" --export-moveconcept-db "
 											+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " " + "\"" + agentName + "\"" + " " + "\"" + folder  + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
 							mainWriter.println("sbatch " + scriptName);
 						}
