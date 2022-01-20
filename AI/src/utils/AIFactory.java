@@ -234,6 +234,11 @@ public class AIFactory
 			return ucb1GRAVE;
 		}
 		
+		if (string.equalsIgnoreCase("Ludii AI"))
+		{
+			return new LudiiAI();
+		}
+		
 		if (string.equalsIgnoreCase("Biased MCTS"))
 			return MCTS.createBiasedMCTS(0.0);
 		
