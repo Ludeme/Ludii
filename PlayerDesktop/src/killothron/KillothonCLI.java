@@ -190,11 +190,11 @@ public class KillothonCLI
 		
 		// Sent results.
 	    String to = "ludii.killothon@gmail.com";
-	    String from = "ludii.killothon@gmail.com"; // TODO change to the second mail used to send results.
+	    String from = "competitionSender@gmail.com";
 	 
         Properties properties = System.getProperties();
         properties = new Properties();
-        properties.put("mail.smtp.user", "ludii.killothon@gmail.com");
+        properties.put("mail.smtp.user", from);
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.starttls.enable","true");
@@ -209,7 +209,7 @@ public class KillothonCLI
 	            new javax.mail.Authenticator() {
 	                @Override
 					protected PasswordAuthentication getPasswordAuthentication() {
-	                    return new PasswordAuthentication("ludii.killothon@gmail.com", "killothon2022"); // TODO change to the second mail used to send results.
+	                    return new PasswordAuthentication(from, "sendResultCompetition"); 
 	                }
 	            });
 	 
@@ -254,7 +254,7 @@ public class KillothonCLI
 	 
 	       // Send email.
            Transport transport = session.getTransport("smtps");
-           transport.connect("smtp.gmail.com", 465, "ludii.killothon@gmail.com", "killothon2022"); // TODO change to the second mail used to send results.
+           transport.connect("smtp.gmail.com", 465, from, "sendResultCompetition");
            transport.sendMessage(message, message.getAllRecipients());
            transport.close();  
 	       System.out.println("Mail successfully sent");
