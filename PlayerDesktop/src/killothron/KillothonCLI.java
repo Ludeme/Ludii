@@ -58,7 +58,9 @@ public class KillothonCLI
 		final int numGamesToPlay = Constants.INFINITY;
 		final String login = "Challenger";
 		double sumUtilities = 0;
+		int numWins = 0;
 		int sumNumMoves = 0;
+		int sumP1Moves = 0;
 		
 		// Get the list of games.
 		final String[] gameList = FileHandling.listGames();
@@ -99,6 +101,16 @@ public class KillothonCLI
 		final String output = "KilothonResults.csv";
 		try (final PrintWriter writer = new UnixPrintWriter(new File(output), "UTF-8"))
 		{
+			final List<String> header = new ArrayList<String>();
+			header.add("GAME NAME"); // game name 
+			header.add("NUM PLAYERS"); // num players
+			header.add("WIN?"); // 1 if winning
+			header.add("RANK P1"); // ranking of P1
+			header.add("UTILITY P1"); // reward of P1
+			header.add("NUM MOVES"); // game length
+			header.add("NUM P1 MOVES"); // number of P1 moves
+			writer.println(StringRoutines.join(",", header));
+			
 			for (final String gameName : validChoices)
 			{
 					final Game game = GameLoader.loadGameFromName(gameName);
@@ -133,6 +145,7 @@ public class KillothonCLI
 						final Model model = context.model();
 						
 						// Run the game.
+						int numP1Moves = 0;
 						double remainingTime = timeToThink; // One minute
 						while (!trial.over())
 						{
@@ -156,20 +169,30 @@ public class KillothonCLI
 									}
 								}
 							}
+							
+							if(context.state().mover() == 1)
+								numP1Moves++;
 						}
 
 						// Get results.
 						final double numMoves = trial.numberRealMoves();
 						final double rankingP1 = trial.ranking()[1];
+						final boolean win = rankingP1 == 1;
 						final double rewardP1 = RankUtils.rankToUtil(rankingP1, numPlayers);
 						System.out.println("Reward of P1 = " + rewardP1 + " (ranking = " + rankingP1 + ") finished in " + trial.numberRealMoves() + " moves.");
 						sumUtilities += rewardP1;
 						sumNumMoves += numMoves;
+						sumP1Moves += numP1Moves;
+						if(win)
+							numWins++;
 						final List<String> lineToWrite = new ArrayList<String>();
 						lineToWrite.add(game.name() + ""); // game name 
+						lineToWrite.add(game.players().count() + ""); // num players
+						lineToWrite.add(win + ""); // 1 if winning
 						lineToWrite.add(rankingP1 + ""); // ranking of P1
 						lineToWrite.add(rewardP1 + ""); // reward of P1
 						lineToWrite.add(numMoves + ""); // game length
+						lineToWrite.add(numP1Moves + ""); // num P1 moves
 						writer.println(StringRoutines.join(",", lineToWrite));
 					}
 					
@@ -187,6 +210,7 @@ public class KillothonCLI
 		int minutes = (int) ((killothonTime / (1000*60)) % 60);
 		int hours   = (int) ((killothonTime / (1000*60*60)) % 24);
 		System.out.println("Killothon done in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.");
+		System.out.println("Computation of the results....");
 		
 		// Sent results.
 	    String to = "ludii.killothon@gmail.com";
@@ -232,8 +256,12 @@ public class KillothonCLI
 	       bodyMsg += "\nMoves limit per player = " + movesLimitPerPlayer;
 	       bodyMsg += "\nGames played = " + idGame;
 	       bodyMsg += "\nAVG utility = " + (sumUtilities/idGame);
+	       bodyMsg += "\nNum Wins = " + numWins;
+	       bodyMsg += "\nAVG Wins = " + (numWins/idGame) *100 + " %";
 	       bodyMsg += "\nNum Moves = " + sumNumMoves;
 	       bodyMsg += "\nAVG Moves = " + (sumNumMoves/idGame);
+	       bodyMsg += "\nNum P1 Moves = " + sumP1Moves;
+	       bodyMsg += "\nAVG P1 Moves = " + (sumP1Moves/idGame);
 	       bodyMsg += "\nDone in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.";
 	       messageBodyPart1.setText(bodyMsg);  
 	       
