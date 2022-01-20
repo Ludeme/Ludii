@@ -136,6 +136,11 @@
     (piece "Hare" P2 "StepToEmpty")	
 )
 
+(define "HaretavlEquipmentStartingPositions"
+	    (piece "Dog" P1 "StepToEmpty")
+	    (piece "Hare" P2 "StepToEmpty")	
+	)
+
 (define "HaretavlRules"
     (rules 
         (start {
@@ -164,6 +169,18 @@
         }) 
     )		
 )
+
+(define "HaretavlRulesStartingPosition"
+	    (rules 
+	    	#1
+	    	
+	        (play (forEach Piece))
+	        
+	        (end {
+	            (if (no Moves P2) (result P1 Win))
+	        }) 
+	    )		
+	)
 
 //Haretavl equipment and rules in switch players 
 
@@ -1876,6 +1893,110 @@
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares starting on the board."
     )
     
+    //--------------------------Haretavl Rulesets with starting positions ---------------------------------------------------
+    
+    (item "Haretavl - No Extension Joined Diagonal - Starting Position" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipmentStartingPositions")
+        })
+        ("HaretavlRulesStartingPosition"
+        		(start {
+                    (place "Dog1" (sites {"A4" "B4" "C4"}))
+                    (place "Hare2" (sites {"B1"}))
+                })	
+        )
+        >  
+        "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board."
+    )*
+    
+    (item "Haretavl - Top Extension Joined Diagonal - Starting Position" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipmentStartingPositions")
+        })
+        ("HaretavlRulesStartingPosition"
+        		(start {
+                    (place "Dog1" (sites {"A5" "B5" "C5"}))
+                    (place "Hare2" (sites {"B1"}))
+                })			
+        )
+        >  
+        "The board has an extension at the top and joined diagonals. Haretavl rules. The pieces start on the board."
+    )
+    
+    (item "Haretavl - Both Extension Joined Diagonal - Starting Position" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipmentStartingPositions")
+        })
+        ("HaretavlRulesStartingPosition"
+        		(start {
+                    (place "Dog1" (sites {"A6" "B6" "C6"}))
+                    (place "Hare2" (sites {"B1"}))
+                })			
+        )
+        >  
+        "The board has two extensions and joined diagonals. Haretavl rules. The pieces start on the board."
+    )
+    
+    (item "Haretavl - No Extension No Joined Diagonal - Starting Position" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentStartingPositions")
+        })
+        ("HaretavlRulesStartingPosition"
+        		(start {
+                    (place "Dog1" (sites {"A4" "C4" "E4"}))
+                    (place "Hare2" (sites {"C1"}))
+                })			
+        )
+        >  
+        "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board."
+    )
+    
+    (item "Haretavl - Top Extension No Joined Diagonal - Starting Position" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentStartingPositions")
+        })
+        ("HaretavlRulesStartingPosition"
+        		(start {
+                    (place "Dog1" (sites {"A5" "C5" "E5"}))
+                    (place "Hare2" (sites {"C1"}))
+                })			
+        )
+        >  
+        "The board has an extension at the top and no joined diagonals. Haretavl rules. The pieces start on the board."
+    )
+    
+    (item "Haretavl - Both Extension No Joined Diagonal - Starting Position" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentStartingPositions")
+        })
+        ("HaretavlRulesStartingPosition"
+        		(start {
+                    (place "Dog1" (sites {"A6" "C6" "E6"}))
+                    (place "Hare2" (sites {"C1"}))
+                })			
+        )
+        >  
+        "The board has two extensions and no joined diagonals. Haretavl rules. The pieces start on the board."
+    )
+    
 })
 
 //------------------------------------------------------------------------------
@@ -1959,30 +2080,6 @@
     })
     
     (ruleset "Ruleset/Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Starting Position - Top Extension No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Starting Position - Top Extension Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Starting Position - Both Extensions No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Starting Position - Both Extensions Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Starting Position - No Extension No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Starting Position - No Extension Joined Diagonal (Suggested)" {
         
     })
     
@@ -2336,6 +2433,30 @@
     
     (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Both Extensions No Joined Diagonal (Suggested)" {
         "Variant/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
+    })
+    
+    (ruleset "Ruleset/Haretavl Starting Position - No Extension Joined Diagonal (Suggested)" {
+        "Variant/Haretavl - No Extension Joined Diagonal - Starting Position"
+    })
+    
+    (ruleset "Ruleset/Haretavl Starting Position - Top Extension Joined Diagonal (Suggested)" {
+        "Variant/Haretavl - Top Extension Joined Diagonal - Starting Position"
+    })
+    
+    (ruleset "Ruleset/Haretavl Starting Position - Both Extensions Joined Diagonal (Suggested)" {
+        "Variant/Haretavl - Both Extension Joined Diagonal - Starting Position"
+    })
+    
+    (ruleset "Ruleset/Haretavl Starting Position - No Extension No Joined Diagonal (Suggested)" {
+        "Variant/Haretavl - No Extension No Joined Diagonal - Starting Position"
+    })
+    
+    (ruleset "Ruleset/Haretavl Starting Position - Top Extension No Joined Diagonal (Suggested)" {
+        "Variant/Haretavl - Top Extension No Joined Diagonal - Starting Position"
+    })
+    
+    (ruleset "Ruleset/Haretavl Starting Position - Both Extensions No Joined Diagonal (Suggested)" {
+        "Variant/Haretavl - Both Extension No Joined Diagonal - Starting Position"
     })
     
 })
