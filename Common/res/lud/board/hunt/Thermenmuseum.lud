@@ -2188,6 +2188,42 @@
           >  
           "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
       )
+  
+  (item "Haretavl Two Dogs - No Extension No Joined Diagonal - Starting Position 1" 
+          <
+          (players 2)
+          (equipment {
+              ("NoExtensionNoJoinedDiagonal")
+              ("HaretavlEquipmentStartingPositions")
+          })
+          ("HaretavlRulesStartingPosition"
+          		(start {
+                      (place "Dog1" (sites {"A4" "E4"}))
+                      (place "Hare2" (sites {"C1"}))
+                  })			
+          )
+          >  
+          "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
+      )
+  
+  (item "Haretavl Two Dogs - No Extension No Joined Diagonal - Starting Position 2" 
+          <
+          (players 2)
+          (equipment {
+              ("NoExtensionNoJoinedDiagonal")
+              ("HaretavlEquipmentStartingPositions")
+          })
+          ("HaretavlRulesStartingPosition"
+          		(start {
+                      (place "Dog1" (sites {"B4" "D4"}))
+                      (place "Hare2" (sites {"C1"}))
+                  })			
+          )
+          >  
+          "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
+      )
+  
+  
 })
 
 //------------------------------------------------------------------------------
@@ -2615,11 +2651,11 @@
     })
     
     (ruleset "Ruleset/Haretavl Two Dogs Starting Position 1 - No Extension No Joined Diagonal (Suggested)" {
-        
+        "Variant/Haretavl Two Dogs - No Extension No Joined Diagonal - Starting Position 1"
     })
     
     (ruleset "Ruleset/Haretavl Two Dogs Starting Position 2 - No Extension No Joined Diagonal (Suggested)" {
-        
+        "Variant/Haretavl Two Dogs - No Extension No Joined Diagonal - Starting Position 2"
     })
     
     (ruleset "Ruleset/Haretavl Two Dogs Starting Position - Both Extensions Joined Diagonals (Suggested)" {
