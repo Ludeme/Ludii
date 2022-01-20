@@ -2223,6 +2223,22 @@
           "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
       )
   
+  (item "Haretavl Two Dogs - Both Extension Joined Diagonal - Starting Position" 
+          <
+          (players 2)
+          (equipment {
+              ("BothExtensionJoinedDiagonal")
+              ("HaretavlEquipmentStartingPositions")
+          })
+          ("HaretavlRulesStartingPosition"
+          		(start {
+                      (place "Dog1" (sites {"A6" "C6"}))
+                      (place "Hare2" (sites {"B1"}))
+                  })			
+          )
+          >  
+          "The board has both extension and joined diagonals. Haretavl rules. The pieces start on the board. 2 dogs."
+      )
   
 })
 
@@ -2659,7 +2675,7 @@
     })
     
     (ruleset "Ruleset/Haretavl Two Dogs Starting Position - Both Extensions Joined Diagonals (Suggested)" {
-        
+        "Variant/Haretavl Two Dogs - Both Extension Joined Diagonal - Starting Position"
     })
     
     (ruleset "Ruleset/Haretavl Two Dogs Starting Position - Both Extensions No Joined Diagonal (Suggested)" {
