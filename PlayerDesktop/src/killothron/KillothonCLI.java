@@ -52,9 +52,10 @@ public class KillothonCLI
 	@SuppressWarnings("resource")
 	public static void main(final String[] args)
 	{
+		final String agentName = "Ludii AI";
 		final double startTime = System.currentTimeMillis();
 		final double timeToThink = 60000; // Time for the challenger to think smartly (in ms).
-		final int movesLimitPerPlayer = 200; // Max number of moves per player.
+		final int movesLimitPerPlayer = 500; // Max number of moves per player.
 		final int numGamesToPlay = Constants.INFINITY;
 		final String login = "Challenger";
 		double sumUtilities = 0;
@@ -128,6 +129,8 @@ public class KillothonCLI
 						for(int pid = 1; pid <= numPlayers; pid++)
 						{
 							if(pid == 1)
+								ais.add(AIFactory.createAI(agentName));
+							else if(pid == 2)
 								ais.add(AIFactory.createAI("UCT"));
 							else
 								ais.add(new utils.RandomAI());
@@ -146,7 +149,8 @@ public class KillothonCLI
 						
 						// Run the game.
 						int numP1Moves = 0;
-						double remainingTime = timeToThink; // One minute
+						double remainingTimeP1 = timeToThink; // One minute
+						double remainingTimeP2 = timeToThink; // One minute
 						while (!trial.over())
 						{
 							final int mover = context.state().mover();
@@ -155,17 +159,33 @@ public class KillothonCLI
 							final double timeUsed = System.currentTimeMillis() - time;
 						    
 							// We check the remaining time to be able to think smartly for the challenger.
-							if(remainingTime > 0) 
+							if(remainingTimeP1 > 0) 
 							{
 								if(mover == 1)
 								{
-									remainingTime = remainingTime - timeUsed;
-									if(remainingTime <= 0)
+									remainingTimeP1 = remainingTimeP1 - timeUsed;
+									if(remainingTimeP1 <= 0)
 									{
-										System.out.println("switch P1 to Random");
+										System.out.println("switch P1 to Random at move number " + trial.numberRealMoves());
 										ais.get(1).closeAI();
 										ais.set(1, new utils.RandomAI());
 										ais.get(1).initAI(game, 1);
+									}
+								}
+							}
+							
+							// We check the remaining time to be able to think smartly for the "smart" opponent.
+							if(remainingTimeP2 > 0) 
+							{
+								if(mover == 2)
+								{
+									remainingTimeP2 = remainingTimeP2 - timeUsed;
+									if(remainingTimeP2 <= 0)
+									{
+										System.out.println("switch P2 to Random at move number " + trial.numberRealMoves());
+										ais.get(2).closeAI();
+										ais.set(2, new utils.RandomAI());
+										ais.get(2).initAI(game, 2);
 									}
 								}
 							}
@@ -180,6 +200,7 @@ public class KillothonCLI
 						final boolean win = rankingP1 == 1;
 						final double rewardP1 = RankUtils.rankToUtil(rankingP1, numPlayers);
 						System.out.println("Reward of P1 = " + rewardP1 + " (ranking = " + rankingP1 + ") finished in " + trial.numberRealMoves() + " moves.");
+						System.out.println("\n**************NEXT GAME***********\n");
 						sumUtilities += rewardP1;
 						sumNumMoves += numMoves;
 						sumP1Moves += numP1Moves;
@@ -209,8 +230,8 @@ public class KillothonCLI
 		int seconds = (int) (killothonTime / 1000) % 60 ;
 		int minutes = (int) ((killothonTime / (1000*60)) % 60);
 		int hours   = (int) ((killothonTime / (1000*60*60)) % 24);
-		System.out.println("Killothon done in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.");
-		System.out.println("Computation of the results....");
+		System.out.println("\nKillothon done in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.");
+		System.out.println("........Computation of the results....");
 		
 		// Sent results.
 	    String to = "ludii.killothon@gmail.com";
@@ -251,13 +272,13 @@ public class KillothonCLI
 	       // Make the body message.
 	       BodyPart messageBodyPart1 = new MimeBodyPart();  
 	       String bodyMsg = "Killothon run by " + login;
-	       bodyMsg += "\nAgent name = " + "UCT";
+	       bodyMsg += "\nAgent name = " + agentName;
 	       bodyMsg += "\nSmart thinking time (in ms) = " + timeToThink;
 	       bodyMsg += "\nMoves limit per player = " + movesLimitPerPlayer;
 	       bodyMsg += "\nGames played = " + idGame;
 	       bodyMsg += "\nAVG utility = " + (sumUtilities/idGame);
 	       bodyMsg += "\nNum Wins = " + numWins;
-	       bodyMsg += "\nAVG Wins = " + (numWins/idGame) *100 + " %";
+	       bodyMsg += "\nAVG Wins = " + ((double)numWins/(double)idGame) *100.0 + " %";
 	       bodyMsg += "\nNum Moves = " + sumNumMoves;
 	       bodyMsg += "\nAVG Moves = " + (sumNumMoves/idGame);
 	       bodyMsg += "\nNum P1 Moves = " + sumP1Moves;
@@ -285,7 +306,7 @@ public class KillothonCLI
            transport.connect("smtp.gmail.com", 465, from, "sendResultCompetition");
            transport.sendMessage(message, message.getAllRecipients());
            transport.close();  
-	       System.out.println("Mail successfully sent");
+	       System.out.println("Mail successfully sent! Congratulations to have played a complete killothon!");
 	    }
 	    catch (MessagingException mex)
 	    {
