@@ -2115,7 +2115,7 @@
                     })			
             )
             >  
-            "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
+            "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
         )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 2" 
@@ -2132,7 +2132,7 @@
                     })			
             )
             >  
-            "The board has top extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
+            "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
         )
     
     (item "Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 3" 
@@ -2146,6 +2146,23 @@
             		(start {
                         (place "Dog1" (sites {"A1" "C1" "E1"}))
                         (place "Hare2" (sites {"A5" "E5"}))
+                    })			
+            )
+            >  
+            "The board has top extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
+        )
+    
+    (item "Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2" 
+            <
+            (players 2)
+            (equipment {
+                ("TopExtensionJoinedDiagonal")
+                ("HaretavlEquipmentStartingPositions")
+            })
+            ("HaretavlRulesStartingPosition"
+            		(start {
+                        (place "Dog1" (sites {"A1" "B1" "C1"}))
+                        (place "Hare2" (sites {"A5" "C5"}))
                     })			
             )
             >  
@@ -2610,7 +2627,7 @@
     })
     
     (ruleset "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - Top Extension Joined Diagonal (Suggested)" {
-        
+        "Variant/Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2"
     })
     
 })
