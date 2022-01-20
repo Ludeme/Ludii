@@ -1996,8 +1996,10 @@
         >  
         "The board has two extensions and no joined diagonals. Haretavl rules. The pieces start on the board."
     )
+
+    //--------------------------Haretavl Rulesets with starting positions and 3 dogs - 2 hares ---------------------------------------------------
     
-    (item "Haretavl Three Dogs Two Hares Starting Position - Both Extension No Joined Diagonal - Starting Position" 
+    (item "Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal - Starting Position" 
             <
             (players 2)
             (equipment {
@@ -2011,7 +2013,24 @@
                     })			
             )
             >  
-            "The board has two extensions and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
+            "The board has no extension and joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
+        )
+    
+    (item "Haretavl Three Dogs Two Hares Starting Position - No Extension No Joined Diagonal - Starting Position" 
+            <
+            (players 2)
+            (equipment {
+                ("NoExtensionNoJoinedDiagonal")
+                ("HaretavlEquipmentStartingPositions")
+            })
+            ("HaretavlRulesStartingPosition"
+            		(start {
+                        (place "Dog1" (sites {"A4" "C4" "E4"}))
+                        (place "Hare2" (sites {"A1" "E1"}))
+                    })			
+            )
+            >  
+            "The board has no extension and no joined diagonals. Haretavl rules. The pieces start on the board. 3 dogs and 2 Hares"
         )
     
 })
@@ -2089,10 +2108,6 @@
     })
     
     (ruleset "Ruleset/Haretavl Three Dogs Two Hares Starting Position 2 - No Extension No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Three Dogs Two Hares Starting Position 1 - No Extension No Joined Diagonal (Suggested)" {
         
     })
     
@@ -2473,7 +2488,11 @@
     })
     
     (ruleset "Ruleset/Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal (Suggested)" {
-        "Variant/Haretavl Three Dogs Two Hares Starting Position - Both Extension No Joined Diagonal - Starting Position"
+        "Variant/Haretavl Three Dogs Two Hares Starting Position - No Extension Joined Diagonal - Starting Position"
+    })
+    
+    (ruleset "Ruleset/Haretavl Three Dogs Two Hares Starting Position 1 - No Extension No Joined Diagonal (Suggested)" {
+        "Variant/Haretavl Three Dogs Two Hares Starting Position - No Extension No Joined Diagonal - Starting Position"
     })
     
 })
