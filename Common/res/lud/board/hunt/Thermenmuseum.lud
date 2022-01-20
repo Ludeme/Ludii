@@ -1772,6 +1772,110 @@
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares starting on the board."
     )
     
+    //--------------------------Haretavl Rulesets Four Dogs Two Hares - Starting Position 2 - Switch Players ---------------------------------------------------
+    
+    (item "Haretavl Four Dogs Two Hares - No Extension Joined Diagonal - Starting Position 2 - Switch Players" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHaresStartingPositionSwitchPlayers")
+        })
+        ("HaretavlRulesFourDogsTwoHaresStartingPositionSwitchPlayers"
+            (start {
+                (place "Hare1" (sites {"A1" "A4"}))
+                (place "Dog2" (sites {"C1" "C2" "C3" "C4"}))
+            })
+        )
+        >  
+        "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2 - Switch Players" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHaresStartingPositionSwitchPlayers")
+        })
+        ("HaretavlRulesFourDogsTwoHaresStartingPositionSwitchPlayers"
+            (start {
+                (place "Hare1" (sites {"A1" "A4"}))
+                (place "Dog2" (sites {"C1" "C2" "C3" "C4"}))
+            })
+        )
+        >  
+        "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal - Starting Position 2 - Switch Players" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHaresStartingPositionSwitchPlayers")
+        })
+        ("HaretavlRulesFourDogsTwoHaresStartingPositionSwitchPlayers"
+            (start {
+                (place "Hare1" (sites {"A2" "A5"}))
+                (place "Dog2" (sites {"C2" "C3" "C4" "C5"}))
+            })
+        )
+        >  
+        "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHaresStartingPositionSwitchPlayers")
+        })
+        ("HaretavlRulesFourDogsTwoHaresStartingPositionSwitchPlayers"
+            (start {
+                (place "Hare1" (sites {"A1" "A4"}))
+                (place "Dog2" (sites {"E1" "E2" "E3" "E4"}))
+            })
+        )
+        >  
+        "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHaresStartingPositionSwitchPlayers")
+        })
+        ("HaretavlRulesFourDogsTwoHaresStartingPositionSwitchPlayers"
+            (start {
+                (place "Hare1" (sites {"A1" "A4"}))
+                (place "Dog2" (sites {"E1" "E2" "E3" "E4"}))
+            })
+        )
+        >  
+        "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares starting on the board."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHaresStartingPositionSwitchPlayers")
+        })
+        ("HaretavlRulesFourDogsTwoHaresStartingPositionSwitchPlayers"
+            (start {
+                (place "Hare1" (sites {"A2" "A5"}))
+                (place "Dog2" (sites {"E2" "E3" "E4" "E5"}))
+            })
+        )
+        >  
+        "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares starting on the board."
+    )
+    
 })
 
 //------------------------------------------------------------------------------
@@ -1879,30 +1983,6 @@
     })
     
     (ruleset "Ruleset/Haretavl Starting Position - No Extension Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Top Extension Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Both Extensions No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Both Extensions Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - No Extension No Joined Diagonal (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - No Extension Joined Diagonal (Suggested)" {
         
     })
     
@@ -2232,6 +2312,30 @@
     
     (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 1 - Both Extensions No Joined Diagonal (Suggested)" {
         "Variant/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 1 - Switch Players" 
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - No Extension Joined Diagonal (Suggested)" {
+        "Variant/Haretavl Four Dogs Two Hares - No Extension Joined Diagonal - Starting Position 2 - Switch Players" 
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Top Extension Joined Diagonal (Suggested)" {
+        "Variant/Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal - Starting Position 2 - Switch Players" 
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Both Extensions Joined Diagonal (Suggested)" {
+        "Variant/Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal - Starting Position 2 - Switch Players" 
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - No Extension No Joined Diagonal (Suggested)" {
+        "Variant/Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Top Extension No Joined Diagonal (Suggested)" {
+        "Variant/Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares Switch Starting Position 2 - Both Extensions No Joined Diagonal (Suggested)" {
+        "Variant/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal - Starting Position 2 - Switch Players" 
     })
     
 })
