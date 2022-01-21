@@ -20,7 +20,7 @@ public class Id implements InfoItem
 	/**
 	 * @param id The ruleset database table Id.
 	 * 
-	 * @example (id 35)
+	 * @example (id "35")
 	 */
 	public Id(final String id)
 	{
