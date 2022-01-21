@@ -2761,10 +2761,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	{
 		Move realMoveToApply = null;
 		final Moves legal = moves(context);
+		final List<Action> moveActions = move.getActionsWithConsequences(context);
 
 		for (final Move m : legal.moves())
 		{
-			if (Model.movesEqual(move, move.actions(), m, context))
+			if (Model.movesEqual(move, moveActions, m, context))
 			{
 				realMoveToApply = m;
 				break;
