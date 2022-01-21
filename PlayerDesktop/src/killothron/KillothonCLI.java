@@ -57,7 +57,7 @@ public class KillothonCLI
 		final double startTime = System.currentTimeMillis();
 		final double timeToThink = 60000; // Time for the challenger to think smartly (in ms).
 		final int movesLimitPerPlayer = 500; // Max number of moves per player.
-		final int numGamesToPlay = Constants.INFINITY;
+		final int numGamesToPlay = Constants.INFINITY; // Infinity is all games.
 		double sumUtilities = 0;
 		int numWins = 0;
 		int sumNumMoves = 0;
