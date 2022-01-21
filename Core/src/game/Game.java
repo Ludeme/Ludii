@@ -2788,6 +2788,8 @@ public class Game extends BaseLudeme implements API, Serializable
 		if (realMoveToApply == null)
 			System.err.println("No Matching Legal Move Found!");
 		
+		System.out.println(realMoveToApply);
+		
 		return apply(context, realMoveToApply);
 	}
 
