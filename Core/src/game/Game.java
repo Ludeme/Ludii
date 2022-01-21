@@ -96,7 +96,6 @@ import other.concept.Concept;
 import other.concept.ConceptDataType;
 import other.context.Context;
 import other.context.TempContext;
-import other.model.Model;
 import other.move.Move;
 import other.playout.PlayoutAddToEmpty;
 import other.playout.PlayoutFilter;
@@ -2751,34 +2750,54 @@ public class Game extends BaseLudeme implements API, Serializable
 		return apply(context, move, false);		// By default false --> don't skip computing end rules
 	}
 	
-	/**
-	 * Get matching move from the legal moves.
-	 * @param context
-	 * @param move
-	 * @return Matching move from the legal moves.
-	 */
-	public Move getMatchingLegalMove(final Context context, final Move move)
-	{
-		Move realMoveToApply = null;
-		final Moves legal = moves(context);
-		final List<Action> moveActions = move.getActionsWithConsequences(context);
-		
-		System.out.println(move.actions());
-		
-
-		for (final Move m : legal.moves())
-		{
-			System.out.println(m.actions());
-			
-			if (Model.movesEqual(move, moveActions, m, context))
-			{
-				realMoveToApply = m;
-				break;
-			}
-		}
-		
-		return realMoveToApply;
-	}
+//	/**
+//	 * Get matching move from the legal moves.
+//	 * @param context
+//	 * @param move
+//	 * @return Matching move from the legal moves.
+//	 */
+//	public Move getMatchingLegalMove(final Context context, final Move move)
+//	{
+//		Move realMoveToApply = null;
+//		final Moves legal = moves(context);
+//		final List<Action> moveActions = move.getActionsWithConsequences(context);
+//		
+//		System.out.println(move.actions());
+//		
+//
+//		for (final Move m : legal.moves())
+//		{
+//			System.out.println(m.actions());
+//			
+//			if (Model.movesEqual(move, moveActions, m, context))
+//			{
+//				realMoveToApply = m;
+//				break;
+//			}
+//		}
+//		
+//		return realMoveToApply;
+//	}
+//	
+//	/**
+//	 * Apply a move to the current context. Checks the legal move to find a match.
+//	 * @param context
+//	 * @param move
+//	 * @return Move object as applied, possibly with additional Actions from consequents
+//	 */
+//	public Move applyRobust(final Context context, final Move move)
+//	{
+//		System.out.println("---------------");
+//		
+//		final Move realMoveToApply = getMatchingLegalMove(context, move);
+//		
+//		if (realMoveToApply == null)
+//			System.err.println("No Matching Legal Move Found!");
+//		
+//		System.out.println(realMoveToApply);
+//		
+//		return apply(context, realMoveToApply);
+//	}
 	
 	/**
 	 * Apply a move to the current context. Checks the legal move to find a match.
@@ -2788,17 +2807,45 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move applyRobust(final Context context, final Move move)
 	{
-		System.out.println("---------------");
-		
-		final Move realMoveToApply = getMatchingLegalMove(context, move);
-		
-		if (realMoveToApply == null)
-			System.err.println("No Matching Legal Move Found!");
-		
-		System.out.println(realMoveToApply);
-		
-		return apply(context, realMoveToApply);
+		return apply(context, move);
 	}
+	
+	/**
+	 * Get matching move from the legal moves.
+	 * @param context
+	 * @param move
+	 * @return Matching move from the legal moves.
+	 */
+	public Move getMatchingLegalMove(final Context context, final Move move)
+	{
+		final Moves legal = context.game().moves(context);
+		for (final Move m : legal.moves())
+		{
+			boolean validMove = true;
+			if (move.getActionsWithConsequences(context).size() > m.getActionsWithConsequences(context).size())
+			{
+				validMove = false;
+			}
+			else
+			{
+				for (int i = 0; i < move.getActionsWithConsequences(context).size(); i++)
+				{
+					if (!m.getActionsWithConsequences(context).get(i).equals(move.getActionsWithConsequences(context).get(i)))
+					{
+						validMove = false;
+						break;
+					}
+				}
+			}
+			
+			if (validMove)
+				return m;
+		}
+		
+		return move;
+	}
+	
+	
 
 	/**
 	 * Apply a move to the current context
