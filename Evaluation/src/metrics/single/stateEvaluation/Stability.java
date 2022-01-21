@@ -70,7 +70,7 @@ public class Stability extends Metric
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 					allPlayersStateEvaluationsAcrossTrial.get(j).add(allPlayerStateEvaluations.get(j));
 				
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 			
 			// Record the average variance for each players state evaluations.

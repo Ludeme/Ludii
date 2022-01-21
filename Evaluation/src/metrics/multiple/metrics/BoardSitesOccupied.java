@@ -46,7 +46,7 @@ public class BoardSitesOccupied extends MultiMetricFramework
 		valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
-			context.game().apply(context, trial.getMove(i));
+			context.game().applyRobust(context, trial.getMove(i));
 			valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 		}
 		return valueList.toArray(new Double[0]);

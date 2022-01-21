@@ -44,7 +44,7 @@ public class PieceNumber extends MultiMetricFramework
 		valueList.add(Double.valueOf(Utils.numPieces(context)));
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
-			context.game().apply(context, trial.getMove(i));
+			context.game().applyRobust(context, trial.getMove(i));
 			valueList.add(Double.valueOf(Utils.numPieces(context)));
 		}
 		return valueList.toArray(new Double[0]);

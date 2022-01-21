@@ -44,7 +44,7 @@ public class StateEvaluationDifference extends MultiMetricFramework
 		valueList.add(getStateEvaluationDiscrepancy(evaluation, context));
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
-			context.game().apply(context, trial.getMove(i));
+			context.game().applyRobust(context, trial.getMove(i));
 			valueList.add(getStateEvaluationDiscrepancy(evaluation, context));
 		}
 		return valueList.toArray(new Double[0]);

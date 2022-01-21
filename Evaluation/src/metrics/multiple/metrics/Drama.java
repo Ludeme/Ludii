@@ -63,7 +63,7 @@ public class Drama extends MultiMetricFramework
 				}
 				
 				valueList.add(Double.valueOf(differenceBetweenWinnersAndMax));
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 		}
 		else

@@ -79,7 +79,7 @@ public class LeadChange extends Metric
 					leadChange++;
 				
 				pastCurrentLeaders = currentLeaders;
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 			
 			avgLeadChange += leadChange / trial.numberRealMoves();

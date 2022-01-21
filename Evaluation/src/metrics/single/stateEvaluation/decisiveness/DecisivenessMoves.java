@@ -77,7 +77,7 @@ public class DecisivenessMoves extends Metric
 				if (aboveThresholdFound)
 					break;
 				
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 			
 			avgDecisivenessThreshold += turnAboveDecisivenessthreshold/trial.numberRealMoves();

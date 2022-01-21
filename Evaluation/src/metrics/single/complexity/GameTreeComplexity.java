@@ -60,7 +60,7 @@ public class GameTreeComplexity extends Metric
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				branchingFactor += Double.valueOf(context.game().moves(context).moves().size()) / trial.numMoves();
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 
 			gameTreeComplexity += trial.numMoves() * Math.log10(branchingFactor);

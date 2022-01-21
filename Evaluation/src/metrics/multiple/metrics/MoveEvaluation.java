@@ -44,7 +44,7 @@ public class MoveEvaluation extends MultiMetricFramework
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
 			valueList.add(Utils.evaluateMove(evaluation, context, trial.getMove(i)));
-			context.game().apply(context, trial.getMove(i));
+			context.game().applyRobust(context, trial.getMove(i));
 		}
 		return valueList.toArray(new Double[0]);
 	}

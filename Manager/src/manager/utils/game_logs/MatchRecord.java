@@ -330,7 +330,7 @@ public class MatchRecord implements Serializable
 				return;
 			}
 			
-			game.apply(context, actionToPlay);
+			game.applyRobust(context, actionToPlay);
 			++currActionIndex;
 		}
 		

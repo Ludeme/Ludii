@@ -39,7 +39,7 @@ public class MoveGeneration
 	
 	public final static void recordTrialMoves(final PlayerApp app, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, final List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList, final boolean includeHandMoves, final boolean includeNoWhatMoves)
 	{
-		Context context = app.manager().ref().context();
+		final Context context = app.manager().ref().context();
 		
 		for (int trialIndex = 0; trialIndex < generatedTrials.size(); trialIndex++)
 		{
@@ -113,7 +113,7 @@ public class MoveGeneration
 						prevContext = new Context(context);
 					
 					// Apply the move to update the context for the next move.
-					context.game().apply(context, matchingLegalMove);
+					context.game().applyRobust(context, matchingLegalMove);
 					
 					// Get endingString for move.
 					if (context.trial().over())
@@ -126,7 +126,7 @@ public class MoveGeneration
 						context.trial().lastMove().apply(prevContext, true);
 						
 						// Store the toEnglish of the end condition.
-						for(End end : getEnd(context.game()))
+						for(final End end : getEnd(context.game()))
 						{
 							if(end != null && end.endRules() != null)
 							{
@@ -134,7 +134,7 @@ public class MoveGeneration
 								{
 									if (endRule instanceof If)
 									{
-										If ifEndRule = (If) endRule;
+										final If ifEndRule = (If) endRule;
 										ifEndRule.endCondition().preprocess(context.game());
 										if (ifEndRule.result() != null && ifEndRule.result().result() != null && ifEndRule.endCondition().eval(prevContext))
 										{
@@ -163,7 +163,7 @@ public class MoveGeneration
 				else
 				{
 					// Apply the move to update the context for the next move.
-					context.game().apply(context, matchingLegalMove);
+					context.game().applyRobust(context, matchingLegalMove);
 				}
 			}
 		}
@@ -177,7 +177,7 @@ public class MoveGeneration
 	 * @param game
 	 * @return A list of End rule objects for the given game.
 	 */
-	private static End[] getEnd(Game game)
+	private static End[] getEnd(final Game game)
 	{
 		if (game.rules().phases().length == 1)
 		{
@@ -185,7 +185,7 @@ public class MoveGeneration
 		}
 		else
 		{
-			End[] phaseEnd = new End[game.rules().phases().length];
+			final End[] phaseEnd = new End[game.rules().phases().length];
 			for (int i = 0; i < game.rules().phases().length; i++)
 				phaseEnd[i] = game.rules().phases()[i].end();
 			

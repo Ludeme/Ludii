@@ -507,7 +507,7 @@ public class ComputePlayoutConcepts
 					prevContext = new Context(context);
 				
 				// We go to the next move.
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 			
 			// Compute avg for all the playouts.

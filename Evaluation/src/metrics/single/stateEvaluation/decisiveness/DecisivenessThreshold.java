@@ -80,7 +80,7 @@ public class DecisivenessThreshold extends Metric
 				if (allPlayerStateEvaluations.get(j) > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
 					decisivenessThreshold = allPlayerStateEvaluations.get(j);
 
-			context.game().apply(context, trial.getMove(i));
+			context.game().applyRobust(context, trial.getMove(i));
 		}
 		
 		return decisivenessThreshold;

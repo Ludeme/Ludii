@@ -757,8 +757,8 @@ public class ExportDbCsvConcepts
 	 */
 	private static void getTrials(final Game game)
 	{
-		File currentFolder = new File(".");
-		File folder = new File(currentFolder.getAbsolutePath() + folderTrials);
+		final File currentFolder = new File(".");
+		final File folder = new File(currentFolder.getAbsolutePath() + folderTrials);
 		final String gameName = game.name();
 		final String rulesetName = game.getRuleset() == null ? "" : game.getRuleset().heading();
 		
@@ -769,14 +769,14 @@ public class ExportDbCsvConcepts
 		if(!rulesetName.isEmpty())
 			trialFolderPath += File.separator + rulesetName.replace("/", "_");
 
-		File trialFolder = new File(trialFolderPath);
+		final File trialFolder = new File(trialFolderPath);
 		
 		if(trialFolder.exists())
 			System.out.println("TRIALS FOLDER EXIST");
 		else
 			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
 		
-		for(File trialFile : trialFolder.listFiles())
+		for(final File trialFile : trialFolder.listFiles())
 		{
 			MatchRecord loadedRecord;
 			try
@@ -786,11 +786,11 @@ public class ExportDbCsvConcepts
 				trials.add(loadedTrial);
 				allStoredRNG.add(loadedRecord.rngState());
 			}
-			catch (FileNotFoundException e)
+			catch (final FileNotFoundException e)
 			{
 				e.printStackTrace();
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -1135,7 +1135,7 @@ public class ExportDbCsvConcepts
 					prevContext = new Context(context);
 				
 				// We go to the next move.
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 			
 			// Compute avg for all the playouts.

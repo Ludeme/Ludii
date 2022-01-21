@@ -46,7 +46,7 @@ public class Utils
 	{
 		final Context context = setupNewContext(game, rngState);
 		for (final Move m : trial.generateRealMovesList())
-			game.apply(context, m);
+			game.applyRobust(context, m);
 		return context;
 	}
 	
@@ -186,7 +186,7 @@ public class Utils
 			return evaluation.getStateAfterMoveEvaluationCache(stateAndMoveHash);
 		
 		final TempContext copyContext = new TempContext(context);
-		copyContext.game().apply(copyContext, move);
+		copyContext.game().applyRobust(copyContext, move);
 		final double stateEvaluationAfterMove = evaluateState(evaluation, copyContext, move.mover());
 		evaluation.putStateAfterMoveEvaluationCache(stateAndMoveHash, stateEvaluationAfterMove);
 

@@ -64,7 +64,7 @@ public class DecisionMoves extends Metric
 				if (context.game().moves(context).moves().size() > 1)
 					numDecisionMoves++;
 				
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 			
 			avgNumDecisionMoves += numDecisionMoves / trial.numberRealMoves();

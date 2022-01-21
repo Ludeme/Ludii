@@ -66,7 +66,7 @@ public class BoardCoverageFull extends Metric
 			sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 				sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			}
 			

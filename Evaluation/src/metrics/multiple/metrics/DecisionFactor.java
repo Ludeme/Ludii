@@ -45,7 +45,7 @@ public class DecisionFactor extends MultiMetricFramework
 			if (context.game().moves(context).moves().size() > 1)
 				valueList.add(Double.valueOf(context.game().moves(context).moves().size()));
 			
-			context.game().apply(context, trial.getMove(i));
+			context.game().applyRobust(context, trial.getMove(i));
 		}
 		return valueList.toArray(new Double[0]);
 	}

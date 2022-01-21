@@ -71,7 +71,7 @@ public class MoveDistance extends MultiMetricFramework
 				valueList.add(Double.valueOf(boardTopology.distancesToOtherSite(moveType)[trial.getMove(i).from()][trial.getMove(i).to()]));
 			}
 			
-			context.game().apply(context, trial.getMove(i));
+			context.game().applyRobust(context, trial.getMove(i));
 		}
 		
 		
