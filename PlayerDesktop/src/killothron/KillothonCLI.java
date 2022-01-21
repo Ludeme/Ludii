@@ -63,6 +63,8 @@ public class KillothonCLI
 		int sumNumMoves = 0;
 		int sumP1Moves = 0;
 		
+		System.out.println("Killothon is starting. Login = " + login + " Agent = " + agentName + "\n");
+		
 		// Get the list of games.
 		final String[] gameList = FileHandling.listGames();
 		final ArrayList<String> validChoices = new ArrayList<>();
