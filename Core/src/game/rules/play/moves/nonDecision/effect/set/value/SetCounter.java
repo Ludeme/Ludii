@@ -163,7 +163,7 @@ public final class SetCounter extends Effect
 	@Override
 	public String toString()
 	{
-		return "SetCounter(" + newValue + ") Generator";
+		return "SetCounter(" + newValue + ")";
 	}
 	
 	@Override
