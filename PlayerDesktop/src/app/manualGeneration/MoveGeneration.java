@@ -57,6 +57,7 @@ public class MoveGeneration
 				Move matchingLegalMove = null;
 				Move move = trial.getMove(i);
 				int matchesFound = 0;
+				
 				// Context used to copy the state reaching the terminal state before the game is over.
 				Context prevContext = null;
 				for (final Move m : context.game().moves(context).moves())
