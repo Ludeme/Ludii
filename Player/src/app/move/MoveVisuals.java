@@ -235,7 +235,7 @@ public class MoveVisuals
 		for (final Move m : legal.moves())
 		{
 			final Context newContext = new Context(context);
-			newContext.game().applyRobust(newContext, m);
+			newContext.game().apply(newContext, m);
 
 			if (app.manager().settingsManager().storedGameStatesForVisuals().contains(Long.valueOf(newContext.state().stateHash())))
 				movesThatLeadToRepeatedStates.add(m);

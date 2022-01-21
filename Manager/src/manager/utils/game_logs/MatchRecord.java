@@ -17,9 +17,7 @@ import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.Status;
 import main.Status.EndType;
-import other.context.Context;
 import other.move.Move;
-import other.state.State;
 import other.trial.Trial;
 
 /**
@@ -279,79 +277,6 @@ public class MatchRecord implements Serializable
 			
 			return new MatchRecord(trial, rngState, loadedGameName);
 		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Tests integrity of this match record
-	 * @param game
-	 */
-	public void testIntegrity(final Game game)
-	{
-		final Context context = new Context(game, new Trial(game));
-		context.rng().restoreState(rngState);
-		
-		final List<State> stateHistory = trial.auxilTrialData().stateHistory();
-		final List<Move> actionHistory = trial.generateCompleteMovesList();
-		
-		// let the game re-playing start in new context
-		game.start(context);
-		
-		// re-play all actions, make sure all states are equal (if stored)
-		int currActionIndex = 0;
-		while (currActionIndex < actionHistory.size())
-		{
-			final State currentState = context.state();
-			
-			if (stateHistory != null)
-			{
-				final State historicState = stateHistory.get(currActionIndex);
-				
-				if (!historicState.equals(currentState))
-				{
-					System.err.println("State " + currActionIndex + 
-							" in history not equal to state in re-played game!");
-					return;
-				}
-			}
-			
-			if (context.trial().over())
-			{
-				System.err.println("Re-played game ended faster than game in history did!");
-				return;
-			}
-			
-			final Move actionToPlay = actionHistory.get(currActionIndex);
-			
-			if (!(game.moves(context).moves().contains(actionToPlay)))
-			{
-				System.err.println("Action to play according to history is not legal!");
-				return;
-			}
-			
-			game.applyRobust(context, actionToPlay);
-			++currActionIndex;
-		}
-		
-		// now compare final states if states are saved...
-		if (stateHistory != null)
-		{
-			if (!(stateHistory.get(stateHistory.size() - 1).equals(context.state())))
-			{
-				System.err.println("Last state of history not equal to state in re-play!");
-				return;
-			}
-		}
-		
-		// and status at end of game
-		if (!(trial.status().equals(context.trial().status())))
-		{
-			System.err.println("Final Status in history does not equal final Status in re-play!");
-			return;
-		}
-		
-		return;
 	}
 	
 	//-------------------------------------------------------------------------

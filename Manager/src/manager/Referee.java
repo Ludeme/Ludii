@@ -313,7 +313,7 @@ public class Referee
 				final Moves legalMatchMoves = context.game().moves(context);
 				assert (legalMatchMoves.moves().size() == 1);
 				assert (legalMatchMoves.moves().get(0).containsNextInstance());
-				context.game().applyRobust(context, legalMatchMoves.moves().get(0));
+				context.game().apply(context, legalMatchMoves.moves().get(0));
 			}
 
 			// We only want to print moves in moves tab from the last trial
@@ -619,7 +619,7 @@ public class Referee
 			final Context newContext = new Context(context);
 			newContext.trial().previousState().clear();
 			newContext.trial().previousStateWithinATurn().clear();
-			newContext.game().applyRobust(newContext, move);
+			newContext.game().apply(newContext, move);
 			manager.settingsManager().setMovesAllowedWithRepetition(newContext.game().moves(newContext).moves());
 		}
 	}
