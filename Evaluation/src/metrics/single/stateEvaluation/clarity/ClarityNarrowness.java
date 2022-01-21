@@ -84,7 +84,7 @@ public class ClarityNarrowness extends Metric
 
 				moveNarrowness.addSample(numberAboveThreshold/moveEvaluations.n());
 				
-				context.game().apply(context, trial.getMove(i));
+				context.game().applyRobust(context, trial.getMove(i));
 			}
 			
 			moveNarrowness.measure();

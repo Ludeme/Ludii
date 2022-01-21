@@ -2749,6 +2749,61 @@ public class Game extends BaseLudeme implements API, Serializable
 	{
 		return apply(context, move, false);		// By default false --> don't skip computing end rules
 	}
+	
+	/**
+	 * Get matching move from the legal moves.
+	 * @param context
+	 * @param move
+	 * @return Matching move from the legal moves.
+	 */
+	public Move getMatchingLegalMove(final Context context, final Move move)
+	{
+		Move realMoveToApply = null;
+		boolean validMove = false;
+		final Moves legal = moves(context);
+		for (final Move m : legal.moves())
+		{
+			validMove = true;
+			if (move.getActionsWithConsequences(context).size() < m.getActionsWithConsequences(context).size())
+			{
+				validMove = false;
+			}
+			else
+			{
+				for (int i = 0; i < move.getActionsWithConsequences(context).size(); i++)
+				{
+					if (!m.getActionsWithConsequences(context).get(i).equals(move.getActionsWithConsequences(context).get(i)))
+					{
+						validMove = false;
+						break;
+					}
+				}
+			}
+			if (validMove)
+			{
+				realMoveToApply = m;
+				break;
+			}
+		}
+		
+		return realMoveToApply;
+	}
+	
+	/**
+	 * Apply a move to the current context. Checks the legal move to find a match.
+	 * @param context
+	 * @param move
+	 * @return Move object as applied, possibly with additional Actions from consequents
+	 */
+	public Move applyRobust(final Context context, final Move move)
+	{
+		final Move realMoveToApply = getMatchingLegalMove(context, move);
+		
+		if (realMoveToApply == null)
+			System.err.println("No Matching Legal Move Found!");
+		
+		return apply(context, realMoveToApply);
+	}
 
 	/**
 	 * Apply a move to the current context
