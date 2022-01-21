@@ -2761,18 +2761,22 @@ public class Game extends BaseLudeme implements API, Serializable
 		Move realMoveToApply = null;
 		boolean validMove = false;
 		final Moves legal = moves(context);
+		final List <Action> originalMoveActions = move.getActionsWithConsequences(context);
+		
 		for (final Move m : legal.moves())
 		{
+			final List <Action> legalMoveActions = m.getActionsWithConsequences(context);
+			
 			validMove = true;
-			if (move.getActionsWithConsequences(context).size() != m.getActionsWithConsequences(context).size())
+			if (originalMoveActions.size() != legalMoveActions.size())
 			{
 				validMove = false;
 			}
 			else
 			{
-				for (int i = 0; i < move.getActionsWithConsequences(context).size(); i++)
+				for (int i = 0; i < originalMoveActions.size(); i++)
 				{
-					if (!m.getActionsWithConsequences(context).get(i).equals(move.getActionsWithConsequences(context).get(i)))
+					if (!legalMoveActions.get(i).equals(originalMoveActions.get(i)))
 					{
 						validMove = false;
 						break;
