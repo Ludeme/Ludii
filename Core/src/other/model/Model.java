@@ -387,8 +387,8 @@ public abstract class Model implements Playout
 	{
 		if (m1.from() != m2.from() || m1.to() != m2.to())
 			return false;
-		if (m1.then().isEmpty() == m2.then().isEmpty() && !m1.actions().equals(m2.actions()))
-			return false;
+		if (m1.then().isEmpty() && m2.then().isEmpty() && m1.actions().equals(m2.actions()))
+			return true;
 		
 		return (m1.getActionsWithConsequences(context).equals(m2.getActionsWithConsequences(context)));
 	}
@@ -404,8 +404,9 @@ public abstract class Model implements Playout
 	{
 		if (m1.from() != m2.from() || m1.to() != m2.to())
 			return false;
-		if (m1.then().isEmpty() == m2.then().isEmpty() && !m1.actions().equals(m2.actions()))
-			return false;
+		
+		if (m1.then().isEmpty() && m2.then().isEmpty() && m1.actions().equals(m2.actions()))
+			return true;
 		
 		return (m1Actions.equals(m2.getActionsWithConsequences(context)));
 	}
