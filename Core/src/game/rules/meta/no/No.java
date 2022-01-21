@@ -70,6 +70,11 @@ public final class No extends MetaRule
 		throw new IllegalArgumentException("No(): A NoSimpleType is not implemented.");
 	}
 	
+	private No()
+	{
+		// Make grammar pick up construct() and not default constructor
+	}
+	
 	//-------------------------------------------------------------------------
 
 	@Override
