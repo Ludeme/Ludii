@@ -96,6 +96,7 @@ import other.concept.Concept;
 import other.concept.ConceptDataType;
 import other.context.Context;
 import other.context.TempContext;
+import other.model.Model;
 import other.move.Move;
 import other.playout.PlayoutAddToEmpty;
 import other.playout.PlayoutFilter;
@@ -2759,31 +2760,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	public Move getMatchingLegalMove(final Context context, final Move move)
 	{
 		Move realMoveToApply = null;
-		boolean validMove = false;
 		final Moves legal = moves(context);
-		final List <Action> originalMoveActions = move.getActionsWithConsequences(context);
-		
+
 		for (final Move m : legal.moves())
 		{
-			final List <Action> legalMoveActions = m.getActionsWithConsequences(context);
-			
-			validMove = true;
-			if (originalMoveActions.size() != legalMoveActions.size())
-			{
-				validMove = false;
-			}
-			else
-			{
-				for (int i = 0; i < originalMoveActions.size(); i++)
-				{
-					if (!legalMoveActions.get(i).equals(originalMoveActions.get(i)))
-					{
-						validMove = false;
-						break;
-					}
-				}
-			}
-			if (validMove)
+			if (Model.movesEqual(move, move.actions(), m, context))
 			{
 				realMoveToApply = m;
 				break;
