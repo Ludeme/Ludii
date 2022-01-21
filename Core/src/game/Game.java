@@ -2783,15 +2783,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move applyRobust(final Context context, final Move move)
 	{
-		System.out.println("---------------");
-		
 		final Move realMoveToApply = getMatchingLegalMove(context, move);
 		
 		if (realMoveToApply == null)
 			System.err.println("No Matching Legal Move Found!");
-		
-		System.out.println(realMoveToApply);
-		
+
 		return apply(context, realMoveToApply);
 	}
 	
