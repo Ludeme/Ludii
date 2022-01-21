@@ -2762,9 +2762,14 @@ public class Game extends BaseLudeme implements API, Serializable
 		Move realMoveToApply = null;
 		final Moves legal = moves(context);
 		final List<Action> moveActions = move.getActionsWithConsequences(context);
+		
+		System.out.println(move.actions());
+		
 
 		for (final Move m : legal.moves())
 		{
+			System.out.println(m.actions());
+			
 			if (Model.movesEqual(move, moveActions, m, context))
 			{
 				realMoveToApply = m;
@@ -2783,6 +2788,8 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move applyRobust(final Context context, final Move move)
 	{
+		System.out.println("---------------");
+		
 		final Move realMoveToApply = getMatchingLegalMove(context, move);
 		
 		if (realMoveToApply == null)
