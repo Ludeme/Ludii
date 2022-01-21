@@ -20,7 +20,7 @@ public class BinaryLeaf extends DecisionTreeNode
 
 	/**
 	 * Defines the feature (condition) and the predicted probability of being a top move.
-	 * @param prob Predicted probability of being a top move
+	 * @param prob Predicted probability of being a top move.
 	 * 
 	 * @example (binaryLeaf 0.6)
 	 */

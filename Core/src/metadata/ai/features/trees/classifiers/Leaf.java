@@ -28,9 +28,9 @@ public class Leaf extends DecisionTreeNode
 
 	/**
 	 * Defines the feature (condition) and the predicted probabilities for different classes.
-	 * @param bottom25 Predicted probability of being a bottom-25% move
-	 * @param iqr Predicted probability of being a move in the Interquartile Range
-	 * @param top25 Predicted probability of being a top-25% move
+	 * @param bottom25 Predicted probability of being a bottom-25% move.
+	 * @param iqr Predicted probability of being a move in the Interquartile Range.
+	 * @param top25 Predicted probability of being a top-25% move.
 	 * 
 	 * @example (leaf bottom25:0.0 iqr:0.2 top25:0.8)
 	 */
