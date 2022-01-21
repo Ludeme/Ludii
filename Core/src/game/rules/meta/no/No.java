@@ -9,7 +9,7 @@ import game.types.play.RepetitionType;
 import other.context.Context;
 
 /**
- * Defines a decision move.
+ * Defines a no meta rules to forbid certain moves.
  * 
  * @author Eric.Piette
  */
@@ -31,7 +31,7 @@ public final class No extends MetaRule
 	public static MetaRule construct
 	(
 		      final NoRepeatType    type,
-		 @Opt final RepetitionType repetitionType
+		 @Opt final RepetitionType  repetitionType
 	)
 	{
 		switch (type)
@@ -55,7 +55,7 @@ public final class No extends MetaRule
 	 */
 	public static MetaRule construct
 	(
-		final NoSimpleType    type	
+		final NoSimpleType type	
     )
 	{
 		switch (type)
