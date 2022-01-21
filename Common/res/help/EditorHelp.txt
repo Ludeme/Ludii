@@ -2179,7 +2179,7 @@ TYPE: game.functions.region.foreach.ForEach
 TYPE JAVADOC: Returns a region filtering with a condition or build according to different player indices.
 NEW CTOR
 (forEach Level [<siteType>] at:<int> [<stackDirection>] [If:<boolean>] [startAt:<int>])
-PARAM JAVADOC: [<siteType>]: 
+PARAM JAVADOC: [<siteType>]: The type of graph element.
 PARAM JAVADOC: at:<int>: The site.
 PARAM JAVADOC: [<stackDirection>]: The direction to count in the stack [FromTop].
 PARAM JAVADOC: [If:<boolean>]: The condition to satisfy.
@@ -2675,9 +2675,7 @@ NEW CTOR
 (swap)
 EXAMPLE: (swap)
 TYPE: game.rules.meta.no.No
-TYPE JAVADOC: Defines a decision move.
-NEW CTOR
-(no)
+TYPE JAVADOC: Defines a no meta rules to forbid certain moves.
 NEW CTOR
 (no Repeat [<repetitionType>])
 PARAM JAVADOC: [<repetitionType>]: Type of repetition to forbid [Positional].
@@ -4721,7 +4719,7 @@ TYPE: metadata.ai.features.trees.classifiers.BinaryLeaf
 TYPE JAVADOC: Describes a leaf node in a binary classification tree for features; it contains  only a predicted probability for "top move".
 NEW CTOR
 (binaryLeaf <float>)
-PARAM JAVADOC: <float>: Predicted probability of being a top move
+PARAM JAVADOC: <float>: Predicted probability of being a top move.
 EXAMPLE: (binaryLeaf 0.6)
 TYPE: metadata.ai.features.trees.classifiers.DecisionTree
 TYPE JAVADOC: Describes a Decision Tree for features (a decision tree representation of a feature set,  which outputs class predictions).
@@ -4747,9 +4745,9 @@ TYPE: metadata.ai.features.trees.classifiers.Leaf
 TYPE JAVADOC: Describes a leaf node in a binary classification tree for features; it contains  only a predicted probability for "best move".
 NEW CTOR
 (leaf bottom25:<float> iqr:<float> top25:<float>)
-PARAM JAVADOC: bottom25:<float>: Predicted probability of being a bottom-25% move
-PARAM JAVADOC: iqr:<float>: Predicted probability of being a move in the Interquartile Range
-PARAM JAVADOC: top25:<float>: Predicted probability of being a top-25% move
+PARAM JAVADOC: bottom25:<float>: Predicted probability of being a bottom-25% move.
+PARAM JAVADOC: iqr:<float>: Predicted probability of being a move in the Interquartile Range.
+PARAM JAVADOC: top25:<float>: Predicted probability of being a top-25% move.
 EXAMPLE: (leaf bottom25:0.0 iqr:0.2 top25:0.8)
 TYPE: metadata.ai.features.trees.logits.If
 TYPE JAVADOC: Describes a decision node in a logit tree for features; it contains one  feature (the condition we check), and two branches; one for the case  where the condition is true, and one for the case where the condition is false.
@@ -5693,7 +5691,7 @@ TYPE JAVADOC: Specifies the database Id for the currently chosen ruleset.
 NEW CTOR
 (id <string>)
 PARAM JAVADOC: <string>: The ruleset database table Id.
-EXAMPLE: (id 35)
+EXAMPLE: (id "35")
 TYPE: metadata.info.database.Origin
 TYPE JAVADOC: Specifies the location of the earliest known origin for this game.
 NEW CTOR
