@@ -52,12 +52,12 @@ public class KillothonCLI
 	@SuppressWarnings("resource")
 	public static void main(final String[] args)
 	{
-		final String agentName = "Ludii AI";
+		final String login = args.length == 0 ? "No Name" : args[0];
+		final String agentName = args.length < 2 ? "Ludii AI" : args[1];
 		final double startTime = System.currentTimeMillis();
 		final double timeToThink = 60000; // Time for the challenger to think smartly (in ms).
 		final int movesLimitPerPlayer = 500; // Max number of moves per player.
 		final int numGamesToPlay = Constants.INFINITY;
-		final String login = "Challenger";
 		double sumUtilities = 0;
 		int numWins = 0;
 		int sumNumMoves = 0;
