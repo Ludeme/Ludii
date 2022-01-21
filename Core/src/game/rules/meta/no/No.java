@@ -23,7 +23,7 @@ public final class No extends MetaRule
 	/**
 	 * For specifying a particular type of repetition that is forbidden in the game.
 	 * 
-	 * @param type Type of repetition to forbid [Positional].
+	 * @param type           Type of repetition to forbid [Positional].
 	 * @param repetitionType Type of repetition to forbid [Positional].
 	 * 
 	 * @example (no Repeat PositionalInTurn)
@@ -95,7 +95,7 @@ public final class No extends MetaRule
 	@Override
 	public void eval(Context context)
 	{
-		// TODO Auto-generated method stub
+		// Nothing to do.
 	}
 
 	//-------------------------------------------------------------------------
