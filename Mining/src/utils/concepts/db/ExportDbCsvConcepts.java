@@ -37,6 +37,7 @@ import main.options.Ruleset;
 import manager.utils.game_logs.MatchRecord;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import metrics.Utils;
 import other.AI;
 import other.GameLoader;
@@ -1256,11 +1257,11 @@ public class ExportDbCsvConcepts
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
 		final long startTime = System.currentTimeMillis();
-		final Trial[] trialsMetrics = new Trial[trials.size()];
+		final ReplayTrial[] trialsMetrics = new ReplayTrial[trials.size()];
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
 		for(int i = 0 ; i < trials.size();i++)
 		{
-			trialsMetrics[i] = trials.get(i);
+			trialsMetrics[i] = new ReplayTrial(game, trials.get(i), allStoredRNG.get(i));
 			rngTrials[i] = allStoredRNG.get(i);
 		}
 		

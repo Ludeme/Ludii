@@ -5,10 +5,10 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
-import other.trial.Trial;
 
 /**
  * Similarity between player win-rates.
@@ -42,7 +42,7 @@ public class Balance extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final Trial[] trials,
+			final ReplayTrial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -52,11 +52,11 @@ public class Balance extends Metric
 		final int[] wins = new int[numPlayers + 1];		
 		for (int i = 0; i < trials.length; i++)
 		{
-			final Trial trial = trials[i];
+			final ReplayTrial trial = trials[i];
 			final RandomProviderState rng = randomProviderStates[i];
 			final Context context = Utils.setupTrialContext(game, rng, trial);
 			
-			wins[context.state().playerToAgent(trial.status().winner())]++;
+			wins[context.state().playerToAgent(trial.trial().status().winner())]++;
 		}
 		
 		// Get mean win rate over all players

@@ -8,11 +8,12 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.topology.TopologyElement;
-import other.trial.Trial;
 
 /**
  * Percentage of default board sites which a piece was placed on at some point.
@@ -46,7 +47,7 @@ public class BoardCoverageDefault extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final Trial[] trials,
+			final ReplayTrial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -54,7 +55,7 @@ public class BoardCoverageDefault extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final Trial trial = trials[trialIndex];
+			final ReplayTrial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			// Setup a new instance of the game
@@ -64,9 +65,9 @@ public class BoardCoverageDefault extends Metric
 			final Set<TopologyElement> sitesCovered = new HashSet<TopologyElement>();
 			
 			sitesCovered.addAll(Utils.boardDefaultSitesCovered(context));
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.fullMoves())
 			{
-				context.game().applyRobust(context, trial.getMove(i));
+				context.game().apply(context, m);
 				sitesCovered.addAll(Utils.boardDefaultSitesCovered(context));
 			}
 			

@@ -5,8 +5,8 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import other.concept.Concept;
-import other.trial.Trial;
 
 /**
  * Number of moves in a game.
@@ -40,14 +40,14 @@ public class DurationMoves extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final Trial[] trials,
+			final ReplayTrial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
 		// Count the number of moves.
 		double moveTally = 0;
-		for (final Trial trial : trials)
-			moveTally += trial.numberRealMoves();
+		for (final ReplayTrial trial : trials)
+			moveTally += trial.trial().numberRealMoves();
 		
 		return moveTally / trials.length;
 	}

@@ -29,6 +29,7 @@ import manager.network.DatabaseFunctionsPublic;
 import manager.utils.game_logs.MatchRecord;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
@@ -238,7 +239,7 @@ public class EvalGames
 		}
 
 		// Generate trials and print generic results.
-		final List<Trial> allStoredTrials = new ArrayList<>();
+		final List<ReplayTrial> allStoredTrials = new ArrayList<>();
 		final List<RandomProviderState> allStoredRNG = new ArrayList<>();
 		final double[] sumScores = new double[game.players().count() + 1];
 		int numDraws = 0;
@@ -333,7 +334,7 @@ public class EvalGames
 					System.out.print(".");
 				}
 				
-				allStoredTrials.add(new Trial(context.trial()));
+				allStoredTrials.add(new ReplayTrial(game, context.trial(), rngState));
 				
 				if (!usingSavedTrial)					
 					databaseFunctionsPublic.storeTrialInDatabase
@@ -382,7 +383,7 @@ public class EvalGames
 		
 		String csvOutputString = DBGameInfo.getUniqueName(game) + ",";
 		
-		final Trial[] trials = allStoredTrials.toArray(new Trial[allStoredTrials.size()]);
+		final ReplayTrial[] trials = allStoredTrials.toArray(new ReplayTrial[allStoredTrials.size()]);
 		final RandomProviderState[] randomProviderStates = allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]);
 
 		// Specific Metric results

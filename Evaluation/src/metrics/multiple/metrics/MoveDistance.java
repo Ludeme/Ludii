@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import game.types.board.RelationType;
 import game.types.board.SiteType;
 import metrics.Evaluation;
+import metrics.ReplayTrial;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.topology.Topology;
-import other.trial.Trial;
 
 /**
  * The distance traveled by pieces when they move around the board.
@@ -41,7 +42,7 @@ public class MoveDistance extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final ReplayTrial trial, final Context context)
 	{
 		final Topology boardTopology = context.game().board().topology();
 		if (context.game().booleanConcepts().get(Concept.Cell.id()))
@@ -53,25 +54,25 @@ public class MoveDistance extends MultiMetricFramework
 		
 		final ArrayList<Double> valueList = new ArrayList<>();
 
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.fullMoves())
 		{
-			final SiteType moveType = trial.getMove(i).fromType();
+			final SiteType moveType = m.fromType();
 			
 			if 
 			(
-				trial.getMove(i).fromType() == trial.getMove(i).toType() 
+				m.fromType() == m.toType() 
 				&&
-				trial.getMove(i).from() < boardTopology.numSites(moveType)
+				m.from() < boardTopology.numSites(moveType)
 				&&
-				trial.getMove(i).to() < boardTopology.numSites(moveType)
+				m.to() < boardTopology.numSites(moveType)
 				&&
-				trial.getMove(i).from() != trial.getMove(i).to()
+				m.from() != m.to()
 			)	
 			{
-				valueList.add(Double.valueOf(boardTopology.distancesToOtherSite(moveType)[trial.getMove(i).from()][trial.getMove(i).to()]));
+				valueList.add(Double.valueOf(boardTopology.distancesToOtherSite(moveType)[m.from()][m.to()]));
 			}
 			
-			context.game().applyRobust(context, trial.getMove(i));
+			context.game().apply(context, m);
 		}
 		
 		

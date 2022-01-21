@@ -5,8 +5,9 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import other.concept.Concept;
-import other.trial.Trial;
+import other.move.Move;
 
 /**
  * Number of actions in a game.
@@ -40,15 +41,15 @@ public class DurationActions extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final Trial[] trials,
+			final ReplayTrial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
 		// Count the number of actions.
 		double actionTally = 0;
-		for (final Trial trial : trials)
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-				actionTally += trial.getMove(i).actions().size();
+		for (final ReplayTrial trial : trials)
+			for (final Move m : trial.fullMoves())
+				actionTally += m.actions().size();
 		
 		return actionTally / trials.length;
 	}

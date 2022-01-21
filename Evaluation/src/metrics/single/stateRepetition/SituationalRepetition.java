@@ -7,10 +7,11 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
-import other.trial.Trial;
+import other.move.Move;
 
 /**
  * Percentage number of repeated situational states.
@@ -44,7 +45,7 @@ public class SituationalRepetition extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final Trial[] trials,
+			final ReplayTrial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -52,7 +53,7 @@ public class SituationalRepetition extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final Trial trial = trials[trialIndex];
+			final ReplayTrial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			// Setup a new instance of the game
@@ -66,9 +67,9 @@ public class SituationalRepetition extends Metric
 			trialStates.add(context.state().fullHash());
 			trialStateCounts.add(1);
 			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.fullMoves())
 			{
-				context.game().applyRobust(context, trial.getMove(i));
+				context.game().apply(context, m);
 				
 				final long currentState = context.state().fullHash();
 				final int currentStateIndex = trialStates.indexOf(currentState);

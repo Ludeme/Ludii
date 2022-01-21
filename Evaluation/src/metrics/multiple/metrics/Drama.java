@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import metrics.Evaluation;
+import metrics.ReplayTrial;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
-import other.trial.Trial;
+import other.move.Move;
 
 /**
  * Difference between the winning players state evaluation and the 'maximum state evaluation of any player.
@@ -39,7 +40,7 @@ public class Drama extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 
 	@Override
-	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final ReplayTrial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		
@@ -48,7 +49,7 @@ public class Drama extends MultiMetricFramework
 		
 		if (highestRankedPlayers.size() > 0)
 		{
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.fullMoves())
 			{
 				// Get the highest state evaluation for any player.
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
@@ -63,7 +64,7 @@ public class Drama extends MultiMetricFramework
 				}
 				
 				valueList.add(Double.valueOf(differenceBetweenWinnersAndMax));
-				context.game().applyRobust(context, trial.getMove(i));
+				context.game().apply(context, m);
 			}
 		}
 		else

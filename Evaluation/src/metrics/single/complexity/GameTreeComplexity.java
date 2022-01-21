@@ -5,10 +5,11 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
-import other.trial.Trial;
+import other.move.Move;
 
 /**
  * Game Tree Complexity Estimate.
@@ -42,7 +43,7 @@ public class GameTreeComplexity extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final Trial[] trials,
+			final ReplayTrial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -50,20 +51,20 @@ public class GameTreeComplexity extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final Trial trial = trials[trialIndex];
+			final ReplayTrial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			double branchingFactor = 0.0;
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.fullMoves())
 			{
-				branchingFactor += Double.valueOf(context.game().moves(context).moves().size()) / trial.numMoves();
-				context.game().applyRobust(context, trial.getMove(i));
+				branchingFactor += Double.valueOf(context.game().moves(context).moves().size()) / trial.fullMoves().size();
+				context.game().apply(context, m);
 			}
 
-			gameTreeComplexity += trial.numMoves() * Math.log10(branchingFactor);
+			gameTreeComplexity += trial.fullMoves().size() * Math.log10(branchingFactor);
 		}
 
 		return gameTreeComplexity / trials.length;

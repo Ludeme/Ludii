@@ -5,7 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
-import other.trial.Trial;
+import metrics.ReplayTrial;
 
 /**
  * Average number or turns in a game, based on an ideal range.
@@ -42,7 +42,7 @@ public class IdealDuration extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final Trial[] trials,
+			final ReplayTrial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -58,9 +58,9 @@ public class IdealDuration extends Metric
 		//    0   Min     Max           2*Max
 		
 		double tally = 0;
-		for (final Trial trial : trials)
+		for (final ReplayTrial trial : trials)
 		{
-			final int numTurns = trial.numTurns();
+			final int numTurns = trial.trial().numTurns();
 			double score = 1;
 			
 			if (numTurns < minTurn)
