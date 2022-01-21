@@ -9,7 +9,7 @@ import game.types.play.RepetitionType;
 import other.context.Context;
 
 /**
- * Defines a decision move.
+ * Defines a no meta rules to forbid certain moves.
  * 
  * @author Eric.Piette
  */
@@ -23,7 +23,7 @@ public final class No extends MetaRule
 	/**
 	 * For specifying a particular type of repetition that is forbidden in the game.
 	 * 
-	 * @param type Type of repetition to forbid [Positional].
+	 * @param type           Type of repetition to forbid [Positional].
 	 * @param repetitionType Type of repetition to forbid [Positional].
 	 * 
 	 * @example (no Repeat PositionalInTurn)
@@ -31,7 +31,7 @@ public final class No extends MetaRule
 	public static MetaRule construct
 	(
 		      final NoRepeatType    type,
-		 @Opt final RepetitionType repetitionType
+		 @Opt final RepetitionType  repetitionType
 	)
 	{
 		switch (type)
@@ -55,7 +55,7 @@ public final class No extends MetaRule
 	 */
 	public static MetaRule construct
 	(
-		final NoSimpleType    type	
+		final NoSimpleType type	
     )
 	{
 		switch (type)
@@ -95,7 +95,7 @@ public final class No extends MetaRule
 	@Override
 	public void eval(Context context)
 	{
-		// TODO Auto-generated method stub
+		// Nothing to do.
 	}
 
 	//-------------------------------------------------------------------------

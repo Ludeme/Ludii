@@ -35,6 +35,7 @@ public final class ForEach extends BaseRegionFunction
 	 * For iterating through levels of a site.
 	 * 
 	 * @param forEachType    The type of property to iterate.
+	 * @param type           The type of graph element.
 	 * @param at             The site.
 	 * @param stackDirection The direction to count in the stack [FromTop].
 	 * @param If             The condition to satisfy.
