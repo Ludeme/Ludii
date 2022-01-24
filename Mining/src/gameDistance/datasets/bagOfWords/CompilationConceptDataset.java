@@ -12,12 +12,12 @@ import other.concept.ConceptDataType;
 import utils.data_structures.support.zhang_shasha.Tree;
 
 /**
- * Dataset containing boolean/compilation concepts.
+ * Dataset containing compilation concepts.
  * - BagOfWords
  * 
  * @author matthew.stephenson
  */
-public class BooleanConceptDataset implements Dataset
+public class CompilationConceptDataset implements Dataset
 {
 	@Override
 	public Map<String, Double> getBagOfWords(final Game game) 
@@ -27,6 +27,7 @@ public class BooleanConceptDataset implements Dataset
 		for (int i = 0; i < Concept.values().length; i++)
 		{
 			final Concept concept = Concept.values()[i];
+			
 			if(concept.computationType().equals(ConceptComputationType.Compilation)) 
 			{
 				if (concept.dataType().equals(ConceptDataType.BooleanData))
@@ -39,6 +40,10 @@ public class BooleanConceptDataset implements Dataset
 				else if (concept.dataType().equals(ConceptDataType.DoubleData) || concept.dataType().equals(ConceptDataType.IntegerData))
 				{
 					featureMap.put(concept.name(), Double.valueOf(game.nonBooleanConcepts().get(concept.id())));
+				}
+				else
+				{
+					System.out.println("ERROR, the following concept has an invalid type " + concept.toString());
 				}
 			}
 		}
