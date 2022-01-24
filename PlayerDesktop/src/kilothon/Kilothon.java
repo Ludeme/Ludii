@@ -164,7 +164,8 @@ public class Kilothon
 						{
 							final int mover = context.state().mover();
 							final double time = System.currentTimeMillis();
-							model.startNewStep(context, ais, 1);
+							final double thinkingTime = (mover == 1) ? ais.get(1).maxSecondsPerMove() : (mover == 2) ? ais.get(2).maxSecondsPerMove() : 1.0;
+							model.startNewStep(context, ais, thinkingTime);
 							final double timeUsed = System.currentTimeMillis() - time;
 						    
 							// We check the remaining time to be able to think smartly for the challenger.
