@@ -163,8 +163,8 @@ public class Kilothon
 						while (!trial.over())
 						{
 							final int mover = context.state().mover();
-							final double time = System.currentTimeMillis();
 							final double thinkingTime = (mover == 1) ? ais.get(1).maxSecondsPerMove() : (mover == 2) ? ais.get(2).maxSecondsPerMove() : 1.0;
+							final double time = System.currentTimeMillis();
 							model.startNewStep(context, ais, thinkingTime);
 							final double timeUsed = System.currentTimeMillis() - time;
 						    
