@@ -1,4 +1,4 @@
-package killothron;
+package kilothon;
 
 import java.io.File;
 import java.io.FileNotFoundException;

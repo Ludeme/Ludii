@@ -19,6 +19,7 @@ import training.expert_iteration.ExpertIteration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 import utils.trials.GenerateTrialsCluster;
+import kilothon.Kilothon;
 
 /**
  * Class with helper method to delegate to various other main methods
@@ -104,6 +105,8 @@ public class PlayerCLI
 			TestInstructionGeneration.main(passArgs);
 		else if (command.equalsIgnoreCase("--game-distance"))
 			CompareAllDistanceMetrics.main(passArgs);
+		else if (command.equalsIgnoreCase("--kilothon"))
+			Kilothon.main(passArgs);
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 
