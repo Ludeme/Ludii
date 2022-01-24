@@ -38,12 +38,12 @@ import other.trial.Trial;
 import utils.AIFactory;
 
 /**
- * To start a killothon without a GUI (beat a weak ai on all games and send report to a mail).
+ * To start a kilothon without a GUI (beat a weak ai on all games and send report to a mail).
  * Note: All games except, match, hidden information, simultaneous games or simulation games.
  * 
  * @author Eric.Piette
  */
-public class KillothonCLI
+public class Kilothon
 {
 	/**
 	 * Main method
@@ -63,7 +63,7 @@ public class KillothonCLI
 		int sumNumMoves = 0;
 		int sumP1Moves = 0;
 		
-		System.out.println("Killothon is starting. Login = " + login + " Agent = " + agentName + "\n");
+		System.out.println("Kilothon is starting. Login = " + login + " Agent = " + agentName + "\n");
 		
 		// Get the list of games.
 		final String[] gameList = FileHandling.listGames();
@@ -119,7 +119,7 @@ public class KillothonCLI
 					final Game game = GameLoader.loadGameFromName(gameName);
 					final int numPlayers = game.players().count();
 					
-					// look only the games we want in the Killothon.
+					// look only the games we want in the Kilothon.
 					if(!game.hasSubgames() && !game.hiddenInformation() && !game.isSimultaneousMoveGame() && !game.isSimulationMoveGame())
 					{
 						idGame++;
@@ -219,7 +219,7 @@ public class KillothonCLI
 						writer.println(StringRoutines.join(",", lineToWrite));
 					}
 					
-					if((idGame + 1) > numGamesToPlay) // To stop the killothon after a specific number of games (for test).
+					if((idGame + 1) > numGamesToPlay) // To stop the kilothon after a specific number of games (for test).
 						break;
 			}
 		}
@@ -228,11 +228,11 @@ public class KillothonCLI
 			e.printStackTrace();
 		}
 		
-		final double killothonTime = System.currentTimeMillis() - startTime;
-		int seconds = (int) (killothonTime / 1000) % 60 ;
-		int minutes = (int) ((killothonTime / (1000*60)) % 60);
-		int hours   = (int) ((killothonTime / (1000*60*60)) % 24);
-		System.out.println("\nKillothon done in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.");
+		final double kilothonTime = System.currentTimeMillis() - startTime;
+		int seconds = (int) (kilothonTime / 1000) % 60 ;
+		int minutes = (int) ((kilothonTime / (1000*60)) % 60);
+		int hours   = (int) ((kilothonTime / (1000*60*60)) % 24);
+		System.out.println("\nKilothon done in " + hours + " hours " + minutes + " minutes " + seconds + " seconds.");
 		System.out.println("........Computation of the results....");
 		
 		// Sent results.
@@ -266,14 +266,14 @@ public class KillothonCLI
 	       MimeMessage message = new MimeMessage(session);
 	       
 	       // Set Subject: subject of the email
-	       message.setSubject("Results of killothon");
+	       message.setSubject("Results of kilothon");
 	       
 	       // Set From Field: adding senders email to from field.
 	       message.setFrom(new InternetAddress(from));
 	       
 	       // Make the body message.
 	       BodyPart messageBodyPart1 = new MimeBodyPart();  
-	       String bodyMsg = "Killothon run by " + login;
+	       String bodyMsg = "Kilothon run by " + login;
 	       bodyMsg += "\nAgent name = " + agentName;
 	       bodyMsg += "\nSmart thinking time (in ms) = " + timeToThink;
 	       bodyMsg += "\nMoves limit per player = " + movesLimitPerPlayer;
@@ -308,7 +308,7 @@ public class KillothonCLI
            transport.connect("smtp.gmail.com", 465, from, "sendResultCompetition");
            transport.sendMessage(message, message.getAllRecipients());
            transport.close();  
-	       System.out.println("Mail successfully sent! Congratulations to have played a complete killothon!");
+	       System.out.println("Mail successfully sent! Congratulations to have played a complete kilothon!");
 	    }
 	    catch (MessagingException mex)
 	    {
