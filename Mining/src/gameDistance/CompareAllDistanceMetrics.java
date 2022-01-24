@@ -46,7 +46,7 @@ public class CompareAllDistanceMetrics
 {
 	
 	/** Set this variable to true, if the stored vocabularies should be overwritten on the next comparison. */
-	final static boolean overrideStoredVocabularies = false;
+	final static boolean overrideStoredVocabularies = true;
 	
 	//---------------------------------------------------------------------
 
