@@ -54,7 +54,7 @@ public class MoveConceptDataset implements Dataset
 			}
 			
 			for(int j = 0; j < gameMoveConceptSet.size(); j++)
-				featureMap.put(j+"", Double.valueOf(gameMoveConceptSet.get(j)));
+				featureMap.put(Concept.values()[j].name(), Double.valueOf(gameMoveConceptSet.get(j)));
 		}
 		
 		return featureMap;

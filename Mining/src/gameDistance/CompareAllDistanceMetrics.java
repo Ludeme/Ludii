@@ -279,7 +279,6 @@ public class CompareAllDistanceMetrics
 	 * Specific games/rulesets to compare.
 	 * @return List of two String arrays, for all game and ruleset names to compare.
 	 */
-	@SuppressWarnings("unused")
 	private static List<String[]> getSpecificGamesToCompare()
 	{			
 		final String[] gamesToCompare = 
