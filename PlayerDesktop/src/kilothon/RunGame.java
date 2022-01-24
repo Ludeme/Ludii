@@ -1,4 +1,4 @@
-package killothron;
+package kilothon;
 
 import static org.junit.Assert.fail;
 
