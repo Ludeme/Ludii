@@ -53,7 +53,7 @@ public class Kilothon
 	public static void main(final String[] args)
 	{
 		final String login = args.length == 0 ? "No Name" : args[0];
-		final String agentName = args.length < 2 ? "Ludii AI" : args[1];
+		final String agentName = args.length < 2 ? "UCT" : args[1];
 		final double startTime = System.currentTimeMillis();
 		final double timeToThink = 60000; // Time for the challenger to think smartly (in ms).
 		final int movesLimitPerPlayer = 500; // Max number of moves per player.
@@ -131,9 +131,16 @@ public class Kilothon
 						for(int pid = 1; pid <= numPlayers; pid++)
 						{
 							if(pid == 1)
-								ais.add(AIFactory.createAI(agentName));
+							{
+								AI challenger = AIFactory.createAI(agentName);
+								ais.add(challenger);
+							}
 							else if(pid == 2)
-								ais.add(AIFactory.createAI("UCT"));
+							{
+								AI UCT = AIFactory.createAI("UCT");
+								UCT.setMaxSecondsPerMove(0.5);
+								ais.add(UCT);
+							}
 							else
 								ais.add(new utils.RandomAI());
 						}
