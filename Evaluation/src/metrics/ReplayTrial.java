@@ -23,17 +23,17 @@ public class ReplayTrial
 	public ReplayTrial(final Game game, final Trial trial, final RandomProviderState rng)
 	{
 		this.trial = trial;
-		final List<Move> fullMoves = new ArrayList<>();
+		final List<Move> movesToReturn = new ArrayList<>();
 		final Context newContext = Utils.setupNewContext(game, rng);
 		
 		for (final Move m : trial.generateRealMovesList())
 		{
 			final Move matchingMove = game.getMatchingLegalMove(newContext, m);
-			fullMoves.add(matchingMove);
+			movesToReturn.add(matchingMove);
 			game.applyRobust(newContext, matchingMove);
 		}
 			
-		this.fullMoves = fullMoves;
+		this.fullMoves = movesToReturn;
 	}
 
 	public List<Move> fullMoves()
