@@ -1,7 +1,6 @@
 package gameDistance.datasets.sequence;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +54,7 @@ public class MoveConceptDataset implements Dataset
 			}
 			
 			for(int j = 0; j < gameMoveConceptSet.size(); j++)
-				featureMap.put(gameMoveConceptSet.get(j)+"", Double.valueOf(gameMoveConceptSet.get(j)));
+				featureMap.put(j+"", Double.valueOf(gameMoveConceptSet.get(j)));
 		}
 		
 		return featureMap;
@@ -77,10 +76,10 @@ public class MoveConceptDataset implements Dataset
 			final Context context = new Context(game, newTrial);
 			game.start(context);
 			
-			final ArrayList<BitSet> moveConceptSet = new ArrayList<>();
+			final ArrayList<TIntArrayList> moveConceptSet = new ArrayList<>();
 			for(int o = newTrial.numInitialPlacementMoves(); o < trial.numMoves(); o++) 
 			{
-				moveConceptSet.add(trial.getMove(o).moveConcepts(context));
+				moveConceptSet.add(trial.getMove(o).moveConceptsValue(context));
 				game.applyRobust(context, trial.getMove(o));
 			}
 					

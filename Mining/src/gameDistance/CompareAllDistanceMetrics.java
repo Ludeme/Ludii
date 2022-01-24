@@ -67,19 +67,19 @@ public class CompareAllDistanceMetrics
 		calculateVocabularies();
 		
 		// Use this code to compare specific games.
-		//final List<String[]> gamesAndRulesetsToCompare = getSpecificGamesToCompare();
-		//recordAllComparisonDistances(gamesAndRulesetsToCompare.get(0), gamesAndRulesetsToCompare.get(1));
+		final List<String[]> gamesAndRulesetsToCompare = getSpecificGamesToCompare();
+		recordAllComparisonDistances(gamesAndRulesetsToCompare.get(0), gamesAndRulesetsToCompare.get(1));
 		
 		// Use this code to compare all games.
-		final List<String[]> gamesAndRulesetsToCompare = GameLoader.allAnalysisGameRulesetNames();
-		final List<String> allGameNames = new ArrayList<>();
-		final List<String> allRulesetNames = new ArrayList<>();
-		for (final String[] allGamesToComare : gamesAndRulesetsToCompare)
-		{
-			allGameNames.add(allGamesToComare[0]);
-			allRulesetNames.add(allGamesToComare[1]);
-		}
-		recordAllComparisonDistances(allGameNames.toArray(new String[0]), allRulesetNames.toArray(new String[0]));
+//		final List<String[]> gamesAndRulesetsToCompare = GameLoader.allAnalysisGameRulesetNames();
+//		final List<String> allGameNames = new ArrayList<>();
+//		final List<String> allRulesetNames = new ArrayList<>();
+//		for (final String[] allGamesToComare : gamesAndRulesetsToCompare)
+//		{
+//			allGameNames.add(allGamesToComare[0]);
+//			allRulesetNames.add(allGamesToComare[1]);
+//		}
+//		recordAllComparisonDistances(allGameNames.toArray(new String[0]), allRulesetNames.toArray(new String[0]));
 	}
 	
 	//---------------------------------------------------------------------
@@ -286,32 +286,14 @@ public class CompareAllDistanceMetrics
 			{
 				"/lud/board/hunt/Haretavl.lud",
 				"/lud/board/hunt/Jeu Militaire.lud",
-				"/lud/board/hunt/Jeu Militaire.lud",
-				"/lud/board/hunt/Hund efter Hare (Thy).lud",
-				"/lud/board/hunt/Hund efter Hare (Vendsyssel).lud",
-				"/lud/board/hunt/Hyvn aetter Hare.lud",
-				"/lud/board/hunt/Janes Soppi.lud",
-				"/lud/board/space/blocking/Janes Soppi (Symmetrical).lud",
-				"/lud/board/hunt/Gioco dell'Orso.lud",
-				"/lud/board/hunt/La Liebre Perseguida.lud",
-				"/lud/board/hunt/Neg Tugal Tuux.lud",
-				"/lud/board/hunt/Uxrijn Ever.lud",
+				"/lud/board/hunt/Jeu Militaire.lud"
 			};
 
 		final String[] rulesetsToCompare = 
 			{
 				"",
 				"Ruleset/Lucas (Described)",
-				"Ruleset/Gardner (Suggested)",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
+				"Ruleset/Gardner (Suggested)"
 			};
 		
 		final List<String[]> gamesAndRulesetsToCompare = new ArrayList<>();
