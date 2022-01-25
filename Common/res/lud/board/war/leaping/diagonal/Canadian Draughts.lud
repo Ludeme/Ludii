@@ -99,10 +99,18 @@
 
 //------------------------------------------------------------------------------
 
+(option "Variant" <Rules> args:{ <rule> }
+  {      
+  (item "Standard"  <>  "The rules are the standard ones.")**   
+  }
+)
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
     (ruleset "Ruleset/Standard (Described)" {
-        
+        "Variant/Standard"
     })*
     
     (ruleset "Ruleset/Huff Rule (Described)" {
