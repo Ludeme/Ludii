@@ -98,12 +98,26 @@ public class ExportDbCsvConcepts
 	// The RNGs of each trial.
 	private static List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 	
+	/** List of games for which the list of trials to use does not have to be more than a specific number to be able to compute in less than 4 days, due to the metrics. */
+	private static List<String> lessTrialsGames = new ArrayList<String>();
+	
+	/** The limit to use for the games in the list above.*/
+	private static final int smallLimitTrials = 50;
+	
 	//-------------------------------------------------------------------------
 
 	public static void main(final String[] args)
 	{
+		// Store the games which needs less trials.
+		lessTrialsGames.add("Russian Fortress Chess");
+		lessTrialsGames.add("Puhulmutu");
+		lessTrialsGames.add("Ludus Latrunculorum");
+		lessTrialsGames.add("Poprad Game");
+		lessTrialsGames.add("Unashogi");
+		lessTrialsGames.add("Taikyoku Shogi");
+		
 		final Evaluation evaluation = new Evaluation();
-		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
+		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
 		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
 		moveLimit = args.length < 4 ? Constants.DEFAULT_MOVES_LIMIT : Integer.parseInt(args[3]);
@@ -121,6 +135,9 @@ public class ExportDbCsvConcepts
 			exportConceptPurposeCSV();
 			exportConceptConceptPurposesCSV();
 		}
+		
+		if(lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
+			numPlayouts = smallLimitTrials;
 
 		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
 	}
@@ -776,6 +793,11 @@ public class ExportDbCsvConcepts
 		else
 			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
 		
+		int limit = Constants.UNDEFINED;
+		if(lessTrialsGames.contains(gameName))
+			limit = smallLimitTrials;
+		
+		int num = 0;
 		for(final File trialFile : trialFolder.listFiles())
 		{
 			MatchRecord loadedRecord;
@@ -785,6 +807,9 @@ public class ExportDbCsvConcepts
 				final Trial loadedTrial = loadedRecord.trial();
 				trials.add(loadedTrial);
 				allStoredRNG.add(loadedRecord.rngState());
+				num++;
+				if(num == limit)
+					break;
 			}
 			catch (final FileNotFoundException e)
 			{
