@@ -20,14 +20,12 @@ public class StateConceptDataset implements Dataset
 	@Override
 	public Map<String, Double> getBagOfWords(final Game game) 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<String> getSequence(final Game game) 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -37,7 +35,6 @@ public class StateConceptDataset implements Dataset
 	@Override
 	public Tree getTree(final Game game) 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
