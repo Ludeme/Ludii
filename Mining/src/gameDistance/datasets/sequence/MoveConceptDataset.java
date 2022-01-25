@@ -50,7 +50,7 @@ public class MoveConceptDataset implements Dataset
 				for(int j = 0; j < Concept.values().length; j++)
 					gameMoveConceptSet.set(j, gameMoveConceptSet.get(j) + moveConceptSet.get(j));
 				
-				game.applyRobust(context, trial.getMove(o));
+				game.apply(context, trial.getMove(o));
 			}
 			
 			for(int j = 0; j < gameMoveConceptSet.size(); j++)
@@ -80,7 +80,7 @@ public class MoveConceptDataset implements Dataset
 			for(int o = newTrial.numInitialPlacementMoves(); o < trial.numMoves(); o++) 
 			{
 				moveConceptSet.add(trial.getMove(o).moveConceptsValue(context));
-				game.applyRobust(context, trial.getMove(o));
+				game.apply(context, trial.getMove(o));
 			}
 					
 			for (int j = 0; j < moveConceptSet.size(); j++)

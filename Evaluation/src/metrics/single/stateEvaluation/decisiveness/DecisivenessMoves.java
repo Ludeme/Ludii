@@ -7,10 +7,10 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.trial.Trial;
 
 /**
  * Percentage number of moves after a winning player has a state evaluation above the decisiveness threshold.
@@ -44,7 +44,7 @@ public class DecisivenessMoves extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -52,7 +52,7 @@ public class DecisivenessMoves extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final ReplayTrial trial = trials[trialIndex];
+			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			final double decisivenessThreshold = DecisivenessThreshold.decisivenessThreshold(game, evaluation, trial, rngState);
@@ -60,9 +60,9 @@ public class DecisivenessMoves extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
 			
-			int turnAboveDecisivenessthreshold = trial.fullMoves().size();
+			int turnAboveDecisivenessthreshold = trial.generateRealMovesList().size();
 			boolean aboveThresholdFound = false;
-			for (int i = 0; i < trial.fullMoves().size(); i++)
+			for (int i = 0; i < trial.generateRealMovesList().size(); i++)
 			{
 				for (final Integer playerIndex : highestRankedPlayers)
 				{
@@ -80,7 +80,7 @@ public class DecisivenessMoves extends Metric
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			avgDecisivenessThreshold += turnAboveDecisivenessthreshold/trial.fullMoves().size();
+			avgDecisivenessThreshold += turnAboveDecisivenessthreshold/trial.generateRealMovesList().size();
 		}
 
 		return avgDecisivenessThreshold / trials.length;

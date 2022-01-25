@@ -5,10 +5,10 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.trial.Trial;
 
 /**
  * Percentage of games which have a winner (not draw or timeout).
@@ -42,7 +42,7 @@ public class Completion extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -50,11 +50,11 @@ public class Completion extends Metric
 		double completedGames = 0.0;
 		for (int i = 0; i < trials.length; i++)
 		{
-			final ReplayTrial trial = trials[i];
+			final Trial trial = trials[i];
 			final RandomProviderState rng = randomProviderStates[i];
 			final Context context = Utils.setupTrialContext(game, rng, trial);
 			
-			if (context.state().playerToAgent(trial.trial().status().winner()) != 0)
+			if (context.state().playerToAgent(trial.status().winner()) != 0)
 				completedGames++;
 		}
 

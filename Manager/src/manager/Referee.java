@@ -85,7 +85,7 @@ public class Referee
 		{
 			move = moves.get(i);
 			preMoveApplication(manager, move);
-			context.game().applyRobust(context, move);
+			context.game().apply(context, move);
 		}
 
 		if (move != null)

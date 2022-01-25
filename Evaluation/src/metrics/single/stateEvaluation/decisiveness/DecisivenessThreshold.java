@@ -7,11 +7,11 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
+import other.trial.Trial;
 
 /**
  * Maximum state evaluation value achieved by non-winning player.
@@ -45,7 +45,7 @@ public class DecisivenessThreshold extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -53,7 +53,7 @@ public class DecisivenessThreshold extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final ReplayTrial trial = trials[trialIndex];
+			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			final double decisivenessThreshold = decisivenessThreshold(game, evaluation, trial, rngState);
@@ -65,7 +65,7 @@ public class DecisivenessThreshold extends Metric
 
 	//-------------------------------------------------------------------------
 	
-	public static double decisivenessThreshold(final Game game, final Evaluation evaluation, final ReplayTrial trial, final RandomProviderState rngState)
+	public static double decisivenessThreshold(final Game game, final Evaluation evaluation, final Trial trial, final RandomProviderState rngState)
 	{
 		// Setup a new instance of the game
 		final Context context = Utils.setupNewContext(game, rngState);
@@ -74,7 +74,7 @@ public class DecisivenessThreshold extends Metric
 		
 		final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
 		
-		for (final Move m : trial.fullMoves())
+		for (final Move m : trial.generateRealMovesList())
 		{
 			final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 			for (int j = 1; j < allPlayerStateEvaluations.size(); j++)

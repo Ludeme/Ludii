@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import game.types.board.RelationType;
 import game.types.board.SiteType;
 import metrics.Evaluation;
-import metrics.ReplayTrial;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
 import other.topology.Topology;
+import other.trial.Trial;
 
 /**
  * The distance traveled by pieces when they move around the board.
@@ -42,7 +42,7 @@ public class MoveDistance extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Double[] getMetricValueList(final Evaluation evaluation, final ReplayTrial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final Topology boardTopology = context.game().board().topology();
 		if (context.game().booleanConcepts().get(Concept.Cell.id()))
@@ -54,7 +54,7 @@ public class MoveDistance extends MultiMetricFramework
 		
 		final ArrayList<Double> valueList = new ArrayList<>();
 
-		for (final Move m : trial.fullMoves())
+		for (final Move m : trial.generateRealMovesList())
 		{
 			final SiteType moveType = m.fromType();
 			

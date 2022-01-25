@@ -3,11 +3,11 @@ package metrics.multiple.metrics;
 import java.util.ArrayList;
 
 import metrics.Evaluation;
-import metrics.ReplayTrial;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
+import other.trial.Trial;
 
 /**
  * Number of possible moves, when greater than 1.
@@ -38,10 +38,10 @@ public class DecisionFactor extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Double[] getMetricValueList(final Evaluation evaluation, final ReplayTrial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
-		for (final Move m : trial.fullMoves())
+		for (final Move m : trial.generateRealMovesList())
 		{
 			if (context.game().moves(context).moves().size() > 1)
 				valueList.add(Double.valueOf(context.game().moves(context).moves().size()));

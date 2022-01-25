@@ -42,10 +42,10 @@ public class Utils
 		return context;
 	}
 	
-	public static Context setupTrialContext(final Game game, final RandomProviderState rngState, final ReplayTrial trial)
+	public static Context setupTrialContext(final Game game, final RandomProviderState rngState, final Trial trial)
 	{
 		final Context context = setupNewContext(game, rngState);
-		for (final Move m : trial.fullMoves())
+		for (final Move m : trial.generateRealMovesList())
 			game.apply(context, m);
 		return context;
 	}
@@ -210,12 +210,12 @@ public class Utils
 	/** 
 	 * Get the highest ranked players based on the final player rankings. 
 	 */
-	public static ArrayList<Integer> highestRankedPlayers(final ReplayTrial trial, final Context context)
+	public static ArrayList<Integer> highestRankedPlayers(final Trial trial, final Context context)
 	{
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
-		final double highestRanking = Arrays.stream(trial.trial().ranking()).max().getAsDouble();
+		final double highestRanking = Arrays.stream(trial.ranking()).max().getAsDouble();
 		for (int i = 1; i <= context.game().players().count(); i++)
-			if (trial.trial().ranking()[i] == highestRanking)
+			if (trial.ranking()[i] == highestRanking)
 				highestRankedPlayers.add(i);
 		
 		return highestRankedPlayers;

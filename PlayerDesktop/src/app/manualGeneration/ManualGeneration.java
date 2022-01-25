@@ -300,7 +300,7 @@ public class ManualGeneration
 		for (int i = trial.numInitialPlacementMoves(); i < moveInformation.moveIndex(); i++)
 		{
 			final Move move = trial.getMove(i);
-			ref.context().game().applyRobust(ref.context(), move);
+			ref.context().game().apply(ref.context(), move);
 		}
 		
 		// Update the GUI

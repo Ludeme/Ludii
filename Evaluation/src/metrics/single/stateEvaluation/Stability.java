@@ -8,10 +8,10 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.trial.Trial;
 
 /**
  * Average variance in each player's state evaluation.
@@ -45,7 +45,7 @@ public class Stability extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -53,7 +53,7 @@ public class Stability extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final ReplayTrial trial = trials[trialIndex];
+			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			// Setup a new instance of the game
@@ -64,13 +64,13 @@ public class Stability extends Metric
 			for (int i = 0; i <= context.game().players().count(); i++)
 				allPlayersStateEvaluationsAcrossTrial.add(new ArrayList<>());
 			
-			for (int i = trial.trial().numInitialPlacementMoves(); i < trial.trial().numMoves(); i++)
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 					allPlayersStateEvaluationsAcrossTrial.get(j).add(allPlayerStateEvaluations.get(j));
 				
-				context.game().apply(context, trial.fullMoves().get(i));
+				context.game().apply(context, trial.generateRealMovesList().get(i));
 			}
 			
 			// Record the average variance for each players state evaluations.

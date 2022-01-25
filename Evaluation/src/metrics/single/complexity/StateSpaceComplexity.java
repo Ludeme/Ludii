@@ -6,8 +6,8 @@ import game.Game;
 import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import other.concept.Concept;
+import other.trial.Trial;
 
 /**
  * State Space Complexity Upper Bound.
@@ -41,7 +41,7 @@ public class StateSpaceComplexity extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{

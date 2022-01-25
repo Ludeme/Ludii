@@ -10,11 +10,11 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
+import other.trial.Trial;
 
 /**
  * Percentage number of times the expected winner changes.
@@ -48,7 +48,7 @@ public class LeadChange extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -56,7 +56,7 @@ public class LeadChange extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final ReplayTrial trial = trials[trialIndex];
+			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			// Setup a new instance of the game
@@ -67,7 +67,7 @@ public class LeadChange extends Metric
 			
 			Set<Integer> pastCurrentLeaders = new HashSet<>();
 			
-			for (final Move m : trial.fullMoves())
+			for (final Move m : trial.generateRealMovesList())
 			{
 				final Set<Integer> currentLeaders = new HashSet<>();
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
@@ -83,7 +83,7 @@ public class LeadChange extends Metric
 				context.game().apply(context, m);
 			}
 			
-			avgLeadChange += leadChange / trial.fullMoves().size();
+			avgLeadChange += leadChange / trial.generateRealMovesList().size();
 		}
 
 		return avgLeadChange / trials.length;

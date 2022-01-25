@@ -11,10 +11,10 @@ import game.Game;
 import main.math.LinearRegression;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.trial.Trial;
 
 public abstract class MultiMetricFramework extends Metric
 {
@@ -49,17 +49,17 @@ public abstract class MultiMetricFramework extends Metric
 	
 	//-------------------------------------------------------------------------
 	
-	public abstract Double[] getMetricValueList(final Evaluation evaluation, final ReplayTrial trial, final Context context); 
+	public abstract Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context); 
 	
 	//-------------------------------------------------------------------------
 	
-	public Double[][] getMetricValueLists(final Game game, final Evaluation evaluation, final ReplayTrial[] trials, final RandomProviderState[] randomProviderStates)
+	public Double[][] getMetricValueLists(final Game game, final Evaluation evaluation, final Trial[] trials, final RandomProviderState[] randomProviderStates)
 	{
 		final ArrayList<Double[]> metricValueLists = new ArrayList<>();
 		
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
-			final ReplayTrial trial = trials[trialIndex];
+			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			final Context context = Utils.setupNewContext(game, rngState);
 			metricValueLists.add(getMetricValueList(evaluation, trial, context));
@@ -311,7 +311,7 @@ public abstract class MultiMetricFramework extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{

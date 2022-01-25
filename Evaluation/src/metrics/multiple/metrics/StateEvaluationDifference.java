@@ -3,12 +3,12 @@ package metrics.multiple.metrics;
 import java.util.ArrayList;
 
 import metrics.Evaluation;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
+import other.trial.Trial;
 
 /**
  * Difference in player state evaluations.
@@ -39,11 +39,11 @@ public class StateEvaluationDifference extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Double[] getMetricValueList(final Evaluation evaluation, final ReplayTrial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		valueList.add(getStateEvaluationDiscrepancy(evaluation, context));
-		for (final Move m : trial.fullMoves())
+		for (final Move m : trial.generateRealMovesList())
 		{
 			context.game().apply(context, m);
 			valueList.add(getStateEvaluationDiscrepancy(evaluation, context));

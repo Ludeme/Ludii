@@ -5,11 +5,11 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
+import other.trial.Trial;
 
 /**
  * Percentage of moves where there was more than 1 possible move.
@@ -43,7 +43,7 @@ public class DecisionMoves extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -51,7 +51,7 @@ public class DecisionMoves extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final ReplayTrial trial = trials[trialIndex];
+			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			// Setup a new instance of the game
@@ -60,7 +60,7 @@ public class DecisionMoves extends Metric
 			// Record the number of possible options for each move.
 			double numDecisionMoves = 0;
 
-			for (final Move m : trial.fullMoves())
+			for (final Move m : trial.generateRealMovesList())
 			{
 				if (context.game().moves(context).moves().size() > 1)
 					numDecisionMoves++;
@@ -68,7 +68,7 @@ public class DecisionMoves extends Metric
 				context.game().apply(context, m);
 			}
 			
-			avgNumDecisionMoves += numDecisionMoves / trial.fullMoves().size();
+			avgNumDecisionMoves += numDecisionMoves / trial.generateRealMovesList().size();
 		}
 
 		return avgNumDecisionMoves / trials.length;

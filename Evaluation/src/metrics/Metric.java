@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.multiple.MultiMetricFramework.MultiMetricValue;
 import other.concept.Concept;
+import other.trial.Trial;
 
 //-----------------------------------------------------------------------------
 
@@ -100,7 +101,7 @@ public abstract class Metric
 	(
 		final Game game,
 		final Evaluation evaluation,
-		final ReplayTrial[] trials,
+		final Trial[] trials,
 		final RandomProviderState[] randomProviderStates
 	);
 	

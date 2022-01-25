@@ -6,11 +6,11 @@ import game.Game;
 import main.math.statistics.Stats;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
+import other.trial.Trial;
 
 /**
  * The average variance in the evaluation values for the legal move.
@@ -44,7 +44,7 @@ public class ClarityVariance extends Metric
 	(
 			final Game game,
 			final Evaluation evaluation,
-			final ReplayTrial[] trials,
+			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
@@ -52,7 +52,7 @@ public class ClarityVariance extends Metric
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
-			final ReplayTrial trial = trials[trialIndex];
+			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
 			// Setup a new instance of the game
@@ -61,7 +61,7 @@ public class ClarityVariance extends Metric
 			// Record all sites covered in this trial.
 			final Stats moveEvaluationVariance = new Stats();
 			
-			for (final Move m : trial.fullMoves())
+			for (final Move m : trial.generateRealMovesList())
 			{
 				final Stats moveEvaluations = new Stats();
 				for (final Move legalMoves : context.game().moves(context).moves())

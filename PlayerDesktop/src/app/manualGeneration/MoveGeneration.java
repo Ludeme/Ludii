@@ -114,7 +114,7 @@ public class MoveGeneration
 						prevContext = new Context(context);
 					
 					// Apply the move to update the context for the next move.
-					context.game().applyRobust(context, matchingLegalMove);
+					context.game().apply(context, matchingLegalMove);
 					
 					// Get endingString for move.
 					if (context.trial().over())
@@ -164,7 +164,7 @@ public class MoveGeneration
 				else
 				{
 					// Apply the move to update the context for the next move.
-					context.game().applyRobust(context, matchingLegalMove);
+					context.game().apply(context, matchingLegalMove);
 				}
 			}
 		}

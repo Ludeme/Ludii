@@ -22,7 +22,6 @@ import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
-import metrics.ReplayTrial;
 import metrics.Utils;
 import other.AI;
 import other.concept.Concept;
@@ -508,7 +507,7 @@ public class ComputePlayoutConcepts
 					prevContext = new Context(context);
 				
 				// We go to the next move.
-				context.game().applyRobust(context, trial.getMove(i));
+				context.game().apply(context, trial.getMove(i));
 			}
 			
 			// Compute avg for all the playouts.
@@ -619,11 +618,11 @@ public class ComputePlayoutConcepts
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
-		final ReplayTrial[] trialsMetrics = new ReplayTrial[trials.size()];
+		final Trial[] trialsMetrics = new Trial[trials.size()];
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
 		for(int i = 0 ; i < trials.size();i++)
 		{
-			trialsMetrics[i] = new ReplayTrial(game, trials.get(i), allStoredRNG.get(i));
+			trialsMetrics[i] = new Trial(trials.get(i));
 			rngTrials[i] = allStoredRNG.get(i);
 		}
 		
