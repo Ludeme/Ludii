@@ -87,19 +87,21 @@
 
 (rulesets { 
     
-    (ruleset "Ruleset/Eight Holes (Observed)" {
-        
-    })
-    
-    (ruleset "Ruleset/Seven Holes (Observed)" {
-        
-    })
-    
     (ruleset "Ruleset/Six Holes (Observed)" {
-        
+        "Board Size/6 Holes"
     })*
     
+    (ruleset "Ruleset/Seven Holes (Observed)" {
+        "Board Size/7 Holes"
+    })
+    
+    (ruleset "Ruleset/Eight Holes (Observed)" {
+        "Board Size/8 Holes"
+    })
+    
 })
+
+//------------------------------------------------------------------------------
 
 (metadata  
     (info

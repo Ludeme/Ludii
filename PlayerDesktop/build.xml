@@ -491,7 +491,7 @@
 				<exclude name="junit-4.12.jar" />
 				<exclude name="Trove4j_ApacheCommonsRNG-sources.jar" />
 			</zipgroupfileset>
-			<zipgroupfileset dir="${ViewController.location}/lib/" includes="**/*.jar" />
+			<zipgroupfileset dir="${Player.location}/lib/" includes="**/*.jar" />
 			
 			<manifest>
 				<attribute name="Main-Class" value="app.StartDesktopApp" />
