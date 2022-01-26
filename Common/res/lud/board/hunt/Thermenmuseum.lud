@@ -405,37 +405,6 @@
     (piece "Hare" P1 "StepToEmpty")	
 )
 
-//Blocking game equipment and rules with 3 pieces each.
-
-(define "BlockingGameEquipmentThreePieces"
-    (hand Each)
-    (piece "Marker" Each "StepToEmpty")
-)
-
-(define "BlockingGameRulesThreePieces"
-    (rules 
-        (start (place "Marker" "Hand" count:3))
-        
-        phases:{
-        (phase "Placement"
-            (play 
-                (move 
-                    (from (handSite Mover)) 
-                    (to (sites Empty))
-                ) 
-            )
-            (nextPhase Mover ("HandEmpty" Mover) "Movement")
-        )
-        
-        (phase "Movement"
-            (play (forEach Piece))
-        )
-        }
-        
-        (end  (if (no Moves Next) (result Mover Win))) 
-    )		
-)
-
 //Blocking game equipment and rules with 4 pieces each.
 
 (define "BlockingGameEquipmentFourPieces"
@@ -1131,80 +1100,6 @@
         ("HaretavlRulesFourDogsTwoHares")
         >  
         "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares."
-    )
-    
-    //-------------------------- Blocking Game with 3 pieces each ---------------------------------------------------
-    
-    (item "Blocking Game Three pieces - No Extension Joined Diagonal" 
-        <
-        (players 2)
-        (equipment {
-            ("NoExtensionJoinedDiagonal")
-            ("BlockingGameEquipmentThreePieces")
-        })
-        ("BlockingGameRulesThreePieces")
-        >  
-        "The board has no extension and joined diagonals. Blocking game with 3 pieces each."
-    )
-    
-    (item "Blocking Game Three pieces - Top Extension Joined Diagonal" 
-        <
-        (players 2)
-        (equipment {
-            ("TopExtensionJoinedDiagonal")
-            ("BlockingGameEquipmentThreePieces")
-        })
-        ("BlockingGameRulesThreePieces")
-        >  
-        "The board has an extension at the top and joined diagonals.  Blocking game with 3 pieces each."
-    )
-    
-    (item "Blocking Game Three pieces - Both Extension Joined Diagonal" 
-        <
-        (players 2)
-        (equipment {
-            ("BothExtensionJoinedDiagonal")
-            ("BlockingGameEquipmentThreePieces")
-        })
-        ("BlockingGameRulesThreePieces")
-        >  
-        "The board has two extensions and joined diagonals.  Blocking game with 3 pieces each."
-    )
-    
-    (item "Blocking Game Three pieces - No Extension No Joined Diagonal" 
-        <
-        (players 2)
-        (equipment {
-            ("NoExtensionNoJoinedDiagonal")
-            ("BlockingGameEquipmentThreePieces")
-        })
-        ("BlockingGameRulesThreePieces")
-        >  
-        "The board has no extension and no joined diagonals.  Blocking game with 3 pieces each."
-    )
-    
-    (item "Blocking Game Three pieces - Top Extension No Joined Diagonal" 
-        <
-        (players 2)
-        (equipment {
-            ("TopExtensionNoJoinedDiagonal")
-            ("BlockingGameEquipmentThreePieces")
-        })
-        ("BlockingGameRulesThreePieces")
-        >  
-        "The board has an extension at the top and no joined diagonals.  Blocking game with 3 pieces each."
-    )
-    
-    (item "Blocking Game Three pieces - Both Extension No Joined Diagonal" 
-        <
-        (players 2)
-        (equipment {
-            ("BothExtensionNoJoinedDiagonal")
-            ("BlockingGameEquipmentThreePieces")
-        })
-        ("BlockingGameRulesThreePieces")
-        >  
-        "The board has two extensions and no joined diagonals.  Blocking game with 3 pieces each."
     )
     
     //-------------------------- Blocking Game with 4 pieces each ---------------------------------------------------
@@ -2491,30 +2386,6 @@
         "Variant/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal"
     })
     
-    (ruleset "Ruleset/Blocking Game Three pieces - No Extension Joined Diagonal (Suggested)" {
-        "Variant/Blocking Game Three pieces - No Extension Joined Diagonal"
-    })
-    
-    (ruleset "Ruleset/Blocking Game Three pieces - Top Extension Joined Diagonal (Suggested)" {
-        "Variant/Blocking Game Three pieces - Top Extension Joined Diagonal"
-    })
-    
-    (ruleset "Ruleset/Blocking Game Three pieces - Both Extension Joined Diagonal (Suggested)" {
-        "Variant/Blocking Game Three pieces - Both Extension Joined Diagonal"
-    })
-    
-    (ruleset "Ruleset/Blocking Game Three pieces - No Extension No Joined Diagonal (Suggested)" {
-        "Variant/Blocking Game Three pieces - No Extension No Joined Diagonal"
-    })
-    
-    (ruleset "Ruleset/Blocking Game Three pieces - Top Extension No Joined Diagonal (Suggested)" {
-        "Variant/Blocking Game Three pieces - Top Extension No Joined Diagonal"
-    })
-    
-    (ruleset "Ruleset/Blocking Game Three pieces - Both Extension No Joined Diagonal (Suggested)" {
-        "Variant/Blocking Game Three pieces - Both Extension No Joined Diagonal"
-    })
-    
     (ruleset "Ruleset/Blocking Game Four pieces - No Extension Joined Diagonal (Suggested)" {
         "Variant/Blocking Game Four pieces - No Extension Joined Diagonal"
     })
@@ -2884,18 +2755,6 @@
         (useFor "Ruleset/Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)" (id "1707"))
         (useFor "Ruleset/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares."))
         (useFor "Ruleset/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" (id "1708"))
-        (useFor "Ruleset/Blocking Game Three pieces - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Blocking game with 3 pieces each."))
-        (useFor "Ruleset/Blocking Game Three pieces - No Extension Joined Diagonal (Suggested)" (id "1709"))
-        (useFor "Ruleset/Blocking Game Three pieces - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals.  Blocking game with 3 pieces each."))
-        (useFor "Ruleset/Blocking Game Three pieces - Top Extension Joined Diagonal (Suggested)" (id "1710"))
-        (useFor "Ruleset/Blocking Game Three pieces - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals.  Blocking game with 3 pieces each."))
-        (useFor "Ruleset/Blocking Game Three pieces - Both Extension Joined Diagonal (Suggested)" (id "1711"))
-        (useFor "Ruleset/Blocking Game Three pieces - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals.  Blocking game with 3 pieces each."))
-        (useFor "Ruleset/Blocking Game Three pieces - No Extension No Joined Diagonal (Suggested)" (id "1712"))
-        (useFor "Ruleset/Blocking Game Three pieces - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals.  Blocking game with 3 pieces each."))
-        (useFor "Ruleset/Blocking Game Three pieces - Top Extension No Joined Diagonal (Suggested)" (id "1713"))
-        (useFor "Ruleset/Blocking Game Three pieces - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals.  Blocking game with 3 pieces each."))
-        (useFor "Ruleset/Blocking Game Three pieces - Both Extension No Joined Diagonal (Suggested)" (id "1714"))
         (useFor "Ruleset/Blocking Game Four pieces - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Blocking game with 4 pieces each."))
         (useFor "Ruleset/Blocking Game Four pieces - No Extension Joined Diagonal (Suggested)" (id "1715"))
         (useFor "Ruleset/Blocking Game Four pieces - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Blocking game with 4 pieces each."))
