@@ -1,0 +1,28 @@
+(game "3x14 Game"
+    (players 2)  
+    (equipment { 
+        (board (rectangle 3 14)   
+            use:Vertex
+        )
+    })  
+    
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+    })
+    
+)

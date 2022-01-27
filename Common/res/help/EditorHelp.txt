@@ -2133,7 +2133,8 @@ NEW CTOR
 PARAM JAVADOC: <rangeFunction>: The range.
 EXAMPLE: (value Random (range 3 5))
 NEW CTOR
-(value Pending)
+(value <valueSimpleType>)
+PARAM JAVADOC: <valueSimpleType>: The property to return the value.
 EXAMPLE: (value Pending)
 NEW CTOR
 (value Player (<int>  | <roleType>))
@@ -2149,6 +2150,11 @@ EXAMPLE: (value Piece at:(to))
 NEW CTOR
 (value)
 EXAMPLE: (value)
+TYPE: game.functions.ints.value.ValueSimpleType
+TYPE JAVADOC: Defines the types of properties than can be returned by the super ludeme value with no parameter.
+CONST JAVADOC: Pending: To get the pending value if the previous state causes the current state to be  pending with a specific value.
+CONST JAVADOC: MoveLimit: To get the move limit of a game.
+CONST JAVADOC: TurnLimit: To get the turn limit of a game.
 TYPE: game.functions.range.Range
 TYPE JAVADOC: Returns a range of values (inclusive) according to some specified condition.
 NEW CTOR
