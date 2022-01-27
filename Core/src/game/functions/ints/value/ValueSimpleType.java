@@ -13,4 +13,14 @@ public enum ValueSimpleType
 	 * pending with a specific value.
 	 */
 	Pending,
+	
+	/**
+	 * To get the move limit of a game.
+	 */
+	MoveLimit,
+	
+	/**
+	 * To get the turn limit of a game.
+	 */
+	TurnLimit,
 }
