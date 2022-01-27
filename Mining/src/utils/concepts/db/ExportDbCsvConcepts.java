@@ -931,6 +931,140 @@ public class ExportDbCsvConcepts
 					}
 				}
 			}
+			else if(agentName.equals("ABONEPLY")) // AB/ONEPLY/AB/ONEPLY/...
+			{
+				if(indexPlayout % 2 == 0)
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = AIFactory.createAI("Alpha-Beta");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+				else
+				{
+					if(p % 2 == 1)
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = AIFactory.createAI("Alpha-Beta");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+			}
+			else if(agentName.equals("UCTONEPLY")) // UCT/ONEPLY/UCT/ONEPLY/...
+			{
+				if(indexPlayout % 2 == 0)
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = AIFactory.createAI("UCT");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+				else
+				{
+					if(p % 2 == 1)
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = AIFactory.createAI("UCT");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+			}
 			else if(agentName.equals("AB-Odd-Even")) // Alternating between AB Odd and AB Even
 			{
 				if(indexPlayout % 2 == 0)
