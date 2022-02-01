@@ -43,4 +43,7 @@ public enum CountSimpleType
 
 	/** Number of active players. */
 	Active,
+	
+	/** Number of legal moves. */
+	LegalMoves,
 }
