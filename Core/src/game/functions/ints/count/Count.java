@@ -265,6 +265,7 @@ public final class Count extends BaseIntFunction
 	 *                  sites or the name of the piece to count only pieces of that
 	 *                  type.
 	 * @param in        The region where to count the pieces.
+	 * @param If        The condition to check for each site where is the piece [True].
 	 * 
 	 * @example (count Pieces Mover)
 	 * 
@@ -277,7 +278,8 @@ public final class Count extends BaseIntFunction
 		@Opt @Or       final RoleType 			role, 
 		@Opt @Or @Name final IntFunction 		of, 
 		@Opt           final String 			name,
-		@Opt @Name     final RegionFunction  	in
+		@Opt @Name     final RegionFunction  	in,
+		@Opt @Name     final BooleanFunction  	If
 	)
 	{
 		int numNonNull = 0;
@@ -293,7 +295,7 @@ public final class Count extends BaseIntFunction
 		switch (countType)
 		{
 		case Pieces:
-			return new CountPieces(type, role, of, name, in);
+			return new CountPieces(type, role, of, name, in, If);
 		case Pips:
 			return new CountPips(role, of);
 		default:
