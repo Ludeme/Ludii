@@ -580,7 +580,7 @@ public class Walk
 		
 		for (int i = 0; i < steps.size(); ++i)
 		{
-			str += StringRoutines.floatToFraction(steps.get(i), 10);
+			str += StringRoutines.floatToFraction(steps.get(i), 20);
 			
 			if (i < steps.size() - 1)
 			{
