@@ -1114,7 +1114,7 @@ public class MainMenuFunctions extends JMenuBar
 				{
 					final List<String> moves = moveStrings[featureIdx];
 					
-					if (moves.size() > 0)
+					if (moves != null && moves.size() > 0)
 					{
 						System.out.println("Feature: " + featureSet.spatialFeatures()[featureIdx].toString());
 						
