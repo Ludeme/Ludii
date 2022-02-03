@@ -37,7 +37,7 @@
         )
         (end 
             (forEach Player
-                if:(all Sites (sites Player) if:(is Empty (site))) 
+                if:(all Sites (sites Player) if:(and (is Next Player) (is Empty (site))))
                 (result Player Loss)
             )
         )
