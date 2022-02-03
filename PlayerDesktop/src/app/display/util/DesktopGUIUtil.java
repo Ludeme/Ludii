@@ -52,6 +52,7 @@ public class DesktopGUIUtil
 		allStrings.addAll(AIRegistry.generateValidAgentNames(app.contextSnapshot().getContext(app).game()));
 
 		allStrings.add("From JAR");
+		allStrings.add("From JSON");
 		
 		return allStrings;
 	}
