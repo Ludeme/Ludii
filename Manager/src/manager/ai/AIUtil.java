@@ -65,6 +65,16 @@ public class AIUtil
 				menuName = "From JAR";
 			}
 		}
+		else if (algName.equals("From JSON"))
+		{
+			if (!aiObj.has("JSON File") || !aiObj.has("Class Name"))
+			{
+				json = manager.getPlayerInterface().getNameFromJson();
+				if (json == null)
+					return;
+				menuName = "From JSON";
+			}
+		}
 		else
 		{
 			AIRegistry.processJson(json);

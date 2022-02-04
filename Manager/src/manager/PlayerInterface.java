@@ -15,6 +15,7 @@ import other.move.Move;
 public interface PlayerInterface
 {
 	JSONObject getNameFromJar();
+	JSONObject getNameFromJson();
 	void loadGameFromName(final String name, final List<String> options, final boolean debug);
 	void addTextToStatusPanel(final String text);
 	void addTextToAnalysisPanel(final String text);
