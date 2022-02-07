@@ -1,12 +1,10 @@
 (game "Flower Shop"
     (players 2)
-    (equipment
-        {
+    (equipment {
             (board (hex 7))
             (tile "Hex" Each)
             (piece "Disc" Neutral)
-        }
-    )
+    })
     (rules
         (play
             (do
@@ -146,7 +144,10 @@
     )
 )
 
+//------------------------------------------------------------------------------
+
 (metadata
+		
     (info {
     })
     
