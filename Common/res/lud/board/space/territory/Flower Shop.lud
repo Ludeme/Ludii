@@ -148,19 +148,8 @@
 
 (metadata
     (info {
-        (rules
-            "Flower Shop is played on a hexhex board and uses the 12* placement protocol, that is: barring the first player's first placement, which must be a single piece, players make two placements in a turn. There are two types of pieces: impartial *stalks* (green) and partial *flowers* (pink and yellow). A maximal set of connected stalks is called a *plant*.
-            
-            Rules
-            There are two placement restrictions:
-            1. Each flower may be adjacent to no more than one stalk and no other flowers.
-            2. Each plant can only be adjacent to at most one colour of flowers.
-            
-            The game ends when no legal placements can be made. The *worth* of each plant is the number of stalks in it times the number of flowers adjacent to it. The *score* of each player is the total worth of all the plants adjacent to his flowers. Highest score wins. In case of equal scores, no player wins.
-            
-            (Description taken - but slighlty adapted - from mindsports.nl.)"
-        )
     })
+    
     (graphics {
         (player Colour P1 (colour Pink))
         (player Colour P2 (colour Yellow))

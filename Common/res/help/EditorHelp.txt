@@ -1716,13 +1716,14 @@ PARAM JAVADOC: [<string>]: The name of the container from which to count the num
 EXAMPLE: (count at:(last To))
 EXAMPLE: (count Sites in:(sites Empty))
 NEW CTOR
-(count <countComponentType> [<siteType>] ([<roleType>]  | [of:<int>]) [<string>] [in:<region>])
+(count <countComponentType> [<siteType>] ([<roleType>]  | [of:<int>]) [<string>] [in:<region>] [If:<boolean>])
 PARAM JAVADOC: <countComponentType>: The property to count.
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [<roleType>]: The role of the player [All].
 PARAM JAVADOC: [of:<int>]: The index of the player.
 PARAM JAVADOC: [<string>]: The name of the container from which to count the number of sites or the name of the piece to count only pieces of that type.
 PARAM JAVADOC: [in:<region>]: The region where to count the pieces.
+PARAM JAVADOC: [If:<boolean>]: The condition to check for each site where is the piece [True].
 EXAMPLE: (count Pieces Mover)
 EXAMPLE: (count Pips)
 NEW CTOR
@@ -1775,6 +1776,7 @@ CONST JAVADOC: Edges: Number of edges on the board.
 CONST JAVADOC: Cells: Number of cells on the board.
 CONST JAVADOC: Players: Number of players.
 CONST JAVADOC: Active: Number of active players.
+CONST JAVADOC: LegalMoves: Number of legal moves.
 TYPE: game.functions.ints.count.CountSiteType
 TYPE JAVADOC: Defines the types of sites that can be counted within a game.
 CONST JAVADOC: Sites: Number of playable sites within a region or container.
