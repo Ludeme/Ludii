@@ -52,7 +52,7 @@
             (and
                 (< 0
                     (count Sites 
-                    in:(difference
+                        in:(difference
                             (sites Occupied by:(player #1))
                             (sites)
                         )
@@ -98,40 +98,40 @@
             (place Stack "Shi_Western2" (handSite P2) count:<Komi>) 
         })
         phases:{
-            (phase "Opening"
-                (play 
-                    (move Add 
-                        (to 
-                            (sites Empty)
-                            if:(= 0
-                                (count Sites in:(sites Around (to) Own Orthogonal))
-                            )
+        (phase "Opening"
+            (play 
+                (move Add 
+                    (to 
+                        (sites Empty)
+                        if:(= 0
+                            (count Sites in:(sites Around (to) Own Orthogonal))
                         )
-                        <Balance:12*>
                     )
-                )
-                (nextPhase 
-                    (and
-                        (= 2 (count Sites in:(sites Occupied by:P1)))
-                        (= 2 (count Sites in:(sites Occupied by:P2)))
-                    )
-                    "Play"
+                    <Balance:12*>
                 )
             )
-            (phase "Play"
-                (play 
-                    (or
-                        ("SpendKomi")
-                        (do
-                            (move Add (to (sites Empty)) 
-                                (then ("Remove"))
-                            )
-                            ifAfterwards:("ReachesAlly" (mover))
+            (nextPhase 
+                (and
+                    (= 2 (count Sites in:(sites Occupied by:P1)))
+                    (= 2 (count Sites in:(sites Occupied by:P2)))
+                )
+                "Play"
+            )
+        )
+        (phase "Play"
+            (play 
+                (or
+                    ("SpendKomi")
+                    (do
+                        (move Add (to (sites Empty)) 
+                            (then ("Remove"))
                         )
-                        <Balance:12*>
+                        ifAfterwards:("ReachesAlly" (mover))
                     )
+                    <Balance:12*>
                 )
             )
+        )
         }
         (end 
             (if 
