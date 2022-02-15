@@ -107,7 +107,6 @@ public class ProportionalPolicyClassificationTree extends Policy
 	 * and a limit on the number of play-out actions to run with this policy
 	 * plus a fallback Play-out strategy to use afterwards.
 	 * 
-	 * @param regressionTreeRoots
 	 * @param featureSets
 	 * @param playoutActionLimit
 	 */

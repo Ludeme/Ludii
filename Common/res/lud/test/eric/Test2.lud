@@ -6,79 +6,136 @@
     )
 )
 
-(define "Place"
-    (move Add
-        (to 
-            (sites Around (sites Occupied by:Mover) Empty Orthogonal)
+(define "ReachesRegion"
+    (>
+        Infinity
+        (count Steps
+            Orthogonal
+            (step
+                (to
+                    if:(or
+                        (is Empty (to))
+                        (is In (to) #2)
+                    )
+                )
+            )
+            #1
+            #2
         )
     )
 )
 
 (define "Remove"
-    (move Select
-        (from 
-            (sites Occupied by:Enemy)
-            if:("SomeSite"
-                (sites Group at:(from))
-                (and 
-                    (= 0 (count Sites in:(sites Around (site) Empty Orthogonal)))
-                    (if 
-                        (>=
-                            11
-                            <Size>
+    (forEach Group Orthogonal if:(is Enemy (who at:(to)))
+        (if
+            (all Sites
+                (sites)
+                if:(not
+                    ("ReachesRegion"
+                        (site)
+                        (difference
+                            (sites Occupied by:Enemy)
+                            (sites)
                         )
-                        (< 0 (count Sites in:(sites Around (site) Own Orthogonal)))
-                        True
+                    )
+                )
+            )
+            (remove (sites))
+        )
+    )
+)
+
+(define "ReachesAlly"
+    (all Groups Orthogonal of:(= #1 (who at:(to)))
+        if:("SomeSite"
+            (sites)
+            (and
+                (< 0
+                    (count Sites 
+                    in:(difference
+                            (sites Occupied by:(player #1))
+                            (sites)
+                        )
+                    )
+                )
+                ("ReachesRegion"
+                    (site)
+                    (difference
+                        (sites Occupied by:(player #1))
+                        (sites)
                     )
                 )
             )
         )
-        (then (forEach Site (sites Group at:(last From) Orthogonal) (remove (site))))
     )
 )
 
+(define "SpendKomi"
+    (if
+        (and
+            (< 0 (size Stack at:(handSite P2)))
+            (= (mover) (id P2))
+        )
+        (move Remove (handSite P2))
+    )
+)
 //------------------------------------------------------------------------------
 
-(game "Rampart"
-    (players 2)
-    (equipment
-        {
-        (board (square <Size>) use:Vertex)
-        (piece "Disc" Each)
+(game "Lifeline"  
+    (players 2) 
+    (equipment 
+        { 
+        //(board <Board> use:Vertex)
+        (board (dual <Board>))
+        (piece "Disc" Each) 
+        (piece "Shi_Western" P2) //Alternative icons: paper, button-pass
+        (hand P2)
         }
     )
-    (rules
+    (rules 
+        <Balance:pie>
         (start {
-            (place "Disc1" 
-                (forEach 
-                    (sites Phase 0) 
-                    if:(and {
-                        (is Even (row of:(site)))
-                        (!= 0 (% (site) 4))
-                        (= 0 (% (row of:(site)) 4))
-                    })
-                )
-            )
-            (place "Disc2" 
-                (forEach 
-                    (sites Phase 0) 
-                    if:(and {
-                        (is Even (row of:(site)))
-                        (!= 0 (% (site) 4))
-                        (= 2 (% (row of:(site)) 4))
-                    })
-                )
-            )
+            (place Stack "Shi_Western2" (handSite P2) count:<Komi>) 
         })
-        (play
-            (or
-                ("Place")
-                ("Remove")
+        phases:{
+            (phase "Opening"
+                (play 
+                    (move Add 
+                        (to 
+                            (sites Empty)
+                            if:(= 0
+                                (count Sites in:(sites Around (to) Own Orthogonal))
+                            )
+                        )
+                        <Balance:12*>
+                    )
+                )
+                (nextPhase 
+                    (and
+                        (= 2 (count Sites in:(sites Occupied by:P1)))
+                        (= 2 (count Sites in:(sites Occupied by:P2)))
+                    )
+                    "Play"
+                )
             )
-        )
+            (phase "Play"
+                (play 
+                    (or
+                        ("SpendKomi")
+                        (do
+                            (move Add (to (sites Empty)) 
+                                (then ("Remove"))
+                            )
+                            ifAfterwards:("ReachesAlly" (mover))
+                        )
+                        <Balance:12*>
+                    )
+                )
+            )
+        }
         (end 
             (if 
-                (no Pieces Next) 
+                (no Moves Next)
                 (result Next Loss)
             )
         )
@@ -87,22 +144,98 @@
 
 //------------------------------------------------------------------------------
 
-(option "Board Size" <Size> args:{ <size> }
+(option "Balance" <Balance> args:{ <pie> <12*> }
     {
-    (item "5"    <5>  "A size 5 board is currently selected")
-    (item "7"    <7>  "A size 7 board is currently selected")
-    (item "9"    <9>  "A size 9 board is currently selected")
-    (item "11"    <11>  "A size 11 board is currently selected")
-    (item "13"    <13>  "A size 13 board is currently selected")*
-    (item "15"    <15>  "A size 15 board is currently selected")
-    (item "17"    <17>  "A size 17 board is currently selected")
-    (item "19"    <19>  "A size 19 board is currently selected")
-    }
-)
+    (item "None"     <> <>                                                           "The neither the 12* protocol nor the pie rule is currently in force.")*
+    (item "Pie"      <(meta (swap))> <>                                              "The pie rule is currently in force.")
+    (item "12*"      <> <(then (if (= 1 (% (+ 1 (count Moves)) 2)) (moveAgain)))>    "The 12* placement protocol is in force.")
+})
+
+(option "Komi" <Komi> args:{ <komi> }
+    {
+    (item "0"      <0>    "White is rewarded no points of komi.")*
+    (item "1"      <1>    "White is rewarded 1 point of komi for going second.")
+    (item "2"      <2>    "White is rewarded 2 points of komi for going second.")
+    (item "3"      <3>    "White is rewarded 3 points of komi for going second.")
+    (item "4"      <4>    "White is rewarded 4 points of komi for going second.")
+    (item "5"      <5>    "White is rewarded 5 points of komi for going second.")
+    (item "6"      <6>    "White is rewarded 6 points of komi for going second.")
+    (item "7"      <7>    "White is rewarded 7 points of komi for going second.")   
+    (item "8"      <8>    "White is rewarded 8 points of komi for going second.")
+    (item "9"      <9>    "White is rewarded 9 points of komi for going second.")   
+    (item "10"    <10>    "White is rewarded 10 points of komi for going second.")
+    (item "11"    <11>    "White is rewarded 11 points of komi for going second.")
+    (item "12"    <12>    "White is rewarded 12 points of komi for going second.")
+    (item "13"    <13>    "White is rewarded 13 points of komi for going second.")
+    (item "14"    <14>    "White is rewarded 14 points of komi for going second.")
+    (item "15"    <15>    "White is rewarded 15 points of komi for going second.")
+})
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "3"    <(tri Hexagon 3)>    "A board of size 3 is currently selected.")
+    (item "4"    <(tri Hexagon 4)>    "A board of size 4 is currently selected.")
+    (item "5"    <(tri Hexagon 5)>    "A board of size 5 is currently selected.")
+    (item "6"    <(tri Hexagon 6)>    "A board of size 6 is currently selected.")*
+    (item "7"    <(tri Hexagon 7)>    "A board of size 7 is currently selected.")
+    (item "8"    <(tri Hexagon 8)>    "A board of size 8 is currently selected.")
+    (item "9"    <(tri Hexagon 9)>    "A board of size 9 is currently selected.")
+    (item "10"    <(tri Hexagon 10)>  "A board of size 10 is currently selected.")
+    (item "11"    <(tri Hexagon 11)>  "A board of size 11 is currently selected.")
+    (item "12"    <(tri Hexagon 12)>  "A board of size 12 is currently selected.")
+})
 
 //------------------------------------------------------------------------------
 
-(metadata
+(metadata 
+    
+    (info
+        {
+        (description "Lifeline is a territorial strategy game for two players. It was invented by Michael Amundsen and Luis Bolaños Mures in February 2022, and is inspired by Go and Kanare Kato's Meridians.")
+        (rules 
+"
+Lifeline is a territorial strategy game for two players that is played on the cells of a hexhex board (or, equivalently, on the points of a hexagonally shaped isometric grid).
+Size 6 is the smallest recommended size.
+
+Definitions:
+A group is a stone along with all other stones one could reach from it through a series of steps between adjacent stones of the same color.
+Two distinct groups are said to be allies if they are of the same color.
+Two groups are said to reach each other if they are adjacent to the same contiguous region of empty points. 
+
+Setup:
+Starting with Black, the players take turns placing stones of their own color on empty points, one stone per turn. 
+This initial phase ends when each player has two stones on the board. 
+Neither stone may be adjacent to the other of its color.
+
+Play:
+Each turn, you place a stone of your color on an empty point.
+After your placement, remove all enemy groups that do not reach an ally group.
+At the end of your turn, each of your groups must reach an ally group.
+The last player to make a placement wins.
+
+Optional meta-rules (for balance):
+The pie rule:
+When playing with the pie rule, White has the option to swap sides after Black's first move. If White chooses to swap, they become Black, and the player who started out as Black plays as White from the immediately next turn onwards.
+
+12* protocol:
+When playing with the 12* protocol, players make two placements each turn, except for Blacks very first turn. The wincondition does not discriminate between the first and second placement in a turn, so even if you were able to make your first placement, you lose if you are unable to complete your turn by making the second placement.
+
+Komi:
+When playing with komi, a whole number of points is given to White as compensation for going second. 
+In stead of making a normal placement, white has the option to spend one point of komi.
+This has no other effect than reducing the number of points they have available to spend, but, crucially, it technically counts as a placement (a null-placement), so White can win by being the last player to spend a point of Komi.
+In this implementation, komi is spent by clicking the shield icon next to White's name.
+
+The 12* protocol and the pie rule cannot be combined in this implementation, but komi is compatible with either choice.
+"
+        )
+        (version "1.3.1")
+        (classification "board/space/territory")
+        (author "Michael Amundsen and Luis Bolaños Mures")
+        (credit "Michael Amundsen")
+        }
+    )
+    
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
@@ -111,5 +244,6 @@
         (board Colour Phase0 (colour 250 210 148))
         (board Colour Phase1 (colour 250 210 148))
         (board Style Board)
+        (stackType Count)
     })
 )
