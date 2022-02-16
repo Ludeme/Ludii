@@ -29,6 +29,7 @@ import main.Constants;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import manager.ai.AIRegistry;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
@@ -132,7 +133,7 @@ public class Kilothon
 						{
 							if(pid == 1)
 							{
-								AI challenger = AIFactory.createAI(agentName);
+								final AI challenger = AIRegistry.fromRegistry(agentName);
 								ais.add(challenger);
 							}
 							else if(pid == 2)
