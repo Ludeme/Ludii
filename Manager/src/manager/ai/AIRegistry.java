@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import org.json.JSONObject;
 
 import game.Game;
+import other.AI;
 import search.flat.FlatMonteCarlo;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
@@ -21,7 +22,7 @@ import utils.RandomAI;
 /**
  * A registry of AIs that can be instantiated in the GUI of Ludii.
  *
- * @author Dennis Soemers
+ * @author Dennis Soemers, Eric.Piette
  */
 public class AIRegistry
 {
@@ -167,6 +168,25 @@ public class AIRegistry
 		
 		registry.put(label, new AIRegistryEntry(label, dbID, supportsGame, aiConstructor));
 		return true;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param agentName The name of the agent.
+	 * @return The AI object from its name.
+	 */
+	public static AI fromRegistry
+	(
+		final String agentName
+	)
+	{
+		final JSONObject json = new JSONObject();
+		final JSONObject aiJson = new JSONObject();
+		aiJson.put("algorithm", agentName);
+		json.put("AI", aiJson);
+		AIRegistry.processJson(json);
+		return AIFactory.fromJson(json);
 	}
 	
 	//-------------------------------------------------------------------------
