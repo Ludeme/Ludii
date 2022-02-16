@@ -559,13 +559,6 @@ public class Expander
 		final Report      report
 	)
 	{
-		// Ruleset format:
-		//
-		// (rulesets { 
-		//     (ruleset “Standard Game (Known)” { "Board Size/6x6” "End Rule/Standard" })
-		//     (ruleset “Misere Version (Speculative)” { "Board Size/7x7” "End Rule/Misere" })
-		// })
-
 		description.clearRulesets();
 		
 		String str = new String(strIn);

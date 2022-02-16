@@ -46,8 +46,8 @@ import utils.AIFactory;
 public class Kilothon
 {
 	/**
-	 * Main method
-	 * @param args
+	 * Method to run a kilothon
+	 * @param args 1-Login 2-AgentName
 	 */
 	@SuppressWarnings("resource")
 	public static void main(final String[] args)
