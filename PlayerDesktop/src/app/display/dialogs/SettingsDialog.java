@@ -658,11 +658,6 @@ public class SettingsDialog extends JDialog
 		checkBoxNetworkRefresh.setBounds(321, 740, 86, 23);
 		otherPanel.add(checkBoxNetworkRefresh);
 		
-		final JCheckBox checkBoxPauseAI = new JCheckBox("yes");
-		checkBoxPauseAI.setSelected(true);
-		checkBoxPauseAI.setBounds(321, 360, 86, 23);
-		otherPanel.add(checkBoxPauseAI);
-		
 		final JLabel labelSaveTrial = new JLabel("Save Trial After Moves");
 		labelSaveTrial.setFont(new Font("Dialog", Font.BOLD, 14));
 		labelSaveTrial.setBounds(30, 400, 227, 17);
