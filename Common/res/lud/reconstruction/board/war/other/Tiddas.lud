@@ -1,35 +1,35 @@
 (game "Tiddas"  
-	    (players 2)  
-	    (equipment { 
-	    	(board 
-		            (merge {
-		            	(square 3)
-		                (shift -1 1 (rectangle 1 5)) 
-		                (shift 1 -1 (rectangle 5 1))
-		            }) 
-		            use:Vertex
-		        )
-	    })  
-	    (rules 
-	        (play (forEach Piece))
-	        (end (if (no Moves Next) (result Mover Win) ) )  
-	    )
-	)
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge {
+                (square 3)
+                (shift -1 1 (rectangle 1 5)) 
+                (shift 1 -1 (rectangle 5 1))
+            }) 
+            use:Vertex
+        )
+    })  
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win) ) )  
+    )
+)
 
 //-------------------------------------------------------------------------
 
-	(metadata 
-	    
-	    (info
-	        {
-	        }
-	    )
-	    
-	    (graphics {
-	        (board Style Graph)
-	        (show Edges Orthogonal Hidden)
-	        (show Edges Diagonal Hidden)
-	        (board StyleThickness InnerVertices 3.0)
-	    })
-	    
-	)
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Graph)
+        (show Edges Orthogonal Hidden)
+        (show Edges Diagonal Hidden)
+        (board StyleThickness InnerVertices 3.0)
+    })
+    
+)
