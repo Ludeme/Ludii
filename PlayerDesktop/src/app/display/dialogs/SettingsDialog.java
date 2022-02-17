@@ -658,11 +658,6 @@ public class SettingsDialog extends JDialog
 		checkBoxNetworkRefresh.setBounds(321, 740, 86, 23);
 		otherPanel.add(checkBoxNetworkRefresh);
 		
-		final JLabel labelPauseAI = new JLabel("|< Button Pauses AI");
-		labelPauseAI.setFont(new Font("Dialog", Font.BOLD, 14));
-		labelPauseAI.setBounds(30, 360, 227, 17);
-		otherPanel.add(labelPauseAI);
-		
 		final JCheckBox checkBoxPauseAI = new JCheckBox("yes");
 		checkBoxPauseAI.setSelected(true);
 		checkBoxPauseAI.setBounds(321, 360, 86, 23);
@@ -754,17 +749,7 @@ public class SettingsDialog extends JDialog
 				app.updateTabs(context);
 			}
 		});
-		
-		checkBoxPauseAI.setSelected(app.settingsPlayer().startButtonPausesAI());
-		checkBoxPauseAI.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(final ActionEvent e)
-			{
-				app.settingsPlayer().setStartButtonPausesAI(checkBoxPauseAI.isSelected());
-			}
-		});
-		
+
 		checkBoxSaveTrial.setSelected(app.settingsPlayer().saveTrialAfterMove());
 		checkBoxSaveTrial.addActionListener(new ActionListener()
 		{

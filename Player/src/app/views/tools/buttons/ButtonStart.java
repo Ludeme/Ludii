@@ -8,7 +8,6 @@ import app.PlayerApp;
 import app.utils.TrialUtil;
 import app.views.tools.ToolButton;
 import app.views.tools.ToolView;
-import manager.ai.AIUtil;
 import other.context.Context;
 
 /**
@@ -100,10 +99,6 @@ public class ButtonStart extends ToolButton
 			context = app.manager().ref().context();
 			
 			ToolView.jumpToMove(app, TrialUtil.getInstanceStartIndex(context));
-			
-			// Don't pause agents unless we have to.
-			if (!app.settingsPlayer().startButtonPausesAI())
-				AIUtil.pauseAgentsIfNeeded(app.manager());
 		}
 	}
 
