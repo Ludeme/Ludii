@@ -42,7 +42,7 @@ public class AboutDialog
 		// Legal
 		final StringBuilder sbLegal = new StringBuilder();
 		//sbLegal.append("Cameron Browne (c) 2017-21.\n\n");
-		sbLegal.append("Ludii is an initiative by Cameron Browne 2017-2021.\n\n");
+		sbLegal.append("Ludii is an initiative by Cameron Browne 2017-2022.\n\n");
 
 		// Team
 		final StringBuilder sbTeam = new StringBuilder();
