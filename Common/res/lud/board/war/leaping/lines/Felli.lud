@@ -13,7 +13,7 @@
             )
             use:Vertex
         )
-
+        
         (piece "Counter" Each)
         (piece "DoubleCounter" Each)
         (regions P1 (intersection (sites Corners) (sites Bottom)))
@@ -37,28 +37,28 @@
 (option "Play Rules" <Play> args:{ <rules> } 
     {
     (item "Bouhajbane"             
-    	        <
-    	        (or {
-    	            (forEach Piece "Counter" ("HopCapture") 
-    	            	(then 
-    	            		(if "OnPromotionZone"
-    	            			(promote (last To) (piece "DoubleCounter") Mover)
-    	            		)
-    	            	)
-    	            )
-    	            (forEach Piece "Counter" ("StepToEmpty")
-    	            		(then 
-    	    	            		(if "OnPromotionZone"
-    	    	            			(promote (last To) (piece "DoubleCounter") Mover)
-    	    	            		)
-    	    	            	)		
-    	            )
-    	            (forEach Piece "DoubleCounter" (move Slide))
-    	            (forEach Piece "DoubleCounter" ("HopCapture"))
-    	        })
-    	        >
-    	        "Capturing is optional but pieces can promote."
-   )*
+        <
+        (or {
+            (forEach Piece "Counter" ("HopCapture") 
+                (then 
+                    (if "OnPromotionZone"
+                        (promote (last To) (piece "DoubleCounter") Mover)
+                    )
+                )
+            )
+            (forEach Piece "Counter" ("StepToEmpty")
+                (then 
+                    (if "OnPromotionZone"
+                        (promote (last To) (piece "DoubleCounter") Mover)
+                    )
+                )		
+            )
+            (forEach Piece "DoubleCounter" (move Slide))
+            (forEach Piece "DoubleCounter" ("HopCapture"))
+        })
+        >
+        "Capturing is optional but pieces can promote."
+    )*
     
     (item "Simplified"             
         <
@@ -88,13 +88,13 @@
 
 (rulesets { 
     
-	    (ruleset "Ruleset/Bouhajbane (Observed)" {
-	        "Play Rules/Bouhajbane"
-	    })*
+    (ruleset "Ruleset/Bouhajbane (Observed)" {
+        "Play Rules/Bouhajbane"
+    })*
     
     (ruleset "Ruleset/Board Game Geek (Suggested)" {
         "Play Rules/BoardGameGeek"
-     })
+    })
     
     (ruleset "Ruleset/Simplified (Suggested)" {
         "Play Rules/Simplified"
