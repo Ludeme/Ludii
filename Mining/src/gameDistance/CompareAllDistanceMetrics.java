@@ -10,9 +10,9 @@ import java.util.Map;
 
 import game.Game;
 import gameDistance.datasets.Dataset;
-import gameDistance.datasets.bagOfWords.ImportConceptDataset;
+import gameDistance.datasets.treeEdit.LudemeDataset;
 import gameDistance.metrics.DistanceMetric;
-import gameDistance.metrics.bagOfWords.JensenShannonDivergence;
+import gameDistance.metrics.bagOfWords.Overlap;
 import gameDistance.utils.DistanceUtils;
 import main.DatabaseInformation;
 import other.GameLoader;
@@ -41,15 +41,15 @@ public class CompareAllDistanceMetrics
 
 	final static String outputPath = "res/gameDistance/";
 	
-//	final static Dataset ludemeDataset = new LudemeDataset();
+	final static Dataset ludemeDataset = new LudemeDataset();
 //	final static Dataset compilationConceptDataset = new CompilationConceptDataset();
 //	final static Dataset moveConceptDataset = new MoveConceptDataset();
-	final static Dataset importConceptDataset = new ImportConceptDataset();
+//	final static Dataset importConceptDataset = new ImportConceptDataset();
 	
-//	static Map<String, Double> fullLudemeVocabulary;
+	static Map<String, Double> fullLudemeVocabulary;
 //	static Map<String, Double> fullCompilationConceptVocabulary;
 //	static Map<String, Double> fullMoveConceptVocabulary;
-	static Map<String, Double> fullImportConceptDataset;
+//	static Map<String, Double> fullImportConceptDataset;
 
 	//---------------------------------------------------------------------
 	
@@ -58,19 +58,19 @@ public class CompareAllDistanceMetrics
 		calculateVocabularies();
 		
 		// Use this code to compare specific games.
-		final List<String[]> gamesAndRulesetsToCompare = getSpecificGamesToCompare();
-		recordAllComparisonDistances(gamesAndRulesetsToCompare.get(0), gamesAndRulesetsToCompare.get(1));
+//		final List<String[]> gamesAndRulesetsToCompare = getSpecificGamesToCompare();
+//		recordAllComparisonDistances(gamesAndRulesetsToCompare.get(0), gamesAndRulesetsToCompare.get(1));
 		
 		// Use this code to compare all games.
-//		final List<String[]> gamesAndRulesetsToCompare = GameLoader.allAnalysisGameRulesetNames();
-//		final List<String> allGameNames = new ArrayList<>();
-//		final List<String> allRulesetNames = new ArrayList<>();
-//		for (final String[] allGamesToComare : gamesAndRulesetsToCompare)
-//		{
-//			allGameNames.add(allGamesToComare[0]);
-//			allRulesetNames.add(allGamesToComare[1]);
-//		}
-//		recordAllComparisonDistances(allGameNames.toArray(new String[0]), allRulesetNames.toArray(new String[0]));
+		final List<String[]> gamesAndRulesetsToCompare = GameLoader.allAnalysisGameRulesetNames();
+		final List<String> allGameNames = new ArrayList<>();
+		final List<String> allRulesetNames = new ArrayList<>();
+		for (final String[] allGamesToComare : gamesAndRulesetsToCompare)
+		{
+			allGameNames.add(allGamesToComare[0]);
+			allRulesetNames.add(allGamesToComare[1]);
+		}
+		recordAllComparisonDistances(allGameNames.toArray(new String[0]), allRulesetNames.toArray(new String[0]));
 	}
 	
 	//---------------------------------------------------------------------
@@ -254,17 +254,17 @@ public class CompareAllDistanceMetrics
 	 */
 	private static void calculateVocabularies()
 	{
-//		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset", overrideStoredVocabularies);
-//		System.out.println("ludemeVocabulary recorded");
-//		
+		fullLudemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset, "ludemeDataset", overrideStoredVocabularies);
+		System.out.println("ludemeVocabulary recorded");
+		
 //		fullCompilationConceptVocabulary = DistanceUtils.fullVocabulary(compilationConceptDataset, "compilationConceptDataset", overrideStoredVocabularies);
 //		System.out.println("compilationConceptDataset recorded");
 //		
 //		fullMoveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset, "moveConceptDataset", overrideStoredVocabularies);
 //		System.out.println("moveConceptVocabulary recorded");
-		
-		fullImportConceptDataset = DistanceUtils.fullVocabulary(importConceptDataset, "importConceptDataset", overrideStoredVocabularies);
-		System.out.println("importConceptVocabulary recorded");
+//		
+//		fullImportConceptDataset = DistanceUtils.fullVocabulary(importConceptDataset, "importConceptDataset", overrideStoredVocabularies);
+//		System.out.println("importConceptVocabulary recorded");
 	}
 	
 	//---------------------------------------------------------------------
@@ -310,19 +310,23 @@ public class CompareAllDistanceMetrics
 		//ludemeDataset.getTree(gameA);
 		System.out.println("\n" + gameA.name() + " v.s. " + gameB.name());
 		
-		final DistanceMetric jensenShannonDivergenceMetric = new JensenShannonDivergence();
-		allDistances.put("JSD_importConcept", jensenShannonDivergenceMetric.distance(importConceptDataset, fullImportConceptDataset, gameA, gameB));
-		
 //		//---------------------------------------------------------------------
 //		// Store the default vocabularies for each dataset.
 //		
-//		final Map<String, Double> defaultLudemeVocabulary = DistanceUtils.defaultVocabulary(ludemeDataset, gameA, gameB);
+		final Map<String, Double> defaultLudemeVocabulary = DistanceUtils.defaultVocabulary(ludemeDataset, gameA, gameB);
 //		final Map<String, Double> defaultLudemeNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(ludemeDataset, DistanceUtils.nGramLength), gameA, gameB);
 //		
 //		final Map<String, Double> defaultCompilationConceptVocabulary = DistanceUtils.defaultVocabulary(compilationConceptDataset, gameA, gameB);
 //		
 //		final Map<String, Double> defaultMoveConceptVocabulary = DistanceUtils.defaultVocabulary(moveConceptDataset, gameA, gameB);
 //		final Map<String, Double> defaultMoveConceptNGramVocabulary = DistanceUtils.defaultVocabulary(new NGramDataset(moveConceptDataset, DistanceUtils.nGramLength), gameA, gameB);
+//		
+//		//---------------------------------------------------------------------
+//		// Overlap
+//		
+		final DistanceMetric overlapDistanceMetric = new Overlap();
+		
+		allDistances.put("overlap_ludeme", overlapDistanceMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
 //		
 //		//---------------------------------------------------------------------
 //		// JensenShannonDivergence
