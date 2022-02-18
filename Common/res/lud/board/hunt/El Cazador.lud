@@ -1,0 +1,47 @@
+(game "El Cazador" 
+    (players {(player S) (player N)})  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Human" P1
+            (or 
+                ("HopCapture") 
+                ("StepToEmpty")
+            )		
+        )
+        (piece "Hen" P2
+            (move Step
+                (directions {Rightward Leftward Forwards})
+                (to if:(is Empty (to)))
+            )
+        )
+    })  
+    
+    (rules 
+        (start { 
+            (place "Human1" (centrePoint))
+            (place "Hen2" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ))
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if (no Pieces P2) (result P1 Win))
+        })  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+    })
+    
+)
