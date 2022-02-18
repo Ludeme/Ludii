@@ -8,7 +8,9 @@ import game.Game;
 import other.context.Context;
 import other.trial.Trial;
 import policies.GreedyPolicy;
-import policies.softmax.SoftmaxPolicy;
+import policies.ProportionalPolicyClassificationTree;
+import policies.softmax.SoftmaxPolicyLinear;
+import policies.softmax.SoftmaxPolicyLogitTree;
 import search.mcts.MCTS;
 
 /**
@@ -87,9 +89,29 @@ public interface PlayoutStrategy
 			playout = new RandomPlayout();
 			playout.customise(inputs);
 		}
-		else if (inputs[0].endsWith("softmax") || inputs[0].endsWith("softmaxplayout"))
+		else if (inputs[0].endsWith("mast"))
 		{
-			playout = new SoftmaxPolicy();
+			playout = new MAST();
+			playout.customise(inputs);
+		}
+		else if (inputs[0].endsWith("nst"))
+		{
+			playout = new NST();
+			playout.customise(inputs);
+		}
+		else if (inputs[0].endsWith("softmax") || inputs[0].endsWith("softmaxplayout") || inputs[0].endsWith("softmaxlinear"))
+		{
+			playout = new SoftmaxPolicyLinear();
+			playout.customise(inputs);
+		}
+		else if (inputs[0].endsWith("softmaxlogittree"))
+		{
+			playout = new SoftmaxPolicyLogitTree();
+			playout.customise(inputs);
+		}
+		else if (inputs[0].endsWith("classificationtreepolicy"))
+		{
+			playout = new ProportionalPolicyClassificationTree();
 			playout.customise(inputs);
 		}
 		else if (inputs[0].endsWith("greedy"))

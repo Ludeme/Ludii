@@ -171,7 +171,6 @@ public class GameSetup
 		catch (final Exception e)
 		{
 			e.printStackTrace();
-			// carry on.
 		}
 		
 		app.manager().settingsNetwork().setLoadingNetworkGame(false);

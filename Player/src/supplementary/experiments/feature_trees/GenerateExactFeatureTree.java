@@ -1,15 +1,23 @@
 package supplementary.experiments.feature_trees;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
+import decision_trees.logits.ExactLogitTreeLearner;
+import decision_trees.logits.LogitTreeNode;
 import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
+import game.types.play.RoleType;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
-import policies.softmax.SoftmaxPolicy;
+import metadata.ai.features.trees.FeatureTrees;
+import metadata.ai.features.trees.logits.LogitNode;
+import metadata.ai.features.trees.logits.LogitTree;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import utils.AIFactory;
 
@@ -43,6 +51,9 @@ public class GenerateExactFeatureTree
 	
 	/** If true, we expect Playout policy weight files to be boosted */
 	protected boolean boosted;
+	
+	/** Type of tree to build */
+	protected String treeType;
 	
 	//-------------------------------------------------------------------------
 	
@@ -80,19 +91,38 @@ public class GenerateExactFeatureTree
 				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicy playoutSoftmax = (SoftmaxPolicy) mcts.playoutStrategy();
+		final SoftmaxPolicyLinear playoutSoftmax = (SoftmaxPolicyLinear) mcts.playoutStrategy();
 		
 		final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
 		
-		@SuppressWarnings("unused")		// TODO
 		final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();
+		
+		final LogitTree[] metadataTrees = new LogitTree[featureSets.length - 1];
 		
 		for (int p = 1; p < featureSets.length; ++p)
 		{
-			// TODO generate logit tree for Player p
+			// Generate logit tree for Player p
+			final LogitTreeNode root;
+			if (treeType.equals("Exact"))
+				root = ExactLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], 10);
+			else if (treeType.equals("NaiveMaxAbs"))
+				root = ExactLogitTreeLearner.buildTreeNaiveMaxAbs(featureSets[p], linearFunctions[p], 10);
+			else
+				root = null;
+			
+			// Convert to metadata structure
+			final LogitNode metadataRoot = root.toMetadataNode();
+			metadataTrees[p - 1] = new LogitTree(RoleType.roleForPlayerId(p), metadataRoot);
 		}
 		
-		// TODO write
+		try (final PrintWriter writer = new PrintWriter(outFile))
+		{
+			writer.println(new FeatureTrees(metadataTrees, null));
+		}
+		catch (final IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -128,6 +158,14 @@ public class GenerateExactFeatureTree
 				.help("Indicates that the policy weight files are expected to be boosted.")
 				.withType(OptionTypes.Boolean));
 		
+		argParse.addOption(new ArgOption()
+				.withNames("--tree-type")
+				.help("Type of tree to build.")
+				.withNumVals(1)
+				.withType(OptionTypes.String)
+				.withDefault("Exact")
+				.withLegalVals("Exact", "NaiveMaxAbs"));
+		
 		// parse the args
 		if (!argParse.parseArguments(args))
 			return;
@@ -137,6 +175,8 @@ public class GenerateExactFeatureTree
 		task.featureWeightsFilepaths = (List<String>) argParse.getValue("--feature-weights-filepaths");
 		task.outFile = new File(argParse.getValueString("--out-file"));
 		task.boosted = argParse.getValueBool("--boosted");
+		
+		task.treeType = argParse.getValueString("--tree-type");
 		
 		task.run();
 	}

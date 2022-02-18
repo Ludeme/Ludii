@@ -1,6 +1,6 @@
 (define "Crand_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (influence weight:0.055196557)
         (centreProximity pieceWeights:{
             (pair "Counter1" 0.3059572)

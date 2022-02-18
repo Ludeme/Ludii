@@ -26,7 +26,7 @@ import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.collections.ListUtils;
 import other.move.Move;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
@@ -46,7 +46,7 @@ public class SpecialMovesCorrelationExpander implements FeatureSetExpander
 	(
 		final List<? extends ExperienceSample> batch,
 		final BaseFeatureSet featureSet,
-		final SoftmaxPolicy policy,
+		final SoftmaxPolicyLinear policy,
 		final Game game,
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final ObjectiveParams objectiveParams,
@@ -209,7 +209,7 @@ public class SpecialMovesCorrelationExpander implements FeatureSetExpander
 				
 				for (int featureIdx = 0; featureIdx < featureSet.getNumSpatialFeatures(); ++featureIdx)
 				{
-					if (sparseFeatureVector.getQuick(sparseIdx) == featureIdx)
+					if (sparseIdx < sparseFeatureVector.size() && sparseFeatureVector.getQuick(sparseIdx) == featureIdx)
 					{
 						// This spatial feature is active
 						errorsPerActiveFeature[featureIdx].add(actionError);

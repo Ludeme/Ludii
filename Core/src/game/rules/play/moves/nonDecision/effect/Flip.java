@@ -97,7 +97,7 @@ public final class Flip extends Effect
 				states.add(cs.state(loc, level, realType));
 				rotations.add(cs.rotation(loc, level, realType));
 				values.add(cs.value(loc, level, realType));
-				move.actions().add(new other.action.move.ActionRemove(realType, loc, level, true));
+				move.actions().add(other.action.move.remove.ActionRemove.construct(realType, loc, level, true));
 			}
 
 			for (int level = 0; level < stackSize; level++)

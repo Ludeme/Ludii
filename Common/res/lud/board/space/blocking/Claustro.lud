@@ -1,0 +1,132 @@
+// Defines for Options
+
+(define "Connection" <BoardShape:directionsUsed>)
+(define "BoardUsed" <BoardShape:gridType> )
+
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
+(define "HexLimp" (board (tri Limping (- <BoardSize:smallSide> 1)) use:Vertex))
+(define "HexLimpCell" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
+(define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
+(define "HexHex" (board (tri Hexagon <BoardSize:smallSide>) use:Vertex))
+(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
+(define "Icosahedron" (board (add (remove (tri Limping 4) vertices:{0 1 3 4 5 6 7 8 9 10 11 13 15 17 18 19 20 23 24 25 26 27 31 32 34 35 36 37 39 40 42 43 44 45 46 47}) edges:{ {0 1} {0 2} {0 3} {0 9} {0 10} {1 2} {1 4} {1 6} {6 11} {7 11} {8 11} {1 9} {2 3} {3 5} {3 8} {3 10} {6 9} {8 10} {9 10} {9 11} {10 11} } ) use:Vertex))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Claustro"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Ball" P1)
+        (piece "Ball" P2)
+        }
+    )
+    (rules
+        (start (set Score Each 0))
+        (play
+            (move Add 
+                (piece (mover))
+                (to (sites Empty) 
+                    if:(<= 0
+                        (- 
+                            (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>))
+                            (count Pieces Mover in:(sites Around (to) <BoardShape:directionsUsed>))
+                )))
+                (then 
+                    (if 
+                        (not
+                            (all Sites 
+                                (sites Occupied by:Mover) 
+                                if:(can Move (step (from (site)) <BoardShape:directionsWin> (to if:(is Empty (to)))))
+                        ))
+                        (trigger "End" Mover)
+                        (if 
+                            (not
+                                (all Sites 
+                                    (sites Occupied by:Next) 
+                                    if:(can Move (step (from (site)) <BoardShape:directionsWin> (to if:(is Empty (to)))))
+                            ))
+                            (trigger "End" Next)
+                        )
+                    )
+                )
+            )
+        )
+        (end 
+            (if 
+                (or (is Triggered "End" Mover) (is Triggered "End" Next))
+                (if 
+                    (is Triggered "End" Mover)
+                    (result Mover Loss)
+                )
+                (result Mover Win)
+))))
+
+//-------------------------------------------------
+// Options
+
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>} 
+    {
+    (item "TriSquare Grid" <"TriSquare"> <Orthogonal> <Hidden> <Orthogonal> "Triangle-Square Grid")
+    (item "TriSquare Omni" <"TriSquare"> <All> <ThinDashed> <All> "Triangle-Square Omni-Grid")
+    (item "TriSquare Omni influence" <"TriSquare"> <All> <ThinDashed> <Orthogonal> "Triangle-Square Omni-Grid plus diagonal influence on placement")
+    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> "Hex N / N-1 Grid")**
+    (item "Hex Limping Omni influence" <"HexLimpCell"> <All> <Hidden> <Orthogonal> "Hex N / N-1 Cell Grid plus diagonal influence on placement")
+    (item "Hex Grid" <"HexHex"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
+    (item "Hex Omni influence" <"HexCell"> <All> <Hidden> <Orthogonal> "Hex Cell Grid plus diagonal influence on placement")
+    //  (item "Icosahedron" <"Icosahedron"> <Orthogonal> <Hidden> <Orthogonal> "Icosahedron")
+    (item "Square Omni" <"SquareGrid"> <All> <ThinDashed> <All> "Square Omni-Grid")
+    (item "Square Omni-influence" <"SquareGrid"> <All> <ThinDashed> <Orthogonal> "Square Omni-Grid plus diagonal influence on placement")
+    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> <Orthogonal> "Square Grid")
+    }
+)
+
+(option "Board Size" <BoardSize> args:{ <smallSide> } 
+    {
+    (item "Order 3" <3> "Order 3 board")
+    (item "Order 4" <4> "Order 4 board")**
+    (item "Order 5" <5> "Order 5 board")
+    (item "Order 6" <6> "Order 6 board")
+    (item "Order 9" <9> "Order 9 board")
+    (item "Order 11" <11> "Order 11 board")
+    }
+)
+
+//---------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Claustro is a proximity restricted pure placement game in which a player loses as soon as one of there pieces is fully surrounded on their turn. The game is 'cold' and can work on multiple types of grids with the same principle.")
+        (rules "Board starts empty. 
+            Place on an empty location, unless it is next to more of your own pieces. 
+            Passing is not allowed.
+        You lose if at the end of your turn, one of your stones is surrounded.")
+        (id "1532")
+        (version "1.3.2")
+        (classification "board/space/blocking")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "26-03-2021")
+        }
+    )
+    (graphics 
+        {
+        
+        (player Colour P1 (colour 229 92 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale 0.96)
+        (board Style Graph)
+        (board StyleThickness InnerVertices .6)
+        (board StyleThickness InnerEdges .25)
+        (board Colour InnerVertices (colour DarkGrey))
+        (board Colour InnerEdges (colour DarkGrey))
+        (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
+        }
+    )
+    (ai
+        "Claustro_ai"
+    )
+)

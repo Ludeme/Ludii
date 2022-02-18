@@ -1,6 +1,6 @@
 (define "Dai Hasami Shogi_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
     })
     

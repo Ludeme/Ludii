@@ -30,9 +30,10 @@ public interface Action extends Serializable
 	 * To undo an action.
 	 *
 	 * @param context The context.
+	 * @param discard To discard directly the action in the trial.
 	 * @return Action as applied to undo the corresponding action.
 	 */
-	public Action undo(final Context context);
+	public Action undo(final Context context, final boolean discard);
 
 	/**
 	 * @return Whether this action is a pass.

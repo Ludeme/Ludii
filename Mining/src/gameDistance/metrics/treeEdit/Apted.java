@@ -16,6 +16,7 @@ import utils.data_structures.support.zhang_shasha.Tree;
 /**
  * Returns Apted tree edit distance.
  * https://github.com/DatabaseGroup/apted
+ * http://tree-edit-distance.dbresearch.uni-salzburg.at
  * 
  * M. Pawlik and N. Augsten. Tree edit distance: Robust and memory- efficient. Information Systems 56. 2016.
  * M. Pawlik and N. Augsten. Efficient Computation of the Tree Edit Distance. ACM Transactions on Database Systems (TODS) 40(1). 2015.

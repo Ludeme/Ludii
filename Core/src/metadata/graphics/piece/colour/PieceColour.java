@@ -58,7 +58,7 @@ public class PieceColour implements GraphicsItem
 	(
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
-		@Opt @Name	final Integer container,
+		@Opt @Name final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 		@Opt @Name final Colour fillColour,

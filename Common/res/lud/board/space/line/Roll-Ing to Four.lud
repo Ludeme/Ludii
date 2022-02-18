@@ -1,0 +1,49 @@
+(game "Roll-Ing to Four"
+    (players {(player N) (player S)})
+    (equipment {
+        (board (rectangle 10 4) use:Vertex)
+        (piece "Ball" Each (move Step (directions Forwards of:All) (to if:(is Empty (to)))))
+    })
+    (rules
+        (start {
+            (place "Ball1" (sites {"A1" "B1" "C1" "B6" "C6" "D6"}))
+            (place "Ball2" (sites {"A5" "B5" "C5" "B10" "C10" "D10"}))
+        })
+        (play (forEach Piece))
+        (end (if (is Line 4 All) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game is played on the following 10x4 square board.")
+        (rules "TURNS - At each turn, each player must move one of his stones
+            - A stone moves (orthogonal and diagonal) forward to an empty cell.
+        GOAL - A player wins by making a (orthogonal or diagonal) 4 in-a-row.")
+        (id "1820")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/rolling.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+        (version "1.3.2")
+        (classification "board/space/line")
+        (author "Ingo Althofer and Thomas Rolle")
+        (credit "Eric Piette")
+        (date "2003")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (show Edges Diagonal (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scaleX:0.5 scaleY:1.25)
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+    
+)

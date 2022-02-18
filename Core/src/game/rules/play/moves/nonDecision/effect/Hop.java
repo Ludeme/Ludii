@@ -18,12 +18,14 @@ import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import game.types.state.GameType;
 import game.util.directions.AbsoluteDirection;
+import game.util.graph.GraphElement;
 import game.util.graph.Radial;
 import game.util.moves.To;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import main.collections.FastTIntArrayList;
-import other.action.move.ActionMove;
+import other.action.Action;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -169,7 +171,7 @@ public final class Hop extends Effect
 
 		final int maxDistanceFromHurdle = maxDistanceFromHurdleFn.eval(context);
 		final int minLengthHurdle = minLengthHurdleFn.eval(context);
-		final int maxLengthHurdle = maxLengthHurdleFn.eval(context);
+		final int maxLengthHurdle = (minLengthHurdleFn == maxLengthHurdleFn) ? minLengthHurdle : maxLengthHurdleFn.eval(context);
 		final int maxDistanceHurdleTo = maxDistanceHurdleToFn.eval(context);
 		
 		context.setFrom(from);
@@ -179,8 +181,7 @@ public final class Hop extends Effect
 		{
 			for (final AbsoluteDirection direction : directions)
 			{
-				final List<game.util.graph.Step> steps = graph.trajectories().steps(realType, fromV.index(), realType,
-						direction);
+				final List<game.util.graph.Step> steps = graph.trajectories().steps(realType, from, realType, direction);
 
 				for (final game.util.graph.Step step : steps)
 				{
@@ -198,8 +199,7 @@ public final class Hop extends Effect
 
 					if (!alreadyCompute(moves, from, to))
 					{
-						final ActionMove action = new ActionMove(type, from, Constants.UNDEFINED, type, to,
-								Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
+						final Action action = ActionMove.construct(type, from, Constants.UNDEFINED, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 
 						if (isDecision())
 							action.setDecision(true);
@@ -232,14 +232,15 @@ public final class Hop extends Effect
 		if (maxLengthHurdle > 0)
 			for (final AbsoluteDirection direction : directions)
 			{
-				final List<Radial> radialList = graph.trajectories().radials(type, fromV.index(), direction);
+				final List<Radial> radialList = graph.trajectories().radials(type, from, direction);
 
 				for (final Radial radial : radialList)
 				{
-					for (int toIdx = 1; toIdx < radial.steps().length; toIdx++)
+					final GraphElement[] steps = radial.steps();
+					for (int toIdx = 1; toIdx < steps.length; toIdx++)
 					{
 						final FastTIntArrayList betweenSites = new FastTIntArrayList();
-						final int between = radial.steps()[toIdx].id();
+						final int between = steps[toIdx].id();
 
 						//context.setFrom(from);
 						
@@ -255,9 +256,9 @@ public final class Hop extends Effect
 							int lengthHurdle = 1;
 							int hurdleIdx = toIdx + 1;
 							boolean hurdleWrong = false;
-							for (/**/; hurdleIdx < radial.steps().length && lengthHurdle < maxLengthHurdle; hurdleIdx++)
+							for (/**/; hurdleIdx < steps.length && lengthHurdle < maxLengthHurdle; hurdleIdx++)
 							{
-								final int hurdleLoc = radial.steps()[hurdleIdx].id();
+								final int hurdleLoc = steps[hurdleIdx].id();
 
 								context.setBetween(hurdleLoc);
 								if (!hurdleRule.eval(context))
@@ -280,9 +281,9 @@ public final class Hop extends Effect
 									- minLengthHurdle; fromMinHurdle >= 0; fromMinHurdle--)
 							{
 								int afterHurdleToIdx = hurdleIdx - fromMinHurdle;
-								for (/**/; afterHurdleToIdx < radial.steps().length; afterHurdleToIdx++)
+								for (/**/; afterHurdleToIdx < steps.length; afterHurdleToIdx++)
 								{
-									final int afterHurdleTo = radial.steps()[afterHurdleToIdx].id();
+									final int afterHurdleTo = steps[afterHurdleToIdx].id();
 
 									//context.setFrom(from);
 									context.setTo(afterHurdleTo);
@@ -291,11 +292,7 @@ public final class Hop extends Effect
 									{
 										if (stopRule != null && stopRule.eval(context))
 										{
-											final ActionMove action = new ActionMove(type, from, Constants.UNDEFINED,
-													type,
-													afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF,
-													Constants.OFF,
-													stack);
+											final Action action = ActionMove.construct(type, from, Constants.UNDEFINED, type, afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 											if (isDecision())
 												action.setDecision(true);
 											Move move = new Move(action);
@@ -315,10 +312,7 @@ public final class Hop extends Effect
 	
 									if (stopRule == null)
 									{
-										final ActionMove action = new ActionMove(type, from, Constants.UNDEFINED, type,
-												afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF,
-												Constants.OFF,
-												stack);
+										final Action action = ActionMove.construct(type, from, Constants.UNDEFINED, type, afterHurdleTo, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 										if (isDecision())
 											action.setDecision(true);
 

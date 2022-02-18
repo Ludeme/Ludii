@@ -10,9 +10,7 @@ import java.util.ArrayList;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The id is for the moment the ordinal until the concepts are more
- * stable to replace it with the id in the constructor of each concept which
- * will be fixed.
+ * Remarks: The next id in case of a new concept is the id 779.
  * 
  * @author Eric.Piette
  */
@@ -152,7 +150,7 @@ public enum Concept
 	HiddenInformation
 	(
 		"1.1.4",
-		45, 
+		10, 
 		"Game involves hidden information.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -166,7 +164,7 @@ public enum Concept
 	Match
 	(
 		"1.1.5",
-		10,
+		11,
 		"Match game.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -180,7 +178,7 @@ public enum Concept
 	Asymmetric
 	(
 		"1.1.6",
-		11,
+		12,
 		"Asymmetry in rules and/or forces.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -194,7 +192,7 @@ public enum Concept
 	AsymmetricRules
 	(
 		"1.1.6.1",
-		12, 
+		13, 
 		"Players have different rules.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -208,7 +206,7 @@ public enum Concept
 	AsymmetricPlayRules
 	(
 		"1.1.6.1.1",
-		13, 
+		14, 
 		"Players have different play rules.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -222,7 +220,7 @@ public enum Concept
 	AsymmetricEndRules
 	(
 		"1.1.6.1.2",
-		14, 
+		15, 
 		"Players have different end rules.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -236,7 +234,7 @@ public enum Concept
 	AsymmetricForces
 	(
 		"1.1.6.2",
-		15, 
+		16, 
 		"Players have different forces.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -250,7 +248,7 @@ public enum Concept
 	AsymmetricSetup
 	(
 		"1.1.6.2.1",
-		16, 
+		17, 
 		"Different starting positions for each player.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -264,7 +262,7 @@ public enum Concept
 	AsymmetricPiecesType
 	(
 		"1.1.6.2.2",
-		17, 
+		18, 
 		"Different piece types owned by each player.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -278,7 +276,7 @@ public enum Concept
 	Players
 	(
 		"1.2",
-		18, 
+		19, 
 		"Players of the game.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -292,7 +290,7 @@ public enum Concept
 	NumPlayers
 	(
 		"1.2.1",
-		19,
+		20,
 		"Number of players.",
 		ConceptType.Properties,
 		ConceptDataType.IntegerData,
@@ -306,7 +304,7 @@ public enum Concept
 	Simulation
 	(
 		"1.2.1.1",
-		20,
+		21,
 		"No players (environment runs the game).",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -320,7 +318,7 @@ public enum Concept
 	Solitaire
 	(
 		"1.2.1.2",
-		21,
+		22,
 		"Single player.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -334,7 +332,7 @@ public enum Concept
 	TwoPlayer
 	(
 		"1.2.1.3",
-		22,
+		23,
 		"Two players.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -348,7 +346,7 @@ public enum Concept
 	Multiplayer
 	(
 		"1.2.1.4",
-		23,
+		24,
 		"More than two players.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -362,7 +360,7 @@ public enum Concept
 	Cooperation
 	(
 		"1.3",
-		24, 
+		25, 
 		"Players have to cooperate.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -376,7 +374,7 @@ public enum Concept
 	Team
 	(
 		"1.3.1",
-		25, 
+		26, 
 		"Game involves teams of players.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -390,7 +388,7 @@ public enum Concept
 	Coalition
 	(
 		"1.3.2",
-		26, 
+		27, 
 		"Players may form coalitions.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -404,7 +402,7 @@ public enum Concept
 	Puzzle
 	(
 		"1.4",
-		27, 
+		28, 
 		"Type of puzzle.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
@@ -418,7 +416,7 @@ public enum Concept
 	DeductionPuzzle
 	(
 		"1.4.1",
-		28, 
+		29, 
 		"Solution can be deduced.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -432,7 +430,7 @@ public enum Concept
 	PlanningPuzzle
 	(
 		"1.4.2",
-		29, 
+		30, 
 		"Solution is reached in moving pieces.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
@@ -450,7 +448,7 @@ public enum Concept
 	Equipment
 	(
 		"2",
-		30, 
+		31, 
 		"Equipment for playing the game.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -464,7 +462,7 @@ public enum Concept
 	Container
 	(
 		"2.1",
-		31, 
+		32, 
 		"Containers that hold components.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -478,7 +476,7 @@ public enum Concept
 	Board
 	(
 		"2.1.1",
-		32, 
+		33, 
 		"Board shared by player for playing the game.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -492,7 +490,7 @@ public enum Concept
 	Shape
 	(
 		"2.1.1.1",
-		33, 
+		34, 
 		"The shape of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -506,7 +504,7 @@ public enum Concept
 	SquareShape
 	(
 		"2.1.1.1.1",
-		78, 
+		35, 
 		"Square shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -520,7 +518,7 @@ public enum Concept
 	HexShape
 	(
 		"2.1.1.1.2",
-		79, 
+		36, 
 		"Hexagonal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -534,7 +532,7 @@ public enum Concept
 	TriangleShape
 	(
 		"2.1.1.1.3",
-		80, 
+		37, 
 		"Triangle shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -548,7 +546,7 @@ public enum Concept
 	DiamondShape
 	(
 		"2.1.1.1.4",
-		81, 
+		38, 
 		"Diamond shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -562,7 +560,7 @@ public enum Concept
 	RectangleShape
 	(
 		"2.1.1.1.5",
-		82, 
+		39, 
 		"Rectangle shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -576,7 +574,7 @@ public enum Concept
 	SpiralShape
 	(
 		"2.1.1.1.6",
-		83, 
+		40, 
 		"Spirale shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -590,7 +588,7 @@ public enum Concept
 	CircleShape
 	(
 		"2.1.1.1.7",
-		84, 
+		41, 
 		"Circle shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -604,7 +602,7 @@ public enum Concept
 	PrismShape
 	(
 		"2.1.1.1.8",
-		85, 
+		42, 
 		"Prism shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -617,7 +615,7 @@ public enum Concept
 	/** True if a sub ludeme correspond to a star shape. */
 	StarShape(
 		"2.1.1.1.9",
-		86, 
+		43, 
 		"Star shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -630,7 +628,7 @@ public enum Concept
 	/** True if a sub ludeme correspond to a parallelogram shape. */
 	ParallelogramShape(
 		"2.1.1.1.10",
-		87, 
+		44, 
 		"Parallelogram shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -643,7 +641,7 @@ public enum Concept
 	/** True if a sub ludeme correspond to a square shape with pyramidal at true. */
 	SquarePyramidalShape(
 		"2.1.1.1.11",
-		78, 
+		45, 
 		"Square Pyramidal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -657,7 +655,7 @@ public enum Concept
 	RectanglePyramidalShape
 	(
 		"2.1.1.1.12",
-		78, 
+		46, 
 		"Rectangle Pyramidal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -671,7 +669,7 @@ public enum Concept
 	RegularShape
 	(
 		"2.1.1.1.13",
-		378, 
+		47, 
 		"Regular shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -685,7 +683,7 @@ public enum Concept
 	PolygonShape
 	(
 		"2.1.1.1.14",
-		379, 
+		48, 
 		"General polygonal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -699,7 +697,7 @@ public enum Concept
 	TargetShape
 	(
 		"2.1.1.1.15",
-		380, 
+		49, 
 		"Target shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -713,7 +711,7 @@ public enum Concept
 	Tiling
 	(
 		"2.1.1.2",
-		34, 
+		50, 
 		"The shape of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -727,7 +725,7 @@ public enum Concept
 	SquareTiling
 	(
 		"2.1.1.2.1",
-		35, 
+		51, 
 		"Square tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -741,7 +739,7 @@ public enum Concept
 	HexTiling
 	(
 		"2.1.1.2.2",
-		36, 
+		52, 
 		"Hexagonal tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -755,7 +753,7 @@ public enum Concept
 	TriangleTiling
 	(
 		"2.1.1.2.3",
-		37, 
+		53, 
 		"Triangle tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -769,7 +767,7 @@ public enum Concept
 	BrickTiling
 	(
 		"2.1.1.2.4",
-		38, 
+		54, 
 		"Brick tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -783,7 +781,7 @@ public enum Concept
 	SemiRegularTiling
 	(
 		"2.1.1.2.5",
-		39, 
+		55, 
 		"Semi regular tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -797,7 +795,7 @@ public enum Concept
 	CelticTiling
 	(
 		"2.1.1.2.6",
-		40, 
+		56, 
 		"Celtic tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -811,7 +809,7 @@ public enum Concept
 	MorrisTiling
 	(
 		"2.1.1.2.7",
-		41, 
+		57, 
 		"Morris tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -825,7 +823,7 @@ public enum Concept
 	QuadHexTiling
 	(
 		"2.1.1.2.8",
-		42, 
+		58, 
 		"QuadHex tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -839,7 +837,7 @@ public enum Concept
 	CircleTiling
 	(
 		"2.1.1.2.9",
-		43, 
+		59, 
 		"Circle tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -853,7 +851,7 @@ public enum Concept
 	ConcentricTiling
 	(
 		"2.1.1.2.10",
-		377, 
+		60, 
 		"Concentric tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -867,7 +865,7 @@ public enum Concept
 	SpiralTiling
 	(
 		"2.1.1.2.11",
-		44, 
+		61, 
 		"Spiral tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -881,7 +879,7 @@ public enum Concept
 	AlquerqueTiling
 	(
 		"2.1.1.2.12",
-		45, 
+		62, 
 		"Alquerque tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -895,7 +893,7 @@ public enum Concept
 	MancalaBoard
 	(
 		"2.1.1.3",
-		35, 
+		63, 
 		"Mancala board.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -909,7 +907,7 @@ public enum Concept
 	MancalaStores
 	(
 		"2.1.1.3.1",
-		35, 
+		64, 
 		"Mancala board with stores.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -923,7 +921,7 @@ public enum Concept
 	MancalaTwoRows
 	(
 		"2.1.1.3.2",
-		35, 
+		65, 
 		"Mancala board with 2 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -937,7 +935,7 @@ public enum Concept
 	MancalaThreeRows
 	(
 		"2.1.1.3.3",
-		35, 
+		66, 
 		"Mancala board with 3 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -951,7 +949,7 @@ public enum Concept
 	MancalaFourRows
 	(
 		"2.1.1.3.4",
-		35, 
+		67, 
 		"Mancala board with 4 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -965,7 +963,7 @@ public enum Concept
 	MancalaSixRows
 	(
 		"2.1.1.3.5",
-		35, 
+		68, 
 		"Mancala board with 6 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -979,7 +977,7 @@ public enum Concept
 	MancalaCircular
 	(
 		"2.1.1.3.6",
-		35, 
+		69, 
 		"Mancala board with circular tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -993,7 +991,7 @@ public enum Concept
 	Track
 	(
 		"2.1.1.4",
-		35, 
+		70, 
 		"The board has a track.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -1007,7 +1005,7 @@ public enum Concept
 	TrackLoop
 	(
 		"2.1.1.4.1",
-		35, 
+		71, 
 		"A track is a loop.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -1021,7 +1019,7 @@ public enum Concept
 	TrackOwned
 	(
 		"2.1.1.4.2",
-		35, 
+		72, 
 		"A track is owned.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -1035,7 +1033,7 @@ public enum Concept
 	Hints
 	(
 		"2.1.1.5", 
-		103,
+		73,
 		"The board has some hints.", 
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -1049,7 +1047,7 @@ public enum Concept
 	Region
 	(
 		"2.1.1.6",
-		36, 
+		74, 
 		"The board has regions.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -1063,7 +1061,7 @@ public enum Concept
 	Boardless
 	(
 		"2.1.1.7",
-		37, 
+		75, 
 		"Game is played on an implied grid.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1077,7 +1075,7 @@ public enum Concept
 	PlayableSites
 	(
 		"2.1.1.8",
-		38, 
+		76, 
 		"Playable sites.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1091,7 +1089,7 @@ public enum Concept
 	Vertex
 	(
 		"2.1.1.8.1",
-		89, 
+		77, 
 		"Use Vertices.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1105,7 +1103,7 @@ public enum Concept
 	Cell
 	(
 		"2.1.1.8.2",
-		90, 
+		78, 
 		"Use cells.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1119,7 +1117,7 @@ public enum Concept
 	Edge
 	(
 		"2.1.1.8.3",
-		91, 
+		79, 
 		"Use edges.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1133,7 +1131,7 @@ public enum Concept
 	NumPlayableSitesOnBoard
 	(
 		"2.1.1.8.4",
-		126, 
+		80, 
 		"Number of playables sites on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1147,7 +1145,7 @@ public enum Concept
 	NumColumns
 	(
 		"2.1.1.9",
-		172, 
+		81, 
 		"Number of columns of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1161,7 +1159,7 @@ public enum Concept
 	NumRows
 	(
 		"2.1.1.10",
-		173, 
+		82, 
 		"Number of rows of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1175,7 +1173,7 @@ public enum Concept
 	NumCorners
 	(
 		"2.1.1.11",
-		174, 
+		83, 
 		"Number of corners of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1189,7 +1187,7 @@ public enum Concept
 	NumDirections
 	(
 		"2.1.1.12",
-		175, 
+		84, 
 		"Average number of directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
@@ -1205,7 +1203,7 @@ public enum Concept
 	NumOrthogonalDirections
 	(
 		"2.1.1.13",
-		176, 
+		85, 
 		"Average number of orthogonal directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
@@ -1219,7 +1217,7 @@ public enum Concept
 	NumDiagonalDirections
 	(
 		"2.1.1.14",
-		177, 
+		86, 
 		"Average number of diagonal directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
@@ -1233,7 +1231,7 @@ public enum Concept
 	NumAdjacentDirections
 	(
 		"2.1.1.15",
-		178, 
+		87, 
 		"Average number of adjacent directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
@@ -1247,7 +1245,7 @@ public enum Concept
 	NumOffDiagonalDirections
 	(
 		"2.1.1.16",
-		179, 
+		88, 
 		"Average number of off diagonal directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
@@ -1261,7 +1259,7 @@ public enum Concept
 	NumOuterSites
 	(
 		"2.1.1.17",
-		180, 
+		89, 
 		"Number of outer sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1275,7 +1273,7 @@ public enum Concept
 	NumInnerSites
 	(
 		"2.1.1.18",
-		181, 
+		90, 
 		"Number of inner sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1289,7 +1287,7 @@ public enum Concept
 	NumLayers
 	(
 		"2.1.1.19",
-		182, 
+		91, 
 		"Number of layers of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1303,7 +1301,7 @@ public enum Concept
 	NumEdges
 	(
 		"2.1.1.20",
-		183, 
+		92, 
 		"Number of edges of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1317,7 +1315,7 @@ public enum Concept
 	NumCells
 	(
 		"2.1.1.21",
-		184, 
+		93, 
 		"Number of cells of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1331,7 +1329,7 @@ public enum Concept
 	NumVertices
 	(
 		"2.1.1.22",
-		185, 
+		94, 
 		"Number of vertices of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1345,7 +1343,7 @@ public enum Concept
 	NumPerimeterSites
 	(
 		"2.1.1.23",
-		186, 
+		95, 
 		"Number of perimeter sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1359,7 +1357,7 @@ public enum Concept
 	NumTopSites
 	(
 		"2.1.1.24",
-		187, 
+		96, 
 		"Number of top sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1373,7 +1371,7 @@ public enum Concept
 	NumBottomSites
 	(
 		"2.1.1.25",
-		188, 
+		97, 
 		"Number of bottom sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1387,7 +1385,7 @@ public enum Concept
 	NumRightSites
 	(
 		"2.1.1.26",
-		189, 
+		98, 
 		"Number of right sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1401,7 +1399,7 @@ public enum Concept
 	NumLeftSites
 	(
 		"2.1.1.27",
-		190, 
+		99, 
 		"Number of left sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1415,7 +1413,7 @@ public enum Concept
 	NumCentreSites
 	(
 		"2.1.1.28",
-		191, 
+		100, 
 		"Number of centre sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1429,7 +1427,7 @@ public enum Concept
 	NumConvexCorners
 	(
 		"2.1.1.29",
-		192, 
+		101, 
 		"Number of convex corners of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1443,7 +1441,7 @@ public enum Concept
 	NumConcaveCorners
 	(
 		"2.1.1.30",
-		193, 
+		102, 
 		"Number of concave corners of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1456,7 +1454,7 @@ public enum Concept
 	NumPhasesBoard
 	(
 		"2.1.1.31",
-		194, 
+		103, 
 		"Number of phases of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1470,7 +1468,7 @@ public enum Concept
 	Hand
 	(
 		"2.1.2",
-		36, 
+		104, 
 		"Player hands for storing own pieces.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1484,7 +1482,7 @@ public enum Concept
 	NumContainers
 	(
 		"2.1.3",
-		199, 
+		105, 
 		"Number of containers.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1498,7 +1496,7 @@ public enum Concept
 	NumPlayableSites
 	(
 		"2.1.4",
-		127, 
+		106, 
 		"Number of playables sites in total.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1512,7 +1510,7 @@ public enum Concept
 	Component
 	(
 		"2.2",
-		37, 
+		107, 
 		"Components manipulated by the players.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1526,7 +1524,7 @@ public enum Concept
 	Piece
 	(
 		"2.2.1",
-		38, 
+		108, 
 		"Game is played with pieces.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1540,7 +1538,7 @@ public enum Concept
 	PieceValue
 	(
 		"2.2.2",
-		168, 
+		109, 
 		"Pieces have value.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1554,7 +1552,7 @@ public enum Concept
 	PieceRotation
 	(
 		"2.2.3",
-		132, 
+		110, 
 		"Pieces have rotations.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1568,7 +1566,7 @@ public enum Concept
 	PieceDirection
 	(
 		"2.2.4",
-		171, 
+		111, 
 		"Pieces have forward direction.",
 		ConceptType.Equipment,
 		ConceptDataType.BooleanData, 
@@ -1582,7 +1580,7 @@ public enum Concept
 	Dice
 	(
 		"2.2.5",
-		39, 
+		112, 
 		"Game is played with dice.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1596,7 +1594,7 @@ public enum Concept
 	BiasedDice
 	(
 		"2.2.6",
-		201, 
+		113, 
 		"Use biased dice.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1610,7 +1608,7 @@ public enum Concept
 	Card
 	(
 		"2.2.7",
-		40, 
+		114, 
 		"Game is played with cards.",
 		ConceptType.Equipment,
 		ConceptDataType.BooleanData,
@@ -1624,7 +1622,7 @@ public enum Concept
 	Domino
 	(
 		"2.2.8",
-		41, 
+		115, 
 		"Game is played with dominoes.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1638,7 +1636,7 @@ public enum Concept
 	LargePiece
 	(
 		"2.2.9",
-		42, 
+		116, 
 		"Game is played with large pieces.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
@@ -1652,7 +1650,7 @@ public enum Concept
 	Tile
 	(
 		"2.2.10",
-		43, 
+		117, 
 		"Game is played with tiles.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
@@ -1666,7 +1664,7 @@ public enum Concept
 	NumComponentsType
 	(
 		"2.2.11",
-		195, 
+		118, 
 		"Number of component types.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1680,7 +1678,7 @@ public enum Concept
 	NumComponentsTypePerPlayer
 	(
 		"2.2.12",
-		196, 
+		119, 
 		"Average number of component types per player.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
@@ -1694,7 +1692,7 @@ public enum Concept
 	NumDice
 	(
 		"2.2.13",
-		197, 
+		120, 
 		"Number of dice.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
@@ -1712,7 +1710,7 @@ public enum Concept
 	Rules
 	(
 		"3",
-		197, 
+		121, 
 		"Rules of the game.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -1730,7 +1728,7 @@ public enum Concept
 	Meta
 	(
 		"3.1",
-		197, 
+		122, 
 		"Global metarules that override all other rules.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData, 
@@ -1744,7 +1742,7 @@ public enum Concept
 	OpeningContract
 	(
 		"3.1.1",
-		197, 
+		123, 
 		"Game involves an opening round equaliser.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
@@ -1758,7 +1756,7 @@ public enum Concept
 	SwapOption
 	(
 		"3.1.1.1",
-		197, 
+		124, 
 		"Second player may swap colours.",
 		ConceptType.Meta, 
 		ConceptDataType.BooleanData,
@@ -1772,7 +1770,7 @@ public enum Concept
 	Repetition
 	(
 		"3.1.2",
-		197, 
+		125, 
 		"Game has repetition checks.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
@@ -1786,7 +1784,7 @@ public enum Concept
 	TurnKo
 	(
 		"3.1.2.1",
-		98, 
+		126, 
 		"No repeated piece positions within a single turn.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
@@ -1800,7 +1798,7 @@ public enum Concept
 	SituationalTurnKo
 	(
 		"3.1.2.2",
-		98, 
+		127, 
 		"No repeated states withing a single turn.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
@@ -1814,7 +1812,7 @@ public enum Concept
 	PositionalSuperko
 	(
 		"3.1.2.3",
-		98, 
+		128, 
 		"No repeated piece positions.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
@@ -1828,7 +1826,7 @@ public enum Concept
 	SituationalSuperko
 	(
 		"3.1.2.4",
-		98, 
+		129, 
 		"No repeated states.",
 		ConceptType.Meta, 
 		ConceptDataType.BooleanData,
@@ -1842,7 +1840,7 @@ public enum Concept
 	AutoMove
 	(
 		"3.1.3",
-		197, 
+		130, 
 		"Apply all legal moves related to one single site.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
@@ -1860,7 +1858,7 @@ public enum Concept
 	Start
 	(
 		"3.2",
-		197, 
+		131, 
 		"Start rules.",
 		ConceptType.Start,
 		ConceptDataType.BooleanData,
@@ -1876,7 +1874,7 @@ public enum Concept
 	PiecesPlacedOnBoard
 	(
 		"3.2.1",
-		105,
+		132,
 		"Places initially some pieces on the board.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
@@ -1892,7 +1890,7 @@ public enum Concept
 	PiecesPlacedOutsideBoard
 	(
 		"3.2.2",
-		106,
+		133,
 		"Places initially some pieces (different of shared dice) outside of the board.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
@@ -1906,7 +1904,7 @@ public enum Concept
 	InitialRandomPlacement
 	(
 		"3.2.3",
-		102,
+		134,
 		"Places initially randomly some pieces.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
@@ -1920,7 +1918,7 @@ public enum Concept
 	InitialScore
 	(
 		"3.2.4",
-		100,
+		135,
 		"Sets initial score.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
@@ -1934,7 +1932,7 @@ public enum Concept
 	InitialAmount
 	(
 		"3.2.5",
-		101,
+		136,
 		"Sets initial amount.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
@@ -1948,7 +1946,7 @@ public enum Concept
 	InitialPot
 	(
 		"3.2.6",
-		140,
+		137,
 		"Sets initial pot.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
@@ -1962,7 +1960,7 @@ public enum Concept
 	InitialCost
 	(
 		"3.2.7",
-		104,
+		138,
 		"Sets initially some costs on graph elements.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
@@ -1976,7 +1974,7 @@ public enum Concept
 	NumStartComponentsBoard
 	(
 		"3.2.8",
-		104,
+		139,
 		"Number of components on board at start.",
 		ConceptType.Start, 
 		ConceptDataType.DoubleData,
@@ -1990,7 +1988,7 @@ public enum Concept
 	NumStartComponentsHand
 	(
 		"3.2.9",
-		104,
+		140,
 		"Number of components in player hands at start.",
 		ConceptType.Start, 
 		ConceptDataType.DoubleData,
@@ -2004,7 +2002,7 @@ public enum Concept
 	NumStartComponents
 	(
 		"3.2.10",
-		104,
+		141,
 		"Number of components at start.",
 		ConceptType.Start, 
 		ConceptDataType.DoubleData,
@@ -2022,7 +2020,7 @@ public enum Concept
 	Play
 	(
 		"3.3",
-		197, 
+		142, 
 		"Rules of general play.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -2036,7 +2034,7 @@ public enum Concept
 	Moves
 	(
 		"3.3.1",
-		197, 
+		143, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -2050,7 +2048,7 @@ public enum Concept
 	MovesDecision
 	(
 		"3.3.1.1",
-		197, 
+		144, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -2064,7 +2062,7 @@ public enum Concept
 	NoSiteMoves
 	(
 		"3.3.1.1.1",
-		197, 
+		145, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -2078,7 +2076,7 @@ public enum Concept
 	BetDecision
 	(
 		"3.3.1.1.1.1",
-		21, 
+		146, 
 		"Decide to bet.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2092,7 +2090,7 @@ public enum Concept
 	BetDecisionFrequency
 	(
 		"3.3.1.1.1.1.1",
-		60, 
+		147, 
 		"Frequency of \"Bet Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2107,7 +2105,7 @@ public enum Concept
 	VoteDecision
 	(
 		"3.3.1.1.1.2",
-		22, 
+		148, 
 		"Decide to vote.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2121,7 +2119,7 @@ public enum Concept
 	VoteDecisionFrequency
 	(
 		"3.3.1.1.1.2.1",
-		60, 
+		149, 
 		"Frequency of \"Vote Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2135,7 +2133,7 @@ public enum Concept
 	SwapPlayersDecision
 	(
 		"3.3.1.1.1.3",
-		97, 
+		150, 
 		"Decide to swap players.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2149,7 +2147,7 @@ public enum Concept
 	SwapPlayersDecisionFrequency
 	(
 		"3.3.1.1.1.3.1",
-		60, 
+		151, 
 		"Frequency of \"Swap Players Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2163,7 +2161,7 @@ public enum Concept
 	ChooseTrumpSuitDecision
 	(
 		"3.3.1.1.1.4",
-		240, 
+		152, 
 		"Choose the trump suit.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2177,7 +2175,7 @@ public enum Concept
 	ChooseTrumpSuitDecisionFrequency
 	(
 		"3.3.1.1.1.4.1",
-		60, 
+		153, 
 		"Frequency of \"Choose Trump Suit Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2191,7 +2189,7 @@ public enum Concept
 	PassDecision
 	(
 		"3.3.1.1.1.5",
-		240, 
+		154, 
 		"Decide to pass a turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2205,7 +2203,7 @@ public enum Concept
 	PassDecisionFrequency
 	(
 		"3.3.1.1.1.5.1",
-		60, 
+		155, 
 		"Frequency of \"Pass Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2219,7 +2217,7 @@ public enum Concept
 	ProposeDecision
 	(
 		"3.3.1.1.1.6",
-		22, 
+		156, 
 		"Decide to propose.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2233,7 +2231,7 @@ public enum Concept
 	ProposeDecisionFrequency
 	(
 		"3.3.1.1.1.6.1",
-		60, 
+		157, 
 		"Frequency of \"Propose Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2247,7 +2245,7 @@ public enum Concept
 	SingleSiteMoves
 	(
 		"3.3.1.1.2",
-		197, 
+		158, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -2261,7 +2259,7 @@ public enum Concept
 	AddDecision
 	(
 		"3.3.1.1.2.1",
-		60, 
+		159, 
 		"Decide to add pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2275,7 +2273,7 @@ public enum Concept
 	AddDecisionFrequency
 	(
 		"3.3.1.1.2.1.1",
-		60, 
+		160, 
 		"Frequency of \"Add Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2289,7 +2287,7 @@ public enum Concept
 	PromotionDecision
 	(
 		"3.3.1.1.2.2",
-		26, 
+		161, 
 		"Promote move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2303,7 +2301,7 @@ public enum Concept
 	PromotionFrequency
 	(
 		"3.3.1.1.2.2.1",
-		60, 
+		162, 
 		"Frequency of \"Promotion Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2317,7 +2315,7 @@ public enum Concept
 	RemoveDecision
 	(
 		"3.3.1.1.2.3",
-		56, 
+		163, 
 		"Decide to remove pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2331,7 +2329,7 @@ public enum Concept
 	RemoveDecisionFrequency
 	(
 		"3.3.1.1.2.3.1",
-		60, 
+		164, 
 		"Frequency of \"Remove Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2345,7 +2343,7 @@ public enum Concept
 	RotationDecision
 	(
 		"3.3.1.1.2.4",
-		46, 
+		165, 
 		"Rotation move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2359,7 +2357,7 @@ public enum Concept
 	RotationDecisionFrequency
 	(
 		"3.3.1.1.2.4.1",
-		60, 
+		166, 
 		"Frequency of \"Rotation Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2373,7 +2371,7 @@ public enum Concept
 	TwoSitesMoves
 	(
 		"3.3.1.1.3",
-		197, 
+		167, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -2387,7 +2385,7 @@ public enum Concept
 	StepDecision
 	(
 		"3.3.1.1.3.1",
-		20, 
+		168, 
 		"Decide to step.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2401,7 +2399,7 @@ public enum Concept
 	StepDecisionFrequency
 	(
 		"3.3.1.1.3.1.1",
-		60, 
+		169, 
 		"Frequency of \"Step Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2415,7 +2413,7 @@ public enum Concept
 	StepDecisionToEmpty
 	(
 		"3.3.1.1.3.1.2",
-		266, 
+		170, 
 		"Decide to step to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2429,7 +2427,7 @@ public enum Concept
 	StepDecisionToEmptyFrequency
 	(
 		"3.3.1.1.3.1.2.1",
-		60, 
+		171, 
 		"Frequency of \"Step Decision To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2443,7 +2441,7 @@ public enum Concept
 	StepDecisionToFriend
 	(
 		"3.3.1.1.3.1.3",
-		267, 
+		172, 
 		"Decide to step to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2457,7 +2455,7 @@ public enum Concept
 	StepToFriendFrequency
 	(
 		"3.3.1.1.3.1.3.1",
-		60, 
+		173, 
 		"Frequency of \"Step Decision To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2471,7 +2469,7 @@ public enum Concept
 	StepDecisionToEnemy
 	(
 		"3.3.1.1.3.1.4",
-		268, 
+		174, 
 		"Decide to step to an enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2485,7 +2483,7 @@ public enum Concept
 	StepDecisionToEnemyFrequency
 	(
 		"3.3.1.1.3.1.4.1",
-		60, 
+		175, 
 		"Frequency of \"Step Decision To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2499,7 +2497,7 @@ public enum Concept
 	SlideDecision
 	(
 		"3.3.1.1.3.2",
-		19, 
+		176, 
 		"Decide to slide.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2513,7 +2511,7 @@ public enum Concept
 	SlideDecisionFrequency
 	(
 		"3.3.1.1.3.2.1",
-		60, 
+		177, 
 		"Frequency of \"Slide Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2527,7 +2525,7 @@ public enum Concept
 	SlideDecisionToEmpty
 	(
 		"3.3.1.1.3.2.2",
-		19, 
+		178, 
 		"Slide move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2541,7 +2539,7 @@ public enum Concept
 	SlideDecisionToEmptyFrequency
 	(
 		"3.3.1.1.3.2.2.1",
-		60, 
+		179, 
 		"Frequency of \"Slide Decision To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2555,7 +2553,7 @@ public enum Concept
 	SlideDecisionToEnemy
 	(
 		"3.3.1.1.3.2.3",
-		19, 
+		180, 
 		"Slide move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2569,7 +2567,7 @@ public enum Concept
 	SlideDecisionToEnemyFrequency
 	(
 		"3.3.1.1.3.2.3.1",
-		60, 
+		181, 
 		"Frequency of \"Slide Decision To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2583,7 +2581,7 @@ public enum Concept
 	SlideDecisionToFriend
 	(
 		"3.3.1.1.3.2.4",
-		19, 
+		182, 
 		"Slide move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2597,7 +2595,7 @@ public enum Concept
 	SlideDecisionToFriendFrequency
 	(
 		"3.3.1.1.3.2.4.1",
-		60, 
+		183, 
 		"Frequency of \"Slide Decision To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2611,7 +2609,7 @@ public enum Concept
 	LeapDecision
 	(
 		"3.3.1.1.3.3",
-		18, 
+		184, 
 		"Decide to leap.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2625,7 +2623,7 @@ public enum Concept
 	LeapDecisionFrequency
 	(
 		"3.3.1.1.3.3.1",
-		60, 
+		185, 
 		"Frequency of \"Leap Decision Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2639,7 +2637,7 @@ public enum Concept
 	LeapDecisionToEmpty
 	(
 		"3.3.1.1.3.3.2",
-		269, 
+		186, 
 		"Decide to leap to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2653,7 +2651,7 @@ public enum Concept
 	LeapDecisionToEmptyFrequency
 	(
 		"3.3.1.1.3.3.2.1",
-		60, 
+		187, 
 		"Frequency of \"Leap Decision To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2667,7 +2665,7 @@ public enum Concept
 	LeapDecisionToFriend
 	(
 		"3.3.1.1.3.3.3",
-		270, 
+		188, 
 		"Decide to leap to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2681,7 +2679,7 @@ public enum Concept
 	LeapDecisionToFriendFrequency
 	(
 		"3.3.1.1.3.3.3.1",
-		60, 
+		189, 
 		"Frequency of \"Leap Decision To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2695,7 +2693,7 @@ public enum Concept
 	LeapDecisionToEnemy
 	(
 		"3.3.1.1.3.3.4",
-		271, 
+		190, 
 		"Decide to leap to an enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2709,7 +2707,7 @@ public enum Concept
 	LeapDecisionToEnemyFrequency
 	(
 		"3.3.1.1.3.3.4.1",
-		60, 
+		191, 
 		"Frequency of \"Leap Decision To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2723,7 +2721,7 @@ public enum Concept
 	HopDecision
 	(
 		"3.3.1.1.3.4",
-		500, 
+		192, 
 		"Decide to hop.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2737,7 +2735,7 @@ public enum Concept
 	HopDecisionFrequency
 	(
 		"3.3.1.1.3.4.1",
-		60, 
+		193, 
 		"Frequency of \"Hop Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2751,7 +2749,7 @@ public enum Concept
 	HopDecisionMoreThanOne
 	(
 		"3.3.1.1.3.4.2",
-		63, 
+		194, 
 		"Hop more than one site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2765,7 +2763,7 @@ public enum Concept
 	HopDecisionMoreThanOneFrequency
 	(
 		"3.3.1.1.3.4.2.1",
-		60, 
+		195, 
 		"Frequency of \"Hop Decision More Than One\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2779,7 +2777,7 @@ public enum Concept
 	HopDecisionEnemyToEmpty
 	(
 		"3.3.1.1.3.4.3",
-		260, 
+		196, 
 		"Hop an enemy to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2793,7 +2791,7 @@ public enum Concept
 	HopDecisionEnemyToEmptyFrequency
 	(
 		"3.3.1.1.3.4.3.1",
-		60, 
+		197, 
 		"Frequency of \"Hop Decision Enemy To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2807,7 +2805,7 @@ public enum Concept
 	HopDecisionFriendToEmpty
 	(
 		"3.3.1.1.3.4.4",
-		261, 
+		198, 
 		"Hop a friend to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2821,7 +2819,7 @@ public enum Concept
 	HopDecisionFriendToEmptyFrequency
 	(
 		"3.3.1.1.3.4.4.1",
-		60, 
+		199, 
 		"Frequency of \"Hop DecisionFriend To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2835,7 +2833,7 @@ public enum Concept
 	HopDecisionEnemyToFriend
 	(
 		"3.3.1.1.3.4.5",
-		262, 
+		200, 
 		"Hop an enemy to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2849,7 +2847,7 @@ public enum Concept
 	HopDecisionEnemyToFriendFrequency
 	(
 		"3.3.1.1.3.4.5.1",
-		60, 
+		201, 
 		"Frequency of \"Hop Decision Enemy To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2863,7 +2861,7 @@ public enum Concept
 	HopDecisionFriendToFriend
 	(
 		"3.3.1.1.3.4.6",
-		263, 
+		202, 
 		"Hop a friend to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2877,7 +2875,7 @@ public enum Concept
 	HopDecisionFriendToFriendFrequency
 	(
 		"3.3.1.1.3.4.6.1",
-		60, 
+		203, 
 		"Frequency of \"Hop Decision Friend To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2891,7 +2889,7 @@ public enum Concept
 	HopDecisionEnemyToEnemy
 	(
 		"3.3.1.1.3.4.7",
-		264, 
+		204, 
 		"Hop an enemy to a enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2905,7 +2903,7 @@ public enum Concept
 	HopDecisionEnemyToEnemyFrequency
 	(
 		"3.3.1.1.3.4.7.1",
-		60, 
+		205, 
 		"Frequency of \"Hop Decision Enemy To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2919,7 +2917,7 @@ public enum Concept
 	HopDecisionFriendToEnemy
 	(
 		"3.3.1.1.3.4.8",
-		265, 
+		206, 
 		"Hop a friend to an enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2933,7 +2931,7 @@ public enum Concept
 	HopDecisionFriendToEnemyFrequency
 	(
 		"3.3.1.1.3.4.8.1",
-		60, 
+		207, 
 		"Frequency of \"Hop Decision Friend To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2947,7 +2945,7 @@ public enum Concept
 	FromToDecision
 	(
 		"3.3.1.1.3.5",
-		50, 
+		208, 
 		"Decide to move a piece from a site to another.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2961,7 +2959,7 @@ public enum Concept
 	FromToDecisionFrequency
 	(
 		"3.3.1.1.3.5.1",
-		60, 
+		209, 
 		"Frequency of \"FromTo Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -2975,7 +2973,7 @@ public enum Concept
 	FromToDecisionWithinBoard
 	(
 		"3.3.1.1.3.5.2",
-		50, 
+		210, 
 		"Move a piece from a site to another withing the board.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -2989,7 +2987,7 @@ public enum Concept
 	FromToDecisionWithinBoardFrequency
 	(
 		"3.3.1.1.3.5.2.1",
-		60, 
+		211, 
 		"Frequency of \"FromTo Decision Within Board\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3003,7 +3001,7 @@ public enum Concept
 	FromToDecisionBetweenContainers
 	(
 		"3.3.1.1.3.5.3",
-		50, 
+		212, 
 		"Move a piece from a site to another between 2 different containers.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3017,7 +3015,7 @@ public enum Concept
 	FromToDecisionBetweenContainersFrequency
 	(
 		"3.3.1.1.3.5.3.1",
-		60, 
+		213, 
 		"Frequency of \"FromTo Decision Between Containers\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3031,7 +3029,7 @@ public enum Concept
 	FromToDecisionEmpty
 	(
 		"3.3.1.1.3.5.4",
-		50, 
+		214, 
 		"Move a piece to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3045,7 +3043,7 @@ public enum Concept
 	FromToDecisionEmptyFrequency
 	(
 		"3.3.1.1.3.5.4.1",
-		60, 
+		215, 
 		"Frequency of \"FromTo Decision Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3059,7 +3057,7 @@ public enum Concept
 	FromToDecisionEnemy
 	(
 		"3.3.1.1.3.5.5",
-		50, 
+		216, 
 		"Move a piece to an enemy site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3073,7 +3071,7 @@ public enum Concept
 	FromToDecisionEnemyFrequency
 	(
 		"3.3.1.1.3.5.5.1",
-		60, 
+		217, 
 		"Frequency of \"FromTo Decision Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3087,7 +3085,7 @@ public enum Concept
 	FromToDecisionFriend
 	(
 		"3.3.1.1.3.5.6",
-		50, 
+		218, 
 		"Move a piece to a friend site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3101,7 +3099,7 @@ public enum Concept
 	FromToDecisionFriendFrequency
 	(
 		"3.3.1.1.3.5.6.1",
-		60, 
+		219, 
 		"Frequency of \"FromTo Decision Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3115,7 +3113,7 @@ public enum Concept
 	SwapPiecesDecision
 	(
 		"3.3.1.1.3.6",
-		96, 
+		220, 
 		"Decide to swap pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3129,7 +3127,7 @@ public enum Concept
 	SwapPiecesDecisionFrequency
 	(
 		"3.3.1.1.3.6.1",
-		60, 
+		221, 
 		"Frequency of \"Swap Pieces Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3143,7 +3141,7 @@ public enum Concept
 	ShootDecision
 	(
 		"3.3.1.1.3.7",
-		138,
+		222,
 		"Decide to shoot.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3157,7 +3155,7 @@ public enum Concept
 	ShootDecisionFrequency
 	(
 		"3.3.1.1.3.7.1",
-		60, 
+		223, 
 		"Frequency of \"Shoot Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3171,7 +3169,7 @@ public enum Concept
 	MovesNonDecision
 	(
 		"3.3.1.2",
-		197, 
+		224, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -3185,7 +3183,7 @@ public enum Concept
 	MovesEffects
 	(
 		"3.3.1.2.1",
-		197, 
+		225, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -3199,7 +3197,7 @@ public enum Concept
 	BetEffect
 	(
 		"3.3.1.2.1.1",
-		21, 
+		226, 
 		"Bet effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3213,7 +3211,7 @@ public enum Concept
 	BetEffectFrequency
 	(
 		"3.3.1.2.1.1.1",
-		21, 
+		227, 
 		"Frequency of \"Bet Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3227,7 +3225,7 @@ public enum Concept
 	VoteEffect
 	(
 		"3.3.1.2.1.2",
-		22, 
+		228, 
 		"Vote effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3241,7 +3239,7 @@ public enum Concept
 	VoteEffectFrequency
 	(
 		"3.3.1.2.1.2.1",
-		21, 
+		229, 
 		"Frequency of \"Vote Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3255,7 +3253,7 @@ public enum Concept
 	SwapPlayersEffect
 	(
 		"3.3.1.2.1.3",
-		97, 
+		230, 
 		"Swap players effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3269,7 +3267,7 @@ public enum Concept
 	SwapPlayersEffectFrequency
 	(
 		"3.3.1.2.1.3.1",
-		97, 
+		231, 
 		"Frequency of \"Swap Players Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3283,7 +3281,7 @@ public enum Concept
 	TakeControl
 	(
 		"3.3.1.2.1.4",
-		129,
+		232,
 		"Take control of enemy pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3297,7 +3295,7 @@ public enum Concept
 	TakeControlFrequency
 	(
 		"3.3.1.2.1.4.1",
-		60, 
+		233, 
 		"Frequency of \"Take Control\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3311,7 +3309,7 @@ public enum Concept
 	PassEffect
 	(
 		"3.3.1.2.1.5",
-		240, 
+		234, 
 		"Pass a turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3325,7 +3323,7 @@ public enum Concept
 	PassEffectFrequency
 	(
 		"3.3.1.2.1.5.1",
-		240, 
+		235, 
 		"Frequency of \"Pass Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3339,7 +3337,7 @@ public enum Concept
 	Roll
 	(
 		"3.3.1.2.1.6",
-		240, 
+		236, 
 		"Roll at least a die.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3353,7 +3351,7 @@ public enum Concept
 	RollFrequency
 	(
 		"3.3.1.2.1.6.1",
-		60, 
+		237, 
 		"Frequency of \"Roll\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3367,7 +3365,7 @@ public enum Concept
 	ProposeEffect
 	(
 		"3.3.1.2.1.7",
-		22, 
+		238, 
 		"Propose a vote effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3381,7 +3379,7 @@ public enum Concept
 	ProposeEffectFrequency
 	(
 		"3.3.1.2.1.7.1",
-		60, 
+		239, 
 		"Frequency of \"Propose Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3395,7 +3393,7 @@ public enum Concept
 	AddEffect
 	(
 		"3.3.1.2.1.8",
-		60, 
+		240, 
 		"Add effect.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData, 
@@ -3409,7 +3407,7 @@ public enum Concept
 	AddEffectFrequency
 	(
 		"3.3.1.2.1.8.1",
-		60, 
+		241, 
 		"Frequency of \"Add Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3423,7 +3421,7 @@ public enum Concept
 	Sow
 	(
 		"3.3.1.2.1.9",
-		11, 
+		242, 
 		"Sowing stones.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3437,7 +3435,7 @@ public enum Concept
 	SowFrequency
 	(
 		"3.3.1.2.1.9.1",
-		60, 
+		243, 
 		"Frequency of \"Sow\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3451,7 +3449,7 @@ public enum Concept
 	SowWithEffect
 	(
 		"3.3.1.2.1.9.2",
-		11, 
+		244, 
 		"Sowing moves with effect on final hole.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3465,7 +3463,7 @@ public enum Concept
 	SowCapture
 	(
 		"3.3.1.2.1.9.2.1",
-		11, 
+		245, 
 		"Sowing with capture.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3479,7 +3477,7 @@ public enum Concept
 	SowCaptureFrequency
 	(
 		"3.3.1.2.1.9.2.1.1",
-		60, 
+		246, 
 		"Frequency of \"Sow Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3493,7 +3491,7 @@ public enum Concept
 	SowRemove
 	(
 		"3.3.1.2.1.9.2.2",
-		11, 
+		247, 
 		"Sowing with seeds removed.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3507,7 +3505,7 @@ public enum Concept
 	SowRemoveFrequency
 	(
 		"3.3.1.2.1.9.2.2.1",
-		60, 
+		248, 
 		"Frequency of \"Sow Remove\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3521,7 +3519,7 @@ public enum Concept
 	SowBacktracking
 	(
 		"3.3.1.2.1.9.2.3",
-		11, 
+		249, 
 		"Sowing uses backtracking captures.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3535,7 +3533,7 @@ public enum Concept
 	SowBacktrackingFrequency
 	(
 		"3.3.1.2.1.9.2.3.1",
-		60, 
+		250, 
 		"Frequency of \"Sow Backtracking\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3549,7 +3547,7 @@ public enum Concept
 	SowProperties
 	(
 		"3.3.1.2.1.9.3",
-		11, 
+		251, 
 		"Sowing properties.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3563,7 +3561,7 @@ public enum Concept
 	SowSkip
 	(
 		"3.3.1.2.1.9.3.1",
-		11, 
+		252, 
 		"Sowing in skiping some holes.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3577,7 +3575,7 @@ public enum Concept
 	SowOriginFirst
 	(
 		"3.3.1.2.1.9.3.2",
-		11, 
+		253, 
 		"Sowing in the origin hole first.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3591,7 +3589,7 @@ public enum Concept
 	SowCW
 	(
 		"3.3.1.2.1.9.3.3",
-		11, 
+		254, 
 		"Sowing is performed CW.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3605,7 +3603,7 @@ public enum Concept
 	SowCCW
 	(
 		"3.3.1.2.1.9.3.4",
-		11, 
+		255, 
 		"Sowing is performed CCW.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3619,7 +3617,7 @@ public enum Concept
 	PromotionEffect
 	(
 		"3.3.1.2.1.10",
-		26, 
+		256, 
 		"Promote effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3633,7 +3631,7 @@ public enum Concept
 	PromotionEffectFrequency
 	(
 		"3.3.1.2.1.10.1",
-		60, 
+		257, 
 		"Frequency of \"Promote Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3647,7 +3645,7 @@ public enum Concept
 	RemoveEffect
 	(
 		"3.3.1.2.1.11",
-		49, 
+		258, 
 		"Remove effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3661,7 +3659,7 @@ public enum Concept
 	RemoveEffectFrequency
 	(
 		"3.3.1.2.1.11.1",
-		60, 
+		259, 
 		"Frequency of \"Remove Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3675,7 +3673,7 @@ public enum Concept
 	PushEffect
 	(
 		"3.3.1.2.1.12",
-		65, 
+		260, 
 		"Push move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3689,7 +3687,7 @@ public enum Concept
 	PushFrequency
 	(
 		"3.3.1.2.1.12.1",
-		60, 
+		261, 
 		"Frequency of \"Push Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3703,7 +3701,7 @@ public enum Concept
 	Flip
 	(
 		"3.3.1.2.1.13",
-		94, 
+		262, 
 		"Flip move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3717,7 +3715,7 @@ public enum Concept
 	FlipFrequency
 	(
 		"3.3.1.2.1.13.1",
-		60, 
+		263, 
 		"Frequency of \"Flip Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3731,7 +3729,7 @@ public enum Concept
 	SetMove
 	(
 		"3.3.1.2.1.14",
-		240, 
+		264, 
 		"Set Moves.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3745,7 +3743,7 @@ public enum Concept
 	SetNextPlayer
 	(
 		"3.3.1.2.1.14.1",
-		240, 
+		265, 
 		"Decide who is the next player.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3759,7 +3757,7 @@ public enum Concept
 	SetNextPlayerFrequency
 	(
 		"3.3.1.2.1.14.1.1",
-		60, 
+		266, 
 		"Frequency of \"Set Next Player\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3773,7 +3771,7 @@ public enum Concept
 	MoveAgain
 	(
 		"3.3.1.2.1.14.2",
-		240, 
+		267, 
 		"Set the next player to the mover.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3787,7 +3785,7 @@ public enum Concept
 	MoveAgainFrequency
 	(
 		"3.3.1.2.1.14.2.1",
-		60, 
+		268, 
 		"Frequency of \"Move Again\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3801,7 +3799,7 @@ public enum Concept
 	SetValue
 	(
 		"3.3.1.2.1.14.3",
-		240, 
+		269, 
 		"Set the value of a piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3815,7 +3813,7 @@ public enum Concept
 	SetValueFrequency
 	(
 		"3.3.1.2.1.14.3.1",
-		60, 
+		270, 
 		"Frequency of \"Set Value\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3829,7 +3827,7 @@ public enum Concept
 	SetCount
 	(
 		"3.3.1.2.1.14.4",
-		240, 
+		271, 
 		"Set the count of a piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3843,7 +3841,7 @@ public enum Concept
 	SetCountFrequency
 	(
 		"3.3.1.2.1.14.4.1",
-		60, 
+		272, 
 		"Frequency of \"Set Count\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3857,7 +3855,7 @@ public enum Concept
 	SetCost
 	(
 		"3.3.1.2.1.14.5",
-		240, 
+		273, 
 		"Set the cost of a graph element.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3871,7 +3869,7 @@ public enum Concept
 	SetCostFrequency
 	(
 		"3.3.1.2.1.14.5.1",
-		60, 
+		274, 
 		"Frequency of \"Set Cost\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3885,7 +3883,7 @@ public enum Concept
 	SetPhase
 	(
 		"3.3.1.2.1.14.6",
-		240, 
+		275, 
 		"Set the phase of a graph element.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3899,7 +3897,7 @@ public enum Concept
 	SetPhaseFrequency
 	(
 		"3.3.1.2.1.14.6.1",
-		60, 
+		276, 
 		"Frequency of \"Set Phase\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3913,7 +3911,7 @@ public enum Concept
 	SetTrumpSuit
 	(
 		"3.3.1.2.1.14.7",
-		240, 
+		277, 
 		"Set the trump suit.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3927,7 +3925,7 @@ public enum Concept
 	SetTrumpSuitFrequency
 	(
 		"3.3.1.2.1.14.7.1",
-		60, 
+		278, 
 		"Frequency of \"Set Trump Suit\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3941,7 +3939,7 @@ public enum Concept
 	SetRotation
 	(
 		"3.3.1.2.1.14.8",
-		46, 
+		279, 
 		"Rotation move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3955,7 +3953,7 @@ public enum Concept
 	RotationEffectFrequency
 	(
 		"3.3.1.2.1.14.8.1",
-		60, 
+		280, 
 		"Frequency of \"Set Rotation\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -3969,7 +3967,7 @@ public enum Concept
 	StepEffect
 	(
 		"3.3.1.2.1.15",
-		20, 
+		281, 
 		"Step effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3983,7 +3981,7 @@ public enum Concept
 	StepEffectFrequency
 	(
 		"3.3.1.2.1.15.1",
-		20, 
+		282, 
 		"Frequency of \"Step Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -3997,7 +3995,7 @@ public enum Concept
 	SlideEffect
 	(
 		"3.3.1.2.1.16",
-		19, 
+		283, 
 		"Slide effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4011,7 +4009,7 @@ public enum Concept
 	SlideEffectFrequency
 	(
 		"3.3.1.2.1.16.1",
-		20, 
+		284, 
 		"Frequency of \"Slide Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4025,7 +4023,7 @@ public enum Concept
 	LeapEffect
 	(
 		"3.3.1.2.1.17",
-		18, 
+		285, 
 		"Leap effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4039,7 +4037,7 @@ public enum Concept
 	LeapEffectFrequency
 	(
 		"3.3.1.2.1.17.1",
-		20, 
+		286, 
 		"Frequency of \"Leap Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4053,7 +4051,7 @@ public enum Concept
 	HopEffect
 	(
 		"3.3.1.2.1.18",
-		500, 
+		287, 
 		"Hop effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4067,7 +4065,7 @@ public enum Concept
 	HopEffectFrequency
 	(
 		"3.3.1.2.1.18.1",
-		20, 
+		288, 
 		"Frequency of \"Hop Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4081,7 +4079,7 @@ public enum Concept
 	FromToEffect
 	(
 		"3.3.1.2.1.19",
-		50, 
+		289, 
 		"Effect to move a piece from a site to another.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4095,7 +4093,7 @@ public enum Concept
 	FromToEffectFrequency
 	(
 		"3.3.1.2.1.19.1",
-		20, 
+		290, 
 		"Frequency of \"FromTo Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4109,7 +4107,7 @@ public enum Concept
 	SwapPiecesEffect
 	(
 		"3.3.1.2.1.20",
-		96, 
+		291, 
 		"Swap pieces effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4123,7 +4121,7 @@ public enum Concept
 	SwapPiecesEffectFrequency
 	(
 		"3.3.1.2.1.20.1",
-		20, 
+		292, 
 		"Frequency of \"Swap Pieces Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4136,7 +4134,7 @@ public enum Concept
 	/** */
 	ShootEffect(
 		"3.3.1.2.1.21",
-		138,
+		293,
 		"Shoot effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4150,7 +4148,7 @@ public enum Concept
 	ShootEffectFrequency
 	(
 		"3.3.1.2.1.21.1",
-		20, 
+		294, 
 		"Frequency of \"Shoot Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4164,7 +4162,7 @@ public enum Concept
 	MovesOperators
 	(
 		"3.3.1.2.2",
-		197, 
+		295, 
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4178,7 +4176,7 @@ public enum Concept
 	Priority
 	(
 		"3.3.1.2.2.1",
-		61, 
+		296, 
 		"Some moves are priority.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4192,7 +4190,7 @@ public enum Concept
 	ByDieMove
 	(
 		"3.3.1.2.2.2",
-		62, 
+		297, 
 		"Each die can correspond to a different move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4206,7 +4204,7 @@ public enum Concept
 	MaxMovesInTurn
 	(
 		"3.3.1.2.2.3",
-		238, 
+		298, 
 		"Maximise the number of moves in a turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4220,7 +4218,7 @@ public enum Concept
 	MaxDistance
 	(
 		"3.3.1.2.2.4",
-		240, 
+		299, 
 		"Maximise the distance to move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4234,7 +4232,7 @@ public enum Concept
 	Capture
 	(
 		"3.3.2",
-		197, 
+		300, 
 		"Game involved captures.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4248,7 +4246,7 @@ public enum Concept
 	ReplacementCapture
 	(
 		"3.3.2.1",
-		54, 
+		301, 
 		"Capture in replacing.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4262,7 +4260,7 @@ public enum Concept
 	ReplacementCaptureFrequency
 	(
 		"3.3.2.1.1",
-		60, 
+		302, 
 		"Frequency of \"Replacement Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4276,7 +4274,7 @@ public enum Concept
 	HopCapture
 	(
 		"3.3.2.2",
-		57, 
+		303, 
 		"Capture in hopping.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4290,7 +4288,7 @@ public enum Concept
 	HopCaptureFrequency
 	(
 		"3.3.2.2.1",
-		60, 
+		304, 
 		"Frequency of \"Hop Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4304,7 +4302,7 @@ public enum Concept
 	HopCaptureMoreThanOne
 	(
 		"3.3.2.3",
-		64, 
+		305, 
 		"Capture in hopping many sites.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4318,7 +4316,7 @@ public enum Concept
 	HopCaptureMoreThanOneFrequency
 	(
 		"3.3.2.3.1",
-		60, 
+		306, 
 		"Frequency of \"Hop Capture More Than One\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4332,7 +4330,7 @@ public enum Concept
 	DirectionCapture
 	(
 		"3.3.2.4",
-		51, 
+		307, 
 		"Capture pieces in a direction.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4346,7 +4344,7 @@ public enum Concept
 	DirectionCaptureFrequency
 	(
 		"3.3.2.4.1",
-		60, 
+		308, 
 		"Frequency of \"Direction Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4360,7 +4358,7 @@ public enum Concept
 	EncloseCapture
 	(
 		"3.3.2.5",
-		52, 
+		309, 
 		"Capture in enclosing.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4374,7 +4372,7 @@ public enum Concept
 	EncloseCaptureFrequency
 	(
 		"3.3.2.5.1",
-		60, 
+		310, 
 		"Frequency of \"Enclose Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4388,7 +4386,7 @@ public enum Concept
 	CustodialCapture
 	(
 		"3.3.2.6",
-		53, 
+		311, 
 		"Capture in custodial.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4402,7 +4400,7 @@ public enum Concept
 	CustodialCaptureFrequency
 	(
 		"3.3.2.6.1",
-		60, 
+		312, 
 		"Frequency of \"Custodial Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4416,7 +4414,7 @@ public enum Concept
 	InterveneCapture
 	(
 		"3.3.2.7",
-		55, 
+		313, 
 		"Intervene capture.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4430,7 +4428,7 @@ public enum Concept
 	InterveneCaptureFrequency
 	(
 		"3.3.2.7.1",
-		60, 
+		314, 
 		"Frequency of \"Intervene Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4444,7 +4442,7 @@ public enum Concept
 	SurroundCapture
 	(
 		"3.3.2.8",
-		58, 
+		315, 
 		"Ccapture in surrounding.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4458,7 +4456,7 @@ public enum Concept
 	SurroundCaptureFrequency
 	(
 		"3.3.2.8.1",
-		60, 
+		316, 
 		"Frequency of \"Surround Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4472,7 +4470,7 @@ public enum Concept
 	CaptureSequence
 	(
 		"3.3.2.9",
-		134,
+		317,
 		"Capture pieces in a sequence at the end of the turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4486,7 +4484,7 @@ public enum Concept
 	CaptureSequenceFrequency
 	(
 		"3.3.2.9.1",
-		60, 
+		318, 
 		"Frequency of \"Capture Sequence\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -4500,7 +4498,7 @@ public enum Concept
 	MaxCapture
 	(
 		"3.3.2.10",
-		239, 
+		319, 
 		"Maximise the number of captures.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4514,7 +4512,7 @@ public enum Concept
 	Conditions
 	(
 		"3.3.3",
-		197, 
+		320, 
 		"Conditions checked.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4528,7 +4526,7 @@ public enum Concept
 	SpaceConditions
 	(
 		"3.3.3.1",
-		197, 
+		321, 
 		"Space conditions.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4542,7 +4540,7 @@ public enum Concept
 	Line
 	(
 		"3.3.3.1.1",
-		3000, 
+		322, 
 		"Line Detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4556,7 +4554,7 @@ public enum Concept
 	Connection
 	(
 		"3.3.3.1.2",
-		7, 
+		323, 
 		"Connected regions detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4570,7 +4568,7 @@ public enum Concept
 	Group
 	(
 		"3.3.3.1.3",
-		9, 
+		324, 
 		"Detect a group.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4584,7 +4582,7 @@ public enum Concept
 	Contains
 	(
 		"3.3.3.1.4",
-		1000,
+		325,
 		"Detect if a site is in a region.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4598,7 +4596,7 @@ public enum Concept
 	Loop
 	(
 		"3.3.3.1.5",
-		30, 
+		326, 
 		"Loop detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4612,7 +4610,7 @@ public enum Concept
 	Pattern
 	(
 		"3.3.3.1.6",
-		32, 
+		327, 
 		"Pattern detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4626,7 +4624,7 @@ public enum Concept
 	PathExtent
 	(
 		"3.3.3.1.7",
-		34, 
+		328, 
 		"Path extent detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4640,7 +4638,7 @@ public enum Concept
 	Territory
 	(
 		"3.3.3.1.8",
-		36, 
+		329, 
 		"Territory detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4654,7 +4652,7 @@ public enum Concept
 	Fill
 	(
 		"3.3.3.1.9",
-		43, 
+		330, 
 		"Check region filled by pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4668,7 +4666,7 @@ public enum Concept
 	Distance
 	(
 		"3.3.3.1.10",
-		202, 
+		331, 
 		"Check distance between two sites.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4682,7 +4680,7 @@ public enum Concept
 	MoveConditions
 	(
 		"3.3.3.2",
-		197, 
+		332, 
 		"Move conditions.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4696,7 +4694,7 @@ public enum Concept
 	NoMoves
 	(
 		"3.3.3.2.1",
-		501, 
+		333, 
 		"Detect no legal moves.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4710,7 +4708,7 @@ public enum Concept
 	NoMovesMover
 	(
 		"3.3.3.2.1.1",
-		501, 
+		334, 
 		"Detect no legal moves for the mover.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4724,7 +4722,7 @@ public enum Concept
 	NoMovesNext
 	(
 		"3.3.3.2.1.2",
-		501, 
+		335, 
 		"Detect no legal moves for the next player.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4738,7 +4736,7 @@ public enum Concept
 	CanMove
 	(
 		"3.3.3.2.2",
-		15, 
+		336, 
 		"Check if a piece (or more) can make specific move(s).",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4752,7 +4750,7 @@ public enum Concept
 	CanNotMove
 	(
 		"3.3.3.2.3",
-		16, 
+		337, 
 		"Check if a piece (or more) can not make specific move(s).",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4766,7 +4764,7 @@ public enum Concept
 	PieceConditions
 	(
 		"3.3.3.3",
-		197, 
+		338, 
 		"Piece conditions.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4780,7 +4778,7 @@ public enum Concept
 	NoPiece
 	(
 		"3.3.3.3.1",
-		12, 
+		339, 
 		"No piece detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4794,7 +4792,7 @@ public enum Concept
 	NoPieceMover
 	(
 		"3.3.3.3.1.1",
-		12, 
+		340, 
 		"No piece detection for the pieces of the mover.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4808,7 +4806,7 @@ public enum Concept
 	NoPieceNext
 	(
 		"3.3.3.3.1.2",
-		12, 
+		341, 
 		"No piece detection for the pieces of the next player.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4822,7 +4820,7 @@ public enum Concept
 	NoTargetPiece
 	(
 		"3.3.3.3.2", 
-		12, 
+		342, 
 		"No target piece detection.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4836,7 +4834,7 @@ public enum Concept
 	Threat
 	(
 		"3.3.3.3.3",
-		14, 
+		343, 
 		"Piece under threat detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4850,7 +4848,7 @@ public enum Concept
 	IsEmpty
 	(
 		"3.3.3.3.4",
-		258, 
+		344, 
 		"Empty site detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4864,7 +4862,7 @@ public enum Concept
 	IsEnemy
 	(
 		"3.3.3.3.5",
-		257, 
+		345, 
 		"Occupied site by enemy detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4878,7 +4876,7 @@ public enum Concept
 	IsFriend
 	(
 		"3.3.3.3.6",
-		259, 
+		346, 
 		"Occupied site by friend detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4892,7 +4890,7 @@ public enum Concept
 	LineOfSight
 	(
 		"3.3.3.3.7",
-		66, 
+		347, 
 		"Line of sight of pieces used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4906,7 +4904,7 @@ public enum Concept
 	CountPiecesComparison
 	(
 		"3.3.3.3.8",
-		12, 
+		348, 
 		"The number of pieces is compared.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4920,7 +4918,7 @@ public enum Concept
 	CountPiecesMoverComparison
 	(
 		"3.3.3.3.8.1",
-		12, 
+		349, 
 		"The number of pieces of the mover is compared.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4934,7 +4932,7 @@ public enum Concept
 	CountPiecesNextComparison
 	(
 		"3.3.3.3.8.2",
-		12, 
+		350, 
 		"The number of pieces of the next player is compared.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -4948,7 +4946,7 @@ public enum Concept
 	ProgressCheck
 	(
 		"3.3.3.4",
-		197, 
+		351, 
 		"Progress condition.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4962,7 +4960,7 @@ public enum Concept
 	Directions
 	(
 		"3.3.4",
-		197, 
+		352, 
 		"Directions used.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4976,7 +4974,7 @@ public enum Concept
 	AbsoluteDirections
 	(
 		"3.3.4.1",
-		197, 
+		353, 
 		"Absolute directions used.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -4990,7 +4988,7 @@ public enum Concept
 	AllDirections
 	(
 		"3.3.4.1.1",
-		145,
+		354,
 		"All directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5004,7 +5002,7 @@ public enum Concept
 	AdjacentDirection
 	(
 		"3.3.4.1.2",
-		143,
+		355,
 		"Adjacent directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5018,7 +5016,7 @@ public enum Concept
 	OrthogonalDirection
 	(
 		"3.3.4.1.3",
-		142,
+		356,
 		"Orthogonal directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5032,7 +5030,7 @@ public enum Concept
 	DiagonalDirection
 	(
 		"3.3.4.1.4",
-		144,
+		357,
 		"Diagonal directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5046,7 +5044,7 @@ public enum Concept
 	OffDiagonalDirection
 	(
 		"3.3.4.1.5",
-		146,
+		358,
 		"Off diagonal directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5060,7 +5058,7 @@ public enum Concept
 	RotationalDirection
 	(
 		"3.3.4.1.6",
-		147,
+		359,
 		"Rotational directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5074,7 +5072,7 @@ public enum Concept
 	SameLayerDirection
 	(
 		"3.3.4.1.7",
-		148,
+		360,
 		"Same layer directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5088,7 +5086,7 @@ public enum Concept
 	RelativeDirections
 	(
 		"3.3.4.2",
-		197, 
+		361, 
 		"Directions used.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5102,7 +5100,7 @@ public enum Concept
 	ForwardDirection
 	(
 		"3.3.4.2.1",
-		149,
+		362,
 		"Forward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5116,7 +5114,7 @@ public enum Concept
 	BackwardDirection
 	(
 		"3.3.4.2.2",
-		150,
+		363,
 		"Backward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5130,7 +5128,7 @@ public enum Concept
 	ForwardsDirection
 	(
 		"3.3.4.2.3",
-		151,
+		364,
 		"Forwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5144,7 +5142,7 @@ public enum Concept
 	BackwardsDirection
 	(
 		"3.3.4.2.4",
-		152,
+		365,
 		"Backwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5158,7 +5156,7 @@ public enum Concept
 	RightwardDirection
 	(
 		"3.3.4.2.5",
-		153,
+		366,
 		"Rightward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5172,7 +5170,7 @@ public enum Concept
 	LeftwardDirection
 	(
 		"3.3.4.2.6",
-		154,
+		367,
 		"Leftward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5186,7 +5184,7 @@ public enum Concept
 	RightwardsDirection
 	(
 		"3.3.4.2.7",
-		155,
+		368,
 		"Rightwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5200,7 +5198,7 @@ public enum Concept
 	LeftwardsDirection
 	(
 		"3.3.4.2.8",
-		156,
+		369,
 		"Leftwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5214,7 +5212,7 @@ public enum Concept
 	ForwardLeftDirection
 	(
 		"3.3.4.2.9",
-		157,
+		370,
 		"Forward left direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5228,7 +5226,7 @@ public enum Concept
 	ForwardRightDirection
 	(
 		"3.3.4.2.10",
-		158,
+		371,
 		"Forward right direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5241,7 +5239,7 @@ public enum Concept
 	/** BL enum is used. */
 	BackwardLeftDirection(
 		"3.3.4.2.11",
-		159,
+		372,
 		"Backward left direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5255,7 +5253,7 @@ public enum Concept
 	BackwardRightDirection
 	(
 		"3.3.4.2.12",
-		160,
+		373,
 		"Use backward right direction.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5269,7 +5267,7 @@ public enum Concept
 	SameDirection
 	(
 		"3.3.4.2.13",
-		161,
+		374,
 		"Same direction of the previous move used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5283,7 +5281,7 @@ public enum Concept
 	OppositeDirection
 	(
 		"3.3.4.2.14",
-		162,
+		375,
 		"Opposite direction of the previous move used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5297,7 +5295,7 @@ public enum Concept
 	Information
 	(
 		"3.3.5",
-		197, 
+		376, 
 		"Information.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5311,7 +5309,7 @@ public enum Concept
 	HidePieceType
 	(
 		"3.3.5.1",
-		110, 
+		377, 
 		"Hide piece type.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5325,7 +5323,7 @@ public enum Concept
 	HidePieceOwner
 	(
 		"3.3.5.2",
-		136, 
+		378, 
 		"Hide piece owner.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5339,7 +5337,7 @@ public enum Concept
 	HidePieceCount
 	(
 		"3.3.5.3",
-		163, 
+		379, 
 		"Hide number of pieces.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5353,7 +5351,7 @@ public enum Concept
 	HidePieceRotation
 	(
 		"3.3.5.4",
-		164, 
+		380, 
 		"Hide piece rotation.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5367,7 +5365,7 @@ public enum Concept
 	HidePieceValue
 	(
 		"3.3.5.5",
-		165, 
+		381, 
 		"Hide piece value.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5381,7 +5379,7 @@ public enum Concept
 	HidePieceState
 	(
 		"3.3.5.6",
-		167, 
+		382, 
 		"Hide the site state.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5395,7 +5393,7 @@ public enum Concept
 	InvisiblePiece
 	(
 		"3.3.5.7",
-		166, 
+		383, 
 		"Piece can be invisible.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5409,7 +5407,7 @@ public enum Concept
 	Phase
 	(
 		"3.3.6",
-		197, 
+		384, 
 		"Phases of play.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5423,7 +5421,7 @@ public enum Concept
 	NumPlayPhase
 	(
 		"3.3.6.1",
-		198, 
+		385, 
 		"Number of play phases.",
 		ConceptType.Play, 
 		ConceptDataType.IntegerData,
@@ -5437,7 +5435,7 @@ public enum Concept
 	Scoring
 	(
 		"3.3.7",
-		41, 
+		386, 
 		"Involve scores.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5451,7 +5449,7 @@ public enum Concept
 	PieceCount
 	(
 		"3.3.8",
-		169, 
+		387, 
 		"Many pieces of the same type on a site.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
@@ -5465,7 +5463,7 @@ public enum Concept
 	SumDice
 	(
 		"3.3.9",
-		95, 
+		388, 
 		"Use sum of all dice.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
@@ -5484,7 +5482,7 @@ public enum Concept
 	End
 	(
 		"3.4",
-		197, 
+		389, 
 		"Rules for ending the game.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
@@ -5498,7 +5496,7 @@ public enum Concept
 	SpaceEnd
 	(
 		"3.4.1",
-		197, 
+		390, 
 		"Space ending rules.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
@@ -5512,7 +5510,7 @@ public enum Concept
 	LineEnd
 	(
 		"3.4.1.1",
-		4, 
+		391, 
 		"End in making a line.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5526,7 +5524,7 @@ public enum Concept
 	LineEndFrequency
 	(
 		"3.4.1.1.1",
-		60, 
+		392, 
 		"Frequency of \"Line End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5540,7 +5538,7 @@ public enum Concept
 	LineWin
 	(
 		"3.4.1.1.2",
-		4, 
+		393, 
 		"Win in making a line.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5554,7 +5552,7 @@ public enum Concept
 	LineWinFrequency
 	(
 		"3.4.1.1.2.1",
-		60, 
+		394, 
 		"Frequency of \"Line Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5568,7 +5566,7 @@ public enum Concept
 	LineLoss
 	(
 		"3.4.1.1.3",
-		4, 
+		395, 
 		"Loss in making a line.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5582,7 +5580,7 @@ public enum Concept
 	LineLossFrequency
 	(
 		"3.4.1.1.3.1",
-		60, 
+		396, 
 		"Frequency of \"Line Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5596,7 +5594,7 @@ public enum Concept
 	LineDraw
 	(
 		"3.4.1.1.4",
-		4, 
+		397, 
 		"Draw in making a line.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5610,7 +5608,7 @@ public enum Concept
 	LineDrawFrequency
 	(
 		"3.4.1.1.4.1",
-		60, 
+		398, 
 		"Frequency of \"Line Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5624,7 +5622,7 @@ public enum Concept
 	ConnectionEnd
 	(
 		"3.4.1.2",
-		8, 
+		399, 
 		"End if connected regions.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5638,7 +5636,7 @@ public enum Concept
 	ConnectionEndFrequency
 	(
 		"3.4.1.2.1",
-		60, 
+		400, 
 		"Frequency of \"Connection End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5652,7 +5650,7 @@ public enum Concept
 	ConnectionWin
 	(
 		"3.4.1.2.2",
-		4, 
+		401, 
 		"Win in connecting regions.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5666,7 +5664,7 @@ public enum Concept
 	ConnectionWinFrequency
 	(
 		"3.4.1.2.2.1",
-		60, 
+		402, 
 		"Frequency of \"Connection Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5680,7 +5678,7 @@ public enum Concept
 	ConnectionLoss
 	(
 		"3.4.1.2.3",
-		4, 
+		403, 
 		"Loss in connecting regions.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5694,7 +5692,7 @@ public enum Concept
 	ConnectionLossFrequency
 	(
 		"3.4.1.2.3.1",
-		60, 
+		404, 
 		"Frequency of \"Connection Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5708,7 +5706,7 @@ public enum Concept
 	ConnectionDraw
 	(
 		"3.4.1.2.4",
-		4, 
+		405, 
 		"Draw in connecting regions.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5722,7 +5720,7 @@ public enum Concept
 	ConnectionDrawFrequency
 	(
 		"3.4.1.2.4.1",
-		60, 
+		406, 
 		"Frequency of \"Connection Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5736,7 +5734,7 @@ public enum Concept
 	GroupEnd
 	(
 		"3.4.1.3",
-		10, 
+		407, 
 		"End in making a group.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5750,7 +5748,7 @@ public enum Concept
 	GroupEndFrequency
 	(
 		"3.4.1.3.1",
-		60, 
+		408, 
 		"Frequency of \"Group End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5764,7 +5762,7 @@ public enum Concept
 	GroupWin
 	(
 		"3.4.1.3.2",
-		4, 
+		409, 
 		"Win in making a group.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5778,7 +5776,7 @@ public enum Concept
 	GroupWinFrequency
 	(
 		"3.4.1.3.2.1",
-		60, 
+		410, 
 		"Frequency of \"Group Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5792,7 +5790,7 @@ public enum Concept
 	GroupLoss
 	(
 		"3.4.1.3.3",
-		4, 
+		411, 
 		"Loss in making a group.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5806,7 +5804,7 @@ public enum Concept
 	GroupLossFrequency
 	(
 		"3.4.1.3.3.1",
-		60, 
+		412, 
 		"Frequency of \"Group Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5820,7 +5818,7 @@ public enum Concept
 	GroupDraw
 	(
 		"3.4.1.3.4",
-		4, 
+		413, 
 		"Draw in making a group.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5834,7 +5832,7 @@ public enum Concept
 	GroupDrawFrequency
 	(
 		"3.4.1.3.4.1",
-		60, 
+		414, 
 		"Frequency of \"Group Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5848,7 +5846,7 @@ public enum Concept
 	LoopEnd
 	(
 		"3.4.1.4",
-		31, 
+		415, 
 		"End in making a loop.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5862,7 +5860,7 @@ public enum Concept
 	LoopEndFrequency
 	(
 		"3.4.1.4.1",
-		60, 
+		416, 
 		"Frequency of \"Loop End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5876,7 +5874,7 @@ public enum Concept
 	LoopWin
 	(
 		"3.4.1.4.2",
-		4, 
+		417, 
 		"Win in making a loop.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5890,7 +5888,7 @@ public enum Concept
 	LoopWinFrequency
 	(
 		"3.4.1.4.2.1",
-		60, 
+		418, 
 		"Frequency of \"Loop Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5904,7 +5902,7 @@ public enum Concept
 	LoopLoss
 	(
 		"3.4.1.4.3",
-		4, 
+		419, 
 		"Loss in making a loop.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5918,7 +5916,7 @@ public enum Concept
 	LoopLossFrequency
 	(
 		"3.4.1.4.3.1",
-		60, 
+		420, 
 		"Frequency of \"Loop Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5932,7 +5930,7 @@ public enum Concept
 	LoopDraw
 	(
 		"3.4.1.4.4",
-		4, 
+		421, 
 		"Draw in making a loop.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5946,7 +5944,7 @@ public enum Concept
 	LoopDrawFrequency
 	(
 		"3.4.1.4.4.1",
-		60, 
+		422, 
 		"Frequency of \"Loop Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5960,7 +5958,7 @@ public enum Concept
 	PatternEnd
 	(
 		"3.4.1.5",
-		33, 
+		423, 
 		"End in making a pattern.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -5974,7 +5972,7 @@ public enum Concept
 	PatternEndFrequency
 	(
 		"3.4.1.5.1",
-		60, 
+		424, 
 		"Frequency of \"Pattern End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -5988,7 +5986,7 @@ public enum Concept
 	PatternWin
 	(
 		"3.4.1.5.2",
-		4, 
+		425, 
 		"Win in making a pattern.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6002,7 +6000,7 @@ public enum Concept
 	PatternWinFrequency
 	(
 		"3.4.1.5.2.1",
-		60, 
+		426, 
 		"Frequency of \"Pattern Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6016,7 +6014,7 @@ public enum Concept
 	PatternLoss
 	(
 		"3.4.1.5.3",
-		4, 
+		427, 
 		"Loss in making a pattern.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6030,7 +6028,7 @@ public enum Concept
 	PatternLossFrequency
 	(
 		"3.4.1.5.3.1",
-		60, 
+		428, 
 		"Frequency of \"Pattern Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6044,7 +6042,7 @@ public enum Concept
 	PatternDraw
 	(
 		"3.4.1.5.4",
-		4, 
+		429, 
 		"Draw in making a Pattern.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6058,7 +6056,7 @@ public enum Concept
 	PatternDrawFrequency
 	(
 		"3.4.1.5.4.1",
-		60, 
+		430, 
 		"Frequency of \"Pattern Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6072,7 +6070,7 @@ public enum Concept
 	PathExtentEnd
 	(
 		"3.4.1.6",
-		35, 
+		431, 
 		"End with a path extent.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6086,7 +6084,7 @@ public enum Concept
 	PathExtentEndFrequency
 	(
 		"3.4.1.6.1",
-		60, 
+		432, 
 		"Frequency of \"Path Extent End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6100,7 +6098,7 @@ public enum Concept
 	PathExtentWin
 	(
 		"3.4.1.6.2",
-		4, 
+		433, 
 		"Win with a path extent.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6114,7 +6112,7 @@ public enum Concept
 	PathExtentWinFrequency
 	(
 		"3.4.1.6.2.1",
-		60, 
+		434, 
 		"Frequency of \"PathExtent Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6128,7 +6126,7 @@ public enum Concept
 	PathExtentLoss
 	(
 		"3.4.1.6.3",
-		4, 
+		435, 
 		"Loss with a path extent.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6142,7 +6140,7 @@ public enum Concept
 	PathExtentLossFrequency
 	(
 		"3.4.1.6.3.1",
-		60, 
+		436, 
 		"Frequency of \"PathExtent Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6156,7 +6154,7 @@ public enum Concept
 	PathExtentDraw
 	(
 		"3.4.1.6.4",
-		4, 
+		437, 
 		"Draw with a path extent.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6170,7 +6168,7 @@ public enum Concept
 	PathExtentDrawFrequency
 	(
 		"3.4.1.6.4.1",
-		60, 
+		438, 
 		"Frequency of \"PathExtent Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6184,7 +6182,7 @@ public enum Concept
 	TerritoryEnd
 	(
 		"3.4.1.7",
-		37, 
+		439, 
 		"End related to a territory.",
 		ConceptType.End,
 		ConceptDataType.BooleanData, 
@@ -6198,7 +6196,7 @@ public enum Concept
 	TerritoryEndFrequency
 	(
 		"3.4.1.7.1",
-		60, 
+		440, 
 		"Frequency of \"Territory End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6212,7 +6210,7 @@ public enum Concept
 	TerritoryWin
 	(
 		"3.4.1.7.2",
-		4, 
+		441, 
 		"Win related to a territory.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6226,7 +6224,7 @@ public enum Concept
 	TerritoryWinFrequency
 	(
 		"3.4.1.7.2.1",
-		60, 
+		442, 
 		"Frequency of \"Territory Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6240,7 +6238,7 @@ public enum Concept
 	TerritoryLoss
 	(
 		"3.4.1.7.3",
-		4, 
+		443, 
 		"Loss related to a territory.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6254,7 +6252,7 @@ public enum Concept
 	TerritoryLossFrequency
 	(
 		"3.4.1.7.3.1",
-		60, 
+		444, 
 		"Frequency of \"Territory Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6268,7 +6266,7 @@ public enum Concept
 	TerritoryDraw
 	(
 		"3.4.1.7.4",
-		4, 
+		445, 
 		"Draw related to a territory.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6282,7 +6280,7 @@ public enum Concept
 	TerritoryDrawFrequency
 	(
 		"3.4.1.7.4.1",
-		60, 
+		446, 
 		"Frequency of \"Territory Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6296,7 +6294,7 @@ public enum Concept
 	CaptureEnd
 	(
 		"3.4.2",
-		197, 
+		447, 
 		"Capture ending rules.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
@@ -6310,7 +6308,7 @@ public enum Concept
 	Checkmate
 	(
 		"3.4.2.1",
-		17, 
+		448, 
 		"End if checkmate.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6324,7 +6322,7 @@ public enum Concept
 	CheckmateFrequency
 	(
 		"3.4.2.1.1",
-		60, 
+		449, 
 		"Frequency of \"Checkmate\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6338,7 +6336,7 @@ public enum Concept
 	CheckmateWin
 	(
 		"3.4.2.1.2",
-		4, 
+		450, 
 		"Win if checkmate.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6352,7 +6350,7 @@ public enum Concept
 	CheckmateWinFrequency
 	(
 		"3.4.2.1.2.1",
-		60, 
+		451, 
 		"Frequency of \"Checkmate Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6366,7 +6364,7 @@ public enum Concept
 	CheckmateLoss
 	(
 		"3.4.2.1.3",
-		4, 
+		452, 
 		"Loss if checkmate.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6380,7 +6378,7 @@ public enum Concept
 	CheckmateLossFrequency
 	(
 		"3.4.2.1.3.1",
-		60, 
+		453, 
 		"Frequency of \"Checkmate Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6394,7 +6392,7 @@ public enum Concept
 	CheckmateDraw
 	(
 		"3.4.2.1.4",
-		4, 
+		454, 
 		"Draw if checkmate.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6408,7 +6406,7 @@ public enum Concept
 	CheckmateDrawFrequency
 	(
 		"3.4.2.1.4.1",
-		60, 
+		455, 
 		"Frequency of \"Checkmate Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6422,7 +6420,7 @@ public enum Concept
 	NoTargetPieceEnd
 	(
 		"3.4.2.2",
-		17, 
+		456, 
 		"End if a target piece is removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6436,7 +6434,7 @@ public enum Concept
 	NoTargetPieceEndFrequency
 	(
 		"3.4.2.2.1",
-		60, 
+		457, 
 		"Frequency of \"No Target Piece End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6450,7 +6448,7 @@ public enum Concept
 	NoTargetPieceWin
 	(
 		"3.4.2.2.2",
-		4, 
+		458, 
 		"Win if a target piece is removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6464,7 +6462,7 @@ public enum Concept
 	NoTargetPieceWinFrequency
 	(
 		"3.4.2.2.2.1",
-		60, 
+		459, 
 		"Frequency of \"No Target Piece Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6478,7 +6476,7 @@ public enum Concept
 	NoTargetPieceLoss
 	(
 		"3.4.2.2.3",
-		4, 
+		460, 
 		"Loss if a target piece is removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6492,7 +6490,7 @@ public enum Concept
 	NoTargetPieceLossFrequency
 	(
 		"3.4.2.2.3.1",
-		60, 
+		461, 
 		"Frequency of \"No Target Piece Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6506,7 +6504,7 @@ public enum Concept
 	NoTargetPieceDraw
 	(
 		"3.4.2.2.4",
-		4, 
+		462, 
 		"Draw if a target piece is removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6520,7 +6518,7 @@ public enum Concept
 	NoTargetPieceDrawFrequency
 	(
 		"3.4.2.2.4.1",
-		60, 
+		463, 
 		"Frequency of \"No Target Piece Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6534,7 +6532,7 @@ public enum Concept
 	EliminatePiecesEnd
 	(
 		"3.4.2.3",
-		17, 
+		464, 
 		"End if all enemy pieces are removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6548,7 +6546,7 @@ public enum Concept
 	EliminatePiecesEndFrequency
 	(
 		"3.4.2.3.1",
-		60, 
+		465, 
 		"Frequency of \"Eliminate All Pieces End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6562,7 +6560,7 @@ public enum Concept
 	EliminatePiecesWin
 	(
 		"3.4.2.3.2",
-		4, 
+		466, 
 		"Win if all enemy pieces are removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6576,7 +6574,7 @@ public enum Concept
 	EliminatePiecesWinFrequency
 	(
 		"3.4.2.3.2.1",
-		60, 
+		467, 
 		"Frequency of \"Eliminate Pieces Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6590,7 +6588,7 @@ public enum Concept
 	EliminatePiecesLoss
 	(
 		"3.4.2.3.3",
-		4, 
+		468, 
 		"Loss if all enemy pieces are removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6604,7 +6602,7 @@ public enum Concept
 	EliminatePiecesLossFrequency
 	(
 		"3.4.2.3.3.1",
-		60, 
+		469, 
 		"Frequency of \"Eliminate Pieces Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6618,7 +6616,7 @@ public enum Concept
 	EliminatePiecesDraw
 	(
 		"3.4.2.3.4",
-		4, 
+		470, 
 		"Draw if a target piece is removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6632,7 +6630,7 @@ public enum Concept
 	EliminatePiecesDrawFrequency
 	(
 		"3.4.2.3.4.1",
-		60, 
+		471, 
 		"Frequency of \"Eliminate Pieces Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6646,7 +6644,7 @@ public enum Concept
 	RaceEnd
 	(
 		"3.4.3",
-		197, 
+		472, 
 		"Race ending rules.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
@@ -6660,7 +6658,7 @@ public enum Concept
 	NoOwnPiecesEnd
 	(
 		"3.4.3.1",
-		13, 
+		473, 
 		"End if all own pieces removed (escape games).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6674,7 +6672,7 @@ public enum Concept
 	NoOwnPiecesEndFrequency
 	(
 		"3.4.3.1.1",
-		60, 
+		474, 
 		"Frequency of \"No Own Pieces End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6688,7 +6686,7 @@ public enum Concept
 	NoOwnPiecesWin
 	(
 		"3.4.3.1.2",
-		4, 
+		475, 
 		"Win if all own pieces removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6702,7 +6700,7 @@ public enum Concept
 	NoOwnPiecesWinFrequency
 	(
 		"3.4.3.1.2.1",
-		60, 
+		476, 
 		"Frequency of \"No Own Pieces Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6716,7 +6714,7 @@ public enum Concept
 	NoOwnPiecesLoss
 	(
 		"3.4.3.1.3",
-		4, 
+		477, 
 		"Loss if all own pieces are removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6730,7 +6728,7 @@ public enum Concept
 	NoOwnPiecesLossFrequency
 	(
 		"3.4.3.1.3.1",
-		60, 
+		478, 
 		"Frequency of \"No Own Pieces Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6744,7 +6742,7 @@ public enum Concept
 	NoOwnPiecesDraw
 	(
 		"3.4.3.1.4",
-		4, 
+		479, 
 		"Draw if all own pieces are removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6758,7 +6756,7 @@ public enum Concept
 	NoOwnPiecesDrawFrequency
 	(
 		"3.4.3.1.4.1",
-		60, 
+		480, 
 		"Frequency of \"No Own Pieces Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6772,7 +6770,7 @@ public enum Concept
 	FillEnd
 	(
 		"3.4.3.2",
-		44, 
+		481, 
 		"End in filling a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6786,7 +6784,7 @@ public enum Concept
 	FillEndFrequency
 	(
 		"3.4.3.2.1",
-		60, 
+		482, 
 		"Frequency of \"Fill End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6800,7 +6798,7 @@ public enum Concept
 	FillWin
 	(
 		"3.4.3.2.2",
-		4, 
+		483, 
 		"Win in filling a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6814,7 +6812,7 @@ public enum Concept
 	FillWinFrequency
 	(
 		"3.4.3.2.2.1",
-		60, 
+		484, 
 		"Frequency of \"Fill Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6828,7 +6826,7 @@ public enum Concept
 	FillLoss
 	(
 		"3.4.3.2.3",
-		4, 
+		485, 
 		"Loss in filling a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6842,7 +6840,7 @@ public enum Concept
 	FillLossFrequency
 	(
 		"3.4.3.2.3.1",
-		60, 
+		486, 
 		"Frequency of \"Fill Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6856,7 +6854,7 @@ public enum Concept
 	FillDraw
 	(
 		"3.4.3.2.4",
-		4, 
+		487, 
 		"Draw in filling a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6870,7 +6868,7 @@ public enum Concept
 	FillDrawFrequency
 	(
 		"3.4.3.2.4.1",
-		60, 
+		488, 
 		"Frequency of \"Fill Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6884,7 +6882,7 @@ public enum Concept
 	ReachEnd
 	(
 		"3.4.3.3",
-		109, 
+		489, 
 		"End in reaching a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData, 
@@ -6898,7 +6896,7 @@ public enum Concept
 	ReachEndFrequency
 	(
 		"3.4.3.3.1",
-		60, 
+		490, 
 		"Frequency of \"Reach End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6912,7 +6910,7 @@ public enum Concept
 	ReachWin
 	(
 		"3.4.3.3.2",
-		4, 
+		491, 
 		"Win in reaching a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6926,7 +6924,7 @@ public enum Concept
 	ReachWinFrequency
 	(
 		"3.4.3.3.2.1",
-		60, 
+		492, 
 		"Frequency of \"Reach Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6940,7 +6938,7 @@ public enum Concept
 	ReachLoss
 	(
 		"3.4.3.3.3",
-		4, 
+		493, 
 		"Loss in reaching a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6954,7 +6952,7 @@ public enum Concept
 	ReachLossFrequency
 	(
 		"3.4.3.3.3.1",
-		60, 
+		494, 
 		"Frequency of \"Reach Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6968,7 +6966,7 @@ public enum Concept
 	ReachDraw
 	(
 		"3.4.3.3.4",
-		4, 
+		495, 
 		"Draw in reaching a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -6982,7 +6980,7 @@ public enum Concept
 	ReachDrawFrequency
 	(
 		"3.4.3.3.4.1",
-		60, 
+		496, 
 		"Frequency of \"Reach Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -6996,7 +6994,7 @@ public enum Concept
 	ScoringEnd
 	(
 		"3.4.4",
-		42, 
+		497, 
 		"End in comparing scores.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7010,7 +7008,7 @@ public enum Concept
 	ScoringEndFrequency
 	(
 		"3.4.4.1",
-		60, 
+		498, 
 		"Frequency of \"Scoring End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7024,7 +7022,7 @@ public enum Concept
 	ScoringWin
 	(
 		"3.4.4.2",
-		4, 
+		499, 
 		"Win in comparing score.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7038,7 +7036,7 @@ public enum Concept
 	ScoringeWinFrequency
 	(
 		"3.4.4.2.1",
-		60, 
+		500, 
 		"Frequency of \"Score Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7052,7 +7050,7 @@ public enum Concept
 	ScoringLoss
 	(
 		"3.4.4.3",
-		4, 
+		501, 
 		"Loss in comparing score.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7066,7 +7064,7 @@ public enum Concept
 	ScoringLossFrequency
 	(
 		"3.4.4.3.1",
-		60, 
+		502, 
 		"Frequency of \"Score Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7080,7 +7078,7 @@ public enum Concept
 	ScoringDraw
 	(
 		"3.4.4.4",
-		4, 
+		503, 
 		"Draw in comparing score.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7094,7 +7092,7 @@ public enum Concept
 	ScoringDrawFrequency
 	(
 		"3.4.4.4.1",
-		60, 
+		504, 
 		"Frequency of \"Reach Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7108,7 +7106,7 @@ public enum Concept
 	NoMovesEnd
 	(
 		"3.4.5",
-		6, 
+		505, 
 		"End if no legal moves (stalemate).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7122,7 +7120,7 @@ public enum Concept
 	NoMovesEndFrequency
 	(
 		"3.4.5.1",
-		60, 
+		506, 
 		"Frequency of \"No Moves End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7136,7 +7134,7 @@ public enum Concept
 	NoMovesWin
 	(
 		"3.4.5.2",
-		4, 
+		507, 
 		"Win if no legal moves.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7150,7 +7148,7 @@ public enum Concept
 	NoMovesWinFrequency
 	(
 		"3.4.5.2.1",
-		60, 
+		508, 
 		"Frequency of \"No Moves Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7164,7 +7162,7 @@ public enum Concept
 	NoMovesLoss
 	(
 		"3.4.5.3",
-		4, 
+		509, 
 		"Loss if no legal moves.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7178,7 +7176,7 @@ public enum Concept
 	NoMovesLossFrequency
 	(
 		"3.4.5.3.1",
-		60, 
+		510, 
 		"Frequency of \"No Moves Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7192,7 +7190,7 @@ public enum Concept
 	NoMovesDraw
 	(
 		"3.4.5.4",
-		4, 
+		511, 
 		"Draw if no legal moves.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7206,7 +7204,7 @@ public enum Concept
 	NoMovesDrawFrequency
 	(
 		"3.4.5.4.1",
-		60, 
+		512, 
 		"Frequency of \"No Moves Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7220,7 +7218,7 @@ public enum Concept
 	NoProgressEnd
 	(
 		"3.4.6",
-		6, 
+		513, 
 		"The game does not progress to an end (e.g. 50 moves rule in Chess).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7234,7 +7232,7 @@ public enum Concept
 	NoProgressEndFrequency
 	(
 		"3.4.6.1",
-		60, 
+		514, 
 		"Frequency of \"No Progress End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7248,7 +7246,7 @@ public enum Concept
 	NoProgressWin
 	(
 		"3.4.6.2",
-		4, 
+		515, 
 		"Win if no progress to an end.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7262,7 +7260,7 @@ public enum Concept
 	NoProgressWinFrequency
 	(
 		"3.4.6.2.1",
-		60, 
+		516, 
 		"Frequency of \"No Progress Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7276,7 +7274,7 @@ public enum Concept
 	NoProgressLoss
 	(
 		"3.4.6.3",
-		4, 
+		517, 
 		"Loss if no progress to an end.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7290,7 +7288,7 @@ public enum Concept
 	NoProgressLossFrequency
 	(
 		"3.4.6.3.1",
-		60, 
+		518, 
 		"Frequency of \"No Progress Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7304,7 +7302,7 @@ public enum Concept
 	NoProgressDraw
 	(
 		"3.4.6.4",
-		4, 
+		519, 
 		"Draw if no progress to an end.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7318,7 +7316,7 @@ public enum Concept
 	NoProgressDrawFrequency
 	(
 		"3.4.6.4.1",
-		60, 
+		520, 
 		"Frequency of \"No Progress Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7332,7 +7330,7 @@ public enum Concept
 	Draw
 	(
 		"3.4.7",
-		6, 
+		521, 
 		"The game can ends in a draw.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7346,7 +7344,7 @@ public enum Concept
 	DrawFrequency
 	(
 		"3.4.7.1",
-		60, 
+		522, 
 		"Frequency of \"Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
@@ -7360,7 +7358,7 @@ public enum Concept
 	Misere
 	(
 		"3.4.8",
-		6, 
+		523, 
 		"A two-players game can ends with the mover losing or the next player winning.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
@@ -7378,7 +7376,7 @@ public enum Concept
 	Behaviour
 	(
 		"4",
-		197, 
+		524, 
 		"Behaviour.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7392,7 +7390,7 @@ public enum Concept
 	StateRepetition
 	(
 		"4.1",
-		197, 
+		525, 
 		"State repetition.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7406,7 +7404,7 @@ public enum Concept
 	PositionalRepetition
 	(
 		"4.1.1",
-		197, 
+		526, 
 		"Average number of repeated positional states.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7420,7 +7418,7 @@ public enum Concept
 	SituationalRepetition
 	(
 		"4.1.2",
-		197, 
+		527, 
 		"Average number of repeated situational states.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7434,7 +7432,7 @@ public enum Concept
 	Duration
 	(
 		"4.2",
-		197, 
+		528, 
 		"Game duration.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7448,7 +7446,7 @@ public enum Concept
 	DurationActions
 	(
 		"4.2.1",
-		197, 
+		529, 
 		"Number of actions in a game.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7462,7 +7460,7 @@ public enum Concept
 	DurationMoves
 	(
 		"4.2.2",
-		197, 
+		530, 
 		"Number of moves in a game.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7476,7 +7474,7 @@ public enum Concept
 	DurationTurns
 	(
 		"4.2.3",
-		197, 
+		531, 
 		"Number of turns in a game.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7490,7 +7488,7 @@ public enum Concept
 	Complexity
 	(
 		"4.3",
-		197, 
+		532, 
 		"Game complexity.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7504,7 +7502,7 @@ public enum Concept
 	DecisionMoves
 	(
 		"4.3.1",
-		197, 
+		533, 
 		"Percentage of moves where there was more than one possible move.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7518,7 +7516,7 @@ public enum Concept
 	GameTreeComplexity
 	(
 		"4.3.2",
-		197, 
+		534, 
 		"Game Tree Complexity Estimate.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7532,7 +7530,7 @@ public enum Concept
 	StateTreeComplexity
 	(
 		"4.3.3",
-		197, 
+		535, 
 		"State Space Complexity Upper Bound.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7546,7 +7544,7 @@ public enum Concept
 	BoardCoverage
 	(
 		"4.4",
-		197, 
+		536, 
 		"Board Coverage.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7560,7 +7558,7 @@ public enum Concept
 	BoardCoverageDefault
 	(
 		"4.4.1",
-		197, 
+		537, 
 		"Percentage of default board sites which a piece was placed on at some point.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7574,7 +7572,7 @@ public enum Concept
 	BoardCoverageFull
 	(
 		"4.4.2",
-		197, 
+		538, 
 		"Percentage of all board sites which a piece was placed on at some point.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7588,7 +7586,7 @@ public enum Concept
 	BoardCoverageUsed
 	(
 		"4.4.3",
-		197, 
+		539, 
 		"Percentage of used board sites which a piece was placed on at some point.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7602,7 +7600,7 @@ public enum Concept
 	GameOutcome
 	(
 		"4.5",
-		197, 
+		540, 
 		"Game Outcome.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7616,7 +7614,7 @@ public enum Concept
 	AdvantageP1
 	(
 		"4.5.1",
-		197, 
+		541, 
 		"Percentage of games where player 1 won.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7630,7 +7628,7 @@ public enum Concept
 	Balance
 	(
 		"4.5.2",
-		197, 
+		542, 
 		"Similarity between player win rates.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7644,7 +7642,7 @@ public enum Concept
 	Completion
 	(
 		"4.5.3",
-		197, 
+		543, 
 		"Percentage of games which have a winner (not drawor timeout).",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7658,7 +7656,7 @@ public enum Concept
 	Drawishness
 	(
 		"4.5.4",
-		197, 
+		544, 
 		"Percentage of games which end in a draw.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7672,7 +7670,7 @@ public enum Concept
 	Timeouts
 	(
 		"4.5.5",
-		197, 
+		545, 
 		"Percentage of games which end via timeout.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7686,7 +7684,7 @@ public enum Concept
 	StateEvaluation
 	(
 		"4.6",
-		197, 
+		546, 
 		"State Evaluation.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7700,7 +7698,7 @@ public enum Concept
 	Clarity
 	(
 		"4.6.1",
-		197, 
+		547, 
 		"Clarity.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7714,7 +7712,7 @@ public enum Concept
 	Narrowness
 	(
 		"4.6.1.1",
-		197, 
+		548, 
 		"Narrowness.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7728,7 +7726,7 @@ public enum Concept
 	Variance
 	(
 		"4.6.1.2",
-		197, 
+		549, 
 		"Variance.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7742,7 +7740,7 @@ public enum Concept
 	Decisiveness
 	(
 		"4.6.2",
-		197, 
+		550, 
 		"Decisiveness.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7756,7 +7754,7 @@ public enum Concept
 	DecisivenessMoves
 	(
 		"4.6.2.1",
-		197, 
+		551, 
 		"Decisiveness Moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7770,7 +7768,7 @@ public enum Concept
 	DecisivenessThreshold
 	(
 		"4.6.2.2",
-		197, 
+		552, 
 		"Decisiveness Threshold.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7784,7 +7782,7 @@ public enum Concept
 	LeadChange
 	(
 		"4.6.3",
-		197, 
+		553, 
 		"LeadChange.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7798,7 +7796,7 @@ public enum Concept
 	Stability
 	(
 		"4.6.4",
-		197, 
+		554, 
 		"Stability.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7812,7 +7810,7 @@ public enum Concept
 	Drama
 	(
 		"4.6.5",
-		197, 
+		555, 
 		"Drama.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7826,7 +7824,7 @@ public enum Concept
 	DramaAverage
 	(
 		"4.6.5.1",
-		197, 
+		556, 
 		"Drama Average.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7840,7 +7838,7 @@ public enum Concept
 	DramaMedian
 	(
 		"4.6.5.2",
-		197, 
+		557, 
 		"Drama Median.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7854,7 +7852,7 @@ public enum Concept
 	DramaMaximum
 	(
 		"4.6.5.3",
-		197, 
+		558, 
 		"Drama Maximum.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7868,7 +7866,7 @@ public enum Concept
 	DramaMinimum
 	(
 		"4.6.5.4",
-		197, 
+		559, 
 		"Drama Minimum.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7882,7 +7880,7 @@ public enum Concept
 	DramaVariance
 	(
 		"4.6.5.5",
-		197, 
+		560, 
 		"Drama Variance.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7896,7 +7894,7 @@ public enum Concept
 	DramaChangeAverage
 	(
 		"4.6.5.6",
-		197, 
+		561, 
 		"Drama Change Average.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7910,7 +7908,7 @@ public enum Concept
 	DramaChangeSign
 	(
 		"4.6.5.7",
-		197, 
+		562, 
 		"Drama Change Sign.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7924,7 +7922,7 @@ public enum Concept
 	DramaChangeLineBestFit
 	(
 		"4.6.5.8",
-		197, 
+		563, 
 		"Drama Change Line Best Fit.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7938,7 +7936,7 @@ public enum Concept
 	DramaChangeNumTimes
 	(
 		"4.6.5.9",
-		197, 
+		564, 
 		"Drama Change Num Times.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7952,7 +7950,7 @@ public enum Concept
 	DramaMaxIncrease
 	(
 		"4.6.5.10",
-		197, 
+		565, 
 		"Drama Max Increase.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7966,7 +7964,7 @@ public enum Concept
 	DramaMaxDecrease
 	(
 		"4.6.5.11",
-		197, 
+		566, 
 		"Drama Max Decrease.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -7980,7 +7978,7 @@ public enum Concept
 	MoveEvaluation
 	(
 		"4.6.6",
-		197, 
+		567, 
 		"Drama.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -7994,7 +7992,7 @@ public enum Concept
 	MoveEvaluationAverage
 	(
 		"4.6.6.1",
-		197, 
+		568, 
 		"Move Evaluation Average.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8008,7 +8006,7 @@ public enum Concept
 	MoveEvaluationMedian
 	(
 		"4.6.6.2",
-		197, 
+		569, 
 		"Move Evaluation Median.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8022,7 +8020,7 @@ public enum Concept
 	MoveEvaluationMaximum
 	(
 		"4.6.6.3",
-		197, 
+		570, 
 		"Move Evaluation Maximum.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8036,7 +8034,7 @@ public enum Concept
 	MoveEvaluationMinimum
 	(
 		"4.6.6.4",
-		197, 
+		571, 
 		"Move Evaluation Minimum.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8050,7 +8048,7 @@ public enum Concept
 	MoveEvaluationVariance
 	(
 		"4.6.6.5",
-		197, 
+		572, 
 		"Move Evaluation Variance.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8064,7 +8062,7 @@ public enum Concept
 	MoveEvaluationChangeAverage
 	(
 		"4.6.6.6",
-		197, 
+		573, 
 		"Move Evaluation Change Average.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8078,7 +8076,7 @@ public enum Concept
 	MoveEvaluationChangeSign
 	(
 		"4.6.6.7",
-		197, 
+		574, 
 		"Move Evaluation Change Sign.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8092,7 +8090,7 @@ public enum Concept
 	MoveEvaluationChangeLineBestFit
 	(
 		"4.6.6.8",
-		197, 
+		575, 
 		"Move Evaluation Change Line Best Fit.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8106,7 +8104,7 @@ public enum Concept
 	MoveEvaluationChangeNumTimes
 	(
 		"4.6.6.9",
-		197, 
+		576, 
 		"Move Evaluation Change Num Times.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8120,7 +8118,7 @@ public enum Concept
 	MoveEvaluationMaxIncrease
 	(
 		"4.6.6.10",
-		197, 
+		577, 
 		"Move Evaluation Max Increase.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8134,7 +8132,7 @@ public enum Concept
 	MoveEvaluationMaxDecrease
 	(
 		"4.6.6.11",
-		197, 
+		578, 
 		"Move Evaluation Max Decrease.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8148,7 +8146,7 @@ public enum Concept
 	StateEvaluationDifference
 	(
 		"4.6.7",
-		197, 
+		579, 
 		"Drama.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -8162,7 +8160,7 @@ public enum Concept
 	StateEvaluationDifferenceAverage
 	(
 		"4.6.7.1",
-		197, 
+		580, 
 		"State Evaluation Difference Average.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8176,7 +8174,7 @@ public enum Concept
 	StateEvaluationDifferenceMedian
 	(
 		"4.6.7.2",
-		197, 
+		581, 
 		"State Evaluation Difference Median.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8190,7 +8188,7 @@ public enum Concept
 	StateEvaluationDifferenceMaximum
 	(
 		"4.6.7.3",
-		197, 
+		582, 
 		"State Evaluation Difference Maximum.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8204,7 +8202,7 @@ public enum Concept
 	StateEvaluationDifferenceMinimum
 	(
 		"4.6.7.4",
-		197, 
+		583, 
 		"State Evaluation Difference Minimum.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8218,7 +8216,7 @@ public enum Concept
 	StateEvaluationDifferenceVariance
 	(
 		"4.6.7.5",
-		197, 
+		584, 
 		"State Evaluation Difference Variance.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8232,7 +8230,7 @@ public enum Concept
 	StateEvaluationDifferenceChangeAverage
 	(
 		"4.6.7.6",
-		197, 
+		585, 
 		"State Evaluation Difference Change Average.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8246,7 +8244,7 @@ public enum Concept
 	StateEvaluationDifferenceChangeSign
 	(
 		"4.6.7.7",
-		197, 
+		586, 
 		"State Evaluation Difference Change Sign.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8260,7 +8258,7 @@ public enum Concept
 	StateEvaluationDifferenceChangeLineBestFit
 	(
 		"4.6.7.8",
-		197, 
+		587, 
 		"State Evaluation Difference Change Line Best Fit.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8274,7 +8272,7 @@ public enum Concept
 	StateEvaluationDifferenceChangeNumTimes
 	(
 		"4.6.7.9",
-		197, 
+		588, 
 		"State Evaluation Difference Change Num Times.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8288,7 +8286,7 @@ public enum Concept
 	StateEvaluationDifferenceMaxIncrease
 	(
 		"4.6.7.10",
-		197, 
+		589, 
 		"State Evaluation Difference Max Increase.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8302,7 +8300,7 @@ public enum Concept
 	StateEvaluationDifferenceMaxDecrease
 	(
 		"4.6.7.11",
-		197, 
+		590, 
 		"State Evaluation Difference Max Decrease.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8316,7 +8314,7 @@ public enum Concept
 	BoardSitesOccupied
 	(
 		"4.7",
-		197, 
+		591, 
 		"Board sites occupied.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -8330,7 +8328,7 @@ public enum Concept
 	BoardSitesOccupiedAverage
 	(
 		"4.7.1",
-		197, 
+		592, 
 		"Average percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8344,7 +8342,7 @@ public enum Concept
 	BoardSitesOccupiedMedian
 	(
 		"4.7.2",
-		197, 
+		593, 
 		"Median percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8358,7 +8356,7 @@ public enum Concept
 	BoardSitesOccupiedMaximum
 	(
 		"4.7.3",
-		197, 
+		594, 
 		"Maximum percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8372,7 +8370,7 @@ public enum Concept
 	BoardSitesOccupiedMinimum
 	(
 		"4.7.4",
-		197, 
+		595, 
 		"Minimum percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8386,7 +8384,7 @@ public enum Concept
 	BoardSitesOccupiedVariance
 	(
 		"4.7.5",
-		197, 
+		596, 
 		"Variance in percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8400,7 +8398,7 @@ public enum Concept
 	BoardSitesOccupiedChangeAverage
 	(
 		"4.7.6",
-		197, 
+		597, 
 		"Change in percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8414,7 +8412,7 @@ public enum Concept
 	BoardSitesOccupiedChangeSign
 	(
 		"4.7.7",
-		197, 
+		598, 
 		"Sign Change of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8428,7 +8426,7 @@ public enum Concept
 	BoardSitesOccupiedChangeLineBestFit
 	(
 		"4.7.8",
-		197, 
+		599, 
 		"Line Best Fit Change of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8442,7 +8440,7 @@ public enum Concept
 	BoardSitesOccupiedChangeNumTimes
 	(
 		"4.7.9",
-		197, 
+		600, 
 		"Number of times the change of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8456,7 +8454,7 @@ public enum Concept
 	BoardSitesOccupiedMaxIncrease
 	(
 		"4.7.10",
-		197, 
+		601, 
 		"Max Increase of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8470,7 +8468,7 @@ public enum Concept
 	BoardSitesOccupiedMaxDecrease
 	(
 		"4.7.11",
-		197, 
+		602, 
 		"Max Decrease of board sites which have a piece on it in any given turn.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8484,7 +8482,7 @@ public enum Concept
 	BranchingFactor
 	(
 		"4.8",
-		197, 
+		603, 
 		"Branching factor.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -8498,7 +8496,7 @@ public enum Concept
 	BranchingFactorAverage
 	(
 		"4.8.1",
-		197, 
+		604, 
 		"Average number of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8512,7 +8510,7 @@ public enum Concept
 	BranchingFactorMedian
 	(
 		"4.8.2",
-		197, 
+		605, 
 		"Median number of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8526,7 +8524,7 @@ public enum Concept
 	BranchingFactorMaximum
 	(
 		"4.8.3",
-		197, 
+		606, 
 		"Maximum number of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8540,7 +8538,7 @@ public enum Concept
 	BranchingFactorMinimum
 	(
 		"4.8.4",
-		197, 
+		607, 
 		"Minimum number of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8554,7 +8552,7 @@ public enum Concept
 	BranchingFactorVariance
 	(
 		"4.8.5",
-		197, 
+		608, 
 		"Variance in number of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8568,7 +8566,7 @@ public enum Concept
 	BranchingFactorChangeAverage
 	(
 		"4.8.6",
-		197, 
+		609, 
 		"Change in percentage of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8582,7 +8580,7 @@ public enum Concept
 	BranchingFactorChangeSign
 	(
 		"4.8.7",
-		197, 
+		610, 
 		"Change sign of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8596,7 +8594,7 @@ public enum Concept
 	BranchingFactorChangeLineBestFit
 	(
 		"4.8.8",
-		197, 
+		611, 
 		"Change line best fit of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8610,7 +8608,7 @@ public enum Concept
 	BranchingFactorChangeNumTimesn
 	(
 		"4.8.9",
-		197, 
+		612, 
 		"Change num times of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8624,7 +8622,7 @@ public enum Concept
 	BranchingFactorChangeMaxIncrease
 	(
 		"4.8.10",
-		197, 
+		613, 
 		"Change max increase of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8638,7 +8636,7 @@ public enum Concept
 	BranchingFactorChangeMaxDecrease
 	(
 		"4.8.11",
-		197, 
+		614, 
 		"Change max decrease of possible moves.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8652,7 +8650,7 @@ public enum Concept
 	DecisionFactor
 	(
 		"4.9",
-		197, 
+		615, 
 		"Decision factor.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -8666,7 +8664,7 @@ public enum Concept
 	DecisionFactorAverage
 	(
 		"4.9.1",
-		197, 
+		616, 
 		"Average number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8680,7 +8678,7 @@ public enum Concept
 	DecisionFactorMedian
 	(
 		"4.9.2",
-		197, 
+		617, 
 		"Median number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8694,7 +8692,7 @@ public enum Concept
 	DecisionFactorMaximum
 	(
 		"4.9.3",
-		197, 
+		618, 
 		"Maximum number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8708,7 +8706,7 @@ public enum Concept
 	DecisionFactorMinimum
 	(
 		"4.9.4",
-		197, 
+		619, 
 		"Minimum number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8722,7 +8720,7 @@ public enum Concept
 	DecisionFactorVariance
 	(
 		"4.9.5",
-		197, 
+		620, 
 		"Variance in number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8736,7 +8734,7 @@ public enum Concept
 	DecisionFactorChangeAverage
 	(
 		"4.9.6",
-		197, 
+		621, 
 		"Change in percentage of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8750,7 +8748,7 @@ public enum Concept
 	DecisionFactorChangeSign
 	(
 		"4.9.7",
-		197, 
+		622, 
 		"Change sign of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8764,7 +8762,7 @@ public enum Concept
 	DecisionFactorChangeLineBestFit
 	(
 		"4.9.8",
-		197, 
+		623, 
 		"Change line best fit of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8778,7 +8776,7 @@ public enum Concept
 	DecisionFactorChangeNumTimes
 	(
 		"4.9.9",
-		197, 
+		624, 
 		"Change num times of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8792,7 +8790,7 @@ public enum Concept
 	DecisionFactorMaxIncrease
 	(
 		"4.9.10",
-		197, 
+		625, 
 		"Max increase of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8806,7 +8804,7 @@ public enum Concept
 	DecisionFactorMaxDecrease
 	(
 		"4.9.11",
-		197, 
+		626, 
 		"Max Decrease of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8820,7 +8818,7 @@ public enum Concept
 	MoveDistance
 	(
 		"4.10",
-		197, 
+		627, 
 		"Move distance.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -8834,7 +8832,7 @@ public enum Concept
 	MoveDistanceAverage
 	(
 		"4.10.1",
-		197, 
+		628, 
 		"Average distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8848,7 +8846,7 @@ public enum Concept
 	MoveDistanceMedian
 	(
 		"4.10.2",
-		197, 
+		629, 
 		"Median distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8862,7 +8860,7 @@ public enum Concept
 	MoveDistanceMaximum
 	(
 		"4.10.3",
-		197, 
+		630, 
 		"Maximum distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8876,7 +8874,7 @@ public enum Concept
 	MoveDistanceMinimum
 	(
 		"4.10.4",
-		197, 
+		631, 
 		"Minimum distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8890,7 +8888,7 @@ public enum Concept
 	MoveDistanceVariance
 	(
 		"4.10.5",
-		197, 
+		632, 
 		"Variance in distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8904,7 +8902,7 @@ public enum Concept
 	MoveDistanceChangeAverage
 	(
 		"4.10.6",
-		197, 
+		633, 
 		"Change average in distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8918,7 +8916,7 @@ public enum Concept
 	MoveDistanceChangeSign
 	(
 		"4.10.7",
-		197, 
+		634, 
 		"Change sign in distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8932,7 +8930,7 @@ public enum Concept
 	MoveDistanceChangeLineBestFit
 	(
 		"4.10.8",
-		197, 
+		635, 
 		"Change line best fit in distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8946,7 +8944,7 @@ public enum Concept
 	MoveDistanceChangeNumTimes
 	(
 		"4.10.9",
-		197, 
+		636, 
 		"Change num times in distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8960,7 +8958,7 @@ public enum Concept
 	MoveDistanceMaxIncrease
 	(
 		"4.10.10",
-		197, 
+		637, 
 		"Max increase in distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8974,7 +8972,7 @@ public enum Concept
 	MoveDistanceMaxDecrease
 	(
 		"4.10.11",
-		197, 
+		638, 
 		"Max decrease in distance traveled by pieces when they move around the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -8988,7 +8986,7 @@ public enum Concept
 	PieceNumber
 	(
 		"4.11",
-		197, 
+		639, 
 		"Piece number.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -9002,7 +9000,7 @@ public enum Concept
 	PieceNumberAverage
 	(
 		"4.11.1",
-		197, 
+		640, 
 		"Average number of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9016,7 +9014,7 @@ public enum Concept
 	PieceNumberMedian
 	(
 		"4.11.2",
-		197, 
+		641, 
 		"Median number of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9030,7 +9028,7 @@ public enum Concept
 	PieceNumberMaximum
 	(
 		"4.11.3",
-		197, 
+		642, 
 		"Maximum number of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9044,7 +9042,7 @@ public enum Concept
 	PieceNumberMinimum
 	(
 		"4.11.4",
-		197, 
+		643, 
 		"Minimum number of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9058,7 +9056,7 @@ public enum Concept
 	PieceNumberVariance
 	(
 		"4.11.5",
-		197, 
+		644, 
 		"Variance in number of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9072,7 +9070,7 @@ public enum Concept
 	PieceNumberChangeAverage
 	(
 		"4.11.6",
-		197, 
+		645, 
 		"Change in percentage of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9086,7 +9084,7 @@ public enum Concept
 	PieceNumberChangeSign
 	(
 		"4.11.7",
-		197, 
+		646, 
 		"Change in sign of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9100,7 +9098,7 @@ public enum Concept
 	PieceNumberChangeLineBestFit
 	(
 		"4.11.8",
-		197, 
+		647, 
 		"Change line best fit of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9114,7 +9112,7 @@ public enum Concept
 	PieceNumberChangeNumTimes
 	(
 		"4.11.9",
-		197, 
+		648, 
 		"Change in number of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9128,7 +9126,7 @@ public enum Concept
 	PieceNumberMaxIncrease
 	(
 		"4.11.10",
-		197, 
+		649, 
 		"Max increase of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9142,7 +9140,7 @@ public enum Concept
 	PieceNumberMaxDecrease
 	(
 		"4.11.11",
-		197, 
+		650, 
 		"Max decrease of pieces on the board.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9156,7 +9154,7 @@ public enum Concept
 	ScoreDifference
 	(
 		"4.12",
-		197, 
+		651, 
 		"Score Difference.",
 		ConceptType.Behaviour,
 		ConceptDataType.BooleanData,
@@ -9170,7 +9168,7 @@ public enum Concept
 	ScoreDifferenceAverage
 	(
 		"4.12.1",
-		197, 
+		652, 
 		"Average difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9184,7 +9182,7 @@ public enum Concept
 	ScoreDifferenceMedian
 	(
 		"4.12.2",
-		197, 
+		653, 
 		"Median difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9198,7 +9196,7 @@ public enum Concept
 	ScoreDifferenceMaximum
 	(
 		"4.12.3",
-		197, 
+		654, 
 		"Maximum difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9212,7 +9210,7 @@ public enum Concept
 	ScoreDifferenceMinimum
 	(
 		"4.12.4",
-		197, 
+		655, 
 		"Minimum difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9226,7 +9224,7 @@ public enum Concept
 	ScoreDifferenceVariance
 	(
 		"4.12.5",
-		197, 
+		656, 
 		"Variance in difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9240,7 +9238,7 @@ public enum Concept
 	ScoreDifferenceChangeAverage
 	(
 		"4.12.6",
-		197, 
+		657, 
 		"Change average in difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9254,7 +9252,7 @@ public enum Concept
 	ScoreDifferenceChangeSign
 	(
 		"4.12.7",
-		197, 
+		658, 
 		"Change sign in difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9268,7 +9266,7 @@ public enum Concept
 	ScoreDifferenceChangeLineBestFit
 	(
 		"4.12.8",
-		197, 
+		659, 
 		"Change line best fit in difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9282,7 +9280,7 @@ public enum Concept
 	ScoreDifferenceChangeNumTimes
 	(
 		"4.12.9",
-		197, 
+		660, 
 		"Change number times in difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9296,7 +9294,7 @@ public enum Concept
 	ScoreDifferenceMaxIncrease
 	(
 		"4.12.10",
-		197, 
+		661, 
 		"Max increase in difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9310,7 +9308,7 @@ public enum Concept
 	ScoreDifferenceMaxDecrease
 	(
 		"4.12.11",
-		197, 
+		662, 
 		"Max decrease in difference in player scores.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
@@ -9328,7 +9326,7 @@ public enum Concept
 	Math
 	(
 		"5",
-		197, 
+		663, 
 		"Mathematics.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9342,7 +9340,7 @@ public enum Concept
 	Arithmetic
 	(
 		"5.1",
-		197, 
+		664, 
 		"Arithmetic.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9356,7 +9354,7 @@ public enum Concept
 	Operations
 	(
 		"5.1.1",
-		197, 
+		665, 
 		"Operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9370,7 +9368,7 @@ public enum Concept
 	Addition
 	(
 		"5.1.1.1",
-		219, 
+		666, 
 		"Addition operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9384,7 +9382,7 @@ public enum Concept
 	Subtraction
 	(
 		"5.1.1.2",
-		221, 
+		667, 
 		"Subtraction operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9398,7 +9396,7 @@ public enum Concept
 	Multiplication
 	(
 		"5.1.1.3",
-		220, 
+		668, 
 		"Multiplication operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9412,7 +9410,7 @@ public enum Concept
 	Division
 	(
 		"5.1.1.4",
-		222, 
+		669, 
 		"Division operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9426,7 +9424,7 @@ public enum Concept
 	Modulo
 	(
 		"5.1.1.5",
-		223, 
+		670, 
 		"Modulo operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9440,7 +9438,7 @@ public enum Concept
 	Absolute
 	(
 		"5.1.1.6",
-		223, 
+		671, 
 		"Absolute operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9454,7 +9452,7 @@ public enum Concept
 	Roots
 	(
 		"5.1.1.7",
-		228, 
+		672, 
 		"Root operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9468,7 +9466,7 @@ public enum Concept
 	Cosine
 	(
 		"5.1.1.8",
-		224, 
+		673, 
 		"Cosine operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9482,7 +9480,7 @@ public enum Concept
 	Sine
 	(
 		"5.1.1.9",
-		225, 
+		674, 
 		"Sine operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9496,7 +9494,7 @@ public enum Concept
 	Tangent
 	(
 		"5.1.1.10",
-		226, 
+		675, 
 		"Tangent operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9510,7 +9508,7 @@ public enum Concept
 	Exponentiation
 	(
 		"5.1.1.11",
-		227, 
+		676, 
 		"Exponentiation operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9524,7 +9522,7 @@ public enum Concept
 	Exponential
 	(
 		"5.1.1.12",
-		231, 
+		677, 
 		"Exponential operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9538,7 +9536,7 @@ public enum Concept
 	Logarithm
 	(
 		"5.1.1.13",
-		232, 
+		678, 
 		"Logarithm operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9552,7 +9550,7 @@ public enum Concept
 	Minimum
 	(
 		"5.1.1.14",
-		229, 
+		679, 
 		"Minimum value.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9566,7 +9564,7 @@ public enum Concept
 	Maximum
 	(
 		"5.1.1.15",
-		230, 
+		680, 
 		"Maximum value.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9580,7 +9578,7 @@ public enum Concept
 	Comparison
 	(
 		"5.1.2",
-		197, 
+		681, 
 		"Comparison of numbers.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9594,7 +9592,7 @@ public enum Concept
 	Equal
 	(
 		"5.1.2.1",
-		250, 
+		682, 
 		"= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9608,7 +9606,7 @@ public enum Concept
 	NotEqual
 	(
 		"5.1.2.2",
-		251, 
+		683, 
 		"!= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9622,7 +9620,7 @@ public enum Concept
 	LesserThan
 	(
 		"5.1.2.3",
-		248, 
+		684, 
 		"< operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9636,7 +9634,7 @@ public enum Concept
 	LesserThanOrEqual
 	(
 		"5.1.2.4",
-		249, 
+		685, 
 		"<= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9650,7 +9648,7 @@ public enum Concept
 	GreaterThan
 	(
 		"5.1.2.5",
-		246, 
+		686, 
 		"> operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9664,7 +9662,7 @@ public enum Concept
 	GreaterThanOrEqual
 	(
 		"5.1.2.6",
-		247, 
+		687, 
 		">= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9678,7 +9676,7 @@ public enum Concept
 	Parity
 	(
 		"5.1.3",
-		197, 
+		688, 
 		"Whether a number is even or odd.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9692,7 +9690,7 @@ public enum Concept
 	Even
 	(
 		"5.1.3.1",
-		216, 
+		689, 
 		"Even values.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9706,7 +9704,7 @@ public enum Concept
 	Odd
 	(
 		"5.1.3.2",
-		217, 
+		690, 
 		"Odd values.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9720,7 +9718,7 @@ public enum Concept
 	Logic
 	(
 		"5.2",
-		197, 
+		691, 
 		"Logic operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9734,7 +9732,7 @@ public enum Concept
 	Conjunction
 	(
 		"5.2.1",
-		241, 
+		692, 
 		"Conjunction (And).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9748,7 +9746,7 @@ public enum Concept
 	Disjunction
 	(
 		"5.2.2",
-		242, 
+		693, 
 		"Disjunction (Or).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9762,7 +9760,7 @@ public enum Concept
 	ExclusiveDisjunction
 	(
 		"5.2.3",
-		253, 
+		694, 
 		"Exclusive Disjunction (Xor).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9776,7 +9774,7 @@ public enum Concept
 	Negation
 	(
 		"5.2.4",
-		252, 
+		695, 
 		"Negation (Not).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9790,7 +9788,7 @@ public enum Concept
 	Set
 	(
 		"5.3",
-		197, 
+		696, 
 		"Set operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9804,7 +9802,7 @@ public enum Concept
 	Union
 	(
 		"5.3.1",
-		254, 
+		697, 
 		"Union operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9818,7 +9816,7 @@ public enum Concept
 	Intersection
 	(
 		"5.3.2",
-		255, 
+		698, 
 		"Intersection operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9832,7 +9830,7 @@ public enum Concept
 	Complement
 	(
 		"5.3.3",
-		256, 
+		699, 
 		"Complement operation (Difference).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9846,7 +9844,7 @@ public enum Concept
 	Algorithmics
 	(
 		"5.4",
-		197, 
+		700, 
 		"Algorithmic operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
@@ -9861,7 +9859,7 @@ public enum Concept
 	ConditionalStatement
 	(
 		"5.4.1",
-		243, 
+		701, 
 		"Conditional Statement (If).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9875,7 +9873,7 @@ public enum Concept
 	ControlFlowStatement
 	(
 		"5.4.2",
-		244, 
+		702, 
 		"Control Flow Statement (For).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9889,7 +9887,7 @@ public enum Concept
 	Float
 	(
 		"5.5",
-		218, 
+		703, 
 		"Float values.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
@@ -9907,7 +9905,7 @@ public enum Concept
 	Visual
 	(
 		"6",
-		197, 
+		704, 
 		"Important visual aspects.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -9921,7 +9919,7 @@ public enum Concept
 	Style
 	(
 		"6.1",
-		197, 
+		705, 
 		"Style of game elements.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -9935,7 +9933,7 @@ public enum Concept
 	BoardStyle
 	(
 		"6.1.1",
-		197, 
+		706, 
 		"Style of the board.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -9949,7 +9947,7 @@ public enum Concept
 	GraphStyle
 	(
 		"6.1.1.1",
-		125,
+		707,
 		"Use Graph style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -9963,7 +9961,7 @@ public enum Concept
 	ChessStyle
 	(
 		"6.1.1.2",
-		113,
+		708,
 		"Use Chess style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -9977,7 +9975,7 @@ public enum Concept
 	GoStyle
 	(
 		"6.1.1.3",
-		114,
+		709,
 		"Use Go style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -9991,7 +9989,7 @@ public enum Concept
 	MancalaStyle
 	(
 		"6.1.1.4",
-		115,
+		710,
 		"Use Mancala style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10005,7 +10003,7 @@ public enum Concept
 	PenAndPaperStyle
 	(
 		"6.1.1.5",
-		116,
+		711,
 		"Use PenAndPaper style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10019,7 +10017,7 @@ public enum Concept
 	ShibumiStyle
 	(
 		"6.1.1.6",
-		117,
+		712,
 		"Use Shibumi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10033,7 +10031,7 @@ public enum Concept
 	BackgammonStyle
 	(
 		"6.1.1.7",
-		118,
+		713,
 		"Use Backgammon style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10047,7 +10045,7 @@ public enum Concept
 	JanggiStyle
 	(
 		"6.1.1.8",
-		119,
+		714,
 		"Use Janggi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10061,7 +10059,7 @@ public enum Concept
 	XiangqiStyle
 	(
 		"6.1.1.9",
-		120,
+		715,
 		"Use Xiangqi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10074,7 +10072,7 @@ public enum Concept
 	/** Use Shogi style. */
 	ShogiStyle(
 		"6.1.1.10",
-		121,
+		716,
 		"Use Shogi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10087,7 +10085,7 @@ public enum Concept
 	/** Use Table style. */
 	TableStyle(
 		"6.1.1.11",
-		122,
+		717,
 		"Use Table style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10101,7 +10099,7 @@ public enum Concept
 	SurakartaStyle
 	(
 		"6.1.1.12",
-		123,
+		718,
 		"Use Surakarta style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10115,7 +10113,7 @@ public enum Concept
 	TaflStyle
 	(
 		"6.1.1.13",
-		124,
+		719,
 		"Use Tafl style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10129,7 +10127,7 @@ public enum Concept
 	NoBoard
 	(
 		"6.1.1.14",
-		237, 
+		720, 
 		"Board is not shown.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10143,7 +10141,7 @@ public enum Concept
 	ComponentStyle
 	(
 		"6.1.2",
-		197, 
+		721, 
 		"Style of the component.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10157,7 +10155,7 @@ public enum Concept
 	AnimalComponent
 	(
 		"6.1.2.1",
-		203, 
+		722, 
 		"Use animal components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10171,7 +10169,7 @@ public enum Concept
 	ChessComponent
 	(
 		"6.1.2.2",
-		204, 
+		723, 
 		"Use Chess components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10185,7 +10183,7 @@ public enum Concept
 	KingComponent
 	(
 		"6.1.2.2.1",
-		204, 
+		724, 
 		"Use Chess components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10199,7 +10197,7 @@ public enum Concept
 	QueenComponent
 	(
 		"6.1.2.2.2",
-		204, 
+		725, 
 		"Use Queen components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10213,7 +10211,7 @@ public enum Concept
 	KnightComponent
 	(
 		"6.1.2.2.3",
-		204, 
+		726, 
 		"Use Knight components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10227,7 +10225,7 @@ public enum Concept
 	RookComponent
 	(
 		"6.1.2.2.4",
-		204, 
+		727, 
 		"Use Rook components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10241,7 +10239,7 @@ public enum Concept
 	BishopComponent
 	(
 		"6.1.2.2.5",
-		204, 
+		728, 
 		"Use Bishop components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10255,7 +10253,7 @@ public enum Concept
 	PawnComponent
 	(
 		"6.1.2.2.6",
-		204, 
+		729, 
 		"Use Pawn components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10269,7 +10267,7 @@ public enum Concept
 	FairyChessComponent
 	(
 		"6.1.2.3",
-		205, 
+		730, 
 		"Use fairy Chess components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10283,7 +10281,7 @@ public enum Concept
 	PloyComponent
 	(
 		"6.1.2.4",
-		206, 
+		731, 
 		"Use Ploy components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10297,7 +10295,7 @@ public enum Concept
 	ShogiComponent
 	(
 		"6.1.2.5",
-		207, 
+		732, 
 		"Use Shogi components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10311,7 +10309,7 @@ public enum Concept
 	XiangqiComponent
 	(
 		"6.1.2.6",
-		208, 
+		733, 
 		"Use Xiangqi components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10325,7 +10323,7 @@ public enum Concept
 	StrategoComponent
 	(
 		"6.1.2.7",
-		209, 
+		734, 
 		"Use Stratego components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10339,7 +10337,7 @@ public enum Concept
 	JanggiComponent
 	(
 		"6.1.2.8",
-		210, 
+		735, 
 		"Use Janggi components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10353,7 +10351,7 @@ public enum Concept
 	HandComponent
 	(
 		"6.1.2.9",
-		211, 
+		736, 
 		"Use Hand components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10367,7 +10365,7 @@ public enum Concept
 	CheckersComponent
 	(
 		"6.1.2.10",
-		212, 
+		737, 
 		"Use Checkers components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10381,7 +10379,7 @@ public enum Concept
 	BallComponent
 	(
 		"6.1.2.11",
-		213, 
+		738, 
 		"Use Ball components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10395,7 +10393,7 @@ public enum Concept
 	TaflComponent
 	(
 		"6.1.2.12",
-		214, 
+		739, 
 		"Use Tafl components.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10409,7 +10407,7 @@ public enum Concept
 	DiscComponent
 	(
 		"6.1.2.13",
-		215, 
+		740, 
 		"Use Disc components.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10423,7 +10421,7 @@ public enum Concept
 	MarkerComponent
 	(
 		"6.1.2.14",
-		213, 
+		741, 
 		"Use Marker components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
@@ -10439,7 +10437,7 @@ public enum Concept
 	StackType
 	(
 		"6.2",
-		111,
+		742,
 		"Visual of a stack.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10455,7 +10453,7 @@ public enum Concept
 	Stack
 	(
 		"6.2.1",
-		112,
+		743,
 		"Stacks of pieces.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10469,7 +10467,7 @@ public enum Concept
 	Symbols
 	(
 		"6.3",
-		234, 
+		744, 
 		"Symbols on the board.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10484,7 +10482,7 @@ public enum Concept
 	ShowPieceValue
 	(
 		"6.4",
-		235, 
+		745, 
 		"Show piece values.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10498,7 +10496,7 @@ public enum Concept
 	ShowPieceState
 	(
 		"6.5",
-		236, 
+		746, 
 		"Show piece states.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
@@ -10517,7 +10515,7 @@ public enum Concept
 	Implementation
 	(
 		"7",
-		197, 
+		747, 
 		"Internal implementation details, e.g. for performance predictions.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10531,7 +10529,7 @@ public enum Concept
 	State
 	(
 		"7.1",
-		197, 
+		748, 
 		"State related implementation.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10545,7 +10543,7 @@ public enum Concept
 	StateType
 	(
 		"7.1.1",
-		197, 
+		749, 
 		"Type of state used.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10559,7 +10557,7 @@ public enum Concept
 	StackState
 	(
 		"7.1.1.1",
-		88, 
+		750, 
 		"Use stack state.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10573,7 +10571,7 @@ public enum Concept
 	PieceState
 	(
 		"7.1.2",
-		197, 
+		751, 
 		"State related information about piece.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10587,7 +10585,7 @@ public enum Concept
 	SiteState
 	(
 		"7.1.2.1",
-		131, 
+		752, 
 		"Use site state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10601,7 +10599,7 @@ public enum Concept
 	SetSiteState
 	(
 		"7.1.2.2",
-		131, 
+		753, 
 		"Set the site state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10616,7 +10614,7 @@ public enum Concept
 	VisitedSites
 	(
 		"7.1.2.3",
-		133, 
+		754, 
 		"Store visited sites in previous moves of a turn.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10630,7 +10628,7 @@ public enum Concept
 	Variable
 	(
 		"7.1.3",
-		139,
+		755,
 		"Use state variable(s).",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10644,7 +10642,7 @@ public enum Concept
 	SetVar
 	(
 		"7.1.3.1",
-		139,
+		756,
 		"The variable 'var' is set.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10658,7 +10656,7 @@ public enum Concept
 	RememberValues
 	(
 		"7.1.3.2",
-		139,
+		757,
 		"Some values are remembered.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10672,7 +10670,7 @@ public enum Concept
 	ForgetValues
 	(
 		"7.1.3.3",
-		139,
+		758,
 		"Some values are forgotten.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10686,7 +10684,7 @@ public enum Concept
 	SetPending
 	(
 		"7.1.3.4",
-		139,
+		759,
 		"The variable pending is set.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10700,7 +10698,7 @@ public enum Concept
 	InternalCounter
 	(
 		"7.1.4",
-		130, 
+		760, 
 		"Use internal counter of the state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10714,7 +10712,7 @@ public enum Concept
 	SetInternalCounter
 	(
 		"7.1.4.1",
-		130, 
+		761, 
 		"Set internal counter of the state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10728,7 +10726,7 @@ public enum Concept
 	PlayerValue
 	(
 		"7.1.5",
-		170, 
+		762, 
 		"Use player value.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10742,7 +10740,7 @@ public enum Concept
 	SetHidden
 	(
 		"7.1.6",
-		170, 
+		763, 
 		"Hidden information are set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10756,7 +10754,7 @@ public enum Concept
 	SetInvisible
 	(
 		"7.1.6.1",
-		170, 
+		764, 
 		"Invisibility is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10770,7 +10768,7 @@ public enum Concept
 	SetHiddenCount
 	(
 		"7.1.6.2",
-		170, 
+		765, 
 		"Hidden count is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10784,7 +10782,7 @@ public enum Concept
 	SetHiddenRotation
 	(
 		"7.1.6.3",
-		170, 
+		766, 
 		"Hidden rotation is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10798,7 +10796,7 @@ public enum Concept
 	SetHiddenState
 	(
 		"7.1.6.4",
-		170, 
+		767, 
 		"Hidden state is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10812,7 +10810,7 @@ public enum Concept
 	SetHiddenValue
 	(
 		"7.1.6.5",
-		170, 
+		768, 
 		"Hidden value is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10826,7 +10824,7 @@ public enum Concept
 	SetHiddenWhat
 	(
 		"7.1.6.6",
-		170, 
+		769, 
 		"Hidden count are set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10840,7 +10838,7 @@ public enum Concept
 	SetHiddenWho
 	(
 		"7.1.6.7",
-		170, 
+		770, 
 		"Hidden who is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
@@ -10854,7 +10852,7 @@ public enum Concept
 	Efficiency
 	(
 		"7.2",
-		197, 
+		771, 
 		"Implementation related to efficiency (run on Intel E7-8860, 2.2 GHz, 4GB Ram, Seed = 2077).",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10869,7 +10867,7 @@ public enum Concept
 	CopyContext
 	(
 		"7.2.1",
-		93, 
+		772, 
 		"The context can be copied during computation of the moves.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
@@ -10883,7 +10881,7 @@ public enum Concept
 	Then
 	(
 		"7.2.2",
-		137, 
+		773, 
 		"Use consequences moves (then).",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10898,7 +10896,7 @@ public enum Concept
 	ForEachPiece
 	(
 		"7.2.3",
-		141,
+		774,
 		"Describes moves per piece.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10912,7 +10910,7 @@ public enum Concept
 	DoLudeme
 	(
 		"7.2.4",
-		200, 
+		775, 
 		"Use a (do ...) ludeme.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10926,7 +10924,7 @@ public enum Concept
 	Trigger
 	(
 		"7.2.5",
-		200, 
+		776, 
 		"Use a (trigger ...) ludeme.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
@@ -10940,7 +10938,7 @@ public enum Concept
 	PlayoutsPerSecond
 	(
 		"7.2.6",
-		200, 
+		777, 
 		"Number of playouts computed per second.",
 		ConceptType.Implementation, 
 		ConceptDataType.DoubleData,
@@ -10954,7 +10952,7 @@ public enum Concept
 	MovesPerSecond
 	(
 		"7.2.7",
-		200, 
+		778, 
 		"Number of moves computed per second.",
 		ConceptType.Implementation, 
 		ConceptDataType.DoubleData,
@@ -11048,7 +11046,7 @@ public enum Concept
 	 */
 	public int id()
 	{
-		return this.ordinal() + 1;
+		return id; //this.ordinal() + 1;
 	}
 	
 	/**

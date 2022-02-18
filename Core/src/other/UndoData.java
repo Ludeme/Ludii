@@ -1,14 +1,15 @@
 package other;
 
 import java.util.Arrays;
+import java.util.BitSet;
 
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 import main.collections.FastTIntArrayList;
+import other.state.owned.Owned;
 import other.state.track.OnTrackIndices;
-import other.state.zhash.HashedBitSet;
 
 /**
  * Undo Data necessary to be able to undo a move.
@@ -91,17 +92,23 @@ public class UndoData
 	/** All the remaining dominoes. */
 	private FastTIntArrayList remainingDominoes;
 
+	/** The decision after voting. */
+	private int isDecided;
+
 	/**
 	 * BitSet used to store all the site already visited (from & to) by each move
 	 * done by the player in a sequence of turns played by the same player.
 	 */
-	private HashedBitSet visited = null;
+	private BitSet visited = null;
 
 	/** In case of a sequence of capture to remove (e.g. some draughts games). */
 	private TIntArrayList sitesToRemove = null;
 	
 	/** To access where are each type of piece on each track. */
 	private OnTrackIndices onTrackIndices;
+	
+	/** To access where are each type of piece on each track. */
+	private Owned owned;
 
 	//-------------------------------------------------------------------------
 	
@@ -130,6 +137,8 @@ public class UndoData
 	 * @param visited	  			   Sites visited during the same turn.
 	 * @param sitesToRemove		   	   Sites to remove in case of a sequence of capture.
 	 * @param onTrackIndices		   To access where are each type of piece on each track.
+	 * @param owned		  			   Access to list of sites for each kind of component owned per player.
+	 * @param isDecided		  		   The decision after voting.
 	 */
 	public UndoData
 	(
@@ -154,9 +163,11 @@ public class UndoData
 		final int numTurnSamePlayer,
 		final int numConsecutivePasses,
 		final FastTIntArrayList remainingDominoes,
-		final HashedBitSet visited,
+		final BitSet visited,
 		final TIntArrayList sitesToRemove,
-		final OnTrackIndices onTrackIndices
+		final OnTrackIndices onTrackIndices,
+		final Owned owned,
+		final int isDecided
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -171,7 +182,7 @@ public class UndoData
 		this.phases = phases == null ? null : Arrays.copyOf(phases, phases.length);
 		this.pendingValues = pendingValues == null ? null : new TIntHashSet(pendingValues);
 		this.counter = counter;
-		this.previousStateWithinATurn = new TLongArrayList(previousState);
+		this.previousStateWithinATurn = new TLongArrayList(previousStateWithinATurn);
 		this.previousState = new TLongArrayList(previousState);
 		this.prev = prev;
 		this.mover = mover;
@@ -180,9 +191,11 @@ public class UndoData
 		this.numTurnSamePlayer = numTurnSamePlayer;
 		this.numConsecutivePasses = numConsecutivePasses;
 		this.remainingDominoes = remainingDominoes == null ? null : new FastTIntArrayList(remainingDominoes);
-		this.visited = visited == null ? null : visited.clone();
+		this.visited = visited == null ? null : (BitSet) visited.clone();
 		this.sitesToRemove = sitesToRemove == null ? null : new TIntArrayList(sitesToRemove);
 		this.onTrackIndices = onTrackIndices == null ? null : new OnTrackIndices(onTrackIndices);
+		this.owned = owned == null ? null : owned.copy();
+		this.isDecided = isDecided;
 	}
 
 	//-------------------------------------------------------------------------
@@ -358,7 +371,7 @@ public class UndoData
 	/**
 	 * @return Sites visited during the same turn.
 	 */
-	public HashedBitSet visited()
+	public BitSet visited()
 	{
 		return visited;
 	}
@@ -377,5 +390,21 @@ public class UndoData
 	public OnTrackIndices onTrackIndices()
 	{
 		return onTrackIndices;
+	}
+	
+	/**
+	 * @return Owned sites per component
+	 */
+	public Owned owned()
+	{
+		return owned;
+	}
+	
+	/**
+	 * @return The decision after voting.
+	 */
+	public int isDecided()
+	{
+		return isDecided;
 	}
 }

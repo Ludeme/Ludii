@@ -23,7 +23,7 @@ import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.GameLoader;
 import other.action.move.ActionAdd;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.action.state.ActionSetNextPlayer;
 import other.context.Context;
 import other.move.Move;
@@ -102,9 +102,7 @@ public class TestAmazonsFeatures
 		// P1 moves from 39 to 9
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 39, Constants.UNDEFINED, SiteType.Cell, 9, Constants.UNDEFINED,
-								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
-								false)
+						ActionMove.construct(SiteType.Cell, 39, Constants.UNDEFINED, SiteType.Cell, 9, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
 						.withDecision(true),
 						new ActionSetNextPlayer(1)).withFrom(39).withTo(9));
 		// P1 shoots at 59
@@ -117,9 +115,7 @@ public class TestAmazonsFeatures
 		// P2 moves from 69 to 36
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 69, Constants.UNDEFINED, SiteType.Cell, 36, Constants.UNDEFINED,
-								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
-								false)
+						ActionMove.construct(SiteType.Cell, 69, Constants.UNDEFINED, SiteType.Cell, 36, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
 						.withDecision(true),
 						new ActionSetNextPlayer(2)).withFrom(69).withTo(36));
 		// P2 shoots at 16
@@ -131,9 +127,7 @@ public class TestAmazonsFeatures
 		// P1 moves from 30 to 35
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 30, Constants.UNDEFINED, SiteType.Cell, 35, Constants.UNDEFINED,
-								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
-								false)
+						ActionMove.construct(SiteType.Cell, 30, Constants.UNDEFINED, SiteType.Cell, 35, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
 						.withDecision(true),
 						new ActionSetNextPlayer(1)).withFrom(30).withTo(35));
 		// P1 shoots at 95
@@ -145,8 +139,7 @@ public class TestAmazonsFeatures
 		// P2 moves from 93 to 90
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 93, Constants.UNDEFINED, SiteType.Cell, 90, Constants.UNDEFINED,
-								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
+						ActionMove.construct(SiteType.Cell, 93, Constants.UNDEFINED, SiteType.Cell, 90, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
 						.withDecision(true),
 						new ActionSetNextPlayer(2)).withFrom(93).withTo(90));
 		// P2 shoots at 45
@@ -163,7 +156,7 @@ public class TestAmazonsFeatures
 					context, 
 					new Move
 					(
-						new ActionMove
+						ActionMove.construct
 						(
 							SiteType.Cell, 3, Constants.UNDEFINED, SiteType.Cell, 0,
 							Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
@@ -197,7 +190,7 @@ public class TestAmazonsFeatures
 					context, 
 					new Move
 					(
-						new ActionMove
+							ActionMove.construct
 						(
 							SiteType.Cell, 3, Constants.UNDEFINED, SiteType.Cell, 30,
 							Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
@@ -227,7 +220,7 @@ public class TestAmazonsFeatures
 					context, 
 					new Move
 					(
-						new ActionMove
+							ActionMove.construct
 						(
 							SiteType.Cell, 35, Constants.UNDEFINED, SiteType.Cell, 32,
 							Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
@@ -258,7 +251,7 @@ public class TestAmazonsFeatures
 					context, 
 					new Move
 					(
-						new ActionMove
+							ActionMove.construct
 						(
 							SiteType.Cell, 35, Constants.UNDEFINED, SiteType.Cell, 44,
 							Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
@@ -295,7 +288,7 @@ public class TestAmazonsFeatures
 					context, 
 					new Move
 					(
-						new ActionMove
+							ActionMove.construct
 						(
 							SiteType.Cell, 35, Constants.UNDEFINED, SiteType.Cell, 46,
 							Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
@@ -333,7 +326,7 @@ public class TestAmazonsFeatures
 					context, 
 					new Move
 					(
-						new ActionMove
+							ActionMove.construct
 						(
 							SiteType.Cell, 9, Constants.UNDEFINED, SiteType.Cell, 27,
 							Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
@@ -375,7 +368,7 @@ public class TestAmazonsFeatures
 		// P1 moves from 39 to 37
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 39, Constants.UNDEFINED, SiteType.Cell, 37, Constants.UNDEFINED,
+						ActionMove.construct(SiteType.Cell, 39, Constants.UNDEFINED, SiteType.Cell, 37, Constants.UNDEFINED,
 								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
 						.withDecision(true),
 						new ActionSetNextPlayer(1)).withFrom(39).withTo(37).withMover(1));
@@ -389,7 +382,7 @@ public class TestAmazonsFeatures
 		// P2 moves from 96 to 36
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 96, Constants.UNDEFINED, SiteType.Cell, 36, Constants.UNDEFINED,
+						ActionMove.construct(SiteType.Cell, 96, Constants.UNDEFINED, SiteType.Cell, 36, Constants.UNDEFINED,
 								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
 						.withDecision(true),
 						new ActionSetNextPlayer(2)).withFrom(96).withTo(36).withMover(2));
@@ -403,7 +396,7 @@ public class TestAmazonsFeatures
 		// P1 moves from 30 to 32
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 30, Constants.UNDEFINED, SiteType.Cell, 32, Constants.UNDEFINED,
+						ActionMove.construct(SiteType.Cell, 30, Constants.UNDEFINED, SiteType.Cell, 32, Constants.UNDEFINED,
 								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, false)
 						.withDecision(true),
 						new ActionSetNextPlayer(1)).withFrom(30).withTo(32).withMover(1));
@@ -417,7 +410,7 @@ public class TestAmazonsFeatures
 		// P2 moves from 93 to 83
 		game.apply(context,
 				new Move(
-						new ActionMove(SiteType.Cell, 93, Constants.UNDEFINED, SiteType.Cell, 83, Constants.UNDEFINED,
+						ActionMove.construct(SiteType.Cell, 93, Constants.UNDEFINED, SiteType.Cell, 83, Constants.UNDEFINED,
 								Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF,
 						false)
 						.withDecision(true),

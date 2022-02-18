@@ -1,7 +1,7 @@
 package app.utils;
 
+import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import app.PlayerApp;
@@ -42,8 +42,16 @@ public class GameUtil
 		Game game = context.game();
 		app.manager().undoneMoves().clear();
 		ref.interruptAI(app.manager());
-		Arrays.fill(app.settingsPlayer().agentArray(), true);
+		
+		// Web Player settings
 		app.settingsPlayer().setWebGameResultValid(true);
+		for (int i = 0; i <= game.players().count(); i++)
+		{
+			if (app.manager().aiSelected()[app.manager().playerToAgent(i)].ai() != null)
+				app.settingsPlayer().setAgentArray(i, true);
+			else
+				app.settingsPlayer().setAgentArray(i, false);
+		}
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
@@ -99,6 +107,10 @@ public class GameUtil
 		app.manager().settingsManager().storedGameStatesForVisuals().clear();
 		app.manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(app.manager().ref().context().state().stateHash()));
 		
+		app.settingsPlayer().setComponentIsSelected(false);
+		app.bridge().settingsVC().setPieceBeingDragged(false);
+		app.settingsPlayer().setDragComponent(null);
+		
 		app.setTemporaryMessage("");
 		
 		app.manager().settingsNetwork().resetNetworkPlayers();
@@ -110,11 +122,10 @@ public class GameUtil
 		if (app.manager().isWebApp())
 		{
 			final Context context = app.manager().ref().context();
-			final Game game = context.game();
 			
 			// Check if that game contains a shared hand (above the board)
 			boolean hasSharedHand = false;
-			for (final Container container : game.equipment().containers())
+			for (final Container container : context.equipment().containers())
 				if (container.role().equals(RoleType.Shared))
 					hasSharedHand = true;
 			
@@ -124,15 +135,19 @@ public class GameUtil
 				if (context.game().metadata().graphics().handPlacement(context, i) != null)
 					hasCustomHandPlacement = true;
 			
-			final boolean boardBackground = game.metadata().graphics().boardBackground(context).size() > 0;
+			final boolean boardBackground = context.game().metadata().graphics().boardBackground(context).size() > 0;
 			
 			// Make the margins around the board thinner
-			if (game.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
+			if (context.board().defaultSite().equals(SiteType.Cell) && !hasSharedHand && !boardBackground && !hasCustomHandPlacement)
 				app.bridge().getContainerStyle(0).setDefaultBoardScale(0.95);
 		}
 
 		MoveHandler.checkMoveWarnings(app);
-		app.repaint();
+		
+		EventQueue.invokeLater(() -> 
+		{
+			app.repaint();
+		});
 	}
 	
 	//-------------------------------------------------------------------------

@@ -92,15 +92,15 @@ public class ExperimentFileUtils
 		
 		final File checkpoint0 = new File(String.format(fileSequenceFormat, baseFilepath, Integer.valueOf(index), extension));
 		
-		if (checkpoint0.exists())
+		if (checkpoint0.getParentFile().exists())
 		{
 			final File dir = checkpoint0.getParentFile();
 			final File[] files = dir.listFiles();
 			
 			for (final File file : files)
 			{
-				final String filepath = file.getAbsolutePath();
-				if (filepath.endsWith("." + extension) && filepath.contains(baseFilepath))
+				final String filepath = file.getAbsolutePath().replaceAll(Pattern.quote("\\"), "/");
+				if (filepath.endsWith("." + extension) && filepath.contains(baseFilepath.replaceAll(Pattern.quote("\\"), "/")))
 				{
 					try
 					{

@@ -66,7 +66,9 @@ public enum AbsoluteDirection implements Direction
 			return dirn.getDirectionActual().uniqueName() == DirectionUniqueName.N
 					|| dirn.getDirectionActual().uniqueName() == DirectionUniqueName.S
 					|| dirn.getDirectionActual().uniqueName() == DirectionUniqueName.E
-					|| dirn.getDirectionActual().uniqueName() == DirectionUniqueName.W;
+					|| dirn.getDirectionActual().uniqueName() == DirectionUniqueName.W
+					|| dirn.getDirectionActual().uniqueName() == DirectionUniqueName.U
+					|| dirn.getDirectionActual().uniqueName() == DirectionUniqueName.D;
 		}
 	},
 

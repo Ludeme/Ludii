@@ -1,7 +1,7 @@
 (define "58 Holes_ai"
     (useFor { "Variant/Carnarvon and Carter" }
         (bestAgent "MC-GRAVE")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:-0.03247712)
             (centreProximity pieceWeights:{
                 (pair "Marker1" -0.18584655)
@@ -22,7 +22,7 @@
             })
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" 0.16206537)
                 (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.15094735)

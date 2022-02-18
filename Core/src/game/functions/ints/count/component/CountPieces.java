@@ -9,6 +9,7 @@ import annotations.Opt;
 import annotations.Or;
 import game.Game;
 import game.equipment.component.Component;
+import game.functions.booleans.BooleanFunction;
 import game.functions.ints.BaseIntFunction;
 import game.functions.ints.IntFunction;
 import game.functions.region.RegionFunction;
@@ -48,6 +49,9 @@ public final class CountPieces extends BaseIntFunction
 	
 	/** The region to count the pieces. */
 	private final RegionFunction whereFn;
+	
+	/** The condition to check for each site where is the piece. */
+	private final BooleanFunction If;
 
 	/**
 	 * @param type The graph element type [default SiteType of the board].
@@ -55,6 +59,7 @@ public final class CountPieces extends BaseIntFunction
 	 * @param of   The index of the player.
 	 * @param name The name of the piece to count only these pieces.
 	 * @param in   The region where to count the pieces.
+	 * @param If   The condition to check for each site where is the piece [True].
 	 */
 	public CountPieces
 	(
@@ -62,7 +67,8 @@ public final class CountPieces extends BaseIntFunction
 		@Opt @Or       final RoleType        role,
 		@Opt @Or @Name final IntFunction     of,
 		@Opt           final String          name,
-		@Opt     @Name final RegionFunction  in
+		@Opt     @Name final RegionFunction  in,
+		@Opt     @Name final BooleanFunction If
 	)
 	{
 		this.type = type;
@@ -70,6 +76,7 @@ public final class CountPieces extends BaseIntFunction
 		whoFn = (of != null) ? of : RoleType.toIntFunction(this.role);
 		this.name = name;
 		whereFn = in;
+		this.If = If;
 	}
 
 	//-------------------------------------------------------------------------
@@ -79,7 +86,9 @@ public final class CountPieces extends BaseIntFunction
 	{
 		if (name != null && name.equals("Bag"))
 			return context.state().remainingDominoes().size();
-		
+
+		final int origSite = context.site();
+		final int origLevel = context.level();
 		int count = 0;
 		final int whoId = whoFn.eval(context);
 		
@@ -152,7 +161,12 @@ public final class CountPieces extends BaseIntFunction
 										if (!componentIds.contains(what))
 											continue;
 									}
-									count++;
+									
+									context.setLevel(level);
+									context.setSite(site);
+									
+									if(If == null || If.eval(context))
+										count++;
 								}
 							}
 							else
@@ -169,7 +183,10 @@ public final class CountPieces extends BaseIntFunction
 									if (!componentIds.contains(what))
 										continue;
 								}
-								count += cs.count(site, realType);
+								
+								context.setSite(site);
+								if(If == null || If.eval(context))
+									count += cs.count(site, realType);
 							}
 						}
 					}
@@ -177,6 +194,9 @@ public final class CountPieces extends BaseIntFunction
 			}
 		}
 
+		context.setLevel(origLevel);
+		context.setSite(origSite);
+		
 		return count;
 	}
 

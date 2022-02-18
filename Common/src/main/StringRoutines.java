@@ -817,7 +817,7 @@ public final class StringRoutines
 
 	//-------------------------------------------------------------------------
 	
-	public static String getPlural(String string) 
+	public static String getPlural(final String string) 
 	{
 		if
 		(

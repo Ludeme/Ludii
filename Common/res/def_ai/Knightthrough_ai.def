@@ -1,6 +1,6 @@
 (define "Knightthrough_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:0)
     })
     

@@ -28,7 +28,7 @@ import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
@@ -50,6 +50,9 @@ public class Reinforce
 	/** We don't store experiences for which the discount factor drops below this threshold */
 	private static final double EXPERIENCE_DISCOUNT_THRESHOLD = 0.001;
 	
+	/** If we have a discount factor gamma = 1, we'll use this threshold to limit amount of data stored per trial */
+	private static final int DATA_PER_TRIAL_THRESHOLD = 50;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -70,9 +73,9 @@ public class Reinforce
 	public static BaseFeatureSet[] runSelfPlayPG
 	(
 		final Game game,
-		final SoftmaxPolicy selectionPolicy,
-		final SoftmaxPolicy playoutPolicy,
-		final SoftmaxPolicy tspgPolicy,
+		final SoftmaxPolicyLinear selectionPolicy,
+		final SoftmaxPolicyLinear playoutPolicy,
+		final SoftmaxPolicyLinear tspgPolicy,
 		final BaseFeatureSet[] inFeatureSets,
 		final FeatureSetExpander featureSetExpander,
 		final Optimiser[] optimisers,
@@ -180,6 +183,10 @@ public class Reinforce
 									final BaseFeatureSet featureSet = epochFeatureSets[mover];
 				
 									final FeatureVector[] featureVectors = featureSet.computeFeatureVectors(context, moves, false);
+									for (final FeatureVector featureVector : featureVectors)
+									{
+										featureVector.activeSpatialFeatureIndices().trimToSize();
+									}
 									final FVector distribution = playoutPolicy.computeDistribution(featureVectors, mover);
 									
 									final int moveIdx = playoutPolicy.selectActionFromDistribution(distribution);
@@ -567,21 +574,39 @@ public class Reinforce
 			
 			double discountMultiplier = 1.0;
 			
+			final boolean[] skipData = new boolean[featureVectorsList.size()];
+			if (trainingParams.pgGamma == 1.0)
+			{
+				int numSkipped = 0;
+				while (skipData.length - numSkipped > DATA_PER_TRIAL_THRESHOLD)
+				{
+					final int skipIdx = ThreadLocalRandom.current().nextInt(skipData.length);
+					if (!skipData[skipIdx])
+					{
+						skipData[skipIdx] = true;
+						++numSkipped;
+					}
+				}
+			}
+			
 			for (int i = featureVectorsList.size() - 1; i >= 0; --i)
 			{
-				epochExperiences[p].add
-				(
-					new PGExperience
+				if (!skipData[i] && legalMovesList.get(i).size() > 1)
+				{
+					epochExperiences[p].add
 					(
-						gameStatesList.get(i),
-						lastDecisionMovesList.get(i),
-						legalMovesList.get(i),
-						featureVectorsList.get(i), 
-						moveIndicesList.getQuick(i), 
-						(float)utilities[p],
-						discountMultiplier
-					)
-				);
+						new PGExperience
+						(
+							gameStatesList.get(i),
+							lastDecisionMovesList.get(i),
+							legalMovesList.get(i),
+							featureVectorsList.get(i), 
+							moveIndicesList.getQuick(i), 
+							(float)utilities[p],
+							discountMultiplier
+						)
+					);
+				}
 				
 				discountMultiplier *= trainingParams.pgGamma;
 				

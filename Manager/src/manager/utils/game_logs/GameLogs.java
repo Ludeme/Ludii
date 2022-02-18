@@ -57,16 +57,6 @@ public class GameLogs
 	{
 		return game;
 	}
-
-	//-------------------------------------------------------------------------
-	
-	public void testIntegrity()
-	{
-		for (final MatchRecord matchRecord : matchRecords)
-		{
-			matchRecord.testIntegrity(game);
-		}
-	}
 	
 	//-------------------------------------------------------------------------
 

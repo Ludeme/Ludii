@@ -1,10 +1,10 @@
 (define "English Draughts_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.019882385)
             (pair "rel:last_from=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" 0.1639077)

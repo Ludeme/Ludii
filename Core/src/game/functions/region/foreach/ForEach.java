@@ -1,16 +1,21 @@
 package game.functions.region.foreach;
 
 import annotations.Name;
+import annotations.Opt;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
 import game.functions.intArray.IntArrayFunction;
+import game.functions.ints.IntFunction;
 import game.functions.region.BaseRegionFunction;
 import game.functions.region.RegionFunction;
+import game.functions.region.foreach.level.ForEachLevel;
 import game.functions.region.foreach.player.ForEachPlayer;
 import game.functions.region.foreach.sites.ForEachSite;
 import game.functions.region.foreach.sites.ForEachSiteInRegion;
 import game.functions.region.foreach.team.ForEachTeam;
 import game.rules.start.forEach.ForEachTeamType;
+import game.types.board.SiteType;
+import game.util.directions.StackDirection;
 import game.util.equipment.Region;
 import other.context.Context;
 
@@ -24,6 +29,33 @@ public final class ForEach extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
+	//-------------------------------------------------------------------------
+
+	/**
+	 * For iterating through levels of a site.
+	 * 
+	 * @param forEachType    The type of property to iterate.
+	 * @param type           The type of graph element.
+	 * @param at             The site.
+	 * @param stackDirection The direction to count in the stack [FromTop].
+	 * @param If             The condition to satisfy.
+	 * @param startAt        The level to start to look at.
+	 * 
+	 * @example (forEach Level at:(site))
+	 */
+	public static RegionFunction construct
+	(
+		           final ForEachLevelType forEachType, 
+		     @Opt  final SiteType         type,
+	         @Name final IntFunction      at,
+	 	@Opt       final StackDirection   stackDirection,
+		@Opt @Name final BooleanFunction  If,
+        @Opt @Name final IntFunction      startAt
+	)
+	{
+		return new ForEachLevel(type, at, stackDirection, If, startAt);
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**

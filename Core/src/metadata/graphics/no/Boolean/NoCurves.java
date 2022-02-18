@@ -24,8 +24,6 @@ public class NoCurves implements GraphicsItem
 
 	/**
 	 * @param straightRingLines  Whether rings on the board should be drawn straight or not [True].
-	 * 
-	 * @example (straightRingLines)
 	 */
 	public NoCurves
 	(

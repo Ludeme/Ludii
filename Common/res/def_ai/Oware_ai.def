@@ -1,18 +1,18 @@
 (define "Oware_ai"
     (useFor { "Play Rules/No limit by hole" "End Rules/No Piece" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (playerSiteMapCount)
         })
         
     )
     (useFor { "Play Rules/12 counters max by hole" "End Rules/25 Counters" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (playerSiteMapCount)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[-{0}]>" -0.062035903)
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N6{0}]>" 0.023009373)

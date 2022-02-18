@@ -1,6 +1,6 @@
 (define "Yote_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
         (centreProximity pieceWeights:{
             (pair "Marker1" -1.119665)

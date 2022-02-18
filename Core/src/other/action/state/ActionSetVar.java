@@ -5,6 +5,7 @@ import java.util.BitSet;
 import game.rules.play.moves.Moves;
 import main.Constants;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
@@ -84,7 +85,7 @@ public final class ActionSetVar extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		if(previousValue == Constants.UNDEFINED)
 			context.state().removeKeyValue(name);
@@ -152,6 +153,12 @@ public final class ActionSetVar extends BaseAction
 	public String toMoveFormat(final Context context, final boolean useCoords)
 	{
 		return "(" + name + "= " + value + ")";
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.SetVar;
 	}
 
 	//-------------------------------------------------------------------------

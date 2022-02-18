@@ -1,6 +1,6 @@
 (define "Nei-Pat-Kono_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
         (cornerProximity pieceWeights:{
             (pair "Marker1" 0.4205946)

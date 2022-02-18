@@ -1,10 +1,10 @@
 (define "Go with the Floe_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[e{0}]>" -0.28713697)
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[!-{0}]>" 0.096906)

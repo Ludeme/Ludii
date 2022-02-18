@@ -107,7 +107,7 @@ public class LinearFunction
 	 */
 	public void writeToFile(final String filepath, final String[] featureSetFiles)
 	{
-		try (PrintWriter writer = new PrintWriter(filepath, "UTF-8"))
+		try (final PrintWriter writer = new PrintWriter(filepath, "UTF-8"))
 		{
 			for (int i = 0; i < theta.allWeights().dim(); ++i)
 			{
@@ -133,7 +133,7 @@ public class LinearFunction
 	{
 		try 
 		(
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filepath), "UTF-8"))
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filepath), "UTF-8"))
 		)
 		{
 			final TFloatArrayList readFloats = new TFloatArrayList();

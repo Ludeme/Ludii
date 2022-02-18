@@ -14,7 +14,7 @@ import main.collections.FastArrayList;
 import other.context.Context;
 import other.move.Move;
 import other.state.State;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import search.mcts.MCTS.MoveKey;
 import search.mcts.backpropagation.BackpropagationStrategy;
@@ -326,11 +326,11 @@ public abstract class BaseNode
     
     /**
      * @param player Player index
-     * @return Sum of squared scores backpropagated into this node for player
+     * @return Sum of squared scores backpropagated into this node for player. NOTE: also adds virtual losses.
      */
     public double sumSquaredScores(final int player)
     {
-    	return sumSquaredScores[player];
+    	return sumSquaredScores[player] + numVirtualVisits.get();
     }
     
     /**
@@ -606,7 +606,7 @@ public abstract class BaseNode
     {
     	// compute distribution using learned Play-out policy
 		final FVector distribution = 
-				((SoftmaxPolicy) mcts.playoutStrategy()).computeDistribution(
+				((SoftmaxPolicyLinear) mcts.playoutStrategy()).computeDistribution(
 						contextRef(), contextRef().game().moves(contextRef()).moves(), true);
 		
 		final int dim = distribution.dim();

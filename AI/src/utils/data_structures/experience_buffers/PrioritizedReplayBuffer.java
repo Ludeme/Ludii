@@ -214,6 +214,12 @@ public class PrioritizedReplayBuffer implements Serializable, ExperienceBuffer
 		return batch;
 	}
 	
+	@Override
+	public ExItExperience[] allExperience()
+	{
+		return buffer;
+	}
+	
 	/**
 	 * Sets priority levels 
 	 * @param indices

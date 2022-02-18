@@ -1,6 +1,6 @@
 (define "Hops-a-Daisy Generalized_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Disc" 3.0933902)

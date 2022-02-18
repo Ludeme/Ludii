@@ -1,157 +1,97 @@
-(define "PieceIsStone"
-    (= (what at:(from)) (id "Stone" Mover))
-)
-
-(define "PieceIsColumn"
-    (= (what at:(from)) (id "Column" Mover))
-)
-
-(define "EnemyBase"
-    (if (is Mover P1) (sites P2) (sites P1))
-)
-
-(define "NotOwnBase"     							  
-    (not (is In (to) (sites Mover "Base"))) 
-)
-
-(define "CaptureToPiece"     							  
-    if:(and
-        (is Enemy (who at:(to)))
-        (not (is In (to) ("EnemyBase")))
+(game "Center"  
+    (players 2) 
+    (equipment 
+        { 
+        <Board> 
+        (piece "Marker" Each)
+        }
     )
-    (apply (remove (to))) 
-)
-
-(define "EmptyAndNotVisited"     							  
-    (and 
-        (is Empty (to)) 
-        (not (is Visited (to))) 
-    ) 
-)
-
-(define "Hop" 
-    (move
-        Hop
-        (from #1)
-        (between if:(or
-                (is Friend (who at:(between)))
-                (is In (between) (sites Mover "Base"))
-            )
-        )
-        (to 
-            if:("EmptyAndNotVisited")
-            // can I insert conditional if: here so "PieceIsStone" allows check for "NotOwnBase" and "PieceIsColumn" allows "CaptureToPiece" and move end?          
-        )
-        #2		
-    )
-)
-
-(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
-
-//------------------------------------------------------------------------------
-
-(game "Batalo"  
-    (players 2)
-    (equipment {
-        (board (hex 7))
-        (regions "Base" P1 {60})
-        (regions "Base" P2 {66})
-        (piece "Stone" Each
-            (move
-                Step 
-                (to 
-                    if:(and
-                        (is Empty (to))
-                        ("NotOwnBase")
-                    )
-                ) 
-            )
-        )
-        (piece "Column" Each
-            (move
-                Slide 
-                (to "CaptureToPiece") 
-            ) 
-        )
-    })
     
     (rules 
-        (start { 
-            (place "Column1" {60})
-            (place "Column2" {66})
-            (place "Stone1" {47 48 59 61 72 73})
-            (place "Stone2" {53 54 65 67 78 79})
-        })
-        
-        phases:{
-        (phase "Movement"  
-            (play
-                (or 
-                    (forEach Piece) 
-                    (forEach Piece ("HopSequence" (from)))
+        <Pie>
+        (play 
+            (move 
+                Add
+                (to 
+                    (sites Empty)
+                    if:(<=
+                        (count Steps 
+                            <Board:direction>
+                            (to)
+                            (sites Perimeter)
+                        )
+                        (count Sites 
+                            in:(intersection
+                                (sites LineOfSight
+                                    at:(to)
+                                    <Board:direction>
+                                )
+                                (sites Occupied by:Mover)
+                            )
+                        )
+                    )
                 )
-            ) 
-            (nextPhase (is Mover (next)) "MultiJump")
-        ) 
-        (phase "MultiJump" 
-            (play 
-                (or 
-                    ("HopSequence" (last To)) 
-                    (move Pass)
-                )
-            ) 
-            (nextPhase (not (is Mover (next))) "Movement")
-        ) 
-        }
+            )
+        )
         
-        // (end (if (is In (last To) ("EnemyBase")) (result Mover Win)))
-        (end (if (or
-                    (is In (last To) ("EnemyBase"))
-                    (no Moves Next )
-                ) 
-                (result Mover Win)
+        (end 
+            (if 
+                (is Occupied (centrePoint)) 
+                (result Next Loss)
             )
         )
     )
 )
 
-//------------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
-(metadata       
-    (info {
-        (description "A mash-up of Chess, Chinese Checkers, and Capture the Flag.")
-        (aliases {"BattleStones (iPad/iPhone/Mac app)"})
-        (rules "Played on a 7x7x7 hex board containing two player Bases.
-            Each player has one Column piece placed on their Base, surrounded by six Stone pieces.
-            
-            Stones can move one space in any direction.
-            Columns can move any number of spaces in any direction.
-            Alternately, all pieces can hop over team pieces (and their own Base) multiple times.
-            
-            Players may capture pieces by moving their Column onto a space occupied by an opponent's piece.
-            
-            Stones may not move onto their own Base.
-            Columns can not be captured while occupying their own Base.
-            
-        Players win by moving a piece onto the opponent's Base, or capturing all the opponent's pieces.")
-        (source "<a href=\"https://www.digitalharmonics.org/harmonygames.html\" target=\"_blank\" />archived web site</a>")
-        (version "1.2.11")
-        (classification "board/race/reach")
-        (author "Scott Harmon")
-        (credit "Scott Harmon")
-        (origin "This game was created by Scott Harmon in 1983, published as a board game in 1991, and programmed and published as an iPad/iPhone/Mac app in 2010.")
-    })
-    (graphics {
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
-        (board Colour Phase0 (colour LightGrey))
-        (region Colour "Base" (colour Grey))
-        (piece Rename piece:"Stone" "Hex")
-        (piece Rename piece:"Column" "Hex")
-        (piece Scale "Stone" 0.6)
-        (piece Scale "Column" 0.8)
-        (piece Foreground "Column1" image:"hex" scale:0.5)
-        (piece Foreground "Column2" image:"hex" edgeColour:(colour White) scale:0.5)
-    })
+(option "Board" <Board> args:{ <size> <direction>}
+    {
+    (item "Square 9x9" <(board (square 9) use:Vertex)> <All> "A square board of size 9 is currently selected")*
+    (item "Square 7x7" <(board (square 7) use:Vertex)> <All> "A square board of size 7 is currently selected")
+    (item "Hex 4" <(board (hex 4))> <> "A hexagonal board of size 4 is currently selected")
+    }
 )
 
+(option "Pie rule" <Pie> args:{ <pie> <direction>}
+    {
+    (item "Off" <> "The pie rule is currenty not in force.")*
+    (item "On" <(meta (swap))> "The pie rule is currently in force.")
+    }
+)
+
+//-------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Center is a strange little game invented by Alek Erickson and Michael Amundsen in February of 2022. The goal is to place a stone on the center of the board, but it's not as easy as it sounds.")
+        (rules "Take turns placing stones on a hexhex board of size 4, or a square board of an odd size not larger than 9. The winner is the player who places a stone on the center cell. A placement N steps away from the perimeter must have at least N friendly pieces in sight. On the square board, pieces see in all 8 directions.
+        ")
+        (version "1.3.1")
+        (credit "Michael Amundsen")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+        (board Colour Phase0 (colour 250 210 148))
+        (board Colour Phase1 (colour 250 210 148))
+        (board Style Board)
+        (useFor "Board/Square 7x7" 
+            (show Symbol "dot" Vertex {24} 
+                edgeColour:(colour 178 151 100) 
+                scale:0.18
+            )
+        )
+        (useFor "Board/Square 9x9" 
+            (show Symbol "dot" Vertex {20 24 56 60 40} 
+                edgeColour:(colour 178 151 100) 
+                scale:0.18
+            )
+        )
+    })
+)

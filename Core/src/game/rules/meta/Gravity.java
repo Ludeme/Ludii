@@ -15,7 +15,7 @@ import game.util.graph.Step;
 import main.Constants;
 import other.MetaRules;
 import other.action.Action;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;
@@ -86,17 +86,14 @@ public class Gravity extends MetaRule
 						final ContainerState cs = newContext.containerState(newContext.containerId()[site]);
 						if (cs.what(site, SiteType.Vertex) != 0)
 						{
-							final List<game.util.graph.Step> steps = topology.trajectories()
-									.steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Downward);
+							final List<game.util.graph.Step> steps = topology.trajectories().steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Downward);
 
 							for (final Step step : steps)
 							{
 								final int toSite = step.to().id();
 								if (cs.what(toSite, SiteType.Vertex) == 0)
 								{
-									final Action action = new ActionMove(SiteType.Vertex, site, 0,
-											SiteType.Vertex, toSite, 0, Constants.UNDEFINED,
-											Constants.UNDEFINED, Constants.UNDEFINED, false);
+									final Action action = ActionMove.construct(SiteType.Vertex, site, 0, SiteType.Vertex, toSite, 0, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, false);
 									final Move moveToApply = new Move(action);
 									moveToApply.apply(newContext, false);
 									droppedMove.actions().add(action);

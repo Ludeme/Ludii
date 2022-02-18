@@ -1,21 +1,21 @@
 (define "Kisolo_ai"
     (useFor { "Start Rules/3 Seeds per hole" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (playerRegionsProximity player:2)
         })
         
     )
     (useFor { "Start Rules/Starting Position 1" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material weight:-1.0)
         })
         
     )
     (useFor { "Start Rules/Starting Position 2" }
         (bestAgent "ProgressiveHistory")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material weight:-1.0)
         })
         

@@ -1,6 +1,7 @@
 package other.action.state;
 
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.context.Context;
 
@@ -63,7 +64,7 @@ public class ActionStoreStateInContext extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().restoreCurrentState(previousValue);
 		return this;
@@ -102,6 +103,12 @@ public class ActionStoreStateInContext extends BaseAction
 			return false;
 
 		return true;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.StoreState;
 	}
 
 	//-------------------------------------------------------------------------

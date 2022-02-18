@@ -1,10 +1,10 @@
 (define "Connect6_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[-{0}]>" 0.211472)
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[e{0}]>" -0.6170133)

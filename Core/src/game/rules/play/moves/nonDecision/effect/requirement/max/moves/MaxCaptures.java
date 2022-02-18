@@ -16,7 +16,7 @@ import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.board.SiteType;
 import gnu.trove.list.array.TIntArrayList;
 import other.action.Action;
-import other.action.move.ActionRemove;
+import other.action.ActionType;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
@@ -81,7 +81,8 @@ public final class MaxCaptures extends Effect
 				final List<Action> actions = m.getActionsWithConsequences(context);
 	
 				for (final Action action : actions)
-					if (action instanceof ActionRemove)
+					if (action != null &&
+					action.actionType().equals(ActionType.Remove))
 						numCapture++;
 	
 				numCaptureByMove.add(numCapture);
@@ -95,7 +96,7 @@ public final class MaxCaptures extends Effect
 				final List<Action> actions = m.getActionsWithConsequences(context);
 	
 				for (final Action action : actions)
-					if (action instanceof ActionRemove)
+					if (action != null && action.actionType().equals(ActionType.Remove))
 						{
 							final int site = action.to();
 							final SiteType type = action.toType();
@@ -151,7 +152,6 @@ public final class MaxCaptures extends Effect
 		concepts.or(withValueFn.concepts(game));
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.MaxCapture.id(), true);
-		concepts.set(Concept.CopyContext.id(), true);
 
 		if (then() != null)
 			concepts.or(then().concepts(game));

@@ -99,5 +99,13 @@ public class FeatureVector
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toString()
+	{
+		return "<Aspatial feature values: " + aspatialFeatureValues + ", Spatial indices: " + activeSpatialFeatureIndices + ">";
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

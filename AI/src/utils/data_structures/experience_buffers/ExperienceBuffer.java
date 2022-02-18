@@ -36,6 +36,12 @@ public interface ExperienceBuffer
 	public List<ExItExperience> sampleExperienceBatchUniformly(final int batchSize);
 	
 	/**
+	 * @return Return the backing array containing ALL experience (including likely
+	 * null entries if the buffer was not completely filled).
+	 */
+	public ExItExperience[] allExperience();
+	
+	/**
 	 * Writes this complete buffer to a binary file
 	 * @param filepath
 	 */

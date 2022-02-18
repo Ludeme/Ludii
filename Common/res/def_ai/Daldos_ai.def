@@ -1,7 +1,7 @@
 (define "Daldos_ai"
     (useFor { "Variant/Ostergaard and Gaston" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity pieceWeights:{
                 (pair "Minus1" 0.23901205)
                 (pair "Minus2" -0.19236146)

@@ -1,6 +1,6 @@
 (define "Sujjua_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
         (centreProximity pieceWeights:{
             (pair "Marker1" -0.31507996)

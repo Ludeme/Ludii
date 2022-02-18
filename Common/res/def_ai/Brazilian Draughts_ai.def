@@ -1,6 +1,6 @@
 (define "Brazilian Draughts_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity)
         (centreProximity pieceWeights:{
             (pair "Counter1" 1.033537)
@@ -42,7 +42,7 @@
         })
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.0035367454)
             (pair "rel:last_from=<{0,0,0,0}>:from=<{}>:pat=<els=[]>" -0.012810383)

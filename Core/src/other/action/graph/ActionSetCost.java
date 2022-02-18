@@ -100,7 +100,7 @@ public final class ActionSetCost extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		context.topology().getGraphElements(type).get(to).setCost(previousCost);

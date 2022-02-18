@@ -1,0 +1,95 @@
+(define "RemainingMove"
+    (if (= Undefined (value Player Mover)) 
+        1
+        (value Player Mover)
+    )
+)
+
+(define "PieceMovement"
+    (move Slide
+        #1
+        (between 
+            (max ("RemainingMove"))
+            if:(not (is Enemy (who at:(between))))
+        )
+        (to
+            if:(is Enemy (who at:(to)))
+            (apply
+                if:(not (is Friend (who at:(to))))
+                (if (is Enemy (who at:(to)))
+                    (remove (to)
+                        (then (set Value Next (+ (value Player Next) 1)))
+                    )
+                )
+            )
+        )
+        (then
+            (if (<= (- ("RemainingMove") (count Steps (last From) (last To))) 0)
+                (set Value Mover (- 7 (count Pieces Mover)))
+                (and
+                    (set Value Mover (- ("RemainingMove") (count Steps (last From) (last To))))
+                    (moveAgain)
+                )
+            )
+        )
+    )		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Annuvin"
+    (players 2)
+    (equipment {
+        (board (rotate 30 (hex 4)))
+        (piece "Ball" Each ("PieceMovement"))
+        (hand Each)
+    })
+    (rules
+        (start {
+            (place "Ball1" (difference (union { (sites Side NW) (sites Side NE) (expand (sites Side N))}) (union (sites Left) (sites Right))))
+            (place "Ball2" (difference (union { (sites Side SW) (sites Side SE) (expand (sites Side S))}) (union (sites Left) (sites Right))))
+        })
+        (play
+            (if (is Prev Mover)
+                ("PieceMovement" (from (last To)))
+                (forEach Piece)
+            )
+        )
+        (end 
+            (if 
+                (or (and (= 1 (count Pieces Next)) (= 6 (count Pieces Mover))) (no Pieces Next))
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Annuvin is played on a hexagonal board (4 hexagons on a side) with 6 pieces per player arranged in opposite corners.")
+        (rules "MOVE - A stone can move up to N spaces in any combination of directions (it may even move over intervening stones), where N varies depending on the number of stones he has remaining:
+            - Six pieces: one space per turn
+            - Five pieces: two spaces per turn
+            - Four pieces: three spaces per turn
+            - Three pieces: four spaces per turn
+            - Two pieces: five spaces per turn
+            - One piece: six spaces per turn.
+            
+            CAPTURE - A stone captures an opposing piece by moving onto it. If a stone makes a capture before it has used all of the spaces available to it that move, it may continue to make additional captures until it has moved its limit.
+            
+        GOAL - Wins the player who captures all of his opponent's stones, or, if he reduces his opponent to a single stone without losing any of his own.")
+        (id "1798")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/annuvin.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+        (version "1.3.2")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Jeff Roy")
+        (credit "Eric Piette")
+        (date "2001")
+        }
+    )
+    
+)

@@ -16,7 +16,7 @@ import game.util.graph.Radial;
 import main.Constants;
 import other.action.Action;
 import other.action.move.ActionAdd;
-import other.action.move.ActionRemove;
+import other.action.move.remove.ActionRemove;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
@@ -94,7 +94,7 @@ public final class Push extends Effect
 		{
 			int currentPiece = cs.what(radial.steps()[0].id(), realType);
 
-			final ActionRemove removeAction = new ActionRemove(realType, from, Constants.UNDEFINED, true);
+			final Action removeAction = ActionRemove.construct(realType, from, Constants.UNDEFINED, true);
 			moves.moves().add(new Move(removeAction));
 
 			for (int toIdx = 1; toIdx < radial.steps().length; toIdx++)
@@ -103,7 +103,7 @@ public final class Push extends Effect
 				final int what = cs.what(to, realType);
 				if (what != 0)
 				{
-					final ActionRemove removeTo = new ActionRemove(realType, to, Constants.UNDEFINED, true);
+					final Action removeTo = ActionRemove.construct(realType, to, Constants.UNDEFINED, true);
 					moves.moves().add(new Move(removeTo));
 					final Action actionAdd = new ActionAdd(realType, to, currentPiece, 1, Constants.UNDEFINED,
 							Constants.UNDEFINED, Constants.UNDEFINED, null);

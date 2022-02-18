@@ -1,6 +1,6 @@
 (define "Tron_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (cornerProximity)
         (centreProximity pieceWeights:{
             (pair "King1" 2.220763)
@@ -24,7 +24,7 @@
         })
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.8050412)
             (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[]>" -0.11794509)

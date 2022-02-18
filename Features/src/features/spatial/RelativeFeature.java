@@ -1,8 +1,19 @@
 package features.spatial;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
+import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
+import main.Constants;
+import main.math.Point2D;
 
 /**
  * In a Relative Feature, the Action-to-play is implied by
@@ -102,7 +113,7 @@ public class RelativeFeature extends SpatialFeature
 				other.lastFromPosition == null ? null : 
 					new Walk(other.lastFromPosition);
 		
-		this.comment = new String(other.comment);
+//		this.comment = new String(other.comment);
 	}
 	
 	/**
@@ -156,7 +167,7 @@ public class RelativeFeature extends SpatialFeature
 			{
 				part = part.substring(
 						"comment=\"".length(), part.length() - "\"".length());
-				comment = part;
+//				comment = part;
 			}
 		}
 		
@@ -568,12 +579,233 @@ public class RelativeFeature extends SpatialFeature
 			str = String.format("last_from=<%s>:%s", lastFromPosition, str);
 		}
 		
-		if (comment.length() > 0)
-		{
-			str = String.format("%s:comment=\"%s\"", str, comment);
-		}
+//		if (comment.length() > 0)
+//		{
+//			str = String.format("%s:comment=\"%s\"", str, comment);
+//		}
 
 		return "rel:" + str;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String generateTikzCode(final Game game)
+	{
+		final Map<TFloatArrayList, List<String>> stringsPerWalk = new HashMap<TFloatArrayList, List<String>>();
+		
+		// Anchor
+		stringsPerWalk.put(new TFloatArrayList(), new ArrayList<String>());
+		stringsPerWalk.get(new TFloatArrayList()).add("");
+		
+		if (toPosition != null)
+		{
+			final TFloatArrayList key = toPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("To");
+		}
+		
+		if (fromPosition != null)
+		{
+			final TFloatArrayList key = fromPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("From");
+		}
+		
+		if (lastToPosition != null)
+		{
+			final TFloatArrayList key = lastToPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("Last To");
+		}
+		
+		if (lastFromPosition != null)
+		{
+			final TFloatArrayList key = lastFromPosition.steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add("Last From");
+		}
+		
+		for (final FeatureElement el : pattern.featureElements())
+		{
+			final TFloatArrayList key = ((RelativeFeatureElement)el).walk().steps();
+			List<String> strings = stringsPerWalk.get(key);
+			
+			if (strings == null)
+			{
+				strings = new ArrayList<String>();
+				stringsPerWalk.put(key, strings);
+			}
+			
+			strings.add((el.not() ? "!" : "") + el.type().label + (el.itemIndex() >= 0 ? String.valueOf(el.itemIndex()) : ""));
+		}
+		
+		final StringBuilder sb = new StringBuilder();
+		
+		final List<Point2D> points = new ArrayList<Point2D>();
+		final List<String> labels = new ArrayList<String>();
+		final List<List<String>> stringsPerPoint = new ArrayList<List<String>>();
+		final Map<List<String>, String> connections = new HashMap<List<String>, String>();
+		
+		// Start with node for anchor
+		sb.append("\\node[ellipse, draw, align=center] (Anchor) at (0,0) {");
+		final List<String> anchorStrings = stringsPerWalk.get(new TFloatArrayList());
+		while (anchorStrings.remove("")) { /** Keep going */ }
+		
+//		for (int i = 0; i < anchorStrings.size(); ++i)
+//		{
+//			if (i > 0)
+//				sb.append("\\\\");
+//			sb.append(anchorStrings.get(i));
+//		}
+		sb.append("{POINT_STRINGS_" + points.size() + "}");
+		
+		sb.append("}; \n");
+		
+		points.add(new Point2D(0.0, 0.0));
+		labels.add("(Anchor)");
+		stringsPerPoint.add(anchorStrings);
+		
+		final double STEP_SIZE = 2.0;
+				
+		int nextLabelIdx = 1;
+		
+		for (final Entry<TFloatArrayList, List<String>> entry : stringsPerWalk.entrySet())
+		{
+			final TFloatArrayList walk = entry.getKey();
+			
+			String currLabel = "(Anchor)";
+			double x = 0.0;
+			double y = 0.0;
+			double currTheta = 0.5 * Math.PI;
+			
+			final TFloatArrayList partialWalk = new TFloatArrayList();
+			for (int i = 0; i < walk.size(); ++i)
+			{
+				final float step = walk.getQuick(i);
+				partialWalk.add(step);
+				
+				currTheta -= step * 2.0 * Math.PI;
+				x += STEP_SIZE * Math.cos(currTheta);
+				y += STEP_SIZE * Math.sin(currTheta);
+				final Point2D currPoint = new Point2D(x, y);
+				
+				String nextLabel = null;
+				List<String> pointStrings = null;
+				
+				for (int j = 0; j < points.size(); ++j)
+				{
+					if (points.get(j).equalsApprox(currPoint, Constants.EPSILON))
+					{
+						nextLabel = labels.get(j);
+						pointStrings = stringsPerPoint.get(j);
+						break;
+					}
+				}
+				
+				if (nextLabel == null)
+				{
+					nextLabel = "(N" + (nextLabelIdx++) + ")";
+					
+					// Need to draw a node for this partial walk
+//					final StringBuilder nodeText = new StringBuilder();
+//					final List<String> walkStrings = stringsPerWalk.get(partialWalk);
+//					
+//					if (walkStrings != null)
+//					{
+//						while (walkStrings.remove("")) { /** Keep going */ }
+//						for (int j = 0; j < walkStrings.size(); ++j)
+//						{
+//							if (j > 0)
+//								nodeText.append("\\\\");
+//							nodeText.append(walkStrings.get(j));
+//						}
+//					}
+					
+					sb.append("\\node[ellipse, draw, align=center] " + nextLabel + " at (" + x + ", " + y + ") {{POINT_STRINGS_" + points.size() + "}}; \n");
+					
+					points.add(currPoint);
+					labels.add(nextLabel);
+					pointStrings = new ArrayList<String>();
+					stringsPerPoint.add(pointStrings);
+				}
+				
+				final List<String> walkStrings = stringsPerWalk.get(partialWalk);
+				if (walkStrings != null)
+				{
+					while (walkStrings.remove("")) { /** Keep going */ }
+					for (final String walkString : walkStrings)
+					{
+						if (!pointStrings.contains(walkString))
+							pointStrings.add(walkString);
+					}
+				}
+				
+				connections.put(Arrays.asList(new String[] {currLabel, nextLabel}), "$" + new DecimalFormat("#.##").format(step) + "$");
+				currLabel = nextLabel;
+			}
+		}
+		
+		for (final Entry<List<String>, String> connection : connections.entrySet())
+		{
+			sb.append("\\path[->,draw] " + connection.getKey().get(0) + " edge node {" + connection.getValue() + "} " + connection.getKey().get(1) + "; \n");
+		}
+		
+		String returnStr = sb.toString();
+		
+		for (int i = 0; i < points.size(); ++i)
+		{
+			final StringBuilder replaceStr = new StringBuilder();
+			for (int j = 0; j < stringsPerPoint.get(i).size(); ++j)
+			{
+				if (j > 0)
+					replaceStr.append("\\\\");
+				replaceStr.append(stringsPerPoint.get(i).get(j));
+			}
+			
+			returnStr = 
+					returnStr.replaceFirst
+					(
+						java.util.regex.Pattern.quote("{POINT_STRINGS_" + i + "}"), 
+						java.util.regex.Matcher.quoteReplacement(replaceStr.toString())
+					);
+		}
+		
+		returnStr = returnStr.replaceAll
+				(
+					java.util.regex.Pattern.quote("#"), 
+					java.util.regex.Matcher.quoteReplacement("\\#")
+				);
+		
+		return returnStr;
 	}
 	
 	//-------------------------------------------------------------------------

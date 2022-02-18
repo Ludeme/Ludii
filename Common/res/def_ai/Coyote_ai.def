@@ -1,7 +1,7 @@
 (define "Coyote_ai"
     (useFor { "Play Rules/No multiple hops" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity)
         })
         

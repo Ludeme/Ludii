@@ -1,14 +1,14 @@
 (define "Connect Four_ai"
     (useFor { "Modelisation/1D" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
         })
         
     )
     (useFor { "Modelisation/2D" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic)
         })
         

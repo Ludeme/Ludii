@@ -1,0 +1,97 @@
+(game "Louis XVI"
+    (players 2)
+    (equipment {
+        (board 
+            (remove
+                (hex 7)
+                cells:{
+                0 1 2 4 5 6 7 8 9 12 13 14 15 16 22 23
+                57 45 70 34 58 82 46 71 69 81 56 44 68 92 55 80
+                120 121 122 124 125 126 112 113 114 117 118 119 103 104 110 111
+                }
+            )
+        )
+        (piece "Pawn" Each)
+        (piece "King" P2)
+        (regions "GoalKing" (difference (sites Corners) (expand (sites Centre) steps:4)))
+    })
+    (rules
+        (start {
+            (place "Pawn1" (difference (expand (sites Centre) steps:4) (expand (sites Centre) steps:3)))
+            (place "Pawn2" (difference (expand (sites Centre) steps:2) (sites Centre)))
+            (place "Pawn1" (difference (expand (sites Centre) steps:4) (expand (sites Centre) steps:3)))
+            (place "King2" (sites Centre))
+        })
+        (play
+            (priority {
+                (or
+                    (forEach Piece "Pawn"
+                        (move Hop
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(and (not (is In (to) (sites "GoalKing"))) (is Empty (to)))
+                                (apply (remove (between)))
+                            )
+                        )
+                    )
+                    (forEach Piece "King"
+                        (move Hop
+                            (between if:(is Enemy (who at:(between))))
+                            (to if:(is Empty (to)))
+                        )
+                    )
+                )
+                (or
+                    (forEach Piece "Pawn"
+                        (move Step
+                            (to if:(and (not (is In (to) (sites "GoalKing"))) (is Empty (to)))
+                                (apply (remove (between)))
+                            )
+                        )
+                    )
+                    (forEach Piece "King"
+                        (move Step
+                            (to if:(is Empty (to)))
+                        )
+                    )
+                )	
+            })
+        )
+        (end { 
+            (if (= Off (where "King" P2)) (result P1 Win))
+            (if (is In (where "King" P2) (sites "GoalKing")) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Louis XVI is a tafl style game in which players must try to help King Louis XVI escape from an angry mob.")
+        (rules "The king player receives one king piece and an army of 18. The mob player gets 26 pieces. Play is set on a star shape board. Captures are done by jumping adjacent enemy pieces and are compulsory but not multiple. Only the King can move to one of the star point cells (the blue cells). If no possible capture, a player moves a pawn to an adjacent empty cell.
+        The mob wins if the king is captured and the king player wins by getting the king piece to any of the points of the star.")
+        (id "1801")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/99537/louis-xvi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.2")
+        (classification "board/war/leaping/orthogonal")
+        (author "Thiago Migoto")
+        (credit "Eric Piette")
+        (date "2002")
+        }
+    )
+    
+    (graphics {
+        (piece Colour "King2" fillColour:(colour Yellow))
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (board Colour Phase0 (colour White))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Background image:"square.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:1)
+        (region Colour "GoalKing" (colour Yellow))
+        (region Colour (sites Centre) (colour Grey))
+    })
+    
+)

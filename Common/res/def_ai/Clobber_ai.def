@@ -1,10 +1,10 @@
 (define "Clobber_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (influence)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.15084204)
             (pair "rel:last_from=<{}>:from=<{}>:pat=<els=[]>" -0.09625084)

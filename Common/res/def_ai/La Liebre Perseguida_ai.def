@@ -1,6 +1,6 @@
 (define "La Liebre Perseguida_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     

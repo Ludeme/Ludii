@@ -1,11 +1,11 @@
 (define "Mbangbi_ai"
     (useFor { "Play Rules/Sowing in CCW" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N6{}]>" 0.008401827)
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N4{}]>" -0.008401898)
@@ -129,7 +129,7 @@
     )
     (useFor { "Play Rules/Sowing in CW" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (mobilitySimple weight:0.016108595)
         })
         

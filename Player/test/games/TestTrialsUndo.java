@@ -23,8 +23,10 @@ import main.grammar.Description;
 import manager.utils.game_logs.MatchRecord;
 import other.action.Action;
 import other.context.Context;
+import other.location.Location;
 import other.move.Move;
 import other.state.container.ContainerState;
+import other.state.owned.Owned;
 import other.trial.Trial;
 import other.state.State;
 
@@ -45,7 +47,7 @@ public class TestTrialsUndo
 	@Test
 	public void test() throws FileNotFoundException, IOException
 	{
-		final boolean stateComparaison = true;
+		final boolean stateComparaison = false;
 		final File startFolder = new File("../Common/res/lud");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -110,14 +112,18 @@ public class TestTrialsUndo
 		
 		boolean gameReached = false;
 		final String gameToReached = "";
-		final String gameToSkip = "";
+		final ArrayList<String> gamesToSkip = new ArrayList<String>();
+		gamesToSkip.add("Galatjang");
+		gamesToSkip.add("Seesaw Draughts");
+		gamesToSkip.add("Sahkku");
+		gamesToSkip.add("Kriegsspiel");
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getPath().contains("Asi Keliya")) 
-			//if (fileEntry.getName().equals(""))
+			if (fileEntry.getPath().contains("")) 
+			//if (fileEntry.getName().equals("Ludus Latrunculorum.lud"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -125,7 +131,15 @@ public class TestTrialsUndo
 				if (!gameReached)
 					continue;
 
-				if (!gameToSkip.equals("") && fileEntry.getName().contains(gameToSkip))
+				boolean skip = false;
+				for(String gameToSkip : gamesToSkip)
+					if (!gameToSkip.equals("") && fileEntry.getName().contains(gameToSkip))
+						{
+						skip = true;
+						break;
+						}
+				
+				if(skip)
 					continue;
 
 				final String ludPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
@@ -306,6 +320,8 @@ public class TestTrialsUndo
 											if(cs.sizeStack(index, type) != csToCompare.sizeStack(index, type))
 											{
 												System.out.println("IN MOVE " + trial.numberRealMoves() +  " != stack size for " + type + " " + index);
+												System.out.println("correct one is " + csToCompare.sizeStack(index, type));
+												System.out.println("undo one is " + cs.sizeStack(index, type));
 												fail();
 											}
 											
@@ -313,19 +329,25 @@ public class TestTrialsUndo
 											{
 												if(cs.what(index, level, type) != csToCompare.what(index, level, type))
 												{
-													System.out.println(type + " != What at  " + index + " level " + level);
+													System.out.println("IN MOVE " + trial.numberRealMoves() +  " " + type + " != What at  " + index + " level " + level);
+													System.out.println("correct one is " + csToCompare.what(index, level, type));
+													System.out.println("undo one is " + cs.what(index, level, type));
 													fail();
 												}
 												
 												if(cs.who(index, level, type) != csToCompare.who(index, level, type))
 												{
-													System.out.println(type + " != Who at  " + index + " level " + level);
+													System.out.println("IN MOVE " + trial.numberRealMoves() +  " " +type + " != Who at  " + index + " level " + level);
+													System.out.println("correct one is " + csToCompare.who(index, level, type));
+													System.out.println("undo one is " + cs.who(index, level, type));
 													fail();
 												}
 												
 												if(cs.state(index, level, type) != csToCompare.state(index, level, type))
 												{
-													System.out.println(type + " != State at  " + index + " level " + level);
+													System.out.println("IN MOVE " + trial.numberRealMoves() +  " " + type + " != State at  " + index + " level " + level);
+													System.out.println("correct one is " + csToCompare.state(index, level, type));
+													System.out.println("undo one is " + cs.state(index, level, type));
 													fail();
 												}
 												
@@ -337,7 +359,9 @@ public class TestTrialsUndo
 												
 												if(cs.value(index, level, type) != csToCompare.value(index, level, type))
 												{
-													System.out.println(type + " != Value at  " + index + " level " + level);
+													System.out.println("IN MOVE " + trial.numberRealMoves() +  " " + type + " != Value at  " + index + " level " + level);
+													System.out.println("correct one is " + csToCompare.value(index, level, type));
+													System.out.println("undo one is " + cs.value(index, level, type));
 													fail();
 												}
 												
@@ -345,7 +369,9 @@ public class TestTrialsUndo
 												{
 													if(cs.isHidden(pid, index, level, type) != csToCompare.isHidden(pid, index, level, type))
 													{
-														System.out.println(type + " != isHidden at  " + index + " level " + level + " player " + pid);
+														System.out.println("IN MOVE " + trial.numberRealMoves() + " " + type + " != isHidden at  " + index + " level " + level + " player " + pid);
+														System.out.println("correct one is " + csToCompare.isHidden(pid, index, level, type));
+														System.out.println("undo one is " + cs.isHidden(pid, index, level, type));
 														fail();
 													}
 													
@@ -387,18 +413,22 @@ public class TestTrialsUndo
 												}
 											}
 											
-											if(!game.isStochasticGame())
+											if(!game.isStacking())
 											{
 												if(cs.count(index, type) != csToCompare.count(index, type))
 												{
-													System.out.println(type + " != Count at  " + index);
+													System.out.println("IN MOVE " + trial.numberRealMoves() + " " + type + " != Count at  " + index);
+													System.out.println("correct one is " + csToCompare.count(index, type));
+													System.out.println("undo one is " + cs.count(index, type));
 													fail();
 												}
 											}
 											
 											if(cs.isEmpty(index, type) != csToCompare.isEmpty(index, type))
 											{
-												System.out.println(type + " != Empty at  " + index);
+												System.out.println("IN MOVE " + trial.numberRealMoves() + " " + type + " != Empty at  " + index);
+												System.out.println("correct one is " + csToCompare.isEmpty(index, type));
+												System.out.println("undo one is " + cs.isEmpty(index, type));
 												fail();
 											}
 											
@@ -426,12 +456,16 @@ public class TestTrialsUndo
 							}
 							if(!trial.previousState().equals(trialToCompare.previousState()))
 							{
-								System.out.println("!= previous states");
+								System.out.println("IN MOVE " + trial.numberRealMoves() +   " != previous states");
+								System.out.println("correct one is " + trialToCompare.previousState());
+								System.out.println("undo one is " + trial.previousState());
 								fail();
 							}
 							if(!trial.previousStateWithinATurn().equals(trialToCompare.previousStateWithinATurn()))
 							{
-								System.out.println("!= previous states within turn");
+								System.out.println("IN MOVE " + trial.numberRealMoves() +   " != previous states within turn");
+								System.out.println("correct one is " + trialToCompare.previousStateWithinATurn());
+								System.out.println("undo one is " + trial.previousStateWithinATurn());
 								fail();
 							}
 							
@@ -474,7 +508,6 @@ public class TestTrialsUndo
 							
 							if(state.pendingValues() != null)
 							{
-								
 								if(state.pendingValues().size() != stateToCompare.pendingValues().size())
 								{
 									System.out.println("IN MOVE " + trial.numberRealMoves() +  " != pendingValues");
@@ -602,10 +635,37 @@ public class TestTrialsUndo
 							
 							if(state.votes() != null)
 							{
-								if(!state.votes().equals(stateToCompare.votes()))
+								if(state.votes().size() != stateToCompare.votes().size())
 								{
-									System.out.println("!= votes");
+									System.out.println("IN MOVE " + trial.numberRealMoves() + " != votes");
+									System.out.println("correct one is " + stateToCompare.votes());
+									System.out.println("undo one is " + state.votes());
 									fail();
+								}
+								else
+								{
+									final int[] votesUndo = state.votes().toArray();
+									final int[] votesToCompare = stateToCompare.votes().toArray();
+									
+									for(int vote : votesUndo)
+									{
+										boolean found = false;
+										for(int voteToCompare : votesToCompare)
+										{
+											if(vote == voteToCompare)
+											{
+												found = true;
+												break;
+											}
+										}
+										if(!found)
+										{
+											System.out.println("IN MOVE " + trial.numberRealMoves() + " != votes");
+											System.out.println("correct one is " + stateToCompare.votes());
+											System.out.println("undo one is " + state.votes());
+											fail();
+										}
+									}
 								}
 							}
 							
@@ -620,7 +680,9 @@ public class TestTrialsUndo
 							
 							if(state.isDecided() != stateToCompare.isDecided())
 							{
-								System.out.println("!= isDecided");
+								System.out.println("IN MOVE " + trial.numberRealMoves() + " != isDecided");
+								System.out.println("correct one is " + stateToCompare.isDecided());
+								System.out.println("undo one is " + state.isDecided());
 								fail();
 							}
 							
@@ -655,7 +717,9 @@ public class TestTrialsUndo
 							{
 								if(!state.visited().equals(stateToCompare.visited()))
 								{
-									System.out.println("!= visited");
+									System.out.println("IN MOVE " + trial.numberRealMoves() +" != visited");
+									System.out.println("correct one is " + stateToCompare.visited());
+									System.out.println("undo one is " + state.visited());
 									fail();
 								}
 							}
@@ -699,44 +763,94 @@ public class TestTrialsUndo
 								fail();
 							}
 							
-//							if(state.onTrackIndices() != null)
-//							{
-//								if(!state.onTrackIndices().equals(stateToCompare.onTrackIndices()))
-//								{
-//									System.out.println("IN MOVE " + trial.numberRealMoves() + " != onTrackIndices");
-//									for(int i = 0; i < state.onTrackIndices().onTrackIndices().length; i++)
-//									{
-//										System.out.println("What is " + i);
-//										System.out.println("correct one is " + stateToCompare.onTrackIndices().whats(i));
-//										System.out.println("undo one is " + state.onTrackIndices().whats(i));
-//									}
-//									
-//									fail();
-//								}
-//							}
+							if(state.onTrackIndices() != null)
+							{
+								if(!state.onTrackIndices().equals(stateToCompare.onTrackIndices()))
+								{
+									System.out.println("IN MOVE " + trial.numberRealMoves() + " != onTrackIndices");
+									for(int i = 0; i < state.onTrackIndices().onTrackIndices().length; i++)
+									{
+										System.out.println("What is " + i);
+										System.out.println("correct one is " + stateToCompare.onTrackIndices().whats(i));
+										System.out.println("undo one is " + state.onTrackIndices().whats(i));
+									}
+									
+									fail();
+								}
+							}
 							
 							// Check the owned structure.
 							for(int pid = 0; pid <= game.players().size(); pid++)
 							{
-								final TIntArrayList ownedUndo = state.owned().sites(pid);
-								final TIntArrayList ownedToCompare = stateToCompare.owned().sites(pid);
-								if(ownedToCompare.size() != ownedUndo.size())
+								final Owned ownedUndo = state.owned();
+								final TIntArrayList ownedSitesUndo = ownedUndo.sites(pid); 
+								final List<? extends Location>[] ownedPositionsUndo = ownedUndo.positions(pid);
+
+								final Owned ownedToCompare = stateToCompare.owned();
+								final TIntArrayList ownedSitesToCompare = ownedToCompare.sites(pid);
+								final List<? extends Location>[] ownedPositionsToCompare = ownedToCompare.positions(pid);
+								
+								if(ownedSitesToCompare.size() != ownedSitesUndo.size())
 								{
 									System.out.println("IN MOVE " + trial.numberRealMoves() + " != owned for pid = " + pid);
-									System.out.println("correct one is " + stateToCompare.owned().sites(pid));
-									System.out.println("undo one is " + state.owned().sites(pid));
+									
+									System.out.println("correct one is");
+									for(int i = 0; i < ownedPositionsToCompare.length ;i++)
+										for(Location loc: ownedPositionsToCompare[i])
+											System.out.println(loc.site() + " lvl = " + loc.level());
+									
+									System.out.println("undo one is ");
+									for(int i = 0; i < ownedPositionsUndo.length ;i++)
+										for(Location loc: ownedPositionsUndo[i])
+											System.out.println(loc.site() + " lvl = " + loc.level());
 									fail();
 								}
 								else
 								{
-									for(int i = 0 ; i < ownedUndo.size() ; i++)
-									{
-										final int site = ownedUndo.get(i);
-										if(!ownedToCompare.contains(site))
+									for(int i = 0; i < ownedPositionsUndo.length ;i++)
+										for(Location loc: ownedPositionsUndo[i])
 										{
-											System.out.println("IN MOVE " + trial.numberRealMoves() + " site " + site + " should not be owned by " + pid);
+											final int site = loc.site();
+											final int level = loc.level();
+											boolean found = false;
+											for(int j = 0; j < ownedPositionsToCompare.length ;j++)
+											{
+												for(Location locToCompare: ownedPositionsToCompare[j])
+												{
+													final int siteToCompare = locToCompare.site();
+													final int levelToCompare = locToCompare.level();
+													if(site == siteToCompare && level == levelToCompare)
+													{
+														found = true;
+														break;
+													}
+												}
+												if(found)
+													break;
+											}
+											
+											if(!found)
+											{
+												System.out.println("IN MOVE " + trial.numberRealMoves() + " site " + site + " level = " + level +" should not be owned by " + pid);
+												
+												System.out.println("correct one is");
+												for(int j = 0; j < ownedPositionsToCompare.length ;j++)
+													for(Location locToCompare: ownedPositionsToCompare[j])
+														System.out.println(locToCompare.site() + " lvl = " + locToCompare.level());
+												
+												fail();
+											}
 										}
-									}
+									
+//									for(int i = 0 ; i < ownedSitesUndo.size() ; i++)
+//									{
+//										final int site = ownedSitesUndo.get(i);
+//										final int site = ownedSitesUndo.get(i);
+//										if(!ownedSitesToCompare.contains(site))
+//										{
+//											System.out.println("IN MOVE " + trial.numberRealMoves() + " site " + site + " should not be owned by " + pid);
+//										}
+//									}
 								}
 							}
 						}
@@ -760,9 +874,7 @@ public class TestTrialsUndo
 						final List<Action> loadedAllActions = loadedMoves.get(moveIdx-1).getActionsWithConsequences(context);
 						final List<Action> trialMoveAllActions = trial.getMove(moveIdx-1).getActionsWithConsequences(context);
 						assert (loadedAllActions.equals(trialMoveAllActions)) : 
-						("Loaded Move Actions = "
-								+ loadedAllActions + ", trial actions = "
-								+ trialMoveAllActions);
+						("Loaded Move Actions = " + loadedAllActions + ", trial actions = " + trialMoveAllActions);
 						
 						final Move loadedMove = loadedMoves.get(moveIdx);
 						final List<Action> loadedMoveAllActions = loadedMove.getActionsWithConsequences(context);
@@ -776,6 +888,10 @@ public class TestTrialsUndo
 							{
 								System.out.println("moveIdx = " + (moveIdx - trial.numInitialPlacementMoves()));
 								System.out.println("legalMoves.moves().size() = " + legalMoves.moves().size());
+								
+								for(Move move : legalMoves.moves())
+									System.out.println(move.getActionsWithConsequences(context));
+								
 								System.out.println(
 										"loadedTrial.legalMovesHistorySizes().getQuick(moveIdx - trial.numInitPlace()) = "
 												+ loadedTrial.auxilTrialData().legalMovesHistorySizes()
@@ -801,7 +917,7 @@ public class TestTrialsUndo
 										{
 											if(!loadedMoveAllActions.contains(action))
 											{
-												moveFound=false;
+												moveFound = false;
 												break;
 											}
 										}
@@ -824,8 +940,7 @@ public class TestTrialsUndo
 							{
 								System.out.println("moveIdx = " + (moveIdx - trial.numInitialPlacementMoves()));
 								System.out.println("Loaded move = " + loadedMove.getActionsWithConsequences(context)
-										+ " from is " + loadedMove.fromType() + " to is "
-										+ loadedMove.toType());
+										+ " from is " + loadedMove.fromType() + " to is " + loadedMove.toType());
 
 								for (final Move move : legalMoves.moves())
 								{

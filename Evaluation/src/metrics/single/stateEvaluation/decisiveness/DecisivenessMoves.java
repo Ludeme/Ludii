@@ -60,16 +60,16 @@ public class DecisivenessMoves extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
 			
-			int turnAboveDecisivenessthreshold = trial.numberRealMoves();
+			int turnAboveDecisivenessthreshold = trial.generateRealMovesList().size();
 			boolean aboveThresholdFound = false;
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (int i = 0; i < trial.generateRealMovesList().size(); i++)
 			{
 				for (final Integer playerIndex : highestRankedPlayers)
 				{
 					if (Utils.evaluateState(evaluation, context, playerIndex) > decisivenessThreshold)
 					{
 						aboveThresholdFound = true;
-						turnAboveDecisivenessthreshold = i - trial.numInitialPlacementMoves();
+						turnAboveDecisivenessthreshold = i;
 						break;
 					}
 				}
@@ -80,7 +80,7 @@ public class DecisivenessMoves extends Metric
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			avgDecisivenessThreshold += turnAboveDecisivenessthreshold/trial.numberRealMoves();
+			avgDecisivenessThreshold += turnAboveDecisivenessthreshold/trial.generateRealMovesList().size();
 		}
 
 		return avgDecisivenessThreshold / trials.length;

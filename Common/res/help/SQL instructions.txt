@@ -1,0 +1,1 @@
+SELECT GameRulesets.gameId, Games.Name, GameRulesets.Id, GameRulesets.Name FROM Games, GameRulesets WHERE GameRulesets.GameId = Games.Id

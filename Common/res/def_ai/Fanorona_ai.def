@@ -1,10 +1,10 @@
 (define "Fanorona_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_from=<{}>:to=<{}>:pat=<els=[]>" -0.026805378)
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.33515146)

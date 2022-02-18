@@ -1,10 +1,10 @@
 (define "Blue Nile_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:-0.12756869)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_from=<{0,1/6}>:to=<{}>:pat=<els=[]>" -0.18677118)
             (pair "rel:last_to=<{}>:to=<{}>:pat=<els=[]>" -0.15918355)

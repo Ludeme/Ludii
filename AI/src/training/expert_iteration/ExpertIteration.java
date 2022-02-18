@@ -23,10 +23,6 @@ import features.WeightVector;
 import features.feature_sets.BaseFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.generation.AtomicFeatureGenerator;
-import features.spatial.Pattern;
-import features.spatial.SpatialFeature;
-import features.spatial.elements.FeatureElement;
-import features.spatial.elements.RelativeFeatureElement;
 import function_approx.BoostedLinearFunction;
 import function_approx.LinearFunction;
 import game.Game;
@@ -34,7 +30,6 @@ import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
-import gnu.trove.set.hash.TIntHashSet;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
@@ -52,7 +47,7 @@ import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
 import other.trial.Trial;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import training.expert_iteration.gradients.Gradients;
 import training.expert_iteration.menageries.Menagerie;
@@ -70,6 +65,7 @@ import training.expert_iteration.params.TrainingParams;
 import training.feature_discovery.CorrelationBasedExpander;
 import training.feature_discovery.CorrelationErrorSignExpander;
 import training.feature_discovery.FeatureSetExpander;
+import training.feature_discovery.RandomExpander;
 import training.feature_discovery.SpecialMovesCorrelationExpander;
 import training.policy_gradients.Reinforce;
 import utils.AIUtils;
@@ -353,24 +349,24 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions = prepareTSPGFunctions(featureSets, selectionFunctions);
 				
 				// create our policies
-				final SoftmaxPolicy selectionPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear selectionPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							selectionFunctions, 
 							featureSets,
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final SoftmaxPolicy playoutPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear playoutPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							playoutFunctions, 
 							featureSets,
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final SoftmaxPolicy tspgPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear tspgPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							tspgFunctions, 
 							featureSets,
@@ -386,11 +382,13 @@ public class ExpertIteration
 				case "CorrelationErrorSignExpander":
 					featureSetExpander = new CorrelationErrorSignExpander();
 					break;
+				case "Random":
+					featureSetExpander = new RandomExpander();
+					break;
 				default:
 					System.err.println("Did not recognise feature set expander type: " + featureDiscoveryParams.expanderType);
 					return;
 				}
-				
 				
 				final FeatureSetExpander specialMovesExpander = new SpecialMovesCorrelationExpander();
 				
@@ -498,6 +496,8 @@ public class ExpertIteration
 						break;
 					}
 					
+					final int thisIterationGameCounter = gameCounter;
+					
 					saveCheckpoints
 					(
 						gameCounter, 
@@ -513,6 +513,10 @@ public class ExpertIteration
 						tspgOptimisers,
 						valueFunctionOptimiser,
 						avgGameDurations,
+						featureOccurrences,
+						winningMovesFeatures,
+						losingMovesFeatures,
+						antiDefeatingMovesFeatures,
 						false
 					);
 
@@ -542,19 +546,35 @@ public class ExpertIteration
 										final int batchSize = trainingParams.batchSize;
 										final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
 										
+										final List<ExItExperience> specialMovesBatch = 
+												specialMoveExperienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
+										
 										final long startTime = System.currentTimeMillis();
-										final BaseFeatureSet expandedFeatureSet = 
-												expandFeatureSet
-												(
-													batch, featureSetExpander, featureSetP, p, selectionPolicy, 
-													featureActiveRatios[p], featureLifetimes[p], featureOccurrences[p],
-													winningMovesFeatures[p], losingMovesFeatures[p], antiDefeatingMovesFeatures[p]
-												);
+										final BaseFeatureSet expandedFeatureSet;
+										if (!featureDiscoveryParams.useSpecialMovesExpanderSplit || thisIterationGameCounter % 2 != 0)
+										{
+											expandedFeatureSet = 
+													expandFeatureSet
+													(
+														batch, featureSetExpander, featureSetP, p, selectionPolicy, 
+														featureActiveRatios[p], featureLifetimes[p], featureOccurrences[p],
+														winningMovesFeatures[p], losingMovesFeatures[p], antiDefeatingMovesFeatures[p]
+													);
+										}
+										else
+										{
+											expandedFeatureSet = 
+													expandFeatureSet
+													(
+														specialMovesBatch, specialMovesExpander, featureSetP, p, selectionPolicy, 
+														featureActiveRatios[p], featureLifetimes[p], featureOccurrences[p],
+														winningMovesFeatures[p], losingMovesFeatures[p], antiDefeatingMovesFeatures[p]
+													);
+										}
+											
 										
 										// And try again to expand for special moves
 										final BaseFeatureSet toExpand = (expandedFeatureSet != null) ? expandedFeatureSet : featureSetP;
-										final List<ExItExperience> specialMovesBatch = 
-												specialMoveExperienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
 										
 										final BaseFeatureSet specialMovesExpandedFeatureSet;
 										
@@ -768,7 +788,7 @@ public class ExpertIteration
 									final FVector playoutErrors = 
 											Gradients.computeCrossEntropyErrors
 											(
-												playoutPolicy, expertPolicy, featureVectors, p, false
+												playoutPolicy, expertPolicy, featureVectors, p, objectiveParams.handleAliasingPlayouts
 											);
 
 									final FVector selectionGradients = selectionPolicy.computeParamGradients
@@ -993,7 +1013,7 @@ public class ExpertIteration
 					}
 				}
 				
-				// final forced save of checkpoints at end of run
+				// Final forced save of checkpoints at end of run
 				saveCheckpoints
 				(
 					gameCounter + 1, 
@@ -1009,36 +1029,16 @@ public class ExpertIteration
 					tspgOptimisers,
 					valueFunctionOptimiser,
 					avgGameDurations,
+					featureOccurrences,
+					winningMovesFeatures,
+					losingMovesFeatures,
+					antiDefeatingMovesFeatures,
 					true
 				);
 				
 				final String menagerieLog = menagerie.generateLog();
 				if (menagerieLog != null)
 					logLine(logWriter, menagerie.generateLog());
-				
-//				for (int p = 1; p < winningMovesFeatures.length; ++p)
-//				{
-//					System.out.println();
-//					System.out.println("Player " + p);
-//					System.out.println("Winning features: ");
-//					for (int i = winningMovesFeatures[p].nextSetBit(0); i >= 0; i = winningMovesFeatures[p].nextSetBit(i + 1))
-//					{
-//						if (featureOccurrences[p].getQuick(i) > 0L)
-//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-//					}
-//					System.out.println("Losing features: ");
-//					for (int i = losingMovesFeatures[p].nextSetBit(0); i >= 0; i = losingMovesFeatures[p].nextSetBit(i + 1))
-//					{
-//						if (featureOccurrences[p].getQuick(i) > 0L)
-//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-//					}
-//					System.out.println("Anti-defeating features: ");
-//					for (int i = antiDefeatingMovesFeatures[p].nextSetBit(0); i >= 0; i = antiDefeatingMovesFeatures[p].nextSetBit(i + 1))
-//					{
-//						if (featureOccurrences[p].getQuick(i) > 0L)
-//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
-//					}
-//				}
 			}
 			
 			//-----------------------------------------------------------------
@@ -1219,7 +1219,7 @@ public class ExpertIteration
 				final FeatureSetExpander expander,
 				final BaseFeatureSet featureSet,
 				final int p,
-				final SoftmaxPolicy policy,
+				final SoftmaxPolicyLinear policy,
 				final TDoubleArrayList featureActiveRatios,
 				final TLongArrayList featureLifetimes,
 				final TLongArrayList featureOccurrences,
@@ -2202,196 +2202,6 @@ public class ExpertIteration
 					featureSet.init(game, new int[]{p}, null);
 					featureSets[p] = featureSet;
 				}
-
-				if (newlyCreated.size() > 0)
-				{
-					// we have some brand new feature sets; we'll likely have
-					// obsolete features in there, and want to prune them
-					
-					// create matrices to store frequencies
-					final long[][][] frequencies = new long[numPlayers + 1][][];
-					for (int p = 1; p <= numPlayers; ++p)
-					{
-						final int numAtomicFeatures = featureSets[p].getNumSpatialFeatures();
-						frequencies[p] = new long[numAtomicFeatures][numAtomicFeatures];
-					}
-					
-					// play random games
-					final Trial trial = new Trial(game);
-					final Context context = new Context(game, trial);
-					
-					final long pruningGamesStartTime = System.currentTimeMillis();
-					final long endTime = pruningGamesStartTime + featureDiscoveryParams.maxNumPruningSeconds * 1000L;
-					
-					for (int gameCounter = 0; gameCounter < featureDiscoveryParams.numPruningGames; ++gameCounter)
-					{
-						if (System.currentTimeMillis() > endTime)
-							break;
-						
-						game.start(context);
-						int numActions = 0;
-						
-						while (!context.trial().over())
-						{
-							final FastArrayList<Move> legal = game.moves(context).moves();
-							final int mover = context.state().mover();
-							
-							if (newlyCreated.contains(mover))
-							{
-								final BaseFeatureSet featureSet = featureSets[mover];
-								
-								// compute active feature indices for all actions
-								final TIntArrayList[] sparseFeatureVectors = 
-										featureSet.computeSparseSpatialFeatureVectors(context, legal, false);
-								
-								// update frequencies matrix
-								for (final TIntArrayList sparse : sparseFeatureVectors)
-								{
-									for (int i = 0; i < sparse.size(); ++i)
-									{
-										final int firstFeature = sparse.getQuick(i);
-										
-										// update diagonal
-										frequencies[mover][firstFeature][firstFeature]++;
-										
-										for (int j = i + 1; j < sparse.size(); ++j)
-										{
-											final int secondFeature = sparse.getQuick(j);
-											
-											// update off-diagonals
-											frequencies[mover][firstFeature][secondFeature]++;
-											frequencies[mover][secondFeature][firstFeature]++;
-										}
-									}
-								}
-							}
-							
-							// apply random action
-							final int r = ThreadLocalRandom.current().nextInt(legal.size());
-							game.apply(context, legal.get(r));
-							
-							++numActions;
-						}
-					}
-					
-					// find features that we can safely remove for every newly created set
-					for (int f = 0; f < newlyCreated.size(); ++f)
-					{
-						final int p = newlyCreated.getQuick(f);
-						
-						final TIntHashSet featuresToRemove = new TIntHashSet();
-						final BaseFeatureSet featureSet = featureSets[p];
-						final int numAtomicFeatures = featureSet.getNumSpatialFeatures();
-						
-						for (int i = 0; i < numAtomicFeatures; ++i)
-						{
-							// only proceed if we didn't already decide to remove 
-							// this feature
-							if (featuresToRemove.contains(i))
-								continue;
-							
-							final long soloCount = frequencies[p][i][i];
-							
-							// only proceed if we have enough observations for feature
-							if (soloCount < featureDiscoveryParams.pruneInitFeaturesThreshold)
-								continue;
-							
-							for (int j = i + 1; j < numAtomicFeatures; ++j)
-							{
-								// only proceed if we didn't already decide to remove 
-								// this feature
-								if (featuresToRemove.contains(j))
-									continue;
-								
-								if (soloCount == frequencies[p][i][j] && soloCount == frequencies[p][j][j])
-								{
-									// should remove the most complex of i and j
-									final SpatialFeature firstFeature = featureSet.spatialFeatures()[i];
-									final SpatialFeature secondFeature = featureSet.spatialFeatures()[j];
-									final Pattern a = firstFeature.pattern();
-									final Pattern b = secondFeature.pattern();
-									
-									// by default just keep the first feature if both
-									// are equally "complex"
-									boolean keepFirst = true;
-									
-									if (b.featureElements().length < a.featureElements().length)
-									{
-										// fewer elements is simpler
-										keepFirst = false;
-									}
-									else 
-									{
-										int sumWalkLengthsA = 0;
-										for (final FeatureElement el : a.featureElements())
-										{
-											if (el instanceof RelativeFeatureElement)
-											{
-												final RelativeFeatureElement rel = (RelativeFeatureElement) el;
-												sumWalkLengthsA += rel.walk().steps().size();
-											}
-										}
-										
-										int sumWalkLengthsB = 0;
-										for (final FeatureElement el : b.featureElements())
-										{
-											if (el instanceof RelativeFeatureElement)
-											{
-												final RelativeFeatureElement rel = (RelativeFeatureElement) el;
-												sumWalkLengthsB += rel.walk().steps().size();
-											}
-										}
-										
-										if (sumWalkLengthsB < sumWalkLengthsA)
-										{
-											// fewer steps in Walks is simpler
-											keepFirst = false;
-										}
-									}
-									
-									if (keepFirst)
-										featuresToRemove.add(j);
-									else
-										featuresToRemove.add(i);
-									
-//									if (keepFirst)
-//										System.out.println("pruning " + secondFeature + " in favour of " + firstFeature);
-//									else
-//										System.out.println("pruning " + firstFeature + " in favour of " + secondFeature);
-								}
-							}
-						}
-						
-						// create new feature set
-						final List<SpatialFeature> keepFeatures = new ArrayList<SpatialFeature>();
-						for (int i = 0; i < numAtomicFeatures; ++i)
-						{
-							if (!featuresToRemove.contains(i))
-								keepFeatures.add(featureSet.spatialFeatures()[i]);
-						}
-						final BaseFeatureSet newFeatureSet = JITSPatterNetFeatureSet.construct(Arrays.asList(featureSet.aspatialFeatures()), keepFeatures);
-						
-						final int[] supportedPlayers;
-						if (p == 0)
-						{
-							supportedPlayers = new int[game.players().count()];
-							for (int i = 0; i < supportedPlayers.length; ++i)
-							{
-								supportedPlayers[i] = i + 1;
-							}
-						}
-						else
-						{
-							supportedPlayers = new int[]{p};
-						}
-						
-						newFeatureSet.init(game, supportedPlayers, null);
-						featureSets[p] = newFeatureSet;
-						
-						logLine(logWriter, "Finished pruning atomic feature set for Player " + p);
-						logLine(logWriter, "Num atomic features after pruning = " + newFeatureSet.getNumSpatialFeatures());
-					}
-				}
 				
 				return featureSets;
 			}
@@ -2525,6 +2335,10 @@ public class ExpertIteration
 				final Optimiser[] tspgOptimisers,
 				final Optimiser valueFunctionOptimiser,
 				final ExponentialMovingAverage[] avgGameDurations,
+				final TLongArrayList[] featureOccurrences,
+				final BitSet[] winningMovesFeatures,
+				final BitSet[] losingMovesFeatures,
+				final BitSet[] antiDefeatingMovesFeatures,
 				final boolean forced
 			)
 			{
@@ -2608,6 +2422,40 @@ public class ExpertIteration
 						final String gameDurationTrackerFilename = createCheckpointFilename("GameDurationTracker_P" + p, nextCheckpoint, "bin");
 						avgGameDurations[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + gameDurationTrackerFilename);
 						currentGameDurationTrackerFilenames[p] = gameDurationTrackerFilename;
+						
+						// and special moves CSV
+						final String specialMovesCSVFilename = createCheckpointFilename("SpecialMoves_P" + p, nextCheckpoint, "csv");
+						try 
+						(
+							final PrintWriter writer = new PrintWriter(outParams.outDir.getAbsolutePath() + File.separator + specialMovesCSVFilename, "UTF-8")
+						)
+						{
+							// Write header
+							writer.println
+							(
+								StringRoutines.join(",", "SpatialFeatureIndex", "AlwaysWinning", "AlwaysLosing", "AlwaysAntiDefeating", "NumOccurrences")
+							);
+							
+							for (int i = 0; i < featureSets[p].getNumSpatialFeatures(); ++i)
+							{
+								writer.println
+								(
+									StringRoutines.join
+									(
+										",", 
+										String.valueOf(i),
+										winningMovesFeatures[p].get(i) ? "1" : "0",
+										losingMovesFeatures[p].get(i) ? "1" : "0",
+										antiDefeatingMovesFeatures[p].get(i) ? "1" : "0",
+										String.valueOf(featureOccurrences[p].getQuick(i))
+									)
+								);
+							}
+						} 
+						catch (final IOException e) 
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 				
@@ -2810,7 +2658,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--num-trials-per-policy-gradient-epoch")
 				.help("Number of trials to run per epoch for policy gradients.")
-				.withDefault(Integer.valueOf(100))
+				.withDefault(Integer.valueOf(60))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2855,24 +2703,6 @@ public class ExpertIteration
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
-				.withNames("--prune-init-features-threshold")
-				.help("Will only consider pruning features if they have been active at least this many times.")
-				.withDefault(Integer.valueOf(50))
-				.withNumVals(1)
-				.withType(OptionTypes.Int));
-		argParse.addOption(new ArgOption()
-				.withNames("--num-pruning-games")
-				.help("Number of random games to play out for determining features to prune.")
-				.withDefault(Integer.valueOf(0))
-				.withNumVals(1)
-				.withType(OptionTypes.Int));
-		argParse.addOption(new ArgOption()
-				.withNames("--max-pruning-seconds")
-				.help("Maximum number of seconds to spend on random games for pruning initial featureset.")
-				.withDefault(Integer.valueOf(0))
-				.withNumVals(1)
-				.withType(OptionTypes.Int));
-		argParse.addOption(new ArgOption()
 				.withNames("--num-feature-discovery-threads")
 				.help("Number of threads to use for parallel feature discovery.")
 				.withDefault(Integer.valueOf(1))
@@ -2890,12 +2720,16 @@ public class ExpertIteration
 				.help("If true, we'll use a special-moves feature expander in addition to the normal one.")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
+				.withNames("--special-moves-expander-split")
+				.help("If true, we'll use a special-moves feature expander in addition to the normal one, splitting time with the normal one.")
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
 				.withNames("--expander-type")
 				.help("Type of feature set expander to use.")
 				.withNumVals(1)
 				.withType(OptionTypes.String)
 				.withDefault("CorrelationBasedExpander")
-				.withLegalVals("CorrelationBasedExpander", "CorrelationErrorSignExpander"));
+				.withLegalVals("CorrelationBasedExpander", "CorrelationErrorSignExpander", "Random"));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--train-tspg")
@@ -2915,7 +2749,11 @@ public class ExpertIteration
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--handle-aliasing")
-				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them")
+				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training selection policy.")
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--handle-aliasing-playouts")
+				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training playout policy.")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--weight-decay-lambda")
@@ -3032,12 +2870,10 @@ public class ExpertIteration
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
 		exIt.featureDiscoveryParams.combiningFeatureInstanceThreshold = argParse.getValueInt("--combining-feature-instance-threshold");
-		exIt.featureDiscoveryParams.pruneInitFeaturesThreshold = argParse.getValueInt("--prune-init-features-threshold");
-		exIt.featureDiscoveryParams.numPruningGames = argParse.getValueInt("--num-pruning-games");
-		exIt.featureDiscoveryParams.maxNumPruningSeconds = argParse.getValueInt("--max-pruning-seconds");
 		exIt.featureDiscoveryParams.numFeatureDiscoveryThreads = argParse.getValueInt("--num-feature-discovery-threads");
 		exIt.featureDiscoveryParams.criticalValueCorrConf = argParse.getValueDouble("--critical-value-corr-conf");
 		exIt.featureDiscoveryParams.useSpecialMovesExpander = argParse.getValueBool("--special-moves-expander");
+		exIt.featureDiscoveryParams.useSpecialMovesExpanderSplit = argParse.getValueBool("--special-moves-expander-split");
 		exIt.featureDiscoveryParams.expanderType = argParse.getValueString("--expander-type");
 		
 		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
@@ -3045,6 +2881,7 @@ public class ExpertIteration
 		exIt.objectiveParams.weightedImportanceSampling = argParse.getValueBool("--wis");
 		exIt.objectiveParams.noValueLearning = argParse.getValueBool("--no-value-learning");
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");
+		exIt.objectiveParams.handleAliasingPlayouts = argParse.getValueBool("--handle-aliasing-playouts");
 		exIt.objectiveParams.weightDecayLambda = argParse.getValueDouble("--weight-decay-lambda");
 		
 		exIt.optimisersParams.selectionOptimiserConfig = argParse.getValueString("--selection-optimiser");

@@ -1,7 +1,7 @@
 (define "Shatranj ar-Rumiya_ai"
     (useFor { "Variant/Murray" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

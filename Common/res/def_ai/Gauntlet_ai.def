@@ -1,10 +1,10 @@
 (define "Gauntlet_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:1)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" -0.23110633)
             (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[]>" 0.32766065)

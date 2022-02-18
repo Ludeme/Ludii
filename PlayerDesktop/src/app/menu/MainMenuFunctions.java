@@ -51,6 +51,7 @@ import app.loading.GameLoading;
 import app.loading.MiscLoading;
 import app.loading.TrialLoading;
 import app.manualGeneration.ManualGeneration;
+import app.util.QrCodeGeneration;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
@@ -83,7 +84,7 @@ import metadata.ai.heuristics.Heuristics;
 import other.AI;
 import other.GameLoader;
 import other.action.Action;
-import other.action.move.ActionRemove;
+import other.action.move.remove.ActionRemove;
 import other.action.state.ActionSetNextPlayer;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
@@ -95,7 +96,7 @@ import other.model.Model;
 import other.move.Move;
 import other.trial.Trial;
 import parser.Parser;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.pns.ProofNumberSearch.ProofGoals;
 import supplementary.EvalUtil;
 import supplementary.experiments.EvalAIsThread;
@@ -140,26 +141,9 @@ public class MainMenuFunctions extends JMenuBar
 			app.addTextToStatusPanel("\nChar count (excluding spaces): " + context.game().description().raw().replaceAll("\\s+","").length());
 			app.addTextToStatusPanel(ludemeCounter.result());
 			System.out.println(ludemeCounter.result());
-			
-//			final String[] choices = FileHandling.listGames();
-//			for (final String s : choices)
-//			{
-//				if (!FileHandling.shouldIgnoreLudAnalysis(s))
-//				{
-//					final String gameName = s.split("\\/")[s.split("\\/").length-1];
-//					final Game tempGame = GameLoader.loadGameFromName(gameName);
-//					System.out.println(gameName.substring(0,gameName.length()-4) + "," + tempGame.description().raw().length() + "," + tempGame.description().raw().replaceAll("\\s+","").length());
-//				}
-//			}
 		}
 		else if (source.getText().equals("Game Description Length"))
 		{
-//			final String[] formattedDescription = game.description().expanded().replaceAll("[(){}\n]","").split(" ");
-//			int numTokens = 0;
-//			for (final String s : formattedDescription)
-//				if (s.trim().length() > 0)
-//					numTokens++;
-			
 			final String allOutputs = game.name() + ", Raw: " + game.description().raw().replaceAll("\\s+","").length() + ", Expanded: " + game.description().expanded().replaceAll("\\s+","").length() + ", Tokens: " + game.description().tokenForest().tokenTree().countKeywords();
 			app.addTextToStatusPanel(allOutputs + "\n");
 		}
@@ -706,6 +690,10 @@ public class MainMenuFunctions extends JMenuBar
 		        500 
 			);	
 		}
+		else if (source.getText().equals("Make QR Code"))
+		{
+			QrCodeGeneration.makeQRCode(game);
+		}
 		else if (source.getText().equals("Play/Pause"))
 		{
 			DesktopApp.view().toolPanel().buttons.get(ToolView.PLAY_BUTTON_INDEX).press();
@@ -742,7 +730,7 @@ public class MainMenuFunctions extends JMenuBar
     		
 			for (int i = 0; i < context.board().numSites(); i++)
 			{
-				final ActionRemove actionRemove = new ActionRemove(context.board().defaultSite(), i, Constants.UNDEFINED, true);
+				final Action actionRemove = ActionRemove.construct(context.board().defaultSite(), i, Constants.UNDEFINED, true);
 				final Move moveToApply = new Move(actionRemove);
 				moveToApply.then().add(csq);
 				
@@ -1084,7 +1072,7 @@ public class MainMenuFunctions extends JMenuBar
 							"metadata.ai.features.Features",
 							new Report()
 						);
-				final SoftmaxPolicy softmax = SoftmaxPolicy.constructSelectionPolicy(features, 0.0);
+				final SoftmaxPolicyLinear softmax = SoftmaxPolicyLinear.constructSelectionPolicy(features, 0.0);
 				softmax.initAI(game, context.state().mover());
 				
 				final BaseFeatureSet[] featureSets = softmax.featureSets();
@@ -1126,7 +1114,7 @@ public class MainMenuFunctions extends JMenuBar
 				{
 					final List<String> moves = moveStrings[featureIdx];
 					
-					if (moves.size() > 0)
+					if (moves != null && moves.size() > 0)
 					{
 						System.out.println("Feature: " + featureSet.spatialFeatures()[featureIdx].toString());
 						
@@ -1652,5 +1640,5 @@ public class MainMenuFunctions extends JMenuBar
 	}
 	
 	//---------------------------------------------------------------------
-	
+
 }

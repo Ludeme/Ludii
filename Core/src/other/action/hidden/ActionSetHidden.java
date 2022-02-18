@@ -6,6 +6,7 @@ import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import main.Constants;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
@@ -125,7 +126,7 @@ public final class ActionSetHidden extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.containerState(context.containerId()[to]).setHidden(context.state(), who, to, level, previousType, previousValue);
 		return this;
@@ -299,6 +300,12 @@ public final class ActionSetHidden extends BaseAction
 	public SiteType toType()
 	{
 		return type;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.SetHidden;
 	}
 
 	//-------------------------------------------------------------------------

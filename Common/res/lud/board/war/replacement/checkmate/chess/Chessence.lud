@@ -1,0 +1,153 @@
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+)
+
+(define "CaptureToPiece"
+    (apply 
+        if:(not (is In (to) (sites "BlackenedSquares")))
+        (if (is Enemy (who at:(to)))
+            (remove 
+                (to) 
+            )
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Chessence"  
+    (players 2)  
+    (equipment { 
+        (board (rectangle 9 6)) 
+        (piece "Pawn" Each
+            (or {
+                (if (not (all Sites (sites Around (from) Orthogonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
+                    (move
+                        Slide 
+                        Orthogonal 
+                        (between
+                            if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
+                        )
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureToPiece"
+                        ) 
+                    )
+                )
+                (if (not (all Sites (sites Around (from) Diagonal) if:(!= (what at:(site)) (id "Pawn" Mover))))
+                    (move
+                        Slide 
+                        Diagonal 
+                        (between
+                            if:(and (is Empty (between)) (not (is In (between) (sites "BlackenedSquares"))))
+                        )
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureToPiece"
+                        ) 
+                    )
+                )
+                
+                (if (not 
+                        (all Sites
+                            (forEach
+                                (sites Around 
+                                    (sites To (hop Orthogonal (between if:True) (to if:True))) 
+                                    Orthogonal
+                                )
+                                if:(= 2 (count Steps (from) (site)))
+                            )
+                            if:(!= (what at:(site)) (id "Pawn" Mover))
+                        )
+                    )
+                    (move
+                        Leap 
+                        "KnightWalk" 
+                        (to 
+                            if:(and (not (is Friend (who at:(to)))) (not (is In (to) (sites "BlackenedSquares"))))
+                            "CaptureToPiece"
+                        ) 
+                    )
+                )
+            })
+        )
+        (piece "King" Each)
+        (hand Each)
+        (regions "BlackenedSquares" (sites {"A2" "B3" "B5" "C6" "D4" "E5" "E7" "F8"}))
+        (regions "PawnStart" P1 (sites {"E1" "E2" "F2" "D2" "D3" "E3"}))
+        (regions "PawnStart" P2 (sites {"B9" "B8" "A8" "C8" "C7" "B7"}))
+    })  
+    (rules 
+        (start { 
+            (place "Pawn" "Hand" count:3)
+            (place "Pawn1" (sites P1 "PawnStart"))
+            (place "Pawn2" (sites P2 "PawnStart"))
+            (place "King1" coord:"F1") 
+            (place "King2" coord:"A9") 
+        })
+        
+        (play 
+            (or
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                )
+                (if (is Occupied (handSite Mover))
+                    (move
+                        (from (sites Hand))
+                        (to (sites Mover "PawnStart") if:(is Empty (to)))
+                    )
+                )
+            )
+        )
+        
+        (end {
+            (if  (and 
+                    ("IsInCheck" "King" Next)
+                    ("NextCanNotMove")
+                )
+                (result Mover Win)
+            ) 
+            (if (no Moves Mover) (result Mover Loss)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chessence is a chess variant invented by Jim Winslow in 1989. The board is a 6×9 rectangle of squares with eight squares missing. Each player has a king and nine men with initial setup as shown, including three men initially not yet in play at the side of the board. ")
+        (rules "In Chessence, kings do not move and must remain fixed on their starting squares the entire game. (Thus, a king is unable to move out of check.) 
+            
+            A man has capability to move based on its relative position to other friendly men on the board, as follows:
+            - If a man is orthogonally adjacent to a friendly man, then both have the ability to move as a rook in chess.
+            - If a man is diagonally adjacent to a friendly man, then both have the ability to move as a chess bishop.
+            - If a man is a knight's move away from a friendly man, then both have the ability to move as a knight.
+            
+            A man with more than one position relationship has the ability to move in more than one way. Likewise, if a man has no position relationship defined above, that man cannot move. The king has no bearing on how the other men may move.
+            
+            A man may not move to, nor through, a non-existent (blackened-out) square; except that a man moving as a knight may jump over a non-existent square. For a turn, a player may move a man on the board, or alternatively, they may put one of their reserve men in play by placing it on any of their six initial starting squares that are currently open.
+            
+        Checks, checkmate, and captures are as in standard chess. If a player has no legal moves, they lose the game.")
+        (id "1784")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Chessence\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.2")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Jim Winslow")
+        (credit "Eric Piette")
+        (date "1989")
+        }
+    )
+    
+    (graphics {
+        (show Check "King")
+        (piece Scale "Pawn" 0.825)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+        (board Style Chess)
+        (show Symbol "Square" "BlackenedSquares" fillColour:(colour Black))
+    })
+    
+)

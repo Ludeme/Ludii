@@ -34,7 +34,7 @@
         (player Colour Neutral (colour 255 0 0))
         (player Colour P1 (colour Blue))
         (player Colour P2 (colour Red))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         
         (show Edges Orthogonal ThinDotted (colour 127 0 0))
         (board Colour InnerVertices (colour Red))

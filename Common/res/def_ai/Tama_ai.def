@@ -1,11 +1,11 @@
 (define "Tama_ai"
     (useFor { "Variant/Wikipedia" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.3882118)
                 (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[]>" 0.280372)

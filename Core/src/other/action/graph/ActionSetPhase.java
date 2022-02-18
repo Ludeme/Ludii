@@ -5,6 +5,7 @@ import java.util.BitSet;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
@@ -99,7 +100,7 @@ public final class ActionSetPhase extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		context.topology().getGraphElements(type).get(to).setPhase(previousPhase);
@@ -243,6 +244,12 @@ public final class ActionSetPhase extends BaseAction
 	public int to()
 	{
 		return to;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.SetPhase;
 	}
 
 	//-------------------------------------------------------------------------

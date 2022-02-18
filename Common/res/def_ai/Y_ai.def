@@ -1,6 +1,6 @@
 (define "Y_ai"
     (bestAgent "MC-GRAVE")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (sidesProximity weight:-1.0)
     })
     

@@ -1,6 +1,7 @@
 package metadata.ai.features.trees.logits;
 
-import annotations.Hide;
+import java.util.Set;
+
 import annotations.Name;
 import main.StringRoutines;
 
@@ -11,7 +12,6 @@ import main.StringRoutines;
  * 
  * @author Dennis Soemers
  */
-@Hide
 public class If extends LogitNode
 {
 	
@@ -33,6 +33,8 @@ public class If extends LogitNode
 	 * @param feature The feature to evaluate (the condition).
 	 * @param then The branch to take if the feature is active.
 	 * @param Else The branch to take if the feature is not active.
+	 * 
+	 * @example (if "rel:to=<{}>:pat=<els=[f{0}]>" then:(leaf { (pair "Intercept" 1.0) }) else:(leaf { (pair "Intercept" -1.0) }))
 	 */
 	public If
 	(
@@ -44,6 +46,42 @@ public class If extends LogitNode
 		this.feature = feature;
 		this.thenNode = then;
 		this.elseNode = Else;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void collectFeatureStrings(final Set<String> outFeatureStrings)
+	{
+		outFeatureStrings.add(feature);
+		thenNode.collectFeatureStrings(outFeatureStrings);
+		elseNode.collectFeatureStrings(outFeatureStrings);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The feature string
+	 */
+	public String featureString()
+	{
+		return feature;
+	}
+	
+	/**
+	 * @return The then node
+	 */
+	public LogitNode thenNode()
+	{
+		return thenNode;
+	}
+	
+	/**
+	 * @return The else node
+	 */
+	public LogitNode elseNode()
+	{
+		return elseNode;
 	}
 	
 	//-------------------------------------------------------------------------

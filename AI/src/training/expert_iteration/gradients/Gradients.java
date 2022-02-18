@@ -9,7 +9,7 @@ import gnu.trove.list.array.TIntArrayList;
 import main.collections.FVector;
 import metadata.ai.heuristics.Heuristics;
 import optimisers.Optimiser;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import training.expert_iteration.ExItExperience;
 
 /**
@@ -52,7 +52,7 @@ public class Gradients
 	
 	public static FVector computeCrossEntropyErrors
 	(
-		final SoftmaxPolicy policy, 
+		final SoftmaxPolicyLinear policy, 
 		final FVector expertDistribution, 
 		final FeatureVector[] featureVectors,
 		final int p,

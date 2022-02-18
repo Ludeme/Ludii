@@ -8,6 +8,7 @@ import metrics.Evaluation;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.topology.Topology;
 import other.trial.Trial;
 
@@ -53,25 +54,25 @@ public class MoveDistance extends MultiMetricFramework
 		
 		final ArrayList<Double> valueList = new ArrayList<>();
 
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.generateRealMovesList())
 		{
-			final SiteType moveType = trial.getMove(i).fromType();
+			final SiteType moveType = m.fromType();
 			
 			if 
 			(
-				trial.getMove(i).fromType() == trial.getMove(i).toType() 
+				m.fromType() == m.toType() 
 				&&
-				trial.getMove(i).from() < boardTopology.numSites(moveType)
+				m.from() < boardTopology.numSites(moveType)
 				&&
-				trial.getMove(i).to() < boardTopology.numSites(moveType)
+				m.to() < boardTopology.numSites(moveType)
 				&&
-				trial.getMove(i).from() != trial.getMove(i).to()
+				m.from() != m.to()
 			)	
 			{
-				valueList.add(Double.valueOf(boardTopology.distancesToOtherSite(moveType)[trial.getMove(i).from()][trial.getMove(i).to()]));
+				valueList.add(Double.valueOf(boardTopology.distancesToOtherSite(moveType)[m.from()][m.to()]));
 			}
 			
-			context.game().apply(context, trial.getMove(i));
+			context.game().apply(context, m);
 		}
 		
 		

@@ -22,7 +22,7 @@ import game.types.board.SiteType;
 import game.types.state.GameType;
 import main.Constants;
 import other.action.Action;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -214,8 +214,7 @@ public final class Sow extends Effect
 			{
 				if(numSeedSowed < count)
 					move.actions()
-							.add(new ActionMove(type, start, Constants.UNDEFINED, type, start, Constants.OFF,
-									Constants.UNDEFINED, Constants.OFF, Constants.OFF, false));
+							.add(ActionMove.construct(type, start, Constants.UNDEFINED, type, start, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false));
 				numDone++;
 				numSeedSowed++;
 			}
@@ -269,7 +268,7 @@ public final class Sow extends Effect
 				while(numDone != numPerHole)
 				{
 					if(numSeedSowed < count)
-						move.actions().add(new ActionMove(type, start, Constants.UNDEFINED, type, to, Constants.OFF,
+						move.actions().add(ActionMove.construct(type, start, Constants.UNDEFINED, type, to, Constants.OFF,
 								startState != toState ? toState : Constants.UNDEFINED,
 								startRotation != toRotation ? toRotation : Constants.UNDEFINED,
 								startValue != toValue ? toValue : Constants.UNDEFINED, false));

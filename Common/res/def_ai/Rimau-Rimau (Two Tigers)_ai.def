@@ -1,14 +1,14 @@
 (define "Rimau-Rimau (Two Tigers)_ai"
     (useFor { "Start Rules/Tigers Start in hand" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
     )
     (useFor { "Start Rules/Tigers start at the centre" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

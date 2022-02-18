@@ -70,6 +70,15 @@ public final class MathRoutines
 	{
 		return (Math.abs(a - b) < epsilon);
 	}
+	
+	/**
+	 * @param x
+	 * @return Base-2 logarithm of x: log_2 (x)
+	 */
+	public static double log2(final double x)
+	{
+		return Math.log(x) / Math.log(2);
+	}
 
 	//-------------------------------------------------------------------------
 	// Geometry routines

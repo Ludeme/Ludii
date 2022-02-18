@@ -2,6 +2,7 @@ package features.spatial;
 
 import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
+import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
 
 /**
@@ -67,7 +68,7 @@ public class AbsoluteFeature extends SpatialFeature
 		this.lastToPosition = other.lastToPosition;
 		this.lastFromPosition = other.lastFromPosition;
 		
-		this.comment = new String(other.comment);
+//		this.comment = new String(other.comment);
 	}
 	
 	/**
@@ -121,7 +122,7 @@ public class AbsoluteFeature extends SpatialFeature
 			{
 				part = part.substring(
 						"comment=\"".length(), part.length() - "\"".length());
-				comment = part;
+//				comment = part;
 			}
 		}
 		
@@ -319,12 +320,20 @@ public class AbsoluteFeature extends SpatialFeature
 			str = String.format("last_from=<%s>:%s", Integer.valueOf(lastFromPosition), str);
 		}
 
-		if (comment.length() > 0)
-		{
-			str = String.format("%s:comment=\"%s\"", str, comment);
-		}
+//		if (comment.length() > 0)
+//		{
+//			str = String.format("%s:comment=\"%s\"", str, comment);
+//		}
 
 		return "abs:" + str;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String generateTikzCode(final Game game)
+	{
+		return "TO DO";
 	}
 	
 	//-------------------------------------------------------------------------

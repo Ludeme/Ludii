@@ -29,18 +29,17 @@ public class LudemeDataset implements Dataset
 	public Map<String, Double> getBagOfWords(final Game game) 
 	{
 		final List<LudemeInfo> allLudemes = GetLudemeInfo.getLudemeInfo();
+		
+		// Initalise all values to zero
+		final Map<String, Double> featureMap = new HashMap<>();
+		for (final LudemeInfo ludeme :allLudemes)
+			featureMap.put(ludeme.symbol().name(), Double.valueOf(0.0));
+		
 		final Call callTree = game.description().callTree();
 		final List<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes);
-		
-		final Map<String, Double> featureMap = new HashMap<>();
 
 		for (final LudemeInfo ludeme : gameLudemes)
-		{
-			if (featureMap.containsKey(ludeme.symbol().name()))
-				featureMap.put(ludeme.symbol().name(), Double.valueOf(featureMap.get(ludeme.symbol().name()).doubleValue()+1.0));
-			else
-				featureMap.put(ludeme.symbol().name(), Double.valueOf(1.0));
-		}
+			featureMap.put(ludeme.symbol().name(), Double.valueOf(featureMap.get(ludeme.symbol().name()).doubleValue()+1.0));
 			
 		return featureMap;
 	}

@@ -228,12 +228,18 @@ public class MainMenu extends JMenuBar
 			menu.add(menuItem);
 		}
 
+		menu.addSeparator();
+		
 		menuItem = new JMenuItem("Game Screenshot");
 		menuItem.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.SHIFT_DOWN_MASK));
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 		
 		menuItem = new JMenuItem("Game Gif");
+		menuItem.addActionListener(al);
+		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Make QR Code");
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 
@@ -540,7 +546,7 @@ public class MainMenu extends JMenuBar
 						{
 							if (s.contains("Classification"))
 							{
-								if (s.contains("true"))
+								if (s.contains("True"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -555,7 +561,7 @@ public class MainMenu extends JMenuBar
 							}
 							else
 							{
-								if (s.contains("true"))
+								if (s.contains("True"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);

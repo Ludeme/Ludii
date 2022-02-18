@@ -1,6 +1,6 @@
 (define "Phantom Go_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -0.11844069)
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[!f{}]>" -0.14825512)

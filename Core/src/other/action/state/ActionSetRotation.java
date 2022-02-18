@@ -3,6 +3,7 @@ package other.action.state;
 import game.types.board.SiteType;
 import main.Constants;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -145,7 +146,7 @@ public final class ActionSetRotation extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
 		final ContainerState cs = context.state().containerStates()[cid];
@@ -348,5 +349,11 @@ public final class ActionSetRotation extends BaseAction
 	public int who()
 	{
 		return rotation;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.SetRotation;
 	}
 }

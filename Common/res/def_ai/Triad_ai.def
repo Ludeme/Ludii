@@ -1,6 +1,6 @@
 (define "Triad_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Marker1" -0.38446468)

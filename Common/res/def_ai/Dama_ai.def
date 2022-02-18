@@ -1,10 +1,10 @@
 (define "Dama_ai"
     (bestAgent "ProgressiveHistory")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.084725715)
             (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[]>" 0.08456967)

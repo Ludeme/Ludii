@@ -1,0 +1,91 @@
+(define "SlideMove"
+    (move Slide #1
+        (to
+            (apply if:(all Sites (sites Around (to)) if:(!= (what at:(site)) (id #2 Next))))
+        )
+    )	
+)
+(define "MouseMove" ("SlideMove" Orthogonal "Lion"))
+(define "ElephantMove" ("SlideMove" All "Mouse"))
+(define "LionMove" ("SlideMove" Diagonal "Elephant"))
+
+(define "IsAround" (is In (from) (sites Around (sites Occupied by:Next component:#1))))
+
+(define "ThreePiecesInWater" (= 3 (count Sites in:(intersection (sites Occupied by:Mover) (sites "Water")))))
+
+//------------------------------------------------------------------------------
+
+(game "Barca"  
+    (players 2)  
+    (equipment { 
+        (board (square 10)) 
+        (piece "Mouse" Each ("MouseMove"))
+        (piece "Elephant" Each ("ElephantMove"))
+        (piece "Lion" Each ("LionMove"))
+        (regions "Water" (sites {"D4" "D7" "G4" "G7"}))
+    })  
+    (rules
+        (start {
+            (place "Elephant1" (sites {"E1" "F1"}))
+            (place "Lion1" (sites {"D2" "G2"}))
+            (place "Mouse1" (sites {"E2" "F2"}))
+            (place "Elephant2" (sites {"E10" "F10"}))
+            (place "Lion2" (sites {"D9" "G9"}))
+            (place "Mouse2" (sites {"E9" "F9"}))
+        })
+        
+        (play
+            (priority {
+                (and {
+                    (forEach Piece "Mouse" (if ("IsAround" "Lion") ("MouseMove")))
+                    (forEach Piece "Elephant" (if ("IsAround" "Mouse") ("ElephantMove")))
+                    (forEach Piece "Lion" (if ("IsAround" "Elephant") ("LionMove")))
+                })
+                (forEach Piece)
+            })
+        )
+        
+        (end (if ("ThreePiecesInWater") (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Barca is a recent commercial chess variant. The game was invented by Andrew Caldwell, and appeared in 2011.")
+        (rules "The game is played on a 10x10 board. Four of the squares are marked and are considered to contain a watering hole.
+            Each player has two elephants, two lions and two mice.
+            
+            Pieces do not take other pieces. Their movement is as follows: mice move like rooks, lions move like bishops, and elephants move like queens.
+            
+            Like their chess counterparts, the pieces cannot jump over other pieces.
+            
+            A mouse is afraid of a lion of the opponent; a lion is afraid of an elephant of the opponent, and an elephant is afraid of a mouse of the opponent.
+            
+            An animal may not move to a square that is adjacent (horizontally, vertically or diagonally) to an animal it is afraid of. In addition, if an animal is adjacent to an animal that it is afraid of, then it must be moved by its owner, i.e., the owner may not move another animal.
+            
+            In the special case that more than one animal is adjacent to an animal it is afraid of, the owner may choose which animal to move.
+            
+        One wins the game by occupying three of the watering holes with own pieces.")
+        (id "1778")
+        (source "<a href=\"http://playbarca.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />playbarca.com/</a>")
+        (version "1.3.2")
+        (classification "board/race/fill")
+        (author "Andrew Caldwell")
+        (credit "Eric Piette")
+        (date "2007")
+        }
+    )
+    
+    (graphics {
+        (board Checkered)
+        (board Colour Phase0 (colour White))
+        (board Colour Phase1 (colour Blue))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Hidden))
+        (show Symbol "Disc" "Water" fillColour:(colour Blue))
+    })
+)

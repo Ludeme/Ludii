@@ -1,0 +1,198 @@
+(define "StepMove"
+    (move Step #1
+        (to
+            if:(and
+                (not (is Friend (who at:(to))))
+                (is Friend (who at:(ahead (coord #2) #1)))
+            )
+            (apply 
+                (if (is Enemy (who at:(to)))
+                    (remove (to))
+                )
+            )
+        )
+    )
+)
+
+(define "HopMove"
+    (move Hop #1
+        (between
+            if:True
+        )
+        (to
+            if:(and
+                (not (is Friend (who at:(to))))
+                (is Friend (who at:(ahead (coord #2) steps:2 #1)))
+            )
+            (apply 
+                (if (is Enemy (who at:(to)))
+                    (remove (to))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "4 Squared"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (square 5)
+                (shift 5 0 (square 5))
+                (shift 0 5 (square 5))
+                (shift 5 5 (square 5))
+            })
+            use:Vertex
+        )
+        (piece "Ball" Each
+            (if (is In (from) (sites "SW"))
+                (or {
+                    ("StepMove" S "H3")
+                    ("StepMove" SE "H3")
+                    ("StepMove" SW "H3")
+                    ("StepMove" E "H3")
+                    ("StepMove" W "H3")
+                    ("StepMove" NE "H3")
+                    ("StepMove" NW "H3")
+                    ("StepMove" N "H3")
+                    ("HopMove" S "H3")
+                    ("HopMove" SE "H3")
+                    ("HopMove" SW "H3")
+                    ("HopMove" E "H3")
+                    ("HopMove" W "H3")
+                    ("HopMove" NE "H3")
+                    ("HopMove" NW "H3")
+                    ("HopMove" N "H3")
+                })
+                (if (is In (from) (sites "NW"))
+                    (or {
+                        ("StepMove" S "C3")
+                        ("StepMove" SE "C3")
+                        ("StepMove" SW "C3")
+                        ("StepMove" E "C3")
+                        ("StepMove" W "C3")
+                        ("StepMove" NE "C3")
+                        ("StepMove" NW "C3")
+                        ("StepMove" N "C3")
+                        ("HopMove" S "C3")
+                        ("HopMove" SE "C3")
+                        ("HopMove" SW "C3")
+                        ("HopMove" E "C3")
+                        ("HopMove" W "C3")
+                        ("HopMove" NE "C3")
+                        ("HopMove" NW "C3")
+                        ("HopMove" N "C3")
+                    })
+                    (if (is In (from) (sites "NE"))
+                        (or {
+                            ("StepMove" S "C8")
+                            ("StepMove" SE "C8")
+                            ("StepMove" SW "C8")
+                            ("StepMove" E "C8")
+                            ("StepMove" W "C8")
+                            ("StepMove" NE "C8")
+                            ("StepMove" NW "C8")
+                            ("StepMove" N "C8")
+                            ("HopMove" S "C8")
+                            ("HopMove" SE "C8")
+                            ("HopMove" SW "C8")
+                            ("HopMove" E "C8")
+                            ("HopMove" W "C8")
+                            ("HopMove" NE "C8")
+                            ("HopMove" NW "C8")
+                            ("HopMove" N "C8")
+                        })
+                        (if (is In (from) (sites "SE"))
+                            (or {
+                                ("StepMove" S "H8")
+                                ("StepMove" SE "H8")
+                                ("StepMove" SW "H8")
+                                ("StepMove" E "H8")
+                                ("StepMove" W "H8")
+                                ("StepMove" NE "H8")
+                                ("StepMove" NW "H8")
+                                ("StepMove" N "H8")
+                                ("HopMove" S "H8")
+                                ("HopMove" SE "H8")
+                                ("HopMove" SW "H8")
+                                ("HopMove" E "H8")
+                                ("HopMove" W "H8")
+                                ("HopMove" NE "H8")
+                                ("HopMove" NW "H8")
+                                ("HopMove" N "H8")
+                            })
+                        )
+                    )
+                )
+            )
+        )
+        (hand Each)
+        (regions "SW" (expand origin:(coord "C3") steps:2 All))
+        (regions "SE" (expand origin:(coord "H3") steps:2 All))
+        (regions "NW" (expand origin:(coord "C8") steps:2 All))
+        (regions "NE" (expand origin:(coord "H8") steps:2 All))
+    })
+    (rules
+        (start (place "Ball" "Hand" count:15))
+        (play
+            (or
+                (forEach Piece)
+                (if (is Occupied (handSite Mover))
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Empty))
+                    )
+                )
+            )
+        )
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The game is played on four boards (called here NW, SW, NE, SE according to their position). Both players start with 15 stones offboard (you can reduce the number for a shorter game).")
+        (rules "- BOARDS: The stones in each board are responsible for the moving possibilities of the stones in the next board (clockwise direction).
+            E.g., board NW position determines the moves for board NE.
+            
+            - MOVE: Every stone allows the stones in the next board to move according to its position (using the red point as a reference point).
+            E.g., A stone on b3, allows that player to move any stone in the next board one step to the left. A stone on e5 allows any stone in the next board to move two steps diagonally to the top right.
+            A stone on a red point is useless for the moves in the next board .
+            
+            - TURN: On his turn a player must do one of two actions:
+            Drop: The player drops a friendly stone on an empty cell. If there are no more offboard stones, he cannot choose this action.
+            Move: The player moves a stone according to the moving rules. To move a stone there must be a friendly stone in the previous board.
+            The move is only allowed if the moving stone stays in the same board.
+            Stones jump. So if a stone moves from a5 to c5 (only possible if there is a friendly stone on e3 at the previous board) the status of b5 is irrelevant.
+            The destination cell must be empty or occupied with an opponent stone, which is captured and removed from play.
+            
+        - GOAL: A player with no legal moves loses.")
+        (id "1796")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/4squared.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />http://www.di.fc.ul.pt/</a>")
+        (version "1.3.2")
+        (classification "board/space/blocking")
+        (author "Martin Windischer")
+        (credit "Eric Piette")
+        (date "2009")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+        (show Symbol "disc" (sites {"C3" "C8" "H3" "H8"}) fillColour:(colour Red) edgeColour:(colour Red) scale:0.3)
+    })
+    
+)

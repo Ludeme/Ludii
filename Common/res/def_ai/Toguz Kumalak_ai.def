@@ -1,10 +1,10 @@
 (define "Toguz Kumalak_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (playerSiteMapCount)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -0.07866706)
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N6{}]>" 0.03660841)

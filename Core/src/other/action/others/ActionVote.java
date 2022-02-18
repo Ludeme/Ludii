@@ -24,7 +24,7 @@ public final class ActionVote extends BaseAction
 	/** The vote. */
 	private final String vote;
 	
-	/** The vote represented as an int */
+	/** The vote represented as an int. */
 	private final int voteInt;
 
 	//-------------------------------------------------------------------------
@@ -89,7 +89,11 @@ public final class ActionVote extends BaseAction
 			if(!alreadyApplied)
 			{
 				previousIsDecided = context.state().isDecided();
-				previousVotes = new TIntArrayList(context.state().votes());
+				previousVotes = new TIntArrayList();
+				
+				for(int i = 0; i < context.state().votes().size()-1; i++)
+					previousVotes.add(context.state().votes().get(i));
+				
 				previousPropositions = new TIntArrayList(context.state().propositions());
 				alreadyApplied = true;
 			}
@@ -131,7 +135,7 @@ public final class ActionVote extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		final TIntArrayList votes = context.state().votes();
 

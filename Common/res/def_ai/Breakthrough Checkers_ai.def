@@ -1,6 +1,6 @@
 (define "Breakthrough Checkers_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (ownRegionsCount weight:-1.0798367)
         (centreProximity pieceWeights:{
             (pair "Counter1" 0.10730263)

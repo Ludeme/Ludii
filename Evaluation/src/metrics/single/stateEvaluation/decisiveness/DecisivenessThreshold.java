@@ -10,6 +10,7 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -73,14 +74,14 @@ public class DecisivenessThreshold extends Metric
 		
 		final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
 		
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.generateRealMovesList())
 		{
 			final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 			for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 				if (allPlayerStateEvaluations.get(j) > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
 					decisivenessThreshold = allPlayerStateEvaluations.get(j);
 
-			context.game().apply(context, trial.getMove(i));
+			context.game().apply(context, m);
 		}
 		
 		return decisivenessThreshold;

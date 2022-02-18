@@ -19,6 +19,7 @@ import game.functions.region.RegionFunction;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.equipment.Region;
+import game.util.graph.GraphElement;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
@@ -61,8 +62,8 @@ public final class SitesDirection extends BaseRegionFunction
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param locn         The origin location.
-	 * @param region       The origin region location.
+	 * @param from         The origin location.
+	 * @param From         The origin region location.
 	 * @param directions   The directions of the move [Adjacent].
 	 * @param included     True if the origin is included in the result [False].
 	 * @param stop         When the condition is true in one specific direction,
@@ -74,8 +75,8 @@ public final class SitesDirection extends BaseRegionFunction
 	 */
 	public SitesDirection
 	(
-			       @Or    final IntFunction                    locn,
-			       @Or    final RegionFunction                 region,
+			  @Or  @Name  final IntFunction                    from,
+			  @Or  @Name  final RegionFunction                 From,
 		@Opt              final game.util.directions.Direction directions,
 		@Opt @Name        final BooleanFunction                included,
 		@Opt @Name        final BooleanFunction                stop, 
@@ -85,7 +86,7 @@ public final class SitesDirection extends BaseRegionFunction
 	)
 	{
 
-		regionFn = new IntArrayFromRegion(locn, region);
+		regionFn = new IntArrayFromRegion(from, From);
 
 		// Directions
 		dirnChoice = (directions != null) 
@@ -107,6 +108,7 @@ public final class SitesDirection extends BaseRegionFunction
 		final int[] region = regionFn.eval(context);
 		final TIntArrayList sites = new TIntArrayList();
 		final int distance = distanceFn.eval(context);
+		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
 		
 		for (final int loc : region)
 		{
@@ -116,7 +118,6 @@ public final class SitesDirection extends BaseRegionFunction
 			if (loc == Constants.UNDEFINED)
 				return new Region(sites.toArray());
 
-			final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
 			final TopologyElement element = topology.getGraphElements(realType).get(loc);
 			final int originTo = context.to();
 
@@ -128,13 +129,15 @@ public final class SitesDirection extends BaseRegionFunction
 
 			for (final AbsoluteDirection direction : directions)
 			{
-				final List<Radial> radialList = topology.trajectories().radials(realType, element.index(), direction);
+				final List<Radial> radialList = topology.trajectories().radials(realType, loc, direction);
 
 				for (final Radial radial : radialList)
 				{
-					for (int toIdx = 1; toIdx < radial.steps().length && toIdx <= distance; toIdx++)
+					final GraphElement[] steps = radial.steps();
+					final int limit = Math.min(steps.length, distance + 1);
+					for (int toIdx = 1; toIdx < limit; toIdx++)
 					{
-						final int to = radial.steps()[toIdx].id();
+						final int to = steps[toIdx].id();
 						context.setTo(to);
 						if (stopRule.eval(context))
 						{
@@ -148,7 +151,6 @@ public final class SitesDirection extends BaseRegionFunction
 			}
 			context.setTo(originTo);
 		}
-		
 
 		return new Region(sites.toArray());
 	}

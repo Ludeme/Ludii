@@ -1,6 +1,7 @@
 package metadata.ai.features.trees.logits;
 
-import annotations.Hide;
+import java.util.Set;
+
 import main.StringRoutines;
 import metadata.ai.misc.Pair;
 
@@ -12,7 +13,6 @@ import metadata.ai.misc.Pair;
  * 
  * @author Dennis Soemers
  */
-@Hide
 public class Leaf extends LogitNode
 {
 	
@@ -27,8 +27,10 @@ public class Leaf extends LogitNode
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Defines the feature (condition), and the two branches.
+	 * Defines the reamining feautures (used in linear model) and their weights.
 	 * @param features List of remaining features to evaluate and their weights.
+	 * 
+	 * @example (leaf { (pair "Intercept" 1.0) })
 	 */
 	public Leaf(final Pair[] features)
 	{
@@ -45,6 +47,35 @@ public class Leaf extends LogitNode
 	//-------------------------------------------------------------------------
 	
 	@Override
+	public void collectFeatureStrings(final Set<String> outFeatureStrings)
+	{
+		for (final String s : featureStrings)
+		{
+			outFeatureStrings.add(s);
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Array of strings of features used in model
+	 */
+	public String[] featureStrings()
+	{
+		return featureStrings;
+	}
+
+	/**
+	 * @return Array of weights used in model
+	 */
+	public float[] weights()
+	{
+		return weights;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
 	public String toString()
 	{
 		return toString(0);
@@ -54,15 +85,13 @@ public class Leaf extends LogitNode
 	public String toString(final int indent)
 	{
 		final StringBuilder sb = new StringBuilder();
-		final String outerIndentStr = StringRoutines.indent(4, indent);
-		final String innerIndentStr = StringRoutines.indent(4, indent + 1);
 		
-		sb.append("(leaf {\n");
+		sb.append("(leaf { ");
 		for (int i = 0; i < featureStrings.length; ++i)
 		{
-			sb.append(innerIndentStr + "(pair " + StringRoutines.quote(featureStrings[i]) + " " + weights[i] + ")\n");
+			sb.append("(pair " + StringRoutines.quote(featureStrings[i]) + " " + weights[i] + ") ");
 		}
-		sb.append(outerIndentStr + "})");
+		sb.append( "})");
 		
 		return sb.toString();
 	}

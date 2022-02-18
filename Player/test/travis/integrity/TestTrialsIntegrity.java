@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 import org.apache.commons.rng.core.source64.SplitMix64;
 import org.junit.Test;
 
+import compiler.Compiler;
 import game.Game;
 import game.rules.play.moves.Moves;
 import game.types.play.ModeType;
-import compiler.Compiler;
 import main.FileHandling;
 import main.collections.FastArrayList;
 import main.collections.ListUtils;
@@ -81,6 +81,9 @@ public class TestTrialsIntegrity
 					if (fileEntryPath.equals("../Common/res/lud/test"))
 						continue;
 
+					if (fileEntryPath.equals("../Common/res/lud/reconstruction"))
+						continue;
+					
 					if (fileEntryPath.equals("../Common/res/lud/puzzle/deduction"))
 						continue;	// skip puzzles for now
 					

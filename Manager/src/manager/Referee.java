@@ -173,40 +173,10 @@ public class Referee
 		}
 		
 		// Get the real move from the set of legal moves that matches the fetched move information.
-		Move realMoveToApply = move;
-		boolean validMove = false;
-		final Moves legal = context.game().moves(context);
-		for (final Move m : legal.moves())
-		{
-			validMove = true;
-			if (move.getActionsWithConsequences(context).size() > m.getActionsWithConsequences(context).size())
-			{
-				validMove = false;
-			}
-			else
-			{
-				for (int i = 0; i < move.getActionsWithConsequences(context).size(); i++)
-				{
-					if (!m.getActionsWithConsequences(context).get(i).equals(move.getActionsWithConsequences(context).get(i)))
-					{
-						validMove = false;
-						break;
-					}
-				}
-			}
-			if (validMove)
-			{
-				realMoveToApply = m;
-				break;
-			}
-		}
-		
-		// If there are no legal moves, passing is the only valid option.
-//		if (legal.moves().isEmpty() && realMoveToApply.isPass())
-//			validMove = true;
+		final Move realMoveToApply = context.game().getMatchingLegalMove(context, move);
 		
 		// If the move was not valid, tell the user and try again
-		if (!validMove)
+		if (realMoveToApply == null)
 		{
 			manager.getPlayerInterface().addTextToStatusPanel("received move was not legal: " + move + "\n");
 			manager.getPlayerInterface().addTextToStatusPanel("currentTrialLength: " + context.trial().moveNumber() + "\n");

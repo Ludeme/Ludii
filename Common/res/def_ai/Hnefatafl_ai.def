@@ -1,7 +1,7 @@
 (define "Hnefatafl_ai"
     (useFor { "Play Rules/Fetlar Common" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         

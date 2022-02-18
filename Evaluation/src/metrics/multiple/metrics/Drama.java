@@ -8,6 +8,7 @@ import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -48,7 +49,7 @@ public class Drama extends MultiMetricFramework
 		
 		if (highestRankedPlayers.size() > 0)
 		{
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
 				// Get the highest state evaluation for any player.
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
@@ -63,7 +64,7 @@ public class Drama extends MultiMetricFramework
 				}
 				
 				valueList.add(Double.valueOf(differenceBetweenWinnersAndMax));
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, m);
 			}
 		}
 		else

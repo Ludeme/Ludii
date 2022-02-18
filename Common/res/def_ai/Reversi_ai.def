@@ -1,12 +1,12 @@
 (define "Reversi_ai"
     (bestAgent "MAST")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (score weight:0.033921152)
         (mobilitySimple weight:0.012719406)
         (influence weight:0.6954622)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[-{0}]>" -0.25539812)
             (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[!-{0}]>" 0.14182763)

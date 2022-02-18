@@ -75,7 +75,7 @@ public final class ActionSetPot extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().setPot(previousPot);
 		return this;
@@ -159,6 +159,6 @@ public final class ActionSetPot extends BaseAction
 	@Override
 	public ActionType actionType()
 	{
-		return ActionType.Bet;
+		return ActionType.SetPot;
 	}
 }

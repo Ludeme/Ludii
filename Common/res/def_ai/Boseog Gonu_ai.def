@@ -1,6 +1,6 @@
 (define "Boseog Gonu_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Disc" -0.058586296)

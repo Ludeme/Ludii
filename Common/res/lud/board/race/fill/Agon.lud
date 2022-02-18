@@ -1,0 +1,164 @@
+(define "CloserToCentre"
+    (>= (count Steps Orthogonal (from) (centrePoint)) 
+        (count Steps Orthogonal (to) (centrePoint)) 
+    )
+)
+
+(define "AllPawnsInInnerRing"
+    (all Sites 
+        (difference (sites Around (sites Centre)) (sites Centre))
+        if:(= (id "Pawn" Mover) (what at:(site)))
+    )	
+)
+
+(define "CapturePiece"
+    (custodial 
+        (from (last To)) 
+        Orthogonal
+        (between (max 1) if:(is Enemy (who at:(between))) (apply (set State at:(between) 1)))
+        (to if:(is Friend (who at:(to)))) 
+    )
+)
+
+(define "ReleaseCapturePiece"
+    (forEach Site 
+        (forEach (sites Occupied by:Mover component:#1) if:(!= 0 (state at:(site))))
+        (move
+            (from (site))
+            (to (sites #2) if:(is Empty (to)))
+            (then
+                (set State at:(last To) 0)
+            )
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Agon"  
+    (players 2)  
+    (equipment { 
+        (board (hex 6))
+        (piece "Pawn" Each 
+            (move Step 
+                (to if:(and {
+                        (is Empty (to))
+                        ("CloserToCentre")
+                        (!= (to) (centrePoint))
+                    })
+                )
+                (then ("CapturePiece"))
+            )
+        ) 
+        (piece "Queen" Each
+            (move Step 
+                (to if:(and 
+                        (is Empty (to))
+                        ("CloserToCentre")
+                    )
+                )
+                (then ("CapturePiece"))
+            )		
+        ) 
+    })  
+    (rules 
+        (start {
+            (place "Pawn1" (sites {89 60 20 3 6 51}))
+            (place "Pawn2" (sites {87 84 39 1 30 70}))
+            (place "Queen1" 85)
+            (place "Queen2" 5)
+        })
+        (play 
+            (priority {
+                ("ReleaseCapturePiece" "Queen" Board)
+                ("ReleaseCapturePiece" "Pawn" Outer)
+                (do (forEach Piece)
+                    ifAfterwards:(not (can Move
+                            (intervene 
+                                (from (last To)) 
+                                Orthogonal
+                                (to if:(is Enemy (who at:(to))))
+                            )
+                    ))
+                )
+                
+                }
+            )
+        )
+        (end 
+            (if ("AllPawnsInInnerRing")
+                {
+                (if 
+                    (= (id "Queen" Mover) (what at:(centrePoint)))
+                    (result Mover Win)
+                )
+                (if 
+                    (!= (id "Queen" Mover) (what at:(centrePoint)))
+                    (result Mover Loss)
+                )
+                }
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Agon is a kind of race game played with pure strategy. Sometimes called Queen's Guard, the game features a queen and six guards for each of the two players. The object is to get one's queen to the centre of the board, surrounded by her guards. The most notable aspect of this game is that it is one of the earliest to be played on a hexagonal grid.")
+        (aliases {"Queen's Guard"})
+        (rules "1. Agon is played on a hexagonal board made of 91 hexagonal playing spaces. Each concentric layer for hexagons is so coloured that it is easy to see a playing space's distance from the centre of the board.
+            
+            2. The players each start with a queen and six guards. They are placed in a set configuration at the edge of the board, as shown again in the diagram.
+            
+            3. In his turn a player moves a piece one space in any direction, except for any direction that leads away from the centre.
+            
+            5. A piece may not land on or jump over another.
+            
+            6. A piece may not move adjacent to two enemy pieces such that it is directly between them.
+            
+            7. Only a queen may move to the central space.
+            
+            8. If a piece becomes sandwiched between two enemies, it is captured.
+            
+            9. If the queen is captured, then its owner must, on his next turn, remove the queen from her predicament and place her on any other space on the board.
+            
+            10. Otherwise if one of his guards is captured, the player must remove the guard from his predicament, but the guard must be placed on a space at the edge of the board.
+            
+            11. Only one captured piece may be so removed each turn; so a player may arrest his opponent's strategy for a number of turns if he makes multiple captures at once or in quick succession.
+            
+            12. A player has won the game when his queen rests on the central space, and her six guards are on the six spaces adjacent to her.
+            
+        13. A player has lost the game if his six guards are adjacent to the central space but his queen is not between them, as this configuration prevents either player from ever winning the game.")
+        (id "1764")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Agon_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.3.2")
+        (classification "board/race/fill")
+        (author "Anthony Peacock")
+        (credit "Eric Piette")
+        (date "1842")
+        }
+    )
+    (graphics {
+        (piece Scale "Pawn" 0.75)
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Symbol "star" (sites Centre) fillColour:(colour Red) edgeColour:(colour Red) scale:0.8) 
+        (region Colour 
+            (union 
+                (sites Outer) 
+                (sites {42 53 63 72 73 74 75 67 58 48 37 27 18 17 16 15 23 32 44 55 56 46 35 34})
+            )
+            (colour 255 205 1)
+        )
+        (region Colour 
+            (union 
+                (sites Centre) 
+                (sites {41 52 62 71 79 80 81 82 83 76 68 59 49 38 28 19 11 10 9 8 7 14 22 31 24 25 26 36 47 57 66 65 64 54 43 33})
+            )
+            (colour 192 64 64)
+        )
+    })
+)

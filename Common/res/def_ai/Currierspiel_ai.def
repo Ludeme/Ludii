@@ -1,6 +1,6 @@
 (define "Currierspiel_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "King1" 0.011260006)

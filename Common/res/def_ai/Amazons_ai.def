@@ -1,10 +1,10 @@
 (define "Amazons_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (influence)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.08178365)
             (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[]>" 0.10212191)

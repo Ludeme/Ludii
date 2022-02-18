@@ -1,10 +1,10 @@
 (define "Spline_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_from=<{0,1/6}>:to=<{}>:pat=<els=[]>" 0.12163405)
             (pair "rel:last_from=<{0,4/9}>:to=<{}>:pat=<els=[]>" 0.28598237)

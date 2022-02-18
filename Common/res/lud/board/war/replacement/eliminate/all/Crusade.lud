@@ -1,0 +1,70 @@
+(game "Crusade"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Ball" Each
+            (move Step
+                (to if:(is Enemy (who at:(to)))
+                    (apply
+                        (remove (to))
+                    )
+                )
+                (then
+                    (forEach Site
+                        (sites Around (last To))
+                        (if (is Enemy (who at:(site)))
+                            (and
+                                (remove (site))
+                                (add (piece (id "Ball" Mover)) (to (site)))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    })
+    (rules
+        (start {
+            //            (place "Ball1" (difference (union (sites Top) (sites Right)) (union {(sites Left) (sites Bottom) (intersertion (sites Top) (sites Right))})))
+            //            (place "Ball2" (difference (union (sites Bottom) (sites Left)) (union {(sites Right) (sites Top) (intersertion (sites Bottom) (sites Left))})))
+            (place "Ball1" (sites Phase 1))
+            (place "Ball2" (sites Phase 0))
+        })
+        
+        (play (forEach Piece))
+        
+        (end (if (no Moves Next)
+                (byScore {
+                    (score P1 (count Pieces P1))
+                    (score P2 (count Pieces P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Crusade can be played on a 8x8 square board. In the initial position, all squares are occupied by a stone: white stones on the white squares and black stones on the black squares.")
+        (rules "Each stone must move to any adjacent(orthogonal or diagonal) cell, which is occupied by an enemy stone. This stone is captured by replacement. After that, all adjacent enemy stones (orthogonal or diagonal) are converted to friendly ones. There are fewer and fewer stones on the board as the game proceeds, which is a major difference with Othello and Ataxx.
+            
+        The player which has more stones, after there is no valid move left, wins the game.")
+        (id "1817")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/70926/crusade\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.2")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Keith Carter")
+        (credit "Eric Piette")
+        (date "2002")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

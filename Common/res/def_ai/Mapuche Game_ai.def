@@ -1,6 +1,6 @@
 (define "Mapuche Game_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (regionProximity region:0)
         (centreProximity pieceWeights:{
             (pair "Marker1" -0.49786612)

@@ -1,6 +1,6 @@
 (define "Pretwa_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Counter1" -0.43753883)

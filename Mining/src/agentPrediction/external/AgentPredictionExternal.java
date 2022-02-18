@@ -23,6 +23,8 @@ import utils.concepts.ComputePlayoutConcepts;
 
 /**
  * Predict the best agent/heuristic using external python models.
+ * 
+ * Models are produced by the "generate_agent_heuristic_prediction_models()" function in the Sklearn "Main.py" file.
  *
  * @author Matthew.Stephenson
  */
@@ -62,18 +64,24 @@ public class AgentPredictionExternal
 		
 		if (!heuristics)
 		{
-			final JSONObject json = new JSONObject().put("AI",
-					new JSONObject()
-					.put("algorithm", bestPredictedAgentName)
-					);
 			if (playerIndexToUpdate > 0)
+			{
+				final JSONObject json = new JSONObject().put("AI",
+						new JSONObject()
+						.put("algorithm", bestPredictedAgentName)
+						);
+				
 				AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
+			}
 		}
 		else
 		{
-			final Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
-			manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
-			manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
+			if (manager.aiSelected()[playerIndexToUpdate].ai() != null)
+			{
+				final Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
+				manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
+				manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
+			}
 		}
 	}
 	

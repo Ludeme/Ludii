@@ -1,8 +1,11 @@
 package search.mcts;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -32,9 +35,13 @@ import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadataPlayout;
 import policies.softmax.SoftmaxFromMetadataSelection;
 import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
+import policies.softmax.SoftmaxPolicyLogitTree;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.BackpropagationStrategy;
+import search.mcts.backpropagation.HeuristicBackprop;
 import search.mcts.backpropagation.MonteCarloBackprop;
+import search.mcts.backpropagation.QualitativeBonus;
 import search.mcts.finalmoveselection.FinalMoveSelectionStrategy;
 import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
@@ -48,8 +55,12 @@ import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
 import search.mcts.selection.NoisyAG0Selection;
+import search.mcts.selection.ProgressiveBias;
+import search.mcts.selection.ProgressiveHistory;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
+import search.mcts.selection.UCB1GRAVE;
+import search.mcts.selection.UCB1Tuned;
 import training.expert_iteration.ExItExperience;
 import training.expert_iteration.ExpertPolicy;
 import utils.AIUtils;
@@ -133,7 +144,7 @@ public class MCTS extends ExpertPolicy
 	protected FinalMoveSelectionStrategy finalMoveSelectionStrategy;
 	
 	/** Strategy for init of Q-values for unvisited nodes. */
-	protected QInit qInit = QInit.PARENT; // TODO allow customisation
+	protected QInit qInit = QInit.PARENT;
 	
 	/** Flags indicating what data needs to be backpropagated */
 	protected int backpropFlags = 0;
@@ -311,13 +322,13 @@ public class MCTS extends ExpertPolicy
 				new MCTS
 				(
 					new NoisyAG0Selection(), 
-					epsilon < 1.0 ? SoftmaxPolicy.constructPlayoutPolicy(features, epsilon) : new RandomPlayout(200),
+					epsilon < 1.0 ? SoftmaxPolicyLinear.constructPlayoutPolicy(features, epsilon) : new RandomPlayout(200),
 					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
 		mcts.setQInit(QInit.WIN);
-		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, epsilon));
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicyLinear.constructSelectionPolicy(features, epsilon));
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
 		return mcts;
@@ -384,7 +395,7 @@ public class MCTS extends ExpertPolicy
 					new RobustChild()
 				);
 		
-		mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(features, 0.0));
+		mcts.setLearnedSelectionPolicy(SoftmaxPolicyLinear.constructSelectionPolicy(features, 0.0));
 		mcts.setPlayoutValueWeight(0.0);
 		mcts.setWantsMetadataHeuristics(false);
 		mcts.setHeuristics(heuristics);
@@ -520,20 +531,38 @@ public class MCTS extends ExpertPolicy
 		if (globalActionStats != null)
 		{
 			// Decay global action statistics
-			for (final ActionStatistics stats : globalActionStats.values())
+			final Set<Entry<MoveKey, ActionStatistics>> entries = globalActionStats.entrySet();
+			final Iterator<Entry<MoveKey, ActionStatistics>> it = entries.iterator();
+			
+			while (it.hasNext())
 			{
-				stats.accumulatedScore *= globalActionDecayFactor;
+				final Entry<MoveKey, ActionStatistics> entry = it.next();
+				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
+				
+				if (stats.visitCount < 1.0)
+					it.remove();
+				else
+					stats.accumulatedScore *= globalActionDecayFactor;
 			}
 		}
 		
 		if (globalNGramActionStats != null)
 		{
 			// Decay global N-gram action statistics
-			for (final ActionStatistics stats : globalNGramActionStats.values())
+			final Set<Entry<NGramMoveKey, ActionStatistics>> entries = globalNGramActionStats.entrySet();
+			final Iterator<Entry<NGramMoveKey, ActionStatistics>> it = entries.iterator();
+			
+			while (it.hasNext())
 			{
-				stats.accumulatedScore *= globalActionDecayFactor;
+				final Entry<NGramMoveKey, ActionStatistics> entry = it.next();
+				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
+				
+				if (stats.visitCount < 1.0)
+					it.remove();
+				else
+					stats.accumulatedScore *= globalActionDecayFactor;
 			}
 		}
 		
@@ -633,6 +662,11 @@ public class MCTS extends ExpertPolicy
 									current = nextNode;
 									current.addVirtualVisit();
 									current.updateContextRef();
+								}
+								catch (final ArrayIndexOutOfBoundsException e)
+								{
+									System.err.println(describeMCTS());
+									throw e;
 								}
 								finally
 								{
@@ -831,7 +865,7 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * @return Learned (linear, softmax) policy for Selection phase
+	 * @return Learned (linear or logits tree, softmax) policy for Selection phase
 	 */
 	public SoftmaxPolicy learnedSelectionPolicy()
 	{
@@ -994,7 +1028,7 @@ public class MCTS extends ExpertPolicy
 	@Override
 	public boolean usesFeatures(final Game game)
 	{
-		return (learnedSelectionPolicy != null || playoutStrategy instanceof SoftmaxPolicy);
+		return (learnedSelectionPolicy != null || playoutStrategy instanceof SoftmaxPolicyLinear);
 	}
 	
 	@Override
@@ -1317,7 +1351,9 @@ public class MCTS extends ExpertPolicy
 		int numThreads = 1;
 		SoftmaxPolicy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
+		QInit qinit = QInit.PARENT;
 		String friendlyName = "MCTS";
+		double playoutValueWeight = 1.0;
 
 		for (String line : lines)
 		{
@@ -1351,6 +1387,26 @@ public class MCTS extends ExpertPolicy
 					selection = new NoisyAG0Selection();
 					selection.customise(lineParts);
 				}
+				else if (lineParts[0].toLowerCase().endsWith("progressivebias"))
+				{
+					selection = new ProgressiveBias();
+					selection.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("progressivehistory"))
+				{
+					selection = new ProgressiveHistory();
+					selection.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("ucb1grave"))
+				{
+					selection = new UCB1GRAVE();
+					selection.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("ucb1tuned"))
+				{
+					selection = new UCB1Tuned();
+					selection.customise(lineParts);
+				}
 				else
 				{
 					System.err.println("Unknown selection strategy: " + line);
@@ -1359,6 +1415,25 @@ public class MCTS extends ExpertPolicy
 			else if (lineParts[0].toLowerCase().startsWith("playout="))
 			{
 				playout = PlayoutStrategy.constructPlayoutStrategy(lineParts);
+			}
+			else if (lineParts[0].toLowerCase().startsWith("backprop="))
+			{
+				if (lineParts[0].toLowerCase().endsWith("alphago"))
+				{
+					backprop = new AlphaGoBackprop();
+				}
+				else if (lineParts[0].toLowerCase().endsWith("heuristic"))
+				{
+					backprop = new HeuristicBackprop();
+				}
+				else if (lineParts[0].toLowerCase().endsWith("montecarlo"))
+				{
+					backprop = new MonteCarloBackprop();
+				}
+				else if (lineParts[0].toLowerCase().endsWith("qualitativebonus"))
+				{
+					backprop = new QualitativeBonus();
+				}
 			}
 			else if (lineParts[0].toLowerCase().startsWith("final_move="))
 			{
@@ -1428,21 +1503,37 @@ public class MCTS extends ExpertPolicy
 				if (lineParts[0].toLowerCase().endsWith("playout"))
 				{
 					// our playout strategy is our learned Selection policy
-					learnedSelectionPolicy = (SoftmaxPolicy) playout;
+					learnedSelectionPolicy = (SoftmaxPolicyLinear) playout;
 				}
 				else if 
 				(
-					lineParts[0].toLowerCase().endsWith("softmax") || 
+					lineParts[0].toLowerCase().endsWith("softmax") 
+					|| 
 					lineParts[0].toLowerCase().endsWith("softmaxplayout")
+					||
+					lineParts[0].toLowerCase().endsWith("softmaxlinear")
 				)
 				{
-					learnedSelectionPolicy = new SoftmaxPolicy();
+					learnedSelectionPolicy = new SoftmaxPolicyLinear();
+					learnedSelectionPolicy.customise(lineParts);
+				}
+				else if (lineParts[0].toLowerCase().endsWith("softmaxlogittree"))
+				{
+					learnedSelectionPolicy = new SoftmaxPolicyLogitTree();
 					learnedSelectionPolicy.customise(lineParts);
 				}
 			}
 			else if (lineParts[0].toLowerCase().startsWith("heuristics="))
 			{
 				heuristics = Heuristics.fromLines(lineParts);
+			}
+			else if (lineParts[0].toLowerCase().startsWith("qinit="))
+			{
+				qinit = QInit.valueOf(lineParts[0].substring("qinit=".length()).toUpperCase());
+			}
+			else if (lineParts[0].toLowerCase().startsWith("playout_value_weight="))
+			{
+				playoutValueWeight = Double.parseDouble(lineParts[0].substring("playout_value_weight=".length()));
 			}
 			else if (lineParts[0].toLowerCase().startsWith("friendly_name="))
 			{
@@ -1457,9 +1548,35 @@ public class MCTS extends ExpertPolicy
 		mcts.setNumThreads(numThreads);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
 		mcts.setHeuristics(heuristics);
+		mcts.setQInit(qinit);
+		mcts.setPlayoutValueWeight(playoutValueWeight);
 		mcts.friendlyName = friendlyName;
 
 		return mcts;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return A string describing our MCTS configuration
+	 */
+	public String describeMCTS()
+	{
+		final StringBuilder sb = new StringBuilder();
+		
+		sb.append("Selection = " + selectionStrategy + "\n");
+		sb.append("Playout = " + playoutStrategy + "\n");
+		sb.append("Backprop = " + backpropagationStrategy + "\n");
+		sb.append("friendly name = " + friendlyName + "\n");
+		sb.append("tree reuse = " + treeReuse + "\n");
+		sb.append("use score bounds = " + useScoreBounds + "\n");
+		sb.append("qinit = " + qInit + "\n");
+		sb.append("playout value weight = " + playoutValueWeight + "\n");
+		sb.append("final move selection = " + finalMoveSelectionStrategy + "\n");
+		sb.append("heuristics:\n");
+		sb.append(heuristicFunction + "\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

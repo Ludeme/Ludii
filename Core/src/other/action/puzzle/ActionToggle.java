@@ -2,6 +2,7 @@ package other.action.puzzle;
 
 import game.types.board.SiteType;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -91,7 +92,7 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = context.containerId()[0];
@@ -261,5 +262,10 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 	{
 		return 1;
 	}
-
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.Toggle;
+	}
 }

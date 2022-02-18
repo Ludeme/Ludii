@@ -88,7 +88,7 @@ public class PlayerViewUser extends View
 		componentPushBufferX = (int) (swatchWidth + maxNameWidth + app.playerNameList()[playerId].getHeight()*2);
 
 		if (AIUtil.anyAIPlayer(app.manager()))
-			componentPushBufferX += playerView.playerNameFont.getSize();
+			componentPushBufferX += playerView.playerNameFont.getSize()*3;
 		
 		if (hand != null)
 		{

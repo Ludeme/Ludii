@@ -4,6 +4,7 @@ import java.util.BitSet;
 
 import game.rules.play.moves.Moves;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
@@ -74,7 +75,7 @@ public final class ActionTrigger extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		context.state().triggers(player, false);
 		return this;
@@ -156,6 +157,12 @@ public final class ActionTrigger extends BaseAction
 	public int what()
 	{
 		return player;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.Trigger;
 	}
 
 	//-------------------------------------------------------------------------

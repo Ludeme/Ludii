@@ -1,0 +1,199 @@
+(define "ShiftLeft"
+    (move Select
+        (from (forEach (sites Column (- (count Columns) 1)) if:(not (all Sites (sites Row (row of:(site))) if:(is Empty (site))))))
+        (to (ahead (from) W) if:(not (is In (+ (from) (to)) (sites Pending))))
+        (then
+            (and {
+                (forEach Site
+                    (sites Row (row of:(last From)))
+                    (remove (site))
+                )
+                (forEach Site
+                    (sites Row (row of:(last From)))
+                    (if (!= (ahead (site) W) (site))
+                        (add
+                            (piece (what at:(site)))
+                            (to (ahead (site) W))
+                        )
+                        (add
+                            (piece (what at:(site)))
+                            (to (coord row:(row of:(last From)) column:(- (count Columns) 1)))
+                        )
+                    )
+                )
+                // Keep in memory for one move the shift left and right of that row.
+                (set Pending (+ (last From) (last To))) 
+                (set Pending (+ (coord row:(row of:(last From)) column:0) (ahead (coord row:(row of:(last From)) column:0) E)))
+            })
+        )
+    )	
+)
+
+(define "ShiftRight"
+    (move Select
+        (from (forEach (sites Column 0) if:(not (all Sites (sites Row (row of:(site))) if:(is Empty (site))))))
+        (to (ahead (from) E) if:(not (is In (+ (from) (to)) (sites Pending))))
+        (then
+            (and {
+                (forEach Site
+                    (sites Row (row of:(last From)))
+                    (remove (site))
+                )
+                (forEach Site
+                    (sites Row (row of:(last From)))
+                    (if (!= (ahead (site) E) (site))
+                        (add
+                            (piece (what at:(site)))
+                            (to (ahead (site) E))
+                        )
+                        (add
+                            (piece (what at:(site)))
+                            (to (coord row:(row of:(last From)) column:0))
+                        )
+                    )
+                )
+                // Keep in memory for one move the shift left and right of that row.
+                (set Pending (+ (last From) (last To)))
+                (set Pending (+ (coord row:(row of:(last From)) column:(- (count Columns) 1)) (ahead (coord row:(row of:(last From)) column:(- (count Columns) 1)) W)))
+            })
+        )
+    )	
+)
+
+(define "ShiftUp"
+    (move Select
+        (from (forEach (sites Row 0) if:(not (all Sites (sites Column (column of:(site))) if:(is Empty (site))))))
+        (to (ahead (from) N) if:(not (is In (+ (from) (to)) (sites Pending))))
+        (then
+            (and {
+                (forEach Site
+                    (sites Column (column of:(last From)))
+                    (remove (site))
+                )
+                (forEach Site
+                    (sites Column (column of:(last From)))
+                    (if (!= (ahead (site) N) (site))
+                        (add
+                            (piece (what at:(site)))
+                            (to (ahead (site) N))
+                        )
+                        (add
+                            (piece (what at:(site)))
+                            (to (coord row:0 column:(column of:(last From))))
+                        )
+                    )
+                )
+                // Keep in memory for one move the shift up and down of that column.
+                (set Pending (+ (last From) (last To)))
+                (set Pending (+ (coord row:(- (count Rows) 1) column:(column of:(last To))) (ahead (coord row:(- (count Rows) 1) column:(column of:(last To))) S)))
+            })
+        )
+    )	
+)
+
+(define "ShiftDown"
+    (move Select
+        (from (forEach (sites Row (- (count Rows) 1)) if:(not (all Sites (sites Column (column of:(site))) if:(is Empty (site))))))
+        (to (ahead (from) S) if:(not (is In (+ (from) (to)) (sites Pending))))
+        (then
+            (and {
+                (forEach Site
+                    (sites Column (column of:(last From)))
+                    (remove (site))
+                )
+                (forEach Site
+                    (sites Column (column of:(last From)))
+                    (if (!= (ahead (site) S) (site))
+                        (add
+                            (piece (what at:(site)))
+                            (to (ahead (site) S))
+                        )
+                        (add
+                            (piece (what at:(site)))
+                            (to (coord row:(- (count Rows) 1) column:(column of:(last From))))
+                        )
+                    )
+                )
+                // Keep in memory for one move the shift up and down of that column.
+                (set Pending (+ (last From) (last To)))
+                (set Pending (+ (coord row:(- (count Rows) 1) column:0) (ahead (coord row:(- (count Rows) 1) column:0) N)))
+            })
+        )
+    )	
+)
+
+(define "IsLine"
+    (not
+        (all Sites
+            (sites Occupied by:#1)
+            if:(not (is Line 5 through:(site)))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Kassle"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Square" Each)
+    })
+    (rules
+        (play 
+            (or {
+                (move Add (to (sites Empty)))
+                ("ShiftLeft")
+                ("ShiftRight")
+                ("ShiftUp")
+                ("ShiftDown")
+            })
+        )
+        (end {
+            (if (and ("IsLine" P1) ("IsLine" P2)) 
+                (result Mover Win)
+            )
+            (if ("IsLine" P1) 
+                (result P1 Win)
+            )
+            
+            (if ("IsLine" P2) 
+                (result P2 Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Players take turn placing tiles onto a 5x5 square board.")
+        (rules "DROP - A player, on his turn, can drop a stone on an empty cell.
+            SHIFT - Instead of dropping a stone, the player may decide to shift one row or column, one cell left/right (for rows) or up/down (for columns). 
+            All stones are shifted on the chosen direction. If a stone is shifted off-board, it is placed on the other end of the shifted row/column (so, for shift purposes, the board is a Torus).
+            KO rule- If a player has just shifted, the next player cannot shift that row/column.
+            
+        GOAL - A player wins when he makes a 5 in-a-row (orthogonal or diagonal). If a shift give both players a 5 in-a-row, wins the player that made that shift.")
+        (id "1811")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/kassle.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+        (version "1.3.2")
+        (classification "board/space/line")
+        (author "David M. Rea")
+        (publisher "DMR Games")
+        (credit "Eric Piette")
+        (date "1985")
+        }
+    )
+    
+    (graphics {
+        (player Colour P2 (colour Red))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour InnerEdges (colour Hidden))
+        (no Sunken)
+        (show Symbol "square" (sites Board) fillColour:(colour Hidden) edgeColour:(colour White) scale:0.9)
+    })
+    
+)

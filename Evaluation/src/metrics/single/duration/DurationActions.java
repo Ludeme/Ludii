@@ -6,6 +6,7 @@ import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -47,8 +48,8 @@ public class DurationActions extends Metric
 		// Count the number of actions.
 		double actionTally = 0;
 		for (final Trial trial : trials)
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-				actionTally += trial.getMove(i).actions().size();
+			for (final Move m : trial.generateRealMovesList())
+				actionTally += m.actions().size();
 		
 		return actionTally / trials.length;
 	}

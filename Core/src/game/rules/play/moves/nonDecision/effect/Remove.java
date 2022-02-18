@@ -16,7 +16,7 @@ import game.types.play.WhenType;
 import game.types.state.GameType;
 import main.Constants;
 import other.IntArrayFromRegion;
-import other.action.move.ActionRemove;
+import other.action.Action;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
@@ -136,7 +136,7 @@ public final class Remove extends Effect
 			
 			level = (!context.game().isStacking() || cs.sizeStack(loc, realType) == (level + 1)) ? Constants.UNDEFINED: level;
 			
-			final ActionRemove actionRemove = new other.action.move.ActionRemove(realType, loc, level, applyNow);
+			final Action actionRemove = other.action.move.remove.ActionRemove.construct(realType, loc, level, applyNow);
 			if (isDecision())
 				actionRemove.setDecision(true);
 			final Move move = new Move(actionRemove);
@@ -144,7 +144,7 @@ public final class Remove extends Effect
 			numToRemove--;
 			while (numToRemove > 0)
 			{
-				move.actions().add(new other.action.move.ActionRemove(realType, loc, level, applyNow));
+				move.actions().add(other.action.move.remove.ActionRemove.construct(realType, loc, level, applyNow));
 				numToRemove--;
 			}
 

@@ -11,6 +11,7 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.topology.TopologyElement;
 import other.trial.Trial;
 
@@ -64,9 +65,9 @@ public class BoardCoverageFull extends Metric
 			final Set<TopologyElement> sitesCovered = new HashSet<TopologyElement>();
 			
 			sitesCovered.addAll(Utils.boardAllSitesCovered(context));
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, m);
 				sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			}
 			

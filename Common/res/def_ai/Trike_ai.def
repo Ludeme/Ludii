@@ -1,10 +1,10 @@
 (define "Trike_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[]>" 0.035496704)
             (pair "rel:last_from=<{0,1/3}>:to=<{}>:pat=<els=[]>" -0.16568588)

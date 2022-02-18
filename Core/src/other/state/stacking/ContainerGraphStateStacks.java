@@ -669,8 +669,18 @@ public class ContainerGraphStateStacks extends ContainerStateStacks
 	}
 
 	@Override
-	public void insertEdge(State trialState, int site, int level, int what, int who, final int state,
-			final int rotation, final int value, Game game)
+	public void insertEdge
+	(
+			final State trialState, 
+			final int site, 
+			final int level, 
+			final int what, 
+			final int who, 
+			final int state,
+			final int rotation, 
+			final int value,
+			final Game game
+	)
 	{
 		verifyPresentEdge(site);
 		final int size = chunkStacksEdge[site - offset].size();
@@ -684,7 +694,7 @@ public class ContainerGraphStateStacks extends ContainerStateStacks
 			chunkStacksEdge[site - offset].setWho(trialState, who);
 			chunkStacksEdge[site - offset].setState(trialState, (state == Constants.UNDEFINED ? 0 : state));
 			chunkStacksEdge[site - offset].setRotation(trialState, (rotation == Constants.UNDEFINED ? 0 : rotation));
-			chunkStacksEdge[site - offset].setValue(trialState, 0, (value == Constants.UNDEFINED ? 0 : value));
+			chunkStacksEdge[site - offset].setValue(trialState, (value == Constants.UNDEFINED ? 0 : value));
 		}
 		else if (level < size)
 		{
@@ -709,8 +719,7 @@ public class ContainerGraphStateStacks extends ContainerStateStacks
 			chunkStacksEdge[site - offset].setWhat(trialState, what, level);
 			chunkStacksEdge[site - offset].setWho(trialState, who, level);
 			chunkStacksEdge[site - offset].setState(trialState, (state == Constants.UNDEFINED ? 0 : state), level);
-			chunkStacksEdge[site - offset].setRotation(trialState, (rotation == Constants.UNDEFINED ? 0 : rotation),
-					level);
+			chunkStacksEdge[site - offset].setRotation(trialState, (rotation == Constants.UNDEFINED ? 0 : rotation), level);
 			chunkStacksEdge[site - offset].setValue(trialState, (value == Constants.UNDEFINED ? 0 : value), level);
 		}
 

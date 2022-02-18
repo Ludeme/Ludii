@@ -2,6 +2,7 @@ package other.state;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,13 +28,13 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Constants;
 import main.collections.FastTIntArrayList;
+import other.context.Context;
 import other.state.container.ContainerState;
 import other.state.container.ContainerStateFactory;
 import other.state.owned.Owned;
 import other.state.owned.OwnedFactory;
 import other.state.symmetry.SymmetryValidator;
 import other.state.track.OnTrackIndices;
-import other.state.zhash.HashedBitSet;
 import other.state.zhash.ZobristHashGenerator;
 import other.state.zhash.ZobristHashUtilities;
 
@@ -158,7 +159,7 @@ public class State implements Serializable
 	 * BitSet used to store all the site already visited (from & to) by each move
 	 * done by the player in a sequence of turns played by the same player.
 	 */
-	private HashedBitSet visited = null;
+	private BitSet visited = null;
 
 	/** In case of a sequence of capture to remove (e.g. some draughts games). */
 	private TIntArrayList sitesToRemove = null;
@@ -229,7 +230,25 @@ public class State implements Serializable
 	/** @param delta incremental hash to be xored with value */ 
 	public void updateStateHash(final long delta) 
 	{
+//		final long old = stateHash;
 		stateHash ^= delta; 
+		
+//		if (old != stateHash)
+//		{
+//			final String stacktraceString = Utilities.stackTraceString();
+//			if 
+//			(
+//				!stacktraceString.contains("getMoveStringToDisplay") 
+//				&& 
+//				!stacktraceString.contains("other.context.InformationContext.moves") 
+//				&& 
+//				!stacktraceString.contains("game.rules.play.moves.Moves$1.canMoveConditionally(Moves.java:305)")
+//			)
+//			{
+//				System.out.println("Updated stateHash from " + old + " to " + stateHash);
+//				Utilities.stackTrace();
+//			}
+//		}
 	}
 	
 	/**
@@ -370,24 +389,26 @@ public class State implements Serializable
 			
 		numConsecutivePassesHashCap = 2 * game.players().count() + 1;
 		numConsecutivePassesHashes = ZobristHashUtilities.getSequence(generator, 2, numConsecutivePassesHashCap);
+		
+		isPendingHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
+		
+		stateHash = ZobristHashUtilities.INITIAL_VALUE;
+		scoreHash = ZobristHashUtilities.INITIAL_VALUE;
+		amountHash = ZobristHashUtilities.INITIAL_VALUE;
 
+		//-------------- on with the plot ----------------
+		
 		playerOrder = new int[game.players().count() + 1];
 		for (int i = 1; i < playerOrder.length; i++)
 		{
 			playerOrder[i] = i;
 			updateStateHash(playerOrderHashes[i][playerOrder[i]]);
 		}
-
-		//-------------- on with the plot ----------------
 		
 		assert (!game.hasSubgames());
 
 		moneyPot = 0;
-		isPendingHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
-		stateHash = ZobristHashUtilities.INITIAL_VALUE;
-		scoreHash = ZobristHashUtilities.INITIAL_VALUE;
-		amountHash = ZobristHashUtilities.INITIAL_VALUE;
-
+		
 		containerStates = new ContainerState[game.equipment().containers().length];
 		
 		if (game.usesPendingValues())
@@ -417,7 +438,7 @@ public class State implements Serializable
 		owned = OwnedFactory.createOwned(game);
 
 		if (game.requiresVisited())
-			visited = new HashedBitSet(generator, game.board().numSites());
+			visited = new BitSet(game.board().numSites());
 
 		if (game.hasSequenceCapture())
 			sitesToRemove = new TIntArrayList();
@@ -491,17 +512,6 @@ public class State implements Serializable
 		// Back to the plot
 		numPlayers = other.numPlayers;
 		
-		stateHash = other.stateHash;
-		moverHash = other.moverHash;
-		nextHash = other.nextHash;
-		prevHash = other.prevHash;
-		activeHash = other.activeHash;
-		checkmatedHash = other.checkmatedHash;
-		stalematedHash = other.stalematedHash;
-		pendingHash = other.pendingHash;
-		scoreHash = other.scoreHash;
-		amountHash = other.amountHash;
-		
 		trumpSuit = other.trumpSuit;
 		
 		mover = other.mover;
@@ -524,8 +534,8 @@ public class State implements Serializable
 					containerStates[is] = other.containerStates[is].deepClone();
 		}
 
-		setCounter(other.counter);
-		setTemp(other.tempValue);
+		counter = other.counter;
+		tempValue = other.tempValue;
 		
 		if (other.pendingValues != null)
 			pendingValues = new TIntHashSet(other.pendingValues);
@@ -549,7 +559,7 @@ public class State implements Serializable
 		}
 		
 		if (other.visited != null)
-			visited = other.visited.clone();
+			visited = (BitSet) other.visited.clone();
 
 		if (other.sitesToRemove != null)
 			sitesToRemove = new TIntArrayList(other.sitesToRemove);
@@ -610,6 +620,17 @@ public class State implements Serializable
 		
 		if (other.valueMap != null)
 			valueMap = new TObjectIntHashMap<String>(other.valueMap);
+		
+		stateHash = other.stateHash;
+		moverHash = other.moverHash;
+		nextHash = other.nextHash;
+		prevHash = other.prevHash;
+		activeHash = other.activeHash;
+		checkmatedHash = other.checkmatedHash;
+		stalematedHash = other.stalematedHash;
+		pendingHash = other.pendingHash;
+		scoreHash = other.scoreHash;
+		amountHash = other.amountHash;
 	}
 
 	//-------------------------------------------------------------------------
@@ -896,17 +917,6 @@ public class State implements Serializable
 		// Back to the plot
 		numPlayers = other.numPlayers;
 				
-		stateHash = other.stateHash;
-		moverHash = other.moverHash;
-		nextHash = other.nextHash;
-		prevHash = other.prevHash;
-		activeHash = other.activeHash;
-		checkmatedHash = other.checkmatedHash;
-		stalematedHash = other.stalematedHash;
-		pendingHash = other.pendingHash;
-		scoreHash = other.scoreHash;
-		amountHash = other.amountHash;
-				
 		trumpSuit = other.trumpSuit;
 				
 		mover = other.mover;
@@ -929,8 +939,8 @@ public class State implements Serializable
 					containerStates[is] = other.containerStates[is].deepClone();
 		}
 
-		setCounter(other.counter);
-		setTemp(other.tempValue);
+		counter = other.counter;
+		tempValue = other.tempValue;
 				
 		if (other.pendingValues != null)
 			pendingValues = new TIntHashSet(other.pendingValues);
@@ -954,7 +964,7 @@ public class State implements Serializable
 		}
 				
 		if (other.visited != null)
-			visited = other.visited.clone();
+			visited = (BitSet) other.visited.clone();
 
 		if (other.sitesToRemove != null)
 			sitesToRemove = new TIntArrayList(other.sitesToRemove);
@@ -1018,6 +1028,17 @@ public class State implements Serializable
 
 		if (game.isBoardless() && containerStates[0].isEmpty(game.board().topology().centre(SiteType.Cell).get(0).index(), SiteType.Cell))
 			containerStates[0].setPlayable(this, game.board().topology().centre(SiteType.Cell).get(0).index(), true);
+		
+		stateHash = other.stateHash;
+		moverHash = other.moverHash;
+		nextHash = other.nextHash;
+		prevHash = other.prevHash;
+		activeHash = other.activeHash;
+		checkmatedHash = other.checkmatedHash;
+		stalematedHash = other.stalematedHash;
+		pendingHash = other.pendingHash;
+		scoreHash = other.scoreHash;
+		amountHash = other.amountHash;
 	}
 
 	//-------------------------------------------------------------------------
@@ -1676,6 +1697,15 @@ public class State implements Serializable
 	}
 
 	/**
+	 * Set the owned structure.
+	 * @param owned The owned structure.
+	 */
+	public void setOwned(final Owned owned)
+	{
+		this.owned = owned.copy();
+	}
+	
+	/**
 	 * @return Owned sites per component
 	 */
 	public Owned owned()
@@ -1711,17 +1741,9 @@ public class State implements Serializable
 	 */
 	public void reInitVisited()
 	{
-		visited.clear(this);
+		visited.clear();
 	}
-
-	/**
-	 * @param newVisited The visited sites replacing the current one.
-	 */
-	public void setVisited(final HashedBitSet newVisited)
-	{
-		visited = newVisited.clone();
-	}
-
+	
 	/**
 	 * @param site
 	 * @return true if the site is already visited
@@ -1738,15 +1760,25 @@ public class State implements Serializable
 	 */
 	public void visit(final int site)
 	{
-		if(visited.internalState().size() > site && site >= 0)
-			visited.set(this, site, true);
+		if(visited.size() > site && site >= 0)
+			visited.set(site, true);
 	}
 	
+	/**
+	 * To unvi the visited bitSet with the site visited.
+	 *
+	 * @param site
+	 */
+	public void unvisit(final int site)
+	{
+		if(visited.size() > site && site >= 0)
+			visited.set(site, false);
+	}
 	
 	/**
 	 * @return visited sites.
 	 */
-	public HashedBitSet visited()
+	public BitSet visited()
 	{
 		return visited;
 	}
@@ -2098,4 +2130,65 @@ public class State implements Serializable
 
 	//-------------------------------------------------------------------------
 
+	/**
+	 * @param context The current context.
+	 * @return The concepts involved in this specific state.
+	 */
+	public BitSet concepts(final Context context)
+	{
+		// TODO CHECK LEGAL MOVES CONCEPT, CHECK ONLY PIECES CONCEPT ON BOARD, BUT NEED TO DISCUSS WITH MATTHEW BEFORE TO FINISH THAT CODE.
+		
+		final Game game = context.game();
+		final BitSet concepts = new BitSet();
+
+		// Accumulate concepts over the players.
+		concepts.or(game.players().concepts(game));
+		
+		// Accumulate concepts for all the containers.
+		for (int i = 0; i < game.equipment().containers().length; i++)
+			concepts.or(game.equipment().containers()[i].concepts(game));
+		
+		// Accumulate concepts for all the components.
+		for (int i = 1; i < game.equipment().components().length; i++)
+			concepts.or(game.equipment().components()[i].concepts(game));
+		
+//		// Accumulate concepts for all the regions.
+//		for (int i = 0; i < equipment().regions().length; i++)
+//			concept.or(equipment().regions()[i].concepts(this));
+//
+//		// Accumulate concepts for all the maps.
+//		for (int i = 0; i < equipment().maps().length; i++)
+//			concept.or(equipment().maps()[i].concepts(this));
+//
+//		// Look if the game uses hints.
+//		if (equipment().vertexHints().length != 0 || equipment().cellsWithHints().length != 0
+//			|| equipment().edgesWithHints().length != 0)
+//			concept.set(Concept.Hints.id(), true);
+//
+//		// Check if some regions are defined.
+//		if (equipment().regions().length != 0)
+//			concept.set(Concept.Region.id(), true);
+//		
+//		// Accumulate concepts over meta rules
+//		if (rules.meta() != null)
+//			for (final MetaRule meta : rules.meta().rules())
+//				concept.or(meta.concepts(this));
+//		
+//		// Accumulate concepts over the ending rules.
+//		if (rules.end() != null)
+//			concept.or(rules.end().concepts(this));
+//
+//		// Look if the game uses a stack state.
+//		if (isStacking())
+//		{
+//			concept.set(Concept.StackState.id(), true);
+//			concept.set(Concept.Stack.id(), true);
+//		}
+//
+//		// Look the graph element types used.
+//		concept.or(SiteType.concepts(board().defaultSite()));
+		
+		return concepts;
+	}
+	
 }

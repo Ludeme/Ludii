@@ -4,7 +4,7 @@
     )
     (useFor { "Board/Wheel Shape" "Play Rules/Complete" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity)
         })
         

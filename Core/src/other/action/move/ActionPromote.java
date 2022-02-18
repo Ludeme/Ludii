@@ -197,7 +197,7 @@ public final class ActionPromote extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
@@ -207,77 +207,25 @@ public final class ActionPromote extends BaseAction
 		
 		if (!game.isStacking())
 		{
-			Component piece = null;
-			// to keep the site of the item in cache for each player
-			if (oldWhat != 0)
-			{
-				piece = context.components()[oldWhat];
-				final int owner = piece.owner();
-				if (owner != 0)
-				{
-					context.state().owned().remove(owner, oldWhat, to, type);
-				}
-			}
 			cs.remove(context.state(), to, type);
 
 			final int who = (oldWhat < 1) ? 0 : context.components()[previousWhat].owner();
 			cs.setSite(context.state(), to, who, previousWhat, 1, previousState, previousRotation,
 					previousValue, type);
-
-			// to keep the site of the item in cache for each player
-			if (previousWhat != 0)
-			{
-				piece = context.components()[previousWhat];
-				final int owner = piece.owner();
-				if (owner != 0)
-					context.state().owned().add(owner, previousWhat, to, type);
-			}
 		}
 		else
 		{
-			Component piece = null;
-
-			piece = context.components()[oldWhat];
-			final int previousOwner = piece.owner();
-
 			if (level == Constants.UNDEFINED) // remove the item on the top of the stack
 				cs.remove(context.state(), to, type);
 			else
 				cs.remove(context.state(), to, level);
 
-			final int sizeStack = cs.sizeStack(to, type);
-
 			if (cs.sizeStack(to, type) == 0)
 				cs.addToEmptyCell(to);
-
-			// to keep the site of the item in cache for each player
-			if (cs.sizeStack(to, type) != 0)
-			{
-				if (previousOwner != 0)
-				{
-					if (level == Constants.UNDEFINED)
-						context.state().owned().remove(previousOwner, oldWhat, to, sizeStack, type);
-					else
-						context.state().owned().remove(previousOwner, oldWhat, to, level, type);
-				}
-			}
 
 			final int who = (previousWhat < 1) ? 0 : context.components()[previousWhat].owner();
 			cs.addItemGeneric(context.state(), to, previousWhat, who, context.game(), type);
 			cs.removeFromEmptyCell(to);
-
-			if (previousWhat != 0)
-			{
-				piece = context.components()[previousWhat];
-				final int owner = piece.owner();
-				if (owner != 0)
-				{
-					if (level == Constants.UNDEFINED)
-						context.state().owned().add(owner, previousWhat, to, sizeStack, type);
-					else
-						context.state().owned().add(owner, previousWhat, to, level, type);
-				}
-			}
 		}
 		
 		return this;

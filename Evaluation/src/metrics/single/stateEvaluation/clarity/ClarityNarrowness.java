@@ -61,11 +61,15 @@ public class ClarityNarrowness extends Metric
 			// Record all sites covered in this trial.
 			final Stats moveNarrowness = new Stats();
 			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
 				final Stats moveEvaluations = new Stats();
-				for (final Move m : context.game().moves(context).moves())
-					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, m));
+				for (final Move legalMoves : context.game().moves(context).moves())
+					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, legalMoves));
+				
+//				System.out.println(context.trial().over());
+//				System.out.println(context.game().moves(context).moves().size());
+//				System.out.println(trial.getMove(i));
 				
 				moveEvaluations.measure();
 				
@@ -80,7 +84,7 @@ public class ClarityNarrowness extends Metric
 
 				moveNarrowness.addSample(numberAboveThreshold/moveEvaluations.n());
 				
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, m);
 			}
 			
 			moveNarrowness.measure();

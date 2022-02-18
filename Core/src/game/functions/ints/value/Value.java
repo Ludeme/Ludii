@@ -11,6 +11,8 @@ import game.functions.ints.value.piece.ValuePiece;
 import game.functions.ints.value.player.ValuePlayer;
 import game.functions.ints.value.random.ValueRandom;
 import game.functions.ints.value.simple.ValuePending;
+import game.functions.ints.value.simple.ValueMoveLimit;
+import game.functions.ints.value.simple.ValueTurnLimit;
 import game.functions.range.RangeFunction;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
@@ -72,6 +74,10 @@ public final class Value extends BaseIntFunction
 		{
 		case Pending:
 			return new ValuePending();
+		case MoveLimit:
+			return new ValueMoveLimit();
+		case TurnLimit:
+			return new ValueTurnLimit();
 		default:
 			break;
 		}

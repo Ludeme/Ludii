@@ -1,7 +1,7 @@
 (define "Sig (Mzab)_ai"
     (useFor { "Board Size/20" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (cornerProximity)
             (centreProximity pieceWeights:{
                 (pair "Stick1" -1.08572)

@@ -1,7 +1,7 @@
 (define "Owela (Benguela)_ai"
     (useFor { "Board Size/12" }
         (bestAgent "UCT")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (influence)
         })
         

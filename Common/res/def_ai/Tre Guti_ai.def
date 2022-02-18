@@ -1,6 +1,6 @@
 (define "Tre Guti_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material)
         (centreProximity pieceWeights:{
             (pair "Marker1" -2.9529579)

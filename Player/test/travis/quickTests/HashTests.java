@@ -11,7 +11,7 @@ import game.Game;
 import game.types.board.SiteType;
 import main.Constants;
 import other.GameLoader;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.action.state.ActionSetNextPlayer;
 import other.context.Context;
 import other.move.Move;
@@ -304,9 +304,7 @@ public class HashTests
 	private static void step(final Context context, final Game game, final int nextPlayer, final int from, final int to) 
 	{
 		game.apply(context,
-				new Move(new ActionMove(SiteType.Cell, from, Constants.UNDEFINED, SiteType.Cell, to,
-						Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false)
-						.withDecision(true),
+				new Move(ActionMove.construct(SiteType.Cell, from, Constants.UNDEFINED, SiteType.Cell, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false).withDecision(true),
 						new ActionSetNextPlayer(nextPlayer)).withFrom(from).withTo(to));
 	}
 }

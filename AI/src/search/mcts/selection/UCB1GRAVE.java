@@ -169,7 +169,23 @@ public class UCB1GRAVE implements SelectionStrategy
 	@Override
 	public void customise(final String[] inputs)
 	{
-		// TODO 
+		if (inputs.length > 1)
+		{
+			// We have more inputs than just the name of the strategy
+			for (int i = 1; i < inputs.length; ++i)
+			{
+				final String input = inputs[i];
+				
+				if (input.startsWith("explorationconstant="))
+				{
+					explorationConstant = Double.parseDouble(input.substring("explorationconstant=".length()));
+				}
+				else
+				{
+					System.err.println("UCB1GRAVE ignores unknown customisation: " + input);
+				}
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------

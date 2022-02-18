@@ -89,9 +89,10 @@ public abstract class BaseController implements Controller
 		double furthestPossibleDistance = 0;
 		ContainerStyle containerStyle = bridge.getContainerStyle(container.index());
 		
-		if (containerStyle.ignorePieceSelectionLimit() || context.game().hasLargePiece())
+		if (containerStyle.ignorePieceSelectionLimit())
 		{
-			furthestPossibleDistance = Math.max(containerStyle.placement().getWidth(), containerStyle.placement().getHeight());
+			if (containerStyle.placement() != null)
+				furthestPossibleDistance = Math.max(containerStyle.placement().getWidth(), containerStyle.placement().getHeight());
 		}
 		else
 		{
@@ -147,8 +148,25 @@ public abstract class BaseController implements Controller
 				final int dx = pt.x - sitePosn.x;
 				final int dy = pt.y - sitePosn.y;
 				dist = Math.sqrt(dx * dx + dy * dy);
+
+				// Check if any large pieces are selected
+//				final ContainerState cs = context.state().containerStates()[container.index()];
+//				if (validLocations.get(i).location().siteType().equals(SiteType.Cell) && validLocations.get(i).location().level() == 0)
+//				{
+//					final int localState = cs.state(site, 0, SiteType.Cell);
+//					for (final Component component : context.equipment().components())
+//					{
+//						for (final Integer cellIndex : ContainerUtil.cellsCoveredByPiece(context, container, component, site, localState))
+//						{
+//							sitePosn = containerStyle.screenPosn(context.board().topology().cells().get(cellIndex).centroid());
+//							dx = pt.x - sitePosn.x;
+//							dy = pt.y - sitePosn.y;
+//							dist = Math.min(dist, Math.sqrt(dx * dx + dy * dy));
+//						}
+//					}
+//				}
 			}
-			
+
 			if (dist < minDist && dist < furthestPossibleDistance)
 			{
 				location = new FullLocation(site, validLocations.get(i).location().level(), validLocations.get(i).location().siteType());

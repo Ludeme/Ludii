@@ -1,6 +1,6 @@
 (define "HexTrike_ai"
     (bestAgent "UCT")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic weight:29.098421)
         (centreProximity pieceWeights:{
             (pair "Ball1" 3.422843)

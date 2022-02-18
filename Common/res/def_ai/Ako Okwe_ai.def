@@ -1,11 +1,11 @@
 (define "Ako Okwe_ai"
     (useFor { "Play Rules/First capture = 3, Second Capture = 1" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N4{}]>" -0.0023902494)
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N6{}]>" 0.0023934732)
@@ -132,11 +132,11 @@
     )
     (useFor { "Play Rules/First capture = 1" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (ownRegionsCount)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N6{}]>" 0.003987287)
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N4{}]>" -0.0039842683)

@@ -1,10 +1,10 @@
 (define "Uxrijn Ever_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (centreProximity weight:-1.0)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_to=<{0}>:to=<{}>:pat=<els=[]>" 0.4462023)
             (pair "rel:last_from=<{0,1/6}>:to=<{}>:pat=<els=[]>" 0.49253482)

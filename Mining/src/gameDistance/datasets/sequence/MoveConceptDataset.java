@@ -1,7 +1,6 @@
 package gameDistance.datasets.sequence;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,8 @@ import java.util.Map;
 import game.Game;
 import gameDistance.datasets.Dataset;
 import gameDistance.datasets.DatasetUtils;
+import gnu.trove.list.array.TIntArrayList;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 import utils.data_structures.support.zhang_shasha.Tree;
@@ -38,20 +39,22 @@ public class MoveConceptDataset implements Dataset
 			final Context context = new Context(game, newTrial);
 			game.start(context);
 			
-			final ArrayList<BitSet> moveConceptSet = new ArrayList<>();
+			final TIntArrayList gameMoveConceptSet = new TIntArrayList();
+			
+			for(int j = 0; j < Concept.values().length; j++)
+				gameMoveConceptSet.add(0);
+			
 			for(int o = newTrial.numInitialPlacementMoves(); o < trial.numMoves(); o++) 
 			{
-				moveConceptSet.add(trial.getMove(o).moveConcepts(context));
+				final TIntArrayList moveConceptSet = trial.getMove(o).moveConceptsValue(context);
+				for(int j = 0; j < Concept.values().length; j++)
+					gameMoveConceptSet.set(j, gameMoveConceptSet.get(j) + moveConceptSet.get(j));
+				
 				game.apply(context, trial.getMove(o));
 			}
-					
-			for (int j = 0; j < moveConceptSet.size(); j++)
-			{
-				if (featureMap.containsKey(moveConceptSet.get(j).toString()))
-					featureMap.put(moveConceptSet.get(j).toString(), Double.valueOf(featureMap.get(moveConceptSet.get(j).toString()).doubleValue()+1.0));
-				else
-					featureMap.put(moveConceptSet.get(j).toString(), Double.valueOf(1.0));
-			}
+			
+			for(int j = 0; j < gameMoveConceptSet.size(); j++)
+				featureMap.put(Concept.values()[j].name(), Double.valueOf(gameMoveConceptSet.get(j)));
 		}
 		
 		return featureMap;
@@ -73,10 +76,10 @@ public class MoveConceptDataset implements Dataset
 			final Context context = new Context(game, newTrial);
 			game.start(context);
 			
-			final ArrayList<BitSet> moveConceptSet = new ArrayList<>();
+			final ArrayList<TIntArrayList> moveConceptSet = new ArrayList<>();
 			for(int o = newTrial.numInitialPlacementMoves(); o < trial.numMoves(); o++) 
 			{
-				moveConceptSet.add(trial.getMove(o).moveConcepts(context));
+				moveConceptSet.add(trial.getMove(o).moveConceptsValue(context));
 				game.apply(context, trial.getMove(o));
 			}
 					

@@ -6,6 +6,7 @@ import features.aspatial.PassMoveFeature;
 import features.aspatial.SwapMoveFeature;
 import features.spatial.AbsoluteFeature;
 import features.spatial.RelativeFeature;
+import game.Game;
 
 /**
  * Abstract class for features; can be spatial or aspatial.
@@ -50,6 +51,14 @@ public abstract class Feature
 		
 		return null;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game Game to visualise for
+	 * @return Tikz code to visualise this feature in a Tikz environment in LaTeX.
+	 */
+	public abstract String generateTikzCode(final Game game);
 	
 	//-------------------------------------------------------------------------
 

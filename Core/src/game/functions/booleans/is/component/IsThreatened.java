@@ -69,7 +69,7 @@ public final class IsThreatened extends BaseBooleanFunction
 	 * @param sites         The locations to check.
 	 * @param specificMoves The specific moves used to threat.
 	 */
-	public IsThreatened 
+	public IsThreatened
 	(
 		@Opt	 final IntFunction    what,
 		@Opt     final SiteType       type,
@@ -105,6 +105,14 @@ public final class IsThreatened extends BaseBooleanFunction
 		if (autoFails())
 			return false;
 		
+		final SiteType realSiteType = (
+				(
+					(type != null && type.equals(SiteType.Cell))
+					||
+					(type == null && context.game().board().defaultSite() != SiteType.Vertex)
+				)
+				? SiteType.Vertex : SiteType.Cell);
+		
 		if (what != null)
 		{
 			if (what.eval(context) < 1)
@@ -116,6 +124,7 @@ public final class IsThreatened extends BaseBooleanFunction
 		
 			final int ownerWhat = context.components()[what.eval(context)].owner();			
 			final int[] sites = region.eval(context);
+
 			for (final int site : sites)
 			{
 				if (site == Constants.OFF)
@@ -133,22 +142,7 @@ public final class IsThreatened extends BaseBooleanFunction
 						Constants.UNDEFINED,
 						Constants.UNDEFINED,
 						Constants.UNDEFINED,
-						(
-							(
-								(
-									type != null 
-									&& 
-									type.equals(SiteType.Cell)
-								)
-								|| 
-								(
-									type == null 
-									&& 
-									context.game().board().defaultSite() != SiteType.Vertex
-								)
-							)
-							? SiteType.Vertex
-							: SiteType.Cell)
+						realSiteType
 					);
 
 				autoFail.set(Boolean.TRUE);
@@ -208,23 +202,7 @@ public final class IsThreatened extends BaseBooleanFunction
 						Constants.UNDEFINED, 
 						Constants.UNDEFINED,
 						Constants.UNDEFINED,
-						(
-							(
-								(
-									type != null
-									&& 
-									type.equals(SiteType.Cell)
-								)
-								|| 
-								(
-									type == null 
-									&& 
-									context.game().board().defaultSite() != SiteType.Vertex
-								)
-							)
-							? SiteType.Vertex
-							: SiteType.Cell
-						)
+						realSiteType
 					);
 				
 				autoFail.set(Boolean.TRUE);

@@ -1,11 +1,11 @@
 (define "Felli_ai"
     (useFor { "Play Rules/BoardGameGeek" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[N4{}]>" -0.040490787)
                 (pair "rel:from=<{}>:pat=<refl=true,rots=all,els=[N6{}]>" -0.12624486)
@@ -236,7 +236,7 @@
     )
     (useFor { "Play Rules/Simplified" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (material)
         })
         

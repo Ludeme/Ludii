@@ -1,6 +1,6 @@
 (define "Wure Dune_ai"
     (bestAgent "AlphaBeta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (mobilitySimple weight:-0.048789676)
         (centreProximity pieceWeights:{
             (pair "Marker1" 2.456056)

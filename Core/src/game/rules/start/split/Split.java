@@ -12,8 +12,8 @@ import game.rules.start.StartRule;
 import game.types.board.SiteType;
 import game.types.state.GameType;
 import main.Constants;
-import other.action.BaseAction;
-import other.action.move.ActionMove;
+import other.action.Action;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
@@ -74,7 +74,7 @@ public final class Split extends StartRule
 		int hand = 0;
 		for (int indexCard = 0; indexCard < sizeDeck; indexCard++)
 		{
-			final BaseAction actionAtomic = new ActionMove(SiteType.Cell, indexSiteDeck, 0, SiteType.Cell,
+			final Action actionAtomic = ActionMove.construct(SiteType.Cell, indexSiteDeck, 0, SiteType.Cell,
 					handIndex.get(hand).intValue(), Constants.OFF, Constants.OFF, Constants.OFF, Constants.OFF, false);
 			actionAtomic.apply(context, true);
 			context.trial().addMove(new Move(actionAtomic));

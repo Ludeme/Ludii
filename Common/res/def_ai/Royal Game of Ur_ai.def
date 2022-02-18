@@ -1,7 +1,7 @@
 (define "Royal Game of Ur_ai"
     (useFor { "Play Rules/Track Finkel" }
         (bestAgent "MAST")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (lineCompletionHeuristic weight:0.10624312)
             (centreProximity pieceWeights:{
                 (pair "UrPiece1" -0.12520494)
@@ -29,11 +29,11 @@
     )
     (useFor { "Play Rules/Track Murray" }
         (bestAgent "Biased MCTS (Uniform Playouts)")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (regionProximity weight:-1.0 region:0)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:last_from=<{0,0,0,0}>:to=<{}>:pat=<els=[]>" 0.07016525)
                 (pair "rel:last_from=<{}>:from=<{}>:pat=<els=[]>" 0.07154232)

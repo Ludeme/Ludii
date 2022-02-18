@@ -43,9 +43,6 @@ public class SettingsPlayer
 	/** Format for printing moves (Move, Full, Short). */
 	private MoveFormat moveFormat = MoveFormat.Move;
 	
-	/** If pressing |< Button Pauses AI. */
-	private boolean startButtonPausesAI = true;
-	
 	/** Strings entered into the TestLudemeDialog, to be saved in preferences. */
 	private String testLudeme1 = "";
 	private String testLudeme2 = "";
@@ -81,8 +78,8 @@ public class SettingsPlayer
 	private boolean webGameResultValid = true;
 	
 	/** If played index has always been an agent */
-	private final boolean[] agentArray = {true,true,true,true,true,true,true,true,true,true,
-										  true,true,true,true,true,true,true,true,true,true};
+	private final boolean[] agentArray = {false,false,false,false,false,false,false,false,false,false,
+										  false,false,false,false,false,false,false,false,false,false};
 	
 	//-------------------------------------------------------------------------
 	// User settings
@@ -270,16 +267,6 @@ public class SettingsPlayer
 	public void setMoveFormat(final MoveFormat format)
 	{
 		moveFormat = format;
-	}
-
-	public boolean startButtonPausesAI()
-	{
-		return startButtonPausesAI;
-	}
-
-	public void setStartButtonPausesAI(final boolean start)
-	{
-		startButtonPausesAI = start;
 	}
 
 	public String testLudeme1()

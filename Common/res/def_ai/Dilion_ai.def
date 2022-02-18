@@ -1,21 +1,21 @@
 (define "Dilion_ai"
     (useFor { "Board/Graph1" }
         (bestAgent "Alpha-Beta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity weight:-1.0)
         })
         
     )
     (useFor { "Board/Graph2" }
         (bestAgent "Alpha-Beta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity weight:-1.0)
         })
         
     )
     (useFor { "Board/Graph3" }
         (bestAgent "Alpha-Beta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (centreProximity weight:-1.0)
         })
         

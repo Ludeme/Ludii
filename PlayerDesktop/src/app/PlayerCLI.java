@@ -2,6 +2,7 @@ package app;
 
 import java.util.Arrays;
 
+import gameDistance.CompareAllDistanceMetrics;
 import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -18,6 +19,7 @@ import training.expert_iteration.ExpertIteration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 import utils.trials.GenerateTrialsCluster;
+import kilothon.Kilothon;
 
 /**
  * Class with helper method to delegate to various other main methods
@@ -62,7 +64,9 @@ public class PlayerCLI
 					"--export-features-db",
 					"--export-moveconcept-db",
 					"--generate-trials",
-					"--tutorial-generation"
+					"--tutorial-generation",
+					"--game-distance",
+					"--kilothon"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -100,6 +104,10 @@ public class PlayerCLI
 			GenerateTrialsCluster.main(passArgs);
 		else if (command.equalsIgnoreCase("--tutorial-generation"))
 			TestInstructionGeneration.main(passArgs);
+		else if (command.equalsIgnoreCase("--game-distance"))
+			CompareAllDistanceMetrics.main(passArgs);
+		else if (command.equalsIgnoreCase("--kilothon"))
+			Kilothon.main(passArgs);
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 

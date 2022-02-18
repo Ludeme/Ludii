@@ -1,0 +1,429 @@
+(define "Continue"
+    (if
+        (= 1 (var))
+        ("Cardinal" N ~)
+        (if
+            (= 2 (var))
+            ("Cardinal" E ~)
+            (if
+                (= 3 (var))
+                ("Cardinal" S ~)
+                (if
+                    (= 4 (var))
+                    ("Cardinal" W ~)
+                    (if
+                        (= 5 (var))
+                        ("NorthEast" ~ ~)
+                        (if
+                            (= 6 (var))
+                            ("SouthEast" ~ ~)
+                            (if
+                                (= 7 (var))
+                                ("NorthWest" ~ ~)
+                                ("SouthWest" ~ ~)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "NextEnemies"
+    (if
+        (= 1 (var))
+        ("ReachableCardinalFrom" (last To) N)
+        (if
+            (= 2 (var))
+            ("ReachableCardinalFrom" (last To) E)
+            (if
+                (= 3 (var))
+                ("ReachableCardinalFrom" (last To) S)
+                (if
+                    (= 4 (var))
+                    ("ReachableCardinalFrom" (last To) W)
+                    (if
+                        (= 5 (var))
+                        ("ReachableFrom" (last To) N E)
+                        (if
+                            (= 6 (var))
+                            ("ReachableFrom" (last To) S E)
+                            (if
+                                (= 7 (var))
+                                ("ReachableFrom" (last To) N W)
+                                ("ReachableFrom" (last To) S W)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "ReachableFrom"
+    (intersection
+        (sites Occupied by:Enemy)
+        (union
+            (expand
+                (union
+                    (sites {#1})
+                    (sites Distance
+                        (step 
+                            (directions {#2 #3})
+                            (to if:(is Empty (to)))
+                        )
+                        from:#1
+                        (range 1 Infinity)
+                    )
+                )
+                #2
+            )
+            (expand
+                (union
+                    (sites {#1})
+                    (sites Distance
+                        (step 
+                            (directions {#2 #3})
+                            (to if:(is Empty (to)))
+                        )
+                        from:#1
+                        (range 1 Infinity)
+                    )
+                )
+                #3
+            )
+        )
+    )
+)
+
+(define "ReachableCardinalFrom"
+    (intersection
+        (sites Occupied by:Enemy)
+        (sites Direction
+            from:#1
+            #2
+            stop:(is Occupied (to))
+            stopIncluded:True
+        )
+    )
+)
+
+(define "EastOf"
+    (>
+        (column of:#1)
+        (column of:#2)
+    )
+)
+
+(define "WestOf"
+    (<
+        (column of:#1)
+        (column of:#2)
+    )
+)
+
+(define "NorthOf"
+    (>
+        (row of:#1)
+        (row of:#2)
+    )
+)
+
+(define "SouthOf"
+    (<
+        (row of:#1)
+        (row of:#2)
+    )
+)
+
+(define "Reachable"
+    (intersection
+        (sites Occupied by:Enemy)
+        (union
+            (expand
+                (union
+                    (sites {(from)})
+                    (sites Distance
+                        (step 
+                            (directions {#1 #2})
+                            (to if:(is Empty (to)))
+                        )
+                        from:(from)
+                        (range 1 Infinity)
+                    )
+                )
+                #1
+            )
+            (expand
+                (union
+                    (sites {(from)})
+                    (sites Distance
+                        (step 
+                            (directions {#1 #2})
+                            (to if:(is Empty (to)))
+                        )
+                        from:(from)
+                        (range 1 Infinity)
+                    )
+                )
+                #2
+            )
+        )
+    )
+)
+
+(define "NorthEast"
+    (move
+        (from
+            if:(= 
+                (* 
+                    (from)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+                (* 
+                    (last To)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+            )
+        )
+        (to
+            ("Reachable" N E)
+            #1
+            (apply (remove (to)))
+        )
+        #2
+    )
+)
+
+(define "SouthEast"
+    (move
+        (from
+            if:(= 
+                (* 
+                    (from)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+                (* 
+                    (last To)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+            )
+        )
+        (to
+            ("Reachable" S E)
+            #1
+            (apply (remove (to)))
+        )
+        #2
+    )
+)
+
+(define "NorthWest"
+    (move
+        (from
+            if:(= 
+                (* 
+                    (from)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+                (* 
+                    (last To)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+            )
+        )
+        (to
+            ("Reachable" N W)
+            #1
+            (apply (remove (to)))
+        )
+        #2
+    )
+)
+
+(define "SouthWest"
+    (move
+        (from
+            if:(= 
+                (* 
+                    (from)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+                (* 
+                    (last To)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+            )
+        )
+        (to
+            ("Reachable" S W)
+            #1
+            (apply (remove (to)))
+        )
+        #2
+    )
+)
+
+(define "Cardinal"
+    (move
+        (from
+            if:(= 
+                (* 
+                    (from)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+                (* 
+                    (last To)  
+                    (if (< 0 (count MovesThisTurn)) 1 0)
+                )
+            )
+        )
+        (to
+            (sites Direction
+                from:(from)
+                #1
+                stop:(is Occupied (to))
+                stopIncluded:True
+            )
+            if:(= (next) (who at:(to)))
+            (apply (remove (to)))
+        )
+        #2
+    )
+    
+)
+
+//------------------------------------------------------------------------------
+
+(game "Sweep Burrow"
+    (players 2)
+    (equipment
+        {
+        (board (square 8))
+        (piece "Disc" Each
+            (if
+                (= 0 (count MovesThisTurn))
+                (or {
+                    ("Cardinal" N
+                        (then (set Var 1))
+                    )
+                    ("Cardinal" E
+                        (then (set Var 2))
+                    )
+                    ("Cardinal" S
+                        (then (set Var 3))
+                    )
+                    ("Cardinal" W
+                        (then (set Var 4))
+                    )
+                    ("NorthEast"
+                        if:(and 
+                            ("NorthOf" (to) (from))
+                            ("EastOf" (to) (from))
+                        )
+                        (then (set Var 5))
+                    )
+                    ("SouthEast"
+                        if:(and 
+                            ("SouthOf" (to) (from))
+                            ("EastOf" (to) (from))
+                        )
+                        (then (set Var 6))
+                    )
+                    ("NorthWest"
+                        if:(and 
+                            ("NorthOf" (to) (from))
+                            ("WestOf" (to) (from))
+                        )
+                        (then (set Var 7))
+                    )
+                    ("SouthWest"
+                        if:(and 
+                            ("SouthOf" (to) (from))
+                            ("WestOf" (to) (from))
+                        )
+                        (then (set Var 8))
+                    )
+                })
+                ("Continue")
+                (then 
+                    (if
+                        (< 0 (count Sites in:("NextEnemies")))
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        }
+    )
+    (rules
+        (start {
+            (place "Disc1" 
+                (forEach 
+                    (sites Board) 
+                    if:(or
+                        (and
+                            (is Even (row of:(site)))
+                            (> 2 (% (site) 4))
+                        )
+                        (and
+                            (is Odd (row of:(site)))
+                            (< 1 (% (site) 4))
+                        )
+                        
+                    )
+                )
+            )
+            (place "Disc2" 
+                (forEach 
+                    (sites Board) 
+                    if:(or
+                        (and
+                            (is Odd (row of:(site)))
+                            (> 2 (% (site) 4))
+                        )
+                        (and
+                            (is Even (row of:(site)))
+                            (< 1 (% (site) 4))
+                        )
+                        
+                    )
+                )
+            )
+            
+        })
+        (play  (forEach Piece))
+        (end 
+            (if 
+                (no Pieces Next) 
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Burrow is a whole series of draw-free annihilation games based on the general concept of capture-templates. To begin a turn, a player takes one of his pieces and captures-via-replacement some enemy piece. Some aspect of the capture provides a template whereby the piece may perform further captures. The template can be the minimal bounding box containing the move, the directions used to achieve the capture or even the number of friendly pieces in the line-of-sight. 
+            
+        This Ludii version is implementing the Sweep Burrow version.")
+        (rules "By far the easiest of the variants so far, Sweep Burrow's template is simply the two orthogonal directions involved in making the initial capture. The only further convention here is that if the capture was made with just movement in one direction, you cannot employ a second direction.
+            
+        The player may not end his turn until the capturing piece have no further captures available.")
+        (id "1932")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/331849/burrow\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.2")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Corey Clark")
+        (credit "Michael Amundsen")
+        (date "2021")
+        }
+    )
+    
+)

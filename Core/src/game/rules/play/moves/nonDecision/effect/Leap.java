@@ -22,7 +22,8 @@ import game.util.directions.CompassDirection;
 import game.util.moves.To;
 import main.Constants;
 import other.ContainerId;
-import other.action.move.ActionMove;
+import other.action.Action;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -147,8 +148,7 @@ public final class Leap extends Effect
 				if (!goRule.eval(context))
 					continue;
 
-				final ActionMove actionMove = new ActionMove(realType, from, Constants.UNDEFINED, realType,
-						to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
+				final Action actionMove = ActionMove.construct(realType, from, Constants.UNDEFINED, realType, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 				if (isDecision())
 					actionMove.setDecision(true);
 				Move thisAction = new Move(actionMove);

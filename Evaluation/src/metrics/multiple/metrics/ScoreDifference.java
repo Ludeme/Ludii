@@ -6,6 +6,7 @@ import metrics.Evaluation;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -41,9 +42,9 @@ public class ScoreDifference extends MultiMetricFramework
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		valueList.add(getScoreDiscrepancy(context));
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.generateRealMovesList())
 		{
-			context.game().apply(context, trial.getMove(i));
+			context.game().apply(context, m);
 			valueList.add(getScoreDiscrepancy(context));
 		}
 		return valueList.toArray(new Double[0]);

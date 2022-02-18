@@ -5,6 +5,7 @@ import java.util.BitSet;
 import game.rules.play.moves.Moves;
 import main.collections.FastTIntArrayList;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
@@ -83,7 +84,7 @@ public class ActionRememberValue extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context)
+	public Action undo(final Context context, boolean discard)
 	{
 		if (name == null)
 		{
@@ -101,6 +102,12 @@ public class ActionRememberValue extends BaseAction
 		}
 		
 		return this;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.Remember;
 	}
 
 	//-------------------------------------------------------------------------

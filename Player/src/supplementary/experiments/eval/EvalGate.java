@@ -29,7 +29,7 @@ import other.RankUtils;
 import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
 import utils.AIFactory;
@@ -543,7 +543,11 @@ public class EvalGate
 						
 						// Generate our features metadata and write it
 						final Features features = 
-								AIUtils.generateFeaturesMetadata(mcts.learnedSelectionPolicy(), (SoftmaxPolicy) mcts.playoutStrategy());
+								AIUtils.generateFeaturesMetadata
+								(
+									(SoftmaxPolicyLinear) mcts.learnedSelectionPolicy(), 
+									(SoftmaxPolicyLinear) mcts.playoutStrategy()
+								);
 						
 						try (final PrintWriter writer = new PrintWriter(bestFeaturesFile))
 						{

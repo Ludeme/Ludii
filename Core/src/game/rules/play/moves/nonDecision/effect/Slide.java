@@ -29,7 +29,7 @@ import main.Constants;
 import main.collections.FastTIntArrayList;
 import other.action.Action;
 import other.action.move.ActionAdd;
-import other.action.move.ActionMove;
+import other.action.move.move.ActionMove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -196,7 +196,7 @@ public final class Slide extends Effect
 		final Topology topology = context.topology();
 
 		final TopologyElement fromV = topology.getGraphElements(type).get(from);
-		context.setFrom(fromV.index());
+		context.setFrom(from);
 		final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(type, fromV, null, null, null,
 				context);
 
@@ -213,7 +213,7 @@ public final class Slide extends Effect
 
 		for (final AbsoluteDirection direction : directions)
 		{
-			final List<Radial> radials = topology.trajectories().radials(type, fromV.index(), direction);
+			final List<Radial> radials = topology.trajectories().radials(type, from, direction);
 			
 			for (final Radial radial : radials)
 			{
@@ -228,13 +228,12 @@ public final class Slide extends Effect
 					{
 						if (min <= toIdx)
 						{
-							ActionMove action = null;
+							Action action = null;
 							Move move = null;
 							// Check stack move.
 							if (levelFrom == Constants.UNDEFINED && stack == false)
-							{
-								action = new ActionMove(type, from, Constants.UNDEFINED, type, to, Constants.OFF,
-										Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
+							{ 
+								action = ActionMove.construct(type, from, Constants.UNDEFINED, type, to, Constants.OFF,Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 								action.setDecision(isDecision());
 								move = new Move(action);
 								move = MoveUtilities.chainRuleWithAction(context, sideEffect, move, true, false);
@@ -246,8 +245,7 @@ public final class Slide extends Effect
 												: context.state().containerStates()[0].sizeStack(from, type) - 1
 										: Constants.UNDEFINED;
 
-								action = new ActionMove(type, from, level, type, to, Constants.OFF, Constants.UNDEFINED,
-										Constants.OFF, Constants.OFF, stack);
+								action = ActionMove.construct(type, from, level, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 								action.setDecision(true);
 								move = new Move(action);
 
@@ -262,8 +260,7 @@ public final class Slide extends Effect
 							}
 							else // Slide a piece at a specific level.
 							{
-								action = new ActionMove(type, from, levelFrom, type, to, Constants.UNDEFINED,
-										Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, stack);
+								action = ActionMove.construct(type, from, levelFrom, type, to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, stack);
 								action.setDecision(true);
 								move = new Move(action);
 								move.setLevelMinNonDecision(levelFrom);
@@ -277,8 +274,7 @@ public final class Slide extends Effect
 								final int pieceToLet = let.eval(context);
 								for (int i = 0; i < toIdx; i++)
 								{
-									final Action add = new ActionAdd(type, radial.steps()[i].id(), pieceToLet, 1,
-											Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, null);
+									final Action add = new ActionAdd(type, radial.steps()[i].id(), pieceToLet, 1, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, null);
 									move.actions().add(add);
 								}
 							}
@@ -309,13 +305,12 @@ public final class Slide extends Effect
 
 					if (min <= toIdx)
 					{
-						ActionMove action = null;
+						Action action = null;
 						Move move = null;
 						// Check stack move.
 						if (levelFrom == Constants.UNDEFINED && stack == false)
 						{
-							action = new ActionMove(type, from, Constants.UNDEFINED, type, to, Constants.OFF,
-									Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
+							action = ActionMove.construct(type, from, Constants.UNDEFINED, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 							action.setDecision(isDecision());
 							move = new Move(action);
 							move = MoveUtilities.chainRuleWithAction(context, sideEffect, move, true, false);
@@ -327,8 +322,7 @@ public final class Slide extends Effect
 											: context.state().containerStates()[0].sizeStack(from, type) - 1
 									: Constants.UNDEFINED;
 
-							action = new ActionMove(type, from, level, type, to, Constants.OFF, Constants.UNDEFINED,
-									Constants.OFF, Constants.OFF, stack);
+							action = ActionMove.construct(type, from, level, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, stack);
 							action.setDecision(true);
 							move = new Move(action);
 
@@ -342,8 +336,7 @@ public final class Slide extends Effect
 						}
 						else // Step a piece at a specific level.
 						{
-							action = new ActionMove(type, from, levelFrom, type, to, Constants.UNDEFINED,
-									Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, stack);
+							action = ActionMove.construct(type, from, levelFrom, type, to, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, stack);
 							action.setDecision(true);
 							move = new Move(action);
 							move.setLevelMinNonDecision(levelFrom);
@@ -356,8 +349,7 @@ public final class Slide extends Effect
 							final int pieceToLet = let.eval(context);
 							for (int i = 0; i < toIdx; i++)
 							{
-								final Action add = new ActionAdd(type, radial.steps()[i].id(), pieceToLet, 1,
-										Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
+								final Action add = new ActionAdd(type, radial.steps()[i].id(), pieceToLet, 1, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
 										null);
 								move.actions().add(add);
 							}
@@ -441,8 +433,7 @@ public final class Slide extends Effect
 							{
 								if (min <= nbElem)
 								{
-									final ActionMove actionMove = new ActionMove(type, from, Constants.UNDEFINED, type, to,
-											Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
+									final Action actionMove = ActionMove.construct(type, from, Constants.UNDEFINED, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 									actionMove.setDecision(isDecision());
 									Move thisAction = new Move(actionMove);
 	
@@ -461,9 +452,7 @@ public final class Slide extends Effect
 									context.setTo(to);
 									if (toRule == null || (toRule.eval(context)))
 									{
-										final ActionMove actionMove = new ActionMove(type, from, Constants.UNDEFINED,
-												type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF,
-												Constants.OFF, false);
+										final Action actionMove = ActionMove.construct(type, from, Constants.UNDEFINED, type, to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 										actionMove.setDecision(isDecision());
 										final Move thisAction = new Move(actionMove);
 										thisAction.setFromNonDecision(from);

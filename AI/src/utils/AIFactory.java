@@ -24,9 +24,12 @@ import org.json.JSONTokener;
 import game.Game;
 import other.AI;
 import policies.GreedyPolicy;
-import policies.softmax.SoftmaxPolicy;
+import policies.ProportionalPolicyClassificationTree;
+import policies.softmax.SoftmaxPolicyLinear;
+import policies.softmax.SoftmaxPolicyLogitTree;
 import search.flat.FlatMonteCarlo;
 import search.flat.HeuristicSampling;
+import search.flat.OnePlyNoHeuristic;
 import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
 import search.mcts.backpropagation.AlphaGoBackprop;
@@ -231,6 +234,11 @@ public class AIFactory
 			return ucb1GRAVE;
 		}
 		
+		if (string.equalsIgnoreCase("Ludii AI"))
+		{
+			return new LudiiAI();
+		}
+		
 		if (string.equalsIgnoreCase("Biased MCTS"))
 			return MCTS.createBiasedMCTS(0.0);
 		
@@ -284,6 +292,9 @@ public class AIFactory
 		{
 			return new HeuristicSampling(1);
 		}
+		
+		if (string.equalsIgnoreCase("One-Ply (No Heuristic)"))
+			return new OnePlyNoHeuristic();
 		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
@@ -348,6 +359,10 @@ public class AIFactory
 			{
 				return AlphaBetaSearch.fromLines(lines);
 			}
+			else if (algName.equalsIgnoreCase("BRS+"))
+			{
+				return BRSPlus.fromLines(lines);
+			}
 			else if (algName.equalsIgnoreCase("HeuristicSampling"))
 			{
 				return HeuristicSampling.fromLines(lines);
@@ -359,7 +374,7 @@ public class AIFactory
 				algName.equalsIgnoreCase("SoftmaxPolicy")
 			)
 			{
-				return SoftmaxPolicy.fromLines(lines);
+				return SoftmaxPolicyLinear.fromLines(lines);
 			}
 			else if 
 			(
@@ -369,6 +384,14 @@ public class AIFactory
 			)
 			{
 				return GreedyPolicy.fromLines(lines);
+			}
+			else if (algName.equalsIgnoreCase("ProportionalPolicyClassificationTree"))
+			{
+				return ProportionalPolicyClassificationTree.fromLines(lines);
+			}
+			else if (algName.equalsIgnoreCase("SoftmaxPolicyLogitTree"))
+			{
+				return SoftmaxPolicyLogitTree.fromLines(lines);
 			}
 			else if (algName.equalsIgnoreCase("Random"))
 			{
@@ -589,6 +612,10 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("Heuristic Sampling (1)"))
 		{
 			return new HeuristicSampling(1);
+		}
+		else if (algName.equalsIgnoreCase("One-Ply (No Heuristic)"))
+		{
+			return new OnePlyNoHeuristic();
 		}
 		else if (algName.equalsIgnoreCase("From JAR"))
 		{

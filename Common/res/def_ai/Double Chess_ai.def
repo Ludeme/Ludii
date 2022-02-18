@@ -1,6 +1,6 @@
 (define "Double Chess_ai"
     (bestAgent "Alpha-Beta")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (material transformation:(divNumInitPlacement) pieceWeights:{
             (pair "Pawn1" 2.3766654)
             (pair "Pawn2" 4.081501)

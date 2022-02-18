@@ -2,6 +2,7 @@ package supplementary.experiments.scripts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -44,10 +45,71 @@ public class FindBestBaseAgentScriptsGen
 	private static final String JVM_MEM = "4096";
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 6000;
+	private static final int MAX_WALL_TIME = 7000;
 	
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
+	
+	/** Max number of trials we want to be running from a single script */
+	private static final int NUM_TRIALS_PER_SCRIPT = 500;
+	
+	/** All our hyperparameters for MCTS */
+	private static final String[] mctsHyperparamNames = new String[] 
+			{
+				"ExplorationConstant",
+				"Selection",
+				"Backpropagation",
+				"Playout",
+				"ScoreBounds"
+			};
+	
+	/** Indices for our MCTS hyperparameter types */
+	private static final int IDX_EXPLORATION_CONSTANT = 0;
+	private static final int IDX_SELECTION = 1;
+	private static final int IDX_BACKPROPAGATION = 2;
+	private static final int IDX_PLAYOUT = 3;
+	private static final int IDX_SCORE_BOUNDS = 4;
+
+	/** All the values our hyperparameters for MCTS can take */
+	private static final String[][] mctsHyperParamValues = new String[][]
+			{
+				{"0.0", "0.6", "1.41421356237"},
+				{"ProgressiveBias", "ProgressiveHistory", "UCB1", "UCB1GRAVE", "UCB1Tuned"},
+				{"AlphaGo05", "AlphaGo0", "Heuristic", "MonteCarlo", "QualitativeBonus"},
+				{"MAST", "NST", "Random200", "Random4", "Random0"},
+				{"true", "false"}
+			};
+		
+	/** For every MCTS hyperparameter value, an indication of whether stochastic games are supported */
+	private static final boolean[][] mctsSupportsStochastic = new boolean[][]
+			{
+				{true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{true, true, true, true, true},
+				{false, true},
+			};
+			
+	/** For every MCTS hyperparameter value, an indication of whether heuristics are required */
+	private static final boolean[][] mctsRequiresHeuristic = new boolean[][]
+			{
+				{false, false, false},
+				{true, false, false, false, false},
+				{true, true, true, false, true},
+				{false, false, false, false, false},
+				{false, false},
+			};
+			
+	/**
+	 * Games we should skip since they never end anyway (in practice), but do
+	 * take a long time.
+	 */
+	private static final String[] SKIP_GAMES = new String[]
+			{
+				"Chinese Checkers.lud",
+				"Li'b al-'Aqil.lud",
+				"Li'b al-Ghashim.lud"
+			};
 	
 	//-------------------------------------------------------------------------
 	
@@ -62,6 +124,74 @@ public class FindBestBaseAgentScriptsGen
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param supportStochasticGames Do we need to support stochastic games?
+	 * @return All combinations of indices for MCTS hyperparameter values
+	 */
+	public static int[][] generateMCTSCombos(final boolean supportStochasticGames)
+	{
+		if (mctsHyperparamNames.length != 5)
+		{
+			System.err.println("generateMCTSCombos() code currently hardcoded for exactly 5 hyperparams.");
+			return null;
+		}
+		
+		final List<TIntArrayList> combos = new ArrayList<TIntArrayList>();
+		
+		// Hyperparam 1
+		for (int i1 = 0; i1 < mctsHyperParamValues[0].length; ++i1)
+		{
+			if (supportStochasticGames && !mctsSupportsStochastic[0][i1])
+				continue;
+			
+			// Hyperparam 2
+			for (int i2 = 0; i2 < mctsHyperParamValues[1].length; ++i2)
+			{
+				if (supportStochasticGames && !mctsSupportsStochastic[1][i2])
+					continue;
+				
+				// Hyperparam 3
+				for (int i3 = 0; i3 < mctsHyperParamValues[2].length; ++i3)
+				{
+					if (supportStochasticGames && !mctsSupportsStochastic[2][i3])
+						continue;
+					
+					final boolean alphaGo0Backprop = (mctsHyperParamValues[2][i3].equals("AlphaGo0"));
+					
+					// Hyperparam 4
+					for (int i4 = 0; i4 < mctsHyperParamValues[3].length; ++i4)
+					{
+						if (supportStochasticGames && !mctsSupportsStochastic[3][i4])
+							continue;
+						
+						// With AlphaGo-0 backprops, we only support 0-length playouts
+						if (alphaGo0Backprop && !(mctsHyperParamValues[3][i4].equals("Random0")))
+							continue;
+						
+						// Hyperparam 5
+						for (int i5 = 0; i5 < mctsHyperParamValues[4].length; ++i5)
+						{
+							if (supportStochasticGames && !mctsSupportsStochastic[4][i5])
+								continue;
+							
+							combos.add(TIntArrayList.wrap(i1, i2, i3, i4, i5));
+						}
+					}
+				}
+			}
+		}
+		
+		final int[][] ret = new int[combos.size()][];
+		for (int i = 0; i < ret.length; ++i)
+		{
+			ret[i] = combos.get(i).toArray();
+		}
+		
+		return ret;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * Generates our scripts
 	 * @param argParse
 	 */
@@ -71,12 +201,196 @@ public class FindBestBaseAgentScriptsGen
 		final AlphaBetaSearch dummyAlphaBeta = new AlphaBetaSearch();
 		final BRSPlus dummyBRSPlus = (BRSPlus) AIFactory.createAI("BRS+");
 		final MCTS dummyUCT = MCTS.createUCT();
-		final MCTS dummyGRAVE = (MCTS) AIFactory.createAI("MC-GRAVE");
 		//final MCTS dummyBiased = MCTS.createBiasedMCTS(0.0);
 		//final MCTS dummyBiasedUniformPlayouts = MCTS.createBiasedMCTS(1.0);
-		final MCTS dummyProgressiveHistory = (MCTS) AIFactory.createAI("Progressive History");
-		final MCTS dummyMAST = (MCTS) AIFactory.createAI("MAST");
 		final RandomAI dummyRandom = (RandomAI) AIFactory.createAI("Random");
+		
+		final int[][] deterministicMCTSCombos = generateMCTSCombos(false);
+		final int[][] stochasticMCTSCombos = generateMCTSCombos(true);
+		
+		// Construct all the strings for MCTS variants in deterministic games
+		final String[] mctsNamesDeterministic = new String[deterministicMCTSCombos.length];
+		final String[] mctsStringsDeterministic = new String[deterministicMCTSCombos.length];
+		final boolean[] mctsRequiresHeuristicsDeterministic = new boolean[deterministicMCTSCombos.length];
+		for (int i = 0; i < deterministicMCTSCombos.length; ++i)
+		{
+			final int[] combo = deterministicMCTSCombos[i];
+			mctsRequiresHeuristicsDeterministic[i] = 
+					mctsRequiresHeuristic[0][combo[0]] ||
+					mctsRequiresHeuristic[1][combo[1]] ||
+					mctsRequiresHeuristic[2][combo[2]] ||
+					mctsRequiresHeuristic[3][combo[3]] ||
+					mctsRequiresHeuristic[4][combo[4]];
+						
+			final List<String> nameParts = new ArrayList<String>();
+			final List<String> algStringParts = new ArrayList<String>();
+			
+			nameParts.add("MCTS");
+			algStringParts.add("algorithm=MCTS");
+			algStringParts.add("tree_reuse=true");
+			
+			final String selectionType = mctsHyperParamValues[IDX_SELECTION][combo[IDX_SELECTION]];
+			final String explorationConstant = mctsHyperParamValues[IDX_EXPLORATION_CONSTANT][combo[IDX_EXPLORATION_CONSTANT]];
+			nameParts.add(selectionType);
+			nameParts.add(explorationConstant);
+			algStringParts.add("selection=" + selectionType + ",explorationconstant=" + explorationConstant);
+			
+			String qinitString = "PARENT";
+			if (Double.parseDouble(explorationConstant) == 0.0)
+				qinitString = "INF";
+			else if (selectionType.equals("ProgressiveBias"))
+				qinitString = "INF";
+			algStringParts.add("qinit=" + qinitString);
+			
+			final String playoutType = mctsHyperParamValues[IDX_PLAYOUT][combo[IDX_PLAYOUT]];
+			nameParts.add(playoutType);
+			switch (playoutType)
+			{
+			case "MAST":
+				algStringParts.add("playout=mast,playoutturnlimit=200");
+				break;
+			case "NST":
+				algStringParts.add("playout=nst,playoutturnlimit=200");
+				break;
+			case "Random200":
+				algStringParts.add("playout=random,playoutturnlimit=200");
+				break;
+			case "Random4":
+				algStringParts.add("playout=random,playoutturnlimit=4");
+				break;
+			case "Random0":
+				algStringParts.add("playout=random,playoutturnlimit=0");
+				break;
+			default:
+				System.err.println("Unrecognised playout type: " + playoutType);
+				break;
+			}
+			
+			final String backpropType = mctsHyperParamValues[IDX_BACKPROPAGATION][combo[IDX_BACKPROPAGATION]];
+			nameParts.add(backpropType);
+			switch (backpropType)
+			{
+			case "AlphaGo05":
+				algStringParts.add("backprop=alphago");
+				algStringParts.add("playout_value_weight=0.5");
+				break;
+			case "AlphaGo0":
+				algStringParts.add("backprop=alphago");
+				algStringParts.add("playout_value_weight=0.0");
+				break;
+			case "Heuristic":
+				algStringParts.add("backprop=heuristic");
+				break;
+			case "MonteCarlo":
+				algStringParts.add("backprop=montecarlo");
+				break;
+			case "QualitativeBonus":
+				algStringParts.add("backprop=qualitativebonus");
+				break;
+			default:
+				System.err.println("Unrecognised backprop type: " + backpropType);
+				break;
+			}
+			
+			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
+				algStringParts.add("use_score_bounds=true");
+			
+			algStringParts.add("friendly_name=" + StringRoutines.join("-", nameParts));
+			mctsNamesDeterministic[i] = StringRoutines.join("-", nameParts);
+			mctsStringsDeterministic[i] = StringRoutines.join(";", algStringParts);
+		}
+		
+		// all the same once more for stochastic games
+		final String[] mctsNamesStochastic = new String[stochasticMCTSCombos.length];
+		final String[] mctsStringsStochastic = new String[stochasticMCTSCombos.length];
+		final boolean[] mctsRequiresHeuristicsStochastic = new boolean[stochasticMCTSCombos.length];
+		for (int i = 0; i < stochasticMCTSCombos.length; ++i)
+		{
+			final int[] combo = stochasticMCTSCombos[i];
+			mctsRequiresHeuristicsStochastic[i] = 
+					mctsRequiresHeuristic[0][combo[0]] ||
+					mctsRequiresHeuristic[1][combo[1]] ||
+					mctsRequiresHeuristic[2][combo[2]] ||
+					mctsRequiresHeuristic[3][combo[3]] ||
+					mctsRequiresHeuristic[4][combo[4]];
+						
+			final List<String> nameParts = new ArrayList<String>();
+			final List<String> algStringParts = new ArrayList<String>();
+			
+			nameParts.add("MCTS");
+			algStringParts.add("algorithm=MCTS");
+			algStringParts.add("tree_reuse=true");
+			
+			final String selectionType = mctsHyperParamValues[IDX_SELECTION][combo[IDX_SELECTION]];
+			final String explorationConstant = mctsHyperParamValues[IDX_EXPLORATION_CONSTANT][combo[IDX_EXPLORATION_CONSTANT]];
+			nameParts.add(selectionType);
+			nameParts.add(explorationConstant);
+			algStringParts.add("selection=" + selectionType + ",explorationconstant=" + explorationConstant);
+			
+			String qinitString = "PARENT";
+			if (Double.parseDouble(explorationConstant) == 0.0)
+				qinitString = "INF";
+			else if (selectionType.equals("ProgressiveBias"))
+				qinitString = "INF";
+			algStringParts.add("qinit=" + qinitString);
+			
+			final String playoutType = mctsHyperParamValues[IDX_PLAYOUT][combo[IDX_PLAYOUT]];
+			nameParts.add(playoutType);
+			switch (playoutType)
+			{
+			case "MAST":
+				algStringParts.add("playout=mast,playoutturnlimit=200");
+				break;
+			case "NST":
+				algStringParts.add("playout=nst,playoutturnlimit=200");
+				break;
+			case "Random200":
+				algStringParts.add("playout=random,playoutturnlimit=200");
+				break;
+			case "Random4":
+				algStringParts.add("playout=random,playoutturnlimit=4");
+				break;
+			case "Random0":
+				algStringParts.add("playout=random,playoutturnlimit=0");
+				break;
+			default:
+				System.err.println("Unrecognised playout type: " + playoutType);
+				break;
+			}
+			
+			final String backpropType = mctsHyperParamValues[IDX_BACKPROPAGATION][combo[IDX_BACKPROPAGATION]];
+			nameParts.add(backpropType);
+			switch (backpropType)
+			{
+			case "AlphaGo05":
+				algStringParts.add("backprop=alphago");
+				algStringParts.add("playout_value_weight=0.5");
+				break;
+			case "AlphaGo0":
+				algStringParts.add("backprop=alphago");
+				algStringParts.add("playout_value_weight=0.0");
+				break;
+			case "Heuristic":
+				algStringParts.add("backprop=heuristic");
+				break;
+			case "MonteCarlo":
+				algStringParts.add("backprop=montecarlo");
+				break;
+			case "QualitativeBonus":
+				algStringParts.add("backprop=qualitativebonus");
+				break;
+			default:
+				System.err.println("Unrecognised backprop type: " + backpropType);
+				break;
+			}
+			
+			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
+				System.err.println("Should never have score bounds in MCTSes for stochastic games!");
+			
+			algStringParts.add("friendly_name=" + StringRoutines.join("-", nameParts));
+			mctsNamesStochastic[i] = StringRoutines.join("-", nameParts);
+			mctsStringsStochastic[i] = StringRoutines.join(";", algStringParts);
+		}
 		
 		String scriptsDir = argParse.getValueString("--scripts-dir");
 		scriptsDir = scriptsDir.replaceAll(Pattern.quote("\\"), "/");
@@ -98,9 +412,25 @@ public class FindBestBaseAgentScriptsGen
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/proprietary/"))
 			)).toArray(String[]::new);
 		
+		long callID = 0L;
+		
 		for (final String fullGamePath : allGameNames)
 		{
 			final String[] gamePathParts = fullGamePath.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
+			
+			boolean skipGame = false;
+			for (final String game : SKIP_GAMES)
+			{
+				if (gamePathParts[gamePathParts.length - 1].endsWith(game))
+				{
+					skipGame = true;
+					break;
+				}
+			}
+			
+			if (skipGame)
+				continue;
+			
 			final String gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
 			final Game gameNoRuleset = GameLoader.loadGameFromName(gameName + ".lud");
 			final List<Ruleset> gameRulesets = new ArrayList<Ruleset>(gameNoRuleset.description().rulesets());
@@ -147,16 +477,15 @@ public class FindBestBaseAgentScriptsGen
 				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
 				final String filepathsRulesetName = StringRoutines.cleanRulesetName(fullRulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
 				final String dbGameName = DBGameInfo.getUniqueName(game);
+				final Entry abHeuristicEntry = bestStartingHeuristics.getEntry(dbGameName);
 				
-				final List<String> relevantAIs = new ArrayList<String>();
+				final List<String> relevantNonMCTSAIs = new ArrayList<String>();
 				
 				final String alphaBetaString;
-				final String alphaBetaMetadataString = null;
+				final String brsPlusString;
 				
 				if (dummyAlphaBeta.supportsGame(game))
 				{
-					final Entry abHeuristicEntry = bestStartingHeuristics.getEntry(dbGameName);
-					
 					if (abHeuristicEntry != null)
 					{
 						final String heuristic = abHeuristicEntry.topHeuristic();
@@ -167,7 +496,7 @@ public class FindBestBaseAgentScriptsGen
 									"heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt",
 									"friendly_name=AlphaBeta"
 								);
-						relevantAIs.add("Alpha-Beta");
+						relevantNonMCTSAIs.add("Alpha-Beta");
 					}
 					else
 					{
@@ -197,194 +526,339 @@ public class FindBestBaseAgentScriptsGen
 					//alphaBetaMetadataString = null;
 				}
 				
-				if (dummyUCT.supportsGame(game))
-					relevantAIs.add("UCT");
-				
-				if (dummyGRAVE.supportsGame(game))
-					relevantAIs.add("MC-GRAVE");
-				
-//				if (dummyBiased.supportsGame(game))
-//					relevantAIs.add("BiasedMCTS");
-//				
-//				if (dummyBiasedUniformPlayouts.supportsGame(game))
-//					relevantAIs.add("BiasedMCTSUniformPlayouts");
-				
 				if (dummyBRSPlus.supportsGame(game))
-					relevantAIs.add("BRS+");
-				
-				if (dummyProgressiveHistory.supportsGame(game))
-					relevantAIs.add("ProgressiveHistory");
-				
-				if (dummyMAST.supportsGame(game))
-					relevantAIs.add("MAST");
+				{
+					if (abHeuristicEntry != null)
+					{
+						final String heuristic = abHeuristicEntry.topHeuristic();
+						brsPlusString = StringRoutines.join
+								(
+									";", 
+									"algorithm=BRS+",
+									"heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt",
+									"friendly_name=BRS+"
+								);
+						relevantNonMCTSAIs.add("BRS+");
+					}
+					else
+					{
+						brsPlusString = null;
+					}
+				}
+				else
+				{
+					brsPlusString = null;
+				}
 				
 				if (dummyRandom.supportsGame(game))
-					relevantAIs.add("Random");
-				
-				if (relevantAIs.size() == 0)
-				{
-					System.err.println("Warning! No relevant AIs for: " + gameName);
-					continue;
-				}
-				
-				if (relevantAIs.size() == 1)
-				{
-					System.err.println("Warning! Only one relevant AI for " + gameName + ": " + relevantAIs.get(0));
-					continue;
-				}
+					relevantNonMCTSAIs.add("Random");
 				
 				final int numPlayers = game.players().count();
 				
-				for (int evalAgentIdx = 0; evalAgentIdx < relevantAIs.size(); ++evalAgentIdx)
+				int numTrialsThisJob = 0;
+				int jobCounterThisGame = 0;
+				
+				@SuppressWarnings("resource")	// Not using try-catch to control this resource because we need to sometimes switch to different files
+				PrintWriter writer = null;
+				
+				try
 				{
-					final String agentToEval = relevantAIs.get(evalAgentIdx);
-					
-					final TIntArrayList candidateOpponentIndices = new TIntArrayList(relevantAIs.size() - 1);
-					for (int i = 0; i < relevantAIs.size(); ++i)
+					// Evaluate all of the non-MCTSes against each other
+					for (int evalAgentIdxNonMCTS = 0; evalAgentIdxNonMCTS < relevantNonMCTSAIs.size(); ++evalAgentIdxNonMCTS)
 					{
-						if (i != evalAgentIdx)
-							candidateOpponentIndices.add(i);
-					}
-					
-					final int numOpponents = numPlayers - 1;
-					final List<TIntArrayList> opponentCombinations = new ArrayList<TIntArrayList>();
-					
-					final int opponentCombLength;
-					
-					if (candidateOpponentIndices.size() >= numOpponents)
-						opponentCombLength = numOpponents;
-					else
-						opponentCombLength = candidateOpponentIndices.size();
-					
-					ListUtils.generateAllCombinations
-					(
-						candidateOpponentIndices, opponentCombLength, 0, 
-						new int[opponentCombLength], 
-						opponentCombinations
-					);
-					
-					while (opponentCombinations.size() > 10)
-					{
-						// Too many combinations of opponents; we'll randomly remove some
-						ListUtils.removeSwap(opponentCombinations, ThreadLocalRandom.current().nextInt(opponentCombinations.size()));
-					}
-					
-					if (candidateOpponentIndices.size() < numOpponents)
-					{
-						// We don't have enough candidates to fill up all opponent slots;
-						// we'll just fill up every combination with duplicates of its last entry
-						for (final TIntArrayList combination : opponentCombinations)
-						{
-							while (combination.size() < numOpponents)
-							{
-								combination.add(combination.getQuick(combination.size() - 1));
-							}
-						}
-					}
-					
-					final int numCombinations = opponentCombinations.size();
-					int numGamesPerComb = 10;
-					
-					while (numCombinations * numGamesPerComb < 50)
-					{
-						numGamesPerComb += 10;
-					}
-					
-					final String jobScriptFilename = "Eval" + filepathsGameName + filepathsRulesetName + agentToEval + ".sh";
-					
-					try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8"))
-					{
-						writer.println("#!/usr/local_rwth/bin/zsh");
-						writer.println("#SBATCH -J Eval" + filepathsGameName + filepathsRulesetName + agentToEval);
-						writer.println("#SBATCH -o /work/" + userName + "/FindBestBaseAgent/Out"
-								+ filepathsGameName + filepathsRulesetName + agentToEval + "_%J.out");
-						writer.println("#SBATCH -e /work/" + userName + "/FindBestBaseAgent/Err"
-								+ filepathsGameName + filepathsRulesetName + agentToEval + "_%J.err");
-						writer.println("#SBATCH -t " + MAX_WALL_TIME);
-						writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
-						writer.println("#SBATCH -A " + argParse.getValueString("--project"));
-						writer.println("unset JAVA_TOOL_OPTIONS");
+						final String agentToEval = relevantNonMCTSAIs.get(evalAgentIdxNonMCTS);
 						
-						for (final TIntArrayList agentsCombination : opponentCombinations)
+						for (int oppIdx = 0; oppIdx < relevantNonMCTSAIs.size(); ++oppIdx)
 						{
-							// Add the index of the heuristic to eval in front
-							agentsCombination.insert(0, evalAgentIdx);
-							
-							assert (agentsCombination.size() == numPlayers);
-							
-							final String[] agentStrings = new String[numPlayers];
-							String matchupStr = "";
-							for (int i = 0; i < numPlayers; ++i)
+							if (writer == null || numTrialsThisJob + numPlayers > NUM_TRIALS_PER_SCRIPT)
 							{
-								final String agent = relevantAIs.get(agentsCombination.getQuick(i));
+								// Time to open a new job script
+								if (writer != null)
+								{
+									writer.close();
+									writer = null;
+								}
+								
+								final String jobScriptFilename = "Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame + ".sh";
+								jobScriptNames.add(jobScriptFilename);
+								numTrialsThisJob = 0;
+								writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8");
+								writer.println("#!/usr/local_rwth/bin/zsh");
+								writer.println("#SBATCH -J Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame);
+								writer.println("#SBATCH -o /work/" + userName + "/FindBestBaseAgent/Out"
+										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.out");
+								writer.println("#SBATCH -e /work/" + userName + "/FindBestBaseAgent/Err"
+										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.err");
+								writer.println("#SBATCH -t " + MAX_WALL_TIME);
+								writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
+								writer.println("#SBATCH -A " + argParse.getValueString("--project"));
+								writer.println("unset JAVA_TOOL_OPTIONS");
+								++jobCounterThisGame;
+							}
+							
+							numTrialsThisJob += numPlayers;
+							
+							// Take (k - 1) copies of same opponent for a k-player game
+							final String[] agentStrings = new String[numPlayers];
+							for (int i = 0; i < numPlayers - 1; ++i)
+							{
+								final String agent = relevantNonMCTSAIs.get(oppIdx);
 								final String agentCommandString;
 								
 								if (agent.equals("Alpha-Beta"))
 									agentCommandString = StringRoutines.quote(alphaBetaString);
-								else if (agent.equals("Alpha-Beta-Metadata"))
-									agentCommandString = StringRoutines.quote(alphaBetaMetadataString);
-								else if (agent.equals("BiasedMCTS"))
-									agentCommandString = StringRoutines.quote("Biased MCTS");
-								else if (agent.equals("BiasedMCTSUniformPlayouts"))
-									agentCommandString = StringRoutines.quote("Biased MCTS (Uniform Playouts)");
-								else if (agent.equals("ProgressiveHistory"))
-									agentCommandString = StringRoutines.quote("Progressive History");
+								else if (agent.equals("BRS+"))
+									agentCommandString = StringRoutines.quote(brsPlusString);
 								else
 									agentCommandString = StringRoutines.quote(agent);
 								
 								agentStrings[i] = agentCommandString;
-								matchupStr += agent;
 							}
 							
-							final String javaCall = StringRoutines.join
+							// and finally add the eval agent
+							final String evalAgentCommandString;
+							
+							if (agentToEval.equals("Alpha-Beta"))
+								evalAgentCommandString = StringRoutines.quote(alphaBetaString);
+							else if (agentToEval.equals("BRS+"))
+								evalAgentCommandString = StringRoutines.quote(brsPlusString);
+							else
+								evalAgentCommandString = StringRoutines.quote(agentToEval);
+							
+							agentStrings[numPlayers - 1] = evalAgentCommandString;
+							
+							final String javaCall = generateJavaCall
 									(
-										" ", 
-										"java",
-										"-Xms" + JVM_MEM + "M",
-										"-Xmx" + JVM_MEM + "M",
-										"-XX:+HeapDumpOnOutOfMemoryError",
-				                        "-da",
-				                        "-dsa",
-				                        "-XX:+UseStringDeduplication",
-				                        "-jar",
-				                        StringRoutines.quote("/home/" + userName + "/FindBestBaseAgent/Ludii.jar"),
-				                        "--eval-agents",
-				                        "--game",
-				                        StringRoutines.quote(gameName + ".lud"),
-				                        "--ruleset",
-				                        StringRoutines.quote(fullRulesetName),
-				                        "-n",
-				                        "" + numGamesPerComb,
-				                        "--game-length-cap 1000",
-				                        "--thinking-time 1",
-				                        "--warming-up-secs 30",
-				                        "--out-dir",
-				                        StringRoutines.quote
-				                        (
-				                        	"/work/" + 
-				                        	userName + 
-				                        	"/FindBestBaseAgent/" + 
-				                        	filepathsGameName + filepathsRulesetName +
-				                        	"/" + matchupStr + "/"
-				                        ),
-				                        "--agents",
-				                        StringRoutines.join(" ", agentStrings),
-				                        "--max-wall-time",
-				                        "" + Math.max((MAX_WALL_TIME / opponentCombinations.size()), 60),
-				                        "--output-alpha-rank-data",
-				                        "--no-print-out",
-				                        "--round-to-next-permutations-divisor"
+										userName,
+										gameName,
+										fullRulesetName,
+										numPlayers,
+										filepathsGameName,
+										filepathsRulesetName,
+										callID,
+										agentStrings
 									);
+							++callID;
 							
 							writer.println(javaCall);
 						}
-						
-						jobScriptNames.add(jobScriptFilename);
 					}
-					catch (final FileNotFoundException | UnsupportedEncodingException e)
+					
+					if (dummyUCT.supportsGame(game))
 					{
-						e.printStackTrace();
+						// Evaluate all MCTSes...
+						final String[] relevantMCTSNames = (game.isStochasticGame()) ? mctsNamesStochastic : mctsNamesDeterministic;
+						final String[] relevantMCTSStrings = (game.isStochasticGame()) ? mctsStringsStochastic : mctsStringsDeterministic;
+						final boolean[] relevantMCTSHeuristicRequirements = (game.isStochasticGame()) ? mctsRequiresHeuristicsStochastic : mctsRequiresHeuristicsDeterministic;
+						
+						for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
+						{				
+							// ... against all non-MCTSes...
+							for (int oppIdx = 0; oppIdx < relevantNonMCTSAIs.size(); ++oppIdx)
+							{
+								if (writer == null || numTrialsThisJob + numPlayers > NUM_TRIALS_PER_SCRIPT)
+								{
+									// Time to open a new job script
+									if (writer != null)
+									{
+										writer.close();
+										writer = null;
+									}
+									
+									final String jobScriptFilename = "Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame + ".sh";
+									jobScriptNames.add(jobScriptFilename);
+									numTrialsThisJob = 0;
+									writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8");
+									writer.println("#!/usr/local_rwth/bin/zsh");
+									writer.println("#SBATCH -J Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame);
+									writer.println("#SBATCH -o /work/" + userName + "/FindBestBaseAgent/Out"
+											+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.out");
+									writer.println("#SBATCH -e /work/" + userName + "/FindBestBaseAgent/Err"
+											+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.err");
+									writer.println("#SBATCH -t " + MAX_WALL_TIME);
+									writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
+									writer.println("#SBATCH -A " + argParse.getValueString("--project"));
+									writer.println("unset JAVA_TOOL_OPTIONS");
+									++jobCounterThisGame;
+								}
+								
+								numTrialsThisJob += numPlayers;
+								
+								// Take (k - 1) copies of same opponent for a k-player game
+								final String[] agentStrings = new String[numPlayers];
+								for (int i = 0; i < numPlayers - 1; ++i)
+								{
+									final String agent = relevantNonMCTSAIs.get(oppIdx);
+									final String agentCommandString;
+									
+									if (agent.equals("Alpha-Beta"))
+										agentCommandString = StringRoutines.quote(alphaBetaString);
+									else if (agent.equals("BRS+"))
+										agentCommandString = StringRoutines.quote(brsPlusString);
+									else
+										agentCommandString = StringRoutines.quote(agent);
+									
+									agentStrings[i] = agentCommandString;
+								}
+								
+								// and finally add the eval agent
+								String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
+								
+								if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
+								{
+									if (abHeuristicEntry != null)
+									{
+										final String heuristic = abHeuristicEntry.topHeuristic();
+										evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt";
+									}
+									else
+									{
+										// Our MCTS requires heuristics but we don't have any, so skip
+										continue;
+									}
+								}
+								
+								evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
+								
+								agentStrings[numPlayers - 1] = evalAgentCommandString;
+								
+								final String javaCall = generateJavaCall
+										(
+											userName,
+											gameName,
+											fullRulesetName,
+											numPlayers,
+											filepathsGameName,
+											filepathsRulesetName,
+											callID,
+											agentStrings
+										);
+								++callID;
+								
+								writer.println(javaCall);
+							}
+							
+							// ... and once against a randomly selected set of (k - 1) other MCTSes for a k-player game
+							if (writer == null || numTrialsThisJob + numPlayers > NUM_TRIALS_PER_SCRIPT)
+							{
+								// Time to open a new job script
+								if (writer != null)
+								{
+									writer.close();
+									writer = null;
+								}
+								
+								final String jobScriptFilename = "Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame + ".sh";
+								jobScriptNames.add(jobScriptFilename);
+								numTrialsThisJob = 0;
+								writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8");
+								writer.println("#!/usr/local_rwth/bin/zsh");
+								writer.println("#SBATCH -J Eval" + filepathsGameName + filepathsRulesetName + jobCounterThisGame);
+								writer.println("#SBATCH -o /work/" + userName + "/FindBestBaseAgent/Out"
+										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.out");
+								writer.println("#SBATCH -e /work/" + userName + "/FindBestBaseAgent/Err"
+										+ filepathsGameName + filepathsRulesetName + jobCounterThisGame + "_%J.err");
+								writer.println("#SBATCH -t " + MAX_WALL_TIME);
+								writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
+								writer.println("#SBATCH -A " + argParse.getValueString("--project"));
+								writer.println("unset JAVA_TOOL_OPTIONS");
+								++jobCounterThisGame;
+							}
+							
+							numTrialsThisJob += numPlayers;
+							
+							final String[] agentStrings = new String[numPlayers];
+							for (int i = 0; i < numPlayers - 1; ++i)
+							{
+								boolean success = false;
+								
+								final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
+								while (!success)
+								{
+									final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
+									final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
+									ListUtils.removeSwap(sampleIndices, randIdx);
+									String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
+									
+									if (relevantMCTSHeuristicRequirements[otherMCTSIdx])
+									{
+										if (abHeuristicEntry != null)
+										{
+											final String heuristic = abHeuristicEntry.topHeuristic();
+											agentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt";
+											success = true;
+										}
+										else
+										{
+											// Our MCTS requires heuristics but we don't have any, so try again
+											//System.out.println("no heuristics in game: " + dbGameName);
+											//System.out.println("picked index " + otherMCTSIdx + " out of " + relevantMCTSNames.length + " options");
+											continue;
+										}
+									}
+									else
+									{
+										success = true;
+									}
+									
+									agentCommandString = StringRoutines.quote(agentCommandString);
+									
+									agentStrings[i] = agentCommandString;
+								}
+								
+								if (!success)
+								{
+									System.err.println("No suitable MCTS found at all");
+									continue;
+								}
+							}
+							
+							// add the eval agent
+							String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
+							if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
+							{
+								if (abHeuristicEntry != null)
+								{
+									final String heuristic = abHeuristicEntry.topHeuristic();
+									evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt";
+								}
+								else
+								{
+									// Our MCTS requires heuristics but we dont have any, so skip
+									continue;
+								}
+							}
+							
+							evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
+							
+							agentStrings[numPlayers - 1] = evalAgentCommandString;
+							
+							final String javaCall = generateJavaCall
+									(
+										userName,
+										gameName,
+										fullRulesetName,
+										numPlayers,
+										filepathsGameName,
+										filepathsRulesetName,
+										callID,
+										agentStrings
+									);
+							++callID;
+							
+							writer.println(javaCall);
+						}
 					}
+					
+					if (writer != null)
+					{
+						writer.close();
+						writer = null;
+					}
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}
@@ -427,6 +901,71 @@ public class FindBestBaseAgentScriptsGen
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * @param userName
+	 * @param gameName
+	 * @param fullRulesetName
+	 * @param numTrialsPerOpponent
+	 * @param filepathsGameName
+	 * @param filepathsRulesetName
+	 * @param callID
+	 * @param agentStrings
+	 * @return A complete string for a Java call
+	 */
+	public static String generateJavaCall
+	(
+		final String userName,
+		final String gameName,
+		final String fullRulesetName,
+		final int numTrialsPerOpponent,
+		final String filepathsGameName,
+		final String filepathsRulesetName,
+		final long callID,
+		final String[] agentStrings
+	)
+	{
+		return StringRoutines.join
+				(
+					" ", 
+					"java",
+					"-Xms" + JVM_MEM + "M",
+					"-Xmx" + JVM_MEM + "M",
+					"-XX:+HeapDumpOnOutOfMemoryError",
+					"-da",
+					"-dsa",
+					"-XX:+UseStringDeduplication",
+					"-jar",
+					StringRoutines.quote("/home/" + userName + "/FindBestBaseAgent/Ludii.jar"),
+					"--eval-agents",
+					"--game",
+					StringRoutines.quote(gameName + ".lud"),
+					"--ruleset",
+					StringRoutines.quote(fullRulesetName),
+					"-n",
+					String.valueOf(numTrialsPerOpponent),
+					"--game-length-cap 1000",
+					"--thinking-time 1",
+					"--iteration-limit 100000",				// 100K iterations per move should be good enough
+					"--warming-up-secs 30",
+					"--out-dir",
+					StringRoutines.quote
+					(
+						"/work/" + 
+						userName + 
+						"/FindBestBaseAgent/" + 
+						filepathsGameName + filepathsRulesetName +
+						"/" + callID + "/"
+					),
+					"--agents",
+					StringRoutines.join(" ", agentStrings),
+					"--max-wall-time",
+					String.valueOf(500),
+					"--output-alpha-rank-data",
+					"--no-print-out",
+					"--suppress-divisor-warning"
+				);
 	}
 	
 	//-------------------------------------------------------------------------

@@ -17,7 +17,8 @@ import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import metadata.ai.misc.Pair;
 import other.action.Action;
-import other.action.move.ActionRemove;
+import other.action.ActionType;
+import other.action.move.remove.ActionRemove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;
@@ -133,7 +134,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 			{
 				final TempContext temp = new TempContext(context);
 				temp.state().setPrev(context.state().mover());
-				temp.state().setMover(player);
+				temp.state().setMover(p);
 				temp.trial().clearLegalMoves();
 				oppLegalMoves = game.moves(temp).moves();
 				
@@ -141,7 +142,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 				{
 					for (final Action action : move.actions())
 					{
-						if (action instanceof ActionRemove)
+						if (action != null && action.actionType() != null && action.actionType().equals(ActionType.Remove))
 						{
 							final ActionRemove removeAction = (ActionRemove) action;
 							final int removeSite = removeAction.to();
@@ -218,7 +219,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 				{
 					for (final Action action : move.actions())
 					{
-						if (action instanceof ActionRemove)
+						if (action != null && action.actionType().equals(ActionType.Remove))
 						{
 							final ActionRemove removeAction = (ActionRemove) action;
 							final int removeSite = removeAction.to();

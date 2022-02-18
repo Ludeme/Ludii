@@ -1,11 +1,11 @@
 (define "Chaturaji_ai"
     (useFor { "Variant/Wikipedia" }
         (bestAgent "AlphaBeta")
-        (heuristics {
+        trainedHeuristics:(heuristics {
             (score)
         })
         
-        (features {
+        trainedFeatures:(features {
             (featureSet P1 {
                 (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -4.8827157)
                 (pair "rel:from=<{}>:pat=<refl=true,rots=all,els=[]>" -4.8827157)

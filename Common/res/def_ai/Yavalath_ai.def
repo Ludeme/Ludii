@@ -1,10 +1,10 @@
 (define "Yavalath_ai"
     (bestAgent "Biased MCTS (Uniform Playouts)")
-    (heuristics {
+    trainedHeuristics:(heuristics {
         (lineCompletionHeuristic)
     })
     
-    (features {
+    trainedFeatures:(features {
         (featureSet P1 {
             (pair "rel:last_from=<{0}>:to=<{}>:pat=<els=[]>" -0.20634423)
             (pair "rel:last_to=<{0,0,0}>:to=<{}>:pat=<els=[]>" -0.35407344)

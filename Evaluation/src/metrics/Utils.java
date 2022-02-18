@@ -45,7 +45,7 @@ public class Utils
 	public static Context setupTrialContext(final Game game, final RandomProviderState rngState, final Trial trial)
 	{
 		final Context context = setupNewContext(game, rngState);
-		for (final Move m : trial.generateCompleteMovesList())
+		for (final Move m : trial.generateRealMovesList())
 			game.apply(context, m);
 		return context;
 	}
@@ -182,8 +182,8 @@ public class Utils
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
 		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
 		
-		if (evaluation.stateAfterMoveEvaluationCacheContains(Long.valueOf(stateAndMoveHash)))
-			return evaluation.getStateAfterMoveEvaluationCache(Long.valueOf(stateAndMoveHash));
+		if (evaluation.stateAfterMoveEvaluationCacheContains(stateAndMoveHash))
+			return evaluation.getStateAfterMoveEvaluationCache(stateAndMoveHash);
 		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
