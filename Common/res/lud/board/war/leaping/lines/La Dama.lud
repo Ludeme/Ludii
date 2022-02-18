@@ -91,28 +91,28 @@
 )
 
 //------------------------------------------------------------------------------
-        
+
 (game "La Dama" 
     (players {(player N) (player S)})  
     (equipment { 
         (board (square 5) use:Vertex)
         (piece "Disc" Each
-                (or
-                        ("HopDisc") 
-                        (move
-                            Step 
-                            (directions {Rightward Leftward Forwards} of:All) 
-                            (to if:(is Empty (to)))
-                            (then ("HasNotCaptured"))
-                        )
-                        (then ("PromoteIfCornersReached"))
-                    )		
+            (or
+                ("HopDisc") 
+                (move
+                    Step 
+                    (directions {Rightward Leftward Forwards} of:All) 
+                    (to if:(is Empty (to)))
+                    (then ("HasNotCaptured"))
+                )
+                (then ("PromoteIfCornersReached"))
+            )		
         )
         (piece "DiscDouble" Each
-                (or
-                        ("HopDiscDouble") 
-                        (move Slide All (then ("HasNotCaptured")))
-                    )		
+            (or
+                ("HopDiscDouble") 
+                (move Slide All (then ("HasNotCaptured")))
+            )		
         )
         (regions P1 (intersection (sites Corners) (sites Bottom)))
         (regions P2 (intersection (sites Corners) (sites Top)))
@@ -125,23 +125,23 @@
         })
         
         (play 
-                (or
-                    (if ("DidNotCaptured")
-                        (or
-                            (if ("ShouldCapturedButMoved") 
-                                ("HuffOnePieceOf" (last To))
-                            )
-                            ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
+            (or
+                (if ("DidNotCaptured")
+                    (or
+                        (if ("ShouldCapturedButMoved") 
+                            ("HuffOnePieceOf" (last To))
                         )
-                    )
-                    (do 
-                        ("RememberSiteWithPossibleCapture") 
-                        next:(forEach Piece)
+                        ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
                     )
                 )
-            ) 
-            
-            (end (if (no Pieces Mover) (result Next Win))) 
+                (do 
+                    ("RememberSiteWithPossibleCapture") 
+                    next:(forEach Piece)
+                )
+            )
+        ) 
+        
+        (end (if (no Pieces Mover) (result Next Win))) 
     )
 )
 

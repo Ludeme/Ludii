@@ -10,24 +10,24 @@
         )
         (piece "Fox" P1 (or ("HopCapture") "StepToEmpty" ) )
         (piece "Hen" P2 
-        	(move Step
-        		(directions {Rightward Leftward Forwards})
-        		(to if:(is Empty (to)))
-        	)
+            (move Step
+                (directions {Rightward Leftward Forwards})
+                (to if:(is Empty (to)))
+            )
         ) 
     })  
     (rules 
         (start { 
-        	(place "Hen2" (union (sites Top) (expand  (sites Row 4))))
+            (place "Hen2" (union (sites Top) (expand  (sites Row 4))))
             (place "Fox1" (intersection (union (sites Column 4) (sites Column 2)) (sites Bottom)))
         })
         
-       (play (forEach Piece))
+        (play (forEach Piece))
         
         (end {
             (if
-            	(all Sites (expand (sites Bottom) steps:2) if:(= (who at:(site)) P2))
-            	(result P2 Win)
+                (all Sites (expand (sites Bottom) steps:2) if:(= (who at:(site)) P2))
+                (result P2 Win)
             )
             (if (no Pieces P2) (result P1 Win))
         }) 
