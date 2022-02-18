@@ -1,0 +1,36 @@
+(game "Khiam"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 4)
+                (shift 0 2 (rectangle 1 4))
+                (shift 1.5 1 (square 1))
+            })
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+    })
+    (rules
+        (start { 
+            (set Count 6 to:(difference (sites Board) (sites Row 1)))
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
