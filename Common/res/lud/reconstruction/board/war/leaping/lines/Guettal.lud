@@ -1,14 +1,10 @@
 (game "Guettal"
     (players 2)
     (equipment {
-        ("AlquerqueBoard" 6 6)
+        ("AlquerqueBoard" 5 5)
         (piece "Marker" Each)
     })
     (rules
-    	(start {
-    		(place "Marker1" (expand (sites Bottom)))
-    		(place "Marker2" (expand (sites Top)))
-    	})
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
