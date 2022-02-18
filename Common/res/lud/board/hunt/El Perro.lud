@@ -1,0 +1,91 @@
+(define "Hop" 
+    (move Hop 
+        (from #1) 
+        Adjacent
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "El Perro"
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Goat" P2
+        		(move Step
+        	        (if (= (value Player Mover) 1)
+        	        	(directions {S SE SW E W})
+        	        	(directions {N NE NW E W})
+        			)
+        	        (to if:(is Empty (to)))
+        		)
+        )
+        (piece "Dog" P1 
+        	(or 
+            		("Hop" 
+            		        (from)
+            		        (then (if (can Move ("Hop" (last To)) ) (moveAgain) )) 
+            		    ) 
+        		"StepToEmpty"
+        	)
+        )
+    })  
+    
+    (rules 
+        (start {
+            (place "Goat2" (union (intersection (union (sites Left) (sites Right)) (sites Row 2)) (expand (sites Bottom))))
+            (place "Dog1" (sites Centre))
+        })
+        (play
+        	(if ("SameTurn")
+        		(or
+        				("Hop" 
+                		        (last To)
+                		        (then (if (can Move ("Hop" (last To)) ) (moveAgain) )) 
+                		    ) 
+        		(move Pass)
+        		)
+        		(forEach Piece)
+    	        (then
+        	        	(if (not 
+        	        			(can Move
+        	        				(forEach Piece 
+        	        					(step
+        	        							(if (= (value Player P2) 1)
+        	        		        	        	(directions {S SE SW})
+        	        		        	        	(directions {N NE NW})
+        	        		        			)	
+        	        		        	        (to if:(is Empty (to)))
+        	        					)	
+        	        					P2
+        	        				)
+        	        			)
+        	        		)
+        	        		(set Value P2 (if (= (value Player P2) 1) 0 1))
+        	        	)
+        	        )
+        	)
+        )
+        (end {
+        	(if (no Moves P1) (result P2 Win))
+        	(if (no Pieces P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
