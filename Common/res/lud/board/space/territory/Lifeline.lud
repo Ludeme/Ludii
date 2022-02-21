@@ -112,40 +112,40 @@
             (place Stack "Shi_Western2" (handSite P2) count:<Komi>) 
         })
         phases:{
-            (phase "Opening"
-                (play 
-                    (move Add 
-                        (to 
-                            (sites Empty)
-                            if:(= 0
-                                (count Sites in:(sites Around (to) Own Orthogonal))
-                            )
+        (phase "Opening"
+            (play 
+                (move Add 
+                    (to 
+                        (sites Empty)
+                        if:(= 0
+                            (count Sites in:(sites Around (to) Own Orthogonal))
                         )
-                        <Balance:12*>
                     )
-                )
-                (nextPhase 
-                    (and
-                        (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
-                        (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
-                    )
-                    "Play"
+                    <Balance:12*>
                 )
             )
-            (phase "Play"
-                (play 
-                    (or
-                        ("SpendKomi")
-                        (do 
-                            ("Place"
-                                (then ("Remove" Enemy))
-                            )
-                            ifAfterwards:("NoCorneredGroups" Mover)
+            (nextPhase 
+                (and
+                    (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
+                    (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
+                )
+                "Play"
+            )
+        )
+        (phase "Play"
+            (play 
+                (or
+                    ("SpendKomi")
+                    (do 
+                        ("Place"
+                            (then ("Remove" Enemy))
                         )
-                        <Balance:12*>
+                        ifAfterwards:("NoCorneredGroups" Mover)
                     )
+                    <Balance:12*>
                 )
             )
+        )
         }
         (end 
             (if
