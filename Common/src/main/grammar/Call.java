@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import annotations.Alias;
@@ -333,7 +334,7 @@ public class Call
 			break;
 		}
 		
-		return ludemesFound;
+		return new ArrayList<>(new HashSet<>(ludemesFound));
 	}
 	
 	//-------------------------------------------------------------------------

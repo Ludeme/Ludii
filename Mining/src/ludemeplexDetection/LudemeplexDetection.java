@@ -128,9 +128,9 @@ public class LudemeplexDetection
 		System.out.println("//-------------------------------------------------------------------------");
 	
 		// Record possible define ludemeplexes.
-		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
-		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
-		System.out.println("Define Ruleset Ludemeplexes Recorded");
+//		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
+//		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
+//		System.out.println("Define Ruleset Ludemeplexes Recorded");
 		
 		System.out.println("//-------------------------------------------------------------------------");
 	}
