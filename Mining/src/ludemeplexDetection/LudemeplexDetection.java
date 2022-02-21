@@ -16,6 +16,8 @@ import utils.DBGameInfo;
  * 
  * Ouput .csv files are stored in Ludii/Mining/res/ludemeplexDetection/output/
  * These files should be uploaded to the Ludii database.
+ * 
+ * Make sure the file located at "Ludii/Mining/res/concepts/input/GameRulesets.csv" is up to date.
  *
  * @author matthew.stephenson
  */
@@ -103,30 +105,32 @@ public class LudemeplexDetection
 	 */
 	public static void main(final String[] args)
 	{		
-		// Record the ludemeplexes across all lud files.
+		// All rulesets to be analysed.
 		final List<String[]> chosenGames = GameLoader.allAnalysisGameRulesetNames();
-		for (final String[] gameRulesetName : chosenGames)
-			recordLudemeplexesInGame(GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]));
-			
 		
 		System.out.println("//-------------------------------------------------------------------------");
-	
-		// Store relevant details in output csv files for uploading to DB
-		DatabaseFunctions.storeLudemeInfo();
-		System.out.println("Ludemes Recorded");
-		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
-		System.out.println("Ludemeplexes Recorded");
-		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
-		System.out.println("Ludemes in Ludemeplexes Recorded");
-		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
-		System.out.println("Ruleset Ludemeplexes Recorded");
 		
+		// Record ludemes  across all rulesets.
+		DatabaseFunctions.storeLudemeInfo();
+		DatabaseFunctions.storeLudemesInGames(GetLudemeInfo.getLudemeInfo(), chosenGames);
+		System.out.println("Ludemes Recorded");
+		
+		System.out.println("//-------------------------------------------------------------------------");
+		
+		// Record ludemeplexes across all rulesets.
+		for (final String[] gameRulesetName : chosenGames)
+			recordLudemeplexesInGame(GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]));
+		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
+		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
+		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
+		System.out.println("Ludemeplexes Recorded");
+			
+		System.out.println("//-------------------------------------------------------------------------");
+	
+		// Record possible define ludemeplexes.
 		final Map<String, Set<String>> allDefineLudemeplexes = DatabaseFunctions.storeDefineLudemeplexInfo(allLudemeplexes, allLudemeplexesCount, 4);
-		System.out.println("Define Ludemeplexes Recorded");
 		DatabaseFunctions.storeDefineLudemeplexRulesetPairs(allDefineLudemeplexes);
 		System.out.println("Define Ruleset Ludemeplexes Recorded");
-		
-		DatabaseFunctions.storeLudemesInGames(GetLudemeInfo.getLudemeInfo(), chosenGames);
 		
 		System.out.println("//-------------------------------------------------------------------------");
 	}

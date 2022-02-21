@@ -31,10 +31,11 @@ public class DatabaseFunctions
 	private static String ludemesOutputFilePath = "./res/ludemeplexDetection/output/ludemes.csv";
 	private static String ludemeplexesOutputFilePath = "./res/ludemeplexDetection/output/ludemeplexes.csv";
 	private static String defineLudemeplexesOutputFilePath = "./res/ludemeplexDetection/output/defineLudemeplexes.csv";
-	private static String rulesetludemeplexOutputFilePath = "./res/ludemeplexDetection/output/rulesetLudemeplexes.csv";
-	private static String defineRulesetludemeplexOutputFilePath = "./res/ludemeplexDetection/output/rulesetDefineLudemeplexes.csv";
-	private static String ludemeplexesLudemeOutputFilePath = "./res/ludemeplexDetection/output/ludemeplexLudemes.csv";
-	private static String rulesetludemesOutputFilePath = "./res/ludemeplexDetection/output/rulesetLudemes.csv";
+	private static String rulesetLudemeplexesOutputFilePath = "./res/ludemeplexDetection/output/rulesetLudemeplexes.csv";
+	private static String defineRulesetludemeplexesOutputFilePath = "./res/ludemeplexDetection/output/rulesetDefineLudemeplexes.csv";
+	private static String ludemeplexesLudemesOutputFilePath = "./res/ludemeplexDetection/output/ludemeplexLudemes.csv";
+	private static String rulesetLudemesOutputFilePath = "./res/ludemeplexDetection/output/rulesetLudemes.csv";
+	private static String notFoundLudemesFilePath = "./res/ludemeplexDetection/output/NOTFOUNDLUDEMES.csv";
 
 	//-------------------------------------------------------------------------
 	
@@ -244,7 +245,7 @@ public class DatabaseFunctions
 		int IdCounter = 1;
 		int ludemeplexId = 1;
 		
-		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(rulesetludemeplexOutputFilePath, false)))
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(rulesetLudemeplexesOutputFilePath, false)))
 		{
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
@@ -281,7 +282,7 @@ public class DatabaseFunctions
 		int IdCounter = 1;
 		int defineLudemeplexId = 1;
 		
-		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(defineRulesetludemeplexOutputFilePath, false)))
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(defineRulesetludemeplexesOutputFilePath, false)))
 		{
 			for (final Map.Entry<String, Set<String>> entry : allDefineLudemeplexes.entrySet())
 			{
@@ -321,7 +322,7 @@ public class DatabaseFunctions
 		int IdCounter = 1;
 		int ludemeplexId = 1;
 		
-		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(ludemeplexesLudemeOutputFilePath, false)))
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(ludemeplexesLudemesOutputFilePath, false)))
 		{
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
@@ -359,7 +360,7 @@ public class DatabaseFunctions
 		int IdCounter = 1;
 		final Set<LudemeInfo> allLudemesfound = new HashSet<LudemeInfo>();
 		
-		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(rulesetludemesOutputFilePath, false)))
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(rulesetLudemesOutputFilePath, false)))
 		{			
 			for (final String[] gameRulesetName : gameRulesetNames)
 			{
@@ -388,20 +389,12 @@ public class DatabaseFunctions
 			e.printStackTrace();
 		}
 		
-//		System.out.println("\n==================================\nallLudemesfound:");
-//		for (final LudemeInfo li : allLudemesfound)
-//			System.out.println(li.symbol().path());
-//		
-//		System.out.println("\n==================================\nallValidLudemes:");
-//		for (final LudemeInfo li : allValidLudemes)
-//			System.out.println(li.symbol().path());
-		
 		// Record all ludemes that weren't found in any game.
 		String notFoundLudemesString = "";
 		for (final LudemeInfo ludeme : allValidLudemes)
 			if (!allLudemesfound.contains(ludeme))
 				notFoundLudemesString += ludeme.getDBString() + "\n";
-		try (final BufferedWriter writer = new BufferedWriter(new FileWriter("/res/ludemeplexDetection/output/NOTFOUNDLUDEMES.csv", false)))
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(notFoundLudemesFilePath, false)))
 		{
 			writer.write(notFoundLudemesString);
 			writer.close();
