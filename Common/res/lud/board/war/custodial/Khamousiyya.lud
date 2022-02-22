@@ -94,33 +94,33 @@
                             (from (last To))
                             Orthogonal 
                             (to if:("IsConfigurationToCustodialAgain"))	
-                        (then 
-                            (custodial 
-                                (from (last To))
-                                Orthogonal
-                                (between
-                                    (max 1)
-                                    if:(is Enemy (who at:(between)))
-                                    (apply (remove (between)))
-                                )
-                                (to if:(is Friend (who at:(to))))
-                                (then
-                                    (if ("CanCaptureAgain")	
-                                        (moveAgain)
+                            (then 
+                                (custodial 
+                                    (from (last To))
+                                    Orthogonal
+                                    (between
+                                        (max 1)
+                                        if:(is Enemy (who at:(between)))
+                                        (apply (remove (between)))
+                                    )
+                                    (to if:(is Friend (who at:(to))))
+                                    (then
+                                        (if ("CanCaptureAgain")	
+                                            (moveAgain)
+                                        )
                                     )
                                 )
                             )
                         )
+                        (move Pass)
                     )
-                    (move Pass)
+                    (forEach Piece) 
                 )
-                (forEach Piece) 
-            )
-        )	
-    )
-    }
-    (end (if (no Moves Next) (result Mover Win)))
-)	
+            )	
+        )
+        }
+        (end (if (no Moves Next) (result Mover Win)))
+    )	
 )
 
 //--------------------------------------
