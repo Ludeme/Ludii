@@ -213,7 +213,9 @@
             (place "Square" (handSite P2 5) state:2)
             (place "Hex" (handSite P2 6) state:3)
             (place "Hex" (handSite P2 7) state:1)
-            (place "Hex" (handSite P2 8) state:2)  
+            (place "Hex" (handSite P2 8) state:2)
+            
+            (set Score Each 9)
             }
         )
         (play
@@ -230,12 +232,16 @@
                         ("SlideAdjacent")  // After placement the move continues with a compulsary slide of an adjacent piece
                         ("DestroyEachMillsByCapturingAStaticPiece")
                         ("ThenIfMillsAddSites2PendingAndMoveAgain")
-        ))))
+                ))
+                (then (set Score Mover (count Pieces in:(sites Hand Mover))))
+        ))
         (end
             (if
                 (no Moves Mover)
                 (result Mover Loss)
 ))))
+
+//-------------------------------------
 
 (metadata
     (info
