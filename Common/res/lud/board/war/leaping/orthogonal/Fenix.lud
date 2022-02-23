@@ -79,7 +79,7 @@
                 (move
                     (from (sites Occupied by:Mover) if:(= 1 (size Stack at:(from))))
                     (to 
-                        (sites Occupied by:Mover) 
+                        (sites Around (from) Own Orthogonal) 
                         if:(and {
                             (!= (from) (to))
                             (< (size Stack at:(to)) 3)
