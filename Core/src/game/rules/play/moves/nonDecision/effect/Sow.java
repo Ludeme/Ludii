@@ -225,6 +225,7 @@ public final class Sow extends Effect
 		// Computation of the sowing moves.
 		if(numSeedSowed < count)
 		{
+			int numSkipped = 0;
 			for (int index = 0; index < count; index++)
 			{
 				context.setValue(count - index);
@@ -232,13 +233,16 @@ public final class Sow extends Effect
 				context.setTo(to);
 				
 				// Check if that site should be skip.
-				if (skipFn != null && skipFn.eval(context))
+				if (skipFn != null && skipFn.eval(context) && numSkipped < Constants.MAX_NUM_ITERATION)
 				{
 					index--;
+					numSkipped++;
 					i = track.elems()[i].nextIndex;
 					to = track.elems()[i].next;
 					continue;
 				}
+				else
+					numSkipped = 0;
 				
 				// Check if we include the origin in the sowing movement.
 				if (!includeSelf && to == start)
