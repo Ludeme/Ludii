@@ -327,10 +327,10 @@ public class DatabaseFunctions
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
 				// Get all ludemes in this ludemeplex
-				final List<LudemeInfo> ludemesInLudemeplex = entry.getKey().analysisFormat(0, GetLudemeInfo.getLudemeInfo()); 
+				final Map<LudemeInfo, Integer> ludemesInLudemeplex = entry.getKey().analysisFormat(0, GetLudemeInfo.getLudemeInfo());
 				ludemesInLudemeplex.remove(null);
 				
-				for (final LudemeInfo ludeme : ludemesInLudemeplex)
+				for (final LudemeInfo ludeme : ludemesInLudemeplex.keySet())
 				{
 					if (GetLudemeInfo.getLudemeInfo().contains(ludeme))
 					{
@@ -365,15 +365,15 @@ public class DatabaseFunctions
 			for (final String[] gameRulesetName : gameRulesetNames)
 			{
 				final Game game = GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]);
-				final List<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
 				final String name = DBGameInfo.getUniqueName(game);
 				
-				for (final LudemeInfo ludeme : ludemesInGame)
+				final Map<LudemeInfo, Integer> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
+				for (final LudemeInfo ludeme : ludemesInGame.keySet())
 				{
 					allLudemesfound.add(ludeme);
 					if (DBGameInfo.getRulesetIds().containsKey(name))
 					{
-						writer.write(IdCounter + "," + DBGameInfo.getRulesetIds().get(name) + "," + ludeme.id() + "\n");
+						writer.write(IdCounter + "," + DBGameInfo.getRulesetIds().get(name) + "," + ludeme.id() + "," + ludemesInGame.get(ludeme) +"\n");
 						IdCounter++;
 					}
 					else
