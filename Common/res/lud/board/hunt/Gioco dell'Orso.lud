@@ -19,88 +19,133 @@
             (place "Bear2" (sites Centre))
         })	
         
-        phases:{
-        (phase "PlacementP1" 
-            (play
-                (move 
-                    (from (handSite P1))
-                    (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
-                )
-            )
-            (nextPhase ("HandEmpty" P1) "HuntingP2")
-        )
-        (phase "HuntingP2" 
-            (play 
-                (forEach Piece
-                    (then 
-                        (if (not 
-                                (can Move 
-                                    (step 
-                                        (from (where "Bear" P2))
-                                        (to if:(is Empty (to)))
-                                    )
-                                )
-                            )
-                            (and {
-                                (addScore P2 (- (count Moves) 3))
-                                (remove (sites Occupied by:All container:"Board"))
-                                (add (piece "Bear1") (to (sites Centre)))
-                                (add (piece "Human2") (to (handSite P2)) count:3)
-                            })
-                        )
-                    )
-                )
-            )
-            (nextPhase (= 1 (count Sites in:(sites Occupied by:All container:"Board"))) "PlacementP2")
-        )
-        (phase "PlacementP2" 
-            (play
-                (move 
-                    (from (handSite P2))
-                    (to (intersection (sites Empty) (sites {1..4})))
-                    (then (if (not ("HandEmpty" P2)) (moveAgain)))
-                )
-            )
-            (nextPhase ("HandEmpty" P2) "HuntingP1")
-        )
-        (phase "HuntingP1" 
-            (play 
-                (forEach Piece
-                    (then 
-                        (if (not 
-                                (can Move 
-                                    (step 
-                                        (from (where "Bear" P1))
-                                        (to if:(is Empty (to)))
-                                    )
-                                )
-                            )
-                            (addScore P1 (- (count Moves) (+ (score P2) 6)))
-                        )
-                    )
-                )
-            )
-            (end (if (!= 0 (score P1)) (byScore)))
-        )
-        }
+        <Rule:rule>
         
     )		
 )
 
 //------------------------------------------------------------------------------
 
+(option "Rules" <Rule> args:{ <rule> } {
+  
+  (item "Two Phases" 
+      <
+      phases:{
+      (phase "PlacementP1" 
+          (play
+              (move 
+                  (from (handSite P1))
+                  (to (intersection (sites Empty) (sites {1..4})))
+                  (then (if (not ("HandEmpty" P1)) (moveAgain)))
+              )
+          )
+          (nextPhase ("HandEmpty" P1) "HuntingP2")
+      )
+      (phase "HuntingP2" 
+          (play 
+              (forEach Piece
+                  (then 
+                      (if (not 
+                              (can Move 
+                                  (step 
+                                      (from (where "Bear" P2))
+                                      (to if:(is Empty (to)))
+                                  )
+                              )
+                          )
+                          (and {
+                              (addScore P2 (- (count Moves) 3))
+                              (remove (sites Occupied by:All container:"Board"))
+                              (add (piece "Bear1") (to (sites Centre)))
+                              (add (piece "Human2") (to (handSite P2)) count:3)
+                          })
+                      )
+                  )
+              )
+          )
+          (nextPhase (= 1 (count Sites in:(sites Occupied by:All container:"Board"))) "PlacementP2")
+      )
+      (phase "PlacementP2" 
+          (play
+              (move 
+                  (from (handSite P2))
+                  (to (intersection (sites Empty) (sites {1..4})))
+                  (then (if (not ("HandEmpty" P2)) (moveAgain)))
+              )
+          )
+          (nextPhase ("HandEmpty" P2) "HuntingP1")
+      )
+      (phase "HuntingP1" 
+          (play 
+              (forEach Piece
+                  (then 
+                      (if (not 
+                              (can Move 
+                                  (step 
+                                      (from (where "Bear" P1))
+                                      (to if:(is Empty (to)))
+                                  )
+                              )
+                          )
+                          (addScore P1 (- (count Moves) (+ (score P2) 6)))
+                      )
+                  )
+              )
+          )
+          (end (if (!= 0 (score P1)) (byScore)))
+      )
+      }
+      >  
+      "The game has two rounds."
+  )*
+  
+  (item "One Round" 
+      <
+      phases:{
+      (phase "PlacementP1" 
+          (play
+              (move 
+                  (from (handSite P1))
+                  (to (intersection (sites Empty) (sites {1..4})))
+                  (then (if (not ("HandEmpty" P1)) (moveAgain)))
+              )
+          )
+          (nextPhase ("HandEmpty" P1) "HuntingP2")
+      )
+      (phase "HuntingP2" 
+          (play (forEach Piece))
+          (end {
+              (if (no Moves P2) (result P1 Win))
+              (if 
+                  (or
+                      (>= (count Moves) (- (value MoveLimit) 10)) 
+                      (>= (count Turns) (- (value TurnLimit) 5)) 
+                  )
+                  (result P2 Win)
+              )
+          }) 
+      )
+      }
+      >  
+      "The game has only one round."
+  )
+})
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
+    (ruleset "Ruleset/Gioco dell'Orso (Described)" {
+        "Rules/Two Phases"
+    })*
+	
     (ruleset "Ruleset/Bear Wins One Round (Suggested)" {
-        
+        "Rules/One Round"
     })
     
-    (ruleset "Ruleset/Gioco dell'Orso (Described)" {
-        
-    })*
-    
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     (info
