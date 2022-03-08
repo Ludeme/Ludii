@@ -30,12 +30,12 @@ public class CreateClusterConceptScript
 		final int maxMove = 5000; //5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", "ABONEPLY", "UCTONEPLY", or "Random"
+		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", "ABONEPLY", "UCTONEPLY", or "Random"
 		final String clusterLogin = "ls670643";
-		final String folder = ""; //"/../Trials/TrialsAlpha-Beta"; //""; //"/../Trials/TrialsAll";
+		final String folder = "/../Trials/TrialsAlpha-Beta"; //""; //"/../Trials/TrialsAlpha-Beta"; //""; //"/../Trials/TrialsAll";
 		final String mainScriptName = "StateConcepts.sh";
-		final String folderName = "ConceptsUCT";
-		final String jobName = "UCTConcept";
+		final String folderName = "ConceptsAB";
+		final String jobName = "ABConcept";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
 		{
 			final String[] gameNames = FileHandling.listGames();
