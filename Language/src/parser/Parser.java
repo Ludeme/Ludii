@@ -100,7 +100,10 @@ public class Parser
 	{
 		if (Completer.needsCompleting(description))
 		{
-			final List<String> completions = Completer.complete(description.raw(), report);
+			final String rawGame = description.rawGameDescription();
+			System.out.println("Raw game description is:\n" + rawGame);
+		
+			final List<String> completions = Completer.complete(rawGame, report);
 			System.out.println(completions.size() + " completions found.");
 			
 			if (!completions.isEmpty())

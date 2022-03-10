@@ -20,8 +20,6 @@ public class Completer
 	public static boolean needsCompleting(final Description description)
 	{
 		final String rawGame = description.rawGameDescription();
-		System.out.println("Raw game description is:\n" + rawGame);
-		
 		return rawGame.contains("[") && rawGame.contains("]");
 	}
 	
