@@ -115,6 +115,7 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Poprad Game");
 		lessTrialsGames.add("Unashogi");
 		lessTrialsGames.add("Taikyoku Shogi");
+		lessTrialsGames.add("Pagade Kayi Ata (Sixteen-handed)");
 		
 		final Evaluation evaluation = new Evaluation();
 		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);

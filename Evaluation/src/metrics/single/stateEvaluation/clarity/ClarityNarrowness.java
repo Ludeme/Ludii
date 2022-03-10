@@ -82,7 +82,7 @@ public class ClarityNarrowness extends Metric
 					if (moveEvaluations.get(j) > threshold)
 						numberAboveThreshold++;
 
-				moveNarrowness.addSample(numberAboveThreshold/moveEvaluations.n());
+				moveNarrowness.addSample(moveEvaluations.n() == 0 ? 0 : numberAboveThreshold/moveEvaluations.n());
 				
 				context.game().apply(context, m);
 			}
@@ -91,7 +91,7 @@ public class ClarityNarrowness extends Metric
 			clarity += moveNarrowness.mean();
 		}
 
-		return clarity / trials.length;
+		return trials.length == 0 ? 0 : clarity / trials.length;
 	}
 
 }
