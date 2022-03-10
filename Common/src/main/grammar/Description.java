@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import main.Constants;
+import main.StringRoutines;
 import main.options.GameOptions;
 import main.options.Ruleset;
 
@@ -196,6 +197,22 @@ public class Description
 		}
 		
 		return Constants.UNDEFINED;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * @return "(game ...)" ludeme from raw description.
+	 */
+	public String rawGameDescription()
+	{
+		final int c = raw.indexOf("(game");
+		final int cc = StringRoutines.matchingBracketAt(raw, c);
+		
+		final String sub = raw.substring(c, cc + 1);
+		//System.out.println("Raw game description: " + sub);
+		
+		return sub;
 	}
 	
 	//-------------------------------------------------------------------------

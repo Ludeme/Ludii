@@ -98,6 +98,18 @@ public class Parser
 		final boolean        isVerbose
 	)
 	{
+		if (Completer.needsCompleting(description))
+		{
+			final List<String> completions = Completer.complete(description.raw(), report);
+			System.out.println(completions.size() + " completions found.");
+			
+			if (!completions.isEmpty())
+			{
+				// Replace raw description string passed in with best completion 
+				description.setRaw(completions.get(0));
+			}
+		}
+		
 		try
 		{
 			try
