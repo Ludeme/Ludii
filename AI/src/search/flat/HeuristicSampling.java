@@ -30,8 +30,8 @@ public class HeuristicSampling extends AI
 	//-------------------------------------------------------------------------
 	
 	/** Score we give to winning opponents in paranoid searches in states where game is still going (> 2 players) */
-	private static final float PARANOID_OPP_WIN_SCORE = 10000.f;
-	private static final float WIN_SCORE = 10000.f;
+	protected static final float PARANOID_OPP_WIN_SCORE = 10000.f;
+	protected static final float WIN_SCORE = 10000.f;
 	
 	/** We skip computing heuristics with absolute weight value lower than this */
 	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;

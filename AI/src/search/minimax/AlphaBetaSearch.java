@@ -1234,6 +1234,15 @@ public class AlphaBetaSearch extends ExpertPolicy
 	{
 		allowedSearchDepths = allowed;
 	}
+
+	/**
+	 * replaces the heuristic after being registered
+	 * @param newHeuristicFunction
+	 */
+	public void replaceHeuristics(Heuristics newHeuristicFunction) {
+		this.heuristicValueFunction = newHeuristicFunction;
+		
+	}
 	
 	//-------------------------------------------------------------------------
 
