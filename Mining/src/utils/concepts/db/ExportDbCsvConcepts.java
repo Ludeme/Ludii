@@ -102,7 +102,7 @@ public class ExportDbCsvConcepts
 	private static List<String> lessTrialsGames = new ArrayList<String>();
 	
 	/** The limit to use for the games in the list above.*/
-	private static final int smallLimitTrials = 50;
+	private static final int smallLimitTrials = 30;
 	
 	//-------------------------------------------------------------------------
 
@@ -115,6 +115,7 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Poprad Game");
 		lessTrialsGames.add("Unashogi");
 		lessTrialsGames.add("Taikyoku Shogi");
+		lessTrialsGames.add("Tai Shogi");
 		lessTrialsGames.add("Pagade Kayi Ata (Sixteen-handed)");
 		
 		final Evaluation evaluation = new Evaluation();
