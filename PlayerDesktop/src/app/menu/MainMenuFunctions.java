@@ -96,7 +96,7 @@ import other.model.Model;
 import other.move.Move;
 import other.trial.Trial;
 import parser.Parser;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.pns.ProofNumberSearch.ProofGoals;
 import supplementary.EvalUtil;
 import supplementary.experiments.EvalAIsThread;
@@ -1072,7 +1072,7 @@ public class MainMenuFunctions extends JMenuBar
 							"metadata.ai.features.Features",
 							new Report()
 						);
-				final SoftmaxPolicy softmax = SoftmaxPolicy.constructSelectionPolicy(features, 0.0);
+				final SoftmaxPolicyLinear softmax = SoftmaxPolicyLinear.constructSelectionPolicy(features, 0.0);
 				softmax.initAI(game, context.state().mover());
 				
 				final BaseFeatureSet[] featureSets = softmax.featureSets();
@@ -1114,7 +1114,7 @@ public class MainMenuFunctions extends JMenuBar
 				{
 					final List<String> moves = moveStrings[featureIdx];
 					
-					if (moves.size() > 0)
+					if (moves != null && moves.size() > 0)
 					{
 						System.out.println("Feature: " + featureSet.spatialFeatures()[featureIdx].toString());
 						

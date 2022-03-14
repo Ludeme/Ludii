@@ -456,7 +456,7 @@ public final class LudiiGameWrapper
 	public int numDistinctActions()
 	{
 		final int[] moveTensorsShape = moveTensorsShape();
-		return moveTensorsShape[1] * moveTensorsShape[2] * moveTensorsShape[3];
+		return moveTensorsShape[0] * moveTensorsShape[1] * moveTensorsShape[2];
 	}
 	
 	/**

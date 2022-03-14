@@ -93,6 +93,10 @@ public final class SitesLineOfSight extends BaseRegionFunction
 			return new Region(sitesLineOfSight.toArray());
 
 		final ContainerState cs = context.containerState(context.containerId()[from]);
+		
+		if(cs.container().index() > 0)
+			return new Region(sitesLineOfSight.toArray());
+		
 		final Topology graph = context.topology();
 		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
 		final TopologyElement fromV = graph.getGraphElements(realType).get(from);

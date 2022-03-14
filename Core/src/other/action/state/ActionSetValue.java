@@ -99,6 +99,9 @@ public class ActionSetValue extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(to < 0)
+			return this;
+		
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
 		final ContainerState cs = context.state().containerStates()[cid];
@@ -159,6 +162,9 @@ public class ActionSetValue extends BaseAction
 	@Override
 	public Action undo(final Context context, boolean discard)
 	{
+		if(to < 0)
+			return this;
+		
 		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
 		final ContainerState cs = context.state().containerStates()[cid];
 		

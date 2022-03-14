@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import app.display.MainWindowDesktop;
 import app.display.dialogs.AboutDialog;
@@ -728,6 +731,39 @@ public final class DesktopApp extends PlayerApp
 			System.err.println("Could not find JAR file.");
 			return null;
 		}
+	}
+	
+	@Override
+	public JSONObject getNameFromJson()
+	{
+		// we'll have to go through file chooser
+		final JFileChooser fileChooser = DesktopApp.jsonFileChooser();
+		fileChooser.setDialogTitle("Select JSON file containing AI.");
+		final int jsonReturnVal = fileChooser.showOpenDialog(DesktopApp.frame());
+		final File jsonFile;
+
+		if (jsonReturnVal == JFileChooser.APPROVE_OPTION)
+			jsonFile = fileChooser.getSelectedFile();
+		else
+			jsonFile = null;
+
+		if (jsonFile != null && jsonFile.exists())
+		{
+			try (final InputStream inputStream = new FileInputStream(jsonFile))
+			{
+				return new JSONObject(new JSONTokener(inputStream));
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			System.err.println("Could not find JSON file.");
+		}
+		
+		return null;
 	}
 
 	@Override

@@ -12,7 +12,6 @@ import game.util.graph.Step;
 import other.MetaRules;
 import other.action.Action;
 import other.action.ActionType;
-import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
 import other.state.container.ContainerState;
@@ -76,8 +75,7 @@ public class Pin extends MetaRule
 							if (cs.what(siteToRemove, SiteType.Vertex) != 0)
 							{
 								final List<game.util.graph.Step> steps = game.board().topology().trajectories()
-										.steps(SiteType.Vertex, siteToRemove, SiteType.Vertex,
-												AbsoluteDirection.Upward);
+										.steps(SiteType.Vertex, siteToRemove, SiteType.Vertex, AbsoluteDirection.Upward);
 
 								int numOccupiedUpWardSites = 0;
 								for (final Step step : steps)
@@ -125,7 +123,6 @@ public class Pin extends MetaRule
 	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.CopyContext.id(), true);
 		return concepts;
 	}
 

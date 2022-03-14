@@ -1,0 +1,94 @@
+(game "Moxie"
+    (players 2)
+    (equipment {
+        (board (square 4))
+        (piece "Pawn" Each)
+        (hand Each)
+    })
+    (rules
+        (start (place "Pawn" "Hand" count:8))
+        (play 
+            (if (is Prev Mover)
+                (move Hop 
+                    (from (last To))
+                    (between if:(is Enemy (who at:(between)))) 
+                    (to if:(is Empty (to)) (apply (remove (between))))
+                    (then
+                        (if (can Move 
+                                (hop 
+                                    (from (last To))
+                                    (between if:(is Enemy (who at:(between)))) 
+                                    (to if:(is Empty (to)) (apply (remove (between))))
+                                )
+                            )
+                            (moveAgain)
+                        )
+                    )
+                )
+                (priority {
+                    (forEach Piece 
+                        (move Hop 
+                            (between if:(is Enemy (who at:(between)))) 
+                            (to if:(is Empty (to)) (apply (remove (between))))
+                            (then
+                                (if (can Move 
+                                        (hop 
+                                            (from (last To))
+                                            (between if:(is Enemy (who at:(between)))) 
+                                            (to if:(is Empty (to)) (apply (remove (between))))
+                                        )
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    (or
+                        (if (is Occupied (handSite Mover))
+                            (move (from (handSite Mover)) (to (sites Empty)))
+                        )
+                        (forEach Piece (move Step (to if:(is Empty (to)))))
+                    )
+                    
+                })
+            )
+        )
+        (end {
+            (forEach NonMover
+                if:(<= (count Pieces Player) 2)
+                (result Player Loss)
+            )
+            (if (is Line 3 All) (result Mover Win))
+        }) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game is played on an empty 4x4 square board. Each player has 8 stones off board.")
+(rules "According to the given rules, the pieces, eight on each army, start in reserve off the board. A move consists of either: 1) placing a piece from your reserve on any vacant square; 2) moving a piece to any adjacent square, orthogonally or diagonally (as a chess king), or 3) capturing an enemy piece by jumping it, like an 8-directional checker. Multiple jumps are allowed. When a jump is possible, jumping is compulsory, though the player may choose any jumping move available and need not capture the greatest possible number of pieces.
+
+The object is either to form a line of three of your pieces, orthogonally or diagonally with no intervening spaces, or to capture six enemy pieces (i.e. reduce your enemy’s forces to two so that he cannot win).")
+(id "1813")
+(source "<a href=\"https://boardgamegeek.com/boardgame/24546/moxie\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+(version "1.3.2")
+(classification "board/space/line")
+(author "Harold C. Manley")
+(credit "Eric Piette")
+(date "1956")
+}
+)
+
+(graphics {
+    (board Colour Phase0 (colour Black))
+    (board Colour OuterEdges (colour Hidden))
+    (board Colour InnerEdges (colour 223 178 110))
+    (player Colour P2 (colour Red))
+    (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.2)
+})
+
+)

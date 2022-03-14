@@ -1,0 +1,143 @@
+(define "CellOfLastVertex" 
+    (sites Incident Cell of:Vertex at:(last To)) 
+)
+
+(define "AllHolesOfCell"
+    (intersection
+        (sites Incident Vertex of:Cell at:(site))
+        (sites "Holes")
+    )
+)
+
+(define "NumHolesCells" 
+    (count Sites in:("AllHolesOfCell"))
+)
+
+(define "NumOwnedHolesCells"
+    (count Sites 
+        in:(intersection
+            ("AllHolesOfCell")
+            (sites Occupied by:Mover on:Vertex)
+        )
+    )		
+)
+
+(define "MajorityOfEmptyCell" 
+    (if (is In (site) (sites Centre))
+        (>=
+            (+ ("NumOwnedHolesCells") (if (= (mover) (who Vertex at:(centrePoint Vertex))) 1 0))
+            3
+        )
+        (>=
+            ("NumOwnedHolesCells")
+            (if (is Even ("NumHolesCells")) (/ ("NumHolesCells") 2) (+ (/ ("NumHolesCells") 2) 1))
+        )
+    )
+)
+
+(define "CaptureTheCell" 
+    (claim
+        (piece (id "Rectangle" Mover))
+        (to
+            Cell 
+            (site) 
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "ConHex" 
+    (players 2)
+    (equipment {
+        (board
+            (add
+                (keep
+                    (splitCrossings 
+                        (merge 
+                            (rotate 45 (dual (square 12 diagonals:Concentric)))
+                            (shift 3 3 (scale 6 (square 1)))
+                        )
+                    )
+                    (poly { {3 3} {3 9} {9 9} {9 3} })
+                )
+                vertices:{{6 6}}
+            )
+        )
+        (piece "Marker" Each)
+        (piece "Rectangle" Each)
+        (regions "Holes"  (union (difference (sites Board Vertex) (sites Outer Vertex)) (sites Corners Vertex)))
+        (regions P1 { (sites Side N) (sites Side S) } )
+        (regions P2 { (sites Side W) (sites Side E) } )
+    })
+    (rules
+        
+        (meta (swap) )
+        (play 
+            (move Add (to Vertex (sites Empty Vertex) if:(is In (to) (sites "Holes")))
+                (then 
+                    (forEach Site
+                        "CellOfLastVertex" 
+                        (if "MajorityOfEmptyCell"
+                            "CaptureTheCell"
+                        )
+                        (then
+                            (forEach Site (forEach ("CellOfLastVertex") if:(is Mover (who Cell at:(site))))
+                                (if (is Connected at:(site) Mover)
+                                    (trigger "Connected" Mover)
+                                )
+                            )		
+                        )
+                    )
+                )		
+            )
+        )
+        
+        (end {
+            (if (is Triggered "Connected" Mover) (result Mover Win))
+            (if (<= 52 (count Moves)) (result Mover Draw))
+        }) 
+    )
+)
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "ConHex is an abstract strategy game for two players. Both aim to complete a contiguous chain of connected cells between the 2 sides of their colour. 
+            
+        Cells are claimed by conquering them. In order to conquer a cell, players must surround it with pegs.")
+        (rules "Each player has an allocated colour. The game is played in turns. On his first move, the second player may elect to swap colours (swap option). This is to prevent overly strong opening moves.
+            
+            Each turn the current player places one of their pegs on an empty hole, which may conquer one or more cells. A cell is conquered by the first player to occupy at least half of its surrounding holes. A blue rectangle is placed on cells conquered by Blue, and a red rectangle is placed on cells conquered by Red.
+            The central cell, which has five holes, is conquered by the player who has occupied any three of these holes. 
+        The first player that completes a contiguous chain of connected cells of his colour between the 2 sides of his colour wins the game.  ")
+        (id "1763")
+        (source "<a href=\"http://nestorgames.com/rulebooks/CONHEX_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>
+        ")
+        (version "1.3.2")
+        (classification "board/space/connection")
+        (author "Michail Antonow")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>
+        ")
+        (credit "Eric Piette and Cameron Browne")
+        (date "2002")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (show Symbol "disc" "Holes" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.165555)
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+        (board Background image:"rectangle.svg" fillColour:(colour Red) edgeColour:(colour Red) scaleX:1.26 scaleY:2)
+        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:1.26 offsetY:0.25)
+        (board Background image:"triangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:1.26 rotation:180 offsetY:-0.51)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.5 scaleY:2.5 offsetX:-0.825)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.5 scaleY:2.5 offsetX:0.825)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:2.5 scaleY:0.5 offsetY:-0.75)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:2.5 scaleY:0.5 offsetY:0.75)
+        (piece Scale "Marker" 0.5)
+    })
+    
+)

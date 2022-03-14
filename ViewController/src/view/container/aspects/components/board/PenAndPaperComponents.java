@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ import game.types.board.SiteType;
 import metadata.graphics.util.BoardGraphicsType;
 import other.context.Context;
 import other.state.container.ContainerState;
-import other.topology.Cell;
 import other.topology.Edge;
 import other.topology.TopologyElement;
 import other.topology.Vertex;
@@ -53,24 +51,22 @@ public class PenAndPaperComponents extends PuzzleComponents
 	public void drawComponents(final Graphics2D g2d, final Context context)
 	{	
 		final List<Vertex> vertices = graphStyle.topology().vertices();
-		
 		final BasicStroke strokeThick = boardDesign.strokeThick();
-		
 		final ContainerState cs = context.state().containerStates()[0];
 
-		if (!context.metadata().graphics().replaceComponentsWithFilledCells())
+		if (context.metadata().graphics().replaceComponentsWithFilledCells())
+		{
+			fillCellsBasedOnOwner(g2d, context);
+		}
+		else
 		{
 			super.drawComponents(g2d, context, (ArrayList<? extends TopologyElement>) graphStyle.topology().cells());
 			super.drawComponents(g2d, context, (ArrayList<? extends TopologyElement>) graphStyle.topology().vertices());
 		}
-		else
-		{
-			fillCells(g2d, context);
-		}
 		
 		// Pass 1: Draw thick black edges
 		g2d.setColor(Color.BLACK);
-		final BasicStroke slightlyThickerStroke = new BasicStroke(strokeThick.getLineWidth()*1 + 4.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
+		final BasicStroke slightlyThickerStroke = new BasicStroke(strokeThick.getLineWidth() + 4.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
 		g2d.setStroke(slightlyThickerStroke);
 
 		for (final Vertex va : vertices)
@@ -95,7 +91,7 @@ public class PenAndPaperComponents extends PuzzleComponents
 		}
 
 		// Pass 2: Redraw thinner edges in player colour
-		final BasicStroke roundedThinStroke = new BasicStroke(strokeThick.getLineWidth()*2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
+		final BasicStroke roundedThinStroke = new BasicStroke(strokeThick.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
 		g2d.setStroke(roundedThinStroke);
 
 		for (final Vertex va : vertices)
@@ -155,40 +151,6 @@ public class PenAndPaperComponents extends PuzzleComponents
 			final Point circlePosn = graphStyle.screenPosn(vertex.centroid());
 			final java.awt.Shape ellipseO = new Ellipse2D.Double(circlePosn.x-rO, circlePosn.y-rO, 2*rO, 2*rO);
 			g2d.fill(ellipseO);
-		}
-
-	}
-	
-	//-------------------------------------------------------------------------
-
-	/** 
-	 * Fills cells of the container that are owned by specific players with their colour. 
-	 */
-	public void fillCells(final Graphics2D g2d, final Context context)
-	{
-		final ContainerState cs = context.state().containerStates()[0];
-		for (int f = 0; f < context.topology().cells().size(); f++)
-		{
-			if (cs.whoCell(f) != 0)
-			{
-				final Cell face = context.topology().cells().get(f);
-				final GeneralPath path = new GeneralPath();
-				for (int v = 0; v < face.vertices().size(); v++)
-				{
-					if (path.getCurrentPoint() == null)
-					{
-						final Vertex prev = face.vertices().get(face.vertices().size() - 1);
-						final Point drawPrev = graphStyle.screenPosn(prev.centroid());
-						path.moveTo(drawPrev.x, drawPrev.y);
-					}
-					final Vertex corner = face.vertices().get(v);
-					final Point drawCorner = graphStyle.screenPosn(corner.centroid());
-					path.lineTo(drawCorner.x, drawCorner.y);
-				}
-
-				g2d.setColor(bridge.settingsColour().playerColour(context, cs.whoCell(f)));
-				g2d.fill(path);
-			}
 		}
 	}
 	

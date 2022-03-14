@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import annotations.Hide;
@@ -79,6 +78,7 @@ import other.action.state.ActionSetValue;
 import other.action.state.ActionSetVar;
 import other.action.state.ActionStoreStateInContext;
 import other.action.state.ActionTrigger;
+import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;
 import other.location.FullLocation;
@@ -86,7 +86,6 @@ import other.state.State;
 import other.state.container.ContainerState;
 import other.state.owned.Owned;
 import other.state.track.OnTrackIndices;
-import other.state.zhash.HashedBitSet;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 import other.trial.Trial;
@@ -623,14 +622,6 @@ public class Move extends BaseAction
 			final State currentState = context.state();
 			final Game game = context.game();
 			
-			// Step 1: restore previous RNG.
-			trial.removeLastRNGStates();
-			if(!trial.RNGStates().isEmpty())
-			{
-				final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
-				context.rng().restoreState(previousRNGState);
-			}
-			
 			// Step 2: Restore the data modified by the last end rules or nextPhase.
 			// Get the previous end data.
 			final UndoData undoData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
@@ -650,7 +641,7 @@ public class Move extends BaseAction
 			final int numTurnSamePlayer = undoData == null ? 0 : undoData.numTurnSamePlayer();
 			final int numConsecutivePasses = undoData == null ? 0 : undoData.numConsecutivePasses();
 			final FastTIntArrayList remainingDominoes = undoData == null ? null : undoData.remainingDominoes();
-			final HashedBitSet visited = undoData == null ? null : undoData.visited();
+			final BitSet visited = undoData == null ? null : undoData.visited();
 			final TIntArrayList sitesToRemove = undoData == null ? null : undoData.sitesToRemove();
 			final OnTrackIndices onTrackIndices = undoData == null ? null : undoData.onTrackIndices();
 			final Owned owned = undoData == null ? null : undoData.owned();
@@ -726,8 +717,14 @@ public class Move extends BaseAction
 				for(int i = 0; i < remainingDominoes.size(); i++)
 					currentState.remainingDominoes().add(remainingDominoes.get(i));
 			}
+			
 			if(visited != null)
-				currentState.setVisited(visited);
+			{
+				currentState.reInitVisited();
+				for(int site = 0; site < visited.size(); site++)
+					if(visited.get(site))
+						currentState.visit(site);
+			}
 	
 			if(sitesToRemove != null)
 			{
@@ -1641,6 +1638,36 @@ public class Move extends BaseAction
 		for (final Action action : getActionsWithConsequences(context))
 			moveConcepts.or(action.concepts(context, movesLudeme));
 		return moveConcepts;
+	}
+	
+	/**
+	 * @param context The Context.
+	 * @return The values associated with the Moves concepts computed thanks to the action/move concepts.
+	 */
+	public TIntArrayList moveConceptsValue(final Context context)
+	{
+		final TIntArrayList moveConceptsValues = new TIntArrayList();
+		
+		for(int i = 0; i < Concept.values().length; i++)
+			moveConceptsValues.add(0);
+		
+		for (final Action action : getActionsWithConsequences(context))
+		{
+			BitSet actionConcepts = action.concepts(context, movesLudeme);
+			for(int i = 0; i < Concept.values().length; i++)
+				if(actionConcepts.get(i))
+					moveConceptsValues.set(i, moveConceptsValues.get(i) + 1);
+		}
+//		
+//		System.out.println("Move is " + this);
+//
+//		for(int i = 0; i < Concept.values().length; i++)
+//			if(moveConceptsValues.get(i) != 0)
+//				System.out.println("Concept = " + Concept.values()[i] + " value = " + moveConceptsValues.get(i));
+//		
+//		System.out.println();
+		
+		return moveConceptsValues;
 	}
 
 	/**

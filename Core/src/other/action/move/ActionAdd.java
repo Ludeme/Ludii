@@ -335,7 +335,7 @@ public final class ActionAdd extends BaseAction
 			cs.addItemGeneric(context.state(), to, what, who, context.game(), type);
 		}
 
-		cs.removeFromEmpty(to, type);
+		cs.removeFromEmpty(to, type); 
 
 		if (what != 0)
 		{

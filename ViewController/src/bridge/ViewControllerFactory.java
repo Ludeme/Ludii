@@ -22,14 +22,12 @@ import view.component.custom.large.TileStyle;
 import view.container.ContainerStyle;
 import view.container.styles.BoardStyle;
 import view.container.styles.HandStyle;
-import view.container.styles.board.AgonStyle;
 import view.container.styles.board.BackgammonStyle;
 import view.container.styles.board.BoardlessStyle;
 import view.container.styles.board.ChessStyle;
 import view.container.styles.board.Connect4Style;
 import view.container.styles.board.ConnectiveGoalStyle;
 import view.container.styles.board.GoStyle;
-import view.container.styles.board.GooseStyle;
 import view.container.styles.board.HoundsAndJackalsStyle;
 import view.container.styles.board.IsometricStyle;
 import view.container.styles.board.JanggiStyle;
@@ -100,8 +98,6 @@ public class ViewControllerFactory
 			return new PenAndPaperStyle(bridge, container, context);
 		
 		// custom types
-		case Agon:
-			return new AgonStyle(bridge, container);
 		case Backgammon:
 			return new BackgammonStyle(bridge, container);
 		case Boardless:
@@ -112,8 +108,6 @@ public class ViewControllerFactory
 			return new ConnectiveGoalStyle(bridge, container);
 		case Go:
 			return new GoStyle(bridge, container);
-		case Goose:
-			return new GooseStyle(bridge, container);
 		case HoundsAndJackals:
 			return new HoundsAndJackalsStyle(bridge, container);
 		case Janggi:

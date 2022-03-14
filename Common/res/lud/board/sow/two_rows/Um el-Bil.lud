@@ -1,0 +1,132 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+(define "Column" <Board>)
+
+//------------------------------------------------------------------------------
+
+(game "Um el-Bil"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Column" store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom)) // P1 home
+        (regions P2 (sites Top))    // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+    })  
+    
+    (rules 
+        (start (set Count 4 to:(sites Track)))		
+        
+        phases:{
+        (phase "Opening"
+            (play 
+                (move
+                    Select 
+                    (from 
+                        (- ("Column") 1) 
+                    )
+                    (then 
+                        (sow  
+                            if:(= (count at:(to)) 1)
+                            apply:(fromTo 
+                                (from (to)) 
+                                (to (handSite Mover)) 
+                                count:1
+                            )
+                        )
+                    )
+                )		
+            )
+            (nextPhase "Play")
+        )
+        (phase "Play"
+            (play 
+                (move
+                    Select 
+                    (from 
+                        (sites Mover) 
+                        if:(< 0 (count at:(from)))
+                    )
+                    (then 
+                        (sow  
+                            if:(= (count at:(to)) 1)
+                            apply:(fromTo 
+                                (from (to)) 
+                                (to (handSite Mover)) 
+                                count:1
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end
+            (if (all Sites (sites Board) if:(is Empty (site)))
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> } {
+    (item "6 Holes"    <6>   "The game is played with 6 holes per row.")*   
+    (item "7 Holes"    <7>   "The game is played with 7 holes per row.")   
+    (item "8 Holes"    <8>   "The game is played with 8 holes per row.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Six Holes (Observed)" {
+        "Board Size/6 Holes"
+    })*
+    
+    (ruleset "Ruleset/Seven Holes (Observed)" {
+        "Board Size/7 Holes"
+    })
+    
+    (ruleset "Ruleset/Eight Holes (Observed)" {
+        "Board Size/8 Holes"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "'Um El-Bil is a two-row mancala-style board game played in Tunisia. Typically it is played in holes in the ground, with camel droppings, shells, or nuts as counters. It was rarely played by young girls. ")
+        (aliases {"'Um el-Bil"})
+        (useFor "Ruleset/Six Holes (Observed)" (rules "2x6 board. Four counters in each hole. Sowing occurs in an anti-clockwise direction. The first player sows from the hole on their right. When the final counter lands in an occupied hole, the turn ends. When the final counter lands in an empty hole, that counter is captured. The player who captures the most counters wins."))
+        (useFor "Ruleset/Six Holes (Observed)" (source "Ayoub 1991: 20-21."))
+        (useFor "Ruleset/Six Holes (Observed)" (id "1783"))
+        (useFor "Ruleset/Seven Holes (Observed)" (rules "2x7 board."))
+        (useFor "Ruleset/Seven Holes (Observed)" (source "Atoub 1991: 20-21."))
+        (useFor "Ruleset/Seven Holes (Observed)" (id "1785"))
+        (useFor "Ruleset/Eight Holes (Observed)" (rules "2x8 board."))
+        (useFor "Ruleset/Eight Holes (Observed)" (source "Ayoub 1991: 20-21."))
+        (useFor "Ruleset/Eight Holes (Observed)" (id "1786"))
+        (id "1783")
+        (version "1.3.2")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Tunisia, around 1988.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

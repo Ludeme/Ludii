@@ -83,6 +83,12 @@ public class ContainerComponents
 		
 		if (container != null && state.containerStates().length > container.index())
 		{
+			if (context.metadata().graphics().replaceComponentsWithFilledCells())
+			{
+				fillCellsBasedOnOwner(g2d, context);
+				return;
+			}
+			
 			final ContainerState cs = state.containerStates()[container.index()];
 			
 			// Draw pieces
@@ -122,9 +128,6 @@ public class ContainerComponents
 						if (component.isDie())
 						{
 							final int diceLocalState = context.diceSiteState().get(site);
-//							System.out.println(site);
-//							System.out.println(diceLocalState);
-//							System.out.println(context.currentInstanceContext().diceSiteState().get(site));
 							if (diceLocalState != -99)
 								localState = diceLocalState;
 						}
@@ -207,7 +210,7 @@ public class ContainerComponents
 							}
 						}
 						
-						if (component.isTile() && !HiddenUtil.siteHidden(context, cs, site, level, mover, type))
+						if (component.isTile() && container.index() == 0 && !HiddenUtil.siteHidden(context, cs, site, level, mover, type))
 							for (final Integer cellIndex : ContainerUtil.cellsCoveredByPiece(context, container, component, site, localState))
 								drawTilePiece(g2d, context, component, cellIndex.intValue(), stackOffset.x, stackOffset.y, container, localState, value, imageSize);
 						
@@ -257,6 +260,39 @@ public class ContainerComponents
 	  		g2d.draw(path);
 	  		g2d.setClip(oldClip);
 	 	}
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/** 
+	 * Fills cells of the container that are owned by specific players with their colour. 
+	 */
+	public void fillCellsBasedOnOwner(final Graphics2D g2d, final Context context)
+	{
+		final ContainerState cs = context.state().containerStates()[0];
+		for (int f = 0; f < context.topology().cells().size(); f++)
+		{
+			if (cs.whoCell(f) != 0)
+			{
+				final Cell face = context.topology().cells().get(f);
+				final GeneralPath path = new GeneralPath();
+				for (int v = 0; v < face.vertices().size(); v++)
+				{
+					if (path.getCurrentPoint() == null)
+					{
+						final Vertex prev = face.vertices().get(face.vertices().size() - 1);
+						final Point drawPrev = containerStyle.screenPosn(prev.centroid());
+						path.moveTo(drawPrev.x, drawPrev.y);
+					}
+					final Vertex corner = face.vertices().get(v);
+					final Point drawCorner = containerStyle.screenPosn(corner.centroid());
+					path.lineTo(drawCorner.x, drawCorner.y);
+				}
+
+				g2d.setColor(bridge.settingsColour().playerColour(context, cs.whoCell(f)));
+				g2d.fill(path);
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------

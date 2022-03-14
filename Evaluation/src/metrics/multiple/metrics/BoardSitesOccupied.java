@@ -7,6 +7,7 @@ import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -44,9 +45,9 @@ public class BoardSitesOccupied extends MultiMetricFramework
 		final ArrayList<Double> valueList = new ArrayList<>();
 		final int numberDefaultBoardSites = context.board().topology().getGraphElements(context.board().defaultSite()).size();
 		valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.generateRealMovesList())
 		{
-			context.game().apply(context, trial.getMove(i));
+			context.game().apply(context, m);
 			valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 		}
 		return valueList.toArray(new Double[0]);

@@ -20,7 +20,7 @@
                     )
                 ) 
                 from:(from) 
-                (range 1 #2)
+                (range 1 (- #2 1))
             )
             if:(is Empty (to)) 
             (apply 
@@ -2276,7 +2276,8 @@
             Lady Luck - All attack damage is randomly selected between 50% and 150% of the normal amount.
             
         //------------------------------------------------------------------------------")
-        (version "1.3.0")
+        (id "1421")
+        (version "1.3.2")
         (classification "board/war/replacement/eliminate/target")
         (author "Matthew Stephenson")
         (credit "Matthew Stephenson and Eric Piette")
@@ -2327,6 +2328,8 @@
         <FogOfWar:Metadata>
         
         (show Score " Gold")
+        
+        (piece Families {"Defined" "Fantasy"})
     })
     
     (ai

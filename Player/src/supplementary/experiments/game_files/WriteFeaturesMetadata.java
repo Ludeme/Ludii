@@ -10,7 +10,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.StringRoutines;
 import metadata.ai.features.Features;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import utils.AIFactory;
 import utils.AIUtils;
@@ -88,8 +88,8 @@ public class WriteFeaturesMetadata
 				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicy selectionSoftmax = mcts.learnedSelectionPolicy();
-		final SoftmaxPolicy playoutSoftmax = (SoftmaxPolicy) mcts.playoutStrategy();
+		final SoftmaxPolicyLinear selectionSoftmax = (SoftmaxPolicyLinear) mcts.learnedSelectionPolicy();
+		final SoftmaxPolicyLinear playoutSoftmax = (SoftmaxPolicyLinear) mcts.playoutStrategy();
 
 		// Generate our features metadata and write it
 		final Features features = AIUtils.generateFeaturesMetadata(selectionSoftmax, playoutSoftmax);

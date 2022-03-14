@@ -18,6 +18,7 @@ import game.functions.ints.count.simple.CountColumns;
 import game.functions.ints.count.simple.CountEdges;
 import game.functions.ints.count.simple.CountMoves;
 import game.functions.ints.count.simple.CountMovesThisTurn;
+import game.functions.ints.count.simple.CountLegalMoves;
 import game.functions.ints.count.simple.CountPhases;
 import game.functions.ints.count.simple.CountPlayers;
 import game.functions.ints.count.simple.CountRows;
@@ -68,8 +69,8 @@ public final class Count extends BaseIntFunction
 	 */
 	public static IntFunction construct
 	(
-			  final CountValueType countType, 
-	          final IntFunction of, 
+			  final CountValueType   countType, 
+	          final IntFunction 	 of, 
 	    @Name final IntArrayFunction in 
 	)
 	{
@@ -102,11 +103,11 @@ public final class Count extends BaseIntFunction
 	 */
 	public static IntFunction construct
 	(
-			           final CountStackType countType, 
-		    @Opt       final StackDirection stackDirection,
-		    @Opt       final SiteType type,
-		    @Or  @Name final IntFunction at,
-		    @Or  @Name final RegionFunction to,
+			           final CountStackType  countType, 
+		    @Opt       final StackDirection  stackDirection,
+		    @Opt       final SiteType 		 type,
+		    @Or  @Name final IntFunction 	 at,
+		    @Or  @Name final RegionFunction  to,
 		    @Opt @Name final BooleanFunction If,
 		    @Opt @Name final BooleanFunction stop
  		
@@ -150,7 +151,7 @@ public final class Count extends BaseIntFunction
 	public static IntFunction construct
 	(
 		     final CountSimpleType countType,
-		@Opt final SiteType type
+		@Opt final SiteType 	   type
 	)
 	{
 		switch (countType)
@@ -179,6 +180,8 @@ public final class Count extends BaseIntFunction
 			return new CountTurns();
 		case Vertices:
 			return new CountVertices();
+		case LegalMoves:
+			return new CountLegalMoves();
 		default:
 			break;
 		}
@@ -205,11 +208,11 @@ public final class Count extends BaseIntFunction
 	 */
 	public static IntFunction construct
 	(
-		@Opt           final CountSiteType countType, 
-		@Opt           final SiteType type,
+		@Opt           final CountSiteType  countType, 
+		@Opt           final SiteType 		type,
 		@Opt @Or @Name final RegionFunction in, 
-		@Opt @Or @Name final IntFunction at, 
-		@Opt @Or       final String name
+		@Opt @Or @Name final IntFunction 	at, 
+		@Opt @Or       final String 		name
 	)
 	{
 		int numNonNull = 0;
@@ -262,6 +265,7 @@ public final class Count extends BaseIntFunction
 	 *                  sites or the name of the piece to count only pieces of that
 	 *                  type.
 	 * @param in        The region where to count the pieces.
+	 * @param If        The condition to check for each site where is the piece [True].
 	 * 
 	 * @example (count Pieces Mover)
 	 * 
@@ -270,11 +274,12 @@ public final class Count extends BaseIntFunction
 	public static IntFunction construct
 	(
 		               final CountComponentType countType, 
-		@Opt           final SiteType type,
-		@Opt @Or       final RoleType role, 
-		@Opt @Or @Name final IntFunction of, 
-		@Opt           final String name,
-		@Opt @Name     final RegionFunction  in
+		@Opt           final SiteType 		    type,
+		@Opt @Or       final RoleType 			role, 
+		@Opt @Or @Name final IntFunction 		of, 
+		@Opt           final String 			name,
+		@Opt @Name     final RegionFunction  	in,
+		@Opt @Name     final BooleanFunction  	If
 	)
 	{
 		int numNonNull = 0;
@@ -290,7 +295,7 @@ public final class Count extends BaseIntFunction
 		switch (countType)
 		{
 		case Pieces:
-			return new CountPieces(type, role, of, name, in);
+			return new CountPieces(type, role, of, name, in, If);
 		case Pips:
 			return new CountPips(role, of);
 		default:
@@ -352,10 +357,10 @@ public final class Count extends BaseIntFunction
 	public static IntFunction construct
 	(
 			           final CountLibertiesType countType,
-			@Opt	   final SiteType type,
-			@Opt @Name final IntFunction at,
-			@Opt       final Direction    directions,
-			@Opt @Name final BooleanFunction If
+			@Opt	   final SiteType 			type,
+			@Opt @Name final IntFunction 		at,
+			@Opt       final Direction    		directions,
+			@Opt @Name final BooleanFunction 	If
 	)
 	{
 		switch (countType)
@@ -424,12 +429,12 @@ public final class Count extends BaseIntFunction
 	 */
 	public static IntFunction construct
 	(
-			      final CountStepsOnTrackType    countType,
-		@Opt @Or  final RoleType role,
+			      final CountStepsOnTrackType  countType,
+		@Opt @Or  final RoleType 			   role,
 		@Opt @Or  final game.util.moves.Player player,
-		@Opt @Or  final String      name,
-		@Opt      final IntFunction site1,
-		@Opt      final IntFunction site2
+		@Opt @Or  final String      		   name,
+		@Opt      final IntFunction 		   site1,
+		@Opt      final IntFunction 		   site2
 	)
 	{
 		switch (countType)

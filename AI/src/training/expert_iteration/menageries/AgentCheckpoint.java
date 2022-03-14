@@ -8,7 +8,7 @@ import main.grammar.Report;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.misc.BestAgent;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.finalmoveselection.RobustChild;
@@ -173,7 +173,7 @@ public class AgentCheckpoint
 						new RobustChild()
 					);
 
-			mcts.setLearnedSelectionPolicy(SoftmaxPolicy.constructSelectionPolicy(featuresMetadata, 0.0));
+			mcts.setLearnedSelectionPolicy(SoftmaxPolicyLinear.constructSelectionPolicy(featuresMetadata, 0.0));
 			mcts.setPlayoutValueWeight(0.0);
 			mcts.setWantsMetadataHeuristics(false);
 			mcts.setHeuristics(heuristicsMetadata);

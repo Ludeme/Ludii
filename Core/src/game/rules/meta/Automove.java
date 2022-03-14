@@ -10,7 +10,6 @@ import main.Constants;
 import other.MetaRules;
 import other.concept.Concept;
 import other.context.Context;
-import other.context.TempContext;
 import other.move.Move;
 import other.move.MoveUtilities;
 
@@ -60,13 +59,13 @@ public class Automove extends MetaRule
 				if (context.state().isDecided() != Constants.UNDEFINED)
 					context.state().setIsDecided(Constants.UNDEFINED);
 
-				final Context newContext = new TempContext(context);
-				game.applyInternal(newContext, move, false);
+				context.storeCurrentData(); // We need to save the data before to apply the move.
+				final Move moveApplied = (Move) move.apply(context, true);
 
-				final int mover = newContext.state().mover();
-				final int indexPhase = newContext.state().currentPhase(mover); 
-				final Phase phase = newContext.game().rules().phases()[indexPhase];
-				final Moves newLegalMoves = phase.play().moves().eval(newContext);
+				final int mover = context.state().mover();
+				final int indexPhase = context.state().currentPhase(mover); 
+				final Phase phase = context.game().rules().phases()[indexPhase];
+				final Moves newLegalMoves = phase.play().moves().eval(context);
 
 				for (int j = 0; j < newLegalMoves.moves().size() - 1; j++)
 				{
@@ -97,12 +96,12 @@ public class Automove extends MetaRule
 				{
 					final Moves forcedMoves = new BaseMoves(null);
 					for (int j = 0; j < newLegalMoves.moves().size(); j++)
-						MoveUtilities.chainRuleCrossProduct(newContext, forcedMoves, null,
-								newLegalMoves.moves().get(j), false);
+						MoveUtilities.chainRuleCrossProduct(context, forcedMoves, null, newLegalMoves.moves().get(j), false);
 					move.then().add(forcedMoves);
 
 					repeatAutoMove = true;
 				}
+				moveApplied.undo(context, true); // We undo the move.
 			}
 		}
 	}
@@ -131,7 +130,6 @@ public class Automove extends MetaRule
 	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.CopyContext.id(), true);
 		concepts.set(Concept.AutoMove.id(), true);
 		return concepts;
 	}

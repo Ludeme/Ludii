@@ -192,6 +192,15 @@ public class ResultsSummary
 				sb.append("P" + p + agentPointsPerPlayer[i][p] + "\n");
 			}
 			
+			agentGameDurations[i].measure();
+			sb.append("Game Durations" + agentGameDurations[i] + "\n");
+			
+			for (int p = 1; p < agentGameDurationsPerPlayer[i].length; ++p)
+			{
+				agentGameDurationsPerPlayer[i][p].measure();
+				sb.append("P" + p + agentGameDurationsPerPlayer[i][p] + "\n");
+			}
+			
 			if (i < agents.size() - 1)
 			{
 				sb.append("\n");

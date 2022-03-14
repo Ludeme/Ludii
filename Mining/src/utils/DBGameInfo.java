@@ -18,7 +18,7 @@ import main.options.Ruleset;
 public class DBGameInfo 
 {
 	
-	// Input (run AddMetadata.py script to generate this)
+	// SQL command to update this file located in the same directory
 	private static String rulesetIdsInputFilePath = "./res/concepts/input/GameRulesets.csv";
 	
 	// Cached version of ruleset-Id information.

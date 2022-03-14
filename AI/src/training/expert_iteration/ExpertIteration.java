@@ -47,7 +47,7 @@ import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
 import other.trial.Trial;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import training.expert_iteration.gradients.Gradients;
 import training.expert_iteration.menageries.Menagerie;
@@ -349,24 +349,24 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions = prepareTSPGFunctions(featureSets, selectionFunctions);
 				
 				// create our policies
-				final SoftmaxPolicy selectionPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear selectionPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							selectionFunctions, 
 							featureSets,
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final SoftmaxPolicy playoutPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear playoutPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							playoutFunctions, 
 							featureSets,
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final SoftmaxPolicy tspgPolicy = 
-						new SoftmaxPolicy
+				final SoftmaxPolicyLinear tspgPolicy = 
+						new SoftmaxPolicyLinear
 						(
 							tspgFunctions, 
 							featureSets,
@@ -384,6 +384,7 @@ public class ExpertIteration
 					break;
 				case "Random":
 					featureSetExpander = new RandomExpander();
+					break;
 				default:
 					System.err.println("Did not recognise feature set expander type: " + featureDiscoveryParams.expanderType);
 					return;
@@ -787,7 +788,7 @@ public class ExpertIteration
 									final FVector playoutErrors = 
 											Gradients.computeCrossEntropyErrors
 											(
-												playoutPolicy, expertPolicy, featureVectors, p, false
+												playoutPolicy, expertPolicy, featureVectors, p, objectiveParams.handleAliasingPlayouts
 											);
 
 									final FVector selectionGradients = selectionPolicy.computeParamGradients
@@ -1218,7 +1219,7 @@ public class ExpertIteration
 				final FeatureSetExpander expander,
 				final BaseFeatureSet featureSet,
 				final int p,
-				final SoftmaxPolicy policy,
+				final SoftmaxPolicyLinear policy,
 				final TDoubleArrayList featureActiveRatios,
 				final TLongArrayList featureLifetimes,
 				final TLongArrayList featureOccurrences,
@@ -2657,7 +2658,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--num-trials-per-policy-gradient-epoch")
 				.help("Number of trials to run per epoch for policy gradients.")
-				.withDefault(Integer.valueOf(100))
+				.withDefault(Integer.valueOf(60))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2748,7 +2749,11 @@ public class ExpertIteration
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--handle-aliasing")
-				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them")
+				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training selection policy.")
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--handle-aliasing-playouts")
+				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them, for training playout policy.")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--weight-decay-lambda")
@@ -2876,6 +2881,7 @@ public class ExpertIteration
 		exIt.objectiveParams.weightedImportanceSampling = argParse.getValueBool("--wis");
 		exIt.objectiveParams.noValueLearning = argParse.getValueBool("--no-value-learning");
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");
+		exIt.objectiveParams.handleAliasingPlayouts = argParse.getValueBool("--handle-aliasing-playouts");
 		exIt.objectiveParams.weightDecayLambda = argParse.getValueDouble("--weight-decay-lambda");
 		
 		exIt.optimisersParams.selectionOptimiserConfig = argParse.getValueString("--selection-optimiser");

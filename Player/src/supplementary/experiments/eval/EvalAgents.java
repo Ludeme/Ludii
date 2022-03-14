@@ -80,6 +80,9 @@ public class EvalAgents
 	
 	/** Whether we want to print general messages to System.out */
 	protected boolean printOut;
+	
+	/** Suppress warnings about number of trials not being divisible by number of permutations of agents */
+	protected boolean suppressDivisorWarning = false;
 
 	//-------------------------------------------------------------------------
 	
@@ -154,7 +157,8 @@ public class EvalAgents
 				.setOutDir(outDir)
 				.setOutputAlphaRankData(outputAlphaRankData)
 				.setOutputSummary(outputSummary)
-				.setPrintOut(printOut);
+				.setPrintOut(printOut)
+				.setSuppressDivisorWarning(suppressDivisorWarning);
 		
 		gamesSet.startGames();
 	}
@@ -273,6 +277,11 @@ public class EvalAgents
 				.help("Suppress general prints to System.out.")
 				.withType(OptionTypes.Boolean)
 				.withNumVals(0));
+		argParse.addOption(new ArgOption()
+				.withNames("--suppress-divisor-warning")
+				.help("Suppress warning about number of trials not being divisible by number of permutations of agents.")
+				.withType(OptionTypes.Boolean)
+				.withNumVals(0));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--useGUI")
@@ -321,6 +330,7 @@ public class EvalAgents
 		eval.outputSummary = argParse.getValueBool("--output-summary");
 		eval.outputAlphaRankData = argParse.getValueBool("--output-alpha-rank-data");
 		eval.printOut = !argParse.getValueBool("--no-print-out");
+		eval.suppressDivisorWarning = argParse.getValueBool("--suppress-divisor-warning");
 		
 		eval.startExperiment();
 	}

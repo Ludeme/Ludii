@@ -91,6 +91,8 @@ public class Ai implements MetadataItem
 	 */
 	public Heuristics heuristics()
 	{
+		if (heuristics == null)
+			return trainedHeuristics;
 		return heuristics;
 	}
 	

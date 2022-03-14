@@ -127,7 +127,8 @@
         (aliases {"La Pipopipette"})
         (rules "It is played on a board that is a grid of dots. 3x3 dots is common. Players alternate turns drawing a line between two of the dots. If a player completes a square, they receive one point and play again. The player with the most points when there are no more moves wins.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Dots_and_Boxes\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.0")
+        (id "103")
+        (version "1.3.2")
         (classification "math/graph")
         (author "Édouard Lucas")
         (credit "Eric Piette")
@@ -138,7 +139,7 @@
     (graphics {
         (player Colour P1 (colour Red))
         (player Colour P2 (colour Blue))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         
     })
     (ai

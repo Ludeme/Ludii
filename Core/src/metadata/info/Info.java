@@ -14,6 +14,7 @@ import metadata.info.database.Classification;
 import metadata.info.database.Credit;
 import metadata.info.database.Date;
 import metadata.info.database.Description;
+import metadata.info.database.Id;
 import metadata.info.database.Origin;
 import metadata.info.database.Publisher;
 import metadata.info.database.Rules;
@@ -101,6 +102,20 @@ public class Info implements MetadataItem, Serializable
 			if (infoItem instanceof Source)
 				sources.add(((Source) infoItem).source());
 		return sources;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The ruleset database table Id.
+	 */
+	public ArrayList<String> getId()
+	{
+		final ArrayList<String> ids = new ArrayList<>();
+		for (final InfoItem infoItem : items)
+			if (infoItem instanceof Id)
+				ids.add(((Id) infoItem).id());
+		return ids;
 	}
 	
 	//-------------------------------------------------------------------------

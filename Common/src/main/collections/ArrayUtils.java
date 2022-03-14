@@ -1,5 +1,8 @@
 package main.collections;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -89,6 +92,22 @@ public class ArrayUtils
 	}
 	
 	/**
+	 * @param val
+	 * @param arr
+	 * @return (First) index of given val in given array. -1 if not found
+	 */
+	public static int indexOf(final Object val, final Object[] arr)
+	{
+		for (int i = 0; i < arr.length; ++i)
+		{
+			if (arr[i].equals(val))
+				return i;
+		}
+		
+		return -1;
+	}
+	
+	/**
 	 * @param arr
 	 * @return Maximum value in given array
 	 */
@@ -120,6 +139,23 @@ public class ArrayUtils
 		}
 		
 		return max;
+	}
+	
+	/**
+	 * @param arr
+	 * @return Minimum value in given array
+	 */
+	public static float min(final float[] arr)
+	{
+		float min = Float.POSITIVE_INFINITY;
+		
+		for (final float val : arr)
+		{
+			if (val < min)
+				min = val;
+		}
+		
+		return min;
 	}
 	
 	/**
@@ -199,6 +235,27 @@ public class ArrayUtils
 		}
 		
 		return sb.toString();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param numEntries
+	 * @param comp
+	 * @return A list of indices (ranging from 0 up to numEntries (exclusive), sorted
+	 * using the given comparator.
+	 */
+	public static List<Integer> sortedIndices(final int numEntries, final Comparator<Integer> comp)
+	{
+		final List<Integer> list = new ArrayList<Integer>(numEntries);
+		
+		for (int i = 0; i < numEntries; ++i)
+		{
+			list.add(Integer.valueOf(i));
+		}
+		list.sort(comp);
+		
+		return list;
 	}
 	
 	//-------------------------------------------------------------------------

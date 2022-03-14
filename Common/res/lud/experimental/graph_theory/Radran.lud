@@ -225,7 +225,8 @@
         {
         (description "Radran is a graph theory game that uses a regular graph mechanism. A regular graph is a graph where each vertex has the same number of neighbours; i.e. every vertex has the same degree. Radran can be played on any undirected and edge-weighted graph. It can be played with two or more player.")
         (rules "The graph is initially empty. Players alternate turns colouring an uncoloured edge between two of the vertices. Both players share a common colour for this gameplay. Radran is a score-based game. At each turn, a player gets a score, which is equal to the cost of his last coloured edge. The game ends when the coloured graph is regular. The player with the highest score wins.")
-        (version "1.3.0")
+        (id "691")
+        (version "1.3.2")
         (classification "experimental/graph theory")
         (author "Tahmina Begum")
         (credit "Tahmina Begum")
@@ -235,7 +236,7 @@
     
     (graphics {
         (player Colour Neutral (colour 255 127 0))
-        (board Style PenAndPaper)
+        (board Style PenAndPaper replaceComponentsWithFilledCells:True)
         (show Cost)
         (show Edges ThinDotted (colour 127 127 127))
         

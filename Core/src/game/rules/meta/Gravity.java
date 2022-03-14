@@ -86,8 +86,7 @@ public class Gravity extends MetaRule
 						final ContainerState cs = newContext.containerState(newContext.containerId()[site]);
 						if (cs.what(site, SiteType.Vertex) != 0)
 						{
-							final List<game.util.graph.Step> steps = topology.trajectories()
-									.steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Downward);
+							final List<game.util.graph.Step> steps = topology.trajectories().steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Downward);
 
 							for (final Step step : steps)
 							{

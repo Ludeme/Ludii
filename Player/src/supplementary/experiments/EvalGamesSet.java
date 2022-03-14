@@ -89,6 +89,9 @@ public class EvalGamesSet
 	/** The results of the last experiment run. */
 	protected ResultsSummary resultsSummary = null;
 	
+	/** Suppress warnings about number of trials not being divisible by number of permutations of agents */
+	protected boolean suppressDivisorWarning = false;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -211,7 +214,7 @@ public class EvalGamesSet
 						{
 							numGamesToPlay += (numGamesToPlay % aiListPermutations.size());
 						}
-						else
+						else if (!suppressDivisorWarning)
 						{
 							System.out.println
 							(
@@ -537,6 +540,18 @@ public class EvalGamesSet
 	public EvalGamesSet setPrintOut(final boolean printOut)
 	{
 		this.printOut = printOut;
+		return this;
+	}
+	
+	/**
+	 * Set whether we want to suppress warnings about number of trials not being
+	 * divisible by number of permutations of agents.
+	 * @param suppress
+	 * @return This, modified.
+	 */
+	public EvalGamesSet setSuppressDivisorWarning(final boolean suppress)
+	{
+		this.suppressDivisorWarning = suppress;
 		return this;
 	}
 

@@ -11,6 +11,7 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -64,13 +65,15 @@ public class Stability extends Metric
 			for (int i = 0; i <= context.game().players().count(); i++)
 				allPlayersStateEvaluationsAcrossTrial.add(new ArrayList<>());
 			
+			final List<Move> realMoves = trial.generateRealMovesList();
+			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 					allPlayersStateEvaluationsAcrossTrial.get(j).add(allPlayerStateEvaluations.get(j));
 				
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, realMoves.get(i - trial.numInitialPlacementMoves()));
 			}
 			
 			// Record the average variance for each players state evaluations.

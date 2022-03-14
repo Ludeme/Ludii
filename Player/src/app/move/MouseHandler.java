@@ -126,11 +126,15 @@ public class MouseHandler
 		final Context context = app.contextSnapshot().getContext(app);
 		
 		// clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getAllLocations(context, app.bridge()));
-		final Location clickedLocation;
+		Location clickedLocation;
 		if (app.settingsPlayer().componentIsSelected())
 			clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getLegalToLocations(app.bridge(), context));
 		else
 			clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getLegalFromLocations(context));
+		
+		// If not valid legal location was found, just use the closest site to what they clicked.
+		if (clickedLocation.equals(new FullLocation(Constants.UNDEFINED)))
+			clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getAllLocations(context, app.bridge()));
 		
 		app.bridge().settingsVC().setLastClickedSite(clickedLocation);
 		app.repaint();

@@ -337,7 +337,7 @@ public class SettingsDialog extends JDialog
 			{
 
 				// AI type for all
-				if (comboBoxAgentAll.getSelectedIndex() != aiStringsBlank.size() - 1)
+				if (comboBoxAgentAll.isEnabled() && comboBoxAgentAll.getSelectedIndex() != aiStringsBlank.size() - 1)
 				{
 					// set AI name/type
 					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
@@ -345,18 +345,21 @@ public class SettingsDialog extends JDialog
 				}
 
 				// AI search time for all
-				try
+				if (textFieldThinkingTimeAll.isEnabled())
 				{
-					double allSearchTimeValue = Double.valueOf(textFieldThinkingTimeAll.getText()).doubleValue();
-					if (allSearchTimeValue <= 0)
-						allSearchTimeValue = 1.0;
-
-					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-						playerThinkTimesArray[i].setSelectedItem(Double.valueOf(allSearchTimeValue));
-				}
-				catch (final Exception E)
-				{
-					// invalid think time
+					try
+					{
+						double allSearchTimeValue = Double.valueOf(textFieldThinkingTimeAll.getText()).doubleValue();
+						if (allSearchTimeValue <= 0)
+							allSearchTimeValue = 1.0;
+	
+						for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
+							playerThinkTimesArray[i].setSelectedItem(Double.valueOf(allSearchTimeValue));
+					}
+					catch (final Exception E)
+					{
+						// invalid think time
+					}
 				}
 
 				applyPlayerDetails(app, context);
@@ -655,16 +658,6 @@ public class SettingsDialog extends JDialog
 		checkBoxNetworkRefresh.setBounds(321, 740, 86, 23);
 		otherPanel.add(checkBoxNetworkRefresh);
 		
-		final JLabel labelPauseAI = new JLabel("|< Button Pauses AI");
-		labelPauseAI.setFont(new Font("Dialog", Font.BOLD, 14));
-		labelPauseAI.setBounds(30, 360, 227, 17);
-		otherPanel.add(labelPauseAI);
-		
-		final JCheckBox checkBoxPauseAI = new JCheckBox("yes");
-		checkBoxPauseAI.setSelected(true);
-		checkBoxPauseAI.setBounds(321, 360, 86, 23);
-		otherPanel.add(checkBoxPauseAI);
-		
 		final JLabel labelSaveTrial = new JLabel("Save Trial After Moves");
 		labelSaveTrial.setFont(new Font("Dialog", Font.BOLD, 14));
 		labelSaveTrial.setBounds(30, 400, 227, 17);
@@ -751,17 +744,7 @@ public class SettingsDialog extends JDialog
 				app.updateTabs(context);
 			}
 		});
-		
-		checkBoxPauseAI.setSelected(app.settingsPlayer().startButtonPausesAI());
-		checkBoxPauseAI.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(final ActionEvent e)
-			{
-				app.settingsPlayer().setStartButtonPausesAI(checkBoxPauseAI.isSelected());
-			}
-		});
-		
+
 		checkBoxSaveTrial.setSelected(app.settingsPlayer().saveTrialAfterMove());
 		checkBoxSaveTrial.addActionListener(new ActionListener()
 		{

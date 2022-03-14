@@ -1,0 +1,44 @@
+(game "Khiam"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 4)
+                (shift 0 2 (rectangle 1 4))
+                (shift 1.5 1 (square 1))
+            })
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+    })
+    (rules
+        (start { 
+            (set Count 6 to:(difference (sites Board) (sites Row 1)))
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Khiam is a mancala-style board game played in the Bordj Bou Arreridj region of Algeria in the early twentieth century. Players scooped holes in the soil to use as the board and used snail shells or date pits as counters.")
+        (rules "2x4 board, with a store in the center. Six counters in each hole. Players alternate turns picking up the counters in their holes and sowing them, sowing first into the hole from which they picked up the counters. When the final counter falls in an occupied hole, the counters in that hole are captured. The player who captures the most counters wins.")
+        (source "Robert 1921: 67.")
+        (id "1946")
+        (version "1.3.2")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Algeria, around 1921.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

@@ -152,7 +152,6 @@ public final class MaxCaptures extends Effect
 		concepts.or(withValueFn.concepts(game));
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.MaxCapture.id(), true);
-		concepts.set(Concept.CopyContext.id(), true);
 
 		if (then() != null)
 			concepts.or(then().concepts(game));

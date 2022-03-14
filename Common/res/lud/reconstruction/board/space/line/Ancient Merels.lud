@@ -1,0 +1,28 @@
+(game "Ancient Merels"
+    (players 2)
+    
+    (equipment { 
+        (board (concentric Square rings:3) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each) 
+    })  
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)

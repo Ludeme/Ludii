@@ -142,7 +142,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 				{
 					for (final Action action : move.actions())
 					{
-						if (action != null && action.actionType()!= null && action.actionType().equals(ActionType.Remove))
+						if (action != null && action.actionType() != null && action.actionType().equals(ActionType.Remove))
 						{
 							final ActionRemove removeAction = (ActionRemove) action;
 							final int removeSite = removeAction.to();

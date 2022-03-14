@@ -6,6 +6,7 @@ import metrics.Evaluation;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -40,12 +41,12 @@ public class DecisionFactor extends MultiMetricFramework
 	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.generateRealMovesList())
 		{
 			if (context.game().moves(context).moves().size() > 1)
 				valueList.add(Double.valueOf(context.game().moves(context).moves().size()));
 			
-			context.game().apply(context, trial.getMove(i));
+			context.game().apply(context, m);
 		}
 		return valueList.toArray(new Double[0]);
 	}

@@ -1,18 +1,21 @@
 package policies;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import features.FeatureVector;
 import features.WeightVector;
 import features.feature_sets.BaseFeatureSet;
-import features.feature_sets.network.SPatterNetFeatureSet;
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import function_approx.BoostedLinearFunction;
 import function_approx.LinearFunction;
 import game.Game;
 import game.rules.play.moves.Moves;
 import gnu.trove.list.array.TIntArrayList;
+import main.Constants;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import other.context.Context;
@@ -105,34 +108,6 @@ public class GreedyPolicy extends Policy
 					featureSet.computeFeatureVectors(context, actions, thresholded),
 					context.state().mover()
 				);
-	}
-	
-	@Override
-	public float computeLogit(final Context context, final Move move)
-	{
-		final BaseFeatureSet featureSet;
-		
-		if (featureSets.length == 1)
-		{
-			featureSet = featureSets[0];
-		}
-		else
-		{
-			featureSet = featureSets[context.state().mover()];
-		}
-		
-		final LinearFunction linearFunction;
-		
-		if (linearFunctions.length == 1)
-		{
-			linearFunction = linearFunctions[0];
-		}
-		else
-		{
-			linearFunction = linearFunctions[context.state().mover()];
-		}
-		
-		return linearFunction.predict(featureSet.computeFeatureVector(context, move, true));
 	}
 	
 	/**
@@ -258,8 +233,7 @@ public class GreedyPolicy extends Policy
 	@Override
 	public void customise(final String[] inputs) 
 	{
-		// TODO allow reading multiple different weight filepaths
-		String policyWeightsFilepath = null;
+		final List<String> policyWeightsFilepaths = new ArrayList<String>();
 		boolean boosted = false;
 		
 		for (int i = 1; i < inputs.length; ++i)
@@ -268,8 +242,28 @@ public class GreedyPolicy extends Policy
 			
 			if (input.toLowerCase().startsWith("policyweights="))
 			{
-				policyWeightsFilepath = 
-						input.substring("policyweights=".length());
+				if (policyWeightsFilepaths.size() > 0)
+					policyWeightsFilepaths.clear();
+				
+				policyWeightsFilepaths.add(input.substring("policyweights=".length()));
+			}
+			else if (input.toLowerCase().startsWith("policyweights"))
+			{
+				for (int p = 1; p <= Constants.MAX_PLAYERS; ++p)
+				{
+					if (input.toLowerCase().startsWith("policyweights" + p + "="))
+					{
+						while (policyWeightsFilepaths.size() <= p)
+						{
+							policyWeightsFilepaths.add(null);
+						}
+						
+						if (p < 10)
+							policyWeightsFilepaths.set(p, input.substring("policyweightsX=".length()));
+						else		// Doubt we'll ever have more than 99 players
+							policyWeightsFilepaths.set(p, input.substring("policyweightsXX=".length()));
+					}
+				}
 			}
 			else if (input.toLowerCase().startsWith("playoutturnlimit="))
 			{
@@ -291,46 +285,55 @@ public class GreedyPolicy extends Policy
 			}
 		}
 		
-		if (policyWeightsFilepath != null)
+		if (!policyWeightsFilepaths.isEmpty())
 		{
-			final String parentDir = 
-					new File(policyWeightsFilepath).getParent();
-			
-			if (! new File(policyWeightsFilepath).exists())
-			{
-				// replace with whatever is the latest file we have
-				policyWeightsFilepath = 
-						ExperimentFileUtils.getLastFilepath(
-								parentDir + "/PolicyWeights", "txt");
-			}
-			
-			if (boosted)
-			{
-				this.linearFunctions = new LinearFunction[]{
-						BoostedLinearFunction.boostedFromFile(policyWeightsFilepath, null)
-				};
-			}
-			else
-			{
-				this.linearFunctions = new LinearFunction[]{
-						LinearFunction.fromFile(policyWeightsFilepath)
-				};
-			}
-						
+			this.linearFunctions = new LinearFunction[policyWeightsFilepaths.size()];
 			this.featureSets = new BaseFeatureSet[linearFunctions.length];
 			
-			for (int i = 0; i < linearFunctions.length; ++i)
+			for (int i = 0; i < policyWeightsFilepaths.size(); ++i)
 			{
-				if (linearFunctions[i] != null)
+				String policyWeightsFilepath = policyWeightsFilepaths.get(i);
+				
+				if (policyWeightsFilepath != null)
 				{
-					featureSets[i] = new SPatterNetFeatureSet(parentDir + File.separator + linearFunctions[i].featureSetFile());
+					final String parentDir = new File(policyWeightsFilepath).getParent();
+					
+					if (!new File(policyWeightsFilepath).exists())
+					{
+						// Replace with whatever is the latest file we have
+						if (policyWeightsFilepath.contains("Selection"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsSelection_P" + i, "txt");
+						}
+						else if (policyWeightsFilepath.contains("Playout"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsPlayout_P" + i, "txt");
+						}
+						else if (policyWeightsFilepath.contains("TSPG"))
+						{
+							policyWeightsFilepath = 
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsTSPG_P" + i, "txt");
+						}
+						else
+						{
+							policyWeightsFilepath = null;
+						}
+					}
+					
+					if (boosted)
+						linearFunctions[i] = BoostedLinearFunction.boostedFromFile(policyWeightsFilepath, null);
+					else
+						linearFunctions[i] = LinearFunction.fromFile(policyWeightsFilepath);
+					
+					featureSets[i] = JITSPatterNetFeatureSet.construct(parentDir + File.separator + linearFunctions[i].featureSetFile());
 				}
 			}
 		}
 		else
 		{
-			System.err.println("Cannot construct Greedy Policy from: "
-					+ Arrays.toString(inputs));
+			System.err.println("Cannot construct Greedy Policy from: " + Arrays.toString(inputs));
 		}
 	}
 	

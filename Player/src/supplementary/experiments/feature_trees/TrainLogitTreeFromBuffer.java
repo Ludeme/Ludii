@@ -19,7 +19,7 @@ import metadata.ai.features.trees.FeatureTrees;
 import metadata.ai.features.trees.logits.LogitNode;
 import metadata.ai.features.trees.logits.LogitTree;
 import other.GameLoader;
-import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import utils.AIFactory;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -98,7 +98,7 @@ public class TrainLogitTreeFromBuffer
 				);
 
 		final MCTS mcts = (MCTS) AIFactory.createAI(agentStr);
-		final SoftmaxPolicy playoutSoftmax = (SoftmaxPolicy) mcts.playoutStrategy();
+		final SoftmaxPolicyLinear playoutSoftmax = (SoftmaxPolicyLinear) mcts.playoutStrategy();
 		
 		final BaseFeatureSet[] featureSets = playoutSoftmax.featureSets();
 		final LinearFunction[] linearFunctions = playoutSoftmax.linearFunctions();
@@ -133,7 +133,7 @@ public class TrainLogitTreeFromBuffer
 			}
 			
 			// Generate logit tree for Player p
-			final LogitTreeNode root = ExperienceLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, 10);
+			final LogitTreeNode root = ExperienceLogitTreeLearner.buildTree(featureSets[p], linearFunctions[p], buffer, 10, 5);
 			
 			// Convert to metadata structure
 			final LogitNode metadataRoot = root.toMetadataNode();
@@ -142,7 +142,7 @@ public class TrainLogitTreeFromBuffer
 		
 		try (final PrintWriter writer = new PrintWriter(outFile))
 		{
-			writer.println(new FeatureTrees(metadataTrees));
+			writer.println(new FeatureTrees(metadataTrees, null));
 		}
 		catch (final IOException e)
 		{

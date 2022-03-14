@@ -126,7 +126,7 @@ public final class AG0Selection implements SelectionStrategy
 				}
 				else
 				{
-					System.err.println("AG0Selection ignores unknown customization: " + input);
+					System.err.println("AG0Selection ignores unknown customisation: " + input);
 				}
 			}
 		}

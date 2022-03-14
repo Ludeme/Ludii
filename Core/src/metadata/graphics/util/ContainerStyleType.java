@@ -55,9 +55,6 @@ public enum ContainerStyleType implements MetadataItem
 
 	//---------- Custom styles for specific games ----------
 	
-	/** Custom style for the Agon board. */
-	Agon,
-	
 	/** Custom style for the Backgammon board. */
 	Backgammon,
 	
@@ -66,9 +63,6 @@ public enum ContainerStyleType implements MetadataItem
 	
 	/** Custom style for the Connect4 board. */
 	Connect4,
-	
-	/** Custom style for the Game of the Goose board. */
-	Goose,
 	
 	/** Custom style for the Go board. */
 	Go,

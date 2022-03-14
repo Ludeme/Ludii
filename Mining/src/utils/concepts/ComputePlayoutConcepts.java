@@ -622,7 +622,7 @@ public class ComputePlayoutConcepts
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
 		for(int i = 0 ; i < trials.size();i++)
 		{
-			trialsMetrics[i] = trials.get(i);
+			trialsMetrics[i] = new Trial(trials.get(i));
 			rngTrials[i] = allStoredRNG.get(i);
 		}
 		

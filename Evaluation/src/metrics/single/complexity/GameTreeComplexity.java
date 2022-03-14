@@ -8,6 +8,7 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -57,13 +58,13 @@ public class GameTreeComplexity extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			double branchingFactor = 0.0;
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
-				branchingFactor += Double.valueOf(context.game().moves(context).moves().size()) / trial.numMoves();
-				context.game().apply(context, trial.getMove(i));
+				branchingFactor += Double.valueOf(context.game().moves(context).moves().size()) / trial.generateRealMovesList().size();
+				context.game().apply(context, m);
 			}
 
-			gameTreeComplexity += trial.numMoves() * Math.log10(branchingFactor);
+			gameTreeComplexity += trial.generateRealMovesList().size() * Math.log10(branchingFactor);
 		}
 
 		return gameTreeComplexity / trials.length;

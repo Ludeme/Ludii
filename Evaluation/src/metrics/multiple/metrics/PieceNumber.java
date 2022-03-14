@@ -7,6 +7,7 @@ import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -42,9 +43,9 @@ public class PieceNumber extends MultiMetricFramework
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		valueList.add(Double.valueOf(Utils.numPieces(context)));
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.generateRealMovesList())
 		{
-			context.game().apply(context, trial.getMove(i));
+			context.game().apply(context, m);
 			valueList.add(Double.valueOf(Utils.numPieces(context)));
 		}
 		return valueList.toArray(new Double[0]);

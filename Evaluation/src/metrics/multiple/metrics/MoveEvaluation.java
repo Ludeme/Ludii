@@ -7,6 +7,7 @@ import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -41,10 +42,10 @@ public class MoveEvaluation extends MultiMetricFramework
 	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
-		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		for (final Move m : trial.generateRealMovesList())
 		{
-			valueList.add(Utils.evaluateMove(evaluation, context, trial.getMove(i)));
-			context.game().apply(context, trial.getMove(i));
+			valueList.add(Utils.evaluateMove(evaluation, context, m));
+			context.game().apply(context, m);
 		}
 		return valueList.toArray(new Double[0]);
 	}

@@ -50,7 +50,7 @@ public final class ForEach extends Effect
 	 * @param forEachType    The type of property to iterate.
 	 * @param type           The type of the graph elements of the group [default SiteType of the board].
 	 * @param site           The site to iterate through. 
-	 * @param stackDirection The direction to count in the stack [FromBottom].
+	 * @param stackDirection The direction to count in the stack [FromTop].
 	 * @param moves          The moves.
 	 * @param then           The moves applied after that move is applied.
 	 * 

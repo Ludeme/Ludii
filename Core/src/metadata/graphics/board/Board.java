@@ -28,8 +28,9 @@ public class Board implements GraphicsItem
 	/**
 	 * For setting the style of a board.
 	 * 
-	 * @param boardType          The type of data.
-	 * @param containerStyleType Container style wanted for the board.
+	 * @param boardType          					The type of data.
+	 * @param containerStyleType 					Container style wanted for the board.
+	 * @param replaceComponentsWithFilledCells		True if cells should be filled instead of component drawn [False].
 	 * 
 	 * @example (board Style Chess)
 	 */
@@ -37,42 +38,14 @@ public class Board implements GraphicsItem
 	public static GraphicsItem construct
 	(
 		final BoardStyleType boardType, 
-		final ContainerStyleType containerStyleType
+		final ContainerStyleType containerStyleType,
+		@Opt @Name final Boolean replaceComponentsWithFilledCells
 	)
 	{
 		switch (boardType)
 		{
 		case Style:
-			return new BoardStyle(containerStyleType, true);
-		default:
-			break;
-		}
-
-		// We should never reach that except if we forget some codes.
-		throw new IllegalArgumentException("Board(): A BoardStyleType is not implemented.");
-	}
-	
-	/**
-	 * For setting the style Pen and Paper of a board.
-	 * 
-	 * @param boardType          					The type of data.
-	 * @param containerStyleType 					Container style wanted for the board.
-	 * @param replaceComponentsWithFilledCells		True if cells should be filled instead of component drawn.
-	 * 
-	 * @example (board Style Chess)
-	 */
-	@SuppressWarnings("javadoc")
-	public static GraphicsItem construct
-	(
-		       final BoardStyleType boardType, 
-		       final BoardStylePenAndPaperType containerStyleType,
-		@Name  final Boolean replaceComponentsWithFilledCells
-	)
-	{
-		switch (boardType)
-		{
-		case Style:
-			return new BoardStyle(ContainerStyleType.PenAndPaper,replaceComponentsWithFilledCells.booleanValue());
+			return new BoardStyle(containerStyleType, replaceComponentsWithFilledCells);
 		default:
 			break;
 		}

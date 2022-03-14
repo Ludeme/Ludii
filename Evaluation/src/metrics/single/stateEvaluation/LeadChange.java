@@ -13,6 +13,7 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -66,7 +67,7 @@ public class LeadChange extends Metric
 			
 			Set<Integer> pastCurrentLeaders = new HashSet<>();
 			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
 				final Set<Integer> currentLeaders = new HashSet<>();
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
@@ -79,10 +80,10 @@ public class LeadChange extends Metric
 					leadChange++;
 				
 				pastCurrentLeaders = currentLeaders;
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, m);
 			}
 			
-			avgLeadChange += leadChange / trial.numberRealMoves();
+			avgLeadChange += leadChange / trial.generateRealMovesList().size();
 		}
 
 		return avgLeadChange / trials.length;

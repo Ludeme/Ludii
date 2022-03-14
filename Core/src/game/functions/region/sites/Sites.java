@@ -779,7 +779,7 @@ public final class Sites extends BaseRegionFunction
 
 		if (numNonNull > 1)
 			throw new IllegalArgumentException(
-					"Sites(): A SitesDirectionType only one of index, role, direction can be non-null.");
+					"Sites(): A SitesSideType only one of index, role, direction can be non-null.");
 
 		switch (regionType)
 		{

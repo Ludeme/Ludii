@@ -1,0 +1,113 @@
+(define "OnPromotionZone" (is In (last To) (sites Next)) )
+
+(define "LargeDiagonals"
+    (union
+        (sites Direction from:4 NW included:True)
+        (sites Direction from:0 NE included:True)
+    )
+)
+
+(define "HopLargeDiagonals" 
+    (move Hop
+        (from
+            (from)
+            if:(is In (from) ("LargeDiagonals"))
+        )
+        Adjacent
+        (between 
+            before:(count Rows) 
+            after:(count Rows)
+            if:(and (is Enemy (who at:(between))) (is In (between) ("LargeDiagonals"))) 
+            (apply (remove (between)))
+        )
+        (to if:(and (is Empty (to)) (is In (to) ("LargeDiagonals"))))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Fetach"
+    (players {(player N) (player S)})  
+    
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Counter" Each
+            (or {
+                (move Step 
+                    (if (!= 0 (count Moves))
+                        (difference Adjacent Backwards)
+                        Forwards
+                    )
+                    (to if:(is Empty (to)))
+                    (then 
+                        (if "OnPromotionZone"
+                            (promote (last To) (piece "DoubleCounter") Mover)
+                        )
+                    )	
+                )
+                (move Hop 
+                    (difference Adjacent Backwards)
+                    (between 
+                        if:(is Enemy (who at:(between))) 
+                        (apply (remove (between)))
+                    )
+                    (to if:(is Empty (to)))
+                    (then 
+                        (if "OnPromotionZone"
+                            (promote (last To) (piece "DoubleCounter") Mover)
+                        )
+                    )	
+                    
+                )
+            })
+        )
+        (piece "DoubleCounter" Each
+            (or {
+                (move Step 
+                    Adjacent
+                    (to if:(is Empty (to)))
+                )
+                (move Hop 
+                    Adjacent
+                    (between 
+                        if:(is Enemy (who at:(between))) 
+                        (apply (remove (between)))
+                    )
+                    (to if:(is Empty (to)))
+                )
+                ("HopLargeDiagonals")
+            })
+        )
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
+    
+    (rules 
+        (start { 
+            (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ) )
+            (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) } ) )
+        })
+        (play (forEach Piece))
+        (end (if (no Pieces Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Fetach is a capturing game played in Morocco. It was described by Moroccan immigrants in France, who described games played during their childhood in Southern Morocco.")
+        (aliases {"Quireq"})
+        (rules "5x5 intersecting lines with diagonals drawn in each quadrant. Twelve pieces per player, which begin on the rows closest to the player and the two spots to the right of the central point, leaving the central point open. Players alternate turns moving the pieces along the lines of the board. The first play is from one of the pieces directly above or below the central point. Pieces cannot move backwards. A player may capture an opponent's piece by hopping over it to an empty spot immediately adjacent to the opponent's piece on the opposite side, along the lines of the board.Pieces which reach the opposite edge of the board from where they started are promoted and can move and capture any distance along the two large diagonals of the board. The player who captures all of the opponent's pieces wins.")
+        (source "Bouhajbane 1989: 258.")
+        (id "1375")
+        (version "1.3.2")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin  "This game was played in Morocco, from around 1960 to 1982.")
+        }
+    )
+    
+)

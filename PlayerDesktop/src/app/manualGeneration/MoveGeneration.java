@@ -39,7 +39,7 @@ public class MoveGeneration
 	
 	public final static void recordTrialMoves(final PlayerApp app, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, final List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList, final boolean includeHandMoves, final boolean includeNoWhatMoves)
 	{
-		Context context = app.manager().ref().context();
+		final Context context = app.manager().ref().context();
 		
 		for (int trialIndex = 0; trialIndex < generatedTrials.size(); trialIndex++)
 		{
@@ -57,6 +57,7 @@ public class MoveGeneration
 				Move matchingLegalMove = null;
 				Move move = trial.getMove(i);
 				int matchesFound = 0;
+				
 				// Context used to copy the state reaching the terminal state before the game is over.
 				Context prevContext = null;
 				for (final Move m : context.game().moves(context).moves())
@@ -126,7 +127,7 @@ public class MoveGeneration
 						context.trial().lastMove().apply(prevContext, true);
 						
 						// Store the toEnglish of the end condition.
-						for(End end : getEnd(context.game()))
+						for(final End end : getEnd(context.game()))
 						{
 							if(end != null && end.endRules() != null)
 							{
@@ -134,7 +135,7 @@ public class MoveGeneration
 								{
 									if (endRule instanceof If)
 									{
-										If ifEndRule = (If) endRule;
+										final If ifEndRule = (If) endRule;
 										ifEndRule.endCondition().preprocess(context.game());
 										if (ifEndRule.result() != null && ifEndRule.result().result() != null && ifEndRule.endCondition().eval(prevContext))
 										{
@@ -177,7 +178,7 @@ public class MoveGeneration
 	 * @param game
 	 * @return A list of End rule objects for the given game.
 	 */
-	private static End[] getEnd(Game game)
+	private static End[] getEnd(final Game game)
 	{
 		if (game.rules().phases().length == 1)
 		{
@@ -185,7 +186,7 @@ public class MoveGeneration
 		}
 		else
 		{
-			End[] phaseEnd = new End[game.rules().phases().length];
+			final End[] phaseEnd = new End[game.rules().phases().length];
 			for (int i = 0; i < game.rules().phases().length; i++)
 				phaseEnd[i] = game.rules().phases()[i].end();
 			

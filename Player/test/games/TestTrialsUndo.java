@@ -123,7 +123,7 @@ public class TestTrialsUndo
 		for (final File fileEntry : entries)
 		{
 			if (fileEntry.getPath().contains("")) 
-			//if (fileEntry.getName().equals(""))
+			//if (fileEntry.getName().equals("Ludus Latrunculorum.lud"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -717,7 +717,9 @@ public class TestTrialsUndo
 							{
 								if(!state.visited().equals(stateToCompare.visited()))
 								{
-									System.out.println("!= visited");
+									System.out.println("IN MOVE " + trial.numberRealMoves() +" != visited");
+									System.out.println("correct one is " + stateToCompare.visited());
+									System.out.println("undo one is " + state.visited());
 									fail();
 								}
 							}

@@ -16,7 +16,8 @@ import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
-import game.rules.meta.NoRepeat;
+import game.rules.meta.no.repeat.NoRepeat;
+import game.rules.meta.no.simple.NoSuicide;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.util.equipment.Region;
@@ -285,12 +286,12 @@ public class Trial implements Serializable
 	 */
 	public void setLegalMoves(final Moves legalMoves, final Context context)
 	{		
-		// Remove moves that don't satisfy state repetition restrictions
+		// Remove moves that don't satisfy meta rules
 		for (int i = 0; i < legalMoves.moves().size(); i++)
 		{
 			final Move m = legalMoves.moves().get(i);
 			
-			if (!NoRepeat.apply(context, m))
+			if (!NoRepeat.apply(context, m) || !NoSuicide.apply(context, m))
 				legalMoves.moves().removeSwap(i--);
 		}
 		
@@ -360,6 +361,18 @@ public class Trial implements Serializable
 	public List<Move> generateCompleteMovesList()
 	{
 		return moves.generateCompleteMovesList();
+	}
+	
+	/**
+	 * Generates a complete list of all the real moves that were made
+	 * @return Complete list of real moves
+	 */
+	public List<Move> generateRealMovesList()
+	{
+		final List<Move> realMoves = new ArrayList<>();
+		for (int i = numInitialPlacementMoves(); i < numMoves(); i++)
+			realMoves.add(moves.getMove(i));
+		return realMoves;
 	}
 	
 	/**
@@ -1024,5 +1037,14 @@ public class Trial implements Serializable
 	public void removeLastRNGStates()
 	{
 		RNGStates.remove(RNGStates.size()-1);
+	}
+	
+	/**
+	 * Sets any data only required for undo() operations to null
+	 */
+	public void nullUndoData()
+	{
+		endData = null;
+		RNGStates = null;
 	}
 }

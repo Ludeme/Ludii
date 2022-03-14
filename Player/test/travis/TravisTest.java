@@ -211,6 +211,7 @@ public class TravisTest
 
 			final List<String> excludedCustomPlayouts = new ArrayList<String>();
 			excludedCustomPlayouts.add("Kriegsspiel");
+			excludedCustomPlayouts.add("Throngs ");
 			excludedCustomPlayouts.add("Omny");
 
 			if (!containsPartOf(excludedCustomPlayouts, game.name()))
@@ -220,6 +221,7 @@ public class TravisTest
 
 			final List<String> excludedTensors = new ArrayList<String>();
 			excludedTensors.add("Kriegsspiel");
+			excludedTensors.add("Throngs");
 			excludedTensors.add("Omny");
 
 			if (!containsPartOf(excludedTensors, game.name()))
@@ -229,6 +231,7 @@ public class TravisTest
 
 			final List<String> excludedPlayoutPerOption = new ArrayList<String>();
 			excludedPlayoutPerOption.add("Kriegsspiel");
+			excludedPlayoutPerOption.add("Throngs");
 			excludedPlayoutPerOption.add("Mini Wars");
 			excludedPlayoutPerOption.add("Omny");
 
@@ -242,6 +245,7 @@ public class TravisTest
 
 			final List<String> excludedParallelPlayouts = new ArrayList<String>();
 			excludedParallelPlayouts.add("Kriegsspiel");
+			excludedParallelPlayouts.add("Throngs");
 			excludedParallelPlayouts.add("Omny");
 
 			if (!containsPartOf(excludedParallelPlayouts, game.name()))
@@ -268,6 +272,7 @@ public class TravisTest
 
 			final List<String> excludedSerialisation = new ArrayList<String>();
 			excludedSerialisation.add("Kriegsspiel");
+			excludedSerialisation.add("Throngs");
 			excludedSerialisation.add("Omny");
 
 			if (!containsPartOf(excludedSerialisation, game.name()))

@@ -1,0 +1,18 @@
+{"AI": {
+	"algorithm": "MCTS",
+	"friendly_name": "UCT_test_file",
+	"selection": {
+		"strategy": "UCB1"
+	},
+	"playout": {
+		"strategy": "Random"
+	},
+	"final_move": {
+		"strategy": "RobustChild"
+	},
+	"backpropagation": {
+		"strategy": "MonteCarlo"
+	},
+	"tree_reuse": true,
+	"description": "A standard UCT implementation, with an exploration constant of sqrt(2), and tree reuse."
+}}

@@ -61,16 +61,16 @@ public class ClarityVariance extends Metric
 			// Record all sites covered in this trial.
 			final Stats moveEvaluationVariance = new Stats();
 			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
 				final Stats moveEvaluations = new Stats();
-				for (final Move m : context.game().moves(context).moves())
-					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, m));
+				for (final Move legalMoves : context.game().moves(context).moves())
+					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, legalMoves));
 				
 				moveEvaluations.measure();
 
 				moveEvaluationVariance.addSample(moveEvaluations.varn());
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, m);
 			}
 			
 			moveEvaluationVariance.measure();

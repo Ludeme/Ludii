@@ -43,7 +43,7 @@ public class EvalTrainedFeaturesSnellius
 	private static final int MAX_REQUEST_MEM = 234;
 	
 	/** Max number of self-play trials */
-	private static final int NUM_TRIALS = 144;
+	private static final int NUM_TRIALS = 100;
 	
 	/** Max wall time (in minutes) */
 	private static final int MAX_WALL_TIME = 2880;
@@ -51,7 +51,7 @@ public class EvalTrainedFeaturesSnellius
 	/** Number of cores per node (this is for Thin nodes on Snellius) */
 	private static final int CORES_PER_NODE = 128;
 	
-	/** Two cores is not enough since we want at least 5GB memory per job, so we take 3 cores (and 6GB memory) per job */
+	/** Number of cores per Java call */
 	private static final int CORES_PER_PROCESS = 2;
 	
 	/** If we request more cores than this in a job, we get billed for the entire node anyway, so should request exclusive */

@@ -8,6 +8,7 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -59,15 +60,15 @@ public class DecisionMoves extends Metric
 			// Record the number of possible options for each move.
 			double numDecisionMoves = 0;
 
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
 				if (context.game().moves(context).moves().size() > 1)
 					numDecisionMoves++;
 				
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, m);
 			}
 			
-			avgNumDecisionMoves += numDecisionMoves / trial.numberRealMoves();
+			avgNumDecisionMoves += numDecisionMoves / trial.generateRealMovesList().size();
 		}
 
 		return avgNumDecisionMoves / trials.length;

@@ -5,7 +5,7 @@ import java.util.Random;
 
 import game.Game;
 import game.functions.ints.IntConstant;
-import game.rules.meta.NoRepeat;
+import game.rules.meta.no.repeat.NoRepeat;
 import game.rules.phase.Phase;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.decision.MoveSwapType;
@@ -82,16 +82,18 @@ public class PlayoutNoRepetition implements Playout
 				)
 				{
 					final int moverLastTurn = context.trial().lastTurnMover(mover);
-					if(mover != moverLastTurn && moverLastTurn != Constants.UNDEFINED)
+					if (mover != moverLastTurn && moverLastTurn != Constants.UNDEFINED)
 					{
-						final Moves swapMove = game.rules.play.moves.decision.Move.construct(
-								MoveSwapType.Swap,
-								SwapPlayersType.Players, 
-								new IntConstant(mover), 
-								null, 
-								new IntConstant(moverLastTurn), 
-								null, 
-								null
+						final Moves swapMove = 
+								game.rules.play.moves.decision.Move.construct
+								(
+									MoveSwapType.Swap,
+									SwapPlayersType.Players, 
+									new IntConstant(mover), 
+									null, 
+									new IntConstant(moverLastTurn), 
+									null, 
+									null
 								);
 						legalMoves.moves().addAll(swapMove.eval(context).moves());
 					}

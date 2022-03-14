@@ -85,6 +85,8 @@ public class GraphicsCache
 			// create the image for the given local state value
 			if (containerId > 0 && component.isLargePiece())
 				componentStyle.renderImageSVG(context, containerId, bridge.getContainerStyle(0).cellRadiusPixels()*2, localState, value, true, hiddenValue, rotation);
+			else if (containerId > 0 && component.isTile())
+				componentStyle.renderImageSVG(context, containerId, imageSize, localState, value, true, hiddenValue, rotation);
 			else
 				componentStyle.renderImageSVG(context, containerId, imageSize, localState, value, secondary, hiddenValue, rotation);
 			

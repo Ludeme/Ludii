@@ -96,6 +96,7 @@ import other.concept.Concept;
 import other.concept.ConceptDataType;
 import other.context.Context;
 import other.context.TempContext;
+import other.model.Model;
 import other.move.Move;
 import other.playout.PlayoutAddToEmpty;
 import other.playout.PlayoutFilter;
@@ -2749,7 +2750,31 @@ public class Game extends BaseLudeme implements API, Serializable
 	{
 		return apply(context, move, false);		// By default false --> don't skip computing end rules
 	}
+	
+	/**
+	 * Get matching move from the legal moves.
+	 * @param context
+	 * @param move
+	 * @return Matching move from the legal moves.
+	 */
+	public Move getMatchingLegalMove(final Context context, final Move move)
+	{
+		Move realMoveToApply = null;
+		final Moves legal = moves(context);
+		final List<Action> moveActions = move.getActionsWithConsequences(context);
 
+		for (final Move m : legal.moves())
+		{
+			if (Model.movesEqual(move, moveActions, m, context))
+			{
+				realMoveToApply = m;
+				break;
+			}
+		}
+		
+		return realMoveToApply;
+	}
+	
 	/**
 	 * Apply a move to the current context
 	 * 
@@ -2774,7 +2799,7 @@ public class Game extends BaseLudeme implements API, Serializable
 
 			// Meta-rule: We apply the gravity rules if existing.
 			Gravity.apply(context,move);
-	
+			
 			// If a decision was done previously we reset it.
 			if (context.state().isDecided() != Constants.UNDEFINED)
 				context.state().setIsDecided(Constants.UNDEFINED);
@@ -3032,6 +3057,15 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
+			final Trial trial = context.trial();
+			// Step 1: restore previous RNG.
+			trial.removeLastRNGStates();
+			if(!trial.RNGStates().isEmpty())
+			{
+				final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
+				context.rng().restoreState(previousRNGState);
+			}
+			
 			final Move move = context.trial().lastMove();
 			move.undo(context, true);
 			return move;
@@ -3565,7 +3599,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 
 	/**
-	 * Set the options used when compiling this game
+	 * Set the options used when compiling this game.
+	 * 
+	 * NOTE: call hierarchy in Eclipse is not entirely accurate,
+	 * this method also gets called (through Reflection) by compiler!
+	 * 
 	 * @param options
 	 */
 	public void setOptions(final List<String> options) 
@@ -3580,9 +3618,11 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Ruleset getRuleset()
 	{
+		final List<String> allOptions = description().gameOptions().allOptionStrings(getOptions());
+		
 		for (final Ruleset r : description().rulesets())
 			if (!r.optionSettings().isEmpty())
-				if (r.optionSettings().equals(getOptions()))
+				if (description().gameOptions().allOptionStrings(r.optionSettings()).equals(allOptions))
 					return r;
 		
 		return null;

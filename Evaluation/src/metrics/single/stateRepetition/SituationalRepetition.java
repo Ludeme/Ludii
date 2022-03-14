@@ -10,6 +10,7 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -66,9 +67,9 @@ public class SituationalRepetition extends Metric
 			trialStates.add(context.state().fullHash());
 			trialStateCounts.add(1);
 			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (final Move m : trial.generateRealMovesList())
 			{
-				context.game().apply(context, trial.getMove(i));
+				context.game().apply(context, m);
 				
 				final long currentState = context.state().fullHash();
 				final int currentStateIndex = trialStates.indexOf(currentState);

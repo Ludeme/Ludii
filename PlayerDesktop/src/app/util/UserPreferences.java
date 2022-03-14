@@ -103,7 +103,6 @@ public class UserPreferences
 			json.put("tabFontSize", app.settingsPlayer().tabFontSize());
 			json.put("editorFontSize", app.settingsPlayer().editorFontSize());
 			json.put("editorParseText", app.settingsPlayer().isEditorParseText());
-			json.put("startButtonPausesAI", app.settingsPlayer().startButtonPausesAI());
 			json.put("testLudeme1", app.settingsPlayer().testLudeme1());
 			json.put("testLudeme2", app.settingsPlayer().testLudeme2());
 			json.put("testLudeme3", app.settingsPlayer().testLudeme3());
@@ -439,7 +438,6 @@ public class UserPreferences
 			app.settingsPlayer().setTabFontSize(json.optInt("tabFontSize", app.settingsPlayer().tabFontSize()));
 			app.settingsPlayer().setEditorFontSize(json.optInt("editorFontSize", app.settingsPlayer().editorFontSize()));
 			app.settingsPlayer().setEditorParseText(json.optBoolean("editorParseText", app.settingsPlayer().isEditorParseText()));
-			app.settingsPlayer().setStartButtonPausesAI(json.optBoolean("startButtonPausesAI", app.settingsPlayer().startButtonPausesAI()));
 			app.settingsPlayer().setMoveFormat(MoveFormat.valueOf(json.optString("moveFormat", app.settingsPlayer().moveFormat().name())));
 			app.settingsPlayer().setFrameMaximised(json.optBoolean("FrameMaximizedBoth", app.settingsPlayer().frameMaximised()));
 			app.settingsPlayer().setTestLudeme1(json.optString("testLudeme1", app.settingsPlayer().testLudeme1()));

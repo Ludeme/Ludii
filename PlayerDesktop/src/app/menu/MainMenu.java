@@ -546,7 +546,7 @@ public class MainMenu extends JMenuBar
 						{
 							if (s.contains("Classification"))
 							{
-								if (s.contains("true"))
+								if (s.contains("True"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);
@@ -561,7 +561,7 @@ public class MainMenu extends JMenuBar
 							}
 							else
 							{
-								if (s.contains("true"))
+								if (s.contains("True"))
 								{
 									menuItem = new JMenuItem(s.split("-")[0]);
 									menuItem.addActionListener(al);

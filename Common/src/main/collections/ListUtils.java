@@ -125,6 +125,22 @@ public class ListUtils
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param maxExclusive
+	 * @return Exactly like python's range() function, generates a list from 0 to maxExclusive
+	 */
+	public static TIntArrayList range(final int maxExclusive)
+	{
+		final TIntArrayList list = new TIntArrayList(maxExclusive);
+		for (int i = 0; i < maxExclusive; ++i)
+		{
+			list.add(i);
+		}
+		return list;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * @param list
 	 * @return Index of maximum entry in the list
 	 * 	(breaks ties by taking the lowest index).
@@ -251,19 +267,49 @@ public class ListUtils
 	 */
 	public static final int numCombinationsWithReplacement(final int numItems, final int combinationLength)
 	{
-		int numerator = 1;
-		for (int i = combinationLength + 1; i <= (numItems + combinationLength - 1); ++i)
+		// We have to compute:
+		//
+		// (n + r - 1)!
+		// -------------
+		// r! * (n - 1)!
+		//
+		// Where n = numItems, r = combinationLength
+		
+		long numerator = 1L;
+		long denominator = 1L;
+		
+		if (combinationLength >= (numItems - 1))
 		{
-			numerator *= i;
+			// Divide numerator and denominator by r!
+			// Retain (n - 1)! as denominator
+			// Retain (r + 1) * (r + 2) * (r + 3) * ... * (n + r - 1) as numerator
+			for (int i = combinationLength + 1; i <= (numItems + combinationLength - 1); ++i)
+			{
+				numerator *= i;
+			}
+			
+			for (int i = 1; i <= (numItems - 1); ++i)
+			{
+				denominator *= i;
+			}
+		}
+		else
+		{
+			// Divide numerator and denominator by (n - 1)!
+			// Retain r! as denominator
+			// Retain n * (n + 1) * (n + 2) * ... * (n + r - 1) as 
+			for (int i = numItems; i <= (numItems + combinationLength - 1); ++i)
+			{
+				numerator *= i;
+			}
+			
+			for (int i = 1; i <= combinationLength; ++i)
+			{
+				denominator *= i;
+			}
 		}
 		
-		int denominator = 1;
-		for (int i = 1; i <= (numItems - 1); ++i)
-		{
-			denominator *= i;
-		}
-		
-		return numerator / denominator;
+		return (int) (numerator / denominator);
 	}
 	
 	/**

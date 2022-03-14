@@ -630,7 +630,7 @@ public class FeatureToEPS
 			w.println("    gsave                                  % save graphic context");
 			w.println("    {");
 			w.println("        100 100 moveto                     % move to some point");
-			w.println("        (HÍpg) true charpath pathbbox      % gets text path bounding box (LLx LLy URx URy)");
+			w.println("        (HIpg) true charpath pathbbox      % gets text path bounding box (LLx LLy URx URy)");
 			w.println("        exch pop 3 -1 roll pop             % keeps LLy and URy");
 			w.println("        exch sub                           % URy - LLy");
 			w.println("    }");

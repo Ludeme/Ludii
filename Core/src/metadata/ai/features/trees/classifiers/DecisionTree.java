@@ -39,6 +39,24 @@ public class DecisionTree implements AIItem
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return The role that this tree was built for.
+	 */
+	public RoleType role()
+	{
+		return role;
+	}
+	
+	/**
+	 * @return The root node of this tree
+	 */
+	public DecisionTreeNode root()
+	{
+		return root;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String toString()
 	{

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import game.Game;
 import gameDistance.datasets.Dataset;
@@ -29,18 +30,17 @@ public class LudemeDataset implements Dataset
 	public Map<String, Double> getBagOfWords(final Game game) 
 	{
 		final List<LudemeInfo> allLudemes = GetLudemeInfo.getLudemeInfo();
-		final Call callTree = game.description().callTree();
-		final List<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes);
 		
+		// Initalise all values to zero
 		final Map<String, Double> featureMap = new HashMap<>();
+		for (final LudemeInfo ludeme :allLudemes)
+			featureMap.put(ludeme.symbol().name(), Double.valueOf(0.0));
+		
+		final Call callTree = game.description().callTree();
+		final Set<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes).keySet();
 
 		for (final LudemeInfo ludeme : gameLudemes)
-		{
-			if (featureMap.containsKey(ludeme.symbol().name()))
-				featureMap.put(ludeme.symbol().name(), Double.valueOf(featureMap.get(ludeme.symbol().name()).doubleValue()+1.0));
-			else
-				featureMap.put(ludeme.symbol().name(), Double.valueOf(1.0));
-		}
+			featureMap.put(ludeme.symbol().name(), Double.valueOf(featureMap.get(ludeme.symbol().name()).doubleValue()+1.0));
 			
 		return featureMap;
 	}
@@ -52,7 +52,7 @@ public class LudemeDataset implements Dataset
 	{
 		final List<LudemeInfo> allLudemes = GetLudemeInfo.getLudemeInfo();
 		final Call callTree = game.description().callTree();
-		final List<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes);
+		final Set<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes).keySet();
 		
 		final List<String> ludemeSequence = new ArrayList<>();
 		for (final LudemeInfo ludeme : gameLudemes)

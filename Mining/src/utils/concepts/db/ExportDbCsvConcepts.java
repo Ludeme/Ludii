@@ -49,7 +49,6 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
-import other.topology.Edge;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
@@ -99,12 +98,28 @@ public class ExportDbCsvConcepts
 	// The RNGs of each trial.
 	private static List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 	
+	/** List of games for which the list of trials to use does not have to be more than a specific number to be able to compute in less than 4 days, due to the metrics. */
+	private static List<String> lessTrialsGames = new ArrayList<String>();
+	
+	/** The limit to use for the games in the list above.*/
+	private static final int smallLimitTrials = 30;
+	
 	//-------------------------------------------------------------------------
 
 	public static void main(final String[] args)
 	{
+		// Store the games which needs less trials.
+		lessTrialsGames.add("Russian Fortress Chess");
+		lessTrialsGames.add("Puhulmutu");
+		lessTrialsGames.add("Ludus Latrunculorum");
+		lessTrialsGames.add("Poprad Game");
+		lessTrialsGames.add("Unashogi");
+		lessTrialsGames.add("Taikyoku Shogi");
+		lessTrialsGames.add("Tai Shogi");
+		lessTrialsGames.add("Pagade Kayi Ata (Sixteen-handed)");
+		
 		final Evaluation evaluation = new Evaluation();
-		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
+		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
 		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
 		moveLimit = args.length < 4 ? Constants.DEFAULT_MOVES_LIMIT : Integer.parseInt(args[3]);
@@ -122,6 +137,9 @@ public class ExportDbCsvConcepts
 			exportConceptPurposeCSV();
 			exportConceptConceptPurposesCSV();
 		}
+		
+		if(lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
+			numPlayouts = smallLimitTrials;
 
 		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
 	}
@@ -622,9 +640,9 @@ public class ExportDbCsvConcepts
 		// We run the playouts needed for the computation.
 		
 		// FOR THE MUSEUM GAME
-		final TIntArrayList edgesUsage = new TIntArrayList();	
-		for(int i = 0; i < game.board().topology().edges().size(); i++)
-			edgesUsage.add(0);
+//		final TIntArrayList edgesUsage = new TIntArrayList();	
+//		for(int i = 0; i < game.board().topology().edges().size(); i++)
+//			edgesUsage.add(0);
 		
 		if(folderTrials.isEmpty())
 		{
@@ -653,17 +671,17 @@ public class ExportDbCsvConcepts
 					
 					// FOR THE MUSEUM GAME
 					// To count the frequency/usage of each edge on the board. 
-					final Move lastMove = trial.lastMove();
-					final int vertexFrom = lastMove.fromNonDecision();
-					final int vertexTo = lastMove.toNonDecision();
-	
-					for(int i = 0; i < game.board().topology().edges().size(); i++)
-					{
-						final Edge edge = game.board().topology().edges().get(i);
-						if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
-								(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
-							edgesUsage.set(i, edgesUsage.get(i)+1);
-					}
+//					final Move lastMove = trial.lastMove();
+//					final int vertexFrom = lastMove.fromNonDecision();
+//					final int vertexTo = lastMove.toNonDecision();
+//	
+//					for(int i = 0; i < game.board().topology().edges().size(); i++)
+//					{
+//						final Edge edge = game.board().topology().edges().get(i);
+//						if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
+//								(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
+//							edgesUsage.set(i, edgesUsage.get(i)+1);
+//					}
 					
 					// TO PRINT THE NUMBER OF PIECES PER TRIAL
 	//				int countPieces = 0;
@@ -708,35 +726,35 @@ public class ExportDbCsvConcepts
 		}
 		
 		// FOR THE MUSEUM GAME
-		int totalEdgesUsage = 0;
-		for(int i = 0 ; i < edgesUsage.size(); i++)
-			totalEdgesUsage += edgesUsage.get(i);
-		
-		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
-		for(int i = 0 ; i < edgesUsage.size(); i++)
-		{
-			final Edge edge = game.board().topology().edges().get(i);
-			final int vFrom =edge.vertices().get(0).index();
-			final int vTo = edge.vertices().get(1).index();
-			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
-		}
-		
-		final String outputEdgesResults =  "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8)+".csv";
-		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
-		{
-			for(int i = 0 ; i < edgesUsage.size(); i++)
-				writer.println(i+","+ edgesUsage.get(i) +","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
-		}
-		catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		int totalEdgesUsage = 0;
+//		for(int i = 0 ; i < edgesUsage.size(); i++)
+//			totalEdgesUsage += edgesUsage.get(i);
+//		
+//		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
+//		for(int i = 0 ; i < edgesUsage.size(); i++)
+//		{
+//			final Edge edge = game.board().topology().edges().get(i);
+//			final int vFrom =edge.vertices().get(0).index();
+//			final int vTo = edge.vertices().get(1).index();
+//			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
+//		}
+//		
+//		final String outputEdgesResults =  "EdgesResult" + game.name() + "-" + game.getRuleset().heading().substring(8)+".csv";
+//		try (final PrintWriter writer = new UnixPrintWriter(new File(outputEdgesResults), "UTF-8"))
+//		{
+//			for(int i = 0 ; i < edgesUsage.size(); i++)
+//				writer.println(i+","+ edgesUsage.get(i) +","+ new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0)));
+//		}
+//		catch (FileNotFoundException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		catch (UnsupportedEncodingException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game));
@@ -758,8 +776,8 @@ public class ExportDbCsvConcepts
 	 */
 	private static void getTrials(final Game game)
 	{
-		File currentFolder = new File(".");
-		File folder = new File(currentFolder.getAbsolutePath() + folderTrials);
+		final File currentFolder = new File(".");
+		final File folder = new File(currentFolder.getAbsolutePath() + folderTrials);
 		final String gameName = game.name();
 		final String rulesetName = game.getRuleset() == null ? "" : game.getRuleset().heading();
 		
@@ -770,14 +788,19 @@ public class ExportDbCsvConcepts
 		if(!rulesetName.isEmpty())
 			trialFolderPath += File.separator + rulesetName.replace("/", "_");
 
-		File trialFolder = new File(trialFolderPath);
+		final File trialFolder = new File(trialFolderPath);
 		
 		if(trialFolder.exists())
 			System.out.println("TRIALS FOLDER EXIST");
 		else
 			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
 		
-		for(File trialFile : trialFolder.listFiles())
+		int limit = Constants.UNDEFINED;
+		if(lessTrialsGames.contains(gameName))
+			limit = smallLimitTrials;
+		
+		int num = 0;
+		for(final File trialFile : trialFolder.listFiles())
 		{
 			MatchRecord loadedRecord;
 			try
@@ -786,12 +809,15 @@ public class ExportDbCsvConcepts
 				final Trial loadedTrial = loadedRecord.trial();
 				trials.add(loadedTrial);
 				allStoredRNG.add(loadedRecord.rngState());
+				num++;
+				if(num == limit)
+					break;
 			}
-			catch (FileNotFoundException e)
+			catch (final FileNotFoundException e)
 			{
 				e.printStackTrace();
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -898,6 +924,140 @@ public class ExportDbCsvConcepts
 						else if (AIFactory.createAI("UCT").supportsGame(game))
 						{
 							ai = AIFactory.createAI("UCT");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+			}
+			else if(agentName.equals("ABONEPLY")) // AB/ONEPLY/AB/ONEPLY/...
+			{
+				if(indexPlayout % 2 == 0)
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = AIFactory.createAI("Alpha-Beta");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+				else
+				{
+					if(p % 2 == 1)
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = AIFactory.createAI("Alpha-Beta");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+			}
+			else if(agentName.equals("UCTONEPLY")) // UCT/ONEPLY/UCT/ONEPLY/...
+			{
+				if(indexPlayout % 2 == 0)
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = AIFactory.createAI("UCT");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+				else
+				{
+					if(p % 2 == 1)
+					{
+						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = AIFactory.createAI("UCT");
+						if(ai.supportsGame(game))
+						{
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game))
+						{
+							ai = AIFactory.createAI("One-Ply (No Heuristic)");
 							ais.add(ai);
 						}
 						else 
@@ -1109,7 +1269,6 @@ public class ExportDbCsvConcepts
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final Moves legalMoves = context.game().moves(context);
-				
 				final TIntArrayList frenquencyTurn = new TIntArrayList();
 				for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 					frenquencyTurn.add(0);
@@ -1262,7 +1421,7 @@ public class ExportDbCsvConcepts
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
 		for(int i = 0 ; i < trials.size();i++)
 		{
-			trialsMetrics[i] = trials.get(i);
+			trialsMetrics[i] = new Trial(trials.get(i));
 			rngTrials[i] = allStoredRNG.get(i);
 		}
 		

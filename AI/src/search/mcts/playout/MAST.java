@@ -62,7 +62,10 @@ public class MAST implements PlayoutStrategy
 	{
 		final MASTMoveSelector mast = moveSelector.get();
 		mast.mcts = mcts;
-		return context.game().playout(context, null, 1.0, new EpsilonGreedyWrapper(mast, epsilon), -1, playoutTurnLimit, ThreadLocalRandom.current());
+		final Trial trial =
+				context.game().playout(context, null, 1.0, new EpsilonGreedyWrapper(mast, epsilon), -1, playoutTurnLimit, ThreadLocalRandom.current());
+		mast.mcts = null;
+		return trial;
 	}
 	
 	@Override
@@ -85,7 +88,19 @@ public class MAST implements PlayoutStrategy
 	@Override
 	public void customise(final String[] inputs)
 	{
-		// TODO
+		for (int i = 1; i < inputs.length; ++i)
+		{
+			final String input = inputs[i];
+			
+			if (input.toLowerCase().startsWith("playoutturnlimit="))
+			{
+				playoutTurnLimit = 
+						Integer.parseInt
+						(
+							input.substring("playoutturnlimit=".length())
+						);
+			}
+		}
 	}
 	
 	/**

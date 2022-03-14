@@ -1,0 +1,390 @@
+(define "MoveZeroStack"
+    (move 
+        (from)
+        (to 
+            (sites Direction
+                from:(from)
+                stop:(< 0 (who at:(to)))
+            )
+            if:(< 
+                (count Steps (from) (centrePoint))
+                (count Steps (to) (centrePoint))
+            )
+        ) 
+        copy:True
+        (then 
+            (do
+                (remove (last To) count:(size Stack at:(last To)))
+                next:(add 
+                    (to (last To)) 
+                    count:(- 
+                        (count Steps
+                            (last To)
+                            (centrePoint)
+                        ) 
+                        (count Steps 
+                            (last From) 
+                            (centrePoint)
+                        )
+                    )
+                    stack:True
+                )
+            )
+        )
+    )
+)
+
+(define "MoveWholeStack"
+    (move
+        (from 
+            if:#1
+        )
+        (to 
+            (sites Direction
+                from:(from)
+                stop:(< 0 (who at:(to)))
+            )
+            if:(< 
+                (count Steps (from) (centrePoint))
+                (count Steps (to) (centrePoint))
+            )
+            (apply (remove (to)))
+        )
+        count:(size Stack at:(from))
+        stack:True
+        (then 
+            (and
+                (add 
+                    (to (last To)) 
+                    count:(- 
+                        (count Steps
+                            (last To)
+                            (centrePoint)
+                        ) 
+                        (count Steps 
+                            (last From) 
+                            (centrePoint)
+                        )
+                    )
+                    stack:True
+                )
+                (add (piece "Disc0") (to (last From)))
+            )
+        )
+    )
+)
+
+(define "MoveStackPart"
+    (forEach Value min:1 max:(- (size Stack at:(from)) 1)
+        (move
+            (from 
+                if:#1
+            )
+            (to 
+                (sites Direction
+                    from:(from)
+                    stop:(< 0 (who at:(to)))
+                )
+                (apply (remove (to)))
+            )
+            count:(value)
+            stack:True
+            (then
+                (if 
+                    (< 
+                        (count Steps (last From) (centrePoint))
+                        (count Steps (last To) (centrePoint))
+                    )
+                    (add 
+                        (to (last To)) 
+                        count:(- 
+                            (count Steps
+                                (last To)
+                                (centrePoint)
+                            ) 
+                            (count Steps 
+                                (last From) 
+                                (centrePoint)
+                            )
+                        )
+                        stack:True
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "MoveStack"
+    (or {
+        (forEach Piece 
+            ("MoveZeroStack")
+            Neutral 
+            top:True
+        )
+        (forEach Piece 
+            (or
+                ("MoveWholeStack" True) 
+                ("MoveStackPart" (< 1 (size Stack at:(from))) ) 
+            )
+            Mover 
+            top:True
+        )
+    })
+)
+
+(define "CaptureDirection"
+    (sites Direction
+        from:(last To)
+        #1
+        stop:(= (mover) (who at:(to)))
+        stopIncluded:True
+    )
+)
+
+(define "Capturable"
+    (and {
+        (= 1 
+            (count Sites 
+                in:(intersection 
+                    ("CaptureDirection" #1) 
+                    (sites Occupied by:Mover)
+                )
+            )
+        )
+        (= 1 
+            (count Sites 
+                in:(intersection 
+                    ("CaptureDirection" #1) 
+                    (sites Occupied by:Next)
+                )
+            )
+        )
+        (= (next) 
+            (who 
+                at:(ahead (last To) 
+                    steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
+                    #1
+                )
+            )
+        )
+        (is Even (count Sites in:("CaptureDirection" #1)))
+        (= (mover) (who at:(last To)))
+        (=
+            (size Stack at:(last To))
+            (size Stack 
+                at:(ahead (last To) 
+                    steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
+                    #1
+                )
+            )
+        )
+        (=
+            (size Stack 
+                at:(ahead (last To) 
+                    steps:(count Sites in:("CaptureDirection" #1)) 
+                    #1
+                )
+            )
+            (size Stack 
+                at:(ahead (last To) 
+                    steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
+                    #1
+                )
+            )
+        )
+    })
+)
+
+(define "CapturableInAnyDirection"
+    (or {
+        ("Capturable" NNW)
+        ("Capturable" W)
+        ("Capturable" SSW)
+        ("Capturable" SSE)
+        ("Capturable" E)
+        ("Capturable" NNE)
+    })
+)
+
+(define "Remember"
+    (remember Value 
+        (ahead 
+            (last To) 
+            steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
+            #1
+        )
+    )
+)
+
+(define "RememberAllCapturables"
+    (and {
+        (if
+            ("Capturable" NNW)
+            ("Remember" NNW)
+        )
+        (if
+            ("Capturable" W)
+            ("Remember" W)
+        )
+        (if
+            ("Capturable" SSW)
+            ("Remember" SSW)
+        )
+        (if
+            ("Capturable" SSE)
+            ("Remember" SSE)
+        )
+        (if
+            ("Capturable" E)
+            ("Remember" E)
+        )
+        (if
+            ("Capturable" NNE)
+            ("Remember" NNE)
+        )
+    })
+)
+
+(define "Capture"
+    (or {
+        (forEach Piece 
+            ("MoveWholeStack" (is In (from) (sites (values Remembered))) ) 
+            Next 
+            top:True
+        )
+        (forEach Piece 
+            ("MoveStackPart" (is In (from) (sites (values Remembered))) ) 
+            Next 
+            top:True
+        )
+    })
+)
+
+//------------------------------------------------------------------------------
+
+(game "Ex Nihilo"
+    (players 2)
+    (equipment
+        {
+        (board (hex <Board>))
+        (piece "Disc" Each)
+        (piece "Disc" Neutral)
+        }
+    )
+    (rules
+        (start {
+            (place "Disc0" (sites Board))
+        })
+        (play
+            (priority
+                (do
+                    (if
+                        (= 1 (var))
+                        (and
+                            (set Var 0)
+                            ("Capture")
+                        )
+                        ("MoveStack")
+                    )
+                    ifAfterwards:("CapturableInAnyDirection")
+                )
+                (if
+                    (= 1 (var))
+                    (do
+                        (set Var 0)
+                        next:("Capture")
+                    )
+                    ("MoveStack")
+                )
+                (then
+                    (and
+                        (forget Value All)
+                        ("RememberAllCapturables")
+                        (then
+                            (if
+                                ("CapturableInAnyDirection")
+                                (and
+                                    (set Var 1)
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end
+            (if 
+                (no Moves Next)
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4"    <4>  "A base 4 board is currently selected")
+    (item "5"    <5>  "A base 5 board is currently selected")* 
+    (item "6"    <6>  "A base 6 board is currently selected") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "A highly tactical game of battling stacks growing into existence.")
+        (rules "Ex nihilo is a game for 2 players played with stackable pieces of two colors on the cells of a hexagonal arrangement of hexagons (a hexhex board). The board starts out empty. The game is over as soon as one player is unable to make a move. The other player is then the winner.
+            
+            Even though the goal is technically stalemate, out of the interlocking mechanics emerges a territorial goal with a constant threat of a clever check mate turning the tide or ending the game before territory is settled.
+            
+            The novelty of this game lies in its central gimmick: Every move consists in moving a stack. In this sense it is a pure movement game. Yet, the game features both placement and captures.
+            
+            Movement – overview:
+            Stacks move along straight open lines and grow when they move away from the center cell. This game is unusual in allowing movement of stacks containing 0 pieces. It is by growing these that pieces get onto the board in the first place.
+            
+            Movement – details:
+            On your turn, you must move a stack not topped by an enemy piece to an empty cell reachable through an unbroken line of empty cells. By convention, a single piece is considered a stack of size 1 and an empty cell is considered to contain a stack of size 0.
+            
+            If, after you have moved a stack, it is farther away from the center cell than before it was moved (measured in number of steps), its size is increased by 1 per step further away from the center it now is. This happens automatically in Ludii.
+            
+            You may move a proper part of a stack by splitting it. To move a part of a stack, drag the piece that will be the bottom piece of the new stack to its destination, or click it, then the destination.
+            
+            You may also move a whole stack, but only on the condition that you move it farther away from the center cell. A consequence is that moving a whole stack always results in its size increasing. Together with the convention that empty cells contain stacks of size 0, this also has the consequence that you can effectively place a new stack on the board by moving a stack of size 0. In Ludii a 0-stack is represented by a grey disc. You move it by dragging it to where you want to go, or click it, then the destination.
+            
+            Note that nothing special happens to the cell you moved the 0-stack from – it still contains a 0-stack.
+            
+            Capturing - overview:
+            Flanked enemy stacks are captured by being taken hostage for a move. Capturing is obligatory: If a capturing move is available, a capturing move must be made.
+            
+            Capturing - details:
+            If (and only if) the top piece of a stack is of your color, it is said to partake in flanking an enemy stack if (i) this enemy stack is exactly in the middle of a line of otherwise empty cells going from the flanking stack to another one of your stacks, and (ii) all three of these stacks are of the same size.
+            
+        If, after you have moved a stack, it partakes in flanking one or more enemy stacks, you must immediately move one of these enemy stacks. Except for the obvious difference that you are moving an enemy stack, all normal rules apply to this move. For example: If the captured stack grows (if you move it farther away from the center cell, that is), it grows by the addition of pieces of your color, so situations where this hostage move must itself be a capturing move are possible. Such chaining of captures must continue until you capture a stack that is not in a position to continue the chain. Growing captured stacks is the only way to take ownership of them more permanently.")
+        (id "1185")
+        (version "1.3.2")
+        (classification "board/space/blocking")
+        (author "Michael Amundsen")
+        (publisher "Michael Amundsen")
+        (credit "Designed and implemented by Michael Amundsen.")
+        (date "2020")
+        }
+    )
+    
+    (graphics {
+        (piece Colour Neutral
+            fillColour:(colour LightGrey)
+            strokeColour:(colour 0 0 0 0)
+        )
+        (region Colour (sites Board) (colour 0 0 0 0))
+        (board Colour InnerEdges (colour 0 0 0 0))
+        (board Colour OuterEdges (colour 0 0 0 0))
+        (no Sunken)
+    })
+)
+
