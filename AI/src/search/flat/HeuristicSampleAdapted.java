@@ -12,22 +12,18 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JTable;
 
 import game.Game;
-import gnu.trove.list.array.TFloatArrayList;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import metadata.ai.heuristics.terms.PlayerRegionsProximity;
 import metadata.ai.heuristics.terms.RegionProximity;
-import other.AI.AIVisualisationData;
 import other.action.Action;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
 import other.move.MoveScore;
-import other.state.State;
 import search.flat.HeuristicSampleAdaptedUtils.HeuristicProportionViewInterface;
-import search.mcts.nodes.BaseNode;
 
 /**
  * Include the visualisation of weightings and wait out the thinking time
@@ -35,8 +31,9 @@ import search.mcts.nodes.BaseNode;
  * @author Markus
  *
  */
-public class HeuristicSampleAdapted extends HeuristicSampling {
-
+public class HeuristicSampleAdapted extends HeuristicSampling 
+{
+	@SuppressWarnings("unused")
 	private FastArrayList<Move> moves;
 	private FastArrayList<MoveScore> moveScores;
 	private boolean waitForUserAction;
@@ -167,7 +164,6 @@ public class HeuristicSampleAdapted extends HeuristicSampling {
 
 		deltaNegative = maxNegative - minNegative;
 		deltaPositive = maxPositive - minPositive;
-		;
 		if (noPositive) {
 			minPositive = 0f;
 			maxPositive = 0f;
@@ -389,7 +385,6 @@ public class HeuristicSampleAdapted extends HeuristicSampling {
 
 			Move move = moves.get(0);
 			HashMap<HeuristicTerm, Float[]> hm = hashMap.get(move);
-			ArrayList<HeuristicTerm> htList = new ArrayList<>(hm.keySet());
 			Object[][] data = new Object[moves.size()][hm.size() * floatNames.length + 1];
 			for (int i = 0; i < moves.size(); i++) {
 				Move m = moves.get(i);
@@ -405,14 +400,12 @@ public class HeuristicSampleAdapted extends HeuristicSampling {
 					data[i][counter++] = String.format("%+.2f", floats[valueType]) + "";
 
 				}
-				data[i][1] = Float.valueOf(sum);;
+				data[i][1] = Float.valueOf(sum);
 			}
 
 			String[] columNamesArray = columnNames.toArray(new String[columnNames.size()]);
 
 			JTable table = new JTable(data, columNamesArray);
-			int c = table.getModel().getColumnCount();
-			int r = table.getModel().getRowCount();
 			return table;
 
 		}
@@ -425,9 +418,7 @@ public class HeuristicSampleAdapted extends HeuristicSampling {
 	
 
 		public void recalcMove(int selectedRow) {
-			HashMap<HeuristicTerm, Float[]> termsToValueMap = calculateMove(this.moves.get(selectedRow));
-			
-			
+			//HashMap<HeuristicTerm, Float[]> termsToValueMap = calculateMove(this.moves.get(selectedRow));
 		}
 
 		public Move getMove(int selectedIndex) {
