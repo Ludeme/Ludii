@@ -1,13 +1,13 @@
 (game "Tic-Tac-Toe"  
     (players 2)  
     (equipment { 
-        (board (square [ 3 | 5 | 7 ])) 
+        (board (square [ 3 | 5 | * ])) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
     })  
     (rules 
         (play (move Add (to (sites Empty))))
-        (end (if (is Line [ 3 | 4 | 5 ]) (result Mover Win)))
+        (end (if (is Line [ 3 | * | 5 ]) (result Mover Win)))
     )
 )
 
