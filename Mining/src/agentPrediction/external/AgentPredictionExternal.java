@@ -121,10 +121,10 @@ public class AgentPredictionExternal
 	            		try
 	            		{
 	            			final String[] classNamesAndProbas = sInput.split("=")[1].split("_:_");
-	            			final String[] classNames = classNamesAndProbas[0].split("_");
+	            			final String[] classNames = classNamesAndProbas[0].split("_;_");
 	            			for (int i = 0; i < classNames.length; i++)
 	            				classNames[i] = classNames[i];
-	            			final String[] valueStrings = classNamesAndProbas[1].split("_");
+	            			final String[] valueStrings = classNamesAndProbas[1].split("_;_");
 	            			final Double[] values = new Double[valueStrings.length];
 	            			for (int i = 0; i < valueStrings.length; i++)
 	            				values[i] = Double.valueOf(valueStrings[i]);
