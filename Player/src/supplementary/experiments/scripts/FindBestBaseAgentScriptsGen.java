@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -29,7 +30,6 @@ import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
 import utils.AIFactory;
-import utils.DBGameInfo;
 import utils.RandomAI;
 
 /**
@@ -52,7 +52,7 @@ public class FindBestBaseAgentScriptsGen
 	private static final int MAX_JOBS_PER_BATCH = 800;
 	
 	/** Max number of trials we want to be running from a single script */
-	private static final int NUM_TRIALS_PER_SCRIPT = 500;
+	private static final int NUM_TRIALS_PER_SCRIPT = 100;
 	
 	/** All our hyperparameters for MCTS */
 	private static final String[] mctsHyperparamNames = new String[] 
@@ -477,7 +477,7 @@ public class FindBestBaseAgentScriptsGen
 				
 				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
 				final String filepathsRulesetName = StringRoutines.cleanRulesetName(fullRulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
-				final String dbGameName = DBGameInfo.getUniqueName(game);
+				//final String dbGameName = DBGameInfo.getUniqueName(game);
 				//final Entry abHeuristicEntry = bestStartingHeuristics.getEntry(dbGameName);
 				
 				final List<String> relevantNonMCTSAIs = new ArrayList<String>();
@@ -874,6 +874,7 @@ public class FindBestBaseAgentScriptsGen
 
 		final List<List<String>> jobScriptsLists = new ArrayList<List<String>>();
 		List<String> remainingJobScriptNames = jobScriptNames;
+		Collections.shuffle(remainingJobScriptNames);
 
 		while (remainingJobScriptNames.size() > 0)
 		{
