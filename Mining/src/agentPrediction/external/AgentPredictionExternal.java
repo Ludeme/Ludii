@@ -132,18 +132,18 @@ public class AgentPredictionExternal
 	            				System.out.println("ERROR! Class Names and Values should be the same length.");
 	            			
 	            			double highestProbabilityValue = -1.0;
-	            			String highestProabilityName = "Random";
+	            			String highestProbabilityName = "Random";
 	            			for (int i = 0; i < classNames.length; i++)
 	            			{
 	            				manager.getPlayerInterface().addTextToAnalysisPanel("Predicted probability for " + classNames[i] + ": " + values[i] + "\n");
 	            				if (values[i].doubleValue() > highestProbabilityValue)
 	            				{
 	            					highestProbabilityValue = values[i].doubleValue();
-	            					highestProabilityName = classNames[i];
+	            					highestProbabilityName = classNames[i];
 	            				}
 	            			}
 	            			
-	            			return highestProabilityName;
+	            			return highestProbabilityName;
 	            		}
 	            		catch (final Exception e)
 	            		{
@@ -224,7 +224,7 @@ public class AgentPredictionExternal
 	/**
 	 * @return The concepts as a string with comma between them.
 	 */
-	private static String conceptNameString(final boolean compilationOnly)
+	public static String conceptNameString(final boolean compilationOnly)
 	{
 		final Concept[] concepts = compilationOnly ? Concept.values() : Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();
@@ -242,7 +242,7 @@ public class AgentPredictionExternal
 	 * @param game The game compiled.
 	 * @return The concepts as boolean values with comma between them.
 	 */
-	private static String conceptValueString(final Game game, final boolean compilationOnly)
+	public static String conceptValueString(final Game game, final boolean compilationOnly)
 	{
 		final Concept[] concepts = compilationOnly ? Concept.values() : Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();
