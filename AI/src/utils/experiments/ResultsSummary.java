@@ -267,7 +267,68 @@ public class ResultsSummary
 	{
 		return agentPoints;
 	}
+
+	
 	
 	//-------------------------------------------------------------------------
 
+	/**
+	 * if several similar EvalGamesSet are done, this method summerises the results together.
+	 * doesnt do savety check if same agents apply
+	 * 
+	 * @param first the resultSummery to squash the results of the second in
+	 * @param second 
+	 */
+	public static void squash(ResultsSummary first, ResultsSummary second) {
+		
+		for (int i = 0; i < second.agentGameDurations.length; i++) {
+			Stats secondAgentGameDurations = second.agentGameDurations[i];
+			Stats firstAgentGameDurations = first.agentGameDurations[i];
+			squash(firstAgentGameDurations,secondAgentGameDurations);
+			
+			
+			Stats[] firstStats = first.agentGameDurationsPerPlayer[i];
+			Stats[] secondStats = second.agentGameDurationsPerPlayer[i];
+			for (int j = 0; j < firstStats.length; j++) {
+				squash(firstStats[j], secondStats[j]);
+			}
+			
+			Stats[] secondStats2 = second.agentPointsPerPlayer[i];
+			Stats[] firstStats2 = first.agentPointsPerPlayer[i];
+			for (int j = 0; j < firstStats.length; j++) {
+				squash(firstStats2[j], secondStats2[j]);
+			}		
+		}
+		
+		for (List<String> key : second.matchupCountsMap.keySet()) {
+			if (!first.matchupCountsMap.containsKey(key))first.matchupCountsMap.put(key, second.matchupCountsMap.get(key));
+			else {
+				first.matchupCountsMap.adjustValue(key, second.matchupCountsMap.get(key));
+			}
+		}
+		for (List<String> key : second.matchupPayoffsMap.keySet()) {
+			if (!first.matchupPayoffsMap.containsKey(key))first.matchupPayoffsMap.put(key, second.matchupPayoffsMap.get(key));
+			else {
+				double[] smth = first.matchupPayoffsMap.get(key);
+				double[] smth2 = second.matchupPayoffsMap.get(key);
+				for (int j = 0; j < smth.length; j++) {
+					smth[j]+=smth2[j];
+				}
+			}
+		}
+	}
+
+	/**
+	 * appends the values of second into the first
+	 * @param firstAgentGameDurations
+	 * @param secondAgentGameDurations
+	 */
+	private static void squash(Stats firstStats, Stats secondStats) {
+		if (firstStats==null||secondStats==null)return;
+		int n = secondStats.n();
+		for (int j = 0; j < n; j++) {
+			firstStats.addSample(secondStats.get(j));
+		}
+	}
+	
 }
