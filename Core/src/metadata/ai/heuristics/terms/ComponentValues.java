@@ -540,4 +540,12 @@ public class ComponentValues extends HeuristicTerm
 	
 	//-------------------------------------------------------------------------
 
+	@Override
+	public float[] gameAgnosticWeightsArray() {
+		return gameAgnosticWeightsArray;
+	}
+	@Override
+	public FVector pieceWeights() {
+		return pieceWeights;
+	}
 }

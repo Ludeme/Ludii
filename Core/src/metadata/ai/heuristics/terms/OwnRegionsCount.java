@@ -243,5 +243,5 @@ public class OwnRegionsCount extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
-
+	
 }

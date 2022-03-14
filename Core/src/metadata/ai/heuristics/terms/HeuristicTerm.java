@@ -314,6 +314,19 @@ public abstract class HeuristicTerm implements AIItem
 	{
 		this.weight = weight;
 	}
+
+	/** used for term reconstruction using a genetic code 
+	 * @return
+	 */
+	public float[] gameAgnosticWeightsArray() {
+		return null;
+	}
+	/** used for term reconstruction using a genetic code 
+	 * @return
+	 */
+	public FVector pieceWeights() {
+		return null;
+	}
 	
 	//-------------------------------------------------------------------------
 

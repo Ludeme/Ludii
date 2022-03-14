@@ -20,6 +20,11 @@ public class MoveScore
 		this.score = score;
 	}
 	
+	@Override
+	public String toString() {
+		return move.toString() + " score:" + score;
+	}
+	
 	/**
 	 * @return The move.
 	 */

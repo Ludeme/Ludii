@@ -295,4 +295,10 @@ public class Intercept extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public float[] gameAgnosticWeightsArray() {
+		return gameAgnosticWeightsArray;
+	}
+	
 }

@@ -7,25 +7,33 @@ import annotations.Name;
 import annotations.Opt;
 import game.Game;
 import game.equipment.component.Component;
-import game.equipment.container.Container;
 import game.types.board.SiteType;
+import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.set.hash.TIntHashSet;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
+import main.collections.FastArrayList;
 import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import metadata.ai.misc.Pair;
+import other.action.Action;
+import other.action.ActionType;
+import other.action.move.remove.ActionRemove;
+import other.concept.Concept;
 import other.context.Context;
+import other.context.TempContext;
 import other.location.Location;
+import other.move.Move;
 import other.state.owned.Owned;
 
 /**
- * Defines a heuristic term based on the material that a player has on
- * the board and in their hand.
+ * Defines a heuristic term based on the unthreatened material (which
+ * opponents cannot threaten with their legal moves).
  * 
  * @author Dennis Soemers
  */
-public class Material extends HeuristicTerm
+public class ThreatenedMaterialMultipleCount extends HeuristicTerm
 {
 	
 	//-------------------------------------------------------------------------
@@ -39,17 +47,8 @@ public class Material extends HeuristicTerm
 	 */
 	private float[] gameAgnosticWeightsArray;
 	
-	/** If true, only count pieces on the main board (i.e., container 0) */
-	private final boolean boardOnly;
-	
 	/** Vector with weights for every piece type */
 	private FVector pieceWeights = null;
-	
-	/** Indices of hand containers per player */
-	private int[] handIndices = null;
-	
-	/** Does our current game have more than 1 container? */
-	private boolean gameHasMultipleContainers = false;
 	
 	//-------------------------------------------------------------------------
 	
@@ -64,17 +63,14 @@ public class Material extends HeuristicTerm
 	 * specified at all, all piece types are given an equal weight of $1.0$. If piece
 	 * weights are only specified for some piece types, all other piece types get a
 	 * weight of $0$.
-	 * @param boardOnly If true, only pieces that are on the game's main board are counted,
-	 * and pieces that are, for instance, in players' hands are excluded. False by default.
 	 * 
-	 * @example (material pieceWeights:{ (pair "Pawn" 1.0) (pair "Bishop" 3.0) })
+	 * @example (threatenedMaterialMultipleCount pieceWeights:{ (pair "Pawn" 1.0) (pair "Bishop" 3.0) })
 	 */
-	public Material
+	public ThreatenedMaterialMultipleCount
 	(
 		@Name @Opt final HeuristicTransformation transformation,
 		@Name @Opt final Float weight,
-		@Name @Opt final Pair[] pieceWeights,
-		@Name @Opt final Boolean boardOnly
+		@Name @Opt final Pair[] pieceWeights
 	)
 	{
 		super(transformation, weight);
@@ -96,26 +92,23 @@ public class Material extends HeuristicTerm
 				gameAgnosticWeightsArray[i] = pieceWeights[i].floatVal();
 			}
 		}
-		
-		this.boardOnly = (boardOnly == null) ? false : boardOnly.booleanValue();
 	}
 	
 	@Override
 	public HeuristicTerm copy()
 	{
-		return new Material(this);
+		return new ThreatenedMaterialMultipleCount(this);
 	}
 	
 	/**
 	 * Copy constructor (private, so not visible to grammar)
 	 * @param other
 	 */
-	private Material(final Material other)
+	private ThreatenedMaterialMultipleCount(final ThreatenedMaterialMultipleCount other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
 		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
 		gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
-		boardOnly = other.boardOnly;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -123,49 +116,68 @@ public class Material extends HeuristicTerm
 	@Override
 	public float computeValue(final Context context, final int player, final float absWeightThreshold)
 	{
+		final Game game = context.game();
 		final Owned owned = context.state().owned();
 		
-		final List<? extends Location>[] pieces = owned.positions(player);
-		float value = 0.f;
+	
+		//final int mover = context.state().mover();
+		// First find all threatened positions by any opposing players
 		
-		if (!boardOnly || !gameHasMultipleContainers)
+		final TIntIntHashMap threatenedSitesWithCounter = new TIntIntHashMap();
+	
+		for (int p = 1; p <= game.players().count(); ++p)
 		{
-			for (int i = 0; i < pieces.length; ++i)
-			{
-				if (pieces[i].isEmpty())
-					continue;
-				
-				final float pieceWeight = pieceWeights.get(owned.reverseMap(player, i));
-				if (Math.abs(pieceWeight) >= absWeightThreshold)
-					value += pieceWeight * pieces[i].size();
-			}
+			if (p != player)
+				continue;
 			
-			if (handIndices != null)
+			final FastArrayList<Move> legalMoves;
+			if (context.state().mover() == p)
 			{
-				final List<? extends Location>[] neutralPieces = owned.positions(0);
-				
-				for (int i = 0; i < neutralPieces.length; ++i)
+				legalMoves = game.moves(context).moves();
+				for (final Move move : legalMoves)
 				{
-					if (neutralPieces[i].isEmpty())
-						continue;
-					
-					final float pieceWeight = pieceWeights.get(owned.reverseMap(0, i));
-					
-					if (Math.abs(pieceWeight) >= absWeightThreshold)
+					for (final Action action : move.actions())
 					{
-						for (final Location pos : neutralPieces[i])
+						if (action != null && action.actionType()!= null && action.actionType().equals(ActionType.Remove))
 						{
-							final int site = pos.site();
+							final ActionRemove removeAction = (ActionRemove) action;
+							final int removeSite = removeAction.to();
+							final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
 							
-							if (pos.siteType() == SiteType.Cell && context.containerId()[site] == handIndices[player])
-								value += pieceWeight * context.state().containerStates()[handIndices[player]].countCell(site);
+							if (contID == 0)
+							{
+								int returnValue = threatenedSitesWithCounter.putIfAbsent(removeSite,1);
+								if (returnValue != threatenedSitesWithCounter.getNoEntryValue())
+									threatenedSitesWithCounter.adjustValue(removeSite,1);
+							}
 						}
 					}
+					
+					// Also assume we threaten the site we move to, regardless of whether or not there are Remove actions
+					if (move.to() >= 0) {
+						int returnValue = threatenedSitesWithCounter.putIfAbsent(move.to(),1);
+						if (returnValue != threatenedSitesWithCounter.getNoEntryValue())
+							threatenedSitesWithCounter.adjustValue(move.to(),1);
+					}
+						
 				}
 			}
+			else
+			{
+				//final TempContext temp = new TempContext(context);
+			}
 		}
-		else
+		
+		float value = 0.f;
+		
+		for (int p = 1; p <= game.players().count(); ++p)
 		{
+			if (p == player)
+				continue;
+			// Now count material value, but only for unthreatened sites
+			final List<? extends Location>[] pieces =  owned.positions(p);
+			
+			
 			for (int i = 0; i < pieces.length; ++i)
 			{
 				if (pieces[i].isEmpty())
@@ -177,12 +189,17 @@ public class Material extends HeuristicTerm
 					for (final Location loc : pieces[i])
 					{
 						if (loc.siteType() != SiteType.Cell || context.containerId()[loc.site()] == 0)
-							value += pieceWeight;
+						{
+							int returnValue = threatenedSitesWithCounter.get(loc.site());
+							if (returnValue != threatenedSitesWithCounter.getNoEntryValue())
+								value += returnValue*pieceWeight;
+						}
 					}
 				}
 			}
 		}
-				
+		
+	
 		return value;
 	}
 	
@@ -191,44 +208,66 @@ public class Material extends HeuristicTerm
 	{
 		final FVector featureVector = new FVector(pieceWeights.dim());
 		
+		final Game game = context.game();
 		final Owned owned = context.state().owned();
-		final List<? extends Location>[] pieces = owned.positions(player);
 		
-		if (!boardOnly || !gameHasMultipleContainers)
+		// First find all threatened positions by any opposing players
+		final TIntHashSet threatenedSites = new TIntHashSet();
+		for (int p = 1; p <= game.players().count(); ++p)
 		{
-			for (int i = 0; i < pieces.length; ++i)
-			{
-				final int compIdx = owned.reverseMap(player, i);
-				featureVector.addToEntry(compIdx, pieces[i].size());
-			}
+			if (p == player)
+				continue;
 			
-			if (handIndices != null)
+			final FastArrayList<Move> oppLegalMoves;
+			if (context.state().mover() == p)
 			{
-				final List<? extends Location>[] neutralPieces = owned.positions(0);
+				oppLegalMoves = game.moves(context).moves();
+			}
+			else
+			{
+				final TempContext temp = new TempContext(context);
+				temp.state().setMover(player);
+				temp.trial().clearLegalMoves();
+				oppLegalMoves = game.moves(temp).moves();
 				
-				for (int i = 0; i < neutralPieces.length; ++i)
+				for (final Move move : oppLegalMoves)
 				{
-					final int compIdx = owned.reverseMap(player, i);
-					
-					for (final Location pos : neutralPieces[i])
+					for (final Action action : move.actions())
 					{
-						final int site = pos.site();
-	
-						if (pos.siteType() == SiteType.Cell && context.containerId()[site] == handIndices[player])
-							featureVector.addToEntry(compIdx, context.state().containerStates()[handIndices[player]].countCell(site));
+						if (action != null && action.actionType().equals(ActionType.Remove))
+						{
+							final ActionRemove removeAction = (ActionRemove) action;
+							final int removeSite = removeAction.to();
+							final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
+							
+							if (contID == 0)
+							{
+								threatenedSites.add(removeSite);
+							}
+						}
 					}
+					
+					// Also assume we threaten the site we move to, regardless of whether or not there are Remove actions
+					if (move.to() >= 0)
+						threatenedSites.add(move.to());
 				}
 			}
 		}
-		else
+		
+		final List<? extends Location>[] pieces = owned.positions(player);
+		
+		for (int i = 0; i < pieces.length; ++i)
 		{
-			for (int i = 0; i < pieces.length; ++i)
+			if (pieces[i].isEmpty())
+				continue;
+			
+			final int compIdx = owned.reverseMap(player, i);
+
+			for (final Location loc : pieces[i])
 			{
-				final int compIdx = owned.reverseMap(player, i);
-				
-				for (final Location loc : pieces[i])
+				if (loc.siteType() != SiteType.Cell || context.containerId()[loc.site()] == 0)
 				{
-					if (loc.siteType() != SiteType.Cell || context.containerId()[loc.site()] == 0)
+					if (!threatenedSites.contains(loc.site()))
 						featureVector.addToEntry(compIdx, 1.f);
 				}
 			}
@@ -248,11 +287,6 @@ public class Material extends HeuristicTerm
 	{
 		// Compute vector of piece weights
 		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
-		
-		// Precompute hand indices for this game
-		computeHandIndices(game);
-		
-		gameHasMultipleContainers = (game.equipment().containers().length > 1);
 	}
 	
 	@Override
@@ -267,35 +301,6 @@ public class Material extends HeuristicTerm
 		gameAgnosticWeightsArray = (float[]) returnArrays[1];
 		
 		return retVal;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param game
-	 */
-	private void computeHandIndices(final Game game)
-	{
-		boolean foundHands = false;
-		final int[] handContainerIndices = new int[game.players().count() + 1];
-		
-		for (final Container c : game.equipment().containers())
-		{
-			if (c instanceof game.equipment.container.other.Hand)
-			{
-				final int owner = ((game.equipment.container.other.Hand)c).owner();
-				if (owner > 0 && owner < handContainerIndices.length && handContainerIndices[owner] == 0)
-				{
-					foundHands = true;
-					handContainerIndices[owner] = c.index();
-				}
-			}
-		}
-		
-		if (!foundHands)
-			handIndices = null;
-		else
-			handIndices = handContainerIndices;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -322,7 +327,7 @@ public class Material extends HeuristicTerm
 	 */
 	public static boolean isSensibleForGame(final Game game)
 	{
-		return isApplicableToGame(game);
+		return isApplicableToGame(game) && game.booleanConcepts().get(Concept.Capture.id());
 	}
 	
 	//-------------------------------------------------------------------------
@@ -332,7 +337,7 @@ public class Material extends HeuristicTerm
 	{
 		final StringBuilder sb = new StringBuilder();
 		
-		sb.append("(material");
+		sb.append("(threatenedMaterialMultipleCount");
 		if (transformation != null)
 			sb.append(" transformation:" + transformation.toString());
 		if (weight != 1.f)
@@ -349,13 +354,6 @@ public class Material extends HeuristicTerm
 			}
 			
 			sb.append("    }");
-			
-			if (boardOnly)
-				sb.append("\n    boardOnly:True\n");
-		}
-		else if (boardOnly)
-		{
-			sb.append(" boardOnly:True");
 		}
 		
 		sb.append(")");
@@ -395,7 +393,7 @@ public class Material extends HeuristicTerm
 		{
 			final StringBuilder sb = new StringBuilder();
 		
-			sb.append("(material");
+			sb.append("(threatenedMaterial");
 			if (transformation != null)
 				sb.append(" transformation:" + transformation.toString());
 			if (weight != 1.f)
@@ -406,13 +404,6 @@ public class Material extends HeuristicTerm
 				sb.append(" pieceWeights:{\n");
 				sb.append(pieceWeightsSb);
 				sb.append("    }");
-				
-				if (boardOnly)
-					sb.append("\n    boardOnly:True\n");
-			}
-			else if (boardOnly)
-			{
-				sb.append(" boardOnly:True");
 			}
 			sb.append(")");
 			
@@ -429,7 +420,7 @@ public class Material extends HeuristicTerm
 	@Override
 	public void merge(final HeuristicTerm term) 
 	{
-		final Material castTerm = (Material) term;
+		final ThreatenedMaterialMultipleCount castTerm = (ThreatenedMaterialMultipleCount) term;
 		for (int i = 0; i < pieceWeightNames.length; i++)
 			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
 				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
@@ -462,15 +453,13 @@ public class Material extends HeuristicTerm
 	@Override
 	public String description() 
 	{
-		return "Sum of owned pieces.";
+		return "Sum of unthreatened owned pieces.";
 	}
 	
 	@Override
 	public String toEnglishString(final Context context, final int playerIndex) 
 	{
 		final StringBuilder sb = new StringBuilder();
-		
-		final String extraString = boardOnly ? " on the board" : "";
 
 		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))
 		{
@@ -483,11 +472,11 @@ public class Material extends HeuristicTerm
 					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
 					{
 						if (gameAgnosticWeightsArray[i] > 0)
-							sb.append("You should try to maximise the number of " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+							sb.append("You should try to maximise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						else
-							sb.append("You should try to minimise the number of " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+							sb.append("You should try to minimise the number of unthreatened " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						
-						sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
+						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
 				}
 			}
@@ -495,17 +484,18 @@ public class Material extends HeuristicTerm
 		else
 		{
 			if (weight > 0)
-				sb.append("You should try to maximise the number of piece(s) you control");
+				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
 			else
-				sb.append("You should try to maximise the number of piece(s) you control");
+				sb.append("You should try to maximise the number of unthreatened piece(s) you control");
 			
-			sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
+			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
 		
 		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------
+
 	@Override
 	public float[] gameAgnosticWeightsArray() {
 		return gameAgnosticWeightsArray;

@@ -224,5 +224,5 @@ public class PlayerSiteMapCount extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
-
+	
 }

@@ -134,7 +134,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 			{
 				final TempContext temp = new TempContext(context);
 				temp.state().setPrev(context.state().mover());
-				temp.state().setMover(player);
+				temp.state().setMover(p);
 				temp.trial().clearLegalMoves();
 				oppLegalMoves = game.moves(temp).moves();
 				
@@ -142,7 +142,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 				{
 					for (final Action action : move.actions())
 					{
-						if (action != null && action.actionType().equals(ActionType.Remove))
+						if (action != null && action.actionType()!= null && action.actionType().equals(ActionType.Remove))
 						{
 							final ActionRemove removeAction = (ActionRemove) action;
 							final int removeSite = removeAction.to();
@@ -481,4 +481,12 @@ public class UnthreatenedMaterial extends HeuristicTerm
 	
 	//-------------------------------------------------------------------------
 
+	@Override
+	public float[] gameAgnosticWeightsArray() {
+		return gameAgnosticWeightsArray;
+	}
+	@Override
+	public FVector pieceWeights() {
+		return pieceWeights;
+	}
 }

@@ -124,7 +124,7 @@ public class PlayerRegionsProximity extends HeuristicTerm
 		if (maxDistance == 0)
 			return 0.f;
 		
-		final int[][] distances = context.game().distancesToRegions();		
+		final int[][] distances = context.game().distancesToRegions();	
 		final Owned owned = context.state().owned();
 
 		final List<? extends Location>[] pieces = owned.positions(player);
@@ -489,5 +489,12 @@ public class PlayerRegionsProximity extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
-
+	@Override
+	public float[] gameAgnosticWeightsArray() {
+		return gameAgnosticWeightsArray;
+	}
+	@Override
+	public FVector pieceWeights() {
+		return pieceWeights;
+	}
 }
