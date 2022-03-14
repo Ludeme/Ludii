@@ -107,7 +107,7 @@ public class AgentPredictionExternal
         		final String arg1 = modelFilePath;
         		final String arg2 = "Classification";
         		final String arg3 = conceptNameString;
-        		final String arg4 =  conceptValueString;
+        		final String arg4 = conceptValueString;
 	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
 	
 	            // Read file output
