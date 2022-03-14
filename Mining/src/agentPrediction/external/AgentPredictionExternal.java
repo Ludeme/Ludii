@@ -78,7 +78,7 @@ public class AgentPredictionExternal
 		{
 			if (manager.aiSelected()[playerIndexToUpdate].ai() != null)
 			{
-				final Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
+				final Heuristics heuristic = AIUtils.convertStringtoHeuristic(bestPredictedAgentName);
 				manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
 				manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
 			}
