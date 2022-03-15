@@ -42,6 +42,7 @@ public class GameUtil
 		Game game = context.game();
 		app.manager().undoneMoves().clear();
 		ref.interruptAI(app.manager());
+		AIUtil.checkAISupported(app.manager(), context);
 		
 		// Web Player settings
 		app.settingsPlayer().setWebGameResultValid(true);
