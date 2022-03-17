@@ -475,6 +475,8 @@ public class FindBestBaseAgentScriptsGen
 				if (game.hasSubgames())
 					continue;
 				
+				final String bestPredictedHeuristicName = predictBestHeuristic(game);
+				
 				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
 				final String filepathsRulesetName = StringRoutines.cleanRulesetName(fullRulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
 				//final String dbGameName = DBGameInfo.getUniqueName(game);
@@ -487,8 +489,6 @@ public class FindBestBaseAgentScriptsGen
 				
 				if (dummyAlphaBeta.supportsGame(game))
 				{		
-					final String bestPredictedHeuristicName = predictBestHeuristic(game);
-					
 					if (bestPredictedHeuristicName != null)
 					{
 						//final String heuristic = abHeuristicEntry.topHeuristic();
@@ -532,8 +532,6 @@ public class FindBestBaseAgentScriptsGen
 				
 				if (dummyBRSPlus.supportsGame(game))
 				{
-					final String bestPredictedHeuristicName = predictBestHeuristic(game);
-					
 					if (bestPredictedHeuristicName != null)
 					{
 						//final String heuristic = abHeuristicEntry.topHeuristic();
@@ -712,8 +710,6 @@ public class FindBestBaseAgentScriptsGen
 								
 								if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
 								{
-									final String bestPredictedHeuristicName = predictBestHeuristic(game);
-									
 									if (bestPredictedHeuristicName != null)
 									{
 										evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt";
@@ -789,8 +785,6 @@ public class FindBestBaseAgentScriptsGen
 									
 									if (relevantMCTSHeuristicRequirements[otherMCTSIdx])
 									{
-										final String bestPredictedHeuristicName = predictBestHeuristic(game);
-										
 										if (bestPredictedHeuristicName != null)
 										{
 											agentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt";
@@ -825,8 +819,6 @@ public class FindBestBaseAgentScriptsGen
 							String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
 							if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
 							{
-								final String bestPredictedHeuristicName = predictBestHeuristic(game);
-								
 								if (bestPredictedHeuristicName != null)
 								{
 									evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt";
