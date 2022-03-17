@@ -52,7 +52,7 @@ public class FindBestBaseAgentScriptsGen
 	private static final int MAX_JOBS_PER_BATCH = 800;
 	
 	/** Max number of trials we want to be running from a single script */
-	private static final int NUM_TRIALS_PER_SCRIPT = 100;
+	private static final int NUM_TRIALS_PER_SCRIPT = 150;
 	
 	/** All our hyperparameters for MCTS */
 	private static final String[] mctsHyperparamNames = new String[] 
@@ -1040,7 +1040,7 @@ public class FindBestBaseAgentScriptsGen
 					"--game-length-cap 1000",
 					"--thinking-time 1",
 					"--iteration-limit 100000",				// 100K iterations per move should be good enough
-					"--warming-up-secs 30",
+					"--warming-up-secs 10",
 					"--out-dir",
 					StringRoutines.quote
 					(
