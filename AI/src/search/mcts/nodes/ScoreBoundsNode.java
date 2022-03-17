@@ -61,7 +61,7 @@ public final class ScoreBoundsNode extends DeterministicNode
     	
     	for (int p = 1; p <= numPlayers; ++p)
     	{
-    		if (currentUtils[p] != 0.0)
+    		if (!context.active(p))		// Have a proven outcome
     		{
     			pessimisticScores[p] = currentUtils[p];
     			optimisticScores[p] = currentUtils[p];
@@ -80,8 +80,8 @@ public final class ScoreBoundsNode extends DeterministicNode
 	    	{
 	    		if (currentUtils[p] != 0.0)
 	    		{
-	    			((ScoreBoundsNode) parent).updatePessBounds(p, currentUtils[p], this);
-		    		((ScoreBoundsNode) parent).updateOptBounds(p, currentUtils[p], this);
+	    			((ScoreBoundsNode) parent).updatePessBounds(p, pessimisticScores[p], this);
+		    		((ScoreBoundsNode) parent).updateOptBounds(p, optimisticScores[p], this);
 	    		}
 	    	}
     	}
@@ -195,7 +195,12 @@ public final class ScoreBoundsNode extends DeterministicNode
     			}
     			
     			if (minPess < oldPess)
+    			{
     				System.err.println("ERROR in updatePessBounds()!");
+    				System.err.println("oldPess = " + oldPess);
+    				System.err.println("minPess = " + minPess);
+    				System.err.println("pessBound = " + pessBound);
+    			}
     			
     			// We can update
     			pessimisticScores[agent] = minPess;
