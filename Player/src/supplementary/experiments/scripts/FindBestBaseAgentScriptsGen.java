@@ -74,7 +74,7 @@ public class FindBestBaseAgentScriptsGen
 	/** All the values our hyperparameters for MCTS can take */
 	private static final String[][] mctsHyperParamValues = new String[][]
 			{
-				{"0.0", "0.6", "1.41421356237"},
+				{"0.1", "0.6", "1.41421356237"},
 				{"ProgressiveBias", "ProgressiveHistory", "UCB1", "UCB1GRAVE", "UCB1Tuned"},
 				{"AlphaGo05", "AlphaGo0", "Heuristic", "MonteCarlo", "QualitativeBonus"},
 				{"MAST", "NST", "Random200", "Random4", "Random0"},
@@ -109,7 +109,8 @@ public class FindBestBaseAgentScriptsGen
 			{
 				"Chinese Checkers.lud",
 				"Li'b al-'Aqil.lud",
-				"Li'b al-Ghashim.lud"
+				"Li'b al-Ghashim.lud",
+				"Pagade Kayi Ata (Sixteen-handed).lud"
 			};
 	
 	//-------------------------------------------------------------------------
@@ -237,7 +238,7 @@ public class FindBestBaseAgentScriptsGen
 			algStringParts.add("selection=" + selectionType + ",explorationconstant=" + explorationConstant);
 			
 			String qinitString = "PARENT";
-			if (Double.parseDouble(explorationConstant) == 0.0)
+			if (Double.parseDouble(explorationConstant) == 0.1)
 				qinitString = "INF";
 			else if (selectionType.equals("ProgressiveBias"))
 				qinitString = "INF";
