@@ -42,6 +42,16 @@
             (place "Dog1" (handSite P1 1) count:2)
         })
         
+        <Rule:rule>
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Rules" <Rule> args:{ <rule> } {
+    
+    (item "Two Phases" 
+        <
         phases:{
         (phase "PlacementP1" 
             (play
@@ -108,8 +118,55 @@
             (end (if (!= 0 (score P1)) (byScore)))
         )
         }
+        >  
+        "The game has two rounds."
+    )*
+    
+    (item "One Round" 
+        <
+        phases:{
+        (phase "PlacementP1" 
+            (play
+                (move 
+                    (from (sites Hand P1) if:(is Occupied (from)))
+                    (to (sites {1..8}) if:(is Empty (to)))
+                    (then (if (not ("HandEmpty" P1)) (moveAgain)))
+                )
+            )
+            (nextPhase ("HandEmpty" P1) "HuntingP2")
+        )
+        (phase "HuntingP2" 
+            (play (forEach Piece))
+            (end {
+                (if (no Moves P2) (result P1 Win))
+                (if 
+                    (or
+                        (>= (count Moves) (- (value MoveLimit) 10)) 
+                        (>= (count Turns) (- (value TurnLimit) 5)) 
+                    )
+                    (result P2 Win)
+                )
+            }) 
+        )
+        }
+        >  
+        "The game has only one round."
     )
-)
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/To Kynegi tou Lagou (Observed)" {
+        "Rules/Two Phases"
+    })
+    
+    (ruleset "Ruleset/Rabbit Wins One Round (Suggested)" {
+        "Rules/One Round"
+    })
+    
+})
 
 //------------------------------------------------------------------------------
 
@@ -119,17 +176,16 @@
         {
         (description "To Kynégi tou Lagoú (\"Hare Hunt\") is a blockade game played by children in Greece. Played on a square board, the game is played by three people; one moving the hare, one moving the hunter, and the other moving the two hounds. ")
         (aliases {"To Kynégi tou Lagoú" "The Game of Chasing the Hare"})
-        (rules "A square, with lines bisecting the sides drawn to the center. A circle is drawn around the central point. arcs are drawn inside the square around the midpoints of the sides and the corners. Diagonals are drawn from the corner arcs to the central circle. One player plays as the hare, one player plays as the hunter, and the third player plays as the two hounds. The hunter and the hounds play as a team. The hare begins on the central spot, and the hunter and hounds are placed on three of the points on the central circle.")
-        (source "Argyriadis 1997: 93-95.")
-        (id "1166")
+        (useFor "Ruleset/To Kynegi tou Lagou (Observed)" (rules "A square, with lines bisecting the sides drawn to the center. A circle is drawn around the central point. arcs are drawn inside the square around the midpoints of the sides and the corners. Diagonals are drawn from the corner arcs to the central circle. One player plays as the hare, one player plays as the hunter and two hounds. The hare begins on the central spot, and the hunter and hounds are placed on three of the points on the central circle. Pieces move to an empty adjacent spot along the lines of the board. The hare moves first. When the hunter and hounds prevent the hare from being able to move, the game ends and the players switch roles."))
+        (useFor "Ruleset/To Kynegi tou Lagou (Observed)" (source "Argyriadis 1997: 93-95."))
+        (useFor "Ruleset/To Kynegi tou Lagou (Observed)" (id "1166"))
+        (useFor "Ruleset/Rabbit Wins One Round (Suggested)" (rules "Only played in one round. If the hunter and dogs cannot block the rabbit before the game times out, the raabbit wins."))
+        (useFor "Ruleset/Rabbit Wins One Round (Suggested)" (id "1960"))
+        (source "Michaelsen 2014: 211-212.")
         (version "1.3.2")
         (classification "board/hunt/reconstruction")
         (credit "Eric Piette")
         }
     )
-    
-    (graphics {
-        
-    })
     
 )
