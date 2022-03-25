@@ -1,0 +1,32 @@
+(game "Tavla (Ottoman)" 
+    (players 2)
+    (equipment {
+        (board 
+            (rectangle 2 13) 
+            use:Vertex
+        )
+        (dice d:6 num:2)
+        (piece "Disc" Each)
+    })
+    (rules
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)
+
