@@ -33,31 +33,31 @@
 //------------------------------------------------------------------------------
 
 (option "End" <End> args:{ <rule> } {
-
-(item "Cond for P2" 
-    <
-    (end {
-        (if (no Moves P1) (result P2 Win))
-    }) 
-    >  
-    "The game has an ending condition only for P2."
-)*
-
-(item "Cond for P1 and P2" 
-    <
-    (end {
-        (if (no Moves P1) (result P2 Win))
-        (if 
-            (or
-                (>= (count Moves) (- (value MoveLimit) 10)) 
-                (>= (count Turns) (- (value TurnLimit) 5)) 
+    
+    (item "Cond for P2" 
+        <
+        (end {
+            (if (no Moves P1) (result P2 Win))
+        }) 
+        >  
+        "The game has an ending condition only for P2."
+    )*
+    
+    (item "Cond for P1 and P2" 
+        <
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if 
+                (or
+                    (>= (count Moves) (- (value MoveLimit) 10)) 
+                    (>= (count Turns) (- (value TurnLimit) 5)) 
+                )
+                (result P1 Win)
             )
-            (result P1 Win)
-        )
-    }) 
-    >  
-    "The game has an ending condition for each player."
-)
+        }) 
+        >  
+        "The game has an ending condition for each player."
+    )
 })
 
 //------------------------------------------------------------------------------
@@ -67,7 +67,7 @@
     (ruleset "Ruleset/Hund efter Hare (Vendsyssel) (Observed)" {
         "End/Cond for P2"
     })*
-	
+    
     (ruleset "Ruleset/Hare Wins (Suggested)" {
         "End/Cond for P1 and P2"
     })

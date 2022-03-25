@@ -53,37 +53,37 @@
         "The First player moves only when all the pieces are placed."
     )*  
     (item "White moves only when all placed and winning conditions for each player" 
-            <
-            phases:{
-            (phase "Placement"
-                (play 
-                    (if (not ("HandEmpty" Mover)) 
-                        (move 
-                            (from (handSite Mover)) 
-                            (to (sites Empty))
-                        ) 
-                    )
+        <
+        phases:{
+        (phase "Placement"
+            (play 
+                (if (not ("HandEmpty" Mover)) 
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    ) 
                 )
-                (nextPhase ("HandEmpty" P2) "Movement")
             )
-            
-            (phase "Movement"
-                (play (forEach Piece))
-                (end {
-                	("NoMoves" Loss)
-                    (if 
-                        (or
-                            (>= (count Moves) (- (value MoveLimit) 10)) 
-                            (>= (count Turns) (- (value TurnLimit) 5)) 
-                        )
-                        (result P1 Win)
-                    )
-                }) 
-            )
-            }
-            >
-            "The First player moves only when all the pieces are placed. The game has an ending condition for each player."
+            (nextPhase ("HandEmpty" P2) "Movement")
         )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+            (end {
+                ("NoMoves" Loss)
+                (if 
+                    (or
+                        (>= (count Moves) (- (value MoveLimit) 10)) 
+                        (>= (count Turns) (- (value TurnLimit) 5)) 
+                    )
+                    (result P1 Win)
+                )
+            }) 
+        )
+        }
+        >
+        "The First player moves only when all the pieces are placed. The game has an ending condition for each player."
+    )
     (item "White moves only when his piece is placed"    
         <
         phases:{
@@ -114,7 +114,7 @@
     (ruleset "Ruleset/Hyvn aetter Hare (Described)" {
         "Play Rules/White moves only when all placed and P2 winning condition"
     })*
-	
+    
     (ruleset "Ruleset/Hare Wins (Suggested)" {
         "Play Rules/White moves only when all placed and winning conditions for each player"
     })
