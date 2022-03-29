@@ -11,17 +11,17 @@
         ) 
         (hand Each)
         (piece "Marker" Each
-        	(or
-        		("StepToEmpty")
-        		("HopOrthogonalCapture")
-        	)
+            (or
+                ("StepToEmpty")
+                ("HopOrthogonalCapture")
+            )
         ) 
-     })  
+    })  
     (rules 
-    	(start {
-    		(place "Marker1" [*])
-    		(place "Marker2" [*])
-    	})
+        (start {
+            (place "Marker1" [*])
+            (place "Marker2" [*])
+        })
         (play (forEach Piece))
         (end (if (no Pieces Next) (result Mover Win)))
     )
