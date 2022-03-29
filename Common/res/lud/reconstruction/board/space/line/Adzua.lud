@@ -1,8 +1,8 @@
 (define "RemoveEnemyPiece" 
-        (move
-            Remove
-            (sites Occupied by:Next container:"Board") 
-        )
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -47,7 +47,7 @@
             (play 
                 (if "SameTurn"
                     "RemoveEnemyPiece"
-                        (forEach Piece)
+                    (forEach Piece)
                 )
             )
         )
