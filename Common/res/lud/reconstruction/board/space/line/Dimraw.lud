@@ -1,24 +1,65 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLineMoveAgain" 
+    (then 
+        (if 
+        	(is Line 3)
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Dimraw"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board 
-            (remove 
-                (concentric Square rings:3)
-                edges:{
-                {22 19} {19 16} {12 13} {13 14} {7 4} {4 1} {11 10} {9 10}
-                }
-            )
+            (concentric Square rings:3 joinCorners:True)
             use:Vertex
         ) 
         (hand Each)
-        (piece "Marker" Each) 
-        }
-    )  
+        (piece "Marker" Each (move [*])) // Do not know the movement of the pieces
+    })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start {
+    		(place "Marker1" (handSite P1) count:12)
+    		(place "Marker2" (handSite P2) count:16)
+    	})
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLineMoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece
+                        ("IfLineMoveAgain")		
+                    )
+                )
+            )
+        )
+        }
+        
+        (end (if [*] (result Mover Win))) // Do not know the ending cond.
     )
 )
 
@@ -40,7 +81,12 @@
     )
     
     (graphics {
-        
+        (show Line 
+        	{ {17 20} {20 23} {16 19} {19 22} {15 18} {18 21} {11 10} {10 9}
+        	  {6 3} {3 0} {7 4} {4 1} {8 5} {5 2} {12 13} {13 14}
+        	} 
+        	(colour Hidden)
+        )
     })
     
 )
