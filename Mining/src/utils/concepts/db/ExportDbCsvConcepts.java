@@ -63,12 +63,13 @@ import utils.IdRuleset;
  * 
  *         Structure for the db:
  * 
- *         Concepts.csv (Id, Name, Description, TypeId, DataTypeId, ComputationTypeId)
+ *         Concepts.csv (Id, Name, Description, TypeId, DataTypeId,
+ *         ComputationTypeId)
  * 
  *         ConceptTypes.csv (Id, Name)
  * 
  *         ConceptDataTypes.csv (Id, Name)
- *         
+ * 
  *         ConceptComputationTypes.csv (Id, Name)
  * 
  *         ConceptKeywords.csv (Id, Name, Description)
@@ -85,26 +86,30 @@ public class ExportDbCsvConcepts
 {
 	/** The path of the csv with the id of the rulesets for each game. */
 	private static final String GAME_RULESET_PATH = "/concepts/input/GameRulesets.csv";
-	
+
 	/** The move limit to use in the trials used. */
 	private static int moveLimit;
-	
+
 	/** The folder with the trials to use. */
 	private static String folderTrials;
-	
+
 	/** The trials. */
 	private static List<Trial> trials = new ArrayList<Trial>();
-	
+
 	// The RNGs of each trial.
 	private static List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
-	
-	/** List of games for which the list of trials to use does not have to be more than a specific number to be able to compute in less than 4 days, due to the metrics. */
+
+	/**
+	 * List of games for which the list of trials to use does not have to be more
+	 * than a specific number to be able to compute in less than 4 days, due to the
+	 * metrics.
+	 */
 	private static List<String> lessTrialsGames = new ArrayList<String>();
-	
-	/** The limit to use for the games in the list above.*/
+
+	/** The limit to use for the games in the list above. */
 	private static final int smallLimitTrials = 30;
-	
-	//-------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
 
 	public static void main(final String[] args)
 	{
@@ -117,7 +122,7 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Taikyoku Shogi");
 		lessTrialsGames.add("Tai Shogi");
 		lessTrialsGames.add("Pagade Kayi Ata (Sixteen-handed)");
-		
+
 		final Evaluation evaluation = new Evaluation();
 		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
@@ -137,14 +142,14 @@ public class ExportDbCsvConcepts
 			exportConceptPurposeCSV();
 			exportConceptConceptPurposesCSV();
 		}
-		
-		if(lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
+
+		if (lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
 			numPlayouts = smallLimitTrials;
 
 		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * To create Concepts.csv (Id, Name, Description, TypeId, DataTypeId)
@@ -176,7 +181,7 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * To create ConceptTypes.csv (Id, Name)
@@ -202,7 +207,7 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * To create ConceptDataTypes.csv (Id, Name)
@@ -227,8 +232,8 @@ public class ExportDbCsvConcepts
 		}
 		System.out.println("Done.");
 	}
-	
-	//-------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
 
 	/**
 	 * To create ConceptComputationTypes.csv (Id, Name)
@@ -254,7 +259,7 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * To create ConceptPurposes.csv (Id, Name)
@@ -280,7 +285,7 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * To create ConceptConceptPurposes.csv (Id, ConceptId, PurposeId)
@@ -312,7 +317,7 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * To create RulesetConcepts.csv (Id, RulesetId, ConceptId, Value)
@@ -322,27 +327,17 @@ public class ExportDbCsvConcepts
 	 * @param thinkingTime    The maximum time to take a decision per move.
 	 * @param agentName       The name of the agent to use for the playout concepts
 	 * @param name            The name of the game.
-	 * @param rulesetExpected The name of the ruleset of the game. 
+	 * @param rulesetExpected The name of the ruleset of the game.
 	 */
-	public static void exportRulesetConceptsCSV
-	(
-		final Evaluation evaluation,
-		final int numPlayouts, 
-		final double timeLimit, 
-		final double thinkingTime, 
-		final String agentName, 
-		final String name, 
-		final String rulesetExpected
-	)
+	public static void exportRulesetConceptsCSV(final Evaluation evaluation, final int numPlayouts,
+			final double timeLimit, final double thinkingTime, final String agentName, final String name,
+			final String rulesetExpected)
 	{
 		final List<String> games = new ArrayList<String>();
 		final List<String> rulesets = new ArrayList<String>();
 		final TIntArrayList ids = new TIntArrayList();
-		try
-		(
-			final InputStream in = ExportDbCsvConcepts.class.getResourceAsStream(GAME_RULESET_PATH);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));	
-		)
+		try (final InputStream in = ExportDbCsvConcepts.class.getResourceAsStream(GAME_RULESET_PATH);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(in));)
 		{
 			String line = reader.readLine();
 			while (line != null)
@@ -372,7 +367,8 @@ public class ExportDbCsvConcepts
 
 		final String fileName = name.isEmpty() ? ""
 				: name.substring(name.lastIndexOf('/') + 1, name.length() - 4).replace(" ", "");
-		final String outputRulesetConcepts = rulesetExpected.isEmpty() ? "RulesetConcepts" + fileName + ".csv" : "RulesetConcepts" + fileName +"-" + rulesetExpected.substring(8) + ".csv";
+		final String outputRulesetConcepts = rulesetExpected.isEmpty() ? "RulesetConcepts" + fileName + ".csv"
+				: "RulesetConcepts" + fileName + "-" + rulesetExpected.substring(8) + ".csv";
 		System.out.println("Writing " + outputRulesetConcepts);
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputRulesetConcepts), "UTF-8"))
 		{
@@ -382,7 +378,7 @@ public class ExportDbCsvConcepts
 			{
 				if (concept.dataType().equals(ConceptDataType.BooleanData))
 					booleanConcepts.add(concept);
-				else 
+				else
 					nonBooleanConcepts.add(concept);
 			}
 
@@ -426,11 +422,11 @@ public class ExportDbCsvConcepts
 					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 					{
 						final Ruleset ruleset = rulesetsInGame.get(rs);
-						
+
 						// We check if we want a specific ruleset.
-						if(!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
+						if (!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
 							continue;
-						
+
 						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
 						{
 							final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
@@ -439,7 +435,8 @@ public class ExportDbCsvConcepts
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
-									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
+									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime,
+											agentName);
 
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
@@ -448,7 +445,7 @@ public class ExportDbCsvConcepts
 								if (concepts.get(concept.id()))
 								{
 									final List<String> lineToWrite = new ArrayList<String>();
-									lineToWrite.add(id + ""); // id 
+									lineToWrite.add(id + ""); // id
 									lineToWrite.add(idRuleset + ""); // id ruleset
 									lineToWrite.add(concept.id() + ""); // id concept
 									lineToWrite.add("\"1\"");
@@ -458,20 +455,23 @@ public class ExportDbCsvConcepts
 							}
 							for (final Concept concept : nonBooleanConcepts)
 							{
-								if(concept.computationType().equals(ConceptComputationType.Compilation)) 
+								if (concept.computationType().equals(ConceptComputationType.Compilation))
 								{
 									final List<String> lineToWrite = new ArrayList<String>();
 									lineToWrite.add(id + "");
 									lineToWrite.add(idRuleset + "");
 									lineToWrite.add(concept.id() + "");
-									lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
+									lineToWrite.add(
+											"\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
 									writer.println(StringRoutines.join(",", lineToWrite));
 									id++;
 								}
 								else
 								{
 									final String conceptName = concept.name();
-									if(conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency concepts added to the csv.
+									if (conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency
+																									// concepts added to
+																									// the csv.
 									{
 										final double value = frequencyPlayouts.get(concept.name()) == null ? 0
 												: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -479,28 +479,33 @@ public class ExportDbCsvConcepts
 										lineToWrite.add(id + "");
 										lineToWrite.add(idRuleset + "");
 										lineToWrite.add(concept.id() + "");
-										lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the metric
+										lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the
+																									// metric
 										writer.println(StringRoutines.join(",", lineToWrite));
 										id++;
-										//System.out.println("metric: " + concept);
+										// System.out.println("metric: " + concept);
 									}
 									else // Frequency concepts added to the csv.
 									{
-										final String correspondingBooleanConceptName = conceptName.substring(0,conceptName.indexOf("Frequency"));
+										final String correspondingBooleanConceptName = conceptName.substring(0,
+												conceptName.indexOf("Frequency"));
 										for (final Concept correspondingConcept : booleanConcepts)
 										{
-											if(correspondingConcept.name().equals(correspondingBooleanConceptName))
+											if (correspondingConcept.name().equals(correspondingBooleanConceptName))
 											{
 												final List<String> lineToWrite = new ArrayList<String>();
 												lineToWrite.add(id + "");
 												lineToWrite.add(idRuleset + "");
 												lineToWrite.add(concept.id() + "");
-												final double frequency = frequencyPlayouts.get(correspondingConcept.name()) == null ? 0
-														: frequencyPlayouts.get(correspondingConcept.name()).doubleValue();
-												if(frequency > 0)
-													System.out.println(concept + " = " + (frequency * 100) +"%");
-												lineToWrite.add(
-														(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "0") + ""); // the frequency
+												final double frequency = frequencyPlayouts
+														.get(correspondingConcept.name()) == null ? 0
+																: frequencyPlayouts.get(correspondingConcept.name())
+																		.doubleValue();
+												if (frequency > 0)
+													System.out.println(concept + " = " + (frequency * 100) + "%");
+												lineToWrite.add((frequency > 0
+														? new DecimalFormat("##.##").format(frequency) + ""
+														: "0") + ""); // the frequency
 												writer.println(StringRoutines.join(",", lineToWrite));
 												id++;
 											}
@@ -531,10 +536,10 @@ public class ExportDbCsvConcepts
 							id++;
 						}
 					}
-					
+
 					for (final Concept concept : nonBooleanConcepts)
 					{
-						if(concept.computationType().equals(ConceptComputationType.Compilation)) 
+						if (concept.computationType().equals(ConceptComputationType.Compilation))
 						{
 							if (!game.nonBooleanConcepts().get(Integer.valueOf(concept.id())).equals("0"))
 							{
@@ -542,14 +547,21 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(id + "");
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
-								lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
+								lineToWrite.add(
+										"\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 							}
 						}
 						else
 						{
-							if(concept.type().equals(ConceptType.Behaviour) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
+							if (concept.type().equals(ConceptType.Behaviour) || !concept.name().contains("Frequency")) // Non
+																														// Frequency
+																														// concepts
+																														// added
+																														// to
+																														// the
+																														// csv.
 							{
 								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 										: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -557,7 +569,8 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(id + "");
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
-								lineToWrite.add(value == Constants.UNDEFINED ? "NULL" : new DecimalFormat("##.##").format(value)); // the value of the metric
+								lineToWrite.add(value == Constants.UNDEFINED ? "NULL"
+										: new DecimalFormat("##.##").format(value)); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 //								if(value != 0)
@@ -566,21 +579,25 @@ public class ExportDbCsvConcepts
 							else // Frequency concepts added to the csv.
 							{
 								final String conceptName = concept.name();
-								final String correspondingBooleanConceptName = conceptName.substring(0, conceptName.indexOf("Frequency"));
+								final String correspondingBooleanConceptName = conceptName.substring(0,
+										conceptName.indexOf("Frequency"));
 								for (final Concept correspondingConcept : booleanConcepts)
 								{
-									if(correspondingConcept.name().equals(correspondingBooleanConceptName))
+									if (correspondingConcept.name().equals(correspondingBooleanConceptName))
 									{
 										final List<String> lineToWrite = new ArrayList<String>();
 										lineToWrite.add(id + "");
 										lineToWrite.add(idRuleset + "");
 										lineToWrite.add(concept.id() + "");
-										final double frequency = frequencyPlayouts.get(correspondingConcept.name()) == null ? 0
-												: frequencyPlayouts.get(correspondingConcept.name()).doubleValue();
+										final double frequency = frequencyPlayouts
+												.get(correspondingConcept.name()) == null ? 0
+														: frequencyPlayouts.get(correspondingConcept.name())
+																.doubleValue();
 //										if(frequency > 0)
 //											System.out.println(concept + " = " + (frequency * 100) +"%");
-										lineToWrite.add(
-												(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "0") + ""); // the frequency
+										lineToWrite
+												.add((frequency > 0 ? new DecimalFormat("##.##").format(frequency) + ""
+														: "0") + ""); // the frequency
 										writer.println(StringRoutines.join(",", lineToWrite));
 										id++;
 									}
@@ -599,8 +616,9 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
-	//------------------------------PLAYOUT CONCEPTS-----------------------------------------------------
-	
+	// ------------------------------PLAYOUT
+	// CONCEPTS-----------------------------------------------------
+
 	/**
 	 * @param game         The game
 	 * @param playoutLimit The number of playouts to run.
@@ -609,15 +627,8 @@ public class ExportDbCsvConcepts
 	 * @return The frequency of all the boolean concepts in the number of playouts
 	 *         set in entry
 	 */
-	private static Map<String, Double> playoutsMetrics
-	(
-		final Game game, 
-		final Evaluation evaluation,
-		final int playoutLimit, 
-		final double timeLimit,
-		final double thinkingTime,
-		final String agentName
-	)
+	private static Map<String, Double> playoutsMetrics(final Game game, final Evaluation evaluation,
+			final int playoutLimit, final double timeLimit, final double thinkingTime, final String agentName)
 	{
 		final long startTime = System.currentTimeMillis();
 
@@ -629,48 +640,49 @@ public class ExportDbCsvConcepts
 		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
 				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
 		{
-			// We add all the default metrics values corresponding to a concept to the returned map.
+			// We add all the default metrics values corresponding to a concept to the
+			// returned map.
 			final List<Metric> metrics = new Evaluation().conceptMetrics();
-			for(final Metric metric: metrics)
-				if(metric.concept() != null)
+			for (final Metric metric : metrics)
+				if (metric.concept() != null)
 					mapFrequency.put(metric.concept().name(), null);
 			return mapFrequency;
 		}
-		
+
 		// We run the playouts needed for the computation.
-		
+
 		// FOR THE MUSEUM GAME
 //		final TIntArrayList edgesUsage = new TIntArrayList();	
 //		for(int i = 0; i < game.board().topology().edges().size(); i++)
 //			edgesUsage.add(0);
-		
-		if(folderTrials.isEmpty())
+
+		if (folderTrials.isEmpty())
 		{
 			int playoutsDone = 0;
 			for (int indexPlayout = 0; indexPlayout < playoutLimit; indexPlayout++)
 			{
 				final List<AI> ais = chooseAI(game, agentName, indexPlayout);
-				
-				for(final AI ai : ais)
-					if(ai != null)
+
+				for (final AI ai : ais)
+					if (ai != null)
 						ai.setMaxSecondsPerMove(thinkingTime);
-				
+
 				final Context context = new Context(game, new Trial(game));
 				allStoredRNG.add(context.rng().saveState());
 				final Trial trial = context.trial();
 				game.start(context);
-	
+
 				// Init the ais.
 				for (int p = 1; p <= game.players().count(); ++p)
 					ais.get(p).initAI(game, p);
 				final Model model = context.model();
-				
+
 				while (!trial.over())
 				{
 					model.startNewStep(context, ais, thinkingTime);
-					
+
 					// FOR THE MUSEUM GAME
-					// To count the frequency/usage of each edge on the board. 
+					// To count the frequency/usage of each edge on the board.
 //					final Move lastMove = trial.lastMove();
 //					final int vertexFrom = lastMove.fromNonDecision();
 //					final int vertexTo = lastMove.toNonDecision();
@@ -682,49 +694,50 @@ public class ExportDbCsvConcepts
 //								(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
 //							edgesUsage.set(i, edgesUsage.get(i)+1);
 //					}
-					
+
 					// TO PRINT THE NUMBER OF PIECES PER TRIAL
-	//				int countPieces = 0;
-	//				int countPiecesP1 = 0;
-	//				int countPiecesP2 = 0;
-	//				final ContainerState cs = context.containerState(0);
-	//				final int numCells = context.topology().cells().size();
-	//				for(int i = 0; i < numCells; i++)
-	//				{
-	//					if(cs.what(i, SiteType.Cell) != 0)
-	//						countPieces++;
-	//
-	//					if(cs.what(i, SiteType.Cell) == 1)
-	//						countPiecesP1++;
-	//
-	//					if(cs.what(i, SiteType.Cell) == 2)
-	//						countPiecesP2++;
-	//				}
-	//				
-	//				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
+					// int countPieces = 0;
+					// int countPiecesP1 = 0;
+					// int countPiecesP2 = 0;
+					// final ContainerState cs = context.containerState(0);
+					// final int numCells = context.topology().cells().size();
+					// for(int i = 0; i < numCells; i++)
+					// {
+					// if(cs.what(i, SiteType.Cell) != 0)
+					// countPieces++;
+					//
+					// if(cs.what(i, SiteType.Cell) == 1)
+					// countPiecesP1++;
+					//
+					// if(cs.what(i, SiteType.Cell) == 2)
+					// countPiecesP2++;
+					// }
+					//
+					// System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
 				}
-				
+
 				trials.add(trial);
 				playoutsDone++;
-	
+
 				for (int p = 1; p <= game.players().count(); ++p)
 					ais.get(p).closeAI();
-				
+
 				final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
 				if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
 					break;
 			}
-			
+
 			final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 			final int seconds = (int) (allSeconds % 60.0);
 			final int minutes = (int) ((allSeconds - seconds) / 60.0);
-			System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
+			System.out.println(
+					"Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
 		}
 		else
 		{
 			getTrials(game);
 		}
-		
+
 		// FOR THE MUSEUM GAME
 //		int totalEdgesUsage = 0;
 //		for(int i = 0 ; i < edgesUsage.size(); i++)
@@ -755,22 +768,22 @@ public class ExportDbCsvConcepts
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
+
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game));
-		
+
 		// We get the values of the frequencies.
 		mapFrequency.putAll(frequencyConcepts(game));
-		
+
 		// We get the values of the metrics.
 		mapFrequency.putAll(metricsConcepts(game, evaluation));
-		
+
 		// Computation of the p/s and m/s
 		mapFrequency.putAll(playoutsEstimationConcepts(game));
-		
+
 		return mapFrequency;
 	}
-	
+
 	/**
 	 * @param game The game.
 	 */
@@ -780,27 +793,27 @@ public class ExportDbCsvConcepts
 		final File folder = new File(currentFolder.getAbsolutePath() + folderTrials);
 		final String gameName = game.name();
 		final String rulesetName = game.getRuleset() == null ? "" : game.getRuleset().heading();
-		
+
 //		System.out.println("GAME NAME = " + gameName);
 //		System.out.println("RULESET NAME = " + rulesetName);
-		
+
 		String trialFolderPath = folder + "/" + gameName;
-		if(!rulesetName.isEmpty())
+		if (!rulesetName.isEmpty())
 			trialFolderPath += File.separator + rulesetName.replace("/", "_");
 
 		final File trialFolder = new File(trialFolderPath);
-		
-		if(trialFolder.exists())
+
+		if (trialFolder.exists())
 			System.out.println("TRIALS FOLDER EXIST");
 		else
 			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
-		
+
 		int limit = Constants.UNDEFINED;
-		if(lessTrialsGames.contains(gameName))
+		if (lessTrialsGames.contains(gameName))
 			limit = smallLimitTrials;
-		
+
 		int num = 0;
-		for(final File trialFile : trialFolder.listFiles())
+		for (final File trialFile : trialFolder.listFiles())
 		{
 			MatchRecord loadedRecord;
 			try
@@ -810,7 +823,7 @@ public class ExportDbCsvConcepts
 				trials.add(loadedTrial);
 				allStoredRNG.add(loadedRecord.rngState());
 				num++;
-				if(num == limit)
+				if (num == limit)
 					break;
 			}
 			catch (final FileNotFoundException e)
@@ -825,8 +838,8 @@ public class ExportDbCsvConcepts
 	}
 
 	/**
-	 * @param game The game.
-	 * @param agentName The name of the agent.
+	 * @param game         The game.
+	 * @param agentName    The name of the agent.
 	 * @param indexPlayout The index of the playout.
 	 * @return The list of AIs to play that playout.
 	 */
@@ -834,13 +847,13 @@ public class ExportDbCsvConcepts
 	{
 		final List<AI> ais = new ArrayList<AI>();
 		ais.add(null);
-		
+
 		for (int p = 1; p <= game.players().count(); ++p)
 		{
-			if(agentName.equals("UCT"))
+			if (agentName.equals("UCT"))
 			{
 				final AI ai = AIFactory.createAI("UCT");
-				if(ai.supportsGame(game))
+				if (ai.supportsGame(game))
 				{
 					ais.add(ai);
 				}
@@ -849,10 +862,10 @@ public class ExportDbCsvConcepts
 					ais.add(new utils.RandomAI());
 				}
 			}
-			else if(agentName.equals("Alpha-Beta"))
+			else if (agentName.equals("Alpha-Beta"))
 			{
 				AI ai = AIFactory.createAI("Alpha-Beta");
-				if(ai.supportsGame(game))
+				if (ai.supportsGame(game))
 				{
 					ais.add(ai);
 				}
@@ -861,19 +874,19 @@ public class ExportDbCsvConcepts
 					ai = AIFactory.createAI("UCT");
 					ais.add(ai);
 				}
-				else 
+				else
 				{
 					ais.add(new utils.RandomAI());
 				}
 			}
-			else if(agentName.equals("Alpha-Beta-UCT")) // AB/UCT/AB/UCT/...
+			else if (agentName.equals("Alpha-Beta-UCT")) // AB/UCT/AB/UCT/...
 			{
-				if(indexPlayout % 2 == 0)
+				if (indexPlayout % 2 == 0)
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						AI ai = AIFactory.createAI("Alpha-Beta");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -882,7 +895,7 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -890,7 +903,7 @@ public class ExportDbCsvConcepts
 					else
 					{
 						final AI ai = AIFactory.createAI("UCT");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -902,10 +915,10 @@ public class ExportDbCsvConcepts
 				}
 				else
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						final AI ai = AIFactory.createAI("UCT");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -917,7 +930,7 @@ public class ExportDbCsvConcepts
 					else
 					{
 						AI ai = AIFactory.createAI("Alpha-Beta");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -926,21 +939,21 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
 					}
 				}
 			}
-			else if(agentName.equals("ABONEPLY")) // AB/ONEPLY/AB/ONEPLY/...
+			else if (agentName.equals("ABONEPLY")) // AB/ONEPLY/AB/ONEPLY/...
 			{
-				if(indexPlayout % 2 == 0)
+				if (indexPlayout % 2 == 0)
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						AI ai = AIFactory.createAI("Alpha-Beta");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -949,7 +962,7 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("One-Ply (No Heuristic)");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -957,7 +970,7 @@ public class ExportDbCsvConcepts
 					else
 					{
 						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -969,10 +982,10 @@ public class ExportDbCsvConcepts
 				}
 				else
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -984,7 +997,7 @@ public class ExportDbCsvConcepts
 					else
 					{
 						AI ai = AIFactory.createAI("Alpha-Beta");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -993,21 +1006,21 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("One-Ply (No Heuristic)");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
 					}
 				}
 			}
-			else if(agentName.equals("UCTONEPLY")) // UCT/ONEPLY/UCT/ONEPLY/...
+			else if (agentName.equals("UCTONEPLY")) // UCT/ONEPLY/UCT/ONEPLY/...
 			{
-				if(indexPlayout % 2 == 0)
+				if (indexPlayout % 2 == 0)
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						AI ai = AIFactory.createAI("UCT");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1016,7 +1029,7 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("One-Ply (No Heuristic)");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -1024,7 +1037,7 @@ public class ExportDbCsvConcepts
 					else
 					{
 						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1036,10 +1049,10 @@ public class ExportDbCsvConcepts
 				}
 				else
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						final AI ai = AIFactory.createAI("One-Ply (No Heuristic)");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1051,7 +1064,7 @@ public class ExportDbCsvConcepts
 					else
 					{
 						AI ai = AIFactory.createAI("UCT");
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1060,22 +1073,22 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("One-Ply (No Heuristic)");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
 					}
 				}
 			}
-			else if(agentName.equals("AB-Odd-Even")) // Alternating between AB Odd and AB Even
+			else if (agentName.equals("AB-Odd-Even")) // Alternating between AB Odd and AB Even
 			{
-				if(indexPlayout % 2 == 0)
+				if (indexPlayout % 2 == 0)
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						AI ai = new AlphaBetaSearch();
-						((AlphaBetaSearch)ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
-						if(ai.supportsGame(game))
+						((AlphaBetaSearch) ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1084,7 +1097,7 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -1093,7 +1106,7 @@ public class ExportDbCsvConcepts
 					{
 						final AlphaBetaSearch ai = new AlphaBetaSearch();
 						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1105,11 +1118,11 @@ public class ExportDbCsvConcepts
 				}
 				else
 				{
-					if(p % 2 == 1)
+					if (p % 2 == 1)
 					{
 						final AlphaBetaSearch ai = new AlphaBetaSearch();
 						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
-						if(ai.supportsGame(game))
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1121,8 +1134,8 @@ public class ExportDbCsvConcepts
 					else
 					{
 						AI ai = new AlphaBetaSearch();
-						((AlphaBetaSearch)ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
-						if(ai.supportsGame(game))
+						((AlphaBetaSearch) ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
+						if (ai.supportsGame(game))
 						{
 							ais.add(ai);
 						}
@@ -1131,7 +1144,7 @@ public class ExportDbCsvConcepts
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -1149,22 +1162,23 @@ public class ExportDbCsvConcepts
 	/**
 	 * 
 	 * @param game The game.
-	 * @return The map of playout concepts to the their values for the starting ones.
+	 * @return The map of playout concepts to the their values for the starting
+	 *         ones.
 	 */
 	private static Map<String, Double> startsConcepts(final Game game)
 	{
 		final Map<String, Double> mapStarting = new HashMap<String, Double>();
 		final long startTime = System.currentTimeMillis();
-		
+
 		final BitSet booleanConcepts = game.booleanConcepts();
 		double numStartComponents = 0.0;
 		double numStartComponentsHands = 0.0;
 		double numStartComponentsBoard = 0.0;
-		
+
 		for (int index = 0; index < allStoredRNG.size(); index++)
 		{
 			final RandomProviderState rngState = allStoredRNG.get(index);
-			
+
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
 			for (int cid = 0; cid < context.containers().length; cid++)
@@ -1176,23 +1190,26 @@ public class ExportDbCsvConcepts
 					if (booleanConcepts.get(Concept.Cell.id()))
 						for (int cell = 0; cell < cont.topology().cells().size(); cell++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell)
+									: cs.count(cell, SiteType.Cell);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
 						}
-		
+
 					if (booleanConcepts.get(Concept.Vertex.id()))
 						for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(vertex, SiteType.Vertex) : cs.count(vertex, SiteType.Vertex);
+							final int count = game.isStacking() ? cs.sizeStack(vertex, SiteType.Vertex)
+									: cs.count(vertex, SiteType.Vertex);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
 						}
-		
+
 					if (booleanConcepts.get(Concept.Edge.id()))
 						for (int edge = 0; edge < cont.topology().edges().size(); edge++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(edge, SiteType.Edge) : cs.count(edge, SiteType.Edge);
+							final int count = game.isStacking() ? cs.sizeStack(edge, SiteType.Edge)
+									: cs.count(edge, SiteType.Edge);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
 						}
@@ -1203,40 +1220,46 @@ public class ExportDbCsvConcepts
 						for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
 								+ cont.topology().cells().size(); cell++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell)
+									: cs.count(cell, SiteType.Cell);
 							numStartComponents += count;
 							numStartComponentsHands += count;
 						}
 				}
 			}
 		}
-		
+
 		mapStarting.put(Concept.NumStartComponents.name(), Double.valueOf(numStartComponents / allStoredRNG.size()));
-		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
-		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
-		
+		mapStarting.put(Concept.NumStartComponentsHand.name(),
+				Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
+		mapStarting.put(Concept.NumStartComponentsBoard.name(),
+				Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
+
 //		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
 //		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
 //		System.out.println(Concept.NumStartComponentsBoard.name() + " = " + mapStarting.get(Concept.NumStartComponentsBoard.name()));
-		
+
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
 		final double allSeconds = allMilliSecond / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
-		System.out.println("Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
-		
+		System.out.println(
+				"Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+
 		return mapStarting;
-		
+
 	}
-	
-	//------------------------------Frequency CONCEPTS-----------------------------------------------------
-	
+
+	// ------------------------------Frequency
+	// CONCEPTS-----------------------------------------------------
+
 	/**
-	 * @param game The game.
-	 * @param trials The trials.
+	 * @param game         The game.
+	 * @param trials       The trials.
 	 * @param allStoredRNG The RNG for each trial.
-	 * @return The map of playout concepts to the their values for the frequency ones.
+	 * @return The map of playout concepts to the their values for the frequency
+	 *         ones.
 	 */
 	private static Map<String, Double> frequencyConcepts(final Game game)
 	{
@@ -1254,10 +1277,10 @@ public class ExportDbCsvConcepts
 		{
 			final Trial trial = trials.get(trialIndex);
 			final RandomProviderState rngState = allStoredRNG.get(trialIndex);
-			
+
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
-			
+
 			// Frequencies returned by that playout.
 			final TDoubleArrayList frenquencyPlayout = new TDoubleArrayList();
 			for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
@@ -1272,11 +1295,11 @@ public class ExportDbCsvConcepts
 				final TIntArrayList frenquencyTurn = new TIntArrayList();
 				for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 					frenquencyTurn.add(0);
-				
+
 				final double numLegalMoves = legalMoves.moves().size();
 				if (numLegalMoves > 0)
 					turnWithMoves++;
-				
+
 				for (final Move legalMove : legalMoves.moves())
 				{
 					final BitSet moveConcepts = legalMove.moveConcepts(context);
@@ -1287,18 +1310,20 @@ public class ExportDbCsvConcepts
 							frenquencyTurn.set(indexConcept, frenquencyTurn.get(indexConcept) + 1);
 					}
 				}
-				
+
 				for (int j = 0; j < frenquencyTurn.size(); j++)
-					frenquencyPlayout.set(j, frenquencyPlayout.get(j) + (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
-				
-				// We keep the context before the ending state for the frequencies of the end conditions.
-				if(i == trial.numMoves()-1)
+					frenquencyPlayout.set(j, frenquencyPlayout.get(j)
+							+ (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
+
+				// We keep the context before the ending state for the frequencies of the end
+				// conditions.
+				if (i == trial.numMoves() - 1)
 					prevContext = new Context(context);
-				
+
 				// We go to the next move.
 				context.game().apply(context, trial.getMove(i));
 			}
-			
+
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frenquencyPlayout.size(); j++)
 				frequencyPlayouts.set(j, frequencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
@@ -1350,9 +1375,9 @@ public class ExportDbCsvConcepts
 					final EndRule endRuleResult = endingRule.eval(prevContext);
 					if (endRuleResult == null)
 						continue;
-	
+
 					final BitSet endConcepts = endingRule.stateConcepts(prevContext);
-	
+
 					noEndFound = false;
 					for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 					{
@@ -1390,8 +1415,10 @@ public class ExportDbCsvConcepts
 		{
 			final Concept concept = Concept.values()[indexConcept];
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
-			if(mapFrequency.get(concept.name()) != 0)
-				System.out.println("concept = " + concept.name() + " frequency is " + new DecimalFormat("##.##").format(Double.valueOf(mapFrequency.get(concept.name()))*100) +"%.");
+			if (mapFrequency.get(concept.name()) != 0)
+				System.out.println("concept = " + concept.name() + " frequency is "
+						+ new DecimalFormat("##.##").format(Double.valueOf(mapFrequency.get(concept.name())) * 100)
+						+ "%.");
 		}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
@@ -1399,16 +1426,18 @@ public class ExportDbCsvConcepts
 		final int seconds = (int) (allSeconds % 60.0);
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
-		System.out.println("Frequency done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
-		
+		System.out
+				.println("Frequency done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+
 		return mapFrequency;
 	}
-	
-	//------------------------------Metrics CONCEPTS-----------------------------------------------------
-	
+
+	// ------------------------------Metrics
+	// CONCEPTS-----------------------------------------------------
+
 	/**
-	 * @param game The game.
-	 * @param trials The trials.
+	 * @param game         The game.
+	 * @param trials       The trials.
 	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the metric ones.
 	 */
@@ -1419,21 +1448,21 @@ public class ExportDbCsvConcepts
 		final long startTime = System.currentTimeMillis();
 		final Trial[] trialsMetrics = new Trial[trials.size()];
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
-		for(int i = 0 ; i < trials.size();i++)
+		for (int i = 0; i < trials.size(); i++)
 		{
 			trialsMetrics[i] = new Trial(trials.get(i));
 			rngTrials[i] = allStoredRNG.get(i);
 		}
-		
+
 		// We add all the metrics corresponding to a concept to the returned map.
 		final List<Metric> metrics = new Evaluation().conceptMetrics();
-		for(final Metric metric: metrics)
-			if(metric.concept() != null)
+		for (final Metric metric : metrics)
+			if (metric.concept() != null)
 			{
 				double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
 				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
 				playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
-				if(metricValue != 0)
+				if (metricValue != 0)
 					System.out.println(metric.concept().name() + ": " + metricValue);
 			}
 
@@ -1443,15 +1472,17 @@ public class ExportDbCsvConcepts
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
 		System.out.println("Metrics done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
-		
+
 		return playoutConceptValues;
 	}
-	
-	//------------------------------Playout Estimation CONCEPTS-----------------------------------------------------
-	
+
+	// ------------------------------Playout Estimation
+	// CONCEPTS-----------------------------------------------------
+
 	/**
 	 * @param game The game.
-	 * @return The map of playout concepts to the their values for the p/s and m/s ones.
+	 * @return The map of playout concepts to the their values for the p/s and m/s
+	 *         ones.
 	 */
 	private static Map<String, Double> playoutsEstimationConcepts(final Game game)
 	{
@@ -1476,7 +1507,7 @@ public class ExportDbCsvConcepts
 		System.gc();
 
 		// Set up RNG for this game, Always with a rng of 2077.
-		final Random rng = new Random((long)game.name().hashCode() * 2077);
+		final Random rng = new Random((long) game.name().hashCode() * 2077);
 
 		// The Test
 		stopAt = 0L;
@@ -1504,9 +1535,10 @@ public class ExportDbCsvConcepts
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		System.out.println("p/s = " + rate);
 		System.out.println("m/s = " + rateMove);
-		System.out.println("Playouts/Moves per second estimation done in " + minutes + " minutes " + seconds + " seconds.");
-		
+		System.out.println(
+				"Playouts/Moves per second estimation done in " + minutes + " minutes " + seconds + " seconds.");
+
 		return playoutConceptValues;
 	}
-	
+
 }
