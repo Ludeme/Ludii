@@ -1,10 +1,15 @@
 (game "Caturvimsatikosthakatmiki Krida"
     (players 2)  
     (equipment { 
-        (board  (rectangle 3 12))
+        (board  (rectangle 3 8))
+        (piece "Marker" Each)
     })  
     
     (rules 
+    	(start {
+    		(place "Marker1" (sites Bottom))
+    		(place "Marker2" (sites Top))
+    	})
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -27,7 +32,7 @@
     )
     
     (graphics {
-        (show Symbol "thinCross" {13 22} scale:0.9)
+        (show Symbol "thinCross" {9 14} scale:0.9)
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
