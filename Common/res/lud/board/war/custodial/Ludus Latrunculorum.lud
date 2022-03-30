@@ -697,21 +697,40 @@
         (equipment { 
             (board (square 12)) 
             (piece "Counter" Each 
-                (move
-                    Step
-                    (to if:(is Empty (to))) 
-                    (then 
-                        (custodial 
-                            (from (last To)) 
-                            (between 
-                                (max 1) 
-                                if:(is Enemy (who at:(between))) 
-                                (apply (remove (between)))
-                            )
-                            (to if:(is Friend (who at:(to)))) 
+                (or
+                    (move
+                        Step
+                        (to if:(is Empty (to))) 
+                        (then 
+                            (custodial 
+                                (from (last To)) 
+                                (between 
+                                    (max 1) 
+                                    if:(is Enemy (who at:(between))) 
+                                    (apply (remove (between)))
+                                )
+                                (to if:(is Friend (who at:(to)))) 
+                            ) 
                         ) 
                     ) 
-                ) 
+                    (move Hop 
+                        (between 
+                            if:(is Enemy (who at:(between))) 
+                        )
+                        (to if:(is Empty (to)))
+                        (then 
+                            (custodial 
+                                (from (last To)) 
+                                (between 
+                                    (max 1) 
+                                    if:(is Enemy (who at:(between))) 
+                                    (apply (remove (between)))
+                                )
+                                (to if:(is Friend (who at:(to)))) 
+                            ) 
+                        ) 
+                    )
+                )
             )
         })
         (rules 
