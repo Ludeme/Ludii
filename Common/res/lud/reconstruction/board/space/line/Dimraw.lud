@@ -8,7 +8,17 @@
 (define "IfLineMoveAgain" 
     (then 
         (if 
+        	(or {
             (is Line 3)
+            (and (is In (last To) (sites {1 4 6})) (all Sites (sites {1 4 6}) if:(= (who at:(site)) Mover)))
+            (and (is In (last To) (sites {1 4 7})) (all Sites (sites {1 4 7}) if:(= (who at:(site)) Mover)))
+            (and (is In (last To) (sites {7 10 11})) (all Sites (sites {7 10 11}) if:(= (who at:(site)) Mover)))
+            (and (is In (last To) (sites {13 10 11})) (all Sites (sites {13 10 11}) if:(= (who at:(site)) Mover)))
+            (and (is In (last To) (sites {18 15 13})) (all Sites (sites {18 15 13}) if:(= (who at:(site)) Mover)))
+            (and (is In (last To) (sites {12 15 18})) (all Sites (sites {12 15 18}) if:(= (who at:(site)) Mover)))
+            (and (is In (last To) (sites {8 9 12})) (all Sites (sites {8 9 12}) if:(= (who at:(site)) Mover)))
+            (and (is In (last To) (sites {8 9 6})) (all Sites (sites {8 9 6}) if:(= (who at:(site)) Mover)))
+        	})
             (moveAgain)
         )
     )
@@ -21,7 +31,13 @@
     
     (equipment { 
         (board 
+        	(add
+        	(remove
             (concentric Square rings:3 joinCorners:True)
+            vertices:{16 11 12 7}
+            )
+        	edges:{{6 7} {7 13} {13 12} {6 12}}
+        	)
             use:Vertex
         ) 
         (hand Each)
@@ -58,8 +74,8 @@
             )
         )
         }
-        
-        (end (if [*] (result Mover Win))) // Do not know the ending cond.
+
+		(end (if (<= (count Pieces Next) 2) (result Mover Win)))
     )
 )
 
@@ -82,8 +98,7 @@
     
     (graphics {
         (show Line 
-            { {17 20} {20 23} {16 19} {19 22} {15 18} {18 21} {11 10} {10 9}
-            {6 3} {3 0} {7 4} {4 1} {8 5} {5 2} {12 13} {13 14}
+            { {0 3} {3 6} {7 5} {1 4} {5 2} {10 11} {13 16} {16 19} {15 18} {17 14} {14 12} {9 8}
             } 
             (colour Hidden)
         )
