@@ -16,10 +16,7 @@
     (players 2)  
     (equipment { 
         (board 
-            (remove
-                (concentric {0 0 0 16 16 16 16})
-                cells:{1}
-            )
+            <Variant:board>
         )
         (piece "Pawn" Each
             (or {
@@ -140,6 +137,31 @@
         }
     )  
     (rules 
+        <Variant:start>
+        (play 
+            (do
+                (forEach Piece)
+                ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+            )
+        )
+        (end { 
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            )
+            <Variant:end>
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <start> <board> <end>}
+    {
+    (item  "Murray"  
+    	<
         (start {
             (place "Rook1" (sites {52 53}))
             (place "Rook2" (sites {61 60}))
@@ -154,28 +176,53 @@
             (place "Pawn2" (sites {11 27 43 59}) state:0) 
             (place "Pawn2" (sites {14 30 46 62}) state:1) 
         })
-        (play 
-            (do
-                (forEach Piece)
-                ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            )
+    	>
+    <
+    (remove
+            (concentric {0 0 0 16 16 16 16})
+            cells:{1}
         )
-        (end { 
-            (if (and 
-                    ("IsInCheck" "King_noCross" Next)
-                    ("NextCanNotMove")
-                ) 
-                (result Mover Win)
-            ) 
-        })
+    >
+    <>
+    "Rules Murray.")* 
+    (item  "Al-Amuli"  
+        	<
+            (start {
+                (place "Rook1" (sites {4 5}))
+                (place "Rook2" (sites {13 12}))
+                (place "Knight1" (sites {20 21}))
+                (place "Knight2" (sites {29 28}))
+                (place "Elephant1" (sites {36 37}))
+                (place "Elephant2" (sites {45 44}))
+                (place "Queen1" 52) (place "Queen2" 60)
+                (place "King_noCross1" 53) (place "King_noCross2" 61)
+                (place "Pawn1" (sites {3 19 35 51}) state:0) 
+                (place "Pawn1" (sites {54 38 22 6}) state:1) 
+                (place "Pawn2" (sites {11 27 43 59}) state:0) 
+                (place "Pawn2" (sites {14 30 46 62}) state:1) 
+            })
+        	> 
+    <
+    (add
+    (add
+    (remove
+            (concentric {0 0 0 16 16 16 16})
+            cells:{1}
+        )
+    edges:{{0 5} {0 9} {0 13} {1 0}}
     )
-)
-
-//------------------------------------------------------------------------------
-
-(option "Variant" <Variant> args:{ <murray> }
-    {
-    (item  "Murray"  <> "Rules Murray.")* 
+    cells:{
+    	{0 5 6 7 8 9}
+    	{0 9 10 11 12 13}
+    	{0 13 14 15 16 1}
+    	{0 1 2 3 4 5}
+    }
+    )
+    >
+    <
+    (if (is In (where "King_noCross" Mover) (sites {64..67})) (result Mover Draw))
+    >
+        "Rules Al-Amuli.")* 
     }
 )
 
@@ -188,7 +235,7 @@
     })*
     
     (ruleset "Ruleset/Al-Amuli (Described)" {
-        
+    	"Variant/Al-Amuli"
     })
     
 })
