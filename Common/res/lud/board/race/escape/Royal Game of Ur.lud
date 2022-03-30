@@ -58,11 +58,11 @@
 
 (option "Tracks" <Track> args:{ <type> }
     {
-    	
+    
     (item "Track Finkel" 
         <(track "Track1" "20,3,W,N1,E,S1,W,End" P1 directed:True)
         (track "Track2" "21,17,W,S1,E,N1,W,End" P2 directed:True)>                          
-    "The pieces follow the track described by Finkel."
+        "The pieces follow the track described by Finkel."
     )*   
     
     (item "Track Murray"    
@@ -87,43 +87,43 @@
 )
 
 (option "Rosette" <Rosette> args:{ <move> }
-{
-(item "Replay and Protect" 
-    <
-    (if (or
-            (is In "SiteToMoveOnTrack" (sites Empty))
-            (and 
-                (not (is Friend (who at:"SiteToMoveOnTrack"))) 
-                (not (is In "SiteToMoveOnTrack" (sites "Replay")))
+    {
+    (item "Replay and Protect" 
+        <
+        (if (or
+                (is In "SiteToMoveOnTrack" (sites Empty))
+                (and 
+                    (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+                    (not (is In "SiteToMoveOnTrack" (sites "Replay")))
+                )
+            )
+            (move 
+                (from)
+                (to 
+                    "SiteToMoveOnTrack" 
+                    "CaptureEnemyPiece"
+                )
+                (then (if (is In (last To) (sites "Replay")) (moveAgain) ) )
             )
         )
-        (move 
-            (from)
-            (to 
-                "SiteToMoveOnTrack" 
-                "CaptureEnemyPiece"
+        >                          
+    "The rosettes are protecting the pieces and allow them to replay.")*   
+    
+    (item "Nothing Happen"    
+        <
+        (if (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+            (move 
+                (from)
+                (to 
+                    "SiteToMoveOnTrack" 
+                    "CaptureEnemyPiece"
+                )
             )
-            (then (if (is In (last To) (sites "Replay")) (moveAgain) ) )
         )
+        > 
+        "Nothing special happens on the rosettes."
     )
-    >                          
-"The rosettes are protecting the pieces and allow them to replay.")*   
-
-(item "Nothing Happen"    
-    <
-    (if (not (is Friend (who at:"SiteToMoveOnTrack"))) 
-        (move 
-            (from)
-            (to 
-                "SiteToMoveOnTrack" 
-                "CaptureEnemyPiece"
-            )
-        )
-    )
-    > 
-    "Nothing special happens on the rosettes."
-)
-}
+    }
 )
 
 //------------------------------------------------------------------------------

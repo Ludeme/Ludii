@@ -8,17 +8,17 @@
 (define "IfLineMoveAgain" 
     (then 
         (if 
-        	(or {
-            (is Line 3)
-            (and (is In (last To) (sites {1 4 6})) (all Sites (sites {1 4 6}) if:(= (who at:(site)) Mover)))
-            (and (is In (last To) (sites {1 4 7})) (all Sites (sites {1 4 7}) if:(= (who at:(site)) Mover)))
-            (and (is In (last To) (sites {7 10 11})) (all Sites (sites {7 10 11}) if:(= (who at:(site)) Mover)))
-            (and (is In (last To) (sites {13 10 11})) (all Sites (sites {13 10 11}) if:(= (who at:(site)) Mover)))
-            (and (is In (last To) (sites {18 15 13})) (all Sites (sites {18 15 13}) if:(= (who at:(site)) Mover)))
-            (and (is In (last To) (sites {12 15 18})) (all Sites (sites {12 15 18}) if:(= (who at:(site)) Mover)))
-            (and (is In (last To) (sites {8 9 12})) (all Sites (sites {8 9 12}) if:(= (who at:(site)) Mover)))
-            (and (is In (last To) (sites {8 9 6})) (all Sites (sites {8 9 6}) if:(= (who at:(site)) Mover)))
-        	})
+            (or {
+                (is Line 3)
+                (and (is In (last To) (sites {1 4 6})) (all Sites (sites {1 4 6}) if:(= (who at:(site)) Mover)))
+                (and (is In (last To) (sites {1 4 7})) (all Sites (sites {1 4 7}) if:(= (who at:(site)) Mover)))
+                (and (is In (last To) (sites {7 10 11})) (all Sites (sites {7 10 11}) if:(= (who at:(site)) Mover)))
+                (and (is In (last To) (sites {13 10 11})) (all Sites (sites {13 10 11}) if:(= (who at:(site)) Mover)))
+                (and (is In (last To) (sites {18 15 13})) (all Sites (sites {18 15 13}) if:(= (who at:(site)) Mover)))
+                (and (is In (last To) (sites {12 15 18})) (all Sites (sites {12 15 18}) if:(= (who at:(site)) Mover)))
+                (and (is In (last To) (sites {8 9 12})) (all Sites (sites {8 9 12}) if:(= (who at:(site)) Mover)))
+                (and (is In (last To) (sites {8 9 6})) (all Sites (sites {8 9 6}) if:(= (who at:(site)) Mover)))
+            })
             (moveAgain)
         )
     )
@@ -31,13 +31,13 @@
     
     (equipment { 
         (board 
-        	(add
-        	(remove
-            (concentric Square rings:3 joinCorners:True)
-            vertices:{16 11 12 7}
+            (add
+                (remove
+                    (concentric Square rings:3 joinCorners:True)
+                    vertices:{16 11 12 7}
+                )
+                edges:{{6 7} {7 13} {13 12} {6 12}}
             )
-        	edges:{{6 7} {7 13} {13 12} {6 12}}
-        	)
             use:Vertex
         ) 
         (hand Each)
@@ -74,8 +74,8 @@
             )
         )
         }
-
-		(end (if (<= (count Pieces Next) 2) (result Mover Win)))
+        
+        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
     )
 )
 

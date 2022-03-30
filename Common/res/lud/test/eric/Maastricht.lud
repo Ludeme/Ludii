@@ -939,69 +939,69 @@
     {
     
     (item "Maastricht (2-player, square)"
-            <
-            "TwoPlayerMaps"
-            >
-            <
-            2
-            >
-            <
-            (rectangle 15 25)
-            >
-            <										 
-            (regions "DeepWater" (sites {9 10 35 36 61 62 86 87 111 112 161 162 211 212 235 236 284 285 309 310 335 334 359 360 137 136 186 187 260 261}))  
-            (regions "ShallowWater" (sites {160 159 158 157 156 155 154 153 127 101 75}))  
-            (regions "Forest" (sites {29 30 31 4 5 6 183 182 129 128 0..3 25..28 50..54 109 184 110 85 60 34 100 76 126 152 151 125 102 77 63 88 113 170 195 220 245
-            165..167	
-            }))  
-            (regions "Mountain" (sites {80 55 56 57 82})) 
-            > 
-            <
-            //(place "Town1" (sites {"A2" "A7" "C1" "C8"}) state:8 value:100) 
-            (place "Town1" (sites {68}) state:8 value:100) 
-            (place "Town0" (sites {256 350..358 361..372 374 325..333 336..347 349 24 49 74 99 124 149 174 199 249 274 299 11..21 32 33 7 8 300 275 250 225 200 175 23 224
-            48 73 98 123 148 173 198 223 324 37..42 44..46 311..322 117 92 193 194 168 169 70 120 176 201 226 251 276 301 177..178 78 79 103 104
-            }) state:8 value:100) 
-            (place "Base1" (sites {95 278}) state:8 value:100) 
-            (place "Base2" (sites {}) state:8 value:100)
-            (place "Airport1" (sites {}) state:8 value:100) 
-            (place "Airport2" (sites {}) state:8 value:100)
-            (place "Train0" (sites {72 273}) state:8 value:100)
-            (place "Beer2" (sites {230 66 232 281 282 241 244 292 190 237 280 279 252..254}) state:8 value:100) 
-            (place "Bridge0" (sites {136 137 186 187 260 261}) state:8 value:100) 
-            (place "Bridge0" (sites {160 156}) state:8 rotation:2 value:100) 
-            (place "Castle0" (sites {81}) state:8 value:100) 
-            (place "Restaurant0" (sites {231 255 65 189 289 130 290 291 293..297 233 207 277 283}) state:8 value:100) 
-            (place "Road0" (sites {135 134 133 132 131 138 139 263 262 259 258 257 209 140..145 67 264..272}) state:8 rotation:2 value:100) 
-            (place "Road0" (sites {69 94 119 64 89 114 163 188 213 238 185 210 234 181 206 71 96 121 146 171 196 221 246}) state:8 value:100) 
-            (place "Battleship0" (sites {86 310}) state:8 value:100) 
-            (place "Museum0" (sites {164}) state:8 value:100)
-            (place "Book0" (sites {191}) state:8 value:100)
-            (place "Hospital0" (sites {43}) state:8 value:100)
-            (place "Soldier_fantasy0" (sites {180}) state:8 value:100)
-            (place "Train_track0" (sites {97 122 147 172 197 222 247 248 298 323 348 373 47 22}) state:8 value:100)
-            (place "Cake0" (sites {243 208}) state:8 value:100)
-            (place "Goose0" (sites {106..108}) state:8 value:100)
-            >       
-            <
-            
-            >      
-            <
-            100
-            >        
-            <
-            > 
-            <
-            (piece ExtendName P2 "Flip")
-            >
-            <
-            (show Symbol "forest" (sites "Forest"))
-            (show Symbol "waves" (sites "ShallowWater"))
-            (show Symbol "waves" (sites "DeepWater"))
-            (show Symbol "mountain" (sites "Mountain"))
-            >                
-            "Scenario - Maastricht"
-        )**
+        <
+        "TwoPlayerMaps"
+        >
+        <
+        2
+        >
+        <
+        (rectangle 15 25)
+        >
+        <										 
+        (regions "DeepWater" (sites {9 10 35 36 61 62 86 87 111 112 161 162 211 212 235 236 284 285 309 310 335 334 359 360 137 136 186 187 260 261}))  
+        (regions "ShallowWater" (sites {160 159 158 157 156 155 154 153 127 101 75}))  
+        (regions "Forest" (sites {29 30 31 4 5 6 183 182 129 128 0..3 25..28 50..54 109 184 110 85 60 34 100 76 126 152 151 125 102 77 63 88 113 170 195 220 245
+                165..167	
+        }))  
+        (regions "Mountain" (sites {80 55 56 57 82})) 
+        > 
+        <
+        //(place "Town1" (sites {"A2" "A7" "C1" "C8"}) state:8 value:100) 
+        (place "Town1" (sites {68}) state:8 value:100) 
+        (place "Town0" (sites {256 350..358 361..372 374 325..333 336..347 349 24 49 74 99 124 149 174 199 249 274 299 11..21 32 33 7 8 300 275 250 225 200 175 23 224
+                48 73 98 123 148 173 198 223 324 37..42 44..46 311..322 117 92 193 194 168 169 70 120 176 201 226 251 276 301 177..178 78 79 103 104
+        }) state:8 value:100) 
+        (place "Base1" (sites {95 278}) state:8 value:100) 
+        (place "Base2" (sites {}) state:8 value:100)
+        (place "Airport1" (sites {}) state:8 value:100) 
+        (place "Airport2" (sites {}) state:8 value:100)
+        (place "Train0" (sites {72 273}) state:8 value:100)
+        (place "Beer2" (sites {230 66 232 281 282 241 244 292 190 237 280 279 252..254}) state:8 value:100) 
+        (place "Bridge0" (sites {136 137 186 187 260 261}) state:8 value:100) 
+        (place "Bridge0" (sites {160 156}) state:8 rotation:2 value:100) 
+        (place "Castle0" (sites {81}) state:8 value:100) 
+        (place "Restaurant0" (sites {231 255 65 189 289 130 290 291 293..297 233 207 277 283}) state:8 value:100) 
+        (place "Road0" (sites {135 134 133 132 131 138 139 263 262 259 258 257 209 140..145 67 264..272}) state:8 rotation:2 value:100) 
+        (place "Road0" (sites {69 94 119 64 89 114 163 188 213 238 185 210 234 181 206 71 96 121 146 171 196 221 246}) state:8 value:100) 
+        (place "Battleship0" (sites {86 310}) state:8 value:100) 
+        (place "Museum0" (sites {164}) state:8 value:100)
+        (place "Book0" (sites {191}) state:8 value:100)
+        (place "Hospital0" (sites {43}) state:8 value:100)
+        (place "Soldier_fantasy0" (sites {180}) state:8 value:100)
+        (place "Train_track0" (sites {97 122 147 172 197 222 247 248 298 323 348 373 47 22}) state:8 value:100)
+        (place "Cake0" (sites {243 208}) state:8 value:100)
+        (place "Goose0" (sites {106..108}) state:8 value:100)
+        >       
+        <
+        
+        >      
+        <
+        100
+        >        
+        <
+        > 
+        <
+        (piece ExtendName P2 "Flip")
+        >
+        <
+        (show Symbol "forest" (sites "Forest"))
+        (show Symbol "waves" (sites "ShallowWater"))
+        (show Symbol "waves" (sites "DeepWater"))
+        (show Symbol "mountain" (sites "Mountain"))
+        >                
+        "Scenario - Maastricht"
+    )**
     
     }
 )
