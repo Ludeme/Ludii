@@ -52,7 +52,7 @@
             )
         )
         }
-        (end (if (no Pieces Next) (result Mover Win))) // To check if that's the right ending condition for this recons game.
+    	(end (if (<= (count Pieces Next) 2) (result Mover Win)))
     )
 )
 
