@@ -6,10 +6,10 @@
     })  
     
     (rules 
-    	(start {
-    		(place "Marker1" (sites Bottom))
-    		(place "Marker2" (sites Top))
-    	})
+        (start {
+            (place "Marker1" (sites Bottom))
+            (place "Marker2" (sites Top))
+        })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
