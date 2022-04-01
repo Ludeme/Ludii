@@ -153,18 +153,35 @@
 //-------------------------------------------------------------------------
 
 (metadata
-    (info {
-        
-    })
+    (info
+        {
+        (description "Symple is an abstract strategy game in which two players strive to get as much area as possible with as few groups as possible.")
+    (rules "Players alternate making a move. White plays with the white stones and makes the first move, Black plays with the black stones. On his turn, a player may choose either a) to place a stone on the board without contact to other stones of his color in order to start a new group, or b) to grow all possible groups by one stone. Stones touching two groups count as growing both groups. However, if two groups are grown by one stone each and only the two newly grown stones touch, then the move is legal.
     
-    (graphics {
-        (player Colour P1 (colour White))
-        (player Colour P2 (colour Black))
-        (player Colour Neutral (colour Grey))
-        (board Colour InnerEdges (colour 178 151 100))
-        (board Colour OuterEdges (colour 178 151 100))
-        (board Colour Phase0 (colour 250 210 148))
-        (board Colour Phase1 (colour 250 210 148))
-        (board Style Board)
-    })
+    For balancing, there is an extra rule: Black is allowed to grow all his groups and place a single stone as long as neither player has not yet grown any groups.
+    
+    The game ends when the board is filled in. The score is determined by the number of stones each player has on the board minus 'P' times the number of groups he has, where 'P' is en even number of 4 or higher. With an even penalty and an odd boardsize, draws are not possible.
+    
+    In Ludii:
+When you grow your groups, you repeatedly add a grey stone adjacent to a friendly group – making sure to never place so that a friendly group")
+(id "1962")
+(source "<a href=\"https://boardgamegeek.com/boardgame/106341/symple\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+(version "1.3.2")
+(classification "")
+(author "Christian Feeling, Benedick Rosenau")
+(credit "Michael Amundsen")
+(date "2010")
+}
+)
+
+(graphics {
+    (player Colour P1 (colour White))
+    (player Colour P2 (colour Black))
+    (player Colour Neutral (colour Grey))
+    (board Colour InnerEdges (colour 178 151 100))
+    (board Colour OuterEdges (colour 178 151 100))
+    (board Colour Phase0 (colour 250 210 148))
+    (board Colour Phase1 (colour 250 210 148))
+    (board Style Board)
+})
 )
