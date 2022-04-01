@@ -223,6 +223,9 @@ public class CompilationTest
 
 			if (fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
 				continue;
+
+			if (fileName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/"))
+				continue;
 			
 			// Get game description from resource
 			System.out.println("Game: " + fileName);
