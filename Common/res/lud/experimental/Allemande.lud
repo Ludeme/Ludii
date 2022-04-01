@@ -1,0 +1,212 @@
+// The game of Allemande
+(define "Order" <Board:size>)
+
+(define "SitesAdjacentLast2SameTurnPlacements" 
+    (from
+        (sites Empty)
+        if:(or 
+            (not (is Mover (who at:(last To))))
+            (is In (from) (sites Around (last To) All))
+)))
+
+//-------------------------------------------------------------------------
+
+(game "Allemande"
+    (players 2)
+    (equipment
+        {
+        (board
+            (remove
+                (square (+ 2 "Order")) 
+                cells:{0 (+ "Order" 1) (* (+ "Order" 2) (+ "Order" 1)) (- (^ (+ "Order" 2) 2) 1)} 
+            ) 
+            use:Cell
+        )
+        (regions "EW"
+            P1
+            (union
+                (sites Column (+ "Order" 1))
+                (sites Column 0)
+        ))
+        (regions "NS"
+            P2
+            (union 
+                (sites Row (+ "Order" 1))
+                (sites Row 0)
+        ))
+        (piece "Square" Each )    
+        (hand Each size:<Stones:perTurn>)
+        }
+    )
+    (rules
+        (meta (no Repeat PositionalInTurn))
+        (start 
+            {
+            (place "Square1" (sites Hand P1) state:0)
+            (place "Square1"
+                (union
+                    (sites Column (+ "Order" 1))
+                    (sites Column 0) 
+            ))
+            // this must come last for the variant placement to work (last To) must be the "Next" player
+            (place "Square2" 
+                (union
+                    (sites Row (+ "Order" 1))
+                    (sites Row 0) 
+            ))
+            }
+        )
+        (play
+            (or
+                {
+                // Return a blocked move to the hand
+                (priority
+                    (if
+                        (< 0 (count Pieces Mover in:(sites State 2)))
+                        (move Select (from (last To)  if:(is Mover (who at:(from))))
+                            (then
+                                (fromTo
+                                    (from (last To))
+                                    (to (max (array (forEach (sites Hand Mover) if:(is  Empty (site))))))
+                    ))))
+                    (move Pass)
+                )
+                (do
+                    (move Select
+                        <Variant:placementRestriction>
+                        (then
+                            (fromTo
+                                (from (min (array (forEach (sites Hand Mover) if:(is Mover (who at:(site)))))))
+                                (to (last From))
+                                (then
+                                    (and 
+                                        (forEach Site
+                                            (sites Around (last To) Diagonal
+                                                if:(and
+                                                    {
+                                                    (is Mover (who at:(to)))
+                                                    (= 0 (state at:(to)))
+                                                    (or
+                                                        (no Pieces Mover in:(sites Around (to) Orthogonal))
+                                                        (= Infinity
+                                                            (count Steps
+                                                                (step Orthogonal (to if:(is Mover (who at:(to)))))
+                                                                (to)  
+                                                                (last To)
+                                                    )))
+                                                    }
+                                            ))
+                                            (set State at:(site) 1)
+                                        )
+                                        (forEach Site
+                                            (intersection
+                                                (sites Around (last To) Orthogonal)
+                                                (sites Around (var "LT") Diagonal)
+                                            )
+                                            (if
+                                                (is In (var "LT") (sites Around (last To) Orthogonal))
+                                                (set State at:(site) 0)
+                    )))))))
+                    ifAfterwards:(and
+                        {
+                        (no Pieces Mover in:(sites State 2))
+                        (or
+                            (no Pieces Mover in:(sites State 1))
+                            (< 0 (count Pieces Mover in:(sites Hand Mover)))
+                        )
+                        }
+                ))
+                }
+                (then
+                    (if
+                        (was Pass)
+                        (and
+                            {
+                            (remove (sites Hand Mover))
+                            (add (piece (id "Square" Next)) (to (sites Hand Next)))
+                            (forEach Site (sites State 2) (set State at:(site) 0)) 
+                            }
+                        )
+                        (if
+                            (no Pieces in:(sites Hand Mover))
+                            (and
+                                (add (piece (id "Square" Next)) (to (sites Hand Next)))
+                                (forEach Site (sites State 2) (set State at:(site) 0)) 
+                            )
+                            (and
+                                {
+                                (set Var "LT" (last To))
+                                (forEach Site (sites State 1) (set State at:(site) 2)) 
+                                (moveAgain)
+                                }
+            )))))
+        )
+        (end
+            (if
+                (or
+                    {
+                    (!= Infinity
+                        (count Steps
+                            (step Orthogonal (to if:(is Mover (who at:(to))))) 
+                            (min (array (sites Occupied by:Mover))) 
+                            (max (array (sites Occupied by:Mover)))
+                    ))
+                    
+                    }
+                )
+                (result Mover Win)
+))))
+
+//-------------------------------------------------------------------------
+
+(option "Boards" <Board> args:{ <size> }
+    {
+    (item "Order 5" <5> "Order 5 Board")
+    (item "Order 7" <7> "Order 7 Board")
+    (item "Order 9" <9> "Order 9 Board")**
+    (item "Order 13" <13> "Order 13 Board")
+    (item "Order 19" <19> "Order 19 Board")
+    }
+)
+
+(option "Stone count" <Stones> args:{ <perTurn> }
+    {
+    (item "2" <2> "Use upto 2 stones per turn")
+    (item "3" <3> "Use upto 3 stones per turn")
+    (item "4" <4> "Use upto 4 stones per turn")**
+    }
+)    
+
+(option "Variants" <Variant> args:{ <placementRestriction> }
+    {
+    (item "Any Empty" <(from (sites Empty))> "Place on any Empty site")**
+    (item "As a Group" <"SitesAdjacentLast2SameTurnPlacements"> "Each stones must be placed around the last piece place in that turn, and end up coniguous.")
+    }
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        }
+    )
+    
+    (graphics
+        {
+        (board StyleThickness InnerEdges 2)
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Cream)) 
+        (piece Colour P1 fillColour:(colour Red) strokeColour:(colour DarkGrey)) 
+        (piece Colour P2 fillColour:(colour Cream) strokeColour:(colour DarkGrey)) 
+        (region Colour "EW" P1 (colour 255 0 0 50))
+        (region Colour "NS" P2 (colour 200 200 50 50))
+        (region Colour P2 (sites State 2) (colour 0 0 0 160))
+        //   (show Piece State)
+        (hand Placement P2 scale:0.222 offsetX:0.95 offsetY:0.10 vertical:True)
+        (hand Placement P1 scale:0.222 offsetX:0.05 offsetY:0.10 vertical:True)
+        }
+    )
+    (ai
+        (heuristics (lineCompletionHeuristic targetLength:"Order"))
+))
