@@ -298,6 +298,14 @@ public abstract class HeuristicTerm implements AIItem
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param game
+	 * @return True if heuristic of this type could be applicable to given game
+	 */
+	public abstract boolean isApplicable(final Game game);
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * @param threshold
 	 * @return A string representation of this heuristic term, with any components
 	 * for which the absolute weight does not exceed the given threshold removed.
@@ -315,16 +323,21 @@ public abstract class HeuristicTerm implements AIItem
 		this.weight = weight;
 	}
 
-	/** used for term reconstruction using a genetic code 
-	 * @return
+	/** 
+	 * Used for term reconstruction using a genetic code 
+	 * @return 
 	 */
-	public float[] gameAgnosticWeightsArray() {
+	public float[] gameAgnosticWeightsArray() 
+	{
 		return null;
 	}
-	/** used for term reconstruction using a genetic code 
-	 * @return
+	
+	/** 
+	 * Used for term reconstruction using a genetic code 
+	 * @return 
 	 */
-	public FVector pieceWeights() {
+	public FVector pieceWeights() 
+	{
 		return null;
 	}
 	

@@ -25,11 +25,14 @@ import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.collections.ListUtils;
 import main.options.Ruleset;
+import metadata.ai.heuristics.Heuristics;
+import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.GameLoader;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
 import utils.AIFactory;
+import utils.AIUtils;
 import utils.RandomAI;
 
 /**
@@ -966,8 +969,24 @@ public class FindBestBaseAgentScriptsGen
         				{
         					if (values[i] > highestProbabilityValue)
         					{
-        						highestProbabilityValue = values[i];
-        						highestProbabilityName = classNames[i];
+        						// Check that the heuristic is actually applicable
+        						final Heuristics heuristics = AIUtils.convertStringtoHeuristic(classNames[i]);
+        						boolean applicable = true;
+        						for (final HeuristicTerm term : heuristics.heuristicTerms())
+        						{
+        							if (!term.isApplicable(game))
+        							{
+        								applicable = false;
+        								break;
+        							}
+        						}
+        						
+        						if (applicable)
+        						{
+        							highestProbabilityValue = values[i];
+	        						highestProbabilityName = classNames[i];
+        						}
+	        						
         					}
         				}
 

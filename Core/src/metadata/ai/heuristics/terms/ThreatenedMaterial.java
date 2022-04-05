@@ -318,6 +318,12 @@ public class ThreatenedMaterial extends HeuristicTerm
 		return isApplicableToGame(game) && game.booleanConcepts().get(Concept.Capture.id());
 	}
 	
+	@Override
+	public boolean isApplicable(final Game game)
+	{
+		return isApplicableToGame(game);
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override

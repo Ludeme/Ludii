@@ -268,6 +268,12 @@ public class CentreProximity extends HeuristicTerm
 		return isApplicableToGame(game);
 	}
 	
+	@Override
+	public boolean isApplicable(final Game game)
+	{
+		return isApplicableToGame(game);
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override
