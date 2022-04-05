@@ -169,7 +169,7 @@ public class UnthreatenedMaterial extends HeuristicTerm
 							}
 							else
 							{
-								System.err.println("ERROR: UnthreatenedMaterial does not recognise Remove action!");
+								System.err.println("ERROR: UnthreatenedMaterial does not recognise Remove action: " + action.getClass());
 							}
 						}
 					}
