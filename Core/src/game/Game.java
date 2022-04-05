@@ -850,6 +850,14 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 	
 	/**
+	 * @return True if the game involved a cycle detection.
+	 */
+	public boolean hasCycleDetection()
+	{
+		return ((gameFlags & GameType.CycleDetection) != 0L);
+	}
+	
+	/**
 	 * @return True if the game involved a sequence of capture.
 	 */
 	public boolean hasLargeStack()
@@ -2935,6 +2943,9 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		if (usesNoRepeatPositionalInGame() && state.mover() != context.state().prev())
 			trial.previousState().add(state.stateHash());
+		else
+			if (hasCycleDetection())
+				trial.previousState().add(state.stateHash());
 		
 		if (usesNoRepeatPositionalInTurn())
 		{

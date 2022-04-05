@@ -258,6 +258,11 @@ public interface GameType extends Serializable
 	 * On if the game checks the situational repetition in the turn.
 	 */
 	public final static long RepeatSituationalInTurn = (0x1L << 48);
+	
+	/**
+	 * On if the game checks the repetition of cycles.
+	 */
+	public final static long CycleDetection          = (0x1L << 49);
 
 	/**
 	 * @param game The game.
