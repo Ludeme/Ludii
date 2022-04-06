@@ -25,7 +25,7 @@ public final class Constants
 	/** Maximum score. */
 	public static final int MAX_SCORE = 1000000000;
 
-	/** Minimum score. */
+	/** Minimum score. *
 	public static final int MIN_SCORE = -1000000000;
 
 	/** The maximum number of iterations allowed in a loop inside an eval method. */
