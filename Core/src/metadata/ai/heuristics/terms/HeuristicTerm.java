@@ -325,7 +325,7 @@ public abstract class HeuristicTerm implements AIItem
 
 	/** 
 	 * Used for term reconstruction using a genetic code 
-	 * @return 
+	 * @return The array of game-agnostic weights
 	 */
 	public float[] gameAgnosticWeightsArray() 
 	{
@@ -334,7 +334,7 @@ public abstract class HeuristicTerm implements AIItem
 	
 	/** 
 	 * Used for term reconstruction using a genetic code 
-	 * @return 
+	 * @return The vector of piece weights
 	 */
 	public FVector pieceWeights() 
 	{
