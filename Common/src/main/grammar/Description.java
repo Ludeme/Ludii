@@ -207,6 +207,11 @@ public class Description
 	public String rawGameDescription()
 	{
 		final int c = raw.indexOf("(game");
+		
+		// This description does not contain a (game ...) ludeme
+		if (c < 0)
+			return "";
+		
 		final int cc = StringRoutines.matchingBracketAt(raw, c);
 		
 		final String sub = raw.substring(c, cc + 1);
