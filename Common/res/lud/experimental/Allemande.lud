@@ -1,0 +1,279 @@
+// The game of Allemande
+(define "Order" <Board:size>)
+
+(define "SitesAdjacentLast2SameTurnPlacements" 
+    (from
+        (sites Empty)
+        if:(or 
+            (not (is Mover (who at:(last To))))
+            (is In (from) (sites Around (last To) All))
+)))
+
+//-------------------------------------------------------------------------
+
+(game "Allemande"
+    (players 2)
+    (equipment
+        {
+        (board
+            (remove
+                (square (+ 2 "Order")) 
+                cells:{0 (+ "Order" 1) (* (+ "Order" 2) (+ "Order" 1)) (- (^ (+ "Order" 2) 2) 1)} 
+            ) 
+            use:Cell
+        )
+        (regions "EW"
+            P1
+            (union
+                (sites Column (+ "Order" 1))
+                (sites Column 0)
+        ))
+        (regions "NS"
+            P2
+            (union 
+                (sites Row (+ "Order" 1))
+                (sites Row 0)
+        ))
+        (piece "Square" Each )    
+        (hand Each size:<Stones:perTurn>)
+        }
+    )
+    (rules
+        (meta (no Repeat PositionalInTurn))
+        (start 
+            {
+            (place "Square1" (sites Hand P1) state:0)
+            (place "Square1"
+                (union
+                    (sites Column (+ "Order" 1))
+                    (sites Column 0) 
+            ))
+            // this must come last for the variant placement to work (last To) must be the "Next" player
+            (place "Square2" 
+                (union
+                    (sites Row (+ "Order" 1))
+                    (sites Row 0) 
+            ))
+            }
+        )
+        (play
+            (or
+                {
+                // Return a blocked move to the hand
+                (priority
+                    (if
+                        (< 0 (count Pieces Mover in:(sites State 2)))
+                        (move Select (from (last To)  if:(is Mover (who at:(from))))
+                            (then
+                                (fromTo
+                                    (from (last To))
+                                    (to (max (array (forEach (sites Hand Mover) if:(is  Empty (site))))))
+                    ))))
+                    (move Pass)
+                )
+                (do
+                    (move Select
+                        <Variant:placementRestriction>
+                        (then
+                            (fromTo
+                                (from (min (array (forEach (sites Hand Mover) if:(is Mover (who at:(site)))))))
+                                (to (last From))
+                                (then
+                                    (and 
+                                        (forEach Site
+                                            (sites Around (last To) Diagonal
+                                                if:(and
+                                                    {
+                                                    (is Mover (who at:(to)))
+                                                    (= 0 (state at:(to)))
+                                                    (or
+                                                        (no Pieces Mover in:(sites Around (to) Orthogonal))
+                                                        (= Infinity
+                                                            (count Steps
+                                                                (step Orthogonal (to if:(is Mover (who at:(to)))))
+                                                                (to)  
+                                                                (last To)
+                                                    )))
+                                                    }
+                                            ))
+                                            (set State at:(site) 1)
+                                        )
+                                        (forEach Site
+                                            (intersection
+                                                (sites Around (last To) Orthogonal)
+                                                (sites Around (var "LT") Diagonal)
+                                            )
+                                            (if
+                                                (is In (var "LT") (sites Around (last To) Orthogonal))
+                                                (set State at:(site) 0)
+                    )))))))
+                    ifAfterwards:(and
+                        {
+                        (no Pieces Mover in:(sites State 2))
+                        (or
+                            (no Pieces Mover in:(sites State 1))
+                            (< 0 (count Pieces Mover in:(sites Hand Mover)))
+                        )
+                        }
+                ))
+                }
+                (then
+                    (if
+                        (was Pass)
+                        (and
+                            {
+                            (remove (sites Hand Mover))
+                            (add (piece (id "Square" Next)) (to (sites Hand Next)))
+                            (forEach Site (sites State 2) (set State at:(site) 0)) 
+                            }
+                        )
+                        (if
+                            (no Pieces in:(sites Hand Mover))
+                            (and
+                                (add (piece (id "Square" Next)) (to (sites Hand Next)))
+                                (forEach Site (sites State 2) (set State at:(site) 0)) 
+                            )
+                            (and
+                                {
+                                (set Var "LT" (last To))
+                                (forEach Site (sites State 1) (set State at:(site) 2)) 
+                                (moveAgain)
+                                }
+            )))))
+        )
+        (end
+            (if
+                (or
+                    {
+                    (!= Infinity
+                        (count Steps
+                            (step Orthogonal (to if:(is Mover (who at:(to))))) 
+                            (min (array (sites Occupied by:Mover))) 
+                            (max (array (sites Occupied by:Mover)))
+                    ))
+                    
+                    }
+                )
+                (result Mover Win)
+))))
+
+//-------------------------------------------------------------------------
+
+(option "Boards" <Board> args:{ <size> }
+    {
+    (item "Order 5" <5> "Order 5 Board")
+    (item "Order 7" <7> "Order 7 Board")
+    (item "Order 9" <9> "Order 9 Board")**
+    (item "Order 13" <13> "Order 13 Board")
+    (item "Order 19" <19> "Order 19 Board")
+    }
+)
+
+(option "Stone count" <Stones> args:{ <perTurn> }
+    {
+    (item "2" <2> "Use upto 2 stones per turn")
+    (item "3" <3> "Use upto 3 stones per turn")
+    (item "4" <4> "Use upto 4 stones per turn")**
+    }
+)    
+
+(option "Variants" <Variant> args:{ <placementRestriction> }
+    {
+    (item "Any Empty" <(from (sites Empty))> "Place on any Empty site")**
+    (item "As a Group" <"SitesAdjacentLast2SameTurnPlacements"> "Each stones must be placed around the last piece place in that turn, and end up coniguous.")
+    }
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Allemande is a drawless, square board-crossing game that does not allow diagonal connections.
+            It evolved from an idea similar to 'Connecticut' by Corey Clark, with comments and suggestions from Luis Bolaños Mures
+            based on an unpublished polyomino connection game of his.
+            
+            The principle is that for a crossing connection game on a square board, where diagonal connections are not counted for the win condition, they must be disallowed to avoid stalemates. - But may be allowed in the case where a true connection between those pieces has been established.
+            
+            In such a case, four simultaneous placements are the minimum required to avoid any conceivable stalemate position.
+            
+            Thus, in this game up to 4 sequential placements are allowed per turn. 
+            
+            At the end of the turn, no same-color diagonal relationships may remain between pieces that are not otherwise connected orthogonally. 
+            
+            During the turn, however, diagonal placement is allowed, as long as it is resolved before the turn ends.
+            
+            The name Allemande comes from the dance, which is stately and in 4 steps. 
+            
+            Implementation:
+            I implemented the 4 placements by using play from a hand of 4. The hand is replenished before a player's turn. This works well as a way to visually keep track of how many pieces have been played. Select moves are used to make each move a single decision, despite the movements. 
+            
+            Connection is determined by whether the lowest left-edge stone can step a continuous path to the upper rightmost stone.
+            
+            Issues with implementing this game in Ludii:     
+            1. Ludii does not have a turn structure which would allow filtering for illegal diagonals at the end of 4 placements and reversing the entire move. (and that approach would be very inefficient anyway.) 
+            
+            Therefore each diagonal placement is being resolved on the next placement, and is not allowed as the forth placement.
+            And voluntary passing is not allowed when the board is in an illegal state.
+            
+            This has the side effect that the placement sequence is not entirely arbitrary; but it also reduces AI load.
+            
+            2. However, when this approach is taken and the placement cannot be resolved, Ludii supplies an automatic pass that does not allow post processing, leaving the board in an illegal condition of having a diagonal placement.
+            
+            My work-around is to create a reversing move for diagonal placements, but this allows endless cycles.
+            
+            3. Thus (meta (no Repeat PositionalInTurn)) is needed.
+            To allow the reversal, the piece states are not returned to the original values. 
+            This solution also prevents endless replay variants, by limiting the choices available.
+            It also gives a Human the choice to use 'Undo' in order to explore other placement sequences.
+            
+            4. A forced pass can happen after the removal, but leaves the board in a legal position.
+            
+            The AI tends to play out these reversals, and can get caught by the lost opportunities.
+            
+            Human players will quickly become familiar with what sequence of placements is needed for their purpose, and, if necessary reverse their moves with the undo button until they achieve the desired goal.
+            
+        In any case, with 4 placements per turn, the AI's are not very good at the game.")
+        (rules "Goal: To Win, connect the groups of stones at opposite edges.
+            
+            On your turn place up to 4 stones.
+            
+            Restriction:
+            You may not place a stone diagonally from another stone of your color, UNLESS the stone is connected through othogonal links after you have placed your next stone in the same turn. 
+            
+            If you place in the wrong sequence use the Undo button to go back.
+            
+            Do not select the stone to reverse the move as this limits your options to move elsewhere. 
+            That option is just there as a work-around for the Ludii system.
+            
+            There are 2 versions:
+            1. Placing pieces on any empty spaces allowed in the above rules.
+            2. Restricting successive placements in the turn to locations around the previous placement.
+        This keeps all the pieces played in one turn, as a group.")
+        (id "1961")
+        (version "1.3.3")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "2022")
+        }
+    )
+    
+    (graphics
+        {
+        (board StyleThickness InnerEdges 2)
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Cream)) 
+        (piece Colour P1 fillColour:(colour Red) strokeColour:(colour DarkGrey)) 
+        (piece Colour P2 fillColour:(colour Cream) strokeColour:(colour DarkGrey)) 
+        (region Colour "EW" P1 (colour 255 0 0 50))
+        (region Colour "NS" P2 (colour 200 200 50 50))
+        (region Colour P2 (sites State 2) (colour 0 0 0 160))
+        //   (show Piece State)
+        (hand Placement P2 scale:0.222 offsetX:0.95 offsetY:0.10 vertical:True)
+        (hand Placement P1 scale:0.222 offsetX:0.05 offsetY:0.10 vertical:True)
+        }
+    )
+    (ai
+        (heuristics (lineCompletionHeuristic targetLength:"Order"))
+))

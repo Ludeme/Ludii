@@ -39,6 +39,9 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
+import metadata.ai.heuristics.terms.ThreatenedMaterial;
+import metadata.ai.heuristics.terms.ThreatenedMaterialMultipleCount;
+import metadata.ai.heuristics.terms.UnthreatenedMaterial;
 import metadata.ai.misc.Pair;
 import other.AI;
 import other.GameLoader;
@@ -175,6 +178,7 @@ public class HeuristicWeightTuning
 		agentMeanWinRates = compareHeuristics(game, heuristics);
 		System.out.println("Performance against default HeuristicSampling agent : " + agentMeanWinRates.get(0));
 
+		bestHeuristicFound.toFile(game, "cameronMathew.heu");
 		System.out.println("DONE!");
 	}
 	
@@ -678,6 +682,20 @@ public class HeuristicWeightTuning
 					for (final Pair[] componentPairs : allComponentPairsCombinations)
 						heuristicTerms.add(new RegionProximity(null, Float.valueOf(weight), Integer.valueOf(i), componentPairs));
 				}
+			}
+			
+			if (UnthreatenedMaterial.isApplicableToGame(game)) {
+				for (final Pair[] componentPairs : allComponentPairsCombinations)
+				heuristicTerms.add(new UnthreatenedMaterial(null, Float.valueOf(weight), componentPairs));
+			}
+			if (ThreatenedMaterial.isApplicableToGame(game)) {
+				for (final Pair[] componentPairs : allComponentPairsCombinations)
+				heuristicTerms.add(new ThreatenedMaterial(null, Float.valueOf(weight), componentPairs));
+			}
+			
+			if (ThreatenedMaterialMultipleCount.isApplicableToGame(game)) {
+				for (final Pair[] componentPairs : allComponentPairsCombinations)
+					heuristicTerms.add(new ThreatenedMaterialMultipleCount(null, Float.valueOf(weight), componentPairs));
 			}
 		}
 				

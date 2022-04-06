@@ -281,6 +281,12 @@ public class RegionProximity extends HeuristicTerm
 		return isApplicableToGame(game);
 	}
 	
+	@Override
+	public boolean isApplicable(final Game game)
+	{
+		return isApplicableToGame(game);
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -466,5 +472,12 @@ public class RegionProximity extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
-
+	@Override
+	public float[] gameAgnosticWeightsArray() {
+		return gameAgnosticWeightsArray;
+	}
+	@Override
+	public FVector pieceWeights() {
+		return pieceWeights;
+	}
 }

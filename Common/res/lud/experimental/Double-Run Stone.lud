@@ -1,0 +1,340 @@
+// Double-Run Stone
+//-----------------------------------------------
+(define "SetupHands"
+    (start
+        {
+        (set Score Each 0)
+        (place "3Dot1" (handSite P1 0))
+        (place "3Dot1" (handSite P1 1))
+        (place "3Dot1" (handSite P1 2))
+        
+        (place "2Dot1" (handSite P1 4))
+        (place "2Dot1" (handSite P1 5))
+        (place "2Dot1" (handSite P1 6))
+        (place "2Dot1" (handSite P1 7))
+        
+        (place "1Dot1" (handSite P1 9 ))
+        (place "1Dot1" (handSite P1 10))
+        (place "1Dot1" (handSite P1 11))
+        (place "1Dot1" (handSite P1 12))
+        (place "1Dot1" (handSite P1 13))
+        
+        (place "3Dot2" (handSite P2 0))
+        (place "3Dot2" (handSite P2 1))
+        (place "3Dot2" (handSite P2 2))
+        
+        (place "2Dot2" (handSite P2 4))
+        (place "2Dot2" (handSite P2 5))
+        (place "2Dot2" (handSite P2 6))
+        (place "2Dot2" (handSite P2 7))
+        
+        (place "1Dot2" (handSite P2 9 ))
+        (place "1Dot2" (handSite P2 10))
+        (place "1Dot2" (handSite P2 11))
+        (place "1Dot2" (handSite P2 12))
+        (place "1Dot2" (handSite P2 13))
+        }
+))
+
+//---------------------------------------
+// Score the win condition and highlight the involved pieces using set State
+
+(define "ScoreWinCondition"
+    (and
+        (forEach Group "Connection" if:(is In (to) (sites Occupied by:Mover))
+            (if 
+                (and
+                    {
+                    (= 4 (count Sites in:(sites)))
+                    (is Within (id "1Dot" Mover) in:(sites))
+                    (is Within (id "2Dot" Mover) in:(sites))
+                    (is Within (id "3Dot" Mover) in:(sites))
+                    }
+                )
+                // Score for mover's double runs
+                (forEach Site (sites)
+                    (and
+                        (addScore Mover
+                            (if (is Within (id "3Dot" Mover) at:(site))
+                                3
+                                (if (is Within (id "2Dot" Mover) at:(site)) 1 -1)
+                        ))
+                        (set State at:(site) 1)
+        ))))
+        
+        // Also check for opponent's runs
+        (forEach Group "Connection" if:(is In (to) (sites Occupied by:Next))
+            (if 
+                (and
+                    {
+                    (= 4 (count Sites in:(sites)))
+                    (is Within (id "1Dot" Next) in:(sites))
+                    (is Within (id "2Dot" Next) in:(sites))
+                    (is Within (id "3Dot" Next) in:(sites))
+                    }
+                )
+                (forEach Site (sites)
+                    (and
+                        (addScore Next
+                            (if (is Within (id "3Dot" Next) at:(site))
+                                6
+                                (if (is Within (id "2Dot" Next) at:(site)) 2 -2)
+                        ))
+                        (set State at:(site) 1)
+                ))
+))))
+
+//-----------------------------------------
+// Boolean define for checking move legality
+
+(define "IntolerableSite"
+    (and
+        {
+        (or
+            (is Within (id "1Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
+            (is Within (id "1Dot" P2) in:(difference (sites Around (#1) "Connection")  (#2)))
+        )
+        (or
+            (is Within (id "2Dot" P1) in:(difference (sites Around (#1) "Connection")  (#2)))
+            (is Within (id "2Dot" P2) in:(difference (sites Around (#1) "Connection")  (#2)))
+        ) 
+        (or   
+            (is Within (id "3Dot" P1) in:(difference (sites Around (#1) "Connection") (#2)))
+            (is Within (id "3Dot" P2) in:(difference (sites Around (#1) "Connection") (#2)))
+        )
+        }
+))
+//-----------------------------------------------------
+// Movement defines
+
+(define "AddPiece"
+    (move Add 
+        (piece (id #1 Mover))
+        (to (sites Empty) 
+            if:(and
+                (< 0 (count Pieces Mover #1 in:(sites Hand Mover)))
+                (not
+                    ("IntolerableSite" (to) (to))
+        )))
+        (then 
+            (and
+                {
+                (remove (min (array (forEach (sites Hand Mover) if:(= (id #1 Mover) (what at:(site)))))))
+                (forEach Site 
+                    (sites Around (last To) "Connection") 
+                    (if 
+                        ("IntolerableSite" (site) (site))
+                        (remove (site))
+                ))
+                (set Value Mover 0) // reset forced move count when you move
+                }
+))))
+
+(define "StepPiece"
+    (if  // limits number of moves Mover can make before winning.
+        (> (count Sites in:(sites Occupied by:Mover)) (value Player Mover))  
+        (forEach Piece 
+            (move Step "Connection"
+                (to  
+                    if:(and
+                        {
+                        (is Empty (to)) 
+                        (not
+                            ("IntolerableSite" (to) (from))
+                        )
+                        }
+                ))
+                (then
+                    (and
+                        (forEach Site 
+                            (sites Around (last To) "Connection") 
+                            (if 
+                                ("IntolerableSite" (site) (site))
+                                (remove (site))
+                        )) 
+                        (set Value Mover (+ (value Player Mover) 1)) 
+            )))
+            Mover
+        )
+))
+
+//-------------------------------------------------
+// Defines for Options
+
+(define "Connection" <BoardShape:directionsUsed>)
+(define "BoardUsed" <BoardShape:gridType> )
+
+(define "SquareGrid" (square <BoardSize:smallSide>))
+(define "HexLimp" (trim (tri Limping (- <BoardSize:smallSide> 1))))
+(define "TriSquare" (tiling T33434 (- <BoardSize:smallSide> 2)))
+(define "HexHex" (tri Hexagon <BoardSize:smallSide>))
+(define "Icosahedron" (add (remove (tri Limping 4) vertices:{0 1 3 4 5 6 7 8 9 10 11 13 15 17 18 19 20 23 24 25 26 27 31 32 34 35 36 37 39 40 42 43 44 45 46 47}) edges:{ {0 1} {0 2} {0 3} {0 9} {0 10} {1 2} {1 4} {1 6} {6 11} {7 11} {8 11} {1 9} {2 3} {3 5} {3 8} {3 10} {6 9} {8 10} {9 10} {9 11} {10 11} } ))
+
+(define "Stalemate" 
+    (if 
+        (no Moves Mover)
+        (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0)) ))  
+        (move Pass (then (set Score Mover (count Pieces Mover in:(sites Board)))))
+))
+//-----------------------------------------------
+// Main routine
+
+(game "Double-Run Stone"
+    (players 2)
+    (equipment
+        {
+        (board "BoardUsed" use:Vertex)
+        (hand Each size:15)
+        (piece "1Dot" Each )
+        (piece "2Dot" Each )
+        (piece "3Dot" Each )
+        }
+    )
+    (rules
+        ("SetupHands")
+        (play
+            (if 
+                (= 0 (count Sites in:(sites State 1)))
+                (priority
+                    {
+                    (or
+                        {
+                        ("AddPiece" "1Dot")
+                        ("AddPiece" "2Dot")
+                        ("AddPiece" "3Dot")
+                        }
+                    )
+                    ("StepPiece")
+                    (do (forEach Site (sites State 0) (set State at:(site) 1))
+                        next:("Stalemate")
+                    )
+                    (move Pass
+                        (then
+                            (forEach Site (sites State 0) (set State at:(site) 1)) 
+                    ))
+                    }
+                    (then 
+                        ("ScoreWinCondition")
+                ))
+                ("Stalemate")
+        ))
+        (end 
+            (if 
+                (< 0 (+ (score Mover) (score Next)))
+                (byScore)
+))))
+
+//-------------------------------------------------
+// Options
+
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <bugFix> <fix2>} 
+    {
+    (item "TriSquare Omni" <"TriSquare"> <All> <ThinDashed> <1.0> <0.0> "Triangle-Square Omni-Grid")**
+    (item "TriSquare Grid" <"TriSquare"> <Orthogonal> <Hidden> <1.0> <0.0> "Triangle-Square Grid")
+    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <1.8>  <-0.85> "Hex N / N-1 Grid")***
+    (item "Hex Grid" <"HexHex"> <Orthogonal> <Hidden> <1.0>  <0.0> "Hex Grid")
+    (item "Icosahedron" <"Icosahedron"> <Orthogonal> <Hidden> <1.0> <0.0>  "Icosahedron")
+    (item "Square Omni" <"SquareGrid"> <All> <ThinDashed>  <1.0> <0.0> "Square Omni-Grid")
+    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> <1.0>  <0.0> "Square Grid")
+    }
+)
+
+(option "Board Size" <BoardSize> args:{<smallSide> } 
+    {
+    (item "Order 3" <3> "Order 3 board")**
+    (item "Order 4" <4> "Order 4 board")
+    }
+)
+
+//---------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "'Double Run Stone' (originally 'A Family of Four') is a two player pattern-forming game that can be played on a variety of grids. 
+            The main goal is to create a double run (like in Cribbage) as an isolated group of pieces. For this, you score the value of the included pair. 
+            
+            Forcing the opponent to stalemate you is intended to be a common secondary goal and win condition.
+            
+            Play is chaotic due to destination restrictions and required removals that ensure no piece is next to all three values (irrespective of piece ownerships.)
+            
+            This game is surprising as pattern forming games go, in that it may be played with the same rules on a variety of boards grids or networks. It is tactical and delightfully opaque, and thus best suited to small size boards and informal contests.
+            
+            The new version eliminates cycles by using a limited piece supply and by limiting the number of serial movements to the number of a player's pieces currently in play. 
+            
+            The various restrictions combine to create many distinct modes of winning in addition to the pattern forming. They are best served by small tight boards with few enough pieces to make these alternative wins actually occur:
+            - Depleting a category of pieces and/or depleting all pieces to prevent one's own placement. 
+            - Reducing piece count on the board to minimize the forced movement count needed to win. 
+            - Forcing the opponent to fill the board, or eliminate all playable destinations. 
+            - Forcing the opponent to remove pieces in a way that creates a group for yourself. 
+            
+            These tactics are mostly at odds with setting up your own double-run. For example, completely running out of one type of piece prevents one from forming a double run at all. 
+            
+        The game is intended to be played in sets and different wins produce different scores so that this is interesting.  Each player's stock of pieces is weighted to make higher scores less likely than lower scores.")
+        (rules "Dual Goals: 
+        A) Create an isolated group of 4 that contains a single pair. This is called a double-run, but it only scores for the pair depending on its value: (1+1) (2+2) or (3+3); 
+    B) Force the opponent to stalemate you. This scores one point for each of your pieces on the board, with out regard to their value.
+    
+    Keep score and play 2 or more sets of 2 games each. 
+    
+    Play Overview: 
+    The board starts empty. 
+    
+    Turns consist of placement or movement, followed by consequential removals. Placement has priority over movement. 
+    The destinations for both placement and movement are restricted. Movement has an additional limitation.
+    
+    The game ends when a player cannot take a turn, or when, at the end of a turn, a distinctly connected group of 4 of either player's pieces forms double-run of values (1123, 1223, 1233) in any order.
+    
+    Turns:
+    --- if possible: ---
+A) a player must place a piece from his supply onto an empty location,
+-- but never onto a location that is simultaneously adjacent to pieces of every value (1, 2 and 3) without respect to ownership.
+
+--- Otherwise:---
+B) if the previous player has played in a way that prevents placement, then instead, a piece must be moved to an adjacent empty location that meets the same destination restriction as for placement. 
+
+However, a player may not be deprived of placement moves for more turns in a row than he has pieces in play at the start of his turn. If the number of his pieces at the start of his turn is equal to or less than the number of movement turns that he has already taken since his last placement, then he has been stalemated and the game ends in his favor.
+
+He would also be stalemated if there were no legal step moves available on the board.
+
+Removals:
+After the placement or movement, simultaneously remove every piece on the board that is adjacent to pieces of all 3 values without respect to ownership of the pieces and of their neighbors.
+These removed pieces are 'consumed'; they are not returned to the players' supply.
+
+Scoring:
+
+A player who stalemates the opponent loses: the player who is unable to move scores one point for each piece of his color in play.
+
+Otherwise, each Double-run that is owned by the player who just completed the turn scores the value of the pair in that double-run.
+A double-run belong to the opponent is scored by the opponent, and has twice the value.")
+(id "1963")
+(version "1.3.3")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "25-03-2022")
+}
+)
+(graphics 
+    {
+    (player Colour P1 (colour 229 92 0))
+    (player Colour P2 (colour Cream))
+    (piece Families {"salta"})
+    (piece Rename piece:"1Dot" "Salta1Dot.svg" )
+    (piece Rename piece:"2Dot" "Salta2Dot.svg" )
+    (piece Rename piece:"3Dot" "Salta3Dot.svg" )
+    (piece Colour P1 state:0 fillColour:(colour 229 92 0) strokeColour:(colour Black))
+    (piece Colour P2 state:0 fillColour:(colour 255 238 170) strokeColour:(colour Black))
+    (piece Colour P1 state:1 fillColour:(colour 229 92 0 80) strokeColour:(colour  0 0 0 150))
+    (piece Colour P2 state:1 fillColour:(colour 255 238 170 80) strokeColour:(colour 0 0 0 150))
+    (board Style Graph)
+    (board StyleThickness InnerVertices 1.5)
+    (show Edges Diagonal <BoardShape:DiagShow>)
+    //    (show Piece State)
+    
+    (hand Placement P2 scale:<BoardShape:bugFix> offsetX:0.95 offsetY:<BoardShape:fix2> vertical:True)
+    (hand Placement P1 scale:<BoardShape:bugFix> offsetX:0.05 offsetY:<BoardShape:fix2> vertical:True)
+    }
+)
+(ai (heuristics (score weight:2)))
+)

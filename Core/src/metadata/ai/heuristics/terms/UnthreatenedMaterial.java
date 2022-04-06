@@ -19,6 +19,7 @@ import metadata.ai.misc.Pair;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.move.remove.ActionRemove;
+import other.action.move.remove.ActionRemoveTopPiece;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;
@@ -144,13 +145,31 @@ public class UnthreatenedMaterial extends HeuristicTerm
 					{
 						if (action != null && action.actionType() != null && action.actionType().equals(ActionType.Remove))
 						{
-							final ActionRemove removeAction = (ActionRemove) action;
-							final int removeSite = removeAction.to();
-							final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
-							
-							if (contID == 0)
+							if (action instanceof ActionRemove)
 							{
-								threatenedSites.add(removeSite);
+								final ActionRemove removeAction = (ActionRemove) action;
+								final int removeSite = removeAction.to();
+								final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
+								
+								if (contID == 0)
+								{
+									threatenedSites.add(removeSite);
+								}
+							}
+							else if (action instanceof ActionRemoveTopPiece)
+							{
+								final ActionRemoveTopPiece removeAction = (ActionRemoveTopPiece) action;
+								final int removeSite = removeAction.to();
+								final int contID = removeSite >= context.containerId().length ? -1 : context.containerId()[removeSite];
+								
+								if (contID == 0)
+								{
+									threatenedSites.add(removeSite);
+								}
+							}
+							else
+							{
+								System.err.println("ERROR: UnthreatenedMaterial does not recognise Remove action: " + action.getClass());
 							}
 						}
 					}
@@ -313,6 +332,12 @@ public class UnthreatenedMaterial extends HeuristicTerm
 	public static boolean isSensibleForGame(final Game game)
 	{
 		return isApplicableToGame(game) && game.booleanConcepts().get(Concept.Capture.id());
+	}
+	
+	@Override
+	public boolean isApplicable(final Game game)
+	{
+		return isApplicableToGame(game);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -481,4 +506,12 @@ public class UnthreatenedMaterial extends HeuristicTerm
 	
 	//-------------------------------------------------------------------------
 
+	@Override
+	public float[] gameAgnosticWeightsArray() {
+		return gameAgnosticWeightsArray;
+	}
+	@Override
+	public FVector pieceWeights() {
+		return pieceWeights;
+	}
 }

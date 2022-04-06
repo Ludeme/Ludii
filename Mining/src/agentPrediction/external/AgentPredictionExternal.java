@@ -78,7 +78,7 @@ public class AgentPredictionExternal
 		{
 			if (manager.aiSelected()[playerIndexToUpdate].ai() != null)
 			{
-				final Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
+				final Heuristics heuristic = AIUtils.convertStringtoHeuristic(bestPredictedAgentName);
 				manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
 				manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
 			}
@@ -107,7 +107,7 @@ public class AgentPredictionExternal
         		final String arg1 = modelFilePath;
         		final String arg2 = "Classification";
         		final String arg3 = conceptNameString;
-        		final String arg4 =  conceptValueString;
+        		final String arg4 = conceptValueString;
 	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
 	
 	            // Read file output
@@ -121,10 +121,10 @@ public class AgentPredictionExternal
 	            		try
 	            		{
 	            			final String[] classNamesAndProbas = sInput.split("=")[1].split("_:_");
-	            			final String[] classNames = classNamesAndProbas[0].split("_");
+	            			final String[] classNames = classNamesAndProbas[0].split("_;_");
 	            			for (int i = 0; i < classNames.length; i++)
 	            				classNames[i] = classNames[i];
-	            			final String[] valueStrings = classNamesAndProbas[1].split("_");
+	            			final String[] valueStrings = classNamesAndProbas[1].split("_;_");
 	            			final Double[] values = new Double[valueStrings.length];
 	            			for (int i = 0; i < valueStrings.length; i++)
 	            				values[i] = Double.valueOf(valueStrings[i]);
@@ -132,18 +132,18 @@ public class AgentPredictionExternal
 	            				System.out.println("ERROR! Class Names and Values should be the same length.");
 	            			
 	            			double highestProbabilityValue = -1.0;
-	            			String highestProabilityName = "Random";
+	            			String highestProbabilityName = "Random";
 	            			for (int i = 0; i < classNames.length; i++)
 	            			{
 	            				manager.getPlayerInterface().addTextToAnalysisPanel("Predicted probability for " + classNames[i] + ": " + values[i] + "\n");
 	            				if (values[i].doubleValue() > highestProbabilityValue)
 	            				{
 	            					highestProbabilityValue = values[i].doubleValue();
-	            					highestProabilityName = classNames[i];
+	            					highestProbabilityName = classNames[i];
 	            				}
 	            			}
 	            			
-	            			return highestProabilityName;
+	            			return highestProbabilityName;
 	            		}
 	            		catch (final Exception e)
 	            		{
@@ -224,7 +224,7 @@ public class AgentPredictionExternal
 	/**
 	 * @return The concepts as a string with comma between them.
 	 */
-	private static String conceptNameString(final boolean compilationOnly)
+	public static String conceptNameString(final boolean compilationOnly)
 	{
 		final Concept[] concepts = compilationOnly ? Concept.values() : Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();
@@ -242,7 +242,7 @@ public class AgentPredictionExternal
 	 * @param game The game compiled.
 	 * @return The concepts as boolean values with comma between them.
 	 */
-	private static String conceptValueString(final Game game, final boolean compilationOnly)
+	public static String conceptValueString(final Game game, final boolean compilationOnly)
 	{
 		final Concept[] concepts = compilationOnly ? Concept.values() : Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();

@@ -26,7 +26,7 @@ public class RankUtils
 	 * Converts a rank >= 1 into a utility value in [-1, 1].
 	 * 
 	 * @param rank
-	 * @param numPlayers
+	 * @param numPlayers Total number of players in the game (active + inactive ones)
 	 * @return Utility for the given rank
 	 */
 	public static double rankToUtil(final double rank, final int numPlayers)
@@ -47,7 +47,8 @@ public class RankUtils
 	 * Computes a vector of utility values for all players based on the player
 	 * rankings in the given context.
 	 * 
-	 * For players who do not yet have an established ranking, 0.0 will be returned.
+	 * For players who do not yet have an established ranking, a "draw" utility 
+	 * will be returned.
 	 * 
 	 * For players who do have an established ranking, the utility value will lie
 	 * in [-1, 1] based on the ranking; 1.0 for top ranking, -1.0 for bottom ranking,

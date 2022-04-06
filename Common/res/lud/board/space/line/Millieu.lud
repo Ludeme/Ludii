@@ -1,0 +1,316 @@
+// Game of Millieu
+// Definitions of base pieces in Rows, Files and Columns
+
+(define "FileAt" (+ (% #1 3) (* (/ #1 9) 9)))
+(define "RowAt"  (* (/ #1 3) 3))
+(define "ColumnAt" (% #1 9))
+
+(define "AdjacentOccupiedUpDown"
+    (sites
+        (results
+            from:#1
+            to:(forEach
+                (difference
+                    (difference
+                        (sites { ("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) } )
+                        (from)
+                    )
+                    (sites Empty)
+                )
+                if:(or
+                    (= (site) (+ ("ColumnAt" (from)) 9))
+                    (= (from) (+ ("ColumnAt" (from)) 9))
+            ))
+            (to)
+)))
+
+(define "EmptySlideSitesUpDown"
+    (sites
+        (results
+            from:#1
+            to:(forEach
+                (intersection
+                    (difference
+                        (sites { ("ColumnAt" (from)) (+ ("ColumnAt" (from)) 9) (+ ("ColumnAt" (from)) 18) } )
+                        (from)
+                    )
+                    (sites Empty)
+                )
+                if:(or
+                    (is Empty (+ ("ColumnAt" (from)) 9))
+                    (= (from) (+ ("ColumnAt" (from)) 9))
+            ))
+            (to)
+)))
+
+//------------------------------
+// Mill definitions
+(define "IsMill"
+    (or
+        (and 
+            {
+            (= (state at:#1) (state at:(+ {#1 #2})))
+            (= (state at:#1) (state at:(+ { #1 #2 #2})))
+            (!= (what at:#1) (what at:(+ {#1 #2})))
+            (!= (what at:#1) (what at:(+ {#1 #2 #2})))
+            (!= (what at:(+ {#1 #2})) (what at:(+ {#1 #2 #2})))
+            }
+        )
+        (and 
+            {
+            (= (what at:#1) (what at:(+ {#1 #2})))
+            (= (what at:#1) (what at:(+ { #1 #2 #2})))
+            (!= (state at:#1) (state at:(+ {#1 #2})))
+            (!= (state at:#1) (state at:(+ {#1 #2 #2})))
+            (!= (state at:(+ {#1 #2})) (state Vertex at:(+ {#1 #2 #2})))
+            }
+)))
+
+(define "Check4Mill"
+    (or
+        {
+        ("IsMill" ("RowAt" #1) 1)
+        ("IsMill" ("FileAt" #1) 3)
+        ("IsMill" ("ColumnAt" #1) 9)
+        }
+))
+
+(define "PendingMillSites"
+    (and
+        {
+        (if 
+            ("IsMill" ("RowAt" #1) 1)
+            (and
+                {
+                (set Pending ("RowAt" #1)) 
+                (set Pending (+ ("RowAt" #1) 1))
+                (set Pending (+ ("RowAt" #1) 2))
+                }
+        ))
+        (if 
+            ("IsMill" ("FileAt" #1) 3)
+            (and
+                {
+                (set Pending ("FileAt" #1)) 
+                (set Pending (+ ("FileAt" #1) 3))
+                (set Pending (+ ("FileAt" #1) 6))
+                }
+        ))
+        (if 
+            ("IsMill" ("ColumnAt" #1) 9)
+            (and
+                {
+                (set Pending ("ColumnAt" #1)) 
+                (set Pending (+ ("ColumnAt" #1) 9))
+                (set Pending (+ ("ColumnAt" #1) 18))
+                }
+        ))
+        }
+))
+
+//------------------------------------------
+// Move definitions
+
+(define "FirstPlacement"
+    (move
+        (from (sites Hand Mover)) 
+        (to (sites Board) if:(is Empty (to)))
+    )
+)
+
+(define "FirstAction"
+    (move
+        (from (sites Hand Mover)) 
+        (to (sites Board)
+            if:(and
+                (is Empty (to))
+                (or
+                    (< 0 (count Pieces in:(sites Around (to))))
+                    (< 0 (count Pieces in:("AdjacentOccupiedUpDown" (to))))
+        )))
+        (then
+            (and
+                (set Var "LastMove1" (last To))
+                (moveAgain)
+))))
+
+(define "SlideAdjacent"
+    (move
+        (from
+            (union
+                (sites Around (var "LastMove1"))
+                ("AdjacentOccupiedUpDown" (var "LastMove1"))
+        ))
+        (to
+            (union
+                (sites LineOfSight Empty Vertex at:(from))
+                ("EmptySlideSitesUpDown" (from))
+        ))
+        (then (set Var "LastMove2" (last To)))
+))
+
+(define "DestroyEachMillsByCapturingAStaticPiece"
+    (do
+        (move
+            (from
+                (sites Pending)
+            )
+            (to
+                (sites Hand Mover)
+                if:(is Empty (to))
+            )
+        )
+        ifAfterwards:(all Sites
+            (sites { (var "LastMove1") (var "LastMove2") } ) 
+            if:(not (is Empty (site))) // not allowed to remove the pieces moved to make the mill
+)))
+
+(define "ThenIfMillsAddSites2PendingAndMoveAgain"
+    (then
+        (and
+            {
+            ("PendingMillSites" (var "LastMove1"))
+            ("PendingMillSites" (var "LastMove2"))
+            (if 
+                (or ("Check4Mill" (var "LastMove1")) ("Check4Mill" (var "LastMove2")))
+                (moveAgain)
+            )
+            }  
+)))
+
+//-------------------------------------
+// Main routine 
+
+(game "Millieu"
+    (players 2)
+    (equipment
+        {
+        (board (remove (rectangle 9 3) cells:{4 5 10 11}) use:Vertex)
+        (hand Each size:9)
+        (piece "Disc" Shared maxState:3)
+        (piece "Square" Shared maxState:3)
+        (piece "Hex" Shared maxState:3)
+        }
+    )
+    (rules
+        (start
+            {
+            (place "Disc" (handSite P1 0) state:3)
+            (place "Disc" (handSite P1 1) state:1)
+            (place "Disc" (handSite P1 2) state:2)
+            (place "Square" (handSite P1 3) state:3)
+            (place "Square" (handSite P1 4) state:1)
+            (place "Square" (handSite P1 5) state:2)
+            (place "Hex" (handSite P1 6) state:3)
+            (place "Hex" (handSite P1 7) state:1)
+            (place "Hex" (handSite P1 8) state:2)
+            
+            (place "Disc" (handSite P2 0) state:3)
+            (place "Disc" (handSite P2 1) state:1)
+            (place "Disc" (handSite P2 2) state:2)
+            (place "Square" (handSite P2 3) state:3)
+            (place "Square" (handSite P2 4) state:1)
+            (place "Square" (handSite P2 5) state:2)
+            (place "Hex" (handSite P2 6) state:3)
+            (place "Hex" (handSite P2 7) state:1)
+            (place "Hex" (handSite P2 8) state:2)
+            
+            (set Score Each 9)
+            }
+        )
+        (play
+            (if
+                (> 0 (counter))
+                ("FirstPlacement")
+                
+                // regular moves
+                (if
+                    (not (is Mover Prev))  // Move begins with a placement that can be followed by an adjacent slide
+                    ("FirstAction") 
+                    (if
+                        (= 0 (count Sites in:(sites Pending)))
+                        ("SlideAdjacent")  // After placement the move continues with a compulsary slide of an adjacent piece
+                        ("DestroyEachMillsByCapturingAStaticPiece")
+                        ("ThenIfMillsAddSites2PendingAndMoveAgain")
+                ))
+                (then (set Score Mover (count Pieces in:(sites Hand Mover))))
+        ))
+        (end
+            (if
+                (no Moves Mover)
+                (result Mover Loss)
+))))
+
+//-------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Millieu is a 3-D Morris game based loosely on the game OutFox
+            
+            The goal is to be the last to complete a turn - this almost always occurs by the opponent running out of pieces.
+            
+            The game uses 2 sets of 9 common pieces combining all combinations of 3 attributes in 2 dimensions (color + shape). Each player has their own set in-hand in the beginning, but the pieces are no longer owned once in play. Moves follow a place-then-must-slide-an-adjacent-piece protocol. All turns must be fully completed.
+            
+            Captures are made by forming mills, and allow a player to restock their hand. A mill is an orthogonal line of 3 uniquely different pieces that share one common attribute. When a player forms a mill, they must remove one of the 2 inactive pieces in that mill back into their own hand for re-use.
+            
+        To win, the first player must either make one more capture than the opponent, or rarely, prevent the other player from placing a piece by leaving no slide moves available. This suggests the game, as it stands, has a second player advantage. - However much opening play testing will be needed to determine if the perceived advantage is real...")
+        (rules "Goal:
+            The last player to complete a turn wins - typically when the opponent runs out of pieces in their hand.
+            
+            Each player starts with a full set of 9 pieces: each combination of shape and color. Pieces once played are not owned, but may be recaptured during the game for reuse.
+            
+            The game starts with a placement by the first player.
+            Thereafter, each turn has a placement followed by a movement, and one or more required piece recaptures if available.
+            
+            -- 1. Placement:
+            The first step in every turn is a placement to an empty point next to at least one existing piece that can slide.
+            
+            -- 2. Movement:
+            The player must choose on piece next to the newly placed piece and slide it orthogonally one or two points to a new position. The piece can only move to empty points, never crossing a piece in play.
+            
+            -- 3. Capture:
+            Either (or both) of the first two actions can form one or more 'mills'.
+            
+            A mill is an orthogonal line of three uniquely different piece types that all share one common attribute - either color or shape.
+            
+            The player completes their turn by destroying every mill on the board by removing one of the 2 unmoved pieces that it contains. (Newly added and moved pieces may not be removed.)
+            
+        A turn is not complete until all the applicable actions have been performed. A player may not make a move that would bring their hand size to more than 9 pieces.")
+        (id "1950")
+        (version "1.3.3")
+        (classification "board/space/line")
+        (author "Dale Walton")
+        (credit "Dale Walton")
+        (date "22-02-2022")
+        }
+    )
+    
+    (graphics
+        {
+        (board style Graph)
+        (board StyleThickness OuterEdges 0.20)
+        (board StyleThickness InnerEdges 0.20)
+        (show Edges Diagonal Hidden)
+        (piece Colour state:3 fillColour:(colour Red))
+        (piece Colour state:1 fillColour:(colour DarkBrown))
+        (piece Colour state:2 fillColour:(colour Cream))
+        (piece Scale "Disc" scaleX:.85 scaleY:.85)
+        (piece Scale "Square" scaleX:.50 scaleY:.50)
+        
+        // workaround for line thicknes after scaling square to necessary size:
+        (piece Background "Square" image:"square-alt1.svg"  scaleX:.76 scaleY:.76)
+        (piece Foreground "Square" state:3 image:"square-alt1.svg"
+            fillColour:(colour Red) scaleX:.72 scaleY:.72
+        )
+        (piece Foreground "Square" state:1 image:"square-alt1.svg"
+            fillColour:(colour DarkBrown) scaleX:.72 scaleY:.72
+        )
+        (piece Foreground "Square" state:2 image:"square-alt1.svg"
+            fillColour:(colour Cream) scaleX:.72 scaleY:.72
+        ) 
+        
+        (hand Placement P2 scale:0.8 offsetX:0.85 offsetY:0.10 vertical:True)
+        (hand Placement P1 scale:0.8 offsetX:0.15 offsetY:0.10 vertical:True)
+        }
+))

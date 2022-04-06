@@ -213,6 +213,7 @@ public class TravisTest
 			excludedCustomPlayouts.add("Kriegsspiel");
 			excludedCustomPlayouts.add("Throngs ");
 			excludedCustomPlayouts.add("Omny");
+			excludedCustomPlayouts.add("Lifeline");
 
 			if (!containsPartOf(excludedCustomPlayouts, game.name()))
 				testCustomPlayouts();
@@ -223,6 +224,7 @@ public class TravisTest
 			excludedTensors.add("Kriegsspiel");
 			excludedTensors.add("Throngs");
 			excludedTensors.add("Omny");
+			excludedTensors.add("Lifeline");
 
 			if (!containsPartOf(excludedTensors, game.name()))
 				testStateMoveTensors();
@@ -234,6 +236,7 @@ public class TravisTest
 			excludedPlayoutPerOption.add("Throngs");
 			excludedPlayoutPerOption.add("Mini Wars");
 			excludedPlayoutPerOption.add("Omny");
+			excludedPlayoutPerOption.add("Lifeline");
 
 			if (!containsPartOf(excludedPlayoutPerOption, game.name()))
 				testPlayoutPerOption((USE_TIME) ? (hour < MIN_HOUR || hour > MAX_HOUR) : true);
@@ -247,6 +250,7 @@ public class TravisTest
 			excludedParallelPlayouts.add("Kriegsspiel");
 			excludedParallelPlayouts.add("Throngs");
 			excludedParallelPlayouts.add("Omny");
+			excludedParallelPlayouts.add("Lifeline");
 
 			if (!containsPartOf(excludedParallelPlayouts, game.name()))
 				testParallelPlayouts(true);
@@ -274,6 +278,7 @@ public class TravisTest
 			excludedSerialisation.add("Kriegsspiel");
 			excludedSerialisation.add("Throngs");
 			excludedSerialisation.add("Omny");
+			excludedSerialisation.add("Lifeline");
 
 			if (!containsPartOf(excludedSerialisation, game.name()))
 				testTrialSerialisation();

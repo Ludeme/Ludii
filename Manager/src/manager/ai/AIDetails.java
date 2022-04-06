@@ -49,7 +49,7 @@ public class AIDetails
 				{
 					final JSONObject json = new JSONObject()
 							.put("AI", new JSONObject()
-							.put("algorithm", "AlphaBeta")
+							.put("algorithm", "UCT")
 							);
 					aiFromName = AIFactory.fromJson(json);
 				}

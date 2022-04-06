@@ -1,24 +1,92 @@
+(define "IsLineDirection" 
+    (if (is Line 4 #1 #2 whats:{0 1 2})	
+        (is Line 4 #1 #2 exact:True) 
+        (is Line 3 #1 #2 exact:True) 
+    )	
+)
+
+(define "IsLine"
+    (or {
+        ("IsLineDirection" N #1)
+        ("IsLineDirection" NE #1)
+        ("IsLineDirection" E #1)
+        ("IsLineDirection" SE #1)
+        ("IsLineDirection" S #1)
+        ("IsLineDirection" SW #1)
+        ("IsLineDirection" W #1)
+        ("IsLineDirection" NW #1)	
+    })
+)
+
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (forEach 
+            (sites Occupied by:Next container:"Board") 
+            if:(not ("IsLine" through:(site)))
+        )
+    )
+)
+
+(define "IfLineMoveAgain" 
+    (then 
+        (if 
+            ("IsLine")
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Davxar Zirge (Type 1)"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board 
             (add
                 (concentric Square rings:4 joinCorners:True)
-                edges:{{14 20} {20 24} {24 22} {22 17} {17 11} {11 7} {7 9} {9 14} {6 4} {4 8} {5 1}
+                edges:{
+                {14 20} {20 24} {24 22} {22 17} {17 11} {11 7} {7 9} {9 14} {6 4} {4 8} {5 1}
                 {1 3} {23 27} {27 25} {26 30} {30 28}
                 }
             )
             use:Vertex
         ) 
         (hand Each)
-        (piece "Marker" Each) 
-        }
-    )  
+        (piece "Marker" Each "StepToEmpty") 
+    })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (start (place "Marker" "Hand" count:[*])) // The unknow information is the number of pieces.
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLineMoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece
+                        ("IfLineMoveAgain")		
+                    )
+                )
+            )
+        )
+        }
+        
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
@@ -39,9 +107,5 @@
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")
         }
     )
-    
-    (graphics {
-        
-    })
     
 )

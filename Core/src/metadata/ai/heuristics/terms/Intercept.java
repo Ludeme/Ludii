@@ -168,6 +168,12 @@ public class Intercept extends HeuristicTerm
 		return isApplicableToGame(game);
 	}
 	
+	@Override
+	public boolean isApplicable(final Game game)
+	{
+		return isApplicableToGame(game);
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override
@@ -295,4 +301,10 @@ public class Intercept extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public float[] gameAgnosticWeightsArray() {
+		return gameAgnosticWeightsArray;
+	}
+	
 }

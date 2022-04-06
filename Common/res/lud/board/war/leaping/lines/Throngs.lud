@@ -211,8 +211,8 @@
                             (and
                                 {
                                 (set Var "LastTo" (last To))
-                                (set Var "PowerLeft" (- ("InfluenceAt" (last To)) 3))
-                                (set State at:(last To) (- ("InfluenceAt" (last To)) 3))
+                                (set Var "PowerLeft" (- ("InfluenceAt" (last To)) 4))
+                                (set State at:(last To) (- ("InfluenceAt" (last To)) 4))
                                 }
         ))))))
         (then
@@ -237,17 +237,17 @@
                                 (and
                                     {
                                     (set Var "LastTo" (last To))
-                                (set State at:(last To) ("InfluenceAt" (last To))) // (+ 1 ("InfluenceAt" (last To))))
-                            (set Var "PowerLeft" ("InfluenceAt" (last To))) // (+ 1 ("InfluenceAt" (last To))))
-                            }
-    ))))))
-    Mover
-    (then 
-        ("FindDestinations" 
+                                    (set State at:(last To) ("InfluenceAt" (last To))) 
+                                    (set Var "PowerLeft" ("InfluenceAt" (last To))) 
+                                    }
+            ))))))
+            Mover
             (then 
-                (forget Value "S0" (var "LastTo"))
-))))
-ifAfterwards:("CanMoveElsewhere")
+                ("FindDestinations" 
+                    (then 
+                        (forget Value "S0" (var "LastTo"))
+        ))))
+        ifAfterwards:("CanMoveElsewhere")
 )) 
 // Continuation of the moves based on remaining influence
 
@@ -683,15 +683,15 @@ ifAfterwards:("CanMoveElsewhere")
         This method ends the game when one player has a clear advantage.")
         (id "1224")
         (source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
-        (version "1.3.2")
+        (version "1.3.3")
         (classification "board/war/leaping/lines")
         (author "Dale W. Walton")
         (credit "Dale W. Walton 2020-11-11")
         (date "18-11-2019")
         }
     )
-    (graphics
-        {
+    
+    (graphics {
         (board Style Graph)
         (show Piece State Middle)
         (player Colour P1 (colour DarkGrey))
@@ -724,10 +724,11 @@ ifAfterwards:("CanMoveElsewhere")
         (board Colour InnerEdges (colour 200 200 200 255))
         (board Colour OuterEdges (colour Grey))
         (no Sunken)
-        }
-    )
+    })
+    
     (ai
         "Throngs_ai"
     )
+    
 )
 

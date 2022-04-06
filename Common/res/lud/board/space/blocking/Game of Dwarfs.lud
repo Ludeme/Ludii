@@ -1,0 +1,114 @@
+(game "Game of Dwarfs"
+    (players {(player S) (player N)})
+    
+    (equipment {
+        (board
+            (add
+                (remove
+                    (merge {
+                        (rectangle 3 3 diagonals:Alternating) 
+                        (shift 0 2 (wedge 2)) 
+                        (shift 0 -1 (rotate 180 (wedge 2))) 
+                    })
+                    vertices:{3 5 1}
+                )
+                edges:{{0 3} {1 5} {2 7} {0 1}}
+            )
+            use:Vertex
+        )
+        
+        (piece "Foot" P1 
+            (move Step Adjacent 
+                (to 
+                    if:(and
+                        (if (= 1 (count Turns)) (!= (centrePoint) (to)) True)
+                        (is Empty (to))
+                    )
+                )
+            )
+        )
+        
+        (piece "Gnome" P2 (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to)))))
+        
+        (hand P1)
+        (regions "Home" P2 (intersection (sites Outer) (expand (sites Bottom))))
+        (regions "Home" P1 (sites Top))
+    })
+    (rules
+        
+        (start {
+            (place "Gnome2" (intersection (sites Outer) (expand (sites Bottom))))
+            (place "Foot1" (handSite P1))
+        })
+        
+        phases:{
+        (phase "Opening" P1
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (expand (sites Top)))
+                )
+            )
+            (nextPhase P1 "MainP1")
+        )
+        (phase "MainP1" P1 
+            (play 
+                (forEach Piece
+                    (then 
+                        (if (is In (where "Foot" P1) (sites P2))
+                            (set Score P1 2)
+                            (if (is Cycle)
+                                (set Score P1 1)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (phase "MainP2" P2 
+            (play (forEach Piece
+                    (then (if (no Moves Next)
+                            (set Score P2 1)
+                            (if (is Cycle)
+                                (set Score P1 1)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end (forEach Player if:(!= 0 (score Player)) (result Player Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "The game of Dwarfs, also called, \"Catch the Giant\" is played by two players on a board of size 8.")
+        (aliases {"Catch the Giant"})
+        (rules "One player has three dwarfs and the other has one giant.
+            Firstly, the giant is placed on one of the top sites. After this first move of the giant, it is the dwarfs' move.
+            Each piece can move between the different sites only if they are connected by an edge. The dwarfs can move only forwards or sideways, the giant can move in all the directions.
+            
+            The goal of the dwarfs is to block the giant on the top site. The giant has to break through the line of dwarfs to get 2 points and win. In case of a repetition of moves, the giant is winning with one point.
+            
+        ")
+        (id "1966")
+        (version "1.3.3")
+        (classification "board/space/blocking")
+        (author "Fred Schuh")
+        (credit "Eric Piette")
+        (date "1943")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+    })
+    
+)

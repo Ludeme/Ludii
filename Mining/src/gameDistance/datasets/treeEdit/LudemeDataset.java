@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import game.Game;
 import gameDistance.datasets.Dataset;
@@ -36,7 +37,7 @@ public class LudemeDataset implements Dataset
 			featureMap.put(ludeme.symbol().name(), Double.valueOf(0.0));
 		
 		final Call callTree = game.description().callTree();
-		final List<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes);
+		final Set<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes).keySet();
 
 		for (final LudemeInfo ludeme : gameLudemes)
 			featureMap.put(ludeme.symbol().name(), Double.valueOf(featureMap.get(ludeme.symbol().name()).doubleValue()+1.0));
@@ -51,7 +52,7 @@ public class LudemeDataset implements Dataset
 	{
 		final List<LudemeInfo> allLudemes = GetLudemeInfo.getLudemeInfo();
 		final Call callTree = game.description().callTree();
-		final List<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes);
+		final Set<LudemeInfo> gameLudemes = callTree.analysisFormat(0, allLudemes).keySet();
 		
 		final List<String> ludemeSequence = new ArrayList<>();
 		for (final LudemeInfo ludeme : gameLudemes)

@@ -1,8 +1,48 @@
+(define "IsLineDirection" 
+    (if (is Line 4 #1 #2 whats:{0 1 2})	
+        (is Line 4 #1 #2 exact:True) 
+        (is Line 3 #1 #2 exact:True) 
+    )	
+)
+
+(define "IsLine"
+    (or {
+        ("IsLineDirection" N #1)
+        ("IsLineDirection" NE #1)
+        ("IsLineDirection" E #1)
+        ("IsLineDirection" SE #1)
+        ("IsLineDirection" S #1)
+        ("IsLineDirection" SW #1)
+        ("IsLineDirection" W #1)
+        ("IsLineDirection" NW #1)	
+    })
+)
+
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (forEach 
+            (sites Occupied by:Next container:"Board") 
+            if:(not ("IsLine" through:(site)))
+        )
+    )
+)
+
+(define "IfLineMoveAgain" 
+    (then 
+        (if 
+            ("IsLine")
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Davxar Zirge (Type 2)"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board 
             (add
                 (merge {
@@ -21,12 +61,39 @@
             use:Vertex
         ) 
         (hand Each)
-        (piece "Marker" Each) 
-        }
-    )  
+        (piece "Marker" Each "StepToEmpty") 
+    })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (start (place "Marker" "Hand" count:[*])) // The unknow information is the number of pieces.
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLineMoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece
+                        ("IfLineMoveAgain")		
+                    )
+                )
+            )
+        )
+        }
+        
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
@@ -50,7 +117,6 @@
     
     (graphics {
         (show Edges Diagonal (colour Hidden))
-        
     })
     
 )

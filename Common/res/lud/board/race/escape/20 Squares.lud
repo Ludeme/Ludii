@@ -1,4 +1,20 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+(define "CountPips"
+    (if (= 0 (face 23) )
+        (face 22)	
+        (if (= 1 (face 22) )
+            (+ (face 22) 5)
+            (if (= 2 (face 22) )
+                (+ (face 22) 6)
+                (if (= 3 (face 22) )
+                    (+ (face 22) 7)
+                    (+ (face 22) 10)
+                )
+            )
+        )
+    )
+)
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:("CountPips")))
 
 (define "RemoveAPiece" (move Remove (from) ) )
 
@@ -25,7 +41,7 @@
             (track "Track2" "21,12,W,S1,E,End" P2 directed:True)
             }
         )
-        (dice d:2 from:0 num:4)
+        (dice facesByDie:{{1 2 3 4} {0 1}} num:2)
         (hand Each)
         (regions "Replay" (sites {"A1" "A3" "D2" "H2" "L2"} ))
         
@@ -67,7 +83,7 @@
             (place "UrPiece2" (handSite P2) count:7)
         })	
         
-        (play (do (roll) next:(if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
+        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))) )
         
         (end (if (no Pieces Mover) (result Mover Win)))
     )
@@ -85,6 +101,12 @@
 
 (rulesets { 
     
+    (ruleset "Ruleset/Seleucid (Scholarly)" 
+        {
+        "Variant/Seleucid"
+        }
+    )
+    
     (ruleset "Ruleset/Double 20 Squares (Incomplete)" {
         
     })
@@ -100,12 +122,6 @@
     (ruleset "Ruleset/Simple 20 Squares (Incomplete)" {
         
     })
-    
-    (ruleset "Ruleset/Seleucid (Scholarly)" 
-        {
-        "Variant/Seleucid"
-        }
-    )
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         
@@ -164,7 +180,7 @@
         (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
         (useFor "Ruleset/Historical Information (Incomplete)" (id "530"))
         (id "35")
-        (version "1.3.2")
+        (version "1.3.3")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in Mesopotamia, from around 2300BCE to 1BCE.")

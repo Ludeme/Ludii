@@ -387,7 +387,7 @@ public class AIUtils
 	
 	//-------------------------------------------------------------------------
 	
-	public static Heuristics convertStringtoHeurisitc(String s)
+	public static Heuristics convertStringtoHeuristic(String s)
 	{
 		switch(s)
 		{

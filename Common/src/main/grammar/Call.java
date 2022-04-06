@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import annotations.Alias;
 import main.StringRoutines;
@@ -298,12 +300,52 @@ public class Call
 	
 	//-------------------------------------------------------------------------
 	
+//	/**
+//	 * @return LudemeInfo list representation of callTree for ludemplex analysis purposes.
+//	 */
+//	public List<LudemeInfo> analysisFormatList(final int depth, final List<LudemeInfo> ludemes)
+//	{
+//		final List<LudemeInfo> ludemesFound = new ArrayList<>();
+//		
+//		switch (type)
+//		{
+//		case Null:
+//			break;
+//		case Array:
+//			for (final Call arg : args)
+//				ludemesFound.addAll(arg.analysisFormatList(depth, ludemes));
+//			break;
+//		case Class:
+//			final LudemeInfo ludemeInfo = LudemeInfo.findLudemeInfo(this, ludemes);
+//			if (ludemeInfo != null)
+//			{
+//				ludemesFound.add(ludemeInfo);
+//				if (args.size() > 0)
+//					for (final Call arg : args)
+//						ludemesFound.addAll(arg.analysisFormatList(depth + 1, ludemes));
+//			}
+//			break;
+//		case Terminal:
+//			final LudemeInfo ludemeInfo2 = LudemeInfo.findLudemeInfo(this, ludemes);
+//			if (ludemeInfo2 != null)
+//				ludemesFound.add(ludemeInfo2);
+//			break;
+//		default:
+//			System.out.println("** Call.format() should never hit default.");
+//			break;
+//		}
+//		
+//		return new ArrayList<>(new HashSet<>(ludemesFound));
+//	}
+	
 	/**
-	 * @return LudemeInfo set representation of callTree for ludemplex analysis purposes.
+	 * @return LudemeInfo dictionary representation of callTree for ludemplex analysis purposes.
 	 */
-	public List<LudemeInfo> analysisFormat(final int depth, final List<LudemeInfo> ludemes)
+	public Map<LudemeInfo, Integer> analysisFormat(final int depth, final List<LudemeInfo> ludemes)
 	{
-		final List<LudemeInfo> ludemesFound = new ArrayList<>();
+		final Map<LudemeInfo, Integer> ludemesFound = new HashMap<>();
+		for (final LudemeInfo ludemeInfo : ludemes)
+			ludemesFound.put(ludemeInfo, 0);
 		
 		switch (type)
 		{
@@ -311,29 +353,42 @@ public class Call
 			break;
 		case Array:
 			for (final Call arg : args)
-				ludemesFound.addAll(arg.analysisFormat(depth, ludemes));
+			{
+				final Map<LudemeInfo, Integer> ludemesFound2 = arg.analysisFormat(depth, ludemes);
+				for (final LudemeInfo ludemeInfo : ludemesFound2.keySet())
+					ludemesFound.put(ludemeInfo, ludemesFound.get(ludemeInfo) + ludemesFound2.get(ludemeInfo));
+			}
 			break;
 		case Class:
 			final LudemeInfo ludemeInfo = LudemeInfo.findLudemeInfo(this, ludemes);
 			if (ludemeInfo != null)
 			{
-				ludemesFound.add(ludemeInfo);
-				if (args.size() > 0)
-					for (final Call arg : args)
-						ludemesFound.addAll(arg.analysisFormat(depth + 1, ludemes));
+				ludemesFound.put(ludemeInfo, ludemesFound.get(ludemeInfo) + 1);
+				for (final Call arg : args)
+				{
+					final Map<LudemeInfo, Integer> ludemesFound2 = arg.analysisFormat(depth + 1, ludemes);
+					for (final LudemeInfo ludemeInfoChildren : ludemesFound2.keySet())
+						ludemesFound.put(ludemeInfoChildren, ludemesFound.get(ludemeInfoChildren) + ludemesFound2.get(ludemeInfoChildren));
+				}
 			}
 			break;
 		case Terminal:
 			final LudemeInfo ludemeInfo2 = LudemeInfo.findLudemeInfo(this, ludemes);
 			if (ludemeInfo2 != null)
-				ludemesFound.add(ludemeInfo2);
+				ludemesFound.put(ludemeInfo2, ludemesFound.get(ludemeInfo2) + 1);
 			break;
 		default:
 			System.out.println("** Call.format() should never hit default.");
 			break;
 		}
 		
-		return ludemesFound;
+		// remove ludemes with a count of zero.
+		final Map<LudemeInfo, Integer> ludemesFoundGreaterZero = new HashMap<>();
+		for (final LudemeInfo ludemeInfo : ludemesFound.keySet())
+			if (ludemesFound.get(ludemeInfo) > 0)
+				ludemesFoundGreaterZero.put(ludemeInfo, ludemesFound.get(ludemeInfo));
+		
+		return ludemesFoundGreaterZero;
 	}
 	
 	//-------------------------------------------------------------------------

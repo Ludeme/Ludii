@@ -11,10 +11,10 @@ public final class Constants
 	// Admin
 	
 	/** Version number of the Ludii's grammar/ludeme-based language. */
-	public static final String LUDEME_VERSION = "1.3.2";
+	public static final String LUDEME_VERSION = "1.3.3";
 
 	/** Date last modified. */
-	public static final String DATE = "18/02/2021";
+	public static final String DATE = "06/04/2021";
 	
 	/** lud-path for default game to load (on initial launch, when prefs/trial loading fails, etc.) */
 	public static final String DEFAULT_GAME_PATH = "/lud/board/war/replacement/eliminate/all/Surakarta.lud";
@@ -25,7 +25,7 @@ public final class Constants
 	/** Maximum score. */
 	public static final int MAX_SCORE = 1000000000;
 
-	/** Minimum score. */
+	/** Minimum score. *
 	public static final int MIN_SCORE = -1000000000;
 
 	/** The maximum number of iterations allowed in a loop inside an eval method. */

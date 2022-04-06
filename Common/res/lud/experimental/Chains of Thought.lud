@@ -1,0 +1,329 @@
+// Chains of Thought
+//---------------------------------------------
+//Capture
+
+(define "ThenCaptures"
+    (then
+        (remove
+            (forEach 
+                (sites Around
+                    (sites Group
+                        at:(last To) "GridDirection"
+                        if:(is In (to) (sites Occupied by:Mover))
+                    ) 
+                    "GridDirection"
+                    if:(is Next (who at:(to)))
+                )
+                if:(>
+                    (size Group at:(last To) "GridDirection" if:(is Mover (who at:(to))))
+                    (size Group at:(site) "GridDirection" if:(is Next (who at:(to))))
+            ))
+            // check for secondary removals
+            (then 
+                (forEach Value
+                    (array (sites Around (sites Occupied by:Mover) "GridDirection" if:(is Next (who at:(to)))))
+                    (if 
+                        (>
+                            (count Pieces
+                                in:(sites Group
+                                    from:(sites Around (value) "GridDirection") 
+                                    "GridDirection"
+                                    if:(is Mover (who at:(to)))
+                            ))
+                            (size Group at:(value) "GridDirection" if:(is Next (who at:(to))))
+                        )
+                        (remove (value))
+))))))
+
+(define "IsNeitherSelfAdjacentNorSuicide"
+    (and
+        
+        // no adjacent mover
+        (not (is In (to) (sites Around (sites Occupied by:Mover) "GridDirection" ))) 
+        
+        // No adjacent enemy group > 1 
+        (no Pieces Next
+            in:(intersection
+                (sites Around (to) "GridDirection") 
+                (sites Around (sites Occupied by:Next) "GridDirection")
+))))
+
+(define "IfAdjacentIsContactBetween2EqualChains"
+    (or
+        (no Pieces in:(sites Around (to) "GridDirection"))
+        (=
+            (+ 1
+                (count Pieces 
+                    in:(sites Group
+                        from:(sites Around (to) "GridDirection")
+                        "GridDirection"
+                        if:(is Mover (who at:(to)))
+            )))
+            (count Pieces 
+                in:(sites Group
+                    from:(sites Around (to) "GridDirection")
+                    "GridDirection"
+                    if:(is Next (who at:(to)))
+)))))
+
+//-------------------------------------------------
+// Defines for Options
+
+(define "SizeOfLargestGroupMover"
+    (max
+        (sizes Group "GridDirection" Mover) 
+))
+
+(define "SizeOfLargestGroupNext"
+    (max
+        (sizes Group "GridDirection" Next) 
+))
+
+(define "SizeOf2ndLargestGroupMover"    
+    (max
+        (difference
+            (sizes Group "GridDirection" P2) 
+            "SizeOfLargestGroupMover"
+))) 
+
+(define "FindSizeOfGroupIfLargerThanAny"
+    (set Var "LargestMover"
+        (max (sizes Group "GridDirection" Mover))
+        (then
+            (set Var "LargestNext"
+                (max (sizes Group "GridDirection" Next))
+                (then 
+                    (set Var "SecondLargestMover" 
+                        (max
+                            (difference
+                                (sizes Group "GridDirection" Mover)
+                                (var "LargestMover") 
+                        ))
+                        (then
+                            (set Var "LargestUnique" 
+                                (if
+                                    (and
+                                        (>
+                                            (var "LargestMover")
+                                            (var "LargestNext")
+                                        )
+                                        (>
+                                            (var "LargestMover")
+                                            (var "SecondLargestMover")
+                                    ))
+                                    (var "LargestMover")
+                                    0
+)))))))))
+
+(define "SitesAroundLargestChainIfOFMover"
+    (sites Around
+        (forEach
+            (sites Occupied by:Mover) 
+            if:(=
+                (size Group at:(site) "GridDirection")
+                (var "LargestUnique")
+        ))
+        "GridDirection"
+))
+
+(define "RestrictededMergerSites"
+    (difference
+        (intersection
+            (sites Empty)
+            (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection" ) // adjacent mover
+        )
+        ("SitesAroundLargestChainIfOFMover")
+))
+
+(define "MergerSites"
+    (intersection
+        (sites Empty)
+        (sites Around (difference (sites Occupied by:Mover) (from)) "GridDirection" ) // adjacent mover
+))
+
+(define "GridDirection" <BoardShape:directionsUsed>)
+//-----------------------------------------------
+// Main routine
+
+(game "Chains of Thought"
+    (players 2)
+    (equipment
+        {
+        (board <BoardShape:gridType> use:Vertex)
+        (piece "Disc" Each )
+        }
+    )
+    (rules
+        (play
+            (or
+                (move Add
+                    (to (sites Empty)
+                        if:(<Variant:placement>)
+                    )
+                    <GameOption:capture>
+                )
+                (do
+                    (and
+                        {
+                        (set Var "GroupCount" (count Groups "GridDirection" if:(is Mover (who at:(to)))))
+                        <Movement:precheck>  // "FindSizeOfGroupIfLargerThanAny"
+                        }
+                    )
+                    next:(forEach Piece 
+                        (move Step "GridDirection"
+                            (to  
+                                if:(is In (to)
+                                    <Movement:limits> // "MergerSites" or "RestrictededMergerSites"
+                    ))))
+                    ifAfterwards:(and
+                        {
+                        // Reduces the number of groups, by merger
+                        (< (count Groups "GridDirection" if:(is Mover (who at:(to)))) (var "GroupCount"))
+                        
+                        // Forms a group at least as big as the opponent's group that it contacts
+                        (>=
+                            (size Group at:(last To) "GridDirection" if:(is Mover (who at:(to)))) 
+                            (max
+                                (results
+                                    from:(sites Around (last To) "GridDirection" if:(is Next (who at:(to)))) 
+                                    to:(from)
+                                    (size Group at:(to) "GridDirection" if:(is Next (who at:(to))))
+                        )))
+                        } 
+                    ) 
+                    <GameOption:capture>
+                )
+                <GameGoal:scoring>
+        ))
+        (end 
+            (if (no Moves Next) <GameGoal:goal>)
+)))
+
+(define "SetScores"
+    (and
+        (set Score P1 (max (difference (sizes Group "GridDirection" P1) (sizes Group "GridDirection" P2))))
+        (set Score P2 (max (difference (sizes Group "GridDirection" P2) (sizes Group "GridDirection" P1))))
+)) 
+
+//-------------------------------------------------
+// Options
+(define "GridDirection" <BoardShape:directionsUsed>)
+
+(option "Board" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <bugFix> <fix2>} 
+    {
+    (item "Square 6 - tactical AI" <(square 6)> <All> <ThinDashed>  <1.0> <0.0> "Order 6, Square Omni-Grid")
+    (item "Square 9" <(square 9)> <All> <ThinDashed>  <1.0> <0.0> "Order 9, Square Omni-Grid")
+    (item "Square 13*" <(square 13)> <All> <ThinDashed>  <1.0> <0.0> "Order 13, Square Omni-Grid")
+    (item "Square 19" <(square 19)> <All> <ThinDashed>  <1.0> <0.0> "Order 19, Square Omni-Grid")
+    (item "Hex 4 - tactical AI" <(tri Hexagon 4)> <Orthogonal> <Hidden> <1.0>  <0.0> "Order 4, Hex Grid")**
+    (item "Hex 7*" <(tri Hexagon 7)> <Orthogonal> <Hidden> <1.0>  <0.0> "Order 7, Hex Grid")
+    (item "Hex 11" <(tri Hexagon 11)> <Orthogonal> <Hidden> <1.0>  <0.0> "Order 11, Hex Grid")
+    (item "TriSquare 4" <(renumber (rotate 135 (tiling T33434 4)))> <Orthogonal> <Hidden> <1.0> <0.0> "Order 6, Triangle-Square Grid")
+    (item "TriSquare 6*" <(renumber (rotate 135 (tiling T33434 6)))>  <Orthogonal> <Hidden> <1.0> <0.0> "Order 9, Triangle-Square Grid")
+    (item "TriSquare 8" <(renumber (rotate 135 (tiling T33434 8)))>  <Orthogonal> <Hidden> <1.0> <0.0> "Order 13, Triangle-Square Grid")
+    }
+)
+
+(option "Goal" <GameGoal> args:{<goal> <scoring>} 
+    {
+    (item "Largest Chain*"  <(byScore)> <(then "SetScores")> "Cascading scoring of largest chain.")***
+    (item "Stalemate" <(result Mover Win)> < > "Capture any opponent's piece adjacent to a larger friendly group.")
+    }
+)
+
+(option "Placements" <Variant> args:{ <placement> }
+    {
+    (item "Adjacent chains sum equal*" <"IfAdjacentIsContactBetween2EqualChains"> "Placement: If placed adjacent to a chain, the sum of the stones in the adjacent chains for each player must be equal when the placed piece is included in the sums.")***
+    (item "Not self-adjacent nor suicide" <"IsNeitherSelfAdjacentNorSuicide"> "Placement: Stones must not be placed adjacent to friendly stones and adjacent enemystones must be singletons.")
+    }
+)
+
+(option "Movements" <Movement> args:{ <limits> <precheck> }
+    {
+    (item "Must merge" <"MergerSites"> < > "Movement: Move a piece to reduce the number of chains by merger")
+    (item "Merge, except to largest*" <"RestrictededMergerSites"> <"FindSizeOfGroupIfLargerThanAny"> "Movement: Move a piece to reduce the number of chains by merger, except with the largest group")***
+    }
+)
+
+(option "Remove" <GameOption> args:{<capture>} 
+    {
+    (item "Adjacent*" <("ThenCaptures")> "Remove any opponent's stone that is directly adjacent to a larger friendly chain.")***
+    (item "No removals" < > "No captures")
+    }
+)
+
+//---------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Chains of Thought is a 2 player combinatorial game. 
+            
+            Finite play is ensured by the limited available area for stone placement, and by the need, when removing stones from the board, to create a chain larger than the chain(s) from which stones were taken.
+            
+            The game ends when a player cannot move, but the goal is to have the largest chain at the end of play. The goal cascades for tied chains.
+            
+            Chains of similar size are capable of approaching and attacking each other, when supported by potential mergers from behind. The need for support causes such approaches to be cool. 
+            
+            Blocking is generally done by chains of disparate size, as they mutually repel the isolated stones needed for the larger chain to attack the smaller. This is what leads to the territorial race by placing outliers into yet open areas for expansion.
+            
+            The result is a tactical cool clouding of stones, followed by an obstructive race to extend the largest viable group. 
+            
+            Players must also be careful obstruct their own possibility of (re)connecting chains that have been formed separately, or been cut in an attack.    
+            
+        The leading player may seek to stalemate himself if the opponent has potential for future expansion.")
+        (rules "Goal: End with the largest chain of stones, the goal cascades to the next largest in the case of ties.
+            
+            A 'chain' is any set of player's stones that comprised of a starting stone and every stone which can be reached from it by a series steps between adjacent stones.
+            
+            Starting with an empty board, players alternate taking turns.
+            
+            A turn consists of either placing or moving a stone followed by removing opposing stones, if applicable.
+            
+            Placing:
+            A friendly stone may be placed either:
+        - 1) where there are no adjacent stones of either player, or
+    - 2) where the number of stones in adjacent chains that belong to the opponent equal those that belong to the player including the stone to be placed.
+    
+    For example: A stone may be placed next to an opponent's 1-chain (isolated stone).
+    
+    Moving:
+B) A friendly stone may be moved one step to an empty site, but only if the number of chains on the board is reduced by merger and the merged chain becomes at least as large as every opponent's chain that it is adjacent to.
+
+Special movement restrictions:
+Pieces may not step to merge with a chain that is the larger than any other chain on the board. This restriction does not affect the placement rule. It also does not apply if more than one group is tied for largest.
+
+Removing stones:
+After placement or movement, the player removes every opponent's stone that is directly adjacent to a larger friendly chain than its own.
+
+When the turn is completed, only chains of equal size remain in contact.
+
+Ending the game:
+There is no passing. The game ends when either player is unable to move.
+
+Please also try the optional board grids.  
+Choose smaller boards for a good AI experience and tactical game.
+Choose larger boards for a strategy game experience with other players.
+
+The other rule variants are only for experimentation.")
+(id "1965")
+(version "1.3.3")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "29-03-2022")
+}
+)
+(graphics 
+    {
+    (player Colour P1 (colour 229 92 0))
+    (player Colour P2 (colour Cream))
+    (board Style Graph)
+    (board StyleThickness InnerEdges .2)
+    (board StyleThickness OuterEdges .2)
+    (board StyleThickness InnerVertices .5)
+    (show Edges Diagonal <BoardShape:DiagShow>)
+    }
+)
+(ai (heuristics (score weight:2)))
+)

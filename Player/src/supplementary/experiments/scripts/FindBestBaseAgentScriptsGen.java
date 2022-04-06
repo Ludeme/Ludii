@@ -1,16 +1,20 @@
 package supplementary.experiments.scripts;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
+import agentPrediction.external.AgentPredictionExternal;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
@@ -21,15 +25,15 @@ import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.collections.ListUtils;
 import main.options.Ruleset;
+import metadata.ai.heuristics.Heuristics;
+import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.GameLoader;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
 import utils.AIFactory;
-import utils.DBGameInfo;
+import utils.AIUtils;
 import utils.RandomAI;
-import utils.analysis.BestStartingHeuristics;
-import utils.analysis.BestStartingHeuristics.Entry;
 
 /**
  * Script to find best base agent in every game.
@@ -51,7 +55,7 @@ public class FindBestBaseAgentScriptsGen
 	private static final int MAX_JOBS_PER_BATCH = 800;
 	
 	/** Max number of trials we want to be running from a single script */
-	private static final int NUM_TRIALS_PER_SCRIPT = 500;
+	private static final int NUM_TRIALS_PER_SCRIPT = 150;
 	
 	/** All our hyperparameters for MCTS */
 	private static final String[] mctsHyperparamNames = new String[] 
@@ -73,7 +77,7 @@ public class FindBestBaseAgentScriptsGen
 	/** All the values our hyperparameters for MCTS can take */
 	private static final String[][] mctsHyperParamValues = new String[][]
 			{
-				{"0.0", "0.6", "1.41421356237"},
+				{"0.1", "0.6", "1.41421356237"},
 				{"ProgressiveBias", "ProgressiveHistory", "UCB1", "UCB1GRAVE", "UCB1Tuned"},
 				{"AlphaGo05", "AlphaGo0", "Heuristic", "MonteCarlo", "QualitativeBonus"},
 				{"MAST", "NST", "Random200", "Random4", "Random0"},
@@ -108,7 +112,8 @@ public class FindBestBaseAgentScriptsGen
 			{
 				"Chinese Checkers.lud",
 				"Li'b al-'Aqil.lud",
-				"Li'b al-Ghashim.lud"
+				"Li'b al-Ghashim.lud",
+				"Pagade Kayi Ata (Sixteen-handed).lud"
 			};
 	
 	//-------------------------------------------------------------------------
@@ -236,7 +241,7 @@ public class FindBestBaseAgentScriptsGen
 			algStringParts.add("selection=" + selectionType + ",explorationconstant=" + explorationConstant);
 			
 			String qinitString = "PARENT";
-			if (Double.parseDouble(explorationConstant) == 0.0)
+			if (Double.parseDouble(explorationConstant) == 0.1)
 				qinitString = "INF";
 			else if (selectionType.equals("ProgressiveBias"))
 				qinitString = "INF";
@@ -399,7 +404,7 @@ public class FindBestBaseAgentScriptsGen
 		
 		final String userName = argParse.getValueString("--user-name");
 		
-		final BestStartingHeuristics bestStartingHeuristics = BestStartingHeuristics.loadData();
+		//final BestStartingHeuristics bestStartingHeuristics = BestStartingHeuristics.loadData();
 		
 		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter(s -> (
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
@@ -474,10 +479,12 @@ public class FindBestBaseAgentScriptsGen
 				if (game.hasSubgames())
 					continue;
 				
+				final String bestPredictedHeuristicName = predictBestHeuristic(game);
+				
 				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
 				final String filepathsRulesetName = StringRoutines.cleanRulesetName(fullRulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
-				final String dbGameName = DBGameInfo.getUniqueName(game);
-				final Entry abHeuristicEntry = bestStartingHeuristics.getEntry(dbGameName);
+				//final String dbGameName = DBGameInfo.getUniqueName(game);
+				//final Entry abHeuristicEntry = bestStartingHeuristics.getEntry(dbGameName);
 				
 				final List<String> relevantNonMCTSAIs = new ArrayList<String>();
 				
@@ -485,21 +492,22 @@ public class FindBestBaseAgentScriptsGen
 				final String brsPlusString;
 				
 				if (dummyAlphaBeta.supportsGame(game))
-				{
-					if (abHeuristicEntry != null)
+				{		
+					if (bestPredictedHeuristicName != null)
 					{
-						final String heuristic = abHeuristicEntry.topHeuristic();
+						//final String heuristic = abHeuristicEntry.topHeuristic();
 						alphaBetaString = StringRoutines.join
 								(
 									";", 
 									"algorithm=Alpha-Beta",
-									"heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt",
+									"heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt",
 									"friendly_name=AlphaBeta"
 								);
 						relevantNonMCTSAIs.add("Alpha-Beta");
 					}
 					else
 					{
+						System.err.println("Null predicted heuristic!");
 						alphaBetaString = null;
 					}
 					
@@ -528,14 +536,14 @@ public class FindBestBaseAgentScriptsGen
 				
 				if (dummyBRSPlus.supportsGame(game))
 				{
-					if (abHeuristicEntry != null)
+					if (bestPredictedHeuristicName != null)
 					{
-						final String heuristic = abHeuristicEntry.topHeuristic();
+						//final String heuristic = abHeuristicEntry.topHeuristic();
 						brsPlusString = StringRoutines.join
 								(
 									";", 
 									"algorithm=BRS+",
-									"heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt",
+									"heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt",
 									"friendly_name=BRS+"
 								);
 						relevantNonMCTSAIs.add("BRS+");
@@ -706,10 +714,9 @@ public class FindBestBaseAgentScriptsGen
 								
 								if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
 								{
-									if (abHeuristicEntry != null)
+									if (bestPredictedHeuristicName != null)
 									{
-										final String heuristic = abHeuristicEntry.topHeuristic();
-										evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt";
+										evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt";
 									}
 									else
 									{
@@ -782,10 +789,9 @@ public class FindBestBaseAgentScriptsGen
 									
 									if (relevantMCTSHeuristicRequirements[otherMCTSIdx])
 									{
-										if (abHeuristicEntry != null)
+										if (bestPredictedHeuristicName != null)
 										{
-											final String heuristic = abHeuristicEntry.topHeuristic();
-											agentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt";
+											agentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt";
 											success = true;
 										}
 										else
@@ -817,10 +823,9 @@ public class FindBestBaseAgentScriptsGen
 							String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
 							if (relevantMCTSHeuristicRequirements[evalAgentIdxMCTS])
 							{
-								if (abHeuristicEntry != null)
+								if (bestPredictedHeuristicName != null)
 								{
-									final String heuristic = abHeuristicEntry.topHeuristic();
-									evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + heuristic + ".txt";
+									evalAgentCommandString += ";heuristics=/home/" + userName + "/FindStartingHeuristic/" + bestPredictedHeuristicName + ".txt";
 								}
 								else
 								{
@@ -865,6 +870,7 @@ public class FindBestBaseAgentScriptsGen
 
 		final List<List<String>> jobScriptsLists = new ArrayList<List<String>>();
 		List<String> remainingJobScriptNames = jobScriptNames;
+		Collections.shuffle(remainingJobScriptNames);
 
 		while (remainingJobScriptNames.size() > 0)
 		{
@@ -901,6 +907,112 @@ public class FindBestBaseAgentScriptsGen
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static String predictBestHeuristic(final Game game)
+	{
+		final boolean useClassifier = true;
+		final boolean useCompilationOnly = true;
+
+		String modelFilePath = "RandomForestClassifier";
+
+		if (useClassifier)
+			modelFilePath += "-Classification";
+		else
+			modelFilePath += "-Regression";
+
+		modelFilePath += "-Heuristics";
+
+		if (useCompilationOnly)
+			modelFilePath += "-True";
+		else
+			modelFilePath += "-False";
+		
+		String sInput = null;
+		String sError = null;
+
+        try 
+        {
+        	final String conceptNameString = "RulesetName," + AgentPredictionExternal.conceptNameString(useCompilationOnly);
+        	final String conceptValueString = "UNUSED," + AgentPredictionExternal.conceptValueString(game, useCompilationOnly);
+        	
+        	final String arg1 = modelFilePath;
+        	final String arg2 = "Classification";
+        	final String arg3 = conceptNameString;
+        	final String arg4 = conceptValueString;
+        	final Process p = Runtime.getRuntime().exec("conda.bat activate DefaultEnv && python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
+
+        	// Read file output
+        	final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        	while ((sInput = stdInput.readLine()) != null) 
+        	{
+        		System.out.println(sInput);
+        		if (sInput.contains("PREDICTION"))
+        		{
+        			// Check if returning probabilities for each class.
+        			try
+        			{
+        				final String[] classNamesAndProbas = sInput.split("=")[1].split("_:_");
+        				final String[] classNames = classNamesAndProbas[0].split("_;_");
+        				for (int i = 0; i < classNames.length; i++)
+        					classNames[i] = classNames[i];
+        				final String[] valueStrings = classNamesAndProbas[1].split("_;_");
+        				final double[] values = new double[valueStrings.length];
+        				for (int i = 0; i < valueStrings.length; i++)
+        					values[i] = Double.parseDouble(valueStrings[i]);
+        				if (classNames.length != values.length)
+        					System.out.println("ERROR! Class Names and Values should be the same length.");
+
+        				double highestProbabilityValue = -1.0;
+        				String highestProbabilityName = "Random";
+        				for (int i = 0; i < classNames.length; i++)
+        				{
+        					if (values[i] > highestProbabilityValue)
+        					{
+        						// Check that the heuristic is actually applicable
+        						final Heuristics heuristics = AIUtils.convertStringtoHeuristic(classNames[i]);
+        						boolean applicable = true;
+        						for (final HeuristicTerm term : heuristics.heuristicTerms())
+        						{
+        							if (!term.isApplicable(game))
+        							{
+        								applicable = false;
+        								break;
+        							}
+        						}
+        						
+        						if (applicable)
+        						{
+        							highestProbabilityValue = values[i];
+	        						highestProbabilityName = classNames[i];
+        						}
+	        						
+        					}
+        				}
+
+        				return highestProbabilityName;
+        			}
+        			catch (final Exception e)
+        			{
+        				return sInput.split("=")[1];
+        			}
+        		}	
+        	}
+
+        	// Read any errors.
+        	final BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        	while ((sError = stdError.readLine()) != null) 
+        	{
+        		System.out.println("Python Error\n");
+        		System.out.println(sError);
+        	}
+        }
+        catch (final IOException e) 
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
 	}
 	
 	/**
@@ -948,7 +1060,7 @@ public class FindBestBaseAgentScriptsGen
 					"--game-length-cap 1000",
 					"--thinking-time 1",
 					"--iteration-limit 100000",				// 100K iterations per move should be good enough
-					"--warming-up-secs 30",
+					"--warming-up-secs 10",
 					"--out-dir",
 					StringRoutines.quote
 					(
