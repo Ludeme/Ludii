@@ -5,7 +5,7 @@ package test;
 import java.io.IOException;
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 
 import parser.Completer;
 
@@ -44,19 +44,19 @@ class TestReconstruction
 	
 	//-------------------------------------------------------------------------
 
-	@Test
-	public void test()
-	{
-		testSaving();
-		testLoadLuds();
-	}
-
-//	public static void main(String[] args)
+//	@Test
+//	public void test()
 //	{
-//		final TestReconstruction app = new TestReconstruction();
-//		
-//		app.testSaving();
-//		app.testLoadLuds();
+//		testSaving();
+//		testLoadLuds();
 //	}
+
+	public static void main(String[] args)
+	{
+		final TestReconstruction app = new TestReconstruction();
+		
+		app.testSaving();
+		app.testLoadLuds();
+	}
 	
 }
