@@ -32,6 +32,8 @@ public class Completer
 	 */
 	public static List<String> complete(final String raw, final Report report)
 	{
+		System.out.println("Completing description...");
+		
 		// Create list of alternative Descriptions, as each will need to be expanded
 		final List<String> completions = new ArrayList<String>();
 		

@@ -709,6 +709,38 @@ public class FileHandling
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Print game options per .lud to file.
+	 * @param fileName
+	 * @throws IOException 
+	 */
+	public static void saveReconstruction
+	(
+		final String name, final String content
+	) throws IOException
+	{
+		final String outFileName = "../Common/res/out/recons/" + name + ".lud";	
+		
+		// Prepare the output file
+		final File file = new File(outFileName);
+		if (!file.exists())
+			file.createNewFile();
+
+		try 
+		(
+			final PrintWriter writer = 
+				new PrintWriter
+				(
+					new BufferedWriter(new FileWriter(outFileName, false))
+				)
+		)
+		{
+			writer.write(content);
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * @param name Path of game file (.lud) with name.
 	 * @return Contents of specified .lud file as string.
 	 */
