@@ -28,7 +28,7 @@ import other.topology.TopologyElement;
 /**
  * Geometric features contain a Pattern that can be matched to parts of the board, and
  * some description of an action to play.
- *
+ * 
  * @author Dennis Soemers
  */
 public abstract class SpatialFeature extends Feature
@@ -40,9 +40,9 @@ public abstract class SpatialFeature extends Feature
 	public static enum BitSetTypes
 	{
 		/** Empty ChunkSet */
-		Empty,
+		Empty, 
 		/** Who ChunkSet */
-		Who,
+		Who, 
 		/** What ChunkSet */
 		What,
 
@@ -55,7 +55,7 @@ public abstract class SpatialFeature extends Feature
 
 	/** The feature's pattern */
 	protected Pattern pattern;
-
+	
 	/** The graph element type this feature applies to. Tries to auto-detect for game if null */
 	protected SiteType graphElementType = null;
 
@@ -97,9 +97,9 @@ public abstract class SpatialFeature extends Feature
 	{
 		spatialFeatureSetIndex = newIdx;
 	}
-
+	
 	/**
-	 * @return Is this a reactive feature (with specifiers for last-from
+	 * @return Is this a reactive feature (with specifiers for last-from 
 	 * 	and/or last-to position)?
 	 */
 	public boolean isReactive()
@@ -130,7 +130,7 @@ public abstract class SpatialFeature extends Feature
 
 	/**
 	 * Creates all possible instances for this feature
-	 *
+	 * 
 	 * @param game
 	 * @param container
 	 * @param player           		Player for whom to create the feature instance
@@ -143,11 +143,11 @@ public abstract class SpatialFeature extends Feature
 	 */
 	public final List<FeatureInstance> instantiateFeature
 	(
-		final Game game,
+		final Game game, 
 		final ContainerState container,
-		final int player,
+		final int player, 
 		final int anchorConstraint,
-		final int fromPosConstraint,
+		final int fromPosConstraint, 
 		final int toPosConstraint,
 		final int lastFromConstraint,
 		final int lastToConstraint
@@ -155,14 +155,14 @@ public abstract class SpatialFeature extends Feature
 	{
 		final Topology topology = game.board().topology();
 		final SiteType instanceType;
-
+		
 		if (graphElementType != null)
 			instanceType = graphElementType;
 		else if (game.board().defaultSite() == SiteType.Vertex)
 			instanceType = SiteType.Vertex;
 		else
 			instanceType = SiteType.Cell;
-
+		
 		final List<FeatureInstance> instances = new ArrayList<FeatureInstance>();
 		final int[] reflections = pattern.allowsReflection() ? new int[]{ 1, -1 } : new int[]{ 1 };
 
@@ -176,16 +176,16 @@ public abstract class SpatialFeature extends Feature
 		{
 			if (anchorConstraint >= 0 && anchorConstraint != siteIdx)
 				break;
-
+			
 			final TopologyElement anchorSite = sites.get(siteIdx);
-
+			
 			if (anchorSite.sortedOrthos().length == 0)
 				continue;	// No point in using this as an anchor
-
+			
 			TFloatArrayList rots = pattern.allowedRotations();
 			if (rots == null)
 				rots = Walk.rotationsForNumOrthos(anchorSite.sortedOrthos().length);
-
+	
 			if (rots.size() == 0)
 				System.err.println("Warning: rots.size() == 0 in Feature.instantiateFeature()");
 
@@ -270,9 +270,9 @@ public abstract class SpatialFeature extends Feature
 						{
 							final int lastToPos = possibleLastToPositions.getQuick(lastToPosIdx);
 
-							if
+							if 
 							(
-								(lastToWalk == null || lastToPos >= 0)
+								(lastToWalk == null || lastToPos >= 0) 
 								&&
 								(lastToConstraint < 0 || lastToPos < 0 || lastToPos == lastToConstraint)
 							)
@@ -316,9 +316,9 @@ public abstract class SpatialFeature extends Feature
 								{
 									final int lastFromPos = possibleLastFromPositions.getQuick(lastFromPosIdx);
 
-									if
+									if 
 									(
-										(lastFromWalk == null || lastFromPos >= 0)
+										(lastFromWalk == null || lastFromPos >= 0) 
 										&&
 										(lastFromConstraint < 0 || lastFromPos < 0 || lastFromPos == lastFromConstraint)
 									)
@@ -366,7 +366,7 @@ public abstract class SpatialFeature extends Feature
 
 											if (toPos == -1 && toWalk != null)
 												continue;
-
+											
 											if (toPosConstraint >= 0 && toPos >= 0 && toPosConstraint != toPos)
 												continue;
 
@@ -409,10 +409,10 @@ public abstract class SpatialFeature extends Feature
 											for (int fromPosIdx = 0; fromPosIdx < possibleFromPositions.size(); ++fromPosIdx)
 											{
 												final int fromPos = possibleFromPositions.getQuick(fromPosIdx);
-
+												
 												if (fromPos == -1 && fromWalk != null)
 													continue;
-
+												
 												if (fromPosConstraint >= 0 && fromPos >= 0 && fromPosConstraint != fromPos)
 													continue;
 
@@ -439,7 +439,7 @@ public abstract class SpatialFeature extends Feature
 					for (final FeatureElement element : pattern.featureElements())
 					{
 						final List<FeatureInstance> replaceNewInstances = new ArrayList<FeatureInstance>(instancesWithElements.size());
-
+						
 						if (element instanceof RelativeFeatureElement)
 							allElementsAbsolute = false;
 
@@ -506,7 +506,7 @@ public abstract class SpatialFeature extends Feature
 									{
 										final FeatureInstance newInstance = new FeatureInstance(instance);
 										newInstance.addInitTimeElement(element);
-										replaceNewInstances.add(newInstance);
+										replaceNewInstances.add(newInstance);	
 									}
 								}
 								else if (type == ElementType.Friend) // entry in "who" BitSetS must (not) equal the player
@@ -524,7 +524,7 @@ public abstract class SpatialFeature extends Feature
 									{
 										final FeatureInstance newInstance = new FeatureInstance(instance);
 										newInstance.addInitTimeElement(element);
-										replaceNewInstances.add(newInstance);
+										replaceNewInstances.add(newInstance);	
 									}
 								}
 								else if (type == ElementType.Enemy)
@@ -541,7 +541,7 @@ public abstract class SpatialFeature extends Feature
 											// no more test needed
 											final FeatureInstance newInstance = new FeatureInstance(instance);
 											newInstance.addInitTimeElement(element);
-											replaceNewInstances.add(newInstance);
+											replaceNewInstances.add(newInstance);	
 										}
 										else
 										{
@@ -611,7 +611,7 @@ public abstract class SpatialFeature extends Feature
 										// already performed our off-board check
 										final FeatureInstance newInstance = new FeatureInstance(instance);
 										newInstance.addInitTimeElement(element);
-										replaceNewInstances.add(newInstance);
+										replaceNewInstances.add(newInstance);	
 									}
 								}
 								else if (type == ElementType.Any)
@@ -619,7 +619,7 @@ public abstract class SpatialFeature extends Feature
 									// anything is fine
 									final FeatureInstance newInstance = new FeatureInstance(instance);
 									newInstance.addInitTimeElement(element);
-									replaceNewInstances.add(newInstance);
+									replaceNewInstances.add(newInstance);	
 								}
 								else if (type == ElementType.P1)
 								{
@@ -635,7 +635,7 @@ public abstract class SpatialFeature extends Feature
 									{
 										final FeatureInstance newInstance = new FeatureInstance(instance);
 										newInstance.addInitTimeElement(element);
-										replaceNewInstances.add(newInstance);
+										replaceNewInstances.add(newInstance);	
 									}
 								}
 								else if (type == ElementType.P2)
@@ -652,7 +652,7 @@ public abstract class SpatialFeature extends Feature
 									{
 										final FeatureInstance newInstance = new FeatureInstance(instance);
 										newInstance.addInitTimeElement(element);
-										replaceNewInstances.add(newInstance);
+										replaceNewInstances.add(newInstance);	
 									}
 								}
 								else if (type == ElementType.Item)
@@ -669,7 +669,7 @@ public abstract class SpatialFeature extends Feature
 									{
 										final FeatureInstance newInstance = new FeatureInstance(instance);
 										newInstance.addInitTimeElement(element);
-										replaceNewInstances.add(newInstance);
+										replaceNewInstances.add(newInstance);	
 									}
 								}
 								else if (type == ElementType.IsPos)
@@ -678,7 +678,7 @@ public abstract class SpatialFeature extends Feature
 									{
 										final FeatureInstance newInstance = new FeatureInstance(instance);
 										newInstance.addInitTimeElement(element);
-										replaceNewInstances.add(newInstance);
+										replaceNewInstances.add(newInstance);	
 									} // else the test has already failed!
 								}
 								else if (type == ElementType.Connectivity)
@@ -691,7 +691,7 @@ public abstract class SpatialFeature extends Feature
 										{
 											final FeatureInstance newInstance = new FeatureInstance(instance);
 											newInstance.addInitTimeElement(element);
-											replaceNewInstances.add(newInstance);
+											replaceNewInstances.add(newInstance);	
 										}
 									}
 								}
@@ -705,13 +705,13 @@ public abstract class SpatialFeature extends Feature
 										final int[] distances = game.distancesToRegions()[element.itemIndex()];
 										final int anchorDist = distances[siteIdx];
 										final int testSiteDist = distances[testSite];
-
+										
 										if ((anchorDist > testSiteDist) != element.not())
 										{
 											// Test passed
 											final FeatureInstance newInstance = new FeatureInstance(instance);
 											newInstance.addInitTimeElement(element);
-											replaceNewInstances.add(newInstance);
+											replaceNewInstances.add(newInstance);	
 										}
 									}
 								}
@@ -735,30 +735,30 @@ public abstract class SpatialFeature extends Feature
 												{
 													// Create a feature instance with piece at stepIdx, and everything else leading up to it empty
 													final FeatureInstance newInstance = new FeatureInstance(instance);
-													boolean failure =
+													boolean failure = 
 															(!newInstance.addTest(container, BitSetTypes.What, steps[stepIdx].id(), true, element.itemIndex()));
-
+													
 													for (int emptyStepIdx = 0; emptyStepIdx < runningMustEmptiesList.size(); ++emptyStepIdx)
 													{
 														// See if we can successfully add next must-empty requirement
-														failure =
+														failure = 
 																(
-																	failure
-																	||
+																	failure 
+																	|| 
 																	(
 																		!newInstance.addTest
 																		(
-																			container, BitSetTypes.Empty,
-																			runningMustEmptiesList.getQuick(emptyStepIdx),
+																			container, BitSetTypes.Empty, 
+																			runningMustEmptiesList.getQuick(emptyStepIdx), 
 																			true
 																		)
 																	)
 																);
 													}
-
+													
 													if (!failure)
 														replaceNewInstances.add(newInstance);
-
+													
 													// All other instances we add will have this step as must-empty
 													runningMustEmptiesList.add(steps[stepIdx].id());
 												}
@@ -781,35 +781,35 @@ public abstract class SpatialFeature extends Feature
 												final GraphElement[] steps = radial.steps();
 												for (int stepIdx = 1; stepIdx < steps.length; ++stepIdx)
 												{
-													// Create a feature instance with not empty and not given piece at stepIdx,
+													// Create a feature instance with not empty and not given piece at stepIdx, 
 													// and everything else leading up to it empty
 													final FeatureInstance newInstance = new FeatureInstance(instance);
-													boolean failure =
+													boolean failure = 
 															(!newInstance.addTest(container, BitSetTypes.What, steps[stepIdx].id(), false, element.itemIndex()));
 													failure = failure ||
 															(!newInstance.addTest(container, BitSetTypes.Empty, steps[stepIdx].id(), false));
-
+													
 													for (int emptyStepIdx = 0; emptyStepIdx < runningMustEmptiesList.size(); ++emptyStepIdx)
 													{
 														// See if we can successfully add next must-empty requirement
-														failure =
+														failure = 
 																(
-																	failure
-																	||
+																	failure 
+																	|| 
 																	(
 																		!newInstance.addTest
 																		(
-																			container, BitSetTypes.Empty,
-																			runningMustEmptiesList.getQuick(emptyStepIdx),
+																			container, BitSetTypes.Empty, 
+																			runningMustEmptiesList.getQuick(emptyStepIdx), 
 																			true
 																		)
 																	)
 																);
 													}
-
+													
 													if (!failure)
 														replaceNewInstances.add(newInstance);
-
+													
 													// All other instances we add will have this step as must-empty
 													runningMustEmptiesList.add(steps[stepIdx].id());
 												}
@@ -837,30 +837,30 @@ public abstract class SpatialFeature extends Feature
 												{
 													// Create a feature instance with piece at stepIdx, and everything else leading up to it empty
 													final FeatureInstance newInstance = new FeatureInstance(instance);
-													boolean failure =
+													boolean failure = 
 															(!newInstance.addTest(container, BitSetTypes.What, steps[stepIdx].id(), true, element.itemIndex()));
-
+													
 													for (int emptyStepIdx = 0; emptyStepIdx < runningMustEmptiesList.size(); ++emptyStepIdx)
 													{
 														// See if we can successfully add next must-empty requirement
-														failure =
+														failure = 
 																(
-																	failure
-																	||
+																	failure 
+																	|| 
 																	(
 																		!newInstance.addTest
 																		(
-																			container, BitSetTypes.Empty,
-																			runningMustEmptiesList.getQuick(emptyStepIdx),
+																			container, BitSetTypes.Empty, 
+																			runningMustEmptiesList.getQuick(emptyStepIdx), 
 																			true
 																		)
 																	)
 																);
 													}
-
+													
 													if (!failure)
 														replaceNewInstances.add(newInstance);
-
+													
 													// All other instances we add will have this step as must-empty
 													runningMustEmptiesList.add(steps[stepIdx].id());
 												}
@@ -883,35 +883,35 @@ public abstract class SpatialFeature extends Feature
 												final GraphElement[] steps = radial.steps();
 												for (int stepIdx = 1; stepIdx < steps.length; ++stepIdx)
 												{
-													// Create a feature instance with not empty and not given piece at stepIdx,
+													// Create a feature instance with not empty and not given piece at stepIdx, 
 													// and everything else leading up to it empty
 													final FeatureInstance newInstance = new FeatureInstance(instance);
-													boolean failure =
+													boolean failure = 
 															(!newInstance.addTest(container, BitSetTypes.What, steps[stepIdx].id(), false, element.itemIndex()));
 													failure = failure ||
 															(!newInstance.addTest(container, BitSetTypes.Empty, steps[stepIdx].id(), false));
-
+													
 													for (int emptyStepIdx = 0; emptyStepIdx < runningMustEmptiesList.size(); ++emptyStepIdx)
 													{
 														// See if we can successfully add next must-empty requirement
-														failure =
+														failure = 
 																(
-																	failure
-																	||
+																	failure 
+																	|| 
 																	(
 																		!newInstance.addTest
 																		(
-																			container, BitSetTypes.Empty,
-																			runningMustEmptiesList.getQuick(emptyStepIdx),
+																			container, BitSetTypes.Empty, 
+																			runningMustEmptiesList.getQuick(emptyStepIdx), 
 																			true
 																		)
 																	)
 																);
 													}
-
+													
 													if (!failure)
 														replaceNewInstances.add(newInstance);
-
+													
 													// All other instances we add will have this step as must-empty
 													runningMustEmptiesList.add(steps[stepIdx].id());
 												}
@@ -972,7 +972,7 @@ public abstract class SpatialFeature extends Feature
 	 * This method expects to only be called with two features that are already
 	 * known to be compatible (e.g. because they have already successfully fired
 	 * together for a single state+action pair)
-	 *
+	 * 
 	 * @param game
 	 * @param a
 	 * @param b
@@ -985,11 +985,11 @@ public abstract class SpatialFeature extends Feature
 		final SpatialFeature featureB = b.feature();
 		final Pattern patternA = featureA.pattern();
 		final Pattern patternB = featureB.pattern();
-
-		// If a and b have different anchors, we can only preserve region-proximity requirements
+		
+		// If a and b have different anchors, we can only preserve region-proximity requirements 
 		// from one of the two instances, because they are relative to the anchor.
 		boolean bHasRegionProxim = false;
-
+		
 		if (a.anchorSite() != b.anchorSite())
 		{
 			for (final FeatureElement elemB : patternB.featureElements())
@@ -997,7 +997,7 @@ public abstract class SpatialFeature extends Feature
 				if (elemB.type() == ElementType.RegionProximity)
 				{
 					bHasRegionProxim = true;
-
+					
 					boolean aHasRegionProxim = false;
 					for (final FeatureElement elemA : patternA.featureElements())
 					{
@@ -1007,13 +1007,13 @@ public abstract class SpatialFeature extends Feature
 							break;
 						}
 					}
-
+					
 					if (!aHasRegionProxim)
 					{
 						// Instead of proceeding (and discarding region proxim from B), we'll just flip A and B
 						return combineFeatures(game, b, a);
 					}
-
+					
 					break;
 				}
 			}
@@ -1028,7 +1028,7 @@ public abstract class SpatialFeature extends Feature
 		modifiedPatternA.applyReflection(a.reflection());
 
 		final Pattern modifiedPatternB = new Pattern(patternB);
-
+		
 		if (bHasRegionProxim)
 		{
 			// B has Region Proximity tests, and A must also have some (because otherwise we
@@ -1039,47 +1039,47 @@ public abstract class SpatialFeature extends Feature
 			final List<FeatureElement> newElementsList = new ArrayList<FeatureElement>(modifiedPatternB.featureElements().length);
 			for (final FeatureElement el : modifiedPatternB.featureElements())
 				newElementsList.add(el);
-
+			
 			for (int i = newElementsList.size() - 1; i >= 0; --i)
 			{
 				if (newElementsList.get(i).type() == ElementType.RegionProximity)
 					newElementsList.remove(i);
 			}
-
+			
 			modifiedPatternB.setFeatureElements(newElementsList.toArray(new FeatureElement[newElementsList.size()]));
 		}
-
+		
 		modifiedPatternB.applyReflection(b.reflection());
 		modifiedPatternB.applyRotation(requiredBRotation);
-
+		
 		final List<? extends TopologyElement> sites = game.graphPlayElements();
-
+		
 		final Path anchorsPath;
 		final Walk anchorsWalk;
 		if (a.anchorSite() != b.anchorSite())
 		{
-			anchorsPath =
+			anchorsPath = 
 					GraphSearch.shortestPathTo
 					(
-						game,
-						sites.get(a.anchorSite()),
+						game, 
+						sites.get(a.anchorSite()), 
 						sites.get(b.anchorSite())
 					);
-
+			
 			// A temporary solution to avoid issues in graphs with multiple disconnected
 			// subgraphs. TODO find a better permanent fix
 			if (anchorsPath == null)
 			{
 				return a.feature().rotatedCopy(0.f);
 			}
-
+			
 			anchorsWalk = anchorsPath.walk();
 			//System.out.println("anchors walk = " + anchorsWalk);
-
+			
 			//anchorsWalk.applyReflection(b.reflection());
 			anchorsWalk.applyRotation(-a.rotation() * a.reflection());
 			modifiedPatternB.prependWalkWithCorrection(anchorsWalk, anchorsPath, a.rotation(), a.reflection());
-
+			
 			//System.out.println("corrected anchors walk = " + anchorsWalk);
 		}
 		else
@@ -1087,7 +1087,7 @@ public abstract class SpatialFeature extends Feature
 			anchorsPath = null;
 			anchorsWalk = null;
 		}
-
+				
 		final Pattern newPattern = Pattern.merge(modifiedPatternA, modifiedPatternB);
 
 		if (featureA instanceof AbsoluteFeature && featureB instanceof AbsoluteFeature)
@@ -1128,10 +1128,10 @@ public abstract class SpatialFeature extends Feature
 			else if (relB.toPosition() != null)
 			{
 				newToPosition = new Walk(relB.toPosition());
-
+				
 				newToPosition.applyReflection(b.reflection());
 				newToPosition.applyRotation(requiredBRotation);
-
+				
 				if (anchorsWalk != null)
 					newToPosition.prependWalkWithCorrection(anchorsWalk, anchorsPath, a.rotation(), a.reflection());
 			}
@@ -1145,14 +1145,14 @@ public abstract class SpatialFeature extends Feature
 			else if (relB.fromPosition() != null)
 			{
 				newFromPosition = new Walk(relB.fromPosition());
-
+				
 				newFromPosition.applyReflection(b.reflection());
 				newFromPosition.applyRotation(requiredBRotation);
-
+				
 				if (anchorsWalk != null)
 					newFromPosition.prependWalkWithCorrection(anchorsWalk, anchorsPath, a.rotation(), a.reflection());
 			}
-
+			
 			Walk newLastFromPosition = null;
 			if (relA.lastFromPosition() != null)
 			{
@@ -1162,14 +1162,14 @@ public abstract class SpatialFeature extends Feature
 			else if (relB.lastFromPosition() != null)
 			{
 				newLastFromPosition = new Walk(relB.lastFromPosition());
-
+				
 				newLastFromPosition.applyReflection(b.reflection());
 				newLastFromPosition.applyRotation(requiredBRotation);
-
+				
 				if (anchorsWalk != null)
 					newLastFromPosition.prependWalkWithCorrection(anchorsWalk, anchorsPath, a.rotation(), a.reflection());
 			}
-
+			
 			Walk newLastToPosition = null;
 			if (relA.lastToPosition() != null)
 			{
@@ -1179,20 +1179,20 @@ public abstract class SpatialFeature extends Feature
 			else if (relB.lastToPosition() != null)
 			{
 				newLastToPosition = new Walk(relB.lastToPosition());
-
+				
 				newLastToPosition.applyReflection(b.reflection());
 				newLastToPosition.applyRotation(requiredBRotation);
-
+				
 				if (anchorsWalk != null)
 					newLastToPosition.prependWalkWithCorrection(anchorsWalk, anchorsPath, a.rotation(), a.reflection());
 			}
-
+			
 			if (featureA.graphElementType != featureB.graphElementType)
 			{
 				System.err.println("WARNING: combining two features for different graph element types!");
 			}
 
-			final RelativeFeature newFeature =
+			final RelativeFeature newFeature = 
 					new RelativeFeature
 					(
 						newPattern, newToPosition, newFromPosition, newLastToPosition, newLastFromPosition
@@ -1217,9 +1217,9 @@ public abstract class SpatialFeature extends Feature
 				System.err.println("ref B = " + b.reflection());
 				System.err.println("anchor B = " + b.anchorSite());
 			}
-
+			
 			//System.out.println("constructed " + newFeature + " from " + a + " and " + b);
-
+			
 			return newFeature;
 		}
 		else
@@ -1236,9 +1236,9 @@ public abstract class SpatialFeature extends Feature
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Simplifies the Feature, by:
+	 * Simplifies the Feature, by: 
 	 * 1) Getting the first turn of as many Walks as
-	 * possible down to 0.0
+	 * possible down to 0.0 
 	 * 2) Making all turns positive if they were originally all
 	 * negative.
 	 * 3) Making sure any turns that are very close to one of the game's
@@ -1248,14 +1248,14 @@ public abstract class SpatialFeature extends Feature
 	 * 4) Preferring small turns in opposite direction over large turns.
 	 * 5) Ensuring all turns are in [-1.0, 1.0].
 	 * 6) Setting any turns of -0.5 to +0.5, and turns of -0.0 to +0.0.
-	 *
+	 * 
 	 * The first modification will only be done for features that allow all
 	 * rotations, and the second will only be done for patterns that allow
 	 * reflection.
-	 *
+	 * 
 	 * After these modifications, the originals can still be re-obtained through
 	 * rotation and/or reflection.
-	 *
+	 * 
 	 * @param game
 	 */
 	public void normalise(final Game game)
@@ -1298,24 +1298,24 @@ public abstract class SpatialFeature extends Feature
 				}
 			}
 		}
-
+		
 		// Collect all the lists of steps we want to look at / modify (can handle them all as a single big batch)
 		final List<TFloatArrayList> stepsLists = new ArrayList<TFloatArrayList>(pattern.featureElements().length + 4);
-
+		
 		if (this instanceof RelativeFeature)
 		{
 			for (final FeatureElement featureElement : pattern.featureElements())
 			{
 				stepsLists.add(((RelativeFeatureElement) featureElement).walk().steps);
 			}
-
+			
 			final RelativeFeature relFeature = (RelativeFeature) this;
-			for
+			for 
 			(
 				final Walk walk : new Walk[]
-				{
-					relFeature.fromPosition, relFeature.toPosition,
-					relFeature.lastFromPosition, relFeature.lastToPosition
+				{ 
+					relFeature.fromPosition, relFeature.toPosition, 
+					relFeature.lastFromPosition, relFeature.lastToPosition 
 				}
 			)
 			{
@@ -1323,7 +1323,7 @@ public abstract class SpatialFeature extends Feature
 					stepsLists.add(walk.steps);
 			}
 		}
-
+		
 		// Make sure we don't have any steps outside of [-1.0, 1.0]
 		for (final TFloatArrayList steps : stepsLists)
 		{
@@ -1350,7 +1350,7 @@ public abstract class SpatialFeature extends Feature
 			float mostCommonTurn = Float.MAX_VALUE;
 			int numOccurrences = 0;
 			final TFloatIntMap occurrencesMap = new TFloatIntHashMap();
-
+			
 			for (final TFloatArrayList steps : stepsLists)
 			{
 				if (steps.size() > 0)
@@ -1370,7 +1370,7 @@ public abstract class SpatialFeature extends Feature
 					}
 				}
 			}
-
+			
 			if (mostCommonTurn != 0.f)
 			{
 				// Now subtract that most common turn from the first step of
@@ -1408,7 +1408,7 @@ public abstract class SpatialFeature extends Feature
 
 			// first figure out if we have any positive turns
 			boolean havePositiveTurns = false;
-
+			
 			for (final TFloatArrayList steps : stepsLists)
 			{
 				for (int i = 0; i < steps.size(); ++i)
@@ -1419,7 +1419,7 @@ public abstract class SpatialFeature extends Feature
 						break;
 					}
 				}
-
+				
 				if (havePositiveTurns)
 				{
 					break;
@@ -1534,7 +1534,7 @@ public abstract class SpatialFeature extends Feature
 //		comment = newComment;
 //		return this;
 //	}
-
+	
 	/**
 	 * @return This feature's graph element type
 	 */
@@ -1569,7 +1569,7 @@ public abstract class SpatialFeature extends Feature
 	/**
 	 * equals() function that ignores restrictions on rotation / reflection in
 	 * pattern.
-	 *
+	 * 
 	 * @param other
 	 * @return Result of test.
 	 */
@@ -1581,7 +1581,7 @@ public abstract class SpatialFeature extends Feature
 	/**
 	 * hashCode() function that ignores restrictions on rotation / reflection in
 	 * pattern.
-	 *
+	 * 
 	 * @return Hash code.
 	 */
 	public int hashCodeIgnoreRotRef()

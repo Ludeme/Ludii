@@ -20,7 +20,7 @@ import other.concept.ConceptType;
 /**
  * Method to get the common concepts (and avg for the numerical ones) between a
  * set of games and avg of same value/diff value for each boolean concept.
- *
+ * 
  * @author Eric.Piette
  */
 public class CommonConcepts
@@ -37,10 +37,10 @@ public class CommonConcepts
 	final static ConceptType type = null;
 
 	//---------------------------------------------------------------------
-
+	
 	/**
 	 * Main method.
-	 *
+	 * 
 	 * @param args
 	 */
 	public static void main(final String[] args) throws IllegalArgumentException, IllegalAccessException
@@ -49,7 +49,7 @@ public class CommonConcepts
 		final List<String> booleanConceptsName = new ArrayList<String>();
 		final TIntArrayList nonBooleanConceptsID = new TIntArrayList();
 		final List<String> nonBooleanConceptsName = new ArrayList<String>();
-
+		
 		// We get the concepts.
 		for (final Concept concept : Concept.values())
 			if (concept.dataType().equals(ConceptDataType.BooleanData))
@@ -69,7 +69,7 @@ public class CommonConcepts
 		getGames();
 
 		final int totalBooleanConcept = booleanConceptsID.size();
-
+		
 		// Check the number of times all the games have the same value for the concepts and the number of times they have a different value (only for boolean).
 		int sameValue = 0;
 		int differentValue = 0;
@@ -91,7 +91,7 @@ public class CommonConcepts
 					sameValue++;
 			}
 		}
-
+		
 		// Keep Only the common boolean concepts.
 		for(int i = booleanConceptsID.size()-1; i>=0; i--)
 		{
@@ -111,13 +111,13 @@ public class CommonConcepts
 
 		for (int i = 0; i < booleanConceptsName.size(); i++)
 			System.out.println(booleanConceptsName.get(i));
-
+		
 		System.out.println("\nAVG Boolean Concepts with same value and AVG Boolean with different values: \n");
 		System.out.println("Same Value = " + new DecimalFormat("##.##")
 				.format((((double) sameValue / (double) totalBooleanConcept)) * 100) + " %");
 		System.out.println("different Value = " + new DecimalFormat("##.##")
 				.format((((double) differentValue / (double) totalBooleanConcept)) * 100) + " %");
-
+		
 
 		System.out.println("\nAvg Numerical Concepts:\n");
 
@@ -127,16 +127,16 @@ public class CommonConcepts
 			final Integer idConcept = Integer.valueOf(nonBooleanConceptsID.get(i));
 			final String Conceptname = nonBooleanConceptsName.get(i);
 			double sum = 0.0;
-
+			
 			for(final Game game: games)
 				sum += Double.parseDouble(game.nonBooleanConcepts().get(idConcept));
-
+			
 			System.out.println(Conceptname + ": " + (sum / games.size()));
 		}
 	}
 
 	//---------------------------------------------------------------------
-
+	
 	/** Get the compiled games. */
 	public static void getGames()
 	{
@@ -195,7 +195,7 @@ public class CommonConcepts
 				}
 			}
 		}
-
+		
 		for (final File fileEntry : entries)
 		{
 			final String gameName = fileEntry.getName();

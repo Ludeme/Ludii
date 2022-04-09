@@ -38,7 +38,7 @@ import other.move.Move;
 import other.state.State;
 import other.state.container.ContainerState;
 import other.topology.Topology;
-import other.trial.Trial;
+import other.trial.Trial; 
 
 /**
  * Context for generating moves during playouts.
@@ -62,16 +62,16 @@ public class Context
 
 	/** Reference to controlling game object. */
 	private final Game game;
-
+	
 	/** Reference to "parent" Context of match we're in. Will be null if this is the top-level Context. */
 	private Context parentContext;
-
+	
 	/** Reference to active subcontext. Will be null if this is not a context for a Match */
 	private Context subcontext;
-
+	
 	/** Current game state. */
 	protected transient State state;
-
+	
 	/** Index for our current subgame (will always be 0 for non-Matches) */
 	private int currentSubgameIdx = 0;
 
@@ -80,10 +80,10 @@ public class Context
 
 	/** Our Trial. */
 	private Trial trial;
-
-	/**
+	
+	/** 
 	 * List of trials that have already been completed.
-	 *
+	 * 
 	 * Will only be non-empty for Matches.		TODO should probably just have it be null for instances then
 	 */
 	private List<Trial> completedTrials;
@@ -112,16 +112,16 @@ public class Context
 	 * find one ^^)			TODO officially I guess this should actually be in EvalContext?
 	 */
 	private int numLossesDecided = 0;
-
+	
 	/** Same as above, but for wins */		// TODO officially I guess this should actually be in EvalContext?
 	private int numWinsDecided = 0;
-
+	
 	// WARNING: if we have a State object, that object should perform modifications of the below fields for us!
 	// this allows it to also update Zobrist hash!
-
+	
 	/** Scores per player. Game scores if this is a trial for just a game, match scores if it's a trial for a Match */
 	private int[] scores;
-
+	
 	/**
 	 * Payoffs per player. Game payoff if this is a trial for just a game, match
 	 * scores if it's a trial for a Match
@@ -130,29 +130,29 @@ public class Context
 
 	/** For every player, a bit indicating whether they are active */
 	private int active = 0;
-
+	
 	// WARNING: if we have a State object, that object should perform modifications of the above fields for us!
 	// this allows it to also update Zobrist hash!
-
+	
 	/** List of players who've already won */
 	private TIntArrayList winners;
-
+	
 	/** List of players who've already lost */
 	private TIntArrayList losers;
-
+	
 	/** Tells us whether we've ever called game.start() with this context */
 	private boolean haveStarted = false;
-
+	
 	/** The states of each site where is a die */
 	final TIntIntHashMap diceSiteStates;
 
 	//-------------------------------------------------------------------------
-
+	
 	/** Lock for Game methods that should not be executed in parallel on the same Context object. */
 	private transient ReentrantLock lock = new ReentrantLock();
-
+	
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * Constructs a new Context for given game and trial
 	 *
@@ -163,10 +163,10 @@ public class Context
 	{
 		this(game, trial, splitMix64(), null);
 	}
-
+	
 	/**
 	 * Constructor
-	 *
+	 * 
 	 * @param game
 	 * @param trial
 	 * @param rng
@@ -180,14 +180,14 @@ public class Context
 		this.trial = trial;
 		completedTrials = new ArrayList<Trial>(1);
 		this.rng = rng;
-
+		
 		if (game.hasSubgames())
 		{
 			// This is a Context for a Match
 			state = null;
 			final Game subgame = game.instances()[0].getGame();
 			subcontext = new Context(subgame, new Trial(subgame), rng, this);	// plug in the same RNG for complete Match
-
+			
 			models = new Model[1];	// Assuming no phases in matches
 			models[0] = new MatchModel();
 		}
@@ -196,9 +196,9 @@ public class Context
 			// This is a Context for just a single Game
 			state = game.stateReference() != null ? new State(game.stateReference()) : null;
 			subcontext = null;
-
+			
 			models = new Model[game.rules().phases().length];
-
+			
 			for (int i = 0; i < game.rules().phases().length; ++i)
 			{
 				if (game.rules().phases()[i].mode() != null)
@@ -207,12 +207,12 @@ public class Context
 					models[i] = game.mode().createModel();
 			}
 		}
-
+		
 		if (game.requiresScore())
 			scores = new int[game.players().count() + 1];
 		else
 			scores = null;
-
+		
 		if (game.requiresPayoff())
 			payoffs = new double[game.players().count() + 1];
 		else
@@ -220,7 +220,7 @@ public class Context
 
 		for (int p = 1; p <= game.players().count(); ++p)
 			setActive(p, true);
-
+		
 		winners = new TIntArrayList(game.players().count());
 		losers = new TIntArrayList(game.players().count());
 	}
@@ -237,7 +237,7 @@ public class Context
 	{
 		this(other, null);
 	}
-
+	
 	/**
 	 * @param other
 	 * @return A copy of the given other context, with a new RNG that has
@@ -249,10 +249,10 @@ public class Context
 		copy.rng.restoreState(other.rng.saveState());
 		return copy;
 	}
-
+	
 	/**
 	 * Copy constructor
-	 *
+	 * 
 	 * @param other
 	 * @param otherParentCopy Copy of the parent context of the given other
 	 */
@@ -261,10 +261,10 @@ public class Context
 		// Pass shared RNG, don't expect to need reproducibility
 		this(other, otherParentCopy, sharedRNG);
 	}
-
+	
 	/**
 	 * Copy constructor
-	 *
+	 * 
 	 * @param other
 	 * @param otherParentCopy Copy of the parent context of the given other
 	 * @param rng The RNG to use for the copy
@@ -272,7 +272,7 @@ public class Context
 	private Context(final Context other, final Context otherParentCopy, final SplitMix64 rng)
 	{
 		other.getLock().lock();
-
+		
 		try
 		{
 			game = other.game;
@@ -280,43 +280,43 @@ public class Context
 			diceSiteStates = new TIntIntHashMap();
 			state = copyState(other.state);
 			trial = copyTrial(other.trial);
-
+			
 			// WARNING: Currently just copying the completed trials by reference here
 			// TODO:    Would actually want these trials to become immutable somehow...
 			//		    Would add a level of safety but is not critical (to do when time permits).
 			completedTrials = new ArrayList<Trial>(other.completedTrials);
-
+			
 			this.rng = rng;
-
+			
 			subcontext = other.subcontext == null ? null : new Context(other.subcontext, this);
 			currentSubgameIdx = other.currentSubgameIdx;
-
+			
 			models = new Model[other.models.length];
 			for (int i = 0; i < models.length; ++i)
 			{
 				models[i] = other.models[i].copy();
 			}
-
+			
 			evalContext = new EvalContext(other.evalContext());
-
+			
 			numLossesDecided = other.numLossesDecided;
 			numWinsDecided = other.numWinsDecided;
-
+	
 			//ringFlagCalled = other.ringFlagCalled;
 			recursiveCalled = other.recursiveCalled;
-
+		
 			if (other.scores != null)
 				scores = Arrays.copyOf(other.scores, other.scores.length);
 			else
 				scores = null;
-
+			
 			if (other.payoffs != null)
 				payoffs = Arrays.copyOf(other.payoffs, other.payoffs.length);
 			else
 				payoffs = null;
 
 			active = other.active;
-
+			
 			winners = new TIntArrayList(other.winners);
 			losers = new TIntArrayList(other.losers);
 		}
@@ -325,7 +325,7 @@ public class Context
 			other.getLock().unlock();
 		}
 	}
-
+	
 	/**
 	 * @return The object used to evalutate the ludemes.
 	 */
@@ -337,7 +337,7 @@ public class Context
 	/**
 	 * Method for copying game states. NOTE: we override this in TempContext for
 	 * copy-on-write states.
-	 *
+	 * 
 	 * @param otherState
 	 * @return Copy of given game state.
 	 */
@@ -345,12 +345,12 @@ public class Context
 	{
 		return otherState == null ? null : new State(otherState);
 	}
-
+	
 	/**
 	 * Method for copying Trials. NOTE: we override this in TempContext
 	 * for Trial copies with MoveSequences that are allowed to be
 	 * invalidated.
-	 *
+	 * 
 	 * @param otherTrial
 	 * @return Copy of given Trial
 	 */
@@ -358,21 +358,21 @@ public class Context
 	{
 		return new Trial(otherTrial);
 	}
-
+	
 	/**
 	 * NOTE: we don't really need this method to exist in Java, but this is
 	 * much more convenient to call from Python than directly calling the
 	 * copy constructor.
-	 *
+	 * 
 	 * @return Deep copy of this context.
 	 */
 	public Context deepCopy()
 	{
 		return new Context(this, null);
 	}
-
+	
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * Reset this Context to play again from the start.
 	 */
@@ -382,38 +382,38 @@ public class Context
 		// ** Don't clear state here. Calling function should copy
 		// ** the reference state stored in the Game object.
 		// **
-
+		
 		if (state != null)
 			state.resetStateTo(game.stateReference(), game);
-
+		
 		trial.reset(game);
-
+		
 		if (scores != null)
 			Arrays.fill(scores, 0);
-
+		
 		if (payoffs != null)
 			Arrays.fill(payoffs, 0);
 
 		active = 0;
 		for (int p = 1; p <= game.players().count(); ++p)
 			setActive(p, true);
-
+		
 		winners.reset();
 		losers.reset();
 		haveStarted = true;
-
+		
 		if (subcontext != null)
 		{
 			final Game subgame = game.instances()[0].getGame();
 			subcontext = new Context(subgame, new Trial(subgame), rng, this);	// plug in the same RNG for complete Match
 			completedTrials.clear();
 		}
-
+		
 		currentSubgameIdx = 0;
 	}
 
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * To set the active bits.
 	 * @param active For each player a bit to indicate if a player is active.
@@ -422,7 +422,7 @@ public class Context
 	{
 		this.active = active;
 	}
-
+	
 	/**
 	 * @param who
 	 * @return Whether player is active.
@@ -431,7 +431,7 @@ public class Context
 	{
 		return (active & (1 << (who - 1))) != 0;
 	}
-
+	
 	/**
 	 * @return If only one player is active, we return the id of that player. Otherwise 0
 	 */
@@ -439,10 +439,10 @@ public class Context
 	{
 		if (BitTwiddling.exactlyOneBitSet(active))
 			return BitTwiddling.lowBitPos(active) + 1;
-
+		
 		return 0;
 	}
-
+	
 	/**
 	 * @return if only one team is active, we return the id of that team. Otherwise 0
 	 */
@@ -466,19 +466,19 @@ public class Context
 			return 0;
 		return activeTeam.getQuick(0);
 	}
-
+	
 	/**
 	 * To add a winner in the list of winners.
 	 * NOTE: important to call this AFTER calling computeNextWinRank(), if
 	 * the intention is to also call that to compute the rank for this player
-	 *
+	 * 
 	 * @param idPlayer
 	 */
 	public void addWinner(final int idPlayer)
 	{
 		winners.add(idPlayer);
 	}
-
+	
 	/**
 	 * To add a loser in the list of losers.
 	 * @param idPlayer
@@ -495,7 +495,7 @@ public class Context
 	{
 		return winners.size();
 	}
-
+	
 	/**
 	 * @return The number of losers.
 	 */
@@ -511,7 +511,7 @@ public class Context
 	{
 		return winners;
 	}
-
+	
 	/**
 	 * @return The losers.
 	 */
@@ -519,7 +519,7 @@ public class Context
 	{
 		return losers;
 	}
-
+	
 	/**
 	 * @return The array of scores.
 	 */
@@ -527,7 +527,7 @@ public class Context
 	{
 		return this.scores;
 	}
-
+	
 	/**
 	 * @param pid
 	 * @return Current score for player with given Player ID
@@ -536,7 +536,7 @@ public class Context
 	{
 		return scores[pid];
 	}
-
+	
 	/**
 	 * @return The array of payoffs.
 	 */
@@ -544,7 +544,7 @@ public class Context
 	{
 		return this.payoffs;
 	}
-
+	
 	/**
 	 * @param pid
 	 * @return Current payoff for player with given Player ID
@@ -556,7 +556,7 @@ public class Context
 
 	/**
 	 * Sets the payoff for the given player
-	 *
+	 * 
 	 * @param pid         Player ID
 	 * @param payoffToSet New payoff
 	 */
@@ -567,7 +567,7 @@ public class Context
 		else
 			payoffs[pid] = payoffToSet;
 	}
-
+	
 	/**
 	 * Sets the score for the given player
 	 * @param pid Player ID
@@ -580,7 +580,7 @@ public class Context
 		else
 			scores[pid] = scoreToSet;
 	}
-
+	
 	/**
 	 * Sets a player to be active or inactive.
 	 *
@@ -597,14 +597,14 @@ public class Context
 		{
 			final int whoBit = (1 << (who - 1));
 			final boolean wasActive = (active & whoBit) != 0;
-
+			
 			if (wasActive && !newActive)
 				active &= ~whoBit;
 			else if (!wasActive && newActive)
 				active |= whoBit;
 		}
 	}
-
+	
 	/**
 	 * @return Whether any player is active
 	 */
@@ -612,18 +612,18 @@ public class Context
 	{
 		return active != 0;
 	}
-
+	
 	/**
 	 * Set all players to "inactive".
 	 */
 	public void setAllInactive()
 	{
 		active = 0;
-
+		
 		if (state != null)
 			state.updateHashAllPlayersInactive();
 	}
-
+	
 	/**
 	 * @return The number of active players.
 	 */
@@ -631,7 +631,7 @@ public class Context
 	{
 		return Integer.bitCount(active);
 	}
-
+	
 	/**
 	 * @return Next rank to assign to players who obtain a win now.
 	 */
@@ -640,7 +640,7 @@ public class Context
 		final int numWinRanksTaken = numWinners();
 		return numWinRanksTaken + 1;
 	}
-
+	
 	/**
 	 * @return Next rank to assign to players who obtain a loss now.
 	 */
@@ -650,7 +650,7 @@ public class Context
 		final int numLossRanksTaken = numLosers();
 		return numRanks - numLossRanksTaken;
 	}
-
+	
 	/**
 	 * @return Rank to assign to remaining players if we were to obtain a draw now.
 	 */
@@ -658,7 +658,7 @@ public class Context
 	{
 		return (numActive() + 1) / 2.0 + (numWinners());
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -668,9 +668,9 @@ public class Context
 	{
 		return game;
 	}
-
+	
 	/**
-	 * @return True if game being played is a Match.
+	 * @return True if game being played is a Match. 
 	 */
 	public boolean isAMatch()
 	{
@@ -703,7 +703,7 @@ public class Context
 	{
 		return trial;
 	}
-
+	
 	/**
 	 * @return Current subcontext in the case of Matches. Will be null if this is
 	 * 	already a context for just an instance.
@@ -712,7 +712,7 @@ public class Context
 	{
 		return subcontext;
 	}
-
+	
 	/**
 	 * @return The context for the current instance. May just be this context if it's
 	 * 	already not a context for a Match.
@@ -720,12 +720,12 @@ public class Context
 	public Context currentInstanceContext()
 	{
 		Context context = this;
-
+		
 		while (context.isAMatch())
 		{
 			context = context.subcontext();
 		}
-
+		
 		return context;
 	}
 
@@ -739,7 +739,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return Team array.
 	 */
 	public int[] team()
@@ -749,7 +749,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param team The team..
 	 */
 	public void setTeam(int[] team)
@@ -759,7 +759,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return From index.
 	 */
 	public int from()
@@ -769,7 +769,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param val The value.
 	 */
 	public void setTrack(final int val)
@@ -779,7 +779,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return track index.
 	 */
 	public int track()
@@ -789,7 +789,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setFrom(final int val)
@@ -798,7 +798,7 @@ public class Context
 	}
 
 	/**
-	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
+	 * WARNING: Should NOT be used outside of Ludemes' eval() calls 
 	 * @return To index.
 	 */
 	public int to()
@@ -808,7 +808,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setTo(final int val)
@@ -817,7 +817,7 @@ public class Context
 	}
 
 	/**
-	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
+	 * WARNING: Should NOT be used outside of Ludemes' eval() calls 
 	 * @return between index.
 	 */
 	public int between()
@@ -828,7 +828,7 @@ public class Context
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls To set the
 	 * between value.
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setBetween(final int val)
@@ -838,7 +838,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return player index.
 	 */
 	public int player()
@@ -849,7 +849,7 @@ public class Context
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls To set the
 	 * player value.
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setPlayer(final int val)
@@ -858,7 +858,7 @@ public class Context
 	}
 
 	/**
-	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
+	 * WARNING: Should NOT be used outside of Ludemes' eval() calls 
 	 * @return dieValue.
 	 */
 	public int pipCount()
@@ -868,7 +868,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setPipCount(final int val)
@@ -877,7 +877,7 @@ public class Context
 	}
 
 	/**
-	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
+	 * WARNING: Should NOT be used outside of Ludemes' eval() calls 
 	 * @return Level index.
 	 */
 	public int level()
@@ -887,7 +887,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setLevel(final int val)
@@ -896,7 +896,7 @@ public class Context
 	}
 
 	/**
-	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
+	 * WARNING: Should NOT be used outside of Ludemes' eval() calls 
 	 * @return Hint index.
 	 */
 	public int hint()
@@ -906,7 +906,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setHint(final int val)
@@ -915,7 +915,7 @@ public class Context
 	}
 
 	/**
-	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
+	 * WARNING: Should NOT be used outside of Ludemes' eval() calls 
 	 * @return Edge index.
 	 */
 	public int edge()
@@ -925,17 +925,17 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setEdge(final int val)
 	{
 		evalContext.setEdge(val);
 	}
-
+	
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return site index.
 	 */
 	public int site()
@@ -946,7 +946,7 @@ public class Context
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls To set the site
 	 * value.
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setSite(final int val)
@@ -956,7 +956,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return value.
 	 */
 	public int value()
@@ -967,7 +967,7 @@ public class Context
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls To set the
 	 * value.
-	 *
+	 * 
 	 * @param val
 	 */
 	public void setValue(final int val)
@@ -977,7 +977,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return A region iterated.
 	 */
 	public Region region()
@@ -987,9 +987,9 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * To set the region iterated.
-	 *
+	 * 
 	 * @param region The region.
 	 */
 	public void setRegion(final Region region)
@@ -999,7 +999,7 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * @return The hint region iterated in the
 	 *         game.functions.booleans.deductionPuzzle.ForEach or called by (sites
 	 *         Hint).
@@ -1011,10 +1011,10 @@ public class Context
 
 	/**
 	 * WARNING: Should NOT be used outside of Ludemes' eval() calls
-	 *
+	 * 
 	 * To set the hint region when we iterate them in
 	 * game.functions.booleans.deductionPuzzle.ForEach.
-	 *
+	 * 
 	 * @param region The region.
 	 */
 	public void setHintRegion(final RegionFunction region)
@@ -1029,7 +1029,7 @@ public class Context
 	{
 		return numLossesDecided;
 	}
-
+	
 	/**
 	 * @return Number of times we applied win End result in a single apply()
 	 */
@@ -1037,27 +1037,27 @@ public class Context
 	{
 		return numWinsDecided;
 	}
-
+	
 	/**
 	 * Set the number of times we applied loss End result in a single ForEach apply()
-	 *
+	 * 
 	 * @param numLossesDecided
 	 */
 	public void setNumLossesDecided(final int numLossesDecided)
 	{
 		this.numLossesDecided = numLossesDecided;
 	}
-
+	
 	/**
 	 * Set the number of times we applied win End result in a single ForEach apply()
-	 *
+	 * 
 	 * @param numWinsDecided
 	 */
 	public void setNumWinsDecided(final int numWinsDecided)
 	{
 		this.numWinsDecided = numWinsDecided;
 	}
-
+	
 	/**
 	 * @return Tells us whether we've ever called game.start() with this context
 	 */
@@ -1067,7 +1067,7 @@ public class Context
 	}
 
 	//-------------------------------------------------------------------------
-
+	
 //	/**
 //	 * @return The ring flag.
 //	 */
@@ -1075,10 +1075,10 @@ public class Context
 //	{
 //		return ringFlagCalled;
 //	}
-//
+//	
 //	/**
 //	 * Set the ring flag.
-//	 *
+//	 * 
 //	 * @param called
 //	 */
 //	public void setRingFlagCalled(final boolean called)
@@ -1086,7 +1086,7 @@ public class Context
 //		ringFlagCalled = called;
 //	}
 
-
+	
 	/**
 	 * @return Reference to containers list.
 	 */
@@ -1112,7 +1112,7 @@ public class Context
 	/**
 	 * @return Reference to track list.
 	 */
-	public List<Track> tracks()
+	public List<Track> tracks() 
 	{
 		if (subcontext != null)
 			return subcontext.tracks();
@@ -1163,7 +1163,7 @@ public class Context
 
 		return game.board();
 	}
-
+	
 	/**
 	 * @return Metadata of game we're currently playing in this context.
 	 */
@@ -1171,10 +1171,10 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.metadata();
-
+		
 		return game.metadata();
 	}
-
+	
 	/**
 	 * @return Equipment of the game we're currently playing in this context.
 	 */
@@ -1182,10 +1182,10 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.equipment();
-
+		
 		return game.equipment();
 	}
-
+	
 	/**
 	 * @return The dice hands of the game we're currently playing in this context
 	 */
@@ -1193,10 +1193,10 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.handDice();
-
+		
 		return game.handDice();
 	}
-
+	
 	/**
 	 * @return Reference to main board graph.
 	 */
@@ -1207,7 +1207,7 @@ public class Context
 
 		return game.board().topology();
 	}
-
+	
 	/**
 	 * @return True if the game we're currently player has any containers owned by the Shared player
 	 */
@@ -1215,10 +1215,10 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.hasSharedPlayer();
-
+		
 		return game.hasSharedPlayer();
 	}
-
+	
 	/**
 	 * @return Number of distinct containers in the game we're currently playing.
 	 */
@@ -1226,7 +1226,7 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.numContainers();
-
+		
 		return game.numContainers();
 	}
 
@@ -1237,7 +1237,7 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.numComponents();
-
+		
 		return game.numComponents();
 	}
 
@@ -1276,10 +1276,10 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.allPass();
-
+		
 		final int numPlayers = game.players().count();
 		final Iterator<Move> reverseMoves = trial.reverseMoveIterator();
-
+		
 		int lastMover = state().mover();
 
 		if (numPlayers == 1)
@@ -1287,7 +1287,7 @@ public class Context
 
 		boolean passMove = false;
 		int countMovesTurn = 0;
-
+		
 		for (int i = 1; i <= numPlayers; i++) // we look the previous turn of each player.
 		{
 			while (true) // We need to check each previous turn of each player.
@@ -1324,7 +1324,7 @@ public class Context
 	}
 
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * @return Our direct parent context (null if we're already the top-level context)
 	 */
@@ -1332,7 +1332,7 @@ public class Context
 	{
 		return parentContext;
 	}
-
+	
 	/**
 	 * @return List of completed trials within this context.
 	 */
@@ -1340,7 +1340,7 @@ public class Context
 	{
 		return completedTrials;
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -1399,7 +1399,7 @@ public class Context
 	{
 		recursiveCalled = value;
 	}
-
+	
 	/**
 	 * @return The from location of the first move of the current turn.
 	 */
@@ -1407,11 +1407,11 @@ public class Context
 	{
 		if (trial.numMoves() == 0)
 			return Constants.UNDEFINED;
-
+		
 		final Iterator<Move> reverseMoves = trial.reverseMoveIterator();
 
 		final int mover = state.mover();
-
+		
 		Move currMove = reverseMoves.next();
 
 		// If the current state corresponds to a new turn the from is not defined.
@@ -1422,16 +1422,16 @@ public class Context
 		while (reverseMoves.hasNext())
 		{
 			currMove = reverseMoves.next();
-
+			
 			if (currMove.mover() != mover)
 				break;
-
+			
 			fromStartOfTurn = currMove.fromNonDecision();
 		}
-
+		
 		return fromStartOfTurn;
 	}
-
+	
 	/**
 	 * @return Index of our current Subgame (always 0 for non-Match games).
 	 */
@@ -1439,7 +1439,7 @@ public class Context
 	{
 		return currentSubgameIdx;
 	}
-
+	
 	/**
 	 * Advance this context to the next instance in a multi-game match.
 	 */
@@ -1447,7 +1447,7 @@ public class Context
 	{
 		final int numPlayers = trial.ranking().length - 1;
 		final Subgame currentInstance = game.instances()[currentSubgameIdx];
-
+		
 		for (int p = 1; p <= numPlayers; p++)
 		{
 			final int currentMatchScore = score(p);
@@ -1469,12 +1469,12 @@ public class Context
 
 			setScore(p, currentMatchScore + scoreToAdd);
 		}
-
+		
 		completedTrials.add(subcontext.trial());
 
 		final End end = game.endRules();
 		end.eval(this);
-
+		
 		if (!trial.over())
 		{
 			final IntFunction nextFunc = currentInstance.next();
@@ -1501,28 +1501,28 @@ public class Context
 			final Trial nextTrial = new Trial(nextGame);
 			subcontext = new Context(nextGame, nextTrial, rng, this);
 			((MatchModel) model()).resetCurrentInstanceModel();
-
+			
 			// TODO set players to be inactive in the trial if they should be inactive from the start
-
+			
 			// May have to tell subtrial to store auxiliary data
 			if (trial().auxilTrialData() != null)
 			{
 				if (trial().auxilTrialData().legalMovesHistory() != null)
 					nextTrial.storeLegalMovesHistory();
-
+				
 				if (trial().auxilTrialData().legalMovesHistorySizes() != null)
 					nextTrial.storeLegalMovesHistorySizes();
 			}
-
+			
 			nextGame.start(subcontext);
 		}
-
+		
 	}
 
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @return Lock for Game methods that should not be executed in parallel
+	 * @return Lock for Game methods that should not be executed in parallel 
 	 *         on the same Context object.
 	 *         Do not call this method "lock()" otherwise we get context.lock().lock();
 	 */
@@ -1530,13 +1530,13 @@ public class Context
 	{
 		return lock;
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Set the mover to the index in entry of the method and set the correct
 	 * previous and next player according to that index.
-	 *
+	 * 
 	 * @param newMover The new mover.
 	 */
 	public void setMoverAndImpliedPrevAndNext(final int newMover)
@@ -1563,9 +1563,9 @@ public class Context
 		}
 		state.setPrev(prev);
 	}
-
+	
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * @return True if the game we're current playing is a graph game.
 	 */
@@ -1573,7 +1573,7 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.isGraphGame();
-
+		
 		return game.isGraphGame();
 	}
 
@@ -1584,7 +1584,7 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.isVertexGame();
-
+		
 		return game.isVertexGame();
 	}
 
@@ -1595,7 +1595,7 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.isEdgeGame();
-
+		
 		return game.isEdgeGame();
 	}
 
@@ -1606,10 +1606,10 @@ public class Context
 	{
 		if (subcontext != null)
 			return subcontext.isCellGame();
-
+		
 		return game.isCellGame();
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -1628,7 +1628,7 @@ public class Context
 	{
 		return state().mover(); // For the normal context that's always the mover.
 	}
-
+	
 	/**
 	 * NOTE: The RNG seed is NOT reset to the one of the startContext here!
 	 * Method used to set the context to another context.
@@ -1639,43 +1639,43 @@ public class Context
 		parentContext = context.parentContext();
 		state.resetStateTo(context.state(),game);
 		trial.resetToTrial(context.trial());
-
+		
 		// WARNING: Currently just copying the completed trials by reference here
 		// TODO:    Would actually want these trials to become immutable somehow...
 		//		    Would add a level of safety but is not critical (to do when time permits).
 		completedTrials = new ArrayList<Trial>(context.completedTrials());
-
+		
 		subcontext = context.subcontext() == null ? null : new Context(context.subcontext(), this);
 		currentSubgameIdx = context.currentSubgameIdx;
-
+		
 		models = new Model[context.models.length];
 		for (int i = 0; i < models.length; ++i)
 			models[i] = context.models[i].copy();
-
+		
 		evalContext = new EvalContext(context.evalContext());
-
+		
 		numLossesDecided = context.numLossesDecided;
 		numWinsDecided = context.numWinsDecided;
 
 		//ringFlagCalled = other.ringFlagCalled;
 		recursiveCalled = context.recursiveCalled();
-
+	
 		if (context.scores != null)
 			scores = Arrays.copyOf(context.scores, context.scores.length);
 		else
 			scores = null;
-
+		
 		if (context.payoffs != null)
 			payoffs = Arrays.copyOf(context.payoffs, context.payoffs.length);
 		else
 			payoffs = null;
 
 		active = context.active;
-
+		
 		winners = new TIntArrayList(context.winners());
 		losers = new TIntArrayList(context.losers());
 	}
-
+	
 	/**
 	 * @return A map with key = site of a die, value = state of the die (for GUI only).
 	 */
@@ -1683,7 +1683,7 @@ public class Context
 	{
 		return diceSiteStates;
 	}
-
+	
 	/**
 	 * Store the current end data into the trial.
 	 */
@@ -1693,21 +1693,21 @@ public class Context
 		final int[] phases = new int[players().size()];
 		for(int pid = 1; pid < players().size(); pid++)
 			phases[pid] = state().currentPhase(pid);
-
+		
 		final UndoData endData = new UndoData(
 				trial.ranking(),
-				trial.status(),
-				winners,
-				losers,
-				active,
-				scores,
-				payoffs,
-				numLossesDecided,
-				numWinsDecided,
-				phases,
-				state.pendingValues(),
-				state.counter(),
-				trial.previousStateWithinATurn(),
+				trial.status(), 
+				winners, 
+				losers, 
+				active, 
+				scores, 
+				payoffs, 
+				numLossesDecided, 
+				numWinsDecided, 
+				phases, 
+				state.pendingValues(), 
+				state.counter(), 
+				trial.previousStateWithinATurn(), 
 				trial.previousState(),
 				state.prev(),
 				state.mover(),
@@ -1722,7 +1722,7 @@ public class Context
 				state.owned(),
 				state.isDecided()
 		);
-
+		
 		trial.addUndoData(endData);
 	}
 

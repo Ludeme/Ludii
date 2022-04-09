@@ -16,9 +16,9 @@ import main.FileHandling;
  */
 public class TestInstructionGeneration
 {
-
+	
 	//-------------------------------------------------------------------------
-
+	
 	public void test()
 	{
 		System.out.println(
@@ -67,12 +67,12 @@ public class TestInstructionGeneration
 			}
 		}
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	/**
 	 * The thread generating the instructions for a game.
-	 *
+	 * 
 	 * @author Matthew.Stephenson
 	 */
 	public class ThreadRunningGame extends Thread
@@ -105,15 +105,15 @@ public class TestInstructionGeneration
 			}
 		}
 	}
-
+	
 	//-------------------------------------------------------------------------
-
+	
 	public static void main(final String[] args)
 	{
 		final TestInstructionGeneration temp = new TestInstructionGeneration();
 		temp.test();
 	}
-
+	
 	//-------------------------------------------------------------------------
-
+	
 }
