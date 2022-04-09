@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ludii</groupId>
+    <artifactId>common</artifactId>
+    <version>1.3.1</version>
+    <packaging>jar</packaging>
+    <parent>
+        <groupId>ludii</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.3.1</version>
+    </parent>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>res</directory>
+                <excludes>
+                    <exclude>**/img/**</exclude>
+                    <exclude>**/audio/**</exclude>
+                    <exclude>**/lud/WishlistDLP/**</exclude>
+                    <exclude>**/lud/reconstruction/**</exclude>
+                    <exclude>**/lud/test/**</exclude>
+                    <exclude>**/lud/wip/**</exclude>
+                    <exclude>**/lud/wishlist/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>res/img</directory>
+            </resource>
+            <resource>
+                <directory>res/audio</directory>
+            </resource>
+        </resources>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.trove4j</groupId>
+            <artifactId>trove4j</artifactId>
+        </dependency>
+    </dependencies>
+</project>

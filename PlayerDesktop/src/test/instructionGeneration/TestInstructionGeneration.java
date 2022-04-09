@@ -1,7 +1,5 @@
 package test.instructionGeneration;
 
-import static org.junit.Assert.fail;
-
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -18,9 +16,9 @@ import main.FileHandling;
  */
 public class TestInstructionGeneration
 {
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	public void test()
 	{
 		System.out.println(
@@ -69,12 +67,12 @@ public class TestInstructionGeneration
 			}
 		}
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**
 	 * The thread generating the instructions for a game.
-	 * 
+	 *
 	 * @author Matthew.Stephenson
 	 */
 	public class ThreadRunningGame extends Thread
@@ -103,19 +101,19 @@ public class TestInstructionGeneration
 			catch (InvocationTargetException | InterruptedException e)
 			{
 				e.printStackTrace();
-				fail();
+				throw new RuntimeException(e);
 			}
 		}
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	public static void main(final String[] args)
 	{
 		final TestInstructionGeneration temp = new TestInstructionGeneration();
 		temp.test();
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 }

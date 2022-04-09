@@ -1,7 +1,5 @@
 package utils.trials;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,22 +24,22 @@ import utils.AIFactory;
 /**
  * To generate, and store, trials for every game.
  * Games for which trials are already stored will be skipped.
- * 
+ *
  * @author Eric Piette
  */
 public class GenerateTrialsCluster
 {
 	/** Number of random trials to generate per game */
 	private static int NUM_TRIALS_PER_GAME;
-	
+
 	/** The move limit to use to generate the trials. */
 	private static int moveLimit;
-	
+
 	//----------------------------------------------------------------
-	
+
 	/**
 	 * Generates trials.
-	 * 
+	 *
 	 * Arg 1 = Move Limit.
 	 * Arg 2 = Thinking time for the agents.
 	 * Arg 3 = Num trials to generate.
@@ -57,7 +55,7 @@ public class GenerateTrialsCluster
 		final String agentName = args.length < 4 ? "Random" : args[3];
 		final String gameNameExpected = args.length < 5 ? "" : args[4];
 		final String rulesetExpected = args.length < 6 ? "" : args[5];
-		
+
 		final File startFolder = new File("Ludii/lud/");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
@@ -65,51 +63,51 @@ public class GenerateTrialsCluster
 		final String[] gamePaths = FileHandling.listGames();
 		int index = 0;
 		String gamePath = "";
-		
+
 		System.out.println("Game looking for is " + gameNameExpected);
 		System.out.println("Ruleset looking for is " + rulesetExpected);
-		
+
 		/** Check if the game path exits. */
 		for (; index < gamePaths.length; index++)
 		{
 			if (!gamePaths[index].contains(gameNameExpected))
 				continue;
-			
+
 			gamePath = gamePaths[index];
 			break;
 		}
-		
+
 		// Game not found !
 		if(index >= gamePaths.length)
 			System.err.println("ERROR GAME NOT FOUND");
 		else
 			System.out.println("GAME FOUND");
-			
+
 		gamePath = gamePath.replaceAll(Pattern.quote("\\"), "/");
-		
+
 		final Game game = GameLoader.loadGameFromName(gamePath);
 		game.setMaxMoveLimit(moveLimit);
 		game.start(new Context(game, new Trial(game)));
-			
+
 		System.out.println("Loading game: " + game.name());
 		final String gameFolderPath = "." + File.separator + game.name() ;
 		final File gameFolderFile = new File(gameFolderPath);
-			
+
 		if(!gameFolderFile.exists())
 			gameFolderFile.mkdir();
-			
+
 		// Check if the game has a ruleset.
 		final List<Ruleset> rulesetsInGame = game.description().rulesets();
-		if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) 
+		if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
 		{
 			for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 			{
 				final Ruleset ruleset = rulesetsInGame.get(rs);
-				
+
 				// We check if we want a specific ruleset.
 				if(!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
 					continue;
-				
+
 				if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
 				{
 					final Game rulesetGame = GameLoader.loadGameFromName(gamePath, ruleset.optionSettings());
@@ -117,42 +115,42 @@ public class GenerateTrialsCluster
 
 					final String rulesetFolderPath = gameFolderPath + File.separator + rulesetGame.getRuleset().heading().replace("/", "_");
 					final File rulesetFolderFile = new File(rulesetFolderPath);
-						
+
 					if(!rulesetFolderFile.exists())
 						rulesetFolderFile.mkdir();
 
 					System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
-						
+
 					for (int i = 0; i < NUM_TRIALS_PER_GAME; ++i)
 					{
 						System.out.println("Starting playout for: ...");
 						final String trialFilepath = rulesetFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
 						final File trialFile = new File(trialFilepath);
-						
+
 						if(trialFile.exists())
 							continue;
-							
+
 						// Set the agents.
 						final List<AI> ais = chooseAI(rulesetGame, agentName, i);
 						for(final AI ai : ais)
 							if(ai != null)
 								ai.setMaxSecondsPerMove(thinkingTime);
-							
+
 						final Trial trial = new Trial(rulesetGame);
 						final Context context = new Context(rulesetGame, trial);
 	
 						final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
 						rulesetGame.start(context);
-							
+
 						// Init the ais.
 						for (int p = 1; p <= rulesetGame.players().count(); ++p)
 							ais.get(p).initAI(rulesetGame, p);
 						final Model model = context.model();
-							
+
 						// Run the trial.
 						while (!trial.over())
 							model.startNewStep(context, ais, thinkingTime);
-							
+
 						try
 						{
 							trial.saveTrialToTextFile(trialFile, gamePath, rulesetGame.getOptions(), new RandomProviderDefaultState(startRNGState));
@@ -161,7 +159,7 @@ public class GenerateTrialsCluster
 						catch (final IOException e)
 						{
 							e.printStackTrace();
-							fail("Crashed when trying to save trial to file.");
+							throw new RuntimeException("Crashed when trying to save trial to file.", e);
 						}
 					}
 				}
@@ -174,31 +172,31 @@ public class GenerateTrialsCluster
 				System.out.println("Starting playout for: ...");
 				final String trialFilepath = gameFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
 				final File trialFile = new File(trialFilepath);
-				
+
 				if(trialFile.exists())
 					continue;
-				
+
 				// Set the agents.
 				final List<AI> ais = chooseAI(game, agentName, i);
 				for(final AI ai : ais)
 					if(ai != null)
 						ai.setMaxSecondsPerMove(thinkingTime);
-					
+
 				final Trial trial = new Trial(game);
 				final Context context = new Context(game, trial);
 
 				final byte[] startRNGState = ((RandomProviderDefaultState) context.rng().saveState()).getState();
 				game.start(context);
-					
+
 				// Init the ais.
 				for (int p = 1; p <= game.players().count(); ++p)
 					ais.get(p).initAI(game, p);
 				final Model model = context.model();
-					
+
 				// Run the trial.
 				while (!trial.over())
 					model.startNewStep(context, ais, thinkingTime);
-					
+
 				try
 				{
 					trial.saveTrialToTextFile(trialFile, gamePath, new ArrayList<String>(), new RandomProviderDefaultState(startRNGState));
@@ -207,12 +205,12 @@ public class GenerateTrialsCluster
 				catch (final IOException e)
 				{
 					e.printStackTrace();
-					fail("Crashed when trying to save trial to file.");
+                    throw new RuntimeException("Crashed when trying to save trial to file.", e);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * @param game The game.
 	 * @param agentName The name of the agent.
@@ -223,7 +221,7 @@ public class GenerateTrialsCluster
 	{
 		final List<AI> ais = new ArrayList<AI>();
 		ais.add(null);
-		
+
 		for (int p = 1; p <= game.players().count(); ++p)
 		{
 			if(agentName.equals("UCT"))
@@ -250,7 +248,7 @@ public class GenerateTrialsCluster
 					ai = AIFactory.createAI("UCT");
 					ais.add(ai);
 				}
-				else 
+				else
 				{
 					ais.add(new utils.RandomAI());
 				}
@@ -271,7 +269,7 @@ public class GenerateTrialsCluster
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -315,7 +313,7 @@ public class GenerateTrialsCluster
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -339,7 +337,7 @@ public class GenerateTrialsCluster
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}
@@ -386,7 +384,7 @@ public class GenerateTrialsCluster
 							ai = AIFactory.createAI("UCT");
 							ais.add(ai);
 						}
-						else 
+						else
 						{
 							ais.add(new utils.RandomAI());
 						}

@@ -1,7 +1,5 @@
 package kilothon;
 
-import static org.junit.Assert.fail;
-
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -18,20 +16,20 @@ import other.trial.Trial;
 
 /**
  * Method used to run a game in the killothon.
- * 
+ *
  * @author Eric.Piette
  */
 public class RunGame extends Thread
 {
 	/** The name of the game. */
 	private final String gameName;
-	
+
 	/** The number of players. */
 	private final int numPlayers;
-	
+
 	/** The limit of moves per player. */
 	private final int moveLimitPerPlayer;
-	
+
 	/** The graphical app used to show the game. */
 	private final PlayerApp app;
 
@@ -42,7 +40,7 @@ public class RunGame extends Thread
 	 */
 	public RunGame
 	(
-		final PlayerApp app, 
+		final PlayerApp app,
 		final String name,
 		final int numPlayers,
 		final int moveLimit
@@ -58,7 +56,7 @@ public class RunGame extends Thread
 	public void run()
 	{
 		final Manager manager = app.manager();
-		
+
 		try
 		{
 			EventQueue.invokeAndWait(() ->
@@ -70,10 +68,10 @@ public class RunGame extends Thread
 					final String AIName = pid == 1 ? "UCT" : "Random";
 					final JSONObject json = new JSONObject().put("AI", new JSONObject().put("algorithm", AIName));
 					AIUtil.updateSelectedAI(app.manager(), json, pid, AIName);
-							
+
 					if (manager.aiSelected()[pid].ai() != null)
 						manager.aiSelected()[pid].ai().closeAI();
-							
+
 					manager.aiSelected()[pid] = new AIDetails(manager, json, pid, "Random");
 				}
 				GameUtil.startGame(app);
@@ -84,7 +82,7 @@ public class RunGame extends Thread
 		catch (InvocationTargetException | InterruptedException e)
 		{
 			e.printStackTrace();
-			fail();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -96,15 +94,15 @@ public class RunGame extends Thread
 		final Manager manager = app.manager();
 		final JSONObject json = new JSONObject().put("AI", new JSONObject().put("algorithm", "Random"));
 		AIUtil.updateSelectedAI(app.manager(), json, 1, "Random");
-				
+
 		if (manager.aiSelected()[1].ai() != null)
 			manager.aiSelected()[1].ai().closeAI();
-				
+
 		manager.aiSelected()[1] = new AIDetails(manager, json, 1, "Random");
 		app.manager().settingsManager().setAgentsPaused(app.manager(), false);
 		app.manager().ref().nextMove(app.manager(), false);
 	}
-	
+
 	/**
 	 * @return True if the game is over.
 	 */
@@ -112,7 +110,7 @@ public class RunGame extends Thread
 	{
 		return app.manager().ref().context().trial().over();
 	}
-	
+
 	/**
 	 * @return The trial of the current game.
 	 */
@@ -120,7 +118,7 @@ public class RunGame extends Thread
 	{
 		return app.manager().ref().context().trial();
 	}
-	
+
 	/**
 	 * @return The current mover.
 	 */
@@ -128,5 +126,5 @@ public class RunGame extends Thread
 	{
 		return app.manager().ref().context().state().mover();
 	}
-	
+
 }
