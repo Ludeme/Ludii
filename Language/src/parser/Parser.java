@@ -98,7 +98,7 @@ public class Parser
 		final boolean        isVerbose
 	)
 	{
-		if (Completer.needsCompleting(description))
+		if (Completer.needsCompleting(description.rawGameDescription()))
 		{
 			final String rawGame = description.rawGameDescription();
 			System.out.println("Raw game description is:\n" + rawGame);
