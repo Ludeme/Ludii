@@ -166,6 +166,7 @@ public class Completer
 			final String[] parent = parents.get(enumeration - 1);
 			//System.out.println("Enumerating on parent " + enumeration + ": " + parent[0] + "?" + parent[1]);
 			enumerateMatches(left, right, parent, ludMap, queue);
+			enumerateMatches(left, right, parent, defMap, queue);
 		}
 		else
 		{
