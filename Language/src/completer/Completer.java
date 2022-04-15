@@ -1,4 +1,4 @@
-package parser;
+package completer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -43,31 +43,31 @@ public class Completer
 	 * @param report Report log for warnings and errors.
 	 * @return List of completed (raw) game descriptions ready for expansion and parsing.        
 	 */
-	public static List<String> complete(final String raw, final Report report)
+	public static List<Completion> complete(final String raw, final Report report)
 	{
 //		System.out.println("Completing description...");
 		
 		// Create list of alternative Descriptions, as each will need to be expanded
-		final List<String> completions = new ArrayList<String>();
+		final List<Completion> completions = new ArrayList<Completion>();
 		
 		final Map<String, String> ludMap = getAllLudContents();
 		final Map<String, String> defMap = getAllLudContents();
 		
-		final List<String> queue = new ArrayList<String>();
-		queue.add(raw);
+		final List<Completion> queue = new ArrayList<Completion>();
+		queue.add(new Completion(new String(raw)));
 		
 		while (!queue.isEmpty())
 		{
-			final String str = queue.remove(0);
-			if (!needsCompleting(str))
+			final Completion comp = queue.remove(0);
+			if (!needsCompleting(comp.raw()))
 			{
 				// Completed!
-				completions.add(str);
+				completions.add(comp);
 				continue;
 			}
 			
 			// Complete the next completion clause
-			nextCompletion(str, queue, ludMap, defMap, report);
+			nextCompletion(comp, queue, ludMap, defMap, report);
 		}
 				
 		return completions;
@@ -83,12 +83,14 @@ public class Completer
 	 */
 	public static void nextCompletion
 	(
-		final String raw, final List<String> queue, 
+		final Completion comp, final List<Completion> queue, 
 		final Map<String, String> ludMap, final Map<String, String> defMap, 
 		final Report report
 	)
 	{
 //		System.out.println("Completing next completion for raw string:\n" + raw);
+		
+		final String raw = comp.raw();
 		
 		// Find opening and closing bracket locations
 		final int from = raw.indexOf("[");
@@ -165,8 +167,8 @@ public class Completer
 			// Enumerate on parents
 			final String[] parent = parents.get(enumeration - 1);
 			//System.out.println("Enumerating on parent " + enumeration + ": " + parent[0] + "?" + parent[1]);
-			enumerateMatches(left, right, parent, ludMap, queue);
-			enumerateMatches(left, right, parent, defMap, queue);
+			enumerateMatches(left, right, parent, ludMap, queue, comp.score());
+			enumerateMatches(left, right, parent, defMap, queue, comp.score());
 		}
 		else
 		{
@@ -203,7 +205,8 @@ public class Completer
 						continue;  // included text is not present
 				}
 				
-				final String completion = raw.substring(0, from) + choice + raw.substring(to + 1);
+				final String str = raw.substring(0, from) + choice + raw.substring(to + 1);
+				final Completion completion = new Completion(str);
 				
 //				System.out.println("\n**********************************************************");
 //				System.out.println("completion " + n + "/" + choices.size() + " is:\n" + completion);
@@ -224,38 +227,46 @@ public class Completer
 	private static void enumerateMatches
 	(
 		final String left, final String right, final String[] parent, 
-		final Map<String, String> map, final List<String> queue
+		final Map<String, String> map, final List<Completion> queue, 
+		final double confidence
 	)
 	{
 		for (Map.Entry<String, String> entry : map.entrySet()) 
 		{
-			final String str = entry.getValue();
+			final String mapString = entry.getValue();
 			
-			final int l = str.indexOf(parent[0]);
+			// **
+			// ** TODO: Determine distance between map entry and this completion
+			// **
+			final double distance = 0.1;  // dummy value for testing
+			
+			final int l = mapString.indexOf(parent[0]);
 			if (l < 0)
 				continue;  // not a match
 			
-			final String secondPart = str.substring(l + parent[0].length());
+			final String secondPart = mapString.substring(l + parent[0].length());
 			
 			final int r = secondPart.indexOf(parent[1]);
 			
 			if (r >= 0)
 			{
 				// Is a match
-				final String match = str.substring(l, l + parent[0].length() + r + parent[1].length());
+				final String match = mapString.substring(l, l + parent[0].length() + r + parent[1].length());
 				//System.out.println("match is: " + match);
 				
-				final String completion = 
-						left.substring(0, left.length() - parent[0].length() - 1)
+				final String str = 
+						left.substring(0, left.length() - parent[0].length())
 						+
 						match
 						+
 						right.substring(parent[1].length());
+				final Completion completion = new Completion(str);
 				//System.out.println("completion is:\n" + completion);
 				
 				if (!queue.contains(completion))
 				{
 					//System.out.println("Adding completion:\n" + completion);
+					completion.setScore(confidence * (1 - distance));
 					queue.add(completion);
 				}
 			}	
@@ -800,13 +811,14 @@ public class Completer
 	 * @param content Completed string to print.
 	 * @throws IOException 
 	 */
+	@SuppressWarnings("boxing")
 	public static void saveReconstruction
 	(
-		final String name, final String content
+		final String name, final Completion completion
 	) throws IOException
 	{
-		final String outFileName = "../Common/res/out/recons/" + name + ".lud";	
-		
+		final String outFileName = "../Common/res/out/recons/" + name + "-" + 
+									String.format("%.3f", completion.score()) + ".lud";	
 		// Prepare the output file
 		final File file = new File(outFileName);
 		if (!file.exists())
@@ -821,7 +833,7 @@ public class Completer
 				)
 		)
 		{
-			writer.write(content);
+			writer.write(completion.raw());
 		}
 	}
 	
