@@ -1,4 +1,4 @@
-package parser;
+package completer;
 
 //import static org.junit.Assert.*;
 
@@ -61,17 +61,17 @@ public class TestCompleter
 
 	//-------------------------------------------------------------------------
 
-	void testSaving()
-	{
-		try
-		{
-			Completer.saveReconstruction("Test", "(test ...)");
-		} 
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+//	void testSaving()
+//	{
+//		try
+//		{
+//			Completer.saveReconstruction("Test", "(test ...)");
+//		} 
+//		catch (IOException e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 		
 	//-------------------------------------------------------------------------
 
@@ -115,15 +115,14 @@ public class TestCompleter
 			System.out.println("File needs completing: " + Completer.needsCompleting(str));
 			
 			//final Report report = new Report();
-			final List<String> completions = Completer.complete(str, null);
+			final List<Completion> completions = Completer.complete(str, null);
 			for (int n = 0; n < completions.size(); n++) 
 			{
-				final String completion = completions.get(n);
+				final Completion completion = completions.get(n);
 				
 				// Don't add ".lud" suffix, that is added by completer
 				final int suffixAt = fileName.indexOf(".lud");
-				final String outFileName = fileName.substring(0, suffixAt) + "-" + n; 
-								
+				final String outFileName = fileName.substring(0, suffixAt) + "-" + n; 			
 				try
 				{
 					Completer.saveReconstruction(outFileName, completion);
