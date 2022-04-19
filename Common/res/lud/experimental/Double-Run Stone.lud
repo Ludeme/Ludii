@@ -126,36 +126,35 @@
                         ("IntolerableSite" (site) (site))
                         (remove (site))
                 ))
-                (set Value Mover 0) // reset forced move count when you move
+                (forEach Site (sites Occupied by:Mover) (set State at:(site) 0)) // clear move limits
                 }
 ))))
 
 (define "StepPiece"
-    (if  // limits number of moves Mover can make before winning.
-        (> (count Sites in:(sites Occupied by:Mover)) (value Player Mover))  
-        (forEach Piece 
-            (move Step "Connection"
-                (to  
-                    if:(and
-                        {
-                        (is Empty (to)) 
-                        (not
-                            ("IntolerableSite" (to) (from))
-                        )
-                        }
-                ))
-                (then
-                    (and
-                        (forEach Site 
-                            (sites Around (last To) "Connection") 
-                            (if 
-                                ("IntolerableSite" (site) (site))
-                                (remove (site))
-                        )) 
-                        (set Value Mover (+ (value Player Mover) 1)) 
-            )))
-            Mover
-        )
+    (forEach Site
+        (intersection (sites Occupied by:Mover) (sites State 0)) 
+        (move Step 
+            (from (site))
+            "Connection"
+            (to  
+                if:(and
+                    {
+                    (is Empty (to)) 
+                    (not
+                        ("IntolerableSite" (to) (from))
+                    )
+                    }
+            ))
+            (then
+                (and
+                    (forEach Site 
+                        (sites Around (last To) "Connection") 
+                        (if 
+                            ("IntolerableSite" (site) (site))
+                            (remove (site))
+                    )) 
+                    (set State at:(last To) 2) // freeze piece 
+        )))
 ))
 
 //-------------------------------------------------
@@ -220,7 +219,8 @@
         ))
         (end 
             (if 
-                (< 0 (+ (score Mover) (score Next)))
+                (!= 0 (count Sites in:(sites State 1)))
+                //    (< 0 (+ (score Mover) (score Next)))
                 (byScore)
 ))))
 
@@ -245,6 +245,8 @@
     (item "Order 4" <4> "Order 4 board")
     }
 )
+
+//---------------------------------------------
 
 //---------------------------------------------
 
