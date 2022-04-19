@@ -131,7 +131,7 @@ public final class SitesAround extends BaseRegionFunction
 			sites = new int[1];
 			sites[0] = locWhere.eval(context);
 		}
-
+		
 		final other.topology.Topology graph = context.topology();
 
 		final ContainerState state = context.state().containerStates()[0];
@@ -175,8 +175,18 @@ public final class SitesAround extends BaseRegionFunction
 		context.setTo(origTo);
 
 		if (originIncluded.eval(context))
-			sitesAround.add(sites[0]);
-
+		{
+			for(int site : sites)
+				if (!sitesAround.contains(site))
+					sitesAround.add(site);
+		}
+		else
+		{
+			for(int site : sites)
+				while (sitesAround.contains(site))
+					sitesAround.remove(site);
+		}
+		
 		return new Region(sitesAround.toArray());
 	}
 
@@ -535,8 +545,18 @@ public final class SitesAround extends BaseRegionFunction
 			gameContext.setTo(origTo);
 
 			if (originIncluded.eval(gameContext))
-				sitesAround.add(sites[0]);
-
+			{
+				for(int site : sites)
+					if (!sitesAround.contains(site))
+						sitesAround.add(site);
+			}
+			else
+			{
+				for(int site : sites)
+					while (sitesAround.contains(site))
+						sitesAround.remove(site);
+			}
+			
 			precomputedRegion = new Region(sitesAround.toArray());
 		}
 	}
