@@ -24,10 +24,10 @@
 (game "Scaffold"
     (players 2)
     (equipment {
-            (board (square <Board:size>) use:Vertex)
-            (piece "Marker" Each)
-            (regions P1 { (sites Side N) (sites Side S) } )
-            (regions P2 { (sites Side W) (sites Side E) } )
+        (board (square <Board:size>) use:Vertex)
+        (piece "Marker" Each)
+        (regions P1 { (sites Side N) (sites Side S) } )
+        (regions P2 { (sites Side W) (sites Side E) } )
     })
     (rules
         (meta (swap))
@@ -42,7 +42,7 @@
                         (moveAgain)
                     )
                 )
-
+                
             )
         )
         (end {

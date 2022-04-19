@@ -3,8 +3,8 @@
         (if (and { 
                 (is Occupied (site)) 
                 (and
-                   (!= (what at:(site)) (id "Pawn" P1)) 
-                   (!= (what at:(site)) (id "Pawn" P2)) 
+                    (!= (what at:(site)) (id "Pawn" P1)) 
+                    (!= (what at:(site)) (id "Pawn" P2)) 
                 )
             })
             (remove (site))
@@ -36,11 +36,11 @@
 (define "CaptureToPieceAndResetCounter"
     (apply 
         (if (is Enemy (who at:(to)))
-        		(and {
-        		(remove (to))
+            (and {
+                (remove (to))
                 ("Boom" (to))
                 (set Counter)
-        		})
+            })
         )
     ) 
 )
@@ -139,10 +139,10 @@
             (apply (remove (to)))
         )
         (then
-        	(and {
-        		(remove (last To))
-        		("Boom" (last To))
-        })
+            (and {
+                (remove (last To))
+                ("Boom" (last To))
+            })
         )
     )
 )

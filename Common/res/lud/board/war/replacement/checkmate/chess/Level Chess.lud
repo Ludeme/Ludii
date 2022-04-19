@@ -97,8 +97,8 @@
         Forward 
         (between (exact 2) if:(is Empty (between))) 
         (to if:(is Empty (to))
-		    (apply if:(>= (+ ("GetSiteLevel" (from)) 1) ("GetSiteLevel" (to))))
-		)
+            (apply if:(>= (+ ("GetSiteLevel" (from)) 1) ("GetSiteLevel" (to))))
+        )
         "SetEnPassantLocation"
     )
 )

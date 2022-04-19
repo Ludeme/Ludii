@@ -30,15 +30,31 @@
         )
     })  
     (rules 
-        (meta 
-            (swap)
-        )
         (start {
-            (place "Marker1" (centrePoint))
-            (place Random {"Marker1"} count:29) 
-            (place Random {"Marker2"} count:30) 
+            (place "Marker2" (centrePoint))
+            (place Random {"Marker2"} count:29) 
+            (place Random {"Marker1"} count:30) 
         })
-        (play (forEach Piece))
+        phases:{
+        (phase "Swap" 
+            (play
+                (or
+                    (move Pass)
+                    (move Select
+                        (from (sites Occupied by:Mover))
+                        (to (sites Occupied by:Next))
+                        (then
+                            (swap Pieces (last From) (last To))
+                        )
+                    )
+                )
+            )
+            (nextPhase "Play")		
+        )
+        (phase "Play"
+            (play (forEach Piece))		
+        )
+        }
         (end ("NoMoves" Loss))  
     )
 )
@@ -61,6 +77,11 @@
         (date "2013")
         }
     )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
     
     (ai 
         "Quantum Leap_ai"

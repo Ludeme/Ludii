@@ -3,129 +3,128 @@
 (define "GridDirection" <BoardShape:directionsUsed>)
 
 (define "Score4"
- (do
-  (forEach Site 
-   (sites Occupied by:#1)
-   (if
-    (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection" )))
-    (set State at:(site) 0)
-    (set State at:(site) 1)
-   )
-  )
-  next:(do
-   (and
-    {
-     (remember Value 0)
-     (remember Value 0)
-     (forEach Group "GridDirection" 
-  //   if:(is #1 (who at:(to)))
-      (if
-       (no Pieces in:(intersection (sites) (sites State 1))) 
-       (remember Value 
-        (count Sites in:(sites))
-     )))
-    }
-   )
-   next:(set Var "TopValue" (max (values Remembered))
-    (then
-     (forget Value (max (values Remembered)) 
-      (then
-       (set Score #1 (* (var "TopValue") (max (values Remembered)))
-        (then
-         (forget Value All)       
-  )))))))
+    (do
+        (forEach Site 
+            (sites Occupied by:#1)
+            (if
+                (> 3 (count Pieces #1 in:(sites Around (site) "GridDirection" )))
+                (set State at:(site) 0)
+                (set State at:(site) 1)
+            )
+        )
+        next:(do
+            (and
+                {
+                (remember Value 0)
+                (remember Value 0)
+                (forEach Group "GridDirection" 
+                    //   if:(is #1 (who at:(to)))
+                    (if
+                        (no Pieces in:(intersection (sites) (sites State 1))) 
+                        (remember Value 
+                            (count Sites in:(sites))
+                )))
+                }
+            )
+            next:(set Var "TopValue" (max (values Remembered))
+                (then
+                    (forget Value (max (values Remembered)) 
+                        (then
+                            (set Score #1 (* (var "TopValue") (max (values Remembered)))
+                                (then
+                                    (forget Value All)       
+        )))))))
 ))
 
 (define "AddOrPass"
- (or
-  {
-   (move Add
-    (piece (id "Disc" Mover))
-    (to (sites Empty)
-      if:(> 3 (count Pieces Mover in:(sites Around (to) "GridDirection"))) 
-    ) 
-    (then (set Var "Added" 1))
-   )
-   (move Pass) // without this there are obscure forced moves...
-  }
+    (or
+        {
+        (move Add
+            (piece (id "Disc" Mover))
+            (to (sites Empty)
+                if:(> 3 (count Pieces Mover in:(sites Around (to) "GridDirection"))) 
+            ) 
+            (then (set Var "Added" 1))
+        )
+        (move Pass) // without this there are obscure forced moves...
+        }
 ))
-       
+
 //-----------------------------------------------
 // Main routine
 
 (game "Wrigglers Squared"
- (players 2)
- (equipment
-  {
-   (board <BoardShape:gridType> use:Vertex)
-   (piece "Disc" Each)
-  }
- )
- (rules
-  (play
-   (if
-    (= 1 (var "Added"))
-    (or
-     {
-      "AddOrPass"
-      (forEach Piece
-       (if
-        (< 2 (count Pieces Mover in:(sites Around (from) "GridDirection"))) 
-        (move Remove (from)
-         (then (set Var "Added" 0))
-       ))
-       Mover
-      )
-     }
+    (players 2)
+    (equipment
+        {
+        (board <BoardShape:gridType> use:Vertex)
+        (piece "Disc" Each)
+        }
     )
-    "AddOrPass"
-    (then ("Score4" Mover))
-  ))
-  (end 
-   (if
-    (all Passed)
-    {
-     (if
-      (>= (score Mover) (score Next))
-      (result Mover Win)
-     )
-    }
-    (result Next Win)
+    (rules
+        (play
+            (if
+                (= 1 (var "Added"))
+                (or
+                    {
+                    "AddOrPass"
+                    (forEach Piece
+                        (if
+                            (< 2 (count Pieces Mover in:(sites Around (from) "GridDirection"))) 
+                            (move Remove (from)
+                                (then (set Var "Added" 0))
+                        ))
+                        Mover
+                    )
+                    }
+                )
+                "AddOrPass"
+                (then ("Score4" Mover))
+        ))
+        (end 
+            (if
+                (all Passed)
+                {
+                (if
+                    (>= (score Mover) (score Next))
+                    (result Mover Win)
+                )
+                }
+                (result Next Win)
 ))))
-
 
 //-------------------------------------------------
 // Options
 (define "GridDirection" <BoardShape:directionsUsed>)
 
 (option "Board" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow>} 
-  {
-  (item "9" <(square 9)> <Orthogonal> <Hidden>  "Order 9, Square Ortho-Grid")**
-  (item "13" <(square 13)> <Orthogonal> <Hidden>  "Order 13, Square Ortho-Grid")
-  (item "19" <(square 19)> <Orthogonal> <Hidden>  "Order 19, Square Ortho-Grid")
-  }
+    {
+    (item "9" <(square 9)> <Orthogonal> <Hidden>  "Order 9, Square Ortho-Grid")**
+    (item "13" <(square 13)> <Orthogonal> <Hidden>  "Order 13, Square Ortho-Grid")
+    (item "19" <(square 19)> <Orthogonal> <Hidden>  "Order 19, Square Ortho-Grid")
+    }
 )
 
 //---------------------------------------------
 
 (metadata
-  (info
-    {
-    
-    }
-  )
-  (graphics 
-   {
-    (player Colour P1 (colour 229 92 0))
-    (player Colour P2 (colour Cream))
-    (board Style Graph)
-    (board StyleThickness InnerEdges .2)
-    (board StyleThickness OuterEdges .2)
-    (board StyleThickness InnerVertices .5)
-    (show Edges Diagonal <BoardShape:DiagShow>)
-    (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-//    (show Piece State)
-   }
-  )
- (ai (heuristics (score weight:2)))
+    (info
+        {
+        
+        }
+    )
+    (graphics 
+        {
+        (player Colour P1 (colour 229 92 0))
+        (player Colour P2 (colour Cream))
+        (board Style Graph)
+        (board StyleThickness InnerEdges .2)
+        (board StyleThickness OuterEdges .2)
+        (board StyleThickness InnerVertices .5)
+        (show Edges Diagonal <BoardShape:DiagShow>)
+        (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
+        //    (show Piece State)
+        }
+    )
+    (ai (heuristics (score weight:2)))
 )
