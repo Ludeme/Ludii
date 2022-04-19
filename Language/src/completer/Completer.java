@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import main.StringRoutines;
 //import main.StringRoutines;
 import main.grammar.Report;
 
@@ -95,8 +96,7 @@ public class Completer
 		
 		// Find opening and closing bracket locations
 		final int from = raw.indexOf("[");
-		//final int to = StringRoutines.matchingBracketAt(raw, from, true);
-		final int to = matchingBracketAt(raw, from, true);
+		final int to = StringRoutines.matchingBracketAt(raw, from);
 
 		// Get reconstruction clause (substring within square brackets)
 		final String left   = raw.substring(0, from);
@@ -474,84 +474,6 @@ public class Completer
 		return choices;
 	}
 		
-	//-------------------------------------------------------------------------
-
-	/**
-	 * @param str
-	 * @param from
-	 * @param doNesting
-	 * @return Location of matching closing bracket, else -1 if none.
-	 */
-	public static int matchingBracketAt(final String str, final int from, final boolean doNesting)
-	{
-		final char[][] brackets = 
-		{
-			{ '(', ')' },	
-			{ '{', '}' },	
-			{ '[', ']' },	
-			{ '<', '>' },	
-		};
-	
-		final int Opening = 0;
-		final int Closing = 1;
-
-		// Check is actually opening bracket
-		int c = from;
-		final char ch = str.charAt(c);
-		
-		// Find which bracket 
-		int bid = -1;
-		for (int n = 0; n < brackets.length; n++)
-			if (brackets[n][0] == ch)
-				bid = n;
-
-		if (bid == -1)
-		{
-			System.out.println("** Specified char '" + ch + "' is not an open bracket.");
-			return -1;
-		}
-		
-		// Check for matching closing bracket
-		int bracketDepth = 0;
-		boolean inString = false;
-		while (c < str.length())
-		{
-			final char chB = str.charAt(c);
-			
-			if (chB == '"')
-				inString = !inString;
-			
-			if (!inString)
-			{
-				final char chA = (c == 0) ? '?' : str.charAt(c - 1);
-				if (chB == brackets[bid][Opening])
-				{
-					if (chA != '(' || chB != '<')  // check is not a (< ...) or (<= ...) ludeme
-						bracketDepth++;
-				}
-				else if (chB == brackets[bid][Closing])
-				{
-					if (chA != '(' || chB != '>')  // check is not a (> ...) or (>= ...) ludeme
-					{
-						if (!doNesting)
-							break;  // stop on first matching closing bracket, e.g. option "<<>"
-						bracketDepth--;
-					}
-				}
-			}
-			
-			if (bracketDepth == 0)
-				break;  // found bracket that closes opening bracket	
-			c++;
-		}
-			
-		if (c >= str.length())
-			return -1;  // no matching closing bracket found
-			//throw new IllegalArgumentException("No matching closing bracket " + brackets[bid][Closing] + " found.");
-			
-		return c;
-	}
-
 	//-------------------------------------------------------------------------
 
 	/**
