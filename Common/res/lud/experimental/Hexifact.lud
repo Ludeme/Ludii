@@ -1,0 +1,140 @@
+// Hexifact
+//---------------------------------------------
+       
+(define "GridDirection" <BoardShape:directionsUsed>)
+
+(define "ScoreMover"
+ (do
+  (and
+   {
+    (remember Value 0)
+    (remember Value 0)
+    (forEach Group "GridDirection" 
+//     if:(is Mover (who at:(to))) // this appears to be the default, and it ceases to work when the boolean is included.
+     (remember Value (count Sites in:(sites)))
+    )
+   }
+  )
+  next:(set Var "TopValue" (max (values Remembered))
+   (then
+    (forget Value (max (values Remembered)) 
+     (then
+      (set Score Mover (* (var "TopValue") (max (values Remembered)))
+       (then
+        (forget Value All)       
+  ))))))
+))
+
+(define "PlacementSites"
+ (and
+  (no Pieces Mover in:(sites Around (to) "GridDirection"))
+  (not (no Pieces Next in:(sites Around (to) "GridDirection")))
+))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Hexifact"
+ (players 2)
+ (equipment
+  {
+   (board <BoardShape:gridType> use:Vertex)
+   (piece "Disc" Each)
+  }
+ )
+ (rules
+  (play
+    (or
+     {
+      (move Add
+       (piece (id "Disc" Mover))
+       (to (sites Empty)
+        if:(or
+         ("PlacementSites")
+         (= -1 (counter))
+       ))
+       (then
+        (forEach Site
+         (sites Occupied by:Mover)
+         (set State at:(site) 0)
+      )))
+      (if
+       <Jumping:limits>
+       (do
+        (forEach Piece
+         (move Hop
+          (from if:(= 0 (state at:(from))))
+          "GridDirection"
+          (between (range 1 Infinity) if:(is In (between) (sites Occupied by:Next)))
+          (to if:(is In (to) (sites Empty)))
+          (then (set State at:(last To) 1))
+         )
+         Mover
+        )
+        ifAfterwards:(all Sites
+         (sites Occupied by:Mover) 
+         if:(> 4 (count Pieces Mover in:(sites Around (site) "GridDirection")))
+      )))
+      (move Pass) // without this there are obscure forced moves...
+     }
+     (then ("ScoreMover"))
+   ))
+  (end 
+   (if
+    (all Passed)
+    {
+     (if
+      (>= (score Mover) (score Next))
+      (result Mover Win)
+     )
+    }
+    (result Next Win)
+))))
+
+
+//-------------------------------------------------
+// Options
+(define "GridDirection" <BoardShape:directionsUsed>)
+
+(option "Board" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow>} 
+ {
+  (item "Hex 3,4 - tactical AI" <(tri Limping 3)> <Orthogonal> <Hidden> "Order 3-4, Hex Grid")**
+  (item "Hex 4 - tactical AI" <(tri Hexagon 4)> <Orthogonal> <Hidden> "Order 4, Hex Grid")
+  (item "Hex 4,5* - tactical AI" <(tri Limping 4)> <Orthogonal> <Hidden> "Order 4-5, Hex Grid")
+  (item "Hex 5" <(tri Hexagon 5)> <Orthogonal> <Hidden> "Order 5, Hex Grid")
+  (item "Hex 5,6 - tactical AI" <(tri Limping 5)> <Orthogonal> <Hidden> "Order 5-6, Hex Grid") 
+ }
+)
+
+(option "Jumping limits" <Jumping> args:{<limits>}
+ {
+  (item "Turn After Placing" <(no Pieces Mover in:(sites State 1))> "Jumping is only allowed if a player made a placement on the last turn")**
+  (item "One Jump per Stone" <True> "A given stone may only jump once before the next placement turn is taken.")
+ }
+)
+
+//---------------------------------------------
+
+(metadata
+  (info
+    {
+
+    }
+  )
+
+  (graphics 
+   {
+    (player Colour P1 (colour 229 92 0))
+    (player Colour P2 (colour Cream))
+    (board Style Graph)
+    (board StyleThickness InnerEdges .2)
+    (board StyleThickness OuterEdges .2)
+    (board StyleThickness InnerVertices .5)
+    (show Edges Diagonal <BoardShape:DiagShow>)
+    (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
+//    (show Piece State)
+   }
+  )
+  
+ (ai (heuristics (score weight:2)))
+)
