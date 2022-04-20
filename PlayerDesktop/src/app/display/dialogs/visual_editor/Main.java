@@ -1,13 +1,13 @@
 package app.display.dialogs.visual_editor;
 
 import app.display.dialogs.visual_editor.view.MainFrame;
-import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel2;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 
 import javax.swing.*;
 
 class Main {
 
-    private static final JPanel editPanel = new EditorPanel2(5000,5000);
+    private static final JPanel editPanel = new EditorPanel(5000,5000);
 
     public static void main(String[] args) {
         MainFrame f = new MainFrame(editPanel);

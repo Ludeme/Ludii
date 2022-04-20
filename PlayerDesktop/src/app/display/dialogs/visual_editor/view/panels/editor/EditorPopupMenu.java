@@ -24,9 +24,9 @@ public class EditorPopupMenu extends JPopupMenu {
 
         duplicateScreen.addActionListener(e -> {
             JFrame frame = new JFrame("Define Editor");
-            EditorPanel2 editorPanel2 = new EditorPanel2(5000,5000);
-            frame.setContentPane(editorPanel2);
-            editorPanel2.drawGraph(graphPanel.getGraph());
+            EditorPanel editorPanel = new EditorPanel(5000,5000);
+            frame.setContentPane(editorPanel);
+            editorPanel.drawGraph(graphPanel.getGraph());
             frame.setVisible(true);
             frame.setPreferredSize(frame.getPreferredSize());
             frame.setSize(1200,800);

@@ -30,7 +30,7 @@ public class Constructor {
 
     @Override
     public String toString(){
-        if(!NAME.isBlank()) return NAME;
+        if(!NAME.equals("")) return NAME;
         return getInputs().toString().substring(1, getInputs().toString().length() - 1);
     }
 }
