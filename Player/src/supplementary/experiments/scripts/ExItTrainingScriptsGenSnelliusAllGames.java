@@ -196,6 +196,10 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 				if (game.isBoardless())
 					continue;
 				
+				// TODO skip imperfect info games
+				// TODO skip games played on edges
+				// TODO skip games with Walk.allGameRotations(game).length == 0
+				
 				double expectedTrialDuration = RulesetConceptsUCT.getValue(RulesetNames.gameRulesetName(game), "DurationMoves");
 				if (Double.isNaN(expectedTrialDuration))
 					expectedTrialDuration = Double.MAX_VALUE;
