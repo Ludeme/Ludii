@@ -91,7 +91,7 @@ public abstract class DeterministicNode extends BaseNode
     	children[moveIdx] = (DeterministicNode) child;
     	--numUnvisitedChildren;
     	
-    	if (numUnvisitedChildren == 0)
+    	if (numUnvisitedChildren == 0 && MCTS.NULL_UNDO_DATA)
     		context.trial().nullUndoData();		// Clear a bunch of memory we no longer need
     }
     
