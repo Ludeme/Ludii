@@ -234,7 +234,7 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 			processDataList.add(new ProcessData(gameNames.get(idx), rulesetNames.get(idx), playerCounts.getQuick(idx)));
 		}
 		
-		long totalCoreHoursRequested = 0L;
+		double totalCoreHoursRequested = 0.0;
 		
 		int processIdx = 0;
 		while (processIdx < processDataList.size())
@@ -261,7 +261,7 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 				else
 					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
 				
-				totalCoreHoursRequested += (CORES_PER_NODE * (MAX_WALL_TIME / 60L));
+				totalCoreHoursRequested += (CORES_PER_NODE * (MAX_WALL_TIME / 60.0));
 				
 				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
@@ -330,12 +330,12 @@ public class ExItTrainingScriptsGenSnelliusAllGames
 								(
 									"/home/" + 
 									userName + 
-									"/TrainFeaturesSnelliusAllGames/Out/" + 
+									"/TrainFeaturesSnelliusAllGames/Out" + 
 									StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
 									+ 
 									"_"
 									+
-									StringRoutines.cleanRulesetName(processData.rulesetName) 
+									StringRoutines.cleanRulesetName(processData.rulesetName).replaceAll(Pattern.quote("/"), "_")
 									+
 									"/"
 								),
