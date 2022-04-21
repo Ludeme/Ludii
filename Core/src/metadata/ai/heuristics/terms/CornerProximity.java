@@ -215,7 +215,6 @@ public class CornerProximity extends HeuristicTerm
 	/**
 	 * Helper method for constructors
 	 * @param game
-	 * @return Computed max dist
 	 */
 	private final void computeMaxDist(final Game game)
 	{
