@@ -124,7 +124,7 @@ public class MoveHandler
 			return false;
 		}
 
-		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves))
+		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves && !app.settingsPlayer().ignoreMultipleMoves()))
 		{
 			// If several different moves are possible.
 			return handleMultiplePossibleMoves(app, possibleMoves, context);

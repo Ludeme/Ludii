@@ -82,6 +82,11 @@ public class SettingsPlayer
 										  false,false,false,false,false,false,false,false,false,false};
 	
 	//-------------------------------------------------------------------------
+	// Exhibiton player settings
+	
+	private boolean ignoreMultipleMoves = false;
+	
+	//-------------------------------------------------------------------------
 	// User settings
 	
 	/** For puzzles whether to show the dialog, cycle through, or decide automatically. */
@@ -775,6 +780,16 @@ public class SettingsPlayer
 	public void setWebGameResultValid(final boolean webGameResultValid)
 	{
 		this.webGameResultValid = webGameResultValid;
+	}
+
+	public boolean ignoreMultipleMoves()
+	{
+		return ignoreMultipleMoves;
+	}
+	
+	public void setIgnoreMultipleMoves(final boolean b)
+	{
+		ignoreMultipleMoves = b;
 	}
 			
 	//-------------------------------------------------------------------------

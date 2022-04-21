@@ -1,0 +1,59 @@
+(game "Exhibition_example_1"  
+    (players 2)  
+    (equipment { 
+        (board (square 6)) 
+        (hand Each size:5)
+        (piece "Pawn1" Shared)
+        (piece "Pawn2" Shared)
+        (piece "Counter1" Shared)
+        (piece "Counter2" Shared)
+        (piece "Rook1" Shared)
+        (piece "Rook2" Shared)
+        (hand Shared size:6)
+    })  
+    (rules 
+    	(start {
+            (place "Pawn1" (handSite Shared 0))
+            (place "Pawn2" (handSite Shared 1))
+            (place "Counter1" (handSite Shared 2))
+            (place "Counter2" (handSite Shared 3))
+            (place "Rook1" (handSite Shared 4))
+            (place "Rook2" (handSite Shared 5))
+        })
+        (play 
+        	(or {
+		        (move 
+		            (from (sites Hand All)) 
+		            (to (union {(sites Hand P1) (sites Hand P2) (sites Board)})) 
+		            copy:True
+		            (then (moveAgain))
+		        )
+		        (move Select 
+	                (from (intersection (sites Occupied by:All) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
+	                (then
+	                    (remove (last To) (then (moveAgain)))
+	                )
+	            )
+	            (move 
+		            (from (intersection (sites Occupied by:All) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
+		            (to (intersection (sites Empty) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
+		            (then (moveAgain))
+		        )
+		    })
+        )
+        (end (if (is Line 9999) (result Mover Win)))
+    )
+)
+
+(metadata 
+
+    (graphics {
+        (piece Colour "Pawn1" fillColour:(colour White))
+        (piece Colour "Pawn2" fillColour:(colour Red))
+        (piece Colour "Counter1" fillColour:(colour White))
+        (piece Colour "Counter2" fillColour:(colour Red))
+        (piece Colour "Rook1" fillColour:(colour White))
+        (piece Colour "Rook2" fillColour:(colour Red))
+    })
+    
+)
