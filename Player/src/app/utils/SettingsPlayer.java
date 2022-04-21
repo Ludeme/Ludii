@@ -84,7 +84,7 @@ public class SettingsPlayer
 	//-------------------------------------------------------------------------
 	// Exhibiton player settings
 	
-	private boolean ignoreMultipleMoves = false;
+	private boolean usingExhibitionApp = false;
 	
 	//-------------------------------------------------------------------------
 	// User settings
@@ -782,14 +782,14 @@ public class SettingsPlayer
 		this.webGameResultValid = webGameResultValid;
 	}
 
-	public boolean ignoreMultipleMoves()
+	public boolean usingExhibitionApp()
 	{
-		return ignoreMultipleMoves;
+		return usingExhibitionApp;
 	}
 	
-	public void setIgnoreMultipleMoves(final boolean b)
+	public void setUsingExhibitionApp(final boolean b)
 	{
-		ignoreMultipleMoves = b;
+		usingExhibitionApp = b;
 	}
 			
 	//-------------------------------------------------------------------------

@@ -125,7 +125,7 @@ public class MoveHandler
 			return false;
 		}
 
-		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves && !app.settingsPlayer().ignoreMultipleMoves()))
+		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves && !app.settingsPlayer().usingExhibitionApp()))
 		{
 			// If several different moves are possible.
 			return handleMultiplePossibleMoves(app, possibleMoves, context);
@@ -638,14 +638,18 @@ public class MoveHandler
 	{
 		final Context context = app.manager().ref().context();
 		final Move lastMove = context.trial().lastMove();
-		final int containerId = ContainerUtil.getContainerId(context, lastMove.getToLocation().site(), lastMove.getToLocation().siteType());	
-		final int what = context.containerState(containerId).what(lastMove.getToLocation().site(), lastMove.getToLocation().siteType());
-		
-		if (context.trial().numberRealMoves() <= 0 || what == 0)
-			return null;
-		
-		final Component lastMoveComponent = context.game().equipment().components()[what];
-		return lastMoveComponent;
+		if (lastMove != null)
+		{
+			final int containerId = ContainerUtil.getContainerId(context, lastMove.getToLocation().site(), lastMove.getToLocation().siteType());	
+			final int what = context.containerState(containerId).what(lastMove.getToLocation().site(), lastMove.getToLocation().siteType());
+			
+			if (context.trial().numberRealMoves() <= 0 || what == 0)
+				return null;
+			
+			final Component lastMoveComponent = context.game().equipment().components()[what];
+			return lastMoveComponent;
+		}
+		return null;
 	}
 	
 	//-------------------------------------------------------------------------
