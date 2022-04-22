@@ -100,7 +100,20 @@ public class PlayerViewUser extends View
 																placement.height
 																);
 			
-			playerView.paintHand(g2d, context, containerPlacement, hand.index());	
+			playerView.paintHand(g2d, context, containerPlacement, hand.index());
+			
+			// Draw boxes around each point if in exhibition mode (hard coded positions).
+			if (app.settingsPlayer().usingExhibitionApp())
+			{
+				int pos_x = containerPlacement.x + containerPlacement.width/11;
+				final int pos_y = containerPlacement.y + containerPlacement.height;
+				g2d.setColor(Color.BLACK);
+				for (int i = 0; i < hand.numSites(); i++)
+				{
+					g2d.drawRect(pos_x - containerPlacement.height/4 + 1, pos_y - containerPlacement.height/4 - 1, containerPlacement.height/2, containerPlacement.height/2);
+					pos_x += containerPlacement.width/5;
+				}
+			}
 		}
 		
 		drawAISpinner(g2d, context);

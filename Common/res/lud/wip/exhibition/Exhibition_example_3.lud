@@ -35,7 +35,7 @@
 	                )
 	            )
 	            (move 
-		            (from (intersection (sites Occupied by:All) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
+		            (from (intersection (union (sites Occupied by:All on:Cell) (sites Occupied by:All on:Vertex)) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
 		            (to (forEach (union {(sites Hand P1) (sites Hand P2) (sites Board)}) if:(is Empty (site))))
 		            (then (moveAgain))
 		        )
