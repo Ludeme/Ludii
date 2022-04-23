@@ -10,6 +10,7 @@ import features.Feature;
 import features.feature_sets.BaseFeatureSet;
 import features.spatial.FeatureUtils;
 import features.spatial.instances.FeatureInstance;
+import game.equipment.component.Component;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
@@ -124,7 +125,7 @@ public class MoveHandler
 			return false;
 		}
 
-		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves))
+		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves && !app.settingsPlayer().usingExhibitionApp()))
 		{
 			// If several different moves are possible.
 			return handleMultiplePossibleMoves(app, possibleMoves, context);
@@ -626,6 +627,29 @@ public class MoveHandler
 		}
 
 		return true;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Returns the component associated with the to position of the last move.
+	 */
+	public static Component getLastMovedPiece(final PlayerApp app)
+	{
+		final Context context = app.manager().ref().context();
+		final Move lastMove = context.trial().lastMove();
+		if (lastMove != null)
+		{
+			final int containerId = ContainerUtil.getContainerId(context, lastMove.getToLocation().site(), lastMove.getToLocation().siteType());	
+			final int what = context.containerState(containerId).what(lastMove.getToLocation().site(), lastMove.getToLocation().siteType());
+			
+			if (context.trial().numberRealMoves() <= 0 || what == 0)
+				return null;
+			
+			final Component lastMoveComponent = context.game().equipment().components()[what];
+			return lastMoveComponent;
+		}
+		return null;
 	}
 	
 	//-------------------------------------------------------------------------

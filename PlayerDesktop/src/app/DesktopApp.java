@@ -66,7 +66,7 @@ import utils.AIFactory;
  *
  * @author Matthew.Stephenson and cambolbro and Eric.Piette
  */
-public final class DesktopApp extends PlayerApp
+public class DesktopApp extends PlayerApp
 {
 	/** App name. */
 	public static final String AppName = "Ludii Player";
@@ -77,10 +77,10 @@ public final class DesktopApp extends PlayerApp
 	public static boolean devJar = true;
 
 	/** Main frame. */
-	private static JFrameListener frame;
+	protected static JFrameListener frame;
 
 	/** Main view. */
-	private static MainWindowDesktop view;
+	protected static MainWindowDesktop view;
 
 	/** Current Graphics Device (screen) that is displaying the frame. */
 	private static GraphicsDevice currentGraphicsDevice = null;
@@ -418,7 +418,7 @@ public final class DesktopApp extends PlayerApp
 	 * Loads the initial game. 
 	 * Either the default game of the previously loaded game when the application was last closed. 
 	 */
-	private void loadInitialGame(final boolean firstTry)
+	protected void loadInitialGame(final boolean firstTry)
 	{
 		try
 		{

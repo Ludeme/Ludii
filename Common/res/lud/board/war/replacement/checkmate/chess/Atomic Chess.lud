@@ -1,13 +1,10 @@
 (define "Boom"
-    (forEach Site (sites Around #1 includeSelf:True)
+    (forEach Site (sites Around #1 includeSelf:False)
         (if (and { 
                 (is Occupied (site)) 
-                (if (= (site) #1)
-                    True
-                    (and
-                        (!= (what at:(site)) (id "Pawn" P1)) 
-                        (!= (what at:(site)) (id "Pawn" P2)) 
-                    )
+                (and
+                    (!= (what at:(site)) (id "Pawn" P1)) 
+                    (!= (what at:(site)) (id "Pawn" P2)) 
                 )
             })
             (remove (site))
@@ -39,13 +36,11 @@
 (define "CaptureToPieceAndResetCounter"
     (apply 
         (if (is Enemy (who at:(to)))
-            (and
-                (remove 
-                    (to) 
-                    (then (set Counter))
-                )
+            (and {
+                (remove (to))
                 ("Boom" (to))
-            )
+                (set Counter)
+            })
         )
     ) 
 )
@@ -126,12 +121,11 @@
         (directions {FR FL}) 
         (to if:"InLocationEnPassant") 
         (then 
-            (and
-                (remove 
-                    (ahead (last To) Backward)
-                )
-                ("Boom" (ahead (last To) Backward))
-            )
+            (and {
+                (remove (ahead (last To) Backward))
+                (remove (last To))
+                ("Boom" (last To))
+            })
         )
     )
 )
@@ -142,12 +136,13 @@
         (directions {FR FL}) 
         (to 
             if:(is Enemy (who at:(to))) 
-            (apply
-                (and
-                    (remove (to))
-                    ("Boom" (to))
-                )
-            )
+            (apply (remove (to)))
+        )
+        (then
+            (and {
+                (remove (last To))
+                ("Boom" (last To))
+            })
         )
     )
 )

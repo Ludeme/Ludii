@@ -285,6 +285,9 @@ public class ExpertIteration
 				
 				initMembers();
 				
+				// Don't want our MCTSes to null undo data in Trial objects, we need that data sometimes
+				MCTS.NULL_UNDO_DATA = false;
+				
 				// TODO add log statements describing complete setup of experiment
 				
 				// Create menagerie

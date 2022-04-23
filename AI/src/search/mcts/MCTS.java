@@ -252,6 +252,19 @@ public class MCTS extends ExpertPolicy
     protected IncrementalStats[] heuristicStats = null;
     
     //-------------------------------------------------------------------------
+    
+    /**
+     * Global flag telling us whether we want MCTS objects to null (clear) undo
+     * data in Trial objects stored in their nodes. True by default, since
+     * usually we want to do this to reduce memory usage.
+     * 
+     * Sometimes in self-play training this causes issues though, and there
+     * we typically don't worry about the memory usage anyway since we tend
+     * to have rather short and shallow searches, so we can set this to false.
+     */
+    public static boolean NULL_UNDO_DATA = true;
+    
+    //-------------------------------------------------------------------------
 	
 	/** 
 	 * Creates standard UCT algorithm, with exploration constant = sqrt(2.0)
