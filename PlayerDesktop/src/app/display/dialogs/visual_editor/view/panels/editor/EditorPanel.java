@@ -60,7 +60,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         for(Ludeme l : p.getLudemes())
             if(l.getName().equals("game")) gameLudeme = l;
 
-
         graph.setRoot(addNode(gameLudeme, 20, 20, false));
         Handler.gameDescriptionGraph = graph;
 
@@ -91,6 +90,19 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         add(addLudemeWindow);
         add(connectLudemeWindow);
 
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void updateGraph()
+    {
+        for (LudemeNodeComponent lc : nodeComponents)
+        {
+            lc.revalidate();
+            lc.updateProvidedInputs();
+            lc.updateLudemePosition();
+        }
         revalidate();
         repaint();
     }
@@ -298,7 +310,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println("ROOT_X: "+graph.getRoot().getPos().getX());
             super.mouseClicked(e);
             if(connectLudemeWindow.isVisible()){
                 cancelNewConnection();

@@ -61,7 +61,7 @@ public class DrawingFrame extends JFrame {
 
             graphPanel.repaint();
             graphPanel.revalidate();
-            updateTimer.stop();
+            //updateTimer.stop();
         }
     }
 

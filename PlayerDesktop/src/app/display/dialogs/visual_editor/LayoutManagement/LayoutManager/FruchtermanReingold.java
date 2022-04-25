@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class FruchtermanReingold implements LayoutMethod
     private final double k;
     private double t;
 
+    private Timer timer;
+
     private HashMap<Integer, iGNode> nodeList;
     private HashMap<Integer, Vector2D> dispMap;
     private List<Edge> edgeList;
@@ -36,7 +39,7 @@ public class FruchtermanReingold implements LayoutMethod
     }
 
     private double cool(double x) {
-        return max(x*(1-coolRate), 0.1);
+        return x*(1-coolRate);
     }
 
     public FruchtermanReingold(iGraph graph, double C, double coolRate, Vector2D boundaries)
@@ -53,7 +56,8 @@ public class FruchtermanReingold implements LayoutMethod
         nodeList = graph.getNodeList();
         edgeList = graph.getEdgeList();
 
-        k = C*sqrt((W*H)/nodeList.size());
+        //k = C*sqrt((W*H)/nodeList.size());
+        k = 100;
         t = W/10;
     }
 
@@ -102,7 +106,7 @@ public class FruchtermanReingold implements LayoutMethod
             {
                 v.setPos(new Vector2D(x, y));
             }
-            System.out.println(x + " " + y);
+            //System.out.println(x + " " + y);
         });
 
         t = cool(t);
@@ -112,19 +116,23 @@ public class FruchtermanReingold implements LayoutMethod
         this.t += incrementor;
     }
 
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+
     @Override
     public void applyLayout()
     {
-
-        // Set up variables (only once)
-
-        // Execute algorithm iteration
-        for (int i = 0; i < 500; i++)
+        if (timer == null)
+        {
+            for (int i = 0; i < 500; i++)
+                FruchReinIteration();
+        }
+        else
         {
             FruchReinIteration();
+            //if (pow((t-0.1),2) <= 1E-3) timer.stop();
         }
-
-
     }
 
 }

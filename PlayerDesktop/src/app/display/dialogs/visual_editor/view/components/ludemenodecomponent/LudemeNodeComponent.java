@@ -97,6 +97,11 @@ public class LudemeNodeComponent extends JComponent {
         header.updatePosition();
     }
 
+    public void updateLudemePosition()
+    {
+        LudemeNodeComponent.this.setLocation((int)LUDEME_NODE.getPos().getX(), (int)LUDEME_NODE.getPos().getY());
+    }
+
     public void updateProvidedInputs(){
         inputArea.updateProvidedInputs();
     }

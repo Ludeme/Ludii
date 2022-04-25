@@ -5,8 +5,10 @@ import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.input.*;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,10 +103,9 @@ public class Parser {
         return lb;
     }
 
-
     private List<Grammar> createGrammar(){
         List<Grammar> records = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("resources/easy.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Admin\\Documents\\Programming\\Projects\\Ludii\\PlayerDesktop\\editor_resources\\easy.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");

@@ -23,5 +23,6 @@ public interface IGraphPanel {
     void clickedOnNode(LudemeNode node);
     void removeNode(LudemeNode node);
     LayoutHandler getLayoutHandler();
+    void updateGraph();
     void repaint();
 }

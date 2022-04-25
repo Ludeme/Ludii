@@ -1,9 +1,12 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
+import app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.GraphPanel;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EditorPopupMenu extends JPopupMenu {
 
@@ -48,10 +51,12 @@ public class EditorPopupMenu extends JPopupMenu {
         });
 
         fdp.addActionListener(e -> {
+            int fdp_delay = 20;
             LayoutHandler lm = graphPanel.getLayoutHandler();
             lm.setLayoutMethod(0);
-            lm.executeLayout();
-            graphPanel.drawGraph(graphPanel.getGraph());
+            Timer timer = new Timer(fdp_delay, new LayoutUpdate(graphPanel));
+            lm.setFDPTimer(timer);
+            timer.start();
         });
 
         cfdp.addActionListener(e -> {
@@ -74,6 +79,24 @@ public class EditorPopupMenu extends JPopupMenu {
         add(lmMenu);
         add(duplicateScreen);
         add(repaintScreen);
+    }
+
+    private static class LayoutUpdate implements ActionListener
+    {
+
+        private final IGraphPanel graphPanel;
+
+        public LayoutUpdate(IGraphPanel graphPanel)
+        {
+            this.graphPanel = graphPanel;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            graphPanel.getLayoutHandler().executeLayout();
+            //graphPanel.drawGraph(graphPanel.getGraph());
+            graphPanel.updateGraph();
+        }
     }
 
 }
