@@ -516,7 +516,7 @@ public class ExportDbCsvConcepts
 						}
 					}
 				}
-				else // Code for one single ruleset for a game. 
+				else // Code for games with only a single ruleset.
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
 							: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
