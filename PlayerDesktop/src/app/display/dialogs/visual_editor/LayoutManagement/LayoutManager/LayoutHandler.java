@@ -35,6 +35,8 @@ public class LayoutHandler {
                 break;
             case 2: layout = new PLANET(graph, root,15);
                 break;
+            case 4: layout = new CFDP(graph, 0.5, 0.15, new Vector2D(5000, 5000));
+                break;
             default: layout = new DFSBoxDrawing(graph, root, 5);
         }
 
@@ -47,6 +49,11 @@ public class LayoutHandler {
     public void setFDPTimer(Timer timer)
     {
         ((FruchtermanReingold) layout).setTimer(timer);
+    }
+
+    public void setCFDPTimer(Timer timer)
+    {
+        ((CFDP) layout).setTimer(timer);
     }
 
     public void executeLayout()

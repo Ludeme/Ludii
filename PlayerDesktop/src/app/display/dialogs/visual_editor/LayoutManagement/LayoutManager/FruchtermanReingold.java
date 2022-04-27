@@ -57,11 +57,11 @@ public class FruchtermanReingold implements LayoutMethod
         edgeList = graph.getEdgeList();
 
         //k = C*sqrt((W*H)/nodeList.size());
-        k = 100;
+        k = 200;
         t = W/10;
     }
 
-    public void FruchReinIteration()
+    private void FruchReinIteration()
     {
         nodeList.forEach((iv, v)-> {
             dispMap.put(iv, new Vector2D(0, 0));
@@ -106,7 +106,7 @@ public class FruchtermanReingold implements LayoutMethod
             {
                 v.setPos(new Vector2D(x, y));
             }
-            //System.out.println(x + " " + y);
+
         });
 
         t = cool(t);
@@ -131,7 +131,7 @@ public class FruchtermanReingold implements LayoutMethod
         else
         {
             FruchReinIteration();
-            //if (pow((t-0.1),2) <= 1E-3) timer.stop();
+            if (pow((t-0.1),2) <= 1E-2) timer.stop();
         }
     }
 

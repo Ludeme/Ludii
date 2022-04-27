@@ -60,10 +60,13 @@ public class EditorPopupMenu extends JPopupMenu {
         });
 
         cfdp.addActionListener(e -> {
+            // TODO: Adjust drawing speed e.g., update screen every 24 iterations
+            int cfdp_delay = 20;
             LayoutHandler lm = graphPanel.getLayoutHandler();
-            lm.setLayoutMethod(3);
-            lm.executeLayout();
-            graphPanel.drawGraph(graphPanel.getGraph());
+            lm.setLayoutMethod(4);
+            Timer timer = new Timer(cfdp_delay, new LayoutUpdate(graphPanel));
+            lm.setCFDPTimer(timer);
+            timer.start();
         });
 
         lmMenu.add(compact);

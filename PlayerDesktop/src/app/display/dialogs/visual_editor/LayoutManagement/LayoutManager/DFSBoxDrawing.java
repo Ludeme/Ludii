@@ -19,8 +19,8 @@ public class DFSBoxDrawing implements LayoutMethod
     private iGraph graph;
     private final int C3j;
     private int freeY;
-    private final double wY = 1.5;
-    private final double wX = 2.5;
+    private final double wY = 0.5;
+    private final double wX = 1.5;
     private final int root;
 
     /**
