@@ -4,6 +4,7 @@ package app.display.dialogs.visual_editor.model.grammar.parser;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.recs.utils.FileUtils;
 import compiler.Arg;
@@ -24,9 +25,12 @@ public class GameParser
     private static List<Ludeme> L = p.getLudemes();
     private static List<Grammar> G = p.getGRAMMAR();
 
+    private static DescriptionGraph GRAPH = new DescriptionGraph();
+
     public static void main(String[] args) throws FileNotFoundException {
         // Playing around with Ludii methods needed for text-to-graph parser
         Description test_desc = new Description(Constants.BASIC_GAME_DESCRIPTION);
+
         parser.Parser.expandAndParse(test_desc, new UserSelections(new ArrayList<>()),new Report(),false);
         Token tokenTree_test = new Token(test_desc.expanded(), new Report());
         grammar.Grammar gm = grammar.Grammar.grammar();
@@ -83,8 +87,10 @@ public class GameParser
             case Class:
                 // TODO: debug this!
                 String lhs = c.symbol().rule().lhs().returnType().token();
+                String grammarLabel = c.symbol().grammarLabel();
                 List<Clause> rhsList = c.symbol().rule().rhs();
                 String rhs = null;
+                Clause rhsClause = null;
                 for (Clause clause : rhsList) {
                     if (clause.args() != null && c.args().size() == clause.args().size()) {
                         List<ClauseArg> iRhs = clause.args();
@@ -105,12 +111,20 @@ public class GameParser
                             matched = counter;
                             counter = 0;
                             rhs = clause.toString();
+                            rhsClause = clause;
                         }
                     }
                 }
 
-                // Output correct lhs + rhs
                 System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
+
+                LudemeNode ln = new LudemeNode(getLudemeForEditor(grammarLabel), 0, 0);
+                Handler.addNode(GRAPH, ln);
+
+                Constructor constructor = findConstructor(ln, rhsClause);
+                Handler.updateCurrentConstructor(GRAPH, ln, constructor);
+
+                // Output correct lhs + rhs
                 // Apply method for the arguments of c
                 for (Call call : cArgs)
                 {
@@ -190,8 +204,31 @@ public class GameParser
 
     private static Ludeme getLudemeForEditor(String keyword)
     {
+        // System.out.println(keyword);
         for(Ludeme l : p.getLudemes())
             if(l.getName().equals(keyword)) return l;
+        return null;
+    }
+
+    private static Constructor findConstructor(LudemeNode l, Clause c)
+    {
+        ArrayList<String> las = new ArrayList<>();
+        ArrayList<Ludeme> luds = new ArrayList<>();
+        for(ClauseArg ca : c.args()){
+            String la = ca.symbol().grammarLabel();
+            las.add(la);
+            luds.add(getLudemeForEditor(la));
+        }
+
+        for(app.display.dialogs.visual_editor.model.grammar.Constructor constructor : l.getLudeme().getConstructors()){
+            boolean found = true;
+            for(int i = 0; i < constructor.getInputs().size(); i++){
+                if(!constructor.getInputs().get(i).getName().equals(las.get(i))){
+                    found = false;
+                }
+            }
+            if(found) return constructor;
+        }
         return null;
     }
 
