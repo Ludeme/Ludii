@@ -12,23 +12,23 @@
         (to 
             (sites Empty )
             if:(not
-				(and
-					(= 0 
-						(+
-							(count Sites  in:(sites Around  (to) Empty))
-							(count Sites  in:(sites Around  (to) Own))
-						)
-					)
-					(all Sites
-						(sites Around (to) Enemy Orthogonal)
-						if:(< 1
-							(count Liberties at:(site) Orthogonal
-								if:(is Next (who at:(to)))
-							)
-						)
-					)
-				)
-			)
+                (and
+                    (= 0 
+                        (+
+                            (count Sites  in:(sites Around  (to) Empty))
+                            (count Sites  in:(sites Around  (to) Own))
+                        )
+                    )
+                    (all Sites
+                        (sites Around (to) Enemy Orthogonal)
+                        if:(< 1
+                            (count Liberties at:(site) Orthogonal
+                                if:(is Next (who at:(to)))
+                            )
+                        )
+                    )
+                )
+            )
         )
         (then
             (if
@@ -52,21 +52,21 @@
                         )
                     )
                     next:(and 
-						(forEach Group  Orthogonal
-							if:(= (mover) (who at:(to)))
-							(if
-								(= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
-								(remove  (sites))
-							)
-						)
-						(forEach Group  Orthogonal
-							if:(= (next) (who at:(to)))
-							(if
-								(= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
-								(remove  (sites))
-							)
-						)
-					)
+                        (forEach Group  Orthogonal
+                            if:(= (mover) (who at:(to)))
+                            (if
+                                (= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
+                                (remove  (sites))
+                            )
+                        )
+                        (forEach Group  Orthogonal
+                            if:(= (next) (who at:(to)))
+                            (if
+                                (= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
+                                (remove  (sites))
+                            )
+                        )
+                    )
                 )
             )
         )
@@ -79,13 +79,13 @@
     (players 2)
     (equipment
         {
-            (board (square <Size>) use:Vertex)
-            (piece "Disc" Each)
-            (piece "Disc" Neutral)
+        (board (square <Size>) use:Vertex)
+        (piece "Disc" Each)
+        (piece "Disc" Neutral)
         }
     )
     (rules
-		(meta (swap))
+        (meta (swap))
         (play
             ("Move")
         )

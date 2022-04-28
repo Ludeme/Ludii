@@ -1,65 +1,65 @@
 (define "FlipGroup"
-	(add 
-		(to 
-			(sites Group at:(last From) Orthogonal)
-			(apply (remove (to)))
-		)
-	)
+    (add 
+        (to 
+            (sites Group at:(last From) Orthogonal)
+            (apply (remove (to)))
+        )
+    )
 )
 
 (define "FlipGroupAndCountFriendly"
-	(do
-		(add 
-			(to 
-				(sites Group at:(last From) Orthogonal)
-				(apply (remove (to)))
-			)
-		)
-		next:(and
-			(set Score P1 (count Groups Orthogonal if:(= (id P1) (who at:(to)))))
-			(set Score P2 (count Groups Orthogonal if:(= (id P2) (who at:(to)))))
-		)
-	)
+    (do
+        (add 
+            (to 
+                (sites Group at:(last From) Orthogonal)
+                (apply (remove (to)))
+            )
+        )
+        next:(and
+            (set Score P1 (count Groups Orthogonal if:(= (id P1) (who at:(to)))))
+            (set Score P2 (count Groups Orthogonal if:(= (id P2) (who at:(to)))))
+        )
+    )
 )
 
 (define "FlipGroupAndCountEnemy"
-	(do
-		(add 
-			(to 
-				(sites Group at:(last From) Orthogonal)
-				(apply (remove (to)))
-			)
-		)
-		next:(and
-			(set Score P1 (* -1 (count Groups Orthogonal if:(= (id P2) (who at:(to))))))
-			(set Score P2 (* -1 (count Groups Orthogonal if:(= (id P1) (who at:(to))))))
-		)
-	)
+    (do
+        (add 
+            (to 
+                (sites Group at:(last From) Orthogonal)
+                (apply (remove (to)))
+            )
+        )
+        next:(and
+            (set Score P1 (* -1 (count Groups Orthogonal if:(= (id P2) (who at:(to))))))
+            (set Score P2 (* -1 (count Groups Orthogonal if:(= (id P1) (who at:(to))))))
+        )
+    )
 )
 
 (define "FlipGroupAndCalculateDifference"
-	(do
-		(add 
-			(to 
-				(sites Group at:(last From) Orthogonal)
-				(apply (remove (to)))
-			)
-		)
-		next:(and
-			(set Score P1 
-				(-
-					(count Groups Orthogonal if:(= (id P1) (who at:(to))))
-					(count Groups Orthogonal if:(= (id P2) (who at:(to))))
-				)
-			)
-			(set Score P2 
-				(-
-					(count Groups Orthogonal if:(= (id P2) (who at:(to))))
-					(count Groups Orthogonal if:(= (id P1) (who at:(to))))
-				)
-			)
-		)
-	)
+    (do
+        (add 
+            (to 
+                (sites Group at:(last From) Orthogonal)
+                (apply (remove (to)))
+            )
+        )
+        next:(and
+            (set Score P1 
+                (-
+                    (count Groups Orthogonal if:(= (id P1) (who at:(to))))
+                    (count Groups Orthogonal if:(= (id P2) (who at:(to))))
+                )
+            )
+            (set Score P2 
+                (-
+                    (count Groups Orthogonal if:(= (id P2) (who at:(to))))
+                    (count Groups Orthogonal if:(= (id P1) (who at:(to))))
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -68,16 +68,16 @@
     (players 2)
     (equipment
         {
-            (board (square <Board>))
-            (tile "Square" Each)
+        (board (square <Board>))
+        (tile "Square" Each)
         }
     )
     (rules
         (start 
             {
-                (place "Square1" (sites Phase 0))
-                (place "Square2" (sites Phase 1))
-				<Score:start>
+            (place "Square1" (sites Phase 0))
+            (place "Square2" (sites Phase 1))
+            <Score:start>
             }
         )
         (play
@@ -110,7 +110,7 @@
     {
     (item "Maximize # of Friendly Groups"    <("FlipGroupAndCountFriendly")> <(set Score P1 (count Sites in:(sites Occupied by:P1))) (set Score P2 (count Sites in:(sites Occupied by:P2)))> "A running count of your number of groups is show as a heuristic.")
     (item "Minimize # of Enemy Groups"    <("FlipGroupAndCountEnemy")> <(set Score P1 (* -1 (count Sites in:(sites Occupied by:P2)))) (set Score P2 (* -1 (count Sites in:(sites Occupied by:P1))))> "A running count of (the inverse of) the number of enemy groups is show as a heuristic.")
-	(item "Maximize Friendly Minus Enemy Groups"   <("FlipGroupAndCalculateDifference")> <>  "A running count of your number of groups minus the number of enemy groups is kept.")
+    (item "Maximize Friendly Minus Enemy Groups"   <("FlipGroupAndCalculateDifference")> <>  "A running count of your number of groups minus the number of enemy groups is kept.")
     (item "None"   <("FlipGroup")> <>  "No heuristic is used.")*
     }
 )
@@ -118,16 +118,16 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-	(info {
-	})
+    (info {
+    })
     (graphics {
         (player Colour P1 (colour 239 227 179))
         (player Colour P2 (colour 127 127 127))
     })
-	(ai
-		(bestAgent "Alpha-Beta")
-		(heuristics 
-			(score)
-		)
-	)
+    (ai
+        (bestAgent "Alpha-Beta")
+        (heuristics 
+            (score)
+        )
+    )
 )
