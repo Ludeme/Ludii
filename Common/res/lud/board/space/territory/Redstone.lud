@@ -1,0 +1,140 @@
+(define "SomeGroup"
+    (not
+        (all Groups  Orthogonal 
+            of:(= (who at:(to)) (id #1))
+            if:(not #2)
+        )
+    )
+)
+
+(define "Move"
+    (move Add
+        (to 
+            (sites Empty )
+            if:(not
+				(and
+					(= 0 
+						(+
+							(count Sites  in:(sites Around  (to) Empty))
+							(count Sites  in:(sites Around  (to) Own))
+						)
+					)
+					(all Sites
+						(sites Around (to) Enemy Orthogonal)
+						if:(< 1
+							(count Liberties at:(site) Orthogonal
+								if:(is Next (who at:(to)))
+							)
+						)
+					)
+				)
+			)
+        )
+        (then
+            (if
+                (or
+                    ("SomeGroup"
+                        Mover
+                        (= 0 (count Sites in:(sites Around  (sites) Empty Orthogonal)))
+                    )
+                    ("SomeGroup"
+                        Next
+                        (= 0 (count Sites in:(sites Around  (sites) Empty Orthogonal)))
+                    )
+                )
+                (do 
+                    (add 
+                        (piece "Disc0") 
+                        (to 
+                            
+                            (last To) 
+                            (apply (remove  (to)))
+                        )
+                    )
+                    next:(and 
+						(forEach Group  Orthogonal
+							if:(= (mover) (who at:(to)))
+							(if
+								(= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
+								(remove  (sites))
+							)
+						)
+						(forEach Group  Orthogonal
+							if:(= (next) (who at:(to)))
+							(if
+								(= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
+								(remove  (sites))
+							)
+						)
+					)
+                )
+            )
+        )
+    )
+)
+
+(game "Redstone"
+    (players 2)
+    (equipment
+        {
+            (board (square <Size>) use:Vertex)
+            (piece "Disc" Each)
+            (piece "Disc" Neutral)
+        }
+    )
+    (rules
+		(meta (swap))
+        (play
+            ("Move")
+        )
+        (end {
+            (if 
+                (and (> (count Moves) 2) (no Pieces Next))
+                (result Next Loss)
+            )
+            (if 
+                (and {(> (count Moves) 2) (no Pieces Mover) (not (no Pieces Next))})
+                (result Mover Loss)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Size> args:{ <size> }
+    {
+    (item "5"    <5>  "A size 5 board is currently selected")
+    (item "6"    <6>  "A size 6 board is currently selected")
+    (item "7"    <7>  "A size 7 board is currently selected")
+    (item "8"    <8>  "A size 8 board is currently selected")
+    (item "9"    <9>  "A size 9 board is currently selected")
+    (item "10"    <10>  "A size 10 board is currently selected")
+    (item "11"    <11>  "A size 11 board is currently selected")
+    (item "12"    <12>  "A size 12 board is currently selected")
+    (item "13"    <13>  "A size 13 board is currently selected")*
+    (item "14"    <14>  "A size 14 board is currently selected")
+    (item "15"    <15>  "A size 15 board is currently selected")
+    (item "16"    <16>  "A size 16 board is currently selected")
+    (item "17"    <17>  "A size 17 board is currently selected")
+    (item "18"    <18>  "A size 18 board is currently selected")
+    (item "19"    <19>  "A size 19 board is currently selected")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (player Colour Neutral (colour Red))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+        (board Colour Phase0 (colour 250 210 148))
+        (board Colour Phase1 (colour 250 210 148))
+        (board Style Board)
+    })
+)
