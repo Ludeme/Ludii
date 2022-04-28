@@ -54,6 +54,7 @@ public class LConnectionComponent extends JComponent {
     }
 
     public void updatePosition(){
+        if(this.getParent() == null || this.getParent().getParent() == null || this.getParent().getParent().getParent() == null) return;
         int x = connectionPointComponent.getX() + this.getX() + this.getParent().getX() + this.getParent().getParent().getX() + this.getParent().getParent().getParent().getX() + RADIUS;
         int y = connectionPointComponent.getY() + this.getY() + this.getParent().getY() + this.getParent().getParent().getY() + this.getParent().getParent().getParent().getY() + RADIUS;
         Point p = new Point(x,y);
