@@ -7,7 +7,7 @@ import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
 import java.awt.*;
 
-import static app.display.dialogs.visual_editor.LayoutManagement.VisualEditor.LayoutConfigs.NODE_SIZE;
+import static app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs.NODE_SIZE;
 
 public class ExpEdgeComponent
 {

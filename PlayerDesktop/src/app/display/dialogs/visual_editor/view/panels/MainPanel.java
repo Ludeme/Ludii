@@ -10,13 +10,16 @@ import java.awt.event.MouseEvent;
 public class MainPanel extends JPanel {
 
     //JPanel editor_panel = new EditorPanel(5000, 5000);
+    private JScrollPane panel;
+    private JPanel editor_panel;
 
     public MainPanel(JPanel editor_panel){
         setLayout(new BorderLayout());
 
         add(new HeaderPanel(), BorderLayout.NORTH);
-        add(new JScrollPane(editor_panel), BorderLayout.CENTER);
-
+        this.editor_panel = editor_panel;
+        panel = new JScrollPane(editor_panel);
+        add(panel, BorderLayout.CENTER);
 
         MouseAdapter ma = new MouseAdapter() {
 
@@ -51,10 +54,26 @@ public class MainPanel extends JPanel {
         };
 
 
+
         editor_panel.addMouseListener(ma);
         editor_panel.addMouseMotionListener(ma);
 
         //add(options_panel, BorderLayout.EAST);
     }
 
+    public JScrollPane getPanel() {
+        return panel;
+    }
+
+    public void setView(int x, int y) {
+        JViewport viewPort = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, editor_panel);
+        if (viewPort != null) {
+
+            Rectangle view = viewPort.getViewRect();
+            view.x = x;
+            view.y = y;
+
+            editor_panel.scrollRectToVisible(view);
+        }
+    }
 }

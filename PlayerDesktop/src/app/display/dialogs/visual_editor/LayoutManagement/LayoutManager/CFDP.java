@@ -19,7 +19,7 @@ import static java.lang.Math.*;
  * @author nic0gin
  */
 
-public class CFDP implements LayoutMethod
+public class CFDP extends FDP implements LayoutMethod
 {
 
     // Constraint Force-directed drawing
@@ -50,18 +50,6 @@ public class CFDP implements LayoutMethod
     private final List<Edge> edgeList;
     private final iGraph graph;
 
-    private double repForce(double x) {
-        return (k*k)/x;
-    }
-
-    private double actForce(double x) {
-        return (x*x)/k;
-    }
-
-    private double cool(double x) {
-        return x*(1-coolRate);
-    }
-
     public CFDP(iGraph graph, double C, double coolRate, Vector2D boundaries)
     {
         this.graph = graph;
@@ -90,7 +78,7 @@ public class CFDP implements LayoutMethod
 
     }
 
-    private void newIteration(int r, Vector2D fZone)
+    private void subtreeIteration(int r, Vector2D fZone)
     {
         List<Integer> C = nodeList.get(r).getChildren();
         List<Integer> nodes = new ArrayList<>(C);
@@ -99,107 +87,41 @@ public class CFDP implements LayoutMethod
         // repulsive forces
         nodes.forEach(v -> {
             dispMap.put(v, new Vector2D(0, 0));
-            iGNode vN = graph.getNode(v);
-
             nodes.forEach(u -> {
-                if (!v.equals(u))
-                {
-                    iGNode uN = graph.getNode(u);
-                    Vector2D delta = vN.getPos().sub(uN.getPos());
-                    Vector2D repF = (delta.normalize()).mult(repForce(delta.euclideanNorm()));
-
-                    // Add vertical alignment force (C1)
-                    Vector2D totalF = repF.add(new Vector2D(vN.getWidth()/2.0 + uN.getWidth()/2.0, 0));
-
-                    dispMap.put(v, dispMap.get(v).add(totalF));
-                }
+                calculateRepForce(v, u);
             });
         });
 
+        // Calculate attractive forces
         for (int i = 0; i < C.size(); i++)
         {
             // f_a for vi and r
+            calculateActForce(r, C.get(i));
             // f_a for vi and left sibling
+            if (i > 0) calculateActForce(C.get(i), C.get(i-1));
             // f_a for vi and right sibling
+            if (i < C.size()-1) calculateActForce(C.get(i), C.get(i+1));
         }
 
-        C.forEach((id) -> {
-            // 1. Calculate repulsive between all vertices
-            // 2. Calculate attractive forces between edge pair + close siblings
-            // 3. If node has children:
-            //      add force to fZone
-            //    else:
-            //      apply total force
-        });
-    }
-
-    private void iteration()
-    {
-        // repulsive forces
-        nodeList.forEach((iv, v)-> {
-            dispMap.put(iv, new Vector2D(0, 0));
-            nodeList.forEach((iu, u)-> {
-                if (v.getId() != u.getId())
-                {
-                    Vector2D delta = v.getPos().sub(u.getPos());
-                    Vector2D repF = (delta.normalize()).mult(repForce(delta.euclideanNorm()));
-
-                    // Add vertical alignment force (C1)
-                    Vector2D totalF = repF.add(new Vector2D(v.getWidth(), 0));
-
-                    dispMap.put(iv, dispMap.get(iv).add(totalF));
-                }
-            });
-        });
-
-        // attractive forces
-        edgeList.forEach((e)->{
-            int aId = e.getNodeA();
-            int bId = e.getNodeB();
-            Vector2D delta = graph.getNode(aId).getPos().sub(graph.getNode(bId).getPos());
-
-            dispMap.put(aId, dispMap.get(aId).sub(
-                    delta.normalize().mult(actForce(delta.euclideanNorm()))
-            ));
-
-            dispMap.put(bId, dispMap.get(bId).add(
-                    delta.normalize().mult(actForce(delta.euclideanNorm()))
-            ));
-
-        });
-
-        // apply forces
-        nodeList.forEach((id, v)->{
-            // Apply forces to all non-fixed nodes
-            if (!fixedNodes.contains(id))
+        // Apply force on root and leafs
+        // Apply procedure for non-leaf nodes
+        nodes.forEach(v -> {
+            if (!fixedNodes.contains(v))
             {
-                Vector2D tempPos = new Vector2D(v.getPos().getX(), v.getPos().getY());
-
-                Vector2D dispNorm = dispMap.get(id).normalize().mult(min(dispMap.get(id).euclideanNorm(), t));
-
-                v.setPos(v.getPos().add(dispNorm));
-
-                // Global boundaries
-                double x = min(W/2, max(-W/2, v.getPos().getX()));
-                double y = min(H/2, max(-H/2, v.getPos().getY()));
-
-                System.out.println(nodeList.get(nodeList.get(id).getParent()).getPos().getX());
-                System.out.println(x);
-
-                if (Double.isNaN(x) || Double.isNaN(y))
+                if (v != r)
                 {
-                    v.setPos(tempPos);
-                }
-                else if (x < nodeList.get(nodeList.get(id).getParent()).getPos().getX())
-                {
-                    v.setPos(new Vector2D(tempPos.getX(), y));
-                }
-                else
-                {
-                    v.setPos(new Vector2D(x, y));
+                    // TODO: consider individual zones as boundaries
+                    applyForce(v, new Vector2D(W, H));
+                    subtreeIteration(v, new Vector2D(0,0));
                 }
             }
         });
+
+    }
+
+    protected void iteration()
+    {
+        subtreeIteration(1, new Vector2D(0,0));
 
         t = cool(t);
     }
@@ -237,4 +159,28 @@ public class CFDP implements LayoutMethod
         }
     }
 
+    @Override
+    protected HashMap<Integer, Vector2D> getDispMap() {
+        return dispMap;
+    }
+
+    @Override
+    protected iGraph getGraph() {
+        return graph;
+    }
+
+    @Override
+    protected double getK() {
+        return k;
+    }
+
+    @Override
+    protected double getCoolRate() {
+        return coolRate;
+    }
+
+    @Override
+    protected double getTemp() {
+        return t;
+    }
 }

@@ -11,11 +11,15 @@ import java.util.List;
 
 import static java.lang.Math.*;
 
-public class FruchtermanReingold implements LayoutMethod
+/**
+ * Force-directed drawing
+ * Fruchterman-Reingold algorithm
+ *
+ * @author nic0gin
+ */
+public class FruchtermanReingold extends FDP implements LayoutMethod
 {
 
-    // Force-directed drawing
-    // Fruchterman-Reingold algorithm
     private final double W;
     private final double H;
     private final double coolRate;
@@ -30,16 +34,29 @@ public class FruchtermanReingold implements LayoutMethod
     private List<Edge> edgeList;
     private iGraph graph;
 
-    private double repForce(double x) {
-        return (k*k)/x;
+    @Override
+    protected HashMap<Integer, Vector2D> getDispMap() {
+        return dispMap;
     }
 
-    private double actForce(double x) {
-        return (x*x)/k;
+    @Override
+    protected iGraph getGraph() {
+        return graph;
     }
 
-    private double cool(double x) {
-        return x*(1-coolRate);
+    @Override
+    protected double getK() {
+        return k;
+    }
+
+    @Override
+    protected double getCoolRate() {
+        return coolRate;
+    }
+
+    @Override
+    protected double getTemp() {
+        return t;
     }
 
     public FruchtermanReingold(iGraph graph, double C, double coolRate, Vector2D boundaries)
@@ -61,52 +78,23 @@ public class FruchtermanReingold implements LayoutMethod
         t = W/10;
     }
 
-    private void FruchReinIteration()
+    protected void iteration()
     {
         nodeList.forEach((iv, v)-> {
             dispMap.put(iv, new Vector2D(0, 0));
             nodeList.forEach((iu, u)-> {
-                if (v.getId() != u.getId())
-                {
-                    Vector2D delta = v.getPos().sub(u.getPos());
-                    dispMap.put(iv, dispMap.get(iv).add( (delta.normalize()).mult(repForce(delta.euclideanNorm()))) );
-                }
+                calculateRepForce(iv, iu);
             });
         });
 
         edgeList.forEach((e)->{
             int aId = e.getNodeA();
             int bId = e.getNodeB();
-            Vector2D delta = graph.getNode(aId).getPos().sub(graph.getNode(bId).getPos());
-
-            dispMap.put(aId, dispMap.get(aId).sub(
-                    delta.normalize().mult(actForce(delta.euclideanNorm()))
-            ));
-
-            dispMap.put(bId, dispMap.get(bId).add(
-                    delta.normalize().mult(actForce(delta.euclideanNorm()))
-            ));
-
+            calculateActForce(aId, bId);
         });
 
         nodeList.forEach((id, v)->{
-            Vector2D tempPos = new Vector2D(v.getPos().getX(), v.getPos().getY());
-
-            Vector2D dispNorm = dispMap.get(id).normalize().mult(min(dispMap.get(id).euclideanNorm(), t));
-
-            v.setPos(v.getPos().add(dispNorm));
-            double x = min(W/2, max(-W/2, v.getPos().getX()));
-            double y = min(H/2, max(-H/2, v.getPos().getY()));
-
-            if (Double.isNaN(x) || Double.isNaN(y))
-            {
-                v.setPos(tempPos);
-            }
-            else
-            {
-                v.setPos(new Vector2D(x, y));
-            }
-
+            applyForce(id, new Vector2D(W, H));
         });
 
         t = cool(t);
@@ -126,11 +114,11 @@ public class FruchtermanReingold implements LayoutMethod
         if (timer == null)
         {
             for (int i = 0; i < 500; i++)
-                FruchReinIteration();
+                iteration();
         }
         else
         {
-            FruchReinIteration();
+            iteration();
             if (pow((t-0.1),2) <= 1E-2) timer.stop();
         }
     }

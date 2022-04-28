@@ -3,7 +3,9 @@ package app.display.dialogs.visual_editor.handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Constructor;
+import app.display.dialogs.visual_editor.view.panels.MainPanel;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Handler {
@@ -13,6 +15,8 @@ public class Handler {
     public static DescriptionGraph gameDescriptionGraph;
 
     public static ArrayList<DescriptionGraph> history = new ArrayList<>();
+
+    public static MainPanel mainPanel;
 
 
     private static void addToHistory(DescriptionGraph graph){
@@ -62,5 +66,22 @@ public class Handler {
     }
     public static String getLudString(DescriptionGraph graph){
         return graph.toLud();
+    }
+
+    public static void centerViewport(int x, int y)
+    {
+        if (mainPanel != null)
+        {
+            System.out.println("###");
+            Rectangle view = mainPanel.getPanel().getViewport().getViewRect();
+            System.out.println(mainPanel.getPanel().getViewport().getViewRect());
+            System.out.println(x + " " + y);
+            mainPanel.setView(x-view.width/2, y-view.height/2);
+            System.out.println(mainPanel.getPanel().getViewport().getViewRect());
+        }
+    }
+
+    public static void setMainPanel(MainPanel mainPanel) {
+        Handler.mainPanel = mainPanel;
     }
 }

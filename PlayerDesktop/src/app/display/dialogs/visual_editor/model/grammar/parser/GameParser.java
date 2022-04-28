@@ -7,6 +7,9 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.recs.utils.FileUtils;
+import app.display.dialogs.visual_editor.view.MainFrame;
+import app.display.dialogs.visual_editor.view.panels.MainPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import compiler.Arg;
 import compiler.ArgClass;
 import compiler.exceptions.CompilerErrorWithMessageException;
@@ -15,6 +18,7 @@ import main.grammar.*;
 import main.options.UserSelections;
 import other.GameLoader;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -51,7 +55,11 @@ public class GameParser
         final Map<String, Boolean> hasCompiled = new HashMap<>();
         rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
 
-        constructGraph(callTree.args().get(0), 0);
+        constructGraph(callTree.args().get(0), 0, null);
+
+        EditorPanel ep = new EditorPanel(4000, 4000);
+        JFrame jf = new MainFrame(ep);
+        ep.drawGraph(GRAPH);
 
 
         DescriptionGraph graph = new DescriptionGraph();
@@ -66,7 +74,7 @@ public class GameParser
      * @param c
      * @param d
      */
-    private static void constructGraph(Call c, int d)
+    private static void constructGraph(Call c, int d, LudemeNode pLn)
     {
         List<Call> cArgs = c.args();
         int matched = 0;
@@ -77,7 +85,7 @@ public class GameParser
                 // Apply method for the arguments of c
                 for (Call call : cArgs)
                 {
-                    constructGraph(call, d+1);
+                    constructGraph(call, d+1, null);
                 }
                 break;
             case Terminal:
@@ -126,10 +134,14 @@ public class GameParser
 
                 // Output correct lhs + rhs
                 // Apply method for the arguments of c
-                for (Call call : cArgs)
-                {
-                    constructGraph(call, d+1);
+                for (int i = 0; i < cArgs.size(); i++) {
+                    Call call = cArgs.get(i);
+                    if (!call.type().equals(Call.CallType.Class)) continue;
+                    Handler.updateInput(GRAPH, ln, i, call.object());
+
+                    constructGraph(call, d+1, ln);
                 }
+
                 break;
             default:
                 break;
@@ -220,16 +232,11 @@ public class GameParser
             luds.add(getLudemeForEditor(la));
         }
 
-        for(app.display.dialogs.visual_editor.model.grammar.Constructor constructor : l.getLudeme().getConstructors()){
-            boolean found = true;
-            for(int i = 0; i < constructor.getInputs().size(); i++){
-                if(!constructor.getInputs().get(i).getName().equals(las.get(i))){
-                    found = false;
-                }
+        for(Constructor cons : l.getLudeme().getConstructors()){
+            if(cons.getInputs().size() == luds.size()) {
+                return cons;
             }
-            if(found) return constructor;
         }
-        return null;
+        return l.getCurrentConstructor();
     }
-
 }

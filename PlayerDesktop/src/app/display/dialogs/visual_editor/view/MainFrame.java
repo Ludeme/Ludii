@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view;
 
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         main_panel = new MainPanel(editor_panel);
+        Handler.setMainPanel(main_panel);
         add(main_panel);
 
         //setLayout(new FlowLayout());

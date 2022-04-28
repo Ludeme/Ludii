@@ -6,7 +6,7 @@ import app.display.dialogs.visual_editor.model.MetaGraph.ExpNode;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-import static app.display.dialogs.visual_editor.LayoutManagement.VisualEditor.LayoutConfigs.NODE_SIZE;
+import static app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs.NODE_SIZE;
 
 
 public class ExpNodeComponent

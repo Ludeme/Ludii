@@ -15,6 +15,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +61,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         for(Ludeme l : p.getLudemes())
             if(l.getName().equals("game")) gameLudeme = l;
 
-        graph.setRoot(addNode(gameLudeme, 20, 20, false));
+        graph.setRoot(addNode(gameLudeme, 30, 30, false));
         Handler.gameDescriptionGraph = graph;
 
         lm = new LayoutHandler(graph, graph.getRoot().getId());
@@ -217,6 +218,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
         addLudemeWindow.setVisible(false);
         connectLudemeWindow.setVisible(false);
+
+        Handler.centerViewport(x+lc.getWidth()/2, y+lc.getHeight()/2);
+
         repaint();
         return node;
     }

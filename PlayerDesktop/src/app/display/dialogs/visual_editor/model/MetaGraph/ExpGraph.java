@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static app.display.dialogs.visual_editor.LayoutManagement.VisualEditor.LayoutConfigs.NODE_SIZE;
+import static app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs.NODE_SIZE;
 
 /**
  * Experimental graph
