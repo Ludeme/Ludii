@@ -29,6 +29,9 @@ public class AddLudemeWindow extends JPanel {
 
         searchField = new JTextField();
 
+        // remove duplicates
+        ludemeList = ludemeList.stream().distinct().sorted(Comparator.comparing(Ludeme::getName)).collect(java.util.stream.Collectors.toList());
+
         //TODO: List of ludemes is sorted here RECS
         // TODO: get list of ludemes and connections from editorpanel
         ludemeList.sort(Comparator.comparing(Object::toString));
@@ -44,6 +47,7 @@ public class AddLudemeWindow extends JPanel {
         searchField.setPreferredSize(new Dimension(scrollableList.getPreferredSize().width, searchField.getPreferredSize().height));
 
 
+        List<Ludeme> ludemeList_copy = ludemeList;
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -58,7 +62,7 @@ public class AddLudemeWindow extends JPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 listModel = new DefaultListModel<Ludeme>();
-                for(Ludeme l : ludemeList){
+                for(Ludeme l : ludemeList_copy){
                     // TODO: Improve
                     if(l.getName().contains(searchField.getText())){
                         listModel.addElement(l);
@@ -151,13 +155,13 @@ public class AddLudemeWindow extends JPanel {
         MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent mouseEvent) {
                 JList theList = (JList) mouseEvent.getSource();
-                    int index = theList.locationToIndex(mouseEvent.getPoint());
-                    if (index >= 0) {
-                        Object o = theList.getModel().getElementAt(index);
-                        graphPanel.addNode((Ludeme) o, getLocation().x, getLocation().y, connect);
-                        searchField.setText("");
-                        scrollableList.getVerticalScrollBar().setValue(0);
-                    }
+                int index = theList.locationToIndex(mouseEvent.getPoint());
+                if (index >= 0) {
+                    Object o = theList.getModel().getElementAt(index);
+                    graphPanel.addNode((Ludeme) o, getLocation().x, getLocation().y, connect);
+                    searchField.setText("");
+                    scrollableList.getVerticalScrollBar().setValue(0);
+                }
             }
         };
         list.addMouseListener(mouseListener);

@@ -8,6 +8,9 @@ public class LudemeConnection {
     private final LConnectionComponent CONNECTION_COMPONENT;
     private final LIngoingConnectionComponent INGOING_CONNECTION_COMPONENT;
 
+    private static int ID_COUNT = 0;
+    private int ID = ID_COUNT++;
+
     private ImmutablePoint inputPoint;
     private ImmutablePoint targetPoint;
 
@@ -37,4 +40,10 @@ public class LudemeConnection {
     public LConnectionComponent getConnectionComponent(){
         return CONNECTION_COMPONENT;
     }
+
+    @Override
+    public String toString(){
+        return "Connection " + ID;
+    }
+
 }
