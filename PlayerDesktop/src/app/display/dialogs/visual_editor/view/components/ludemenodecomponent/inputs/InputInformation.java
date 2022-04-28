@@ -115,13 +115,4 @@ public class InputInformation {
         return INPUT.toString();
     }
 
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof InputInformation){
-            InputInformation i = (InputInformation) o;
-            return i.getInput().equals(INPUT) && i.getConstructor().equals(CONSTRUCTOR) && i.getIndex() == INDEX;
-        }
-        return false;
-    }
-
 }

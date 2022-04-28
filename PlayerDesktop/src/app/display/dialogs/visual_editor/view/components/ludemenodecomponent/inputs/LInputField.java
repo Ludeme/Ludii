@@ -29,8 +29,6 @@ public class LInputField extends JComponent {
     List<InputInformation> inputInformationList = new ArrayList<>();
     boolean isSingle;
 
-    private static final boolean DEBUG = true;
-
     List<LInputField> children = new ArrayList<>(); // list of children in case of collection
 
     JComponent inputFieldComponent;
@@ -72,8 +70,8 @@ public class LInputField extends JComponent {
         add(addItemButton);
 
         addItemButton.addActionListener(e -> {
-            LNC.getInputArea().removeField(this);
-        });
+                  LNC.getInputArea().removeField(this);
+                });
 
 
         add(Box.createHorizontalStrut(5));
@@ -225,6 +223,10 @@ public class LInputField extends JComponent {
             setUserInput(input);
             return;
         }
+        if(inputFieldComponent != connectionComponent){
+            System.out.println("there is some error");
+        }
+
 
         setToSingle(index).setUserInput(input);
         repaint();
@@ -232,28 +234,22 @@ public class LInputField extends JComponent {
     }
 
     public LInputField setToSingle(Ludeme ludeme){
+        // find index of ludeme
         for(InputInformation i : inputInformationList){
             if(i.getPossibleLudemeInputs().contains(ludeme)){
-                if(DEBUG) System.out.println("[LInputField]: Setting " + ludeme + " to single");
-                return setToSingle(i);
+                return setToSingle(i.getIndex());
             }
         }
         return null;
     }
 
     public LInputField setToSingle(int inputIndex){
+        InputInformation inputInformation = null;
         for(InputInformation ii : inputInformationList){
             if(ii.getIndex() == inputIndex){
-                return setToSingle(ii);
+                inputInformation = ii;
             }
         }
-        return this;
-    }
-
-    public LInputField setToSingle(InputInformation inputInformation){
-
-        if(DEBUG) System.out.println("[LInputField]: ^Setting " + inputInformation + " to single");
-
         if(inputInformation == inputInformationList.get(0)){
             LInputField newInputField = new LInputField(LNC, inputInformation);
             LNC.getInputArea().addInputFieldAbove(newInputField, this);
@@ -278,23 +274,10 @@ public class LInputField extends JComponent {
             repaint();
             return newInputField;
         }
-        if(DEBUG) System.out.println("[LInputField]: Error constructing single input field for " + inputInformation + ".");
-        if(DEBUG) System.out.println("[LInputField]: index of input information: " + inputInformationList.indexOf(inputInformation) + ", list: " + inputInformationList);
+        System.out.println(inputInformation + "; " + this);
         return this;
     }
 
-    public void updateActiveConstructors(){
-        if(!LNC.dynamic) return;
-
-    }
-
-    public void addInputInformation(InputInformation inputInformation){
-        inputInformationList.add(inputInformation);
-    }
-
-    public void removeInputInformation(InputInformation inputInformation){
-        inputInformationList.remove(inputInformation);
-    }
 
     public int getInputIndex(){
         if(!isSingle) System.out.println("!!!! INCORRECT USE HERE");

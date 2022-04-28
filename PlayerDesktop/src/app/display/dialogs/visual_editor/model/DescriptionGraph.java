@@ -183,6 +183,7 @@ public class DescriptionGraph implements iGraph {
                     node_new.setProvidedInput(i, in);
                 }
             }
+            System.out.println(graphNew.addNode(node_new));
         }
 
         return graphNew;

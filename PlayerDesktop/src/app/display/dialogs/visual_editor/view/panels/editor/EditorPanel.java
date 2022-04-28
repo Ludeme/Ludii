@@ -173,9 +173,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         source.updatePosition();
         target.updatePosition();
 
-
         if(!source.getInputField().isSingle()){
-            source = source.getLudemeNodeComponent().getInputArea().addedConnection(target.getHeader().getLudemeNodeComponent(), source.getInputField()).getConnectionComponent();
+            source = source.getInputField().setToSingle(target.getHeader().getLudemeNodeComponent().getLudemeNode().getLudeme()).getConnectionComponent();
         }
 
         source.updatePosition();
@@ -247,7 +246,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null,true);
+                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent();
                 Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
             }
         }
@@ -257,14 +256,13 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     @Override
     public void removeConnection(LudemeNode node, LConnectionComponent connection) {
-        if(connection.getLudemeNodeComponent().dynamic) connection.getLudemeNodeComponent().getInputArea().removedConnectionDynamic(node, connection.getInputField());
         for(LudemeConnection e : new ArrayList<>(edges)){
             if(e.getConnectionComponent().equals(connection)){
                 edges.remove(e);
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null, true);
+                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent();
                 Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
             }
         }
