@@ -1,0 +1,219 @@
+(define "CanSlide"
+    (not (all Sites (difference (sites Occupied by:Shared) (sites #1))
+            if:(and
+                (= 0 (count Sites in:(sites LineOfSight Farthest at:(site) #2)))
+                (!=  
+                    (what at:(site))
+                    (what at:(regionSite (sites LineOfSight Piece at:(site) #2) index:0))
+                )
+            )
+        )
+    )
+)
+
+(define "CanSlideW" ("CanSlide" Left W))
+(define "CanSlideE" ("CanSlide" Right E))
+(define "CanSlideN" ("CanSlide" Top N))
+(define "CanSlideS" ("CanSlide" Bottom S))
+
+(define "SlideW" (move Select (from 6) (to 5) (then #1)))
+(define "SlideE" (move Select (from 5) (to 6) (then #1)))
+(define "SlideN" (move Select (from 6) (to 10) (then #1)))
+(define "SlideS" (move Select (from 10) (to 6) (then #1)))
+
+(define "LineOfSightPiece" (regionSite (sites LineOfSight Piece at:(site) #1) index:0))
+(define "LineOfSightEmpty" (sites LineOfSight Farthest at:(site) #1))
+
+(define "ApplySlideLine"
+		(forEach Site (sites #1 #2)
+	            (if (is Occupied (site))
+	                (if 
+	                    (=  
+	                        (what at:(site))
+	                        (what at:("LineOfSightPiece" #3))
+	                    )
+	                    (and {
+	                        (remove (site))
+	                        (remove ("LineOfSightPiece" #3))
+	                        (add 
+	                            (piece (mapEntry "Promotion" (what at:(site))))
+	                            (to ("LineOfSightPiece" #3))
+	                        )
+	                    })
+	                    (if (!= 0 (count Sites in:("LineOfSightEmpty" #3)))
+	                        (fromTo (from (site)) (to ("LineOfSightEmpty" #3)))
+	                    )
+	                )
+	            )
+	        )
+)
+
+(define "ApplySlideW"
+    (and
+    	("ApplySlideLine" Column 1 W)
+        (select (from 0))
+        (then
+            (and
+                ("ApplySlideLine" Column 2 W)
+                (select (from 0))
+                (then
+                    ("ApplySlideLine" Column 3 W)
+                )
+            )
+        )
+    )
+)
+
+(define "ApplySlideE"
+	    (and
+	    	("ApplySlideLine" Column 2 E)
+	        (select (from 0))
+	        (then
+	            (and
+	                ("ApplySlideLine" Column 1 E)
+	                (select (from 0))
+	                (then
+	                    ("ApplySlideLine" Column 0 E)
+	                )
+	            )
+	        )
+	    )
+	)
+
+(define "ApplySlideN"
+	    (and
+	    	("ApplySlideLine" Row 2 N)
+	        (select (from 0))
+	        (then
+	            (and
+	                ("ApplySlideLine" Row 1 N)
+	                (select (from 0))
+	                (then
+	                    ("ApplySlideLine" Row 0 N)
+	                )
+	            )
+	        )
+	    )
+	)
+
+(define "ApplySlideS"
+	    (and
+	    	("ApplySlideLine" Row 1 S)
+	        (select (from 0))
+	        (then
+	            (and
+	                ("ApplySlideLine" Row 2 S)
+	                (select (from 0))
+	                (then
+	                    ("ApplySlideLine" Row 3 S)
+	                )
+	            )
+	        )
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
+(game "2048"
+    (players 1)
+    (equipment {
+        (board (square 4))
+        (piece "Square2" Shared)
+        (piece "Square4" Shared)
+        (piece "Square8" Shared)
+        (piece "Square16" Shared)
+        (piece "Square32" Shared)
+        (piece "Square64" Shared)
+        (piece "Square128" Shared)
+        (piece "Square256" Shared)
+        (piece "Square512" Shared)
+        (piece "Square1024" Shared)
+        (piece "Square2048" Shared)   
+        (map "Promotion" {
+            (pair (id "Square2" Shared) (id "Square4" Shared))
+            (pair (id "Square4" Shared) (id "Square8" Shared))
+            (pair (id "Square8" Shared) (id "Square16" Shared))
+            (pair (id "Square16" Shared) (id "Square32" Shared))
+            (pair (id "Square32" Shared) (id "Square64" Shared))
+            (pair (id "Square64" Shared) (id "Square128" Shared))
+            (pair (id "Square128" Shared) (id "Square256" Shared))
+            (pair (id "Square256" Shared) (id "Square512" Shared))
+            (pair (id "Square512" Shared) (id "Square1024" Shared))
+            (pair (id "Square1024" Shared) (id "Square2048" Shared))
+        })
+    })
+    (rules
+        (start (place Random {"Square2"} count:2))
+        (play 
+                (or {
+                    (if ("CanSlideW")
+                        ("SlideW"
+                            ("ApplySlideW")
+                        )
+                    )
+                    (if ("CanSlideE")
+                        ("SlideE"
+                            ("ApplySlideE")
+                        )
+                    )
+                    (if ("CanSlideN")
+                        ("SlideN"
+                            ("ApplySlideN")
+                        )
+                    )
+                    (if ("CanSlideS")
+                        ("SlideS"
+                            ("ApplySlideS")
+                        )
+                    )
+                }
+                (then
+                        (if (< (value Random (range 1 8)) 2)
+                            (add (piece "Square4") (to (sites Random (sites Empty) num:1)))
+                            (add (piece "Square2") (to (sites Random (sites Empty) num:1)))
+                        )		
+                )
+            )
+        )
+        (end {
+            (if (!= Off (where "Square2048" Shared)) (result Mover Win))
+            (if (no Moves Next) (result Mover Loss))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info {
+        
+    })
+    
+    (graphics {
+        (board Colour Phase0 (colour 205 193 179))
+        (board Colour InnerEdges (colour 187 173 160))
+        (board Colour OuterEdges (colour 187 173 160))
+        (piece Colour Shared "Square2" fillColour:(colour 238 228 218))
+        (piece Colour Shared "Square4" fillColour:(colour 236 224 200))
+        (piece Colour Shared "Square8" fillColour:(colour 242 177 121))
+        (piece Colour Shared "Square16" fillColour:(colour 245 149 99))
+        (piece Colour Shared "Square32" fillColour:(colour 244 125 93))
+        (piece Colour Shared "Square64" fillColour:(colour 246 93 59))
+        (piece Colour Shared "Square128" fillColour:(colour 237 206 113))
+        (piece Colour Shared "Square256" fillColour:(colour 237 204 97))
+        (piece Colour Shared "Square512" fillColour:(colour 236 200 80))
+        (piece Colour Shared "Square1024" fillColour:(colour 255 178 103))
+        (piece Colour Shared "Square2048" fillColour:(colour 241 194 44))
+        (piece Foreground "Square2" image:"2" fillColour:(colour Black) scale:0.4)
+        (piece Foreground "Square4" image:"4" fillColour:(colour Black) scale:0.4)
+        (piece Foreground "Square8" image:"8" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square16" image:"16" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square32" image:"32" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square64" image:"64" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square128" image:"128" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square256" image:"256" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square512" image:"512" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square1024" image:"1024" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square2048" image:"2048" fillColour:(colour White) scale:0.4)
+    })
+)
