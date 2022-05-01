@@ -442,16 +442,16 @@ public class ExportDbCsvConcepts
 							final BitSet concepts = rulesetGame.booleanConcepts();
 							for (final Concept concept : booleanConcepts)
 							{
+								final List<String> lineToWrite = new ArrayList<String>();
+								lineToWrite.add(id + ""); // id
+								lineToWrite.add(idRuleset + ""); // id ruleset
+								lineToWrite.add(concept.id() + ""); // id concept
 								if (concepts.get(concept.id()))
-								{
-									final List<String> lineToWrite = new ArrayList<String>();
-									lineToWrite.add(id + ""); // id
-									lineToWrite.add(idRuleset + ""); // id ruleset
-									lineToWrite.add(concept.id() + ""); // id concept
 									lineToWrite.add("\"1\"");
-									writer.println(StringRoutines.join(",", lineToWrite));
-									id++;
-								}
+								else
+									lineToWrite.add("\"0\"");
+								writer.println(StringRoutines.join(",", lineToWrite));
+								id++;
 							}
 							for (final Concept concept : nonBooleanConcepts)
 							{
@@ -516,7 +516,7 @@ public class ExportDbCsvConcepts
 						}
 					}
 				}
-				else // Code for the default ruleset.
+				else // Code for games with only a single ruleset.
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
 							: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
@@ -525,33 +525,30 @@ public class ExportDbCsvConcepts
 					final BitSet concepts = game.booleanConcepts();
 					for (final Concept concept : booleanConcepts)
 					{
+						final List<String> lineToWrite = new ArrayList<String>();
+						lineToWrite.add(id + "");
+						lineToWrite.add(idRuleset + "");
+						lineToWrite.add(concept.id() + "");
 						if (concepts.get(concept.id()))
-						{
-							final List<String> lineToWrite = new ArrayList<String>();
-							lineToWrite.add(id + "");
-							lineToWrite.add(idRuleset + "");
-							lineToWrite.add(concept.id() + "");
 							lineToWrite.add("\"1\"");
-							writer.println(StringRoutines.join(",", lineToWrite));
-							id++;
-						}
+						else
+							lineToWrite.add("\"0\"");
+						writer.println(StringRoutines.join(",", lineToWrite));
+						id++;
 					}
 
 					for (final Concept concept : nonBooleanConcepts)
 					{
 						if (concept.computationType().equals(ConceptComputationType.Compilation))
 						{
-							if (!game.nonBooleanConcepts().get(Integer.valueOf(concept.id())).equals("0"))
-							{
-								final List<String> lineToWrite = new ArrayList<String>();
-								lineToWrite.add(id + "");
-								lineToWrite.add(idRuleset + "");
-								lineToWrite.add(concept.id() + "");
-								lineToWrite.add(
-										"\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
-								writer.println(StringRoutines.join(",", lineToWrite));
-								id++;
-							}
+							final List<String> lineToWrite = new ArrayList<String>();
+							lineToWrite.add(id + "");
+							lineToWrite.add(idRuleset + "");
+							lineToWrite.add(concept.id() + "");
+							lineToWrite.add(
+									"\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
+							writer.println(StringRoutines.join(",", lineToWrite));
+							id++;
 						}
 						else
 						{

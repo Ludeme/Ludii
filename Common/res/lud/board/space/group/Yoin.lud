@@ -1,0 +1,110 @@
+(define "UpdateScore"
+    (do
+        (set Var "CutOff" 0)
+        next:(do
+            (while 
+                (and
+                    (= 0
+                        (-
+                            (count Groups if:(= (id P1) (who at:(to))) min:(var "CutOff"))
+                            (count Groups if:(= (id P2) (who at:(to))) min:(var "CutOff"))
+                        )
+                    )
+                    (!= 0
+                        (+
+                            (count Groups if:(= (id P1) (who at:(to))) min:(var "CutOff"))
+                            (count Groups if:(= (id P2) (who at:(to))) min:(var "CutOff"))
+                        )
+                    )
+                )
+                (set Var "CutOff"
+                    (+ 1 (var "CutOff"))
+                )
+            )
+            next:(and
+                (set Score P1 (count Groups if:(= (id P1) (who at:(to))) min:(var "CutOff")))
+                (set Score P2 (count Groups if:(= (id P2) (who at:(to))) min:(var "CutOff")))
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Yoin"
+    (players 2)
+    (equipment
+        {
+        (board (hex <Size>))
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (meta (swap))
+        (play
+            (move Add
+                (to 
+                    (sites Empty)
+                )
+                (then <Score>)
+            )
+        )
+        (end 
+            (if 
+                (is Full) 
+                {(if
+                    (< 
+                        (score P1)
+                        (score P2)
+                    )
+                    (result P1 Win)
+                )
+                (if
+                    (> 
+                        (score P1)
+                        (score P2)
+                    )
+                    (result P2 Win)
+                )}
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Size> args:{ <size> }
+    {
+    (item "3"	<3>		"A size 3 board is currently selected")
+    (item "4"	<4>		"A size 4 board is currently selected")
+    (item "5"	<5>		"A size 5 board is currently selected")
+    (item "6"	<6>		"A size 6 board is currently selected")
+    (item "7"	<7>		"A size 7 board is currently selected")*
+    (item "8"	<8>		"A size 8 board is currently selected")
+    (item "9"	<9>		"A size 9 board is currently selected")
+    (item "10"	<10>	"A size 10 board is currently selected")
+    (item "11"	<11>	"A size 11 board is currently selected")
+    (item "12"	<12>	"A size 12 board is currently selected")
+    }
+)
+
+(option "Running Score" <Score> args:{ <score> }
+    {
+    (item "On"  <("UpdateScore")>  "The score is currently updated after each move.")
+    (item "Off" <(if (is Full) ("UpdateScore"))>  "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (region Colour (sites Board) (colour 250 210 148))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+    })
+)
