@@ -28,9 +28,12 @@
     (forEach Site (sites #1 #2)
         (if (is Occupied (site))
             (if 
-                (=  
-                    (what at:(site))
-                    (what at:("LineOfSightPiece" #3))
+                (and
+                    (=  
+                        (what at:(site))
+                        (what at:("LineOfSightPiece" #3))
+                    )
+                    (= 0 (state at:("LineOfSightPiece" #3)))
                 )
                 (and {
                     (remove (site))
@@ -39,6 +42,7 @@
                         (piece (mapEntry "Promotion" (what at:(site))))
                         (to ("LineOfSightPiece" #3))
                     )
+                    (set State at:("LineOfSightPiece" #3) 1)
                     (addScore P1 (mapEntry "Score" (mapEntry "Promotion" (what at:(site)))))
                 })
                 (if (!= 0 (count Sites in:("LineOfSightEmpty" #3)))
@@ -49,11 +53,14 @@
     )
 )
 
+(define "ResetState" (forEach Site (sites State 1) (set State at:(site) 0)))
+
 (define "ApplySlideW"
     (seq {
         ("ApplySlideLine" Column 1 W)
         ("ApplySlideLine" Column 2 W)
         ("ApplySlideLine" Column 3 W)
+        ("ResetState")
     })
 )
 
@@ -62,6 +69,7 @@
         ("ApplySlideLine" Column 2 E)
         ("ApplySlideLine" Column 1 E)
         ("ApplySlideLine" Column 0 E)
+        ("ResetState")
     })
 )
 
@@ -70,6 +78,7 @@
         ("ApplySlideLine" Row 2 N)
         ("ApplySlideLine" Row 1 N)
         ("ApplySlideLine" Row 0 N)
+        ("ResetState")
     })
 )
 
@@ -78,6 +87,7 @@
         ("ApplySlideLine" Row 1 S)
         ("ApplySlideLine" Row 2 S)
         ("ApplySlideLine" Row 3 S)
+        ("ResetState")
     })
 )
 
