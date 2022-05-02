@@ -25,92 +25,61 @@
 (define "LineOfSightEmpty" (sites LineOfSight Farthest at:(site) #1))
 
 (define "ApplySlideLine"
-		(forEach Site (sites #1 #2)
-	            (if (is Occupied (site))
-	                (if 
-	                    (=  
-	                        (what at:(site))
-	                        (what at:("LineOfSightPiece" #3))
-	                    )
-	                    (and {
-	                        (remove (site))
-	                        (remove ("LineOfSightPiece" #3))
-	                        (add 
-	                            (piece (mapEntry "Promotion" (what at:(site))))
-	                            (to ("LineOfSightPiece" #3))
-	                        )
-	                    })
-	                    (if (!= 0 (count Sites in:("LineOfSightEmpty" #3)))
-	                        (fromTo (from (site)) (to ("LineOfSightEmpty" #3)))
-	                    )
-	                )
-	            )
-	        )
-)
-
-(define "ApplySlideW"
-    (and
-    	("ApplySlideLine" Column 1 W)
-        (select (from 0))
-        (then
-            (and
-                ("ApplySlideLine" Column 2 W)
-                (select (from 0))
-                (then
-                    ("ApplySlideLine" Column 3 W)
+    (forEach Site (sites #1 #2)
+        (if (is Occupied (site))
+            (if 
+                (=  
+                    (what at:(site))
+                    (what at:("LineOfSightPiece" #3))
+                )
+                (and {
+                    (remove (site))
+                    (remove ("LineOfSightPiece" #3))
+                    (add 
+                        (piece (mapEntry "Promotion" (what at:(site))))
+                        (to ("LineOfSightPiece" #3))
+                    )
+                    (addScore P1 (mapEntry "Score" (mapEntry "Promotion" (what at:(site)))))
+                })
+                (if (!= 0 (count Sites in:("LineOfSightEmpty" #3)))
+                    (fromTo (from (site)) (to ("LineOfSightEmpty" #3)))
                 )
             )
         )
     )
 )
 
+(define "ApplySlideW"
+    (seq {
+        ("ApplySlideLine" Column 1 W)
+        ("ApplySlideLine" Column 2 W)
+        ("ApplySlideLine" Column 3 W)
+    })
+)
+
 (define "ApplySlideE"
-	    (and
-	    	("ApplySlideLine" Column 2 E)
-	        (select (from 0))
-	        (then
-	            (and
-	                ("ApplySlideLine" Column 1 E)
-	                (select (from 0))
-	                (then
-	                    ("ApplySlideLine" Column 0 E)
-	                )
-	            )
-	        )
-	    )
-	)
+    (seq {
+        ("ApplySlideLine" Column 2 E)
+        ("ApplySlideLine" Column 1 E)
+        ("ApplySlideLine" Column 0 E)
+    })
+)
 
 (define "ApplySlideN"
-	    (and
-	    	("ApplySlideLine" Row 2 N)
-	        (select (from 0))
-	        (then
-	            (and
-	                ("ApplySlideLine" Row 1 N)
-	                (select (from 0))
-	                (then
-	                    ("ApplySlideLine" Row 0 N)
-	                )
-	            )
-	        )
-	    )
-	)
+    (seq {
+        ("ApplySlideLine" Row 2 N)
+        ("ApplySlideLine" Row 1 N)
+        ("ApplySlideLine" Row 0 N)
+    })
+)
 
 (define "ApplySlideS"
-	    (and
-	    	("ApplySlideLine" Row 1 S)
-	        (select (from 0))
-	        (then
-	            (and
-	                ("ApplySlideLine" Row 2 S)
-	                (select (from 0))
-	                (then
-	                    ("ApplySlideLine" Row 3 S)
-	                )
-	            )
-	        )
-	    )
-	)
+    (seq {
+        ("ApplySlideLine" Row 1 S)
+        ("ApplySlideLine" Row 2 S)
+        ("ApplySlideLine" Row 3 S)
+    })
+)
 
 //------------------------------------------------------------------------------
 
@@ -141,37 +110,50 @@
             (pair (id "Square512" Shared) (id "Square1024" Shared))
             (pair (id "Square1024" Shared) (id "Square2048" Shared))
         })
+        (map "Score" {
+            (pair (id "Square2" Shared) 2)
+            (pair (id "Square4" Shared) 4)
+            (pair (id "Square8" Shared) 8)
+            (pair (id "Square16" Shared) 16)
+            (pair (id "Square32" Shared) 32)
+            (pair (id "Square64" Shared) 64)
+            (pair (id "Square128" Shared) 128)
+            (pair (id "Square256" Shared) 256)
+            (pair (id "Square512" Shared) 512)
+            (pair (id "Square1024" Shared) 1024)
+            (pair (id "Square2048" Shared) 2048)
+        })
     })
     (rules
         (start (place Random {"Square2"} count:2))
         (play 
-                (or {
-                    (if ("CanSlideW")
-                        ("SlideW"
-                            ("ApplySlideW")
-                        )
+            (or {
+                (if ("CanSlideW")
+                    ("SlideW"
+                        ("ApplySlideW")
                     )
-                    (if ("CanSlideE")
-                        ("SlideE"
-                            ("ApplySlideE")
-                        )
+                )
+                (if ("CanSlideE")
+                    ("SlideE"
+                        ("ApplySlideE")
                     )
-                    (if ("CanSlideN")
-                        ("SlideN"
-                            ("ApplySlideN")
-                        )
+                )
+                (if ("CanSlideN")
+                    ("SlideN"
+                        ("ApplySlideN")
                     )
-                    (if ("CanSlideS")
-                        ("SlideS"
-                            ("ApplySlideS")
-                        )
+                )
+                (if ("CanSlideS")
+                    ("SlideS"
+                        ("ApplySlideS")
                     )
+                )
                 }
                 (then
-                        (if (< (value Random (range 1 8)) 2)
-                            (add (piece "Square4") (to (sites Random (sites Empty) num:1)))
-                            (add (piece "Square2") (to (sites Random (sites Empty) num:1)))
-                        )		
+                    (if (< (value Random (range 1 8)) 2)
+                        (add (piece "Square4") (to (sites Random (sites Empty) num:1)))
+                        (add (piece "Square2") (to (sites Random (sites Empty) num:1)))
+                    )		
                 )
             )
         )
@@ -204,16 +186,31 @@
         (piece Colour Shared "Square512" fillColour:(colour 236 200 80))
         (piece Colour Shared "Square1024" fillColour:(colour 255 178 103))
         (piece Colour Shared "Square2048" fillColour:(colour 241 194 44))
-        (piece Foreground "Square2" image:"2" fillColour:(colour Black) scale:0.4)
-        (piece Foreground "Square4" image:"4" fillColour:(colour Black) scale:0.4)
-        (piece Foreground "Square8" image:"8" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square16" image:"16" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square32" image:"32" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square64" image:"64" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square128" image:"128" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square256" image:"256" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square512" image:"512" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square1024" image:"1024" fillColour:(colour White) scale:0.4)
-        (piece Foreground "Square2048" image:"2048" fillColour:(colour White) scale:0.4)
+        (piece Foreground "Square2" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground "Square4" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground "Square8" image:"8" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground "Square16" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:-0.6)
+        (piece Foreground "Square16" image:"6" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:0.4)
+        (piece Foreground "Square32" image:"3" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:-0.6)
+        (piece Foreground "Square32" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:0.4)
+        (piece Foreground "Square64" image:"6" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:-0.6)
+        (piece Foreground "Square64" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:0.4)
+        (piece Foreground "Square128" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.7)
+        (piece Foreground "Square128" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.1)
+        (piece Foreground "Square128" image:"8" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:0.5)
+        (piece Foreground "Square256" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.7)
+        (piece Foreground "Square256" image:"5" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.1)
+        (piece Foreground "Square256" image:"6" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:0.5)
+        (piece Foreground "Square512" image:"5" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.7)
+        (piece Foreground "Square512" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.1)
+        (piece Foreground "Square512" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:0.5)
+        (piece Foreground "Square1024" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.6)
+        (piece Foreground "Square1024" image:"0" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.2)
+        (piece Foreground "Square1024" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.2)
+        (piece Foreground "Square1024" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.6)
+        (piece Foreground "Square2048" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.6)
+        (piece Foreground "Square2048" image:"0" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.2)
+        (piece Foreground "Square2048" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.2)
+        (piece Foreground "Square2048" image:"8" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.6)
     })
 )
