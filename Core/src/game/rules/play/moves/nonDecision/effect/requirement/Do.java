@@ -22,8 +22,7 @@ import other.move.Move;
 import other.move.MovesIterator;
 
 /**
- * Applies a sequence of moves in a specified order, according to given
- * conditions.
+ * Applies two moves in order, according to given conditions.
  * 
  * @author Eric.Piette
  * 
