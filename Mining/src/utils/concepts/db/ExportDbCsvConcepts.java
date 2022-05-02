@@ -440,6 +440,7 @@ public class ExportDbCsvConcepts
 
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
+							final Map<Integer,String> nonBooleanConceptsValues = rulesetGame.nonBooleanConcepts();
 							for (final Concept concept : booleanConcepts)
 							{
 								final List<String> lineToWrite = new ArrayList<String>();
@@ -462,7 +463,7 @@ public class ExportDbCsvConcepts
 									lineToWrite.add(idRuleset + "");
 									lineToWrite.add(concept.id() + "");
 									lineToWrite.add(
-											"\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
+											"\"" + nonBooleanConceptsValues.get(Integer.valueOf(concept.id())) + "\"");
 									writer.println(StringRoutines.join(",", lineToWrite));
 									id++;
 								}
