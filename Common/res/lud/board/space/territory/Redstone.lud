@@ -1,70 +1,83 @@
-(define "SomeGroup"
+(define "SomeSite"
     (not
-        (all Groups  Orthogonal 
-            of:(= (who at:(to)) (id #1))
+        (all Sites #1 
             if:(not #2)
         )
     )
 )
 
-(define "Move"
-    (move Add
-        (to 
-            (sites Empty )
-            if:(not
-                (and
-                    (= 0 
-                        (+
-                            (count Sites  in:(sites Around  (to) Empty))
-                            (count Sites  in:(sites Around  (to) Own))
-                        )
+(define "PlaceRed"
+    (do
+        (move Add (piece "Disc0")
+            (to (sites Empty))
+        )
+        ifAfterwards:(or
+            ("SomeSite"
+                (sites Around (last To) Enemy Orthogonal)
+                (= 0 
+                    (count Liberties at:(site) Orthogonal
+                        if:(is Next (who at:(to)))
                     )
-                    (all Sites
-                        (sites Around (to) Enemy Orthogonal)
-                        if:(< 1
-                            (count Liberties at:(site) Orthogonal
-                                if:(is Next (who at:(to)))
-                            )
-                        )
+                )
+            )
+            ("SomeSite"
+                (sites Around (last To) Own Orthogonal)
+                (= 0 
+                    (count Liberties at:(site) Orthogonal
+                        if:(is Mover (who at:(to)))
                     )
                 )
             )
         )
         (then
-            (if
-                (or
-                    ("SomeGroup"
-                        Mover
-                        (= 0 (count Sites in:(sites Around  (sites) Empty Orthogonal)))
-                    )
-                    ("SomeGroup"
-                        Next
-                        (= 0 (count Sites in:(sites Around  (sites) Empty Orthogonal)))
+            (and
+                (forEach Site
+                    (sites Around (last To) Enemy Orthogonal)
+                    (if
+                        (= 0 
+                            (count Liberties at:(site) Orthogonal
+                                if:(is Next (who at:(to)))
+                            )
+                        )
+                        (remove (sites Group at:(site) Orthogonal if:(is Next (who at:(to)))))
                     )
                 )
-                (do 
-                    (add 
-                        (piece "Disc0") 
-                        (to 
-                            
-                            (last To) 
-                            (apply (remove  (to)))
+                (forEach Site
+                    (sites Around (last To) Own Orthogonal)
+                    (if
+                        (= 0 
+                            (count Liberties at:(site) Orthogonal
+                                if:(is Mover (who at:(to)))
+                            )
+                        )
+                        (remove (sites Group at:(site) Orthogonal if:(is Mover (who at:(to)))))
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "PlaceNonRed"
+    (do
+        (move Add 
+            (to (sites Empty))
+        )
+        ifAfterwards:(not
+            (or
+                ("SomeSite"
+                    (sites Around (last To) Enemy Orthogonal)
+                    (= 0 
+                        (count Liberties at:(site) Orthogonal
+                            if:(is Next (who at:(to)))
                         )
                     )
-                    next:(and 
-                        (forEach Group  Orthogonal
-                            if:(= (mover) (who at:(to)))
-                            (if
-                                (= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
-                                (remove  (sites))
-                            )
-                        )
-                        (forEach Group  Orthogonal
-                            if:(= (next) (who at:(to)))
-                            (if
-                                (= 0 (count Sites  in:(sites Around  (sites) Empty Orthogonal)))
-                                (remove  (sites))
-                            )
+                )
+                ("SomeSite"
+                    (sites Around (last To) Own Orthogonal includeSelf:True)
+                    (= 0 
+                        (count Liberties at:(site) Orthogonal
+                            if:(is Mover (who at:(to)))
                         )
                     )
                 )
@@ -87,7 +100,10 @@
     (rules
         (meta (swap))
         (play
-            ("Move")
+            (or
+                ("PlaceRed")
+                ("PlaceNonRed")
+            )
         )
         (end {
             (if 
@@ -127,8 +143,10 @@
 //------------------------------------------------------------------------------
 
 (metadata
+    
     (info {
     })
+    
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
