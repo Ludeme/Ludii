@@ -59,7 +59,8 @@ public class BoardPlacement extends ContainerPlacement
 	 */
 	public void setCustomPlacement(final Context context, final Rectangle placement, final Point2D boardCenter, final double scale)
 	{
-		setUnscaledPlacement(placement);
+		final Rectangle unscaledPlacement = new Rectangle(placement.x, placement.y, placement.width + placement.x, placement.height);
+		setUnscaledPlacement(unscaledPlacement);
 		containerScale = scale;
 		
 		this.placement = new Rectangle(
