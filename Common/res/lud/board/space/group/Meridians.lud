@@ -1,3 +1,45 @@
+(define "Move"
+    (move Add 
+        (to 
+            (forEach
+                (sites Empty)
+                if:(>
+                    (count Pieces Mover in:(sites LineOfSight at:(site)))
+                    0
+                )
+            )
+        )
+        #1
+    )
+)
+
+(define "Remove"
+    (forEach Group 
+        (if 
+            (all Sites
+                (sites)
+                if:(=
+                    0
+                    (count Sites 
+                        in:(difference
+                            (intersection
+                                (sites Occupied by:Mover)
+                                (sites Direction
+                                    from:(site)
+                                    stop:(is Occupied (to))
+                                    stopIncluded:True
+                                )
+                            )
+                            (sites)
+                        )
+                    )
+                )
+            )
+            (remove (sites))
+        )
+    ) 
+)
+
 (game "Meridians"
     (players 2)
     (equipment
@@ -36,42 +78,10 @@
         )
         (phase "Play"
             (play
-                (move Add 
-                    (to 
-                        (forEach
-                            (sites Empty)
-                            if:(>
-                                (count Pieces Mover in:(sites LineOfSight at:(site)))
-                                0
-                            )
-                        )
-                    )
-                    (then
-                        (forEach Group 
-                            (if 
-                                (all Sites
-                                    (sites)
-                                    if:(=
-                                        0
-                                        (count Sites 
-                                            in:(difference
-                                                (intersection
-                                                    (sites Occupied by:Mover)
-                                                    (sites Direction
-                                                        from:(site)
-                                                        stop:(is Occupied (to))
-                                                        stopIncluded:True
-                                                    )
-                                                )
-                                                (sites)
-                                            )
-                                        )
-                                    )
-                                )
-                                (remove (sites))
-                            )
-                        ) 
-                    )
+                (if
+                    (can Move ("Move" ~))
+                    ("Move" (then ("Remove")))
+                    (move Pass (then ("Remove")))
                 )
             )
         )
