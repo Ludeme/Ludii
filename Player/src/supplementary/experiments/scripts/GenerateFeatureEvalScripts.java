@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.DoubleAdder;
 import java.util.regex.Pattern;
 
@@ -284,6 +287,47 @@ public class GenerateFeatureEvalScripts
 			processDataList.add(new ProcessData(gameNames.get(idx), rulesetNames.get(idx), playerCounts.getQuick(idx)));
 		}
 		
+		// Build all the decision trees
+		// TODO
+		
+		final ExecutorService executor = Executors.newFixedThreadPool(NUM_GENERATION_THREADS);
+		
+		try
+		{
+			final CountDownLatch latch = new CountDownLatch(processDataList.size());
+			
+			for (final ProcessData processData : processDataList)
+			{
+				executor.submit
+				(
+					() ->
+					{
+						try
+						{
+							// TODO
+						}
+						catch (final Exception e)
+						{
+							e.printStackTrace();
+						}
+						finally
+						{
+							latch.countDown();
+						}
+					}
+				);
+			}
+			
+			latch.await();
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		// Now write all the job scripts
+		// TODO
 		final DoubleAdder totalCoreHoursRequested = new DoubleAdder();
 		
 		int processIdx = 0;		// TODO make this thread-safe
@@ -309,7 +353,8 @@ public class GenerateFeatureEvalScripts
 				if (exclusive)
 					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
 				else
-					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
+					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
+					//jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
 				
 				totalCoreHoursRequested.add(CORES_PER_NODE * (MAX_WALL_TIME / 60.0));
 				
