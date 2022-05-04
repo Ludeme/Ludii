@@ -2778,6 +2778,7 @@ SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.And
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Append
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.If
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Or
+SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Seq
 TYPE: game.rules.play.moves.decision.Decision
 TYPE JAVADOC: Defines moves that involve a decision by the player.
 SUBCLASS: game.rules.play.moves.decision.Move
@@ -3004,6 +3005,7 @@ SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.And
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Append
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.If
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Or
+SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Seq
 REMARKS: Non-decision moves include move operators that might combine further decision moves.
 TYPE: game.rules.play.moves.nonDecision.effect.Add
 TYPE JAVADOC: Places one or more component(s) at a collection of sites or at one specific  site.
@@ -3136,6 +3138,7 @@ SUBCLASS: game.rules.play.moves.nonDecision.effect.take.Take
 SUBCLASS: game.rules.play.moves.nonDecision.effect.Trigger
 SUBCLASS: game.rules.play.moves.nonDecision.effect.Vote
 SUBCLASS: game.rules.play.moves.nonDecision.operators.foreach.ForEach
+SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Seq
 TYPE: game.rules.play.moves.nonDecision.effect.Enclose
 TYPE JAVADOC: Applies a move to an enclosed group.
 NEW CTOR
@@ -3423,7 +3426,7 @@ PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (avoidStoredState (forEach Piece))
 REMARKS: Example: Arimaa.
 TYPE: game.rules.play.moves.nonDecision.effect.requirement.Do
-TYPE JAVADOC: Applies a sequence of moves in a specified order, according to given  conditions.
+TYPE JAVADOC: Applies two moves in order, according to given conditions.
 NEW CTOR
 (do <moves> [next:<moves>] [ifAfterwards:<boolean>] [<then>])
 PARAM JAVADOC: <moves>: Moves to be applied first.
@@ -3809,6 +3812,12 @@ NEW CTOR
 PARAM JAVADOC: {<moves>}: The list of moves.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (or { (set Score P1 100) (set Score P2 100) (set Score P3 100) })
+TYPE: game.rules.play.moves.nonDecision.operators.logical.Seq
+TYPE JAVADOC: Applies a sequence of moves one by one.
+NEW CTOR
+(seq {<moves>})
+PARAM JAVADOC: {<moves>}: Moves to apply one by one.
+EXAMPLE: (seq {(forEach Site (sites Occupied by:Mover) (remove (site))) (add (piece "Disc" P1) (to (forEach (sites Board) if:(is Odd (site)))))})
 TYPE: game.rules.start.Deal
 TYPE JAVADOC: To deal different components between players.
 NEW CTOR
