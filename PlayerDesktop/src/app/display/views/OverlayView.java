@@ -105,6 +105,22 @@ public final class OverlayView extends View
 		drawSandBoxIcon(g2d);
 		drawExtraGameInformation(g2d, context);
 		
+		if (app.settingsPlayer().usingExhibitionApp())
+		{
+			final Font exhbitionTitleFont = new Font("Arial", Font.BOLD, 32);
+			g2d.setFont(exhbitionTitleFont);
+			g2d.setColor(Color.BLUE);
+			g2d.drawString("Make Your Own Game", 30, 55);
+			
+			final Font exhbitionLabelFont = new Font("Arial", Font.PLAIN, 16);
+			g2d.setFont(exhbitionLabelFont);
+			g2d.drawString("1. Choose a board", 30, 110);
+			g2d.drawString("2. Choose pieces (drag onto board)", 30, 220);
+			g2d.drawString("Movement", 30, 355);
+			g2d.drawString(" Capture", 30, 415);
+			g2d.drawString("3. Choose goal(s)", 30, 475);
+		}
+		
 		paintDebug(g2d, Color.BLACK);
 	}
 	

@@ -96,7 +96,7 @@ public class PlayerView extends View
 			Rectangle place = new Rectangle(0, 0, boardSize, boardSize/10);
 			
 			if (app.settingsPlayer().usingExhibitionApp())
-				place = new Rectangle(10, 180, app.width()-app.height(), boardSize/5);
+				place = new Rectangle(10, 210, app.width()-app.height(), boardSize/5);
 			
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);
