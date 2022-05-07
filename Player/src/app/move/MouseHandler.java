@@ -8,6 +8,7 @@ import main.Constants;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
+import other.move.Move;
 import util.LocationUtil;
 
 /**
@@ -98,8 +99,28 @@ public class MouseHandler
 				}
 				else
 				{
+					// Special exhibition code for making move piece to hands move.
+					if (app.settingsPlayer().usingExhibitionApp())
+					{
+						if (releasedPoint.x > (app.width() - app.height()) && selectedFromLocation.site() >= context.game().board().numSites())
+						{
+							//final Component dragComponent = app.settingsPlayer().dragComponent();
+							//final int dragComponentIndex = IntStream.range(0, context.game().equipment().components().length).filter(i -> context.game().equipment().components()[i] == dragComponent).findFirst().orElse(-1);
+							for (final Move m : context.game().moves(context).moves())
+							{
+								if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+								{
+									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						app.setVolatileMessage("That is not a valid move.");
+					}
 					app.settingsPlayer().setComponentIsSelected(false);
-					app.setVolatileMessage("That is not a valid move.");
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package app.views;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -43,7 +44,8 @@ public final class BoardView extends View
 		boardSize = Math.min(app.height(), (int) (app.width() * boardToSizeRatio));
 		if (exhibitionMode)
 		{
-			placement = new Rectangle(app.width()-boardSize, 0, boardSize, boardSize);
+			placement = new Rectangle(app.width()-boardSize + 30, 30, boardSize, boardSize);
+			app.bridge().getContainerStyle(0).setDefaultBoardScale(0.6);
 		}
 		else
 		{
@@ -56,6 +58,13 @@ public final class BoardView extends View
 	@Override
 	public void paint(final Graphics2D g2d)
 	{
+		if (app.settingsPlayer().usingExhibitionApp())
+		{
+			g2d.setColor(Color.WHITE);
+			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+			g2d.fillRoundRect(placement.x + 50, placement.y + 50, placement.width - 100, placement.height - 100, 40, 40);
+		}
+		
 		final Context context = app.contextSnapshot().getContext(app);
 		
 		app.bridge().getContainerStyle(context.board().index()).setPlacement(context, placement);

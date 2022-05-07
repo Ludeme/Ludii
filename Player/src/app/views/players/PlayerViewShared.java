@@ -1,5 +1,6 @@
 package app.views.players;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -30,6 +31,13 @@ public class PlayerViewShared extends PlayerViewUser
 	@Override
 	public void paint(final Graphics2D g2d)
 	{
+		if (app.settingsPlayer().usingExhibitionApp())
+		{
+			g2d.setColor(Color.WHITE);
+			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+			g2d.fillRoundRect(20, placement.y+10, placement.width, placement.height-20, 40, 40);
+		}
+		
 		if (hand != null)
 		{
 			final Context context = app.contextSnapshot().getContext(app);
