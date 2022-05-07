@@ -131,7 +131,7 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 		panels.add(boardPanel);
 		
 		// create the player panel
-		playerPanel = new PlayerView(app, portraitMode);
+		playerPanel = new PlayerView(app, portraitMode, false);
 		panels.add(playerPanel);
 
 		// Create tool panel

@@ -3,6 +3,7 @@ package app;
 import java.util.Arrays;
 
 import gameDistance.CompareAllDistanceMetrics;
+import kilothon.Kilothon;
 import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -12,6 +13,7 @@ import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
 import supplementary.experiments.eval.EvalGate;
 import supplementary.experiments.optim.EvolOptimHeuristics;
+import supplementary.experiments.scripts.GenerateFeatureEvalScripts;
 import supplementary.experiments.scripts.GenerateGatingScripts;
 import supplementary.experiments.speed.PlayoutsPerSec;
 import test.instructionGeneration.TestInstructionGeneration;
@@ -19,7 +21,6 @@ import training.expert_iteration.ExpertIteration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 import utils.trials.GenerateTrialsCluster;
-import kilothon.Kilothon;
 
 /**
  * Class with helper method to delegate to various other main methods
@@ -66,6 +67,7 @@ public class PlayerCLI
 					"--generate-trials",
 					"--tutorial-generation",
 					"--game-distance",
+					"--generate-feature-eval-scripts",
 					"--kilothon"
 				)
 				.withNumVals(1)
@@ -106,6 +108,8 @@ public class PlayerCLI
 			TestInstructionGeneration.main(passArgs);
 		else if (command.equalsIgnoreCase("--game-distance"))
 			CompareAllDistanceMetrics.main(passArgs);
+		else if (command.equalsIgnoreCase("--generate-feature-eval-scripts"))
+			GenerateFeatureEvalScripts.main(passArgs);
 		else if (command.equalsIgnoreCase("--kilothon"))
 			Kilothon.main(passArgs);
 		else

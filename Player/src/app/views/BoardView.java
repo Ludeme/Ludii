@@ -36,6 +36,20 @@ public final class BoardView extends View
 		boardSize = Math.min(app.height(), (int) (app.width() * boardToSizeRatio));
 		placement = new Rectangle(0, 0, boardSize, boardSize);
 	}
+	
+	public BoardView(final PlayerApp app, final boolean exhibitionMode)
+	{
+		super(app);
+		boardSize = Math.min(app.height(), (int) (app.width() * boardToSizeRatio));
+		if (exhibitionMode)
+		{
+			placement = new Rectangle(app.width()-boardSize, 0, boardSize, boardSize);
+		}
+		else
+		{
+			placement = new Rectangle(0, 0, boardSize, boardSize);
+		}
+	}
 
 	//-------------------------------------------------------------------------
 

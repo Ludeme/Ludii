@@ -34,7 +34,7 @@ public class PlayerView extends View
 	/**
 	 * Constructor.
 	 */
-	public PlayerView(final PlayerApp app, final boolean portraitMode)
+	public PlayerView(final PlayerApp app, final boolean portraitMode, final boolean exhibitionMode)
 	{
 		super(app);
 		playerSections.clear();
@@ -60,6 +60,11 @@ public class PlayerView extends View
 			startY = app.manager().isWebApp() ? boardSize + 88 : boardSize + 48;	// +40 for the height of the toolView, +80 on mobile
 			width = boardSize - 8;
 			height = Math.min(maxHandHeight, (int)((app.height() - boardSize)*maxPanelPercentageHeight/numPlayers));
+		}
+		
+		if (exhibitionMode)
+		{
+			startX = 8;
 		}
 		
 		// create a specific user page for each player.
