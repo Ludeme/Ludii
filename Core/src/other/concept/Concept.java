@@ -10853,7 +10853,7 @@ public enum Concept
 	(
 		"7.2",
 		771, 
-		"Implementation related to efficiency (run on Intel E7-8860, 2.2 GHz, 4GB Ram, Seed = 2077).",
+		"Implementation related to efficiency (run on Intel E7-8860, 2.2 GHz, 4GB RAM, Seed = 2077).",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,

@@ -26,8 +26,12 @@ public class RulesetConceptsUCT
 	/** 
 	 * Filepath for our CSV file. Since this only works with access to private repo 
 	 * anyway, the filepath has been hardcoded for use from Eclipse.
+	 * 
+	 * This would usually be private and final, but making it public and non-final
+	 * is very useful for editing the filepath when running on cluster (where LudiiPrivate
+	 * is not available).
 	 */
-	private static final String FILEPATH = "../../LudiiPrivate/DataMiningScripts/Sklearn/res/Input/RulesetConceptsUCT.csv";
+	public static String FILEPATH = "../../LudiiPrivate/DataMiningScripts/Sklearn/res/Input/RulesetConceptsUCT.csv";
 	
 	/** Names of our columns */
 	private static String[] columnNames = null;
