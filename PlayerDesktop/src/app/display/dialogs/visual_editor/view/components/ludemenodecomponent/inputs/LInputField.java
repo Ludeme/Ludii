@@ -175,7 +175,7 @@ public class LInputField extends JComponent {
         for(int i = 0; i < indexToRemove; i++){
             newProvidedInputs[i] = oldProvidedInputs[i];
         }
-        for(int i = indexToRemove; i < oldProvidedInputs.length; i++){
+        for(int i = indexToRemove+1; i < oldProvidedInputs.length; i++){
             newProvidedInputs[i - 1] = oldProvidedInputs[i];
         }
 
@@ -185,6 +185,10 @@ public class LInputField extends JComponent {
 
         LNC.getInputArea().removeField(this);
         parent.children.remove(this);
+
+        // since the provided input was updated, the input fields need to be updated
+
+
 
     }
 

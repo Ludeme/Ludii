@@ -197,7 +197,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             LudemeNode sourceNode = source.getLudemeNodeComponent().getLudemeNode();
             InputInformation sourceInput = source.getInputField().getInputInformation();
 
-            LudemeNode[] providedInput = null;
+            // TODO: Perhaps this part should be put into LInputField.java addCollectionItem() method
+
+            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.getProvidedInputs()[sourceInput.getIndex()];
 
             // get children of collection
             List<LInputField> children;
