@@ -1,6 +1,7 @@
 package app.utils;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -85,6 +86,10 @@ public class SettingsPlayer
 	// Exhibiton player settings
 	
 	private boolean usingExhibitionApp = false;
+	
+	// Placement of the board and its white margin. Used for detecting whether move to hands is done.
+	private Rectangle boardPlacement = new Rectangle();
+	private Rectangle boardMarginPlacement = new Rectangle();
 	
 	//-------------------------------------------------------------------------
 	// User settings
@@ -790,6 +795,26 @@ public class SettingsPlayer
 	public void setUsingExhibitionApp(final boolean b)
 	{
 		usingExhibitionApp = b;
+	}
+
+	public Rectangle boardPlacement()
+	{
+		return boardPlacement;
+	}
+
+	public void setBoardPlacement(final Rectangle boardPlacement)
+	{
+		this.boardPlacement = boardPlacement;
+	}
+
+	public Rectangle boardMarginPlacement()
+	{
+		return boardMarginPlacement;
+	}
+
+	public void setBoardMarginPlacement(final Rectangle boardMarginPlacement)
+	{
+		this.boardMarginPlacement = boardMarginPlacement;
 	}
 			
 	//-------------------------------------------------------------------------

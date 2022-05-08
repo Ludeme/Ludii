@@ -63,6 +63,8 @@ public final class BoardView extends View
 			g2d.setColor(Color.WHITE);
 			g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
 			g2d.fillRoundRect(placement.x + 50, placement.y + 50, placement.width - 100, placement.height - 100, 40, 40);
+			app.settingsPlayer().setBoardPlacement(new Rectangle(placement.x + 120, placement.y + 120, placement.width - 240, placement.height - 240));
+			app.settingsPlayer().setBoardMarginPlacement(new Rectangle(placement.x + 50, placement.y + 50, placement.width - 100, placement.height - 100));
 		}
 		
 		final Context context = app.contextSnapshot().getContext(app);
