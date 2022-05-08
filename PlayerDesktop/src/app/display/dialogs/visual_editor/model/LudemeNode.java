@@ -191,10 +191,19 @@ public class LudemeNode implements iLudemeNode, iGNode {
         s.append(" ");
         for(Object o : getProvidedInputs()){
             if(o == null); // TODO: What to do when input is empty?
+            else if(o instanceof LudemeNode[]) {
+                s.append("{");
+                for(LudemeNode ln : (LudemeNode[]) o){
+                    if(ln == null) continue;
+                    s.append(ln.getStringRepresentation());
+                    s.append("\n");
+                }
+                s.append("}");
+            }
             else if(o instanceof String) s.append("\"").append(o.toString()).append("\"");
             else s.append(o.toString());
         }
-        if(s.toString().startsWith("(")) s.append(" )");
+        if(s.toString().startsWith("(")) s.append(")");
         return s.toString().trim().replaceAll(" +", " ");
     }
 
