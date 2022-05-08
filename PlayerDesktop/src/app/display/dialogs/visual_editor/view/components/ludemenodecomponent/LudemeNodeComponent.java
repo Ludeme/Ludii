@@ -180,7 +180,7 @@ public class LudemeNodeComponent extends JComponent {
                 getGraphPanel().cancelNewConnection();
             }
             else {
-                getGraphPanel().clickedOnNode(LudemeNodeComponent.this.getLudemeNode());
+                getGraphPanel().clickedOnNode(LudemeNodeComponent.this);
             }
 
         }
@@ -197,7 +197,7 @@ public class LudemeNodeComponent extends JComponent {
                 getGraphPanel().cancelNewConnection();
             }
             else {
-                getGraphPanel().clickedOnNode(LudemeNodeComponent.this.getLudemeNode());
+                getGraphPanel().clickedOnNode(LudemeNodeComponent.this);
             }
         }
     };

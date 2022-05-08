@@ -31,7 +31,9 @@ public class LInputField extends JComponent {
 
     private static final boolean DEBUG = true;
 
-    List<LInputField> children = new ArrayList<>(); // list of children in case of collection
+    public List<LInputField> children = new ArrayList<>(); // list of children in case of collection
+    public LInputField parent = null;
+
 
     JComponent inputFieldComponent;
     LConnectionComponent connectionComponent;
@@ -58,6 +60,7 @@ public class LInputField extends JComponent {
         this.inputInformationList = parent.inputInformationList;
         constructCollectionField(parent);
         parent.children.add(this);
+        this.parent = parent;
     }
 
     private void constructCollectionField(LInputField parent){
@@ -66,12 +69,12 @@ public class LInputField extends JComponent {
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(label);
-        LInputButton addItemButton = new LInputButton(DesignPalette.COLLECTION_REMOVE_ICON_ACTIVE, DesignPalette.COLLECTION_REMOVE_ICON_HOVER);
+        LInputButton removeItemButton = new LInputButton(DesignPalette.COLLECTION_REMOVE_ICON_ACTIVE, DesignPalette.COLLECTION_REMOVE_ICON_HOVER);
 
         add(Box.createHorizontalStrut(10));
-        add(addItemButton);
+        add(removeItemButton);
 
-        addItemButton.addActionListener(e -> {
+        removeItemButton.addActionListener(e -> {
             LNC.getInputArea().removeField(this);
         });
 
@@ -145,7 +148,7 @@ public class LInputField extends JComponent {
                     } else {
                         LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), LInputField.this.children.get(LInputField.this.children.size() - 1));
                     }*/
-                    LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), LInputField.this);
+                    addCollectionItem();
                 });
             }
 
@@ -155,6 +158,10 @@ public class LInputField extends JComponent {
             inputFieldComponent = connectionComponent;
         }
 
+    }
+
+    private void addCollectionItem(){
+        LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), LInputField.this);
     }
 
     /*
@@ -209,8 +216,36 @@ public class LInputField extends JComponent {
     }
 
     public void setUserInput(Object input){
-        if(inputInformationList.size() > 1) System.out.println("!!!! INCORRECT USE HERE");
-        if(inputFieldComponent == connectionComponent){
+        if(inputInformationList.size() > 1) {
+            // TODO: My words: "Incorrect use here", but I do not remember why
+        }
+        if (getInputInformation().isCollection() && input instanceof LudemeNode[]) {
+            System.out.println("YES SIR");
+            // collection inputs are connected to multiple nodes
+            LudemeNode[] connectedTo = (LudemeNode[]) input;
+            IGraphPanel graphPanel = LNC.getGraphPanel();
+
+            for(int i = 1; i < connectedTo.length; i++){
+                // create a new input field for each node
+                addCollectionItem();
+            }
+
+            for(int i = 0; i < connectedTo.length; i++){
+                LudemeNode node = connectedTo[i];
+                if(node != null) {
+                    // get correct connection component
+                    LConnectionComponent connectionComponentChild;
+                    int childrenIndex = i-1;
+                    if (childrenIndex < 0){
+                        connectionComponentChild = connectionComponent;
+                    } else {
+                        connectionComponentChild = (LConnectionComponent) children.get(childrenIndex).getConnectionComponent();
+                    }
+                    graphPanel.addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).getIngoingConnectionComponent());
+                }
+            }
+        }
+        else if(inputFieldComponent == connectionComponent){
             // then its ludeme input
             IGraphPanel graphPanel = LNC.getGraphPanel();
             graphPanel.addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).getIngoingConnectionComponent());

@@ -12,8 +12,10 @@ import app.display.dialogs.visual_editor.view.components.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.InputInformation;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 
@@ -173,7 +175,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         source.updatePosition();
         target.updatePosition();
 
-
         if(!source.getInputField().isSingle()){
             source = source.getLudemeNodeComponent().getInputArea().addedConnection(target.getHeader().getLudemeNodeComponent(), source.getInputField()).getConnectionComponent();
         }
@@ -184,15 +185,56 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         source.setFill(true);
         target.setFill(true);
         source.setConnectedTo(target.getHeader().getLudemeNodeComponent());
-        Handler.updateInput(graph, source.getLudemeNodeComponent().getLudemeNode(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().getLudemeNode());
+
+        // Add an edge
         Handler.addEdge(graph, source.getLudemeNodeComponent().getLudemeNode(), target.getHeader().getLudemeNodeComponent().getLudemeNode());
-
-
         LudemeConnection connection = new LudemeConnection(source, target);
         edges.add(connection);
 
+        // Update the provided input in the description graph
+        // differentiate between an inputed provided to a collection and otherwise
+        if(source.getInputField().getInputInformation().isCollection()){
+            LudemeNode sourceNode = source.getLudemeNodeComponent().getLudemeNode();
+            InputInformation sourceInput = source.getInputField().getInputInformation();
+
+            LudemeNode[] providedInput = null;
+
+            // get children of collection
+            List<LInputField> children;
+            int numberOfChildren;
+            if(source.getInputField().parent != null){
+                children = source.getInputField().parent.children;
+                numberOfChildren = source.getInputField().parent.children.size();
+            } else {
+                children = source.getInputField().children;
+                numberOfChildren = source.getInputField().children.size();
+            }
+
+            // The provided input class just be an array. If it is null, then create it NOTE!: the first collection inputfield is not counted as a child, therefore numberOfChildren+1
+            if(sourceNode.getProvidedInputs()[sourceInput.getIndex()] == null){
+                providedInput = new LudemeNode[numberOfChildren+1];
+            } else {
+                providedInput = (LudemeNode[]) sourceNode.getProvidedInputs()[sourceInput.getIndex()];
+            }
+            // if the array is not big enough, expand it.
+            if(providedInput.length < numberOfChildren+1){
+                LudemeNode[] newProvidedInput = new LudemeNode[numberOfChildren+1];
+                System.arraycopy(providedInput, 0, newProvidedInput, 0, providedInput.length);
+                providedInput = newProvidedInput;
+            }
+            // get the index of the current input field w.r.t collection field
+            int i = children.indexOf(source.getInputField()) + 1; // + 1 because the first input field is not counted as a child
+            //if(i==-1) i = 0;
+            providedInput[i] = target.getHeader().getLudemeNodeComponent().getLudemeNode();
+            Handler.updateInput(graph, sourceNode, sourceInput.getIndex(), providedInput);
+        } else {
+            Handler.updateInput(graph, source.getLudemeNodeComponent().getLudemeNode(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().getLudemeNode());
+        }
+
+
         repaint();
     }
+
 
     @Override
     public LudemeNodeComponent getNodeComponent(LudemeNode node) {
@@ -272,11 +314,16 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     @Override
-    public void clickedOnNode(LudemeNode node) {
-        LudemeNodeComponent lc = getNodeComponent(node);
+    public void clickedOnNode(LudemeNodeComponent lnc) {
+        LudemeNode node = lnc.getLudemeNode();
         if(selectedConnectionComponent != null){
-            if(selectedConnectionComponent.getRequiredLudemes().contains(node.getLudeme()) && !lc.getIngoingConnectionComponent().isFilled()) {
-                finishNewConnection(lc);
+            if(selectedConnectionComponent.getRequiredLudemes().contains(node.getLudeme()) && !lnc.getIngoingConnectionComponent().isFilled()) {
+                finishNewConnection(lnc);
+            }
+        }
+        for(int i = 0; i < node.getProvidedInputs().length; i++){
+            if(node.getProvidedInputs()[i] != null){
+                System.out.println(i + ": (" + node.getProvidedInputs()[i].getClass().getName() + ") " + node.getProvidedInputs()[i]);
             }
         }
     }

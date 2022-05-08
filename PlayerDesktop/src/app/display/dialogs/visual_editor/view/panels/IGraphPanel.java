@@ -20,7 +20,7 @@ public interface IGraphPanel {
     void showAllAvailableLudemes(int x, int y);
     void removeAllConnections(LudemeNode node);
     void removeConnection(LudemeNode node, LConnectionComponent connection);
-    void clickedOnNode(LudemeNode node);
+    void clickedOnNode(LudemeNodeComponent lnc);
     void removeNode(LudemeNode node);
     LayoutHandler getLayoutHandler();
     void updateGraph();
