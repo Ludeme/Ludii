@@ -75,7 +75,7 @@ public class LInputField extends JComponent {
         add(removeItemButton);
 
         removeItemButton.addActionListener(e -> {
-            LNC.getInputArea().removeField(this);
+            removeCollectionItem();
         });
 
 
@@ -163,6 +163,31 @@ public class LInputField extends JComponent {
     private void addCollectionItem(){
         LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), LInputField.this);
     }
+    private void removeCollectionItem(){
+        IGraphPanel graphPanel = LNC.getGraphPanel();
+
+        // get current provided input array
+        LudemeNode[] oldProvidedInputs = (LudemeNode[]) LNC.getLudemeNode().getProvidedInputs()[getInputIndex()];
+        // find this inputfields index in the provided inputs
+        int indexToRemove = parent.children.indexOf(this) + 1;
+        // decrease provided inputs array size
+        LudemeNode[] newProvidedInputs = new LudemeNode[oldProvidedInputs.length - 1];
+        for(int i = 0; i < indexToRemove; i++){
+            newProvidedInputs[i] = oldProvidedInputs[i];
+        }
+        for(int i = indexToRemove; i < oldProvidedInputs.length; i++){
+            newProvidedInputs[i - 1] = oldProvidedInputs[i];
+        }
+
+        Handler.updateInput(graphPanel.getGraph(), LNC.getLudemeNode(), getInputIndex(), newProvidedInputs);
+
+        graphPanel.removeConnection(LNC.getLudemeNode(), this.getConnectionComponent());
+
+        LNC.getInputArea().removeField(this);
+        parent.children.remove(this);
+
+    }
+
 
     /*
          Optional arguments merge
@@ -220,7 +245,6 @@ public class LInputField extends JComponent {
             // TODO: My words: "Incorrect use here", but I do not remember why
         }
         if (getInputInformation().isCollection() && input instanceof LudemeNode[]) {
-            System.out.println("YES SIR");
             // collection inputs are connected to multiple nodes
             LudemeNode[] connectedTo = (LudemeNode[]) input;
             IGraphPanel graphPanel = LNC.getGraphPanel();
@@ -239,7 +263,7 @@ public class LInputField extends JComponent {
                     if (childrenIndex < 0){
                         connectionComponentChild = connectionComponent;
                     } else {
-                        connectionComponentChild = (LConnectionComponent) children.get(childrenIndex).getConnectionComponent();
+                        connectionComponentChild = children.get(childrenIndex).getConnectionComponent();
                     }
                     graphPanel.addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).getIngoingConnectionComponent());
                 }

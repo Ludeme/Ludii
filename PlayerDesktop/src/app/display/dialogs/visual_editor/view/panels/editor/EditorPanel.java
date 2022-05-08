@@ -86,7 +86,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             lc.revalidate();
         }
         for(LudemeNodeComponent lc : nodeComponents){
-            lc.updateProvidedInputs(); //TODO: FIX. Call of this method duplicates children nodes id in parent's list
+            lc.updateProvidedInputs();
             lc.updatePositions();
         }
 
@@ -297,6 +297,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
 
+    // removes all outgoing conenctions of the node's ("node") connection component "connection"
     @Override
     public void removeConnection(LudemeNode node, LConnectionComponent connection) {
         if(connection.getLudemeNodeComponent().dynamic) connection.getLudemeNodeComponent().getInputArea().removedConnectionDynamic(node, connection.getInputField());
@@ -307,7 +308,23 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
                 e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null, true);
-                Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
+                // check whether it was the element of a collection
+                if(connection.getInputField().isSingle() && connection.getInputField().getInputInformation().isCollection()){
+                    // if element of collection udpate the array
+                    LudemeNode[] providedInputs = (LudemeNode[]) node.getProvidedInputs()[connection.getInputField().getInputIndex()];
+                    // find index which to remove from array
+                    int indexToUpdate;
+                    if(connection.getInputField().parent != null) {
+                        indexToUpdate = connection.getInputField().parent.children.indexOf(connection.getInputField()) + 1;
+                    } else {
+                        indexToUpdate = 0;
+                    }
+                    // set to null
+                    providedInputs[indexToUpdate] = null;
+                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), connection.getInputField().getInputIndex(), providedInputs);
+                } else {
+                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
+                }
             }
         }
         repaint();
