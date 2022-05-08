@@ -182,7 +182,7 @@ public class MainWindowDesktop extends JPanel implements MouseListener, MouseMot
 
 			g2d.setColor(Color.white);
 			if (app.settingsPlayer().usingExhibitionApp())
-				g2d.setColor(new Color(31,190,214));
+				g2d.setColor(new Color(146,223,243));
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 
 			// Paint each panel
