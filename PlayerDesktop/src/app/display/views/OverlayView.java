@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.JTextArea;
 
 import app.DesktopApp;
 import app.PlayerApp;
@@ -39,6 +40,8 @@ public final class OverlayView extends View
 {
 	/** Font for displaying values. */
 	protected Font fontForDisplay;
+	
+	final JTextArea englishDescriptionField = new JTextArea();
 
 	//------------------------------------------------------------------------
 
@@ -48,6 +51,7 @@ public final class OverlayView extends View
 	public OverlayView(final PlayerApp app)
 	{
 		super(app);
+		DesktopApp.frame().add(englishDescriptionField);
 	}
 
 	//-------------------------------------------------------------------------
@@ -80,11 +84,26 @@ public final class OverlayView extends View
 			
 			final Font exhbitionLabelFont = new Font("Arial", Font.PLAIN, 16);
 			g2d.setFont(exhbitionLabelFont);
-			g2d.drawString("1. Choose a board", 30, 110);
-			g2d.drawString("2. Choose pieces (drag onto board)", 30, 220);
-			g2d.drawString("Movement", 30, 355);
-			g2d.drawString(" Capture", 30, 415);
-			g2d.drawString("3. Choose goal(s)", 30, 475);
+			if (app.manager().ref().context().equipment().containers().length > 3)
+			{
+				g2d.drawString("1. Choose a board", 30, 110);
+				g2d.drawString("2. Choose pieces (drag onto board)", 30, 220);
+				g2d.drawString("Movement", 30, 355);
+				g2d.drawString(" Capture", 30, 415);
+				g2d.drawString("3. Choose goal(s)", 30, 475);
+			}
+			else
+			{
+				// If playing a game, show toEnglish of that game's description
+				final Font exhbitionDescriptionFont = new Font("Arial", Font.PLAIN, 14);
+				englishDescriptionField.setFont(exhbitionDescriptionFont);
+				englishDescriptionField.setBounds(30, 100 , 400, 400);
+				englishDescriptionField.setOpaque(false);
+				englishDescriptionField.setLineWrap(true);
+				englishDescriptionField.setWrapStyleWord(true);
+				englishDescriptionField.setText(app.contextSnapshot().getContext(app).game().toEnglish(app.contextSnapshot().getContext(app).game()));
+				englishDescriptionField.setVisible(true);
+			}
 		}
 		
 		if (app.bridge().settingsVC().thisFrameIsAnimated())
