@@ -95,7 +95,14 @@ public class MouseHandler
 			else if (!MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation, false, -1))
 			{
 				// Remember the selected From location for next time.
-				if (!app.settingsPlayer().componentIsSelected() && app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation))
+				if 
+				(
+					!app.settingsPlayer().componentIsSelected() 
+					&& 
+					!app.settingsPlayer().usingExhibitionApp()
+					&& 
+					app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation)
+				)
 				{
 					app.settingsPlayer().setComponentIsSelected(true);
 				}
