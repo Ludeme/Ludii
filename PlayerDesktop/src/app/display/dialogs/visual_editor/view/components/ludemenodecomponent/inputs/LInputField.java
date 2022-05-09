@@ -154,7 +154,11 @@ public class LInputField extends JComponent {
     }
 
     private void addCollectionItem(){
-        LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), LInputField.this);
+        // new item added below last collection item or this (parent)
+        LInputField last = null;
+        if(children.isEmpty()) last = this;
+        else last = children.get(children.size()-1);
+        LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
     }
     private void removeCollectionItem(){
         IGraphPanel graphPanel = LNC.getGraphPanel();
