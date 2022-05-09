@@ -155,6 +155,7 @@ public class MoveAnimation
 			endPoints.add(d.imageInfo().drawPosn());
 		}
 		
+		// Placeholders in case no images/points found
 		if (startPoints.size() == 0)
 			startPoints.add(new Point(0,0));
 		if (endPoints.size() == 0)
