@@ -19,6 +19,8 @@
 		(forEach (sites Board Cell) if:(is Occupied Cell (site))) 
 		(forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
 		(sites Hand All) 
+		(sites Hand P1)
+		(sites Hand P2)
 	})		
 )
 
@@ -50,7 +52,7 @@
             (or {
                 (if (not (all Sites (sites Hand P1) if:(is Occupied Cell (site))))
                     (move 
-                        (from (forEach ("AllSites") if:(if (is In (site) (sites Hand All)) (= (who Cell at:(site)) P1) (= (who at:(site)) P1)))) 
+                        (from (forEach ("AllSites") if:(if (is In (site) (sites Board)) (= (who at:(site)) P1) (= (who Cell at:(site)) P1)))) 
                         (to ("FirstEmptySiteHand" P1))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
@@ -58,20 +60,20 @@
                 )
                 (if (not (all Sites (sites Hand P2) if:(is Occupied Cell (site))))
                     (move 
-                        (from (forEach ("AllSites") if:(if (is In (site) (sites Hand All)) (= (who Cell at:(site)) P2) (= (who at:(site)) P2)))) 
+                        (from (forEach ("AllSites") if:(if (is In (site) (sites Board)) (= (who at:(site)) P2) (= (who Cell at:(site)) P2)))) 
                         (to ("FirstEmptySiteHand" P2))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
                     )
                 )
                 (move 
-                    (from (union { ("AllSites") (sites Hand P1) (sites Hand P2) })) 
+                    (from ("AllSites")) 
                     (to (forEach (sites Board) if:(is Empty (site))))
                     copy:(is In (from) (sites Hand All))
                     (then (moveAgain))
                 )
                 (move Remove 
-                    (intersection (sites Occupied by:All) (union {(sites Hand P1) (sites Hand P2) (sites Board)}))
+                    (forEach (union {(sites Hand P1) (sites Hand P2) (sites Board)}) if:(if (is In (site) (sites Board)) (is Occupied (site)) (is Occupied Cell (site))))
                     (then (moveAgain))
                 )
             })
