@@ -47,7 +47,7 @@ public class LInputField extends JComponent {
     }
 
     public LInputField(LudemeNodeComponent ludemeNodeComponent, List<InputInformation> inputInformationList){
-        System.out.println("constructing " + ludemeNodeComponent.getLudemeNode().getLudeme().getName());
+        if(DEBUG) System.out.println("[LIF] constructing " + ludemeNodeComponent.getLudemeNode().getLudeme().getName());
         this.LNC = ludemeNodeComponent;
         this.inputInformationList = inputInformationList;
         isSingle = false;
@@ -141,13 +141,6 @@ public class LInputField extends JComponent {
                 add(addItemButton);
 
                 addItemButton.addActionListener(e -> {
-                    System.out.println("CLICKED ADD");
-                    /* TODO:
-                    if(children.isEmpty()) {
-                        LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), LInputField.this);
-                    } else {
-                        LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), LInputField.this.children.get(LInputField.this.children.size() - 1));
-                    }*/
                     addCollectionItem();
                 });
             }
@@ -221,7 +214,7 @@ public class LInputField extends JComponent {
             super.mouseMoved(e);
             if(isSingle) {
                 Handler.updateInput(LNC.getGraphPanel().getGraph(), LNC.getLudemeNode(), getInputIndex(), getUserInput());
-                System.out.println("Updated input " + getInputIndex() + " to " + getUserInput());
+                System.out.println("[LIF] Updated input " + getInputIndex() + " to " + getUserInput());
             }
         }
     };
@@ -298,7 +291,7 @@ public class LInputField extends JComponent {
     public LInputField setToSingle(Ludeme ludeme){
         for(InputInformation i : inputInformationList){
             if(i.getPossibleLudemeInputs().contains(ludeme)){
-                if(DEBUG) System.out.println("[LInputField]: Setting " + ludeme + " to single");
+                if(DEBUG) System.out.println("[LIF]: Setting " + ludeme + " to single");
                 return setToSingle(i);
             }
         }
@@ -316,7 +309,7 @@ public class LInputField extends JComponent {
 
     public LInputField setToSingle(InputInformation inputInformation){
 
-        if(DEBUG) System.out.println("[LInputField]: ^Setting " + inputInformation + " to single");
+        if(DEBUG) System.out.println("[LIF]: ^Setting " + inputInformation + " to single");
 
         if(inputInformation == inputInformationList.get(0)){
             LInputField newInputField = new LInputField(LNC, inputInformation);

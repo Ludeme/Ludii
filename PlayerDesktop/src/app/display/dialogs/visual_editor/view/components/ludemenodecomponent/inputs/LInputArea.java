@@ -319,10 +319,9 @@ public class LInputArea extends JPanel {
             transferInputs();
             // return inputfield corresponding to new connection
             Ludeme providedLudeme = node.getLudeme();
-            System.out.println("Looking for " + providedLudeme + " in " + inputFields);
+            if(DEBUG) System.out.println("  --> Looking for " + providedLudeme + " in " + inputFields);
             for(LInputField lif : inputFields){
                 for(InputInformation ii : lif.getInputInformations()){
-                    System.out.println("ii: " + ii.getPossibleLudemeInputs());
                     if(ii.getPossibleLudemeInputs().contains(providedLudeme) && LNC.getLudemeNode().getProvidedInputs()[ii.getIndex()] == null){
                         return lif;
                     }
@@ -459,7 +458,6 @@ public class LInputArea extends JPanel {
                 List<InputInformation> lif0_iis = new ArrayList<InputInformation>();
                 lif0_iis.addAll(lifBelow.getInputInformations());
                 lif0_iis.addAll(c_inputField.getInputInformations());
-                System.out.println("- " + lif0_iis);
                 LInputField lif0 = new LInputField(LNC, lif0_iis);
                 addInputFieldAbove(lif0, lifBelow);
                 removeField(c_inputField);
@@ -570,7 +568,7 @@ public class LInputArea extends JPanel {
                 if(newInputField != null) break;
             }
 
-            System.out.println("[LIA] adding connection!");
+            if(DEBUG) System.out.println("[LIA] adding connection!");
             LNC.getGraphPanel().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).getIngoingConnectionComponent());
 
         }
@@ -661,14 +659,14 @@ public class LInputArea extends JPanel {
         inputFields.add(inputFields.indexOf(inputFieldAbove), newInputField);
         if(inputFieldAbove.getInputInformations().size() == 0) inputFields.remove(inputFieldAbove);
         drawInputFields();
-        System.out.println("[LInputArea] Adding " + newInputField + " above " + inputFieldAbove);
+        if(DEBUG) System.out.println("[LIA] Adding " + newInputField + " above " + inputFieldAbove);
     }
 
     public void addInputFieldBelow(LInputField newInputField, LInputField inputFieldBelow){
         inputFields.add(inputFields.indexOf(inputFieldBelow) + 1, newInputField);
         if(inputFieldBelow.getInputInformations().size() == 0) inputFields.remove(inputFieldBelow);
         drawInputFields();
-        System.out.println("[LInputArea] Adding " + newInputField + " below " + inputFieldBelow);
+        if(DEBUG) System.out.println("[LIA] Adding " + newInputField + " below " + inputFieldBelow);
     }
 
     public void removeField(LInputField inputField){

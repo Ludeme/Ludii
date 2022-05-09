@@ -38,10 +38,20 @@ public class LudemeNodeComponent extends JComponent {
 
         setLayout(new BorderLayout());
 
-        // LNC cannot be dynamic if its a terminal node
+        // LNC cannot be dynamic if its a terminal node or all constructors have size one
         if(ludemeNode.getLudeme().getConstructors().size() == 1){
             dynamic = false;
         }
+        else if (dynamic){
+            dynamic = false;
+            for(Constructor c : ludemeNode.getLudeme().getConstructors()){
+                if(c.getInputs().size() > 1){
+                    dynamic = true;
+                }
+            }
+        }
+
+        ludemeNode.setDynamic(dynamic); // TODO: Shouldnt be done here
 
         header = new LHeader(this);
         inputArea = new LInputArea(this);
@@ -147,6 +157,7 @@ public class LudemeNodeComponent extends JComponent {
     public void changeDynamic(){
         dynamic = !dynamic;
         getInputArea().setDynamic(dynamic);
+        getLudemeNode().setDynamic(dynamic);
     }
 
     // Drag Listener

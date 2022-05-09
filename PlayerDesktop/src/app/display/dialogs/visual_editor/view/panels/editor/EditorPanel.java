@@ -232,6 +232,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             providedInput[i] = target.getHeader().getLudemeNodeComponent().getLudemeNode();
             Handler.updateInput(graph, sourceNode, sourceInput.getIndex(), providedInput);
         } else {
+            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().getLudemeNode().getLudeme().getName() + " , " + target.getHeader().getLudemeNodeComponent().getLudemeNode().getLudeme().getName() + " at index " + source.getInputField().getInputIndex());
             Handler.updateInput(graph, source.getLudemeNodeComponent().getLudemeNode(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().getLudemeNode());
         }
 
@@ -271,7 +272,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         repaint();
 
         if(DEBUG) System.out.println("[EP] Added node: " + node.getLudeme().getName());
-        System.out.println(selectedConnectionComponent);
 
         return node;
     }
@@ -346,16 +346,11 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 finishNewConnection(lnc);
             }
         }
-        for(int i = 0; i < node.getProvidedInputs().length; i++){
-            if(node.getProvidedInputs()[i] != null){
-                System.out.println(i + ": (" + node.getProvidedInputs()[i].getClass().getName() + ") " + node.getProvidedInputs()[i]);
-            }
-        }
     }
 
     @Override
     public void removeNode(LudemeNode node) {
-        System.out.println("Removing node");
+        if(DEBUG) System.out.println("[EP] Removing node " + node.getLudeme().getName());
         LudemeNodeComponent lc = getNodeComponent(node);
         nodeComponents.remove(lc);
         removeAllConnections(node, false);
