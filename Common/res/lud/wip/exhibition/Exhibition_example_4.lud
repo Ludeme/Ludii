@@ -50,7 +50,7 @@
             (or {
                 (if (not (all Sites (sites Hand P1) if:(is Occupied Cell (site))))
                     (move 
-                        (from (forEach ("AllSites") if:(= (who Cell at:(site)) P1))) 
+                        (from (forEach ("AllSites") if:(if (is In (site) (sites Hand All)) (= (who Cell at:(site)) P1) (= (who at:(site)) P1)))) 
                         (to ("FirstEmptySiteHand" P1))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
@@ -58,7 +58,7 @@
                 )
                 (if (not (all Sites (sites Hand P2) if:(is Occupied Cell (site))))
                     (move 
-                        (from (forEach ("AllSites") if:(= (who Cell at:(site)) P2))) 
+                        (from (forEach ("AllSites") if:(if (is In (site) (sites Hand All)) (= (who Cell at:(site)) P2) (= (who at:(site)) P2)))) 
                         (to ("FirstEmptySiteHand" P2))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
