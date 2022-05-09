@@ -48,25 +48,25 @@
         })
         (play 
             (or {
-                (if (not (all Sites (sites Hand P1) if:(is Occupied (site))))
+                (if (not (all Sites (sites Hand P1) if:(is Occupied Cell (site))))
                     (move 
-                        (from (forEach ("AllSites") if:(= (who at:(site)) P1))) 
+                        (from (forEach ("AllSites") if:(if (is In (site) (sites Hand All)) (= (who Cell at:(site)) P1) (= (who at:(site)) P1)))) 
                         (to ("FirstEmptySiteHand" P1))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
                     )
                 )
-                (if (not (all Sites (sites Hand P2) if:(is Occupied (site))))
+                (if (not (all Sites (sites Hand P2) if:(is Occupied Cell (site))))
                     (move 
-                        (from (forEach ("AllSites") if:(= (who at:(site)) P2))) 
+                        (from (forEach ("AllSites") if:(if (is In (site) (sites Hand All)) (= (who Cell at:(site)) P2) (= (who at:(site)) P2)))) 
                         (to ("FirstEmptySiteHand" P2))
                         copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
                     )
                 )
                 (move 
-                    (from (union { (sites Occupied by:All on:Cell) (sites Occupied by:All on:Vertex) (sites Hand All) })) 
-                    (to (forEach (sites Board) if:(and (!= (to) (from)) (is Empty (site)))))
+                    (from (union { ("AllSites") (sites Hand P1) (sites Hand P2) })) 
+                    (to (forEach (sites Board) if:(is Empty (site))))
                     copy:(is In (from) (sites Hand All))
                     (then (moveAgain))
                 )
