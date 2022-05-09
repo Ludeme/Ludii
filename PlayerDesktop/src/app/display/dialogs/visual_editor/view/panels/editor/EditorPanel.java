@@ -27,6 +27,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EditorPanel extends JPanel implements IGraphPanel {
@@ -385,6 +386,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
+
+            System.out.println(Arrays.toString(((LudemeNode) graph.getRoot()).getProvidedInputs()));
+
             if(connectLudemeWindow.isVisible()){
                 cancelNewConnection();
             }

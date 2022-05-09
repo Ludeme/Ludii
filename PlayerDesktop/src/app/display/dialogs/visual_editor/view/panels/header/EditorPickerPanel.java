@@ -1,5 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
+import app.display.dialogs.visual_editor.view.components.DesignPalette;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,22 +11,9 @@ public class EditorPickerPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 
-        ImageIcon gameEditorActive = new ImageIcon("resources/icons/editor/active/game_editor.png");
-        ImageIcon gameEditorInactive = new ImageIcon("resources/icons/editor/inactive/game_editor.png");
-        ImageIcon gameEditorHover = new ImageIcon("resources/icons/editor/hover/game_editor.png");
-        HeaderButton gameEditorBtn = new HeaderButton(gameEditorActive, gameEditorInactive, gameEditorHover, "Game Editor", true);
-
-
-        ImageIcon defineEditorActive = new ImageIcon("resources/icons/editor/active/define_editor.png");
-        ImageIcon defineEditorInactive = new ImageIcon("resources/icons/editor/inactive/define_editor.png");
-        ImageIcon defineEditorHover = new ImageIcon("resources/icons/editor/hover/define_editor.png");
-        HeaderButton defineEditorBtn = new HeaderButton(defineEditorActive, defineEditorInactive, defineEditorHover, "Define Editor", false);
-
-
-        ImageIcon textEditorActive = new ImageIcon("resources/icons/editor/active/text_editor.png");
-        ImageIcon textEditorInactive = new ImageIcon("resources/icons/editor/inactive/text_editor.png");
-        ImageIcon textEditorHover = new ImageIcon("resources/icons/editor/hover/text_editor.png");
-        HeaderButton textEditorBtn = new HeaderButton(textEditorActive, textEditorInactive, textEditorHover, "Text Editor", false);
+        HeaderButton gameEditorBtn = new HeaderButton(DesignPalette.GAME_EDITOR_ACTIVE, DesignPalette.GAME_EDITOR_INACTIVE, DesignPalette.GAME_EDITOR_HOVER, "Game Editor", true);
+        HeaderButton defineEditorBtn = new HeaderButton(DesignPalette.DEFINE_EDITOR_ACTIVE, DesignPalette.DEFINE_EDITOR_INACTIVE, DesignPalette.DEFINE_EDITOR_HOVER, "Define Editor", false);
+        HeaderButton textEditorBtn = new HeaderButton(DesignPalette.TEXT_EDITOR_ACTIVE, DesignPalette.TEXT_EDITOR_INACTIVE, DesignPalette.TEXT_EDITOR_HOVER, "Text Editor", false);
 
 
         setBackground(Color.WHITE);

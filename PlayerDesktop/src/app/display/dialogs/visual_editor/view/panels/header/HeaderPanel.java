@@ -7,18 +7,6 @@ import java.io.IOException;
 
 public class HeaderPanel extends JPanel {
     public HeaderPanel(){
-
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/Roboto/Roboto-Black.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/Roboto/Roboto-Bold.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/Roboto/Roboto-Light.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/Roboto/Roboto-Medium.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/Roboto/Roboto-Regular.ttf")));
-        } catch (IOException | FontFormatException e) {
-            System.out.println(e.getMessage());
-        }
-
         setLayout(new BorderLayout());
         setBackground(Color.RED);
 
