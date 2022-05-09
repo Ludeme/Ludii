@@ -6,7 +6,7 @@ import app.PlayerApp;
 import app.utils.GUIUtil;
 import app.utils.sandbox.SandboxUtil;
 import main.Constants;
-import other.action.move.ActionSelect;
+import other.action.move.remove.ActionRemoveTopPiece;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -121,7 +121,7 @@ public class MouseHandler
 						{
 							for (final Move m : context.game().moves(context).moves())
 							{
-								if (m.from() == selectedFromLocation.site() && m.actions().get(0) instanceof ActionSelect)
+								if (m.from() == selectedFromLocation.site() && m.actions().get(0) instanceof ActionRemoveTopPiece)
 								{
 									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
 									break;
