@@ -52,7 +52,7 @@
                     (move 
                         (from (forEach ("AllSites") if:(= (who at:(site)) P1))) 
                         (to ("FirstEmptySiteHand" P1))
-                        copy:True
+                        copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
                     )
                 )
@@ -60,14 +60,14 @@
                     (move 
                         (from (forEach ("AllSites") if:(= (who at:(site)) P2))) 
                         (to ("FirstEmptySiteHand" P2))
-                        copy:True
+                        copy:(is In (from) (sites Hand All))
                         (then (moveAgain))
                     )
                 )
                 (move 
                     (from (union { (sites Occupied by:All on:Cell) (sites Occupied by:All on:Vertex) (sites Hand All) })) 
                     (to (forEach (sites Board) if:(and (!= (to) (from)) (is Empty (site)))))
-                    copy:True
+                    copy:(is In (from) (sites Hand All))
                     (then (moveAgain))
                 )
                 (move Remove 
