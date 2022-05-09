@@ -23,11 +23,23 @@
         (play 
             (or {
                 (move 
-                    (from (sites Hand All)) 
-                    (to (forEach (union {(sites Hand P1) (sites Hand P2) (sites Board)}) if:(is Empty (site))))
-                    copy:True
-                    (then (moveAgain))
-                )
+                        (from (forEach (sites Hand All) if:(= (what at:(site)) P1))) 
+                        (to (forEach (sites Hand P1) if:(is Empty (site))))
+                        copy:True
+                        (then (moveAgain))
+                    )
+                (move 
+                        (from (forEach (sites Hand All) if:(= (what at:(site)) P2))) 
+                        (to (forEach (sites Hand P2) if:(is Empty (site))))
+                        copy:True
+                        (then (moveAgain))
+                    )
+                (move 
+                        (from (sites Hand All)) 
+                        (to (forEach (sites Board) if:(is Empty (site))))
+                        copy:True
+                        (then (moveAgain))
+                    )
                 (move Select 
                     (from (intersection (sites Occupied by:All) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
                     (then
