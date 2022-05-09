@@ -1,14 +1,40 @@
+(define "FirstEmptySiteHand"
+    (if (is Empty (handSite #1 0)) (handSite #1 0)
+        (if (is Empty (handSite #1 1)) (handSite #1 1)
+            (if (is Empty (handSite #1 2)) (handSite #1 2)
+                (if (is Empty (handSite #1 3)) (handSite #1 3)
+                    (if (is Empty (handSite #1 4)) (handSite #1 4)
+                        (if (is Empty (handSite #1 5)) (handSite #1 5)
+                            (handSite #1 6)
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "AllSites"
+	(union { 
+		(forEach (sites Board Cell) if:(is Occupied Cell (site))) 
+		(forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
+		(sites Hand All) 
+	})		
+)
+
+//------------------------------------------------------------------------------
+
 (game "Exhibition_example_4"  
     (players 2)  
-    (equipment {  
+    (equipment { 
         ("AlquerqueBoard" 5 5)
-        (hand Each size:5)
-        (piece "Pawn1" Shared)
-        (piece "Pawn2" Shared)
-        (piece "Counter1" Shared)
-        (piece "Counter2" Shared)
-        (piece "Rook1" Shared)
-        (piece "Rook2" Shared)
+        (hand Each size:7)
+        (piece "Pawn" P1)
+        (piece "Pawn" P2)
+        (piece "Counter" P1)
+        (piece "Counter" P2)
+        (piece "Rook" P1)
+        (piece "Rook" P2)
         (hand Shared size:6)
     })  
     (rules 
@@ -22,21 +48,30 @@
         })
         (play 
             (or {
-                (move 
-                    (from (sites Hand All)) 
-                    (to (forEach (union {(sites Hand P1) (sites Hand P2) (sites Board)}) if:(is Empty (site))))
-                    copy:True
-                    (then (moveAgain))
+                (if (not (all Sites (sites Hand P1) if:(is Occupied (site))))
+                    (move 
+                        (from (forEach ("AllSites") if:(= (who at:(site)) P1))) 
+                        (to ("FirstEmptySiteHand" P1))
+                        copy:(is In (from) (sites Hand All))
+                        (then (moveAgain))
+                    )
                 )
-                (move Select 
-                    (from (intersection (sites Occupied by:All) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
-                    (then
-                        (remove (last To) (then (moveAgain)))
+                (if (not (all Sites (sites Hand P2) if:(is Occupied (site))))
+                    (move 
+                        (from (forEach ("AllSites") if:(= (who at:(site)) P2))) 
+                        (to ("FirstEmptySiteHand" P2))
+                        copy:(is In (from) (sites Hand All))
+                        (then (moveAgain))
                     )
                 )
                 (move 
-                    (from (intersection (union (sites Occupied by:All on:Cell) (sites Occupied by:All on:Vertex)) (union {(sites Hand P1) (sites Hand P2) (sites Board)})))
-                    (to (forEach (union {(sites Hand P1) (sites Hand P2) (sites Board)}) if:(is Empty (site))))
+                    (from (union { (sites Occupied by:All on:Cell) (sites Occupied by:All on:Vertex) (sites Hand All) })) 
+                    (to (forEach (sites Board) if:(and (!= (to) (from)) (is Empty (site)))))
+                    copy:(is In (from) (sites Hand All))
+                    (then (moveAgain))
+                )
+                (move Remove 
+                    (intersection (sites Occupied by:All) (union {(sites Hand P1) (sites Hand P2) (sites Board)}))
                     (then (moveAgain))
                 )
             })
