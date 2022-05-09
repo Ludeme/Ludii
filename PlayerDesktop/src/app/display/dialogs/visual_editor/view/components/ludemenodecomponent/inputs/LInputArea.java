@@ -35,6 +35,8 @@ public class LInputArea extends JPanel {
 
     public LInputArea(LudemeNodeComponent ludemeNodeComponent) {
         this.LNC = ludemeNodeComponent;
+        this.dynamicConstructorActive = LNC.dynamic;
+
 
         activeConstructors = new ArrayList<>(LNC.getLudemeNode().getLudeme().getConstructors());
 

@@ -199,7 +199,8 @@ public class LInputField extends JComponent {
     private void constructInputField(List<InputInformation> inputInformationList){
         removeAll();
 
-        JLabel label = new JLabel("Optional Arguments");
+        JLabel label = new JLabel("Additional Arguments");
+        if(inputInformationList.get(0).isOptional()) label = new JLabel("Optional Arguments");
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 

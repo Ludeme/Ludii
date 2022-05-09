@@ -33,6 +33,9 @@ public class LudemeNode implements iLudemeNode, iGNode {
 
     private int x,y;
 
+    // For dynamic constructor
+    private boolean dynamic = true; // TODO: Not hard-coded
+
     public LudemeNode(Ludeme ludeme, int x, int y){
         LAST_ID++;
         this.ID = LAST_ID;
@@ -171,6 +174,7 @@ public class LudemeNode implements iLudemeNode, iGNode {
         char c = '"';
 
         if(currentConstructor.getInputs().size() == 1 && currentConstructor.getInputs().get(0).isTerminal()){
+            if(providedInputs[0] == null) return "";
             if(providedInputs[0] instanceof String) return c+providedInputs[0].toString()+c+" ";
             else return providedInputs[0].toString();
         }
@@ -211,4 +215,13 @@ public class LudemeNode implements iLudemeNode, iGNode {
     public String toString(){
         return getStringRepresentation();
     }
+
+    public boolean isDynamic(){
+        return dynamic;
+    }
+
+    public void setDynamic(boolean dynamic) {
+        this.dynamic = dynamic;
+    }
+
 }

@@ -23,7 +23,7 @@ public class LudemeNodeComponent extends JComponent {
     private final LudemeNode LUDEME_NODE;
     private final IGraphPanel GRAPH_PANEL;
 
-    public boolean dynamic = false;
+    public boolean dynamic = true;
 
     private LHeader header;
     private LInputArea inputArea;
@@ -37,6 +37,11 @@ public class LudemeNodeComponent extends JComponent {
         this.width = width;
 
         setLayout(new BorderLayout());
+
+        // LNC cannot be dynamic if its a terminal node
+        if(ludemeNode.getLudeme().getConstructors().size() == 1){
+            dynamic = false;
+        }
 
         header = new LHeader(this);
         inputArea = new LInputArea(this);

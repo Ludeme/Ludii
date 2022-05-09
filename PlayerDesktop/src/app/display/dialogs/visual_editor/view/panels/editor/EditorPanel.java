@@ -48,6 +48,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     // window to add a new ludeme as an input
     private AddLudemeWindow connectLudemeWindow = new AddLudemeWindow(ludemes, this, true);
 
+    private static final boolean DEBUG = true;
+
     public EditorPanel(int width, int height){
         setLayout(null);
         setPreferredSize(new Dimension(width, height));
@@ -149,7 +151,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     public void startNewConnection(LConnectionComponent source){
-        System.out.println(source.getConnectionPointPosition() + " , " + source.getRequiredLudemes());
+        if(DEBUG) System.out.println("[EP] Start connection: " + source.getConnectionPointPosition() + " , " + source.getRequiredLudemes());
         if(selectedConnectionComponent != null){
             selectedConnectionComponent.setFill(false);
         }
@@ -267,6 +269,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         Handler.centerViewport(x+lc.getWidth()/2, y+lc.getHeight()/2);
 
         repaint();
+
+        if(DEBUG) System.out.println("[EP] Added node: " + node.getLudeme().getName());
+        System.out.println(selectedConnectionComponent);
+
         return node;
     }
 
@@ -365,6 +371,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     public void showCurrentlyAvailableLudemes(int x, int y) {
+        if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
         connectLudemeWindow.updateList(selectedConnectionComponent.getRequiredLudemes());
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
