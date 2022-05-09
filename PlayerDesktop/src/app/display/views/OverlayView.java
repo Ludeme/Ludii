@@ -267,7 +267,7 @@ public final class OverlayView extends View
 	 */
 	public void drawDraggedPiece(final Graphics2D g2d, final Location selectedLocation, final int x, final int y)
 	{	
-		for (final DrawnImageInfo image : MoveAnimation.getMovingPieceImages(app, selectedLocation, x, y, false))
+		for (final DrawnImageInfo image : MoveAnimation.getMovingPieceImages(app, null, selectedLocation, x, y, false))
 			g2d.drawImage(image.pieceImage(), (int)image.imageInfo().drawPosn().getX(), (int)image.imageInfo().drawPosn().getY(), null);
 	}
     
