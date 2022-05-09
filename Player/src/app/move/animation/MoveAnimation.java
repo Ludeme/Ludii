@@ -122,8 +122,6 @@ public class MoveAnimation
 	 */
 	public static AnimationParameters getMoveAnimationParameters(final PlayerApp app, final Move move)
 	{
-		System.out.println(move.actions());
-		
 		final Context context = app.contextSnapshot().getContext(app);
 		
 		final Location moveFrom = move.getFromLocation();
