@@ -73,7 +73,7 @@
                     (then (moveAgain))
                 )
                 (move Select
-                    (from (sites Occupied by:All))
+                    (from (sites Board) if:(is Occupied (from)))
                     (to Cell (sites Hand All))
                     (then
                         (and
@@ -92,10 +92,6 @@
                         )
                     )
                 )
-                //(move Remove 
-                    //    (forEach (union {(sites Hand P1) (sites Hand P2) (sites Board)}) if:(if (is In (site) (sites Board)) (is Occupied (site)) (is Occupied Cell (site))))
-                    //    (then (moveAgain))
-                //)
             })
         )
         (end (if (is Line 9999) (result Mover Win)))
