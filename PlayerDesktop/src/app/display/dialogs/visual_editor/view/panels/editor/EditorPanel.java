@@ -77,7 +77,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     public void drawGraph(DescriptionGraph graph) {
         if(DEBUG) System.out.println("\n[EP] Redrawing graph\n");
         this.graph = graph;
-        //lm = new LayoutHandler(graph, graph.getRoot().getId());
         removeAll();
         nodeComponents.clear();
         edges.clear();

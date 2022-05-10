@@ -72,7 +72,7 @@ public class EditorPopupMenu extends JPopupMenu {
         });
 
         settings.addActionListener(e -> {
-            LayoutSettingsPanel.getSettingsFrame(graphPanel.getLayoutHandler());
+            LayoutSettingsPanel.getSettingsFrame(graphPanel);
         });
 
         lmMenu.add(compact);

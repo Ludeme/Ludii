@@ -1,67 +1,96 @@
 package app.display.dialogs.visual_editor.view.panels.settings;
 
-import app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.GraphPanel;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
-import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutMethod;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LayoutSettingsPanel extends JPanel
 {
-    public LayoutSettingsPanel(LayoutHandler lh)
+    private final JSlider dSl;
+    private final JSlider oSl;
+    private final JSlider sSl;
+    private final LayoutHandler lh;
+
+    public LayoutSettingsPanel(IGraphPanel graphPanel)
     {
-        JSlider distanceSlider = new JSlider(0, 100);
-        JSlider offsetSlider = new JSlider(0, 100);
-        JSlider spreadSlider = new JSlider(0, 100);
+        lh = graphPanel.getLayoutHandler();
+
+        dSl = new JSlider(0, 100);
+        oSl = new JSlider(0, 100);
+        sSl = new JSlider(0, 100);
+
+        JLabel distanceText = new JLabel("Distance: " + getSliderValue(dSl));
+        JLabel offsetText = new JLabel("Offset: " + getSliderValue(oSl));
+        JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
 
         Button redraw = new Button("Redraw");
         JCheckBox auto = new JCheckBox("Redraw automatically");
 
         redraw.addActionListener(e -> {
-            lh.updateAllWeights(offsetSlider.getValue() / 100.0,
-                    distanceSlider.getValue() / 100.0,
-                    spreadSlider.getValue() / 100.0);
-            lh.executeLayout();
+            updateWeights();
+            executeDFSLayout(graphPanel);
         });
 
-        distanceSlider.addChangeListener(e -> {
+        dSl.addChangeListener(e -> {
+            distanceText.setText("Distance: " + getSliderValue(dSl));
             if (auto.isSelected()){
-                lh.updateDistance(distanceSlider.getValue() / 100.0);
-                lh.executeLayout();
+                updateWeights();
+                executeDFSLayout(graphPanel);
             }
         });
 
-        offsetSlider.addChangeListener(e -> {
+        oSl.addChangeListener(e -> {
+            offsetText.setText("Offset: " + getSliderValue(oSl));
             if (auto.isSelected()){
-                lh.updateDistance(offsetSlider.getValue() / 100.0);
-                lh.executeLayout();
+                updateWeights();
+                executeDFSLayout(graphPanel);
             }
         });
 
-        spreadSlider.addChangeListener(e -> {
+        sSl.addChangeListener(e -> {
+            spreadText.setText("Spread: " + getSliderValue(sSl));
             if (auto.isSelected()){
-                lh.updateDistance(spreadSlider.getValue() / 100.0);
-                lh.executeLayout();
+                updateWeights();
+                executeDFSLayout(graphPanel);
             }
         });
 
-        add(distanceSlider);
-        add(offsetSlider);
-        add(spreadSlider);
+        add(distanceText);
+        add(dSl);
+
+        add(offsetText);
+        add(oSl);
+
+        add(spreadText);
+        add(sSl);
         add(redraw);
         add(auto);
     }
 
-    public static JFrame getSettingsFrame(LayoutHandler lh)
+    private void updateWeights()
+    {
+        lh.updateDFSWeights(getSliderValue(oSl),
+                getSliderValue(dSl),
+                getSliderValue(sSl));
+    }
+
+    private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
+
+    private void executeDFSLayout(IGraphPanel graphPanel)
+    {
+        graphPanel.getLayoutHandler().setLayoutMethod(1);
+        graphPanel.getLayoutHandler().executeLayout();
+        graphPanel.drawGraph(graphPanel.getGraph());
+    }
+
+    public static void getSettingsFrame(IGraphPanel graphPanel)
     {
         JFrame frame = new JFrame("Layout Settings");
-        frame.setSize(250, 400);
-        frame.add(new LayoutSettingsPanel(lh));
+        frame.setSize(300, 400);
+        frame.add(new LayoutSettingsPanel(graphPanel));
         frame.setVisible(true);
-        return frame;
+        frame.setResizable(false);
     }
 }

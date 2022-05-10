@@ -33,13 +33,13 @@ public class LayoutHandler {
         {
             case 0: layout = new FruchtermanReingold(graph, 0.5, 0.15, new Vector2D(5000, 5000));
                 break;
-            case 1: layout = new DFSBoxDrawing(graph, root,50);
+            case 1: if (layout == null) layout = new DFSBoxDrawing(graph, root,50, 4.0, 4.0);
                 break;
             case 2: layout = new PLANET(graph, root,15);
                 break;
             case 4: layout = new CFDP(graph, 0.5, 0.15, new Vector2D(5000, 5000));
                 break;
-            default: layout = new DFSBoxDrawing(graph, root, 5);
+            default: layout = new DFSBoxDrawing(graph, root, 5, 0, 0);
         }
 
     }
@@ -60,60 +60,9 @@ public class LayoutHandler {
 
     // ################
 
-    public void updateOffsets(double w)
+    public void updateDFSWeights(double offset, double distance, double spread)
     {
-        updateWeightMap(((DFSBoxDrawing) layout).getOFFSET_MAP(), w);
-    }
-
-    public void updateOffsets(double w, int l)
-    {
-        updateWeightMap(((DFSBoxDrawing) layout).getOFFSET_MAP(), w, l);
-    }
-
-    public void updateSpread(double w)
-    {
-        updateWeightMap(((DFSBoxDrawing) layout).getSPREAD_MAP(), w);
-    }
-
-    public void updateSpread(double w, int l)
-    {
-        updateWeightMap(((DFSBoxDrawing) layout).getSPREAD_MAP(), w, l);
-    }
-
-    public void updateDistance(double w)
-    {
-        updateWeightMap(((DFSBoxDrawing) layout).getDISTANCE_MAP(), w);
-    }
-
-    public void updateDistance(double w, int l)
-    {
-        updateWeightMap(((DFSBoxDrawing) layout).getDISTANCE_MAP(), w, l);
-    }
-
-    public void updateAllWeights(double offset, double distance, double spread)
-    {
-        updateDistance(distance);
-        updateOffsets(offset);
-        updateSpread(spread);
-    }
-
-    public void updateAllWeights(double offset, double distance, double spread, int l)
-    {
-        updateDistance(distance, l);
-        updateOffsets(offset, l);
-        updateSpread(spread, l);
-    }
-
-    private void updateWeightMap(HashMap<Integer, Double> map, double w)
-    {
-        map.forEach((id,v) -> {
-            map.put(id, w);
-        });
-    }
-
-    public void updateWeightMap(HashMap<Integer, Double> map, double w, int l)
-    {
-        map.put(l, w);
+        ((DFSBoxDrawing) layout).updateAllWeights(offset, distance, spread);
     }
 
     // ################
