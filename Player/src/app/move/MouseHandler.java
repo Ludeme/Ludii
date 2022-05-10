@@ -6,7 +6,7 @@ import app.PlayerApp;
 import app.utils.GUIUtil;
 import app.utils.sandbox.SandboxUtil;
 import main.Constants;
-import other.action.move.remove.ActionRemoveTopPiece;
+import other.action.move.ActionSelect;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -109,16 +109,19 @@ public class MouseHandler
 					// Special exhibition code for making move piece to hands move / removing pieces.
 					if (app.settingsPlayer().usingExhibitionApp())
 					{
-						if (GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardMarginPlacement()) && !GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardPlacement()))
+						if (GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardMarginPlacement()))
 						{
-							//final Component dragComponent = app.settingsPlayer().dragComponent();
-							//final int dragComponentIndex = IntStream.range(0, context.game().equipment().components().length).filter(i -> context.game().equipment().components()[i] == dragComponent).findFirst().orElse(-1);
-							for (final Move m : context.game().moves(context).moves())
+							if (!GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardPlacement()))
 							{
-								if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+								//final Component dragComponent = app.settingsPlayer().dragComponent();
+								//final int dragComponentIndex = IntStream.range(0, context.game().equipment().components().length).filter(i -> context.game().equipment().components()[i] == dragComponent).findFirst().orElse(-1);
+								for (final Move m : context.game().moves(context).moves())
 								{
-									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-									break;
+									if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+									{
+										app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+										break;
+									}
 								}
 							}
 						}
@@ -126,7 +129,7 @@ public class MouseHandler
 						{
 							for (final Move m : context.game().moves(context).moves())
 							{
-								if (m.from() == selectedFromLocation.site() && m.actions().get(0) instanceof ActionRemoveTopPiece)
+								if (m.from() == selectedFromLocation.site() && m.actions().get(0) instanceof ActionSelect)
 								{
 									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
 									break;

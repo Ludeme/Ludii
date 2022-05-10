@@ -73,7 +73,7 @@
                     (then (moveAgain))
                 )
                 (move Select
-                    (from (sites Occupied by:All))
+                    (from (sites Board) if:(is Occupied (from)))
                     (to Cell (sites Hand All))
                     (then
                         (and
