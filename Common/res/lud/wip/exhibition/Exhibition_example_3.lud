@@ -15,13 +15,13 @@
 )
 
 (define "AllSites"
-	(union { 
-		(forEach (sites Board Cell) if:(is Occupied Cell (site))) 
-		(forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
-		(sites Hand All) 
-		(sites Hand P1)
-		(sites Hand P2)
-	})		
+    (union { 
+        (forEach (sites Board Cell) if:(is Occupied Cell (site))) 
+        (forEach (sites Board Vertex) if:(is Occupied Vertex (site))) 
+        (sites Hand All) 
+        (sites Hand P1)
+        (sites Hand P2)
+    })		
 )
 
 //------------------------------------------------------------------------------
