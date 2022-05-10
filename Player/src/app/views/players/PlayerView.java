@@ -66,10 +66,12 @@ public class PlayerView extends View
 		{
 			for (int pid = 1; pid <= numPlayers; pid++)
 			{
-				final int x0 = startX + 10;
+				final int x0 = startX + 5;
 				int y0 = 75;
 				if (pid == 2)
-					y0 = 475;
+					y0 = 600;
+				width = 600;
+				height = 150;
 				final Rectangle place = new Rectangle(x0, y0, width, (int) (height * 0.7));
 				final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this);
 				app.getPanels().add(playerPage);

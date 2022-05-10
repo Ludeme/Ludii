@@ -29,7 +29,7 @@
 (game "Exhibition_example_1"  
     (players 2)  
     (equipment { 
-        (board (square 6)) 
+        (board (square 5)) 
         (hand Each size:7)
         (piece "Pawn" P1)
         (piece "Pawn" P2)
@@ -111,6 +111,8 @@
         (piece Colour "Counter2" fillColour:(colour Red))
         (piece Colour "Rook1" fillColour:(colour White))
         (piece Colour "Rook2" fillColour:(colour Red))
+        (board Colour InnerEdges (colour 17 103 177))
+        (board Colour OuterEdges (colour 17 103 177))
     })
     
 )

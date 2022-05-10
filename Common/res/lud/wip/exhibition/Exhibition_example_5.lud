@@ -29,7 +29,7 @@
 (game "Exhibition_example_5"  
     (players 2)  
     (equipment { 
-        (board (rotate 90 (tiling T3464 2)))
+        (board (tri Hexagon 2))
         (hand Each size:7)
         (piece "Pawn" P1)
         (piece "Pawn" P2)
@@ -107,6 +107,8 @@
         (piece Colour "Counter2" fillColour:(colour Red))
         (piece Colour "Rook1" fillColour:(colour White))
         (piece Colour "Rook2" fillColour:(colour Red))
+        (board Colour InnerEdges (colour 17 103 177))
+        (board Colour OuterEdges (colour 17 103 177))
     })
     
 )

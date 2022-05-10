@@ -107,6 +107,10 @@
         (piece Colour "Counter2" fillColour:(colour Red))
         (piece Colour "Rook1" fillColour:(colour White))
         (piece Colour "Rook2" fillColour:(colour Red))
+        (board Colour InnerEdges (colour DarkGrey))
+        (board Colour OuterEdges (colour DarkGrey))
+        (board Colour InnerVertices (colour DarkGrey))
+        (board Colour OuterVertices (colour DarkGrey))
     })
     
 )
