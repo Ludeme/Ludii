@@ -23,7 +23,7 @@ public class LudemeNodeComponent extends JComponent {
     private final LudemeNode LUDEME_NODE;
     private final IGraphPanel GRAPH_PANEL;
 
-    public boolean dynamic = true;
+    public boolean dynamic;
 
     private LHeader header;
     private LInputArea inputArea;
@@ -38,6 +38,15 @@ public class LudemeNodeComponent extends JComponent {
 
         setLayout(new BorderLayout());
 
+        System.out.println("[LNC] Provided Inputs");
+        for(int i = 0; i < ludemeNode.getProvidedInputs().length; i++){
+            if(ludemeNode.getProvidedInputs()[i] != null)
+            System.out.println("["+i+", " +  ludemeNode.getProvidedInputs()[i].getClass().getName() + "] " + ludemeNode.getProvidedInputs()[i]);
+            else System.out.println("["+i+", null]");
+        }
+
+        this.dynamic = ludemeNode.isDynamic();
+
         // LNC cannot be dynamic if its a terminal node or all constructors have size one
         if(ludemeNode.getLudeme().getConstructors().size() == 1){
             dynamic = false;
@@ -51,6 +60,7 @@ public class LudemeNodeComponent extends JComponent {
             }
         }
 
+        // sync dynamic boolean with model node
         ludemeNode.setDynamic(dynamic); // TODO: Shouldnt be done here
 
         header = new LHeader(this);
@@ -115,6 +125,10 @@ public class LudemeNodeComponent extends JComponent {
         LudemeNodeComponent.this.setLocation((int)LUDEME_NODE.getPos().getX(), (int)LUDEME_NODE.getPos().getY());
     }
 
+    /**
+     * Method which syncs the Ludeme Node Component with provided inputs (stored in the Ludeme Node).
+     * Called when drawing a graph.
+     */
     public void updateProvidedInputs(){
         inputArea.updateProvidedInputs();
     }

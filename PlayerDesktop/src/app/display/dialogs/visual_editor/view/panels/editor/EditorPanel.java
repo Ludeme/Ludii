@@ -74,6 +74,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     @Override
     public void drawGraph(DescriptionGraph graph) {
+        if(DEBUG) System.out.println("\n[EP] Redrawing graph\n");
         this.graph = graph;
         //lm = new LayoutHandler(graph, graph.getRoot().getId());
         removeAll();
@@ -103,6 +104,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     @Override
     public void updateGraph()
     {
+        if(DEBUG) System.out.println("\n[EP] Updating graph\n");
         for (LudemeNodeComponent lc : nodeComponents)
         {
             lc.revalidate();
@@ -231,9 +233,12 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             int i = children.indexOf(source.getInputField()) + 1; // + 1 because the first input field is not counted as a child
             //if(i==-1) i = 0;
             providedInput[i] = target.getHeader().getLudemeNodeComponent().getLudemeNode();
+            // TODO: REMOVE LATER
+            System.out.println("\u001B[32m"+"Calling from EP 237"+"\u001B[0m");
             Handler.updateInput(graph, sourceNode, sourceInput.getIndex(), providedInput);
         } else {
             if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().getLudemeNode().getLudeme().getName() + " , " + target.getHeader().getLudemeNodeComponent().getLudemeNode().getLudeme().getName() + " at index " + source.getInputField().getInputIndex());
+            System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
             Handler.updateInput(graph, source.getLudemeNodeComponent().getLudemeNode(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().getLudemeNode());
         }
 
@@ -299,6 +304,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
                 e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null,true);
+                System.out.println("\u001B[32m"+"Calling from EP 307"+"\u001B[0m");
                 Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
             }
         }
@@ -330,8 +336,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                     }
                     // set to null
                     providedInputs[indexToUpdate] = null;
+                    System.out.println("\u001B[32m"+"Calling from EP 339"+"\u001B[0m");
                     Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), connection.getInputField().getInputIndex(), providedInputs);
                 } else {
+                    System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
                     Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
                 }
             }

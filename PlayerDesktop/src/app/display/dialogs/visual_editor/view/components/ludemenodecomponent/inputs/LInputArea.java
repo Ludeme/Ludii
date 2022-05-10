@@ -12,6 +12,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LInputArea extends JPanel {
@@ -24,7 +25,7 @@ public class LInputArea extends JPanel {
     private List<Constructor> inactiveConstructors = new ArrayList<>();
 
     private List<InputInformation> allInputInformations = new ArrayList<>();
-    private List<LInputField> providedInputFields = new ArrayList<>();
+    public List<LInputField> providedInputFields = new ArrayList<>();
     private List<LudemeNodeComponent> providedInputFieldsConnections = new ArrayList<>();
 
 
@@ -165,6 +166,7 @@ public class LInputArea extends JPanel {
     }
 
     private LInputField addedConnectionDynamic(LudemeNode node, LInputField c_inputField) {
+        if(DEBUG) System.out.println("[LIA]: Adding connection to dynamic constructor of " + LNC.getLudemeNode().getLudeme().getName() + " to " + node.getLudeme().getName());
 
         Ludeme ludeme = node.getLudeme();
         // find LInputField containg the node's ludeme
@@ -311,9 +313,12 @@ public class LInputArea extends JPanel {
         }
         // if |IX| == 1 ->
         else {
-            Handler.updateCurrentConstructor(LNC.getGraphPanel().getGraph(), LNC.getLudemeNode(), activeConstructors.get(0));
+            Object[] providedInputs = node.getProvidedInputs();
+            System.out.println("PROVIDED INPUTS RESETED of " + LNC.getLudemeNode().getLudeme().getName()); // TODO: REMOVE THIS DEBUG LINES
+            System.out.println("  ->  before: " + Arrays.toString(providedInputs));
+            Handler.updateCurrentConstructor(LNC.getGraphPanel().getGraph(), LNC.getLudemeNode(), activeConstructors.get(0)); // TODO: WARNING: DELETES PROVIDED INPUTS
             dynamicConstructorActive = false;
-            if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive to " + dynamicConstructorActive + "(299)");
+            if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive of " + LNC.getLudemeNode().getLudeme().getName() + " to " + dynamicConstructorActive + "(317)");
             updateConstructor();
             // provided inputs should still be connected
             transferInputs();
@@ -323,6 +328,7 @@ public class LInputArea extends JPanel {
             for(LInputField lif : inputFields){
                 for(InputInformation ii : lif.getInputInformations()){
                     if(ii.getPossibleLudemeInputs().contains(providedLudeme) && LNC.getLudemeNode().getProvidedInputs()[ii.getIndex()] == null){
+                        System.out.println("  ->  after: " + Arrays.toString(providedInputs)); // TODO: REMOVE
                         return lif;
                     }
                 }
@@ -378,7 +384,7 @@ public class LInputArea extends JPanel {
 
         if(!dynamicConstructorActive && activeConstructors.size() > 1) {
             dynamicConstructorActive = true;
-            if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive to " + dynamicConstructorActive + "(362)");
+            if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive to " + dynamicConstructorActive + "(387)");
             inputFields = getInputFields(LNC);
             updateConstructor();
             return;
@@ -552,7 +558,9 @@ public class LInputArea extends JPanel {
 
     // when dynamic: if only one constructor active, transfer provided inputs
     private void transferInputs(){
-        if(DEBUG) System.out.println("[DYNAMIC LIA]: Transfering inputs....");
+        if(DEBUG) System.out.println("[DYNAMIC LIA]: Transfering inputs of " +  LNC.getLudemeNode().getLudeme().getName() + "....");
+        System.out.println("Provided inputs model: " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
+        System.out.println("Provided input fields: " + providedInputFields);
         for(int i = 0; i < providedInputFields.size(); i++){
             LInputField providedInputField = providedInputFields.get(i); // input fields of "dynamic" node
             InputInformation ii = providedInputField.getInputInformation();
@@ -576,18 +584,15 @@ public class LInputArea extends JPanel {
 
     public void updateConstructor(){
         if(DEBUG) System.out.println("[LIA] updateConstructor()");
+        System.out.println("Provided input fields 586: " + providedInputFields);
         // TODO: Remove all edges of this ludeme node AND MODEL
         LNC.getGraphPanel().cancelNewConnection();
         LNC.getGraphPanel().removeAllConnections(LNC.getLudemeNode());
-        //providedInputFields.clear();
-        //providedInputFieldsConnections.clear();
+
         inputFields = getInputFields(LNC);
         drawInputFields();
     }
 
-    public void removeAllConnections(){
-
-    }
 
     private void mergeOptionalArgumentsInOne(){
         List<LInputField> consequentOptionalInputs = new ArrayList<>();
@@ -628,8 +633,14 @@ public class LInputArea extends JPanel {
         this.inputFields = newFields;
     }
 
-    public void updateProvidedInputs(){
 
+    /**
+     * Method which syncs the Ludeme Node Component with provided inputs (stored in the Ludeme Node).
+     * Called when drawing a graph.
+     */
+    public void updateProvidedInputs(){
+        if(DEBUG) System.out.println("[LIA] Syncing " + LNC.getLudemeNode().getLudeme().getName() + " with provided inputs...");
+        if(DEBUG) System.out.println("   -> " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
         // Fill existing inputs
         Object[] providedInputs = LNC.getLudemeNode().getProvidedInputs();
         for(int input_index = 0; input_index < providedInputs.length; input_index++){
@@ -646,7 +657,7 @@ public class LInputArea extends JPanel {
                 inputField.setUserInput(providedInput, input_index);
             }
         }
-
+        if(DEBUG) System.out.println("   -> " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
         drawInputFields();
 
         repaint();

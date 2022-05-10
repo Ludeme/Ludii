@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LInputField extends JComponent {
@@ -43,7 +44,6 @@ public class LInputField extends JComponent {
         inputInformationList.add(inputInformation);
         isSingle = true;
         constructInputField(inputInformation);
-
     }
 
     public LInputField(LudemeNodeComponent ludemeNodeComponent, List<InputInformation> inputInformationList){
@@ -176,17 +176,13 @@ public class LInputField extends JComponent {
             newProvidedInputs[i - 1] = oldProvidedInputs[i];
         }
 
+        System.out.println("\u001B[32m"+"Calling from LIF 178"+"\u001B[0m");
         Handler.updateInput(graphPanel.getGraph(), LNC.getLudemeNode(), getInputIndex(), newProvidedInputs);
 
         graphPanel.removeConnection(LNC.getLudemeNode(), this.getConnectionComponent());
 
         LNC.getInputArea().removeField(this);
         parent.children.remove(this);
-
-        // since the provided input was updated, the input fields need to be updated
-
-
-
     }
 
 
@@ -211,17 +207,22 @@ public class LInputField extends JComponent {
 
     }
 
-    // Updates the provided input list in the model whenever the mouse moves over this input field
+    // Updates the provided input list in the model whenever the mouse moves over this input field TODO: Not a good way to solve this
     MouseListener userInputListener = new MouseAdapter() {
         @Override
         public void mouseExited(MouseEvent e) {
             super.mouseMoved(e);
-            if(isSingle) {
-                Handler.updateInput(LNC.getGraphPanel().getGraph(), LNC.getLudemeNode(), getInputIndex(), getUserInput());
-                System.out.println("[LIF] Updated input " + getInputIndex() + " to " + getUserInput());
-            }
+            updateUserInputs();
         }
     };
+
+    public void updateUserInputs(){
+        if(isSingle) {
+            System.out.println("[LIF] Updated input " + getInputIndex() + " to " + getUserInput());
+            System.out.println("\u001B[32m"+"Calling from LIF 221"+"\u001B[0m");
+            Handler.updateInput(LNC.getGraphPanel().getGraph(), LNC.getLudemeNode(), getInputIndex(), getUserInput());
+        }
+    }
 
     /**
      * Returns the user supplied input for an input field
@@ -236,8 +237,6 @@ public class LInputField extends JComponent {
         if(inputFieldComponent instanceof JTextField) return ((JTextField)inputFieldComponent).getText();
         if(inputFieldComponent instanceof JSpinner) return ((JSpinner)inputFieldComponent).getValue();
         if(inputFieldComponent instanceof JComboBox) return ((JComboBox)inputFieldComponent).getSelectedItem();
-
-        // TODO: What about ludeme inputs? required?
 
         return null;
     }
@@ -289,7 +288,7 @@ public class LInputField extends JComponent {
 
         setToSingle(index).setUserInput(input);
         repaint();
-
+        System.out.println("abcc  " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
     }
 
     public LInputField setToSingle(Ludeme ludeme){
@@ -305,6 +304,7 @@ public class LInputField extends JComponent {
     public LInputField setToSingle(int inputIndex){
         for(InputInformation ii : inputInformationList){
             if(ii.getIndex() == inputIndex){
+                System.out.println("[LIF]: Setting " + ii + "(index="+inputIndex+") to single");
                 return setToSingle(ii);
             }
         }
@@ -315,6 +315,7 @@ public class LInputField extends JComponent {
 
         if(DEBUG) System.out.println("[LIF]: ^Setting " + inputInformation + " to single");
 
+        // new single input field is above the "merged" one
         if(inputInformation == inputInformationList.get(0)){
             LInputField newInputField = new LInputField(LNC, inputInformation);
             LNC.getInputArea().addInputFieldAbove(newInputField, this);
@@ -327,6 +328,8 @@ public class LInputField extends JComponent {
             repaint();
             return newInputField;
         }
+
+        // new single input field is below the "merged" one
         if(inputInformation == inputInformationList.get(inputInformationList.size()-1)){
             LInputField newInputField = new LInputField(LNC, inputInformation);
             LNC.getInputArea().addInputFieldBelow(newInputField, this);
@@ -339,14 +342,15 @@ public class LInputField extends JComponent {
             repaint();
             return newInputField;
         }
-        if(DEBUG) System.out.println("[LInputField]: Error constructing single input field for " + inputInformation + ".");
-        if(DEBUG) System.out.println("[LInputField]: index of input information: " + inputInformationList.indexOf(inputInformation) + ", list: " + inputInformationList);
+
+        // new single input field is between two "merged" ones
+        LInputField newInputField = new LInputField(LNC, inputInformation);
+       // LInputField
+
+
+        if(DEBUG) System.err.println("[LInputField]: Error constructing single input field for " + inputInformation + ".");
+        if(DEBUG) System.err.println("[LInputField]: index of input information: " + inputInformationList.indexOf(inputInformation) + ", list: " + inputInformationList);
         return this;
-    }
-
-    public void updateActiveConstructors(){
-        if(!LNC.dynamic) return;
-
     }
 
     public void addInputInformation(InputInformation inputInformation){
