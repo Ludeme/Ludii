@@ -72,9 +72,15 @@
                     copy:(is In (from) (sites Hand All))
                     (then (moveAgain))
                 )
-                (move Remove 
-                    (forEach (union {(sites Hand P1) (sites Hand P2) (sites Board)}) if:(if (is In (site) (sites Board)) (is Occupied (site)) (is Occupied Cell (site))))
-                    (then (moveAgain))
+                (move Select
+                    (from (difference ("AllSites") (sites Hand All)) if:(if (is In (site) (sites Board)) (is Occupied (from)) (is Occupied Cell (from))))
+                    (to (sites Hand All))
+                    (then
+                        (and
+                            (remove (last From))
+                            (moveAgain)
+                        )
+                    )
                 )
             })
         )
