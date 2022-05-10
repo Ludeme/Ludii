@@ -345,12 +345,34 @@ public class LInputField extends JComponent {
 
         // new single input field is between two "merged" ones
         LInputField newInputField = new LInputField(LNC, inputInformation);
-       // LInputField
-
-
-        if(DEBUG) System.err.println("[LInputField]: Error constructing single input field for " + inputInformation + ".");
-        if(DEBUG) System.err.println("[LInputField]: index of input information: " + inputInformationList.indexOf(inputInformation) + ", list: " + inputInformationList);
-        return this;
+        // find which input information belongs above/below the new one
+        List<InputInformation> above_ii = new ArrayList<>();
+        List<InputInformation> below_ii = new ArrayList<>();
+        for(InputInformation ii : inputInformationList){
+            if(ii.getIndex() < inputInformation.getIndex()){
+                above_ii.add(ii);
+            } else if(ii.getIndex() > inputInformation.getIndex()){
+                below_ii.add(ii);
+            }
+        }
+        LInputField above_lif;
+        LInputField below_lif;
+        if(above_ii.size() == 1){
+            above_lif = new LInputField(LNC, above_ii.get(0));
+        } else {
+            above_lif = new LInputField(LNC, above_ii);
+        }
+        if(below_ii.size() == 1){
+            below_lif = new LInputField(LNC, below_ii.get(0));
+        } else {
+            below_lif = new LInputField(LNC, below_ii);
+        }
+        LNC.getInputArea().addInputFieldAbove(above_lif, this);
+        LNC.getInputArea().addInputFieldAbove(newInputField, this);
+        LNC.getInputArea().addInputFieldAbove(below_lif, this);
+        LNC.getInputArea().removeField(this);
+        repaint();
+        return newInputField;
     }
 
     public void addInputInformation(InputInformation inputInformation){
