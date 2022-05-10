@@ -155,6 +155,16 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     public void startNewConnection(LConnectionComponent source){
         if(DEBUG) System.out.println("[EP] Start connection: " + source.getConnectionPointPosition() + " , " + source.getRequiredLudemes());
+
+        if(DEBUG){
+            int upUntilIndex = source.getInputField().getInputInformations().get(0).getIndex();
+            for(InputInformation ii : source.getInputField().getInputInformations()){
+                if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
+            }
+            System.out.println("Found min index: " + upUntilIndex);
+            System.out.println(source.getLudemeNodeComponent().getLudemeNode().getStringRepresentation(upUntilIndex-1));
+        }
+
         if(selectedConnectionComponent != null){
             selectedConnectionComponent.setFill(false);
         }

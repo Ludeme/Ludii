@@ -216,6 +216,48 @@ public class LudemeNode implements iLudemeNode, iGNode {
         return getStringRepresentation();
     }
 
+    public String getStringRepresentation(int untilInputIndex){
+        char c = '"';
+
+        if(currentConstructor.getInputs().size() == 1 && currentConstructor.getInputs().get(0).isTerminal()){
+            if(providedInputs[0] == null) return "";
+            if(providedInputs[0] instanceof String) return c+providedInputs[0].toString()+c+" ";
+            else return providedInputs[0].toString();
+        }
+
+        StringBuilder s = new StringBuilder("");
+        String[] ludemeNameSplit = getLudeme().getName().split("\\.");
+        if(getLudeme().isHidden()) s.append("");
+        else if(ludemeNameSplit.length >= 1){
+            s.append("(");
+            s.append(ludemeNameSplit[ludemeNameSplit.length-1]);
+        }
+        else {
+            s.append("(");
+            s.append(getLudeme().getName());
+        }
+        s.append(" ");
+        s.append(getCurrentConstructor().getName());
+        s.append(" ");
+        for(int i = 0; i <= untilInputIndex; i++){
+            Object o = getProvidedInputs()[i];
+            if(o == null) continue; // TODO: What to do when input is empty?
+            else if(o instanceof LudemeNode[]) {
+                s.append("{");
+                for(LudemeNode ln : (LudemeNode[]) o){
+                    if(ln == null) continue;
+                    s.append(ln.getStringRepresentation());
+                    s.append("\n");
+                }
+                s.append("}");
+            }
+            else if(o instanceof String) s.append("\"").append(o.toString()).append("\"");
+            else s.append(o.toString());
+        }
+        if(s.toString().startsWith("(")) s.append(")");
+        return s.toString().trim().replaceAll(" +", " ");
+    }
+
     public boolean isDynamic(){
         return dynamic;
     }
