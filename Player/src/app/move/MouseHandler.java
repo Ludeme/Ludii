@@ -99,8 +99,6 @@ public class MouseHandler
 				(
 					!app.settingsPlayer().componentIsSelected() 
 					&& 
-					!app.settingsPlayer().usingExhibitionApp()
-					&& 
 					app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation)
 				)
 				{
