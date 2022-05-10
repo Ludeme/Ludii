@@ -73,8 +73,18 @@
                     (then (moveAgain))
                 )
                 (move Select
-                    (from (difference ("AllSites") (sites Hand All)) if:(if (is In (site) (sites Board)) (is Occupied (from)) (is Occupied Cell (from))))
-                    (to (sites Hand All))
+                    (from (sites Occupied by:All))
+                    (to Cell (sites Hand All))
+                    (then
+                        (and
+                            (remove (last From))
+                            (moveAgain)
+                        )
+                    )
+                )
+                (move Select
+                    (from Cell (union (sites Hand P1) (sites Hand P2)) if:(is Occupied Cell (from)))
+                    (to Cell (sites Hand All))
                     (then
                         (and
                             (remove (last From))
