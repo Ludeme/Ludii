@@ -7,6 +7,7 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.parser.Parser;
+import app.display.dialogs.visual_editor.recs.guiInterfacing.CodeCompletion;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.components.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
@@ -155,15 +156,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     public void startNewConnection(LConnectionComponent source){
         if(DEBUG) System.out.println("[EP] Start connection: " + source.getConnectionPointPosition() + " , " + source.getRequiredLudemes());
-
-        if(DEBUG){
-            int upUntilIndex = source.getInputField().getInputInformations().get(0).getIndex();
-            for(InputInformation ii : source.getInputField().getInputInformations()){
-                if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
-            }
-            System.out.println("Found min index: " + upUntilIndex);
-            System.out.println(source.getLudemeNodeComponent().getLudemeNode().getStringRepresentation(upUntilIndex-1));
-        }
 
         if(selectedConnectionComponent != null){
             selectedConnectionComponent.setFill(false);
@@ -386,7 +378,14 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     public void showCurrentlyAvailableLudemes(int x, int y) {
         if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
-        connectLudemeWindow.updateList(selectedConnectionComponent.getRequiredLudemes());
+        // get game description up to current point
+        int upUntilIndex = selectedConnectionComponent.getInputField().getInputInformations().get(0).getIndex();
+        for(InputInformation ii : selectedConnectionComponent.getInputField().getInputInformations()){
+            if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
+        }
+        String gameDescription = selectedConnectionComponent.getLudemeNodeComponent().getLudemeNode().getStringRepresentation(upUntilIndex-1);
+
+        connectLudemeWindow.updateList(CodeCompletion.getRecommendations(gameDescription, selectedConnectionComponent.getRequiredLudemes()));
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();

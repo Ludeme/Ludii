@@ -40,23 +40,13 @@ public class InputInformation {
         }
         if(input instanceof LudemeInput){
             LudemeInput l_input = (LudemeInput) input;
-
             if(l_input.getRequiredLudeme().isHidden()){
-            /*
-                for(Constructor c : l_input.getRequiredLudeme().getConstructors()){
-                    for(Input in : c.getInputs()){
-                        Ludeme l = ((LudemeInput) in).getRequiredLudeme();
-                        possibleLudemeInputs.add(l);
-                    }
-                }
-             */
                 possibleLudemeInputs.addAll(getNonHiddenLudemes(l_input.getRequiredLudeme()));
             } else {
                 possibleLudemeInputs.add(l_input.getRequiredLudeme());
             }
             return possibleLudemeInputs;
         }
-
         return possibleLudemeInputs;
     }
 
