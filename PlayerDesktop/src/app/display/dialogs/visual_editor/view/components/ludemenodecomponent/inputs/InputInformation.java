@@ -112,7 +112,7 @@ public class InputInformation {
 
     @Override
     public String toString(){
-        return INPUT.toString();
+        return "[" + INDEX + ", " + INPUT + "| " + CONSTRUCTOR + "]";
     }
 
     @Override

@@ -21,8 +21,8 @@ public class LInputArea extends JPanel {
     ;
     private LudemeNodeComponent LNC;
 
-    private List<Constructor> activeConstructors = new ArrayList<>();
-    private List<Constructor> inactiveConstructors = new ArrayList<>();
+    public List<Constructor> activeConstructors = new ArrayList<>();
+    public List<Constructor> inactiveConstructors = new ArrayList<>();
 
     private List<InputInformation> allInputInformations = new ArrayList<>();
     public List<LInputField> providedInputFields = new ArrayList<>();
@@ -205,7 +205,10 @@ public class LInputArea extends JPanel {
         // remove
 
         activeConstructors = newActiveC;
-        inactiveConstructors = newInactiveC;
+        for(Constructor c : newInactiveC){
+            if(!inactiveConstructors.contains(c)) inactiveConstructors.add(c);
+        }
+        //inactiveConstructors = newInactiveC;
 
         if (DEBUG) System.out.println("[DYNAMIC LIA]: newActiveC = " + newActiveC.size() + ", " + newActiveC);
         if (DEBUG) System.out.println("[DYNAMIC LIA]: newInactiveC = " + newInactiveC.size() + ", " + newInactiveC);
@@ -347,6 +350,7 @@ public class LInputArea extends JPanel {
     public void removedConnectionDynamic(LudemeNode node, LInputField c_inputField){
 
         if(DEBUG){
+            System.out.println("[DYNAMIC LIA]: Removing Connection of " + LNC.getLudemeNode().getLudeme().getName() + " from " + c_inputField.getInputInformations());
             System.out.println("[DYNAMIC LIA]: Active Constructors: " + activeConstructors + "(" + activeConstructors.size() + ")");
             System.out.println("[DYNAMIC LIA]: Inactive Constructors: " + inactiveConstructors + "(" + inactiveConstructors.size() + ")");
         }
@@ -359,11 +363,19 @@ public class LInputArea extends JPanel {
         for(LInputField lif : providedInputFields){
             providedII.addAll(lif.getInputInformations());
         }
+        // add ii with equivalent node to providedII
+        for(InputInformation ii : new ArrayList<>(providedII)){
+            for(InputInformation ii2 : allInputInformations){
+                if(ii2.getInput().getName().equals(ii.getInput().getName()) && ii2.getIndex() == ii.getIndex()){
+                    if(!providedII.contains(ii2)) providedII.add(ii2);
+                }
+            }
+        }
         providedII.removeAll(c_inputField.getInputInformations());
 
         if(DEBUG) System.out.println("[DYNAMIC LIA]: Provided II: " + providedII);
 
-        List<Constructor> addActiveConstructors = new ArrayList<>();
+        /*List<Constructor> addActiveConstructors = new ArrayList<>();
 
         for(Constructor c : inactiveConstructors){
             boolean flag = true;
@@ -378,8 +390,57 @@ public class LInputArea extends JPanel {
         }
 
         activeConstructors.addAll(addActiveConstructors);
-        inactiveConstructors.removeAll(addActiveConstructors);
-        if(DEBUG) System.out.println("[DYNAMIC LIA]: Add Active Constructors: " + addActiveConstructors);
+        inactiveConstructors.removeAll(addActiveConstructors);*/
+
+        List<Constructor> newActiveC = new ArrayList<>();
+        List<Constructor> newInactiveC = new ArrayList<>();
+        newInactiveC.addAll(activeConstructors);
+        newInactiveC.addAll(inactiveConstructors);
+
+        List<Constructor> addActiveConstructors = new ArrayList<>();
+
+
+        for(InputInformation ii : providedII){
+            for(Constructor c : new ArrayList<>(newInactiveC)){
+                boolean isActive = false;
+                if(c.getInputs().contains(ii.getInput())){
+                    // then is active
+                    if(!newActiveC.contains(c)) newActiveC.add(c);
+                    newInactiveC.remove(c);
+                    if(!addActiveConstructors.contains(c) && !activeConstructors.contains(c)) addActiveConstructors.add(c);
+                    isActive = true;
+                    break;
+                }
+            }
+        }
+
+        /*for(Constructor c : new ArrayList<>(newActiveC)){
+            boolean isInactive = false;
+            for(InputInformation ii : providedII){
+                if(!c.getInputs().contains(ii.getInput())){
+                    isInactive = true;
+                    break;
+                }
+
+            }
+            if(isInactive) {
+                System.out.println("[LIA DYNAMIC] " + c.getInputs() + " does not contain any II of " + providedII);
+                newInactiveC.add(c);
+                newActiveC.remove(c);
+            }
+            if(!isInactive){
+                if(!activeConstructors.contains(c)){
+                    addActiveConstructors.add(c);
+                }
+            }
+        }*/
+
+        activeConstructors = newActiveC;
+        inactiveConstructors = newInactiveC;
+        if(DEBUG) System.out.println("[DYNAMIC LIA]: Active Constructors: " + activeConstructors + "(" + activeConstructors.size() + ")");
+        if(DEBUG) System.out.println("[DYNAMIC LIA]: Inactive Constructors: " + inactiveConstructors + "(" + inactiveConstructors.size() + ")");
+
+        //if(DEBUG) System.out.println("[DYNAMIC LIA]: Add Active Constructors: " + addActiveConstructors);
 
 
         if(!dynamicConstructorActive && activeConstructors.size() > 1) {
