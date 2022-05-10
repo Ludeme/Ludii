@@ -385,7 +385,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         }
         String gameDescription = selectedConnectionComponent.getLudemeNodeComponent().getLudemeNode().getStringRepresentation(upUntilIndex-1);
 
-        connectLudemeWindow.updateList(CodeCompletion.getRecommendations(gameDescription, selectedConnectionComponent.getRequiredLudemes()));
+        connectLudemeWindow.updateList(CodeCompletion.getRecommendations(ludemes, gameDescription, selectedConnectionComponent.getRequiredLudemes()));
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();
