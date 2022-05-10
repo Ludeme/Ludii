@@ -5,6 +5,8 @@ import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
 import javax.swing.*;
 
+import java.util.HashMap;
+
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
 
 /**
@@ -55,6 +57,66 @@ public class LayoutHandler {
     {
         ((CFDP) layout).setTimer(timer);
     }
+
+    // ################
+
+    public void updateOffsets(double w)
+    {
+        updateWeightMap(((DFSBoxDrawing) layout).getOFFSET_MAP(), w);
+    }
+
+    public void updateOffsets(double w, int l)
+    {
+        updateWeightMap(((DFSBoxDrawing) layout).getOFFSET_MAP(), w, l);
+    }
+
+    public void updateSpread(double w)
+    {
+        updateWeightMap(((DFSBoxDrawing) layout).getSPREAD_MAP(), w);
+    }
+
+    public void updateSpread(double w, int l)
+    {
+        updateWeightMap(((DFSBoxDrawing) layout).getSPREAD_MAP(), w, l);
+    }
+
+    public void updateDistance(double w)
+    {
+        updateWeightMap(((DFSBoxDrawing) layout).getDISTANCE_MAP(), w);
+    }
+
+    public void updateDistance(double w, int l)
+    {
+        updateWeightMap(((DFSBoxDrawing) layout).getDISTANCE_MAP(), w, l);
+    }
+
+    public void updateAllWeights(double offset, double distance, double spread)
+    {
+        updateDistance(distance);
+        updateOffsets(offset);
+        updateSpread(spread);
+    }
+
+    public void updateAllWeights(double offset, double distance, double spread, int l)
+    {
+        updateDistance(distance, l);
+        updateOffsets(offset, l);
+        updateSpread(spread, l);
+    }
+
+    private void updateWeightMap(HashMap<Integer, Double> map, double w)
+    {
+        map.forEach((id,v) -> {
+            map.put(id, w);
+        });
+    }
+
+    public void updateWeightMap(HashMap<Integer, Double> map, double w, int l)
+    {
+        map.put(l, w);
+    }
+
+    // ################
 
     public void executeLayout()
     {

@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 
 
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import game.util.graph.Graph;
 
 import java.util.ArrayList;
 import java.util.List;

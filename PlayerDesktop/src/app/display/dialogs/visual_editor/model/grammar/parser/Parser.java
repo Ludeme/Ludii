@@ -3,7 +3,6 @@ package app.display.dialogs.visual_editor.model.grammar.parser;
 import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.input.*;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +100,7 @@ public class Parser {
 
     private List<Grammar> createGrammar(){
         List<Grammar> records = new ArrayList<>();
+        InputStream is = getClass().getResourceAsStream("to-do.txt");
         try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/grammar/easy.csv")))) {
             String line;
             while ((line = br.readLine()) != null) {

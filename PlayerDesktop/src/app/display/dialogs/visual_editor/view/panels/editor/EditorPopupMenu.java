@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 import app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.GraphPanel;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.settings.LayoutSettingsPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,7 @@ public class EditorPopupMenu extends JPopupMenu {
         JMenuItem radial = new JMenuItem("Radial layout");
         JMenuItem fdp = new JMenuItem("FDP layout");
         JMenuItem cfdp = new JMenuItem("CFDP layout");
+        JMenuItem settings = new JMenuItem("Layout Settings");
 
         newLudeme.addActionListener(e -> {
             graphPanel.showAllAvailableLudemes(getX(), getY());
@@ -69,10 +71,15 @@ public class EditorPopupMenu extends JPopupMenu {
             timer.start();
         });
 
+        settings.addActionListener(e -> {
+            LayoutSettingsPanel.getSettingsFrame(graphPanel.getLayoutHandler());
+        });
+
         lmMenu.add(compact);
         lmMenu.add(radial);
         lmMenu.add(fdp);
         lmMenu.add(cfdp);
+        lmMenu.add(settings);
 
         repaintScreen.addActionListener(e -> {
             graphPanel.repaint();

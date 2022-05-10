@@ -6,6 +6,7 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.NodePlacementRoutines.translateByRoot;
@@ -19,9 +20,15 @@ public class DFSBoxDrawing implements LayoutMethod
     private iGraph graph;
     private final int C3j;
     private int freeY;
-    private final double wY = 0.5;
-    private final double wX = 1.5;
+    // spread
+    private final double wY = 1.5;
+    // distance
+    private final double wX = 2.5;
     private final int root;
+
+    private final HashMap<Integer, Double> DISTANCE_MAP;
+    private final HashMap<Integer, Double> OFFSET_MAP;
+    private final HashMap<Integer, Double> SPREAD_MAP;
 
     /**
      *
@@ -34,6 +41,26 @@ public class DFSBoxDrawing implements LayoutMethod
         this.graph = graph;
         freeY = 0;
         this.root = root;
+
+        DISTANCE_MAP = new HashMap<>();
+        OFFSET_MAP = new HashMap<>();
+        SPREAD_MAP = new HashMap<>();
+
+        initWeights();
+    }
+
+    private void initWeights()
+    {
+        graph.getNodeList().forEach((id,n) ->{
+            if (!n.getChildren().isEmpty())
+            {
+                OFFSET_MAP.put(id,0.5);
+                // Wx
+                DISTANCE_MAP.put(id,2.5);
+                // Wy
+                SPREAD_MAP.put(id,2.5);
+            }
+        });
     }
 
     private void initPlacement(int nodeId, int freeX)
@@ -41,7 +68,7 @@ public class DFSBoxDrawing implements LayoutMethod
         if (graph.getNode(nodeId).getChildren() == null || graph.getNode(nodeId).getChildren().size() == 0)
         {
             Vector2D piInit = new Vector2D(freeX, freeY);
-            freeY += graph.getNode(nodeId).getWidth()*wY;
+            freeY += graph.getNode(nodeId).getHeight() * (SPREAD_MAP.get(graph.getNode(nodeId).getParent()));
 
             graph.getNode(nodeId).setPos(piInit);
         }
@@ -52,24 +79,63 @@ public class DFSBoxDrawing implements LayoutMethod
             iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
 
             nodeCh.forEach((s) -> {
-                initPlacement(s, (int) (freeX+graph.getNode(s).getWidth()*wX));
+                initPlacement(s, (int) (freeX + graph.getNode(s).getWidth() * (SPREAD_MAP.get(graph.getNode(s).getParent()))));
                 // freeX + getNodeDepth(graph, s)*graph.getNode(s).getWidth()*wX
 
                 iGNode nV = graph.getNode(nodeId);
-                Vector2D piInit = new Vector2D(freeX,
-                        nFirst.getPos().getY() +
-                                0);
-                // nLast.getPos().getY() - nFirst.getPos().getY()
+
+                double X0 = nFirst.getPos().getY() + 0;
+                double X05 = nFirst.getPos().getY() + (nLast.getPos().getY() - nFirst.getPos().getY())/2;
+                double X1 = nLast.getPos().getY();
+
+                double wOffset = OFFSET_MAP.get(graph.getNode(s).getParent());
+                double yCoord;
+
+                if (wOffset < 0.5)
+                {
+                    yCoord = 2 * wOffset * (X05 - X0) + X0;
+                }
+                else if ((wOffset - 0.5) < 1e-3)
+                {
+                    yCoord = X05;
+                }
+                else {
+                    yCoord = (wOffset - 0.5) * (X1 - X05) + X05;
+                }
+
+                Vector2D piInit = new Vector2D(freeX, yCoord);
+                nV.setPos(piInit);
+
+
+                // H-V downward layout: nFirst.getPos().getY() + 0
+                // intermediate values: between 0.0 and 0.5
+                // Symmetry: nFirst.getPos().getY() + (nLast.getPos().getY() - nFirst.getPos().getY())/2
+                // intermediate values between 0.5 and 1.0
+                // H-V upward layout: nLast.getPos().getY()
+
+
                 // Several options to set Y coordinate based positions of children nodes
                 // (nLast.getPos().getY() - nFirst.getPos().getY())/2
                 // min(C3j, nLast.getPos().getY() - nFirst.getPos().getY())
 
-                nV.setPos(piInit);
-                //freeY = max(freeY, (int) (nV.getPos().getY() + nV.getHeight()*wY));
+                // uncomment to see fun effect
+                //freeY = Math.max(freeY, (int) (nV.getPos().getY() + nV.getHeight()*wY));
 
             });
 
         }
+    }
+
+    public HashMap<Integer, Double> getDISTANCE_MAP() {
+        return DISTANCE_MAP;
+    }
+
+    public HashMap<Integer, Double> getOFFSET_MAP() {
+        return OFFSET_MAP;
+    }
+
+    public HashMap<Integer, Double> getSPREAD_MAP() {
+        return SPREAD_MAP;
     }
 
     private void shift(int root)
@@ -93,7 +159,6 @@ public class DFSBoxDrawing implements LayoutMethod
                 Q.add(childNodes.get(i));
             }
         }
-
     }
 
     @Override
