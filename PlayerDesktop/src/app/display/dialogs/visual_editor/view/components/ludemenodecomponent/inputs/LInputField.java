@@ -165,19 +165,21 @@ public class LInputField extends JComponent {
 
         // get current provided input array
         LudemeNode[] oldProvidedInputs = (LudemeNode[]) LNC.getLudemeNode().getProvidedInputs()[getInputIndex()];
-        // find this inputfields index in the provided inputs
-        int indexToRemove = parent.children.indexOf(this) + 1;
-        // decrease provided inputs array size
-        LudemeNode[] newProvidedInputs = new LudemeNode[oldProvidedInputs.length - 1];
-        for(int i = 0; i < indexToRemove; i++){
-            newProvidedInputs[i] = oldProvidedInputs[i];
-        }
-        for(int i = indexToRemove+1; i < oldProvidedInputs.length; i++){
-            newProvidedInputs[i - 1] = oldProvidedInputs[i];
-        }
+        if(oldProvidedInputs != null) {
+            // find this inputfields index in the provided inputs
+            int indexToRemove = parent.children.indexOf(this) + 1;
+            // decrease provided inputs array size
+            LudemeNode[] newProvidedInputs = new LudemeNode[oldProvidedInputs.length - 1];
+            for (int i = 0; i < indexToRemove; i++) {
+                newProvidedInputs[i] = oldProvidedInputs[i];
+            }
+            for (int i = indexToRemove + 1; i < oldProvidedInputs.length; i++) {
+                newProvidedInputs[i - 1] = oldProvidedInputs[i];
+            }
 
-        System.out.println("\u001B[32m"+"Calling from LIF 178"+"\u001B[0m");
-        Handler.updateInput(graphPanel.getGraph(), LNC.getLudemeNode(), getInputIndex(), newProvidedInputs);
+            System.out.println("\u001B[32m" + "Calling from LIF 178" + "\u001B[0m");
+            Handler.updateInput(graphPanel.getGraph(), LNC.getLudemeNode(), getInputIndex(), newProvidedInputs);
+        }
 
         graphPanel.removeConnection(LNC.getLudemeNode(), this.getConnectionComponent());
 
