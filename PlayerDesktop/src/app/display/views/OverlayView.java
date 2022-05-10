@@ -97,7 +97,7 @@ public final class OverlayView extends View
 				// If playing a game, show toEnglish of that game's description
 				final Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 20);
 				englishDescriptionField.setFont(exhbitionDescriptionFont);
-				englishDescriptionField.setBounds(30, 100 , 400, 400);
+				englishDescriptionField.setBounds(30, 100, 600, 800);
 				englishDescriptionField.setOpaque(false);
 				englishDescriptionField.setLineWrap(true);
 				englishDescriptionField.setWrapStyleWord(true);
