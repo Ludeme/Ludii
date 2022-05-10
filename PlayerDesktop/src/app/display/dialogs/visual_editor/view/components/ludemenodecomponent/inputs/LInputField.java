@@ -359,17 +359,25 @@ public class LInputField extends JComponent {
         LInputField below_lif;
         if(above_ii.size() == 1){
             above_lif = new LInputField(LNC, above_ii.get(0));
-        } else {
+        }
+        else if(above_ii.size() == 0){
+            above_lif = null;
+        }
+        else {
             above_lif = new LInputField(LNC, above_ii);
         }
         if(below_ii.size() == 1){
             below_lif = new LInputField(LNC, below_ii.get(0));
-        } else {
+        }
+        else if (below_ii.size() == 0){
+            below_lif = null;
+        }
+        else {
             below_lif = new LInputField(LNC, below_ii);
         }
-        LNC.getInputArea().addInputFieldAbove(above_lif, this);
+        if(above_lif != null) LNC.getInputArea().addInputFieldAbove(above_lif, this);
         LNC.getInputArea().addInputFieldAbove(newInputField, this);
-        LNC.getInputArea().addInputFieldAbove(below_lif, this);
+        if(below_lif != null) LNC.getInputArea().addInputFieldAbove(below_lif, this);
         LNC.getInputArea().removeField(this);
         repaint();
         return newInputField;
