@@ -30,7 +30,7 @@ public class AddLudemeWindow extends JPanel {
         searchField = new JTextField();
 
         // remove duplicates
-        ludemeList = ludemeList.stream().distinct().sorted(Comparator.comparing(Ludeme::getName)).collect(java.util.stream.Collectors.toList());
+        //ludemeList = ludemeList.stream().distinct().sorted(Comparator.comparing(Ludeme::getName)).collect(java.util.stream.Collectors.toList());
 
         //TODO: List of ludemes is sorted here RECS
         // TODO: get list of ludemes and connections from editorpanel
@@ -105,7 +105,7 @@ public class AddLudemeWindow extends JPanel {
 
         searchField = new JTextField();
 
-        ludemeList.sort(Comparator.comparing(Object::toString));
+        //ludemeList.sort(Comparator.comparing(Object::toString));
 
         listModel = new DefaultListModel<Ludeme>();
         for (Ludeme l : ludemeList) {
