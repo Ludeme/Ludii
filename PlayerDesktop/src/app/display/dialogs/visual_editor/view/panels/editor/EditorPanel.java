@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
+
 public class EditorPanel extends JPanel implements IGraphPanel {
 
     private DescriptionGraph graph = new DescriptionGraph();
@@ -49,6 +51,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     private AddLudemeWindow addLudemeWindow = new AddLudemeWindow(ludemes, this, false);
     // window to add a new ludeme as an input
     private AddLudemeWindow connectLudemeWindow = new AddLudemeWindow(ludemes, this, true);
+
+    private boolean showBackgroundDots = true;
 
     private static final boolean DEBUG = true;
 
@@ -124,6 +128,30 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
+
+        if(showBackgroundDots) {
+            // draw background points
+            // every 50 pixel a circle
+            int paddingHorizontal = 35;
+            int paddingvertical = 15;
+            int frequency = 25;
+            int diameter = 4;
+
+            // to improve performance, only draw points that are in the visible area
+            Rectangle viewRect = mainPanel.getPanel().getViewport().getViewRect();
+            for (int i = paddingHorizontal; i < getWidth() - paddingHorizontal; i += frequency) {
+                for (int j = paddingvertical; j < getHeight() - paddingvertical; j += frequency) {
+                    if(i < viewRect.x || i > viewRect.x + viewRect.width || j < viewRect.y || j > viewRect.y + viewRect.height) continue; // TODO this can be optimized by a lot by adding this offset to i and j
+                    g2.setColor(DesignPalette.BACKGROUND_VISUAL_HELPER);
+                    g2.fillOval(i, j, diameter, diameter);
+                }
+            }
+        }
+
+        // set color for edges
+        g2.setColor(DesignPalette.LUDEME_CONNECTION_EDGE);
+        // set stroke for edges
+        g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
 
         // draw new connection
         if(selectedConnectionComponent != null && mousePosition != null) {

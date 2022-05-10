@@ -21,6 +21,7 @@ public class DesignPalette {
 
     // PANELS //
     public static Color BACKGROUND_EDITOR = new Color(244,244,244);;
+    public static Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
 
     // LUDEME BLOCK //
         // fonts
@@ -82,6 +83,9 @@ public class DesignPalette {
     public static final ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
     public static final ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
     public static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
+
+
+    public static final BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
 
     private static URL getIconURL(String path) {

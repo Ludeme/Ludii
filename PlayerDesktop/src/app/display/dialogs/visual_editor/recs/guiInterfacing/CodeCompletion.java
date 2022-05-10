@@ -30,6 +30,9 @@ public class CodeCompletion {
      * @return
      */
     public static List<Ludeme> getRecommendations(List<Ludeme> allLudemes, String gameDescription, List<Ludeme> possibleLudemes) {
+
+        if(true) return possibleLudemes; // TODO: remove after implementation
+
         System.out.println(gameDescription);
         // List<Pair<NGramInstance, Integer>>:  pre sorted list of recommendations
         // get the NGramInstance: instance = pair.getR()
