@@ -254,8 +254,10 @@ public class LudemeNode implements iLudemeNode, iGNode {
             else if(o instanceof String) s.append("\"").append(o.toString()).append("\"");
             else s.append(o.toString());
         }
-        if(s.toString().startsWith("(")) s.append(")");
+        s.append(" --REC--"); // TODO: SHOULD BE A VARIABLE
         return s.toString().trim().replaceAll(" +", " ");
+        //if(s.toString().startsWith("(")) s.append(")");
+        //return s.toString().trim().replaceAll(" +", " ");
     }
 
     public boolean isDynamic(){
