@@ -129,19 +129,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D) g;
-        if (zoomed) {
-            AffineTransform at = new AffineTransform();
-            at.scale(zoomFactor, zoomFactor);
-            zoomFactor0 = zoomFactor;
-            g2.transform(at);
-            zoomed = false;
-        }
-    }
-
-    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
@@ -160,7 +147,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             at.scale(zoomFactor, zoomFactor);
             zoomFactor0 = zoomFactor;
             g2.transform(at);
-            zoomed = false;
         }
 
         if(showBackgroundDots) {
