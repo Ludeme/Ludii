@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.view.components.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class LHeader extends JComponent {
@@ -48,12 +49,15 @@ public class LHeader extends JComponent {
                 ludemeNodeComponent.changeConstructor((Constructor) constructorPicker.getSelectedItem());
                 repaint();
             });
-            add(constructorPicker, BorderLayout.SOUTH);
+            //add(constructorPicker, BorderLayout.SOUTH);
         }
 
 
         //int width = title.getPreferredSize().width + ingoingConnectionComponent.getPreferredSize().width;
         //int height = title.getPreferredSize().height;
+
+        // TODO: maybe do this somehwere else?
+        setBorder(new EmptyBorder(10,0,3,0)); // just space between this and input area and top of LNC
 
         setPreferredSize(new Dimension(ludemeNodeComponent.getWidth(), getPreferredSize().height));
         setSize(getPreferredSize());

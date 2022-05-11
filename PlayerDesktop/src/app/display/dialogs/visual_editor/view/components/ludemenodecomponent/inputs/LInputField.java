@@ -44,6 +44,7 @@ public class LInputField extends JComponent {
         inputInformationList.add(inputInformation);
         isSingle = true;
         constructInputField(inputInformation);
+        setOpaque(false);
     }
 
     public LInputField(LudemeNodeComponent ludemeNodeComponent, List<InputInformation> inputInformationList){
@@ -52,6 +53,7 @@ public class LInputField extends JComponent {
         this.inputInformationList = inputInformationList;
         isSingle = false;
         constructInputField(inputInformationList);
+        setOpaque(false);
     }
 
     public LInputField(LInputField parent){
@@ -61,6 +63,7 @@ public class LInputField extends JComponent {
         constructCollectionField(parent);
         parent.children.add(this);
         this.parent = parent;
+        setOpaque(false);
     }
 
     private void constructCollectionField(LInputField parent){

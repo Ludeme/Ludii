@@ -4,18 +4,20 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Constructor;
+import app.display.dialogs.visual_editor.view.components.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class LudemeNodeComponent extends JComponent {
+public class LudemeNodeComponent extends JPanel {
 
     protected int x, y;
     private ImmutablePoint position = new ImmutablePoint(x, y);
@@ -65,6 +67,10 @@ public class LudemeNodeComponent extends JComponent {
 
         header = new LHeader(this);
         inputArea = new LInputArea(this);
+
+        // add padding to header and input area TODO: variables rather than hardcoded
+        inputArea.setBorder(new EmptyBorder(0,0,10,0)); // just space between this and bottom of LNC
+
         add(header, BorderLayout.NORTH);
         add(inputArea, BorderLayout.CENTER);
 
@@ -85,10 +91,18 @@ public class LudemeNodeComponent extends JComponent {
 
         updatePositions();
 
+        loadStyling();
+
         revalidate();
         repaint();
         setVisible(true);
 
+    }
+
+
+    private void loadStyling(){
+        setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
+        setBorder(DesignPalette.LUDEME_NODE_BORDER);
     }
 
     public void changeConstructor(Constructor c){
@@ -108,6 +122,8 @@ public class LudemeNodeComponent extends JComponent {
         setSize(getPreferredSize());
         LUDEME_NODE.setWidth(getWidth());
         LUDEME_NODE.setHeight(getHeight());
+
+        loadStyling();
 
         revalidate();
         repaint();

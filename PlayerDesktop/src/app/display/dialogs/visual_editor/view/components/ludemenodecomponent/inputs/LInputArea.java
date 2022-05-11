@@ -108,8 +108,8 @@ public class LInputArea extends JPanel {
         removeAll();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(LEFT_ALIGNMENT);
-        setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
-        setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
+        //setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
+        //setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
 
         for (LInputField inputField : inputFields) {
             inputField.setAlignmentX(LEFT_ALIGNMENT);
@@ -119,11 +119,13 @@ public class LInputArea extends JPanel {
         int preferredHeight = getPreferredSize().height;
         setSize(new Dimension(LNC.getWidth(), preferredHeight));
 
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         LNC.updateComponent();
         LNC.updatePositions();
 
+
+        setOpaque(false);
 
         revalidate();
         repaint();

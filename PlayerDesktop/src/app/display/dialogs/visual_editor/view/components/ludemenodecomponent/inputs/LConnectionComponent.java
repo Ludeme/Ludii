@@ -145,11 +145,18 @@ public class LConnectionComponent extends JComponent {
             }
             else {
                 // fill a new oval with transparent colour (to make the filled out oval disappear)
-                g2.setColor(new Color(0,0,0,0));
+                /*g2.setColor(new Color(0,0,0,0));
                 g2.fillOval(x, y, radius*2, radius*2);
                 // draw unfilled oval
                 g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
-                g2.drawOval(x, y, radius*2, radius*2);
+                g2.drawOval(x, y, radius*2, radius*2);*/
+
+                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);
+                g2.fillOval(x, y, radius*2, radius*2);
+                // make white hole to create stroke effect
+                g2.setColor(DesignPalette.BACKGROUND_LUDEME_BODY);
+                g2.fillOval(x+radius/2, y+radius/2, radius, radius);
+
             }
         }
     }

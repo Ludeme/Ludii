@@ -3,6 +3,8 @@ package app.display.dialogs.visual_editor.view.components;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderButton;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -30,9 +32,11 @@ public class DesignPalette {
         // backgrounds
     public static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
     public static Color BACKGROUND_LUDEME_TITLE = new Color(253,253,253);
+    public static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
         // fills
-    public static Color LUDEME_CONNECTION_POINT = new Color(112,112,112);
-    public static Color LUDEME_CONNECTION_EDGE = new Color(112,112,112);
+    public static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
+    public static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
+    public static Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
 
     // ~~ FONTS ~~ //
     public static void initializeFonts() {
@@ -85,7 +89,10 @@ public class DesignPalette {
     public static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
 
 
+
+    // ~~ STROKES AND BORDERS ~~ //
     public static final BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    public static final Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, 2);
 
 
     private static URL getIconURL(String path) {
