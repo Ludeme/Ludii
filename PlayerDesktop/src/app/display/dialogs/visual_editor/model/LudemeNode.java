@@ -5,10 +5,13 @@ import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.input.Input;
+import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,6 +27,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
     private final Ludeme LUDEME;
     private Constructor currentConstructor;
     private Object[] providedInputs;
+
+    private HashMap<LudemeNode, Integer> childrenOrder = new HashMap<>();
 
     private int depth = 0;
     private int width,height;
@@ -160,7 +165,29 @@ public class LudemeNode implements iLudemeNode, iGNode {
 
     public void addChildren(LudemeNode children){
         // Checks if child nodes was already added
-        if (!this.children.contains(children)) this.children.add(children);
+        if (!this.children.contains(children))
+        {
+            this.children.add(children);
+            // get order of new child in current constructor
+            int order = -1;
+            for (Input in: currentConstructor.getInputs())
+            {
+                if (in.getName().equals(children.getLudeme().getName()))
+                {
+                    order = currentConstructor.getInputs().indexOf(in);
+                    break;
+                }
+            }
+            childrenOrder.put(children, order);
+            // placing child in correct order
+            for (int i = this.children.size()-1; i > 0; i--) {
+                if (childrenOrder.get(this.children.get(i-1)) > childrenOrder.get(this.children.get(i)))
+                {
+                    // swap i-1 and i
+                    Collections.swap(this.children, i-1, i);
+                }
+            }
+        }
     }
 
     public void removeChildren(LudemeNode children){
