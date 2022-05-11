@@ -12,13 +12,16 @@ public class LHeader extends JComponent {
 
     private LIngoingConnectionComponent ingoingConnectionComponent;
     private LudemeNodeComponent LNC;
+    private JPanel connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+    private JLabel title;
 
     public LHeader(LudemeNodeComponent ludemeNodeComponent) {
         LNC = ludemeNodeComponent;
 
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel(ludemeNodeComponent.getLudemeNode().getLudeme().getName());
+        title = new JLabel(ludemeNodeComponent.getLudemeNode().getLudeme().getName());
 
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
@@ -26,7 +29,7 @@ public class LHeader extends JComponent {
 
         ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
 
-        JPanel connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
         connectionAndTitle.add(ingoingConnectionComponent);
         connectionAndTitle.add(Box.createHorizontalStrut(5));
         connectionAndTitle.add(title);
@@ -79,6 +82,39 @@ public class LHeader extends JComponent {
 
     public LudemeNodeComponent getLudemeNodeComponent() {
         return LNC;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if(true) return;
+
+        title.setFont(DesignPalette.LUDEME_TITLE_FONT);
+        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
+        title.setSize(title.getPreferredSize());
+
+        //ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
+
+        remove(connectionAndTitle);
+
+        connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        connectionAndTitle.add(ingoingConnectionComponent);
+        connectionAndTitle.add(Box.createHorizontalStrut(5));
+        connectionAndTitle.add(title);
+        connectionAndTitle.setOpaque(false);
+
+        add(connectionAndTitle, BorderLayout.LINE_START);
+
+        // TODO: maybe do this somehwere else?
+        setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0)); // just space between this and input area and top of LNC
+
+        setPreferredSize(new Dimension(LNC.getWidth(), getPreferredSize().height));
+        setSize(getPreferredSize());
+
+        setOpaque(false);
+
+        setVisible(true);
+
     }
 
 }

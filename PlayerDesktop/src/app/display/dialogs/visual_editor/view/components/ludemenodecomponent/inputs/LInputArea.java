@@ -10,6 +10,7 @@ import app.display.dialogs.visual_editor.view.components.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,6 +106,7 @@ public class LInputArea extends JPanel {
     // called when: (a) change constructor (b) remove edge
     public void drawInputFields() {
         if(DEBUG) System.out.println("[LIA]: Drawing input fields");
+
         removeAll();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(LEFT_ALIGNMENT);
@@ -121,15 +123,10 @@ public class LInputArea extends JPanel {
 
         //setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
+        setBorder(new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0)); // just space between this and bottom of LNC
+
         LNC.updateComponent();
         LNC.updatePositions();
-
-
-        setOpaque(false);
-
-        revalidate();
-        repaint();
-        setVisible(true);
     }
 
     public void setDynamic(boolean dynamic){
@@ -754,6 +751,14 @@ public class LInputArea extends JPanel {
                 inputField.getConnectionComponent().updatePosition();
             }
         }
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawInputFields();
+        setOpaque(false);
+        setVisible(true);
     }
 
 }

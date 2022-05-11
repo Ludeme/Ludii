@@ -445,4 +445,10 @@ public class LInputField extends JComponent {
     }
 
 
+    @Override
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+    }
+
 }

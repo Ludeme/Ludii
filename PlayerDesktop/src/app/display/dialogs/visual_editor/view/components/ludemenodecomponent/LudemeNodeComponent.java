@@ -21,7 +21,6 @@ public class LudemeNodeComponent extends JPanel {
 
     protected int x, y;
     private ImmutablePoint position = new ImmutablePoint(x, y);
-    int width;
     private final LudemeNode LUDEME_NODE;
     private final IGraphPanel GRAPH_PANEL;
 
@@ -30,13 +29,12 @@ public class LudemeNodeComponent extends JPanel {
     private LHeader header;
     private LInputArea inputArea;
 
-    public LudemeNodeComponent(LudemeNode ludemeNode, int width, IGraphPanel graphPanel){
+    public LudemeNodeComponent(LudemeNode ludemeNode, IGraphPanel graphPanel){
         this.LUDEME_NODE = ludemeNode;
         this.GRAPH_PANEL = graphPanel;
 
         this.x = (int) ludemeNode.getPos().getX();
         this.y = (int) ludemeNode.getPos().getY();
-        this.width = width;
 
         setLayout(new BorderLayout());
 
@@ -68,9 +66,6 @@ public class LudemeNodeComponent extends JPanel {
         header = new LHeader(this);
         inputArea = new LInputArea(this);
 
-        // add padding to header and input area TODO: variables rather than hardcoded
-        inputArea.setBorder(new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0)); // just space between this and bottom of LNC
-
         add(header, BorderLayout.NORTH);
         add(inputArea, BorderLayout.CENTER);
 
@@ -78,7 +73,7 @@ public class LudemeNodeComponent extends JPanel {
 
         int preferredHeight = inputArea.getPreferredSize().height + header.getPreferredSize().height;
 
-        setMinimumSize(new Dimension(width, preferredHeight));
+        setMinimumSize(new Dimension(getWidth(), preferredHeight));
         setPreferredSize(new Dimension(getMinimumSize().width, preferredHeight));
         setSize(new Dimension(getMinimumSize().width, preferredHeight));
 
@@ -91,18 +86,10 @@ public class LudemeNodeComponent extends JPanel {
 
         updatePositions();
 
-        loadStyling();
-
         revalidate();
         repaint();
         setVisible(true);
 
-    }
-
-
-    private void loadStyling(){
-        setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
-        setBorder(DesignPalette.LUDEME_NODE_BORDER);
     }
 
     public void changeConstructor(Constructor c){
@@ -110,20 +97,16 @@ public class LudemeNodeComponent extends JPanel {
 
         inputArea.updateConstructor();
 
-        revalidate();
-        repaint();
 
-        int preferredHeight = inputArea.getPreferredSize().height + header.getPreferredSize().height;
+        //int preferredHeight = inputArea.getPreferredSize().height + header.getPreferredSize().height;
 
-        setMinimumSize(new Dimension(width, preferredHeight));
-        setPreferredSize(new Dimension(getMinimumSize().width, preferredHeight));
-        setSize(new Dimension(getMinimumSize().width, preferredHeight));
+        //setMinimumSize(new Dimension(getWidth(), preferredHeight));
+        //setPreferredSize(new Dimension(getMinimumSize().width, preferredHeight));
+        //setSize(new Dimension(getMinimumSize().width, preferredHeight));
 
-        setSize(getPreferredSize());
-        LUDEME_NODE.setWidth(getWidth());
-        LUDEME_NODE.setHeight(getHeight());
-
-        loadStyling();
+        //setSize(getPreferredSize());
+        //LUDEME_NODE.setWidth(getWidth());
+        //LUDEME_NODE.setHeight(getHeight());
 
         revalidate();
         repaint();
@@ -169,7 +152,7 @@ public class LudemeNodeComponent extends JPanel {
     }
 
     public int getWidth(){
-        return width;
+        return DesignPalette.NODE_WIDTH;
     }
 
     public IGraphPanel getGraphPanel(){
@@ -246,5 +229,25 @@ public class LudemeNodeComponent extends JPanel {
             }
         }
     };
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int preferredHeight = inputArea.getPreferredSize().height + header.getPreferredSize().height;
+
+        setMinimumSize(new Dimension(getWidth(), preferredHeight));
+        setPreferredSize(new Dimension(getMinimumSize().width, preferredHeight));
+        setSize(new Dimension(getMinimumSize().width, preferredHeight));
+
+        setSize(getPreferredSize());
+        LUDEME_NODE.setWidth(getWidth());
+        LUDEME_NODE.setHeight(getHeight());
+
+        setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
+        setBorder(DesignPalette.LUDEME_NODE_BORDER);
+
+        System.out.println("width: " + getWidth());
+        System.out.println("size: " + getSize());
+    }
 
 }

@@ -65,6 +65,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
         addMouseListener(clickListener);
         addMouseMotionListener(motionListener);
+        addMouseWheelListener(wheelListener);
 
         add(addLudemeWindow);
         add(connectLudemeWindow);
@@ -77,8 +78,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         Handler.gameDescriptionGraph = graph;
 
         lm = new LayoutHandler(graph, graph.getRoot().getId());
-
-        addMouseWheelListener(this::mouseWheelMoved);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         List<LudemeNode> nodes = graph.getNodes();
         for(LudemeNode node : nodes) {
             //add(new LudemeBlock(node, null, 300));
-            LudemeNodeComponent lc = new LudemeNodeComponent(node, DesignPalette.NODE_WIDTH, this);
+            LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
             nodeComponents.add(lc);
             add(lc);
             lc.revalidate();
@@ -154,8 +153,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             // every 50 pixel a circle
             int paddingHorizontal = 35;
             int paddingvertical = 15;
-            int frequency = 25;
-            int diameter = 4;
+            int frequency = DesignPalette.BACKGROUND_DOT_PADDING;
+            int diameter = DesignPalette.BACKGROUND_DOT_DIAMETER;
 
             // to improve performance, only draw points that are in the visible area
             Rectangle viewRect = mainPanel.getPanel().getViewport().getViewRect();
@@ -306,7 +305,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     @Override
     public LudemeNode addNode(Ludeme ludeme, int x, int y, boolean connect) {
         LudemeNode node = new LudemeNode(ludeme, x, y);
-        LudemeNodeComponent lc = new LudemeNodeComponent(node, DesignPalette.NODE_WIDTH, this);
+        LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         Handler.addNode(graph, node);
         nodeComponents.add(lc);
         add(lc);
@@ -518,21 +517,43 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         g2.draw(p2d);
     }
 
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        zoomed = true;
-        //Zoom in
-        if (e.getWheelRotation() < 0) {
-            zoomFactor *= 1.1;
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    MouseWheelListener wheelListener = new MouseAdapter() {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            double amount = Math.pow(1.01, e.getScrollAmount());
+            if(e.getWheelRotation() > 0){
+                DesignPalette.scale((float) (Math.max(DesignPalette.SCALAR / amount, DesignPalette.MIN_SCALAR)));
+            } else {
+                DesignPalette.scale((float) (Math.min(DesignPalette.SCALAR * amount, DesignPalette.MAX_SCALAR)));
+            }
+            for(LudemeNodeComponent lnc : nodeComponents){
+                lnc.repaint();
+            }
             repaint();
-            revalidate();
         }
-        //Zoom out
-        if (e.getWheelRotation() > 0) {
-            zoomFactor /= 1.1;
-            repaint();
-            revalidate();
+    };
+
+    MouseWheelListener wheelListener2 = new MouseAdapter() {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            zoomed = true;
+            //Zoom in
+            if (e.getWheelRotation() < 0) {
+                zoomFactor *= 1.1;
+                repaint();
+                revalidate();
+            }
+            //Zoom out
+            if (e.getWheelRotation() > 0) {
+                zoomFactor /= 1.1;
+                repaint();
+                revalidate();
+            }
         }
-    }
+    };
 
 
 }

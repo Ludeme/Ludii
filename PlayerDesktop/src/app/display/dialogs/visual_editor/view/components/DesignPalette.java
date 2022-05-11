@@ -21,6 +21,10 @@ public class DesignPalette {
 
 
     public static float SCALAR = 1f;
+
+    public static final float MAX_SCALAR = 2.5f;
+    public static final float MIN_SCALAR = 0.3f;
+
     private static final int DEFAULT_NODE_WIDTH = 250;
     public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
 
@@ -39,16 +43,37 @@ public class DesignPalette {
     private static final int DEFAULT_HEADER_PADDING_TOP = 10;
     public static int HEADER_PADDING_TOP = (int) (DEFAULT_HEADER_PADDING_TOP * SCALAR);
 
+    private static final float DEFAULT_CONNECTION_STROKE_WIDTH = 2f;
+    public static float CONNECTION_STROKE_WIDTH = DEFAULT_CONNECTION_STROKE_WIDTH * SCALAR;
+
+    private static final int DEFAULT_NODE_BORDER_WIDTH = 2;
+    public static int NODE_BORDER_WIDTH = (int) (DEFAULT_NODE_BORDER_WIDTH * SCALAR);
+
+    private static final int DEFAULT_BACKGROUND_DOT_DIAMETER = 4;
+    public static int BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * SCALAR);
+
+    private static final int DEFAULT_BACKGROUND_DOT_PADDING = 25;
+    public static int BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * SCALAR);
 
 
     public static void scale(float scalar) {
         SCALAR = scalar;
+        System.out.println("[SCALING] SCALAR: " + SCALAR);
         NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
         LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * SCALAR);
         LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
         INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);
         HEADER_PADDING_BOTTOM = (int) (DEFAULT_HEADER_PADDING_BOTTOM * SCALAR);
         HEADER_PADDING_TOP = (int) (DEFAULT_HEADER_PADDING_TOP * SCALAR);
+        CONNECTION_STROKE_WIDTH = DEFAULT_CONNECTION_STROKE_WIDTH * SCALAR;
+        NODE_BORDER_WIDTH = (int) (DEFAULT_NODE_BORDER_WIDTH * SCALAR);
+        BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * SCALAR);
+        BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * SCALAR);
+
+        LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  LUDEME_TITLE_FONT_SIZE);
+        LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
+        LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+        LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
     }
 
 
@@ -78,8 +103,8 @@ public class DesignPalette {
     }
 
     // LUDEME BLOCK //
-    public static final Font LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  LUDEME_TITLE_FONT_SIZE);
-    public static final Font LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
+    public static Font LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  LUDEME_TITLE_FONT_SIZE);
+    public static Font LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
 
     // ~~ ICONS ~~ //
 
@@ -124,8 +149,8 @@ public class DesignPalette {
 
 
     // ~~ STROKES AND BORDERS ~~ //
-    public static final BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-    public static final Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, 2);
+    public static BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    public static Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
 
 
     private static URL getIconURL(String path) {

@@ -37,6 +37,7 @@ public class NodePopupMenu extends JPopupMenu {
             message += "Provided LIFs: " + nodeComponent.getInputArea().providedInputFields + "\n";
             message += "Active C: (" + nodeComponent.getInputArea().activeConstructors.size() + ") " +nodeComponent.getInputArea().activeConstructors + "\n";
             message += "Inactive C: (" + + nodeComponent.getInputArea().inactiveConstructors.size() + ") " + nodeComponent.getInputArea().inactiveConstructors + "\n";
+            message += "Width: " + nodeComponent.getWidth() + "\n";
 
             JOptionPane.showMessageDialog((EditorPanel) graphPanel, message);
         });
