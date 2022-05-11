@@ -14,7 +14,7 @@ public class LHeader extends JComponent {
     private LudemeNodeComponent LNC;
     private JPanel connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-    private JLabel title;
+    public JLabel title;
 
     public LHeader(LudemeNodeComponent ludemeNodeComponent) {
         LNC = ludemeNodeComponent;
@@ -62,7 +62,6 @@ public class LHeader extends JComponent {
         // TODO: maybe do this somehwere else?
         setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0)); // just space between this and input area and top of LNC
 
-        setPreferredSize(new Dimension(ludemeNodeComponent.getWidth(), getPreferredSize().height));
         setSize(getPreferredSize());
 
         setOpaque(false);
@@ -84,36 +83,32 @@ public class LHeader extends JComponent {
         return LNC;
     }
 
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(true) return;
 
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
         title.setSize(title.getPreferredSize());
 
-        //ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
+        setSize(getPreferredSize());
+        setBorder(DesignPalette.HEADER_PADDING_BORDER);
 
+        //ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
+/*
         remove(connectionAndTitle);
 
         connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
         connectionAndTitle.add(ingoingConnectionComponent);
         connectionAndTitle.add(Box.createHorizontalStrut(5));
         connectionAndTitle.add(title);
-        connectionAndTitle.setOpaque(false);
+        connectionAndTitle.setOpaque(true);
 
         add(connectionAndTitle, BorderLayout.LINE_START);
 
-        // TODO: maybe do this somehwere else?
-        setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0)); // just space between this and input area and top of LNC
 
-        setPreferredSize(new Dimension(LNC.getWidth(), getPreferredSize().height));
-        setSize(getPreferredSize());
-
-        setOpaque(false);
-
-        setVisible(true);
+*/
 
     }
 

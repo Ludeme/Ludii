@@ -38,6 +38,7 @@ public class LInputField extends JComponent {
 
     JComponent inputFieldComponent;
     LConnectionComponent connectionComponent;
+    public JLabel label;
 
     public LInputField(LudemeNodeComponent ludemeNodeComponent, InputInformation inputInformation){
         this.LNC = ludemeNodeComponent;
@@ -67,7 +68,7 @@ public class LInputField extends JComponent {
     }
 
     private void constructCollectionField(LInputField parent){
-        JLabel label = new JLabel(parent.getInputInformation().getInput().getName());
+        label = new JLabel(parent.getInputInformation().getInput().getName());
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
         setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -93,7 +94,7 @@ public class LInputField extends JComponent {
 
         Input input = inputInformation.getInput();
 
-        JLabel label = new JLabel(input.getName());
+        label = new JLabel(input.getName());
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 
@@ -197,7 +198,7 @@ public class LInputField extends JComponent {
     private void constructInputField(List<InputInformation> inputInformationList){
         removeAll();
 
-        JLabel label = new JLabel("Additional Arguments");
+        label = new JLabel("Additional Arguments");
         if(inputInformationList.get(0).isOptional()) label = new JLabel("Optional Arguments");
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
@@ -448,7 +449,8 @@ public class LInputField extends JComponent {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
+        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
     }
 
 }

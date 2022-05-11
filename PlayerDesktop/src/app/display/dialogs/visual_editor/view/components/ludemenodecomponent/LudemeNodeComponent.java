@@ -113,7 +113,9 @@ public class LudemeNodeComponent extends JPanel {
     }
 
     public void updatePositions() {
-        if(inputArea == null || header == null) return;
+        if(inputArea == null || header == null) {
+            return;
+        }
         position.update(getLocation());
         inputArea.updatePosition();
         header.updatePosition();
@@ -133,14 +135,15 @@ public class LudemeNodeComponent extends JPanel {
     }
 
     public void updateComponent(){
-        if(inputArea == null) return;
+        if(inputArea == null) {
+            return;
+        }
+
         int preferredHeight = inputArea.getPreferredSize().height + header.getPreferredSize().height;
 
         setPreferredSize(new Dimension(getMinimumSize().width, preferredHeight));
         setSize(getPreferredSize());
-
-        repaint();
-        revalidate();
+        //repaint();
     }
 
     public LudemeNode getLudemeNode(){
@@ -245,9 +248,6 @@ public class LudemeNodeComponent extends JPanel {
 
         setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
         setBorder(DesignPalette.LUDEME_NODE_BORDER);
-
-        System.out.println("width: " + getWidth());
-        System.out.println("size: " + getSize());
     }
 
 }

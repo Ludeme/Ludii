@@ -44,7 +44,8 @@ public class LInputArea extends JPanel {
 
         inputFields = getInputFields(LNC);
         drawInputFields();
-
+        setOpaque(false);
+        setVisible(true);
     }
 
     private List<LInputField> getInputFields(LudemeNodeComponent ludemeNodeComponent) {
@@ -105,7 +106,7 @@ public class LInputArea extends JPanel {
 
     // called when: (a) change constructor (b) remove edge
     public void drawInputFields() {
-        if(DEBUG) System.out.println("[LIA]: Drawing input fields");
+        //if(DEBUG) System.out.println("[LIA]: Drawing input fields");
 
         removeAll();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -120,10 +121,6 @@ public class LInputArea extends JPanel {
 
         int preferredHeight = getPreferredSize().height;
         setSize(new Dimension(LNC.getWidth(), preferredHeight));
-
-        //setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        setBorder(new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0)); // just space between this and bottom of LNC
 
         LNC.updateComponent();
         LNC.updatePositions();
@@ -753,12 +750,12 @@ public class LInputArea extends JPanel {
         }
     }
 
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        setBorder(DesignPalette.INPUT_AREA_PADDING_BORDER); // just space between this and bottom of LNC
         drawInputFields();
-        setOpaque(false);
-        setVisible(true);
     }
 
 }

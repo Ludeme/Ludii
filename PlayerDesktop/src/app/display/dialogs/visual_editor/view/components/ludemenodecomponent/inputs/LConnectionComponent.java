@@ -20,7 +20,8 @@ import java.util.List;
 
 public class LConnectionComponent extends JComponent {
 
-    private final int RADIUS;
+    private int RADIUS;
+    private int height;
     private boolean fill;
     private final LInputField INPUT_FIELD;
     private ConnectionPointComponent connectionPointComponent;
@@ -31,14 +32,15 @@ public class LConnectionComponent extends JComponent {
 
     public LConnectionComponent(LInputField inputField, int height, int radius, boolean fill) {
         this.INPUT_FIELD = inputField;
-        this.RADIUS = radius;
+        height = INPUT_FIELD.label.getPreferredSize().height;
+        RADIUS = (int) (INPUT_FIELD.label.getPreferredSize().height * 0.4);
         this.fill = fill;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(height, height));
         setSize(getPreferredSize());
 
-        connectionPointComponent = new ConnectionPointComponent(radius, fill);
+        connectionPointComponent = new ConnectionPointComponent(fill);
 
         connectionPointComponent.repaint();
         add(connectionPointComponent);
@@ -51,6 +53,13 @@ public class LConnectionComponent extends JComponent {
         revalidate();
         repaint();
         setVisible(true);
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        height = INPUT_FIELD.label.getPreferredSize().height;
+        RADIUS = (int) (INPUT_FIELD.label.getPreferredSize().height * 0.4);
     }
 
     public void updatePosition(){
@@ -120,17 +129,19 @@ public class LConnectionComponent extends JComponent {
     }
 
     class ConnectionPointComponent extends JComponent{
-        public int radius;
         public boolean fill;
         public int x,y;
 
-        public ConnectionPointComponent(int radius, boolean fill){
-            this.radius = radius;
+        public ConnectionPointComponent(boolean fill){
             this.fill = fill;
-            setSize(radius*2,radius*2);
+            setSize(getRadius()*2,getRadius()*2);
             revalidate();
             repaint();
             setVisible(true);
+        }
+
+        private int getRadius(){
+            return RADIUS;
         }
 
         @Override
@@ -142,7 +153,7 @@ public class LConnectionComponent extends JComponent {
             // if fill = true, draw a filled circle. otherwise, the contour only
             if(fill) {
                 g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
-                g2.fillOval(x, y, radius*2, radius*2);
+                g2.fillOval(x, y, getRadius()*2, getRadius()*2);
             }
             else {
                 // fill a new oval with transparent colour (to make the filled out oval disappear)
@@ -153,10 +164,10 @@ public class LConnectionComponent extends JComponent {
                 g2.drawOval(x, y, radius*2, radius*2);*/
 
                 g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);
-                g2.fillOval(x, y, radius*2, radius*2);
+                g2.fillOval(x, y, getRadius()*2, getRadius()*2);
                 // make white hole to create stroke effect
                 g2.setColor(DesignPalette.BACKGROUND_LUDEME_BODY);
-                g2.fillOval(x+radius/2, y+radius/2, radius, radius);
+                g2.fillOval(x+getRadius()/2, y+getRadius()/2, getRadius(), getRadius());
 
             }
         }

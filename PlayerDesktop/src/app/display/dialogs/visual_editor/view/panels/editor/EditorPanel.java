@@ -529,9 +529,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             } else {
                 DesignPalette.scale((float) (Math.min(DesignPalette.SCALAR * amount, DesignPalette.MAX_SCALAR)));
             }
-            for(LudemeNodeComponent lnc : nodeComponents){
-                lnc.repaint();
-            }
+            //for(LudemeNodeComponent lnc : nodeComponents){
+            //    lnc.repaint();
+            //}
             repaint();
         }
     };
