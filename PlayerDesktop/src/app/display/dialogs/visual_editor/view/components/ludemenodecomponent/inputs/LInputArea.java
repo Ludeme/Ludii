@@ -715,6 +715,7 @@ public class LInputArea extends JPanel {
             }
         }
         if(DEBUG) System.out.println("   -> " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
+
         drawInputFields();
 
         repaint();
@@ -755,7 +756,6 @@ public class LInputArea extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBorder(DesignPalette.INPUT_AREA_PADDING_BORDER); // just space between this and bottom of LNC
-        drawInputFields();
     }
 
 }

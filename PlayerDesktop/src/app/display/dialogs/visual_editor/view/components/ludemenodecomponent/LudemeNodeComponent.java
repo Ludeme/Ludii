@@ -143,7 +143,9 @@ public class LudemeNodeComponent extends JPanel {
 
         setPreferredSize(new Dimension(getMinimumSize().width, preferredHeight));
         setSize(getPreferredSize());
-        //repaint();
+
+        repaint();
+        revalidate();
     }
 
     public LudemeNode getLudemeNode(){
