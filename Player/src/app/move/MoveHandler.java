@@ -135,6 +135,13 @@ public class MoveHandler
 			if (MoveHandler.moveChecks(app, possibleMoves.get(0)))
 			{
 				app.manager().ref().applyHumanMoveToGame(app.manager(), possibleMoves.get(0));
+				
+				if (app.settingsPlayer().usingExhibitionApp())
+				{
+					app.settingsPlayer().setTestsPassed(false);
+					app.checkButtonsEnabled();
+				}
+				
 				return true; // move found
 			}
 		}
