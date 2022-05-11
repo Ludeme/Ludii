@@ -57,7 +57,7 @@ public class LHeader extends JComponent {
         //int height = title.getPreferredSize().height;
 
         // TODO: maybe do this somehwere else?
-        setBorder(new EmptyBorder(10,0,3,0)); // just space between this and input area and top of LNC
+        setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0)); // just space between this and input area and top of LNC
 
         setPreferredSize(new Dimension(ludemeNodeComponent.getWidth(), getPreferredSize().height));
         setSize(getPreferredSize());

@@ -69,7 +69,7 @@ public class LudemeNodeComponent extends JPanel {
         inputArea = new LInputArea(this);
 
         // add padding to header and input area TODO: variables rather than hardcoded
-        inputArea.setBorder(new EmptyBorder(0,0,10,0)); // just space between this and bottom of LNC
+        inputArea.setBorder(new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0)); // just space between this and bottom of LNC
 
         add(header, BorderLayout.NORTH);
         add(inputArea, BorderLayout.CENTER);
@@ -198,9 +198,8 @@ public class LudemeNodeComponent extends JPanel {
             super.mouseDragged(e);
             e.translatePoint(e.getComponent().getLocation().x - LudemeNodeComponent.this.x, e.getComponent().getLocation().y -LudemeNodeComponent.this.y);
             LudemeNodeComponent.this.setLocation(e.getX(),e.getY());
-            // TODO: fix positions
-            // System.out.println(e.getX() + " " + e.getY());
             updatePositions();
+            getGraphPanel().repaint();
         }
     };
 

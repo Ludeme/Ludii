@@ -88,7 +88,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         List<LudemeNode> nodes = graph.getNodes();
         for(LudemeNode node : nodes) {
             //add(new LudemeBlock(node, null, 300));
-            LudemeNodeComponent lc = new LudemeNodeComponent(node, 250, this);
+            LudemeNodeComponent lc = new LudemeNodeComponent(node, DesignPalette.NODE_WIDTH, this);
             nodeComponents.add(lc);
             add(lc);
             lc.revalidate();
@@ -130,6 +130,12 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        //float scale = 0.5f;
+        //int w = getWidth();
+        //int h = getHeight();
+
+        //g2.scale(scale, scale);
+
         if(showBackgroundDots) {
             // draw background points
             // every 50 pixel a circle
@@ -161,9 +167,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
         // draw existing connections
         paintConnections(g2);
-
-        repaint();
-        revalidate();
     }
 
     private void paintConnections(Graphics2D g2){
@@ -290,7 +293,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     @Override
     public LudemeNode addNode(Ludeme ludeme, int x, int y, boolean connect) {
         LudemeNode node = new LudemeNode(ludeme, x, y);
-        LudemeNodeComponent lc = new LudemeNodeComponent(node, 250, this);
+        LudemeNodeComponent lc = new LudemeNodeComponent(node, DesignPalette.NODE_WIDTH, this);
         Handler.addNode(graph, node);
         nodeComponents.add(lc);
         add(lc);

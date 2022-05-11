@@ -19,6 +19,39 @@ import java.util.Objects;
 
 public class DesignPalette {
 
+
+    public static float SCALAR = 1f;
+    private static final int DEFAULT_NODE_WIDTH = 250;
+    public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
+
+    private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 12;
+    private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * SCALAR);
+
+    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 14;
+    private static int LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
+
+    private static final int DEFAULT_INPUTAREA_PADDING_BOTTOM = 10;
+    public static int INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);
+
+    private static final int DEFAULT_HEADER_PADDING_BOTTOM = 3;
+    public static int HEADER_PADDING_BOTTOM = (int) (DEFAULT_HEADER_PADDING_BOTTOM * SCALAR);
+
+    private static final int DEFAULT_HEADER_PADDING_TOP = 10;
+    public static int HEADER_PADDING_TOP = (int) (DEFAULT_HEADER_PADDING_TOP * SCALAR);
+
+
+
+    public static void scale(float scalar) {
+        SCALAR = scalar;
+        NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
+        LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * SCALAR);
+        LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
+        INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);
+        HEADER_PADDING_BOTTOM = (int) (DEFAULT_HEADER_PADDING_BOTTOM * SCALAR);
+        HEADER_PADDING_TOP = (int) (DEFAULT_HEADER_PADDING_TOP * SCALAR);
+    }
+
+
     // ~~ COLORS ~~ //
 
     // PANELS //
@@ -45,8 +78,8 @@ public class DesignPalette {
     }
 
     // LUDEME BLOCK //
-    public static final Font LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  14);
-    public static final Font LUDEME_INPUT_FONT = new Font("Robot Regular", 0, 12);
+    public static final Font LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  LUDEME_TITLE_FONT_SIZE);
+    public static final Font LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
 
     // ~~ ICONS ~~ //
 
