@@ -22,10 +22,8 @@ import app.display.dialogs.visual_editor.view.panels.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +40,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     private LConnectionComponent selectedConnectionComponent = null;
 
     private LayoutHandler lm;
+
+    private double zoomFactor = 1.0;
+    private double zoomFactor0 = 1.0;
+    private boolean zoomed = false;
 
     // Reads grammar from file and generates all ludemes
     Parser p = new Parser();
@@ -75,6 +77,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         Handler.gameDescriptionGraph = graph;
 
         lm = new LayoutHandler(graph, graph.getRoot().getId());
+
+        addMouseWheelListener(this::mouseWheelMoved);
     }
 
     @Override
@@ -125,6 +129,19 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        if (zoomed) {
+            AffineTransform at = new AffineTransform();
+            at.scale(zoomFactor, zoomFactor);
+            zoomFactor0 = zoomFactor;
+            g2.transform(at);
+            zoomed = false;
+        }
+    }
+
+    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
@@ -135,6 +152,16 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         //int h = getHeight();
 
         //g2.scale(scale, scale);
+
+        // TODO: fix zooming
+        // Scaling works but not visible
+        if (zoomed) {
+            AffineTransform at = new AffineTransform();
+            at.scale(zoomFactor, zoomFactor);
+            zoomFactor0 = zoomFactor;
+            g2.transform(at);
+            zoomed = false;
+        }
 
         if(showBackgroundDots) {
             // draw background points
@@ -503,6 +530,22 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             p2d.curveTo(cp_x, mousePosition.y, cp_x, connection_point.y, connection_point.x, connection_point.y);
         }*/
         g2.draw(p2d);
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        zoomed = true;
+        //Zoom in
+        if (e.getWheelRotation() < 0) {
+            zoomFactor *= 1.1;
+            repaint();
+            revalidate();
+        }
+        //Zoom out
+        if (e.getWheelRotation() > 0) {
+            zoomFactor /= 1.1;
+            repaint();
+            revalidate();
+        }
     }
 
 

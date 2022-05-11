@@ -30,6 +30,10 @@ public class DFSBoxDrawing implements LayoutMethod
     private final HashMap<Integer, Double> OFFSET_MAP;
     private final HashMap<Integer, Double> SPREAD_MAP;
 
+    private final double DEFAULT_DISTANCE = 0.3;
+    private final double DEFAULT_OFFSET = 0.5;
+    private final double DEFAULT_SPREAD = 0.4;
+
     /**
      *
      * @param graph graph
@@ -60,11 +64,11 @@ public class DFSBoxDrawing implements LayoutMethod
         graph.getNodeList().forEach((id,n) ->{
             if (!n.getChildren().isEmpty())
             {
-                OFFSET_MAP.put(id,0.5);
+                if (!OFFSET_MAP.containsKey(id)) OFFSET_MAP.put(id, DEFAULT_OFFSET);
                 // Wx
-                DISTANCE_MAP.put(id,0.5);
+                if (!DISTANCE_MAP.containsKey(id)) DISTANCE_MAP.put(id, DEFAULT_DISTANCE);
                 // Wy
-                SPREAD_MAP.put(id,0.5);
+                if (!SPREAD_MAP.containsKey(id)) SPREAD_MAP.put(id, DEFAULT_SPREAD);
             }
         });
     }
@@ -219,6 +223,9 @@ public class DFSBoxDrawing implements LayoutMethod
         //LudemeNode lN = (LudemeNode) graph.getNode(root);
         //Vector2D lPos = lN.getPos();
         Vector2D oPos = graph.getNode(root).getPos();
+
+        initWeights();
+
         initPlacement(root,0);
         //shift(r);
 
