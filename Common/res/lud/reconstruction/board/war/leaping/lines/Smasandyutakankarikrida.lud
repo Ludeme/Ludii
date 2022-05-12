@@ -1,5 +1,5 @@
 (game "Smasandyutakankarikrida"
-	(players {(player N) (player S)}) 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board 
             (merge 
@@ -12,13 +12,13 @@
             use:Vertex
         )
         (piece "Marker" Each
-        		(or {
-                    ("HopCapture") 
-                    (move
-                        Step 
-                        (directions {Rightward Leftward Forwards} of:All) 
-                        (to if:(is Empty (to)))
-                    )
+            (or {
+                ("HopCapture") 
+                (move
+                    Step 
+                    (directions {Rightward Leftward Forwards} of:All) 
+                    (to if:(is Empty (to)))
+                )
             })		
         )
     })  

@@ -16,10 +16,10 @@
     })  
     
     (rules 
-    	(start { 
-    		(place "Lion1" (sites {"D8"}))
-    		(place "Dog2" (expand (sites Bottom)))
-    	})
+        (start { 
+            (place "Lion1" (sites {"D8"}))
+            (place "Dog2" (expand (sites Bottom)))
+        })
         (play [#])
         (end [#])
     )

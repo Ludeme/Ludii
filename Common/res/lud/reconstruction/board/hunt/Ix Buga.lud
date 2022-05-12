@@ -17,11 +17,11 @@
     })  
     
     (rules 
-        	(start {
-        		(place "Deer1" (forEach (sites [#]) if:(is In (site) (union (expand (sites Top) steps:2) (expand (sites Bottom) steps:2)))))
-        		(place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Maximum of 40 to describe here !
-        		(place "Dog2" (handSite P2) count:40) 
-        	})
+        (start {
+            (place "Deer1" (forEach (sites [#]) if:(is In (site) (union (expand (sites Top) steps:2) (expand (sites Bottom) steps:2)))))
+            (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Maximum of 40 to describe here !
+            (place "Dog2" (handSite P2) count:40) 
+        })
         (play (forEach Piece))
         (end {
             (if (no Pieces P2) (result P1 Win))
