@@ -1,16 +1,15 @@
 (game "Alkarhat"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (square 6)) 
-        (hand Each)
+        (hand Each) // Do we have an hand here?
         (piece "Marker" Each) 
-        }
-    )  
+    })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#]) // 13 pieces per player
+        (play [#]) // Surrounding the opponent in an alignement game?
+        (end [#]) // Alignement game so (is Line ...)?
     )
 )
 
