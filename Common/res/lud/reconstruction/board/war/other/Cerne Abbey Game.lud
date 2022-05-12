@@ -5,7 +5,7 @@
             (rectangle 12 3) 
             use:Vertex
         )
-        (piece "Marker" Each)
+        (piece "Marker" Each (move [#]))
     })  
     
     (rules 
@@ -13,8 +13,8 @@
             (place "Marker1" (sites Left))
             (place "Marker2" (sites Right))
         })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#])
+        (end [#])
     )
 )
 
@@ -37,7 +37,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
