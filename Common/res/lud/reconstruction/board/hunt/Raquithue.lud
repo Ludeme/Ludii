@@ -11,11 +11,17 @@
             )
             use:Vertex
         )
+        (piece "Lion" P1 (move [#])) // Pieces move along the lines of the board.
+        (piece "Dog" P2 (move [#])) // Pieces move along the lines of the board.
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start { 
+    		(place "Lion1" (sites {"D8"}))
+    		(place "Dog2" (expand (sites Bottom)))
+    	})
+        (play [#])
+        (end [#])
     )
 )
 
