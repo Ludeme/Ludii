@@ -5,7 +5,7 @@
             (square 5 diagonals:Solid)
             use:Vertex
         )
-        (piece "Disc" Each) 
+        (piece "Disc" Each (move [#])) 
         }
     )  
     (rules 
@@ -13,8 +13,8 @@
             (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
             (place "Disc2" (forEach (sites Board) if:(> (site) (centrePoint)) ))
         })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#])
+        (end [#])
     )
 )
 
@@ -34,9 +34,5 @@
         (origin  "This game was played in New Mexico, around 1907.")
         }
     )
-    
-    (graphics {
-        
-    })
     
 )
