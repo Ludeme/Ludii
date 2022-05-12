@@ -19,6 +19,8 @@ public class MainPanel extends JPanel {
         add(new HeaderPanel(), BorderLayout.NORTH);
         this.editor_panel = editor_panel;
         panel = new JScrollPane(editor_panel);
+        //panel.getVerticalScrollBar().setValue(editor_panel.getHeight()/2);
+        //panel.getHorizontalScrollBar().setValue(editor_panel.getWidth()/2);
         add(panel, BorderLayout.CENTER);
 
         MouseAdapter ma = new MouseAdapter() {

@@ -1,7 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.view.components.DesignPalette;
+import app.display.dialogs.visual_editor.view.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;

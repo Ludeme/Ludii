@@ -1,6 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
-import app.display.dialogs.visual_editor.view.components.DesignPalette;
+import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LHeader;
 

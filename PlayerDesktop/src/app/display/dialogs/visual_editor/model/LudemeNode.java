@@ -119,6 +119,15 @@ public class LudemeNode implements iLudemeNode, iGNode {
         return depth;
     }
 
+    public int getDepthManual(){
+        int depth = 0;
+        LudemeNode current = this;
+        while(current.getParentNode() != null){
+            depth++;
+            current = current.getParentNode();
+        }
+        return depth;
+    }
 
     // TODO: Should be probably in iGNode ?
     public void setPos(int x, int y){
@@ -199,6 +208,9 @@ public class LudemeNode implements iLudemeNode, iGNode {
     public String getStringRepresentation() {
 
         char c = '"';
+        String tabs = "\t".repeat(getDepthManual());
+        boolean startedWithParanthesis = false;
+        boolean hasLineBreak = getCurrentConstructor().getInputs().size() > 1;
 
         if(currentConstructor.getInputs().size() == 1 && currentConstructor.getInputs().get(0).isTerminal()){
             if(providedInputs[0] == null) return "";
@@ -207,35 +219,45 @@ public class LudemeNode implements iLudemeNode, iGNode {
         }
 
         StringBuilder s = new StringBuilder("");
-        String[] ludemeNameSplit = getLudeme().getName().split("\\.");
         if(getLudeme().isHidden()) s.append("");
-        else if(ludemeNameSplit.length >= 1){
-            s.append("(");
-            s.append(ludemeNameSplit[ludemeNameSplit.length-1]);
-        }
         else {
+            s.append(tabs);
             s.append("(");
-            s.append(getLudeme().getName());
+            startedWithParanthesis = true;
+            s.append(getLudeme().getClearName().trim());
+            s.append(" ");
         }
-        s.append(" ");
-        s.append(getCurrentConstructor().getName());
-        s.append(" ");
+        if(!getCurrentConstructor().getName().equals("")) {
+            s.append(getCurrentConstructor().getName());
+            s.append(" ");
+        }
+
         for(Object o : getProvidedInputs()){
-            if(o == null); // TODO: What to do when input is empty?
-            else if(o instanceof LudemeNode[]) {
-                s.append("{");
+            if(o == null) continue; // TODO: What to do when input is empty?
+            if(o instanceof LudemeNode[]) {
+                s.append("{\n");
                 for(LudemeNode ln : (LudemeNode[]) o){
                     if(ln == null) continue;
                     s.append(ln.getStringRepresentation());
                     s.append("\n");
                 }
-                s.append("}");
+                s.append(tabs+"}");
             }
-            else if(o instanceof String) s.append("\"").append(o.toString()).append("\"");
-            else s.append(o.toString());
+            else if(o instanceof String) {
+                s.append("\"").append(o.toString()).append("\"");
+                s.append("\n");
+            }
+            else {
+                s.append(o.toString());
+                s.append(" \n");
+            }
         }
-        if(s.toString().startsWith("(")) s.append(")");
-        return s.toString().trim().replaceAll(" +", " ");
+        if(startedWithParanthesis){
+            if(s.charAt(s.length()-1) == ' ') s.deleteCharAt(s.length()-1);
+            s.append("\n"+tabs+")");
+        }
+        return s.toString();
+        //return s.toString().trim().replaceAll(" +", " ");
     }
 
     @Override

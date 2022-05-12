@@ -6,7 +6,7 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.input.Input;
 import app.display.dialogs.visual_editor.model.grammar.input.TerminalInput;
-import app.display.dialogs.visual_editor.view.components.DesignPalette;
+import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
@@ -199,7 +199,13 @@ public class LInputField extends JComponent {
         removeAll();
 
         label = new JLabel("Additional Arguments");
-        if(inputInformationList.get(0).isOptional()) label = new JLabel("Optional Arguments");
+        boolean isOptionalNotAdditional = true;
+        for(InputInformation inputInformation : inputInformationList){
+            if(!inputInformation.isOptional()){
+                isOptionalNotAdditional = false;
+            }
+        }
+        if(isOptionalNotAdditional) label = new JLabel("Optional Arguments");
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 

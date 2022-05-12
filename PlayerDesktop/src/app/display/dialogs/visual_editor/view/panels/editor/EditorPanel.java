@@ -9,7 +9,7 @@ import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.parser.Parser;
 import app.display.dialogs.visual_editor.recs.guiInterfacing.CodeCompletion;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
-import app.display.dialogs.visual_editor.view.components.DesignPalette;
+import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -18,7 +18,6 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,8 +73,40 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         for(Ludeme l : p.getLudemes())
             if(l.getName().equals("game")) gameLudeme = l;
 
-        graph.setRoot(addNode(gameLudeme, 30, 30, false));
+        /*
+        graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
         Handler.gameDescriptionGraph = graph;
+
+        LudemeNode gameLudemeNode = createLudemeNode(gameLudeme, 30, 30);
+        graph.setRoot(gameLudemeNode);
+        addLudemeNodeComponent(gameLudemeNode, false);
+
+        lm = new LayoutHandler(graph, graph.getRoot().getId());
+    }
+
+    public EditorPanel(){
+        setLayout(null);
+        //setPreferredSize(DesignPalette.DEFAULT_FRAME_SIZE);
+        setBackground(DesignPalette.BACKGROUND_EDITOR);
+
+        addMouseListener(clickListener);
+        addMouseMotionListener(motionListener);
+        addMouseWheelListener(wheelListener);
+
+        add(addLudemeWindow);
+        add(connectLudemeWindow);
+
+        Ludeme gameLudeme = null;
+        for(Ludeme l : p.getLudemes())
+            if(l.getName().equals("game")) gameLudeme = l;
+
+        /*
+        graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
+        Handler.gameDescriptionGraph = graph;
+
+        LudemeNode gameLudemeNode = createLudemeNode(gameLudeme, 30, 30);
+        graph.setRoot(gameLudemeNode);
+        addLudemeNodeComponent(gameLudemeNode, false);
 
         lm = new LayoutHandler(graph, graph.getRoot().getId());
     }
@@ -305,8 +336,30 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     @Override
     public LudemeNode addNode(Ludeme ludeme, int x, int y, boolean connect) {
         LudemeNode node = new LudemeNode(ludeme, x, y);
-        LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
+        //LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         Handler.addNode(graph, node);
+
+        addLudemeNodeComponent(node, connect);
+
+        //Handler.centerViewport(x+lc.getWidth()/2, y+lc.getHeight()/2);
+
+        repaint();
+
+        if(DEBUG) System.out.println("[EP] Added node: " + node.getLudeme().getName());
+
+        return node;
+    }
+
+    public LudemeNode createLudemeNode(Ludeme ludeme, int x, int y) {
+        LudemeNode node = new LudemeNode(ludeme, x, y);
+        Handler.addNode(graph, node);
+        return node;
+    }
+
+    private LudemeNodeComponent addLudemeNodeComponent(LudemeNode node, boolean connect) {
+        LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
+        addLudemeWindow.setVisible(false);
+        connectLudemeWindow.setVisible(false);
         nodeComponents.add(lc);
         add(lc);
         lc.updatePositions();
@@ -315,16 +368,53 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             finishNewConnection(lc);
         }
 
-        addLudemeWindow.setVisible(false);
-        connectLudemeWindow.setVisible(false);
+        // expand editor
+        //expandEditorPanelSize(lc);
 
-        Handler.centerViewport(x+lc.getWidth()/2, y+lc.getHeight()/2);
+        Handler.centerViewport(lc.getX()+lc.getWidth()/2, lc.getY()+lc.getHeight()/2);
+
+        return lc;
+    }
+
+    /**
+     * Expands the editor panel size if nodes are close to the border
+     * TODO: Not working
+     * @param lnc
+     * @return
+     */
+    private boolean expandEditorPanelSize(LudemeNodeComponent lnc){
+
+        int expandHeightBy = lnc.getHeight()*4;
+        int expandWidthBy = lnc.getWidth()*4;
+
+        int x = lnc.getX(), y = lnc.getY();
+
+        int additionalHeight = expandHeightBy - y;
+        int additionalWidth = expandWidthBy - x;
+
+        boolean expanded = false;
+        int newHeight = getHeight(), newWidth = getWidth();
+
+        if(additionalHeight > 0){
+            newHeight = getHeight() + additionalHeight;
+            expanded = true;
+        }
+        if(additionalWidth > 0){
+            newWidth = getWidth() + additionalWidth;
+            expanded = true;
+        }
+
+        if(expanded){
+            System.out.println("Expanding from " + getSize() + " to " + new Dimension(newWidth, newHeight));
+        }
+
+        setPreferredSize(new Dimension(newWidth, newHeight));
+        setSize(getPreferredSize());
 
         repaint();
+        revalidate();
 
-        if(DEBUG) System.out.println("[EP] Added node: " + node.getLudeme().getName());
-
-        return node;
+        return expanded;
     }
 
     @Override

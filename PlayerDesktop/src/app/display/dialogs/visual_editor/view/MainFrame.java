@@ -2,7 +2,6 @@ package app.display.dialogs.visual_editor.view;
 
 
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.view.components.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 
 import javax.swing.*;
@@ -22,7 +21,7 @@ public class MainFrame extends JFrame {
         DesignPalette.initializeFonts();
         setTitle("Ludii Visual Editor");
         setIconImage((DesignPalette.LUDII_ICON).getImage());
-        setSize(1200,800);
+        setSize(DesignPalette.DEFAULT_FRAME_SIZE);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 

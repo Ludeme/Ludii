@@ -1,15 +1,10 @@
-package app.display.dialogs.visual_editor.view.components;
-
-import app.display.dialogs.visual_editor.view.panels.header.HeaderButton;
+package app.display.dialogs.visual_editor.view;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Objects;
 
@@ -20,6 +15,8 @@ import java.util.Objects;
 
 public class DesignPalette {
 
+
+    public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(1200,800);
 
     public static float SCALAR = 1f;
 
@@ -149,6 +146,7 @@ public class DesignPalette {
     public static final ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
     public static final ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
     public static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
+    public static final ImageIcon DOWN_ICON = getIcon("node/active/down.png");
 
 
 

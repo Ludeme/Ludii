@@ -27,6 +27,14 @@ public class Ludeme {
         return NAME;
     }
 
+    // TODO: Change name of method (should be getName())
+    public String getClearName(){
+        if(NAME.contains(".")) {
+            return NAME.substring(NAME.lastIndexOf(".")+1);
+        }
+        return NAME;
+    }
+
     // TODO: TO FIX when getting constructor of end.forEach appears NullPointException
     public List<Constructor> getConstructors(){
         return CONSTRUCTORS;
@@ -58,6 +66,6 @@ public class Ludeme {
 
     @Override
     public String toString(){
-        return NAME;
+        return getClearName();
     }
 }
