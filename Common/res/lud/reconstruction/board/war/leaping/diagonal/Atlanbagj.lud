@@ -6,10 +6,10 @@
     })  
     
     (rules 
-    	(start {
-    		(place "Counter1" (expand (sites Bottom)))
-    		(place "Counter2" (expand (sites Top)))
-     	})
+        (start {
+            (place "Counter1" (expand (sites Bottom)))
+            (place "Counter2" (expand (sites Top)))
+        })
         (play (forEach Piece))
         (end [#])
     )
