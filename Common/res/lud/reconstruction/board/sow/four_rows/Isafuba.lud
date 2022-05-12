@@ -1,20 +1,14 @@
 (game "Isafuba"  
-    (players 2)  
+    (players 2)  // up to 10 people
     
     (equipment { 
         (mancalaBoard 4 <Board:size> store:None)
         (piece "Seed" Shared)
-        }
-    )  
-    (rules 
-        
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+    })  
+    (rules
+            (start [#])
+            (play [#])
+            (end [#])
     )
 )
 
