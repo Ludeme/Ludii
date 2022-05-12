@@ -1,5 +1,5 @@
 (game "Smasandyutakankarikrida"
-    (players 2)  
+	(players {(player N) (player S)}) 
     (equipment { 
         (board 
             (merge 
@@ -11,7 +11,16 @@
             ) 
             use:Vertex
         )
-        (piece "Marker" Each)
+        (piece "Marker" Each
+        		(or {
+                    ("HopCapture") 
+                    (move
+                        Step 
+                        (directions {Rightward Leftward Forwards} of:All) 
+                        (to if:(is Empty (to)))
+                    )
+            })		
+        )
     })  
     
     (rules 
@@ -20,7 +29,7 @@
             (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (<= (count Pieces Next) 4) (result Mover Win)))
     )
 )
 
@@ -43,7 +52,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
