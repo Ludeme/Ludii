@@ -9,10 +9,12 @@
             }) 
             use:Vertex
         )
+        (piece "Marker" Each (move [#])) // "Pieces move vertically or horizontally. Replacement capture." NEED CONCEPT
     })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win) ) )  
+    	(start [#]) // 11 pieces.
+        (play [#])
+        (end (if (no Pieces Next) (result Mover Win) ) )  
     )
 )
 
