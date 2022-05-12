@@ -78,25 +78,6 @@ public class LHeader extends JComponent {
         });
 
 
-        if(ludemeNodeComponent.getLudemeNode().getLudeme().getConstructors().size() > 1) {
-
-
-            JComboBox<Constructor> constructorPicker = new JComboBox<>();
-            for (Constructor c : ludemeNodeComponent.getLudemeNode().getLudeme().getConstructors()) {
-                constructorPicker.addItem(c);
-            }
-
-            System.out.println(ludemeNodeComponent.getLudemeNode().getCurrentConstructor());
-            constructorPicker.setSelectedItem(ludemeNodeComponent.getLudemeNode().getCurrentConstructor());
-
-            constructorPicker.addActionListener(e -> {
-                ludemeNodeComponent.changeConstructor((Constructor) constructorPicker.getSelectedItem());
-                repaint();
-            });
-            //add(constructorPicker, BorderLayout.SOUTH);
-        }
-
-
         //int width = title.getPreferredSize().width + ingoingConnectionComponent.getPreferredSize().width;
         //int height = title.getPreferredSize().height;
 

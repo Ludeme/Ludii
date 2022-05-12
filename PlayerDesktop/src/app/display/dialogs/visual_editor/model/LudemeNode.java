@@ -221,6 +221,7 @@ public class LudemeNode implements iLudemeNode, iGNode {
         StringBuilder s = new StringBuilder("");
         if(getLudeme().isHidden()) s.append("");
         else {
+            s.append("\n");
             s.append(tabs);
             s.append("(");
             startedWithParanthesis = true;
@@ -235,21 +236,20 @@ public class LudemeNode implements iLudemeNode, iGNode {
         for(Object o : getProvidedInputs()){
             if(o == null) continue; // TODO: What to do when input is empty?
             if(o instanceof LudemeNode[]) {
-                s.append("{\n");
+                s.append("{");
                 for(LudemeNode ln : (LudemeNode[]) o){
                     if(ln == null) continue;
                     s.append(ln.getStringRepresentation());
-                    s.append("\n");
+                    //s.append("\n");
                 }
-                s.append(tabs+"}");
+                s.append("\n"+tabs+"}");
             }
             else if(o instanceof String) {
                 s.append("\"").append(o.toString()).append("\"");
-                s.append("\n");
             }
             else {
                 s.append(o.toString());
-                s.append(" \n");
+                s.append(" ");
             }
         }
         if(startedWithParanthesis){
