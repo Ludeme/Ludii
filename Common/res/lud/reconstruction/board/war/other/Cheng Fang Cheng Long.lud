@@ -5,11 +5,13 @@
             (square 5)
             use:Vertex
         )
+        (piece "Marker" Each (move [#]))
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+            (start [#])
+            (play [#])
+            (end [#])
     )
 )
 
