@@ -3,24 +3,24 @@
     (equipment { 
         (board  (rectangle 3 8))
         (piece "Marker" Each
-                (or {
-                    (move Hop 
-                    		Orthogonal
-                            (between 
-                                if:(and 
-                                		(is Enemy (who at:(between))) 
-                                		(not (is In (between) (union (sites Bottom) (sites Top))))
-                                	)
-                                (apply (remove (between)))
-                            )
-                            (to if:(is Empty (to)))
+            (or {
+                (move Hop 
+                    Orthogonal
+                    (between 
+                        if:(and 
+                            (is Enemy (who at:(between))) 
+                            (not (is In (between) (union (sites Bottom) (sites Top))))
                         )
-                    (move
-                        Step 
-                        Orthogonal 
-                        (to if:(is Empty (to)))
+                        (apply (remove (between)))
                     )
-                })			
+                    (to if:(is Empty (to)))
+                )
+                (move
+                    Step 
+                    Orthogonal 
+                    (to if:(is Empty (to)))
+                )
+            })			
         )
     })  
     

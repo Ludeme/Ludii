@@ -12,7 +12,7 @@
         (piece "Marker" Each (move [#])) // "Pieces move vertically or horizontally. Replacement capture." NEED CONCEPT
     })  
     (rules 
-    	(start [#]) // 11 pieces.
+        (start [#]) // 11 pieces.
         (play [#])
         (end (if (no Pieces Next) (result Mover Win) ) )  
     )

@@ -3,10 +3,10 @@
     (equipment { 
         (board (rectangle 12 6))
         (piece "Marker" Each
-        	(or
-        		(move Step (to [#])) // A step move but we do not know the condition
-        		(move [#]) // A capture move
-        	)
+            (or
+                (move Step (to [#])) // A step move but we do not know the condition
+                (move [#]) // A capture move
+            )
         )
     })
     (rules

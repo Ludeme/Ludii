@@ -17,10 +17,10 @@
         (piece "Marker" Each (move [#])) 
     })  
     (rules 
-    	(start {
-    		(place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
-    		(place "Marker2" (union (sites Top) (expand (sites Row 6))))
-    	})
+        (start {
+            (place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
+            (place "Marker2" (union (sites Top) (expand (sites Row 6))))
+        })
         (play [#])
         (end [#])
     )

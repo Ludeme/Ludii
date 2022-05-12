@@ -17,11 +17,16 @@
             )
             use:Vertex
         )
+        (piece "Marker" Each ("StepToEmpty"))
     })  
     
     (rules 
+        (start {
+            (place "Marker1" (sites [#])) // 1 thief
+            (place "Marker2" (sites [#])) // 3 gendarmes
+        })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (no Moves P1) (result Mover P2)))
     )
 )
 
@@ -44,7 +49,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )

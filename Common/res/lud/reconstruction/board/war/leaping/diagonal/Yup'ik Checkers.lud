@@ -30,57 +30,57 @@
     })  
     
     (rules 
-            (start [#])
-            
-            (play 
-                (if "SameTurn"
-                    (if "IsUnpromoted"
-                        ("HopMan" (last To) 
-                            (then 
-                                (if "JumpToPromotionZone" 
-                                    (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+        (start [#])
+        
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    ("HopMan" (last To) 
+                        (then 
+                            (if "JumpToPromotionZone" 
+                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                                (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+                            ) 
+                        ) 
+                    )
+                    ("HopDiagonalSequenceCaptureAgain")
+                )
+                (priority {
+                    (or  
+                        (forEach Piece "Counter" 
+                            ("HopMan" (from) 
+                                (then 
+                                    (if "JumpToPromotionZone"
+                                        (move Promote (last To) (piece "DoubleCounter") Mover) 
+                                        (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
+                                    ) 
                                 ) 
                             ) 
                         )
-                        ("HopDiagonalSequenceCaptureAgain")
+                        (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture") )
                     )
-                    (priority {
-                        (or  
-                            (forEach Piece "Counter" 
-                                ("HopMan" (from) 
-                                    (then 
-                                        (if "JumpToPromotionZone"
-                                            (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                            (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
-                                        ) 
-                                    ) 
-                                ) 
-                            )
-                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture") )
-                        )
-                        
-                        (or  
-                            (forEach Piece "Counter" 
-                                (move
-                                    Step 
-                                    (directions {FR FL}) 
-                                    (to if:(is Empty (to)))
-                                ) 
-                                (then 
-                                    (if "JumpToPromotionZone"
-                                        (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    )
+                    
+                    (or  
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            ) 
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
                                 )
                             )
-                            (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
                         )
-                    })
-                )
-            ) 
-            
-            (end (if (no Moves Next) (result Mover Win))) 
-        )
+                        (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
+                    )
+                })
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
 )
 
 //------------------------------------------------------------------------------
