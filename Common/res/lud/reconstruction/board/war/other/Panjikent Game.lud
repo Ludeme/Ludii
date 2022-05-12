@@ -24,11 +24,13 @@
                 }
             )
         )
-        (piece "Marker" Each)
-    })
-    (rules
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" P1 (move [#])) 
+        (piece "Disc" P2 (move [#])) 
+    })  
+    (rules 
+        (start [#]) 
+        (play [#])
+        (end [#])
     )
 )
 
