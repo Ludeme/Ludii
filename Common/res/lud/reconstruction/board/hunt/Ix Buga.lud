@@ -11,11 +11,22 @@
             })
             use:Vertex
         )
+        (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
+        (piece "Dog" P2 ("StepToEmpty"))
+        (hand P2)
     })  
     
     (rules 
+        	(start {
+        		(place "Deer1" (forEach (sites [#]) if:(is In (site) (union (expand (sites Top) steps:2) (expand (sites Bottom) steps:2)))))
+        		(place "Dog2" (sites [#])) // Maximum of 40 to describe here !
+        		(place "Dog2" (handSite P2) count:40) 
+        	})
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end {
+            (if (no Pieces P2) (result P1 Win))
+            (if (no Moves P1) (result P2 Win))
+        })
     )
 )
 
@@ -39,7 +50,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
