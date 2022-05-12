@@ -15,11 +15,14 @@
             )
             use:Vertex
         )
+        (piece "Marker" P1 (move [#]))
+        (piece "Marker" P2 (move [#]))
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    		(start [#])
+            (play [#])
+            (end [#])
     )
 )
 
