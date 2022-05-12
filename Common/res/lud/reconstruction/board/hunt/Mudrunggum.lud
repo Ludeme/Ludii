@@ -11,11 +11,17 @@
             ) 
             use:Vertex
         )
+        (piece "Tiger" P1 (move [#]))
+        (piece "Sheep" P2 (move [#]))
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start {
+    		(place "Tiger1" (sites [#]))
+    		(place "Sheep2" (sites [#]))
+    	})
+        (play [#])
+        (end [#])
     )
 )
 
@@ -38,7 +44,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
