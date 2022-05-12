@@ -9,11 +9,24 @@
             })
             use:Vertex
         )
+        (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
+        (piece "Dog" P2 ("StepToEmpty"))
+        (hand P2)
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (start {
+	    	(place "Deer1" (sites {"C11" "C3"}))
+	    	(place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // 11, 12 or 13.
+	    	(place "Dog2" (handSite P2) count:[11 | 12 | 13]) // Some can be introduced later.
+    	})
+    		
+            (play (forEach Piece))
+            
+            (end {
+                (if (no Pieces P2) (result P1 Win))
+                (if (no Moves P1) (result P2 Win))
+            })
     )
 )
 
@@ -37,7 +50,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )

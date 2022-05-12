@@ -23,7 +23,7 @@
     (rules 
         (start {
         	(place "Deer1" (sites {"E11" "I11" "K9" "C9" "C5" "K5" "I3" "E3"}))
-        	(place "Dog2" (sites {[#]})) // Some have to be on the board at the init.
+        	(place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // Some have to be on the board at the init.
         	(place "Dog2" (handSite P2) count:[1..80]) // Some can be introduced later.
         })
         (play (forEach Piece))
