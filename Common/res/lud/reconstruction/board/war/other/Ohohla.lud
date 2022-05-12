@@ -5,12 +5,13 @@
             (splitCrossings (regular Star 5))
             use:Vertex
         )
-        (piece "Disc" Each) 
-        }
-    )  
+        (piece "Disc" P1 (move [#])) 
+        (piece "Disc" P2 (move [#])) 
+    })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (start [#]) 
+        (play [#])
+        (end [#])
     )
 )
 
@@ -33,7 +34,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
