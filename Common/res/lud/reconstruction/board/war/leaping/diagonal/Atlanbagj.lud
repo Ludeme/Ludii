@@ -2,11 +2,16 @@
     (players 2)  
     (equipment { 
         (board (square 8))
+        (piece "Counter" Each (move [#])) // Pieces moves Ortho or Diago to capture. Need the concepts...
     })  
     
     (rules 
+    	(start {
+    		(place "Counter1" (expand (sites Bottom)))
+    		(place "Counter2" (expand (sites Top)))
+     	})
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end [#])
     )
 )
 
