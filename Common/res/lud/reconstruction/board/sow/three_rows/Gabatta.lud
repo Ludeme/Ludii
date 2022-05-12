@@ -7,19 +7,11 @@
     (equipment { 
         (mancalaBoard 3 "Columns")
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
-        
         (start (set Count 3 to:(difference (sites Board) (union (sites Right) (sites Left)))))
-        
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (play [#])
+        (end [#])
     )
 )
 
