@@ -1,17 +1,17 @@
 (game "Yi"  
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         (board (square 17) use:Vertex) 
-        (piece "Marker" Each)
-        }
-    )
-    
+        (piece "Disc" P1 (move [#])) 
+        (piece "Disc" P2 (move [#])) 
+    })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#]) // "Players make groups on the board, opponents may capture groups" NEED CONCEPT
+        (end [#])
     )
 )
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
