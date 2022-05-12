@@ -13,11 +13,17 @@
             )
             use:Vertex
         )
+        (piece "Hare" P1 ("StepToEmpty"))
+        (piece "Dog" P2 ("StepToEmpty"))
     })  
     
     (rules 
+    	(start {
+    		(place "Hare1" (sites [#])) // 1 hare
+    		(place "Dog2" (sites [#])) // 3 dogs
+    	})
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (no Moves P1) (result Mover P2)))
     )
 )
 
