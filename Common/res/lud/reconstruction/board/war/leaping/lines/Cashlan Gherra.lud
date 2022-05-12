@@ -5,8 +5,9 @@
         (piece "Disc" Each) 
     })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    		(start [#]) // 3 pieces per player.
+            (play [#])
+            (end [#])
     )
 )
 
