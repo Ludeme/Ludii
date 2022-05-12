@@ -2,7 +2,8 @@
     (players 2)  
     (equipment { 
         ("AlquerqueBoard" 5 5)
-        (piece "Marker" Each)
+        (piece "Marker" P1 (move [#]))
+        (piece "Marker" P2 (move [#]))
     })  
     
     (rules 
@@ -10,8 +11,8 @@
             (place "Marker1" (sites Centre))
             (place "Marker2" (union (intersection (union (sites Left) (sites Right)) (sites Row 2)) (expand (sites Bottom))))
         })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#])
+        (end (if [#] [#]))
     )
 )
 
