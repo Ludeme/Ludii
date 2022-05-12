@@ -2,18 +2,13 @@
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 2 4 store:None)
+        (mancalaBoard 2 4)
         (piece "Seed" Shared)
     })  
     (rules 
-        
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+            (start [#]) 
+            (play [#])
+            (end [#])
     )
 )
 
