@@ -2,9 +2,9 @@
     (players 2)  
     (equipment { 
         (board (square 8)) 	
-        (piece "Queen" Each)
-        (piece "King" Each)
-        (piece "Pawn" Each)
+        (piece "Queen" Each (move [#]))
+        (piece "King" Each (move [#]))
+        (piece "Pawn" Each (move [#]))
     })
     (rules 
         (start {
@@ -15,8 +15,8 @@
             (place "Pawn1" (difference (expand (sites Bottom) steps:3) (sites Phase 0)  ))
             (place "Pawn2" (difference (expand (sites Bottom) steps:3) (sites Phase 1)  ))
         })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#])
+        (end [#])
     )
 )
 
@@ -33,6 +33,8 @@
     })
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
