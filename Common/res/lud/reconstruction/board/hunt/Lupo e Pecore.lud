@@ -8,11 +8,14 @@
             )
             use:Vertex
         )
+        (piece "Marker" P1 [#])
+        (piece "Marker" P2 [#])
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#])
+        (end (if [#] [#]))
     )
 )
 
@@ -35,7 +38,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
