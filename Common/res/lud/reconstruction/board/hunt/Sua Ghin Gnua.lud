@@ -5,11 +5,14 @@
             (square 5)
             use:Vertex
         )
+        (piece "Marker" P1 (move [#]))
+        (piece "Marker" P2 (move [#]))
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    		(start [#])
+            (play [#])
+            (end [#])
     )
 )
 
@@ -29,8 +32,4 @@
         (origin  "This game was played in Thailand, around 1898.")
         }
     )
-    
-    (graphics {
-        
-    })
 )
