@@ -4,10 +4,13 @@
         (board 
             (square 9)
         )
-    })
+        (piece "Disc" P1 (move [#])) 
+        (piece "Disc" P2 (move [#])) 
+    })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (start [#]) 
+        (play [#])
+        (end [#])
     )
 )
 
