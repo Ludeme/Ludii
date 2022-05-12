@@ -2,7 +2,26 @@
     (players 2)  
     (equipment { 
         (board  (rectangle 3 8))
-        (piece "Marker" Each)
+        (piece "Marker" Each
+                (or {
+                    (move Hop 
+                    		Orthogonal
+                            (between 
+                                if:(and 
+                                		(is Enemy (who at:(between))) 
+                                		(not (is In (between) (union (sites Bottom) (sites Top))))
+                                	)
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Empty (to)))
+                        )
+                    (move
+                        Step 
+                        Orthogonal 
+                        (to if:(is Empty (to)))
+                    )
+                })			
+        )
     })  
     
     (rules 
@@ -11,7 +30,7 @@
             (place "Marker2" (sites Top))
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (<= (count Pieces Next) 4) (result Mover Win)))
     )
 )
 
