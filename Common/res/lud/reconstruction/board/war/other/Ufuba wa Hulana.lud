@@ -2,13 +2,31 @@
     (players 2) 
     (equipment { 
         (board (square 5))
-        (piece "Marker" Each)
+        (piece "Marker" Each (move [#])) // Capture involved.
         (hand Each)
     })
     (rules
         (start (place "Marker" "Hand" count:12))
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+
+    	(end [#])
     )
 )
 
