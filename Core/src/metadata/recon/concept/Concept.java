@@ -1,7 +1,7 @@
 package metadata.recon.concept;
 
 import annotations.Or;
-import metadata.info.InfoItem;
+import metadata.recon.ReconItem;
 
 //-----------------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ import metadata.info.InfoItem;
  * 
  * @author Matthew.Stephenson
  */
-public class Concept implements InfoItem
+public class Concept implements ReconItem
 {
 	
 	/** Concept name. */
@@ -22,19 +22,21 @@ public class Concept implements InfoItem
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param source The source of the game's rules.
+	 * @param conceptName The name of the concept
+	 * @param valueDouble The double value
+	 * @param valueBoolean The boolean value
 	 * 
 	 * @example (concept "Num Players" 6)
 	 */
 	public Concept
 	(
-		final String conceptName, 
+			final String conceptName, 
 		@Or final Double valueDouble,
 		@Or final Boolean valueBoolean
 	)
 	{
 		this.conceptName = conceptName;
-		value = ((valueDouble != null) ? valueDouble : ((valueBoolean != null) ? (valueBoolean ? 1d : 0d) : 1));
+		value = ((valueDouble != null) ? valueDouble : (valueBoolean ? 1d : 0d) );
 	}
 
 	//-------------------------------------------------------------------------

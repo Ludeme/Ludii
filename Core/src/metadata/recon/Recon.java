@@ -16,7 +16,7 @@ import metadata.recon.concept.Concept;
  * 
  * @author Matthew.Stephenson
  */
-public class Recon implements MetadataItem, Serializable
+public class Recon implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

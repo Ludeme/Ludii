@@ -208,7 +208,7 @@ public class Match extends Game
 		}
 		else
 		{
-			metadata = new Metadata(null, null, null);
+			metadata = new Metadata(null, null, null, null);
 		}
 	}
 	
