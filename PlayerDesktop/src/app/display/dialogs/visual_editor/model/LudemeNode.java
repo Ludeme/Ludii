@@ -178,6 +178,7 @@ public class LudemeNode implements iLudemeNode, iGNode {
         {
             this.children.add(children);
             // get order of new child in current constructor
+            // TODO: something goes wrong for [optional] inputs
             int order = -1;
             for (Input in: currentConstructor.getInputs())
             {

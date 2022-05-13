@@ -26,9 +26,7 @@ public class DFSBoxDrawing implements LayoutMethod
     private final double wX;
     private final int root;
 
-    private final HashMap<Integer, Double> DISTANCE_MAP;
-    private final HashMap<Integer, Double> OFFSET_MAP;
-    private final HashMap<Integer, Double> SPREAD_MAP;
+    private final HashMap<Integer, Double[]> DOS_MAP;
 
     private final double DEFAULT_DISTANCE = 0.3;
     private final double DEFAULT_OFFSET = 0.5;
@@ -52,10 +50,7 @@ public class DFSBoxDrawing implements LayoutMethod
         this.wX = wX;
         this.wY = wY;
 
-        DISTANCE_MAP = new HashMap<>();
-        OFFSET_MAP = new HashMap<>();
-        SPREAD_MAP = new HashMap<>();
-
+        DOS_MAP = new HashMap<>();
         initWeights();
     }
 
@@ -64,11 +59,7 @@ public class DFSBoxDrawing implements LayoutMethod
         graph.getNodeList().forEach((id,n) ->{
             if (!n.getChildren().isEmpty())
             {
-                if (!OFFSET_MAP.containsKey(id)) OFFSET_MAP.put(id, DEFAULT_OFFSET);
-                // Wx
-                if (!DISTANCE_MAP.containsKey(id)) DISTANCE_MAP.put(id, DEFAULT_DISTANCE);
-                // Wy
-                if (!SPREAD_MAP.containsKey(id)) SPREAD_MAP.put(id, DEFAULT_SPREAD);
+                if (!DOS_MAP.containsKey(id)) DOS_MAP.put(id, new Double[]{DEFAULT_DISTANCE, DEFAULT_OFFSET, DEFAULT_SPREAD});
             }
         });
     }
@@ -78,7 +69,7 @@ public class DFSBoxDrawing implements LayoutMethod
         if (graph.getNode(nodeId).getChildren() == null || graph.getNode(nodeId).getChildren().size() == 0)
         {
             Vector2D piInit = new Vector2D(freeX, freeY);
-            freeY += graph.getNode(nodeId).getHeight() * wX * (SPREAD_MAP.get(graph.getNode(nodeId).getParent()));
+            freeY += graph.getNode(nodeId).getHeight() * wX * (DOS_MAP.get(graph.getNode(nodeId).getParent())[2]);
 
             graph.getNode(nodeId).setPos(piInit);
         }
@@ -89,29 +80,18 @@ public class DFSBoxDrawing implements LayoutMethod
             iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
 
             nodeCh.forEach((s) -> {
-                initPlacement(s, (int) (freeX + graph.getNode(s).getWidth() * wY * (DISTANCE_MAP.get(graph.getNode(s).getParent()))));
+                initPlacement(s, (int) (freeX + graph.getNode(s).getWidth() * wY * (DOS_MAP.get(graph.getNode(s).getParent())[0])));
                 // freeX + getNodeDepth(graph, s)*graph.getNode(s).getWidth()*wX
 
                 iGNode nV = graph.getNode(nodeId);
 
                 double X0 = nFirst.getPos().getY();
-                double X05 = nFirst.getPos().getY() + (nLast.getPos().getY() - nFirst.getPos().getY())/2;
                 double X1 = nLast.getPos().getY();
 
-                double wOffset = OFFSET_MAP.get(graph.getNode(s).getParent());
+                double wOffset = DOS_MAP.get(graph.getNode(s).getParent())[1];
                 double yCoord;
 
-                if (wOffset < 0.5)
-                {
-                    yCoord = 2 * wOffset * (X05 - X0) + X0;
-                }
-                else if (Math.abs(wOffset - 0.5) < 1e-2)
-                {
-                    yCoord = X05;
-                }
-                else {
-                    yCoord = 2 * (wOffset - 0.5) * (X1 - X05) + X05;
-                }
+                yCoord = (X1 - X0) * wOffset + X0;
 
                 Vector2D piInit = new Vector2D(freeX, yCoord);
                 nV.setPos(piInit);
@@ -136,61 +116,18 @@ public class DFSBoxDrawing implements LayoutMethod
         }
     }
 
-    public void updateOffsets(double w)
+    public void updateAllWeights(Double offset, Double distance, Double spread)
     {
-        updateWeightMap(OFFSET_MAP, w);
-    }
-
-    public void updateOffsets(double w, int l)
-    {
-        updateWeightMap(OFFSET_MAP, w, l);
-    }
-
-    public void updateSpread(double w)
-    {
-        updateWeightMap(SPREAD_MAP, w);
-    }
-
-    public void updateSpread(double w, int l)
-    {
-        updateWeightMap(SPREAD_MAP, w, l);
-    }
-
-    public void updateDistance(double w)
-    {
-        updateWeightMap(DISTANCE_MAP, w);
-    }
-
-    public void updateDistance(double w, int l)
-    {
-        updateWeightMap(DISTANCE_MAP, w, l);
-    }
-
-    public void updateAllWeights(double offset, double distance, double spread)
-    {
-        DISTANCE_MAP.replaceAll((id,v) -> distance);
-        OFFSET_MAP.replaceAll((id,v) -> offset);
-        SPREAD_MAP.replaceAll((id,v) -> spread);
-    }
-
-    public void updateAllWeights(double offset, double distance, double spread, int l)
-    {
-        updateDistance(distance, l);
-        updateOffsets(offset, l);
-        updateSpread(spread, l);
-    }
-
-    private void updateWeightMap(HashMap<Integer, Double> map, double w)
-    {
-        System.out.println("Updating");
-        map.forEach((id,v) -> {
-            v = w;
+        DOS_MAP.forEach((id, w) -> {
+            updateSubtreeWeights(offset, distance, spread, id);
         });
     }
 
-    public void updateWeightMap(HashMap<Integer, Double> map, double w, int l)
+    public void updateSubtreeWeights(Double offset, Double distance, Double spread, int p)
     {
-        map.put(l, w);
+        if (distance != null) DOS_MAP.get(p)[0] = distance;
+        if (offset != null) DOS_MAP.get(p)[1] = offset;
+        if (spread != null) DOS_MAP.get(p)[2] = spread;
     }
 
     private void shift(int root)

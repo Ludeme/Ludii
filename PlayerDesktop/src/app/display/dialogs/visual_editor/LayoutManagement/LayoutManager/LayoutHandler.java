@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 
+import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
@@ -63,6 +64,11 @@ public class LayoutHandler {
     public void updateDFSWeights(double offset, double distance, double spread)
     {
         ((DFSBoxDrawing) layout).updateAllWeights(offset, distance, spread);
+    }
+
+    public void evaluateGraphWeights()
+    {
+        System.out.println(GraphRoutines.getSubtreeDOS(graph, root));
     }
 
     // ################
