@@ -113,8 +113,8 @@ public class MouseHandler
 					{
 						if (GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardMarginPlacement()))
 						{
-							if (!GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardPlacement()))
-							{
+							//if (!GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardPlacement()))
+							//{
 								//final Component dragComponent = app.settingsPlayer().dragComponent();
 								//final int dragComponentIndex = IntStream.range(0, context.game().equipment().components().length).filter(i -> context.game().equipment().components()[i] == dragComponent).findFirst().orElse(-1);
 								for (final Move m : context.game().moves(context).moves())
@@ -125,7 +125,7 @@ public class MouseHandler
 										break;
 									}
 								}
-							}
+							//}
 						}
 						else
 						{
