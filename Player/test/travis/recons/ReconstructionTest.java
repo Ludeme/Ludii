@@ -28,7 +28,7 @@ public class ReconstructionTest
 	@Test
 	public void testCompilingLudFromMemory()
 	{
-		System.out.println("\n=========================================\nTest: Compile all .lud from memory:\n");
+		System.out.println("\n=========================================\nTest: Compile all .lud corresponding to reconstruction:\n");
 
 		final List<String> failedGames = new ArrayList<String>();
 
