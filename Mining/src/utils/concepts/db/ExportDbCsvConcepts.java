@@ -124,6 +124,9 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Pagade Kayi Ata (Sixteen-handed)");
 		lessTrialsGames.add("Chex");
 		lessTrialsGames.add("Poprad Game");
+		lessTrialsGames.add("Backgammon"); // Mostly for smart agent (AB), the playouts are too long
+		lessTrialsGames.add("Buffa de Baldrac"); // Mostly for smart agent (AB), the playouts are too long
+		lessTrialsGames.add("Portes"); // Mostly for smart agent (AB), the playouts are too long
 
 		final Evaluation evaluation = new Evaluation();
 		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
