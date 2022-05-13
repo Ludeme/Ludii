@@ -77,7 +77,7 @@ public final class OverlayView extends View
 
 		if (app.settingsPlayer().usingExhibitionApp())
 		{
-			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 42);
+			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 50);
 			g2d.setFont(exhbitionTitleFont);
 			g2d.setColor(Color.BLUE);
 			g2d.drawString("Make Your Own Game", 40, 75);
