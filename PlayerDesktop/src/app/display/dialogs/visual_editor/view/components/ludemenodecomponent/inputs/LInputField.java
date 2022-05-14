@@ -94,7 +94,7 @@ public class LInputField extends JComponent {
         removeAll();
 
         Input input = inputInformation.getInput();
-        if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().isTerminal()) {
+        if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().isTerminal() && !input.isOptional()) {
             input = ((LudemeInput) input).getRequiredLudeme().getConstructors().get(0).getInputs().get(0);
         }
         else if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().getName().equals("int")) {
