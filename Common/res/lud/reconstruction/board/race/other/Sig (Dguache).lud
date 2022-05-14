@@ -8,11 +8,12 @@
             })
             use:Vertex
         )
-    })  
-    
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -36,7 +37,6 @@
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" Vertex (sites Board Vertex) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
-        
     })
     
 )
