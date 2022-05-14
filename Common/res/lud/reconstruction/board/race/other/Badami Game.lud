@@ -11,11 +11,12 @@
                 (shift 0 16 (rectangle 1 11)) 
             })
         )
-    })  
-    
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
