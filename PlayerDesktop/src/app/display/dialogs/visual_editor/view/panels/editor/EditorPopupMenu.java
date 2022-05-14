@@ -40,6 +40,7 @@ public class EditorPopupMenu extends JPopupMenu {
         compact.addActionListener(e -> {
             LayoutHandler lm = graphPanel.getLayoutHandler();
             lm.setLayoutMethod(1);
+            lm.evaluateGraphWeights();
             lm.executeLayout();
 
             graphPanel.drawGraph(graphPanel.getGraph());

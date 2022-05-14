@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.panels.settings;
 
+import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
@@ -21,7 +22,7 @@ public class LayoutSettingsPanel extends JPanel
         lh = graphPanel.getLayoutHandler();
 
         dSl = new JSlider(0, 100);
-        oSl = new JSlider(0, 100);
+        oSl = new JSlider(-100, 100);
         sSl = new JSlider(0, 100);
 
         JLabel distanceText = new JLabel("Distance: " + getSliderValue(dSl));
@@ -30,14 +31,39 @@ public class LayoutSettingsPanel extends JPanel
 
         Button redraw = new Button("Redraw");
         Button evaluate = new Button("Evaluate metrics");
+
         JCheckBox auto = new JCheckBox("Redraw automatically");
+        JCheckBox metrics = new JCheckBox("Use slider metrics");
+        metrics.setSelected(true);
+
+        JTextField dmTextField = new JTextField("3000");
+        JLabel dmLabel = new JLabel("DM");
+
+        JTextField omTextField = new JTextField("150");
+        JLabel omLabel = new JLabel("OM");
+
+        JTextField smTextField = new JTextField("3500");
+        JLabel smLabel = new JLabel("SM");
 
         redraw.addActionListener(e -> {
-            updateWeights();
+            if (metrics.isSelected())
+            {
+                updateWeights();
+            }
+            else
+            {
+                GraphRoutines.setDM(Integer.parseInt(dmTextField.getText()));
+                GraphRoutines.setOM(Integer.parseInt(omTextField.getText()));
+                GraphRoutines.setSM(Integer.parseInt(smTextField.getText()));
+                lh.evaluateGraphWeights();
+            }
             executeDFSLayout(graphPanel);
         });
 
         evaluate.addActionListener(e -> {
+            GraphRoutines.setDM(Integer.parseInt(dmTextField.getText()));
+            GraphRoutines.setOM(Integer.parseInt(omTextField.getText()));
+            GraphRoutines.setSM(Integer.parseInt(smTextField.getText()));
             lh.evaluateGraphWeights();
         });
 
@@ -75,14 +101,22 @@ public class LayoutSettingsPanel extends JPanel
         add(sSl);
         add(redraw);
         add(auto);
-        add(evaluate);
+        //add(evaluate);
+        //add(metrics);
+
+        //add(dmLabel);
+        //add(dmTextField);
+        //add(omLabel);
+        //add(omTextField);
+        //add(smLabel);
+        //add(smTextField);
     }
 
     private void updateWeights()
     {
         lh.updateDFSWeights(getSliderValue(oSl),
-                getSliderValue(dSl) + DISTANCE_ADD,
-                getSliderValue(sSl) + SPREAD_ADD);
+                getSliderValue(dSl),
+                getSliderValue(sSl));
     }
 
     private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}

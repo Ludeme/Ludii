@@ -15,9 +15,9 @@ import java.util.*;
  */
 public final class GraphRoutines
 {
-    private static final double DM = 250;
-    private static final double OM = 250;
-    private static final double SM = 250;
+    private static double DM = 3000;
+    private static double OM = 150;
+    private static double SM = 3500;
 
 
     /**
@@ -151,8 +151,9 @@ public final class GraphRoutines
                     }
                 });
                 for (int i = 0; i < children.size() - 1; i++) {
-                    Smean += (graph.getNode(i).getPos().getY() - graph.getNode(i + 1).getPos().getY());
+                    Smean += Math.abs(graph.getNode(children.get(i)).getPos().getY() - graph.getNode(children.get(i+1)).getPos().getY());
                 }
+                Smean /= N;
 
                 double D = Math.max(0.0, Math.min(1.0, Xdiffmean/DM));
                 double O = Math.max(-1.0, Math.min(1.0, Ydiffmean/OM));
@@ -166,5 +167,15 @@ public final class GraphRoutines
         return DOS_MAP;
     }
 
+    public static void setDM(double DM) {
+        GraphRoutines.DM = DM;
+    }
 
+    public static void setOM(double OM) {
+        GraphRoutines.OM = OM;
+    }
+
+    public static void setSM(double SM) {
+        GraphRoutines.SM = SM;
+    }
 }

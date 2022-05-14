@@ -1,11 +1,15 @@
 package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
+import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs;
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs.*;
+import game.rules.play.moves.nonDecision.effect.requirement.Do;
 
 import javax.swing.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
@@ -66,9 +70,22 @@ public class LayoutHandler {
         ((DFSBoxDrawing) layout).updateAllWeights(offset, distance, spread);
     }
 
+    public void updateDFSWeights(HashMap<Integer, Double[]> weights)
+    {
+        ((DFSBoxDrawing) layout).updateAllWeights(weights);
+    }
+
     public void evaluateGraphWeights()
     {
-        System.out.println(GraphRoutines.getSubtreeDOS(graph, root));
+        HashMap<Integer, Double[]> weights = GraphRoutines.getSubtreeDOS(graph, root);
+        updateDFSWeights(weights);
+        if (LayoutConfigs.DEBUG)
+        {
+            System.out.println("Graph weights");
+            weights.forEach((id, w) -> {
+                System.out.println("Subtree #" + id + ": " + Arrays.toString(w));
+            });
+        }
     }
 
     // ################
