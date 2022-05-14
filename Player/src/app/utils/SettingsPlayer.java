@@ -1,6 +1,7 @@
 package app.utils;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -84,7 +85,15 @@ public class SettingsPlayer
 	//-------------------------------------------------------------------------
 	// Exhibiton player settings
 	
+	// If the exhibition app if being used
 	private boolean usingExhibitionApp = false;
+	
+	// If the created game has been tested  (must be done before it can be played)
+	private boolean testsPassed = false;
+	
+	// Placement of the board and its white margin. Used for detecting whether move to hands is done.
+	private Rectangle boardPlacement = new Rectangle();
+	private Rectangle boardMarginPlacement = new Rectangle();
 	
 	//-------------------------------------------------------------------------
 	// User settings
@@ -790,6 +799,36 @@ public class SettingsPlayer
 	public void setUsingExhibitionApp(final boolean b)
 	{
 		usingExhibitionApp = b;
+	}
+
+	public Rectangle boardPlacement()
+	{
+		return boardPlacement;
+	}
+
+	public void setBoardPlacement(final Rectangle boardPlacement)
+	{
+		this.boardPlacement = boardPlacement;
+	}
+
+	public Rectangle boardMarginPlacement()
+	{
+		return boardMarginPlacement;
+	}
+
+	public void setBoardMarginPlacement(final Rectangle boardMarginPlacement)
+	{
+		this.boardMarginPlacement = boardMarginPlacement;
+	}
+
+	public boolean testsPassed()
+	{
+		return testsPassed;
+	}
+
+	public void setTestsPassed(final boolean testsPassed)
+	{
+		this.testsPassed = testsPassed;
 	}
 			
 	//-------------------------------------------------------------------------

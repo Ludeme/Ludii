@@ -16,6 +16,7 @@ import game.rules.start.StartRule;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
+import game.util.equipment.Region;
 import main.Constants;
 import other.action.BaseAction;
 import other.action.puzzle.ActionSet;
@@ -362,9 +363,13 @@ public final class PlaceItem extends StartRule
 			// place with regions
 			else if (region != null)
 			{
-				final int[] locs = region.eval(context).sites();
-				for (final int loc : locs)
-					Start.placePieces(context, loc, what, count, state, rotation, value, false, type);
+				final Region regionEval = region.eval(context);
+				if(regionEval != null)
+				{
+					final int[] locs = regionEval.sites();
+					for (final int loc : locs)
+						Start.placePieces(context, loc, what, count, state, rotation, value, false, type);
+				}
 			}
 			// place with locs
 			else if (locationIds != null)
@@ -537,13 +542,17 @@ public final class PlaceItem extends StartRule
 		if (region != null)
 		{
 			concepts.or(region.concepts(game));
-			final int[] sitesRegion = region.eval(new Context(game, new Trial(game))).sites();
-			for (final int site : sitesRegion)
+			final Region regionEval = region.eval(new Context(game, new Trial(game)));
+			if(regionEval != null)
 			{
-				if (site < maxSiteOnBoard)
-					concepts.set(Concept.PiecesPlacedOnBoard.id(), true);
-				else
-					concepts.set(Concept.PiecesPlacedOutsideBoard.id(), true);
+				final int[] sitesRegion = regionEval.sites();
+				for (final int site : sitesRegion)
+				{
+					if (site < maxSiteOnBoard)
+						concepts.set(Concept.PiecesPlacedOnBoard.id(), true);
+					else
+						concepts.set(Concept.PiecesPlacedOutsideBoard.id(), true);
+				}
 			}
 		}
 

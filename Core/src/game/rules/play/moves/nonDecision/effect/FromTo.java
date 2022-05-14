@@ -164,7 +164,6 @@ public final class FromTo extends Effect
 
 		final int origFrom = context.from();
 		final int origTo = context.to();
-		final boolean copyTo = copy.eval(context);
 
 		final BaseMoves moves = new BaseMoves(super.then());
 		final boolean stackingGame = context.currentInstanceContext().game().isStacking();
@@ -188,7 +187,8 @@ public final class FromTo extends Effect
 					continue;
 
 				context.setFrom(from);
-
+				
+				final boolean copyTo = copy.eval(context);
 				if (fromCondition != null && !fromCondition.eval(context))
 					continue;
 

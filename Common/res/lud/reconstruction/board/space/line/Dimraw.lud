@@ -41,7 +41,7 @@
             use:Vertex
         ) 
         (hand Each)
-        (piece "Marker" Each (move [*])) // Do not know the movement of the pieces
+        (piece "Marker" Each (move [#])) // Do not know the movement of the pieces
     })  
     (rules 
         (start {

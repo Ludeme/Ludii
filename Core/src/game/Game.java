@@ -443,7 +443,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		}
 		else
 		{
-			metadata = new Metadata(null, null, null);
+			metadata = new Metadata(null, null, null, null);
 		}
 	}
 	

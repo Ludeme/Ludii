@@ -3,11 +3,14 @@ package app.move;
 import java.awt.Point;
 
 import app.PlayerApp;
+import app.utils.GUIUtil;
 import app.utils.sandbox.SandboxUtil;
 import main.Constants;
+import other.action.move.ActionSelect;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
+import other.move.Move;
 import util.LocationUtil;
 
 /**
@@ -92,14 +95,55 @@ public class MouseHandler
 			else if (!MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation, false, -1))
 			{
 				// Remember the selected From location for next time.
-				if (!app.settingsPlayer().componentIsSelected() && app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation))
+				if 
+				(
+					!app.settingsPlayer().componentIsSelected() 
+					&&
+					!app.settingsPlayer().usingExhibitionApp()
+					&&
+					app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation)
+				)
 				{
 					app.settingsPlayer().setComponentIsSelected(true);
 				}
 				else
 				{
+					// Special exhibition code for making move piece to hands move / removing pieces.
+					if (app.settingsPlayer().usingExhibitionApp())
+					{
+						if (GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardMarginPlacement()))
+						{
+							//if (!GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardPlacement()))
+							//{
+								//final Component dragComponent = app.settingsPlayer().dragComponent();
+								//final int dragComponentIndex = IntStream.range(0, context.game().equipment().components().length).filter(i -> context.game().equipment().components()[i] == dragComponent).findFirst().orElse(-1);
+								for (final Move m : context.game().moves(context).moves())
+								{
+									if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+									{
+										app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+										break;
+									}
+								}
+							//}
+						}
+						else
+						{
+							for (final Move m : context.game().moves(context).moves())
+							{
+								if (m.from() == selectedFromLocation.site() && m.actions().get(0) instanceof ActionSelect)
+								{
+									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						app.setVolatileMessage("That is not a valid move.");
+					}
 					app.settingsPlayer().setComponentIsSelected(false);
-					app.setVolatileMessage("That is not a valid move.");
 				}
 			}
 		}
@@ -157,18 +201,28 @@ public class MouseHandler
 		if (context.game().isDeductionPuzzle())
 			return;
 		
-		// repaint the whole view when a piece starts to be dragged.
-		if (!app.bridge().settingsVC().pieceBeingDragged())
+		// repaint the whole view for exhibition mode.
+		if (app.settingsPlayer().usingExhibitionApp())
+		{
 			app.repaint();
-
-		// Repaint between the dragged points and update location of dragged piece.
-		app.repaintComponentBetweenPoints
-		(
-			context, 
-			app.bridge().settingsVC().selectedFromLocation(), 
-			app.settingsPlayer().oldMousePoint(), 
-			point
-		);
+		}
+		// repaint the whole view when a piece starts to be dragged.
+		else if (!app.bridge().settingsVC().pieceBeingDragged())
+		{
+			app.repaint();
+		}
+		else
+		{
+			// Repaint between the dragged points and update location of dragged piece.
+			app.repaintComponentBetweenPoints
+			(
+				context, 
+				app.bridge().settingsVC().selectedFromLocation(), 
+				app.settingsPlayer().oldMousePoint(), 
+				point
+			);
+		}
+		
 		app.bridge().settingsVC().setPieceBeingDragged(true);
 		app.settingsPlayer().setOldMousePoint(point);
 	}
