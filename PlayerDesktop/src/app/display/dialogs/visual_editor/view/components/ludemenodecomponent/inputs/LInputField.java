@@ -97,6 +97,9 @@ public class LInputField extends JComponent {
         if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().isTerminal()) {
             input = ((LudemeInput) input).getRequiredLudeme().getConstructors().get(0).getInputs().get(0);
         }
+        else if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().getName().equals("int")) {
+            input = ((LudemeInput) input).getRequiredLudeme().getConstructors().get(30).getInputs().get(0);
+        }
 
         label = new JLabel(input.getName());
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
