@@ -30,6 +30,7 @@ public class LInputField extends JComponent {
     private final LudemeNodeComponent LNC;
     List<InputInformation> inputInformationList = new ArrayList<>();
     boolean isSingle;
+    public boolean isOptional = false;
 
     private static final boolean DEBUG = true;
 
@@ -44,6 +45,7 @@ public class LInputField extends JComponent {
     public LInputField(LudemeNodeComponent ludemeNodeComponent, InputInformation inputInformation){
         this.LNC = ludemeNodeComponent;
         inputInformationList.add(inputInformation);
+        if(inputInformation.isOptional()) isOptional = true;
         isSingle = true;
         constructInputField(inputInformation);
         setOpaque(false);
@@ -53,6 +55,13 @@ public class LInputField extends JComponent {
         if(DEBUG) System.out.println("[LIF] constructing " + ludemeNodeComponent.getLudemeNode().getLudeme().getName());
         this.LNC = ludemeNodeComponent;
         this.inputInformationList = inputInformationList;
+        for(InputInformation inputInformation : inputInformationList){
+            isOptional = true;
+            if(!inputInformation.isOptional()) {
+                isOptional = false;
+                break;
+            }
+        }
         isSingle = false;
         constructInputField(inputInformationList);
         setOpaque(false);

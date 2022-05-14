@@ -21,7 +21,7 @@ public class LHeader extends JComponent {
 
         setLayout(new BorderLayout());
 
-        title = new JLabel(ludemeNodeComponent.getLudemeNode().getLudeme().getClearName());
+        title = new JLabel(ludemeNodeComponent.getLudemeNode().getLudeme().getClearName() + " " + ludemeNodeComponent.getLudemeNode().getCurrentConstructor().getName());
 
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);

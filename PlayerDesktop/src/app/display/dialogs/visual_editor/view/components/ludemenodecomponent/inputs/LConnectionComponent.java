@@ -28,6 +28,7 @@ public class LConnectionComponent extends JComponent {
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
 
     private LudemeNodeComponent connected_to;
+    boolean isOptional = false;
 
 
     public LConnectionComponent(LInputField inputField, int height, int radius, boolean fill) {
@@ -35,6 +36,7 @@ public class LConnectionComponent extends JComponent {
         height = INPUT_FIELD.label.getPreferredSize().height;
         RADIUS = (int) (INPUT_FIELD.label.getPreferredSize().height * 0.4);
         this.fill = fill;
+        this.isOptional = INPUT_FIELD.isOptional;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(height, height));
@@ -163,7 +165,11 @@ public class LConnectionComponent extends JComponent {
                 g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
                 g2.drawOval(x, y, radius*2, radius*2);*/
 
-                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);
+                if(!isOptional) {
+                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);
+                } else {
+                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
+                }
                 g2.fillOval(x, y, getRadius()*2, getRadius()*2);
                 // make white hole to create stroke effect
                 g2.setColor(DesignPalette.BACKGROUND_LUDEME_BODY);
