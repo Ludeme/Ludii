@@ -1,5 +1,5 @@
 (game "Hulu Wen"
-    (players 2)  
+    (players [2..16])  
     (equipment { 
         (board
             (add
@@ -10,11 +10,13 @@
                 cells:{{47 39 30 31 32 40 49 48}}
             )
         )
-    })  
-    
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (dice d:[#] num:2)
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
