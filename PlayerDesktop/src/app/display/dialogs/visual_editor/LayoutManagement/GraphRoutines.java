@@ -1,11 +1,13 @@
 package app.display.dialogs.visual_editor.LayoutManagement;
 
 
+import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import game.rules.play.moves.nonDecision.effect.requirement.Do;
 import game.util.graph.Graph;
+import org.junit.Ignore;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Graph manipulation procedures
@@ -13,6 +15,10 @@ import java.util.List;
  */
 public final class GraphRoutines
 {
+    private static final double DM = 250;
+    private static final double OM = 250;
+    private static final double SM = 250;
+
 
     /**
      * Update of depth for graph nodes by BFS traversal
@@ -102,5 +108,63 @@ public final class GraphRoutines
         }
         return Layer;
     }
+
+    // TODO: account for node height/width
+
+    /**
+     * Evaluate subtree configurations of
+     * @param graph graph
+     * @param root starting from a root
+     * @return HashMap of indices and configurations
+     */
+    public static HashMap<Integer, Double[]> getSubtreeDOS(iGraph graph, int root)
+    {
+        HashMap<Integer, Double[]> DOS_MAP = new HashMap<>();
+
+        List<Integer> Q = new ArrayList<>();
+        Q.add(root);
+
+        while (!Q.isEmpty())
+        {
+            int n = Q.remove(0);
+            iGNode node = graph.getNode(n);
+            // if node is a parent: find its configurations
+            if (!node.getChildren().isEmpty())
+            {
+                // DOS
+                List<Integer> children = graph.getNode(n).getChildren();
+                int N = children.size();
+                double Xdiffmean;
+                double Ydiffmean;
+                Xdiffmean = children.stream().mapToDouble(id -> Math.abs(node.getPos().getX() - graph.getNode(id).getPos().getX())).sum();
+                Ydiffmean = children.stream().mapToDouble(id -> node.getPos().getY() - graph.getNode(id).getPos().getY()).sum();
+
+                Xdiffmean /= N;
+                Ydiffmean /= N;
+
+                double Smean = 0;
+                // order children by Y coordinate
+                Collections.sort(children, new Comparator<Integer>() {
+                    @Override
+                    public int compare(Integer o1, Integer o2) {
+                        return (int)(graph.getNode(o1).getPos().getY() - graph.getNode(o2).getPos().getY());
+                    }
+                });
+                for (int i = 0; i < children.size() - 1; i++) {
+                    Smean += (graph.getNode(i).getPos().getY() - graph.getNode(i + 1).getPos().getY());
+                }
+
+                double D = Math.max(0.0, Math.min(1.0, Xdiffmean/DM));
+                double O = Math.max(-1.0, Math.min(1.0, Ydiffmean/OM));
+                double S = Math.max(0.0, Math.min(1.0, Smean/SM));
+
+                DOS_MAP.put(n, new Double[]{D,O,S});
+                // Add children to the Q
+                Q.addAll(children);
+            }
+        }
+        return DOS_MAP;
+    }
+
 
 }

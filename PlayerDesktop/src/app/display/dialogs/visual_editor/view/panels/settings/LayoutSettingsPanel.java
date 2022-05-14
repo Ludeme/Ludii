@@ -13,6 +13,9 @@ public class LayoutSettingsPanel extends JPanel
     private final JSlider sSl;
     private final LayoutHandler lh;
 
+    private final double DISTANCE_ADD = 0.26;
+    private final double SPREAD_ADD = 0.34;
+
     public LayoutSettingsPanel(IGraphPanel graphPanel)
     {
         lh = graphPanel.getLayoutHandler();
@@ -26,11 +29,16 @@ public class LayoutSettingsPanel extends JPanel
         JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
 
         Button redraw = new Button("Redraw");
+        Button evaluate = new Button("Evaluate metrics");
         JCheckBox auto = new JCheckBox("Redraw automatically");
 
         redraw.addActionListener(e -> {
             updateWeights();
             executeDFSLayout(graphPanel);
+        });
+
+        evaluate.addActionListener(e -> {
+            lh.evaluateGraphWeights();
         });
 
         dSl.addChangeListener(e -> {
@@ -67,13 +75,14 @@ public class LayoutSettingsPanel extends JPanel
         add(sSl);
         add(redraw);
         add(auto);
+        add(evaluate);
     }
 
     private void updateWeights()
     {
         lh.updateDFSWeights(getSliderValue(oSl),
-                getSliderValue(dSl),
-                getSliderValue(sSl));
+                getSliderValue(dSl) + DISTANCE_ADD,
+                getSliderValue(sSl) + SPREAD_ADD);
     }
 
     private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
