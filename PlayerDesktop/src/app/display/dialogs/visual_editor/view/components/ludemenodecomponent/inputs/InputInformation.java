@@ -32,10 +32,16 @@ public class InputInformation {
     private List<Ludeme> getPossibleLudemeInputs(Input input){
         List<Ludeme> possibleLudemeInputs = new ArrayList<>();
 
+
+
         if(input.isChoice()){
             for(Input in : ((ChoiceInput)input).getInputs()){
-                possibleLudemeInputs.add(((LudemeInput) in).getRequiredLudeme());
+                if(!possibleLudemeInputs.contains(((LudemeInput) in).getRequiredLudeme())) possibleLudemeInputs.add(((LudemeInput) in).getRequiredLudeme());
             }
+            for(Ludeme l : new ArrayList<>(possibleLudemeInputs)){
+                possibleLudemeInputs.addAll(getSingleInputLudemes(l));
+            }
+            System.out.println("###2: " + possibleLudemeInputs);
             return possibleLudemeInputs;
         }
         if(input instanceof LudemeInput){
@@ -45,9 +51,27 @@ public class InputInformation {
             } else {
                 possibleLudemeInputs.add(l_input.getRequiredLudeme());
             }
+            for(Ludeme l : new ArrayList<>(possibleLudemeInputs)){
+                possibleLudemeInputs.addAll(getSingleInputLudemes(l));
+            }
+            System.out.println("###2: " + possibleLudemeInputs);
             return possibleLudemeInputs;
         }
         return possibleLudemeInputs;
+    }
+
+    private List<Ludeme> getSingleInputLudemes(Ludeme l){
+        List<Ludeme> ludeme_inputs = new ArrayList<>();
+
+        for(Constructor c : l.getConstructors()){
+            if(c.getInputs().size() == 1 && c.getInputs().get(0) instanceof LudemeInput){
+                Ludeme ludeme = ((LudemeInput) c.getInputs().get(0)).getRequiredLudeme();
+                if(!ludeme_inputs.contains(ludeme)) ludeme_inputs.add(ludeme);
+            }
+        }
+        System.out.println("###: " + ludeme_inputs);
+
+        return ludeme_inputs;
     }
 
     private List<Ludeme> getNonHiddenLudemes(Ludeme ludeme){
