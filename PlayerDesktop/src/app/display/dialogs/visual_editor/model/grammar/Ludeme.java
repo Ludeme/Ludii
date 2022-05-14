@@ -23,6 +23,17 @@ public class Ludeme {
         this.NAME = name;
     }
 
+    public boolean isTerminal(){
+        for (Constructor c : getConstructors()) {
+            for(Input in : c.getInputs()){
+                if(!in.isTerminal()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public String getName() {
         return NAME;
     }

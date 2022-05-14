@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.input.Input;
+import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
 import app.display.dialogs.visual_editor.model.grammar.input.TerminalInput;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -93,6 +94,9 @@ public class LInputField extends JComponent {
         removeAll();
 
         Input input = inputInformation.getInput();
+        if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().isTerminal()) {
+            input = ((LudemeInput) input).getRequiredLudeme().getConstructors().get(0).getInputs().get(0);
+        }
 
         label = new JLabel(input.getName());
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
