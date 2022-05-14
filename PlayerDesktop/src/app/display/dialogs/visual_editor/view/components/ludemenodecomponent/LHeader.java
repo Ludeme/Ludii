@@ -111,6 +111,7 @@ public class LHeader extends JComponent {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        title.setText(LNC.getLudemeNode().getLudeme().getClearName() + " " + LNC.getLudemeNode().getCurrentConstructor().getName());
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
         title.setSize(title.getPreferredSize());
