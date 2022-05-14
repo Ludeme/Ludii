@@ -11,13 +11,13 @@
             use:Vertex
         )
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each (move [#]))
         (hand Each)
     })
     (rules
-        (start (place "Disc" "Hand" count:15))
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -41,7 +41,7 @@
     
     (graphics {
         (show Edges Hidden)
-        (board Style Table) // Temporary style until a more specific one exist for that game.
+        (board Style Table)
         (stackType Backgammon)
     })
     
