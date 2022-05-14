@@ -16,13 +16,14 @@
             )
             use:Edge
         )
-        (piece "Marker" Each)
+        (piece "Marker" Each (move [#]))
         (dice d:2 from:0 num:4)
         (hand Each)
     })
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -46,7 +47,6 @@
         (show Edges (colour Hidden))
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:0.3)
         (board Background image:"disc" edgeColour:(colour Black) scale:0.2)
-        
     })
     
 )
