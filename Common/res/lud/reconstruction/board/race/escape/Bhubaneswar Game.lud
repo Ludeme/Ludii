@@ -7,11 +7,12 @@
                 (shift 1 0 (rectangle 12 1))
             })
         )
-    })  
-    
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -37,5 +38,4 @@
         (board Colour OuterEdges (colour Black))
         (show Line {{9 6} {5 10}})
     })
-    
 )
