@@ -99,6 +99,8 @@ public class LInputField extends JComponent {
         }
         else if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().getName().equals("int")) {
             input = ((LudemeInput) input).getRequiredLudeme().getConstructors().get(30).getInputs().get(0);
+        } else if(input instanceof LudemeInput && ((LudemeInput) input).getRequiredLudeme().getName().equals("dim")) {
+            input = ((LudemeInput) input).getRequiredLudeme().getConstructors().get(6).getInputs().get(0);
         }
 
         label = new JLabel(input.getName());
