@@ -25,11 +25,12 @@
                 }
             )
         )
-    })  
-    
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
