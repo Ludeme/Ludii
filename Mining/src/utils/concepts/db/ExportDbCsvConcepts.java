@@ -102,12 +102,22 @@ public class ExportDbCsvConcepts
 	/**
 	 * List of games for which the list of trials to use does not have to be more
 	 * than a specific number to be able to compute in less than 4 days, due to the
-	 * metrics.
+	 * metric computation.
 	 */
 	private static List<String> lessTrialsGames = new ArrayList<String>();
 
-	/** The limit to use for the games in the list above. */
+	/** The limit of trials to use for some games too slow to compute. */
 	private static final int smallLimitTrials = 30;
+	
+	/**
+	 * List of games for which the list of trials to use does not have to be more
+	 * than an even lower specific number to be able to compute in less than 4 days, due to the
+	 * metrics.
+	 */
+	private static List<String> evenLessTrialsGames = new ArrayList<String>();
+	
+	/** The limit of trials to use for some games even slower to compute. */
+	private static final int smallestLimitTrials = 5;
 
 	// -------------------------------------------------------------------------
 
@@ -121,7 +131,6 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Unashogi");
 		lessTrialsGames.add("Taikyoku Shogi");
 		lessTrialsGames.add("Tai Shogi");
-		lessTrialsGames.add("Kriegsspiel");
 		lessTrialsGames.add("Pagade Kayi Ata (Sixteen-handed)");
 		lessTrialsGames.add("Chex");
 		lessTrialsGames.add("Poprad Game");
@@ -129,6 +138,9 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Buffa de Baldrac"); // Mostly for smart agent (AB), the playouts are too long
 		lessTrialsGames.add("Portes"); // Mostly for smart agent (AB), the playouts are too long
 		lessTrialsGames.add("Shatranj al-Kabir"); // Mostly for smart agent (AB), the playouts are too long
+		
+		// Really slow games.
+		evenLessTrialsGames.add("Kriegsspiel");
 
 		final Evaluation evaluation = new Evaluation();
 		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
@@ -150,7 +162,9 @@ public class ExportDbCsvConcepts
 			exportConceptConceptPurposesCSV();
 		}
 
-		if (lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
+		if (evenLessTrialsGames.contains(gameName) && numPlayouts > smallestLimitTrials)
+			numPlayouts = smallestLimitTrials;
+		else if (lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
 			numPlayouts = smallLimitTrials;
 
 		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
@@ -646,17 +660,17 @@ public class ExportDbCsvConcepts
 
 		// For now I exclude the matchs, but can be included too after. The deduc puzzle
 		// will stay excluded.
-		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
-				//|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
-		{
-			// We add all the default metrics values corresponding to a concept to the
-			// returned map.
-			final List<Metric> metrics = new Evaluation().conceptMetrics();
-			for (final Metric metric : metrics)
-				if (metric.concept() != null)
-					mapFrequency.put(metric.concept().name(), null);
-			return mapFrequency;
-		}
+//		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
+//				// || game.name().contains("Kriegsspiel"))
+//		{
+//			// We add all the default metrics values corresponding to a concept to the
+//			// returned map.
+//			final List<Metric> metrics = new Evaluation().conceptMetrics();
+//			for (final Metric metric : metrics)
+//				if (metric.concept() != null)
+//					mapFrequency.put(metric.concept().name(), null);
+//			return mapFrequency;
+//		}
 
 		// We run the playouts needed for the computation.
 
@@ -818,8 +832,10 @@ public class ExportDbCsvConcepts
 			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
 
 		int limit = Constants.UNDEFINED;
-		if (lessTrialsGames.contains(gameName))
-			limit = smallLimitTrials;
+		if (evenLessTrialsGames.contains(gameName))
+			limit = smallestLimitTrials;
+		else if (lessTrialsGames.contains(gameName))
+				limit = smallLimitTrials;
 
 		int num = 0;
 		for (final File trialFile : trialFolder.listFiles())
