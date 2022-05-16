@@ -1360,10 +1360,10 @@ public class ExportDbCsvConcepts
 
 			boolean noEndFound = true;
 
-			if (game.rules().phases() != null)
+			if (context.rules().phases() != null)
 			{
 				final int mover = context.state().mover();
-				final Phase endPhase = game.rules().phases()[context.state().currentPhase(mover)];
+				final Phase endPhase = context.rules().phases()[context.state().currentPhase(mover)];
 				final End EndPhaseRule = endPhase.end();
 
 				// Only check if action not part of setup
@@ -1394,7 +1394,7 @@ public class ExportDbCsvConcepts
 				}
 			}
 
-			final End endRule = game.endRules();
+			final End endRule = context.rules().end();
 			if (noEndFound && endRule != null)
 			{
 				final EndRule[] endRules = endRule.endRules();
