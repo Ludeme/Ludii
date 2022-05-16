@@ -22,6 +22,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import game.equipment.container.Container;
+import game.match.Match;
 import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.phase.Phase;
@@ -1200,6 +1201,7 @@ public class ExportDbCsvConcepts
 		double numStartComponentsHands = 0.0;
 		double numStartComponentsBoard = 0.0;
 
+		// Check for each initial state of the game.
 		for (int index = 0; index < allStoredRNG.size(); index++)
 		{
 			final RandomProviderState rngState = allStoredRNG.get(index);
@@ -1215,7 +1217,8 @@ public class ExportDbCsvConcepts
 					if (booleanConcepts.get(Concept.Cell.id()))
 						for (int cell = 0; cell < cont.topology().cells().size(); cell++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+									? cs.sizeStack(cell, SiteType.Cell)
 									: cs.count(cell, SiteType.Cell);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
@@ -1224,7 +1227,8 @@ public class ExportDbCsvConcepts
 					if (booleanConcepts.get(Concept.Vertex.id()))
 						for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(vertex, SiteType.Vertex)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+									? cs.sizeStack(vertex, SiteType.Vertex)
 									: cs.count(vertex, SiteType.Vertex);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
@@ -1233,7 +1237,8 @@ public class ExportDbCsvConcepts
 					if (booleanConcepts.get(Concept.Edge.id()))
 						for (int edge = 0; edge < cont.topology().edges().size(); edge++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(edge, SiteType.Edge)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking())  
+									? cs.sizeStack(edge, SiteType.Edge)
 									: cs.count(edge, SiteType.Edge);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
@@ -1245,7 +1250,8 @@ public class ExportDbCsvConcepts
 						for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
 								+ cont.topology().cells().size(); cell++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+									? cs.sizeStack(cell, SiteType.Cell)
 									: cs.count(cell, SiteType.Cell);
 							numStartComponents += count;
 							numStartComponentsHands += count;
@@ -1255,10 +1261,8 @@ public class ExportDbCsvConcepts
 		}
 
 		mapStarting.put(Concept.NumStartComponents.name(), Double.valueOf(numStartComponents / allStoredRNG.size()));
-		mapStarting.put(Concept.NumStartComponentsHand.name(),
-				Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
-		mapStarting.put(Concept.NumStartComponentsBoard.name(),
-				Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
+		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
+		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
 
 //		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
 //		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));

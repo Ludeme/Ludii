@@ -4560,10 +4560,11 @@ EXAMPLE: (to (last To) level:(level))
 TYPE: metadata.Metadata
 TYPE JAVADOC: The metadata of a game.
 NEW CTOR
-(metadata [<info>] [<graphics>] [<ai>])
+(metadata [<info>] [<graphics>] [<ai>] [<recon>])
 PARAM JAVADOC: [<info>]: The info metadata.
 PARAM JAVADOC: [<graphics>]: The graphics metadata.
 PARAM JAVADOC: [<ai>]: Metadata for AIs playing this game.
+PARAM JAVADOC: [<recon>]: The metadata related to reconstruction.
 EXAMPLE: (metadata (info { (description "Description of The game") (source "Source of the game") (version "1.0.0") (classification "board/space/territory") (origin "Origin of the game.") }) (graphics { (board Style Go) (player Colour P1 (colour Black)) (player Colour P2 (colour White)) }) (ai (bestAgent "UCT")) )
 TYPE: metadata.MetadataItem
 TYPE JAVADOC: Interface for generic metadata item.  Classes to be included as metadata should inherit form this.
@@ -4656,6 +4657,8 @@ SUBCLASS: metadata.info.database.Version
 SUBCLASS: metadata.info.Info
 SUBCLASS: metadata.info.InfoItem
 SUBCLASS: metadata.Metadata
+SUBCLASS: metadata.recon.concept.Concept
+SUBCLASS: metadata.recon.ReconItem
 TYPE: metadata.ai.AIItem
 TYPE JAVADOC: General function hint for this game.Metadata containing hints for AI agents for this game.
 SUBCLASS: metadata.ai.features.Features
@@ -5762,6 +5765,17 @@ NEW CTOR
 PARAM JAVADOC: <string>: Ludii version in String form.
 EXAMPLE: (version "1.0.0")
 REMARKS: The version format is (Major version).(Minor version).(Build number). For example, the first major version for public release is "1.0.0".
+TYPE: metadata.recon.ReconItem
+TYPE JAVADOC: Metadata containing some specific reconstruction requirements.
+SUBCLASS: metadata.recon.concept.Concept
+TYPE: metadata.recon.concept.Concept
+TYPE JAVADOC: Specifies the what concept values are required
+NEW CTOR
+(concept <string> (<double>  | <boolean>))
+PARAM JAVADOC: <string>: The name of the concept
+PARAM JAVADOC: <double>: The double value
+PARAM JAVADOC: <boolean>: The boolean value
+EXAMPLE: (concept "Num Players" 6)
 DEFINE: AlquerqueBoard
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
 DEFINE EXAMPLE: ("AlquerqueBoard" 5 5)
