@@ -1,5 +1,5 @@
 (game "Edris a Jin"  
-    (players 4)  
+    (players 2)  
     (equipment { 
         (board 
             (add
@@ -34,13 +34,15 @@
             )
         )
         (hand Each) 
-        (dice d:2 from:0 num:6)
-        (piece "Pawn" Each) // 4 pieces per player
+        (dice d:2 from:0 num:4)
+        (piece "Chief" Each (move [#])) // 1 chief
+        (piece "Soldier" Each (move [#])) // 2 soldiers  
     })  
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
-    )
+    (rules
+            (start [#])
+            (play [#])
+            (end [#])
+        )
 )
 
 //------------------------------------------------------------------------------

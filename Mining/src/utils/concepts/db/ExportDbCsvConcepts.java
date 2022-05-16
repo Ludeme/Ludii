@@ -22,6 +22,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import game.equipment.container.Container;
+import game.match.Match;
 import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.phase.Phase;
@@ -102,12 +103,22 @@ public class ExportDbCsvConcepts
 	/**
 	 * List of games for which the list of trials to use does not have to be more
 	 * than a specific number to be able to compute in less than 4 days, due to the
-	 * metrics.
+	 * metric computation.
 	 */
 	private static List<String> lessTrialsGames = new ArrayList<String>();
 
-	/** The limit to use for the games in the list above. */
+	/** The limit of trials to use for some games too slow to compute. */
 	private static final int smallLimitTrials = 30;
+	
+	/**
+	 * List of games for which the list of trials to use does not have to be more
+	 * than an even lower specific number to be able to compute in less than 4 days, due to the
+	 * metrics.
+	 */
+	private static List<String> evenLessTrialsGames = new ArrayList<String>();
+	
+	/** The limit of trials to use for some games even slower to compute. */
+	private static final int smallestLimitTrials = 5;
 
 	// -------------------------------------------------------------------------
 
@@ -121,13 +132,16 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Unashogi");
 		lessTrialsGames.add("Taikyoku Shogi");
 		lessTrialsGames.add("Tai Shogi");
-		lessTrialsGames.add("Kriegsspiel");
 		lessTrialsGames.add("Pagade Kayi Ata (Sixteen-handed)");
 		lessTrialsGames.add("Chex");
 		lessTrialsGames.add("Poprad Game");
 		lessTrialsGames.add("Backgammon"); // Mostly for smart agent (AB), the playouts are too long
 		lessTrialsGames.add("Buffa de Baldrac"); // Mostly for smart agent (AB), the playouts are too long
 		lessTrialsGames.add("Portes"); // Mostly for smart agent (AB), the playouts are too long
+		lessTrialsGames.add("Shatranj al-Kabir"); // Mostly for smart agent (AB), the playouts are too long
+		
+		// Really slow games.
+		evenLessTrialsGames.add("Kriegsspiel");
 
 		final Evaluation evaluation = new Evaluation();
 		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
@@ -149,7 +163,9 @@ public class ExportDbCsvConcepts
 			exportConceptConceptPurposesCSV();
 		}
 
-		if (lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
+		if (evenLessTrialsGames.contains(gameName) && numPlayouts > smallestLimitTrials)
+			numPlayouts = smallestLimitTrials;
+		else if (lessTrialsGames.contains(gameName) && numPlayouts > smallLimitTrials)
 			numPlayouts = smallLimitTrials;
 
 		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
@@ -645,17 +661,17 @@ public class ExportDbCsvConcepts
 
 		// For now I exclude the matchs, but can be included too after. The deduc puzzle
 		// will stay excluded.
-		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
-				//|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
-		{
-			// We add all the default metrics values corresponding to a concept to the
-			// returned map.
-			final List<Metric> metrics = new Evaluation().conceptMetrics();
-			for (final Metric metric : metrics)
-				if (metric.concept() != null)
-					mapFrequency.put(metric.concept().name(), null);
-			return mapFrequency;
-		}
+//		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
+//				// || game.name().contains("Kriegsspiel"))
+//		{
+//			// We add all the default metrics values corresponding to a concept to the
+//			// returned map.
+//			final List<Metric> metrics = new Evaluation().conceptMetrics();
+//			for (final Metric metric : metrics)
+//				if (metric.concept() != null)
+//					mapFrequency.put(metric.concept().name(), null);
+//			return mapFrequency;
+//		}
 
 		// We run the playouts needed for the computation.
 
@@ -817,8 +833,10 @@ public class ExportDbCsvConcepts
 			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
 
 		int limit = Constants.UNDEFINED;
-		if (lessTrialsGames.contains(gameName))
-			limit = smallLimitTrials;
+		if (evenLessTrialsGames.contains(gameName))
+			limit = smallestLimitTrials;
+		else if (lessTrialsGames.contains(gameName))
+				limit = smallLimitTrials;
 
 		int num = 0;
 		for (final File trialFile : trialFolder.listFiles())
@@ -1183,6 +1201,7 @@ public class ExportDbCsvConcepts
 		double numStartComponentsHands = 0.0;
 		double numStartComponentsBoard = 0.0;
 
+		// Check for each initial state of the game.
 		for (int index = 0; index < allStoredRNG.size(); index++)
 		{
 			final RandomProviderState rngState = allStoredRNG.get(index);
@@ -1198,7 +1217,8 @@ public class ExportDbCsvConcepts
 					if (booleanConcepts.get(Concept.Cell.id()))
 						for (int cell = 0; cell < cont.topology().cells().size(); cell++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+									? cs.sizeStack(cell, SiteType.Cell)
 									: cs.count(cell, SiteType.Cell);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
@@ -1207,7 +1227,8 @@ public class ExportDbCsvConcepts
 					if (booleanConcepts.get(Concept.Vertex.id()))
 						for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(vertex, SiteType.Vertex)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+									? cs.sizeStack(vertex, SiteType.Vertex)
 									: cs.count(vertex, SiteType.Vertex);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
@@ -1216,7 +1237,8 @@ public class ExportDbCsvConcepts
 					if (booleanConcepts.get(Concept.Edge.id()))
 						for (int edge = 0; edge < cont.topology().edges().size(); edge++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(edge, SiteType.Edge)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking())  
+									? cs.sizeStack(edge, SiteType.Edge)
 									: cs.count(edge, SiteType.Edge);
 							numStartComponents += count;
 							numStartComponentsBoard += count;
@@ -1228,7 +1250,8 @@ public class ExportDbCsvConcepts
 						for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
 								+ cont.topology().cells().size(); cell++)
 						{
-							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell)
+							final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+									? cs.sizeStack(cell, SiteType.Cell)
 									: cs.count(cell, SiteType.Cell);
 							numStartComponents += count;
 							numStartComponentsHands += count;
@@ -1238,10 +1261,8 @@ public class ExportDbCsvConcepts
 		}
 
 		mapStarting.put(Concept.NumStartComponents.name(), Double.valueOf(numStartComponents / allStoredRNG.size()));
-		mapStarting.put(Concept.NumStartComponentsHand.name(),
-				Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
-		mapStarting.put(Concept.NumStartComponentsBoard.name(),
-				Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
+		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
+		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
 
 //		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
 //		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
@@ -1339,10 +1360,10 @@ public class ExportDbCsvConcepts
 
 			boolean noEndFound = true;
 
-			if (game.rules().phases() != null)
+			if (context.rules().phases() != null)
 			{
 				final int mover = context.state().mover();
-				final Phase endPhase = game.rules().phases()[context.state().currentPhase(mover)];
+				final Phase endPhase = context.rules().phases()[context.state().currentPhase(mover)];
 				final End EndPhaseRule = endPhase.end();
 
 				// Only check if action not part of setup
@@ -1373,7 +1394,7 @@ public class ExportDbCsvConcepts
 				}
 			}
 
-			final End endRule = game.endRules();
+			final End endRule = context.rules().end();
 			if (noEndFound && endRule != null)
 			{
 				final EndRule[] endRules = endRule.endRules();

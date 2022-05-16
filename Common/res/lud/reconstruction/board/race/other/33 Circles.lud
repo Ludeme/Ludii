@@ -4,11 +4,12 @@
         (board (rectangle 3 11)   
             use:Vertex
         )
-    })  
-    
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -33,7 +34,6 @@
         (show Edges Hidden)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour Black) scale:0.9)
         (show Symbol "flower" Vertex (sites Centre) fillColour:(colour Brown) edgeColour:(colour Brown) scale:0.7)
-        
     })
     
 )

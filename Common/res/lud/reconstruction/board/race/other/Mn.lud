@@ -1,12 +1,13 @@
 (game "Mn"
     (players 2)  
     (equipment { 
-        (board (scale 1 6 (rectangle 1 16))) // we know that the game has 5 rectangular pieces too.
-    })  
-    
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (board (scale 1 6 (rectangle 1 16))) 
+        (piece "Square" Each (move [#])) // 5 Pieces.
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 

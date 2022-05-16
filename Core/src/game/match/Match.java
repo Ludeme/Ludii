@@ -779,5 +779,11 @@ public class Match extends Game
 
 		return crash;
 	}
+	
+	@Override
+	public boolean isStacking()
+	{
+		return false;
+	}
 
 }
