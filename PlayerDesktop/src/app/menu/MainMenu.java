@@ -72,7 +72,7 @@ public class MainMenu extends JMenuBar
 	 */
 	public MainMenu(final PlayerApp app)
 	{
-		// No menu if in exhibition mode
+		// No menu for exhibition app.
 		if (app.settingsPlayer().usingExhibitionApp())
 			return;
 		

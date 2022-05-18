@@ -75,6 +75,7 @@ public final class OverlayView extends View
 		if (!app.settingsPlayer().isPerformingTutorialVisualisation() && !app.settingsPlayer().usingExhibitionApp())
 			drawLoginDisc(app, g2d);
 
+		// Draw unique section text for exhibition app.
 		if (app.settingsPlayer().usingExhibitionApp())
 		{
 			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
