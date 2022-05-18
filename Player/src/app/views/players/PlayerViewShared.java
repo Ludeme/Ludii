@@ -31,6 +31,7 @@ public class PlayerViewShared extends PlayerViewUser
 	@Override
 	public void paint(final Graphics2D g2d)
 	{
+		// Add border around shared hand for exhibition app.
 		if (app.settingsPlayer().usingExhibitionApp())
 		{
 			g2d.setColor(Color.WHITE);

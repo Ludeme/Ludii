@@ -796,9 +796,9 @@ public class SettingsPlayer
 		return usingExhibitionApp;
 	}
 	
-	public void setUsingExhibitionApp(final boolean b)
+	public void setUsingExhibitionApp(final boolean usingExhibitionApp)
 	{
-		usingExhibitionApp = b;
+		this.usingExhibitionApp = usingExhibitionApp;
 	}
 
 	public Rectangle boardPlacement()

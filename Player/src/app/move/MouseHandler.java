@@ -196,14 +196,14 @@ public class MouseHandler
 		if (context.game().isDeductionPuzzle())
 			return;
 		
-		// repaint the whole view for exhibition mode.
 		if (app.settingsPlayer().usingExhibitionApp())
 		{
+			// repaint the whole view for exhibition mode.
 			app.repaint();
 		}
-		// repaint the whole view when a piece starts to be dragged.
 		else if (!app.bridge().settingsVC().pieceBeingDragged())
 		{
+			// repaint the whole view when a piece starts to be dragged.
 			app.repaint();
 		}
 		else

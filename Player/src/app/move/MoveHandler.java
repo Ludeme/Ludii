@@ -138,6 +138,7 @@ public class MoveHandler
 				
 				if (app.settingsPlayer().usingExhibitionApp())
 				{
+					// Disable play buttons until tests have been passed.
 					app.settingsPlayer().setTestsPassed(false);
 					app.checkButtonsEnabled();
 				}
