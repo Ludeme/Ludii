@@ -126,20 +126,22 @@ public class Utils
 	 */
 	public static double evaluateState(final Evaluation evaluation, final Context context, final int mover)
 	{
+		final Context instanceContext = context.currentInstanceContext();
+		
 		//TODO need to handle simul games properly
-		if (context.game().isSimultaneousMoveGame())
+		if (instanceContext.game().isSimultaneousMoveGame())
 			return 0.0;
 		
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
-		agent.initAI(context.game(), mover);
+		agent.initAI(instanceContext.game(), mover);
 		
-		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
-		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ rngHashcode;
+		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) instanceContext.rng().saveState()).getState());
+		final long stateAndMoverHash = instanceContext.state().fullHash() ^ mover ^ rngHashcode;
 		
-		if (context.trial().over() || !context.active(mover))
+		if (instanceContext.trial().over() || !instanceContext.active(mover))
 		{
 			// Terminal node (at least for mover)
-			return RankUtils.agentUtilities(context)[mover];
+			return RankUtils.agentUtilities(instanceContext)[mover];
 		}
 		else if (evaluation.stateEvaluationCacheContains(Long.valueOf(stateAndMoverHash)))
 		{
@@ -148,18 +150,18 @@ public class Utils
 		else
 		{
 			// Heuristic evaluation
-			float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+			float heuristicScore = agent.heuristicValueFunction().computeValue(instanceContext, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
 			
 			for (final int opp : agent.opponents(mover))
 			{
-				if (context.active(opp))
-					heuristicScore -= agent.heuristicValueFunction().computeValue(context, opp, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
-				else if (context.winners().contains(opp))
+				if (instanceContext.active(opp))
+					heuristicScore -= agent.heuristicValueFunction().computeValue(instanceContext, opp, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+				else if (instanceContext.winners().contains(opp))
 					heuristicScore -= AlphaBetaSearch.PARANOID_OPP_WIN_SCORE;
 			}
 			
 			// Invert scores if players swapped
-			if (context.state().playerToAgent(mover) != mover)
+			if (instanceContext.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
 
 			// Normalise to between -1 and 1
