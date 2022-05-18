@@ -113,19 +113,14 @@ public class MouseHandler
 					{
 						if (GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardMarginPlacement()))
 						{
-							//if (!GUIUtil.pointOverlapsRectangle(releasedPoint, app.settingsPlayer().boardPlacement()))
-							//{
-								//final Component dragComponent = app.settingsPlayer().dragComponent();
-								//final int dragComponentIndex = IntStream.range(0, context.game().equipment().components().length).filter(i -> context.game().equipment().components()[i] == dragComponent).findFirst().orElse(-1);
-								for (final Move m : context.game().moves(context).moves())
+							for (final Move m : context.game().moves(context).moves())
+							{
+								if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
 								{
-									if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
-									{
-										app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-										break;
-									}
+									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+									break;
 								}
-							//}
+							}
 						}
 						else
 						{

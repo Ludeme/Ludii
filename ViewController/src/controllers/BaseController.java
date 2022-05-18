@@ -96,9 +96,7 @@ public abstract class BaseController implements Controller
 		}
 		else
 		{
-			double furthestDistanceMultiplier = 0.9;
-			if (context.game().name().contains("Exhibition_example"))
-				furthestDistanceMultiplier = 1.2;
+			final double furthestDistanceMultiplier = bridge.settingsVC().furthestDistanceMultiplier();
 			containerStyle = bridge.getContainerStyle(container.index());
 			final double cellDistance = containerStyle.cellRadiusPixels() * furthestDistanceMultiplier;
 			furthestPossibleDistance = Math.max(furthestPossibleDistance, cellDistance);
