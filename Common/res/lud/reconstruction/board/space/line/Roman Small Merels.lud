@@ -5,12 +5,12 @@
         { 
         (board (square 3) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each) 
-        }
-    )  
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -30,9 +30,5 @@
         (origin  "This game was played in Roman Empire, from around 175 to 674.")
         }
     )
-    
-    (graphics {
-        
-    })
     
 )
