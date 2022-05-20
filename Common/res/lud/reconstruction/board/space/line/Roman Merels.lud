@@ -5,12 +5,12 @@
         { 
         (board (concentric Square rings:3) use:Vertex) 
         (hand Each)
-        (piece "Marker" Each) 
-        }
-    )  
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -31,7 +31,4 @@
         }
     )
     
-    (graphics {
-        
-    })
 )
