@@ -1,0 +1,29 @@
+(game "Renette" // Capturing all of the opponent's pieces results in a win.
+	    (players 2)  
+	    (equipment 
+	            (board (rectangle 2 13) 
+	                    {
+	                    (track [#] P1 directed:True)
+	                    (track [#] P2 directed:True)
+	                    } 
+	                    use:Vertex
+	                ) 		
+	    [#]
+	    )
+	    (rules
+	        (start [#])
+	        (play [#]) 
+	        (end [#])
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        }
+	    )
+	    
+	)
