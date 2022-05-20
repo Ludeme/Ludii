@@ -8,14 +8,14 @@
                 (shift 2 0 (scale 1 2 (square 2)))
                 (shift 2 3 (scale 1 2 (square 2)))
             })
-            )
-            (piece "Disc" Each (move [#])) 
-        })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
         )
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
 )
 
 //------------------------------------------------------------------------------

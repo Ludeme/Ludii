@@ -26,49 +26,49 @@
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-                (move
-                    Step 
-                    (to if:(is Empty (to))) 
-                    "IfLine3MoveAgain" 
-                )
-            ) 
+            (move
+                Step 
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
+            )
+        ) 
     })  
     (rules 
-            (start (place "Marker" "Hand" count:[3..12]))
-            
-            phases:{
-            (phase "Placement"
-                (play
-                    (if "SameTurn"
-                        "RemoveEnemyPiece"
+        (start (place "Marker" "Hand" count:[3..12]))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPieceNotInLine3"
+                    (if (> (count Pieces Mover) 3)
+                        (forEach Piece)
                         (move 
-                            (from (handSite Mover)) 
-                            (to (sites Empty)) 
-                            "IfLine3MoveAgain" 
-                        )  
-                    )
-                ) 
-                (nextPhase Mover ("HandEmpty" Mover) "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if "SameTurn"
-                        "RemoveEnemyPieceNotInLine3"
-                        (if (> (count Pieces Mover) 3)
-                            (forEach Piece)
-                            (move 
-                                (from (sites Occupied by:Mover))
-                                (to (sites Empty))
-                            )
+                            (from (sites Occupied by:Mover))
+                            (to (sites Empty))
                         )
                     )
                 )
             )
-            }
-            
-            (end (if (no Pieces Next) (result Mover Win)))
         )
+        }
+        
+        (end (if (no Pieces Next) (result Mover Win)))
+    )
 )
 
 //------------------------------------------------------------------------------

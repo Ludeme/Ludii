@@ -6,13 +6,13 @@
         (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
         (hand Each)
         (piece "Marker" Each (move [#])) 
-        })
-        (rules
-            (start [#])
-            (play [#])
-            (end [#])
-        )
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
+)
 
 //------------------------------------------------------------------------------
 
