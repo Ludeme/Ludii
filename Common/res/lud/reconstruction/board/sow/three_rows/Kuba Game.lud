@@ -1,0 +1,36 @@
+(game "Kuba Game"  
+	    (players 2)  
+	    (equipment { 
+	        (mancalaBoard 3 [3 | #] 
+	            {
+	            (track [#])
+	            (track [#])
+	            }
+	        )
+	        (piece "Seed" Shared)
+	    })  
+	    (rules 
+	        (start [#])
+	        (play 
+	            (move Select 
+	                (from [#])
+	                (then (sow [#]))
+	            )
+	        )
+	        (end [#])
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata  
+	    (info
+	        {
+	        }
+	    )
+	    
+	    (graphics {
+	        (board Style Mancala)
+	    })
+	)
+
