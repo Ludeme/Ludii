@@ -7,11 +7,12 @@
         (hand Each)
         (piece "Marker" Each) 
         }
-    )  
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
-    )
+})
+(rules
+    (start [#])
+    (play [#])
+    (end [#])
+)
 )
 
 //------------------------------------------------------------------------------
@@ -30,9 +31,5 @@
         (origin  "This game was played in Armenia, around 1694.")
         }
     )
-    
-    (graphics {
-        
-    })
     
 )
