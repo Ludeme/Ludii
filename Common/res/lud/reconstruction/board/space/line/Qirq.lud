@@ -3,14 +3,14 @@
     
     (equipment 
         { 
-        (board (square 3) use:Vertex) 
+        (board (square 3) use:Edge) 
         (hand Each)
-        (piece "Marker" Each) 
-        }
-    )  
-    (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -30,9 +30,5 @@
         (origin  "This game was played in Southwest Asia, from around 1503 to 1566.")
         }
     )
-    
-    (graphics {
-        
-    })
     
 )
