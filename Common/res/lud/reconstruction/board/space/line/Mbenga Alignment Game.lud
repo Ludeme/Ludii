@@ -6,19 +6,17 @@
             (square 3 diagonals:Solid)
             use:Vertex
         )
-        (piece "Seed" Shared)
-        }
-    )  
+        (hand Each)
+        (piece "Marker" Each)
+    }) 
+    
     (rules 
-        
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
+            (start (place "Marker" "Hand" count:[3..9]))
+            
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            
+            (end (if (is Line 3) (result Mover Win)))
         )
-    )
 )
 
 //------------------------------------------------------------------------------
@@ -36,9 +34,4 @@
         (origin  "This game was played in Central Africa, from around 1903 to 1907.")
         }
     )
-    
-    (graphics {
-        
-    })
 )
-
