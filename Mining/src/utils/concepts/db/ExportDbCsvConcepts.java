@@ -118,7 +118,7 @@ public class ExportDbCsvConcepts
 	private static List<String> evenLessTrialsGames = new ArrayList<String>();
 	
 	/** The limit of trials to use for some games even slower to compute. */
-	private static final int smallestLimitTrials = 5;
+	private static final int smallestLimitTrials = 1;
 
 	// -------------------------------------------------------------------------
 
@@ -140,8 +140,27 @@ public class ExportDbCsvConcepts
 		lessTrialsGames.add("Portes"); // Mostly for smart agent (AB), the playouts are too long
 		lessTrialsGames.add("Shatranj al-Kabir"); // Mostly for smart agent (AB), the playouts are too long
 		
-		// Really slow games.
+		// Really slow games (included deduc puzzles because the trials always reach the move limit....)
 		evenLessTrialsGames.add("Kriegsspiel");
+		evenLessTrialsGames.add("Anti-Knight Sudoku");
+		evenLessTrialsGames.add("Fill A Pix");
+		evenLessTrialsGames.add("Futoshiki");
+		evenLessTrialsGames.add("Hoshi");
+		evenLessTrialsGames.add("Kakuro");
+		evenLessTrialsGames.add("Killer Sudoku");
+		evenLessTrialsGames.add("Latin Square");
+		evenLessTrialsGames.add("Magic Hexagon");
+		evenLessTrialsGames.add("Magic Square");
+		evenLessTrialsGames.add("N Queens");
+		evenLessTrialsGames.add("Samurai Sudoku");
+		evenLessTrialsGames.add("Slitherlink");
+		evenLessTrialsGames.add("Squaro");
+		evenLessTrialsGames.add("Sudoku");
+		evenLessTrialsGames.add("Sudoku Mine");
+		evenLessTrialsGames.add("Sudoku X");
+		evenLessTrialsGames.add("Sujiken");
+		evenLessTrialsGames.add("Takuzu");
+		evenLessTrialsGames.add("Tridoku");
 
 		final Evaluation evaluation = new Evaluation();
 		int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);

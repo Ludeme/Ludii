@@ -58,6 +58,7 @@ public final class BoardView extends View
 	@Override
 	public void paint(final Graphics2D g2d)
 	{
+		// Add border around board for exhibition app.
 		if (app.settingsPlayer().usingExhibitionApp())
 		{
 			g2d.setColor(Color.WHITE);

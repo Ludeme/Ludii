@@ -18,7 +18,7 @@ import app.PlayerApp;
 public abstract class View
 {
 	/** Panel's placement. */
-	protected Rectangle placement;
+	public Rectangle placement;
 	
 	private final boolean debug = false;
 	

@@ -2,23 +2,23 @@
     (players 2)  
     (equipment { 
         (mancalaBoard 2 9 store:None
-        		{
-                (track [#])
-                (track [#])
-        		}
+            {
+            (track [#])
+            (track [#])
+            }
         )
         (piece "Seed" Shared)
     })  
     (rules 
-            (start [#]) // 24 counters per player....
-            (play 
-            	(move Select 
-            		(from [#])
-            		(then (sow [#]))
-            	)
+        (start [#]) // 24 counters per player....
+        (play 
+            (move Select 
+                (from [#])
+                (then (sow [#]))
             )
-            (end [#])
         )
+        (end [#])
+    )
 )
 
 //------------------------------------------------------------------------------
