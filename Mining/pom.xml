@@ -17,6 +17,12 @@
     </properties>
     <build>
         <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>src</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/gameDistance/utils/apted/test/resources</directory>
+            </testResource>
+        </testResources>
         <resources>
             <resource>
                 <directory>res</directory>
@@ -37,7 +43,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/gameDistance/utils/apted/test/java/**</exclude>
+                        <exclude>gameDistance/utils/apted/test/java/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -46,7 +52,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <includes>
-                        <include>**/gameDistance/utils/apted/test/java/**</include>
+                        <include>gameDistance/utils/apted/test/java/**</include>
                     </includes>
                 </configuration>
             </plugin>

@@ -1738,7 +1738,11 @@ public class Context
 		trial.addUndoData(endData);
 	}
 
-    private static SplitMix64 splitMix64() {
+    /**
+     * TODO: find a better place for this
+     * @return 
+     */
+    public static SplitMix64 splitMix64() {
         return new SplitMix64(SeedFactory.createLong());
     }
 }

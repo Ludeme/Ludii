@@ -1,4 +1,5 @@
 import approaches.random.Generator;
+import org.junit.Test;
 
 /**
  * Random game tester.
@@ -6,7 +7,8 @@ import approaches.random.Generator;
  */
 public class RandomGameTester
 {
-	public static void main(final String[] arg)
+    @Test
+	public void testGames()
 	{
 		Generator.testGames(1000, true, false, false, false);
 	}

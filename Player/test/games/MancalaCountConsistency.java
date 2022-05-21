@@ -26,6 +26,8 @@ import other.state.State;
 import other.state.container.ContainerState;
 import other.trial.Trial;
 
+import static other.context.Context.splitMix64;
+
 /**
  * Unit test to make sure that the sum of counts of all sites in all
  * Mancala games remains constant throughout random playouts.
@@ -133,7 +135,7 @@ public class MancalaCountConsistency
 				final Trial trial = new Trial(game);
 				final Context context = new Context(game, trial);
 				
-				final SplitMix64 playoutRNG = new SplitMix64();
+				final SplitMix64 playoutRNG = splitMix64();
 				final RandomProviderDefaultState playoutStartRngState = (RandomProviderDefaultState) playoutRNG.saveState();
 				final RandomProviderDefaultState gameStartRngState = (RandomProviderDefaultState) context.rng().saveState();
 				
