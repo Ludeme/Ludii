@@ -813,13 +813,6 @@ public class GenerateFeatureEvalScripts
 				.withType(OptionTypes.String)
 				.setRequired());
 		
-		argParse.addOption(new ArgOption()
-				.withNames("--scripts-dir")
-				.help("Directory in which to store generated scripts.")
-				.withNumVals(1)
-				.withType(OptionTypes.String)
-				.setRequired());
-		
 		// parse the args
 		if (!argParse.parseArguments(args))
 			return;
