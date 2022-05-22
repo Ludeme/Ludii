@@ -689,6 +689,8 @@ public class GenerateFeatureEvalScripts
 			e.printStackTrace();
 		}
 		
+		executor.shutdown();
+		
 		final List<List<String>> jobScriptsLists = new ArrayList<List<String>>();
 		List<String> remainingJobScriptNames = jobScriptNames;
 
