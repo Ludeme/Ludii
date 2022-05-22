@@ -56,7 +56,7 @@ public class GenerateFeatureEvalScripts
 {
 	
 	/** Number of threads to use for our actual job that's building decision trees and generating eval scripts */
-	private static final int NUM_GENERATION_THREADS = 128;
+	private static final int NUM_GENERATION_THREADS = 96;
 	
 	/** Depth limits for which we want to build decision trees */
 	private static final int[] DECISION_TREE_DEPTHS = new int[] {1, 2, 3, 4, 5};
