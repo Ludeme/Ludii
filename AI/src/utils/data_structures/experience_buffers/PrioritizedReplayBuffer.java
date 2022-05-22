@@ -317,8 +317,7 @@ public class PrioritizedReplayBuffer implements Serializable, ExperienceBuffer
 						
 						for (final Container container : game.equipment().containers())
 						{
-							if (container != null && 
-									container.name().equals(containerName))
+							if (container != null && container.name().equals(containerName))
 							{
 								containerState.setContainer(container);
 								break;

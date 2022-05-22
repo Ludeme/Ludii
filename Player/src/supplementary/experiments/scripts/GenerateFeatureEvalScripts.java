@@ -35,6 +35,7 @@ import main.collections.ListUtils;
 import main.options.Ruleset;
 import metadata.ai.features.trees.FeatureTrees;
 import other.GameLoader;
+import other.WeaklyCachingGameLoader;
 import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import supplementary.experiments.analysis.RulesetConceptsUCT;
@@ -314,7 +315,7 @@ public class GenerateFeatureEvalScripts
 					{
 						try
 						{
-							final Game game = GameLoader.loadGameFromName(processData.gameName, processData.rulesetName);
+							final Game game = WeaklyCachingGameLoader.SINGLETON.loadGameFromName(processData.gameName, processData.rulesetName);
 							
 							// Construct an MCTS object with trained CE selection policy, easiest way to extract
 							// the features from files again
