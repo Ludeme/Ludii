@@ -496,7 +496,7 @@ public class GenerateFeatureEvalScripts
 		
 		try
 		{
-			final CountDownLatch latch = new CountDownLatch(evalProcessDataList.size());
+			final CountDownLatch latch = new CountDownLatch(batchIndices.size());
 			
 			for (int i = 0; i < batchIndices.size(); ++i)
 			{
