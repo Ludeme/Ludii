@@ -132,8 +132,9 @@ public class GenerateFeatureEvalScripts
 
 		final String userName = argParse.getValueString("--user-name");
 		
-		// Modify the RulesetConceptsUCT.csv filepath for running on Snellius
+		// Modify the ruleset filepaths for running on Snellius
 		RulesetConceptsUCT.FILEPATH = "/home/" + userName + "/RulesetConceptsUCT.csv";
+		RulesetNames.FILEPATH = "/home/" + userName + "/GameRulesets.csv";
 		
 		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter(s -> (
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
@@ -329,7 +330,7 @@ public class GenerateFeatureEvalScripts
 											+ 
 											userName 
 											+ 
-											"/TrainFeaturesSnelliusAllGames/Out/" 
+											"/TrainFeaturesSnelliusAllGames/Out" 
 											+
 											StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
 											+ 
@@ -381,7 +382,7 @@ public class GenerateFeatureEvalScripts
 											+ 
 											userName 
 											+ 
-											"/TrainFeaturesSnelliusAllGames/Out/" 
+											"/TrainFeaturesSnelliusAllGames/Out" 
 											+
 											StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
 											+ 
@@ -502,85 +503,60 @@ public class GenerateFeatureEvalScripts
 				final int evalProcessStartIdx = batchIdx * PROCESSES_PER_JOB;
 				final int evalProcessEndIdx = Math.min((batchIdx + 1) * PROCESSES_PER_JOB, evalProcessDataList.size());
 				
+				// Start a new job script
+				final String jobScriptFilename = "EvalFeatureTrees_" + batchIdx + ".sh";
+
 				executor.submit
 				(
 					() ->
 					{
 						try
+						(
+							final PrintWriter writer = 
+								new UnixPrintWriter
+								(
+									new File("/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/" + jobScriptFilename), "UTF-8"
+								)
+						)
 						{
-							// Start a new job script
-							final String jobScriptFilename = "EvalFeatureTrees_" + batchIdx + ".sh";
-									
-							try 
-							(
-								final PrintWriter writer = 
-									new UnixPrintWriter
-									(
-										new File("/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/" + jobScriptFilename), "UTF-8"
-									)
-							)
+							
+							writer.println("#!/bin/bash");
+							writer.println("#SBATCH -J EvalFeatureTrees");
+							writer.println("#SBATCH -p thin");
+							writer.println("#SBATCH -o /home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Out_%J.out");
+							writer.println("#SBATCH -e /home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Err_%J.err");
+							writer.println("#SBATCH -t " + MAX_WALL_TIME);
+							writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
+							
+							// Compute memory and core requirements
+							final int numProcessesThisJob = evalProcessEndIdx - evalProcessStartIdx;
+							final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
+							final int jobMemRequestGB;
+							if (exclusive)
+								jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
+							else
+								jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
+							
+							totalCoreHoursRequested.add(CORES_PER_NODE * (MAX_WALL_TIME / 60.0));
+							
+							writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
+							writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
+							
+							if (exclusive)
+								writer.println("#SBATCH --exclusive");
+							
+							// load Java modules
+							writer.println("module load 2021");
+							writer.println("module load Java/11.0.2");
+							
+							// Put up to PROCESSES_PER_JOB processes in this job
+							int numJobProcesses = 0;
+							for (int processIdx = evalProcessStartIdx; processIdx < evalProcessEndIdx; ++processIdx)
 							{
-								writer.println("#!/bin/bash");
-								writer.println("#SBATCH -J EvalFeatureTrees");
-								writer.println("#SBATCH -p thin");
-								writer.println("#SBATCH -o /home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Out_%J.out");
-								writer.println("#SBATCH -e /home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Err_%J.err");
-								writer.println("#SBATCH -t " + MAX_WALL_TIME);
-								writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
+								final EvalProcessData evalProcessData = evalProcessDataList.get(processIdx);
 								
-								// Compute memory and core requirements
-								final int numProcessesThisJob = evalProcessEndIdx - evalProcessStartIdx;
-								final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
-								final int jobMemRequestGB;
-								if (exclusive)
-									jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
-								else
-									jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
-								
-								totalCoreHoursRequested.add(CORES_PER_NODE * (MAX_WALL_TIME / 60.0));
-								
-								writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
-								writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
-								
-								if (exclusive)
-									writer.println("#SBATCH --exclusive");
-								
-								// load Java modules
-								writer.println("module load 2021");
-								writer.println("module load Java/11.0.2");
-								
-								// Put up to PROCESSES_PER_JOB processes in this job
-								int numJobProcesses = 0;
-								for (int processIdx = evalProcessStartIdx; processIdx < evalProcessEndIdx; ++processIdx)
-								{
-									final EvalProcessData evalProcessData = evalProcessDataList.get(processIdx);
-									
-									final List<String> agentStrings = new ArrayList<String>();
-									final String agentStr1 = 
-												StringRoutines.join
-												(
-													";", 
-													"algorithm=SoftmaxPolicyLogitTree",
-													"policytrees=/" + 
-													StringRoutines.join
-													(
-														"/", 
-														"home",
-														userName,
-														"TrainFeaturesSnelliusAllGames",
-														"Out",
-														StringRoutines.cleanGameName(evalProcessData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
-														+ 
-														"_"
-														+
-														StringRoutines.cleanRulesetName(evalProcessData.rulesetName).replaceAll(Pattern.quote("/"), "_"),
-														"CE_Selection_Logit_Tree_" + evalProcessData.treeDepth1 + ".txt"
-													),
-													"friendly_name=Depth" + evalProcessData.treeDepth1,
-													"greedy=false"
-												);
-									
-									final String agentStr2 = 
+								final List<String> agentStrings = new ArrayList<String>();
+								final String agentStr1 = 
 											StringRoutines.join
 											(
 												";", 
@@ -592,85 +568,106 @@ public class GenerateFeatureEvalScripts
 													"home",
 													userName,
 													"TrainFeaturesSnelliusAllGames",
-													"Out",
+													"Out" 
+													+
 													StringRoutines.cleanGameName(evalProcessData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
 													+ 
 													"_"
 													+
 													StringRoutines.cleanRulesetName(evalProcessData.rulesetName).replaceAll(Pattern.quote("/"), "_"),
-													"CE_Selection_Logit_Tree_" + evalProcessData.treeDepth2 + ".txt"
+													"CE_Selection_Logit_Tree_" + evalProcessData.treeDepth1 + ".txt"
 												),
-												"friendly_name=Depth" + evalProcessData.treeDepth2,
+												"friendly_name=Depth" + evalProcessData.treeDepth1,
 												"greedy=false"
 											);
-				
-									agentStrings.add(StringRoutines.quote(agentStr1));
-									agentStrings.add(StringRoutines.quote(agentStr2));
-									
-									// Write Java call for this process
-									String javaCall = StringRoutines.join
-											(
-												" ", 
-												"java",
-												"-Xms" + JVM_MEM + "M",
-												"-Xmx" + JVM_MEM + "M",
-												"-XX:+HeapDumpOnOutOfMemoryError",
-												"-da",
-												"-dsa",
-												"-XX:+UseStringDeduplication",
-												"-jar",
-												StringRoutines.quote("/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Ludii.jar"),
-												"--eval-agents",
-												"--game",
-												StringRoutines.quote(evalProcessData.gameName),
-												"--ruleset",
-												StringRoutines.quote(evalProcessData.rulesetName),
-												"-n " + NUM_TRIALS,
-												"--thinking-time 1",
-												"--agents",
-												StringRoutines.join(" ", agentStrings),
-												"--warming-up-secs",
-												String.valueOf(0),
-												"--game-length-cap",
-												String.valueOf(1000),
-												"--out-dir",
-												StringRoutines.quote
-												(
-													"/home/" + 
-													userName + 
-													"/EvalFeatureTreesSnelliusAllGames/Out/" + 
-													StringRoutines.cleanGameName(evalProcessData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
-													+ 
-													"_"
-													+
-													StringRoutines.cleanRulesetName(evalProcessData.rulesetName).replaceAll(Pattern.quote("/"), "_")
-													+
-													"/" 
-													+
-													evalProcessData.treeDepth1 + "_vs_" + evalProcessData.treeDepth2
-												),
-												"--output-summary",
-												"--output-alpha-rank-data",
-												"--max-wall-time",
-												String.valueOf(MAX_WALL_TIME),
-												">",
-												"/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
-												"&"		// Run processes in parallel
-											);
-									
-									writer.println(javaCall);
-									
-									++numJobProcesses;
-								}
 								
-								writer.println("wait");		// Wait for all the parallel processes to finish
+								final String agentStr2 = 
+										StringRoutines.join
+										(
+											";", 
+											"algorithm=SoftmaxPolicyLogitTree",
+											"policytrees=/" + 
+											StringRoutines.join
+											(
+												"/", 
+												"home",
+												userName,
+												"TrainFeaturesSnelliusAllGames",
+												"Out"
+												+
+												StringRoutines.cleanGameName(evalProcessData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
+												+ 
+												"_"
+												+
+												StringRoutines.cleanRulesetName(evalProcessData.rulesetName).replaceAll(Pattern.quote("/"), "_"),
+												"CE_Selection_Logit_Tree_" + evalProcessData.treeDepth2 + ".txt"
+											),
+											"friendly_name=Depth" + evalProcessData.treeDepth2,
+											"greedy=false"
+										);
+			
+								agentStrings.add(StringRoutines.quote(agentStr1));
+								agentStrings.add(StringRoutines.quote(agentStr2));
+								
+								// Write Java call for this process
+								String javaCall = StringRoutines.join
+										(
+											" ", 
+											"java",
+											"-Xms" + JVM_MEM + "M",
+											"-Xmx" + JVM_MEM + "M",
+											"-XX:+HeapDumpOnOutOfMemoryError",
+											"-da",
+											"-dsa",
+											"-XX:+UseStringDeduplication",
+											"-jar",
+											StringRoutines.quote("/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Ludii.jar"),
+											"--eval-agents",
+											"--game",
+											StringRoutines.quote(evalProcessData.gameName),
+											"--ruleset",
+											StringRoutines.quote(evalProcessData.rulesetName),
+											"-n " + NUM_TRIALS,
+											"--thinking-time 1",
+											"--agents",
+											StringRoutines.join(" ", agentStrings),
+											"--warming-up-secs",
+											String.valueOf(0),
+											"--game-length-cap",
+											String.valueOf(1000),
+											"--out-dir",
+											StringRoutines.quote
+											(
+												"/home/" + 
+												userName + 
+												"/EvalFeatureTreesSnelliusAllGames/Out" + 
+												StringRoutines.cleanGameName(evalProcessData.gameName.replaceAll(Pattern.quote(".lud"), "")) 
+												+ 
+												"_"
+												+
+												StringRoutines.cleanRulesetName(evalProcessData.rulesetName).replaceAll(Pattern.quote("/"), "_")
+												+
+												"/" 
+												+
+												evalProcessData.treeDepth1 + "_vs_" + evalProcessData.treeDepth2
+											),
+											"--output-summary",
+											"--output-alpha-rank-data",
+											"--max-wall-time",
+											String.valueOf(MAX_WALL_TIME),
+											">",
+											"/home/" + userName + "/EvalFeatureTreesSnelliusAllGames/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
+											"&"		// Run processes in parallel
+										);
+								
+								writer.println(javaCall);
+								
+								++numJobProcesses;
+							}
+							
+							writer.println("wait");		// Wait for all the parallel processes to finish
 
-								jobScriptNames.add(jobScriptFilename);
-							}
-							catch (final FileNotFoundException | UnsupportedEncodingException e)
-							{
-								e.printStackTrace();
-							}
+							jobScriptNames.add(jobScriptFilename);
 						}
 						catch (final Exception e)
 						{

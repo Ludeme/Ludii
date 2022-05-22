@@ -164,8 +164,9 @@ public class LinearFunction
 			
 			return func;
 		} 
-		catch (final IOException e) 
+		catch (final Exception e) 
 		{
+			System.err.println("exception while trying to load from filepath: " + filepath);
 			e.printStackTrace();
 		}
 		
