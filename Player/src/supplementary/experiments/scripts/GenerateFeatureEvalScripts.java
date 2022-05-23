@@ -150,6 +150,7 @@ public class GenerateFeatureEvalScripts
 		
 		final List<String> gameNames = new ArrayList<String>();
 		final List<String> rulesetNames = new ArrayList<String>();
+		final TIntArrayList gamePlayerCounts = new TIntArrayList();
 		final TDoubleArrayList expectedTrialDurations = new TDoubleArrayList();
 		
 		for (final String gameName : allGameNames)
@@ -269,6 +270,7 @@ public class GenerateFeatureEvalScripts
 				
 				gameNames.add("/" + shortGameName);
 				rulesetNames.add(fullRulesetName);
+				gamePlayerCounts.add(game.players().count());
 				expectedTrialDurations.add(expectedTrialDuration);
 			}
 		}
@@ -297,7 +299,7 @@ public class GenerateFeatureEvalScripts
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
 		for (int idx : sortedGameIndices)
 		{
-			processDataList.add(new ProcessData(gameNames.get(idx), rulesetNames.get(idx)));
+			processDataList.add(new ProcessData(gameNames.get(idx), rulesetNames.get(idx), gamePlayerCounts.getQuick(idx)));
 		}
 		
 		// Build all the decision trees
@@ -486,7 +488,7 @@ public class GenerateFeatureEvalScripts
 		{
 			for (int i = 0; i < DECISION_TREE_DEPTHS.length - 1; ++i)
 			{
-				evalProcessDataList.add(new EvalProcessData(processData.gameName, processData.rulesetName, DECISION_TREE_DEPTHS[i], DECISION_TREE_DEPTHS[i + 1]));
+				evalProcessDataList.add(new EvalProcessData(processData.gameName, processData.rulesetName, processData.numPlayers, DECISION_TREE_DEPTHS[i], DECISION_TREE_DEPTHS[i + 1]));
 			}
 		}
 		
@@ -607,8 +609,13 @@ public class GenerateFeatureEvalScripts
 											"greedy=false"
 										);
 			
-								agentStrings.add(StringRoutines.quote(agentStr1));
-								agentStrings.add(StringRoutines.quote(agentStr2));
+								while (agentStrings.size() < evalProcessData.numPlayers)
+								{
+									agentStrings.add(StringRoutines.quote(agentStr1));
+									
+									if (agentStrings.size() < evalProcessData.numPlayers)
+										agentStrings.add(StringRoutines.quote(agentStr2));
+								}
 								
 								// Write Java call for this process
 								String javaCall = StringRoutines.join
@@ -744,16 +751,19 @@ public class GenerateFeatureEvalScripts
 	{
 		public final String gameName;
 		public final String rulesetName;
+		public final int numPlayers;
 		
 		/**
 		 * Constructor
 		 * @param gameName
 		 * @param rulesetName
+		 * @param numPlayers
 		 */
-		public ProcessData(final String gameName, final String rulesetName)
+		public ProcessData(final String gameName, final String rulesetName, final int numPlayers)
 		{
 			this.gameName = gameName;
 			this.rulesetName = rulesetName;
+			this.numPlayers = numPlayers;
 		}
 	}
 	
@@ -766,6 +776,7 @@ public class GenerateFeatureEvalScripts
 	{
 		public final String gameName;
 		public final String rulesetName;
+		public final int numPlayers;
 		public final int treeDepth1;
 		public final int treeDepth2;
 
@@ -779,12 +790,13 @@ public class GenerateFeatureEvalScripts
 		 */
 		public EvalProcessData
 		(
-			final String gameName, final String rulesetName,
+			final String gameName, final String rulesetName, final int numPlayers,
 			final int treeDepth1, final int treeDepth2
 		)
 		{
 			this.gameName = gameName;
 			this.rulesetName = rulesetName;
+			this.numPlayers = numPlayers;
 			this.treeDepth1 = treeDepth1;
 			this.treeDepth2 = treeDepth2;
 		}
