@@ -1,0 +1,35 @@
+(game "Leoncito"
+	    (players 2)  
+	    (equipment {
+	    	(board [#])
+	    	(piece "Dog" P1 (move Step Orthogonal (to if:(is (to) Empty))))
+	    	(piece "Lion" P2 
+	    		(or
+	    			(move Step Orthogonal (to if:(is (to) Empty)))		
+	    			(move Hop Orthogonal 
+	    				(between if:(is Enemy (who at:(between))))
+	    				(to if:(is (to) Empty))
+	    			)
+	    		)
+	    	)
+	    })
+	    (rules
+	        (start [#])
+	        (play (forEach Piece)) 
+	        (end {
+	        	(if (no Pieces P1) (result P2 Win))
+	        	(if (no Moves P2) (result P1 Win))
+	        }) 
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        }
+	    )
+	    
+	)
