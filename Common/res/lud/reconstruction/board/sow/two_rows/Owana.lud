@@ -1,23 +1,28 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
 (game "Owana"  
     (players 2)  
     
     (equipment { 
         (mancalaBoard 2 4
             (track "Track" "1,E,N,W" loop:True)
-        )
+        )        
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
         (piece "Seed" Shared)
-        }
-    )  
+        (hand Each)
+        })  
     (rules 
         (start (set Count 4 to:(sites Track) ) )
         
-        (play (forEach Piece))
+        (play [#])
         
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (end {
+            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win)) 
+            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win)) 
+        })
     )
 )
 

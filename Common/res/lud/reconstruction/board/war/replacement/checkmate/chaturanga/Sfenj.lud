@@ -1,11 +1,13 @@
 (game "Sfenj"
     (players 2)  
     (equipment { 
-        (board (square 8)) 		
+        (board (square 8)) 
+        [#]
     })
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+            (start [#])
+            (play [#])
+        (end [#])
     )
 )
 

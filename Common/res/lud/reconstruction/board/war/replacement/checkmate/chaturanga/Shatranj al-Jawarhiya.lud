@@ -2,11 +2,17 @@
     (players 2)  
     (equipment { 
         (board (rectangle 8 7)) 		
-        // We know: the game has 6 piece types
+        (piece "Mouth" Each (move [#]))
+        (piece "Eye" Each (move [#]))
+        (piece "Ear" Each (move [#]))
+        (piece "Hand" Each (move [#]))
+        (piece "Foot" Each (move [#]))
+        (piece "Heart" Each (move [#]))
     })
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+            (start [#])
+            (play [#])
+        (end [#])
     )
 )
 

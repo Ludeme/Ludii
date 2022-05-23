@@ -1,12 +1,14 @@
-(game "Maka Dai Dai Shogi"
+(game "Dai Shogi"
     (players 2) 
     (equipment { 
-        (board (square 19))
-        // We know: 192 pieces in total.
+        (board (square 15))
+        [#]
+        // We know: 130 pieces in total.
     })
     (rules
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+            (start [#])
+            (play [#])
+        (end [#])
     )
 )
 
@@ -16,10 +18,10 @@
     
     (info
         {
-        (description "Maka Dai Dai Shogi is a large version of Shogi played in the Edo period.")
-        (rules "19x19 board. 192 pieces.")
-        (source "DLP evidence.")
-        (id "1338")
+        (description "Dai Shogi is a large version of Shogi played in Japan played in the thirteenth-fourteenth century.")
+        (rules "15x15 board. 130 pieces.")
+        (source "DLP evidence")
+        (id "1336")
         (version "1.3.2")
         (classification "board/war/replacement/checkmate/shogi/reconstruction")
         (credit "Eric Piette")
