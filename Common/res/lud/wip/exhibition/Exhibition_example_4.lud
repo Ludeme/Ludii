@@ -66,11 +66,10 @@
                         (then (moveAgain))
                     )
                 )
-                (move 
-                    (from ("AllSites")) 
-                    (to ("AllSites"))
-                    (then (moveAgain))
-                )
+                (move Select
+                        (from ("AllSites")) 
+                        (then (moveAgain))
+                    )
                 (move 
                     (from ("AllSites")) 
                     (to (forEach (sites Board) if:(is Empty (site))))

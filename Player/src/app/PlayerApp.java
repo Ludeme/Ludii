@@ -10,8 +10,6 @@ import java.awt.event.ItemListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +49,6 @@ import other.move.Move;
 import other.state.State;
 import other.state.container.ContainerState;
 import tournament.Tournament;
-import util.ContainerUtil;
 import util.HiddenUtil;
 import util.ImageInfo;
 import util.PlaneType;
@@ -199,15 +196,15 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		final BufferedImage componentImage = graphicsCache().getComponentImage(bridge, imageInfo.containerIndex(), imageInfo.component(), imageInfo.component().owner(), imageInfo.localState(), imageInfo.value(), imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.imageSize(), context, hiddenValue, imageInfo.rotation(), false);
 
 		// Exhibition glowing selected pieces
-		if (settingsPlayer().usingExhibitionApp() && imageInfo.component().equals(MoveHandler.getLastMovedPiece(this)))
+		if (settingsPlayer().usingExhibitionApp() && imageInfo.component().equals(MoveHandler.getLastMovedPiece(this)) && context.game().equipment().containers().length == 4)
 		{
 			//g2d.setColor(new Color(253,253,150,100));
 			//g2d.fillOval(imageInfo.drawPosn().x, imageInfo.drawPosn().y, imageInfo.imageSize(), imageInfo.imageSize());
 			BufferedImage componentImageGlow = BufferedImageUtil.deepCopy(componentImage);
-			int sizeExtension = (int) (componentImageGlow.getWidth()*0.2);
+			final int sizeExtension = (int) (componentImageGlow.getWidth()*0.2);
 			componentImageGlow = BufferedImageUtil.resize(componentImageGlow, componentImageGlow.getWidth() + sizeExtension, componentImageGlow.getHeight() + sizeExtension);
 			componentImageGlow = BufferedImageUtil.setPixelsToColour(componentImageGlow, new Color(253,253,50,100));
-			Point drawPosnGlow = new Point((int) (imageInfo.drawPosn().x - sizeExtension/2), (int) (imageInfo.drawPosn().y - sizeExtension/2));
+			final Point drawPosnGlow = new Point(imageInfo.drawPosn().x - sizeExtension/2, imageInfo.drawPosn().y - sizeExtension/2);
 			graphicsCache().drawPiece(g2d, context,  componentImageGlow, drawPosnGlow, imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.transparency());
 			graphicsCache().drawPiece(g2d, context,  componentImage, imageInfo.drawPosn(), imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.transparency());	
 		}

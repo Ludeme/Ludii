@@ -61,7 +61,7 @@ public class MouseHandler
 		final Location selectedFromLocation = app.bridge().settingsVC().selectedFromLocation();
 		Location selectedToLocation;
 
-		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode() || app.settingsPlayer().usingExhibitionApp())
+		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode())
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getAllLocations(context, app.bridge()));	
 		else
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getLegalToLocations(app.bridge(), context));
@@ -92,6 +92,7 @@ public class MouseHandler
 			{
 				SandboxUtil.makeSandboxDragMove(app, selectedFromLocation, selectedToLocation);
 			}
+			
 			else if (!MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation, false, -1))
 			{
 				// Remember the selected From location for next time.
