@@ -1,0 +1,23 @@
+(game "Fidchell"
+	    (players 2)  
+	    (equipment {
+	    	(board (square [#]))
+	    	[#] // equal number of pieces per side
+	    }) 
+	    (rules
+	        (start [#])
+	        (play [#]) // custodial capture, pieces move orthogonally over any distance.
+	        (end [#]) 
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        }
+	    )
+	    
+	)
