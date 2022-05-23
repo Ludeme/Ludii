@@ -68,6 +68,11 @@
                 )
                 (move 
                     (from ("AllSites")) 
+                    (to ("AllSites"))
+                    (then (moveAgain))
+                )
+                (move 
+                    (from ("AllSites")) 
                     (to (forEach (sites Board) if:(is Empty (site))))
                     copy:(is In (from) (sites Hand All))
                     (then (moveAgain))
