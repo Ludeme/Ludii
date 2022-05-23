@@ -486,7 +486,7 @@ public class GenerateFeatureEvalScripts
 		{
 			for (int i = 0; i < DECISION_TREE_DEPTHS.length - 1; ++i)
 			{
-				evalProcessDataList.add(new EvalProcessData(processData.gameName, processData.rulesetName, i, i + 1));
+				evalProcessDataList.add(new EvalProcessData(processData.gameName, processData.rulesetName, DECISION_TREE_DEPTHS[i], DECISION_TREE_DEPTHS[i + 1]));
 			}
 		}
 		
