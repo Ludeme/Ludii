@@ -6,19 +6,11 @@
             (track "Track" "1,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-        (hand Each)
-        }
-    )  
+        })  
     (rules 
         (start (set Count 4 to:(sites Track) ) )
-        
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (play [#])
+    (end [#])
     )
 )
 
