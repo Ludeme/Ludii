@@ -61,7 +61,7 @@ public class MouseHandler
 		final Location selectedFromLocation = app.bridge().settingsVC().selectedFromLocation();
 		Location selectedToLocation;
 
-		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode())
+		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode() || app.settingsPlayer().usingExhibitionApp())
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getAllLocations(context, app.bridge()));	
 		else
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getLegalToLocations(app.bridge(), context));
@@ -115,10 +115,13 @@ public class MouseHandler
 						{
 							for (final Move m : context.game().moves(context).moves())
 							{
-								if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+								if (selectedFromLocation.site() != selectedToLocation.site())
 								{
-									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-									break;
+									if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+									{
+										app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+										break;
+									}
 								}
 							}
 						}

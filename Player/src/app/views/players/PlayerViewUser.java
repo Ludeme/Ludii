@@ -93,6 +93,15 @@ public class PlayerViewUser extends View
 			if (AIUtil.anyAIPlayer(app.manager()))
 				componentPushBufferX += playerView.playerNameFont.getSize()*3;
 		}
+		else
+		{
+			g2d.setColor(Color.BLACK);
+			g2d.setFont(new Font("Cantarell", Font.PLAIN, 30));
+			g2d.drawString("P1", 670, 140);
+			g2d.drawRect(725, 90, 450, 70);
+			g2d.drawString("P2", 670, 668);
+			g2d.drawRect(725, 618, 450, 70);
+		}
 
 		if (hand != null)
 		{
