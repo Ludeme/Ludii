@@ -1,8 +1,8 @@
 (define "RemoveEnemyPiece" 
-        (move
-            Remove
-            (sites Occupied by:Next container:"Board") 
-        )
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
 )
 
 (define "IfLine3MoveAgain" 
@@ -22,49 +22,49 @@
         (board (concentric Square rings:3) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-                (move
-                    Step 
-                    (to if:(is Empty (to))) 
-                    "IfLine3MoveAgain" 
-                )
+            (move
+                Step 
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
             )
+        )
     })  
     (rules 
-            (start (place "Marker" "Hand" count:12))
-            
-            phases:{
-            (phase "Placement"
-                (play
-                    (if "SameTurn"
-                        "RemoveEnemyPiece"
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (if (> (count Pieces Mover) 3)
+                        (forEach Piece)
                         (move 
-                            (from (handSite Mover)) 
-                            (to (sites Empty)) 
-                            "IfLine3MoveAgain" 
-                        )  
-                    )
-                ) 
-                (nextPhase Mover ("HandEmpty" Mover) "Movement")
-            )
-            
-            (phase "Movement" 
-                (play 
-                    (if "SameTurn"
-                        "RemoveEnemyPiece"
-                        (if (> (count Pieces Mover) 3)
-                            (forEach Piece)
-                            (move 
-                                (from (sites Occupied by:Mover))
-                                (to (sites Empty))
-                            )
+                            (from (sites Occupied by:Mover))
+                            (to (sites Empty))
                         )
                     )
                 )
             )
-            }
-            
-            (end (if (<= (count Pieces Next) 2) (result Mover Win)))
         )
+        }
+        
+        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
+    )
 )
 
 //------------------------------------------------------------------------------

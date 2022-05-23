@@ -11,12 +11,12 @@
     }) 
     
     (rules 
-            (start (place "Marker" "Hand" count:[3..9]))
-            
-            (play (move (from (handSite Mover)) (to (sites Empty))) )
-            
-            (end (if (is Line 3) (result Mover Win)))
-        )
+        (start (place "Marker" "Hand" count:[3..9]))
+        
+        (play (move (from (handSite Mover)) (to (sites Empty))) )
+        
+        (end (if (is Line 3) (result Mover Win)))
+    )
 )
 
 //------------------------------------------------------------------------------

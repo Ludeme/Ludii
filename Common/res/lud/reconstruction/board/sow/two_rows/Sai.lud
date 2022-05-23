@@ -6,7 +6,7 @@
             (track "Track" "0,E,N,W" loop:True)		
         )
         (piece "Seed" Shared)
-        })  
+    })  
     (rules 
         
         (start (set Count 4 to:(sites Track) ) )
@@ -14,7 +14,7 @@
         (play [#]) // Counters are captured when the final counter falls in a hole making it contain four counters.
         
         (end
-        		[#]
+            [#]
         )
     )
 )

@@ -1,23 +1,23 @@
 (game "Wo Shuo"
-	    (players 2)  
-	    (equipment {
-	    [#] 
-	    (dice d:6 num:2)
-	    }) 
-	    (rules
-	        (start [#])
-	        (play [#]) // Single pieces on the board are vulnerable
-	        (end [#])
-	    )
-	)
+    (players 2)  
+    (equipment {
+        [#] 
+        (dice d:6 num:2)
+    }) 
+    (rules
+        (start [#])
+        (play [#]) // Single pieces on the board are vulnerable
+        (end [#])
+    )
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(metadata 
-	    
-	    (info
-	        {
-	        }
-	    )
-	    
-	)
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)

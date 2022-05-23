@@ -1,25 +1,25 @@
 (game "Chang Xing"
-	    (players 2)  
-	    (equipment [#]) // 15 pieces, 2 dice, Pieces which are alone on a space are vulnerable.
-	    (rules
-	        (start [#])
-	        (play [#]) 
-	        (end [#]) 
-	    )
-	)
+    (players 2)  
+    (equipment [#]) // 15 pieces, 2 dice, Pieces which are alone on a space are vulnerable.
+    (rules
+        (start [#])
+        (play [#]) 
+        (end [#]) 
+    )
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(metadata 
-	    
-	    (info
-	        {
-	        }
-	    )
-	    
-	    (graphics {
-	    	(player Colour P1 (colour Black))
-	    	(player Colour P2 (colour Yellow))
-	    })
-	    
-	)
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour Yellow))
+    })
+    
+)

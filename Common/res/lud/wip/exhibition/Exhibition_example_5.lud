@@ -67,9 +67,9 @@
                     )
                 )
                 (move Select
-                        (from ("AllSites")) 
-                        (then (moveAgain))
-                    )
+                    (from ("AllSites")) 
+                    (then (moveAgain))
+                )
                 (move 
                     (from ("AllSites")) 
                     (to (forEach (sites Board) if:(is Empty (site))))

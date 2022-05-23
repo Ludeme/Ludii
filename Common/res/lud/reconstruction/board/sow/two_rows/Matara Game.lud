@@ -1,19 +1,19 @@
 (game "Matara Game"  
-	    (players 2)  
-	    
-	    (equipment { 
-	        (mancalaBoard 2 8
-	                (track "Track" "1,E,N,W" loop:True)
-	            )
-	        (piece "Seed" Shared)
-	        (hand Each)
-	        })  
-	    (rules 
-	            (start [#])
-	            (play [#])
-	        (end [#])
-	    )
-	)
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 8
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+    })  
+    (rules 
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
 
 //------------------------------------------------------------------------------
 
