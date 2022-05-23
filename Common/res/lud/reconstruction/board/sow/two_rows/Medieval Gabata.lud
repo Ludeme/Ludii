@@ -3,19 +3,15 @@
     
     (equipment { 
         (mancalaBoard 2 9 store:None
+        	(track "Track" [#])
         )
         (piece "Seed" Shared)
-        }
-    )  
+        (hand Each)
+        })  
     (rules 
-        
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+            (start [#])
+            (play [#])
+        (end [#])
     )
 )
 
