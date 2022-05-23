@@ -35,8 +35,8 @@
         (piece "Pawn" P2)
         (piece "Counter" P1)
         (piece "Counter" P2)
-        (piece "Rook" P1)
-        (piece "Rook" P2)
+        (piece "Jarl" P1)
+        (piece "Jarl" P2)
         (hand Shared size:6)
     })  
     (rules 
@@ -45,8 +45,8 @@
             (place "Pawn2" (handSite Shared 1))
             (place "Counter1" (handSite Shared 2))
             (place "Counter2" (handSite Shared 3))
-            (place "Rook1" (handSite Shared 4))
-            (place "Rook2" (handSite Shared 5))
+            (place "Jarl1" (handSite Shared 4))
+            (place "Jarl2" (handSite Shared 5))
         })
         (play 
             (or {
@@ -109,8 +109,8 @@
         (piece Colour "Pawn2" fillColour:(colour Red))
         (piece Colour "Counter1" fillColour:(colour White))
         (piece Colour "Counter2" fillColour:(colour Red))
-        (piece Colour "Rook1" fillColour:(colour White))
-        (piece Colour "Rook2" fillColour:(colour Red))
+        (piece Colour "Jarl1" fillColour:(colour White))
+        (piece Colour "Jarl2" fillColour:(colour Red))
         (board Colour InnerEdges (colour 17 103 177))
         (board Colour OuterEdges (colour 17 103 177))
     })
