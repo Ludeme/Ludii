@@ -115,7 +115,7 @@ public class MouseHandler
 						{
 							for (final Move m : context.game().moves(context).moves())
 							{
-								if (selectedFromLocation.site() != selectedToLocation.site())
+								if (selectedToLocation.site() == -1 || selectedToLocation.site() >= context.game().board().numSites())
 								{
 									if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
 									{

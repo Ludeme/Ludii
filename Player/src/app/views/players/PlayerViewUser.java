@@ -116,8 +116,7 @@ public class PlayerViewUser extends View
 			playerView.paintHand(g2d, context, containerPlacement, hand.index());
 		}
 		
-		if (!app.settingsPlayer().usingExhibitionApp())
-			drawAISpinner(g2d, context);
+		drawAISpinner(g2d, context);
 		
 		paintDebug(g2d, Color.RED);
 	}
@@ -338,12 +337,21 @@ public class PlayerViewUser extends View
 		if (app.manager().isWebApp())
 			return;
 		
-		final Rectangle2D nameRect = app.playerNameList()[playerId];
-		final double r = playerView.playerNameFont.getSize();
-		final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
-		
-		if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
-			spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));
+		if (app.settingsPlayer().usingExhibitionApp())
+		{
+			if (spinner == null)
+				spinner = new Spinner(new Rectangle2D.Double(850,290,200,200));
+			spinner.setDotRadius(5);
+		}
+		else
+		{	
+			final Rectangle2D nameRect = app.playerNameList()[playerId];
+			final double r = playerView.playerNameFont.getSize();
+			final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
+			
+			if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
+				spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));
+		}
 
 		if (spinner != null)
 		{
