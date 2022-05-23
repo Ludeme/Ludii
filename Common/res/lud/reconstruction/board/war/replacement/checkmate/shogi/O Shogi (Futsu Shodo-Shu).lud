@@ -2,11 +2,13 @@
     (players 2) 
     (equipment { 
         (board (square 15))
-        // We know: 130 piecesin total and 29 piece types.
+        [#]
+        // We know: 130 pieces in total and 29 piece types.
     })
     (rules
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+            (start [#])
+            (play [#])
+        (end [#])
     )
 )
 
