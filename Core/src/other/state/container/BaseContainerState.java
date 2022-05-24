@@ -474,7 +474,7 @@ public abstract class BaseContainerState implements ContainerState
 	}
 	
 	@Override
-	public final long canonicalHash (final SymmetryValidator validator, final State gameState, final boolean whoOnly) 
+	public final long canonicalHash(final SymmetryValidator validator, final State gameState, final boolean whoOnly) 
 	{
 		// Lazy initialisation
 		if (container().topology().cellRotationSymmetries()==null)

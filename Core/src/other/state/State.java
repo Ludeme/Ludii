@@ -55,9 +55,6 @@ public class State implements Serializable
 	private static final int AMOUNT_MAX_HASH = 1024;
 
 	//-------------------------------------------------------------------------
-
-	/** Number of players in the game. */
-	private int numPlayers = 0;
 	
 	/** Current player to move. */
 	private int mover = 0; 
@@ -346,7 +343,7 @@ public class State implements Serializable
 			"Only Game.java should call this constructor! Other callers can copy the game's stateReference instead using the copy constructor."
 		);
 		
-		numPlayers = game.players().count();
+		final int numPlayers = game.players().count();
 		
 		//-------------- Hash initialisation ----------------
 		final ZobristHashGenerator generator = ZobristHashUtilities.getHashGenerator();
@@ -384,10 +381,10 @@ public class State implements Serializable
 		playerSwitchHashes = ZobristHashUtilities.getSequence(generator, 2, TURN_MAX_HASH);
 		
 		teamHashes = (game.requiresTeams()) 
-						? ZobristHashUtilities.getSequence(generator, game.players().count() + 1, Constants.MAX_PLAYER_TEAM + 1) 
+						? ZobristHashUtilities.getSequence(generator, numPlayers + 1, Constants.MAX_PLAYER_TEAM + 1) 
 						: null;
 			
-		numConsecutivePassesHashCap = 2 * game.players().count() + 1;
+		numConsecutivePassesHashCap = 2 * numPlayers + 1;
 		numConsecutivePassesHashes = ZobristHashUtilities.getSequence(generator, 2, numConsecutivePassesHashCap);
 		
 		isPendingHashes = ZobristHashUtilities.getSequence(generator, game.equipment().totalDefaultSites() + 2);
@@ -398,7 +395,7 @@ public class State implements Serializable
 
 		//-------------- on with the plot ----------------
 		
-		playerOrder = new int[game.players().count() + 1];
+		playerOrder = new int[numPlayers + 1];
 		for (int i = 1; i < playerOrder.length; i++)
 		{
 			playerOrder[i] = i;
@@ -509,9 +506,7 @@ public class State implements Serializable
 		playerOrder = Arrays.copyOf(other.playerOrder, other.playerOrder.length);
 		moneyPot = other.moneyPot;
 
-		// Back to the plot
-		numPlayers = other.numPlayers;
-		
+		// Back to the plot		
 		trumpSuit = other.trumpSuit;
 		
 		mover = other.mover;
@@ -646,11 +641,11 @@ public class State implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @return Number of players.
+	 * @return Number of players in the game of which this is a state.
 	 */
 	public int numPlayers()
 	{
-		return numPlayers;
+		return playerOrder.length - 1;
 	}
 
 	/**
@@ -915,8 +910,6 @@ public class State implements Serializable
 		moneyPot = other.moneyPot;
 
 		// Back to the plot
-		numPlayers = other.numPlayers;
-				
 		trumpSuit = other.trumpSuit;
 				
 		mover = other.mover;
@@ -1091,7 +1084,7 @@ public class State implements Serializable
 		stalemated = 0;
 		moneyPot = 0;
 
-		numPlayers = game.players().count();
+		final int numPlayers = game.players().count();
 
 		if (game.mode().mode() != ModeType.Simulation)
 		{
@@ -1148,7 +1141,7 @@ public class State implements Serializable
 	{
 		String str = "";
 
-		str += "info: num=" + numPlayers() + ", mvr=" + mover() + ", nxt=" + next() + ", prv=" + prev() + ".\n";
+		str += "info: mvr=" + mover() + ", nxt=" + next() + ", prv=" + prev() + ".\n";
 
 		str += Arrays.toString(containerStates) + "\n";
 				
