@@ -120,7 +120,7 @@ public class PlayerViewUser extends View
 					}
 				}
 				if (!pieceOnHand1)
-					g2d.drawString("Drag pieces here that start off the board.", 750, 135);
+					g2d.drawString("Off board pieces can go here.", 800, 135);
 				
 				boolean pieceOnHand2 = false;
 				final Container container2 = context.equipment().containers()[2];
@@ -134,7 +134,7 @@ public class PlayerViewUser extends View
 					}
 				}
 				if (!pieceOnHand2)
-					g2d.drawString("Drag pieces here that start off the board.", 750, 663);
+					g2d.drawString("Off board pieces can go here.", 800, 663);
 			}
 			
 		}
