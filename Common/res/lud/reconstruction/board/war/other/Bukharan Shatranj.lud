@@ -1,0 +1,25 @@
+(game "Bukharan Shatranj"
+    (players 2)  
+    (equipment {
+        (board (square 8))
+        (piece "Queen" Each (move [#])) // The first move is by the queen, which jumps two spaces forward orthogonally, and then is reduced to a weak piece
+        (piece "Bishop" Each (move Hop Diagonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (if (is Enemy (who at:(to))) (remove (to)))))))
+        [#]
+    }) 
+    (rules
+        (start [#])
+        (play [#])  // No castling.
+        (end [#]) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)

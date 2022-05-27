@@ -648,14 +648,25 @@ public class MoveHandler
 		final Move lastMove = context.trial().lastMove();
 		if (lastMove != null)
 		{
-			final int containerId = ContainerUtil.getContainerId(context, lastMove.getToLocation().site(), lastMove.getToLocation().siteType());	
-			final int what = context.containerState(containerId).what(lastMove.getToLocation().site(), lastMove.getToLocation().siteType());
-			
-			if (context.trial().numberRealMoves() <= 0 || what == 0)
+			try
+			{
+				final int containerId = ContainerUtil.getContainerId(context, lastMove.getToLocation().site(), lastMove.getToLocation().siteType());	
+				final int what = context.containerState(containerId).what(lastMove.getToLocation().site(), lastMove.getToLocation().siteType());
+				
+				// TODO update exhib rules so that you can only drag to correct site on shared hand.s
+				if (containerId == 3)
+					return null;
+				
+				if (context.trial().numberRealMoves() <= 0 || what == 0)
+					return null;
+				
+				final Component lastMoveComponent = context.game().equipment().components()[what];
+				return lastMoveComponent;
+			}
+			catch (Exception e)
+			{
 				return null;
-			
-			final Component lastMoveComponent = context.game().equipment().components()[what];
-			return lastMoveComponent;
+			}
 		}
 		return null;
 	}

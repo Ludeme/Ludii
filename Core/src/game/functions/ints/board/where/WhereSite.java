@@ -138,10 +138,13 @@ public final class WhereSite extends BaseIntFunction
 			if (context.game().isStacking())
 			{
 				for (int site = 0; site < numSite; site++)
-					for (int level = 0; level < cs.sizeStack(site, type); level++)
+				{
+					final int stackSize = cs.sizeStack(site, type);
+					for (int level = 0; level < stackSize; level++)
 						if (cs.what(site, level, type) == what)
 							if (localState == Constants.UNDEFINED || cs.state(site, level, type) == localState)
 								return site;
+				}
 			}
 			else
 			{
@@ -175,7 +178,8 @@ public final class WhereSite extends BaseIntFunction
 					final int site = sites.getQuick(i);
 					if (site < numSite)
 					{
-						for (int level = 0; level < cs.sizeStack(site, type); level++)
+						final int stackSize = cs.sizeStack(site, type);
+						for (int level = 0; level < stackSize; level++)
 							if (cs.what(site, level, type) == what)
 								if (localState == Constants.UNDEFINED || cs.state(site, level, type) == localState)
 									return site;

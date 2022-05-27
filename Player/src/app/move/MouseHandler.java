@@ -92,6 +92,7 @@ public class MouseHandler
 			{
 				SandboxUtil.makeSandboxDragMove(app, selectedFromLocation, selectedToLocation);
 			}
+			
 			else if (!MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation, false, -1))
 			{
 				// Remember the selected From location for next time.
@@ -115,10 +116,13 @@ public class MouseHandler
 						{
 							for (final Move m : context.game().moves(context).moves())
 							{
-								if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+								if (selectedToLocation.site() == -1 || selectedToLocation.site() >= context.game().board().numSites())
 								{
-									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-									break;
+									if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+									{
+										app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+										break;
+									}
 								}
 							}
 						}
@@ -126,7 +130,7 @@ public class MouseHandler
 						{
 							for (final Move m : context.game().moves(context).moves())
 							{
-								if (m.from() == selectedFromLocation.site() && m.actions().get(0) instanceof ActionSelect)
+								if (m.from() == selectedFromLocation.site() && m.actions().get(0) instanceof ActionSelect && m.from() != m.to())
 								{
 									app.manager().ref().applyHumanMoveToGame(app.manager(), m);
 									break;

@@ -23,8 +23,8 @@ public class Spinner
 	//-------------------------------------------------------------------------
 	// parameters relating to the spinning loading icon.
 	
-	private final int numPts = 12;
-	private final double dotRadius = 1.5;
+	private int numPts = 12;
+	private double dotRadius = 1.5;
 	
 	private Rectangle2D.Double originalRect = new Rectangle2D.Double();
 	private final Rectangle spinRect = new Rectangle();
@@ -122,6 +122,16 @@ public class Spinner
     public Rectangle2D.Double originalRect() 
     {
 		return originalRect;
+	}
+
+	public void setDotRadius(double dotRadius) 
+	{
+		this.dotRadius = dotRadius;
+	}
+
+	public void setNumPts(int numPts) 
+	{
+		this.numPts = numPts;
 	}
     
   //-------------------------------------------------------------------------

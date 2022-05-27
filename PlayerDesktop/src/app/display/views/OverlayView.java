@@ -88,10 +88,11 @@ public final class OverlayView extends View
 			if (app.manager().ref().context().equipment().containers().length > 3)
 			{
 				g2d.drawString("1. Choose a board", 30, 150);
-				g2d.drawString("2. Choose pieces (drag onto board)", 30, 298);
-				g2d.drawString("Movement", 30, 460);
-				g2d.drawString("   Capture", 30, 530);
-				g2d.drawString("3. Choose goal(s)", 30, 605);
+				g2d.drawString("2. Choose pieces (drag onto play area)", 30, 298);
+				g2d.drawString("Movement", 30, 455);
+				g2d.drawString("  Direction", 30, 503);
+				g2d.drawString("   Capture", 30, 551);
+				g2d.drawString("3. Choose goal(s)", 30, 600);
 			}
 			else
 			{
