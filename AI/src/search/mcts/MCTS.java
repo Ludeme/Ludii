@@ -671,6 +671,8 @@ public class MCTS extends ExpertPolicy
 											);
 										}
 										
+										playoutContext = current.playoutContext();
+										
 										break;	// stop Selection phase
 									}
 									
@@ -685,7 +687,6 @@ public class MCTS extends ExpertPolicy
 								}
 								finally
 								{
-									playoutContext = current.playoutContext();
 									prevNode.getLock().unlock();
 								}
 							}
@@ -695,7 +696,7 @@ public class MCTS extends ExpertPolicy
 							
 							if (!endTrial.over() && playoutValueWeight > 0.0)
 							{
-								// did not reach a terminal game state yet
+								// Did not reach a terminal game state yet
 								
 								/********************************
 											Play-out
@@ -708,6 +709,11 @@ public class MCTS extends ExpertPolicy
 								
 								lastNumPlayoutActions += 
 										(playoutContext.trial().numMoves() - numActionsBeforePlayout);
+							}
+							else
+							{
+								// Reached a terminal game state
+								playoutContext = current.contextRef();
 							}
 							
 							/***************************
