@@ -628,6 +628,8 @@ public class MCTS extends ExpertPolicy
 							current.addVirtualVisit();
 							current.startNewIteration(context);
 							
+							Context playoutContext = null;
+							
 							while (current.contextRef().trial().status() == null)
 							{
 								BaseNode prevNode = current;
@@ -683,11 +685,11 @@ public class MCTS extends ExpertPolicy
 								}
 								finally
 								{
+									playoutContext = current.playoutContext();
 									prevNode.getLock().unlock();
 								}
 							}
 							
-							final Context playoutContext = current.playoutContext();
 							Trial endTrial = current.contextRef().trial();
 							int numPlayoutActions = 0;
 							
