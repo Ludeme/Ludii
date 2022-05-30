@@ -613,8 +613,7 @@ public final class ActionCopy extends BaseAction
 				final Topology topology = context.topology();
 				final TopologyElement fromV = topology.getGraphElements(typeFrom).get(from);
 
-				final List<DirectionFacing> directionsSupported = topology.supportedDirections(RelationType.All,
-						typeFrom);
+				final List<DirectionFacing> directionsSupported = topology.supportedDirections(RelationType.All, typeFrom);
 				AbsoluteDirection direction = null;
 				int distance = Constants.UNDEFINED;
 
@@ -664,6 +663,12 @@ public final class ActionCopy extends BaseAction
 										else
 											concepts.set(Concept.HopDecisionEnemyToFriend.id(), true);
 									}
+									
+									if(distance > 1)
+									{
+										concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
+										concepts.set(Concept.HopCaptureMoreThanOne.id(), true);
+									}
 								}
 								else
 								{
@@ -675,6 +680,10 @@ public final class ActionCopy extends BaseAction
 											concepts.set(Concept.HopDecisionFriendToEnemy.id(), true);
 										else
 											concepts.set(Concept.HopDecisionFriendToFriend.id(), true);
+									}
+									if(distance > 1)
+									{
+										concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 									}
 								}
 							}
