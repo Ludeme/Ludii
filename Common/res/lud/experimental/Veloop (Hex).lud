@@ -1,115 +1,115 @@
 // Veloop 
 
 (define "SwapSites" 
- (intersection (sites Around #1 Adjacent) (sites Around #2 Adjacent))
+    (intersection (sites Around #1 Adjacent) (sites Around #2 Adjacent))
 )
 
 (define "Placement"
- (move Select
-  (from  #1 if:(> 2 (count Stack at:(from))))
-  (to <Board:placementVector>
-   if:(and
-    {
-     (is In (to) (sites Occupied by:Mover top:True))
-     (= 2 (count Sites in:("SwapSites" (to) (from))))
-     (or
-      (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Mover top:True))))
-      (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Next top:True))))
-     )
-    }
-  ))
-  (then
-   (and
-    {
-// use stacking concept instead of replace concept -
-// physical boards would use stacks to track which can be played onto    
-//     (remove (last From))  // not used
-     (add
-      (piece (id "Disc" Mover))
-      (to (last From))
-      stack:True
-     )
-     (forEach Site
-      ("SwapSites" (last To) (last From))
-      (remember Value (site))
-     )
-    }
+    (move Select
+        (from  #1 if:(> 2 (count Stack at:(from))))
+        (to <Board:placementVector>
+            if:(and
+                {
+                (is In (to) (sites Occupied by:Mover top:True))
+                (= 2 (count Sites in:("SwapSites" (to) (from))))
+                (or
+                    (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Mover top:True))))
+                    (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Next top:True))))
+                )
+                }
+        ))
+        (then
+            (and
+                {
+                // use stacking concept instead of replace concept -
+                // physical boards would use stacks to track which can be played onto    
+                //     (remove (last From))  // not used
+                (add
+                    (piece (id "Disc" Mover))
+                    (to (last From))
+                    stack:True
+                )
+                (forEach Site
+                    ("SwapSites" (last To) (last From))
+                    (remember Value (site))
+                )
+                }
 ))))
 (define "SwapSite"  (arrayValue (values Remembered) index:#1))
 (define "SwapPiece" (what at:("SwapSite" #1) level:(topLevel at:("SwapSite" #1))))
 
 (define "MakeSwap"
- (if
-  (is Empty ("SwapSite" 1))
-  (fromTo (from ("SwapSite" 0)) (to ("SwapSite" 1)))
-  (if (is Empty ("SwapSite" 0))
-   (fromTo (from ("SwapSite" 1)) (to ("SwapSite" 0)))
-   (set Var "Piece1" ("SwapPiece" 1)
-    (then
-     (add
-      (piece ("SwapPiece" 0))
-      (to ("SwapSite" 1)
-       (apply (remove (to)))
-      )
-      (then
-       (add
-        (piece (var "Piece1"))
-        (to ("SwapSite" 0)
-         (apply (remove (to)))
-  )))))))
-  (then
-   (and
-    {
-     ("SetScoreOf" Mover)
-     ("SetScoreOf" Next)
-     (forget Value All)
-     <Protocol:turn>
-    }
+    (if
+        (is Empty ("SwapSite" 1))
+        (fromTo (from ("SwapSite" 0)) (to ("SwapSite" 1)))
+        (if (is Empty ("SwapSite" 0))
+            (fromTo (from ("SwapSite" 1)) (to ("SwapSite" 0)))
+            (set Var "Piece1" ("SwapPiece" 1)
+                (then
+                    (add
+                        (piece ("SwapPiece" 0))
+                        (to ("SwapSite" 1)
+                            (apply (remove (to)))
+                        )
+                        (then
+                            (add
+                                (piece (var "Piece1"))
+                                (to ("SwapSite" 0)
+                                    (apply (remove (to)))
+        )))))))
+        (then
+            (and
+                {
+                ("SetScoreOf" Mover)
+                ("SetScoreOf" Next)
+                (forget Value All)
+                <Protocol:turn>
+                }
 ))))
- 
+
 //--------------------------
 (game "Veloop (Hex)"
- (players 2)
- (equipment
-  {
-   (board (renumber (rotate 90 <Board:type>)) use:Cell)
-   (piece "Disc" Each)
-  }
- )
- (rules
-  (start
-   {
-    (place "Disc1" <Board:bStart>)
-    (place "Disc2" <Board:wStart>)
-   }
-  )
-  (play
-   (priority
-    ("Placement" (sites Empty))
-    ("Placement" (sites Occupied by:Next))
-    (then 
-     ("MakeSwap")
-  )))
-  (end 
-   (if 
-    (!= 0 (+ (score P1) (score P2)))
-    (byScore)
+    (players 2)
+    (equipment
+        {
+        (board (renumber (rotate 90 <Board:type>)) use:Cell)
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (start
+            {
+            (place "Disc1" <Board:bStart>)
+            (place "Disc2" <Board:wStart>)
+            }
+        )
+        (play
+            (priority
+                ("Placement" (sites Empty))
+                ("Placement" (sites Occupied by:Next))
+                (then 
+                    ("MakeSwap")
+        )))
+        (end 
+            (if 
+                (!= 0 (+ (score P1) (score P2)))
+                (byScore)
 )))) 
 
 (define "SetScoreOf"
- (set Score #1 (- 0 (count Sites in:(difference (sites Occupied by:#1) ("UnconfinedStiesOf" #1)))))
+    (set Score #1 (- 0 (count Sites in:(difference (sites Occupied by:#1) ("UnconfinedStiesOf" #1)))))
 ) 
- 
+
 (define "UnconfinedStiesOf"
- (forEach
-  (sites Board)
-  if:(!= Infinity
-   (count Steps Adjacent
-    (step Adjacent
-     (to if:(or (is Empty (to)) (is #1 (who at:(to)))))
-    )
-    (site)
-    (sites Outer)
+    (forEach
+        (sites Board)
+        if:(!= Infinity
+            (count Steps Adjacent
+                (step Adjacent
+                    (to if:(or (is Empty (to)) (is #1 (who at:(to)))))
+                )
+                (site)
+                (sites Outer)
 ))))  
 
 //--------------------------------------
@@ -117,46 +117,46 @@
 (define "DiagonalVector" (sites Around (from) Diagonal))
 
 (option "Board" <Board> args:{ <type> <bStart> <wStart> <placementVector>}
- {
-  (item "Hex3" <(hex Hexagon 3)> <7> <12> <"DiagonalVector"> "Order 4 Hexagon")
-  (item "Hex 343434" <(hex Limping 3)> <10> <16> <"DiagonalVector"> "Edge 343434 Hexagon")**
-  (item "Hex4" <(hex Hexagon 4)> <15> <22> <"DiagonalVector"> "Order 4 Hexagon")
-  (item "Hex 454545" <(hex Limping 4)> <20> <28> <"DiagonalVector"> "Edge 454545 Hexagon")
-//  (item "Hex 565656" <(hex Limping 5)> <32> <42> <"DiagonalVector"> "Edge 565656 Hexagon")
- }
+    {
+    (item "Hex3" <(hex Hexagon 3)> <7> <12> <"DiagonalVector"> "Order 4 Hexagon")
+    (item "Hex 343434" <(hex Limping 3)> <10> <16> <"DiagonalVector"> "Edge 343434 Hexagon")**
+    (item "Hex4" <(hex Hexagon 4)> <15> <22> <"DiagonalVector"> "Order 4 Hexagon")
+    (item "Hex 454545" <(hex Limping 4)> <20> <28> <"DiagonalVector"> "Edge 454545 Hexagon")
+    //  (item "Hex 565656" <(hex Limping 5)> <32> <42> <"DiagonalVector"> "Edge 565656 Hexagon")
+    }
 ) 
 
 (option "Move Protocol" <Protocol> args:{ <turn> }
- {
-  (item "Alternating" < > "Turns alternate")**
-  (item "122..." <(if (and (not (is Prev Mover)) (< -1 (counter))) (moveAgain))> " First player takes one turn, then players alternate taking 2 turns each")
- }
+    {
+    (item "Alternating" < > "Turns alternate")**
+    (item "122..." <(if (and (not (is Prev Mover)) (< -1 (counter))) (moveAgain))> " First player takes one turn, then players alternate taking 2 turns each")
+    }
 )
 
 //--------------------------------------
 
 (metadata
- (info
-  {
-
-  }
- )
- 
- (graphics
-  {
-   (board Colour Phase0 (colour 200 250 210 120))
-   (board Colour OuterEdges (colour Black))
-   (board Colour InnerEdges (colour Black))
-   (board StyleThickness OuterEdges 1.5)
-   (board StyleThickness InnerEdges 0.4)
-   (board StyleThickness InnerVertices 0.4)
-   (board StyleThickness OuterVertices 0.4)
-   (board Colour Symbols (colour Black))
-   (player Colour P1 (colour Black))
-   (player Colour P2 (colour LightOrange))
-//   (stackType Default .5)
-   (stackType None)
-   (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
-  }
- )
+    (info
+        {
+        
+        }
+    )
+    
+    (graphics
+        {
+        (board Colour Phase0 (colour 200 250 210 120))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (board Colour Symbols (colour Black))
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour LightOrange))
+        //   (stackType Default .5)
+        (stackType None)
+        (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
+        }
+    )
 )

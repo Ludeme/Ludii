@@ -8,7 +8,7 @@
                 (remove (between)) 
             ) 
         )
-		#2
+        #2
     )
 )
 
@@ -42,57 +42,57 @@
         }
     )
     (rules 
-		(meta (swap))
+        (meta (swap))
         phases:{
-            (phase "Opening"
-                (play (move Add (to (sites Empty))))
-                (nextPhase 
-                    (and
-                        (= 1 (count Sites in:(sites Occupied by:P1)))
-                        (= 1 (count Sites in:(sites Occupied by:P2)))
+        (phase "Opening"
+            (play (move Add (to (sites Empty))))
+            (nextPhase 
+                (and
+                    (= 1 (count Sites in:(sites Occupied by:P1)))
+                    (= 1 (count Sites in:(sites Occupied by:P2)))
+                )
+                "Play"
+            )
+        )
+        (phase "Play"
+            (play 
+                (move 
+                    Add
+                    (to 
+                        (sites Empty)
+                        if:("ReachesRegion" 
+                            (to)
+                            (sites Occupied by:Mover)
+                        )
                     )
-                    "Play"
+                    (then 
+                        (if 
+                            (can Move ("CaptureSurroundedGroup" Enemy))
+                            ("CaptureSurroundedGroup" Enemy)
+                            ("CaptureSurroundedGroup" Mover)
+                        )
+                    )
                 )
             )
-            (phase "Play"
-                (play 
-					(move 
-						Add
-						(to 
-							(sites Empty)
-							if:("ReachesRegion" 
-								(to)
-								(sites Occupied by:Mover)
-							)
-						)
-						(then 
-							(if 
-								(can Move ("CaptureSurroundedGroup" Enemy))
-								("CaptureSurroundedGroup" Enemy)
-								("CaptureSurroundedGroup" Mover)
-							)
-						)
-					)
-                )
-            )
+        )
         }
         
         (end {
             (if 
                 (and
-					(< 2 (count Moves))
-					(no Pieces Next) 
-				)
+                    (< 2 (count Moves))
+                    (no Pieces Next) 
+                )
                 (result Next Loss)
             )
             (if 
-				(and
-					(< 2 (count Moves))
-               		(no Pieces Mover) 
-				)
+                (and
+                    (< 2 (count Moves))
+                    (no Pieces Mover) 
+                )
                 (result Mover Loss)
             )
-		})
+        })
     )
 )
 

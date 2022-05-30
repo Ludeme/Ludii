@@ -1,58 +1,58 @@
 (define "UpdateScoreMoverAndMarkEvenGroups"
-	(and
-		(set Score Mover 0)
-		(forEach Group Orthogonal
-			if:(is Mover (who at:(to)))
-			(if 
-				(is Odd (count Sites in:(sites)))
-				(and
-					(addScore Mover -1)
-					(forEach Site 
-						(sites)
-						(set State at:(site) 0)
-					)
-				)
-				(and
-					(addScore Mover -2)
-					(forEach Site 
-						(sites)
-						(set State at:(site) 1)
-					)
-				)
-			)
-		)
-	)
+    (and
+        (set Score Mover 0)
+        (forEach Group Orthogonal
+            if:(is Mover (who at:(to)))
+            (if 
+                (is Odd (count Sites in:(sites)))
+                (and
+                    (addScore Mover -1)
+                    (forEach Site 
+                        (sites)
+                        (set State at:(site) 0)
+                    )
+                )
+                (and
+                    (addScore Mover -2)
+                    (forEach Site 
+                        (sites)
+                        (set State at:(site) 1)
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "MarkEvenGroups"
-	(forEach Group Orthogonal
-		if:(is Mover (who at:(to)))
-		(if 
-			(is Odd (count Sites in:(sites)))
-			(forEach Site 
-				(sites)
-				(set State at:(site) 0)
-			)
-			(forEach Site 
-				(sites)
-				(set State at:(site) 1)
-			)
-		)
-	)
+    (forEach Group Orthogonal
+        if:(is Mover (who at:(to)))
+        (if 
+            (is Odd (count Sites in:(sites)))
+            (forEach Site 
+                (sites)
+                (set State at:(site) 0)
+            )
+            (forEach Site 
+                (sites)
+                (set State at:(site) 1)
+            )
+        )
+    )
 )
 
 (define "UpdateScoreMover"
-	(and
-		(set Score Mover 0)
-		(forEach Group Orthogonal
-			if:(is Mover (who at:(to)))
-			(if 
-				(is Odd (count Sites in:(sites)))
-				(addScore Mover -1)
-				(addScore Mover -2)
-			)
-		)
-	)
+    (and
+        (set Score Mover 0)
+        (forEach Group Orthogonal
+            if:(is Mover (who at:(to)))
+            (if 
+                (is Odd (count Sites in:(sites)))
+                (addScore Mover -1)
+                (addScore Mover -2)
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -61,15 +61,15 @@
     (players 2)
     (equipment
         {
-            (board (hex <Size>))
-            (piece "Disc" Each)
+        (board (hex <Size>))
+        (piece "Disc" Each)
         }
     )
     (rules
         (play
             (move Add
                 (to (sites Empty))
-				(then <Score>)
+                (then <Score>)
             )
         )
         (end 
@@ -84,11 +84,11 @@
 //------------------------------------------------------------------------------
 
 (option "Visual aids" <Score> args:{ <score> }
-	{
-	(item "Show running score and mark even groups"  <("UpdateScoreMoverAndMarkEvenGroups")>  "The score is currently updated after each move, and groups of even size are marked with a red outline.")*
-	(item "Show running score"  <("UpdateScoreMover")>  "The score is currently updated after each move, but the parity of group sizes is not marked on the stones.")
-	(item "None" <(if (or (= 1 (count Sites in:(sites Empty))) (is Full)) ("UpdateScoreMover"))>  "The score is currently updated only when the board is full, and the parity of group sizes is not marked on the stones. (This makes the AI stronger.)")
-	}
+    {
+    (item "Show running score and mark even groups"  <("UpdateScoreMoverAndMarkEvenGroups")>  "The score is currently updated after each move, and groups of even size are marked with a red outline.")*
+    (item "Show running score"  <("UpdateScoreMover")>  "The score is currently updated after each move, but the parity of group sizes is not marked on the stones.")
+    (item "None" <(if (or (= 1 (count Sites in:(sites Empty))) (is Full)) ("UpdateScoreMover"))>  "The score is currently updated only when the board is full, and the parity of group sizes is not marked on the stones. (This makes the AI stronger.)")
+    }
 )
 
 (option "Board Size" <Size> args:{ <size> }
@@ -107,28 +107,28 @@
 (metadata
     (info {
         (description
-"Elea is a simple unification game of pure placement invented by Michael Amundsen in May 2022. There cannot be a tie in Elea."
+            "Elea is a simple unification game of pure placement invented by Michael Amundsen in May 2022. There cannot be a tie in Elea."
         )
         (rules
-"Players take turns placing a stone of their own color on any empty cell of a hexagonal grid of hexagons (a hexhex board). 
-The game is over when the board is full, and the player with the lower score wins. 
-Your score is 1 point per odd-sized group and 2 points even-sized group.
-
-In this implementation, you get -1 per odd-sized group and -2 per even-sized group, so the winner will be the player with the higher score.
-"
+            "Players take turns placing a stone of their own color on any empty cell of a hexagonal grid of hexagons (a hexhex board). 
+            The game is over when the board is full, and the player with the lower score wins. 
+            Your score is 1 point per odd-sized group and 2 points even-sized group.
+            
+            In this implementation, you get -1 per odd-sized group and -2 per even-sized group, so the winner will be the player with the higher score.
+            "
         )
         (date "2022")
     })
-	(graphics {
-		(player Colour P1 (colour Black))
-		(player Colour P2 (colour White))
-		(piece Colour state:0 strokeColour:(colour Black))
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (piece Colour state:0 strokeColour:(colour Black))
         (piece Colour state:1 strokeColour:(colour Red))
-		(region Colour (sites Board) (colour 250 210 148))
-		(board Colour InnerEdges (colour 178 151 100))
-		(board Colour OuterEdges (colour 178 151 100))
-	})
+        (region Colour (sites Board) (colour 250 210 148))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+    })
     (ai
-		(bestAgent "MC-GRAVE")
+        (bestAgent "MC-GRAVE")
     )
 )
