@@ -240,20 +240,19 @@
         (credit "Michael Amundsen")
         (date "2022")
         }
+    )   
+    (graphics {
+        (player Colour P1 (colour 250 221 144))
+        (player Colour P2 (colour 200 150 75))
+        (piece Colour P1 fillColour:(colour LightGrey))
+        (piece Scale P1 0.7)
+        (board Style Chess)
+        (stackType Count)
+    })
+    (ai
+        (bestAgent "Alpha-Beta")
+        (heuristics 
+            (score)
+        )
     )
-})
-(graphics {
-    (player Colour P1 (colour 250 221 144))
-    (player Colour P2 (colour 200 150 75))
-    (piece Colour P1 fillColour:(colour LightGrey))
-    (piece Scale P1 0.7)
-    (board Style Chess)
-    (stackType Count)
-})
-(ai
-    (bestAgent "Alpha-Beta")
-    (heuristics 
-        (score)
-    )
-)
 )

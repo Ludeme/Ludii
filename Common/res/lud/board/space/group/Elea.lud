@@ -121,26 +121,16 @@
         (date "2022")
         }
     )
-    (rules
-        "Players take turns placing a stone of their own color on any empty cell of a hexagonal grid of hexagons (a hexhex board). 
-        The game is over when the board is full, and the player with the lower score wins. 
-        Your score is 1 point per odd-sized group and 2 points even-sized group.
-        
-        In this implementation, you get -1 per odd-sized group and -2 per even-sized group, so the winner will be the player with the higher score.
-        "
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (piece Colour state:0 strokeColour:(colour Black))
+        (piece Colour state:1 strokeColour:(colour Red))
+        (region Colour (sites Board) (colour 250 210 148))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+    })
+    (ai
+    		(bestAgent "MC-GRAVE")
     )
-    (date "2022")
-})
-(graphics {
-    (player Colour P1 (colour Black))
-    (player Colour P2 (colour White))
-    (piece Colour state:0 strokeColour:(colour Black))
-    (piece Colour state:1 strokeColour:(colour Red))
-    (region Colour (sites Board) (colour 250 210 148))
-    (board Colour InnerEdges (colour 178 151 100))
-    (board Colour OuterEdges (colour 178 151 100))
-})
-(ai
-    (bestAgent "MC-GRAVE")
-)
 )
