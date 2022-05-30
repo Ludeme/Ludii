@@ -542,6 +542,9 @@ public class Referee
 									e.printStackTrace();
 								}
 							}
+							
+							if (shouldTerminate)
+								return;
 	
 							EventQueue.invokeLater(() -> 
 							{
