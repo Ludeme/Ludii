@@ -391,22 +391,10 @@ public class PlayerViewUser extends View
 
 		if (spinner != null)
 		{
-			
-			if (app.settingsPlayer().usingExhibitionApp())
-			{
-				if (context.state().mover() == 2 && context.game().numContainers() <= 3)
-					spinner.startSpinner();
-				else
-					spinner.stopSpinner();
-			}
+			if (context.state().mover() == playerId && !app.manager().aiSelected()[app.manager().playerToAgent(playerId)].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+				spinner.startSpinner();
 			else
-			{		
-				// TODO seems buggy, liveAIs is sometimes empty even on AIs turn
-				if (context.state().mover() == playerId && !app.manager().aiSelected()[app.manager().playerToAgent(playerId)].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
-					spinner.startSpinner();
-				else
-					spinner.stopSpinner();
-			}
+				spinner.stopSpinner();
 		}
 		
 		spinner.drawSpinner(g2d);

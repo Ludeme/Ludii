@@ -47,6 +47,9 @@ public class Referee
 
 	/** Update visualisation of what AI is thinking every x milliseconds */
 	public static final int AI_VIS_UPDATE_TIME = 40;
+	
+	/** Thread for checking model to make moves. */
+	private Thread moveThread = null;
 
 	//-------------------------------------------------------------------------
 
@@ -422,7 +425,7 @@ public class Referee
 				else
 				{
 					allowHumanBasedStepStart.set(model.expectsHumanInput());
-					final Thread thread = new Thread(() -> 
+					moveThread = new Thread(() -> 
 					{
 						final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.aiSelected());
 
@@ -580,11 +583,11 @@ public class Referee
 						}
 					});
 
-					thread.setDaemon(true);
-					thread.start();
+					moveThread.setDaemon(true);
+					moveThread.start();
 
 					// don't return until the model has at least started running (or maybe instantly completed)
-					while (!wantNextMoveCall.get() && thread.isAlive() && (model.isReady() || !model.isRunning()))
+					while (!wantNextMoveCall.get() && moveThread.isAlive() && (model.isReady() || !model.isRunning()))
 					{
 						// don't return from call yet, keep calling thread occupied until
 						// model is at least properly running (or maybe already finished)
