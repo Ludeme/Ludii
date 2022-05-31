@@ -46,6 +46,8 @@ public class AdvantageP1 extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		if (game.players().count() <= 1)
+			return null;
 		
 		// Count number of wins for P1 (draws count as half a win)
 		double p1Wins = 0.0;

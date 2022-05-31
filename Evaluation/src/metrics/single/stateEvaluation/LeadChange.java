@@ -52,6 +52,10 @@ public class LeadChange extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		// Cannot perform move/state evaluation for matches.
+				if (game.hasSubgames())
+					return null;
+		
 		double avgLeadChange = 0.0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{

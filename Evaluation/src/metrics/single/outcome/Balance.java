@@ -48,6 +48,9 @@ public class Balance extends Metric
 	{
 		final int numPlayers = game.players().count();
 		
+		if (numPlayers <= 1)
+			return null;
+		
 		// Count number of wins per player
 		final int[] wins = new int[numPlayers + 1];		
 		for (int i = 0; i < trials.length; i++)
