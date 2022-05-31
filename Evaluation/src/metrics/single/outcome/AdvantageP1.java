@@ -11,7 +11,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Percentage of games where player 1 won.
+ * Percentage of games where player 1 won. Draws and multi-player results calculated as partial wins.
  * 
  * @author matthew.stephenson
  */
@@ -28,7 +28,7 @@ public class AdvantageP1 extends Metric
 		super
 		(
 			"AdvantageP1", 
-			"Percentage of games where player 1 won.", 
+			"Percentage of games where player 1 won. Draws and multi-player results calculated as partial wins.", 
 			0.0, 
 			1.0,
 			Concept.AdvantageP1
@@ -49,18 +49,16 @@ public class AdvantageP1 extends Metric
 		if (game.players().count() <= 1)
 			return null;
 		
-		// Count number of wins for P1 (draws count as half a win)
 		double p1Wins = 0.0;
+		
 		for (int i = 0; i < trials.length; i++)
 		{
 			final Trial trial = trials[i];
 			final RandomProviderState rng = randomProviderStates[i];
 			final Context context = Utils.setupTrialContext(game, rng, trial);
 			
-			if (context.state().playerToAgent(trial.status().winner()) == 1)
-				p1Wins++;
-			else if (context.state().playerToAgent(trial.status().winner()) <= 0)
-				p1Wins += 0.5;
+			// TODO Check with Dennis if this is correct.
+			p1Wins += 1.0 - (trial.ranking()[context.state().playerToAgent(1)] - 1.0) / (trial.ranking().length - 2.0);
 		}
 
 		return p1Wins / trials.length;

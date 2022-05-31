@@ -11,7 +11,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Similarity between player win-rates.
+ * Similarity between player win-rates. Draws and multi-player results calculated as partial wins.
  * 
  * @author cambolbro and matthew.stephenson
  */
@@ -28,7 +28,7 @@ public class Balance extends Metric
 		super
 		(
 			"Balance", 
-			"Similarity between player win-rates.", 
+			"Similarity between player win-rates. Draws and multi-player results calculated as partial wins.", 
 			0.0, 
 			1.0,
 			Concept.Balance
@@ -59,7 +59,9 @@ public class Balance extends Metric
 			final RandomProviderState rng = randomProviderStates[i];
 			final Context context = Utils.setupTrialContext(game, rng, trial);
 			
-			wins[context.state().playerToAgent(trial.status().winner())]++;
+			// TODO check with Dennis
+			for (int p = 1; p <= numPlayers; p++) 
+				wins[p] += 1.0 - (trial.ranking()[context.state().playerToAgent(p)] - 1.0) / (trial.ranking().length - 2.0);
 		}
 		
 		// Get mean win rate over all players

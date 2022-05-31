@@ -89,7 +89,6 @@ public class Evaluation
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
-		//dialogMetrics.add(new ClarityNarrowness());
 	}
 	
 	private final List<Metric> conceptMetrics = new ArrayList<>();

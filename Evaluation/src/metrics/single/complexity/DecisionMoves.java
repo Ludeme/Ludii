@@ -12,7 +12,7 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * Percentage of moves where there was more than 1 possible move.
+ * Percentage number of states in the trial where there was more than 1 possible move.
  * 
  * @author matthew.stephenson
  */
@@ -29,7 +29,7 @@ public class DecisionMoves extends Metric
 		super
 		(
 			"Decision Moves", 
-			"Percentage of moves where there was more than 1 possible move.", 
+			"Percentage number of states in the trial where there was more than 1 possible move.", 
 			0.0, 
 			1.0,
 			Concept.DecisionMoves

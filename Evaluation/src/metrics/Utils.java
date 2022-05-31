@@ -160,6 +160,7 @@ public class Utils
 					heuristicScore -= AlphaBetaSearch.PARANOID_OPP_WIN_SCORE;
 			}
 			
+			// TODO, this seems to only work for two player games.
 			// Invert scores if players swapped
 			if (instanceContext.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
