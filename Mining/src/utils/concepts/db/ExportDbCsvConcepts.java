@@ -483,8 +483,33 @@ public class ExportDbCsvConcepts
 									? new HashMap<String, Double>()
 									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
 
+							
+							
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
+							
+							if(numPlayouts != 0) // NEED TO COMPLETE THIS AFTER DISCUSSING WITH MATTHEW
+							{
+								concepts.set(Concept.Behaviour.id(), true);
+								concepts.set(Concept.StateRepetition.id(), true);
+								concepts.set(Concept.Duration.id(), true);
+								concepts.set(Concept.Complexity.id(), true);
+								concepts.set(Concept.BoardCoverage.id(), true);
+								concepts.set(Concept.GameOutcome.id(), true);
+								concepts.set(Concept.StateEvaluation.id(), true);
+								concepts.set(Concept.Clarity.id(), true);
+								concepts.set(Concept.Decisiveness.id(), true);
+								concepts.set(Concept.Drama.id(), true);
+								concepts.set(Concept.MoveEvaluation.id(), true);
+								concepts.set(Concept.StateEvaluationDifference.id(), true);
+								concepts.set(Concept.BoardSitesOccupied.id(), true);
+								concepts.set(Concept.BranchingFactor.id(), true);
+								concepts.set(Concept.DecisionFactor.id(), true);
+								concepts.set(Concept.StateRepetition.id(), true);
+								concepts.set(Concept.PieceNumber.id(), true);
+								concepts.set(Concept.ScoreDifference.id(), true);
+							}
+							
 							final Map<Integer,String> nonBooleanConceptsValues = rulesetGame.nonBooleanConcepts();
 							
 							// Boolean concepts
@@ -569,6 +594,29 @@ public class ExportDbCsvConcepts
 
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
+					
+					if(numPlayouts != 0) // NEED TO COMPLETE THIS AFTER DISCUSSING WITH MATTHEW
+					{
+						concepts.set(Concept.Behaviour.id(), true);
+						concepts.set(Concept.StateRepetition.id(), true);
+						concepts.set(Concept.Duration.id(), true);
+						concepts.set(Concept.Complexity.id(), true);
+						concepts.set(Concept.BoardCoverage.id(), true);
+						concepts.set(Concept.GameOutcome.id(), true);
+						concepts.set(Concept.StateEvaluation.id(), true);
+						concepts.set(Concept.Clarity.id(), true);
+						concepts.set(Concept.Decisiveness.id(), true);
+						concepts.set(Concept.Drama.id(), true);
+						concepts.set(Concept.MoveEvaluation.id(), true);
+						concepts.set(Concept.StateEvaluationDifference.id(), true);
+						concepts.set(Concept.BoardSitesOccupied.id(), true);
+						concepts.set(Concept.BranchingFactor.id(), true);
+						concepts.set(Concept.DecisionFactor.id(), true);
+						concepts.set(Concept.StateRepetition.id(), true);
+						concepts.set(Concept.PieceNumber.id(), true);
+						concepts.set(Concept.ScoreDifference.id(), true);
+					}
+					
 					for (final Concept concept : booleanConcepts)
 					{
 						final List<String> lineToWrite = new ArrayList<String>();
@@ -598,13 +646,7 @@ public class ExportDbCsvConcepts
 						}
 						else
 						{
-							if (concept.type().equals(ConceptType.Behaviour) || !concept.name().contains("Frequency")) // Non
-																														// Frequency
-																														// concepts
-																														// added
-																														// to
-																														// the
-																														// csv.
+							if (concept.type().equals(ConceptType.Behaviour) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
 							{
 								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 										: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -680,17 +722,17 @@ public class ExportDbCsvConcepts
 
 		// For now I exclude the matchs, but can be included too after. The deduc puzzle
 		// will stay excluded.
-//		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
-//				// || game.name().contains("Kriegsspiel"))
-//		{
-//			// We add all the default metrics values corresponding to a concept to the
-//			// returned map.
-//			final List<Metric> metrics = new Evaluation().conceptMetrics();
-//			for (final Metric metric : metrics)
-//				if (metric.concept() != null)
-//					mapFrequency.put(metric.concept().name(), null);
-//			return mapFrequency;
-//		}
+		if (//game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
+				 game.name().contains("Kriegsspiel"))
+		{
+			// We add all the default metrics values corresponding to a concept to the
+			// returned map.
+			final List<Metric> metrics = new Evaluation().conceptMetrics();
+			for (final Metric metric : metrics)
+				if (metric.concept() != null)
+					mapFrequency.put(metric.concept().name(), null);
+			return mapFrequency;
+		}
 
 		// We run the playouts needed for the computation.
 
