@@ -2298,7 +2298,7 @@ public enum Concept
 	),
 	
 	/** Frequency of Promotion. */
-	PromotionFrequency
+	PromotionDecisionFrequency
 	(
 		"3.3.1.1.2.2.1",
 		162, 
