@@ -44,7 +44,7 @@ import other.trial.Trial;
 /**
  * Topology of the graph of the game.
  * 
- * @author Eric.Piette and cambolbro
+ * @author Eric.Piette and cambolbro and Dennis Soemers
  */
 public class Topology implements Serializable
 {
@@ -994,7 +994,7 @@ public class Topology implements Serializable
 	 */
 	public void preGenerateDistanceToEachElementToEachOther(final SiteType type, final RelationType relation)
 	{
-		if(this.distanceToOtherSite.get(type) != null)
+		if (this.distanceToOtherSite.get(type) != null)
 			return;
 		
 		final List<? extends TopologyElement> elements = getGraphElements(type);
@@ -1039,7 +1039,7 @@ public class Topology implements Serializable
 
 				for (int i = 0; i < currList.size(); i++)
 				{
-					final int idNeighbour = currList.get(i);
+					final int idNeighbour = currList.getQuick(i);
 
 					if (idNeighbour == idElem || distances[idElem][idNeighbour] > 0)
 						continue;
@@ -2252,16 +2252,32 @@ public class Topology implements Serializable
 		{
 			final TDoubleArrayList layerCentroids = new TDoubleArrayList();
 			for (final TopologyElement element : getGraphElements(type))
-				if (!layerCentroids.contains(element.centroid3D().z()))
-					layerCentroids.add(element.centroid3D().z());
+			{
+				final double z = element.centroid3D().z();
+				
+				if (layerCentroids.isEmpty())
+				{
+					layerCentroids.add(z);
+				}
+				else
+				{
+					final int insertIdx = layerCentroids.binarySearch(z);
+					
+					if (insertIdx < 0)
+					{
+						// Only insert if it's not already there
+						layerCentroids.insert(-insertIdx, z);
+					}
+				}
+			}
 
-			layerCentroids.sort();
+			//layerCentroids.sort();		Already sorted
 
 			for (int i = 0; i < layerCentroids.size(); i++)
 			{
 				layers(type).add(new ArrayList<TopologyElement>());
 				for (final TopologyElement element : getGraphElements(type))
-					if (element.centroid3D().z() == layerCentroids.get(i))
+					if (element.centroid3D().z() == layerCentroids.getQuick(i))
 					{
 						layers(type).get(i).add(element);
 
@@ -2538,7 +2554,9 @@ public class Topology implements Serializable
 
 		// No walk if the sites are the same or if the sites are incorrect.
 		if (origin == target || origin < 0 || target < 0 || origin >= elements.size() || target >= elements.size())
+		{
 			return new StepType[0];
+		}
 		else
 		{
 			// The min walk to return.
