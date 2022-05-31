@@ -38,7 +38,7 @@ public class AdvantageP1 extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,

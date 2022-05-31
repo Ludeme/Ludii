@@ -97,7 +97,7 @@ public abstract class Metric
 	 * @param trials At least one trial to be measured, may be multiple trials.
 	 * @return Evaluation of the specified trial(s) according to this metric.
 	 */
-	public abstract double apply
+	public abstract Double apply
 	(
 		final Game game,
 		final Evaluation evaluation,

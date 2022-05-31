@@ -307,7 +307,7 @@ public abstract class MultiMetricFramework extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -333,7 +333,7 @@ public abstract class MultiMetricFramework extends Metric
 			case MaxIncrease: return metricMaxIncrease(metricValues);
 			case MaxDecrease: return metricMaxDecrease(metricValues);
 			
-			default: return -1;
+			default: return null;
 		}
 	}
 

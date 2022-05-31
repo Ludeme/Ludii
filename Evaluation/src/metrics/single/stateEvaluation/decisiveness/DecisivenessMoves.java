@@ -40,7 +40,7 @@ public class DecisivenessMoves extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -80,9 +80,9 @@ public class DecisivenessMoves extends Metric
 				try {
 					context.game().apply(context, trial.getMove(i));
 				}
-				catch(Exception e) // To avoid a few exceptions in rare cases.
+				catch(final Exception e) // To avoid a few exceptions in rare cases.
 				{
-					return 0;
+					return null;
 				}
 			}
 			
