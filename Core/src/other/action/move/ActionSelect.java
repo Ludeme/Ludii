@@ -1,23 +1,15 @@
 package other.action.move;
 
 import java.util.BitSet;
-import java.util.List;
 
 import game.rules.play.moves.Moves;
-import game.types.board.RelationType;
 import game.types.board.SiteType;
-import game.util.directions.AbsoluteDirection;
-import game.util.directions.DirectionFacing;
-import game.util.graph.Radial;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
-import other.state.container.ContainerState;
-import other.topology.Topology;
-import other.topology.TopologyElement;
 
 /**
  * Selects the from/to sites of the move.
@@ -120,7 +112,7 @@ public final class ActionSelect extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context, boolean discard)
+	public Action undo(final Context context, final boolean discard)
 	{
 		return this;
 	}
