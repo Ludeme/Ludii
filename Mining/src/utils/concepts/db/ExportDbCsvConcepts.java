@@ -1548,11 +1548,17 @@ public class ExportDbCsvConcepts
 		for (final Metric metric : metrics)
 			if (metric.concept() != null)
 			{
-				double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
-				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
-				playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
-				if (metricValue != 0)
-					System.out.println(metric.concept().name() + ": " + metricValue);
+				Double value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
+				if(value == null)
+					playoutConceptValues.put(metric.concept().name(), null);
+				else
+				{
+					double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
+					metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
+					playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
+					if (metricValue != 0)
+						System.out.println(metric.concept().name() + ": " + metricValue);
+				}
 			}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
