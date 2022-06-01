@@ -315,12 +315,12 @@ public abstract class MultiMetricFramework extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		final Double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
-		
 		// Zero player games cannot be computed.
 		if (game.hasSubgames() || game.isSimultaneousMoveGame() || game.players().count() == 0)
 			return null;
 		
+		final Double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
+
 		switch (multiMetricValue())
 		{
 			case Average: return metricAverage(metricValues);
