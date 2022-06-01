@@ -1,4 +1,4 @@
-package app.util;
+package app.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,9 +24,14 @@ public class QrCodeGeneration
 	 */
 	public static void makeQRCode(final Game game)
 	{
+		makeQRCode(game, 10, 4, true);
+	}
+	
+	public static void makeQRCode(final Game game, final int scale, final int border, final boolean includeRuleset)
+	{
 		// Determine the file name
 		String fileName = "qr-" + game.name();
-		if (game.getRuleset() != null)
+		if (game.getRuleset() != null && includeRuleset)
 		{
 			fileName += "-" + game.getRuleset().heading();
 			fileName = fileName.replaceAll("Ruleset/", "");  // remove keyword
@@ -37,7 +42,7 @@ public class QrCodeGeneration
 		
 		// Determine URL to encode
 		String url = "https://ludii.games/details.php?keyword=" + game.name(); 
-		if (game.getRuleset() != null)
+		if (game.getRuleset() != null && includeRuleset)
 		{
 			// Format: https://ludii.games/variantDetails.php?keyword=Achi&variant=563
 			final int variant = DatabaseInformation.getRulesetId(game.name(), game.getRuleset().heading());
@@ -49,9 +54,6 @@ public class QrCodeGeneration
 		final QrCode qr = QrCode.encodeText(url, QrCode.Ecc.MEDIUM);
 	
 		// Make the image
-		final int scale = 10;
-		final int border = 4;
-	
 		final BufferedImage img = ToImage.toLudiiCodeImage(qr, scale, border);   
 		try
 		{
