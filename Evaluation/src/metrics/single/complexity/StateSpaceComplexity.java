@@ -10,7 +10,8 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * State Space Complexity Upper Bound.
+ * Estimate of the total number of possible game board states.
+ * https://www.pipmodern.com/post/complexity-state-space-game-tree
  * 
  * @author matthew.stephenson
  */
@@ -27,7 +28,7 @@ public class StateSpaceComplexity extends Metric
 		super
 		(
 			"State Space Complexity", 
-			"State Space Complexity Upper Bound.", 
+			"Estimate of the total number of possible game board states.", 
 			0.0, 
 			-1,
 			Concept.StateTreeComplexity
@@ -37,7 +38,7 @@ public class StateSpaceComplexity extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,

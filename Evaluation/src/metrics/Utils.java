@@ -160,6 +160,7 @@ public class Utils
 					heuristicScore -= AlphaBetaSearch.PARANOID_OPP_WIN_SCORE;
 			}
 			
+			// TODO, this seems to only work for two player games.
 			// Invert scores if players swapped
 			if (instanceContext.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
@@ -179,8 +180,11 @@ public class Utils
 	/**
 	 * Returns an evaluation of a given move from the current (context) state.
 	 */
-	public static double evaluateMove(final Evaluation evaluation, final Context context, final Move move)
+	public static Double evaluateMove(final Evaluation evaluation, final Context context, final Move move)
 	{
+		if (context.game().hasSubgames())
+			return null;
+		
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
 		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
 		
@@ -200,6 +204,9 @@ public class Utils
 	 */
 	public static ArrayList<Double> allPlayerStateEvaluations(final Evaluation evaluation, final Context context)
 	{
+		if (context.game().hasSubgames())
+			return null;
+		
 		final ArrayList<Double> allPlayerStateEvalations = new ArrayList<>();
 		allPlayerStateEvalations.add(Double.valueOf(-1.0));
 		for (int i = 1; i <= context.game().players().count(); i++)
@@ -214,6 +221,9 @@ public class Utils
 	 */
 	public static ArrayList<Integer> highestRankedPlayers(final Trial trial, final Context context)
 	{
+		if (context.game().hasSubgames())
+			return null;
+		
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
 		final double highestRanking = Arrays.stream(trial.ranking()).max().getAsDouble();
 		for (int i = 1; i <= context.game().players().count(); i++)
