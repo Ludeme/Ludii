@@ -573,7 +573,21 @@ public final class FromTo extends Effect
 		concepts.or(SiteType.concepts(typeTo));
 		
 		if(isDecision())
+		{
 			concepts.set(Concept.FromToDecision.id(), true);
+			if (moveRule.concepts(game).get(Concept.IsEmpty.id()))
+				concepts.set(Concept.FromToDecisionEmpty.id(), true);
+			if (moveRule.concepts(game).get(Concept.IsFriend.id()))
+				concepts.set(Concept.FromToDecisionFriend.id(), true);
+			if (moveRule.concepts(game).get(Concept.IsEnemy.id()))
+				concepts.set(Concept.FromToDecisionEnemy.id(), true);
+			if (moveRule instanceof BooleanConstant.TrueConstant)
+			{
+				concepts.set(Concept.FromToDecisionEmpty.id(), true);
+				concepts.set(Concept.FromToDecisionFriend.id(), true);
+				concepts.set(Concept.FromToDecisionEnemy.id(), true);
+			}
+		}
 		else
 			concepts.set(Concept.FromToEffect.id(), true);
 
