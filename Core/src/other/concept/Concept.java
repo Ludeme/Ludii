@@ -1780,7 +1780,7 @@ public enum Concept
 		Concept.Meta
 	),
 	
-	/** (no Repeat InTurn) is used. */
+	/** (no Repeat PositionalInTurn) is used. */
 	TurnKo
 	(
 		"3.1.2.1",
@@ -1808,7 +1808,7 @@ public enum Concept
 		Concept.Repetition
 	),
 	
-	/** (no Repeat InGame) is used. */
+	/** (no Repeat Positional) is used. */
 	PositionalSuperko
 	(
 		"3.1.2.3",
