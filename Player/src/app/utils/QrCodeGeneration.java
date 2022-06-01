@@ -36,8 +36,8 @@ public class QrCodeGeneration
 			fileName += "-" + game.getRuleset().heading();
 			fileName = fileName.replaceAll("Ruleset/", "");  // remove keyword
 		}
-		fileName = fileName.replaceAll(" ", "-");  // remove empty spaces
-		fileName = fileName.replaceAll("/", "-");  // remove slashes spaces
+		//fileName = fileName.replaceAll(" ", "-");  // remove empty spaces
+		//fileName = fileName.replaceAll("/", "-");  // remove slashes spaces
 		fileName += ".png";
 		
 		// Determine URL to encode
