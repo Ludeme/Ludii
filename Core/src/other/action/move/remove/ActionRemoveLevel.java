@@ -528,6 +528,9 @@ public final class ActionRemoveLevel extends BaseAction
 			
 			if (ludemeConcept.get(Concept.SowRemove.id()))
 				concepts.set(Concept.SowRemove.id(), true);
+			
+			if (ludemeConcept.get(Concept.PushEffect.id()))
+				concepts.set(Concept.PushEffect.id(), true);
 		}
 
 		return concepts;

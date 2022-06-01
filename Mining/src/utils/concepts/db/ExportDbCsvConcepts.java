@@ -374,6 +374,26 @@ public class ExportDbCsvConcepts
 			final double timeLimit, final double thinkingTime, final String agentName, final String name,
 			final String rulesetExpected)
 	{
+		final List<Concept> ignoredConcepts = new ArrayList<Concept>();
+		ignoredConcepts.add(Concept.Behaviour);
+		ignoredConcepts.add(Concept.StateRepetition);
+		ignoredConcepts.add(Concept.Duration);
+		ignoredConcepts.add(Concept.Complexity);
+		ignoredConcepts.add(Concept.BoardCoverage);
+		ignoredConcepts.add(Concept.GameOutcome);
+		ignoredConcepts.add(Concept.StateEvaluation);
+		ignoredConcepts.add(Concept.Clarity);
+		ignoredConcepts.add(Concept.Decisiveness);
+		ignoredConcepts.add(Concept.Drama);
+		ignoredConcepts.add(Concept.MoveEvaluation);
+		ignoredConcepts.add(Concept.StateEvaluationDifference);
+		ignoredConcepts.add(Concept.BoardSitesOccupied);
+		ignoredConcepts.add(Concept.BranchingFactor);
+		ignoredConcepts.add(Concept.DecisionFactor);
+		ignoredConcepts.add(Concept.StateRepetition);
+		ignoredConcepts.add(Concept.PieceNumber);
+		ignoredConcepts.add(Concept.ScoreDifference);
+		
 		final List<String> games = new ArrayList<String>();
 		final List<String> rulesets = new ArrayList<String>();
 		final TIntArrayList ids = new TIntArrayList();
@@ -482,34 +502,9 @@ public class ExportDbCsvConcepts
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
 									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
-
-							
 							
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
-							
-							if(numPlayouts != 0) // NEED TO COMPLETE THIS AFTER DISCUSSING WITH MATTHEW
-							{
-								concepts.set(Concept.Behaviour.id(), true);
-								concepts.set(Concept.StateRepetition.id(), true);
-								concepts.set(Concept.Duration.id(), true);
-								concepts.set(Concept.Complexity.id(), true);
-								concepts.set(Concept.BoardCoverage.id(), true);
-								concepts.set(Concept.GameOutcome.id(), true);
-								concepts.set(Concept.StateEvaluation.id(), true);
-								concepts.set(Concept.Clarity.id(), true);
-								concepts.set(Concept.Decisiveness.id(), true);
-								concepts.set(Concept.Drama.id(), true);
-								concepts.set(Concept.MoveEvaluation.id(), true);
-								concepts.set(Concept.StateEvaluationDifference.id(), true);
-								concepts.set(Concept.BoardSitesOccupied.id(), true);
-								concepts.set(Concept.BranchingFactor.id(), true);
-								concepts.set(Concept.DecisionFactor.id(), true);
-								concepts.set(Concept.StateRepetition.id(), true);
-								concepts.set(Concept.PieceNumber.id(), true);
-								concepts.set(Concept.ScoreDifference.id(), true);
-							}
-							
 							final Map<Integer,String> nonBooleanConceptsValues = rulesetGame.nonBooleanConcepts();
 							
 							// Boolean concepts
@@ -519,7 +514,9 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(id + ""); // id
 								lineToWrite.add(idRuleset + ""); // id ruleset
 								lineToWrite.add(concept.id() + ""); // id concept
-								if (concepts.get(concept.id()))
+								if(ignoredConcepts.contains(concept))
+									lineToWrite.add("NULL");
+								else if (concepts.get(concept.id()))
 									lineToWrite.add("\"1\"");
 								else
 									lineToWrite.add("\"0\"");
@@ -595,35 +592,15 @@ public class ExportDbCsvConcepts
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
 					
-					if(numPlayouts != 0) // NEED TO COMPLETE THIS AFTER DISCUSSING WITH MATTHEW
-					{
-						concepts.set(Concept.Behaviour.id(), true);
-						concepts.set(Concept.StateRepetition.id(), true);
-						concepts.set(Concept.Duration.id(), true);
-						concepts.set(Concept.Complexity.id(), true);
-						concepts.set(Concept.BoardCoverage.id(), true);
-						concepts.set(Concept.GameOutcome.id(), true);
-						concepts.set(Concept.StateEvaluation.id(), true);
-						concepts.set(Concept.Clarity.id(), true);
-						concepts.set(Concept.Decisiveness.id(), true);
-						concepts.set(Concept.Drama.id(), true);
-						concepts.set(Concept.MoveEvaluation.id(), true);
-						concepts.set(Concept.StateEvaluationDifference.id(), true);
-						concepts.set(Concept.BoardSitesOccupied.id(), true);
-						concepts.set(Concept.BranchingFactor.id(), true);
-						concepts.set(Concept.DecisionFactor.id(), true);
-						concepts.set(Concept.StateRepetition.id(), true);
-						concepts.set(Concept.PieceNumber.id(), true);
-						concepts.set(Concept.ScoreDifference.id(), true);
-					}
-					
 					for (final Concept concept : booleanConcepts)
 					{
 						final List<String> lineToWrite = new ArrayList<String>();
 						lineToWrite.add(id + "");
 						lineToWrite.add(idRuleset + "");
 						lineToWrite.add(concept.id() + "");
-						if (concepts.get(concept.id()))
+						if(ignoredConcepts.contains(concept))
+							lineToWrite.add("NULL");
+						else if (concepts.get(concept.id()))
 							lineToWrite.add("\"1\"");
 						else
 							lineToWrite.add("\"0\"");
