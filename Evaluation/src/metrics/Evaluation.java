@@ -271,7 +271,7 @@ public class Evaluation
 
 	public List<Metric> dialogMetrics()
 	{
-		return Collections.unmodifiableList(conceptMetrics);
+		return Collections.unmodifiableList(dialogMetrics);
 	}
 	
 	public List<Metric> reconstructionMetrics()
