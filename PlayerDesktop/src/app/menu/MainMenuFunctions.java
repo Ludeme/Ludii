@@ -259,6 +259,7 @@ public class MainMenuFunctions extends JMenuBar
 			EventQueue.invokeLater(() -> 
 	    	{
 		    	Thumbnails.generateThumbnails(app, false);
+		    	QrCodeGeneration.makeQRCode(game, 5, 2, false);
 	    	});
 		}
 		else if (source.getText().equals("Export Thumbnails (ruleset)"))
