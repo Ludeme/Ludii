@@ -11,8 +11,8 @@
             ) 
             use:Vertex
         )
-        (piece "Tiger" P1)
-        (piece "Sheep" P2)
+        (piece "Tiger" P1 (move [#]))
+        (piece "Sheep" P2 (move [#]))
     })  
     
     (rules 
@@ -20,8 +20,8 @@
             (place "Tiger1" (sites [#]) ) // 3 Tigers
             (place "Sheep2" (sites [#]) ) // 13 Sheeps
         })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#])
+        (end [#])
     )
 )
 
