@@ -3684,7 +3684,7 @@ public enum Concept
 	),
 	
 	/** Frequency of Push. */
-	PushFrequency
+	PushEffectFrequency
 	(
 		"3.3.1.2.1.12.1",
 		261, 
