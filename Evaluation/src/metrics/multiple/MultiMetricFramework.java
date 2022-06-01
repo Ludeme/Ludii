@@ -318,7 +318,7 @@ public abstract class MultiMetricFramework extends Metric
 		final Double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
 		
 		// Zero player games cannot be computed.
-		if (game.players().count() == 0)
+		if (game.hasSubgames() || game.isSimultaneousMoveGame() || game.players().count() == 0)
 			return null;
 		
 		switch (multiMetricValue())
