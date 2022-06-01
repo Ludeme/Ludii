@@ -172,7 +172,7 @@ public class Utils
 	 */
 	public static Double evaluateMove(final Evaluation evaluation, final Context context, final Move move)
 	{
-		if (context.game().hasSubgames() || context.game().isSimultaneousMoveGame())
+		if (context.game().isSimultaneousMoveGame())
 			return null;
 		
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
@@ -194,9 +194,6 @@ public class Utils
 	 */
 	public static ArrayList<Double> allPlayerStateEvaluations(final Evaluation evaluation, final Context context)
 	{
-		if (context.game().hasSubgames())
-			return null;
-		
 		final ArrayList<Double> allPlayerStateEvalations = new ArrayList<>();
 		allPlayerStateEvalations.add(Double.valueOf(-1.0));
 		for (int i = 1; i <= context.game().players().count(); i++)
