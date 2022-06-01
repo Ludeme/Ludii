@@ -7033,7 +7033,7 @@ public enum Concept
 	),
 	
 	/** Frequency of ScoreWin. */
-	ScoringeWinFrequency
+	ScoringWinFrequency
 	(
 		"3.4.4.2.1",
 		500, 
