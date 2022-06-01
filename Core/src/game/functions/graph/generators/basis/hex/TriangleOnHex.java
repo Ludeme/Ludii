@@ -109,6 +109,8 @@ public class TriangleOnHex extends Basis
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.HexTiling.id(), true);
 		concepts.set(Concept.TriangleShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
+		concepts.set(Concept.RegularShape.id(), true);
 		return concepts;
 	}
 

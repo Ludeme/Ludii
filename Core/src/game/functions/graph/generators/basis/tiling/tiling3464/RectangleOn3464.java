@@ -161,6 +161,7 @@ public class RectangleOn3464 extends Basis
 			concepts.set(Concept.SquareShape.id(), true);
 		else
 			concepts.set(Concept.RectangleShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

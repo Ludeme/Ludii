@@ -296,6 +296,7 @@ public class Quadhex extends Basis
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.QuadHexTiling.id(), true);
 		concepts.set(Concept.HexShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

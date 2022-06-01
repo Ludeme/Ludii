@@ -1,5 +1,7 @@
 package game.functions.graph.generators.shape;
 
+import java.util.BitSet;
+
 import annotations.Opt;
 import game.Game;
 import game.functions.dim.DimFunction;
@@ -9,6 +11,7 @@ import game.types.board.ShapeType;
 import game.types.board.SiteType;
 import game.util.graph.Graph;
 import main.math.MathRoutines;
+import other.concept.Concept;
 import other.context.Context;
 
 //-----------------------------------------------------------------------------
@@ -131,6 +134,15 @@ public class Wedge extends Basis
 	public void preprocess(Game game)
 	{
 		// Nothing to do.
+	}	
+	
+	@Override
+	public BitSet concepts(final Game game)
+	{
+		final BitSet concepts = new BitSet();
+		concepts.or(super.concepts(game));
+		concepts.set(Concept.PolygonShape.id(), true);
+		return concepts;
 	}
 	
 	//-------------------------------------------------------------------------

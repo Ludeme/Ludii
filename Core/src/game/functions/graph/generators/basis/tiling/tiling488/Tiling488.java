@@ -1,10 +1,12 @@
 package game.functions.graph.generators.basis.tiling.tiling488;
 
 import java.awt.geom.Point2D;
+import java.util.BitSet;
 
 import annotations.Hide;
 import game.Game;
 import game.functions.graph.generators.basis.Basis;
+import other.concept.Concept;
 
 //-----------------------------------------------------------------------------
 
@@ -67,6 +69,16 @@ public class Tiling488 extends Basis
 	public void preprocess(Game game)
 	{
 		// Nothing to do.
+	}
+	
+	@Override
+	public BitSet concepts(final Game game)
+	{
+		final BitSet concepts = new BitSet();
+		concepts.or(super.concepts(game));
+		concepts.set(Concept.SemiRegularTiling.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
+		return concepts;
 	}
 	
 	//-------------------------------------------------------------------------

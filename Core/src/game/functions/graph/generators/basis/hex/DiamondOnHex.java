@@ -140,6 +140,8 @@ public class DiamondOnHex extends Basis
 			concepts.set(Concept.DiamondShape.id(), true);
 		else
 			concepts.set(Concept.PrismShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
+		concepts.set(Concept.RegularShape.id(), true);
 		return concepts;
 	}
 

@@ -151,6 +151,8 @@ public class HexagonOnTri extends Basis
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.TriangleTiling.id(), true);
 		concepts.set(Concept.HexShape.id(), true);
+		concepts.set(Concept.RegularShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 
