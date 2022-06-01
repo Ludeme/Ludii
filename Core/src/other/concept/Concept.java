@@ -3950,7 +3950,7 @@ public enum Concept
 	),
 	
 	/** Frequency of Rotation. */
-	RotationEffectFrequency
+	SetRotationFrequency
 	(
 		"3.3.1.2.1.14.8.1",
 		280, 
