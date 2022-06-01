@@ -50,7 +50,7 @@ public class DecisivenessThreshold extends Metric
 	)
 	{
 		// Cannot perform move/state evaluation for matches.
-		if (game.hasSubgames())
+		if (game.hasSubgames() || game.isSimultaneousMoveGame())
 			return null;
 		
 		double avgDecisivenessThreshold = 0.0;

@@ -46,7 +46,7 @@ public class StateSpaceComplexity extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (game.hasSubgames())
+		if (game.hasSubgames() || game.isSimultaneousMoveGame())
 			return null;
 		
 		long maxStatePossibilites = game.numComponents() + 1;

@@ -51,7 +51,7 @@ public class Stability extends Metric
 	)
 	{
 		// Cannot perform move/state evaluation for matches.
-		if (game.hasSubgames())
+		if (game.hasSubgames() || game.isSimultaneousMoveGame())
 			return null;
 		
 		double avgStability = 0.0;

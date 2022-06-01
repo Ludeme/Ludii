@@ -53,8 +53,8 @@ public class LeadChange extends Metric
 	)
 	{
 		// Cannot perform move/state evaluation for matches.
-				if (game.hasSubgames())
-					return null;
+		if (game.hasSubgames() || game.isSimultaneousMoveGame())
+			return null;
 		
 		double avgLeadChange = 0.0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
