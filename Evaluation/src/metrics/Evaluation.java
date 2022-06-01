@@ -105,7 +105,6 @@ public class Evaluation
 		reconstructionMetrics.add(new PieceNumber(MultiMetricValue.Average, Concept.PieceNumberAverage));
 		reconstructionMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, Concept.BoardSitesOccupiedAverage));
 		reconstructionMetrics.add(new BranchingFactor(MultiMetricValue.Average, Concept.BranchingFactorAverage));
-		reconstructionMetrics.add(new ScoreDifference(MultiMetricValue.Average, Concept.ScoreDifferenceAverage));
 	}
 	
 	//-------------------------------------------------------------------------
