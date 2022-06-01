@@ -400,12 +400,18 @@ public class EvalGames
 				System.out.print(metric.name() + "\n");
 			}
 			
-			final double score = metric.apply(game, evaluation, trials, randomProviderStates);
-			final double weight = weights.get(m).doubleValue();
-			analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
-			finalScore += score * weight;
-			
-			csvOutputString += score + ",";
+			final Double score = metric.apply(game, evaluation, trials, randomProviderStates);
+			if (score == null)
+			{
+				csvOutputString += "NULL,";
+			}
+			else
+			{
+				final double weight = weights.get(m).doubleValue();
+				analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
+				finalScore += score * weight;
+				csvOutputString += score + ",";
+			}
 		}
 		
 		analysisPanelString += "Final Score: " + df.format(finalScore) + "\n\n";

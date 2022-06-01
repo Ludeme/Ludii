@@ -3,6 +3,7 @@ package metrics.single.complexity;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
@@ -32,7 +33,7 @@ public class GameTreeComplexity extends Metric
 			"Game Tree Complexity", 
 			"Estimate of the number of possible distinct play traces. ", 
 			0.0, 
-			Double.MAX_VALUE,
+			Constants.INFINITY,
 			Concept.GameTreeComplexity
 		);
 	}

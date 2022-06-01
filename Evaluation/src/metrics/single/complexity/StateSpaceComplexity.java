@@ -30,7 +30,7 @@ public class StateSpaceComplexity extends Metric
 			"State Space Complexity", 
 			"Estimate of the total number of possible game board states.", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			Concept.StateTreeComplexity
 		);
 	}

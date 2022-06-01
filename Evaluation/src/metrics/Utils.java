@@ -7,6 +7,7 @@ import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
+import main.Constants;
 import other.RankUtils;
 import other.context.Context;
 import other.context.TempContext;
@@ -214,7 +215,12 @@ public class Utils
 			return null;
 		
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
-		final double highestRanking = Arrays.stream(RankUtils.agentUtilities(context)).max().getAsDouble();
+		
+		double highestRanking = -Constants.INFINITY;
+		for (int i = 1; i <= context.game().players().count(); i++)
+			if (RankUtils.agentUtilities(context)[i] > highestRanking)
+				highestRanking = RankUtils.agentUtilities(context)[i];
+		
 		for (int i = 1; i <= context.game().players().count(); i++)
 			if (RankUtils.agentUtilities(context)[i] == highestRanking)
 				highestRankedPlayers.add(i);
