@@ -48,7 +48,6 @@ public class Balance extends Metric
 	)
 	{
 		final int numPlayers = game.players().count();
-		
 		if (numPlayers <= 1)
 			return null;
 		

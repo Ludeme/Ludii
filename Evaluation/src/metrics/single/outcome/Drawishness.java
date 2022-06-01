@@ -44,6 +44,10 @@ public class Drawishness extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		final int numPlayers = game.players().count();
+		if (numPlayers <= 1)
+			return null;
+		
 		// Count number of draws
 		double naturalDraws = 0.0;
 		for (int i = 0; i < trials.length; i++)
