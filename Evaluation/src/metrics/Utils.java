@@ -172,7 +172,7 @@ public class Utils
 	 */
 	public static Double evaluateMove(final Evaluation evaluation, final Context context, final Move move)
 	{
-		if (context.game().hasSubgames())
+		if (context.game().hasSubgames() || context.game().isSimultaneousMoveGame())
 			return null;
 		
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
