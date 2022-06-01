@@ -515,7 +515,7 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(idRuleset + ""); // id ruleset
 								lineToWrite.add(concept.id() + ""); // id concept
 								if(ignoredConcepts.contains(concept))
-									lineToWrite.add("\"NULL\"");
+									lineToWrite.add("NULL");
 								else if (concepts.get(concept.id()))
 									lineToWrite.add("\"1\"");
 								else
@@ -599,7 +599,7 @@ public class ExportDbCsvConcepts
 						lineToWrite.add(idRuleset + "");
 						lineToWrite.add(concept.id() + "");
 						if(ignoredConcepts.contains(concept))
-							lineToWrite.add("\"NULL\"");
+							lineToWrite.add("NULL");
 						else if (concepts.get(concept.id()))
 							lineToWrite.add("\"1\"");
 						else
