@@ -2452,7 +2452,7 @@ public enum Concept
 	),
 	
 	/** Frequency of StepToEmpty. */
-	StepToFriendFrequency
+	StepDecisionToFriendFrequency
 	(
 		"3.3.1.1.3.1.3.1",
 		173, 
