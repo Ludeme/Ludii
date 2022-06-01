@@ -126,12 +126,7 @@ public class Utils
 	 */
 	public static double evaluateState(final Evaluation evaluation, final Context context, final int mover)
 	{
-		final Context instanceContext = context.currentInstanceContext();
-		
-		//TODO need to handle simul games properly
-		if (instanceContext.game().isSimultaneousMoveGame())
-			return 0.0;
-		
+		final Context instanceContext = context.currentInstanceContext();		
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(instanceContext.game(), mover);
 		
@@ -160,19 +155,13 @@ public class Utils
 					heuristicScore -= AlphaBetaSearch.PARANOID_OPP_WIN_SCORE;
 			}
 			
-			// TODO, this seems to only work for two player games.
-			// Invert scores if players swapped
+			// Invert scores if players swapped (only works for two player games)
 			if (instanceContext.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
 
 			// Normalise to between -1 and 1
 			final double heuristicScoreTanh = Math.tanh(heuristicScore);
-			
-			// Convert score to between range 0 and 1, rather than -1 and 1
-			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
-			
 			evaluation.putStateEvaluationCacheValue(stateAndMoverHash, heuristicScoreTanh);
-			
 			return heuristicScoreTanh;
 		}
 	}
@@ -225,9 +214,9 @@ public class Utils
 			return null;
 		
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
-		final double highestRanking = Arrays.stream(trial.ranking()).max().getAsDouble();
+		final double highestRanking = Arrays.stream(RankUtils.agentUtilities(context)).max().getAsDouble();
 		for (int i = 1; i <= context.game().players().count(); i++)
-			if (trial.ranking()[i] == highestRanking)
+			if (RankUtils.agentUtilities(context)[i] == highestRanking)
 				highestRankedPlayers.add(i);
 		
 		return highestRankedPlayers;

@@ -6,6 +6,7 @@ import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
+import other.RankUtils;
 import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
@@ -56,9 +57,7 @@ public class AdvantageP1 extends Metric
 			final Trial trial = trials[i];
 			final RandomProviderState rng = randomProviderStates[i];
 			final Context context = Utils.setupTrialContext(game, rng, trial);
-			
-			// TODO Check with Dennis if this is correct.
-			p1Wins += 1.0 - (trial.ranking()[context.state().playerToAgent(1)] - 1.0) / (trial.ranking().length - 2.0);
+			p1Wins += (RankUtils.agentUtilities(context)[1] + 1.0) / 2.0;
 		}
 
 		return p1Wins / trials.length;

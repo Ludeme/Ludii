@@ -6,6 +6,7 @@ import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
+import other.RankUtils;
 import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
@@ -59,9 +60,8 @@ public class Balance extends Metric
 			final RandomProviderState rng = randomProviderStates[i];
 			final Context context = Utils.setupTrialContext(game, rng, trial);
 			
-			// TODO check with Dennis
 			for (int p = 1; p <= numPlayers; p++) 
-				wins[p] += 1.0 - (trial.ranking()[context.state().playerToAgent(p)] - 1.0) / (trial.ranking().length - 2.0);
+				wins[p] += (RankUtils.agentUtilities(context)[p] + 1.0) / 2.0;
 		}
 		
 		// Get mean win rate over all players
