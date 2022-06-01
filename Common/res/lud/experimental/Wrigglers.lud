@@ -111,21 +111,21 @@
 (metadata
     (info
         {
-
-    }
-)
-(graphics 
-    {
-    (player Colour P1 (colour 229 92 0))
-    (player Colour P2 (colour Cream))
-    (board Style Graph)
-    (board StyleThickness InnerEdges .2)
-    (board StyleThickness OuterEdges .2)
-    (board StyleThickness InnerVertices .5)
-    (show Edges Diagonal <BoardShape:DiagShow>)
-    (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-    //    (show Piece State)
-    }
-)
-(ai (heuristics (score weight:2)))
+        
+        }
+    )
+    (graphics 
+        {
+        (player Colour P1 (colour 229 92 0))
+        (player Colour P2 (colour Cream))
+        (board Style Graph)
+        (board StyleThickness InnerEdges .2)
+        (board StyleThickness OuterEdges .2)
+        (board StyleThickness InnerVertices .5)
+        (show Edges Diagonal <BoardShape:DiagShow>)
+        (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
+        //    (show Piece State)
+        }
+    )
+    (ai (heuristics (score weight:2)))
 )
