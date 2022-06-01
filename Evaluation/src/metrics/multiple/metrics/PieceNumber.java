@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
+import main.Constants;
 import metrics.Evaluation;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
@@ -30,7 +31,7 @@ public class PieceNumber extends MultiMetricFramework
 			"Piece Number " + multiMetricValue.name(), 
 			"The number of pieces on the board.", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			concept,
 			multiMetricValue
 		);

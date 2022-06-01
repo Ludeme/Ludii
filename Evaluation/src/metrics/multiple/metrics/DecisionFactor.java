@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
+import main.Constants;
 import metrics.Evaluation;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -29,7 +30,7 @@ public class DecisionFactor extends MultiMetricFramework
 			"Decision Factor " + multiMetricValue.name(), 
 			"Number of possible moves, when greater than 1.", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			concept,
 			multiMetricValue
 		);
