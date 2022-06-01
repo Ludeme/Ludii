@@ -54,7 +54,18 @@ public class Drawishness extends Metric
 		{
 			final Trial trial = trials[i];
 			
-			if (trial.status().winner() == 0 && trial.numTurns() <= game.getMaxTurnLimit() && trial.numberRealMoves() <= game.getMaxMoveLimit())
+			// No players have won/lost.
+			boolean allRankingZero = true;
+			for (int j = 0; j < trial.ranking().length; j++)
+			{
+				if (trial.ranking()[j] != 0)
+				{
+					allRankingZero = false;
+					break;
+				}
+			}
+			
+			if (allRankingZero)
 				naturalDraws++;
 		}
 

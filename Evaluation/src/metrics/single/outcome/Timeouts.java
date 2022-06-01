@@ -50,7 +50,10 @@ public class Timeouts extends Metric
 		{
 			final Trial trial = trials[i];
 			
-			if (trial.status().winner() == 0 && (trial.numTurns() > game.getMaxTurnLimit() || trial.numberRealMoves() > game.getMaxMoveLimit()))
+			// Trial ended by timeout.
+			final boolean trialTimedOut = trial.numTurns() > game.getMaxTurnLimit() || trial.numberRealMoves() > game.getMaxMoveLimit();
+			
+			if (trialTimedOut)
 				timeouts++;
 		}
 
