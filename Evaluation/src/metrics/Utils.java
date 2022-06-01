@@ -61,9 +61,9 @@ public class Utils
 		int numPieces = 0;
 		final ContainerState cs = context.containerState(0);
 		
-		for (int i = 0; i < context.game().board().topology().getAllGraphElements().size(); i++)
+		for (int i = 0; i < context.board().topology().getAllGraphElements().size(); i++)
 		{
-			final TopologyElement element = context.game().board().topology().getAllGraphElements().get(i);
+			final TopologyElement element = context.board().topology().getAllGraphElements().get(i);
 			if (context.game().isStacking())
 				numPieces += cs.sizeStack(element.index(), element.elementType());
 			else
@@ -83,7 +83,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (final TopologyElement topologyElement : context.game().board().topology().getAllGraphElements())
+		for (final TopologyElement topologyElement : context.board().topology().getAllGraphElements())
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -98,7 +98,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (final TopologyElement topologyElement : context.game().board().topology().getAllUsedGraphElements(context.game()))
+		for (final TopologyElement topologyElement : context.board().topology().getAllUsedGraphElements(context.game()))
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -113,7 +113,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (final TopologyElement topologyElement : context.game().board().topology().getGraphElements(context.game().board().defaultSite()))
+		for (final TopologyElement topologyElement : context.board().topology().getGraphElements(context.board().defaultSite()))
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -211,7 +211,7 @@ public class Utils
 	 */
 	public static ArrayList<Integer> highestRankedPlayers(final Trial trial, final Context context)
 	{
-		if (context.game().hasSubgames())
+		if (context.game().players().count() <= 0)
 			return null;
 		
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();

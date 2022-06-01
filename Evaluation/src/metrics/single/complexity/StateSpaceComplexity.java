@@ -46,6 +46,9 @@ public class StateSpaceComplexity extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		if (game.hasSubgames())
+			return null;
+		
 		long maxStatePossibilites = game.numComponents() + 1;
 		if (game.isStacking())
 			maxStatePossibilites *= Constants.MAX_STACK_HEIGHT;

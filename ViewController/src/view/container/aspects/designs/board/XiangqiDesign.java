@@ -91,7 +91,7 @@ public class XiangqiDesign extends BoardDesign
 			}
 		}
 
-		if (context.game().board().topology().vertices().size() == 90)
+		if (context.board().topology().vertices().size() == 90)
 		{
 			Point screenPosn = boardStyle.screenPosn(topology().vertices().get(3).centroid());
 			path.moveTo(screenPosn.x, screenPosn.y);

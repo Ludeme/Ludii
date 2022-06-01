@@ -71,7 +71,7 @@ public class BoardCoverageFull extends Metric
 				sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			}
 			
-			numSitesCovered += ((double) sitesCovered.size()) / game.board().topology().getAllGraphElements().size();
+			numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllGraphElements().size();
 		}
 
 		return numSitesCovered / trials.length;

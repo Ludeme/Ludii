@@ -116,9 +116,9 @@ public class MouseHandler
 						{
 							for (final Move m : context.game().moves(context).moves())
 							{
-								if (selectedToLocation.site() == -1 || selectedToLocation.site() >= context.game().board().numSites())
+								if (selectedToLocation.site() == -1 || selectedToLocation.site() >= context.board().numSites())
 								{
-									if (m.from() == selectedFromLocation.site() && m.to() >= context.game().board().numSites())
+									if (m.from() == selectedFromLocation.site() && m.to() >= context.board().numSites())
 									{
 										app.manager().ref().applyHumanMoveToGame(app.manager(), m);
 										break;
