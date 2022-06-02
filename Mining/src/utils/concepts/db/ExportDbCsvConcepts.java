@@ -678,8 +678,7 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
-	// ------------------------------PLAYOUT
-	// CONCEPTS-----------------------------------------------------
+	// ------------------------------PLAYOUT CONCEPTS-----------------------------------------------------
 
 	/**
 	 * @param game         The game
@@ -708,6 +707,10 @@ public class ExportDbCsvConcepts
 			for (final Metric metric : metrics)
 				if (metric.concept() != null)
 					mapFrequency.put(metric.concept().name(), null);
+
+			// Computation of the p/s and m/s
+			mapFrequency.putAll(playoutsEstimationConcepts(game));
+			
 			return mapFrequency;
 		}
 
@@ -1548,8 +1551,7 @@ public class ExportDbCsvConcepts
 		return playoutConceptValues;
 	}
 
-	// ------------------------------Playout Estimation
-	// CONCEPTS-----------------------------------------------------
+	// ------------------------------Playout Estimation CONCEPTS-----------------------------------------------------
 
 	/**
 	 * @param game The game.
