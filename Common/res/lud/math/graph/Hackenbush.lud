@@ -146,7 +146,7 @@
         (rules "The game starts in drawing a ground line and several line segments such that each line segment is connected to the ground. Any number of segments may meet at a point, and thus there may be multiple paths to ground. Every turn, the current player selects any line segment to be removed. Every line segment no longer connected to the ground by any path falls. The first player who is unable to move loses. In addition to the standard Hackenbush, there are two variants; HackenbushR-B and HackenbushR-G-B. For the Hackenbush version, all the lines are in the same colour (green). At each turn, the current player selects a coloured line to be removed, also removing any other line segments that become disconnected from the ground as a result. The game is over when there are no green edges in the graph. The second version is the Red-Blue version; HackenbushR-B. There is one red player, and one blue player. The players can remove only edges of their own colour. The last version is HackenbushR-G-B; there is a graph with red, green, and blue edges. Players may remove edges of their own colour, as well as the shared colour. For all the versions of Hackenbush, if the current player has no move, then the opposing player wins. ")
         (id "697")
         (source "<a href=\"https://en.wikipedia.org/wiki/Hackenbush\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.3.3")
+        (version "1.3.4")
         (classification "math/graph")
         (author "John Horton Conway")
         (credit "Tahmina Begum 11-06-2020")

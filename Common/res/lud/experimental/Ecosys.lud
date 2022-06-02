@@ -101,7 +101,7 @@
         (description "EcoSys is a game from a comment by Michael Amundsen about my concurrently developed game 'Off-Shore', causing me to strip away all elements of that game except for the placement rule:
             'A stone must not be placed next to a group that has the same or more stones than there are friendly groups.'
             
-            The game is not Nim-like because the restrictions for each player apply separately.
+            It turns out that this rules is very similar to that found in Mark Steere's Bamboo 2021 - On a hexagon, the games differ only by whether merging is alowed to form groups larger than the number of groups or not.
             
             The game does not work on a square grid with orthogonal connectivity due to the ability to create large numbers of groups using crosscuts. It works best on grids with high connectivity.
             
@@ -111,10 +111,11 @@
         (rules "With the board empty, Black starts.
             
             Players take turns in alternation, placing a stone on to an empty cell.
+            However, a stone must not be placed next to a group that already has the same (or more) stones as there are friendly groups.
             
         The game is lost by the first player forced to place a stone next to a friendly group that has as many (or more) stones as there are friendly groups.")
         (id "1987")
-        (version "1.3.3")
+        (version "1.3.4")
         (classification "experimental")
         (author "Dale Walton")
         (credit "Dale Walton")
