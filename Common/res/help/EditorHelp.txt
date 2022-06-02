@@ -3817,7 +3817,7 @@ TYPE JAVADOC: Applies a sequence of moves one by one.
 NEW CTOR
 (seq {<moves>})
 PARAM JAVADOC: {<moves>}: Moves to apply one by one.
-EXAMPLE: (seq {(forEach Site (sites Occupied by:Mover) (remove (site))) (add (piece "Disc" P1) (to (forEach (sites Board) if:(is Odd (site)))))})
+EXAMPLE: (seq {(remove 1) (remove 2)})
 TYPE: game.rules.start.Deal
 TYPE JAVADOC: To deal different components between players.
 NEW CTOR
@@ -5769,12 +5769,12 @@ TYPE: metadata.recon.ReconItem
 TYPE JAVADOC: Metadata containing some specific reconstruction requirements.
 SUBCLASS: metadata.recon.concept.Concept
 TYPE: metadata.recon.concept.Concept
-TYPE JAVADOC: Specifies the what concept values are required
+TYPE JAVADOC: Specifies the what concept values are required.
 NEW CTOR
 (concept <string> (<double>  | <boolean>))
-PARAM JAVADOC: <string>: The name of the concept
-PARAM JAVADOC: <double>: The double value
-PARAM JAVADOC: <boolean>: The boolean value
+PARAM JAVADOC: <string>: The name of the concept.
+PARAM JAVADOC: <double>: The double value.
+PARAM JAVADOC: <boolean>: The boolean value.
 EXAMPLE: (concept "Num Players" 6)
 DEFINE: AlquerqueBoard
 DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
