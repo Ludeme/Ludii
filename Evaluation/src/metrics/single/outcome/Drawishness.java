@@ -5,7 +5,10 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.Utils;
+import other.RankUtils;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -53,12 +56,14 @@ public class Drawishness extends Metric
 		for (int i = 0; i < trials.length; i++)
 		{
 			final Trial trial = trials[i];
+			final RandomProviderState rng = randomProviderStates[i];
+			final Context context = Utils.setupTrialContext(game, rng, trial);
 			
 			// No players have won/lost.
 			boolean allRankingZero = true;
-			for (int j = 0; j < trial.ranking().length; j++)
+			for (int j = 1; j < RankUtils.agentUtilities(context).length; j++)
 			{
-				if (trial.ranking()[j] != 0)
+				if (RankUtils.agentUtilities(context)[j] != 0.0)
 				{
 					allRankingZero = false;
 					break;
