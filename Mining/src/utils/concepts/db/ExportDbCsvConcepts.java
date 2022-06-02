@@ -499,7 +499,7 @@ public class ExportDbCsvConcepts
 							rulesetGame.setMaxMoveLimit(moveLimit);
 
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
-							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
+							final Map<String, Double> playoutConcepts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
 									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
 							
@@ -544,16 +544,16 @@ public class ExportDbCsvConcepts
 									final String conceptName = concept.name();
 									if (conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency concepts added to the csv.
 									{
-										final double value = frequencyPlayouts.get(concept.name()) == null ? 0
-												: frequencyPlayouts.get(concept.name()).doubleValue();
+										final double value = playoutConcepts.get(concept.name()) == null ? Constants.UNDEFINED
+												: playoutConcepts.get(concept.name()).doubleValue();
 										final List<String> lineToWrite = new ArrayList<String>();
 										lineToWrite.add(id + "");
 										lineToWrite.add(idRuleset + "");
 										lineToWrite.add(concept.id() + "");
-										lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the metric
+										lineToWrite.add(value == Constants.UNDEFINED ? "NULL"
+												: "\"" + new DecimalFormat("##.##").format(value) + "\""); // the value of the metric
 										writer.println(StringRoutines.join(",", lineToWrite));
 										id++;
-										// System.out.println("metric: " + concept);
 									}
 									else // Frequency concepts added to the csv.
 									{
@@ -566,14 +566,12 @@ public class ExportDbCsvConcepts
 												lineToWrite.add(id + "");
 												lineToWrite.add(idRuleset + "");
 												lineToWrite.add(concept.id() + "");
-												final double frequency = frequencyPlayouts
-														.get(correspondingConcept.name()) == null ? 0
-																: frequencyPlayouts.get(correspondingConcept.name()).doubleValue();
+												final double frequency = playoutConcepts
+														.get(correspondingConcept.name()) == null ? Constants.UNDEFINED
+																: playoutConcepts.get(correspondingConcept.name()).doubleValue();
 												if (frequency > 0)
 													System.out.println(concept + " = " + (frequency * 100) + "%");
-												lineToWrite.add((frequency > 0
-														? new DecimalFormat("##.##").format(frequency) + ""
-														: "0") + ""); // the frequency
+												lineToWrite.add((frequency > 0 ? "\"" + new DecimalFormat("##.##").format(frequency) + "\"" : "0") + ""); // the frequency
 												writer.println(StringRoutines.join(",", lineToWrite));
 												id++;
 											}
@@ -586,7 +584,7 @@ public class ExportDbCsvConcepts
 				}
 				else // Code for games with only a single ruleset.
 				{
-					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
+					final Map<String, Double> playoutConcepts = (numPlayouts == 0) ? new HashMap<String, Double>()
 							: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
 
 					final int idRuleset = IdRuleset.get(game);
@@ -623,16 +621,17 @@ public class ExportDbCsvConcepts
 						}
 						else
 						{
-							if (concept.type().equals(ConceptType.Behaviour) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
+							final String conceptName = concept.name();
+							if (conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency concepts added to the csv.
 							{
-								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
-										: frequencyPlayouts.get(concept.name()).doubleValue();
+								final double value = playoutConcepts.get(conceptName) == null ? Constants.UNDEFINED
+										: playoutConcepts.get(conceptName).doubleValue();
 								final List<String> lineToWrite = new ArrayList<String>();
 								lineToWrite.add(id + "");
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
 								lineToWrite.add(value == Constants.UNDEFINED ? "NULL"
-										: new DecimalFormat("##.##").format(value)); // the value of the metric
+										: "\"" + new DecimalFormat("##.##").format(value) + "\""); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 //								if(value != 0)
@@ -640,9 +639,7 @@ public class ExportDbCsvConcepts
 							}
 							else // Frequency concepts added to the csv.
 							{
-								final String conceptName = concept.name();
-								final String correspondingBooleanConceptName = conceptName.substring(0,
-										conceptName.indexOf("Frequency"));
+								final String correspondingBooleanConceptName = conceptName.substring(0, conceptName.indexOf("Frequency"));
 								for (final Concept correspondingConcept : booleanConcepts)
 								{
 									if (correspondingConcept.name().equals(correspondingBooleanConceptName))
@@ -651,15 +648,12 @@ public class ExportDbCsvConcepts
 										lineToWrite.add(id + "");
 										lineToWrite.add(idRuleset + "");
 										lineToWrite.add(concept.id() + "");
-										final double frequency = frequencyPlayouts
-												.get(correspondingConcept.name()) == null ? 0
-														: frequencyPlayouts.get(correspondingConcept.name())
-																.doubleValue();
-//										if(frequency > 0)
-//											System.out.println(concept + " = " + (frequency * 100) +"%");
-										lineToWrite
-												.add((frequency > 0 ? new DecimalFormat("##.##").format(frequency) + ""
-														: "0") + ""); // the frequency
+										final double frequency = playoutConcepts
+												.get(correspondingConcept.name()) == null ? Constants.UNDEFINED
+														: playoutConcepts.get(correspondingConcept.name()).doubleValue();
+										if(frequency > 0)
+											System.out.println(concept + " = " + (frequency * 100) +"%");
+										lineToWrite.add((frequency > 0 ? "\"" + new DecimalFormat("##.##").format(frequency) + "\"" : "0") + ""); // the frequency
 										writer.println(StringRoutines.join(",", lineToWrite));
 										id++;
 									}
@@ -707,7 +701,7 @@ public class ExportDbCsvConcepts
 			for (final Metric metric : metrics)
 				if (metric.concept() != null)
 					mapFrequency.put(metric.concept().name(), null);
-
+			
 			// Computation of the p/s and m/s
 			mapFrequency.putAll(playoutsEstimationConcepts(game));
 			
@@ -833,19 +827,19 @@ public class ExportDbCsvConcepts
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		
+		// We get the values of the frequencies.
+		mapFrequency.putAll(frequencyConcepts(game));
+		
+		// We get the values of the metrics.
+		mapFrequency.putAll(metricsConcepts(game, evaluation));
 
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game));
 
-		// We get the values of the frequencies.
-		mapFrequency.putAll(frequencyConcepts(game));
-
-		// We get the values of the metrics.
-		mapFrequency.putAll(metricsConcepts(game, evaluation));
-
 		// Computation of the p/s and m/s
 		mapFrequency.putAll(playoutsEstimationConcepts(game));
-
+		
 		return mapFrequency;
 	}
 
@@ -1314,8 +1308,7 @@ public class ExportDbCsvConcepts
 		final int seconds = (int) (allSeconds % 60.0);
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
-		System.out.println(
-				"Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+		System.out.println("Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
 
 		return mapStarting;
 
@@ -1495,14 +1488,12 @@ public class ExportDbCsvConcepts
 		final int seconds = (int) (allSeconds % 60.0);
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
-		System.out
-				.println("Frequency done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+		System.out.println("Frequency done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
 
 		return mapFrequency;
 	}
 
-	// ------------------------------Metrics
-	// CONCEPTS-----------------------------------------------------
+	// ------------------------------Metrics CONCEPTS-----------------------------------------------------
 
 	/**
 	 * @param game         The game.
