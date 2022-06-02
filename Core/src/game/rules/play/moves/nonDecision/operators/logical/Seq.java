@@ -30,7 +30,7 @@ public final class Seq extends Effect
 	/**
 	 * @param moves   Moves to apply one by one.
 	 * 
-	 * @example (seq {(forEach Site (sites Occupied by:Mover) (remove (site))) (add (piece "Disc" P1) (to (forEach (sites Board) if:(is Odd (site)))))})
+	 * @example (seq {(remove 1) (remove 2)})
 	 */
 	public Seq
 	(

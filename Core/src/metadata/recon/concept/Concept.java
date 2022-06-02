@@ -6,7 +6,7 @@ import metadata.recon.ReconItem;
 //-----------------------------------------------------------------------------
 
 /**
- * Specifies the what concept values are required
+ * Specifies the what concept values are required.
  * 
  * @author Matthew.Stephenson
  */
@@ -22,9 +22,9 @@ public class Concept implements ReconItem
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param conceptName The name of the concept
-	 * @param valueDouble The double value
-	 * @param valueBoolean The boolean value
+	 * @param conceptName The name of the concept.
+	 * @param valueDouble The double value.
+	 * @param valueBoolean The boolean value.
 	 * 
 	 * @example (concept "Num Players" 6)
 	 */
