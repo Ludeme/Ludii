@@ -544,7 +544,7 @@ public class ExportDbCsvConcepts
 									final String conceptName = concept.name();
 									if (conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency concepts added to the csv.
 									{
-										final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
+										final double value = frequencyPlayouts.get(concept.name()) == null ? 0
 												: frequencyPlayouts.get(concept.name()).doubleValue();
 										final List<String> lineToWrite = new ArrayList<String>();
 										lineToWrite.add(id + "");
@@ -626,7 +626,7 @@ public class ExportDbCsvConcepts
 							final String conceptName = concept.name();
 							if (conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency concepts added to the csv.
 							{
-								final double value = frequencyPlayouts.get(conceptName) == null ? Constants.UNDEFINED
+								final double value = frequencyPlayouts.get(conceptName) == null ? 0
 										: frequencyPlayouts.get(conceptName).doubleValue();
 								final List<String> lineToWrite = new ArrayList<String>();
 								lineToWrite.add(id + "");
