@@ -1,10 +1,14 @@
 package other.action.state;
 
+import java.util.BitSet;
+
+import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
+import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
 
@@ -355,5 +359,20 @@ public final class ActionSetRotation extends BaseAction
 	public ActionType actionType()
 	{
 		return ActionType.SetRotation;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public BitSet concepts(final Context context, final Moves movesLudeme)
+	{
+		final BitSet concepts = new BitSet();
+		
+		if(decision)
+			concepts.set(Concept.RotationDecision.id(), true);
+		else
+			concepts.set(Concept.SetRotation.id(), true);
+		
+		return concepts;
 	}
 }

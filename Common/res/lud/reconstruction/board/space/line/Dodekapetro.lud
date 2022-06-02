@@ -1,0 +1,32 @@
+(game "Dodekapetro"
+    (players 2)
+    
+    (equipment { 
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+        (hand Each)
+        (piece "Disc" P1 (move [#])) 
+        (piece "Disc" P2 (move [#])) 
+    })  
+    (rules 
+        (start [#]) // 12 pieces per player.
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dodekapetro is an alignment game played in Greece.")
+        (rules "Three concentric squares, with lines connecting the corners of the squares and the midpoints of the sides. Twelve pieces per player.")
+        (source "DLP evidence.")
+        (id "1424")
+        (version "1.3.4")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+)

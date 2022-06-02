@@ -156,6 +156,7 @@ public class PlayoutFilter implements Playout
 				// Compute list of maybe-legal-moves and functor to filter out illegal ones
 				final boolean mustCheckCondition;
 				final boolean ifConditionIsTrue;
+				final boolean usedDoRule;
 				final Moves legalMoves;
 
 				final Context movesGenContext;
@@ -166,6 +167,7 @@ public class PlayoutFilter implements Playout
 					legalMoves = ifRule.list().eval(context);
 					mustCheckCondition = false;
 					ifConditionIsTrue = true;
+					usedDoRule = false;
 					movesGenContext = context;
 
 					if (ifRule.then() != null)
@@ -191,6 +193,7 @@ public class PlayoutFilter implements Playout
 					legalMoves = mainMovesGenerator.eval(movesGenContext);
 					mustCheckCondition = !(condition.autoSucceeds());
 					ifConditionIsTrue = false;
+					usedDoRule = true;
 
 					if (priorMovesGenerated != null)
 						Do.prependPreMoves(priorMovesGenerated, legalMoves, movesGenContext);
@@ -214,7 +217,7 @@ public class PlayoutFilter implements Playout
 						&& trial.moveNumber() == movesGenContext.game().players().count() - 1)
 				{
 					final int moverLastTurn = context.trial().lastTurnMover(mover);
-					if(mover != moverLastTurn && moverLastTurn != Constants.UNDEFINED)
+					if (mover != moverLastTurn && moverLastTurn != Constants.UNDEFINED)
 					{
 						final Moves swapMove = game.rules.play.moves.decision.Move.construct(
 								MoveSwapType.Swap,
@@ -274,7 +277,7 @@ public class PlayoutFilter implements Playout
 				else
 				{
 					// Add consequents (which shouldn't have been included yet in condition check)
-					if (doRule.then() != null)
+					if (usedDoRule && doRule.then() != null)
 						move.then().add(doRule.then().moves());
 
 					if (ifRule != null && ifRule.then() != null && !ifConditionIsTrue)

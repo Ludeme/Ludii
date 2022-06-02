@@ -1,0 +1,114 @@
+(define "Connect"
+    (do
+        (move Add
+            (to 
+                (sites Around (sites Occupied by:Mover) Empty)
+                (apply
+                    (set Var "NumberOfFriendlyGroupsBeforePlacement"
+                        (count Groups Orthogonal
+                            if:(is Mover (who at:(to)))
+                        )
+                    )
+                )
+            )
+        )
+        ifAfterwards:(<
+            (count Groups Orthogonal
+                if:(is Mover (who at:(to)))
+            )
+            (var "NumberOfFriendlyGroupsBeforePlacement")
+        )
+    )
+)
+
+(game "Scaffold"
+    (players 2)
+    (equipment {
+        (board (square <Board:size>) use:Vertex)
+        (piece "Marker" Each)
+        (regions P1 { (sites Side N) (sites Side S) } )
+        (regions P2 { (sites Side W) (sites Side E) } )
+    })
+    (rules
+        (meta (swap))
+        (play
+            (if
+                (< 0 (count MovesThisTurn))
+                ("Connect")
+                (move Add (to (sites Empty)))
+                (then
+                    (if 
+                        (can Move ("Connect"))
+                        (moveAgain)
+                    )
+                )
+                
+            )
+        )
+        (end {
+            (if (is Connected Orthogonal Mover) (result Mover Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4x4"     <4>  "A 4x4 board is currently selected")
+    (item "5x5"     <5>  "A 5x5 board is currently selected")
+    (item "6x6"     <6>  "A 6x6 board is currently selected")
+    (item "7x7"     <7>  "A 7x7 board is currently selected")
+    (item "8x8"     <8>  "An 8x8 board is currently selected")
+    (item "9x9"     <9>  "A 9x9 board is currently selected")
+    (item "10x10"  <10>  "A 10x10 board is currently selected")
+    (item "11x11"  <11>  "An 11x11 board is currently selected")
+    (item "12x12"  <12>  "A 12x12 board is currently selected")*
+    (item "13x13"  <13>  "A 13x13 board is currently selected")
+    (item "14x14"  <14>  "A 14x14 board is currently selected")
+    (item "15x15"  <15>  "A 15x15 board is currently selected")
+    (item "16x16"  <16>  "A 16x16 board is currently selected")
+    (item "17x17"  <17>  "A 17x17 board is currently selected")
+    (item "18x18"  <18>  "An 18x18 board is currently selected")
+    (item "19x19"  <19>  "A 19x19 board is currently selected")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Scaffold is a drawless square connection game invented by Andrew Lannan in 2022 with inspiration and input from the designers on Boardgamegeek.com's Abstract Game forum. Luis Bolaños Mures helped clarify the presentation of the rules. It is similar to Bill Taylor's Quadrex, but was discovered independently.")
+        (rules "Definitions
+            Group: Either a single stone (a group of one) or any number of stones of the same color connected through a continuous series of orthogonal adjacencies.
+            
+            Rules
+            Scaffold is a drawless connection game played on the intersections of a square grid using stones (as in Go). Black is trying to connect N-S edges of the board, White E-W with an orthogonally connected group.
+            
+            First player places a single black stone on any grid intersection, after which the second player decides which color they will play (pie rule). Players then alternate taking turns.
+            
+        On your turn, place a stone of your color on an empty point. Then, if possible, place a stone of your color on an empty point that is orthogonally adjacent to two groups of your color, and keep making such placements until no more are possible.")
+        (id "1971")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/360432/scaffold\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.4")
+        (classification "board/space/connection")
+        (author "Andrew Lannan")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Phase0 (colour 250 210 148))
+        (board Colour Phase1 (colour 250 210 148))
+        (board Style Board)
+        (board StyleThickness OuterEdges 3.0)
+        (region Colour Edge (union (sites Top Edge) (sites Bottom Edge)) regionSiteType:Edge (colour Black))
+        (region Colour Edge (union (sites Left Edge) (sites Right Edge)) regionSiteType:Edge (colour White))
+    })
+)

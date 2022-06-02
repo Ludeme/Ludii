@@ -1,0 +1,40 @@
+(game "Eleven-Fang"
+    (players 2)  
+    (equipment { 
+        (board 
+            (square 11)
+            use:Vertex
+        )
+        (piece "Disc" P1 (move [#])) 
+        (piece "Disc" P2 (move [#])) 
+    })  
+    (rules 
+        (start [#]) 
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Eleven-Fang is a game played in China. Though the game was described in the late twentieth century, it is likely to be much older, since a board belonging to it was found in a Tang Dynasty tomb, but which could date up to 1936.")
+        (rules "11x11 intersecting lines.")
+        (source "DLP evidence.")
+        (id "1138")
+        (version "1.3.4")
+        (classification "board/war/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, from around 680 to 1999.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)
+

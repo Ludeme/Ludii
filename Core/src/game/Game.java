@@ -443,7 +443,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		}
 		else
 		{
-			metadata = new Metadata(null, null, null);
+			metadata = new Metadata(null, null, null, null);
 		}
 	}
 	
@@ -1942,7 +1942,7 @@ public class Game extends BaseLudeme implements API, Serializable
 						concept.set(Concept.XiangqiComponent.id(), true);
 					else if (svgPath.contains("stratego"))
 						concept.set(Concept.StrategoComponent.id(), true);
-					else if (svgPath.contains("janggi"))
+					else if (svgPath.contains("Janggi"))
 						concept.set(Concept.JanggiComponent.id(), true);
 					else if (svgPath.contains("hand"))
 						concept.set(Concept.HandComponent.id(), true);

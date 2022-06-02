@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
+import main.Constants;
 import metrics.Evaluation;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -29,7 +30,7 @@ public class BranchingFactor extends MultiMetricFramework
 			"Branching Factor " + multiMetricValue.name(), 
 			"Number of possible moves.", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			concept,
 			multiMetricValue
 		);

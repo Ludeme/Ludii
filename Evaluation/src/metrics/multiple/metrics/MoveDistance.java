@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import game.types.board.RelationType;
 import game.types.board.SiteType;
+import main.Constants;
 import metrics.Evaluation;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -33,7 +34,7 @@ public class MoveDistance extends MultiMetricFramework
 			"Move Distance " + multiMetricValue.name(), 
 			"The distance traveled by pieces when they move around the board.", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			concept,
 			multiMetricValue
 		);
@@ -44,7 +45,7 @@ public class MoveDistance extends MultiMetricFramework
 	@Override
 	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
-		final Topology boardTopology = context.game().board().topology();
+		final Topology boardTopology = context.board().topology();
 		if (context.game().booleanConcepts().get(Concept.Cell.id()))
 			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
 		if (context.game().booleanConcepts().get(Concept.Edge.id()))

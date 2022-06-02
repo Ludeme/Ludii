@@ -83,6 +83,7 @@ public class GameUtil
 		
 		// Start the game
 		GameUtil.startGame(app);
+		app.settingsPlayer().setTestsPassed(false);
 
 		updateRecentGames(app, app.manager().ref().context().game().name());
 		resetUIVariables(app);
@@ -169,7 +170,7 @@ public class GameUtil
 			
 			if (app.manager().isWebApp())
 				app.setTemporaryMessage(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), app.manager().ref().context().trial()));
-			else
+			else if (!app.settingsPlayer().usingExhibitionApp())
 				app.setTemporaryMessage("Choose Game > Restart to play again.");
 		}
 		else if (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves())

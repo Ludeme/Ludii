@@ -1,0 +1,40 @@
+(game "O Shogi (Futsu Shodo-Shu)"
+    (players 2) 
+    (equipment { 
+        (board (square 15))
+        [#]
+        // We know: 130 pieces in total and 29 piece types.
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "O-Shogi was a game played in medieval Japan, recorded in the Futsu Shodo-Shu. It was an enlarged version of Shogi, with 29 different pieces.")
+        (rules "15x15 board. 29 different pieces, 130 pieces in total.")
+        (source "DLP evidence.")
+        (id "1178")
+        (version "1.3.4")
+        (classification "board/war/replacement/checkmate/shogi/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Japan, from around 1297 to 1302.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Families {"Defined" "Study"})
+        (board Style Shogi)
+        (piece Rotate P2 degrees:180)
+    })
+    
+)

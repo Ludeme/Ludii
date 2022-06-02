@@ -112,9 +112,9 @@ public class Hand extends Container
 		else
 			graph = new RectangleOnSquare(new DimConstant(1), new DimConstant(this.numLocs), null, null).eval(null,
 					SiteType.Cell);
-
+		
 		// Add the cells to the topology.
-		for (int i = 0; i < graph.faces().size(); i++)
+		for (int i = 0; i < this.numLocs; i++)
 		{
 			final Face face = graph.faces().get(i);
 			final Cell cell = new Cell(face.id() + beginIndex, face.pt().x() + (i * unit), face.pt().y(),

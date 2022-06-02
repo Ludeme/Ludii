@@ -129,6 +129,8 @@ public class DiamondOnTri extends Basis
 			concepts.set(Concept.DiamondShape.id(), true);
 		else
 			concepts.set(Concept.PrismShape.id(), true);
+		concepts.set(Concept.RegularShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

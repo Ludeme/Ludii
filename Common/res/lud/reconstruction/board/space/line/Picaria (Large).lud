@@ -1,0 +1,33 @@
+(game "Picaria (Large)"
+    (players 2)
+    
+    (equipment { 
+        (board (concentric Square rings:3) use:Vertex) 
+        (hand Each)
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Picaria is the a word referring to two games played by the people of Isleta Pueblo in New Mexico. This version is the larger board, though the specific rules have not been recorded.")
+        (aliases {"Pedreria"})
+        (rules "Two concentric squares, with lines connecting the midpoints of the squares, but which extend beyond the edge of the outer square.")
+        (source "DLP evidence.")
+        (id "958")
+        (version "1.3.4")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in New Mexico, around 1907.")
+        }
+    )
+)

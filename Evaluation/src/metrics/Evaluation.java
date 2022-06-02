@@ -89,8 +89,27 @@ public class Evaluation
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
-		//dialogMetrics.add(new ClarityNarrowness());
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	private final List<Metric> reconstructionMetrics = new ArrayList<>();
+	{
+		reconstructionMetrics.add(new DurationTurns());
+		reconstructionMetrics.add(new DecisionMoves());
+		reconstructionMetrics.add(new BoardCoverageDefault());
+		reconstructionMetrics.add(new AdvantageP1());
+		reconstructionMetrics.add(new Balance());
+		reconstructionMetrics.add(new Completion());
+		reconstructionMetrics.add(new Drawishness());
+		
+		reconstructionMetrics.add(new PieceNumber(MultiMetricValue.Average, Concept.PieceNumberAverage));
+		reconstructionMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, Concept.BoardSitesOccupiedAverage));
+		reconstructionMetrics.add(new BranchingFactor(MultiMetricValue.Average, Concept.BranchingFactorAverage));
+		reconstructionMetrics.add(new MoveDistance(MultiMetricValue.Average, Concept.DecisionFactorAverage));
+	}
+	
+	//-------------------------------------------------------------------------
 	
 	private final List<Metric> conceptMetrics = new ArrayList<>();
 	{
@@ -255,6 +274,11 @@ public class Evaluation
 	public List<Metric> dialogMetrics()
 	{
 		return Collections.unmodifiableList(dialogMetrics);
+	}
+	
+	public List<Metric> reconstructionMetrics()
+	{
+		return Collections.unmodifiableList(reconstructionMetrics);
 	}
 	
 	public List<Metric> conceptMetrics()

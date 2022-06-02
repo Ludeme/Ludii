@@ -94,12 +94,12 @@ public class Trial implements Serializable
 	/**
 	 * The list of all the end data in each previous state from the initial state.
 	 */
-	private List<UndoData> endData;
+	private List<UndoData> endData = null;
 	
 	/**
 	 * The list of all the RNG states at each state.
 	 */
-	private List<RandomProviderState> RNGStates;
+	private List<RandomProviderState> RNGStates = null;
 
 	//-------------------------------------------------------------------------
 
@@ -160,8 +160,12 @@ public class Trial implements Serializable
 		numSubmovesPlayed = other.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(other.ranking, other.ranking.length);
-		endData = new ArrayList<UndoData>(other.endData);
-		RNGStates = new ArrayList<RandomProviderState>(other.RNGStates);
+		
+		if (other.endData != null)
+		{
+			endData = new ArrayList<UndoData>(other.endData);
+			RNGStates = new ArrayList<RandomProviderState>(other.RNGStates);
+		}
 	}
 	
 	/**

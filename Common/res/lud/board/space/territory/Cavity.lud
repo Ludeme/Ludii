@@ -1,0 +1,159 @@
+(define "CaptureSurroundedGroup"
+    (enclose 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:(is #1 (who at:(between))) 
+            (apply             
+                (remove (between)) 
+            ) 
+        )
+        #2
+    )
+)
+
+(define "ReachesRegion"
+    (>
+        Infinity
+        (count Steps
+            Orthogonal
+            (step
+                (to
+                    if:(or
+                        (is Empty (to))
+                        (is In (to) #2)
+                    )
+                )
+            )
+            #1
+            #2
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Cavity"  
+    (players 2) 
+    (equipment 
+        { 
+        (board <Board> use:Vertex) 
+        (piece "Marker" Each)
+        }
+    )
+    (rules 
+        (meta (swap))
+        phases:{
+        (phase "Opening"
+            (play (move Add (to (sites Empty))))
+            (nextPhase 
+                (and
+                    (= 1 (count Sites in:(sites Occupied by:P1)))
+                    (= 1 (count Sites in:(sites Occupied by:P2)))
+                )
+                "Play"
+            )
+        )
+        (phase "Play"
+            (play 
+                (move 
+                    Add
+                    (to 
+                        (sites Empty)
+                        if:("ReachesRegion" 
+                            (to)
+                            (sites Occupied by:Mover)
+                        )
+                    )
+                    (then 
+                        (if 
+                            (can Move ("CaptureSurroundedGroup" Enemy))
+                            ("CaptureSurroundedGroup" Enemy)
+                            ("CaptureSurroundedGroup" Mover)
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end {
+            (if 
+                (and
+                    (< 2 (count Moves))
+                    (no Pieces Next) 
+                )
+                (result Next Loss)
+            )
+            (if 
+                (and
+                    (< 2 (count Moves))
+                    (no Pieces Mover) 
+                )
+                (result Mover Loss)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4x4"      <(square 4)>     "The game is played on a 4x4 board")
+    (item "5x5"      <(square 5)>     "The game is played on a 5x5 board")
+    (item "6x6"      <(square 6)>     "The game is played on a 6x6 board")
+    (item "7x7"      <(square 7)>     "The game is played on a 7x7 board")
+    (item "8x8"      <(square 8)>     "The game is played on a 8x8 board")
+    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")
+    (item "10x10"    <(square 10)>    "The game is played on an 10x10 board")   
+    (item "11x11"    <(square 11)>    "The game is played on an 11x11 board")*
+    (item "12x12"    <(square 12)>    "The game is played on an 12x12 board")   
+    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")
+    (item "14x14"    <(square 14)>    "The game is played on a 14x14 board")   
+    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")
+    (item "16x16"    <(square 16)>    "The game is played on a 16x16 board")
+    (item "17x17"    <(square 17)>    "The game is played on a 17x17 board")   
+    (item "18x18"    <(square 18)>    "The game is played on a 18x18 board")   
+    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Cavity is a finite Go variant with an elimination goal – a bit like Mark Steere's Redstone, but without red stones. This game inspired Lifeline.")
+        (rules "Like Go, Cavity is played on the points of a square grid, and groups (chains, more precisely) and liberties are defined the same way. 
+            An empty region is a group (chain) of empty points, and it is said to be adjacent to a stone if any of its points are.
+            
+            Setup: 
+            Starting with Black, place one stone each on any empty point. 
+            The setup is over as soon as the players have one stone each on the board.
+            
+            Play: 
+            On your turn, place a stone of your color on any point in an empty region that's adjacent to a stone of your color.
+            After placement, first remove all enemy groups that have no liberties, then remove all friendly groups that have no liberties.
+            In this phase, as soon as one player is the only one with stones on the board, the game is over and that player is the winner.
+            
+        The game is balanced with the pie rule.")
+        (id "1982")
+        (version "1.3.4")
+        (classification "board/space/territory")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+        (board Colour Phase0 (colour 250 210 148))
+        (board Colour Phase1 (colour 250 210 148))
+        (board Style Board)
+    })
+)

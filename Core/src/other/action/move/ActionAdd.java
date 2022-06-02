@@ -833,6 +833,13 @@ public final class ActionAdd extends BaseAction
 
 		if (ludemeConcept.get(Concept.TakeControl.id()))
 			concepts.set(Concept.TakeControl.id(), true);
+		
+		// ---- Push concepts
+
+		if (ludemeConcept.get(Concept.PushEffect.id()))
+			concepts.set(Concept.PushEffect.id(), true);
+
+		// ---- Add concepts
 
 		if (concepts.isEmpty())
 		{

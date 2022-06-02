@@ -182,6 +182,9 @@ public class ConcentricRegular extends Basis
 		final BitSet concepts = new BitSet();
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.ConcentricTiling.id(), true);
+		concepts.set(Concept.MorrisTiling.id(), true);
+		concepts.set(Concept.RegularShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		
 		switch (numSides)
 		{

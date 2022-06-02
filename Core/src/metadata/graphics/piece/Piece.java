@@ -172,7 +172,7 @@ public class Piece implements GraphicsItem
 			       final PieceGroundType pieceType, 
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
-		@Opt @Name  final Integer container,
+		@Opt @Name final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 			 @Name final String image,
@@ -208,7 +208,7 @@ public class Piece implements GraphicsItem
 	 * @param pieceType    		The type of data to apply to the pieces.
 	 * @param roleType     		Player whose index is to be matched.
 	 * @param pieceName    		Base piece name to match.
-	 * @param container Container index to match.
+	 * @param container 		Container index to match.
 	 * @param state     		State to match.
 	 * @param value     		Value to match.
 	 * @param fillColour   		Fill colour for this piece.
@@ -224,7 +224,7 @@ public class Piece implements GraphicsItem
 			       final PieceColourType pieceType, 
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
-		@Opt @Name  final Integer container,
+		@Opt @Name final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 		@Opt @Name final Colour fillColour,
@@ -266,7 +266,7 @@ public class Piece implements GraphicsItem
 			       final PieceRotateType pieceType, 
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
-		@Opt @Name  final Integer container,
+		@Opt @Name final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 		@Name 	   final Integer degrees
@@ -306,9 +306,9 @@ public class Piece implements GraphicsItem
 	 */
 	public static GraphicsItem construct
 	(
-			 final PieceScaleType pieceType, 
-		@Opt final RoleType roleType,
-		@Opt final String pieceName,
+			 	   final PieceScaleType pieceType, 
+		@Opt 	   final RoleType roleType,
+		@Opt 	   final String pieceName,
 		@Opt @Name final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,

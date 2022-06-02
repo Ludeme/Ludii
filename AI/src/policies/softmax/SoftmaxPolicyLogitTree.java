@@ -74,6 +74,9 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	/** Epsilon for epsilon-greedy playouts */
 	protected double epsilon = 0.0;
 	
+	/** Temperature for distribution */
+	protected double temperature = 1.0;
+	
 	/** Do we want to play greedily? */
 	protected boolean greedy = false;
 	
@@ -220,7 +223,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		}
 		
 		final FVector distribution = FVector.wrap(logits);
-		distribution.softmax();
+		distribution.softmax(temperature);
 		
 		return distribution;
 	}
@@ -234,9 +237,9 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		if (epsilon < 1.0)
 		{
 			if (epsilon <= 0.0)
-				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy);
+				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy, temperature);
 			else
-				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy), epsilon);
+				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy, temperature), epsilon);
 		}
 		else
 		{
@@ -305,6 +308,10 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 			else if (input.toLowerCase().startsWith("greedy="))
 			{
 				greedy = Boolean.parseBoolean(input.substring("greedy=".length()));
+			}
+			else if (input.toLowerCase().startsWith("temperature="))
+			{
+				temperature = Double.parseDouble(input.substring("temperature=".length()));
 			}
 		}
 		

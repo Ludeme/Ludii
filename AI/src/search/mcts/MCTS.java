@@ -252,6 +252,19 @@ public class MCTS extends ExpertPolicy
     protected IncrementalStats[] heuristicStats = null;
     
     //-------------------------------------------------------------------------
+    
+    /**
+     * Global flag telling us whether we want MCTS objects to null (clear) undo
+     * data in Trial objects stored in their nodes. True by default, since
+     * usually we want to do this to reduce memory usage.
+     * 
+     * Sometimes in self-play training this causes issues though, and there
+     * we typically don't worry about the memory usage anyway since we tend
+     * to have rather short and shallow searches, so we can set this to false.
+     */
+    public static boolean NULL_UNDO_DATA = true;
+    
+    //-------------------------------------------------------------------------
 	
 	/** 
 	 * Creates standard UCT algorithm, with exploration constant = sqrt(2.0)
@@ -615,6 +628,8 @@ public class MCTS extends ExpertPolicy
 							current.addVirtualVisit();
 							current.startNewIteration(context);
 							
+							Context playoutContext = null;
+							
 							while (current.contextRef().trial().status() == null)
 							{
 								BaseNode prevNode = current;
@@ -656,6 +671,8 @@ public class MCTS extends ExpertPolicy
 											);
 										}
 										
+										playoutContext = current.playoutContext();
+										
 										break;	// stop Selection phase
 									}
 									
@@ -674,13 +691,12 @@ public class MCTS extends ExpertPolicy
 								}
 							}
 							
-							final Context playoutContext = current.playoutContext();
 							Trial endTrial = current.contextRef().trial();
 							int numPlayoutActions = 0;
 							
 							if (!endTrial.over() && playoutValueWeight > 0.0)
 							{
-								// did not reach a terminal game state yet
+								// Did not reach a terminal game state yet
 								
 								/********************************
 											Play-out
@@ -693,6 +709,11 @@ public class MCTS extends ExpertPolicy
 								
 								lastNumPlayoutActions += 
 										(playoutContext.trial().numMoves() - numActionsBeforePlayout);
+							}
+							else
+							{
+								// Reached a terminal game state
+								playoutContext = current.contextRef();
 							}
 							
 							/***************************
@@ -708,6 +729,7 @@ public class MCTS extends ExpertPolicy
 					}
 					catch (final Exception e)
 					{
+						System.err.println("MCTS error in game: " + context.game().name());
 						e.printStackTrace();	// Need to do this here since we don't retrieve runnable's Future result
 					}
 					finally
@@ -1503,7 +1525,7 @@ public class MCTS extends ExpertPolicy
 				if (lineParts[0].toLowerCase().endsWith("playout"))
 				{
 					// our playout strategy is our learned Selection policy
-					learnedSelectionPolicy = (SoftmaxPolicyLinear) playout;
+					learnedSelectionPolicy = (SoftmaxPolicy) playout;
 				}
 				else if 
 				(

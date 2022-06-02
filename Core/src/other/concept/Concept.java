@@ -1780,7 +1780,7 @@ public enum Concept
 		Concept.Meta
 	),
 	
-	/** (no Repeat InTurn) is used. */
+	/** (no Repeat PositionalInTurn) is used. */
 	TurnKo
 	(
 		"3.1.2.1",
@@ -1808,7 +1808,7 @@ public enum Concept
 		Concept.Repetition
 	),
 	
-	/** (no Repeat InGame) is used. */
+	/** (no Repeat Positional) is used. */
 	PositionalSuperko
 	(
 		"3.1.2.3",
@@ -2298,7 +2298,7 @@ public enum Concept
 	),
 	
 	/** Frequency of Promotion. */
-	PromotionFrequency
+	PromotionDecisionFrequency
 	(
 		"3.3.1.1.2.2.1",
 		162, 
@@ -2452,7 +2452,7 @@ public enum Concept
 	),
 	
 	/** Frequency of StepToEmpty. */
-	StepToFriendFrequency
+	StepDecisionToFriendFrequency
 	(
 		"3.3.1.1.3.1.3.1",
 		173, 
@@ -3684,7 +3684,7 @@ public enum Concept
 	),
 	
 	/** Frequency of Push. */
-	PushFrequency
+	PushEffectFrequency
 	(
 		"3.3.1.2.1.12.1",
 		261, 
@@ -3950,7 +3950,7 @@ public enum Concept
 	),
 	
 	/** Frequency of Rotation. */
-	RotationEffectFrequency
+	SetRotationFrequency
 	(
 		"3.3.1.2.1.14.8.1",
 		280, 
@@ -7033,7 +7033,7 @@ public enum Concept
 	),
 	
 	/** Frequency of ScoreWin. */
-	ScoringeWinFrequency
+	ScoringWinFrequency
 	(
 		"3.4.4.2.1",
 		500, 
@@ -10853,7 +10853,7 @@ public enum Concept
 	(
 		"7.2",
 		771, 
-		"Implementation related to efficiency (run on Intel E7-8860, 2.2 GHz, 4GB Ram, Seed = 2077).",
+		"Implementation related to efficiency (run on Intel E7-8860, 2.2 GHz, 4GB RAM, Seed = 2077).",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,

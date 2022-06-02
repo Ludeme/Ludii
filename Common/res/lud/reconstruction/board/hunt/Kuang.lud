@@ -1,0 +1,36 @@
+(game "Kuang"
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Marker" P1 (move [#]))
+        (piece "Marker" P2 (move [#]))
+    })  
+    
+    (rules 
+        (start {
+            (place "Marker1" (sites Centre))
+            (place "Marker2" (union (intersection (union (sites Left) (sites Right)) (sites Row 2)) (expand (sites Bottom))))
+        })
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kuang (\"Jackrabbit\") is a game that was played at by the people of the Santa Clara Pueblo in New Mexico. ")
+        (rules "5x5 intersecting lines, with diagonals drawn in each quadrant. One player plays with a single piece, placed in the central point. The other player plays with twelve pieces, beginning on the first two rows and one piece on each end of the central row.")
+        (source "DLP evidence.")
+        (id "959")
+        (version "1.3.4")
+        (classification "board/hunt/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in New Mexico, around 1907.")
+        }
+    )
+    
+)

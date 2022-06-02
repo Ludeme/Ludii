@@ -16,7 +16,7 @@ import other.topology.TopologyElement;
 import other.trial.Trial;
 
 /**
- * Percentage of used board sites which a piece was placed on at some point.
+ * Percentage of used board sites (detected automatically based on the games rule description) which a piece was placed on at some point.
  * 
  * @author matthew.stephenson
  */
@@ -33,7 +33,7 @@ public class BoardCoverageUsed extends Metric
 		super
 		(
 			"Board Coverage Used", 
-			"Percentage of used board sites which a piece was placed on at some point.", 
+			"Percentage of used board sites (detected automatically based on the games rule description) which a piece was placed on at some point.",
 			0.0, 
 			1.0,
 			Concept.BoardCoverageUsed
@@ -43,7 +43,7 @@ public class BoardCoverageUsed extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -71,7 +71,7 @@ public class BoardCoverageUsed extends Metric
 				sitesCovered.addAll(Utils.boardUsedSitesCovered(context));
 			}
 			
-			numSitesCovered += ((double) sitesCovered.size()) / game.board().topology().getAllUsedGraphElements(context.game()).size();
+			numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllUsedGraphElements(context.game()).size();
 		}
 
 		return numSitesCovered / trials.length;

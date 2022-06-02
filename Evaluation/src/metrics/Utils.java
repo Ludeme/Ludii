@@ -7,6 +7,7 @@ import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
+import main.Constants;
 import other.RankUtils;
 import other.context.Context;
 import other.context.TempContext;
@@ -60,9 +61,9 @@ public class Utils
 		int numPieces = 0;
 		final ContainerState cs = context.containerState(0);
 		
-		for (int i = 0; i < context.game().board().topology().getAllGraphElements().size(); i++)
+		for (int i = 0; i < context.board().topology().getAllGraphElements().size(); i++)
 		{
-			final TopologyElement element = context.game().board().topology().getAllGraphElements().get(i);
+			final TopologyElement element = context.board().topology().getAllGraphElements().get(i);
 			if (context.game().isStacking())
 				numPieces += cs.sizeStack(element.index(), element.elementType());
 			else
@@ -82,7 +83,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (final TopologyElement topologyElement : context.game().board().topology().getAllGraphElements())
+		for (final TopologyElement topologyElement : context.board().topology().getAllGraphElements())
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -97,7 +98,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (final TopologyElement topologyElement : context.game().board().topology().getAllUsedGraphElements(context.game()))
+		for (final TopologyElement topologyElement : context.board().topology().getAllUsedGraphElements(context.game()))
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -112,7 +113,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (final TopologyElement topologyElement : context.game().board().topology().getGraphElements(context.game().board().defaultSite()))
+		for (final TopologyElement topologyElement : context.board().topology().getGraphElements(context.board().defaultSite()))
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -126,20 +127,17 @@ public class Utils
 	 */
 	public static double evaluateState(final Evaluation evaluation, final Context context, final int mover)
 	{
-		//TODO need to handle simul games properly
-		if (context.game().isSimultaneousMoveGame())
-			return 0.0;
-		
+		final Context instanceContext = context.currentInstanceContext();		
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
-		agent.initAI(context.game(), mover);
+		agent.initAI(instanceContext.game(), mover);
 		
-		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
-		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ rngHashcode;
+		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) instanceContext.rng().saveState()).getState());
+		final long stateAndMoverHash = instanceContext.state().fullHash() ^ mover ^ rngHashcode;
 		
-		if (context.trial().over() || !context.active(mover))
+		if (instanceContext.trial().over() || !instanceContext.active(mover))
 		{
 			// Terminal node (at least for mover)
-			return RankUtils.agentUtilities(context)[mover];
+			return RankUtils.agentUtilities(instanceContext)[mover];
 		}
 		else if (evaluation.stateEvaluationCacheContains(Long.valueOf(stateAndMoverHash)))
 		{
@@ -148,28 +146,23 @@ public class Utils
 		else
 		{
 			// Heuristic evaluation
-			float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+			float heuristicScore = agent.heuristicValueFunction().computeValue(instanceContext, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
 			
 			for (final int opp : agent.opponents(mover))
 			{
-				if (context.active(opp))
-					heuristicScore -= agent.heuristicValueFunction().computeValue(context, opp, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
-				else if (context.winners().contains(opp))
+				if (instanceContext.active(opp))
+					heuristicScore -= agent.heuristicValueFunction().computeValue(instanceContext, opp, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+				else if (instanceContext.winners().contains(opp))
 					heuristicScore -= AlphaBetaSearch.PARANOID_OPP_WIN_SCORE;
 			}
 			
-			// Invert scores if players swapped
-			if (context.state().playerToAgent(mover) != mover)
+			// Invert scores if players swapped (only works for two player games)
+			if (instanceContext.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
 
 			// Normalise to between -1 and 1
 			final double heuristicScoreTanh = Math.tanh(heuristicScore);
-			
-			// Convert score to between range 0 and 1, rather than -1 and 1
-			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
-			
 			evaluation.putStateEvaluationCacheValue(stateAndMoverHash, heuristicScoreTanh);
-			
 			return heuristicScoreTanh;
 		}
 	}
@@ -177,7 +170,7 @@ public class Utils
 	/**
 	 * Returns an evaluation of a given move from the current (context) state.
 	 */
-	public static double evaluateMove(final Evaluation evaluation, final Context context, final Move move)
+	public static Double evaluateMove(final Evaluation evaluation, final Context context, final Move move)
 	{
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
 		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
@@ -212,10 +205,18 @@ public class Utils
 	 */
 	public static ArrayList<Integer> highestRankedPlayers(final Trial trial, final Context context)
 	{
+		if (context.game().players().count() <= 0)
+			return null;
+		
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
-		final double highestRanking = Arrays.stream(trial.ranking()).max().getAsDouble();
+		
+		double highestRanking = -Constants.INFINITY;
 		for (int i = 1; i <= context.game().players().count(); i++)
-			if (trial.ranking()[i] == highestRanking)
+			if (RankUtils.agentUtilities(context)[i] > highestRanking)
+				highestRanking = RankUtils.agentUtilities(context)[i];
+		
+		for (int i = 1; i <= context.game().players().count(); i++)
+			if (RankUtils.agentUtilities(context)[i] == highestRanking)
 				highestRankedPlayers.add(i);
 		
 		return highestRankedPlayers;

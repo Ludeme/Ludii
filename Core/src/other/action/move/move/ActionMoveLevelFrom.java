@@ -954,7 +954,7 @@ public final class ActionMoveLevelFrom extends BaseAction
 		// ---- Hop concepts
 
 		if (ludemeConcept.get(Concept.HopDecision.id()))
-			{
+		{
 			concepts.set(Concept.HopDecision.id(), true);
 
 			if (whatA != 0)
@@ -962,8 +962,7 @@ public final class ActionMoveLevelFrom extends BaseAction
 				final Topology topology = context.topology();
 				final TopologyElement fromV = topology.getGraphElements(typeFrom).get(from);
 
-				final List<DirectionFacing> directionsSupported = topology.supportedDirections(RelationType.All,
-						typeFrom);
+				final List<DirectionFacing> directionsSupported = topology.supportedDirections(RelationType.All, typeFrom);
 				AbsoluteDirection direction = null;
 				int distance = Constants.UNDEFINED;
 
@@ -1013,6 +1012,12 @@ public final class ActionMoveLevelFrom extends BaseAction
 										else
 											concepts.set(Concept.HopDecisionEnemyToFriend.id(), true);
 									}
+									
+									if(distance > 1)
+									{
+										concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
+										concepts.set(Concept.HopCaptureMoreThanOne.id(), true);
+									}
 								}
 								else
 								{
@@ -1024,6 +1029,10 @@ public final class ActionMoveLevelFrom extends BaseAction
 											concepts.set(Concept.HopDecisionFriendToEnemy.id(), true);
 										else
 											concepts.set(Concept.HopDecisionFriendToFriend.id(), true);
+									}
+									if(distance > 1)
+									{
+										concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 									}
 								}
 							}
@@ -1137,10 +1146,19 @@ public final class ActionMoveLevelFrom extends BaseAction
 			concepts.set(Concept.SwapPiecesDecision.id(), true);
 
 
-		// ---- Sow capture concepts
+		// ---- Sow concepts
 
 		if (ludemeConcept.get(Concept.SowCapture.id()))
 			concepts.set(Concept.SowCapture.id(), true);
+
+		if (ludemeConcept.get(Concept.Sow.id()))
+			concepts.set(Concept.Sow.id(), true);
+
+		if (ludemeConcept.get(Concept.SowRemove.id()))
+			concepts.set(Concept.SowRemove.id(), true);
+
+		if (ludemeConcept.get(Concept.SowBacktracking.id()))
+			concepts.set(Concept.SowBacktracking.id(), true);
 
 		return concepts;
 	}

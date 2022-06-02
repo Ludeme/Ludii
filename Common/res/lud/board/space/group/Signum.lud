@@ -1,0 +1,151 @@
+(define "ConnectsAt"
+    (or {
+        (is Connected at:#1 {(sites Side N) (sites Side S)})
+        (is Connected at:#1 {(sites Side NW) (sites Side SE)})
+        (is Connected at:#1 {(sites Side NE) (sites Side SW)})
+    })
+)
+
+(define "Connects"
+    (=
+        (max
+            (results
+                from:(intersection
+                    #1
+                    (sites Perimeter)
+                )
+                to:(intersection
+                    #1
+                    (sites Perimeter)
+                )
+                (count Steps (from) (to))
+            )
+        )
+        ("LengthOfDiagonal")
+    )
+)
+
+(define "ConnectsSLOWER"
+    (or {
+        (is Connected {(sites Side N) #1 (sites Side S)})
+        (is Connected {(sites Side NW) #1 (sites Side SE)})
+        (is Connected {(sites Side NE) #1 (sites Side SW)})
+    })
+)
+
+(define "LengthOfDiagonal"
+    (* 2 (- <Size> 1))
+)
+
+(define "UpdateScoreMover"
+    (and
+        (set Score Mover 0)
+        (forEach Group Orthogonal
+            if:(is Mover (who at:(to)))
+            (if 
+                ("Connects" (sites))
+                (addScore Mover (count Sites in:(sites)))
+                (addScore Mover (- (count Sites in:(sites))))
+            )
+        )
+    )
+)
+
+(define "ScoreOf" 
+    (+
+        (results
+            from:(sites Occupied by:#1)
+            to:0
+            (if 
+                ("ConnectsAt" (from))
+                1 
+                -1
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Signum"
+    (players 2)
+    (equipment
+        {
+        (board (hex <Size>))
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (meta (swap))
+        (play
+            (move Add
+                (to (sites Empty))
+                <Score>
+            )
+        )
+        (end 
+            (if 
+                (is Full) 
+                (byScore
+                    {
+                    (score P1 ("ScoreOf" P1))
+                    (score P2 ("ScoreOf" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Running Score" <Score> args:{ <score> }
+    {
+    (item "On"  <(then ("UpdateScoreMover"))>  "The score is currently updated after each move. (This makes the AI weaker.)")
+    (item "Off" <>  "The score is currently updated only when the board is full. (This makes the AI stronger.)")*
+    }
+)
+
+(option "Board Size" <Size> args:{ <size> }
+    {
+    (item "4"    <4>  "A size 4 board is currently selected")
+    (item "5"    <5>  "A size 5 board is currently selected")
+    (item "6"    <6>  "A size 6 board is currently selected")*
+    (item "7"    <7>  "A size 7 board is currently selected")
+    (item "8"    <8>  "A size 8 board is currently selected")
+    (item "9"    <9>  "A size 9 board is currently selected")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Signum is a drawless connection game for the hexhex board in the vein of Global Connection, but without markings on the board or an initial position. Signum was invented by Michael Amundsen in May 2022.")
+        (rules "Play: Players take turns placing one stone of their color on any empty hex.
+            
+            Goal: When the board is full, the game is over and the player with the higher score is the winner.
+            
+            Scoring: Each stone is worth 1 point for its owner if it is part of a group connecting opposite sides of the board, and -1 point otherwise.
+            
+        The scoring trick that gave the game its name – namely that each stone is worth either +1 point or -1 point – was (unbeknownst to the inventor of Signum) discovered by Brian Wittmann (the inventor of Loops) 9 years earlier.")
+        (id "1981")
+        (version "1.3.4")
+        (classification "board/space/group")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (region Colour (sites Board) (colour 250 210 148))
+        (board Colour InnerEdges (colour 178 151 100))
+        (board Colour OuterEdges (colour 178 151 100))
+    })
+    (ai
+        (bestAgent "MC-GRAVE")
+    )
+)

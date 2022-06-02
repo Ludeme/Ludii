@@ -1,0 +1,45 @@
+(game "Tiddas"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge {
+                (square 3)
+                (shift -1 1 (rectangle 1 5)) 
+                (shift 1 -1 (rectangle 5 1))
+            }) 
+            use:Vertex
+        )
+        (piece "Marker" Each (move [#])) // "Pieces move vertically or horizontally. Replacement capture." NEED CONCEPT
+    })  
+    (rules 
+        (start [#]) // 11 pieces.
+        (play [#])
+        (end (if (no Pieces Next) (result Mover Win) ) )  
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tiddas is a capturing game played in the countryside of Morocco in the early twentieth century.")
+        (rules "The board consists of thirteen holes arranged in a diamond shape. Eleven pieces per player. Pieces move vertically or horizontally. Replacement capture. The player who captures all of the opponent's pieces wins.")
+        (source "DLP evidence.")
+        (id "1937")
+        (version "1.3.4")
+        (classification "board/war/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Morocco, around 1908.")
+        }
+    )
+    
+    (graphics {
+        (board Style Graph)
+        (show Edges Orthogonal Hidden)
+        (show Edges Diagonal Hidden)
+        (board StyleThickness InnerVertices 3.0)
+    })
+    
+)

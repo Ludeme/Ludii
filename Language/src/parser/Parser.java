@@ -9,6 +9,8 @@ import compiler.Arg;
 import compiler.ArgClass;
 import compiler.ArgTerminal;
 import compiler.exceptions.CompilerException;
+import completer.Completer;
+import completer.Completion;
 import grammar.Grammar;
 import main.Constants;
 import main.StringRoutines;
@@ -98,18 +100,18 @@ public class Parser
 		final boolean        isVerbose
 	)
 	{
-		if (Completer.needsCompleting(description))
+		if (Completer.needsCompleting(description.rawGameDescription()))
 		{
 			final String rawGame = description.rawGameDescription();
 			System.out.println("Raw game description is:\n" + rawGame);
 		
-			final List<String> completions = Completer.complete(rawGame, report);
+			final List<Completion> completions = Completer.complete(rawGame, report);
 			System.out.println(completions.size() + " completions found.");
 			
 			if (!completions.isEmpty())
 			{
 				// Replace raw description string passed in with best completion 
-				description.setRaw(completions.get(0));
+				description.setRaw(completions.get(0).raw());
 			}
 		}
 		

@@ -91,7 +91,7 @@ public abstract class DeterministicNode extends BaseNode
     	children[moveIdx] = (DeterministicNode) child;
     	--numUnvisitedChildren;
     	
-    	if (numUnvisitedChildren == 0)
+    	if (numUnvisitedChildren == 0 && MCTS.NULL_UNDO_DATA)
     		context.trial().nullUndoData();		// Clear a bunch of memory we no longer need
     }
     
@@ -158,26 +158,26 @@ public abstract class DeterministicNode extends BaseNode
     @Override
     public Context playoutContext()
     {
-    	// need to copy context
+    	// Need to copy context
     	return mcts.copyContext(context);
     }
     
     @Override
     public void rootInit(final Context cont)
     {
-    	// do nothing
+    	// Do nothing
     }
     
     @Override
     public void startNewIteration(final Context cont)
     {
-    	// do nothing
+    	// Do nothing
     }
     
     @Override
     public int sumLegalChildVisits()
     {
-    	// just the number of visits of this node
+    	// Just the number of visits of this node
     	return numVisits;
     }
     
@@ -188,7 +188,7 @@ public abstract class DeterministicNode extends BaseNode
     	
     	if (children[moveIdx] == null)
     	{
-    		// need to copy context
+    		// Need to copy context
         	newContext = mcts.copyContext(context);
         	newContext.game().apply(newContext, legalMoves[moveIdx]);
     	}

@@ -186,6 +186,9 @@ public final class SettingsVC
 	
 	/** Map of all piece families for displaying different piece styles, e.g. Chess. */
 	private HashMap<String,String> pieceFamilies = new HashMap<String,String>();
+	
+	/** Multiplier, applied to cell radius, for determining minimumal click distance. */
+	private double furthestDistanceMultiplier = 0.9;
 
 	//-------------------------------------------------------------------------
 	// Getters and setters
@@ -1160,5 +1163,13 @@ public final class SettingsVC
 	public void setAnimationMove(final Move animationMove)
 	{
 		this.animationMove = animationMove;
+	}
+
+	public double furthestDistanceMultiplier() {
+		return furthestDistanceMultiplier;
+	}
+
+	public void setFurthestDistanceMultiplier(final double furthestDistanceMultiplier) {
+		this.furthestDistanceMultiplier = furthestDistanceMultiplier;
 	}
 }

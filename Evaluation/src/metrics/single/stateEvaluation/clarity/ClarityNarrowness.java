@@ -40,7 +40,7 @@ public class ClarityNarrowness extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -48,6 +48,9 @@ public class ClarityNarrowness extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		if (game.hasSubgames() || game.isSimultaneousMoveGame())
+			return null;
+		
 		double clarity = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
@@ -66,10 +69,6 @@ public class ClarityNarrowness extends Metric
 				final Stats moveEvaluations = new Stats();
 				for (final Move legalMoves : context.game().moves(context).moves())
 					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, legalMoves));
-				
-//				System.out.println(context.trial().over());
-//				System.out.println(context.game().moves(context).moves().size());
-//				System.out.println(trial.getMove(i));
 				
 				moveEvaluations.measure();
 				

@@ -34,7 +34,7 @@ public class PlayerView extends View
 	/**
 	 * Constructor.
 	 */
-	public PlayerView(final PlayerApp app, final boolean portraitMode)
+	public PlayerView(final PlayerApp app, final boolean portraitMode, final boolean exhibitionMode)
 	{
 		super(app);
 		playerSections.clear();
@@ -62,21 +62,45 @@ public class PlayerView extends View
 			height = Math.min(maxHandHeight, (int)((app.height() - boardSize)*maxPanelPercentageHeight/numPlayers));
 		}
 		
-		// create a specific user page for each player.
-		for (int pid = 1; pid <= numPlayers; pid++)
+		if (exhibitionMode)
 		{
-			final int x0 = startX;
-			final int y0 = startY + (pid-1) * height;
-			final Rectangle place = new Rectangle(x0, y0, width, height);
-			final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this);
-			app.getPanels().add(playerPage);
-			playerSections.add(playerPage);
+			for (int pid = 1; pid <= numPlayers; pid++)
+			{
+				final int x0 = startX + 5;
+				int y0 = 75;
+				if (pid == 2)
+					y0 = 600;
+				width = 600;
+				height = 150;
+				final Rectangle place = new Rectangle(x0, y0, width, (int) (height * 0.7));
+				final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this);
+				app.getPanels().add(playerPage);
+				playerSections.add(playerPage);
+			}
+		}
+		else
+		{
+			// create a specific user page for each player.
+			for (int pid = 1; pid <= numPlayers; pid++)
+			{
+				final int x0 = startX;
+				final int y0 = startY + (pid-1) * height;
+				final Rectangle place = new Rectangle(x0, y0, width, height);
+				final PlayerViewUser playerPage = new PlayerViewUser(app, place, pid, this);
+				app.getPanels().add(playerPage);
+				playerSections.add(playerPage);
+			}
 		}
 		
 		// create the shared player pages (if it exists)
 		if (app.contextSnapshot().getContext(app).hasSharedPlayer())
 		{
-			final Rectangle place = new Rectangle(0, 0, boardSize, boardSize/10);
+			Rectangle place = new Rectangle(0, 0, boardSize, boardSize/10);
+			
+			// Place the shared hand in different location for exhibition app.
+			if (app.settingsPlayer().usingExhibitionApp())
+				place = new Rectangle(20, 290, app.width()-app.height(), boardSize/5);
+			
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);
 			playerSections.add(naturePlayerPage);

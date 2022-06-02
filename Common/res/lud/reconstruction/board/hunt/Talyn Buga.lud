@@ -1,0 +1,55 @@
+(game "Talyn Buga"
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge {
+                (rotate 45 (shift 1.5 8.2 (square 2 diagonals:Solid)))
+                (shift 0.67 -1.32 (scale 0.66 (wedge 3)))
+                (rectangle 9 5 diagonals:Alternating)
+            })
+            use:Vertex
+        )
+        (piece "Deer" P1 (and ("StepToEmpty") ("HopCapture")))
+        (piece "Dog" P2 ("StepToEmpty"))
+        (hand P2)
+    })  
+    
+    (rules 
+        (start {
+            (place "Deer1" (sites {"C11" "C3"}))
+            (place "Dog2" (forEach (sites [#]) if:(not (is In (site) (expand (union (sites Top) (sites Bottom)) steps:2))))) // 11, 12 or 13.
+            (place "Dog2" (handSite P2) count:[11 | 12 | 13]) // Some can be introduced later.
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+            (if (no Pieces P2) (result P1 Win))
+            (if (no Moves P1) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Talyn Buga (Plains deer) is hunt game played in Mongolia.")
+        (rules "5x9 intersecting lines, with diagonals in each 3x3 square of the board. On one short side, a square with diagonals, with one corner as the midpoint of one of the sides of the main board. on the other short side, a triangle, with a line bisecting the base and another bisecting this line and intersecting with the other two sides of the triangle. The triangle's apex is the midpoint of the opposite side as the square. One player plays as two deer, on of which which begins on a point in the small square intersecting with the main board, the other in the triangle. The other player plays with 22, 24, or 26 hunters, half of which begin in the main part of the board. Pieces move to an adjacent empty spot along the lines of the board. The deer may capture an adjacent dog by hopping over it to an empty space immediately on the opposite side of it along the lines of the board. The player playing as the hunters may place a remaining piece on an empty spot on the board as their turn. The goal of the deer is to capture all of the dogs, the goal of the dogs is to block the deer from being able to move.
+        ")
+        (source "DLP evidence.")
+        (id "1018")
+        (version "1.3.4")
+        (classification "board/hunt/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)

@@ -6,12 +6,13 @@ import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
+import other.RankUtils;
 import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Similarity between player win-rates.
+ * Similarity between player win-rates. Draws and multi-player results calculated as partial wins.
  * 
  * @author cambolbro and matthew.stephenson
  */
@@ -28,7 +29,7 @@ public class Balance extends Metric
 		super
 		(
 			"Balance", 
-			"Similarity between player win-rates.", 
+			"Similarity between player win-rates. Draws and multi-player results calculated as partial wins.", 
 			0.0, 
 			1.0,
 			Concept.Balance
@@ -38,7 +39,7 @@ public class Balance extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -47,6 +48,8 @@ public class Balance extends Metric
 	)
 	{
 		final int numPlayers = game.players().count();
+		if (numPlayers <= 1)
+			return null;
 		
 		// Count number of wins per player
 		final int[] wins = new int[numPlayers + 1];		
@@ -56,7 +59,8 @@ public class Balance extends Metric
 			final RandomProviderState rng = randomProviderStates[i];
 			final Context context = Utils.setupTrialContext(game, rng, trial);
 			
-			wins[context.state().playerToAgent(trial.status().winner())]++;
+			for (int p = 1; p <= numPlayers; p++) 
+				wins[p] += (RankUtils.agentUtilities(context)[p] + 1.0) / 2.0;
 		}
 		
 		// Get mean win rate over all players

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.JTextArea;
 
 import app.DesktopApp;
 import app.PlayerApp;
@@ -39,6 +40,8 @@ public final class OverlayView extends View
 {
 	/** Font for displaying values. */
 	protected Font fontForDisplay;
+	
+	final JTextArea englishDescriptionField = new JTextArea();
 
 	//------------------------------------------------------------------------
 
@@ -48,6 +51,7 @@ public final class OverlayView extends View
 	public OverlayView(final PlayerApp app)
 	{
 		super(app);
+		DesktopApp.frame().add(englishDescriptionField);
 	}
 
 	//-------------------------------------------------------------------------
@@ -68,9 +72,42 @@ public final class OverlayView extends View
 		
 		final Context context = app.contextSnapshot().getContext(app);
 			
-		if (!app.settingsPlayer().isPerformingTutorialVisualisation())
+		if (!app.settingsPlayer().isPerformingTutorialVisualisation() && !app.settingsPlayer().usingExhibitionApp())
 			drawLoginDisc(app, g2d);
 
+		// Draw unique section text for exhibition app.
+		if (app.settingsPlayer().usingExhibitionApp())
+		{
+			final Font exhbitionTitleFont = new Font("Cantarell", Font.BOLD, 52);
+			g2d.setFont(exhbitionTitleFont);
+			g2d.setColor(Color.BLUE);
+			g2d.drawString("Make Your Own Game", 40, 75);
+			
+			final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
+			g2d.setFont(exhbitionLabelFont);
+			if (app.manager().ref().context().equipment().containers().length > 3)
+			{
+				g2d.drawString("1. Choose a board", 30, 150);
+				g2d.drawString("2. Choose pieces (drag onto play area)", 30, 298);
+				g2d.drawString("Movement", 30, 455);
+				g2d.drawString("  Direction", 30, 503);
+				g2d.drawString("   Capture", 30, 551);
+				g2d.drawString("3. Choose goal(s)", 30, 600);
+			}
+			else
+			{
+				// If playing a game, show toEnglish of that game's description
+				final Font exhbitionDescriptionFont = new Font("Cantarell", Font.PLAIN, 20);
+				englishDescriptionField.setFont(exhbitionDescriptionFont);
+				englishDescriptionField.setBounds(30, 100, 600, 800);
+				englishDescriptionField.setOpaque(false);
+				englishDescriptionField.setLineWrap(true);
+				englishDescriptionField.setWrapStyleWord(true);
+				englishDescriptionField.setText(app.contextSnapshot().getContext(app).game().toEnglish(app.contextSnapshot().getContext(app).game()));
+				englishDescriptionField.setVisible(true);
+			}
+		}
+		
 		if (app.bridge().settingsVC().thisFrameIsAnimated())
 		{
 			MoveAnimation.moveAnimation(app, g2d);
@@ -232,7 +269,7 @@ public final class OverlayView extends View
 	 */
 	public void drawDraggedPiece(final Graphics2D g2d, final Location selectedLocation, final int x, final int y)
 	{	
-		for (final DrawnImageInfo image : MoveAnimation.getMovingPieceImages(app, selectedLocation, x, y, false))
+		for (final DrawnImageInfo image : MoveAnimation.getMovingPieceImages(app, null, selectedLocation, x, y, false))
 			g2d.drawImage(image.pieceImage(), (int)image.imageInfo().drawPosn().getX(), (int)image.imageInfo().drawPosn().getY(), null);
 	}
     

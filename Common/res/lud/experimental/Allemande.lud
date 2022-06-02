@@ -1,15 +1,110 @@
 // The game of Allemande
+(define "EmptyCellsAroundPiecesPlaced"
+    (intersection (sites Around (sites (values Remembered)) Orthogonal) (sites Empty))
+)
+
+(define "TouchingPlacements"
+    (or
+        {
+        (move Add
+            (piece (id "Square" Mover)) 
+            (to Cell "EmptyCellsAroundPiecesPlaced")
+        )
+        (move Select
+            (from Edge
+                (forEach
+                    of:"EmptyCellsAroundPiecesPlaced"
+                    (sites Incident Edge of:Cell at:(site))
+                )
+                if:(no Pieces All in:(sites Incident Cell of:Edge at:(from)))
+            )
+            (then
+                (add (piece (id "Square" Mover)) (to Cell (sites Incident Cell of:Edge at:(last From))))
+        ))
+        }
+))
+
+(define "Placements"
+    (or
+        {
+        (move Add
+            (piece (id "Square" Mover)) 
+            (to (sites Empty))
+            (then
+                (if
+                    (not (is Prev Mover)) 
+                    (remember Value (last To))
+        )))
+        (move Select
+            (from Edge
+                (sites Board Edge) 
+                if:(no Pieces All in:(sites Incident Cell of:Edge at:(from)))
+            )
+            (then
+                (forEach Site 
+                    (sites Incident Cell of:Edge at:(last From))
+                    (and
+                        (add
+                            (piece (id "Square" Mover)) 
+                            (to (site))
+                        )
+                        (if
+                            (not (is Prev Mover))
+                            (remember Value (site))
+        )))))
+        (if
+            (is Prev Mover)
+            (move Pass) // allows playing less than 2 pieces
+        )
+        }
+))
+
+(define "NoCrosscuts" (= (size Array (sizes Group Orthogonal Mover)) (size Array (sizes Group All Mover))))
+
+(define "GamePlay"
+    (if
+        (not (is Prev Mover))
+        (do
+            ("Placements") 
+            ifAfterwards:(or
+                {
+                "NoCrosscuts"
+                (can Move
+                    (do <GameOption:restriction>
+                        ifAfterwards:("NoCrosscuts")
+                ))
+                }
+            )
+            (then (moveAgain))
+        )
+        (do
+            <GameOption:restriction>
+            ifAfterwards:("NoCrosscuts")
+            (then
+                (forget Value All)
+))))
+
+(define "Goal"
+    (or
+        (is Connected 
+            at:(regionSite (sites Column Cell 0) index:0)
+            Orthogonal
+            {
+            (sites Column (+ "Order" 1))
+            (sites Column 0)
+            }
+        )
+        (is Connected 
+            at:(regionSite (sites Row Cell 0) index:0)
+            Orthogonal
+            {
+            (sites Row (+ "Order" 1))
+            (sites Row 0) 
+            }
+        )
+))
+
 (define "Order" <Board:size>)
-
-(define "SitesAdjacentLast2SameTurnPlacements" 
-    (from
-        (sites Empty)
-        if:(or 
-            (not (is Mover (who at:(last To))))
-            (is In (from) (sites Around (last To) All))
-)))
-
-//-------------------------------------------------------------------------
 
 (game "Allemande"
     (players 2)
@@ -34,153 +129,57 @@
                 (sites Row (+ "Order" 1))
                 (sites Row 0)
         ))
-        (piece "Square" Each )    
-        (hand Each size:<Stones:perTurn>)
+    (piece "Square" Each ) // ("Placements" ~) )    
+    (hand Each size:4)
+    }
+)
+(rules
+    (start 
+        {
+        (place "Square1"
+            (union
+                (sites Column (+ "Order" 1))
+                (sites Column 0) 
+        ))
+        // this must come last for the variant placement to work (last To) must be the "Next" player
+        (place "Square2" 
+            (union
+                (sites Row (+ "Order" 1))
+                (sites Row 0) 
+        ))
         }
     )
-    (rules
-        (meta (no Repeat PositionalInTurn))
-        (start 
-            {
-            (place "Square1" (sites Hand P1) state:0)
-            (place "Square1"
-                (union
-                    (sites Column (+ "Order" 1))
-                    (sites Column 0) 
-            ))
-            // this must come last for the variant placement to work (last To) must be the "Next" player
-            (place "Square2" 
-                (union
-                    (sites Row (+ "Order" 1))
-                    (sites Row 0) 
-            ))
-            }
-        )
-        (play
-            (or
-                {
-                // Return a blocked move to the hand
-                (priority
-                    (if
-                        (< 0 (count Pieces Mover in:(sites State 2)))
-                        (move Select (from (last To)  if:(is Mover (who at:(from))))
-                            (then
-                                (fromTo
-                                    (from (last To))
-                                    (to (max (array (forEach (sites Hand Mover) if:(is  Empty (site))))))
-                    ))))
-                    (move Pass)
-                )
-                (do
-                    (move Select
-                        <Variant:placementRestriction>
-                        (then
-                            (fromTo
-                                (from (min (array (forEach (sites Hand Mover) if:(is Mover (who at:(site)))))))
-                                (to (last From))
-                                (then
-                                    (and 
-                                        (forEach Site
-                                            (sites Around (last To) Diagonal
-                                                if:(and
-                                                    {
-                                                    (is Mover (who at:(to)))
-                                                    (= 0 (state at:(to)))
-                                                    (or
-                                                        (no Pieces Mover in:(sites Around (to) Orthogonal))
-                                                        (= Infinity
-                                                            (count Steps
-                                                                (step Orthogonal (to if:(is Mover (who at:(to)))))
-                                                                (to)  
-                                                                (last To)
-                                                    )))
-                                                    }
-                                            ))
-                                            (set State at:(site) 1)
-                                        )
-                                        (forEach Site
-                                            (intersection
-                                                (sites Around (last To) Orthogonal)
-                                                (sites Around (var "LT") Diagonal)
-                                            )
-                                            (if
-                                                (is In (var "LT") (sites Around (last To) Orthogonal))
-                                                (set State at:(site) 0)
-                    )))))))
-                    ifAfterwards:(and
-                        {
-                        (no Pieces Mover in:(sites State 2))
-                        (or
-                            (no Pieces Mover in:(sites State 1))
-                            (< 0 (count Pieces Mover in:(sites Hand Mover)))
-                        )
-                        }
-                ))
-                }
-                (then
-                    (if
-                        (was Pass)
-                        (and
-                            {
-                            (remove (sites Hand Mover))
-                            (add (piece (id "Square" Next)) (to (sites Hand Next)))
-                            (forEach Site (sites State 2) (set State at:(site) 0)) 
-                            }
-                        )
-                        (if
-                            (no Pieces in:(sites Hand Mover))
-                            (and
-                                (add (piece (id "Square" Next)) (to (sites Hand Next)))
-                                (forEach Site (sites State 2) (set State at:(site) 0)) 
-                            )
-                            (and
-                                {
-                                (set Var "LT" (last To))
-                                (forEach Site (sites State 1) (set State at:(site) 2)) 
-                                (moveAgain)
-                                }
-            )))))
-        )
-        (end
-            (if
-                (or
-                    {
-                    (!= Infinity
-                        (count Steps
-                            (step Orthogonal (to if:(is Mover (who at:(to))))) 
-                            (min (array (sites Occupied by:Mover))) 
-                            (max (array (sites Occupied by:Mover)))
-                    ))
-                    
-                    }
-                )
-                (result Mover Win)
+    (play
+        "GamePlay"
+    )
+    (end
+        (if
+            "Goal"
+            (result Mover Win)
 ))))
 
 //-------------------------------------------------------------------------
 
-(option "Boards" <Board> args:{ <size> }
+(option "Restriction" <GameOption> args:{ <restriction> }
     {
-    (item "Order 5" <5> "Order 5 Board")
-    (item "Order 7" <7> "Order 7 Board")
-    (item "Order 9" <9> "Order 9 Board")**
-    (item "Order 13" <13> "Order 13 Board")
-    (item "Order 19" <19> "Order 19 Board")
+    (item "Anyplace"
+        <("Placements")>
+        "The pieces may be placed anywhere that leave all crosscuts connected"
+    )
+    (item "Together"
+        <("TouchingPlacements")>
+        "Both the pieces must be placed together (touching) and leave all crosscuts connected"
+    )**
     }
 )
 
-(option "Stone count" <Stones> args:{ <perTurn> }
+(option "Boards" <Board> args:{ <size> }
     {
-    (item "2" <2> "Use upto 2 stones per turn")
-    (item "3" <3> "Use upto 3 stones per turn")
-    (item "4" <4> "Use upto 4 stones per turn")**
-    }
-)    
-
-(option "Variants" <Variant> args:{ <placementRestriction> }
-    {
-    (item "Any Empty" <(from (sites Empty))> "Place on any Empty site")**
-    (item "As a Group" <"SitesAdjacentLast2SameTurnPlacements"> "Each stones must be placed around the last piece place in that turn, and end up coniguous.")
+    (item "Order 5" <5> "Order 5 Board")
+    (item "Order 7" <7> "Order 7 Board")**
+    (item "Order 9" <9> "Order 9 Board")
+    (item "Order 13" <13> "Order 13 Board")
+    (item "Order 19" <19> "Order 19 Board")
     }
 )
 
@@ -251,7 +250,7 @@
             2. Restricting successive placements in the turn to locations around the previous placement.
         This keeps all the pieces played in one turn, as a group.")
         (id "1961")
-        (version "1.3.3")
+        (version "1.3.4")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

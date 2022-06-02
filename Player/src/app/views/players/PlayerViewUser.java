@@ -33,6 +33,7 @@ import metadata.graphics.util.colour.ColourRoutines;
 import other.AI;
 import other.context.Context;
 import other.model.SimultaneousMove;
+import other.state.container.ContainerState;
 
 //-----------------------------------------------------------------------------
 
@@ -73,23 +74,71 @@ public class PlayerViewUser extends View
 	
 	@Override
 	public void paint(final Graphics2D g2d)
-	{
+	{		
 		final Context context = app.contextSnapshot().getContext(app);
 		final int mover = context.state().mover();
 		final ArrayList<Integer> winnerNumbers = getWinnerNumbers(context);
 		
-		drawColourSwatch(g2d, mover, winnerNumbers, context);
-		drawPlayerName(g2d, mover, winnerNumbers, context);
-		drawAIFace(g2d);
-
 		int componentPushBufferX = 0;
-		final int swatchWidth = app.playerSwatchList()[playerId].width;
-		final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
-		componentPushBufferX = (int) (swatchWidth + maxNameWidth + app.playerNameList()[playerId].getHeight()*2);
-
-		if (AIUtil.anyAIPlayer(app.manager()))
-			componentPushBufferX += playerView.playerNameFont.getSize()*3;
 		
+		if (!app.settingsPlayer().usingExhibitionApp())
+		{
+			drawColourSwatch(g2d, mover, winnerNumbers, context);
+			drawPlayerName(g2d, mover, winnerNumbers, context);
+			drawAIFace(g2d);
+			
+			final int swatchWidth = app.playerSwatchList()[playerId].width;
+			final int maxNameWidth = playerView.maximalPlayerNameWidth(context, g2d);
+			componentPushBufferX = (int) (swatchWidth + maxNameWidth + app.playerNameList()[playerId].getHeight()*2);
+
+			if (AIUtil.anyAIPlayer(app.manager()))
+				componentPushBufferX += playerView.playerNameFont.getSize()*3;
+		}
+		else
+		{
+			g2d.setColor(Color.BLACK);
+			g2d.setFont(new Font("Cantarell", Font.PLAIN, 30));
+			g2d.drawString("P1", 670, 140);
+			g2d.drawRect(725, 90, 450, 70);
+			g2d.drawString("P2", 670, 668);
+			g2d.drawRect(725, 618, 450, 70);
+			
+			if (context.game().equipment().containers().length == 4)
+			{
+				g2d.setColor(new Color(150,150,150));
+				g2d.setFont(new Font("Cantarell", Font.ITALIC, 22));
+				
+				boolean pieceOnHand1 = false;
+				final Container container = context.equipment().containers()[1];
+				final ContainerState cs = context.state().containerStates()[1];
+				for (int i = 0; i < container.numSites(); i++)
+				{
+					if (cs.what(context.sitesFrom()[1] + i, container.defaultSite()) > 0)
+					{
+						pieceOnHand1 = true;
+						break;
+					}
+				}
+				if (!pieceOnHand1)
+					g2d.drawString("Off board pieces can go here.", 800, 135);
+				
+				boolean pieceOnHand2 = false;
+				final Container container2 = context.equipment().containers()[2];
+				final ContainerState cs2 = context.state().containerStates()[2];
+				for (int i = 0; i < container2.numSites(); i++)
+				{
+					if (cs2.what(context.sitesFrom()[2] + i, container2.defaultSite()) > 0)
+					{
+						pieceOnHand2 = true;
+						break;
+					}
+				}
+				if (!pieceOnHand2)
+					g2d.drawString("Off board pieces can go here.", 800, 663);
+			}
+			
+		}
+
 		if (hand != null)
 		{
 			final int containerMarginWidth = (int) (0.05 * placement.height);
@@ -100,7 +149,7 @@ public class PlayerViewUser extends View
 																placement.height
 																);
 			
-			playerView.paintHand(g2d, context, containerPlacement, hand.index());	
+			playerView.paintHand(g2d, context, containerPlacement, hand.index());
 		}
 		
 		drawAISpinner(g2d, context);
@@ -324,12 +373,21 @@ public class PlayerViewUser extends View
 		if (app.manager().isWebApp())
 			return;
 		
-		final Rectangle2D nameRect = app.playerNameList()[playerId];
-		final double r = playerView.playerNameFont.getSize();
-		final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
-		
-		if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
-			spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));
+		if (app.settingsPlayer().usingExhibitionApp())
+		{
+			if (spinner == null)
+				spinner = new Spinner(new Rectangle2D.Double(850,290,200,200));
+			spinner.setDotRadius(5);
+		}
+		else
+		{	
+			final Rectangle2D nameRect = app.playerNameList()[playerId];
+			final double r = playerView.playerNameFont.getSize();
+			final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
+			
+			if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
+				spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));
+		}
 
 		if (spinner != null)
 		{

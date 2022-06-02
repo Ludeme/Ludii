@@ -72,6 +72,10 @@ public class MainMenu extends JMenuBar
 	 */
 	public MainMenu(final PlayerApp app)
 	{
+		// No menu for exhibition app.
+		if (app.settingsPlayer().usingExhibitionApp())
+			return;
+		
 		final ActionListener al = app;
 		final ItemListener il = app;
 		
