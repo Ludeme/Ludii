@@ -71,25 +71,19 @@
         (if
             (not ("ReachesPlayer" (sites) #1))
             (remove (sites))
+            (pass)
         )
-    )
-)
-
-(define "NoCorneredGroups"
-    (or
-        (no Pieces Enemy in:(sites Board))
-        (all Groups Orthogonal of:(is #1 (who at:(to)))
-            if:("ReachesPlayer" (sites) #1)
-        )
+        #2
     )
 )
 
 (define "SpendKomi"
     (if
-        (and
+        (and {
             (< 0 (size Stack at:(handSite P2)))
             (= (mover) (id P2))
-        )
+            (< 0 (count Pieces Mover in:(sites Board)))
+        })
         (move Remove (handSite P2))
     )
 )
@@ -136,11 +130,12 @@
             (play 
                 (or
                     ("SpendKomi")
-                    (do 
-                        ("Place"
-                            (then ("Remove" Enemy))
+                    ("Place"
+                        (then 
+                            ("Remove" Enemy 
+                                (then ("Remove" Mover ~))
+                            )
                         )
-                        ifAfterwards:("NoCorneredGroups" Mover)
                     )
                     <Balance:12*>
                 )
@@ -160,7 +155,7 @@
 
 (option "Balance" <Balance> args:{ <pie> <12*> }
     {
-    (item "None"     <> <>                                                           "The neither the 12* protocol nor the pie rule is currently in force.")*
+    (item "None"     <> <>                                                           "Neither the 12* protocol nor the pie rule is currently in force.")*
     (item "Pie"      <(meta (swap))> <>                                              "The pie rule is currently in force.")
     (item "12*"      <> <(then (if (= 1 (% (+ 1 (count Moves)) 2)) (moveAgain)))>    "The 12* placement protocol is in force.")
 })

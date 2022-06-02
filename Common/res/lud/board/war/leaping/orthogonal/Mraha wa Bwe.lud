@@ -1,0 +1,93 @@
+(define "HopCounter" 
+    (move
+        Hop 
+        (from #1) 
+        Orthogonal 
+        (between 
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mraha wa Bwe" 
+    (players 2)  
+    (equipment { 
+        (board (square 5)) 
+        (piece "Counter" Each)
+        (hand Each)
+    })  
+    
+    (rules 
+        (start (place "Counter" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Empty) (sites Centre)))
+                    (then (if ("NewTurn") (moveAgain)))
+                )
+            )
+            (nextPhase Mover (is Empty (handSite Mover)) "Play")
+        )
+        (phase "Play"
+            (play 
+                (if "SameTurn"
+                    (or
+                        ("HopCounter" (last To)
+                            (then 
+                                (if (can Move ("HopCounter" (last To))) 
+                                    (moveAgain)
+                                ) 
+                            ) 
+                        )
+                        (move Pass)
+                    )
+                    (or 
+                        (forEach Piece "Counter"
+                            ("HopCounter" (from) 
+                                (then 
+                                    (if (can Move ("HopCounter" (last To))) 
+                                        (moveAgain) 
+                                    ) 
+                                ) 
+                            ) 
+                        )
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                Orthogonal 
+                                (to if:(is Empty (to)))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end (if (no Moves Mover) (result Mover Loss))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+)
