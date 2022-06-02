@@ -390,7 +390,7 @@ public class ExportDbCsvConcepts
 		ignoredConcepts.add(Concept.BoardSitesOccupied);
 		ignoredConcepts.add(Concept.BranchingFactor);
 		ignoredConcepts.add(Concept.DecisionFactor);
-		ignoredConcepts.add(Concept.StateRepetition);
+		ignoredConcepts.add(Concept.MoveDistance);
 		ignoredConcepts.add(Concept.PieceNumber);
 		ignoredConcepts.add(Concept.ScoreDifference);
 		
