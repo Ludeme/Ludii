@@ -2,6 +2,7 @@ package search.mcts.finalmoveselection;
 
 import main.collections.FVector;
 import other.move.Move;
+import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;
 
 /**
@@ -35,7 +36,7 @@ public final class ProportionalExpVisitCount implements FinalMoveSelectionStrate
 	//-------------------------------------------------------------------------
 
 	@Override
-	public Move selectMove(final BaseNode rootNode) 
+	public Move selectMove(final MCTS mcts, final BaseNode rootNode) 
 	{
 		final FVector distribution = rootNode.computeVisitCountPolicy(tau);
 		final int actionIndex = distribution.sampleProportionally();

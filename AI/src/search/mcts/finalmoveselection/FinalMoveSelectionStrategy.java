@@ -3,6 +3,7 @@ package search.mcts.finalmoveselection;
 import org.json.JSONObject;
 
 import other.move.Move;
+import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;
 
 /**
@@ -20,10 +21,11 @@ public interface FinalMoveSelectionStrategy
 	/**
 	 * Should be implemented to select the move to play in the real game
 	 * 
+	 * @param mcts
 	 * @param rootNode
 	 * @return The move.
 	 */
-	public Move selectMove(final BaseNode rootNode);
+	public Move selectMove(final MCTS mcts, final BaseNode rootNode);
 
 	//-------------------------------------------------------------------------
 	

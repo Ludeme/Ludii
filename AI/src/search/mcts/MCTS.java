@@ -752,7 +752,7 @@ public class MCTS extends ExpertPolicy
 
 		lastNumMctsIterations = numIterations.get();
 		
-		final Move returnMove = finalMoveSelectionStrategy.selectMove(rootThisCall);
+		final Move returnMove = finalMoveSelectionStrategy.selectMove(this, rootThisCall);
 		
 		if (!wantsInterrupt)
 		{
