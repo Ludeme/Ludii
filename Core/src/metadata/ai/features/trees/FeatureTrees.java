@@ -2,7 +2,6 @@ package metadata.ai.features.trees;
 
 import annotations.Name;
 import annotations.Opt;
-import metadata.ai.AIItem;
 import metadata.ai.features.trees.classifiers.DecisionTree;
 import metadata.ai.features.trees.logits.LogitTree;
 
@@ -12,7 +11,7 @@ import metadata.ai.features.trees.logits.LogitTree;
  *
  * @author Dennis Soemers
  */
-public class FeatureTrees implements AIItem
+public class FeatureTrees 
 {
 	
 	//-------------------------------------------------------------------------
