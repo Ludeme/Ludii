@@ -4,6 +4,7 @@ import annotations.Name;
 import annotations.Opt;
 import metadata.MetadataItem;
 import metadata.ai.features.Features;
+import metadata.ai.features.trees.FeatureTrees;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.misc.BestAgent;
 
@@ -41,6 +42,9 @@ public class Ai implements MetadataItem
 	/** Automatically trained features */
 	private final Features trainedFeatures;
 	
+	/** Automatically trained feature trees */
+	private final FeatureTrees trainedFeatureTrees;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -57,6 +61,9 @@ public class Ai implements MetadataItem
 	 * If not specified, Biased MCTS will not be available as an AI for this game in Ludii.
 	 * @param trainedFeatures Automatically-trained feature sets. Will be used instead of the
 	 * regular ``features'' parameter if that one is left unspecified.
+	 * @param trainedFeatureTrees Automatically-trained decision trees of features. Will be used
+	 * instead of the regular ``features'' or ``trainedFeatures'' parameters if those are left
+	 * unspecified.
 	 * 
 	 * @example (ai (bestAgent "UCT"))
 	 */
@@ -66,7 +73,8 @@ public class Ai implements MetadataItem
 				@Opt final Heuristics heuristics, 
 		@Name 	@Opt final Heuristics trainedHeuristics,
 				@Opt final Features features,
-		@Name	@Opt final Features trainedFeatures
+		@Name	@Opt final Features trainedFeatures,
+		@Name	@Opt final FeatureTrees trainedFeatureTrees
 	)
 	{
 		this.bestAgent = bestAgent;
@@ -74,6 +82,7 @@ public class Ai implements MetadataItem
 		this.trainedHeuristics = trainedHeuristics;
 		this.features = features;
 		this.trainedFeatures = trainedFeatures;
+		this.trainedFeatureTrees = trainedFeatureTrees;
 	}
 
 	//-------------------------------------------------------------------------
@@ -116,11 +125,19 @@ public class Ai implements MetadataItem
 	}
 	
 	/**
-	 * @return Features for this game
+	 * @return Trained features for this game
 	 */
 	public Features trainedFeatures()
 	{
 		return trainedFeatures;
+	}
+	
+	/**
+	 * @return Trained feature trees for this game
+	 */
+	public FeatureTrees trainedFeatureTrees()
+	{
+		return trainedFeatureTrees;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -146,6 +163,9 @@ public class Ai implements MetadataItem
 		
 		if (trainedFeatures != null)
 			sb.append("        trainedFeatures:" + trainedFeatures.toString() + "\n");
+		
+		if (trainedFeatureTrees != null)
+			sb.append("        trainedFeatureTrees:" + trainedFeatureTrees.toString() + "\n");
 			
 		sb.append("    )\n");
 

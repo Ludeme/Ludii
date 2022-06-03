@@ -1181,7 +1181,7 @@ public class MCTS extends ExpertPolicy
 	{
 		final long gameFlags = game.gameFlags();
 		
-		// this MCTS implementation does not support simultaneous-move games
+		// This MCTS implementation does not support simultaneous-move games
 		if ((gameFlags & GameType.Simultaneous) != 0L)
 			return false;
 		
