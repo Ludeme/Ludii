@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.repeatString;
+
 /**
  * Node representation of a ludeme in the current description
  * @author Filipp Dokienko
@@ -209,7 +211,7 @@ public class LudemeNode implements iLudemeNode, iGNode {
     public String getStringRepresentation() {
 
         char c = '"';
-        String tabs = "\t".repeat(getDepthManual());
+        String tabs = repeatString("\t", getDepthManual());
         boolean startedWithParanthesis = false;
         boolean hasLineBreak = getCurrentConstructor().getInputs().size() > 1;
 

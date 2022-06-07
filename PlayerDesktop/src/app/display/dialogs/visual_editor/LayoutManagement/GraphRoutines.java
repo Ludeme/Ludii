@@ -178,4 +178,13 @@ public final class GraphRoutines
     public static void setSM(double SM) {
         GraphRoutines.SM = SM;
     }
+
+    public static String repeatString(String str, int n)
+    {
+        String repStr = ""; // if error occur change to String repStr = str;
+        for (int i = 0; i < n; i++) {
+            repStr = repStr.concat(str);
+        }
+        return repStr;
+    }
 }

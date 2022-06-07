@@ -6,6 +6,8 @@ import app.display.dialogs.visual_editor.model.grammar.input.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Parser {
 
@@ -178,7 +180,11 @@ public class Parser {
         ArrayList<Terminal> terminals = new ArrayList<>();
         for(String c : g.constructors) terminals.add(new Terminal(c));
         TerminalInput input = new TerminalInput(g.NAME, TerminalInputType.DROPDOWN, terminals);
-        Ludeme l = new Ludeme(g.NAME,List.of(new Constructor(List.of(input))));
+
+        Ludeme l = new Ludeme(g.NAME, Stream.of(new Constructor(
+                Stream.of(input).collect(Collectors.toList()))
+        ).collect(Collectors.toList()));
+
         addLudeme(l);
         return l;
     }

@@ -23,6 +23,8 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.repeatString;
+
 public class GameParser
 {
     private static Parser p = new Parser();
@@ -90,7 +92,7 @@ public class GameParser
                 break;
             case Terminal:
                 // Return lhs and the object
-                System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
+                System.out.println(repeatString("    ", d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
                 break;
             case Class:
                 // TODO: debug this!
@@ -124,7 +126,7 @@ public class GameParser
                     }
                 }
 
-                System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
+                System.out.println(repeatString("    ", d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
 
                 LudemeNode ln = new LudemeNode(getLudemeForEditor(grammarLabel), 0, 0);
                 Handler.addNode(GRAPH, ln);
