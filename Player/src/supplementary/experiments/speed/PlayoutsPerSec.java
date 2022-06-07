@@ -33,6 +33,8 @@ import other.playout.PlayoutMoveSelector;
 import other.trial.Trial;
 import playout_move_selectors.FeaturesSoftmaxMoveSelector;
 import policies.softmax.SoftmaxFromMetadataSelection;
+import policies.softmax.SoftmaxPolicy;
+import policies.softmax.SoftmaxPolicyLinear;
 
 /**
  * Experiment for measuring playouts per second.
@@ -293,17 +295,26 @@ public final class PlayoutsPerSec
 				// Load features from metadata
 				final SoftmaxFromMetadataSelection softmax = new SoftmaxFromMetadataSelection(0.0);
 				softmax.initAI(game, -1);
-	
-				if (softmax.featureSets().length > 0)
+				
+				final SoftmaxPolicy wrappedSoftmax = softmax.wrappedSoftmax();
+				if (wrappedSoftmax instanceof SoftmaxPolicyLinear)
 				{
-					final BaseFeatureSet[] featureSets = softmax.featureSets();
-					final WeightVector[] weights = new WeightVector[softmax.linearFunctions().length];
-					for (int i = 0; i < softmax.linearFunctions().length; ++i)
+					final SoftmaxPolicyLinear linearWrappedSoftmax = (SoftmaxPolicyLinear) wrappedSoftmax;
+					if (linearWrappedSoftmax.featureSets().length > 0)
 					{
-						if (softmax.linearFunctions()[i] != null)
-							weights[i] = softmax.linearFunctions()[i].effectiveParams();
+						final BaseFeatureSet[] featureSets = linearWrappedSoftmax.featureSets();
+						final WeightVector[] weights = new WeightVector[linearWrappedSoftmax.linearFunctions().length];
+						for (int i = 0; i < linearWrappedSoftmax.linearFunctions().length; ++i)
+						{
+							if (linearWrappedSoftmax.linearFunctions()[i] != null)
+								weights[i] = linearWrappedSoftmax.linearFunctions()[i].effectiveParams();
+						}
+						playoutMoveSelector = new FeaturesSoftmaxMoveSelector(featureSets, weights, false);
 					}
-					playoutMoveSelector = new FeaturesSoftmaxMoveSelector(featureSets, weights, false);
+					else
+					{
+						playoutMoveSelector = null;
+					}
 				}
 				else
 				{

@@ -2,14 +2,9 @@ package app.move;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.List;
 
 import app.PlayerApp;
 import app.utils.PuzzleSelectionType;
-import features.Feature;
-import features.feature_sets.BaseFeatureSet;
-import features.spatial.FeatureUtils;
-import features.spatial.instances.FeatureInstance;
 import game.equipment.component.Component;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
@@ -26,7 +21,6 @@ import other.location.Location;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.Vertex;
-import policies.softmax.SoftmaxFromMetadataSelection;
 import util.ContainerUtil;
 
 /**
@@ -154,49 +148,53 @@ public class MoveHandler
 	
 	private static void printMoveFeatures(final PlayerApp app, final Context context, final FastArrayList<Move> possibleMoves)
 	{
+		// Not supported anymore because decision trees in metadata mess up the implementation
+		System.err.println("Printing move features is not currently supported.");
+		
+		
 		// Don't apply move, but print active features for all matching moves
-		final SoftmaxFromMetadataSelection softmax = app.settingsPlayer().featurePrintingSoftmax();
-		softmax.initIfNeeded(context.game(), context.state().mover());
-		
-		final BaseFeatureSet[] featureSets = softmax.featureSets();
-		final BaseFeatureSet featureSet;
-		if (featureSets[0] != null)
-			featureSet = featureSets[0];
-		else
-			featureSet = featureSets[context.state().mover()];
-		
-		if (app.settingsPlayer().printMoveFeatures())
-		{
-			for (final Move move : possibleMoves)
-			{
-				final List<Feature> activeFeatures = featureSet.computeActiveFeatures(context, move);
-				System.out.println("Listing active features for move: " + move);
-				
-				for (final Feature activeFeature : activeFeatures)
-					System.out.println(activeFeature);
-			}
-		}
-			
-		if (app.settingsPlayer().printMoveFeatureInstances())
-		{
-			for (final Move move : possibleMoves)
-			{
-				final List<FeatureInstance> activeFeatureInstances = 
-						featureSet.getActiveSpatialFeatureInstances
-						(
-							context.state(), 
-							FeatureUtils.fromPos(context.trial().lastMove()),
-							FeatureUtils.toPos(context.trial().lastMove()),
-							FeatureUtils.fromPos(move),
-							FeatureUtils.toPos(move), 
-							move.mover()
-						);
-				System.out.println("Listing active feature instances for move: " + move);
-				
-				for (final FeatureInstance activeFeatureInstance : activeFeatureInstances)
-					System.out.println(activeFeatureInstance);
-			}
-		}
+//		final SoftmaxFromMetadataSelection softmax = app.settingsPlayer().featurePrintingSoftmax();
+//		softmax.initIfNeeded(context.game(), context.state().mover());
+//		
+//		final BaseFeatureSet[] featureSets = softmax.featureSets();
+//		final BaseFeatureSet featureSet;
+//		if (featureSets[0] != null)
+//			featureSet = featureSets[0];
+//		else
+//			featureSet = featureSets[context.state().mover()];
+//		
+//		if (app.settingsPlayer().printMoveFeatures())
+//		{
+//			for (final Move move : possibleMoves)
+//			{
+//				final List<Feature> activeFeatures = featureSet.computeActiveFeatures(context, move);
+//				System.out.println("Listing active features for move: " + move);
+//				
+//				for (final Feature activeFeature : activeFeatures)
+//					System.out.println(activeFeature);
+//			}
+//		}
+//			
+//		if (app.settingsPlayer().printMoveFeatureInstances())
+//		{
+//			for (final Move move : possibleMoves)
+//			{
+//				final List<FeatureInstance> activeFeatureInstances = 
+//						featureSet.getActiveSpatialFeatureInstances
+//						(
+//							context.state(), 
+//							FeatureUtils.fromPos(context.trial().lastMove()),
+//							FeatureUtils.toPos(context.trial().lastMove()),
+//							FeatureUtils.fromPos(move),
+//							FeatureUtils.toPos(move), 
+//							move.mover()
+//						);
+//				System.out.println("Listing active feature instances for move: " + move);
+//				
+//				for (final FeatureInstance activeFeatureInstance : activeFeatureInstances)
+//					System.out.println(activeFeatureInstance);
+//			}
+//		}
 	}
 	
 	//-------------------------------------------------------------------------

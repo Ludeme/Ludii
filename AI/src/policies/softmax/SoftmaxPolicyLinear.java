@@ -72,20 +72,6 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 	 */
 	protected BaseFeatureSet[] featureSets;
 	
-	/** 
-	 * If >= 0, we'll only actually use this softmax policy in MCTS play-outs
-	 * for up to this many actions. If a play-out still did not terminate
-	 * after this many play-out actions, we revert to a random play-out
-	 * strategy as fallback
-	 */
-	protected int playoutActionLimit = -1;
-	
-	/** Auto-end playouts in a draw if they take more turns than this */
-	protected int playoutTurnLimit = -1;
-	
-	/** Epsilon for epsilon-greedy playouts */
-	protected double epsilon = 0.0;
-	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -727,9 +713,9 @@ public class SoftmaxPolicyLinear extends SoftmaxPolicy
 	 * @param lines
 	 * @return A softmax policy constructed from a given array of input lines
 	 */
-	public static SoftmaxPolicyLinear fromLines(final String[] lines)
+	public static SoftmaxPolicy fromLines(final String[] lines)
 	{
-		SoftmaxPolicyLinear policy = null;
+		SoftmaxPolicy policy = null;
 		
 		for (final String line : lines)
 		{
