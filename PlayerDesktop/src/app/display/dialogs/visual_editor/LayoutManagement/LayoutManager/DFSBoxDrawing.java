@@ -138,48 +138,13 @@ public class DFSBoxDrawing implements LayoutMethod
         DOS_MAP = new HashMap<>(weights);
     }
 
-    private void shift(int root)
-    {
-        List<Integer> Q = new ArrayList<>();
-        Q.add(root);
-        List<Integer> childNodes;
-        int nId;
-        while (!Q.isEmpty())
-        {
-            nId = Q.remove(0);
-            childNodes = graph.getNode(nId).getChildren();
-            for (int i = childNodes.size()-1; i >= 0; i--)
-            {
-                if (i > 1)
-                {
-                    iGNode nV = graph.getNode(i);
-                    iGNode nVl = graph.getNode(childNodes.get(i-1));
-                    nV.setPos(nV.getPos().sub(new Vector2D(0, nVl.getPos().getY() + nVl.getHeight() )));
-                }
-                Q.add(childNodes.get(i));
-            }
-        }
-    }
-
     @Override
     public void applyLayout()
     {
         freeY = 0;
-        //LudemeNode lN = (LudemeNode) graph.getNode(root);
-        //Vector2D lPos = lN.getPos();
         Vector2D oPos = graph.getNode(root).getPos();
-
         initWeights();
-
         initPlacement(root,0);
-        //shift(r);
-
         translateByRoot(graph, root, oPos);
-
-        //packLayers(graph, root);
-        //NodePlacementRoutines.packLayers(graph, root);
-        // translate graph by root vertex coordinates
-
-        //NodePlacementRoutines.resolveNodeTranslation(graph, root);
     }
 }

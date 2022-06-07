@@ -14,9 +14,6 @@ public class LayoutSettingsPanel extends JPanel
     private final JSlider sSl;
     private final LayoutHandler lh;
 
-    private final double DISTANCE_ADD = 0.26;
-    private final double SPREAD_ADD = 0.34;
-
     public LayoutSettingsPanel(IGraphPanel graphPanel)
     {
         lh = graphPanel.getLayoutHandler();
@@ -123,7 +120,6 @@ public class LayoutSettingsPanel extends JPanel
 
     private void executeDFSLayout(IGraphPanel graphPanel)
     {
-        graphPanel.getLayoutHandler().setLayoutMethod(1);
         graphPanel.getLayoutHandler().executeLayout();
         graphPanel.drawGraph(graphPanel.getGraph());
     }
