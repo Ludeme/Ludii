@@ -198,11 +198,12 @@ public final class ActionAdd extends BaseAction
 		final ContainerState cs = context.state().containerStates()[contID];
 		final int who = (what < 1) ? 0 : context.components()[what].owner();
 		final boolean requiresStack = game.isStacking();
+		final boolean hiddenInfoGame = game.hiddenInformation();
 		
 		// Keep in memory the data of the site from and to (for undo method)
-		if(!alreadyApplied)
+		if (!alreadyApplied)
 		{
-			if(!requiresStack)
+			if (!requiresStack)
 			{
 				previousCount = cs.count(to, type);
 				previousWhat = new int[1];
@@ -216,7 +217,7 @@ public final class ActionAdd extends BaseAction
 				previousRotation[0] = cs.rotation(to, 0, type);
 				previousValue[0] = cs.value(to, 0, type);
 				
-				if(context.game().hiddenInformation())
+				if (hiddenInfoGame)
 				{
 					previousHidden = new boolean[1][context.players().size()];
 					previousHiddenWhat = new boolean[1][context.players().size()];
@@ -246,7 +247,7 @@ public final class ActionAdd extends BaseAction
 				previousState = new int[sizeStackTo];
 				previousRotation = new int[sizeStackTo];
 				previousValue = new int[sizeStackTo];
-				for(int lvl = 0 ; lvl < sizeStackTo; lvl++)
+				for (int lvl = 0 ; lvl < sizeStackTo; lvl++)
 				{
 					previousWhat[lvl] = cs.what(to, lvl, type);
 					previousWho[lvl] = cs.who(to, lvl, type);
@@ -254,7 +255,7 @@ public final class ActionAdd extends BaseAction
 					previousRotation[lvl] = cs.rotation(to, lvl, type);
 					previousValue[lvl] = cs.value(to, lvl, type);
 					
-					if(context.game().hiddenInformation())
+					if (hiddenInfoGame)
 					{
 						previousHidden = new boolean[sizeStackTo][context.players().size()];
 						previousHiddenWhat = new boolean[sizeStackTo][context.players().size()];
@@ -288,7 +289,7 @@ public final class ActionAdd extends BaseAction
 
 		if (currentWhat == 0)
 		{
-			cs.setSite(context.state(), to, who, what, count, state, rotation, (context.game().hasDominoes() ? 1 : value), type);
+			cs.setSite(context.state(), to, who, what, count, state, rotation, (game.hasDominoes() ? 1 : value), type);
 			Component piece = null;
 			// to keep the site of the item in cache for each player
 			if (what != 0)
@@ -415,8 +416,9 @@ public final class ActionAdd extends BaseAction
 		final int contIdTo = type.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState csTo = context.state().containerStates()[contIdTo];
 		final State gameState = context.state();
+		final boolean hiddenInfoGame = game.hiddenInformation();
 		
-		if(actionLargePiece)
+		if (actionLargePiece)
 		{
 			int pieceIdx = 0;
 			pieceIdx = csTo.remove(context.state(), to, type);
@@ -428,16 +430,16 @@ public final class ActionAdd extends BaseAction
 			final boolean requiresStack = context.currentInstanceContext().game().isStacking();
 			final int sizeStackTo = csTo.sizeStack(to, type);
 			
-			if(requiresStack) // Stacking undo.
+			if (requiresStack) // Stacking undo.
 			{
 				// We restore the to site
-				for(int lvl = sizeStackTo -1 ; lvl >= 0; lvl--)
+				for (int lvl = sizeStackTo -1 ; lvl >= 0; lvl--)
 					csTo.remove(context.state(), to, lvl, type);
 				
-				for(int lvl = 0 ; lvl < previousWhat.length; lvl++)
+				for (int lvl = 0 ; lvl < previousWhat.length; lvl++)
 				{
 					csTo.addItemGeneric(gameState, to, previousWhat[lvl], previousWho[lvl], previousState[lvl], previousRotation[lvl], previousValue[lvl], game, type);
-					if(context.game().hiddenInformation())
+					if (hiddenInfoGame)
 					{
 						for (int pid = 1; pid < context.players().size(); pid++)
 						{
@@ -457,9 +459,10 @@ public final class ActionAdd extends BaseAction
 				csTo.remove(context.state(), to, type);
 				csTo.setSite(context.state(), to, previousWho[0], previousWhat[0], previousCount, previousState[0], previousRotation[0], previousValue[0], type);
 				
-				if(context.game().hiddenInformation())
+				if (hiddenInfoGame)
 				{
-					if(previousHidden.length > 0)
+					if (previousHidden.length > 0)
+					{
 						for (int pid = 1; pid < context.players().size(); pid++)
 						{
 							csTo.setHidden(gameState, pid, to, 0, type, previousHidden[0][pid]);
@@ -470,6 +473,7 @@ public final class ActionAdd extends BaseAction
 							csTo.setHiddenRotation(gameState, pid, to, 0, type, previousHiddenRotation[0][pid]);
 							csTo.setHiddenValue(gameState, pid, to, 0, type, previousHiddenValue[0][pid]);
 						}
+					}
 				}
 			}
 		}
