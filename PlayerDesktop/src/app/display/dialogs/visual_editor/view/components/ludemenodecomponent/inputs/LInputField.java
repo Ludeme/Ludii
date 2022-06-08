@@ -132,7 +132,7 @@ public class LInputField extends JComponent {
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 
 
-        if(inputSymbol.isTerminal() || inputType.equals(Symbol.LudemeType.Structural)){ // TODO: does that work?
+        if(inputSymbol.isTerminal()){ // TODO: does that work?
             inputFieldComponent = getTerminalComponent(input.arg());
             inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.getWidth()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
             inputFieldComponent.addMouseListener(userInputListener);
@@ -189,7 +189,7 @@ public class LInputField extends JComponent {
     }
 
     private JComponent getTerminalComponent(ClauseArg arg){
-        if(!arg.symbol().isTerminal() && !arg.symbol().ludemeType().equals(Symbol.LudemeType.Structural)) return null;
+        if(!arg.symbol().isTerminal()) return null;
         switch(arg.symbol().name()){
             case "Integer":
                 return new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
@@ -198,7 +198,10 @@ public class LInputField extends JComponent {
             default:
                 if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Structural)) { // TODO: Eh, keine ahnung
                     JComboBox<Symbol> comboBox = new JComboBox<>();
-                    if(true) return new JTextField("!!");
+                    if(true) {
+                        System.out.println(arg);
+                        return new JTextField("!!");
+                    }
                     for (ClauseArg ca : arg.symbol().rule().rhs().get(0).args()) {
                         comboBox.addItem(ca.symbol());
                     }

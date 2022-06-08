@@ -122,22 +122,6 @@ public class LHeader extends JComponent {
         title.setSize(title.getPreferredSize());
 
         setBorder(DesignPalette.HEADER_PADDING_BORDER);
-        //setSize(getPreferredSize());
-
-        //ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
-/*
-        remove(connectionAndTitle);
-
-        connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        connectionAndTitle.add(ingoingConnectionComponent);
-        connectionAndTitle.add(Box.createHorizontalStrut(5));
-        connectionAndTitle.add(title);
-        connectionAndTitle.setOpaque(true);
-
-        add(connectionAndTitle, BorderLayout.LINE_START);
-
-
-*/
 
     }
 
