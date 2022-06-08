@@ -65,6 +65,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         addMouseListener(clickListener);
         addMouseMotionListener(motionListener);
         addMouseWheelListener(wheelListener);
+        //addMouseWheelListener(wheelListener2);
 
         add(addLudemeWindow);
         add(connectLudemeWindow);

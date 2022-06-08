@@ -8,6 +8,7 @@ import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import game.functions.ints.board.Layer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +16,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LudemeNodeComponent extends JPanel {
 
-    protected int x, y;
+    protected int x, y; // TODO: figure out this nonsense
     private ImmutablePoint position = new ImmutablePoint(x, y);
     private final LudemeNode LUDEME_NODE;
     private final IGraphPanel GRAPH_PANEL;
@@ -27,6 +30,8 @@ public class LudemeNodeComponent extends JPanel {
 
     private LHeader header;
     private LInputArea inputArea;
+
+    private boolean MOVE_DESCENDANTS = false;
 
     public LudemeNodeComponent(LudemeNode ludemeNode, IGraphPanel graphPanel){
         this.LUDEME_NODE = ludemeNode;
@@ -177,14 +182,51 @@ public class LudemeNodeComponent extends JPanel {
         getLudemeNode().setDynamic(dynamic);
     }
 
-    // Drag Listener
+    private void dragNode(LudemeNodeComponent lnc, MouseEvent e, Point dif1)
+    {
+        e.translatePoint(e.getComponent().getLocation().x - lnc.x, e.getComponent().getLocation().y - lnc.y);
+        Point dif2 = new Point(dif1.x - LudemeNodeComponent.this.x, dif1.y - LudemeNodeComponent.this.y);
+        lnc.setLocation(lnc.x+dif2.x, lnc.y+dif2.y);
+    }
 
+    // Drag Listener
+    // TODO: Implement moving node subtree + movement of selected nodes
     MouseMotionListener dragListener = new MouseAdapter() {
         @Override
         public void mouseDragged(MouseEvent e) {
             super.mouseDragged(e);
-            e.translatePoint(e.getComponent().getLocation().x - LudemeNodeComponent.this.x, e.getComponent().getLocation().y -LudemeNodeComponent.this.y);
-            LudemeNodeComponent.this.setLocation(e.getX(),e.getY());
+
+            if (!MOVE_DESCENDANTS)
+            {
+                LudemeNodeComponent.this.setLocation(e.getX()+e.getComponent().getLocation().x - LudemeNodeComponent.this.x,
+                        e.getY()+e.getComponent().getLocation().y - LudemeNodeComponent.this.y);
+                updatePositions();
+            }
+            else
+            {
+                int initX = position.x;
+                int initY = position.y;
+
+                e.translatePoint(e.getComponent().getLocation().x - LudemeNodeComponent.this.x, e.getComponent().getLocation().y - LudemeNodeComponent.this.y);
+                LudemeNodeComponent.this.setLocation(e.getX(), e.getY());
+                updatePositions();
+                Point posDif = new Point(position.x-initX, position.y-initY);
+
+                // iterate children in BFS
+                java.util.List<LudemeNodeComponent> Q = new ArrayList<>();
+                Q.add(LudemeNodeComponent.this);
+                while (!Q.isEmpty())
+                {
+                    LudemeNodeComponent lnc = Q.remove(0);
+                    if (!lnc.equals(LudemeNodeComponent.this)) lnc.setLocation(lnc.getLocation().x+posDif.x, lnc.getLocation().y+posDif.y);
+                    lnc.updatePositions();
+
+                    List<Integer> children = lnc.getLudemeNode().getChildren();
+                    children.forEach(v -> {
+                        Q.add(GRAPH_PANEL.getNodeComponent(GRAPH_PANEL.getGraph().getNode(v)));
+                    });
+                }
+            }
             updatePositions();
             getGraphPanel().repaint();
         }
@@ -196,6 +238,21 @@ public class LudemeNodeComponent extends JPanel {
         private void openPopupMenu(MouseEvent e){
             JPopupMenu popupMenu = new NodePopupMenu(LudemeNodeComponent.this, LudemeNodeComponent.this.getGraphPanel());
             popupMenu.show(e.getComponent(), e.getX(), e.getY());
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            super.mouseClicked(e);
+            if (e.getClickCount() == 1)
+            {
+                MOVE_DESCENDANTS = false;
+            }
+            else
+            {
+                System.out.println("TRUE");
+                MOVE_DESCENDANTS = true;
+            }
         }
 
         //TODO: do we need mousePressed listener?

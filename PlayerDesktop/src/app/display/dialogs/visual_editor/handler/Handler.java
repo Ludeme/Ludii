@@ -77,12 +77,8 @@ public class Handler {
     {
         if (mainPanel != null)
         {
-            //System.out.println("###");
             Rectangle view = mainPanel.getPanel().getViewport().getViewRect();
-            //System.out.println(mainPanel.getPanel().getViewport().getViewRect());
-            //System.out.println(x + " " + y);
             mainPanel.setView(x-view.width/2, y-view.height/2);
-            //System.out.println(mainPanel.getPanel().getViewport().getViewRect());
         }
     }
 
