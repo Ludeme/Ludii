@@ -2,8 +2,9 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import main.grammar.Clause;
 
 import java.awt.*;
@@ -15,6 +16,10 @@ public class Handler {
     // TODO: History for Undo/Redo
 
     public static DescriptionGraph gameDescriptionGraph;
+
+    public static EditorPanel editorPanel;
+
+    public static ToolsPanel toolsPanel;
 
     public static ArrayList<DescriptionGraph> history = new ArrayList<>();
 
@@ -89,4 +94,24 @@ public class Handler {
     public static void setMainPanel(MainPanel mainPanel) {
         Handler.mainPanel = mainPanel;
     }
+
+    public static void activateSelectionMode()
+    {
+        editorPanel.setSELECTION_MODE(true);
+    }
+
+    public static void deactivateSelectionMode()
+    {
+        editorPanel.setSELECTION_MODE(false);
+        editorPanel.repaint();
+    }
+
+    public static void turnOffSelectionBtn()
+    {
+        toolsPanel.deactivateSelection();
+        toolsPanel.repaint();
+        toolsPanel.revalidate();
+    }
+
+
 }

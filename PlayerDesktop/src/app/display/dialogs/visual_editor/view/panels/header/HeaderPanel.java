@@ -1,5 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
+import app.display.dialogs.visual_editor.handler.Handler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -11,7 +13,9 @@ public class HeaderPanel extends JPanel {
         setBackground(Color.RED);
 
         add(new EditorPickerPanel(), BorderLayout.LINE_START);
-        add(new ToolsPanel(), BorderLayout.LINE_END);
+        ToolsPanel toolsPanel = new ToolsPanel();
+        Handler.toolsPanel = toolsPanel;
+        add(toolsPanel, BorderLayout.LINE_END);
 
         setBackground(Color.WHITE);
 

@@ -10,6 +10,7 @@ import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.grammar.Clause;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -31,6 +32,7 @@ public class LudemeNodeComponent extends JPanel {
     private LInputArea inputArea;
 
     private boolean MOVE_DESCENDANTS = false;
+    private boolean SELECTED = false;
 
     public LudemeNodeComponent(LudemeNode ludemeNode, IGraphPanel graphPanel){
         this.LUDEME_NODE = ludemeNode;
@@ -40,6 +42,9 @@ public class LudemeNodeComponent extends JPanel {
         this.y = (int) ludemeNode.getPos().getY();
 
         setLayout(new BorderLayout());
+
+        Border border = BorderFactory.createLineBorder(new Color(92, 150, 242));
+        setBorder(border);
 
         System.out.println("[LNC] Provided Inputs");
         for(int i = 0; i < ludemeNode.providedInputs().length; i++){
@@ -85,7 +90,6 @@ public class LudemeNodeComponent extends JPanel {
         setVisible(true);
 
     }
-
 
     public void changeClause(Clause clause){
         Handler.updateCurrentClause(getGraphPanel().getGraph(), node(), clause);
@@ -152,6 +156,14 @@ public class LudemeNodeComponent extends JPanel {
         return position;
     }
 
+    public void setSELECTED(boolean SELECTED) {
+        this.SELECTED = SELECTED;
+    }
+
+    public boolean isSELECTED() {
+        return SELECTED;
+    }
+
     public LIngoingConnectionComponent getIngoingConnectionComponent(){
         return header.getIngoingConnectionComponent();
     }
@@ -162,15 +174,7 @@ public class LudemeNodeComponent extends JPanel {
         node().setDynamic(dynamic);
     }
 
-    private void dragNode(LudemeNodeComponent lnc, MouseEvent e, Point dif1)
-    {
-        e.translatePoint(e.getComponent().getLocation().x - lnc.x, e.getComponent().getLocation().y - lnc.y);
-        Point dif2 = new Point(dif1.x - LudemeNodeComponent.this.x, dif1.y - LudemeNodeComponent.this.y);
-        lnc.setLocation(lnc.x+dif2.x, lnc.y+dif2.y);
-    }
-
     // Drag Listener
-    // TODO: Implement moving node subtree + movement of selected nodes
     MouseMotionListener dragListener = new MouseAdapter() {
         @Override
         public void mouseDragged(MouseEvent e) {
@@ -285,7 +289,8 @@ public class LudemeNodeComponent extends JPanel {
         LUDEME_NODE.setHeight(getHeight());
 
         setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
-        setBorder(DesignPalette.LUDEME_NODE_BORDER);
+        if (SELECTED) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
+        else setBorder(DesignPalette.LUDEME_NODE_BORDER);
     }
 
 }

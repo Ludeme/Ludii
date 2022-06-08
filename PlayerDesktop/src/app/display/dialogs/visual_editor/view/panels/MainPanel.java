@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.panels;
 
+import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
 
 import javax.swing.*;
@@ -11,9 +12,9 @@ public class MainPanel extends JPanel {
 
     //JPanel editor_panel = new EditorPanel(5000, 5000);
     private JScrollPane panel;
-    private JPanel editor_panel;
+    private EditorPanel editor_panel;
 
-    public MainPanel(JPanel editor_panel){
+    public MainPanel(EditorPanel editor_panel){
         setLayout(new BorderLayout());
 
         add(new HeaderPanel(), BorderLayout.NORTH);
@@ -38,7 +39,7 @@ public class MainPanel extends JPanel {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (origin != null) {
+                if (origin != null && !editor_panel.isSELECTION_MODE()) {
                     JViewport viewPort = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, editor_panel);
                     if (viewPort != null) {
                         int deltaX = origin.x - e.getX();

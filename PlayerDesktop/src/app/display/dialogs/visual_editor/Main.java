@@ -7,7 +7,7 @@ import javax.swing.*;
 
 class Main {
 
-    private static final JPanel editPanel = new EditorPanel(5000,5000);
+    private static final EditorPanel editPanel = new EditorPanel(5000,5000);
 
     public static void main(String[] args) {
         MainFrame f = new MainFrame(editPanel);

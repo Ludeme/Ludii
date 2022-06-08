@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 
 import javax.swing.*;
 
@@ -10,11 +11,11 @@ public class MainFrame extends JFrame {
 
     private MainPanel main_panel;
 
-    public MainFrame(JPanel editor_panel){
+    public MainFrame(EditorPanel editor_panel){
         initialize(editor_panel);
     }
 
-    private void initialize(JPanel editor_panel){
+    private void initialize(EditorPanel editor_panel){
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch(Exception ignored){}

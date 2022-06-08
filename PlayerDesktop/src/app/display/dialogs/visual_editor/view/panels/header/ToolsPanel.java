@@ -5,18 +5,26 @@ import app.display.dialogs.visual_editor.view.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ToolsPanel extends JPanel {
+
+    private final HeaderButton selectBtn = new HeaderButton(DesignPalette.SELECT_ACTIVE, DesignPalette.SELECT_INACTIVE, DesignPalette.SELECT_HOVER, "Select", false, true);
+
     public ToolsPanel() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        HeaderButton selectBtn = new HeaderButton(DesignPalette.SELECT_ACTIVE, DesignPalette.SELECT_INACTIVE, DesignPalette.SELECT_HOVER, "Select", false);
-        HeaderButton undoBtn = new HeaderButton(DesignPalette.UNDO_ACTIVE, DesignPalette.UNDO_INACTIVE, DesignPalette.UNDO_HOVER, "Undo", false);
-        HeaderButton redoBtn = new HeaderButton(DesignPalette.REDO_ACTIVE, DesignPalette.REDO_INACTIVE, DesignPalette.REDO_HOVER, "Redo", false);
+        HeaderButton undoBtn = new HeaderButton(DesignPalette.UNDO_INACTIVE, DesignPalette.UNDO_INACTIVE, DesignPalette.UNDO_HOVER, "Undo", false, false);
+        HeaderButton redoBtn = new HeaderButton(DesignPalette.UNDO_INACTIVE, DesignPalette.UNDO_INACTIVE, DesignPalette.REDO_HOVER, "Redo", false, false);
 
         setBackground(Color.WHITE);
 
+        selectBtn.addActionListener(e -> {
+            if (!selectBtn.isActive()) Handler.activateSelectionMode();
+            else Handler.deactivateSelectionMode();
+        });
         add(selectBtn);
         add(Box.createHorizontalStrut(30));
         add(undoBtn);
@@ -39,4 +47,12 @@ public class ToolsPanel extends JPanel {
         add(Box.createHorizontalStrut(20));
 
     }
+
+    public void deactivateSelection()
+    {
+        selectBtn.setInactive();
+        selectBtn.repaint();
+        selectBtn.revalidate();
+    }
+
 }

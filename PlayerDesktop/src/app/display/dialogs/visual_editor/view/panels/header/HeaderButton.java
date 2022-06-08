@@ -16,11 +16,13 @@ public class HeaderButton extends JButton {
     private final ImageIcon INACTIVE_ICON;
     private final ImageIcon HOVER_ICON;
 
+    private boolean selectable = false;
     private boolean active = true;
 
-    public HeaderButton(ImageIcon activeIcon, ImageIcon inactiveIcon, ImageIcon hoverIcon, String text, boolean active){
+    public HeaderButton(ImageIcon activeIcon, ImageIcon inactiveIcon, ImageIcon hoverIcon, String text, boolean active, boolean selectable){
         super(text);
         this.active = active;
+        this.selectable = selectable;
 
         this.ACTIVE_ICON = activeIcon;
         this.INACTIVE_ICON = inactiveIcon;
@@ -48,7 +50,6 @@ public class HeaderButton extends JButton {
         this.ACTIVE_ICON = activeIcon;
         this.INACTIVE_ICON = inactiveIcon;
         this.HOVER_ICON = null;
-
         this.active = active;
 
         if(active){
@@ -87,6 +88,31 @@ public class HeaderButton extends JButton {
     }
 
     MouseListener hoverMouseListener = new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            super.mouseClicked(e);
+            if (!active)
+            {
+                if (selectable) setActive();
+            }
+            else
+            {
+                if (selectable) setInactive();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            super.mousePressed(e);
+            if (!selectable) setActive();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            super.mouseReleased(e);
+            if (!selectable) setInactive();
+        }
+
         public void mouseEntered(MouseEvent e) {
             if(!active) {
                 setHover();
@@ -102,4 +128,7 @@ public class HeaderButton extends JButton {
         }
     };
 
+    public boolean isActive() {
+        return active;
+    }
 }

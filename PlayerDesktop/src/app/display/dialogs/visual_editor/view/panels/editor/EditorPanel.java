@@ -18,8 +18,8 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import grammar.Grammar;
-import main.grammar.GrammarRule;
 import main.grammar.Symbol;
 
 import javax.swing.*;
@@ -51,6 +51,13 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     Parser p = new Parser();
     List<Symbol> symbols = Grammar.grammar().symbols();
 
+    // flag to check if select button is active
+    private boolean SELECTION_MODE = false;
+    // flag to check if user performs selection
+    private boolean SELECTING = false;
+    // flag to check if selection was performed
+    private boolean SELECTED = false;
+
 
     // window to add a new ludeme out of all possible ones
     private AddLudemeWindow addLudemeWindow = new AddLudemeWindow(symbols, this, false);
@@ -81,6 +88,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         /*
         graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
         Handler.gameDescriptionGraph = graph;
+        Handler.editorPanel = this;
 
         LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
         graph.setRoot(gameLudemeNode);
@@ -167,12 +175,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //float scale = 0.5f;
-        //int w = getWidth();
-        //int h = getHeight();
-
-        //g2.scale(scale, scale);
-
         // TODO: fix zooming
         // Scaling works but not visible
         if (zoomed) {
@@ -213,6 +215,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
         // draw existing connections
         paintConnections(g2);
+
+        // Draw selection area
+        if (SELECTION_MODE && !SELECTING) SelectionBox.drawSelectionModeIdle(mousePosition, g2);
+        if (SELECTION_MODE && SELECTING) SelectionBox.drawSelectionArea(mousePosition, mousePosition, g2);
     }
 
     private void paintConnections(Graphics2D g2){
@@ -221,7 +227,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             ImmutablePoint targetPoint = e.getTargetPosition();
 
             int cp_x = inputPoint.x + Math.abs((inputPoint.x-targetPoint.x)/2);
-            int cp1_y =inputPoint.y;
+            int cp1_y = inputPoint.y;
             int cp2_y = targetPoint.y;
 
             Path2D p2d = new Path2D.Double();
@@ -564,6 +570,16 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                     cancelNewConnection();
                 }
             }
+
+            if (SELECTED) deselectEverything();
+
+            repaint();
+            revalidate();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            super.mouseDragged(e);
         }
 
         public void mousePressed(MouseEvent e){
@@ -571,11 +587,33 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 cancelNewConnection();
                 openPopupMenu(e);
             }
+
+            if (SELECTION_MODE && e.getButton() == MouseEvent.BUTTON1)
+            {
+                SELECTING = true;
+                repaint();
+                revalidate();
+            }
         }
 
         public void mouseReleased(MouseEvent e){
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);
+            }
+            if (SELECTING && e.getButton() == MouseEvent.BUTTON1)
+            {
+                Rectangle region = exitSelectionMode();
+                if (region != null)
+                {
+                    graph.getNodes().forEach(n -> {
+                        LudemeNodeComponent lnc = getNodeComponent(n);
+                        if (region.contains(lnc.getPosition().x, lnc.getPosition().y))
+                        {
+                            lnc.setSELECTED(true);
+                            SELECTED = true;
+                        }
+                    });
+                }
             }
         }
 
@@ -586,7 +624,20 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         public void mouseMoved(MouseEvent e) {
             super.mouseMoved(e);
             mousePosition = e.getPoint();
+            if (SELECTION_MODE || SELECTING) {
+                repaint();
+            }
             if(selectedConnectionComponent != null){
+                repaint();
+            }
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            super.mouseDragged(e);
+            mousePosition = e.getPoint();
+            if (SELECTION_MODE || SELECTING) {
+                System.out.println("Selecting...");
                 repaint();
             }
         }
@@ -610,7 +661,32 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         g2.draw(p2d);
     }
 
+    public void setSELECTION_MODE(boolean SELECTION_MODE) {
+        this.SELECTION_MODE = SELECTION_MODE;
+    }
 
+    private Rectangle exitSelectionMode()
+    {
+        SELECTING = false;
+        SELECTION_MODE = false;
+        Handler.turnOffSelectionBtn();
+        repaint();
+        revalidate();
+        return SelectionBox.endSelection();
+    }
+
+    private void deselectEverything()
+    {
+        graph.getNodes().forEach(n -> {
+            LudemeNodeComponent lnc = getNodeComponent(n);
+            lnc.setSELECTED(false);
+        });
+        SELECTED = false;
+    }
+
+    public boolean isSELECTION_MODE() {
+        return SELECTION_MODE;
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     MouseWheelListener wheelListener = new MouseAdapter() {

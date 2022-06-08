@@ -72,6 +72,7 @@ public class DesignPalette {
         LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
         LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
+        LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(DesignPalette.LUDEME_SELECTION_COLOR, NODE_BORDER_WIDTH);
 
         INPUT_AREA_PADDING_BORDER = new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0);
         HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
@@ -92,6 +93,7 @@ public class DesignPalette {
     public static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
     public static Color BACKGROUND_LUDEME_TITLE = new Color(253,253,253);
     public static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
+    public static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
         // fills
     public static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
     public static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
@@ -153,6 +155,7 @@ public class DesignPalette {
     // ~~ STROKES AND BORDERS ~~ //
     public static BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     public static Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
+    public static Border LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(DesignPalette.LUDEME_SELECTION_COLOR, NODE_BORDER_WIDTH);
 
     public static EmptyBorder INPUT_AREA_PADDING_BORDER = new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0);
     public static EmptyBorder HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
