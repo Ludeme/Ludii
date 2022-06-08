@@ -19,7 +19,7 @@ public class NodePopupMenu extends JPopupMenu {
         add(observe);
 
         delete.addActionListener(e -> {
-            graphPanel.removeNode(nodeComponent.getLudemeNode());
+            graphPanel.removeNode(nodeComponent.node());
         });
 
         dynamic.addActionListener(e -> {
@@ -27,16 +27,16 @@ public class NodePopupMenu extends JPopupMenu {
         });
 
         observe.addActionListener(e -> {
-            LudemeNode node = nodeComponent.getLudemeNode();
+            LudemeNode node = nodeComponent.node();
             String message = "";
             message += "ID: " + node.getId() + "\n";
-            message += "Name: " + node.getLudeme().getName() + "\n";
-            message += "Constructor: " + node.getCurrentConstructor() + "\n";
+            message += "Name: " + node.symbol().name() + "\n";
+            message += "Constructor: " + node.selectedClause() + "\n";
             message += "Dynamic: " + node.isDynamic() + "\n";
-            message += "Provided Inputs: " + Arrays.toString(node.getProvidedInputs()) + "\n";
+            message += "Provided Inputs: " + Arrays.toString(node.providedInputs()) + "\n";
             message += "Provided LIFs: " + nodeComponent.getInputArea().providedInputFields + "\n";
-            message += "Active C: (" + nodeComponent.getInputArea().activeConstructors.size() + ") " +nodeComponent.getInputArea().activeConstructors + "\n";
-            message += "Inactive C: (" + + nodeComponent.getInputArea().inactiveConstructors.size() + ") " + nodeComponent.getInputArea().inactiveConstructors + "\n";
+            message += "Active C: (" + nodeComponent.getInputArea().activeClauses.size() + ") " +nodeComponent.getInputArea().activeClauses + "\n";
+            message += "Inactive C: (" + + nodeComponent.getInputArea().inactiveClauses.size() + ") " + nodeComponent.getInputArea().inactiveClauses + "\n";
             message += "Width: " + nodeComponent.getWidth() + "\n";
 
             JOptionPane.showMessageDialog((EditorPanel) graphPanel, message);

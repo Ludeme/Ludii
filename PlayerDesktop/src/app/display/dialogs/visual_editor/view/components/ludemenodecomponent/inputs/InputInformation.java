@@ -6,6 +6,9 @@ import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.input.ChoiceInput;
 import app.display.dialogs.visual_editor.model.grammar.input.Input;
 import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
+import main.grammar.Clause;
+import main.grammar.ClauseArg;
+import main.grammar.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +17,29 @@ import java.util.stream.Collectors;
 public class InputInformation {
 
     private final int INDEX; // index of input in constructor
-    private final Constructor CONSTRUCTOR;
-    private final Input INPUT;
-    private final List<Ludeme> LUDEME_INPUTS;
 
-    public InputInformation(Constructor constructor, Input input){
-        this.CONSTRUCTOR = constructor;
-        this.INPUT = input;
-        this.INDEX = getIndex(constructor, input);
-        this.LUDEME_INPUTS = getPossibleLudemeInputs(input);
+
+    private final Clause CLAUSE;
+    private final NodeInput NODE_INPUT;
+    private final List<Symbol> SYMBOL_INPUTS;
+
+    public InputInformation(Clause clause, NodeInput nodeInput){
+        this.CLAUSE = clause;
+        this.NODE_INPUT = nodeInput;
+        this.INDEX = getIndex(clause, nodeInput.arg());
+        this.SYMBOL_INPUTS = getPossibleSymbolInputs(nodeInput);
     }
 
-    private int getIndex(Constructor constructor, Input input){
-        return constructor.getInputs().indexOf(input);
+    private int getIndex(Clause clause, ClauseArg argument){
+        return clause.args().indexOf(argument);
+    }
+
+    private List<Symbol> getPossibleSymbolInputs(NodeInput argument){
+        List<Symbol> inputs = new ArrayList<>();
+        for(ClauseArg arg : argument.args()){
+            inputs.add(arg.symbol());
+        }
+        return inputs;
     }
 
     private List<Ludeme> getPossibleLudemeInputs(Input input){
@@ -96,44 +109,46 @@ public class InputInformation {
         return null;
     }
 
-    public List<Ludeme> getPossibleLudemeInputs(){
-        return LUDEME_INPUTS;
+
+    public List<Symbol> getPossibleSymbolInputs(){
+        return SYMBOL_INPUTS;
     }
 
-    public boolean isOptional(){
-        return INPUT.isOptional();
+    public boolean optional(){
+        return NODE_INPUT.arg().optional();
     }
 
-    public boolean isCollection(){
-        return INPUT.isCollection();
+    public boolean collection(){
+        return NODE_INPUT.arg().nesting() > 0;
     }
 
-    public boolean isChoice(){
-        return INPUT.isChoice();
+    public boolean choice(){
+        return NODE_INPUT.size() > 1;
+    }
+
+    public Clause clause(){
+        return CLAUSE;
+    }
+
+    public NodeInput nodeInput(){
+        return NODE_INPUT;
     }
 
     public int getIndex(){
         return INDEX;
     }
 
-    public Input getInput(){
-        return INPUT;
-    }
-
-    public Constructor getConstructor(){
-        return CONSTRUCTOR;
-    }
 
     @Override
     public String toString(){
-        return "[" + INDEX + ", " + INPUT + "| " + CONSTRUCTOR + "]";
+        return "[" + INDEX + ", " + nodeInput() + "| " + clause() + "]";
     }
 
     @Override
     public boolean equals(Object o){
         if(o instanceof InputInformation){
             InputInformation i = (InputInformation) o;
-            return i.getInput().equals(INPUT) && i.getConstructor().equals(CONSTRUCTOR) && i.getIndex() == INDEX;
+            return i.nodeInput().equals(nodeInput()) && i.clause().equals(clause()) && i.getIndex() == INDEX;
         }
         return false;
     }

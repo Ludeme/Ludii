@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,7 +102,7 @@ public class LConnectionComponent extends JComponent {
                 else{
                     // if already connected: remove connection
                     if(getConnectedTo() != null) {
-                        graphPanel.removeConnection(LConnectionComponent.this.getLudemeNodeComponent().getLudemeNode(), LConnectionComponent.this);
+                        graphPanel.removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), LConnectionComponent.this);
                         setConnectedTo(null);
                     }
                     else {
@@ -179,8 +180,10 @@ public class LConnectionComponent extends JComponent {
         }
     }
 
-    public List<Ludeme> getRequiredLudemes(){
-        return INPUT_FIELD.getRequiredLudemes();
+
+    public List<Symbol> getRequiredSymbols(){
+        return INPUT_FIELD.getRequiredSymbols();
+        //return INPUT_FIELD.getRequiredLudemes(); TODO
     }
 
 

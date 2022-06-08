@@ -18,6 +18,9 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import grammar.Grammar;
+import main.grammar.GrammarRule;
+import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,12 +49,13 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     // Reads grammar from file and generates all ludemes
     Parser p = new Parser();
-    List<Ludeme> ludemes = p.getLudemes();
+    List<Symbol> symbols = Grammar.grammar().symbols();
+
 
     // window to add a new ludeme out of all possible ones
-    private AddLudemeWindow addLudemeWindow = new AddLudemeWindow(ludemes, this, false);
+    private AddLudemeWindow addLudemeWindow = new AddLudemeWindow(symbols, this, false);
     // window to add a new ludeme as an input
-    private AddLudemeWindow connectLudemeWindow = new AddLudemeWindow(ludemes, this, true);
+    private AddLudemeWindow connectLudemeWindow = new AddLudemeWindow(symbols, this, true);
 
     private boolean showBackgroundDots = true;
 
@@ -77,7 +81,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
         Handler.gameDescriptionGraph = graph;
 
-        LudemeNode gameLudemeNode = createLudemeNode(gameLudeme, 30, 30);
+        LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
         graph.setRoot(gameLudemeNode);
         addLudemeNodeComponent(gameLudemeNode, false);
 
@@ -97,15 +101,12 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         add(addLudemeWindow);
         add(connectLudemeWindow);
 
-        Ludeme gameLudeme = null;
-        for(Ludeme l : p.getLudemes())
-            if(l.getName().equals("game")) gameLudeme = l;
 
         /*
         graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
         Handler.gameDescriptionGraph = graph;
 
-        LudemeNode gameLudemeNode = createLudemeNode(gameLudeme, 30, 30);
+        LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
         graph.setRoot(gameLudemeNode);
         addLudemeNodeComponent(gameLudemeNode, false);
 
@@ -230,7 +231,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     public void startNewConnection(LConnectionComponent source){
-        if(DEBUG) System.out.println("[EP] Start connection: " + source.getConnectionPointPosition() + " , " + source.getRequiredLudemes());
+        if(DEBUG) System.out.println("[EP] Start connection: " + source.getConnectionPointPosition() + " , " + source.getRequiredSymbols());
 
         if(selectedConnectionComponent != null){
             selectedConnectionComponent.setFill(false);
@@ -269,19 +270,19 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         source.setConnectedTo(target.getHeader().getLudemeNodeComponent());
 
         // Add an edge
-        Handler.addEdge(graph, source.getLudemeNodeComponent().getLudemeNode(), target.getHeader().getLudemeNodeComponent().getLudemeNode());
+        Handler.addEdge(graph, source.getLudemeNodeComponent().node(), target.getHeader().getLudemeNodeComponent().node());
         LudemeConnection connection = new LudemeConnection(source, target);
         edges.add(connection);
 
         // Update the provided input in the description graph
         // differentiate between an inputed provided to a collection and otherwise
-        if(source.getInputField().getInputInformation().isCollection()){
-            LudemeNode sourceNode = source.getLudemeNodeComponent().getLudemeNode();
+        if(source.getInputField().getInputInformation().collection()){
+            LudemeNode sourceNode = source.getLudemeNodeComponent().node();
             InputInformation sourceInput = source.getInputField().getInputInformation();
 
             // TODO: Perhaps this part should be put into LInputField.java addCollectionItem() method
 
-            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.getProvidedInputs()[sourceInput.getIndex()];
+            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
 
             // get children of collection
             List<LInputField> children;
@@ -295,10 +296,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             }
 
             // The provided input class just be an array. If it is null, then create it NOTE!: the first collection inputfield is not counted as a child, therefore numberOfChildren+1
-            if(sourceNode.getProvidedInputs()[sourceInput.getIndex()] == null){
+            if(sourceNode.providedInputs()[sourceInput.getIndex()] == null){
                 providedInput = new LudemeNode[numberOfChildren+1];
             } else {
-                providedInput = (LudemeNode[]) sourceNode.getProvidedInputs()[sourceInput.getIndex()];
+                providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
             }
             // if the array is not big enough, expand it.
             if(providedInput.length < numberOfChildren+1){
@@ -309,14 +310,14 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             // get the index of the current input field w.r.t collection field
             int i = children.indexOf(source.getInputField()) + 1; // + 1 because the first input field is not counted as a child
             //if(i==-1) i = 0;
-            providedInput[i] = target.getHeader().getLudemeNodeComponent().getLudemeNode();
+            providedInput[i] = target.getHeader().getLudemeNodeComponent().node();
             // TODO: REMOVE LATER
             System.out.println("\u001B[32m"+"Calling from EP 237"+"\u001B[0m");
             Handler.updateInput(graph, sourceNode, sourceInput.getIndex(), providedInput);
         } else {
-            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().getLudemeNode().getLudeme().getName() + " , " + target.getHeader().getLudemeNodeComponent().getLudemeNode().getLudeme().getName() + " at index " + source.getInputField().getInputIndex());
+            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().node().symbol().name() + " , " + target.getHeader().getLudemeNodeComponent().node().symbol().name() + " at index " + source.getInputField().getInputIndex());
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
-            Handler.updateInput(graph, source.getLudemeNodeComponent().getLudemeNode(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().getLudemeNode());
+            Handler.updateInput(graph, source.getLudemeNodeComponent().node(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().node());
         }
 
 
@@ -327,7 +328,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     @Override
     public LudemeNodeComponent getNodeComponent(LudemeNode node) {
         for(LudemeNodeComponent lc : nodeComponents){
-            if(lc.getLudemeNode().equals(node)){
+            if(lc.node().equals(node)){
                 return lc;
             }
         }
@@ -335,8 +336,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     @Override
-    public LudemeNode addNode(Ludeme ludeme, int x, int y, boolean connect) {
-        LudemeNode node = new LudemeNode(ludeme, x, y);
+    public LudemeNode addNode(Symbol symbol, int x, int y, boolean connect) {
+        LudemeNode node = new LudemeNode(symbol, x, y);
         //LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         Handler.addNode(graph, node);
 
@@ -346,13 +347,13 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
         repaint();
 
-        if(DEBUG) System.out.println("[EP] Added node: " + node.getLudeme().getName());
+        if(DEBUG) System.out.println("[EP] Added node: " + node.symbol().name());
 
         return node;
     }
 
-    public LudemeNode createLudemeNode(Ludeme ludeme, int x, int y) {
-        LudemeNode node = new LudemeNode(ludeme, x, y);
+    public LudemeNode createLudemeNode(Symbol symbol, int x, int y) {
+        LudemeNode node = new LudemeNode(symbol, x, y);
         Handler.addNode(graph, node);
         return node;
     }
@@ -434,14 +435,14 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     public void removeAllConnections(LudemeNode node, boolean onlyOutgoingConnections){
         for(LudemeConnection e : new ArrayList<>(edges)){
-            if(e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode().equals(node) || (!onlyOutgoingConnections && e.getIngoingConnectionComponent().getHeader().getLudemeNodeComponent().getLudemeNode().equals(node))){
+            if(e.getConnectionComponent().getLudemeNodeComponent().node().equals(node) || (!onlyOutgoingConnections && e.getIngoingConnectionComponent().getHeader().getLudemeNodeComponent().node().equals(node))){
                 edges.remove(e);
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
                 e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null,true);
                 System.out.println("\u001B[32m"+"Calling from EP 307"+"\u001B[0m");
-                Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
+                Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().getInputIndex(), null);
             }
         }
         repaint();
@@ -460,9 +461,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 e.getConnectionComponent().setConnectedTo(null);
                 e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null, true);
                 // check whether it was the element of a collection
-                if(connection.getInputField().isSingle() && connection.getInputField().getInputInformation().isCollection()){
+                if(connection.getInputField().isSingle() && connection.getInputField().getInputInformation().collection()){
                     // if element of collection udpate the array
-                    LudemeNode[] providedInputs = (LudemeNode[]) node.getProvidedInputs()[connection.getInputField().getInputIndex()];
+                    LudemeNode[] providedInputs = (LudemeNode[]) node.providedInputs()[connection.getInputField().getInputIndex()];
                     // find index which to remove from array
                     int indexToUpdate;
                     if(connection.getInputField().parent != null) {
@@ -473,10 +474,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                     // set to null
                     providedInputs[indexToUpdate] = null;
                     System.out.println("\u001B[32m"+"Calling from EP 339"+"\u001B[0m");
-                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), connection.getInputField().getInputIndex(), providedInputs);
+                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().node(), connection.getInputField().getInputIndex(), providedInputs);
                 } else {
                     System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
-                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().getLudemeNode(), e.getConnectionComponent().getInputField().getInputIndex(), null);
+                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().getInputIndex(), null);
                 }
             }
         }
@@ -485,9 +486,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     @Override
     public void clickedOnNode(LudemeNodeComponent lnc) {
-        LudemeNode node = lnc.getLudemeNode();
+        LudemeNode node = lnc.node();
         if(selectedConnectionComponent != null){
-            if(selectedConnectionComponent.getRequiredLudemes().contains(node.getLudeme()) && !lnc.getIngoingConnectionComponent().isFilled()) {
+            if(selectedConnectionComponent.getRequiredSymbols().contains(node.symbol()) && !lnc.getIngoingConnectionComponent().isFilled()) {
                 finishNewConnection(lnc);
             }
         }
@@ -495,7 +496,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     @Override
     public void removeNode(LudemeNode node) {
-        if(DEBUG) System.out.println("[EP] Removing node " + node.getLudeme().getName());
+        if(DEBUG) System.out.println("[EP] Removing node " + node.symbol().name());
         LudemeNodeComponent lc = getNodeComponent(node);
         nodeComponents.remove(lc);
         removeAllConnections(node, false);
@@ -517,9 +518,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         for(InputInformation ii : selectedConnectionComponent.getInputField().getInputInformations()){
             if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
         }
-        String gameDescription = selectedConnectionComponent.getLudemeNodeComponent().getLudemeNode().getStringRepresentation(upUntilIndex-1);
+        String gameDescription = selectedConnectionComponent.getLudemeNodeComponent().node().getStringRepresentation();
 
-        connectLudemeWindow.updateList(CodeCompletion.getRecommendations(ludemes, gameDescription, selectedConnectionComponent.getRequiredLudemes()));
+        connectLudemeWindow.updateList(CodeCompletion.getRecommendations(symbols, gameDescription, selectedConnectionComponent.getRequiredSymbols()));
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();
@@ -538,7 +539,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
 
-            System.out.println(Arrays.toString(((LudemeNode) graph.getRoot()).getProvidedInputs()));
+            System.out.println(Arrays.toString(((LudemeNode) graph.getRoot()).providedInputs()));
 
             if(connectLudemeWindow.isVisible()){
                 cancelNewConnection();
@@ -549,10 +550,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 // user is drawing a new connection
                 if(selectedConnectionComponent != null) {
                     // if user has no chocie for next ludeme -> automatically add required ludeme
-                    if(selectedConnectionComponent.getRequiredLudemes().size() == 1) {
-                        addNode(selectedConnectionComponent.getRequiredLudemes().get(0), e.getX(), e.getY(), true);
+                    if(selectedConnectionComponent.getRequiredSymbols().size() == 1) {
+                        addNode(selectedConnectionComponent.getRequiredSymbols().get(0), e.getX(), e.getY(), true);
                     }
-                    else if(!connectLudemeWindow.isVisible() && selectedConnectionComponent.getRequiredLudemes().size() > 1) {
+                    else if(!connectLudemeWindow.isVisible() && selectedConnectionComponent.getRequiredSymbols().size() > 1) {
                         showCurrentlyAvailableLudemes(e.getX(), e.getY());
                     }
                 }

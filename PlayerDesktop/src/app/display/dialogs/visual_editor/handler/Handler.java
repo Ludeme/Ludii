@@ -4,6 +4,7 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
+import main.grammar.Clause;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -49,11 +50,11 @@ public class Handler {
         // TODO: Remove edges
     }
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
-        if(index < node.getProvidedInputs().length) {
+        if(index < node.providedInputs().length) {
             //graph = graph.clone();
-            if(DEBUG) System.out.println("[HANDLER] Updating input of " + node.getLudeme().getName() + ", " + index + " to " + input);
+            if(DEBUG) System.out.println("[HANDLER] Updating input of " + node.symbol().name() + ", " + index + " to " + input);
             node.setProvidedInput(index, input);
-            if(DEBUG) System.out.println("[HANDLER] Provided Inputs: " + Arrays.toString(node.getProvidedInputs()));
+            if(DEBUG) System.out.println("[HANDLER] Provided Inputs: " + Arrays.toString(node.providedInputs()));
         }
     }
 
@@ -66,9 +67,12 @@ public class Handler {
     public static void updatePosition(DescriptionGraph graph, LudemeNode node, int x, int y){
         node.setPos(x, y);
     }
-    public static void updateCurrentConstructor(DescriptionGraph graph, LudemeNode node, Constructor c){
-        node.setCurrentConstructor(c);
+
+
+    public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c){
+        node.setSelectedClause(c);
     }
+
     public static String getLudString(DescriptionGraph graph){
         return graph.toLud();
     }

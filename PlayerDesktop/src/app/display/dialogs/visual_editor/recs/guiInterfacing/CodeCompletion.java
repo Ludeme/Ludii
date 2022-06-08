@@ -4,6 +4,7 @@ import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.parser.Grammar;
 import app.display.dialogs.visual_editor.recs.model.Ludii.NGramInstanceLudii;
 import app.display.dialogs.visual_editor.recs.utils.Pair;
+import main.grammar.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class CodeCompletion {
      * @param possibleLudemes
      * @return
      */
-    public static List<Ludeme> getRecommendations(List<Ludeme> allLudemes, String gameDescription, List<Ludeme> possibleLudemes) {
+    public static List<Symbol> getRecommendations(List<Symbol> allLudemes, String gameDescription, List<Symbol> possibleLudemes) {
 
         if(true) return possibleLudemes; // TODO: remove after implementation
 
@@ -51,7 +52,7 @@ public class CodeCompletion {
             sorted_recommendations.add(new Pair<>(new NGramInstanceLudii(a,multiplicity),matchingWords));
         }
 
-        List<Ludeme> recommendedLudemes = new ArrayList<>();
+        List<Symbol> recommendedLudemes = new ArrayList<>();
         for(Pair p : sorted_recommendations) {
             // get recommendation
             String recommendation = ((NGramInstanceLudii) p.getR()).getKey();
@@ -73,15 +74,15 @@ public class CodeCompletion {
             }
             // find this ludeme in available ludemes and add it to recommendation list
             boolean foundLudeme = false;
-            for(Ludeme ludeme : possibleLudemes) {
+            for(Symbol ludeme : possibleLudemes) {
                 // remove periods from ludeme name // TODO: should be done in Ludeme.java
-                String ludemeNameWithoutPeriods = ludeme.getName();
+                String ludemeNameWithoutPeriods = ludeme.name();
                 if(ludemeNameWithoutPeriods.contains(".")) {
                     ludemeNameWithoutPeriods = ludemeNameWithoutPeriods.substring(ludemeNameWithoutPeriods.lastIndexOf(".")+1);
                 }
-                System.out.println("-  " + ludeme.getName());
-                if(ludeme.getName().equalsIgnoreCase(ludemeName)) {
-                    System.out.println("Adding " + ludeme.getName() + " as recommendation");
+                System.out.println("-  " + ludeme.name());
+                if(ludeme.name().equalsIgnoreCase(ludemeName)) {
+                    System.out.println("Adding " + ludeme.name() + " as recommendation");
                     recommendedLudemes.add(ludeme);
                     foundLudeme = true;
                     break;
@@ -93,7 +94,7 @@ public class CodeCompletion {
         }
 
         // not recommended but available ludemes should be added to the list too
-        for(Ludeme ludeme : possibleLudemes) {
+        for(Symbol ludeme : possibleLudemes) {
             if(!recommendedLudemes.contains(ludeme)) {
                 recommendedLudemes.add(ludeme);
             }

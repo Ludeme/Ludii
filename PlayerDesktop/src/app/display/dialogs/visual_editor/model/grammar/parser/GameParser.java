@@ -32,7 +32,7 @@ public class GameParser
     private static List<Grammar> G = p.getGRAMMAR();
 
     private static DescriptionGraph GRAPH = new DescriptionGraph();
-
+/*
     public static void main(String[] args) throws FileNotFoundException {
         // Playing around with Ludii methods needed for text-to-graph parser
         Description test_desc = new Description(Constants.BASIC_GAME_DESCRIPTION);
@@ -76,6 +76,7 @@ public class GameParser
      * @param c
      * @param d
      */
+    /*
     private static void constructGraph(Call c, int d, LudemeNode pLn)
     {
         List<Call> cArgs = c.args();
@@ -240,5 +241,5 @@ public class GameParser
             }
         }
         return l.getCurrentConstructor();
-    }
+    }*/
 }
