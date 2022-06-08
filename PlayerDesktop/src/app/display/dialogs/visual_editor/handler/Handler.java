@@ -75,7 +75,8 @@ public class Handler {
 
 
     public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c){
-        node.setSelectedClause(c);
+        if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
+        else node.setSelectedClause(c);
     }
 
     public static String getLudString(DescriptionGraph graph){

@@ -24,7 +24,7 @@ public class NodeInput {
         if(arg.orGroup() != 0) {
             int group = arg.orGroup();
             int index = clause.args().indexOf(arg)+1;
-            while(clause.args().get(index).orGroup() == group){
+            while(index < clause.args().size() && clause.args().get(index).orGroup() == group){
                 ARGS.add(clause.args().get(index));
                 index++;
             }

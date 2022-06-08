@@ -57,16 +57,27 @@ public class LInputArea extends JPanel {
         if (LNC.dynamic && dynamicConstructorActive) {
             // Convert every clause's clause arguments to InputInformation
             List<InputInformation> inputInformationList = new ArrayList<>();
-            for(Clause clause : LNC.node().clauses()){
-                for(int i = 0; i < clause.args().size(); i++){
-                    ClauseArg arg = clause.args().get(i);
-                    NodeInput nodeInput = new NodeInput(clause, arg);
-                    InputInformation ii = new InputInformation(clause, nodeInput);
-                    // if argument was part of or group, skip the rest of the group
-                    i = i+nodeInput.size()-1;
+            for(Clause clause : LNC.node().clauses()) {
+                if (clause.args() == null) {
+                    for (Clause c : clause.symbol().rule().rhs()) {
+                        for (int i = 0; i < c.args().size(); i++) {
+                            ClauseArg arg = c.args().get(i);
+                            NodeInput nodeInput = new NodeInput(c, arg);
+                            InputInformation ii = new InputInformation(c, nodeInput);
+                            // if argument was part of or group, skip the rest of the group
+                            i = i + nodeInput.size() - 1;
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < clause.args().size(); i++) {
+                        ClauseArg arg = clause.args().get(i);
+                        NodeInput nodeInput = new NodeInput(clause, arg);
+                        InputInformation ii = new InputInformation(clause, nodeInput);
+                        // if argument was part of or group, skip the rest of the group
+                        i = i + nodeInput.size() - 1;
+                    }
                 }
             }
-
             fields.add(new LInputField(ludemeNodeComponent, inputInformationList));
             return fields;
         }
@@ -74,13 +85,25 @@ public class LInputArea extends JPanel {
         // List of clause arguments of currently selected clause
         Clause selectedClause = LNC.node().selectedClause();
         List<NodeInput> inputs = new ArrayList<>();
-        for(int i = 0; i < selectedClause.args().size(); i++){
-            ClauseArg arg = selectedClause.args().get(i);
-            NodeInput nodeInput = new NodeInput(selectedClause, arg);
-            inputs.add(nodeInput);
-            InputInformation ii = new InputInformation(selectedClause, nodeInput);
-            // if argument was part of or group, skip the rest of the group
-            i = i+nodeInput.size()-1;
+        if(selectedClause.args() == null) {
+            for(Clause c : selectedClause.symbol().rule().rhs()){
+                for(int i = 0; i < c.args().size(); i++){
+                    ClauseArg arg = c.args().get(i);
+                    NodeInput nodeInput = new NodeInput(c, arg);
+                    inputs.add(nodeInput);
+                    // if argument was part of or group, skip the rest of the group
+                    i = i + nodeInput.size() - 1;
+                }
+            }
+        } else {
+            for (int i = 0; i < selectedClause.args().size(); i++) {
+                ClauseArg arg = selectedClause.args().get(i);
+                NodeInput nodeInput = new NodeInput(selectedClause, arg);
+                inputs.add(nodeInput);
+                InputInformation ii = new InputInformation(selectedClause, nodeInput);
+                // if argument was part of or group, skip the rest of the group
+                i = i + nodeInput.size() - 1;
+            }
         }
 
         System.out.println("These are the inputs: ");

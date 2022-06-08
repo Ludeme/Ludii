@@ -60,6 +60,9 @@ public class LudemeNode implements iLudemeNode, iGNode {
         this.width = 100;
         this.height = 100;
         this.selectedClause = symbol.rule().rhs().get(0);
+        while(selectedClause.args() == null) {
+            selectedClause = selectedClause.symbol().rule().rhs().get(0);
+        }
         this.providedInputs = new Object[selectedClause.args().size()];
     }
 
@@ -237,6 +240,7 @@ public class LudemeNode implements iLudemeNode, iGNode {
     public boolean canBeDynamic(){
         if(CLAUSES.size() == 1) return false;
         for(Clause clause : CLAUSES){
+            if(clause.args() == null) continue;
             if(clause.args().size() > 1) return true;
         }
         return false;
