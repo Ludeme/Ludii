@@ -201,7 +201,7 @@ public class LudemeNodeComponent extends JPanel {
                     if (!lnc.equals(LudemeNodeComponent.this)) lnc.setLocation(lnc.getLocation().x+posDif.x, lnc.getLocation().y+posDif.y);
                     lnc.updatePositions();
 
-                    List<Integer> children = lnc.getLudemeNode().getChildren();
+                    List<Integer> children = lnc.LUDEME_NODE.getChildren();
                     children.forEach(v -> {
                         Q.add(GRAPH_PANEL.getNodeComponent(GRAPH_PANEL.getGraph().getNode(v)));
                     });
