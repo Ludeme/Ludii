@@ -53,6 +53,7 @@ public class DesktopGUIUtil
 
 		allStrings.add("From JAR");
 		allStrings.add("From JSON");
+		allStrings.add("From AI.DEF");
 		
 		return allStrings;
 	}

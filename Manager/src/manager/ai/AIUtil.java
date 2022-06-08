@@ -75,6 +75,16 @@ public class AIUtil
 				menuName = "From JSON";
 			}
 		}
+		else if (algName.equals("From AI.DEF"))
+		{
+			if (!aiObj.has("AI.DEF File") || !aiObj.has("Class Name"))
+			{
+				json = manager.getPlayerInterface().getNameFromAiDef();
+				if (json == null)
+					return;
+				menuName = "From AI.DEF";
+			}
+		}
 		else
 		{
 			AIRegistry.processJson(json);

@@ -102,6 +102,11 @@ public class DesktopApp extends PlayerApp
 	private static JFileChooser jarFileChooser;
 	
 	/**
+	 * Reference to file chooser we use for selecting AI.DEF files (containing AI configurations)
+	 */
+	private static JFileChooser aiDefFileChooser;
+	
+	/**
 	 * Reference to file chooser we use for selecting LUD files
 	 */
 	private static JFileChooser gameFileChooser;
@@ -130,6 +135,9 @@ public class DesktopApp extends PlayerApp
 	
 	/** Last selected filepath for JSON file chooser (loaded from preferences) */
 	private static String lastSelectedJarPath;
+	
+	/** Last selected filepath for AI.DEF file chooser (loaded from preferences) */
+	private static String lastSelectedAiDefPath;
 	
 	/** Last selected filepath for Game file chooser (loaded from preferences) */
 	private static String lastSelectedGamePath;
@@ -765,6 +773,40 @@ public class DesktopApp extends PlayerApp
 		
 		return null;
 	}
+	
+	@Override
+	public JSONObject getNameFromAiDef()
+	{
+		// we'll have to go through file chooser
+		final JFileChooser fileChooser = DesktopApp.aiDefFileChooser();
+		fileChooser.setDialogTitle("Select AI.DEF file containing AI.");
+		final int aiDefReturnVal = fileChooser.showOpenDialog(DesktopApp.frame());
+		final File aiDefFile;
+
+		if (aiDefReturnVal == JFileChooser.APPROVE_OPTION)
+			aiDefFile = fileChooser.getSelectedFile();
+		else
+			aiDefFile = null;
+
+		if (aiDefFile != null && aiDefFile.exists())
+		{
+			try (final InputStream inputStream = new FileInputStream(aiDefFile))
+			{
+				// TODO DENNIS Add in new code here to process the AI.DEF file input.
+				//return new JSONObject(new JSONTokener(inputStream));
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			System.err.println("Could not find AI.DEF file.");
+		}
+		
+		return null;
+	}
 
 	@Override
 	public void addTextToStatusPanel(final String text)
@@ -970,6 +1012,26 @@ public class DesktopApp extends PlayerApp
 	public void checkButtonsEnabled()
 	{
 		// do nothing
+	}
+
+	public static JFileChooser aiDefFileChooser()
+	{
+		return aiDefFileChooser;
+	}
+
+	public static void setAiDefFileChooser(final JFileChooser aiDefFileChooser)
+	{
+		DesktopApp.aiDefFileChooser = aiDefFileChooser;
+	}
+
+	public static String lastSelectedAiDefPath()
+	{
+		return lastSelectedAiDefPath;
+	}
+
+	public static void setLastSelectedAiDefPath(final String lastSelectedAiDefPath)
+	{
+		DesktopApp.lastSelectedAiDefPath = lastSelectedAiDefPath;
 	}
 
 }
