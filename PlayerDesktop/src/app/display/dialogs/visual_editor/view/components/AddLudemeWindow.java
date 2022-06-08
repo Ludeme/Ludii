@@ -1,8 +1,7 @@
 package app.display.dialogs.visual_editor.view.components;
 
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
-import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import main.grammar.Symbol;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,11 +26,11 @@ public class AddLudemeWindow extends JPanel {
 
 
 
-    public AddLudemeWindow(List<Ludeme> ludemeList, IGraphPanel graphPanel, boolean connect){
+    public AddLudemeWindow(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect){
         this.graphPanel = graphPanel;
         this.connect = connect;
 
-        updateList(ludemeList);
+        updateList(symbolList);
 
     }
 
@@ -42,32 +41,6 @@ public class AddLudemeWindow extends JPanel {
         scrollableList.setPreferredSize(new Dimension(scrollableList.getPreferredSize().width, 150));
         searchField.setPreferredSize(new Dimension(scrollableList.getPreferredSize().width, searchField.getPreferredSize().height));
 
-/*
-        int widthOfPanels = (int) (searchField.getPreferredSize().width * 1.3);
-        int heightOfTopPanel = (int) (searchField.getPreferredSize().height * 1.2);
-
-        EmptyBorder searchFieldBorder = new EmptyBorder(heightOfTopPanel-searchField.getPreferredSize().height, widthOfPanels-searchField.getPreferredSize().width, heightOfTopPanel-searchField.getPreferredSize().height, widthOfPanels-searchField.getPreferredSize().width);
-
-        int heightOfBottomPanel = (int) (scrollableList.getPreferredSize().height * 1.15);
-
-        JPanel top = new JPanel();
-        top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
-
-
-        searchField.setBorder(searchFieldBorder);
-        top.setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
-        top.setBackground(Color.RED);
-        top.add(searchField);
-        top.setSize(widthOfPanels, heightOfTopPanel);
-
-        JPanel bottom = new JPanel();
-        bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
-        bottom.setSize(widthOfPanels, scrollableList.getPreferredSize().height);
-
-
-        bottom.add(scrollableList);
-
-        add(top);add(bottom);*/
 
         add(searchField); add(scrollableList);
 
@@ -85,7 +58,7 @@ public class AddLudemeWindow extends JPanel {
                 int index = theList.locationToIndex(mouseEvent.getPoint());
                 if (index >= 0) {
                     Object o = theList.getModel().getElementAt(index);
-                    graphPanel.addNode((Ludeme) o, getLocation().x, getLocation().y, connect);
+                    graphPanel.addNode((Symbol) o, getLocation().x, getLocation().y, connect);
                     searchField.setText("");
                     scrollableList.getVerticalScrollBar().setValue(0);
                 }
@@ -95,26 +68,26 @@ public class AddLudemeWindow extends JPanel {
 
     }
 
-    public void updateList(List<Ludeme> ludemeList){
+    public void updateList(List<Symbol> symbolList){
 
 
         searchField = new JTextField();
 
         // remove duplicates
-        ludemeList = ludemeList.stream().distinct().sorted(Comparator.comparing(Ludeme::getName)).collect(java.util.stream.Collectors.toList());
+        symbolList = symbolList.stream().distinct().sorted(Comparator.comparing(Symbol::name)).collect(java.util.stream.Collectors.toList());
 
         //TODO: List of ludemes is sorted here RECS
         // TODO: get list of ludemes and connections from editorpanel
         //ludemeList.sort(Comparator.comparing(Object::toString));
 
-        listModel = new DefaultListModel<Ludeme>();
-        for (Ludeme l : ludemeList) {
+        listModel = new DefaultListModel<Symbol>();
+        for (Symbol l : symbolList) {
             listModel.addElement(l);
         }
         list = new JList(listModel);
         scrollableList = new JScrollPane(list);
 
-        List<Ludeme> ludemeList_copy = ludemeList;
+        List<Symbol> ludemeList_copy = symbolList;
 
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -129,10 +102,10 @@ public class AddLudemeWindow extends JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                listModel = new DefaultListModel<Ludeme>();
-                for(Ludeme l : ludemeList_copy){
+                listModel = new DefaultListModel<Symbol>();
+                for(Symbol l : ludemeList_copy){
                     // TODO: Improve
-                    if(l.getName().contains(searchField.getText())){
+                    if(l.name().contains(searchField.getText())){
                         listModel.addElement(l);
                     }
                 }

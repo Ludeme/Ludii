@@ -2,12 +2,11 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.grammar.Constructor;
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
-import app.display.dialogs.visual_editor.model.grammar.input.Input;
-import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import main.grammar.Clause;
+import main.grammar.ClauseArg;
+import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +20,11 @@ public class LInputArea extends JPanel {
     ;
     private LudemeNodeComponent LNC;
 
-    public List<Constructor> activeConstructors = new ArrayList<>();
-    public List<Constructor> inactiveConstructors = new ArrayList<>();
+    //public List<Constructor> activeClauses = new ArrayList<>();
+    //public List<Constructor> inactiveClauses = new ArrayList<>();
+
+    public List<Clause> activeClauses = new ArrayList<>();
+    public List<Clause> inactiveClauses = new ArrayList<>();
 
     private List<InputInformation> allInputInformations = new ArrayList<>();
     public List<LInputField> providedInputFields = new ArrayList<>();
@@ -38,8 +40,7 @@ public class LInputArea extends JPanel {
         this.LNC = ludemeNodeComponent;
         this.dynamicConstructorActive = LNC.dynamic;
 
-
-        activeConstructors = new ArrayList<>(LNC.getLudemeNode().getLudeme().getConstructors());
+        activeClauses = new ArrayList<>(LNC.node().clauses());
 
         inputFields = getInputFields(LNC);
         drawInputFields();
@@ -54,27 +55,46 @@ public class LInputArea extends JPanel {
         List<LInputField> fields = new ArrayList<>();
 
         if (LNC.dynamic && dynamicConstructorActive) {
+            // Convert every clause's clause arguments to InputInformation
             List<InputInformation> inputInformationList = new ArrayList<>();
-            for (Constructor c : ludemeNodeComponent.getLudemeNode().getLudeme().getConstructors()) {
-                for (Input input : c.getInputs()) {
-                    InputInformation ii = new InputInformation(c, input);
-                    inputInformationList.add(ii);
-                    allInputInformations.add(ii);
+            for(Clause clause : LNC.node().clauses()){
+                for(int i = 0; i < clause.args().size(); i++){
+                    ClauseArg arg = clause.args().get(i);
+                    NodeInput nodeInput = new NodeInput(clause, arg);
+                    InputInformation ii = new InputInformation(clause, nodeInput);
+                    // if argument was part of or group, skip the rest of the group
+                    i = i+nodeInput.size()-1;
                 }
             }
+
             fields.add(new LInputField(ludemeNodeComponent, inputInformationList));
             return fields;
         }
 
-        List<Input> inputs = ludemeNodeComponent.getLudemeNode().getCurrentConstructor().getInputs();
+        // List of clause arguments of currently selected clause
+        Clause selectedClause = LNC.node().selectedClause();
+        List<NodeInput> inputs = new ArrayList<>();
+        for(int i = 0; i < selectedClause.args().size(); i++){
+            ClauseArg arg = selectedClause.args().get(i);
+            NodeInput nodeInput = new NodeInput(selectedClause, arg);
+            inputs.add(nodeInput);
+            InputInformation ii = new InputInformation(selectedClause, nodeInput);
+            // if argument was part of or group, skip the rest of the group
+            i = i+nodeInput.size()-1;
+        }
 
+        System.out.println("These are the inputs: ");
+        System.out.println(inputs);
+        System.out.println(LNC.node().selectedClause().args());
+
+        // Store consequent optional arguments to group them
         List<InputInformation> consequentOptionalInputs = new ArrayList<>();
 
-        for (int i = 0; i < inputs.size(); i++) {
-            Input in = inputs.get(i);
-            InputInformation ii = new InputInformation(ludemeNodeComponent.getLudemeNode().getCurrentConstructor(), in);
-
-            if (ii.isOptional() && LNC.getLudemeNode().getProvidedInputs()[ii.getIndex()] == null) {
+        // Create InputInformation for each clause argument
+        for(int i = 0; i < inputs.size(); i++){
+            NodeInput nodeInput = inputs.get(i);
+            InputInformation ii = new InputInformation(selectedClause, nodeInput);
+            if(ii.optional() && LNC.node().providedInputs()[ii.getIndex()] == null){
                 consequentOptionalInputs.add(ii);
                 continue;
             } else if (consequentOptionalInputs.size() == 1) {
@@ -86,10 +106,10 @@ public class LInputArea extends JPanel {
                 fields.add(inputFieldPrevious);
                 consequentOptionalInputs = new ArrayList<>();
             }
-
             LInputField inputField = new LInputField(ludemeNodeComponent, ii);
             fields.add(inputField);
         }
+
         if (consequentOptionalInputs.size() == 1) {
             LInputField inputFieldPrevious = new LInputField(ludemeNodeComponent, consequentOptionalInputs.get(0));
             fields.add(inputFieldPrevious);
@@ -135,13 +155,13 @@ public class LInputArea extends JPanel {
         if(DEBUG) System.out.println("[LIA]: Updating component");
         if(!dynamicConstructorActive) mergeOptionalArgumentsInOne();
         if (!removed && c_inputField != null && !c_inputField.isSingle()) {
-            c_inputField.setToSingle(node.getLudeme());
+            c_inputField.setToSingle(node.symbol());
         }
         drawInputFields();
     }
 
     public LInputField addedConnection(LudemeNodeComponent nodeComponent, LInputField c_inputField){
-        LudemeNode node = nodeComponent.getLudemeNode();
+        LudemeNode node = nodeComponent.node();
 
         if(LNC.dynamic && dynamicConstructorActive){
             LInputField addedInputField = addedConnectionDynamic(node, c_inputField);
@@ -153,7 +173,7 @@ public class LInputArea extends JPanel {
         // else if not dynamic:
         LInputField addedInputField = null;
         if(c_inputField != null && !c_inputField.isSingle()){
-            addedInputField = c_inputField.setToSingle(node.getLudeme());
+            addedInputField = c_inputField.setToSingle(node.symbol());
         }
         providedInputFields.add(addedInputField);
         providedInputFieldsConnections.add(nodeComponent);
@@ -161,49 +181,43 @@ public class LInputArea extends JPanel {
     }
 
     private LInputField addedConnectionDynamic(LudemeNode node, LInputField c_inputField) {
-        if(DEBUG) System.out.println("[LIA]: Adding connection to dynamic constructor of " + LNC.getLudemeNode().getLudeme().getName() + " to " + node.getLudeme().getName());
+        if(DEBUG) System.out.println("[LIA]: Adding connection to dynamic constructor of " + LNC.node().symbol().name() + " to " + node.symbol().name());
 
-        Ludeme ludeme = node.getLudeme();
+        Symbol symbol = node.symbol();
+
         // find LInputField containg the node's ludeme
         LInputField lif0 = c_inputField;
-        /*for (LInputField inputField : inputFields) {
-            for (InputInformation ii : inputField.getInputInformations()) {
-                if (ii.getPossibleLudemeInputs().contains(ludeme)) {
-                    lif0 = inputField;
-                    break;
-                }
-                if (lif0 != null) break;
-            }
-        }*/
+
         if (DEBUG) System.out.println("[DYNAMIC LIA]: lif0 = " + lif0);
 
         // find all InputInformation containing the node's ludeme
         List<InputInformation> IC = new ArrayList<>();
         for (InputInformation ii : lif0.getInputInformations()) {
-            if (ii.getPossibleLudemeInputs().contains(ludeme)) {
+            if (ii.getPossibleSymbolInputs().contains(symbol)) {
                 IC.add(ii);
             }
         }
         if (DEBUG) System.out.println("[DYNAMIC LIA]: IC = " + IC);
 
         // active constructors are all ii's constructors in IC
-        List<Constructor> newActiveC = new ArrayList<>();
-        List<Constructor> newInactiveC = new ArrayList<>();
+        List<Clause> newActiveC = new ArrayList<>();
+        List<Clause> newInactiveC = new ArrayList<>();
+
         for (InputInformation ii : IC) {
-            if (!newActiveC.contains(ii.getConstructor())) newActiveC.add(ii.getConstructor());
+            if (!newActiveC.contains(ii.clause())) newActiveC.add(ii.clause());
         }
         // every constructor in activeConsturctors but not in newActiveC is inactive
-        for (Constructor c : activeConstructors) {
+        for (Clause c : activeClauses) {
             if (!newActiveC.contains(c)) newInactiveC.add(c);
         }
 
         // remove
 
-        activeConstructors = newActiveC;
-        for(Constructor c : newInactiveC){
-            if(!inactiveConstructors.contains(c)) inactiveConstructors.add(c);
+        activeClauses = newActiveC;
+        for(Clause c : newInactiveC){
+            if(!inactiveClauses.contains(c)) inactiveClauses.add(c);
         }
-        //inactiveConstructors = newInactiveC;
+        //inactiveClauses = newInactiveC;
 
         if (DEBUG) System.out.println("[DYNAMIC LIA]: newActiveC = " + newActiveC.size() + ", " + newActiveC);
         if (DEBUG) System.out.println("[DYNAMIC LIA]: newInactiveC = " + newInactiveC.size() + ", " + newInactiveC);
@@ -234,10 +248,10 @@ public class LInputArea extends JPanel {
             //                  if constructor(j) == constructor(i) && index(j) > index(ii) -> lif02_iis.add(j)
             for (InputInformation ii : IC) {
                 for (InputInformation j : lif0_ii) {
-                    if (j.getConstructor() == ii.getConstructor() && j.getIndex() < ii.getIndex()) {
+                    if (j.clause() == ii.clause() && j.getIndex() < ii.getIndex()) {
                         lif01_iis.add(j);
                     }
-                    else if (j.getConstructor() == ii.getConstructor() && j.getIndex() > ii.getIndex()) {
+                    else if (j.clause() == ii.clause() && j.getIndex() > ii.getIndex()) {
                         lif02_iis.add(j);
                     }
                 }
@@ -249,8 +263,8 @@ public class LInputArea extends JPanel {
                 System.err.println("[DYNAMIC LIA] lif0_1_iis and lif0_2_iis are empty!");
                 InputInformation single_ii = IC.get(0);
                 for(InputInformation ii : IC) {
-                    Ludeme l = ((LudemeInput) (ii.getInput())).getRequiredLudeme();
-                    if(l.equals(node.getLudeme())){
+                    Symbol s = ii.nodeInput().arg().symbol();
+                    if(s.equals(node.symbol())){
                         single_ii = ii;
                     }
                 }
@@ -311,21 +325,21 @@ public class LInputArea extends JPanel {
         }
         // if |IX| == 1 ->
         else {
-            Object[] providedInputs = node.getProvidedInputs();
-            System.out.println("PROVIDED INPUTS RESETED of " + LNC.getLudemeNode().getLudeme().getName()); // TODO: REMOVE THIS DEBUG LINES
+            Object[] providedInputs = node.providedInputs();
+            System.out.println("PROVIDED INPUTS RESETED of " + LNC.node().symbol().name()); // TODO: REMOVE THIS DEBUG LINES
             System.out.println("  ->  before: " + Arrays.toString(providedInputs));
-            Handler.updateCurrentConstructor(LNC.getGraphPanel().getGraph(), LNC.getLudemeNode(), activeConstructors.get(0)); // TODO: WARNING: DELETES PROVIDED INPUTS
+            Handler.updateCurrentClause(LNC.getGraphPanel().getGraph(), LNC.node(), activeClauses.get(0)); // TODO: WARNING: DELETES PROVIDED INPUTS
             dynamicConstructorActive = false;
-            if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive of " + LNC.getLudemeNode().getLudeme().getName() + " to " + dynamicConstructorActive + "(317)");
+            if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive of " + LNC.node().symbol().name() + " to " + dynamicConstructorActive + "(317)");
             updateConstructor();
             // provided inputs should still be connected
             transferInputs();
             // return inputfield corresponding to new connection
-            Ludeme providedLudeme = node.getLudeme();
-            if(DEBUG) System.out.println("  --> Looking for " + providedLudeme + " in " + inputFields);
+            Symbol providedSymbol = node.symbol();
+            if(DEBUG) System.out.println("  --> Looking for " + providedSymbol + " in " + inputFields);
             for(LInputField lif : inputFields){
                 for(InputInformation ii : lif.getInputInformations()){
-                    if(ii.getPossibleLudemeInputs().contains(providedLudeme) && LNC.getLudemeNode().getProvidedInputs()[ii.getIndex()] == null){
+                    if(ii.getPossibleSymbolInputs().contains(providedSymbol) && LNC.node().providedInputs()[ii.getIndex()] == null){
                         System.out.println("  ->  after: " + Arrays.toString(providedInputs)); // TODO: REMOVE
                         return lif;
                     }
@@ -345,9 +359,9 @@ public class LInputArea extends JPanel {
     public void removedConnectionDynamic(LudemeNode node, LInputField c_inputField){
 
         if(DEBUG){
-            System.out.println("[DYNAMIC LIA]: Removing Connection of " + LNC.getLudemeNode().getLudeme().getName() + " from " + c_inputField.getInputInformations());
-            System.out.println("[DYNAMIC LIA]: Active Constructors: " + activeConstructors + "(" + activeConstructors.size() + ")");
-            System.out.println("[DYNAMIC LIA]: Inactive Constructors: " + inactiveConstructors + "(" + inactiveConstructors.size() + ")");
+            System.out.println("[DYNAMIC LIA]: Removing Connection of " + LNC.node().symbol().name() + " from " + c_inputField.getInputInformations());
+            System.out.println("[DYNAMIC LIA]: Active Constructors: " + activeClauses + "(" + activeClauses.size() + ")");
+            System.out.println("[DYNAMIC LIA]: Inactive Constructors: " + inactiveClauses + "(" + inactiveClauses.size() + ")");
         }
 
         int indexOfCInputField = inputFields.indexOf(c_inputField);
@@ -361,7 +375,7 @@ public class LInputArea extends JPanel {
         // add ii with equivalent node to providedII
         for(InputInformation ii : new ArrayList<>(providedII)){
             for(InputInformation ii2 : allInputInformations){
-                if(ii2.getInput().getName().equals(ii.getInput().getName()) && ii2.getIndex() == ii.getIndex()){
+                if(ii2.nodeInput().arg().symbol().name().equals(ii.nodeInput().arg().symbol().name()) && ii2.getIndex() == ii.getIndex()){
                     if(!providedII.contains(ii2)) providedII.add(ii2);
                 }
             }
@@ -370,9 +384,9 @@ public class LInputArea extends JPanel {
 
         if(DEBUG) System.out.println("[DYNAMIC LIA]: Provided II: " + providedII);
 
-        /*List<Constructor> addActiveConstructors = new ArrayList<>();
+        /*List<Constructor> addactiveClauses = new ArrayList<>();
 
-        for(Constructor c : inactiveConstructors){
+        for(Constructor c : inactiveClauses){
             boolean flag = true;
             for(InputInformation ii : providedII){
                 if(!c.getInputs().contains(ii.getInput())){
@@ -381,28 +395,28 @@ public class LInputArea extends JPanel {
                 }
             }
             if(!flag) continue;
-            addActiveConstructors.add(c);
+            addactiveClauses.add(c);
         }
 
-        activeConstructors.addAll(addActiveConstructors);
-        inactiveConstructors.removeAll(addActiveConstructors);*/
+        activeClauses.addAll(addactiveClauses);
+        inactiveClauses.removeAll(addactiveClauses);*/
 
-        List<Constructor> newActiveC = new ArrayList<>();
-        List<Constructor> newInactiveC = new ArrayList<>();
-        newInactiveC.addAll(activeConstructors);
-        newInactiveC.addAll(inactiveConstructors);
+        List<Clause> newActiveC = new ArrayList<>();
+        List<Clause> newInactiveC = new ArrayList<>();
+        newInactiveC.addAll(activeClauses);
+        newInactiveC.addAll(inactiveClauses);
 
-        List<Constructor> addActiveConstructors = new ArrayList<>();
+        List<Clause> addactiveClauses = new ArrayList<>();
 
 
         for(InputInformation ii : providedII){
-            for(Constructor c : new ArrayList<>(newInactiveC)){
+            for(Clause c : new ArrayList<>(newInactiveC)){
                 boolean isActive = false;
-                if(c.getInputs().contains(ii.getInput())){
+                if(c.args().contains(ii.nodeInput().arg())){
                     // then is active
                     if(!newActiveC.contains(c)) newActiveC.add(c);
                     newInactiveC.remove(c);
-                    if(!addActiveConstructors.contains(c) && !activeConstructors.contains(c)) addActiveConstructors.add(c);
+                    if(!addactiveClauses.contains(c) && !activeClauses.contains(c)) addactiveClauses.add(c);
                     isActive = true;
                     break;
                 }
@@ -424,21 +438,21 @@ public class LInputArea extends JPanel {
                 newActiveC.remove(c);
             }
             if(!isInactive){
-                if(!activeConstructors.contains(c)){
-                    addActiveConstructors.add(c);
+                if(!activeClauses.contains(c)){
+                    addactiveClauses.add(c);
                 }
             }
         }*/
 
-        activeConstructors = newActiveC;
-        inactiveConstructors = newInactiveC;
-        if(DEBUG) System.out.println("[DYNAMIC LIA]: Active Constructors: " + activeConstructors + "(" + activeConstructors.size() + ")");
-        if(DEBUG) System.out.println("[DYNAMIC LIA]: Inactive Constructors: " + inactiveConstructors + "(" + inactiveConstructors.size() + ")");
+        activeClauses = newActiveC;
+        inactiveClauses = newInactiveC;
+        if(DEBUG) System.out.println("[DYNAMIC LIA]: Active Constructors: " + activeClauses + "(" + activeClauses.size() + ")");
+        if(DEBUG) System.out.println("[DYNAMIC LIA]: Inactive Constructors: " + inactiveClauses + "(" + inactiveClauses.size() + ")");
 
-        //if(DEBUG) System.out.println("[DYNAMIC LIA]: Add Active Constructors: " + addActiveConstructors);
+        //if(DEBUG) System.out.println("[DYNAMIC LIA]: Add Active Constructors: " + addactiveClauses);
 
 
-        if(!dynamicConstructorActive && activeConstructors.size() > 1) {
+        if(!dynamicConstructorActive && activeClauses.size() > 1) {
             dynamicConstructorActive = true;
             if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive to " + dynamicConstructorActive + "(387)");
             inputFields = getInputFields(LNC);
@@ -451,9 +465,9 @@ public class LInputArea extends JPanel {
             // Create list of InputInformations to be added to lifs
             List<InputInformation> newActiveII = new ArrayList<>();
 
-            for(Constructor c : addActiveConstructors){
+            for(Clause c : addactiveClauses){
                 for(InputInformation ii : allInputInformations){
-                    if(c.getInputs().contains(ii.getInput())){
+                    if(c.args().contains(ii.nodeInput().arg())){
                         newActiveII.add(ii);
                     }
                 }
@@ -559,11 +573,11 @@ public class LInputArea extends JPanel {
                 List<InputInformation> addedInputInformations = new ArrayList<InputInformation>();
                 for(int i = 0; i < providedInputFields.size(); i++){
                     LInputField providedInputField = providedInputFields.get(i);
-                    Ludeme connectedTo = providedInputFieldsConnections.get(i).getLudemeNode().getLudeme();
+                    Symbol connectedTo = providedInputFieldsConnections.get(i).node().symbol();
                     // find corresponding InputInformations
                     List<InputInformation> correspondingII = new ArrayList<>();
                     for(InputInformation ii : allInputInformations){
-                        if(ii.getPossibleLudemeInputs().contains(connectedTo)) correspondingII.add(ii);
+                        if(ii.getPossibleSymbolInputs().contains(connectedTo)) correspondingII.add(ii);
                     }
 
                     // check whether providedInputField has a non-single input field above or below
@@ -614,8 +628,8 @@ public class LInputArea extends JPanel {
 
     // when dynamic: if only one constructor active, transfer provided inputs
     private void transferInputs(){
-        if(DEBUG) System.out.println("[DYNAMIC LIA]: Transfering inputs of " +  LNC.getLudemeNode().getLudeme().getName() + "....");
-        System.out.println("Provided inputs model: " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
+        if(DEBUG) System.out.println("[DYNAMIC LIA]: Transfering inputs of " +  LNC.node().symbol().name() + "....");
+        System.out.println("Provided inputs model: " + Arrays.toString(LNC.node().providedInputs()));
         System.out.println("Provided input fields: " + providedInputFields);
         for(int i = 0; i < providedInputFields.size(); i++){
             LInputField providedInputField = providedInputFields.get(i); // input fields of "dynamic" node
@@ -643,7 +657,7 @@ public class LInputArea extends JPanel {
         System.out.println("Provided input fields 586: " + providedInputFields);
         // TODO: Remove all edges of this ludeme node AND MODEL
         LNC.getGraphPanel().cancelNewConnection();
-        LNC.getGraphPanel().removeAllConnections(LNC.getLudemeNode());
+        LNC.getGraphPanel().removeAllConnections(LNC.node());
 
         inputFields = getInputFields(LNC);
         drawInputFields();
@@ -655,7 +669,7 @@ public class LInputArea extends JPanel {
         List<LInputField> newFields = new ArrayList<>();
         for(int i = 0; i < inputFields.size(); i++){
             LInputField inputField = inputFields.get(i);
-            if((inputField.isSingle || LNC.getLudemeNode().getProvidedInputs()[inputField.getInputInformation().getIndex()] == null) && inputField.getInputInformation().isOptional()){
+            if((inputField.isSingle || LNC.node().providedInputs()[inputField.getInputInformation().getIndex()] == null) && inputField.getInputInformation().optional()){
                 consequentOptionalInputs.add(inputField);
             } else if(consequentOptionalInputs.size() == 1){
                 newFields.add(consequentOptionalInputs.get(0));
@@ -695,10 +709,10 @@ public class LInputArea extends JPanel {
      * Called when drawing a graph.
      */
     public void updateProvidedInputs(){
-        if(DEBUG) System.out.println("[LIA] Syncing " + LNC.getLudemeNode().getLudeme().getName() + " with provided inputs...");
-        if(DEBUG) System.out.println("   -> " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
+        if(DEBUG) System.out.println("[LIA] Syncing " + LNC.node().symbol().name() + " with provided inputs...");
+        if(DEBUG) System.out.println("   -> " + Arrays.toString(LNC.node().providedInputs()));
         // Fill existing inputs
-        Object[] providedInputs = LNC.getLudemeNode().getProvidedInputs();
+        Object[] providedInputs = LNC.node().providedInputs();
         for(int input_index = 0; input_index < providedInputs.length; input_index++){
             Object providedInput = providedInputs[input_index];
             if(providedInput != null){
@@ -713,7 +727,7 @@ public class LInputArea extends JPanel {
                 inputField.setUserInput(providedInput, input_index);
             }
         }
-        if(DEBUG) System.out.println("   -> " + Arrays.toString(LNC.getLudemeNode().getProvidedInputs()));
+        if(DEBUG) System.out.println("   -> " + Arrays.toString(LNC.node().providedInputs()));
 
         drawInputFields();
 

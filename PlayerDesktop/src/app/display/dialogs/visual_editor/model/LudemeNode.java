@@ -8,6 +8,8 @@ import app.display.dialogs.visual_editor.model.grammar.input.Input;
 import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
+import main.grammar.Clause;
+import main.grammar.Symbol;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,8 +28,13 @@ public class LudemeNode implements iLudemeNode, iGNode {
     private static int LAST_ID = 0;
     private final int ID;
 
-    private final Ludeme LUDEME;
-    private Constructor currentConstructor;
+    //private final Ludeme LUDEME;
+    //private Constructor currentConstructor;
+
+    private final Symbol SYMBOL;
+    private final List<Clause> CLAUSES;
+    private Clause selectedClause;
+
     private Object[] providedInputs;
 
     private HashMap<LudemeNode, Integer> childrenOrder = new HashMap<>();
@@ -41,8 +48,22 @@ public class LudemeNode implements iLudemeNode, iGNode {
     private int x,y;
 
     // For dynamic constructor
-    private boolean dynamic = true; // TODO: Not hard-coded
+    private boolean dynamic = false; // TODO: Not hard-coded
 
+
+    public LudemeNode(Symbol symbol, int x, int y) {
+        this.ID = LAST_ID++;
+        this.SYMBOL = symbol;
+        this.CLAUSES = new ArrayList<>(symbol.rule().rhs());
+        this.x = x;
+        this.y = y;
+        this.width = 100;
+        this.height = 100;
+        this.selectedClause = symbol.rule().rhs().get(0);
+        this.providedInputs = new Object[selectedClause.args().size()];
+    }
+
+    /*
     public LudemeNode(Ludeme ludeme, int x, int y){
         LAST_ID++;
         this.ID = LAST_ID;
@@ -53,7 +74,7 @@ public class LudemeNode implements iLudemeNode, iGNode {
         this.x = x;
         this.y = y;
     }
-
+*/
     @Override
     public int getId() {
         return ID;
@@ -137,36 +158,29 @@ public class LudemeNode implements iLudemeNode, iGNode {
         this.y = y;
     }
 
+
     @Override
-    public Ludeme getLudeme() {
-        return this.LUDEME;
+    public Symbol symbol() {
+        return SYMBOL;
+    }
+
+    public List<Clause> clauses(){
+        return CLAUSES;
     }
 
     @Override
-    public Constructor getCurrentConstructor() {
-        return currentConstructor;
+    public Clause selectedClause() {
+        return selectedClause;
     }
 
     @Override
-    public void setCurrentConstructor(Constructor selectedConstructor) {
-        this.currentConstructor = selectedConstructor;
-        // update providedInputs size
-        this.providedInputs = new Object[currentConstructor.getInputs().size()];
-    }
-
-    @Override
-    public Object[] getProvidedInputs() {
+    public Object[] providedInputs() {
         return providedInputs;
     }
 
     @Override
-    public void setProvidedInput(int index, Object providedInput) {
-        providedInputs[index] = providedInput;
-    }
-
-    @Override
-    public void setProvidedInput(Input input, Object providedInput) {
-        // TODO
+    public void setProvidedInput(int index, Object input) {
+        providedInputs[index] = input;
     }
 
     @Override
@@ -174,8 +188,14 @@ public class LudemeNode implements iLudemeNode, iGNode {
         this.parent = (LudemeNode) ludemeNode; // TODO: should it be casted?
     }
 
+    @Override
+    public String getStringRepresentation() {
+        return ""; // TODO
+    }
+
     public void addChildren(LudemeNode children){
         // Checks if child nodes was already added
+        /*
         if (!this.children.contains(children))
         {
             this.children.add(children);
@@ -199,7 +219,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
                     Collections.swap(this.children, i-1, i);
                 }
             }
-        }
+        }*/
+        // TODO: Implement
     }
 
     public void removeChildren(LudemeNode children){
@@ -208,108 +229,17 @@ public class LudemeNode implements iLudemeNode, iGNode {
 
 
     @Override
-    public String getStringRepresentation() {
-
-        char c = '"';
-        String tabs = repeatString("\t", getDepthManual());
-        boolean startedWithParanthesis = false;
-        boolean hasLineBreak = getCurrentConstructor().getInputs().size() > 1;
-
-        if(currentConstructor.getInputs().size() == 1 && currentConstructor.getInputs().get(0).isTerminal()){
-            if(providedInputs[0] == null) return "";
-            if(providedInputs[0] instanceof String) return c+providedInputs[0].toString()+c+" ";
-            else return providedInputs[0].toString();
-        }
-
-        StringBuilder s = new StringBuilder("");
-        if(getLudeme().isHidden()) s.append("");
-        else {
-            s.append("\n");
-            s.append(tabs);
-            s.append("(");
-            startedWithParanthesis = true;
-            s.append(getLudeme().getClearName().trim());
-            s.append(" ");
-        }
-        if(!getCurrentConstructor().getName().equals("")) {
-            s.append(getCurrentConstructor().getName());
-            s.append(" ");
-        }
-
-        for(Object o : getProvidedInputs()){
-            if(o == null) continue; // TODO: What to do when input is empty?
-            if(o instanceof LudemeNode[]) {
-                s.append("{");
-                for(LudemeNode ln : (LudemeNode[]) o){
-                    if(ln == null) continue;
-                    s.append(ln.getStringRepresentation());
-                    //s.append("\n");
-                }
-                s.append("\n"+tabs+"}");
-            }
-            else if(o instanceof String) {
-                s.append("\"").append(o.toString()).append("\"");
-            }
-            else {
-                s.append(o.toString());
-                s.append(" ");
-            }
-        }
-        if(startedWithParanthesis){
-            if(s.charAt(s.length()-1) == ' ') s.deleteCharAt(s.length()-1);
-            s.append("\n"+tabs+")");
-        }
-        return s.toString();
-        //return s.toString().trim().replaceAll(" +", " ");
-    }
-
-    @Override
     public String toString(){
         return getStringRepresentation();
     }
 
-    public String getStringRepresentation(int untilInputIndex){
-        char c = '"';
 
-        if(currentConstructor.getInputs().size() == 1 && currentConstructor.getInputs().get(0).isTerminal()){
-            if(providedInputs[0] == null) return "";
-            if(providedInputs[0] instanceof String) return c+providedInputs[0].toString()+c+" ";
-            else return providedInputs[0].toString();
+    public boolean canBeDynamic(){
+        if(CLAUSES.size() == 1) return false;
+        for(Clause clause : CLAUSES){
+            if(clause.args().size() > 1) return true;
         }
-
-        StringBuilder s = new StringBuilder("");
-        String[] ludemeNameSplit = getLudeme().getName().split("\\.");
-        if(getLudeme().isHidden()) s.append("");
-        else if(ludemeNameSplit.length >= 1){
-            s.append("(");
-            s.append(ludemeNameSplit[ludemeNameSplit.length-1]);
-        }
-        else {
-            s.append("(");
-            s.append(getLudeme().getName());
-        }
-        s.append(" ");
-        s.append(getCurrentConstructor().getName());
-        s.append(" ");
-        for(int i = 0; i <= untilInputIndex; i++){
-            Object o = getProvidedInputs()[i];
-            if(o == null) continue; // TODO: What to do when input is empty?
-            else if(o instanceof LudemeNode[]) {
-                s.append("{");
-                for(LudemeNode ln : (LudemeNode[]) o){
-                    if(ln == null) continue;
-                    s.append(ln.getStringRepresentation());
-                    s.append("\n");
-                }
-                s.append("}");
-            }
-            else if(o instanceof String) s.append("\"").append(o.toString()).append("\"");
-            else s.append(o.toString());
-        }
-        s.append(" --REC--"); // TODO: SHOULD BE A VARIABLE
-        return s.toString().trim().replaceAll(" +", " ");
-        //if(s.toString().startsWith("(")) s.append(")");
-        //return s.toString().trim().replaceAll(" +", " ");
+        return false;
     }
 
     public boolean isDynamic(){
@@ -320,4 +250,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
         this.dynamic = dynamic;
     }
 
+    public void setSelectedClause(Clause selectedClause) {
+        this.selectedClause = selectedClause;
+        this.providedInputs = new Object[selectedClause.args().size()];
+    }
 }

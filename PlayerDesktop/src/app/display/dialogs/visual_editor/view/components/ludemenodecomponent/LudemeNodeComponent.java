@@ -3,12 +3,11 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import game.functions.ints.board.Layer;
+import main.grammar.Clause;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,26 +42,17 @@ public class LudemeNodeComponent extends JPanel {
         setLayout(new BorderLayout());
 
         System.out.println("[LNC] Provided Inputs");
-        for(int i = 0; i < ludemeNode.getProvidedInputs().length; i++){
-            if(ludemeNode.getProvidedInputs()[i] != null)
-            System.out.println("["+i+", " +  ludemeNode.getProvidedInputs()[i].getClass().getName() + "] " + ludemeNode.getProvidedInputs()[i]);
+        for(int i = 0; i < ludemeNode.providedInputs().length; i++){
+            if(ludemeNode.providedInputs()[i] != null)
+            System.out.println("["+i+", " +  ludemeNode.providedInputs()[i].getClass().getName() + "] " + ludemeNode.providedInputs()[i]);
             else System.out.println("["+i+", null]");
         }
 
         this.dynamic = ludemeNode.isDynamic();
 
         // LNC cannot be dynamic if its a terminal node or all constructors have size one
-        if(ludemeNode.getLudeme().getConstructors().size() == 1){
-            dynamic = false;
-        }
-        else if (dynamic){
-            dynamic = false;
-            for(Constructor c : ludemeNode.getLudeme().getConstructors()){
-                if(c.getInputs().size() > 1){
-                    dynamic = true;
-                }
-            }
-        }
+        if(!ludemeNode.canBeDynamic()) dynamic = false;
+
 
         // sync dynamic boolean with model node
         ludemeNode.setDynamic(dynamic); // TODO: Shouldnt be done here
@@ -96,25 +86,15 @@ public class LudemeNodeComponent extends JPanel {
 
     }
 
-    public void changeConstructor(Constructor c){
-        Handler.updateCurrentConstructor(getGraphPanel().getGraph(), getLudemeNode(), c);
 
-        inputArea.updateConstructor();
-
-
-        //int preferredHeight = inputArea.getPreferredSize().height + header.getPreferredSize().height;
-
-        //setMinimumSize(new Dimension(getWidth(), preferredHeight));
-        //setPreferredSize(new Dimension(getMinimumSize().width, preferredHeight));
-        //setSize(new Dimension(getMinimumSize().width, preferredHeight));
-
-        //setSize(getPreferredSize());
-        //LUDEME_NODE.setWidth(getWidth());
-        //LUDEME_NODE.setHeight(getHeight());
-
+    public void changeClause(Clause clause){
+        Handler.updateCurrentClause(getGraphPanel().getGraph(), node(), clause);
+        inputArea.updateConstructor(); // TODO: update input area
         revalidate();
         repaint();
+
     }
+
 
     public void updatePositions() {
         if(inputArea == null || header == null) {
@@ -152,7 +132,7 @@ public class LudemeNodeComponent extends JPanel {
         revalidate();
     }
 
-    public LudemeNode getLudemeNode(){
+    public LudemeNode node(){
         return LUDEME_NODE;
     }
 
@@ -179,7 +159,7 @@ public class LudemeNodeComponent extends JPanel {
     public void changeDynamic(){
         dynamic = !dynamic;
         getInputArea().setDynamic(dynamic);
-        getLudemeNode().setDynamic(dynamic);
+        node().setDynamic(dynamic);
     }
 
     private void dragNode(LudemeNodeComponent lnc, MouseEvent e, Point dif1)
@@ -262,7 +242,7 @@ public class LudemeNodeComponent extends JPanel {
             super.mousePressed(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(getGraphPanel().getGraph(), getLudemeNode(), getX(), getY());
+            Handler.updatePosition(getGraphPanel().getGraph(), node(), getX(), getY());
 
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);
@@ -279,7 +259,7 @@ public class LudemeNodeComponent extends JPanel {
             super.mouseReleased(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(getGraphPanel().getGraph(), getLudemeNode(), getX(), getY());
+            Handler.updatePosition(getGraphPanel().getGraph(), node(), getX(), getY());
 
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);

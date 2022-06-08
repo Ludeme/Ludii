@@ -1,9 +1,9 @@
 package app.display.dialogs.visual_editor.model;
 
 
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import main.grammar.Symbol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,15 +90,15 @@ public class DescriptionGraph implements iGraph {
         return allLudemeNodes;
     }
 
-    public List<LudemeNode> getNodes(Ludeme ludeme) {
+    public List<LudemeNode> getNodes(Symbol symbol) {
         List<LudemeNode> result = new ArrayList<>();
-        for(LudemeNode ln : allLudemeNodes) if(ln.getLudeme() == ludeme) result.add(ln);
+        for(LudemeNode ln : allLudemeNodes) if(ln.symbol() == symbol) result.add(ln);
         return result;
     }
 
-    public List<LudemeNode> getNodes(String ludemeName) {
+    public List<LudemeNode> getNodes(String symbolName) {
         List<LudemeNode> result = new ArrayList<>();
-        for(LudemeNode ln : allLudemeNodes) if(Objects.equals(ln.getLudeme().getName(), ludemeName)) result.add(ln);
+        for(LudemeNode ln : allLudemeNodes) if(Objects.equals(ln.symbol().name(), symbolName)) result.add(ln);
         return result;
     }
 
@@ -159,8 +159,8 @@ public class DescriptionGraph implements iGraph {
 
         DescriptionGraph graphNew = new DescriptionGraph();
         for(LudemeNode node : getNodes()){
-            LudemeNode node_new = new LudemeNode(node.getLudeme(), (int)node.getPos().getX(), (int)node.getPos().getY());
-            node_new.setCurrentConstructor(node.getCurrentConstructor());
+            LudemeNode node_new = new LudemeNode(node.symbol(), (int)node.getPos().getX(), (int)node.getPos().getY());
+            node_new.setSelectedClause(node.selectedClause());
 
             if(to.contains(node)){
                 int index = to.indexOf(node);
@@ -173,8 +173,8 @@ public class DescriptionGraph implements iGraph {
 
             }
 
-            for(int i = 0; i < node.getProvidedInputs().length; i++){
-                Object in = node.getProvidedInputs()[i];
+            for(int i = 0; i < node.providedInputs().length; i++){
+                Object in = node.providedInputs()[i];
                 if(in instanceof LudemeNode){
                     indeces.add(i);
                     from.add(node_new);

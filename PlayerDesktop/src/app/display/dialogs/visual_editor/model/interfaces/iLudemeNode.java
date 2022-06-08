@@ -3,6 +3,8 @@ package app.display.dialogs.visual_editor.model.interfaces;
 import app.display.dialogs.visual_editor.model.grammar.Constructor;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.input.Input;
+import main.grammar.Clause;
+import main.grammar.Symbol;
 
 /**
  * Interface for a node representation of a ludeme in the current description
@@ -11,18 +13,15 @@ import app.display.dialogs.visual_editor.model.grammar.input.Input;
 
 public interface iLudemeNode {
 
-    // Ludeme the node represents
-    Ludeme getLudeme();
-
-    // (User-) selected constructor for this Ludeme
-    Constructor getCurrentConstructor();
-    void setCurrentConstructor(Constructor selectedConstructor);
-
-    // User-provided inputs (order by first to last required input)
-    Object[] getProvidedInputs();
-    void setProvidedInput(int index, Object providedInput);
-    void setProvidedInput(Input input, Object providedInput);
-
+    // Symbol/Ludeme that the node represents
+    Symbol symbol();
+    // Current selected clause by the user
+    Clause selectedClause();
+    // Current provided inputs
+    Object[] providedInputs();
+    // Set an input
+    void setProvidedInput(int index, Object input);
+    // Sets the parent of the node to another node
     void setParent(iLudemeNode ludemeNode);
 
     /* The .lud equivalent of that node

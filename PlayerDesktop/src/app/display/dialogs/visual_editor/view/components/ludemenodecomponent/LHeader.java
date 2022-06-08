@@ -1,8 +1,10 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
-import app.display.dialogs.visual_editor.model.grammar.Constructor;
+import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import main.grammar.Clause;
+import main.grammar.Symbol;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,10 +20,12 @@ public class LHeader extends JComponent {
 
     public LHeader(LudemeNodeComponent ludemeNodeComponent) {
         LNC = ludemeNodeComponent;
+        LudemeNode LN = LNC.node();
 
         setLayout(new BorderLayout());
 
-        title = new JLabel(ludemeNodeComponent.getLudemeNode().getLudeme().getClearName() + " " + ludemeNodeComponent.getLudemeNode().getCurrentConstructor().getName());
+        title = new JLabel(getNodeTitle());
+
 
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
@@ -29,7 +33,7 @@ public class LHeader extends JComponent {
 
         ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
 
-        if(LNC.getGraphPanel().getGraph().getRoot() == LNC.getLudemeNode()) ingoingConnectionComponent = null;
+        if(LNC.getGraphPanel().getGraph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
 
         System.out.println("Root: " + LNC.getGraphPanel().getGraph().getRoot());
 
@@ -61,13 +65,14 @@ public class LHeader extends JComponent {
 
         JPopupMenu popup = new JPopupMenu();
 
-        JMenuItem[] items = new JMenuItem[LNC.getLudemeNode().getLudeme().getConstructors().size()];
+        JMenuItem[] items = new JMenuItem[LN.clauses().size()];
 
-        for(int i = 0; i < LNC.getLudemeNode().getLudeme().getConstructors().size(); i++) {
-            Constructor constructor = LNC.getLudemeNode().getLudeme().getConstructors().get(i);
-            items[i] = new JMenuItem(constructor.toString());
+        for(int i = 0; i < LN.clauses().size(); i++) {
+            Clause clause = LN.clauses().get(i);
+            items[i] = new JMenuItem(clause.toString());
             items[i].addActionListener(e1 -> {
-                ludemeNodeComponent.changeConstructor(constructor);
+                System.out.println("Selected clause: " + clause.toString());
+                ludemeNodeComponent.changeClause(clause);
                 repaint();
             });
             popup.add(items[i]);
@@ -111,7 +116,7 @@ public class LHeader extends JComponent {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        title.setText(LNC.getLudemeNode().getLudeme().getClearName() + " " + LNC.getLudemeNode().getCurrentConstructor().getName());
+        title.setText(getNodeTitle());
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
         title.setSize(title.getPreferredSize());
@@ -134,6 +139,19 @@ public class LHeader extends JComponent {
 
 */
 
+    }
+
+    private String getNodeTitle(){
+        LudemeNode LN = LNC.node();
+        String title = LN.symbol().name();
+        if(LN.selectedClause().args() == null) return title;
+        // if selected clause starts with constants, add these to the title
+        int index = 0;
+        while(LN.selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant)){
+            title = title + " " + LN.selectedClause().args().get(index).symbol().name();
+            index++;
+        }
+        return title;
     }
 
 }
