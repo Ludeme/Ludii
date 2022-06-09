@@ -1,8 +1,6 @@
-package display;
+package app.display.dialogs.visual_editor.recs.display;
 
-import codecompletion.domain.filehandling.DocHandler;
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatLightLaf;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

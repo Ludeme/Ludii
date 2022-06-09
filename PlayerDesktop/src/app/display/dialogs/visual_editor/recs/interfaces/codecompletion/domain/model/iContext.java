@@ -1,4 +1,4 @@
-package interfaces.codecompletion.domain.model;
+package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model;
 
 import java.util.List;
 

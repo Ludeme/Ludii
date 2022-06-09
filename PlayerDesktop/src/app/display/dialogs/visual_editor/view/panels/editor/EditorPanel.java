@@ -7,7 +7,6 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.parser.Parser;
-import app.display.dialogs.visual_editor.recs.guiInterfacing.CodeCompletion;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
@@ -531,7 +530,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         }
         String gameDescription = selectedConnectionComponent.getLudemeNodeComponent().node().getStringRepresentation();
 
-        connectLudemeWindow.updateList(CodeCompletion.getRecommendations(symbols, gameDescription, selectedConnectionComponent.getRequiredSymbols()));
+        //connectLudemeWindow.updateList(CodeCompletion.getRecommendations(symbols, gameDescription, selectedConnectionComponent.getRequiredSymbols()));
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();

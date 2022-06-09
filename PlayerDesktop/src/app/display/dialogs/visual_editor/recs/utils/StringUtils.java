@@ -1,4 +1,4 @@
-package utils;
+package app.display.dialogs.visual_editor.recs.utils;
 
 /**
  * @author filreh

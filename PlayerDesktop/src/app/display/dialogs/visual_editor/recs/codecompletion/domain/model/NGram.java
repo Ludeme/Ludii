@@ -1,11 +1,11 @@
-package codecompletion.domain.model;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 
-import interfaces.codecompletion.domain.model.iNGram;
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model.iNGram;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.util.*;
 
-import static codecompletion.domain.model.Preprocessing.*;
+import static app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing.*;
 
 /**
  * @author filreh

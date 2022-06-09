@@ -1,9 +1,9 @@
-package display;
+package app.display.dialogs.visual_editor.recs.display;
 
-import codecompletion.controller.Controller;
-import codecompletion.domain.filehandling.DocHandler;
-import codecompletion.domain.filehandling.ModelLibrary;
-import codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

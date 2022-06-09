@@ -1,7 +1,7 @@
-package display;
+package app.display.dialogs.visual_editor.recs.display;
 
-import codecompletion.domain.filehandling.DocHandler;
-import codecompletion.domain.filehandling.LudiiGameDatabase;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;

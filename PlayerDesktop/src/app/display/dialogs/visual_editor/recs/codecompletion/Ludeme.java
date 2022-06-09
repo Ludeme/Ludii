@@ -1,4 +1,4 @@
-package codecompletion;
+package app.display.dialogs.visual_editor.recs.codecompletion;
 
 public class Ludeme {
     private final String keyword;

@@ -1,4 +1,4 @@
-package display;
+package app.display.dialogs.visual_editor.recs.display;
 
 import java.awt.*;
 import java.awt.event.*;

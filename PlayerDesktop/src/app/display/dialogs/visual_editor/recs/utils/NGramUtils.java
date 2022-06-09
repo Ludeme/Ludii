@@ -1,9 +1,8 @@
-package utils;
+package app.display.dialogs.visual_editor.recs.utils;
 
-import codecompletion.Ludeme;
-import codecompletion.domain.model.Context;
-import codecompletion.domain.model.Instance;
-import codecompletion.domain.model.Preprocessing;
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Context;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
 
 import java.util.*;
 

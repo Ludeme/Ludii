@@ -1,4 +1,4 @@
-package interfaces.codecompletion.domain.filehandling;
+package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.filehandling;
 
 import java.util.List;
 

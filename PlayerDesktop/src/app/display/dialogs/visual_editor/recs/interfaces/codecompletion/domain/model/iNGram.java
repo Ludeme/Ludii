@@ -1,6 +1,6 @@
-package interfaces.codecompletion.domain.model;
+package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model;
 
-import codecompletion.domain.model.Instance;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
 
 import java.util.List;
 import java.util.Map;

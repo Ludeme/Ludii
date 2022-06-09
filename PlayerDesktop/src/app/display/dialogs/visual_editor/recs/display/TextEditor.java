@@ -1,11 +1,8 @@
-package display;
-
-import codecompletion.controller.Controller;
-import codecompletion.domain.filehandling.DocHandler;
-import codecompletion.domain.filehandling.GameFileHandler;
-import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-import utils.NGramUtils;
+package app.display.dialogs.visual_editor.recs.display;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.GameFileHandler;
+import app.display.dialogs.visual_editor.recs.utils.NGramUtils;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -212,7 +209,7 @@ public class TextEditor {
     }
     private void lightMode() {
         try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
+            //UIManager.setLookAndFeel(new FlatLightLaf());//TODO
         } catch( Exception ex ) {
             System.err.println( "Failed to initialize LaF" );
         }
@@ -221,7 +218,7 @@ public class TextEditor {
     private void darkMode() {
         // Dark LAF
         try {
-            UIManager.setLookAndFeel( new FlatDarculaLaf());
+            //UIManager.setLookAndFeel( new FlatDarculaLaf());//TODO
         } catch( Exception ex ) {
             System.err.println( "Failed to initialize LaF" );
         }

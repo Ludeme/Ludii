@@ -1,6 +1,6 @@
-package codecompletion.domain.model;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

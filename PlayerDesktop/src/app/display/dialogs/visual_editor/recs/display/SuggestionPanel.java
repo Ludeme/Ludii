@@ -1,7 +1,8 @@
-package display;
+package app.display.dialogs.visual_editor.recs.display;
 
-import codecompletion.Ludeme;
-import codecompletion.controller.Controller;
+
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;

@@ -1,8 +1,8 @@
-package utils;
+package app.display.dialogs.visual_editor.recs.utils;
 
-import codecompletion.domain.model.Instance;
-import codecompletion.domain.model.NGram;
-import display.ProgressBar;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.display.ProgressBar;
 
 import java.util.*;
 

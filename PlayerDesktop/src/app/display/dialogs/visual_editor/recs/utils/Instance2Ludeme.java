@@ -1,7 +1,7 @@
-package utils;
+package app.display.dialogs.visual_editor.recs.utils;
 
-import codecompletion.Ludeme;
-import codecompletion.domain.model.Instance;
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
 
 import java.util.ArrayList;
 import java.util.List;

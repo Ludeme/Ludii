@@ -1,7 +1,6 @@
-package display;
+package app.display.dialogs.visual_editor.recs.display;
 
-import codecompletion.domain.filehandling.DocHandler;
-import codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 
 import javax.swing.*;
 import java.awt.*;

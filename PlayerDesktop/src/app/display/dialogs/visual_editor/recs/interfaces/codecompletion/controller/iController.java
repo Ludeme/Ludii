@@ -1,7 +1,7 @@
-package interfaces.codecompletion.controller;
+package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller;
 
-import codecompletion.Ludeme;
-import codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
 
 import java.util.List;
 

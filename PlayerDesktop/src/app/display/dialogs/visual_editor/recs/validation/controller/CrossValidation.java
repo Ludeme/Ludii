@@ -1,4 +1,4 @@
-package validation.controller;
+package app.display.dialogs.visual_editor.recs.validation.controller;
 
 import java.util.ArrayList;
 import java.util.List;

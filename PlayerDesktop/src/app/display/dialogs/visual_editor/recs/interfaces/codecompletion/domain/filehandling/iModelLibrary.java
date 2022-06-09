@@ -1,6 +1,6 @@
-package interfaces.codecompletion.domain.filehandling;
+package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.filehandling;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
 
-import codecompletion.domain.model.NGram;
 import java.util.List;
 
 /**

@@ -1,9 +1,9 @@
-package codecompletion.domain.filehandling;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling;
 
-import interfaces.codecompletion.domain.filehandling.iLudiiGameDatabase;
-import utils.FileUtils;
-import utils.NGramUtils;
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.filehandling.iLudiiGameDatabase;
+import app.display.dialogs.visual_editor.recs.utils.FileUtils;
+import app.display.dialogs.visual_editor.recs.utils.NGramUtils;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;

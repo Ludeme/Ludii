@@ -1,7 +1,7 @@
-package utils;
+package app.display.dialogs.visual_editor.recs.utils;
 
-import codecompletion.domain.model.Instance;
-import interfaces.utils.BucketSortComparator;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
+import app.display.dialogs.visual_editor.recs.interfaces.utils.BucketSortComparator;
 
 public class MatchingWordsBucketSortComparator implements BucketSortComparator<Pair<Instance,Integer>> {
     @Override

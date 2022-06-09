@@ -1,11 +1,8 @@
-package codecompletion.domain.model;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
+import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model.iInstance;
+import app.display.dialogs.visual_editor.recs.utils.ListUtils;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
-import interfaces.codecompletion.domain.model.iInstance;
-import utils.ListUtils;
-import utils.StringUtils;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 /**

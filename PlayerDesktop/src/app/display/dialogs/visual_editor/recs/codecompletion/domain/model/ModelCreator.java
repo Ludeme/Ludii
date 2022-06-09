@@ -1,10 +1,10 @@
-package codecompletion.domain.model;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 
-import codecompletion.domain.filehandling.LudiiGameDatabase;
-import codecompletion.domain.filehandling.ModelFilehandler;
-import display.ProgressBar;
-import utils.FileUtils;
-import utils.NGramUtils;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelFilehandler;
+import app.display.dialogs.visual_editor.recs.display.ProgressBar;
+import app.display.dialogs.visual_editor.recs.utils.FileUtils;
+import app.display.dialogs.visual_editor.recs.utils.NGramUtils;
 
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
@@ -18,8 +18,6 @@ import java.util.concurrent.ExecutionException;
  * @author filreh
  */
 public class ModelCreator {
-    public static final String TRAINING = "res/crossvalidation/trainingIDs.txt";
-    public static final String VALIDATION = "res/crossvalidation/validationIDs.txt";
     /**
      * This method should only be called as part of the validation process or by the ModelLibrary
      * This method creates a new model and writes a model to a .gz file.
@@ -121,12 +119,7 @@ public class ModelCreator {
     public static NGram createModel(int N) {
         List<Integer> gameIDs = new ArrayList<>();
         LudiiGameDatabase db = LudiiGameDatabase.getInstance();
-        List<Integer> trainingsIDs = new ArrayList<>();
-        Scanner sc = FileUtils.readFile(TRAINING);
-        while (sc.hasNextLine()) {
-            int id = Integer.parseInt(sc.nextLine());
-            trainingsIDs.add(id);
-        }
+
         int amountGames = db.getAmountGames();
 
         for (int i = 0; i < amountGames; i++) {
@@ -134,6 +127,6 @@ public class ModelCreator {
         }
 
         //return createModel(N, gameIDs, false);
-        return createModel(N, trainingsIDs, false);
+        return createModel(N, gameIDs, false);
     }
 }

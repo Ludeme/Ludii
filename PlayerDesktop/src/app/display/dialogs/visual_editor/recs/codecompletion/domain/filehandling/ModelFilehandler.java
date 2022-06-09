@@ -1,10 +1,10 @@
-package codecompletion.domain.filehandling;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling;
 
-import codecompletion.domain.model.NGram;
-import utils.FileUtils;
-import utils.GZIPController;
-import utils.Model2CSV;
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.utils.FileUtils;
+import app.display.dialogs.visual_editor.recs.utils.GZIPController;
+import app.display.dialogs.visual_editor.recs.utils.Model2CSV;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 public class ModelFilehandler {
     public static final String MODEL_LOCATION = DocHandler.getInstance().getModelsLocation()+"/ngram_model_";

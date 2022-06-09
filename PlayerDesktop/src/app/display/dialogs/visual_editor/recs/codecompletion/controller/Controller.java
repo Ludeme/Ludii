@@ -1,10 +1,11 @@
-package codecompletion.controller;
+package app.display.dialogs.visual_editor.recs.codecompletion.controller;
 
-import codecompletion.Ludeme;
-import codecompletion.domain.filehandling.DocHandler;
-import codecompletion.domain.filehandling.ModelLibrary;
-import codecompletion.domain.model.*;
-import interfaces.codecompletion.controller.iController;
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
+import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller.iController;
+import app.display.dialogs.visual_editor.recs.utils.*;
 import utils.*;
 
 import java.io.File;

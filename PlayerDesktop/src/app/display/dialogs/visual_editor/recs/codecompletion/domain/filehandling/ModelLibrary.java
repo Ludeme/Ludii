@@ -1,10 +1,10 @@
-package codecompletion.domain.filehandling;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling;
 
-import codecompletion.domain.model.ModelCreator;
-import codecompletion.domain.model.NGram;
-import display.ProgressBar;
-import interfaces.codecompletion.domain.filehandling.iModelLibrary;
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.ModelCreator;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.display.ProgressBar;
+import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.filehandling.iModelLibrary;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class ModelLibrary implements iModelLibrary {
     private final DocHandler docHandler;
 
     private List<String> modelLocations;
-    private Map<Integer,NGram> allModels;
+    private Map<Integer, NGram> allModels;
 
     //Singleton
     private static ModelLibrary lib;

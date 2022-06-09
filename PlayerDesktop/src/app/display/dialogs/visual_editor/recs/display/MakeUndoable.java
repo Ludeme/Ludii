@@ -1,4 +1,4 @@
-package display;
+package app.display.dialogs.visual_editor.recs.display;
 
 import javax.swing.*;
 import javax.swing.event.UndoableEditEvent;

@@ -1,8 +1,7 @@
-package codecompletion.domain.model;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 
-import codecompletion.domain.filehandling.DocHandler;
-import interfaces.codecompletion.domain.model.iGrammar;
-
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
+import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model.iGrammar;
 import java.util.List;
 
 /**

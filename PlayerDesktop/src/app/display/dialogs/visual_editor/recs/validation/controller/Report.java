@@ -1,7 +1,7 @@
-package validation.controller;
+package app.display.dialogs.visual_editor.recs.validation.controller;
 
-import utils.CSVUtils;
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.utils.CSVUtils;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

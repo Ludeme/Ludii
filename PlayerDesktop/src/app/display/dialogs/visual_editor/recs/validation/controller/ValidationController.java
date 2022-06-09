@@ -1,12 +1,12 @@
-package validation.controller;
+package app.display.dialogs.visual_editor.recs.validation.controller;
 
-import codecompletion.Ludeme;
-import codecompletion.controller.Controller;
-import codecompletion.domain.filehandling.LudiiGameDatabase;
-import codecompletion.domain.model.ModelCreator;
-import codecompletion.domain.model.NGram;
-import codecompletion.domain.model.Preprocessing;
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.ModelCreator;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 import java.util.Arrays;
 import java.util.List;
 

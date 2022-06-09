@@ -1,7 +1,7 @@
-package codecompletion.domain.filehandling;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling;
 
-import utils.FileUtils;
-import utils.StringUtils;
+import app.display.dialogs.visual_editor.recs.utils.FileUtils;
+import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.*;
  * Class is a singleton
  */
 public class DocHandler {
-    public static final String DOC_LOCATION = "res/documents.txt";
+    public static final String DOC_LOCATION = "PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/documents.txt";
     public static final String GRAMMAR = "grammar_location";
     public static final String GAMES = "games_location";
     public static final String MODELS = "models_location";

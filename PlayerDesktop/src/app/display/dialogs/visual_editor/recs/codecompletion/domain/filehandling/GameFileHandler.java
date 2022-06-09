@@ -1,6 +1,6 @@
-package codecompletion.domain.filehandling;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling;
 
-import utils.FileUtils;
+import app.display.dialogs.visual_editor.recs.utils.FileUtils;
 
 import java.io.FileWriter;
 import java.io.IOException;
