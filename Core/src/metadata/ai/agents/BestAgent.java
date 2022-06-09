@@ -1,4 +1,4 @@
-package metadata.ai.misc;
+package metadata.ai.agents;
 
 import main.StringRoutines;
 import metadata.ai.AIItem;

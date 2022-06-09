@@ -22,6 +22,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import game.Game;
+import main.FileHandling;
+import main.grammar.Report;
+import metadata.ai.Ai;
 import other.AI;
 import policies.GreedyPolicy;
 import policies.ProportionalPolicyClassificationTree;
@@ -633,6 +636,24 @@ public class AIFactory
 				}
 			}
 			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else if (algName.equalsIgnoreCase("From AI.DEF"))
+		{
+			try
+			{
+				final String aiMetadataStr = FileHandling.loadTextContentsFromFile(aiObj.getString("AI.DEF File"));
+				final Ai aiMetadata = 
+						(Ai)compiler.Compiler.compileObject
+						(
+							aiMetadataStr, 
+							"metadata.ai.Ai",
+							new Report()
+						);
+			}
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}

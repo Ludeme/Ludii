@@ -19,9 +19,9 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Report;
 import main.options.Ruleset;
+import metadata.ai.agents.BestAgent;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
-import metadata.ai.misc.BestAgent;
 import other.GameLoader;
 import search.minimax.AlphaBetaSearch;
 

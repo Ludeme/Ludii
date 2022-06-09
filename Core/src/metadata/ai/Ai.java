@@ -3,10 +3,10 @@ package metadata.ai;
 import annotations.Name;
 import annotations.Opt;
 import metadata.MetadataItem;
+import metadata.ai.agents.BestAgent;
 import metadata.ai.features.Features;
 import metadata.ai.features.trees.FeatureTrees;
 import metadata.ai.heuristics.Heuristics;
-import metadata.ai.misc.BestAgent;
 
 //-----------------------------------------------------------------------------
 

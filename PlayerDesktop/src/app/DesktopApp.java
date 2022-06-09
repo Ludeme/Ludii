@@ -724,8 +724,6 @@ public class DesktopApp extends PlayerApp
 							.put("JAR File", jarFile.getAbsolutePath())
 							.put("Class Name", choice)
 							);
-					
-					
 				}
 			}
 			else
@@ -790,15 +788,13 @@ public class DesktopApp extends PlayerApp
 
 		if (aiDefFile != null && aiDefFile.exists())
 		{
-			try (final InputStream inputStream = new FileInputStream(aiDefFile))
-			{
-				// TODO DENNIS Add in new code here to process the AI.DEF file input.
-				//return new JSONObject(new JSONTokener(inputStream));
-			}
-			catch (final IOException e)
-			{
-				e.printStackTrace();
-			}
+			return new JSONObject().put
+					(
+						"AI",
+						new JSONObject()
+						.put("algorithm", "From AI.DEF")
+						.put("AI.DEF File", aiDefFile.getAbsolutePath())
+					);
 		}
 		else
 		{
