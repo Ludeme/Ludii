@@ -187,11 +187,11 @@ public class InitBestAgentsData
 				e.printStackTrace();
 			}
 		}
-		else if (aiMetadata.bestAgent() != null)
+		else if (aiMetadata.agent() != null)
 		{
 			try (final PrintWriter writer = new PrintWriter(bestAgentFile, "UTF-8"))
 			{
-				writer.println(aiMetadata.bestAgent().toString());
+				writer.println(aiMetadata.agent().toString());
 			}
 			catch (final FileNotFoundException | UnsupportedEncodingException e)
 			{

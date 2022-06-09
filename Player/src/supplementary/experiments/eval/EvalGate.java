@@ -186,35 +186,35 @@ public class EvalGate
 				final BestAgent bestAgent = (BestAgent)compiler.Compiler.compileObject
 				(
 					FileHandling.loadTextContentsFromFile(bestAgentDataDirFilepath + "/BestAgent.txt"), 
-					"metadata.ai.misc.BestAgent",
+					"metadata.ai.agents.BestAgent",
 					report
 				);
 						
-				if (bestAgent.agent().equals("AlphaBeta") || bestAgent.agent().equals("Alpha-Beta"))
+				if (bestAgent.constructAgentString().equals("AlphaBeta") || bestAgent.constructAgentString().equals("Alpha-Beta"))
 				{
 					return new AlphaBetaSearch(bestAgentDataDirFilepath + "/BestHeuristics.txt");
 				}
-				else if (bestAgent.agent().equals("AlphaBetaMetadata"))
+				else if (bestAgent.constructAgentString().equals("AlphaBetaMetadata"))
 				{
 					return new AlphaBetaSearch();
 				}
-				else if (bestAgent.agent().equals("UCT"))
+				else if (bestAgent.constructAgentString().equals("UCT"))
 				{
 					return AIFactory.createAI("UCT");
 				}
-				else if (bestAgent.agent().equals("MC-GRAVE"))
+				else if (bestAgent.constructAgentString().equals("MC-GRAVE"))
 				{
 					return AIFactory.createAI("MC-GRAVE");
 				}
-				else if (bestAgent.agent().equals("MAST"))
+				else if (bestAgent.constructAgentString().equals("MAST"))
 				{
 					return AIFactory.createAI("MAST");
 				}
-				else if (bestAgent.agent().equals("ProgressiveHistory") || bestAgent.agent().equals("Progressive History"))
+				else if (bestAgent.constructAgentString().equals("ProgressiveHistory") || bestAgent.constructAgentString().equals("Progressive History"))
 				{
 					return AIFactory.createAI("Progressive History");
 				}
-				else if (bestAgent.agent().equals("Biased MCTS"))
+				else if (bestAgent.constructAgentString().equals("Biased MCTS"))
 				{
 					final Features features = (Features)compiler.Compiler.compileObject
 					(
@@ -225,7 +225,7 @@ public class EvalGate
 					
 					return MCTS.createBiasedMCTS(features, 1.0);
 				}
-				else if (bestAgent.agent().equals("Biased MCTS (Uniform Playouts)"))
+				else if (bestAgent.constructAgentString().equals("Biased MCTS (Uniform Playouts)"))
 				{
 					final Features features = (Features)compiler.Compiler.compileObject
 					(
@@ -238,7 +238,7 @@ public class EvalGate
 				}
 				else
 				{
-					System.err.println("Unrecognised best agent: " + bestAgent.agent());
+					System.err.println("Unrecognised best agent: " + bestAgent.constructAgentString());
 				}
 			}
 			else if (gateAgentType.equals("Alpha-Beta"))

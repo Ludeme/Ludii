@@ -3,7 +3,7 @@ package metadata.ai;
 import annotations.Name;
 import annotations.Opt;
 import metadata.MetadataItem;
-import metadata.ai.agents.BestAgent;
+import metadata.ai.agents.Agent;
 import metadata.ai.features.Features;
 import metadata.ai.features.trees.FeatureTrees;
 import metadata.ai.heuristics.Heuristics;
@@ -27,8 +27,8 @@ public class Ai implements MetadataItem
 	
 	//-------------------------------------------------------------------------
 	
-	/** Best agent for this game */
-	private final BestAgent bestAgent;
+	/** The agent */
+	private final Agent agent;
 	
 	/** Heuristics */
 	private final Heuristics heuristics;
@@ -49,7 +49,7 @@ public class Ai implements MetadataItem
 
 	/**
 	 * Constructor
-	 * @param bestAgent Can be used to specify the agent that is expected to
+	 * @param agent Can be used to specify the agent that is expected to
 	 * perform best in this game. This algorithm will be used when the ``Ludii AI"
 	 * option is selected in the Ludii app.
 	 * @param heuristics Heuristics to be used by Alpha-Beta agents. These may be
@@ -69,7 +69,7 @@ public class Ai implements MetadataItem
 	 */
 	public Ai
 	(
-				@Opt final BestAgent bestAgent,
+				@Opt final Agent agent,
 				@Opt final Heuristics heuristics, 
 		@Name 	@Opt final Heuristics trainedHeuristics,
 				@Opt final Features features,
@@ -77,7 +77,7 @@ public class Ai implements MetadataItem
 		@Name	@Opt final FeatureTrees trainedFeatureTrees
 	)
 	{
-		this.bestAgent = bestAgent;
+		this.agent = agent;
 		this.heuristics = heuristics;
 		this.trainedHeuristics = trainedHeuristics;
 		this.features = features;
@@ -88,11 +88,11 @@ public class Ai implements MetadataItem
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @return Metadata item describing best agent
+	 * @return Metadata item describing agent
 	 */
-	public BestAgent bestAgent()
+	public Agent agent()
 	{
-		return bestAgent;
+		return agent;
 	}
 	
 	/**
@@ -149,8 +149,8 @@ public class Ai implements MetadataItem
 		
 		sb.append("    (ai\n");
 		
-		if (bestAgent != null)
-			sb.append("        " + bestAgent.toString() + "\n");
+		if (agent != null)
+			sb.append("        " + agent.toString() + "\n");
 			
 		if (heuristics != null)
 			sb.append("        " + heuristics.toString() + "\n");

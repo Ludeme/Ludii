@@ -679,9 +679,9 @@ public class AIFactory
 		else
 			bestAgent = "UCT";
 		
-		if (game.metadata().ai().bestAgent() != null)
+		if (game.metadata().ai().agent() != null)
 		{
-			bestAgent = game.metadata().ai().bestAgent().agent();
+			bestAgent = game.metadata().ai().agent().constructAgentString();
 		}
 		
 		final AI ai = createAI(bestAgent);

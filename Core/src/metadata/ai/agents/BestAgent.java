@@ -1,7 +1,6 @@
 package metadata.ai.agents;
 
 import main.StringRoutines;
-import metadata.ai.AIItem;
 
 /**
  * Describes the name of an algorithm or agent that is typically expected to
@@ -13,7 +12,7 @@ import metadata.ai.AIItem;
  *
  * @author Dennis Soemers
  */
-public final class BestAgent implements AIItem
+public final class BestAgent implements Agent
 {
 	
 	//-------------------------------------------------------------------------
@@ -36,10 +35,8 @@ public final class BestAgent implements AIItem
 	
 	//-------------------------------------------------------------------------
 	
-	/**
-	 * @return Agent name
-	 */
-	public String agent()
+	@Override
+	public String constructAgentString()
 	{
 		return agent;
 	}

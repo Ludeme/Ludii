@@ -213,11 +213,11 @@ public class UpdateAIMetadata
 					BestAgent bestAgent = (BestAgent)compiler.Compiler.compileObject
 					(
 						FileHandling.loadTextContentsFromFile(bestAgentsFile.getAbsolutePath()), 
-						"metadata.ai.misc.BestAgent",
+						"metadata.ai.agents.BestAgent",
 						new Report()
 					);
 					
-					if (bestAgent.agent().equals("AlphaBetaMetadata"))
+					if (bestAgent.constructAgentString().equals("AlphaBetaMetadata"))
 						bestAgent = new BestAgent("Alpha-Beta");
 
 					stringsToWrite.add(bestAgent.toString());
@@ -302,7 +302,7 @@ public class UpdateAIMetadata
 				final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
 				final String defStr = StringRoutines.quote(gameName + "_ai");
 				
-				if (defaultGame.metadata().ai().bestAgent() == null)
+				if (defaultGame.metadata().ai().agent() == null)
 				{
 					if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
 					{
