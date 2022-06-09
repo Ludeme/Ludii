@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.view.panels;
 
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,10 @@ public class MainPanel extends JPanel {
         panel = new JScrollPane(editor_panel);
         //panel.getVerticalScrollBar().setValue(editor_panel.getHeight()/2);
         //panel.getHorizontalScrollBar().setValue(editor_panel.getWidth()/2);
-        add(panel, BorderLayout.CENTER);
+
+        JSplitPane splitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, new EditorSidebar());
+        splitPanel.setResizeWeight(0.9);
+        add(splitPanel, BorderLayout.CENTER);
 
         MouseAdapter ma = new MouseAdapter() {
 

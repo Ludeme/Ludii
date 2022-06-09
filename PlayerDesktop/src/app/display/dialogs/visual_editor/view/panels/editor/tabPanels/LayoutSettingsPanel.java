@@ -1,11 +1,14 @@
-package app.display.dialogs.visual_editor.view.panels.settings;
+package app.display.dialogs.visual_editor.view.panels.editor.tabPanels;
 
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LayoutSettingsPanel extends JPanel
 {
@@ -16,6 +19,8 @@ public class LayoutSettingsPanel extends JPanel
 
     public LayoutSettingsPanel(IGraphPanel graphPanel)
     {
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         lh = graphPanel.getLayoutHandler();
 
         dSl = new JSlider(0, 100);
@@ -32,6 +37,14 @@ public class LayoutSettingsPanel extends JPanel
         JCheckBox auto = new JCheckBox("Redraw automatically");
         JCheckBox metrics = new JCheckBox("Use slider metrics");
         metrics.setSelected(true);
+        JCheckBox autoPlacement = new JCheckBox("Automatic placement");
+        autoPlacement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Handler.setAutoplacement(autoPlacement.isSelected());
+            }
+        });
+        JCheckBox layerPlacement = new JCheckBox("Layer placement");
 
         JTextField dmTextField = new JTextField("3000");
         JLabel dmLabel = new JLabel("DM");
@@ -96,8 +109,16 @@ public class LayoutSettingsPanel extends JPanel
 
         add(spreadText);
         add(sSl);
+        redraw.setMaximumSize(new Dimension(550, 25));
+        //JPanel btnPanel = new JPanel();
+        //btnPanel.add(redraw);
+        //btnPanel.setMaximumSize(new Dimension(50,25));
         add(redraw);
         add(auto);
+
+        add(autoPlacement);
+        add(layerPlacement);
+
         //add(evaluate);
         //add(metrics);
 

@@ -121,4 +121,9 @@ public class Handler {
     {
         editorPanel.addNodeToSelections(lnc);
     }
+
+    public static void setAutoplacement(boolean var) {editorPanel.setAutoplacement(var);}
+
+
+
 }

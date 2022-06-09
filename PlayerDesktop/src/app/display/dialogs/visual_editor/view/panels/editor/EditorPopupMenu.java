@@ -1,13 +1,10 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
-import app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.GraphPanel;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.settings.LayoutSettingsPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class EditorPopupMenu extends JPopupMenu {
 
@@ -35,11 +32,7 @@ public class EditorPopupMenu extends JPopupMenu {
         });
 
         compact.addActionListener(e -> {
-            LayoutHandler lm = graphPanel.getLayoutHandler();
-            lm.evaluateGraphWeights();
-            lm.executeLayout();
-
-            graphPanel.drawGraph(graphPanel.getGraph());
+            LayoutHandler.applyOnPanel(graphPanel);
         });
 
         settings.addActionListener(e -> {

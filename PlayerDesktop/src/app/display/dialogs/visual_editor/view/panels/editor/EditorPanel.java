@@ -59,6 +59,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     // list of selected nodes
     private List<LudemeNodeComponent> selectedLnc = new ArrayList<>();
 
+    // node autoplacement
+    private boolean autoplacement = false;
+
     // window to add a new ludeme out of all possible ones
     private AddLudemeWindow addLudemeWindow = new AddLudemeWindow(symbols, this, false);
     // window to add a new ludeme as an input
@@ -513,6 +516,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         Handler.removeNode(graph, node);
         remove(lc);
         repaint();
+        if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
     }
 
     @Override
@@ -572,6 +576,7 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                     {
                         showCurrentlyAvailableLudemes(e.getX(), e.getY());
                     }
+                    if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
                 }
             }
             else
@@ -733,6 +738,11 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     public List<LudemeNodeComponent> getSelectedLnc()
     {
         return selectedLnc;
+    }
+
+    public void setAutoplacement(boolean autoplacement)
+    {
+        this.autoplacement = autoplacement;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
