@@ -940,7 +940,7 @@ public class FindBestBaseAgentScriptsGen
         	final String arg2 = "Classification";
         	final String arg3 = conceptNameString;
         	final String arg4 = conceptValueString;
-        	final Process p = Runtime.getRuntime().exec("conda.bat activate DefaultEnv && python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
+        	final Process p = Runtime.getRuntime().exec("conda.bat activate DefaultEnv && python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/External/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
 
         	// Read file output
         	final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
