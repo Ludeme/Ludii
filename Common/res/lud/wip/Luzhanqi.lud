@@ -1,5 +1,6 @@
 (define "Circles" (sites {11 13 21 23 39 41 49 51}))
 (define "Squares" (sites {30..32}))
+(define "Fortresses" (sites {1 3 59 61}))
 
 //------------------------------------------------------------------------------
 
@@ -40,9 +41,12 @@
   (graphics {
       (show Edges Diagonal Hidden) 
       (show Edges Thin (colour Black))
+      (show Symbol "disc" 31 fillColour:(colour Grey) edgeColour:(colour Black) scale:0.9 offsetX:2)
+      (show Symbol "disc" 31 fillColour:(colour Grey) edgeColour:(colour Black) scale:0.9 offsetX:-2)
       (show Symbol "disc" ("Circles") fillColour:(colour White) edgeColour:(colour Black) scale:0.9)
       (show Symbol "square" ("Squares") fillColour:(colour White) edgeColour:(colour Black) scale:1)
-      (show Symbol "rectangle" (difference (sites Board) (union ("Circles") ("Squares"))) fillColour:(colour White) edgeColour:(colour Black) scaleX:1 scaleY:0.2)
+      (show Symbol "rectangle" ("Fortresses") fillColour:(colour Grey) edgeColour:(colour Black) scaleX:1.2 scaleY:0.2)
+      (show Symbol "rectangle" (difference (sites Board) (union {("Circles") ("Squares") ("Fortresses")})) fillColour:(colour White) edgeColour:(colour Black) scaleX:1 scaleY:0.2)
   })
   
 )
