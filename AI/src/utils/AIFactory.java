@@ -652,6 +652,8 @@ public class AIFactory
 							"metadata.ai.Ai",
 							new Report()
 						);
+				
+				return createAI(aiMetadata.agent().constructAgentString());
 			}
 			catch (final IOException e)
 			{
