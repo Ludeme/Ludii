@@ -1,3 +1,8 @@
+(define "Circles" (sites {11 13 21 23 39 41 49 51}))
+(define "Squares" (sites {30..32}))
+
+//------------------------------------------------------------------------------
+
 (game "Luzhanqi"
 		(players 2)
 		(equipment {
@@ -33,7 +38,11 @@
   )
   
   (graphics {
-      (show Edges Diagonal Hidden)
+      (show Edges Diagonal Hidden) 
+      (show Edges Thin (colour Black))
+      (show Symbol "disc" ("Circles") fillColour:(colour White) edgeColour:(colour Black) scale:0.9)
+      (show Symbol "square" ("Squares") fillColour:(colour White) edgeColour:(colour Black) scale:1)
+      (show Symbol "rectangle" (difference (sites Board) (union ("Circles") ("Squares"))) fillColour:(colour White) edgeColour:(colour Black) scaleX:1 scaleY:0.2)
   })
   
 )

@@ -79,7 +79,7 @@ public class Show implements GraphicsItem
 	 */
 	public static GraphicsItem construct
 	(
-		 final ShowSiteDataType showDataType, 
+			  final ShowSiteDataType showDataType, 
 		 @Opt final SiteType type,
 		 @Opt final Integer additionalValue
 	)
