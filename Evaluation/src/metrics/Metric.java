@@ -24,7 +24,7 @@ public abstract class Metric
 	/** Brief description of what this metric measures. */ 
 	private final String notes;  
 	
-	/** Range of possible values. -1 indicates no bound.*/
+	/** Range of possible values.*/
 	private final Range<Double, Double> range;
 	
 	/** Concept associated with this Metric. */
