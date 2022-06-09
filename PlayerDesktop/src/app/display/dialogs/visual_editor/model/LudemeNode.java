@@ -9,6 +9,7 @@ import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
 import main.grammar.Clause;
+import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import java.util.ArrayList;
@@ -198,21 +199,22 @@ public class LudemeNode implements iLudemeNode, iGNode {
 
     public void addChildren(LudemeNode children){
         // Checks if child nodes was already added
-        /*
         if (!this.children.contains(children))
         {
             this.children.add(children);
             // get order of new child in current constructor
             // TODO: something goes wrong for [optional] inputs
             int order = -1;
-            for (Input in: currentConstructor.getInputs())
+
+            for (ClauseArg arg : selectedClause.args())
             {
-                if (in.getName().equals(children.getLudeme().getName()))
+                if (arg.symbol().name().equals(children.symbol().name()))
                 {
-                    order = currentConstructor.getInputs().indexOf(in);
+                    order = selectedClause.args().indexOf(arg);
                     break;
                 }
             }
+
             childrenOrder.put(children, order);
             // placing child in correct order
             for (int i = this.children.size()-1; i > 0; i--) {
@@ -222,8 +224,7 @@ public class LudemeNode implements iLudemeNode, iGNode {
                     Collections.swap(this.children, i-1, i);
                 }
             }
-        }*/
-        // TODO: Implement
+        }
     }
 
     public void removeChildren(LudemeNode children){
