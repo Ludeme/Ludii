@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
@@ -17,8 +18,10 @@ public class Handler {
 
     public static DescriptionGraph gameDescriptionGraph;
 
+    // Single EditorPanel
     public static EditorPanel editorPanel;
 
+    // Single ToolsPanel
     public static ToolsPanel toolsPanel;
 
     public static ArrayList<DescriptionGraph> history = new ArrayList<>();
@@ -98,12 +101,12 @@ public class Handler {
 
     public static void activateSelectionMode()
     {
-        editorPanel.setSELECTION_MODE(true);
+        editorPanel.enterSelectionMode();
     }
 
     public static void deactivateSelectionMode()
     {
-        editorPanel.setSELECTION_MODE(false);
+        editorPanel.exitSelectionMode();
         editorPanel.repaint();
     }
 
@@ -114,5 +117,8 @@ public class Handler {
         toolsPanel.revalidate();
     }
 
-
+    public static void selectNode(LudemeNodeComponent lnc)
+    {
+        editorPanel.addNodeToSelections(lnc);
+    }
 }

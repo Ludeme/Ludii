@@ -7,6 +7,7 @@ import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import main.grammar.Clause;
 
 import javax.swing.*;
@@ -31,7 +32,6 @@ public class LudemeNodeComponent extends JPanel {
     private LHeader header;
     private LInputArea inputArea;
 
-    private boolean MOVE_DESCENDANTS = false;
     private boolean SELECTED = false;
 
     public LudemeNodeComponent(LudemeNode ludemeNode, IGraphPanel graphPanel){
@@ -98,7 +98,6 @@ public class LudemeNodeComponent extends JPanel {
         repaint();
 
     }
-
 
     public void updatePositions() {
         if(inputArea == null || header == null) {
@@ -180,36 +179,21 @@ public class LudemeNodeComponent extends JPanel {
         public void mouseDragged(MouseEvent e) {
             super.mouseDragged(e);
 
-            if (!MOVE_DESCENDANTS)
-            {
-                LudemeNodeComponent.this.setLocation(e.getX()+e.getComponent().getLocation().x - LudemeNodeComponent.this.x,
-                        e.getY()+e.getComponent().getLocation().y - LudemeNodeComponent.this.y);
-                updatePositions();
-            }
-            else
-            {
-                int initX = position.x;
-                int initY = position.y;
+            int initX = position.x;
+            int initY = position.y;
 
-                e.translatePoint(e.getComponent().getLocation().x - LudemeNodeComponent.this.x, e.getComponent().getLocation().y - LudemeNodeComponent.this.y);
-                LudemeNodeComponent.this.setLocation(e.getX(), e.getY());
-                updatePositions();
-                Point posDif = new Point(position.x-initX, position.y-initY);
-
-                // iterate children in BFS
-                java.util.List<LudemeNodeComponent> Q = new ArrayList<>();
-                Q.add(LudemeNodeComponent.this);
-                while (!Q.isEmpty())
-                {
-                    LudemeNodeComponent lnc = Q.remove(0);
+            e.translatePoint(e.getComponent().getLocation().x - LudemeNodeComponent.this.x, e.getComponent().getLocation().y - LudemeNodeComponent.this.y);
+            LudemeNodeComponent.this.setLocation(e.getX(), e.getY());
+            updatePositions();
+            Point posDif = new Point(position.x-initX, position.y-initY);
+            // if selection was performed move all others selected nodes with respect to the dragged one
+            if (SELECTED)
+            {
+                List<LudemeNodeComponent> Q = ((EditorPanel) getGraphPanel()).getSelectedLnc();
+                Q.forEach(lnc -> {
                     if (!lnc.equals(LudemeNodeComponent.this)) lnc.setLocation(lnc.getLocation().x+posDif.x, lnc.getLocation().y+posDif.y);
                     lnc.updatePositions();
-
-                    List<Integer> children = lnc.LUDEME_NODE.getChildren();
-                    children.forEach(v -> {
-                        Q.add(GRAPH_PANEL.getNodeComponent(GRAPH_PANEL.getGraph().getNode(v)));
-                    });
-                }
+                });
             }
             updatePositions();
             getGraphPanel().repaint();
@@ -228,14 +212,22 @@ public class LudemeNodeComponent extends JPanel {
         public void mouseClicked(MouseEvent e)
         {
             super.mouseClicked(e);
-            if (e.getClickCount() == 1)
+            // when double click is performed on a node add its descendant into selection list
+            if (e.getClickCount() >= 2)
             {
-                MOVE_DESCENDANTS = false;
-            }
-            else
-            {
-                System.out.println("TRUE");
-                MOVE_DESCENDANTS = true;
+                List<LudemeNodeComponent> Q = new ArrayList<>();
+                Q.add(LudemeNodeComponent.this);
+                while (!Q.isEmpty())
+                {
+                    LudemeNodeComponent lnc = Q.remove(0);
+                    Handler.selectNode(lnc);
+
+                    List<Integer> children = lnc.LUDEME_NODE.getChildren();
+                    children.forEach(v -> {
+                        Q.add(GRAPH_PANEL.getNodeComponent(GRAPH_PANEL.getGraph().getNode(v)));
+                    });
+                }
+                getGraphPanel().repaint();
             }
         }
 

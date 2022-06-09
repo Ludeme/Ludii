@@ -57,7 +57,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     private boolean SELECTING = false;
     // flag to check if selection was performed
     private boolean SELECTED = false;
-
+    // list of selected nodes
+    private List<LudemeNodeComponent> selectedLnc = new ArrayList<>();
 
     // window to add a new ludeme out of all possible ones
     private AddLudemeWindow addLudemeWindow = new AddLudemeWindow(symbols, this, false);
@@ -215,6 +216,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
         // draw existing connections
         paintConnections(g2);
+
+        // paint ludeme nodes somewhere here...
+
 
         // Draw selection area
         if (SELECTION_MODE && !SELECTING) SelectionBox.drawSelectionModeIdle(mousePosition, g2);
@@ -543,34 +547,44 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(MouseEvent e)
+        {
             super.mouseClicked(e);
 
             System.out.println(Arrays.toString(((LudemeNode) graph.getRoot()).providedInputs()));
 
-            if(connectLudemeWindow.isVisible()){
+            if(connectLudemeWindow.isVisible())
+            {
                 cancelNewConnection();
             }
             addLudemeWindow.setVisible(false);
             connectLudemeWindow.setVisible(false);
-            if(e.getButton() == MouseEvent.BUTTON1) {
+            if(e.getButton() == MouseEvent.BUTTON1)
+            {
                 // user is drawing a new connection
-                if(selectedConnectionComponent != null) {
+                if(selectedConnectionComponent != null)
+                {
                     // if user has no chocie for next ludeme -> automatically add required ludeme
-                    if(selectedConnectionComponent.getRequiredSymbols().size() == 1) {
+                    if(selectedConnectionComponent.getRequiredSymbols().size() == 1)
+                    {
                         addNode(selectedConnectionComponent.getRequiredSymbols().get(0), e.getX(), e.getY(), true);
                     }
-                    else if(!connectLudemeWindow.isVisible() && selectedConnectionComponent.getRequiredSymbols().size() > 1) {
+                    else if(!connectLudemeWindow.isVisible() && selectedConnectionComponent.getRequiredSymbols().size() > 1)
+                    {
                         showCurrentlyAvailableLudemes(e.getX(), e.getY());
                     }
                 }
-            } else {
+            }
+            else
+            {
                 // user is selecting a connection -> cancel new connection
-                if(selectedConnectionComponent != null) {
+                if(selectedConnectionComponent != null)
+                {
                     cancelNewConnection();
                 }
             }
 
+            // When selection was performed user can clear it out by clicking on blank area
             if (SELECTED) deselectEverything();
 
             repaint();
@@ -596,10 +610,17 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             }
         }
 
+        /**
+         * - Open pop up menu right click on empty space
+         * - Select nodes that fall within selection area
+         * @param e mouse event
+         */
         public void mouseReleased(MouseEvent e){
-            if(e.getButton() == MouseEvent.BUTTON3){
+            if(e.getButton() == MouseEvent.BUTTON3)
+            {
                 openPopupMenu(e);
             }
+
             if (SELECTING && e.getButton() == MouseEvent.BUTTON1)
             {
                 Rectangle region = exitSelectionMode();
@@ -607,9 +628,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
                 {
                     graph.getNodes().forEach(n -> {
                         LudemeNodeComponent lnc = getNodeComponent(n);
-                        if (region.contains(lnc.getPosition().x, lnc.getPosition().y))
+                        if (region.intersects(lnc.getBounds()))
                         {
-                            lnc.setSELECTED(true);
+                            addNodeToSelections(lnc);
                             SELECTED = true;
                         }
                     });
@@ -619,27 +640,23 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
     };
 
-    MouseMotionListener motionListener = new MouseAdapter() {
+    MouseMotionListener motionListener = new MouseAdapter()
+    {
         @Override
-        public void mouseMoved(MouseEvent e) {
+        public void mouseMoved(MouseEvent e)
+        {
             super.mouseMoved(e);
             mousePosition = e.getPoint();
-            if (SELECTION_MODE || SELECTING) {
-                repaint();
-            }
-            if(selectedConnectionComponent != null){
-                repaint();
-            }
+            if (SELECTION_MODE) repaint();
+            if(selectedConnectionComponent != null) repaint();
         }
 
         @Override
-        public void mouseDragged(MouseEvent e) {
+        public void mouseDragged(MouseEvent e)
+        {
             super.mouseDragged(e);
             mousePosition = e.getPoint();
-            if (SELECTION_MODE || SELECTING) {
-                System.out.println("Selecting...");
-                repaint();
-            }
+            if (SELECTING) repaint();
         }
     };
 
@@ -661,11 +678,19 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         g2.draw(p2d);
     }
 
-    public void setSELECTION_MODE(boolean SELECTION_MODE) {
-        this.SELECTION_MODE = SELECTION_MODE;
+    /**
+     * Enter selection mode
+     */
+    public void enterSelectionMode()
+    {
+        this.SELECTION_MODE = true;
     }
 
-    private Rectangle exitSelectionMode()
+    /**
+     * Exit selection mode
+     * @return boundary box of the selection area
+     */
+    public Rectangle exitSelectionMode()
     {
         SELECTING = false;
         SELECTION_MODE = false;
@@ -675,17 +700,40 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         return SelectionBox.endSelection();
     }
 
+    /**
+     * Clear selection list and deselects all nodes
+     */
     private void deselectEverything()
     {
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = getNodeComponent(n);
             lnc.setSELECTED(false);
         });
+        selectedLnc = new ArrayList<>();
         SELECTED = false;
+        repaint();
+        revalidate();
     }
 
-    public boolean isSELECTION_MODE() {
+    /**
+     * Select node and add it into selection list
+     * @param lnc ludeme node component
+     */
+    public void addNodeToSelections(LudemeNodeComponent lnc)
+    {
+        SELECTED = true;
+        lnc.setSELECTED(true);
+        selectedLnc.add(lnc);
+    }
+
+    public boolean isSELECTION_MODE()
+    {
         return SELECTION_MODE;
+    }
+
+    public List<LudemeNodeComponent> getSelectedLnc()
+    {
+        return selectedLnc;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
