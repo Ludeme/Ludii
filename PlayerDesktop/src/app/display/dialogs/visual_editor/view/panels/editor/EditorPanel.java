@@ -9,13 +9,10 @@ import app.display.dialogs.visual_editor.model.grammar.Ludeme;
 import app.display.dialogs.visual_editor.model.grammar.parser.Parser;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.InputInformation;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import grammar.Grammar;
@@ -25,22 +22,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
 
-public class EditorPanel extends JPanel implements IGraphPanel {
+public class EditorPanel extends JPanel implements IGraphPanel
+{
 
     private DescriptionGraph graph = new DescriptionGraph();
-    private List<LudemeNodeComponent> nodeComponents = new ArrayList<>();
-    private List<LudemeConnection> edges = new ArrayList<>();
+    private final List<LudemeNodeComponent> nodeComponents = new ArrayList<>();
+    private final List<LudemeConnection> edges = new ArrayList<>();
     private Point mousePosition;
-    private LConnectionComponent selectedConnectionComponent = null;
 
-    private LayoutHandler lm;
+    private final LayoutHandler lm;
+    private ConnectionHandler ch;
 
     private double zoomFactor = 1.0;
     private double zoomFactor0 = 1.0;
@@ -63,15 +60,14 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     private boolean autoplacement = false;
 
     // window to add a new ludeme out of all possible ones
-    private AddLudemeWindow addLudemeWindow = new AddLudemeWindow(symbols, this, false);
+    private final AddLudemeWindow addLudemeWindow = new AddLudemeWindow(symbols, this, false);
     // window to add a new ludeme as an input
-    private AddLudemeWindow connectLudemeWindow = new AddLudemeWindow(symbols, this, true);
-
-    private boolean showBackgroundDots = true;
+    private final AddLudemeWindow connectLudemeWindow = new AddLudemeWindow(symbols, this, true);
 
     private static final boolean DEBUG = true;
 
-    public EditorPanel(int width, int height){
+    public EditorPanel(int width, int height)
+    {
         setLayout(null);
         setPreferredSize(new Dimension(width, height));
         setBackground(DesignPalette.BACKGROUND_EDITOR);
@@ -98,9 +94,11 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         addLudemeNodeComponent(gameLudemeNode, false);
 
         lm = new LayoutHandler(graph, graph.getRoot().getId());
+        ch = new ConnectionHandler(edges);
     }
 
-    public EditorPanel(){
+    public EditorPanel()
+    {
         setLayout(null);
         //setPreferredSize(DesignPalette.DEFAULT_FRAME_SIZE);
         setBackground(DesignPalette.BACKGROUND_EDITOR);
@@ -126,53 +124,6 @@ public class EditorPanel extends JPanel implements IGraphPanel {
     }
 
     @Override
-    public void drawGraph(DescriptionGraph graph) {
-        if(DEBUG) System.out.println("\n[EP] Redrawing graph\n");
-        this.graph = graph;
-        removeAll();
-        nodeComponents.clear();
-        edges.clear();
-        selectedConnectionComponent = null;
-        List<LudemeNode> nodes = graph.getNodes();
-        for(LudemeNode node : nodes) {
-            //add(new LudemeBlock(node, null, 300));
-            LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
-            nodeComponents.add(lc);
-            add(lc);
-            lc.revalidate();
-        }
-        for(LudemeNodeComponent lc : nodeComponents){
-            lc.updateProvidedInputs();
-            lc.updatePositions();
-        }
-
-        add(addLudemeWindow);
-        add(connectLudemeWindow);
-
-        revalidate();
-        repaint();
-    }
-
-    @Override
-    public void updateGraph()
-    {
-        if(DEBUG) System.out.println("\n[EP] Updating graph\n");
-        for (LudemeNodeComponent lc : nodeComponents)
-        {
-            lc.revalidate();
-            lc.updateProvidedInputs();
-            lc.updateLudemePosition();
-        }
-        revalidate();
-        repaint();
-    }
-
-    @Override
-    public DescriptionGraph getGraph() {
-        return graph;
-    }
-
-    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
@@ -187,7 +138,9 @@ public class EditorPanel extends JPanel implements IGraphPanel {
             g2.transform(at);
         }
 
-        if(showBackgroundDots) {
+        boolean showBackgroundDots = true;
+        if(showBackgroundDots)
+        {
             // draw background points
             // every 50 pixel a circle
             int paddingHorizontal = 35;
@@ -197,8 +150,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
 
             // to improve performance, only draw points that are in the visible area
             Rectangle viewRect = mainPanel.getPanel().getViewport().getViewRect();
-            for (int i = paddingHorizontal; i < getWidth() - paddingHorizontal; i += frequency) {
-                for (int j = paddingvertical; j < getHeight() - paddingvertical; j += frequency) {
+            for (int i = paddingHorizontal; i < getWidth() - paddingHorizontal; i += frequency)
+            {
+                for (int j = paddingvertical; j < getHeight() - paddingvertical; j += frequency)
+                {
                     if(i < viewRect.x || i > viewRect.x + viewRect.width || j < viewRect.y || j > viewRect.y + viewRect.height) continue; // TODO this can be optimized by a lot by adding this offset to i and j
                     g2.setColor(DesignPalette.BACKGROUND_VISUAL_HELPER);
                     g2.fillOval(i, j, diameter, diameter);
@@ -212,12 +167,10 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
 
         // draw new connection
-        if(selectedConnectionComponent != null && mousePosition != null) {
-            paintNewConnection(g2, mousePosition);
-        }
+        ch.drawNewConnection(g2, mousePosition);
 
         // draw existing connections
-        paintConnections(g2);
+        ch.paintConnections(g2);
 
         // paint ludeme nodes somewhere here...
 
@@ -227,151 +180,34 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         if (SELECTION_MODE && SELECTING) SelectionBox.drawSelectionArea(mousePosition, mousePosition, g2);
     }
 
-    private void paintConnections(Graphics2D g2){
-        for(LudemeConnection e : edges){
-            ImmutablePoint inputPoint = e.getInputPosition();
-            ImmutablePoint targetPoint = e.getTargetPosition();
-
-            int cp_x = inputPoint.x + Math.abs((inputPoint.x-targetPoint.x)/2);
-            int cp1_y = inputPoint.y;
-            int cp2_y = targetPoint.y;
-
-            Path2D p2d = new Path2D.Double();
-            p2d.moveTo(inputPoint.x, inputPoint.y);
-            p2d.curveTo(cp_x, cp1_y, cp_x, cp2_y, targetPoint.x, targetPoint.y);
-            g2.draw(p2d);
+    public void showCurrentlyAvailableLudemes(int x, int y)
+    {
+        if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
+        // get game description up to current point
+        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().getInputInformations().get(0).getIndex();
+        for(InputInformation ii : ch.getSelectedConnectionComponent().getInputField().getInputInformations())
+        {
+            if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
         }
-    }
+        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().getStringRepresentation();
 
-    public void startNewConnection(LConnectionComponent source){
-        if(DEBUG) System.out.println("[EP] Start connection: " + source.getConnectionPointPosition() + " , " + source.getRequiredSymbols());
-
-        if(selectedConnectionComponent != null){
-            selectedConnectionComponent.setFill(false);
-        }
-        selectedConnectionComponent = source;
-    }
-
-    @Override
-    public void cancelNewConnection(){
-        if(selectedConnectionComponent != null) {
-            selectedConnectionComponent.setFill(false);
-            selectedConnectionComponent = null;
-        }
-    }
-
-    public void finishNewConnection(LudemeNodeComponent target){
-        addConnection(selectedConnectionComponent, target.getIngoingConnectionComponent());
-        selectedConnectionComponent = null;
-    }
-
-    @Override
-    public void addConnection(LConnectionComponent source, LIngoingConnectionComponent target) {
-
-        source.updatePosition();
-        target.updatePosition();
-
-        if(!source.getInputField().isSingle()){
-            source = source.getLudemeNodeComponent().getInputArea().addedConnection(target.getHeader().getLudemeNodeComponent(), source.getInputField()).getConnectionComponent();
-        }
-
-        source.updatePosition();
-        target.updatePosition();
-
-        source.setFill(true);
-        target.setFill(true);
-        source.setConnectedTo(target.getHeader().getLudemeNodeComponent());
-
-        // Add an edge
-        Handler.addEdge(graph, source.getLudemeNodeComponent().node(), target.getHeader().getLudemeNodeComponent().node());
-        LudemeConnection connection = new LudemeConnection(source, target);
-        edges.add(connection);
-
-        // Update the provided input in the description graph
-        // differentiate between an inputed provided to a collection and otherwise
-        if(source.getInputField().getInputInformation().collection()){
-            LudemeNode sourceNode = source.getLudemeNodeComponent().node();
-            InputInformation sourceInput = source.getInputField().getInputInformation();
-
-            // TODO: Perhaps this part should be put into LInputField.java addCollectionItem() method
-
-            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
-
-            // get children of collection
-            List<LInputField> children;
-            int numberOfChildren;
-            if(source.getInputField().parent != null){
-                children = source.getInputField().parent.children;
-                numberOfChildren = source.getInputField().parent.children.size();
-            } else {
-                children = source.getInputField().children;
-                numberOfChildren = source.getInputField().children.size();
-            }
-
-            // The provided input class just be an array. If it is null, then create it NOTE!: the first collection inputfield is not counted as a child, therefore numberOfChildren+1
-            if(sourceNode.providedInputs()[sourceInput.getIndex()] == null){
-                providedInput = new LudemeNode[numberOfChildren+1];
-            } else {
-                providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
-            }
-            // if the array is not big enough, expand it.
-            if(providedInput.length < numberOfChildren+1){
-                LudemeNode[] newProvidedInput = new LudemeNode[numberOfChildren+1];
-                System.arraycopy(providedInput, 0, newProvidedInput, 0, providedInput.length);
-                providedInput = newProvidedInput;
-            }
-            // get the index of the current input field w.r.t collection field
-            int i = children.indexOf(source.getInputField()) + 1; // + 1 because the first input field is not counted as a child
-            //if(i==-1) i = 0;
-            providedInput[i] = target.getHeader().getLudemeNodeComponent().node();
-            // TODO: REMOVE LATER
-            System.out.println("\u001B[32m"+"Calling from EP 237"+"\u001B[0m");
-            Handler.updateInput(graph, sourceNode, sourceInput.getIndex(), providedInput);
-        } else {
-            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().node().symbol().name() + " , " + target.getHeader().getLudemeNodeComponent().node().symbol().name() + " at index " + source.getInputField().getInputIndex());
-            System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
-            Handler.updateInput(graph, source.getLudemeNodeComponent().node(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().node());
-        }
-
-
+        //connectLudemeWindow.updateList(CodeCompletion.getRecommendations(symbols, gameDescription, selectedConnectionComponent.getRequiredSymbols()));
+        connectLudemeWindow.setVisible(true);
+        connectLudemeWindow.setLocation(mousePosition);
+        connectLudemeWindow.searchField.requestFocus();
+        revalidate();
         repaint();
     }
 
-
-    @Override
-    public LudemeNodeComponent getNodeComponent(LudemeNode node) {
-        for(LudemeNodeComponent lc : nodeComponents){
-            if(lc.node().equals(node)){
-                return lc;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public LudemeNode addNode(Symbol symbol, int x, int y, boolean connect) {
-        LudemeNode node = new LudemeNode(symbol, x, y);
-        //LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
-        Handler.addNode(graph, node);
-
-        addLudemeNodeComponent(node, connect);
-
-        //Handler.centerViewport(x+lc.getWidth()/2, y+lc.getHeight()/2);
-
-        repaint();
-
-        if(DEBUG) System.out.println("[EP] Added node: " + node.symbol().name());
-
-        return node;
-    }
-
-    public LudemeNode createLudemeNode(Symbol symbol, int x, int y) {
+    public LudemeNode createLudemeNode(Symbol symbol, int x, int y)
+    {
         LudemeNode node = new LudemeNode(symbol, x, y);
         Handler.addNode(graph, node);
         return node;
     }
 
-    private LudemeNodeComponent addLudemeNodeComponent(LudemeNode node, boolean connect) {
+    private void addLudemeNodeComponent(LudemeNode node, boolean connect)
+    {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         addLudemeWindow.setVisible(false);
         connectLudemeWindow.setVisible(false);
@@ -379,16 +215,12 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         add(lc);
         lc.updatePositions();
 
-        if(connect){
-            finishNewConnection(lc);
-        }
+        if(connect){ch.finishNewConnection(lc);}
 
         // expand editor
         //expandEditorPanelSize(lc);
 
         Handler.centerViewport(lc.getX()+lc.getWidth()/2, lc.getY()+lc.getHeight()/2);
-
-        return lc;
     }
 
     /**
@@ -397,7 +229,8 @@ public class EditorPanel extends JPanel implements IGraphPanel {
      * @param lnc
      * @return
      */
-    private boolean expandEditorPanelSize(LudemeNodeComponent lnc){
+    private boolean expandEditorPanelSize(LudemeNodeComponent lnc)
+    {
 
         int expandHeightBy = lnc.getHeight()*4;
         int expandWidthBy = lnc.getWidth()*4;
@@ -432,255 +265,14 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         return expanded;
     }
 
-    @Override
-    public void showAllAvailableLudemes(int x, int y) {
-        addLudemeWindow.setVisible(true);
-        addLudemeWindow.setLocation(mousePosition);
-        addLudemeWindow.searchField.requestFocus();
-        revalidate();
-        repaint();
-    }
-
-    @Override
-    public void removeAllConnections(LudemeNode node) {
-        removeAllConnections(node, true);
-    }
-
-    public void removeAllConnections(LudemeNode node, boolean onlyOutgoingConnections){
-        for(LudemeConnection e : new ArrayList<>(edges)){
-            if(e.getConnectionComponent().getLudemeNodeComponent().node().equals(node) || (!onlyOutgoingConnections && e.getIngoingConnectionComponent().getHeader().getLudemeNodeComponent().node().equals(node))){
-                edges.remove(e);
-                e.getIngoingConnectionComponent().setFill(false); // header
-                e.getConnectionComponent().setFill(false); // input
-                e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null,true);
-                System.out.println("\u001B[32m"+"Calling from EP 307"+"\u001B[0m");
-                Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().getInputIndex(), null);
-            }
-        }
-        repaint();
-    }
-
-
-    // removes all outgoing conenctions of the node's ("node") connection component "connection"
-    @Override
-    public void removeConnection(LudemeNode node, LConnectionComponent connection) {
-        if(connection.getLudemeNodeComponent().dynamic) connection.getLudemeNodeComponent().getInputArea().removedConnectionDynamic(node, connection.getInputField());
-        for(LudemeConnection e : new ArrayList<>(edges)){
-            if(e.getConnectionComponent().equals(connection)){
-                edges.remove(e);
-                e.getIngoingConnectionComponent().setFill(false); // header
-                e.getConnectionComponent().setFill(false); // input
-                e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null, true);
-                // check whether it was the element of a collection
-                if(connection.getInputField().isSingle() && connection.getInputField().getInputInformation().collection()){
-                    // if element of collection udpate the array
-                    LudemeNode[] providedInputs = (LudemeNode[]) node.providedInputs()[connection.getInputField().getInputIndex()];
-                    // find index which to remove from array
-                    int indexToUpdate;
-                    if(connection.getInputField().parent != null) {
-                        indexToUpdate = connection.getInputField().parent.children.indexOf(connection.getInputField()) + 1;
-                    } else {
-                        indexToUpdate = 0;
-                    }
-                    // set to null
-                    providedInputs[indexToUpdate] = null;
-                    System.out.println("\u001B[32m"+"Calling from EP 339"+"\u001B[0m");
-                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().node(), connection.getInputField().getInputIndex(), providedInputs);
-                } else {
-                    System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
-                    Handler.updateInput(graph, e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().getInputIndex(), null);
-                }
-            }
-        }
-        repaint();
-    }
-
-    @Override
-    public void clickedOnNode(LudemeNodeComponent lnc) {
-        LudemeNode node = lnc.node();
-        if(selectedConnectionComponent != null){
-            if(selectedConnectionComponent.getRequiredSymbols().contains(node.symbol()) && !lnc.getIngoingConnectionComponent().isFilled()) {
-                finishNewConnection(lnc);
-            }
-        }
-    }
-
-    @Override
-    public void removeNode(LudemeNode node) {
-        if(DEBUG) System.out.println("[EP] Removing node " + node.symbol().name());
-        LudemeNodeComponent lc = getNodeComponent(node);
-        nodeComponents.remove(lc);
-        removeAllConnections(node, false);
-        Handler.removeNode(graph, node);
-        remove(lc);
-        repaint();
-        if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
-    }
-
-    @Override
-    public LayoutHandler getLayoutHandler()
+    public ConnectionHandler getCh()
     {
-        return lm;
+        return ch;
     }
 
-    public void showCurrentlyAvailableLudemes(int x, int y) {
-        if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
-        // get game description up to current point
-        int upUntilIndex = selectedConnectionComponent.getInputField().getInputInformations().get(0).getIndex();
-        for(InputInformation ii : selectedConnectionComponent.getInputField().getInputInformations()){
-            if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
-        }
-        String gameDescription = selectedConnectionComponent.getLudemeNodeComponent().node().getStringRepresentation();
 
-        //connectLudemeWindow.updateList(CodeCompletion.getRecommendations(symbols, gameDescription, selectedConnectionComponent.getRequiredSymbols()));
-        connectLudemeWindow.setVisible(true);
-        connectLudemeWindow.setLocation(mousePosition);
-        connectLudemeWindow.searchField.requestFocus();
-        revalidate();
-        repaint();
-    }
 
-    MouseListener clickListener = new MouseAdapter() {
-
-        private void openPopupMenu(MouseEvent e){
-            JPopupMenu popupMenu = new EditorPopupMenu(EditorPanel.this);
-            popupMenu.show(e.getComponent(), e.getX(), e.getY());
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-            super.mouseClicked(e);
-
-            System.out.println(Arrays.toString(((LudemeNode) graph.getRoot()).providedInputs()));
-
-            if(connectLudemeWindow.isVisible())
-            {
-                cancelNewConnection();
-            }
-            addLudemeWindow.setVisible(false);
-            connectLudemeWindow.setVisible(false);
-            if(e.getButton() == MouseEvent.BUTTON1)
-            {
-                // user is drawing a new connection
-                if(selectedConnectionComponent != null)
-                {
-                    // if user has no chocie for next ludeme -> automatically add required ludeme
-                    if(selectedConnectionComponent.getRequiredSymbols().size() == 1)
-                    {
-                        addNode(selectedConnectionComponent.getRequiredSymbols().get(0), e.getX(), e.getY(), true);
-                    }
-                    else if(!connectLudemeWindow.isVisible() && selectedConnectionComponent.getRequiredSymbols().size() > 1)
-                    {
-                        showCurrentlyAvailableLudemes(e.getX(), e.getY());
-                    }
-                    if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
-                }
-            }
-            else
-            {
-                // user is selecting a connection -> cancel new connection
-                if(selectedConnectionComponent != null)
-                {
-                    cancelNewConnection();
-                }
-            }
-
-            // When selection was performed user can clear it out by clicking on blank area
-            if (SELECTED) deselectEverything();
-
-            repaint();
-            revalidate();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            super.mouseDragged(e);
-        }
-
-        public void mousePressed(MouseEvent e){
-            if(e.getButton() == MouseEvent.BUTTON3){
-                cancelNewConnection();
-                openPopupMenu(e);
-            }
-
-            if (SELECTION_MODE && e.getButton() == MouseEvent.BUTTON1)
-            {
-                SELECTING = true;
-                repaint();
-                revalidate();
-            }
-        }
-
-        /**
-         * - Open pop up menu right click on empty space
-         * - Select nodes that fall within selection area
-         * @param e mouse event
-         */
-        public void mouseReleased(MouseEvent e){
-            if(e.getButton() == MouseEvent.BUTTON3)
-            {
-                openPopupMenu(e);
-            }
-
-            if (SELECTING && e.getButton() == MouseEvent.BUTTON1)
-            {
-                Rectangle region = exitSelectionMode();
-                if (region != null)
-                {
-                    graph.getNodes().forEach(n -> {
-                        LudemeNodeComponent lnc = getNodeComponent(n);
-                        if (region.intersects(lnc.getBounds()))
-                        {
-                            addNodeToSelections(lnc);
-                            SELECTED = true;
-                        }
-                    });
-                }
-            }
-        }
-
-    };
-
-    MouseMotionListener motionListener = new MouseAdapter()
-    {
-        @Override
-        public void mouseMoved(MouseEvent e)
-        {
-            super.mouseMoved(e);
-            mousePosition = e.getPoint();
-            if (SELECTION_MODE) repaint();
-            if(selectedConnectionComponent != null) repaint();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e)
-        {
-            super.mouseDragged(e);
-            mousePosition = e.getPoint();
-            if (SELECTING) repaint();
-        }
-    };
-
-    private void paintNewConnection(Graphics2D g2, Point mousePosition){
-        ImmutablePoint connection_point = selectedConnectionComponent.getConnectionPointPosition();
-        Path2D p2d = new Path2D.Double();
-
-        //if(selectedConnectionComponent.isOutgoing()){
-            int cp_x = connection_point.x + Math.abs((connection_point.x-mousePosition.x)/2);
-            p2d.moveTo(connection_point.x, connection_point.y);
-            p2d.curveTo(cp_x, connection_point.y, cp_x, mousePosition.y, mousePosition.x, mousePosition.y);
-        //}
-        /*
-        else {
-            int cp_x = mousePosition.x + Math.abs((mousePosition.x-connection_point.x)/2);
-            p2d.moveTo(mousePosition.x, mousePosition.y);
-            p2d.curveTo(cp_x, mousePosition.y, cp_x, connection_point.y, connection_point.x, connection_point.y);
-        }*/
-        g2.draw(p2d);
-    }
+    // # Methods to handle selection #
 
     /**
      * Enter selection mode
@@ -745,14 +337,271 @@ public class EditorPanel extends JPanel implements IGraphPanel {
         this.autoplacement = autoplacement;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    MouseWheelListener wheelListener = new MouseAdapter() {
+
+
+    // # Implementation of IGraphPanel interface methods #
+
+    @Override
+    public void drawGraph(DescriptionGraph graph)
+    {
+        if(DEBUG) System.out.println("\n[EP] Redrawing graph\n");
+        this.graph = graph;
+        removeAll();
+        nodeComponents.clear();
+        edges.clear();
+        ch.setSelectedConnectionComponent(null);
+        List<LudemeNode> nodes = graph.getNodes();
+        for(LudemeNode node : nodes)
+        {
+            //add(new LudemeBlock(node, null, 300));
+            LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
+            nodeComponents.add(lc);
+            add(lc);
+            lc.revalidate();
+        }
+        for(LudemeNodeComponent lc : nodeComponents)
+        {
+            lc.updateProvidedInputs();
+            lc.updatePositions();
+        }
+
+        add(addLudemeWindow);
+        add(connectLudemeWindow);
+
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void updateGraph()
+    {
+        if(DEBUG) System.out.println("\n[EP] Updating graph\n");
+        for (LudemeNodeComponent lc : nodeComponents)
+        {
+            lc.revalidate();
+            lc.updateProvidedInputs();
+            lc.updateLudemePosition();
+        }
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public DescriptionGraph getGraph() {
+        return graph;
+    }
+
+    @Override
+    public LudemeNodeComponent getNodeComponent(LudemeNode node)
+    {
+        for(LudemeNodeComponent lc : nodeComponents)
+        {
+            if(lc.node().equals(node))
+            {
+                return lc;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public LudemeNode addNode(Symbol symbol, int x, int y, boolean connect)
+    {
+        LudemeNode node = new LudemeNode(symbol, x, y);
+        Handler.addNode(graph, node);
+        addLudemeNodeComponent(node, connect);
+        repaint();
+        if(DEBUG) System.out.println("[EP] Added node: " + node.symbol().name());
+        return node;
+    }
+
+    @Override
+    public void showAllAvailableLudemes(int x, int y)
+    {
+        addLudemeWindow.setVisible(true);
+        addLudemeWindow.setLocation(mousePosition);
+        addLudemeWindow.searchField.requestFocus();
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void clickedOnNode(LudemeNodeComponent lnc)
+    {
+        LudemeNode node = lnc.node();
+        if(ch.getSelectedConnectionComponent() != null)
+        {
+            if(ch.getSelectedConnectionComponent().getRequiredSymbols().contains(node.symbol()) && !lnc.getIngoingConnectionComponent().isFilled())
+            {
+                ch.finishNewConnection(lnc);
+            }
+        }
+    }
+
+    @Override
+    public void removeNode(LudemeNode node)
+    {
+        if(DEBUG) System.out.println("[EP] Removing node " + node.symbol().name());
+        LudemeNodeComponent lc = getNodeComponent(node);
+        nodeComponents.remove(lc);
+        ch.removeAllConnections(node, false);
+        Handler.removeNode(graph, node);
+        remove(lc);
+        repaint();
+        if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
+    }
+
+    @Override
+    public LayoutHandler getLayoutHandler()
+    {
+        return lm;
+    }
+
+
+
+    // # Mouse listeners #
+
+    MouseListener clickListener = new MouseAdapter()
+    {
+        private void openPopupMenu(MouseEvent e)
+        {
+            JPopupMenu popupMenu = new EditorPopupMenu(EditorPanel.this);
+            popupMenu.show(e.getComponent(), e.getX(), e.getY());
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            super.mouseClicked(e);
+
+            System.out.println(Arrays.toString(((LudemeNode) graph.getRoot()).providedInputs()));
+
+            if(connectLudemeWindow.isVisible())
+            {
+                ch.cancelNewConnection();
+            }
+            addLudemeWindow.setVisible(false);
+            connectLudemeWindow.setVisible(false);
+            if(e.getButton() == MouseEvent.BUTTON1)
+            {
+                // user is drawing a new connection
+                if(ch.getSelectedConnectionComponent() != null)
+                {
+                    // if user has no chocie for next ludeme -> automatically add required ludeme
+                    if(ch.getSelectedConnectionComponent().getRequiredSymbols().size() == 1)
+                    {
+                        addNode(ch.getSelectedConnectionComponent().getRequiredSymbols().get(0), e.getX(), e.getY(), true);
+                    }
+                    else if(!connectLudemeWindow.isVisible() && ch.getSelectedConnectionComponent().getRequiredSymbols().size() > 1)
+                    {
+                        showCurrentlyAvailableLudemes(e.getX(), e.getY());
+                    }
+                    if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
+                }
+            }
+            else
+            {
+                // user is selecting a connection -> cancel new connection
+                if(ch.getSelectedConnectionComponent() != null)
+                {
+                    ch.cancelNewConnection();
+                }
+            }
+
+            // When selection was performed user can clear it out by clicking on blank area
+            if (SELECTED) deselectEverything();
+
+            repaint();
+            revalidate();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            super.mouseDragged(e);
+        }
+
+        public void mousePressed(MouseEvent e)
+        {
+            if(e.getButton() == MouseEvent.BUTTON3)
+            {
+                ch.cancelNewConnection();
+                openPopupMenu(e);
+            }
+
+            if (SELECTION_MODE && e.getButton() == MouseEvent.BUTTON1)
+            {
+                SELECTING = true;
+                repaint();
+                revalidate();
+            }
+        }
+
+        /**
+         * - Open pop up menu right click on empty space
+         * - Select nodes that fall within selection area
+         * @param e mouse event
+         */
+        public void mouseReleased(MouseEvent e)
+        {
+            if(e.getButton() == MouseEvent.BUTTON3)
+            {
+                openPopupMenu(e);
+            }
+
+            if (SELECTING && e.getButton() == MouseEvent.BUTTON1)
+            {
+                Rectangle region = exitSelectionMode();
+                if (region != null)
+                {
+                    graph.getNodes().forEach(n -> {
+                        LudemeNodeComponent lnc = getNodeComponent(n);
+                        if (region.intersects(lnc.getBounds()))
+                        {
+                            addNodeToSelections(lnc);
+                            SELECTED = true;
+                        }
+                    });
+                }
+            }
+        }
+
+    };
+
+    MouseMotionListener motionListener = new MouseAdapter()
+    {
+        @Override
+        public void mouseMoved(MouseEvent e)
+        {
+            super.mouseMoved(e);
+            mousePosition = e.getPoint();
+            if (SELECTION_MODE) repaint();
+            if(ch.getSelectedConnectionComponent() != null) repaint();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+            super.mouseDragged(e);
+            mousePosition = e.getPoint();
+            if (SELECTING) repaint();
+        }
+    };
+
+
+
+    // # Mouse wheel listeners #
+
+    MouseWheelListener wheelListener = new MouseAdapter()
+    {
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
             double amount = Math.pow(1.01, e.getScrollAmount());
-            if(e.getWheelRotation() > 0){
+            if(e.getWheelRotation() > 0)
+            {
                 DesignPalette.scale((float) (Math.max(DesignPalette.SCALAR / amount, DesignPalette.MIN_SCALAR)));
-            } else {
+            }
+            else
+            {
                 DesignPalette.scale((float) (Math.min(DesignPalette.SCALAR * amount, DesignPalette.MAX_SCALAR)));
             }
             repaint();

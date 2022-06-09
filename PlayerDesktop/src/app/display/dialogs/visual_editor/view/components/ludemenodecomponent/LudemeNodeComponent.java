@@ -242,7 +242,7 @@ public class LudemeNodeComponent extends JPanel {
 
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);
-                getGraphPanel().cancelNewConnection();
+                getGraphPanel().getCh().cancelNewConnection();
             }
             else {
                 getGraphPanel().clickedOnNode(LudemeNodeComponent.this);
@@ -259,7 +259,7 @@ public class LudemeNodeComponent extends JPanel {
 
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);
-                getGraphPanel().cancelNewConnection();
+                getGraphPanel().getCh().cancelNewConnection();
             }
             else {
                 getGraphPanel().clickedOnNode(LudemeNodeComponent.this);

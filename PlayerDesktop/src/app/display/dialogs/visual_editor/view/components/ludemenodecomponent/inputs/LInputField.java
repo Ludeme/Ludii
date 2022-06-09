@@ -239,7 +239,7 @@ public class LInputField extends JComponent {
             Handler.updateInput(graphPanel.getGraph(), LNC.node(), getInputIndex(), newProvidedInputs);
         }
 
-        graphPanel.removeConnection(LNC.node(), this.getConnectionComponent());
+        graphPanel.getCh().removeConnection(LNC.node(), this.getConnectionComponent());
 
         LNC.getInputArea().removeField(this);
         parent.children.remove(this);
@@ -332,14 +332,14 @@ public class LInputField extends JComponent {
                     } else {
                         connectionComponentChild = children.get(childrenIndex).getConnectionComponent();
                     }
-                    graphPanel.addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).getIngoingConnectionComponent());
+                    graphPanel.getCh().addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).getIngoingConnectionComponent());
                 }
             }
         }
         else if(inputFieldComponent == connectionComponent){
             // then its ludeme input
             IGraphPanel graphPanel = LNC.getGraphPanel();
-            graphPanel.addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).getIngoingConnectionComponent());
+            graphPanel.getCh().addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).getIngoingConnectionComponent());
         }
         if(inputFieldComponent instanceof JTextField) ((JTextField)inputFieldComponent).setText((String)input);
         if(inputFieldComponent instanceof JSpinner) ((JSpinner)inputFieldComponent).setValue(input);
