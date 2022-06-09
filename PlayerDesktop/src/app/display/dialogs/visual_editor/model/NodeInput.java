@@ -1,4 +1,4 @@
-package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
+package app.display.dialogs.visual_editor.model;
 
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
@@ -16,6 +16,11 @@ import java.util.stream.Collectors;
 public class NodeInput {
     private final List<ClauseArg> ARGS;
 
+    /**
+     * Constructor for NodeInput
+     * @param clause
+     * @param arg
+     */
     public NodeInput(Clause clause, ClauseArg arg){
         // add argument to list
         ARGS = new ArrayList<>();
@@ -31,14 +36,24 @@ public class NodeInput {
         }
     }
 
+    /**
+     * @return the list of ClauseArgs this NodeInput encompasses
+     */
     public List<ClauseArg> args(){
         return ARGS;
     }
 
+    /**
+     * @return the first ClauseArg this NodeInput encompasses
+     */
     public ClauseArg arg(){
         return ARGS.get(0);
     }
 
+
+    /**
+     * @return Size of the list of ClauseArgs this NodeInput encompasses
+     */
     public int size(){
         return ARGS.size();
     }

@@ -2,16 +2,12 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.model.InputInformation;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
-import app.display.dialogs.visual_editor.model.grammar.input.Input;
-import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
-import app.display.dialogs.visual_editor.model.grammar.input.Terminal;
-import app.display.dialogs.visual_editor.model.grammar.input.TerminalInput;
+import app.display.dialogs.visual_editor.model.NodeInput;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import gameDistance.utils.apted.node.Node;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
@@ -469,6 +465,8 @@ public class LInputField extends JComponent {
         for(InputInformation inputInformation : inputInformationList){
             requiredLudemes.addAll(inputInformation.getPossibleSymbolInputs());
         }
+        System.out.println(this + " InputInformation: getPossibleSymbolInputs: " + requiredLudemes);
+
         return requiredLudemes;
     }
 

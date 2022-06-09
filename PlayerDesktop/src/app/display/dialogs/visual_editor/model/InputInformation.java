@@ -1,11 +1,7 @@
-package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
+package app.display.dialogs.visual_editor.model;
 
 
-import app.display.dialogs.visual_editor.model.grammar.Constructor;
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
-import app.display.dialogs.visual_editor.model.grammar.input.ChoiceInput;
-import app.display.dialogs.visual_editor.model.grammar.input.Input;
-import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
+
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -37,12 +33,13 @@ public class InputInformation {
     private List<Symbol> getPossibleSymbolInputs(NodeInput argument){
         List<Symbol> inputs = new ArrayList<>();
         for(ClauseArg arg : argument.args()){
+            System.out.println("---- " + arg);
             inputs.add(arg.symbol());
         }
-        return inputs;
+        return inputs.stream().distinct().collect(Collectors.toList()); // remove duplicates
     }
 
-    private List<Ludeme> getPossibleLudemeInputs(Input input){
+    /*private List<Ludeme> getPossibleLudemeInputs(Input input){
         List<Ludeme> possibleLudemeInputs = new ArrayList<>();
 
 
@@ -107,7 +104,7 @@ public class InputInformation {
             return ludeme_inputs.stream().distinct().collect(Collectors.toList());
         }
         return null;
-    }
+    }*/
 
 
     public List<Symbol> getPossibleSymbolInputs(){

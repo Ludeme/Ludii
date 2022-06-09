@@ -1,8 +1,5 @@
 package app.display.dialogs.visual_editor.model.interfaces;
 
-import app.display.dialogs.visual_editor.model.grammar.Constructor;
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
-import app.display.dialogs.visual_editor.model.grammar.input.Input;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 

@@ -5,14 +5,11 @@ import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHa
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
-import app.display.dialogs.visual_editor.model.grammar.parser.Parser;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.InputInformation;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
+import app.display.dialogs.visual_editor.model.InputInformation;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import grammar.Grammar;
@@ -43,8 +40,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     private double zoomFactor0 = 1.0;
     private boolean zoomed = false;
 
-    // Reads grammar from file and generates all ludemes
-    Parser p = new Parser();
+
     List<Symbol> symbols = Grammar.grammar().symbols();
 
     // flag to check if select button is active
@@ -80,9 +76,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         add(addLudemeWindow);
         add(connectLudemeWindow);
 
-        Ludeme gameLudeme = null;
-        for(Ludeme l : p.getLudemes())
-            if(l.getName().equals("game")) gameLudeme = l;
 
         /*
         graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
@@ -189,9 +182,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
         {
             if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
         }
-        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().getStringRepresentation();
 
-        //connectLudemeWindow.updateList(CodeCompletion.getRecommendations(symbols, gameDescription, selectedConnectionComponent.getRequiredSymbols()));
+        connectLudemeWindow.updateList(ch.getSelectedConnectionComponent().getRequiredSymbols());
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();
@@ -223,54 +215,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
         Handler.centerViewport(lc.getX()+lc.getWidth()/2, lc.getY()+lc.getHeight()/2);
     }
 
-    /**
-     * Expands the editor panel size if nodes are close to the border
-     * TODO: Not working
-     * @param lnc
-     * @return
-     */
-    private boolean expandEditorPanelSize(LudemeNodeComponent lnc)
-    {
-
-        int expandHeightBy = lnc.getHeight()*4;
-        int expandWidthBy = lnc.getWidth()*4;
-
-        int x = lnc.getX(), y = lnc.getY();
-
-        int additionalHeight = expandHeightBy - y;
-        int additionalWidth = expandWidthBy - x;
-
-        boolean expanded = false;
-        int newHeight = getHeight(), newWidth = getWidth();
-
-        if(additionalHeight > 0){
-            newHeight = getHeight() + additionalHeight;
-            expanded = true;
-        }
-        if(additionalWidth > 0){
-            newWidth = getWidth() + additionalWidth;
-            expanded = true;
-        }
-
-        if(expanded){
-            System.out.println("Expanding from " + getSize() + " to " + new Dimension(newWidth, newHeight));
-        }
-
-        setPreferredSize(new Dimension(newWidth, newHeight));
-        setSize(getPreferredSize());
-
-        repaint();
-        revalidate();
-
-        return expanded;
-    }
 
     public ConnectionHandler getCh()
     {
         return ch;
     }
-
-
 
     // # Methods to handle selection #
 

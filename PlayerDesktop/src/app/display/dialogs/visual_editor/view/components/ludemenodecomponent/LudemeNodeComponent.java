@@ -58,10 +58,6 @@ public class LudemeNodeComponent extends JPanel {
         // LNC cannot be dynamic if its a terminal node or all constructors have size one
         if(!ludemeNode.canBeDynamic()) dynamic = false;
 
-
-        // sync dynamic boolean with model node
-        ludemeNode.setDynamic(dynamic); // TODO: Shouldnt be done here
-
         header = new LHeader(this);
         inputArea = new LInputArea(this);
 

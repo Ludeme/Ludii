@@ -2,10 +2,6 @@ package app.display.dialogs.visual_editor.model;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
-import app.display.dialogs.visual_editor.model.grammar.Constructor;
-import app.display.dialogs.visual_editor.model.grammar.Ludeme;
-import app.display.dialogs.visual_editor.model.grammar.input.Input;
-import app.display.dialogs.visual_editor.model.grammar.input.LudemeInput;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
 import main.grammar.Clause;
@@ -55,30 +51,23 @@ public class LudemeNode implements iLudemeNode, iGNode {
     public LudemeNode(Symbol symbol, int x, int y) {
         this.ID = LAST_ID++;
         this.SYMBOL = symbol;
-        this.CLAUSES = new ArrayList<>(symbol.rule().rhs());
+        if(symbol.rule().rhs() == null){
+            this.CLAUSES = new ArrayList<>();
+        } else {
+            this.CLAUSES = symbol.rule().rhs();
+        }
         this.x = x;
         this.y = y;
         this.width = 100;
         this.height = 100;
-        this.selectedClause = symbol.rule().rhs().get(0);
+        if(symbol.rule().rhs() != null) this.selectedClause = symbol.rule().rhs().get(0);
         while(selectedClause.args() == null) {
             selectedClause = selectedClause.symbol().rule().rhs().get(0);
         }
         this.providedInputs = new Object[selectedClause.args().size()];
     }
 
-    /*
-    public LudemeNode(Ludeme ludeme, int x, int y){
-        LAST_ID++;
-        this.ID = LAST_ID;
 
-        this.LUDEME = ludeme;
-        this.currentConstructor = ludeme.getConstructors().get(0); // automatically first one
-        this.providedInputs = new Object[currentConstructor.getInputs().size()];
-        this.x = x;
-        this.y = y;
-    }
-*/
     @Override
     public int getId() {
         return ID;
