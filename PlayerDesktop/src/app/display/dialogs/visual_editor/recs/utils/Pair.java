@@ -1,4 +1,4 @@
-package app.display.dialogs.visual_editor.recs.utils;
+package utils;
 
 public class Pair<R, S> {
     private final R r;

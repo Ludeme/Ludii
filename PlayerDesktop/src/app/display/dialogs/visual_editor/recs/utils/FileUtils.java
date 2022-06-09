@@ -1,4 +1,4 @@
-package app.display.dialogs.visual_editor.recs.utils;
+package utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileUtils {
-    public static boolean isFileDotLud(String fileName) {
+    public static boolean isFileCSV(String fileName) {
         if(!fileName.contains("."))
             return false;
-        return ".lud".equals(fileName.substring(fileName.length() - 4));
+        return ".csv".equals(fileName.substring(fileName.length() - 4));
     }
 
     /**
@@ -72,6 +72,11 @@ public class FileUtils {
             }
         }
         return files;
+    }
+
+    public static ArrayList<File> listFilesForFolder(String pathname) {
+        File folder = new File(pathname);
+        return listFilesForFolder(folder);
     }
 
     /**
