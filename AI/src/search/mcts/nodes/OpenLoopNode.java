@@ -8,6 +8,7 @@ import main.collections.FVector;
 import main.collections.FastArrayList;
 import other.context.Context;
 import other.move.Move;
+import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 
 /**
@@ -341,7 +342,11 @@ public final class OpenLoopNode extends BaseNode
 				}
 				
 				final FVector dist = FVector.wrap(logits);
-				dist.softmax();
+				
+				if (mcts.learnedSelectionPolicy() instanceof SoftmaxPolicy)
+					dist.softmax();
+				else
+					dist.normalise();
 				
 				if (root)
 				{

@@ -1,7 +1,5 @@
 package policies.softmax;
 
-import other.context.Context;
-import other.move.Move;
 import policies.Policy;
 
 /**
@@ -29,15 +27,6 @@ public abstract class SoftmaxPolicy extends Policy
 	
 	/** Auto-end playouts in a draw if they take more turns than this */
 	protected int playoutTurnLimit = -1;
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param context
-	 * @param move
-	 * @return Logit for a single move in a single state
-	 */
-	public abstract float computeLogit(final Context context, final Move move);
 	
 	//-------------------------------------------------------------------------
 

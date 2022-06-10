@@ -35,5 +35,14 @@ public abstract class Policy extends AI implements PlayoutStrategy
 	);
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param context
+	 * @param move
+	 * @return Logit for a single move in a single state
+	 */
+	public abstract float computeLogit(final Context context, final Move move);
+	
+	//-------------------------------------------------------------------------
 
 }
