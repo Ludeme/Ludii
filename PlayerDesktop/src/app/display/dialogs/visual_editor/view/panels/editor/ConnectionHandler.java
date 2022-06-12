@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -97,14 +98,14 @@ public class ConnectionHandler
 
         // Update the provided input in the description graph
         // differentiate between an inputed provided to a collection and otherwise
-        if(source.getInputField().getInputInformation().collection())
+        if(source.getInputField().getNodeArgument().collection())
         {
             LudemeNode sourceNode = source.getLudemeNodeComponent().node();
-            InputInformation sourceInput = source.getInputField().getInputInformation();
+            NodeArgument sourceInput = source.getInputField().getNodeArgument();
 
             // TODO: Perhaps this part should be put into LInputField.java addCollectionItem() method
 
-            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
+            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.indexFirst()];
 
             // get children of collection
             List<LInputField> children;
@@ -121,13 +122,13 @@ public class ConnectionHandler
             }
 
             // The provided input class just be an array. If it is null, then create it NOTE!: the first collection inputfield is not counted as a child, therefore numberOfChildren+1
-            if(sourceNode.providedInputs()[sourceInput.getIndex()] == null)
+            if(sourceNode.providedInputs()[sourceInput.indexFirst()] == null)
             {
                 providedInput = new LudemeNode[numberOfChildren+1];
             }
             else
             {
-                providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
+                providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.indexFirst()];
             }
             // if the array is not big enough, expand it.
             if(providedInput.length < numberOfChildren+1)
@@ -142,7 +143,7 @@ public class ConnectionHandler
             providedInput[i] = target.getHeader().ludemeNodeComponent().node();
             // TODO: REMOVE LATER
             System.out.println("\u001B[32m"+"Calling from EP 237"+"\u001B[0m");
-            Handler.updateInput(Handler.editorPanel.getGraph(), sourceNode, sourceInput.getIndex(), providedInput);
+            Handler.updateInput(Handler.editorPanel.getGraph(), sourceNode, sourceInput.indexFirst(), providedInput);
         }
         else
         {
@@ -192,7 +193,7 @@ public class ConnectionHandler
                 e.getConnectionComponent().setConnectedTo(null);
                 e.getConnectionComponent().getInputField().getLudemeNodeComponent().inputArea().updateComponent(node, null, true);
                 // check whether it was the element of a collection
-                if(connection.getInputField().isSingle() && connection.getInputField().getInputInformation().collection())
+                if(connection.getInputField().isSingle() && connection.getInputField().getNodeArgument().collection())
                 {
                     // if element of collection udpate the array
                     LudemeNode[] providedInputs = (LudemeNode[]) node.providedInputs()[connection.getInputField().getInputIndex()];

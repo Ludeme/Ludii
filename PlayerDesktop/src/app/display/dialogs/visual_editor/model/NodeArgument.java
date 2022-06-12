@@ -88,7 +88,8 @@ public class NodeArgument
      * @param clause the Clause to find possible Symbols for
      * @return list of Symbols that may be provided as input for the given Clause
      */
-    private List<Symbol> possibleSymbolInputsExpanded(List<Clause> visited, Clause clause){
+    private List<Symbol> possibleSymbolInputsExpanded(List<Clause> visited, Clause clause)
+    {
         List<Symbol> possibleSymbolInputs = new ArrayList<>();
         // if clause is already visited, return empty list
         if(visited.contains(clause)) return possibleSymbolInputs;
@@ -132,6 +133,12 @@ public class NodeArgument
         List<Symbol> possibleSymbolInputs = new ArrayList<>();
         // Ignore constant symbols
         if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Constant)) return possibleSymbolInputs;
+        // If the argument has no rules, but another returnType, then expand it instead
+        if(arg.symbol().rule().rhs().size() == 0)
+        {
+            ClauseArg arg2 = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
+            return possibleSymbolInputsExpanded(visited, arg2);
+        }
         if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Structural) && !isTerminal(arg.symbol()))
         {
             for(Clause clause : arg.symbol().rule().rhs())

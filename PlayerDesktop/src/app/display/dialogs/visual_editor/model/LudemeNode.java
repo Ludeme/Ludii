@@ -69,9 +69,18 @@ public class LudemeNode implements iLudemeNode, iGNode
         this.y = y;
         this.width = 100; // width and height are hard-coded for now, updated later
         this.height = 100;
-        if(CLAUSES != null) {
-            this.selectedClause = CLAUSES.get(0);
-            this.providedInputs = new Object[CLAUSES.get(0).args().size()];
+        if(CLAUSES != null)
+        {
+            if(CLAUSES.size() > 0)
+            {
+                this.selectedClause = CLAUSES.get(0);
+                this.providedInputs = new Object[selectedClause.args().size()];
+            }
+            else
+            {
+                this.selectedClause = null;
+                this.providedInputs = new Object[0];
+            }
         } else {
             this.selectedClause = null;
             this.providedInputs = null;

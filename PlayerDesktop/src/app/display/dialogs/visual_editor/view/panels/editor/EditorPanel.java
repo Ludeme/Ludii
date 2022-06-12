@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHa
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -177,10 +178,10 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
         // get game description up to current point
-        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().getInputInformations().get(0).getIndex();
-        for(InputInformation ii : ch.getSelectedConnectionComponent().getInputField().getInputInformations())
+        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().getNodeArguments().get(0).indexFirst();
+        for(NodeArgument ii : ch.getSelectedConnectionComponent().getInputField().getNodeArguments())
         {
-            if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
+            if(ii.indexFirst() < upUntilIndex) upUntilIndex = ii.indexFirst();
         }
 
         connectLudemeWindow.updateList(ch.getSelectedConnectionComponent().getRequiredSymbols());
