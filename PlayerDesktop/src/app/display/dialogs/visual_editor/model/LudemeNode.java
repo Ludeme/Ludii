@@ -18,7 +18,8 @@ import java.util.List;
  * @author Filipp Dokienko
  */
 
-public class LudemeNode implements iLudemeNode, iGNode {
+public class LudemeNode implements iLudemeNode, iGNode
+{
 
     /** ID of last node */
     private static int LAST_ID = 0;
@@ -50,25 +51,35 @@ public class LudemeNode implements iLudemeNode, iGNode {
      */
     private boolean dynamic = false; // TODO: Not hard-coded
 
-
-    public LudemeNode(Symbol symbol, int x, int y) {
+    /**
+     * Constructor for a new LudemeNode
+     * @param symbol Symbol/Ludeme this node represents
+     * @param x x coordinate of this node in the graph
+     * @param y y coordinate of this node in the graph
+     */
+    public LudemeNode(Symbol symbol, int x, int y)
+    {
         this.ID = LAST_ID++;
         this.SYMBOL = symbol;
-        if(symbol.rule().rhs() == null){
-            this.CLAUSES = new ArrayList<>();
-        } else {
-            this.CLAUSES = symbol.rule().rhs();
-        }
+        this.CLAUSES = symbol.rule().rhs();
         this.x = x;
         this.y = y;
-        this.width = 100;
+        this.width = 100; // width and height are hard-coded for now, updated later
         this.height = 100;
+        if(CLAUSES != null) {
+            this.selectedClause = CLAUSES.get(0);
+            this.providedInputs = new Object[CLAUSES.get(0).args().size()];
+        } else {
+            this.selectedClause = null;
+            this.providedInputs = null;
+        }
+        /* TODO: Fix such that this is not needed. Issue: Structural nodes should not be added to the graph
         if(symbol.rule().rhs() != null) this.selectedClause = symbol.rule().rhs().get(0);
         while(selectedClause.args() == null) {
             selectedClause = selectedClause.symbol().rule().rhs().get(0);
         }
         this.providedInputs = new Object[selectedClause.args().size()];
-
+         */
         if(dynamic && !dynamicPossible()) dynamic = false;
     }
 
@@ -77,7 +88,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the symbol this node represents
      */
     @Override
-    public Symbol symbol() {
+    public Symbol symbol()
+    {
         return SYMBOL;
     }
 
@@ -85,7 +97,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      *
      * @return the list of clauses this symbol encompasses
      */
-    public List<Clause> clauses(){
+    public List<Clause> clauses()
+    {
         return CLAUSES;
     }
 
@@ -93,7 +106,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * Changes the selected clause of this node
      * @param selectedClause the selected clause to set
      */
-    public void setSelectedClause(Clause selectedClause) {
+    public void setSelectedClause(Clause selectedClause)
+    {
         this.selectedClause = selectedClause;
         this.providedInputs = new Object[selectedClause.args().size()];
     }
@@ -103,7 +117,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the currently selected clause
      */
     @Override
-    public Clause selectedClause() {
+    public Clause selectedClause()
+    {
         return selectedClause;
     }
 
@@ -112,7 +127,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the array of provided inputs
      */
     @Override
-    public Object[] providedInputs() {
+    public Object[] providedInputs()
+    {
         return providedInputs;
     }
 
@@ -122,7 +138,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @param input the input to set
      */
     @Override
-    public void setProvidedInput(int index, Object input) {
+    public void setProvidedInput(int index, Object input)
+    {
         providedInputs[index] = input;
     }
 
@@ -130,7 +147,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * Sets this node to be dynamic or not
      * @param dynamic the dynamic to set
      */
-    public void setDynamic(boolean dynamic) {
+    public void setDynamic(boolean dynamic)
+    {
         this.dynamic = dynamic;
     }
 
@@ -138,7 +156,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      *
      * @return whether it is possible to make this node dynamic
      */
-    public boolean dynamicPossible(){
+    public boolean dynamicPossible()
+    {
         if(CLAUSES.size() == 1) return false;
         for(Clause clause : CLAUSES){
             if(clause.args() == null) continue;
@@ -151,7 +170,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      *
      * @return whether this node is dynamic
      */
-    public boolean dynamic(){
+    public boolean dynamic()
+    {
         return dynamic;
     }
 
@@ -160,7 +180,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the id of this node
      */
     @Override
-    public int id() {
+    public int id()
+    {
         return ID;
     }
 
@@ -169,7 +190,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the id of this node's parent
      */
     @Override
-    public int parent() {
+    public int parent()
+    {
         return parent.id();
     }
 
@@ -177,7 +199,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      *
      * @return the parent node
      */
-    public LudemeNode parentNode(){
+    public LudemeNode parentNode()
+    {
         return parent;
     }
 
@@ -186,7 +209,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the list of children of this node
      */
     @Override
-    public List<Integer> children() {
+    public List<Integer> children()
+    {
         List<Integer> children_ids = new ArrayList<>();
         for(LudemeNode c : children) children_ids.add(c.id());
         return children_ids;
@@ -197,7 +221,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the list of siblings of this node
      */
     @Override
-    public List<Integer> siblings() {
+    public List<Integer> siblings()
+    {
         // TODO implement
         return null;
     }
@@ -207,7 +232,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the position of this node in the graph
      */
     @Override
-    public Vector2D pos() {
+    public Vector2D pos()
+    {
         return new Vector2D(x, y);
     }
 
@@ -216,7 +242,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @param pos the position to set
      */
     @Override
-    public void setPos(Vector2D pos) {
+    public void setPos(Vector2D pos)
+    {
         x = (int) pos.getX();
         y = (int) pos.getY();
     }
@@ -225,7 +252,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * Set the width of this node in the graph
      * @param width the width to set
      */
-    public void setWidth(int width){
+    public void setWidth(int width)
+    {
         this.width = width;
     }
 
@@ -234,7 +262,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the width of this node in the graph
      */
     @Override
-    public int width() {
+    public int width()
+    {
         return width;
     }
 
@@ -242,7 +271,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * Set the height of this node in the graph
      * @param height the height to set
      */
-    public void setHeight(int height){
+    public void setHeight(int height)
+    {
         this.height = height;
     }
 
@@ -251,7 +281,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the height of this node in the graph
      */
     @Override
-    public int height() {
+    public int height()
+    {
         return height;
     }
 
@@ -270,7 +301,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return the depth of this node
      */
     @Override
-    public int depth() {
+    public int depth()
+    {
         return depth;
     }
 
@@ -278,7 +310,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      *
      * @return The depth of this node computed manually
      */
-    public int depthManual(){
+    public int depthManual()
+    {
         int depth = 0;
         LudemeNode current = this;
         while(current.parentNode() != null){
@@ -295,7 +328,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @param x the x coordinate to set
      * @param y the y coordinate to set
      */
-    public void setPos(int x, int y){
+    public void setPos(int x, int y)
+    {
         this.x = x;
         this.y = y;
     }
@@ -305,7 +339,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @param ludemeNode the parent to set
      */
     @Override
-    public void setParent(iLudemeNode ludemeNode) {
+    public void setParent(iLudemeNode ludemeNode)
+    {
         this.parent = (LudemeNode) ludemeNode; // TODO: should it be casted?
     }
 
@@ -313,7 +348,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * Adds a child to this node
      * @param children the child to add
      */
-    public void addChildren(LudemeNode children){
+    public void addChildren(LudemeNode children)
+    {
         // Checks if child nodes was already added
         if (!this.children.contains(children))
         {
@@ -347,7 +383,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * Removes a child from this node
      * @param children the child to remove
      */
-    public void removeChildren(LudemeNode children){
+    public void removeChildren(LudemeNode children)
+    {
         this.children.remove(children);
     }
 
@@ -358,7 +395,8 @@ public class LudemeNode implements iLudemeNode, iGNode {
      * @return The .lud equivalent representation of this node
      */
     @Override
-    public String stringRepresentation() {
+    public String stringRepresentation()
+    {
         return ""; // TODO
     }
 

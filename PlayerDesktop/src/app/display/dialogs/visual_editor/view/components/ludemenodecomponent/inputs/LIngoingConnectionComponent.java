@@ -18,8 +18,8 @@ public class LIngoingConnectionComponent extends JComponent {
 
     public LIngoingConnectionComponent(LHeader header, int height, int radius, boolean fill){
         this.lHeader = header;
-        height = lHeader.title.getSize().height;
-        RADIUS = (int) (lHeader.title.getSize().height * 0.4);
+        height = lHeader.title().getSize().height;
+        RADIUS = (int) (lHeader.title().getSize().height * 0.4);
         this.fill = fill;
 
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -41,8 +41,8 @@ public class LIngoingConnectionComponent extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        height = lHeader.title.getSize().height;
-        RADIUS = (int) (lHeader.title.getSize().height * 0.4);
+        height = lHeader.title().getSize().height;
+        RADIUS = (int) (lHeader.title().getSize().height * 0.4);
     }
 
         public void updatePosition(){

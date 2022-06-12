@@ -220,7 +220,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public LIngoingConnectionComponent ingoingConnectionComponent()
     {
-        return header.getIngoingConnectionComponent();
+        return header.ingoingConnectionComponent();
     }
 
     /**
@@ -319,7 +319,6 @@ public class LudemeNodeComponent extends JPanel
         public void mousePressed(MouseEvent e)
         {
             super.mousePressed(e);
-            System.out.println("CLICKED");
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
             Handler.updatePosition(graphPanel().getGraph(), node(), getX(), getY());
@@ -331,7 +330,6 @@ public class LudemeNodeComponent extends JPanel
         public void mouseReleased(MouseEvent e)
         {
             super.mouseReleased(e);
-            System.out.println("RELEASED");
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
             Handler.updatePosition(graphPanel().getGraph(), node(), getX(), getY());

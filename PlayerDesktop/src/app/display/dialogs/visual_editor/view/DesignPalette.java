@@ -13,7 +13,8 @@ import java.util.Objects;
  * @author Filipp Dokienko
  */
 
-public class DesignPalette {
+public class DesignPalette
+{
 
 
     public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(1200,800);
@@ -41,6 +42,9 @@ public class DesignPalette {
     private static final int DEFAULT_HEADER_PADDING_TOP = 10;
     public static int HEADER_PADDING_TOP = (int) (DEFAULT_HEADER_PADDING_TOP * SCALAR);
 
+    private static final int DEFAULT_HEADER_TITLE_CONNECTION_SPACE = 5;
+    public static int HEADER_TITLE_CONNECTION_SPACE = (int) (DEFAULT_HEADER_TITLE_CONNECTION_SPACE * SCALAR);
+
     private static final float DEFAULT_CONNECTION_STROKE_WIDTH = 2f;
     public static float CONNECTION_STROKE_WIDTH = DEFAULT_CONNECTION_STROKE_WIDTH * SCALAR;
 
@@ -54,7 +58,8 @@ public class DesignPalette {
     public static int BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * SCALAR);
 
 
-    public static void scale(float scalar) {
+    public static void scale(float scalar)
+    {
         SCALAR = scalar;
         System.out.println("[SCALING] SCALAR: " + SCALAR);
         NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
@@ -63,6 +68,7 @@ public class DesignPalette {
         INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);
         HEADER_PADDING_BOTTOM = (int) (DEFAULT_HEADER_PADDING_BOTTOM * SCALAR);
         HEADER_PADDING_TOP = (int) (DEFAULT_HEADER_PADDING_TOP * SCALAR);
+        HEADER_TITLE_CONNECTION_SPACE = (int) (DEFAULT_HEADER_TITLE_CONNECTION_SPACE * SCALAR);
         CONNECTION_STROKE_WIDTH = DEFAULT_CONNECTION_STROKE_WIDTH * SCALAR;
         NODE_BORDER_WIDTH = (int) (DEFAULT_NODE_BORDER_WIDTH * SCALAR);
         BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * SCALAR);
@@ -161,26 +167,34 @@ public class DesignPalette {
     public static EmptyBorder HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
 
 
-    private static URL getIconURL(String path) {
+    private static URL getIconURL(String path)
+    {
         return DesignPalette.class.getResource("/icons/"+path);
     }
 
-    private static ImageIcon getIcon(String path) {
+    private static ImageIcon getIcon(String path)
+    {
         return new ImageIcon(getIconURL(path));
     }
 
-    private static void registerAllFonts(String folderName) {
+    private static void registerAllFonts(String folderName)
+    {
         String extension = ".ttf";
-        try {
+        try
+        {
             File dir = new File(DesignPalette.class.getResource("/fonts/"+folderName).toURI());
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            for (File file : Objects.requireNonNull(dir.listFiles())) {
-                if (file.getName().endsWith(extension)) {
+            for (File file : Objects.requireNonNull(dir.listFiles()))
+            {
+                if (file.getName().endsWith(extension))
+                {
                     System.out.println("Registering font: " + file.getName());
                     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,file));
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
