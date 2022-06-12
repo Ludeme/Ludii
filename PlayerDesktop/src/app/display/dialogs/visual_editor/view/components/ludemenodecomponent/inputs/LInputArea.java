@@ -3,7 +3,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.InputInformation;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.NodeInput;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import main.grammar.Clause;
@@ -170,11 +170,11 @@ public class LInputArea extends JPanel {
         } else {
             for (int i = 0; i < clause.args().size(); i++) {
                 ClauseArg arg = clause.args().get(i);
-                NodeInput nodeInput = new NodeInput(clause, arg);
-                InputInformation ii = new InputInformation(clause, nodeInput);
+                NodeArgument nodeArgument = new NodeArgument(clause, arg);
+                InputInformation ii = new InputInformation(clause, nodeArgument);
                 inputInformations.add(ii);
                 // if argument was part of or group, skip the rest of the group
-                i = i + nodeInput.size() - 1;
+                i = i + nodeArgument.size() - 1;
             }
         }
         return inputInformations;

@@ -16,21 +16,24 @@ public class InputInformation {
 
 
     private final Clause CLAUSE;
-    private final NodeInput NODE_INPUT;
+    private final NodeArgument NODE_INPUT;
     private final List<Symbol> SYMBOL_INPUTS;
 
-    public InputInformation(Clause clause, NodeInput nodeInput){
+    public InputInformation(Clause clause, NodeArgument nodeArgument){
         this.CLAUSE = clause;
-        this.NODE_INPUT = nodeInput;
-        this.INDEX = getIndex(clause, nodeInput.arg());
-        this.SYMBOL_INPUTS = getPossibleSymbolInputs(nodeInput);
+        this.NODE_INPUT = nodeArgument;
+        this.INDEX = getIndex(clause, nodeArgument.arg());
+        this.SYMBOL_INPUTS = getPossibleSymbolInputs(nodeArgument);
     }
 
     private int getIndex(Clause clause, ClauseArg argument){
         return clause.args().indexOf(argument);
     }
 
-    private List<Symbol> getPossibleSymbolInputs(NodeInput argument){
+    private List<Symbol> getPossibleSymbolInputs(NodeArgument argument){
+        if(true){
+            return argument.possibleSymbolInputsExpanded();
+        }
         List<Symbol> inputs = new ArrayList<>();
         for(ClauseArg arg : argument.args()){
             System.out.println("---- " + arg);
@@ -59,7 +62,7 @@ public class InputInformation {
         return CLAUSE;
     }
 
-    public NodeInput nodeInput(){
+    public NodeArgument nodeInput(){
         return NODE_INPUT;
     }
 

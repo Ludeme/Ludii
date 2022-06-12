@@ -59,6 +59,9 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     public LudemeNode(Symbol symbol, int x, int y)
     {
+
+        System.out.println("Creating new LudemeNode: " + symbol.grammarLabel());
+
         this.ID = LAST_ID++;
         this.SYMBOL = symbol;
         this.CLAUSES = symbol.rule().rhs();

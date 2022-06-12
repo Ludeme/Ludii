@@ -4,7 +4,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.InputInformation;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.NodeInput;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -106,7 +106,7 @@ public class LInputField extends JComponent {
     private void constructInputField(InputInformation inputInformation){
         removeAll();
 
-        NodeInput input = inputInformation.nodeInput();
+        NodeArgument input = inputInformation.nodeInput();
         Symbol inputSymbol = input.arg().symbol();
         Symbol.LudemeType inputType = inputSymbol.ludemeType();
 
