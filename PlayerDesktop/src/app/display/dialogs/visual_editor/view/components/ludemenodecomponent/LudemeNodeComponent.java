@@ -84,10 +84,14 @@ public class LudemeNodeComponent extends JPanel
         setVisible(true);
     }
 
+    /**
+     * Changes the currently selected clause of the node
+     * @param clause The clause that was selected
+     */
     public void changeCurrentClause(Clause clause)
     {
         Handler.updateCurrentClause(graphPanel().getGraph(), node(), clause);
-        inputArea.updateConstructor(); // TODO: update input area
+        inputArea.updateConstructor();
         revalidate();
         repaint();
     }
