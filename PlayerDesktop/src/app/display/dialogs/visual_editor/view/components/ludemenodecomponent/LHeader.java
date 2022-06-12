@@ -33,9 +33,9 @@ public class LHeader extends JComponent {
 
         ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
 
-        if(LNC.getGraphPanel().getGraph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
+        if(LNC.graphPanel().getGraph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
 
-        System.out.println("Root: " + LNC.getGraphPanel().getGraph().getRoot());
+        System.out.println("Root: " + LNC.graphPanel().getGraph().getRoot());
 
         connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
         if(ingoingConnectionComponent!=null) connectionAndTitle.add(ingoingConnectionComponent);
@@ -72,7 +72,7 @@ public class LHeader extends JComponent {
             items[i] = new JMenuItem(clause.toString());
             items[i].addActionListener(e1 -> {
                 System.out.println("Selected clause: " + clause.toString());
-                ludemeNodeComponent.changeClause(clause);
+                ludemeNodeComponent.changeCurrentClause(clause);
                 repaint();
             });
             popup.add(items[i]);

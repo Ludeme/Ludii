@@ -26,15 +26,15 @@ public class ExpNodeComponent
         drawInner((Graphics2D) g);
         drawOuter((Graphics2D) g);
         g.drawString(label,
-                (int)(node.getPos().getX() + DrawingFrame.getWIDTH() / 2 - node.getWidth() /2 ),
-                (int)(node.getPos().getY() + DrawingFrame.getHEIGHT() / 2 + node.getHeight()/2));
+                (int)(node.pos().getX() + DrawingFrame.getWIDTH() / 2 - node.width() /2 ),
+                (int)(node.pos().getY() + DrawingFrame.getHEIGHT() / 2 + node.height()/2));
     }
 
     private void drawInner(Graphics2D g2)
     {
         Shape inner = new Ellipse2D.Double(
-                node.getPos().getScreenTransX(),
-                node.getPos().getScreenTransY(),
+                node.pos().getScreenTransX(),
+                node.pos().getScreenTransY(),
                 NODE_SIZE, NODE_SIZE);
         g2.setColor(Color.WHITE);
         g2.fill(inner);
@@ -44,8 +44,8 @@ public class ExpNodeComponent
     private void drawOuter(Graphics2D g2)
     {
         Shape outer = new Ellipse2D.Double(
-                node.getPos().getScreenTransX(),
-                node.getPos().getScreenTransY(),
+                node.pos().getScreenTransX(),
+                node.pos().getScreenTransY(),
                 NODE_SIZE, NODE_SIZE);
         g2.setColor(Color.BLACK);
         g2.draw(outer);

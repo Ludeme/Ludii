@@ -6,7 +6,6 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeInput;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
-import game.rules.Rule;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -42,7 +41,7 @@ public class LInputArea extends JPanel {
 
     public LInputArea(LudemeNodeComponent ludemeNodeComponent) {
         this.LNC = ludemeNodeComponent;
-        this.dynamicConstructorActive = LNC.dynamic;
+        this.dynamicConstructorActive = LNC.dynamic();
 
         activeClauses = new ArrayList<>(LNC.node().clauses());
 
@@ -58,7 +57,7 @@ public class LInputArea extends JPanel {
 
         List<LInputField> fields = new ArrayList<>();
 
-        if (LNC.dynamic && dynamicConstructorActive) {
+        if (LNC.dynamic() && dynamicConstructorActive) {
             // Convert every clause's clause arguments to InputInformation
             List<InputInformation> inputInformationList = new ArrayList<>();
             for(Clause clause : LNC.node().clauses()) inputInformationList.addAll(inputInformations(clause));
@@ -197,9 +196,9 @@ public class LInputArea extends JPanel {
         }
 
         int preferredHeight = getPreferredSize().height;
-        setSize(new Dimension(LNC.getWidth(), preferredHeight));
+        setSize(new Dimension(LNC.width(), preferredHeight));
 
-        LNC.updateComponent();
+        LNC.updateComponentDimension();
         LNC.updatePositions();
     }
 
@@ -221,7 +220,7 @@ public class LInputArea extends JPanel {
     public LInputField addedConnection(LudemeNodeComponent nodeComponent, LInputField c_inputField){
         LudemeNode node = nodeComponent.node();
 
-        if(LNC.dynamic && dynamicConstructorActive){
+        if(LNC.dynamic() && dynamicConstructorActive){
             LInputField addedInputField = addedConnectionDynamic(node, c_inputField);
             providedInputFields.add(addedInputField);
             providedInputFieldsConnections.add(nodeComponent);
@@ -386,7 +385,7 @@ public class LInputArea extends JPanel {
             Object[] providedInputs = node.providedInputs();
             System.out.println("PROVIDED INPUTS RESETED of " + LNC.node().symbol().name()); // TODO: REMOVE THIS DEBUG LINES
             System.out.println("  ->  before: " + Arrays.toString(providedInputs));
-            Handler.updateCurrentClause(LNC.getGraphPanel().getGraph(), LNC.node(), activeClauses.get(0)); // TODO: WARNING: DELETES PROVIDED INPUTS
+            Handler.updateCurrentClause(LNC.graphPanel().getGraph(), LNC.node(), activeClauses.get(0)); // TODO: WARNING: DELETES PROVIDED INPUTS
             dynamicConstructorActive = false;
             if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive of " + LNC.node().symbol().name() + " to " + dynamicConstructorActive + "(317)");
             updateConstructor();
@@ -705,7 +704,7 @@ public class LInputArea extends JPanel {
             }
 
             if(DEBUG) System.out.println("[LIA] adding connection!");
-            LNC.getGraphPanel().getCh().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).getIngoingConnectionComponent());
+            LNC.graphPanel().getCh().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).ingoingConnectionComponent());
 
         }
     }
@@ -714,8 +713,8 @@ public class LInputArea extends JPanel {
         if(DEBUG) System.out.println("[LIA] updateConstructor()");
         System.out.println("Provided input fields 586: " + providedInputFields);
         // TODO: Remove all edges of this ludeme node AND MODEL
-        LNC.getGraphPanel().getCh().cancelNewConnection();
-        LNC.getGraphPanel().getCh().removeAllConnections(LNC.node());
+        LNC.graphPanel().getCh().cancelNewConnection();
+        LNC.graphPanel().getCh().removeAllConnections(LNC.node());
 
         inputFields = getInputFields(LNC);
         drawInputFields();

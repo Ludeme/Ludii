@@ -24,10 +24,10 @@ public class ExpEdgeComponent
     public void drawEdge(Graphics2D g2d)
     {
         g2d.setColor(Color.GRAY);
-        g2d.drawLine((int)(nodeA.getPos().getScreenTransX()+(NODE_SIZE*0.5)),
-                (int)(nodeA.getPos().getScreenTransY()+(NODE_SIZE*0.5)),
-                (int)(nodeB.getPos().getScreenTransX()+(NODE_SIZE*0.5)),
-                (int)(nodeB.getPos().getScreenTransY()+(NODE_SIZE*0.5)));
+        g2d.drawLine((int)(nodeA.pos().getScreenTransX()+(NODE_SIZE*0.5)),
+                (int)(nodeA.pos().getScreenTransY()+(NODE_SIZE*0.5)),
+                (int)(nodeB.pos().getScreenTransX()+(NODE_SIZE*0.5)),
+                (int)(nodeB.pos().getScreenTransY()+(NODE_SIZE*0.5)));
     }
 
 }

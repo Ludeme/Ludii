@@ -58,27 +58,27 @@ public class ExpNode implements iGNode
     //### Implementation of interface methods ###
 
     @Override
-    public int getId() {
+    public int id() {
         return id;
     }
 
     @Override
-    public int getParent() {
+    public int parent() {
         return parent;
     }
 
     @Override
-    public List<Integer> getChildren() {
+    public List<Integer> children() {
         return childNodes;
     }
 
     @Override
-    public List<Integer> getSiblings() {
+    public List<Integer> siblings() {
         return null;
     }
 
     @Override
-    public Vector2D getPos() {
+    public Vector2D pos() {
         return pos;
     }
 
@@ -88,12 +88,12 @@ public class ExpNode implements iGNode
     }
 
     @Override
-    public int getWidth() {
+    public int width() {
         return width;
     }
 
     @Override
-    public int getHeight() {
+    public int height() {
         return height;
     }
 
@@ -104,7 +104,7 @@ public class ExpNode implements iGNode
     }
 
     @Override
-    public int getDepth()
+    public int depth()
     {
         return depth;
     }

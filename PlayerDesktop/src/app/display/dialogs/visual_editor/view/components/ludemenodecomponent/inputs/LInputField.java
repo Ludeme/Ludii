@@ -130,7 +130,7 @@ public class LInputField extends JComponent {
 
         if(inputSymbol.isTerminal()){ // TODO: does that work?
             inputFieldComponent = getTerminalComponent(input.arg());
-            inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.getWidth()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
+            inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.width()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
             inputFieldComponent.addMouseListener(userInputListener);
 
             setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -212,10 +212,10 @@ public class LInputField extends JComponent {
         LInputField last = null;
         if(children.isEmpty()) last = this;
         else last = children.get(children.size()-1);
-        LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
+        LNC.inputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
     }
     private void removeCollectionItem(){
-        IGraphPanel graphPanel = LNC.getGraphPanel();
+        IGraphPanel graphPanel = LNC.graphPanel();
 
         // get current provided input array
         LudemeNode[] oldProvidedInputs = (LudemeNode[]) LNC.node().providedInputs()[getInputIndex()];
@@ -237,7 +237,7 @@ public class LInputField extends JComponent {
 
         graphPanel.getCh().removeConnection(LNC.node(), this.getConnectionComponent());
 
-        LNC.getInputArea().removeField(this);
+        LNC.inputArea().removeField(this);
         parent.children.remove(this);
     }
 
@@ -282,7 +282,7 @@ public class LInputField extends JComponent {
         if(isSingle) {
             System.out.println("[LIF] Updated input " + getInputIndex() + " to " + getUserInput());
             System.out.println("\u001B[32m"+"Calling from LIF 221"+"\u001B[0m");
-            Handler.updateInput(LNC.getGraphPanel().getGraph(), LNC.node(), getInputIndex(), getUserInput());
+            Handler.updateInput(LNC.graphPanel().getGraph(), LNC.node(), getInputIndex(), getUserInput());
         }
     }
 
@@ -310,7 +310,7 @@ public class LInputField extends JComponent {
         if (getInputInformation().collection() && input instanceof LudemeNode[]) {
             // collection inputs are connected to multiple nodes
             LudemeNode[] connectedTo = (LudemeNode[]) input;
-            IGraphPanel graphPanel = LNC.getGraphPanel();
+            IGraphPanel graphPanel = LNC.graphPanel();
 
             for(int i = 1; i < connectedTo.length; i++){
                 // create a new input field for each node
@@ -328,14 +328,14 @@ public class LInputField extends JComponent {
                     } else {
                         connectionComponentChild = children.get(childrenIndex).getConnectionComponent();
                     }
-                    graphPanel.getCh().addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).getIngoingConnectionComponent());
+                    graphPanel.getCh().addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).ingoingConnectionComponent());
                 }
             }
         }
         else if(inputFieldComponent == connectionComponent){
             // then its ludeme input
-            IGraphPanel graphPanel = LNC.getGraphPanel();
-            graphPanel.getCh().addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).getIngoingConnectionComponent());
+            IGraphPanel graphPanel = LNC.graphPanel();
+            graphPanel.getCh().addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).ingoingConnectionComponent());
         }
         if(inputFieldComponent instanceof JTextField) ((JTextField)inputFieldComponent).setText((String)input);
         if(inputFieldComponent instanceof JSpinner) ((JSpinner)inputFieldComponent).setValue(input);
@@ -380,7 +380,7 @@ public class LInputField extends JComponent {
         // new single input field is above the "merged" one
         if(inputInformation == inputInformationList.get(0)){
             LInputField newInputField = new LInputField(LNC, inputInformation);
-            LNC.getInputArea().addInputFieldAbove(newInputField, this);
+            LNC.inputArea().addInputFieldAbove(newInputField, this);
             inputInformationList.remove(0);
             if(inputInformationList.size() == 1){
                 constructInputField(inputInformationList.get(0));
@@ -394,7 +394,7 @@ public class LInputField extends JComponent {
         // new single input field is below the "merged" one
         if(inputInformation == inputInformationList.get(inputInformationList.size()-1)){
             LInputField newInputField = new LInputField(LNC, inputInformation);
-            LNC.getInputArea().addInputFieldBelow(newInputField, this);
+            LNC.inputArea().addInputFieldBelow(newInputField, this);
             inputInformationList.remove(inputInformationList.size()-1);
             if(inputInformationList.size() == 1){
                 constructInputField(inputInformationList.get(0));
@@ -437,10 +437,10 @@ public class LInputField extends JComponent {
         else {
             below_lif = new LInputField(LNC, below_ii);
         }
-        if(above_lif != null) LNC.getInputArea().addInputFieldAbove(above_lif, this);
-        LNC.getInputArea().addInputFieldAbove(newInputField, this);
-        if(below_lif != null) LNC.getInputArea().addInputFieldAbove(below_lif, this);
-        LNC.getInputArea().removeField(this);
+        if(above_lif != null) LNC.inputArea().addInputFieldAbove(above_lif, this);
+        LNC.inputArea().addInputFieldAbove(newInputField, this);
+        if(below_lif != null) LNC.inputArea().addInputFieldAbove(below_lif, this);
+        LNC.inputArea().removeField(this);
         repaint();
         return newInputField;
     }

@@ -71,7 +71,7 @@ public class DescriptionGraph implements iGraph {
     @Override
     public LudemeNode getNode(int id) {
         for(LudemeNode ln : allLudemeNodes){
-            if(ln.getId() == id) return ln;
+            if(ln.id() == id) return ln;
         }
         return null;
     }
@@ -105,7 +105,7 @@ public class DescriptionGraph implements iGraph {
     @Override
     public int addNode(iGNode ludemeNode) {
         this.allLudemeNodes.add((LudemeNode) ludemeNode);
-        int id = ludemeNode.getId();
+        int id = ludemeNode.id();
         nodeMap.put(id, ludemeNode);
         return id;
     }
@@ -113,8 +113,8 @@ public class DescriptionGraph implements iGraph {
     @Override
     public int removeNode(iGNode node) {
         this.allLudemeNodes.remove((LudemeNode) node);
-        nodeMap.remove(node.getId());
-        return node.getId();
+        nodeMap.remove(node.id());
+        return node.id();
     }
 
     @Override
@@ -122,7 +122,7 @@ public class DescriptionGraph implements iGraph {
         iGNode node = getNode(id);
         nodeMap.remove(id);
         this.allLudemeNodes.remove((LudemeNode) node);
-        return node.getId();
+        return node.id();
     }
 
     @Override
@@ -148,7 +148,7 @@ public class DescriptionGraph implements iGraph {
     }
 
     public String toLud() {
-        return ROOT.getStringRepresentation();
+        return ROOT.stringRepresentation();
     }
 
     public DescriptionGraph clone(){
@@ -159,7 +159,7 @@ public class DescriptionGraph implements iGraph {
 
         DescriptionGraph graphNew = new DescriptionGraph();
         for(LudemeNode node : getNodes()){
-            LudemeNode node_new = new LudemeNode(node.symbol(), (int)node.getPos().getX(), (int)node.getPos().getY());
+            LudemeNode node_new = new LudemeNode(node.symbol(), (int)node.pos().getX(), (int)node.pos().getY());
             node_new.setSelectedClause(node.selectedClause());
 
             if(to.contains(node)){

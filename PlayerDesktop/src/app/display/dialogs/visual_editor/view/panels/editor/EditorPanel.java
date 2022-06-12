@@ -86,7 +86,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         graph.setRoot(gameLudemeNode);
         addLudemeNodeComponent(gameLudemeNode, false);
 
-        lm = new LayoutHandler(graph, graph.getRoot().getId());
+        lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(edges);
     }
 
@@ -113,7 +113,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         graph.setRoot(gameLudemeNode);
         addLudemeNodeComponent(gameLudemeNode, false);
 
-        lm = new LayoutHandler(graph, graph.getRoot().getId());
+        lm = new LayoutHandler(graph, graph.getRoot().id());
     }
 
     @Override
@@ -212,7 +212,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         // expand editor
         //expandEditorPanelSize(lc);
 
-        Handler.centerViewport(lc.getX()+lc.getWidth()/2, lc.getY()+lc.getHeight()/2);
+        Handler.centerViewport(lc.getX()+lc.width()/2, lc.getY()+lc.getHeight()/2);
     }
 
 
@@ -252,7 +252,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = getNodeComponent(n);
-            lnc.setSELECTED(false);
+            lnc.setSelected(false);
         });
         selectedLnc = new ArrayList<>();
         SELECTED = false;
@@ -267,7 +267,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     public void addNodeToSelections(LudemeNodeComponent lnc)
     {
         SELECTED = true;
-        lnc.setSELECTED(true);
+        lnc.setSelected(true);
         selectedLnc.add(lnc);
     }
 
@@ -380,7 +380,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         LudemeNode node = lnc.node();
         if(ch.getSelectedConnectionComponent() != null)
         {
-            if(ch.getSelectedConnectionComponent().getRequiredSymbols().contains(node.symbol()) && !lnc.getIngoingConnectionComponent().isFilled())
+            if(ch.getSelectedConnectionComponent().getRequiredSymbols().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
             {
                 ch.finishNewConnection(lnc);
             }

@@ -13,8 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.repeatString;
-
 /**
  * Node representation of a ludeme in the current description
  * @author Filipp Dokienko
@@ -22,29 +20,34 @@ import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.r
 
 public class LudemeNode implements iLudemeNode, iGNode {
 
+    /** ID of last node */
     private static int LAST_ID = 0;
+    /** ID of this node */
     private final int ID;
-
-    //private final Ludeme LUDEME;
-    //private Constructor currentConstructor;
-
+    /** Symbol/Ludeme this node represents */
     private final Symbol SYMBOL;
+    /** List of clauses this symbol encompasses */
     private final List<Clause> CLAUSES;
+    /** Currently selected Clause by the user */
     private Clause selectedClause;
-
+    /** Inputs to the Clause Arguments of the currently selected Clause provided by the user */
     private Object[] providedInputs;
-
-    private HashMap<LudemeNode, Integer> childrenOrder = new HashMap<>();
-
+    /** HashMap of Nodes this node is connected to (as a parent) and their order */
+    private final HashMap<LudemeNode, Integer> childrenOrder = new HashMap<>();
+    /** Depth in the graph/tree */
     private int depth = 0;
+    /** Width and height of the node in its graphical representation */
     private int width,height;
-
+    /** This node's parent */
     private LudemeNode parent;
-    private List<LudemeNode> children = new ArrayList<>();
-
+    /** List of children of this node */
+    private final List<LudemeNode> children = new ArrayList<>();
+    /** x and y coordinates of this node in the graph */
     private int x,y;
-
-    // For dynamic constructor
+    /** whether this node is dynamic or not.
+     * a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
+     * possible clauses is narrowed down to the ones that match the provided arguments.
+     */
     private boolean dynamic = false; // TODO: Not hard-coded
 
 
@@ -65,127 +68,251 @@ public class LudemeNode implements iLudemeNode, iGNode {
             selectedClause = selectedClause.symbol().rule().rhs().get(0);
         }
         this.providedInputs = new Object[selectedClause.args().size()];
+
+        if(dynamic && !dynamicPossible()) dynamic = false;
     }
 
-
+    /**
+     *
+     * @return the symbol this node represents
+     */
     @Override
-    public int getId() {
+    public Symbol symbol() {
+        return SYMBOL;
+    }
+
+    /**
+     *
+     * @return the list of clauses this symbol encompasses
+     */
+    public List<Clause> clauses(){
+        return CLAUSES;
+    }
+
+    /**
+     * Changes the selected clause of this node
+     * @param selectedClause the selected clause to set
+     */
+    public void setSelectedClause(Clause selectedClause) {
+        this.selectedClause = selectedClause;
+        this.providedInputs = new Object[selectedClause.args().size()];
+    }
+
+    /**
+     *
+     * @return the currently selected clause
+     */
+    @Override
+    public Clause selectedClause() {
+        return selectedClause;
+    }
+
+    /**
+     *
+     * @return the array of provided inputs
+     */
+    @Override
+    public Object[] providedInputs() {
+        return providedInputs;
+    }
+
+    /**
+     * Sets the provided inputs to the given array
+     * @param index the index of the supplied argument to set
+     * @param input the input to set
+     */
+    @Override
+    public void setProvidedInput(int index, Object input) {
+        providedInputs[index] = input;
+    }
+
+    /**
+     * Sets this node to be dynamic or not
+     * @param dynamic the dynamic to set
+     */
+    public void setDynamic(boolean dynamic) {
+        this.dynamic = dynamic;
+    }
+
+    /**
+     *
+     * @return whether it is possible to make this node dynamic
+     */
+    public boolean dynamicPossible(){
+        if(CLAUSES.size() == 1) return false;
+        for(Clause clause : CLAUSES){
+            if(clause.args() == null) continue;
+            if(clause.args().size() > 1) return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @return whether this node is dynamic
+     */
+    public boolean dynamic(){
+        return dynamic;
+    }
+
+    /**
+     *
+     * @return the id of this node
+     */
+    @Override
+    public int id() {
         return ID;
     }
 
+    /**
+     *
+     * @return the id of this node's parent
+     */
     @Override
-    public int getParent() {
-        return parent.getId();
+    public int parent() {
+        return parent.id();
     }
 
-    public LudemeNode getParentNode(){
+    /**
+     *
+     * @return the parent node
+     */
+    public LudemeNode parentNode(){
         return parent;
     }
 
+    /**
+     *
+     * @return the list of children of this node
+     */
     @Override
-    public List<Integer> getChildren() {
+    public List<Integer> children() {
         List<Integer> children_ids = new ArrayList<>();
-        for(LudemeNode c : children) children_ids.add(c.getId());
+        for(LudemeNode c : children) children_ids.add(c.id());
         return children_ids;
     }
 
+    /**
+     *
+     * @return the list of siblings of this node
+     */
     @Override
-    public List<Integer> getSiblings() {
+    public List<Integer> siblings() {
         // TODO implement
         return null;
     }
 
+    /**
+     *
+     * @return the position of this node in the graph
+     */
     @Override
-    public Vector2D getPos() {
+    public Vector2D pos() {
         return new Vector2D(x, y);
     }
 
+    /**
+     * Set the position of this node in the graph
+     * @param pos the position to set
+     */
     @Override
     public void setPos(Vector2D pos) {
         x = (int) pos.getX();
         y = (int) pos.getY();
     }
 
+    /**
+     * Set the width of this node in the graph
+     * @param width the width to set
+     */
     public void setWidth(int width){
         this.width = width;
     }
 
+    /**
+     *
+     * @return the width of this node in the graph
+     */
     @Override
-    public int getWidth() {
+    public int width() {
         return width;
     }
 
-   public void setHeight(int height){
+    /**
+     * Set the height of this node in the graph
+     * @param height the height to set
+     */
+    public void setHeight(int height){
         this.height = height;
-   }
+    }
 
+    /**
+     *
+     * @return the height of this node in the graph
+     */
     @Override
-    public int getHeight() {
+    public int height() {
         return height;
     }
 
+    /**
+     * Set the depth of this node
+     * @param depth the depth to set
+     */
     @Override
     public void setDepth(int depth)
     {
         this.depth = depth;
     }
 
+    /**
+     *
+     * @return the depth of this node
+     */
     @Override
-    public int getDepth() {
+    public int depth() {
         return depth;
     }
 
-    public int getDepthManual(){
+    /**
+     *
+     * @return The depth of this node computed manually
+     */
+    public int depthManual(){
         int depth = 0;
         LudemeNode current = this;
-        while(current.getParentNode() != null){
+        while(current.parentNode() != null){
             depth++;
-            current = current.getParentNode();
+            current = current.parentNode();
         }
         return depth;
     }
 
     // TODO: Should be probably in iGNode ?
+
+    /**
+     * Set the position of this node
+     * @param x the x coordinate to set
+     * @param y the y coordinate to set
+     */
     public void setPos(int x, int y){
         this.x = x;
         this.y = y;
     }
 
-
-    @Override
-    public Symbol symbol() {
-        return SYMBOL;
-    }
-
-    public List<Clause> clauses(){
-        return CLAUSES;
-    }
-
-    @Override
-    public Clause selectedClause() {
-        return selectedClause;
-    }
-
-    @Override
-    public Object[] providedInputs() {
-        return providedInputs;
-    }
-
-    @Override
-    public void setProvidedInput(int index, Object input) {
-        providedInputs[index] = input;
-    }
-
+    /**
+     * Sets the parent of this node
+     * @param ludemeNode the parent to set
+     */
     @Override
     public void setParent(iLudemeNode ludemeNode) {
         this.parent = (LudemeNode) ludemeNode; // TODO: should it be casted?
     }
 
-    @Override
-    public String getStringRepresentation() {
-        return ""; // TODO
-    }
-
+    /**
+     * Adds a child to this node
+     * @param children the child to add
+     */
     public void addChildren(LudemeNode children){
         // Checks if child nodes was already added
         if (!this.children.contains(children))
@@ -216,36 +343,27 @@ public class LudemeNode implements iLudemeNode, iGNode {
         }
     }
 
+    /**
+     * Removes a child from this node
+     * @param children the child to remove
+     */
     public void removeChildren(LudemeNode children){
         this.children.remove(children);
     }
 
 
+
+    /**
+     *
+     * @return The .lud equivalent representation of this node
+     */
+    @Override
+    public String stringRepresentation() {
+        return ""; // TODO
+    }
+
     @Override
     public String toString(){
-        return getStringRepresentation();
-    }
-
-
-    public boolean canBeDynamic(){
-        if(CLAUSES.size() == 1) return false;
-        for(Clause clause : CLAUSES){
-            if(clause.args() == null) continue;
-            if(clause.args().size() > 1) return true;
-        }
-        return false;
-    }
-
-    public boolean isDynamic(){
-        return dynamic;
-    }
-
-    public void setDynamic(boolean dynamic) {
-        this.dynamic = dynamic;
-    }
-
-    public void setSelectedClause(Clause selectedClause) {
-        this.selectedClause = selectedClause;
-        this.providedInputs = new Object[selectedClause.args().size()];
+        return stringRepresentation();
     }
 }

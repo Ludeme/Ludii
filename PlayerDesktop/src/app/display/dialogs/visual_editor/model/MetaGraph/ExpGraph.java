@@ -94,8 +94,8 @@ public class ExpGraph implements iGraph {
     public int addNode(String data)
     {
         ExpNode n = new ExpNode(data);
-        nodeList.put(n.getId(), n);
-        return n.getId();
+        nodeList.put(n.id(), n);
+        return n.id();
     }
 
     @Override
@@ -119,8 +119,8 @@ public class ExpGraph implements iGraph {
     public int addNode()
     {
         ExpNode n = new ExpNode();
-        nodeList.put(n.getId(), n);
-        return n.getId();
+        nodeList.put(n.id(), n);
+        return n.id();
     }
 
     //### Functionality for the experimental graph panel ###
@@ -131,11 +131,11 @@ public class ExpGraph implements iGraph {
         AtomicReference<Double> minDist = new AtomicReference<>(Double.MAX_VALUE);
         AtomicInteger clickedId = new AtomicInteger(0);
         nodeList.forEach((k,v) -> {
-            Vector2D delta = pos.sub(v.getPos());
+            Vector2D delta = pos.sub(v.pos());
             double dist = delta.euclideanNorm();
             if (dist < NODE_SIZE && dist < minDist.get()) {
                 minDist.set(dist);
-                clickedId.set(v.getId());
+                clickedId.set(v.id());
             }
         });
 
@@ -155,11 +155,11 @@ public class ExpGraph implements iGraph {
         AtomicReference<Double> minDist = new AtomicReference<>(Double.MAX_VALUE);
         AtomicInteger clickedId = new AtomicInteger(0);
         nodeList.forEach((k,v) -> {
-            Vector2D delta = pos.sub(v.getPos());
+            Vector2D delta = pos.sub(v.pos());
             double dist = delta.euclideanNorm();
             if (dist < NODE_SIZE && dist < minDist.get()) {
                 minDist.set(dist);
-                clickedId.set(v.getId());
+                clickedId.set(v.id());
             }
         });
 
