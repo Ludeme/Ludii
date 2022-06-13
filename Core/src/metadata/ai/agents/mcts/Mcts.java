@@ -1,6 +1,9 @@
 package metadata.ai.agents.mcts;
 
+import annotations.Opt;
 import metadata.ai.agents.Agent;
+import metadata.ai.agents.mcts.selection.Selection;
+import metadata.ai.agents.mcts.selection.UCB1;
 
 /**
  * Describes a Monte-Carlo tree search agent.
@@ -17,14 +20,27 @@ public class Mcts implements Agent
 	
 	//-------------------------------------------------------------------------
 	
+	/** Our Selection strategy */
+	protected final Selection selection;
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Constructor
 	 * 
+	 * @param selection The Selection strategy to be used by this MCTS agent [UCB1].
+	 * 
 	 * @example (mcts)
 	 */
-	public Mcts()
+	public Mcts
+	(
+		@Opt final Selection selection
+	)
 	{
-		// Do nothing
+		if (selection != null)
+			this.selection = selection;
+		else
+			this.selection = new UCB1(null);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -32,7 +48,7 @@ public class Mcts implements Agent
 	@Override
 	public String constructAgentString()
 	{
-		return "algorithm=MCTS";
+		return "algorithm=MCTS";		// TODO selection
 	}
 	
 	//-------------------------------------------------------------------------
@@ -40,7 +56,7 @@ public class Mcts implements Agent
 	@Override
 	public String toString()
 	{
-		return "(mcts)";
+		return "(mcts " + selection + ")";
 	}
 	
 	//-------------------------------------------------------------------------
