@@ -1,3 +1,27 @@
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "SumPips" (count Pips))
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+
+(define "NumDiceAtOne" 
+	(+ {
+		(if (= 1 (face (+ 0 (count Sites in:(sites Board))))) 1 0)
+		(if (= 1 (face (+ 1 (count Sites in:(sites Board))))) 1 0)
+		(if (= 1 (face (+ 2 (count Sites in:(sites Board))))) 1 0)
+		(if (= 1 (face (+ 3 (count Sites in:(sites Board))))) 1 0)
+	})
+)
+
+(define "CaptureEnemyPiece" 
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (remove (to))
+	    ) 
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Chong (Sakhalin)"
 		    (players 2)
 		    (equipment {
@@ -19,12 +43,39 @@
 		            (place "Marker2" (difference (sites Top) (sites Left)))
 		            (place "King2" (intersection (sites Top) (sites Left)))
 		        })
-		        (play 
-		            (do 
-		                (roll) 
-		                next:(forEach Piece)
-		            )
+		        phases:{
+		    	(phase "Opening"
+			        (play 
+			            (do 
+			                (roll) 
+			                next:(if (!= 0 ("NumDiceAtOne"))
+			                	(if (is Mover P1)
+				                	(move Swap Pieces (where "King" Mover) (- (where "King" Mover) ("NumDiceAtOne")))
+				                	(move Swap Pieces (where "King" Mover) (+ (where "King" Mover) ("NumDiceAtOne")))
+			                	(then
+			                		(fromTo
+			                			(from (last From))
+			                			(to ("SiteToMoveOnTrack" from:(last From) (- ("SumPips") ("NumDiceAtOne")))
+			                                ("CaptureEnemyPiece")
+			                			)
+			                		)
+			                	)
+			                	)
+			                )
+			            )
+			        )
+			        (nextPhase Mover (not (was Pass)) "Playing")
 		        )
+		    	(phase "Playing"
+		    		(play
+		    			(do
+		    				(roll)
+		    				next:(forEach Piece)
+		    			)
+		    		)
+		    	)
+		    	}
+		    
 		        (end (if (no Pieces Next) (result Mover Win)))
 		    )
 		)
