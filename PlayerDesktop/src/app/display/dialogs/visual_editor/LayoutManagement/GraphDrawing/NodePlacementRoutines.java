@@ -127,21 +127,21 @@ public final class NodePlacementRoutines
 
     public static void alignNodes(List<iGNode> nodes, int axis)
     {
-        double posX = nodes.get(0).getPos().getX();
-        double posY = nodes.get(0).getPos().getY();
+        double posX = nodes.get(0).pos().getX();
+        double posY = nodes.get(0).pos().getY();
         if (nodes.isEmpty()) return;
         if (axis == X_AXIS)
         {
             for (int i = 1; i < nodes.size(); i++)
             {
-                nodes.get(i).setPos(new Vector2D(posX+nodes.get(i-1).getWidth()+NODE_GAP*i, posY));
+                nodes.get(i).setPos(new Vector2D(posX+nodes.get(i-1).width()+NODE_GAP*i, posY));
             }
         }
         else if (axis == Y_AXIS)
         {
             for (int i = 1; i < nodes.size(); i++)
             {
-                nodes.get(i).setPos(new Vector2D(posX, posY+nodes.get(i-1).getHeight()+NODE_GAP*i));
+                nodes.get(i).setPos(new Vector2D(posX, posY+nodes.get(i-1).height()+NODE_GAP*i));
             }
         }
     }

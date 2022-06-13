@@ -41,17 +41,14 @@ public class LudemeNodeComponent extends JPanel
     private final IGraphPanel GRAPH_PANEL;
 
     public boolean dynamic;
-
-    private LHeader header;
-    private LInputArea inputArea;
-
+    // Whether the node is "marked"/selected
     private boolean selected = false;
     private boolean subtree = false;
     /** Sub-Components of the node */
     private final LHeader header;
     private final LInputArea inputArea;
-    // Whether the node is "marked"/selected
-    private boolean SELECTED = false;
+
+
 
     /**
      * Constructor for the LudemeNodeComponent
@@ -200,26 +197,22 @@ public class LudemeNodeComponent extends JPanel
         return position;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     /**
      * Sets the node to be selected/unselected
      * @param selected Whether the node is selected
      */
     public void setSelected(boolean selected)
     {
-        this.SELECTED = selected;
+        this.selected = selected;
     }
 
-    public boolean isSelected() {
-        return selected;
     /**
      *
      * @return whether the node is selected
      */
     public boolean selected()
     {
-        return SELECTED;
+        return selected;
     }
 
     /**
@@ -295,12 +288,6 @@ public class LudemeNodeComponent extends JPanel
         }
     };
 
-    // Mouse Listener
-    MouseListener mouseListener = new MouseAdapter() {
-
-        private void openPopupMenu(MouseEvent e)
-        {
-            JPopupMenu popupMenu = new NodePopupMenu(LudemeNodeComponent.this, LudemeNodeComponent.this.getGraphPanel());
     /**
      * Mouse Listener for the node component
      * - When the node is right-clicked, open a popup menu with options
@@ -322,7 +309,7 @@ public class LudemeNodeComponent extends JPanel
             // when double click is performed on a node add its descendant into selection list
             if (e.getClickCount() == 1)
             {
-                getGraphPanel().deselectEverything();
+                graphPanel().deselectEverything();
                 Handler.selectNode(LudemeNodeComponent.this);
                 subtree = false;
             }
@@ -334,18 +321,16 @@ public class LudemeNodeComponent extends JPanel
                 {
                     LudemeNodeComponent lnc = Q.remove(0);
                     Handler.selectNode(lnc);
-                    List<Integer> children = lnc.LUDEME_NODE.getChildren();
-
                     List<Integer> children = lnc.LN.children();
                     children.forEach(v -> {
                         Q.add(GRAPH_PANEL.getNodeComponent(GRAPH_PANEL.getGraph().getNode(v)));
                     });
                 }
-                subtree = !LudemeNodeComponent.this.LUDEME_NODE.getChildren().isEmpty();
-                getGraphPanel().repaint();
+                subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
+                graphPanel().repaint();
                 graphPanel().repaint();
             }
-            LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent(LudemeNodeComponent.this.header.title.getText(), subtree);
+            LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent(LudemeNodeComponent.this.header.title().getText(), subtree);
         }
 
         // When pressed, update position
