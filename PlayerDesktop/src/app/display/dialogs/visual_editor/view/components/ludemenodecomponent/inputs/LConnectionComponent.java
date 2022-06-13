@@ -50,7 +50,7 @@ public class LConnectionComponent extends JComponent {
 
         addMouseListener(clickListener);
 
-        connectionPointPosition.update(new Point(inputField.getLudemeNodeComponent().getWidth(), inputField.getPreferredSize().height*inputField.getInputIndex()));
+        connectionPointPosition.update(new Point(inputField.getLudemeNodeComponent().width(), inputField.getPreferredSize().height*inputField.getInputIndex()));
 
         revalidate();
         repaint();
@@ -91,7 +91,7 @@ public class LConnectionComponent extends JComponent {
         @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
-            IGraphPanel graphPanel = INPUT_FIELD.getLudemeNodeComponent().getGraphPanel();
+            IGraphPanel graphPanel = INPUT_FIELD.getLudemeNodeComponent().graphPanel();
             if(e.getButton() == MouseEvent.BUTTON1){
                 if(!fill){
                     // Start drawing connection

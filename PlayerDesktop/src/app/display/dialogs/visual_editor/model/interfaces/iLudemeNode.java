@@ -24,7 +24,7 @@ public interface iLudemeNode {
     /* The .lud equivalent of that node
      e.g. for a (game ) for an empty <game> LudemeNode
      */
-    String getStringRepresentation();
+    String stringRepresentation();
 
 
 }

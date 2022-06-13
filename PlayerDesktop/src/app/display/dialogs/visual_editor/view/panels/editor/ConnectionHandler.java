@@ -2,10 +2,10 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
-import app.display.dialogs.visual_editor.model.InputInformation;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
@@ -68,7 +68,7 @@ public class ConnectionHandler
 
     public void finishNewConnection(LudemeNodeComponent target)
     {
-        addConnection(selectedConnectionComponent, target.getIngoingConnectionComponent());
+        addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
         selectedConnectionComponent = null;
     }
 
@@ -80,7 +80,7 @@ public class ConnectionHandler
 
         if(!source.getInputField().isSingle())
         {
-            source = source.getLudemeNodeComponent().getInputArea().addedConnection(target.getHeader().getLudemeNodeComponent(), source.getInputField()).getConnectionComponent();
+            source = source.getLudemeNodeComponent().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.getInputField()).getConnectionComponent();
         }
 
         source.updatePosition();
@@ -88,23 +88,23 @@ public class ConnectionHandler
 
         source.setFill(true);
         target.setFill(true);
-        source.setConnectedTo(target.getHeader().getLudemeNodeComponent());
+        source.setConnectedTo(target.getHeader().ludemeNodeComponent());
 
         // Add an edge
-        Handler.addEdge(Handler.editorPanel.getGraph(), source.getLudemeNodeComponent().node(), target.getHeader().getLudemeNodeComponent().node());
+        Handler.addEdge(Handler.editorPanel.getGraph(), source.getLudemeNodeComponent().node(), target.getHeader().ludemeNodeComponent().node());
         LudemeConnection connection = new LudemeConnection(source, target);
         edges.add(connection);
 
         // Update the provided input in the description graph
         // differentiate between an inputed provided to a collection and otherwise
-        if(source.getInputField().getInputInformation().collection())
+        if(source.getInputField().getNodeArgument().collection())
         {
             LudemeNode sourceNode = source.getLudemeNodeComponent().node();
-            InputInformation sourceInput = source.getInputField().getInputInformation();
+            NodeArgument sourceInput = source.getInputField().getNodeArgument();
 
             // TODO: Perhaps this part should be put into LInputField.java addCollectionItem() method
 
-            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
+            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.indexFirst()];
 
             // get children of collection
             List<LInputField> children;
@@ -121,13 +121,13 @@ public class ConnectionHandler
             }
 
             // The provided input class just be an array. If it is null, then create it NOTE!: the first collection inputfield is not counted as a child, therefore numberOfChildren+1
-            if(sourceNode.providedInputs()[sourceInput.getIndex()] == null)
+            if(sourceNode.providedInputs()[sourceInput.indexFirst()] == null)
             {
                 providedInput = new LudemeNode[numberOfChildren+1];
             }
             else
             {
-                providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.getIndex()];
+                providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.indexFirst()];
             }
             // if the array is not big enough, expand it.
             if(providedInput.length < numberOfChildren+1)
@@ -139,16 +139,16 @@ public class ConnectionHandler
             // get the index of the current input field w.r.t collection field
             int i = children.indexOf(source.getInputField()) + 1; // + 1 because the first input field is not counted as a child
             //if(i==-1) i = 0;
-            providedInput[i] = target.getHeader().getLudemeNodeComponent().node();
+            providedInput[i] = target.getHeader().ludemeNodeComponent().node();
             // TODO: REMOVE LATER
             System.out.println("\u001B[32m"+"Calling from EP 237"+"\u001B[0m");
-            Handler.updateInput(Handler.editorPanel.getGraph(), sourceNode, sourceInput.getIndex(), providedInput);
+            Handler.updateInput(Handler.editorPanel.getGraph(), sourceNode, sourceInput.indexFirst(), providedInput);
         }
         else
         {
-            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().node().symbol().name() + " , " + target.getHeader().getLudemeNodeComponent().node().symbol().name() + " at index " + source.getInputField().getInputIndex());
+            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.getInputField().getInputIndex());
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
-            Handler.updateInput(Handler.editorPanel.getGraph(), source.getLudemeNodeComponent().node(), source.getInputField().getInputIndex(), target.getHeader().getLudemeNodeComponent().node());
+            Handler.updateInput(Handler.editorPanel.getGraph(), source.getLudemeNodeComponent().node(), source.getInputField().getInputIndex(), target.getHeader().ludemeNodeComponent().node());
         }
 
         Handler.editorPanel.repaint();
@@ -164,13 +164,13 @@ public class ConnectionHandler
         {
             if(e.getConnectionComponent().getLudemeNodeComponent().node().equals(node)
                     || (!onlyOutgoingConnections
-                    && e.getIngoingConnectionComponent().getHeader().getLudemeNodeComponent().node().equals(node)))
+                    && e.getIngoingConnectionComponent().getHeader().ludemeNodeComponent().node().equals(node)))
             {
                 edges.remove(e);
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null,true);
+                e.getConnectionComponent().getInputField().getLudemeNodeComponent().inputArea().updateComponent(node, null,true);
                 System.out.println("\u001B[32m"+"Calling from EP 307"+"\u001B[0m");
                 Handler.updateInput(Handler.editorPanel.getGraph(), e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().getInputIndex(), null);
             }
@@ -181,7 +181,7 @@ public class ConnectionHandler
     // removes all outgoing conenctions of the node's ("node") connection component "connection"
     public void removeConnection(LudemeNode node, LConnectionComponent connection)
     {
-        if(connection.getLudemeNodeComponent().dynamic) connection.getLudemeNodeComponent().getInputArea().removedConnectionDynamic(node, connection.getInputField());
+        if(connection.getLudemeNodeComponent().dynamic()) connection.getLudemeNodeComponent().inputArea().removedConnectionDynamic(node, connection.getInputField());
         for(LudemeConnection e : new ArrayList<>(edges))
         {
             if(e.getConnectionComponent().equals(connection))
@@ -190,9 +190,9 @@ public class ConnectionHandler
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().getInputArea().updateComponent(node, null, true);
+                e.getConnectionComponent().getInputField().getLudemeNodeComponent().inputArea().updateComponent(node, null, true);
                 // check whether it was the element of a collection
-                if(connection.getInputField().isSingle() && connection.getInputField().getInputInformation().collection())
+                if(connection.getInputField().isSingle() && connection.getInputField().getNodeArgument().collection())
                 {
                     // if element of collection udpate the array
                     LudemeNode[] providedInputs = (LudemeNode[]) node.providedInputs()[connection.getInputField().getInputIndex()];

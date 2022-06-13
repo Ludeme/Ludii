@@ -5,7 +5,6 @@ import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHa
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -13,7 +12,6 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.model.InputInformation;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
-import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
 import main.grammar.Symbol;
 
@@ -88,7 +86,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         graph.setRoot(gameLudemeNode);
         addLudemeNodeComponent(gameLudemeNode, false);
 
-        lm = new LayoutHandler(graph, graph.getRoot().getId());
+        lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(edges);
     }
 
@@ -115,7 +113,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         graph.setRoot(gameLudemeNode);
         addLudemeNodeComponent(gameLudemeNode, false);
 
-        lm = new LayoutHandler(graph, graph.getRoot().getId());
+        lm = new LayoutHandler(graph, graph.getRoot().id());
     }
 
     @Override
@@ -179,10 +177,10 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
         // get game description up to current point
-        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().getInputInformations().get(0).getIndex();
-        for(InputInformation ii : ch.getSelectedConnectionComponent().getInputField().getInputInformations())
+        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().getNodeArguments().get(0).indexFirst();
+        for(NodeArgument ii : ch.getSelectedConnectionComponent().getInputField().getNodeArguments())
         {
-            if(ii.getIndex() < upUntilIndex) upUntilIndex = ii.getIndex();
+            if(ii.indexFirst() < upUntilIndex) upUntilIndex = ii.indexFirst();
         }
 
         connectLudemeWindow.updateList(ch.getSelectedConnectionComponent().getRequiredSymbols());
@@ -214,7 +212,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         // expand editor
         //expandEditorPanelSize(lc);
 
-        Handler.centerViewport(lc.getX()+lc.getWidth()/2, lc.getY()+lc.getHeight()/2);
+        Handler.centerViewport(lc.getX()+lc.width()/2, lc.getY()+lc.getHeight()/2);
     }
 
 
@@ -250,8 +248,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     /**
      * Clear selection list and deselects all nodes
      */
-    @Override
-    public void deselectEverything()
+    private void deselectEverything()
     {
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = getNodeComponent(n);
@@ -271,7 +268,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         SELECTED = true;
         lnc.setSelected(true);
-        if (!selectedLnc.contains(lnc)) selectedLnc.add(lnc);
+        selectedLnc.add(lnc);
     }
 
     public boolean isSELECTION_MODE()
@@ -383,7 +380,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         LudemeNode node = lnc.node();
         if(ch.getSelectedConnectionComponent() != null)
         {
-            if(ch.getSelectedConnectionComponent().getRequiredSymbols().contains(node.symbol()) && !lnc.getIngoingConnectionComponent().isFilled())
+            if(ch.getSelectedConnectionComponent().getRequiredSymbols().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
             {
                 ch.finishNewConnection(lnc);
             }

@@ -2,9 +2,9 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 
 
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.model.InputInformation;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.NodeInput;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -23,12 +23,12 @@ import java.util.List;
 public class LInputField extends JComponent {
 
     /*
-        A LInputField can either have 1x InputInformation -> Standard Field
-                                list of InputInformation -> "Merged" Field
+        A LInputField can either have 1x NodeArgument -> Standard Field
+                                list of NodeArgument -> "Merged" Field
      */
 
     private final LudemeNodeComponent LNC;
-    List<InputInformation> inputInformationList = new ArrayList<>();
+    List<NodeArgument>nodeArgumentList = new ArrayList<>();
     boolean isSingle;
     public boolean isOptional = false;
 
@@ -42,35 +42,35 @@ public class LInputField extends JComponent {
     LConnectionComponent connectionComponent;
     public JLabel label;
 
-    public LInputField(LudemeNodeComponent ludemeNodeComponent, InputInformation inputInformation){
+    public LInputField(LudemeNodeComponent ludemeNodeComponent, NodeArgument nodeArgument){
         this.LNC = ludemeNodeComponent;
-        inputInformationList.add(inputInformation);
-        if(inputInformation.optional()) isOptional = true;
+        nodeArgumentList.add(nodeArgument);
+        if(nodeArgument.optional()) isOptional = true;
         isSingle = true;
-        constructInputField(inputInformation);
+        constructInputField(nodeArgument);
         setOpaque(false);
     }
 
-    public LInputField(LudemeNodeComponent ludemeNodeComponent, List<InputInformation> inputInformationList){
+    public LInputField(LudemeNodeComponent ludemeNodeComponent, List<NodeArgument> nodeArgumentList){
         if(DEBUG) System.out.println("[LIF] constructing " + ludemeNodeComponent.node().symbol().name());
         this.LNC = ludemeNodeComponent;
-        this.inputInformationList = inputInformationList;
-        for(InputInformation inputInformation : inputInformationList){
+        this.nodeArgumentList = nodeArgumentList;
+        for(NodeArgument nodeArgument : nodeArgumentList){
             isOptional = true;
-            if(!inputInformation.optional()) {
+            if(!nodeArgument.optional()) {
                 isOptional = false;
                 break;
             }
         }
         isSingle = false;
-        constructInputField(inputInformationList);
+        constructInputField(nodeArgumentList);
         setOpaque(false);
     }
 
     public LInputField(LInputField parent){
         this.LNC = parent.LNC;
         this.isSingle = parent.isSingle;
-        this.inputInformationList = parent.inputInformationList;
+        this.nodeArgumentList = parent.nodeArgumentList;
         constructCollectionField(parent);
         parent.children.add(this);
         this.parent = parent;
@@ -78,10 +78,10 @@ public class LInputField extends JComponent {
     }
 
     private void constructCollectionField(LInputField parent){
-        if(parent.getInputInformation().nodeInput().arg().label() == null){
-            label = new JLabel(parent.getInputInformation().nodeInput().arg().symbol().name());
+        if(parent.getNodeArgument().arg().label() == null){
+            label = new JLabel(parent.getNodeArgument().arg().symbol().name());
         } else {
-            label = new JLabel(parent.getInputInformation().nodeInput().arg().label());
+            label = new JLabel(parent.getNodeArgument().arg().label());
         }
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
@@ -103,10 +103,10 @@ public class LInputField extends JComponent {
         inputFieldComponent = connectionComponent;
     }
 
-    private void constructInputField(InputInformation inputInformation){
+    private void constructInputField(NodeArgument nodeArgument){
         removeAll();
 
-        NodeInput input = inputInformation.nodeInput();
+        NodeArgument input = nodeArgument;
         Symbol inputSymbol = input.arg().symbol();
         Symbol.LudemeType inputType = inputSymbol.ludemeType();
 
@@ -130,7 +130,7 @@ public class LInputField extends JComponent {
 
         if(inputSymbol.isTerminal()){ // TODO: does that work?
             inputFieldComponent = getTerminalComponent(input.arg());
-            inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.getWidth()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
+            inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.width()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
             inputFieldComponent.addMouseListener(userInputListener);
 
             setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -212,10 +212,10 @@ public class LInputField extends JComponent {
         LInputField last = null;
         if(children.isEmpty()) last = this;
         else last = children.get(children.size()-1);
-        LNC.getInputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
+        LNC.inputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
     }
     private void removeCollectionItem(){
-        IGraphPanel graphPanel = LNC.getGraphPanel();
+        IGraphPanel graphPanel = LNC.graphPanel();
 
         // get current provided input array
         LudemeNode[] oldProvidedInputs = (LudemeNode[]) LNC.node().providedInputs()[getInputIndex()];
@@ -237,7 +237,7 @@ public class LInputField extends JComponent {
 
         graphPanel.getCh().removeConnection(LNC.node(), this.getConnectionComponent());
 
-        LNC.getInputArea().removeField(this);
+        LNC.inputArea().removeField(this);
         parent.children.remove(this);
     }
 
@@ -245,13 +245,13 @@ public class LInputField extends JComponent {
     /*
          Optional arguments merge
      */
-    private void constructInputField(List<InputInformation> inputInformationList){
+    private void constructInputField(List<NodeArgument> nodeArgumentList){
         removeAll();
 
         label = new JLabel("Additional Arguments");
         boolean isOptionalNotAdditional = true;
-        for(InputInformation inputInformation : inputInformationList){
-            if(!inputInformation.optional()){
+        for(NodeArgument nodeArgument : nodeArgumentList){
+            if(!nodeArgument.optional()){
                 isOptionalNotAdditional = false;
             }
         }
@@ -282,7 +282,7 @@ public class LInputField extends JComponent {
         if(isSingle) {
             System.out.println("[LIF] Updated input " + getInputIndex() + " to " + getUserInput());
             System.out.println("\u001B[32m"+"Calling from LIF 221"+"\u001B[0m");
-            Handler.updateInput(LNC.getGraphPanel().getGraph(), LNC.node(), getInputIndex(), getUserInput());
+            Handler.updateInput(LNC.graphPanel().getGraph(), LNC.node(), getInputIndex(), getUserInput());
         }
     }
 
@@ -291,7 +291,7 @@ public class LInputField extends JComponent {
      * @return
      */
     public Object getUserInput(){
-        if(inputInformationList.size() > 1) System.out.println("!!!! INCORRECT USE HERE");
+        if(nodeArgumentList.size() > 1) System.out.println("!!!! INCORRECT USE HERE");
         if(inputFieldComponent == connectionComponent){
             // then its ludeme input
             return connectionComponent.getConnectedTo().node();
@@ -304,13 +304,13 @@ public class LInputField extends JComponent {
     }
 
     public void setUserInput(Object input){
-        if(inputInformationList.size() > 1) {
+        if(nodeArgumentList.size() > 1) {
             // TODO: My words: "Incorrect use here", but I do not remember why
         }
-        if (getInputInformation().collection() && input instanceof LudemeNode[]) {
+        if (getNodeArgument().collection() && input instanceof LudemeNode[]) {
             // collection inputs are connected to multiple nodes
             LudemeNode[] connectedTo = (LudemeNode[]) input;
-            IGraphPanel graphPanel = LNC.getGraphPanel();
+            IGraphPanel graphPanel = LNC.graphPanel();
 
             for(int i = 1; i < connectedTo.length; i++){
                 // create a new input field for each node
@@ -328,14 +328,14 @@ public class LInputField extends JComponent {
                     } else {
                         connectionComponentChild = children.get(childrenIndex).getConnectionComponent();
                     }
-                    graphPanel.getCh().addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).getIngoingConnectionComponent());
+                    graphPanel.getCh().addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).ingoingConnectionComponent());
                 }
             }
         }
         else if(inputFieldComponent == connectionComponent){
             // then its ludeme input
-            IGraphPanel graphPanel = LNC.getGraphPanel();
-            graphPanel.getCh().addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).getIngoingConnectionComponent());
+            IGraphPanel graphPanel = LNC.graphPanel();
+            graphPanel.getCh().addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).ingoingConnectionComponent());
         }
         if(inputFieldComponent instanceof JTextField) ((JTextField)inputFieldComponent).setText((String)input);
         if(inputFieldComponent instanceof JSpinner) ((JSpinner)inputFieldComponent).setValue(input);
@@ -354,8 +354,8 @@ public class LInputField extends JComponent {
     }
 
     public LInputField setToSingle(Symbol symbol){
-        for(InputInformation ii : inputInformationList){
-            if(ii.getPossibleSymbolInputs().contains(symbol)){
+        for(NodeArgument ii : nodeArgumentList){
+            if(ii.possibleSymbolInputsExpanded().contains(symbol)){
                 if(DEBUG) System.out.println("[LIF]: Setting " + symbol + " to single");
                 return setToSingle(ii);
             }
@@ -364,8 +364,8 @@ public class LInputField extends JComponent {
     }
 
     public LInputField setToSingle(int inputIndex){
-        for(InputInformation ii : inputInformationList){
-            if(ii.getIndex() == inputIndex){
+        for(NodeArgument ii : nodeArgumentList){
+            if(ii.indexFirst() == inputIndex){
                 System.out.println("[LIF]: Setting " + ii + "(index="+inputIndex+") to single");
                 return setToSingle(ii);
             }
@@ -373,47 +373,47 @@ public class LInputField extends JComponent {
         return this;
     }
 
-    public LInputField setToSingle(InputInformation inputInformation){
+    public LInputField setToSingle(NodeArgument nodeArgument){
 
-        if(DEBUG) System.out.println("[LIF]: ^Setting " + inputInformation + " to single");
+        if(DEBUG) System.out.println("[LIF]: ^Setting " + nodeArgument + " to single");
 
         // new single input field is above the "merged" one
-        if(inputInformation == inputInformationList.get(0)){
-            LInputField newInputField = new LInputField(LNC, inputInformation);
-            LNC.getInputArea().addInputFieldAbove(newInputField, this);
-            inputInformationList.remove(0);
-            if(inputInformationList.size() == 1){
-                constructInputField(inputInformationList.get(0));
+        if(nodeArgument == nodeArgumentList.get(0)){
+            LInputField newInputField = new LInputField(LNC, nodeArgument);
+            LNC.inputArea().addInputFieldAbove(newInputField, this);
+            nodeArgumentList.remove(0);
+            if(nodeArgumentList.size() == 1){
+                constructInputField(nodeArgumentList.get(0));
             } else {
-                constructInputField(inputInformationList);
+                constructInputField(nodeArgumentList);
             }
             repaint();
             return newInputField;
         }
 
         // new single input field is below the "merged" one
-        if(inputInformation == inputInformationList.get(inputInformationList.size()-1)){
-            LInputField newInputField = new LInputField(LNC, inputInformation);
-            LNC.getInputArea().addInputFieldBelow(newInputField, this);
-            inputInformationList.remove(inputInformationList.size()-1);
-            if(inputInformationList.size() == 1){
-                constructInputField(inputInformationList.get(0));
+        if(nodeArgument == nodeArgumentList.get(nodeArgumentList.size()-1)){
+            LInputField newInputField = new LInputField(LNC, nodeArgument);
+            LNC.inputArea().addInputFieldBelow(newInputField, this);
+            nodeArgumentList.remove(nodeArgumentList.size()-1);
+            if(nodeArgumentList.size() == 1){
+                constructInputField(nodeArgumentList.get(0));
             } else {
-                constructInputField(inputInformationList);
+                constructInputField(nodeArgumentList);
             }
             repaint();
             return newInputField;
         }
 
         // new single input field is between two "merged" ones
-        LInputField newInputField = new LInputField(LNC, inputInformation);
+        LInputField newInputField = new LInputField(LNC, nodeArgument);
         // find which input information belongs above/below the new one
-        List<InputInformation> above_ii = new ArrayList<>();
-        List<InputInformation> below_ii = new ArrayList<>();
-        for(InputInformation ii : inputInformationList){
-            if(ii.getIndex() < inputInformation.getIndex()){
+        List<NodeArgument> above_ii = new ArrayList<>();
+        List<NodeArgument> below_ii = new ArrayList<>();
+        for(NodeArgument ii : nodeArgumentList){
+            if(ii.indexFirst() < nodeArgument.indexFirst()){
                 above_ii.add(ii);
-            } else if(ii.getIndex() > inputInformation.getIndex()){
+            } else if(ii.indexFirst() > nodeArgument.indexFirst()){
                 below_ii.add(ii);
             }
         }
@@ -437,35 +437,35 @@ public class LInputField extends JComponent {
         else {
             below_lif = new LInputField(LNC, below_ii);
         }
-        if(above_lif != null) LNC.getInputArea().addInputFieldAbove(above_lif, this);
-        LNC.getInputArea().addInputFieldAbove(newInputField, this);
-        if(below_lif != null) LNC.getInputArea().addInputFieldAbove(below_lif, this);
-        LNC.getInputArea().removeField(this);
+        if(above_lif != null) LNC.inputArea().addInputFieldAbove(above_lif, this);
+        LNC.inputArea().addInputFieldAbove(newInputField, this);
+        if(below_lif != null) LNC.inputArea().addInputFieldAbove(below_lif, this);
+        LNC.inputArea().removeField(this);
         repaint();
         return newInputField;
     }
 
-    public void addInputInformation(InputInformation inputInformation){
-        inputInformationList.add(inputInformation);
+    public void addNodeArgument(NodeArgument nodeArgument){
+        nodeArgumentList.add(nodeArgument);
     }
 
-    public void removeInputInformation(InputInformation inputInformation){
-        inputInformationList.remove(inputInformation);
+    public void removeNodeArgument(NodeArgument nodeArgument){
+        nodeArgumentList.remove(nodeArgument);
     }
 
     public int getInputIndex(){
         if(!isSingle) System.out.println("!!!! INCORRECT USE HERE");
-        return inputInformationList.get(0).getIndex();
+        return nodeArgumentList.get(0).indexFirst();
     }
 
     public List<Symbol> getRequiredSymbols(){
-        if(isSingle) return inputInformationList.get(0).getPossibleSymbolInputs();
+        if(isSingle) return nodeArgumentList.get(0).possibleSymbolInputsExpanded();
 
         List<Symbol> requiredLudemes = new ArrayList<>();
-        for(InputInformation inputInformation : inputInformationList){
-            requiredLudemes.addAll(inputInformation.getPossibleSymbolInputs());
+        for(NodeArgument nodeArgument : nodeArgumentList){
+            requiredLudemes.addAll(nodeArgument.possibleSymbolInputsExpanded());
         }
-        System.out.println(this + " InputInformation: getPossibleSymbolInputs: " + requiredLudemes);
+        System.out.println(this + " nodeArgument: getPossibleSymbolInputs: " + requiredLudemes);
 
         return requiredLudemes;
     }
@@ -478,18 +478,18 @@ public class LInputField extends JComponent {
         return LNC;
     }
 
-    public InputInformation getInputInformation(){
-        return inputInformationList.get(0);
+    public NodeArgument getNodeArgument(){
+        return nodeArgumentList.get(0);
     }
 
-    public List<InputInformation> getInputInformations(){
-        return inputInformationList;
+    public List<NodeArgument> getNodeArguments(){
+        return nodeArgumentList;
     }
 
     public List<Integer> getInputIndices(){
         List<Integer> indices = new ArrayList<>();
-        for(InputInformation inputInformation : inputInformationList) {
-            indices.add(inputInformation.getIndex());
+        for(NodeArgument nodeArgument : nodeArgumentList) {
+            indices.add(nodeArgument.indexFirst());
         }
         return indices;
     }
@@ -500,7 +500,7 @@ public class LInputField extends JComponent {
 
     @Override
     public String toString(){
-        return "Input Field of " + inputInformationList;
+        return "Input Field of " + nodeArgumentList;
     }
 
 

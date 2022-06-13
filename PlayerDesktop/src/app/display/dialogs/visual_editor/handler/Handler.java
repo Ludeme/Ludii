@@ -54,11 +54,11 @@ public class Handler {
         //graph = graph.clone();
         graph.removeNode(node);
         //addToHistory(graph);
-        for(int childrenId: node.getChildren()){
+        for(int childrenId: node.children()){
             LudemeNode childrenNode = graph.getNode(childrenId);
             childrenNode.setParent(null);
         }
-        if(node.getParentNode() != null) node.getParentNode().removeChildren(node);
+        if(node.parentNode() != null) node.parentNode().removeChildren(node);
         // TODO: Remove edges
     }
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
@@ -71,7 +71,7 @@ public class Handler {
     }
 
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
-        graph.addEdge(from.getId(), to.getId());
+        graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);
         to.setParent(from);
