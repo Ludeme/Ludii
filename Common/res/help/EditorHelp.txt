@@ -4570,6 +4570,7 @@ TYPE: metadata.MetadataItem
 TYPE JAVADOC: Interface for generic metadata item.  Classes to be included as metadata should inherit form this.
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
+SUBCLASS: metadata.ai.agents.mcts.Mcts
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
 SUBCLASS: metadata.ai.Ai
 SUBCLASS: metadata.ai.AIItem
@@ -4666,6 +4667,7 @@ TYPE: metadata.ai.AIItem
 TYPE JAVADOC: General function hint for this game.Metadata containing hints for AI agents for this game.
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
+SUBCLASS: metadata.ai.agents.mcts.Mcts
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
 SUBCLASS: metadata.ai.features.Features
 SUBCLASS: metadata.ai.features.FeatureSet
@@ -4722,6 +4724,7 @@ REMARKS: Specifying AI metadata for games is not mandatory.
 TYPE: metadata.ai.agents.Agent
 TYPE JAVADOC: Describes an agent (either by name of expected best agent, or as a   complete setup).
 SUBCLASS: metadata.ai.agents.BestAgent
+SUBCLASS: metadata.ai.agents.mcts.Mcts
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
 TYPE: metadata.ai.agents.BestAgent
 TYPE JAVADOC: Describes the name of an algorithm or agent that is typically expected to  be the best-performing algorithm available in Ludii for this game.
@@ -4730,6 +4733,11 @@ NEW CTOR
 PARAM JAVADOC: <string>: The name of the (expected) best agent for this game.
 EXAMPLE: (bestAgent "UCT")
 REMARKS: Some examples of names that Ludii can currently recognise are ``Random'', ``Flat MC'', ``Alpha-Beta'', ``UCT'', ``MC-GRAVE'', and ``Biased MCTS''.
+TYPE: metadata.ai.agents.mcts.Mcts
+TYPE JAVADOC: Describes a Monte-Carlo tree search agent.
+NEW CTOR
+(mcts)
+EXAMPLE: (mcts)
 TYPE: metadata.ai.agents.minimax.AlphaBeta
 TYPE JAVADOC: Describes an Alpha-Beta search agent.
 NEW CTOR
