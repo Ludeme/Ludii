@@ -15,11 +15,11 @@ import java.util.List;
 
 public interface IGraphPanel {
     void drawGraph(DescriptionGraph graph);
-    DescriptionGraph getGraph();
-    ConnectionHandler getCh();
-    LudemeNodeComponent getNodeComponent(LudemeNode node);
-    int getSelectedRootId();
-    List<iGNode> getSelectedNodes();
+    DescriptionGraph graph();
+    ConnectionHandler ch();
+    LudemeNodeComponent nodeComponent(LudemeNode node);
+    int selectedRootId();
+    List<iGNode> selectedNodes();
     LudemeNode addNode(Symbol symbol, int x, int y, boolean connect);
     void showAllAvailableLudemes(int x, int y);
     void clickedOnNode(LudemeNodeComponent lnc);

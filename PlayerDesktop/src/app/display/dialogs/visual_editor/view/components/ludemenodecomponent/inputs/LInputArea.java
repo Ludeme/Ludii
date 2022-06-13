@@ -383,7 +383,7 @@ public class LInputArea extends JPanel {
             Object[] providedInputs = node.providedInputs();
             System.out.println("PROVIDED INPUTS RESETED of " + LNC.node().symbol().name()); // TODO: REMOVE THIS DEBUG LINES
             System.out.println("  ->  before: " + Arrays.toString(providedInputs));
-            Handler.updateCurrentClause(LNC.graphPanel().getGraph(), LNC.node(), activeClauses.get(0)); // TODO: WARNING: DELETES PROVIDED INPUTS
+            Handler.updateCurrentClause(LNC.graphPanel().graph(), LNC.node(), activeClauses.get(0)); // TODO: WARNING: DELETES PROVIDED INPUTS
             dynamicConstructorActive = false;
             if(DEBUG) System.out.println("[DYNAMIC LIA]: Setting dynamicConstructorActive of " + LNC.node().symbol().name() + " to " + dynamicConstructorActive + "(317)");
             updateConstructor();
@@ -702,7 +702,7 @@ public class LInputArea extends JPanel {
             }
 
             if(DEBUG) System.out.println("[LIA] adding connection!");
-            LNC.graphPanel().getCh().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).ingoingConnectionComponent());
+            LNC.graphPanel().ch().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).ingoingConnectionComponent());
 
         }
     }
@@ -711,8 +711,8 @@ public class LInputArea extends JPanel {
         if(DEBUG) System.out.println("[LIA] updateConstructor()");
         System.out.println("Provided input fields 586: " + providedInputFields);
         // TODO: Remove all edges of this ludeme node AND MODEL
-        LNC.graphPanel().getCh().cancelNewConnection();
-        LNC.graphPanel().getCh().removeAllConnections(LNC.node());
+        LNC.graphPanel().ch().cancelNewConnection();
+        LNC.graphPanel().ch().removeAllConnections(LNC.node());
 
         inputFields = getInputFields(LNC);
         drawInputFields();

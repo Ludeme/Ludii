@@ -43,7 +43,7 @@ public class LHeader extends JComponent
         // initialize connection component
         ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
         // root nodes have no ingoing connection
-        if(LNC.graphPanel().getGraph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
+        if(LNC.graphPanel().graph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
         // Panel containing the label and the connection component
         JPanel connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
         if(ingoingConnectionComponent!=null) connectionAndTitle.add(ingoingConnectionComponent);

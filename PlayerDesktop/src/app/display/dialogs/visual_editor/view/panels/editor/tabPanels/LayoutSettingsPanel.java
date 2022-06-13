@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.view.panels.editor.tabPanels;
 
 import app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.NodePlacementRoutines;
-import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -9,8 +8,6 @@ import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Class for the single instance of the Layout Settings Panel
@@ -46,8 +43,8 @@ public class LayoutSettingsPanel extends JPanel
         JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
 
         Button redraw = new Button("Arrange graph");
-        Button alignX = new Button("Align by X-axis");
-        Button alignY = new Button("Align by Y-axis");
+        Button alignX = new Button("Align vertically");
+        Button alignY = new Button("Align horizontally");
 
         redraw.addActionListener(e -> {
             lh.evaluateGraphWeights();
@@ -55,13 +52,13 @@ public class LayoutSettingsPanel extends JPanel
         });
 
         alignX.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.getSelectedNodes(), NodePlacementRoutines.X_AXIS);
-            graphPanel.drawGraph(graphPanel.getGraph());
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS);
+            graphPanel.drawGraph(graphPanel.graph());
         });
 
         alignY.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.getSelectedNodes(), NodePlacementRoutines.Y_AXIS);
-            graphPanel.drawGraph(graphPanel.getGraph());
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS);
+            graphPanel.drawGraph(graphPanel.graph());
         });
 
         ChangeListener sliderUpdateListener = e -> {
@@ -121,9 +118,9 @@ public class LayoutSettingsPanel extends JPanel
 
     private void executeDFSLayout(IGraphPanel graphPanel)
     {
-        int root = graphPanel.getSelectedRootId();
+        int root = graphPanel.selectedRootId();
         graphPanel.getLayoutHandler().executeLayout(root);
-        graphPanel.drawGraph(graphPanel.getGraph());
+        graphPanel.drawGraph(graphPanel.graph());
     }
 
     public void setSelectedComponent(String node, boolean subtree)

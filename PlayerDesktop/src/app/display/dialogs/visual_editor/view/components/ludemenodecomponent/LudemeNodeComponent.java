@@ -97,7 +97,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public void changeCurrentClause(Clause clause)
     {
-        Handler.updateCurrentClause(graphPanel().getGraph(), node(), clause);
+        Handler.updateCurrentClause(graphPanel().graph(), node(), clause);
         inputArea.updateConstructor();
         revalidate();
         repaint();
@@ -323,7 +323,7 @@ public class LudemeNodeComponent extends JPanel
                     Handler.selectNode(lnc);
                     List<Integer> children = lnc.LN.children();
                     children.forEach(v -> {
-                        Q.add(GRAPH_PANEL.getNodeComponent(GRAPH_PANEL.getGraph().getNode(v)));
+                        Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v)));
                     });
                 }
                 subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
@@ -340,7 +340,7 @@ public class LudemeNodeComponent extends JPanel
             super.mousePressed(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(graphPanel().getGraph(), node(), getX(), getY());
+            Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
         }
         // When released, update position
         // If right click, open popup menu
@@ -351,11 +351,11 @@ public class LudemeNodeComponent extends JPanel
             super.mouseReleased(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(graphPanel().getGraph(), node(), getX(), getY());
+            Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
 
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);
-                graphPanel().getCh().cancelNewConnection();
+                graphPanel().ch().cancelNewConnection();
             }
             else {
                 graphPanel().clickedOnNode(LudemeNodeComponent.this);

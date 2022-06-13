@@ -4,7 +4,6 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -232,10 +231,10 @@ public class LInputField extends JComponent {
             }
 
             System.out.println("\u001B[32m" + "Calling from LIF 178" + "\u001B[0m");
-            Handler.updateInput(graphPanel.getGraph(), LNC.node(), getInputIndex(), newProvidedInputs);
+            Handler.updateInput(graphPanel.graph(), LNC.node(), getInputIndex(), newProvidedInputs);
         }
 
-        graphPanel.getCh().removeConnection(LNC.node(), this.getConnectionComponent());
+        graphPanel.ch().removeConnection(LNC.node(), this.getConnectionComponent());
 
         LNC.inputArea().removeField(this);
         parent.children.remove(this);
@@ -282,7 +281,7 @@ public class LInputField extends JComponent {
         if(isSingle) {
             System.out.println("[LIF] Updated input " + getInputIndex() + " to " + getUserInput());
             System.out.println("\u001B[32m"+"Calling from LIF 221"+"\u001B[0m");
-            Handler.updateInput(LNC.graphPanel().getGraph(), LNC.node(), getInputIndex(), getUserInput());
+            Handler.updateInput(LNC.graphPanel().graph(), LNC.node(), getInputIndex(), getUserInput());
         }
     }
 
@@ -328,14 +327,14 @@ public class LInputField extends JComponent {
                     } else {
                         connectionComponentChild = children.get(childrenIndex).getConnectionComponent();
                     }
-                    graphPanel.getCh().addConnection(connectionComponentChild, graphPanel.getNodeComponent(node).ingoingConnectionComponent());
+                    graphPanel.ch().addConnection(connectionComponentChild, graphPanel.nodeComponent(node).ingoingConnectionComponent());
                 }
             }
         }
         else if(inputFieldComponent == connectionComponent){
             // then its ludeme input
             IGraphPanel graphPanel = LNC.graphPanel();
-            graphPanel.getCh().addConnection(connectionComponent, graphPanel.getNodeComponent((LudemeNode) input).ingoingConnectionComponent());
+            graphPanel.ch().addConnection(connectionComponent, graphPanel.nodeComponent((LudemeNode) input).ingoingConnectionComponent());
         }
         if(inputFieldComponent instanceof JTextField) ((JTextField)inputFieldComponent).setText((String)input);
         if(inputFieldComponent instanceof JSpinner) ((JSpinner)inputFieldComponent).setValue(input);

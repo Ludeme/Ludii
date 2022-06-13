@@ -2,18 +2,11 @@ package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs;
-import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs.*;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import game.rules.play.moves.nonDecision.effect.requirement.Do;
-
-import javax.swing.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
 
@@ -71,12 +64,12 @@ public class LayoutHandler {
         LayoutHandler lm = graphPanel.getLayoutHandler();
         lm.evaluateGraphWeights();
         lm.executeLayout(1);
-        graphPanel.drawGraph(graphPanel.getGraph());
+        graphPanel.drawGraph(graphPanel.graph());
     }
 
     public void executeLayout(int root)
     {
-        updateNodeDepth(graph, graph.getRoot().getId());
+        updateNodeDepth(graph, graph.getRoot().id());
         layout.setRoot(root);
         layout.applyLayout();
     }

@@ -218,7 +218,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
 
-    public ConnectionHandler getCh()
+    public ConnectionHandler ch()
     {
         return ch;
     }
@@ -253,7 +253,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     public void deselectEverything()
     {
         graph.getNodes().forEach(n -> {
-            LudemeNodeComponent lnc = getNodeComponent(n);
+            LudemeNodeComponent lnc = nodeComponent(n);
             lnc.setSelected(false);
         });
         selectedLnc = new ArrayList<>();
@@ -338,12 +338,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
-    public DescriptionGraph getGraph() {
+    public DescriptionGraph graph() {
         return graph;
     }
 
     @Override
-    public LudemeNodeComponent getNodeComponent(LudemeNode node)
+    public LudemeNodeComponent nodeComponent(LudemeNode node)
     {
         for(LudemeNodeComponent lc : nodeComponents)
         {
@@ -393,7 +393,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     public void removeNode(LudemeNode node)
     {
         if(DEBUG) System.out.println("[EP] Removing node " + node.symbol().name());
-        LudemeNodeComponent lc = getNodeComponent(node);
+        LudemeNodeComponent lc = nodeComponent(node);
         nodeComponents.remove(lc);
         ch.removeAllConnections(node, false);
         Handler.removeNode(graph, node);
@@ -410,21 +410,21 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
-    public int getSelectedRootId() {
+    public int selectedRootId() {
         if (!selectedLnc.isEmpty())
         {
             LudemeNodeComponent rootLnc = selectedLnc.get(0);
             // TODO: implemented awfully, if performance is bad, refactor how the selection list is implemented
             for (LudemeNode n:
                     graph.getNodes()) {
-                if (getNodeComponent(n).getBounds().intersects(rootLnc.getBounds())) return n.id();
+                if (nodeComponent(n).getBounds().intersects(rootLnc.getBounds())) return n.id();
             }
         }
         return graph.getRoot().id();
     }
 
     @Override
-    public List<iGNode> getSelectedNodes()
+    public List<iGNode> selectedNodes()
     {
         List<iGNode> nodeList = new ArrayList<>();
         for (LudemeNodeComponent lnc:
@@ -534,7 +534,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 if (region != null)
                 {
                     graph.getNodes().forEach(n -> {
-                        LudemeNodeComponent lnc = getNodeComponent(n);
+                        LudemeNodeComponent lnc = nodeComponent(n);
                         if (region.intersects(lnc.getBounds()))
                         {
                             addNodeToSelections(lnc);
