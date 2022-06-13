@@ -47,7 +47,6 @@ public class LudemeNode implements iLudemeNode, iGNode {
     // For dynamic constructor
     private boolean dynamic = false; // TODO: Not hard-coded
 
-
     public LudemeNode(Symbol symbol, int x, int y) {
         this.ID = LAST_ID++;
         this.SYMBOL = symbol;

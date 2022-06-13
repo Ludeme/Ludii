@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHa
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -12,6 +13,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.model.InputInformation;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
+import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
 import main.grammar.Symbol;
 
@@ -248,11 +250,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
     /**
      * Clear selection list and deselects all nodes
      */
-    private void deselectEverything()
+    @Override
+    public void deselectEverything()
     {
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = getNodeComponent(n);
-            lnc.setSELECTED(false);
+            lnc.setSelected(false);
         });
         selectedLnc = new ArrayList<>();
         SELECTED = false;
@@ -267,8 +270,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
     public void addNodeToSelections(LudemeNodeComponent lnc)
     {
         SELECTED = true;
-        lnc.setSELECTED(true);
-        selectedLnc.add(lnc);
+        lnc.setSelected(true);
+        if (!selectedLnc.contains(lnc)) selectedLnc.add(lnc);
     }
 
     public boolean isSELECTION_MODE()
@@ -397,7 +400,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
         Handler.removeNode(graph, node);
         remove(lc);
         repaint();
-        if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
+        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
+            LayoutHandler.applyOnPanel(EditorPanel.this);
     }
 
     @Override
@@ -406,7 +410,30 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return lm;
     }
 
+    @Override
+    public int getSelectedRootId() {
+        if (!selectedLnc.isEmpty())
+        {
+            LudemeNodeComponent rootLnc = selectedLnc.get(0);
+            // TODO: implemented awfully, if performance is bad, refactor how the selection list is implemented
+            for (LudemeNode n:
+                    graph.getNodes()) {
+                if (getNodeComponent(n).getBounds().intersects(rootLnc.getBounds())) return n.getId();
+            }
+        }
+        return graph.getRoot().getId();
+    }
 
+    @Override
+    public List<iGNode> getSelectedNodes()
+    {
+        List<iGNode> nodeList = new ArrayList<>();
+        for (LudemeNodeComponent lnc:
+             selectedLnc) {
+            nodeList.add(lnc.node());
+        }
+        return nodeList;
+    }
 
     // # Mouse listeners #
 
@@ -445,7 +472,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
                     {
                         showCurrentlyAvailableLudemes(e.getX(), e.getY());
                     }
-                    if (autoplacement) LayoutHandler.applyOnPanel(EditorPanel.this);
+                    if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
+                        LayoutHandler.applyOnPanel(EditorPanel.this);
                 }
             }
             else
@@ -458,7 +486,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
             }
 
             // When selection was performed user can clear it out by clicking on blank area
-            if (SELECTED) deselectEverything();
+            if (SELECTED)
+            {
+                LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent("Empty", false);
+                deselectEverything();
+            }
 
             repaint();
             revalidate();

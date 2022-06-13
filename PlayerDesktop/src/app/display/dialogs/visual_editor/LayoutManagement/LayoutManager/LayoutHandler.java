@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs;
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs.*;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import game.rules.play.moves.nonDecision.effect.requirement.Do;
 
@@ -12,6 +13,7 @@ import javax.swing.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
 
@@ -24,7 +26,6 @@ public class LayoutHandler {
 
     private final iGraph graph;
     private int root;
-
     private LayoutMethod layout;
 
     public LayoutHandler(iGraph graph, int root)
@@ -69,15 +70,14 @@ public class LayoutHandler {
     {
         LayoutHandler lm = graphPanel.getLayoutHandler();
         lm.evaluateGraphWeights();
-        lm.executeLayout();
+        lm.executeLayout(1);
         graphPanel.drawGraph(graphPanel.getGraph());
     }
 
-    public void executeLayout()
+    public void executeLayout(int root)
     {
-        // TODO implement int root into constructor
-        int r = 1;
-        updateNodeDepth(graph, r);
+        updateNodeDepth(graph, graph.getRoot().getId());
+        layout.setRoot(root);
         layout.applyLayout();
     }
 

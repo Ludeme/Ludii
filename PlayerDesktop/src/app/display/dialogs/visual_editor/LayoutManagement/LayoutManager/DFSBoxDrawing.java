@@ -4,6 +4,7 @@ package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class DFSBoxDrawing implements LayoutMethod
     private final double wY;
     // distance
     private final double wX;
-    private final int root;
+    private int root;
 
     private HashMap<Integer, Double[]> DOS_MAP;
 
@@ -34,6 +35,8 @@ public class DFSBoxDrawing implements LayoutMethod
 
     private final int PADDING_X = 10;
     private final int PADDING_Y = 10;
+
+    private List<LudemeNodeComponent> selectedNodes;
 
     /**
      *
@@ -138,6 +141,11 @@ public class DFSBoxDrawing implements LayoutMethod
         DOS_MAP = new HashMap<>(weights);
     }
 
+    public void setSelectedNodes(List<LudemeNodeComponent> selectedNodes)
+    {
+        this.selectedNodes = selectedNodes;
+    }
+
     @Override
     public void applyLayout()
     {
@@ -146,5 +154,10 @@ public class DFSBoxDrawing implements LayoutMethod
         initWeights();
         initPlacement(root,0);
         translateByRoot(graph, root, oPos);
+    }
+
+    @Override
+    public void setRoot(int root) {
+        this.root = root;
     }
 }

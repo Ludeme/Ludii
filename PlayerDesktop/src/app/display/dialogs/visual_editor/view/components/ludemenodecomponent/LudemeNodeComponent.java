@@ -8,6 +8,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Clause;
 
 import javax.swing.*;
@@ -32,7 +33,8 @@ public class LudemeNodeComponent extends JPanel {
     private LHeader header;
     private LInputArea inputArea;
 
-    private boolean SELECTED = false;
+    private boolean selected = false;
+    private boolean subtree = false;
 
     public LudemeNodeComponent(LudemeNode ludemeNode, IGraphPanel graphPanel){
         this.LUDEME_NODE = ludemeNode;
@@ -151,12 +153,12 @@ public class LudemeNodeComponent extends JPanel {
         return position;
     }
 
-    public void setSELECTED(boolean SELECTED) {
-        this.SELECTED = SELECTED;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
-    public boolean isSELECTED() {
-        return SELECTED;
+    public boolean isSelected() {
+        return selected;
     }
 
     public LIngoingConnectionComponent getIngoingConnectionComponent(){
@@ -183,7 +185,7 @@ public class LudemeNodeComponent extends JPanel {
             updatePositions();
             Point posDif = new Point(position.x-initX, position.y-initY);
             // if selection was performed move all others selected nodes with respect to the dragged one
-            if (SELECTED)
+            if (selected)
             {
                 List<LudemeNodeComponent> Q = ((EditorPanel) getGraphPanel()).getSelectedLnc();
                 Q.forEach(lnc -> {
@@ -199,7 +201,8 @@ public class LudemeNodeComponent extends JPanel {
     // Mouse Listener
     MouseListener mouseListener = new MouseAdapter() {
 
-        private void openPopupMenu(MouseEvent e){
+        private void openPopupMenu(MouseEvent e)
+        {
             JPopupMenu popupMenu = new NodePopupMenu(LudemeNodeComponent.this, LudemeNodeComponent.this.getGraphPanel());
             popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
@@ -209,7 +212,13 @@ public class LudemeNodeComponent extends JPanel {
         {
             super.mouseClicked(e);
             // when double click is performed on a node add its descendant into selection list
-            if (e.getClickCount() >= 2)
+            if (e.getClickCount() == 1)
+            {
+                getGraphPanel().deselectEverything();
+                Handler.selectNode(LudemeNodeComponent.this);
+                subtree = false;
+            }
+            else if (e.getClickCount() >= 2)
             {
                 List<LudemeNodeComponent> Q = new ArrayList<>();
                 Q.add(LudemeNodeComponent.this);
@@ -217,14 +226,15 @@ public class LudemeNodeComponent extends JPanel {
                 {
                     LudemeNodeComponent lnc = Q.remove(0);
                     Handler.selectNode(lnc);
-
                     List<Integer> children = lnc.LUDEME_NODE.getChildren();
                     children.forEach(v -> {
                         Q.add(GRAPH_PANEL.getNodeComponent(GRAPH_PANEL.getGraph().getNode(v)));
                     });
                 }
+                subtree = !LudemeNodeComponent.this.LUDEME_NODE.getChildren().isEmpty();
                 getGraphPanel().repaint();
             }
+            LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent(LudemeNodeComponent.this.header.title.getText(), subtree);
         }
 
         //TODO: do we need mousePressed listener?
@@ -277,7 +287,7 @@ public class LudemeNodeComponent extends JPanel {
         LUDEME_NODE.setHeight(getHeight());
 
         setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
-        if (SELECTED) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
+        if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
         else setBorder(DesignPalette.LUDEME_NODE_BORDER);
     }
 

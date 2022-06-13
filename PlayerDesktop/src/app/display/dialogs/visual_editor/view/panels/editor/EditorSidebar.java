@@ -12,7 +12,8 @@ public class EditorSidebar extends JTabbedPane
     {
 
         // adding layout settings tab
-        JComponent layoutPanel = new LayoutSettingsPanel(Handler.editorPanel);
+        LayoutSettingsPanel layoutPanel = LayoutSettingsPanel.getLayoutSettingsPanel();
+        Handler.lsPanel = layoutPanel;
         addTab("Layout settings", layoutPanel);
 
         // add other tabs here...

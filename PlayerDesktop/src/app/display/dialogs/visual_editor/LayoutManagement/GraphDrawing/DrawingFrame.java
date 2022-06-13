@@ -57,7 +57,7 @@ public class DrawingFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            graphPanel.getLayoutManager().executeLayout();
+            graphPanel.getLayoutManager().executeLayout(1);
 
             graphPanel.repaint();
             graphPanel.revalidate();

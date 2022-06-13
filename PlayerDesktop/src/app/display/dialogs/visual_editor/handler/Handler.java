@@ -2,9 +2,11 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import main.grammar.Clause;
 
@@ -23,6 +25,8 @@ public class Handler {
 
     // Single ToolsPanel
     public static ToolsPanel toolsPanel;
+
+    public static LayoutSettingsPanel lsPanel;
 
     public static ArrayList<DescriptionGraph> history = new ArrayList<>();
 
@@ -117,13 +121,11 @@ public class Handler {
         toolsPanel.revalidate();
     }
 
-    public static void selectNode(LudemeNodeComponent lnc)
+    public static void selectNode(LudemeNodeComponent node)
     {
-        editorPanel.addNodeToSelections(lnc);
+        editorPanel.addNodeToSelections(node);
     }
 
     public static void setAutoplacement(boolean var) {editorPanel.setAutoplacement(var);}
-
-
 
 }
