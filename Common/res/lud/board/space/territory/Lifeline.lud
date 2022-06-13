@@ -6,6 +6,115 @@
     )
 )
 
+(define "WeakPieSetup"
+    (phase "Opening"
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                    if:(= 0
+                        (count Sites in:(sites Around (to) Own Orthogonal))
+                    )
+                )
+            )
+        )
+        (nextPhase 
+            (and
+                (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
+                (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
+            )
+            "Play"
+        )
+    )
+)
+
+(define "StrongPieSetup"
+    (phase "Opening"
+        (play 
+            (move Select
+                (from
+                    (sites Empty)
+                )
+                (to 
+                    (sites Empty)
+                    if:(not (is In (from) (sites Around (to) includeSelf:True)))
+                )
+                (then 
+                    (and
+                        (add (to (last To)))
+                        (add (to (last From)))
+                    )
+                )
+            )
+        )
+        (nextPhase 
+            (and
+                (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
+                (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
+            )
+            "Play"
+        )
+    )
+)
+
+(define "KomiPieSetup"
+    (phase "KomiPie"
+        (play 
+            (if 
+                (= 0 (count Moves))
+                (move Select
+                    (from (sites Distance from:(centrePoint) (exact 2)))
+                    (then 
+                        (fromTo 
+                            (from (last From))
+                            (to (handSite P2))
+                            count:(size Stack at:(from))
+                            (then
+                                (forEach Site
+                                    (sites Distance from:(centrePoint) (exact 2))
+                                    (remove (site) count:(size Stack at:(site)))
+                                )
+                            )
+                        )
+                    )
+                )
+                (if 
+                    (= 1 (count Moves))
+                    (or
+                        (move Pass)
+                        (move Add (piece 1) (to (sites Empty))
+                            (then (swap Players 1 2))
+                        )
+                    )
+                )
+            )
+        )
+        (nextPhase 
+            (= 2 (count Moves))
+            "Opening"
+        )
+    )
+    (phase "Opening"
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty)
+                    if:(= 0
+                        (count Sites in:(sites Around (to) Own Orthogonal))
+                    )
+                )
+            )
+        )
+        (nextPhase 
+            (and
+                (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
+                (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
+            )
+            "Play"
+        )
+    )
+)
+
 (define "Place"
     (move Add
         (to
@@ -88,6 +197,23 @@
     )
 )
 
+(define "KomiSelection"
+    (start {
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:1 N) count:1)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:2 NNE) count:2)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:1 ENE) count:3)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:2 E) count:4)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:1 ESE) count:5)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:2 SSE) count:6)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:1 S) count:7)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:2 SSW) count:8)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:1 WSW) count:9)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:2 W) count:10)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:1 WNW) count:11)
+        (place Stack "Shi_Western2" (ahead (centrePoint) steps:2 NNW) count:12)
+    })
+)
+
 //------------------------------------------------------------------------------
 
 (game "Lifeline"  
@@ -101,31 +227,10 @@
         }
     )
     (rules 
-        <Balance:pie>
-        (start {
-            (place Stack "Shi_Western2" (handSite P2) count:<Komi>) 
-        })
+        <Balance:meta>
+        <Balance:start>
         phases:{
-        (phase "Opening"
-            (play 
-                (move Add 
-                    (to 
-                        (sites Empty)
-                        if:(= 0
-                            (count Sites in:(sites Around (to) Own Orthogonal))
-                        )
-                    )
-                    <Balance:12*>
-                )
-            )
-            (nextPhase 
-                (and
-                    (= 2 (count Sites in:(sites Occupied by:P1 component:"Disc")))
-                    (= 2 (count Sites in:(sites Occupied by:P2 component:"Disc")))
-                )
-                "Play"
-            )
-        )
+        <Balance:setup>
         (phase "Play"
             (play 
                 (or
@@ -137,14 +242,13 @@
                             )
                         )
                     )
-                    <Balance:12*>
                 )
             )
         )
         }
         (end 
             (if
-                (no Moves Next)
+                (and (no Moves Next) (< 2 (count Moves)))
                 (result Next Loss)
             )
         )
@@ -153,40 +257,21 @@
 
 //------------------------------------------------------------------------------
 
-(option "Balance" <Balance> args:{ <pie> <12*> }
+(option "Balance" <Balance> args:{ <meta> <start> <setup> }
     {
-    (item "None"     <> <>                                                           "Neither the 12* protocol nor the pie rule is currently in force.")*
-    (item "Pie"      <(meta (swap))> <>                                              "The pie rule is currently in force.")
-    (item "12*"      <> <(then (if (= 1 (% (+ 1 (count Moves)) 2)) (moveAgain)))>    "The 12* placement protocol is in force.")
-})
-
-(option "Komi" <Komi> args:{ <komi> }
-    {
-    (item "0"      <0>    "White is rewarded no points of komi.")*
-    (item "1"      <1>    "White is rewarded 1 point of komi for going second.")
-    (item "2"      <2>    "White is rewarded 2 points of komi for going second.")
-    (item "3"      <3>    "White is rewarded 3 points of komi for going second.")
-    (item "4"      <4>    "White is rewarded 4 points of komi for going second.")
-    (item "5"      <5>    "White is rewarded 5 points of komi for going second.")
-    (item "6"      <6>    "White is rewarded 6 points of komi for going second.")
-    (item "7"      <7>    "White is rewarded 7 points of komi for going second.")   
-    (item "8"      <8>    "White is rewarded 8 points of komi for going second.")
-    (item "9"      <9>    "White is rewarded 9 points of komi for going second.")   
-    (item "10"    <10>    "White is rewarded 10 points of komi for going second.")
-    (item "11"    <11>    "White is rewarded 11 points of komi for going second.")
-    (item "12"    <12>    "White is rewarded 12 points of komi for going second.")
-    (item "13"    <13>    "White is rewarded 13 points of komi for going second.")
-    (item "14"    <14>    "White is rewarded 14 points of komi for going second.")
-    (item "15"    <15>    "White is rewarded 15 points of komi for going second.")
-})
+    (item "Strong pie (standard)" <(meta (swap))> <> <("StrongPieSetup")> "The strong pie rule is currently in force.")*
+    (item "Weak pie" <(meta (swap))> <> <("WeakPieSetup")> "The weak pie rule is currently in force.")
+    (item "Komi pie"<> <("KomiSelection")> <("KomiPieSetup")> "The komi pie rule is currently in force.")
+    }
+)
 
 (option "Board Size" <Board> args:{ <size> }
     {
     (item "3"    <(tri Hexagon 3)>    "A board of size 3 is currently selected.")
     (item "4"    <(tri Hexagon 4)>    "A board of size 4 is currently selected.")
     (item "5"    <(tri Hexagon 5)>    "A board of size 5 is currently selected.")
-    (item "6"    <(tri Hexagon 6)>    "A board of size 6 is currently selected.")*
-    (item "7"    <(tri Hexagon 7)>    "A board of size 7 is currently selected.")
+    (item "6"    <(tri Hexagon 6)>    "A board of size 6 is currently selected.")
+    (item "7"    <(tri Hexagon 7)>    "A board of size 7 is currently selected.")*
     (item "8"    <(tri Hexagon 8)>    "A board of size 8 is currently selected.")
     (item "9"    <(tri Hexagon 9)>    "A board of size 9 is currently selected.")
     (item "10"    <(tri Hexagon 10)>  "A board of size 10 is currently selected.")
