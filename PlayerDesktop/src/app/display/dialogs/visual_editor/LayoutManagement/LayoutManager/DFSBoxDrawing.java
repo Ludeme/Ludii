@@ -4,8 +4,8 @@ package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class DFSBoxDrawing implements LayoutMethod
     private final double wY;
     // distance
     private final double wX;
-    private final int root;
+    private int root;
 
     private HashMap<Integer, Double[]> DOS_MAP;
 
@@ -34,6 +34,8 @@ public class DFSBoxDrawing implements LayoutMethod
 
     private final int PADDING_X = 10;
     private final int PADDING_Y = 10;
+
+    private List<LudemeNodeComponent> selectedNodes;
 
     /**
      *
@@ -60,7 +62,7 @@ public class DFSBoxDrawing implements LayoutMethod
     private void initWeights()
     {
         graph.getNodeList().forEach((id,n) ->{
-            if (!n.getChildren().isEmpty())
+            if (!n.children().isEmpty())
             {
                 if (!DOS_MAP.containsKey(id)) DOS_MAP.put(id, new Double[]{DEFAULT_DISTANCE, DEFAULT_OFFSET, DEFAULT_SPREAD});
             }
@@ -69,21 +71,21 @@ public class DFSBoxDrawing implements LayoutMethod
 
     private void initPlacement(int nodeId, int freeX)
     {
-        if (graph.getNode(nodeId).getChildren() == null || graph.getNode(nodeId).getChildren().size() == 0)
+        if (graph.getNode(nodeId).children() == null || graph.getNode(nodeId).children().size() == 0)
         {
             Vector2D piInit = new Vector2D(freeX, freeY);
-            freeY += graph.getNode(nodeId).getHeight() * wX * (DOS_MAP.get(graph.getNode(nodeId).getParent())[2]) + graph.getNode(nodeId).getHeight() + PADDING_X;
+            freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP.get(graph.getNode(nodeId).parent())[2]) + graph.getNode(nodeId).height() + PADDING_X;
 
             graph.getNode(nodeId).setPos(piInit);
         }
         else
         {
-            List<Integer> nodeCh = graph.getNode(nodeId).getChildren();
+            List<Integer> nodeCh = graph.getNode(nodeId).children();
             iGNode nFirst = graph.getNode(nodeCh.get(0));
             iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
 
             nodeCh.forEach((s) -> {
-                initPlacement(s, (int) (freeX + graph.getNode(s).getWidth() * wY * (DOS_MAP.get(graph.getNode(s).getParent())[0])) + graph.getNode(s).getWidth() + PADDING_X);
+                initPlacement(s, (int) (freeX + graph.getNode(s).width() * wY * (DOS_MAP.get(graph.getNode(s).parent())[0])) + graph.getNode(s).width() + PADDING_X);
                 // freeX + getNodeDepth(graph, s)*graph.getNode(s).getWidth()*wX
 
 
@@ -105,8 +107,8 @@ public class DFSBoxDrawing implements LayoutMethod
 
             iGNode nV = graph.getNode(nodeId);
 
-            double X0 = nFirst.getPos().getY();
-            double X1 = nLast.getPos().getY();
+            double X0 = nFirst.pos().getY();
+            double X1 = nLast.pos().getY();
 
             double wOffset = DOS_MAP.get(nodeId)[1];
             double yCoord;
@@ -138,13 +140,23 @@ public class DFSBoxDrawing implements LayoutMethod
         DOS_MAP = new HashMap<>(weights);
     }
 
+    public void setSelectedNodes(List<LudemeNodeComponent> selectedNodes)
+    {
+        this.selectedNodes = selectedNodes;
+    }
+
     @Override
     public void applyLayout()
     {
         freeY = 0;
-        Vector2D oPos = graph.getNode(root).getPos();
+        Vector2D oPos = graph.getNode(root).pos();
         initWeights();
         initPlacement(root,0);
         translateByRoot(graph, root, oPos);
+    }
+
+    @Override
+    public void setRoot(int root) {
+        this.root = root;
     }
 }

@@ -2,9 +2,11 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import main.grammar.Clause;
 
@@ -23,6 +25,8 @@ public class Handler {
 
     // Single ToolsPanel
     public static ToolsPanel toolsPanel;
+
+    public static LayoutSettingsPanel lsPanel;
 
     public static ArrayList<DescriptionGraph> history = new ArrayList<>();
 
@@ -50,11 +54,11 @@ public class Handler {
         //graph = graph.clone();
         graph.removeNode(node);
         //addToHistory(graph);
-        for(int childrenId: node.getChildren()){
+        for(int childrenId: node.children()){
             LudemeNode childrenNode = graph.getNode(childrenId);
             childrenNode.setParent(null);
         }
-        if(node.getParentNode() != null) node.getParentNode().removeChildren(node);
+        if(node.parentNode() != null) node.parentNode().removeChildren(node);
         // TODO: Remove edges
     }
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
@@ -67,7 +71,7 @@ public class Handler {
     }
 
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
-        graph.addEdge(from.getId(), to.getId());
+        graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);
         to.setParent(from);
@@ -117,13 +121,11 @@ public class Handler {
         toolsPanel.revalidate();
     }
 
-    public static void selectNode(LudemeNodeComponent lnc)
+    public static void selectNode(LudemeNodeComponent node)
     {
-        editorPanel.addNodeToSelections(lnc);
+        editorPanel.addNodeToSelections(node);
     }
 
     public static void setAutoplacement(boolean var) {editorPanel.setAutoplacement(var);}
-
-
 
 }

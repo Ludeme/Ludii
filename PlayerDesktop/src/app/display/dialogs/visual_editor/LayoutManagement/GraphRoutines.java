@@ -3,9 +3,6 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import game.rules.play.moves.nonDecision.effect.requirement.Do;
-import game.util.graph.Graph;
-import org.junit.Ignore;
 
 import java.util.*;
 
@@ -38,7 +35,7 @@ public final class GraphRoutines
             nextLayer.clear();
             layer.forEach((v) -> {
                 graph.getNode(v).setDepth(finalD);
-                nextLayer.addAll(graph.getNode(v).getChildren());
+                nextLayer.addAll(graph.getNode(v).children());
             });
             layer = new ArrayList<>(nextLayer);
             d++;
@@ -54,7 +51,7 @@ public final class GraphRoutines
      */
     public static int getNodeDepth(iGraph graph, int v)
     {
-        return graph.getNode(v).getDepth();
+        return graph.getNode(v).depth();
     }
 
     /**
@@ -65,7 +62,7 @@ public final class GraphRoutines
      */
     public static int getChildIndex(iGraph graph, int v)
     {
-        return graph.getNode(graph.getNode(v).getParent()).getChildren().indexOf(v)+1;
+        return graph.getNode(graph.getNode(v).parent()).children().indexOf(v)+1;
     }
 
     /**
@@ -76,7 +73,7 @@ public final class GraphRoutines
      */
     public static int getNumSiblings(iGraph graph, int v)
     {
-        return graph.getNode(graph.getNode(v).getParent()).getChildren().size();
+        return graph.getNode(graph.getNode(v).parent()).children().size();
     }
 
     public static List<Integer> getLayerNodes(iGraph graph, int j, int r)
@@ -95,7 +92,7 @@ public final class GraphRoutines
             if (d == j) Layer.add(n);
             else
             {
-                List<Integer> children = graph.getNode(n).getChildren();
+                List<Integer> children = graph.getNode(n).children();
                 children.forEach((v) -> {
                     if (!Visited.contains(v))
                     {
@@ -129,15 +126,15 @@ public final class GraphRoutines
             int n = Q.remove(0);
             iGNode node = graph.getNode(n);
             // if node is a parent: find its configurations
-            if (!node.getChildren().isEmpty())
+            if (!node.children().isEmpty())
             {
                 // DOS
-                List<Integer> children = graph.getNode(n).getChildren();
+                List<Integer> children = graph.getNode(n).children();
                 int N = children.size();
                 double Xdiffmean;
                 double Ydiffmean;
-                Xdiffmean = children.stream().mapToDouble(id -> Math.abs(node.getPos().getX() - graph.getNode(id).getPos().getX())).sum();
-                Ydiffmean = children.stream().mapToDouble(id -> node.getPos().getY() - graph.getNode(id).getPos().getY()).sum();
+                Xdiffmean = children.stream().mapToDouble(id -> Math.abs(node.pos().getX() - graph.getNode(id).pos().getX())).sum();
+                Ydiffmean = children.stream().mapToDouble(id -> node.pos().getY() - graph.getNode(id).pos().getY()).sum();
 
                 Xdiffmean /= N;
                 Ydiffmean /= N;
@@ -147,11 +144,11 @@ public final class GraphRoutines
                 Collections.sort(children, new Comparator<Integer>() {
                     @Override
                     public int compare(Integer o1, Integer o2) {
-                        return (int)(graph.getNode(o1).getPos().getY() - graph.getNode(o2).getPos().getY());
+                        return (int)(graph.getNode(o1).pos().getY() - graph.getNode(o2).pos().getY());
                     }
                 });
                 for (int i = 0; i < children.size() - 1; i++) {
-                    Smean += Math.abs(graph.getNode(children.get(i)).getPos().getY() - graph.getNode(children.get(i+1)).getPos().getY());
+                    Smean += Math.abs(graph.getNode(children.get(i)).pos().getY() - graph.getNode(children.get(i+1)).pos().getY());
                 }
                 Smean /= N;
 

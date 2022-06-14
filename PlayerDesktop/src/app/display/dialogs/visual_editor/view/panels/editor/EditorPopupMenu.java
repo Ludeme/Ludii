@@ -25,7 +25,7 @@ public class EditorPopupMenu extends JPopupMenu {
             JFrame frame = new JFrame("Define Editor");
             EditorPanel editorPanel = new EditorPanel(5000,5000);
             frame.setContentPane(editorPanel);
-            editorPanel.drawGraph(graphPanel.getGraph());
+            editorPanel.drawGraph(graphPanel.graph());
             frame.setVisible(true);
             frame.setPreferredSize(frame.getPreferredSize());
             frame.setSize(1200,800);

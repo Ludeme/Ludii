@@ -50,7 +50,7 @@ public class LConnectionComponent extends JComponent {
 
         addMouseListener(clickListener);
 
-        connectionPointPosition.update(new Point(inputField.getLudemeNodeComponent().getWidth(), inputField.getPreferredSize().height*inputField.getInputIndex()));
+        connectionPointPosition.update(new Point(inputField.getLudemeNodeComponent().width(), inputField.getPreferredSize().height*inputField.getInputIndex()));
 
         revalidate();
         repaint();
@@ -91,23 +91,23 @@ public class LConnectionComponent extends JComponent {
         @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
-            IGraphPanel graphPanel = INPUT_FIELD.getLudemeNodeComponent().getGraphPanel();
+            IGraphPanel graphPanel = INPUT_FIELD.getLudemeNodeComponent().graphPanel();
             if(e.getButton() == MouseEvent.BUTTON1){
                 if(!fill){
                     // Start drawing connection
                     setFill(!fill);
-                    graphPanel.getCh().startNewConnection(LConnectionComponent.this);
+                    graphPanel.ch().startNewConnection(LConnectionComponent.this);
                 }
                 else{
                     // if already connected: remove connection
                     if(getConnectedTo() != null) {
-                        graphPanel.getCh().removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), LConnectionComponent.this);
+                        graphPanel.ch().removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), LConnectionComponent.this);
                         setConnectedTo(null);
                     }
                     else {
                         // end drawing connection
                         setFill(!fill);
-                        graphPanel.getCh().cancelNewConnection();
+                        graphPanel.ch().cancelNewConnection();
                     }
                 }
             }

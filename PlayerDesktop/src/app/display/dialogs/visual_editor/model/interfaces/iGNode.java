@@ -11,24 +11,24 @@ import java.util.List;
 
 public interface iGNode {
 
-    int getId();
+    int id();
 
-    int getParent();
+    int parent();
 
-    List<Integer> getChildren();
+    List<Integer> children();
 
-    List<Integer> getSiblings();
+    List<Integer> siblings();
 
-    Vector2D getPos();
+    Vector2D pos();
 
     void setPos(Vector2D pos);
 
-    int getWidth();
+    int width();
 
-    int getHeight();
+    int height();
 
     void setDepth(int depth);
 
-    int getDepth();
+    int depth();
 
 }

@@ -2,13 +2,8 @@ package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs;
-import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs.*;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import game.rules.play.moves.nonDecision.effect.requirement.Do;
-
-import javax.swing.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,7 +19,6 @@ public class LayoutHandler {
 
     private final iGraph graph;
     private int root;
-
     private LayoutMethod layout;
 
     public LayoutHandler(iGraph graph, int root)
@@ -69,15 +63,14 @@ public class LayoutHandler {
     {
         LayoutHandler lm = graphPanel.getLayoutHandler();
         lm.evaluateGraphWeights();
-        lm.executeLayout();
-        graphPanel.drawGraph(graphPanel.getGraph());
+        lm.executeLayout(1);
+        graphPanel.drawGraph(graphPanel.graph());
     }
 
-    public void executeLayout()
+    public void executeLayout(int root)
     {
-        // TODO implement int root into constructor
-        int r = 1;
-        updateNodeDepth(graph, r);
+        updateNodeDepth(graph, graph.getRoot().id());
+        layout.setRoot(root);
         layout.applyLayout();
     }
 

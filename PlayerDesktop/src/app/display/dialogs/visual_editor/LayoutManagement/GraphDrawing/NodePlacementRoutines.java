@@ -1,8 +1,10 @@
 package app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing;
 
+import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import game.rules.meta.no.No;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,13 @@ import static java.lang.Math.abs;
 public final class NodePlacementRoutines
 {
 
+    public static final int X_AXIS = 0;
+
+    public static final int Y_AXIS = 1;
+
+    private static final int NODE_GAP = 50;
+
+
     /**
      * Translate node placement by oPos vector with respect to root
      * @param r
@@ -22,9 +31,9 @@ public final class NodePlacementRoutines
      */
     public static void translateByRoot(iGraph graph, int r, Vector2D oPos)
     {
-        Vector2D t = graph.getNode(r).getPos().sub(oPos);
+        Vector2D t = graph.getNode(r).pos().sub(oPos);
         graph.getNodeList().forEach((i,v) -> {
-            v.setPos(v.getPos().sub(t));
+            v.setPos(v.pos().sub(t));
         });
     }
 
@@ -60,7 +69,7 @@ public final class NodePlacementRoutines
             if (d == 2)
             {
 
-                basicX = (int) graph.getNode(layer.get(0)).getPos().getX();
+                basicX = (int) graph.getNode(layer.get(0)).pos().getX();
             }
 
             int finalBasicX;
@@ -71,8 +80,8 @@ public final class NodePlacementRoutines
             nextLayer.clear();
             layer.forEach((v) -> {
                 iGNode vN = graph.getNode(v);
-                if (finalD > 2) vN.setPos(new Vector2D(finalBasicX, vN.getPos().getY()));
-                nextLayer.addAll(graph.getNode(v).getChildren());
+                if (finalD > 2) vN.setPos(new Vector2D(finalBasicX, vN.pos().getY()));
+                nextLayer.addAll(graph.getNode(v).children());
             });
             layer = new ArrayList<>(nextLayer);
             d++;
@@ -82,7 +91,7 @@ public final class NodePlacementRoutines
     public static void resolveNodeTranslation(iGraph graph, int r)
     {
         HashMap<Integer, Vector2D> transPos = new HashMap<>();
-        transPos.put(r, graph.getNode(r).getPos());
+        transPos.put(r, graph.getNode(r).pos());
 
         List<Integer> Q = new ArrayList<>();
         List<Integer> Visited = new ArrayList<>();
@@ -95,14 +104,14 @@ public final class NodePlacementRoutines
 
             if (n != r)
             {
-                Vector2D vPos = graph.getNode(n).getPos();
-                iGNode p = graph.getNode(graph.getNode(n).getParent());
-                Vector2D pPos = p.getPos();
+                Vector2D vPos = graph.getNode(n).pos();
+                iGNode p = graph.getNode(graph.getNode(n).parent());
+                Vector2D pPos = p.pos();
                 Vector2D relPos = vPos.sub(pPos);
-                transPos.put(n, new Vector2D(p.getWidth()+relPos.getX(), p.getHeight()+relPos.getY()));
+                transPos.put(n, new Vector2D(p.width()+relPos.getX(), p.height()+relPos.getY()));
             }
 
-            List<Integer> children = graph.getNode(n).getChildren();
+            List<Integer> children = graph.getNode(n).children();
             children.forEach((v) -> {
                 if (!Visited.contains(v))
                 {
@@ -114,6 +123,27 @@ public final class NodePlacementRoutines
         graph.getNodeList().forEach((i,v) -> {
             v.setPos(transPos.get(i));
         });
+    }
+
+    public static void alignNodes(List<iGNode> nodes, int axis)
+    {
+        double posX = nodes.get(0).pos().getX();
+        double posY = nodes.get(0).pos().getY();
+        if (nodes.isEmpty()) return;
+        if (axis == X_AXIS)
+        {
+            for (int i = 1; i < nodes.size(); i++)
+            {
+                nodes.get(i).setPos(new Vector2D(posX+nodes.get(i-1).height()+NODE_GAP*i, posY));
+            }
+        }
+        else if (axis == Y_AXIS)
+        {
+            for (int i = 1; i < nodes.size(); i++)
+            {
+                nodes.get(i).setPos(new Vector2D(posX, posY+nodes.get(i-1).height()+NODE_GAP*i));
+            }
+        }
     }
 
 }

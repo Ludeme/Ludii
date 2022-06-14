@@ -4,4 +4,6 @@ public interface LayoutMethod {
 
     void applyLayout();
 
+    void setRoot(int root);
+
 }

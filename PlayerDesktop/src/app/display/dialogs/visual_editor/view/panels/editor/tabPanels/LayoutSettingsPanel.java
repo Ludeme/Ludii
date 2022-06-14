@@ -1,25 +1,36 @@
 package app.display.dialogs.visual_editor.view.panels.editor.tabPanels;
 
-import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
+import app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+/**
+ * Class for the single instance of the Layout Settings Panel
+ */
 public class LayoutSettingsPanel extends JPanel
 {
     private final JSlider dSl;
     private final JSlider oSl;
     private final JSlider sSl;
     private final LayoutHandler lh;
+    private final JLabel selectedComponent;
 
-    public LayoutSettingsPanel(IGraphPanel graphPanel)
+    private static LayoutSettingsPanel lsPanel;
+
+    private final JCheckBox autoUpdateWeights = new JCheckBox("Automatically update weights");
+    private final JCheckBox autoPlacement = new JCheckBox("Automatic placement");
+    private final JCheckBox layerPlacement = new JCheckBox("Layer placement");
+
+    private LayoutSettingsPanel(IGraphPanel graphPanel)
     {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+        selectedComponent = new JLabel("Selection: Empty");
 
         lh = graphPanel.getLayoutHandler();
 
@@ -31,103 +42,62 @@ public class LayoutSettingsPanel extends JPanel
         JLabel offsetText = new JLabel("Offset: " + getSliderValue(oSl));
         JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
 
-        Button redraw = new Button("Redraw");
-        Button evaluate = new Button("Evaluate metrics");
-
-        JCheckBox auto = new JCheckBox("Redraw automatically");
-        JCheckBox metrics = new JCheckBox("Use slider metrics");
-        metrics.setSelected(true);
-        JCheckBox autoPlacement = new JCheckBox("Automatic placement");
-        autoPlacement.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Handler.setAutoplacement(autoPlacement.isSelected());
-            }
-        });
-        JCheckBox layerPlacement = new JCheckBox("Layer placement");
-
-        JTextField dmTextField = new JTextField("3000");
-        JLabel dmLabel = new JLabel("DM");
-
-        JTextField omTextField = new JTextField("150");
-        JLabel omLabel = new JLabel("OM");
-
-        JTextField smTextField = new JTextField("3500");
-        JLabel smLabel = new JLabel("SM");
+        Button redraw = new Button("Arrange graph");
+        Button alignX = new Button("Align vertically");
+        Button alignY = new Button("Align horizontally");
 
         redraw.addActionListener(e -> {
-            if (metrics.isSelected())
-            {
-                updateWeights();
-            }
-            else
-            {
-                GraphRoutines.setDM(Integer.parseInt(dmTextField.getText()));
-                GraphRoutines.setOM(Integer.parseInt(omTextField.getText()));
-                GraphRoutines.setSM(Integer.parseInt(smTextField.getText()));
-                lh.evaluateGraphWeights();
-            }
+            lh.evaluateGraphWeights();
             executeDFSLayout(graphPanel);
         });
 
-        evaluate.addActionListener(e -> {
-            GraphRoutines.setDM(Integer.parseInt(dmTextField.getText()));
-            GraphRoutines.setOM(Integer.parseInt(omTextField.getText()));
-            GraphRoutines.setSM(Integer.parseInt(smTextField.getText()));
-            lh.evaluateGraphWeights();
+        alignX.addActionListener(e -> {
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS);
+            graphPanel.drawGraph(graphPanel.graph());
         });
 
-        dSl.addChangeListener(e -> {
+        alignY.addActionListener(e -> {
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS);
+            graphPanel.drawGraph(graphPanel.graph());
+        });
+
+        ChangeListener sliderUpdateListener = e -> {
             distanceText.setText("Distance: " + getSliderValue(dSl));
-            if (auto.isSelected()){
-                updateWeights();
-                executeDFSLayout(graphPanel);
-            }
-        });
-
-        oSl.addChangeListener(e -> {
             offsetText.setText("Offset: " + getSliderValue(oSl));
-            if (auto.isSelected()){
-                updateWeights();
-                executeDFSLayout(graphPanel);
-            }
-        });
-
-        sSl.addChangeListener(e -> {
             spreadText.setText("Spread: " + getSliderValue(sSl));
-            if (auto.isSelected()){
-                updateWeights();
-                executeDFSLayout(graphPanel);
-            }
-        });
+            updateWeights();
+            executeDFSLayout(graphPanel);
+        };
 
+        dSl.addChangeListener(sliderUpdateListener);
+        oSl.addChangeListener(sliderUpdateListener);
+        sSl.addChangeListener(sliderUpdateListener);
+
+        // adding sliders
+        add(selectedComponent);
         add(distanceText);
         add(dSl);
-
         add(offsetText);
         add(oSl);
-
         add(spreadText);
         add(sSl);
+        // redraw button
         redraw.setMaximumSize(new Dimension(550, 25));
-        //JPanel btnPanel = new JPanel();
-        //btnPanel.add(redraw);
-        //btnPanel.setMaximumSize(new Dimension(50,25));
+        alignX.setMaximumSize(new Dimension(550, 25));
+        alignY.setMaximumSize(new Dimension(550, 25));
         add(redraw);
-        add(auto);
-
+        add(alignX);
+        add(alignY);
+        // adding check boxes
+        add(autoUpdateWeights);
         add(autoPlacement);
         add(layerPlacement);
+    }
 
-        //add(evaluate);
-        //add(metrics);
-
-        //add(dmLabel);
-        //add(dmTextField);
-        //add(omLabel);
-        //add(omTextField);
-        //add(smLabel);
-        //add(smTextField);
+    public static LayoutSettingsPanel getLayoutSettingsPanel()
+    {
+        if (lsPanel == null) lsPanel = new LayoutSettingsPanel(Handler.editorPanel);
+        return lsPanel;
     }
 
     private void updateWeights()
@@ -137,12 +107,26 @@ public class LayoutSettingsPanel extends JPanel
                 getSliderValue(sSl));
     }
 
+    public void updateSliderValues(double d, double o, double s)
+    {
+        dSl.setValue((int)(d * 100));
+        oSl.setValue((int)(o * 100));
+        sSl.setValue((int)(s * 100));
+    }
+
     private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
 
     private void executeDFSLayout(IGraphPanel graphPanel)
     {
-        graphPanel.getLayoutHandler().executeLayout();
-        graphPanel.drawGraph(graphPanel.getGraph());
+        int root = graphPanel.selectedRootId();
+        graphPanel.getLayoutHandler().executeLayout(root);
+        graphPanel.drawGraph(graphPanel.graph());
+    }
+
+    public void setSelectedComponent(String node, boolean subtree)
+    {
+        if (subtree) selectedComponent.setText("Selected subtree of: "+node);
+        else selectedComponent.setText("Selected: "+node);
     }
 
     public static void getSettingsFrame(IGraphPanel graphPanel)
@@ -153,4 +137,11 @@ public class LayoutSettingsPanel extends JPanel
         frame.setVisible(true);
         frame.setResizable(false);
     }
+
+    public boolean isAutoUpdateWeightOn() {return autoUpdateWeights.isSelected();}
+
+    public boolean isAutoPlacementOn() {return autoPlacement.isSelected();}
+
+    public boolean isLayerPlacementOn() {return layerPlacement.isSelected();}
+
 }
