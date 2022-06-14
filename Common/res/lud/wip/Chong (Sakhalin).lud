@@ -37,12 +37,32 @@
 		        	(move
 		        		(from)
             			(to ("SiteToMoveOnTrack" from:(from) (pips))
-            				if:(not (is Friend (who at:(to))))
+            				if:(or {
+            					(is Empty (to))
+            					(and 
+            						(is Enemy (who at:(to)))
+            						(if (!= (what at:(to)) (id "King" Next))
+            							True
+            							(= 1 (abs (- (to) (from))))
+            						)
+            					)
+            				})
                             ("CaptureEnemyPiece")
                 		)
 		        	)
 		        )
-		        (piece "King" Each)
+		        (piece "King" Each
+		        	(if (= 1 (pips))
+		        		(firstMoveOnTrack "Track" Mover
+		        				(if (and (> (site) (from)) (is Mover (who at:(site))))
+	                                (move Swap Pieces
+	                                    (from)
+	                                    (site)
+	                                )
+	                            )
+		        		)
+		        	)
+		        )
 		    })
 		    (rules 
 		        (start { 
@@ -58,8 +78,12 @@
 			                (roll) 
 			                next:(if (!= 0 ("NumDiceAtOne"))
 			                	(if (is Mover P1)
-				                	(move Swap Pieces (where "King" Mover) (- (where "King" Mover) ("NumDiceAtOne")))
-				                	(move Swap Pieces (where "King" Mover) (+ (where "King" Mover) ("NumDiceAtOne")))
+			                		(if (is Mover (who at:(- (where "King" Mover) ("NumDiceAtOne"))))
+			                			(move Swap Pieces (where "King" Mover) (- (where "King" Mover) ("NumDiceAtOne")))
+				                	)
+			                		(if (is Mover (who at:(+ (where "King" Mover) ("NumDiceAtOne"))))
+			                			(move Swap Pieces (where "King" Mover) (+ (where "King" Mover) ("NumDiceAtOne")))
+				                	)
 			                	(then
 			                		(fromTo
 			                			(from (last From))
