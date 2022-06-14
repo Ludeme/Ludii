@@ -50,6 +50,10 @@ public class LudemeNode implements iLudemeNode, iGNode
      * possible clauses is narrowed down to the ones that match the provided arguments.
      */
     private boolean dynamic = false; // TODO: Not hard-coded
+    /**
+     * whether this node (and thus its children) are visible (collapsed) or not.
+     */
+    private boolean collapsed = false;
 
     /**
      * Constructor for a new LudemeNode
@@ -185,6 +189,23 @@ public class LudemeNode implements iLudemeNode, iGNode
     public boolean dynamic()
     {
         return dynamic;
+    }
+
+    /**
+     * Sets this node to be collapsed or not
+     * @param collapsed
+     */
+    public void setCollapsed(boolean collapsed)
+    {
+        this.collapsed = collapsed;
+    }
+
+    /**
+     *
+     * @return whether this node is collapsed
+     */
+    public boolean collapsed(){
+        return collapsed;
     }
 
     /**

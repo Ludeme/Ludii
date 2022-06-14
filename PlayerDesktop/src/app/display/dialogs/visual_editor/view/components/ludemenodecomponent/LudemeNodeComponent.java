@@ -39,8 +39,6 @@ public class LudemeNodeComponent extends JPanel
     private final LudemeNode LN;
     /** Graph Panel this node is in */
     private final IGraphPanel GRAPH_PANEL;
-
-    public boolean dynamic;
     // Whether the node is "marked"/selected
     private boolean selected = false;
     private boolean subtree = false;
