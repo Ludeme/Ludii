@@ -85,7 +85,7 @@ public class LudemeNodeComponent extends JPanel
 
         revalidate();
         repaint();
-        setVisible(true);
+        setVisible(visible());
 
     }
 
@@ -147,6 +147,7 @@ public class LudemeNodeComponent extends JPanel
 
         repaint();
         revalidate();
+        setVisible(visible());
     }
 
     /**
@@ -251,6 +252,18 @@ public class LudemeNodeComponent extends JPanel
     public boolean dynamic()
     {
         return LN.dynamic();
+    }
+
+    /**
+     *
+     * @return whether this node is visible
+     */
+    public boolean visible(){
+        return node().visible();
+    }
+
+    public void setCollapsed(boolean collapsed) {
+        node().setCollapsed(collapsed);
     }
 
     /**
@@ -381,6 +394,7 @@ public class LudemeNodeComponent extends JPanel
         setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
         if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
         else setBorder(DesignPalette.LUDEME_NODE_BORDER);
+        setVisible(visible());
     }
 
 }

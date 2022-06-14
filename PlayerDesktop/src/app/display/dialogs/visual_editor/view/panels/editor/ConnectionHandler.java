@@ -32,6 +32,11 @@ public class ConnectionHandler
     {
         for(LudemeConnection e : edges)
         {
+            if(!(e.outgoingNode().visible() && e.ingoingNode().visible()))
+            {
+                continue;
+            }
+
             ImmutablePoint inputPoint = e.getInputPosition();
             ImmutablePoint targetPoint = e.getTargetPosition();
 

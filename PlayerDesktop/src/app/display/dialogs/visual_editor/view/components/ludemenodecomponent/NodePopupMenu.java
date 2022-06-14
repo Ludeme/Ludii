@@ -13,10 +13,17 @@ public class NodePopupMenu extends JPopupMenu {
         JMenuItem delete = new JMenuItem("Delete");
         JMenuItem dynamic = new JMenuItem("(Un)Set Dynamic");
         JMenuItem observe = new JMenuItem("Observe");
+        JMenuItem collapse = new JMenuItem("Collapse");
 
         add(delete);
         add(dynamic);
         add(observe);
+        add(collapse);
+
+        collapse.addActionListener(e -> {
+            nodeComponent.node().setCollapsed(!nodeComponent.node().collapsed());
+            graphPanel.repaint();
+        });
 
         delete.addActionListener(e -> {
             graphPanel.removeNode(nodeComponent.node());

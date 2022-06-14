@@ -54,6 +54,10 @@ public class LudemeNode implements iLudemeNode, iGNode
      * whether this node (and thus its children) are visible (collapsed) or not.
      */
     private boolean collapsed = false;
+    /**
+     * whether this node is visible
+     */
+    private boolean visible = true;
 
     /**
      * Constructor for a new LudemeNode
@@ -192,12 +196,35 @@ public class LudemeNode implements iLudemeNode, iGNode
     }
 
     /**
+     * Sets this node to be visible or not
+     * @param visible the visible to set
+     */
+    public void setVisible(boolean visible)
+    {
+        this.visible = visible;
+    }
+
+    /**
+     *
+     * @return whether this node is visible in the GUI
+     */
+    public boolean visible(){
+        return visible;
+    }
+
+    /**
      * Sets this node to be collapsed or not
-     * @param collapsed
+     * @param collapsed the collapsed to set
      */
     public void setCollapsed(boolean collapsed)
     {
         this.collapsed = collapsed;
+        this.visible = !collapsed;
+        // the complete subtree of this node becomes invisible if collapsed or visible if not collapsed
+        for(LudemeNode child : children)
+        {
+            child.setCollapsed(collapsed);
+        }
     }
 
     /**
