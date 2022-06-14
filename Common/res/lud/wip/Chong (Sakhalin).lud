@@ -20,43 +20,6 @@
 	    ) 
 	)
 
-(define "Move"
-	    (if 
-	        (and {
-	            (if ("PieceActivated" (from))
-	                True
-	                ("Tab") 
-	            )
-	            #1
-	        })
-	        (if (is In (from) (sites Mover "Home"))
-	            (if (not (is Friend (who at:("SiteToMoveOnTrack" "Track" ("ThrowValue")))))
-	                (move 
-	                    (from)
-	                    (to 
-	                        ("SiteToMoveOnTrack" "Track" ("ThrowValue")) 
-	                        "CaptureEnemyPiece"
-	                    )
-	                    (then
-	                        (if (and (not ("PieceActivated" (last To))) (= 1 ("ThrowValue")))
-	                            ("ActivatePiece" (last To))
-	                        )
-	                    )
-	                )
-	            )
-	            (if (not (is Friend (who at:("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")))))
-	                (move 
-	                    (from)
-	                    (to 
-	                        ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
-	                        "CaptureEnemyPiece"
-	                    )
-	                )
-	            )
-	        )
-	    )
-	)
-
 //------------------------------------------------------------------------------
 
 (game "Chong (Sakhalin)"
@@ -74,8 +37,9 @@
 		        	(move
 		        		(from)
             			(to ("SiteToMoveOnTrack" from:(from) (pips))
-                                ("CaptureEnemyPiece")
-                			)
+            				if:(not (is Friend (who at:(to))))
+                            ("CaptureEnemyPiece")
+                		)
 		        	)
 		        )
 		        (piece "King" Each)
@@ -115,6 +79,7 @@
 		    			(do
 		                    (if (not "SameTurn") (roll))
 		    				next:(forEach Die
+		                            if:("DieNotUsed")
 		    	                    (forEach Piece)
 		                         (then 
 		                                    (if (not (all DiceUsed))
@@ -127,7 +92,10 @@
 		    	)
 		    	}
 		    
-		        (end (if (no Pieces Next) (result Mover Win)))
+		        (end {
+		        	(if (= (who at:0) P2) (result P2 Win))
+		        	(if (= (who at:(- (count Sites in:(sites Board)) 1)) P1) (result P1 Win))
+		        })
 		    )
 		)
 
