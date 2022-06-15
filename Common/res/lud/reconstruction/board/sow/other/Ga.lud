@@ -1,0 +1,88 @@
+(define "NumPlayers" [2..16])
+(define "NumHolesCircle" (* [1..16] ("NumPlayers")))
+(define "LeftMost" 
+    (trackSite FirstSite 
+        from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
+        if:(is Mover (who at:(to)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Ga"
+    (players ("NumPlayers"))  
+    (equipment { 
+        (board 
+            (concentric {"NumHolesCircle"}) 
+            { 
+            (track "Track" [#] loop:True)
+            }
+            use:Vertex
+        )
+        (piece "Seed" Each)
+    })  
+    
+    (rules
+        
+        (start [#])
+        
+        (play 
+            (if (!= 1 (count Pieces Mover))
+                (move
+                    Select 
+                    (from 
+                        ("LeftMost") 
+                    )
+                    (then
+                        (sow
+                            sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
+                                (and
+                                    (remove (to) count:(count at:(to)))
+                                    (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
+                                )
+                            )		
+                        )
+                    )
+                )
+                (move
+                    (from ("LeftMost"))
+                    (to 
+                        (trackSite FirstSite from:(from) if:(is Enemy (who at:(to))))
+                        (apply
+                            (and
+                                (remove (to) count:(count at:(to)))
+                                (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
+                            )	
+                        )	
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (forEach NonMover 
+                if:(no Pieces Player) 
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (player Colour P3 (colour Red))
+        (player Colour P4 (colour Blue))
+    })
+    
+)

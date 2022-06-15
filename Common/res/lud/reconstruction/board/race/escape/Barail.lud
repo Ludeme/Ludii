@@ -11,11 +11,11 @@
         (piece "Disc" Each (move [#]))
     })
     (rules 
-    	(start {
-    		(place Stack "Disc1" 15 count:1)
-    		(place Stack "Disc1" 14 count:14)
-    		(place Stack "Disc2" 13 count:15)
-    	})
+        (start {
+            (place Stack "Disc1" 15 count:1)
+            (place Stack "Disc1" 14 count:14)
+            (place Stack "Disc2" 13 count:15)
+        })
         (play (do (roll) next:[#]))
         (end (if (no Pieces Mover) (result Mover Win)))
     )
