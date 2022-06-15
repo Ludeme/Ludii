@@ -99,7 +99,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         ch = new ConnectionHandler(edges);
 
         N = 7;
-        controller = new NGramController(N);
+        //controller = new NGramController(N);
     }
 
     public EditorPanel()
@@ -204,8 +204,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
         String gameDescription = ""; // TODO: Insert [#] as wild card for completion
 
-        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
-        connectLudemeWindow.updateList(typeMatched);
+        //List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
+        connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();

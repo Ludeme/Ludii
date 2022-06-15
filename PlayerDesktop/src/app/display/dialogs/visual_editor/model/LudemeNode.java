@@ -478,7 +478,26 @@ public class LudemeNode implements iLudemeNode, iGNode
     @Override
     public String stringRepresentation()
     {
+        StringBuilder sb = new StringBuilder();
+        //sb.append(s)
         return ""; // TODO
+    }
+
+    /**
+     * The title consists of the symbol and any Constants followed by the constructor
+     * @return The title of this node
+     */
+    public String title()
+    {
+        StringBuilder title = new StringBuilder(symbol().name());
+        if(selectedClause().args() == null) return title.toString();
+        // if selected clause starts with constants, add these to the title
+        int index = 0;
+        while(selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant)){
+            title.append(" ").append(selectedClause().args().get(index).symbol().name());
+            index++;
+        }
+        return title.toString();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class LHeader extends JComponent
 
         setLayout(new BorderLayout());
         // initialize title
-        title = new JLabel(nodeTitle());
+        title = new JLabel(LNC.node().title());
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
         title.setSize(title.getPreferredSize());
@@ -137,24 +137,6 @@ public class LHeader extends JComponent
     }
 
     /**
-     * The title consists of the symbol and any Constants followed by the constructor
-     * @return The title of this node
-     */
-    private String nodeTitle()
-    {
-        LudemeNode LN = LNC.node();
-        String title = LN.symbol().name();
-        if(LN.selectedClause().args() == null) return title;
-        // if selected clause starts with constants, add these to the title
-        int index = 0;
-        while(LN.selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant)){
-            title = title + " " + LN.selectedClause().args().get(index).symbol().name();
-            index++;
-        }
-        return title;
-    }
-
-    /**
      * Paints the header
      * @param g the <code>Graphics</code> object to protect
      */
@@ -163,7 +145,7 @@ public class LHeader extends JComponent
     {
         super.paintComponent(g);
 
-        title.setText(nodeTitle());
+        title.setText(LNC.node().title());
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
         title.setSize(title.getPreferredSize());
