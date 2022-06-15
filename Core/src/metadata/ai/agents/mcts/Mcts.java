@@ -3,7 +3,7 @@ package metadata.ai.agents.mcts;
 import annotations.Opt;
 import metadata.ai.agents.Agent;
 import metadata.ai.agents.mcts.selection.Selection;
-import metadata.ai.agents.mcts.selection.UCB1;
+import metadata.ai.agents.mcts.selection.Ucb1;
 
 /**
  * Describes a Monte-Carlo tree search agent.
@@ -40,7 +40,7 @@ public class Mcts implements Agent
 		if (selection != null)
 			this.selection = selection;
 		else
-			this.selection = new UCB1(null);
+			this.selection = new Ucb1(null);
 	}
 	
 	//-------------------------------------------------------------------------

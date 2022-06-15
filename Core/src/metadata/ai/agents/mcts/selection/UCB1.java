@@ -8,8 +8,13 @@ import annotations.Opt;
  * 
  * @author Dennis Soemers
  */
-public class UCB1 extends Selection
+public class Ucb1 extends Selection
 {
+	// WARNING: The weird capitalisation of of the class name is INTENTIONAL!
+	// This makes the type name in the grammar and documentation look better,
+	// as just "<ucb1>" instead of the really silly "<uCB1>" that we would get 
+	// otherwise.
+	
 	
 	//-------------------------------------------------------------------------
 	
@@ -26,7 +31,7 @@ public class UCB1 extends Selection
 	 * @example (ucb1)
 	 * @example (ucb1 0.6)
 	 */
-	public UCB1(@Opt final Double explorationConstant)
+	public Ucb1(@Opt final Double explorationConstant)
 	{
 		if (explorationConstant == null)
 			this.explorationConstant = Math.sqrt(2.0);
