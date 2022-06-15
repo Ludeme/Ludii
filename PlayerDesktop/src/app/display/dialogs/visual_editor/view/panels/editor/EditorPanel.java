@@ -190,7 +190,10 @@ public class EditorPanel extends JPanel implements IGraphPanel
             if(ii.indexFirst() < upUntilIndex) upUntilIndex = ii.indexFirst();
         }
 
-        connectLudemeWindow.updateList(ch.getSelectedConnectionComponent().getRequiredSymbols());
+
+        List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
+        String gameDescription = ""; // TODO: Insert [#] as wild card for completion
+        connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();

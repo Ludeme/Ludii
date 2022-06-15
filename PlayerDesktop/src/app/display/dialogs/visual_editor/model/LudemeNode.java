@@ -461,6 +461,14 @@ public class LudemeNode implements iLudemeNode, iGNode
         this.children.remove(children);
     }
 
+    /**
+     *
+     * @return List of children of this node
+     */
+    public List<LudemeNode> childrenNodes()
+    {
+        return children;
+    }
 
 
     /**
