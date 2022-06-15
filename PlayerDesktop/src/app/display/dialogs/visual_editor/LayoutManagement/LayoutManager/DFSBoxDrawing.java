@@ -8,6 +8,7 @@ import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -129,19 +130,93 @@ public class DFSBoxDrawing implements LayoutMethod
         ArrayList<List<Integer>> paths = new ArrayList<>();
         GraphRoutines.findAllPaths(paths, graph, root, new ArrayList<>());
         // 2. Compute upward visibility graph
-        HashMap<Integer, List<Integer>> Gup = GraphRoutines.findUpwardVisibilityGraph(paths, graph);
+        HashMap<Integer, Integer> Gup = findUpwardVisibilityGraph(paths, graph);
         // 3. Move nodes upward according to G_up and specified metrics
-        moveNodeUpward(Gup, graph);
+        moveNodeUpward(paths, Gup, graph);
     }
 
-    private void moveNodeUpward(HashMap<Integer, List<Integer>> gup, iGraph graph)
+    private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph)
     {
-        // 1. For each path i
-        //  if i==0: skip
-        //  else:
-        // 2. Iterate through each vertex on path
-        // 3. For all vertices that have outward edges in Gup: find minimum distant to upper dist
-        // 4. Uniformly move upward all boxes on path i by (dist - MIN_GAP)
+        // Initialize
+        HashMap<Integer, Integer> Gup = new HashMap<>();
+        List<Integer> LE = new ArrayList<>(paths.get(0));
+        // iterate each path
+        for (int i = 1; i < paths.size(); i++)
+        {
+            List<Integer> leCandidates = new ArrayList<>();
+            List<Integer> P = new ArrayList<>(paths.get(i));
+            // cursor on Lower Envelop
+            int j = LE.size()-1;
+            // cursor on current path
+            int k = P.size()-1;
+            // iterating through LE and current path to add edges into Gup
+            while (j != 0 || k != 0)
+            {
+                iGNode upper = graph.getNode(LE.get(j));
+                iGNode lower = graph.getNode(P.get(k));
+                int nodeDist = (int)(lower.pos().getY()-upper.pos().getY()-upper.height());
+                // check all the cases for upper and lower nodes x coordinates intersecting
+                // add edges for upward visibility graph
+                // construct next LE
+                if ((int)(upper.pos().getX()) == (int)(lower.pos().getX()))
+                {
+                    addMinDistToGup(Gup, P, k, nodeDist);
+                    j--;
+                    k--;
+                }
+                else if ((int)(upper.pos().getX()) > (int)(lower.pos().getX()))
+                {
+                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()+lower.width()))
+                    {
+                        leCandidates.add(0, upper.id());
+                    }
+                    if ((int)(upper.pos().getX()) <= (int)(lower.pos().getX()+lower.width()))
+                    {
+                        addMinDistToGup(Gup, P, k, nodeDist);
+                    }
+                    j--;
+                }
+                else if ((int)(upper.pos().getX()) < (int)(lower.pos().getX()))
+                {
+                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()))
+                    {
+                        addMinDistToGup(Gup, P, k, nodeDist);
+                    }
+                    k--;
+                }
+                leCandidates.add(0, P.get(k));
+            }
+            LE = new ArrayList<>(leCandidates);
+        }
+        return Gup;
+    }
+
+    private void addMinDistToGup(HashMap<Integer, Integer> gup, List<Integer> p, int k, int nodeDist)
+    {
+        if (gup.containsKey(p.get(k))) gup.put(p.get(k), Math.min(gup.get(p.get(k)), nodeDist));
+        else gup.put(p.get(k), nodeDist);
+    }
+
+    private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph)
+    {
+        List<Integer> P;
+        // keep track of T_i-1 nodes
+        for (int i = 1; i < paths.size(); i++)
+        {
+            P = new ArrayList<>(paths.get(i));
+            int minDist = Integer.MAX_VALUE;
+            for (int j = 1; j < P.size(); j++)
+            {
+                int nid = P.get(j);
+                if (gup.containsKey(nid)) {minDist = Math.min(minDist, gup.get(nid));}
+            }
+            for (int j = 1; j < P.size(); j++)
+            {
+                iGNode n = graph.getNode(P.get(j));
+                int dist = minDist - 0;
+                n.setPos(new Vector2D(n.pos().getX(), n.pos().getY() + Math.max(dist, minDist)));
+            }
+        }
     }
 
     public void updateAllWeights(Double offset, Double distance, Double spread)

@@ -63,7 +63,7 @@ public class LayoutHandler {
     {
         LayoutHandler lm = graphPanel.getLayoutHandler();
         lm.evaluateGraphWeights();
-        lm.executeLayout(1);
+        lm.executeLayout(graphPanel.graph().getRoot().id());
         graphPanel.drawGraph(graphPanel.graph());
     }
 

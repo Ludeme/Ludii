@@ -255,6 +255,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = nodeComponent(n);
             lnc.setSelected(false);
+            lnc.setDoubleSelected(false);
         });
         selectedLnc = new ArrayList<>();
         SELECTED = false;

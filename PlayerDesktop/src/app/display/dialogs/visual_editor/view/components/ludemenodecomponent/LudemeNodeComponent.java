@@ -41,6 +41,7 @@ public class LudemeNodeComponent extends JPanel
     private final IGraphPanel GRAPH_PANEL;
     // Whether the node is "marked"/selected
     private boolean selected = false;
+    private boolean doubleSelected = false;
     private boolean subtree = false;
     /** Sub-Components of the node */
     private final LHeader header;
@@ -206,6 +207,15 @@ public class LudemeNodeComponent extends JPanel
     }
 
     /**
+     * Sets the node to be double selected/unselected
+     * @param selected Whether the node is selected
+     */
+    public void setDoubleSelected(boolean selected)
+    {
+        this.doubleSelected = selected;
+    }
+
+    /**
      *
      * @return whether the node is selected
      */
@@ -318,14 +328,15 @@ public class LudemeNodeComponent extends JPanel
         {
             super.mouseClicked(e);
             // when double click is performed on a node add its descendant into selection list
-            if (e.getClickCount() == 1)
+            if (e.getClickCount() == 1 && !selected)
             {
                 graphPanel().deselectEverything();
                 Handler.selectNode(LudemeNodeComponent.this);
                 subtree = false;
             }
-            else if (e.getClickCount() >= 2)
+            else if (e.getClickCount() >= 2 && !doubleSelected)
             {
+                doubleSelected = true;
                 List<LudemeNodeComponent> Q = new ArrayList<>();
                 Q.add(LudemeNodeComponent.this);
                 while (!Q.isEmpty())
