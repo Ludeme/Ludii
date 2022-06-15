@@ -16,7 +16,8 @@ public interface iGrammar {
      * @param match
      * @return
      */
-    List<SuggestionInstance> filterOutInvalid(String contextString, List<Instance> match, int caretPosition);
+
+    List<SuggestionInstance> filterOutInvalid(String contextString, List<Instance> match);
 
     String getLocation();
 }

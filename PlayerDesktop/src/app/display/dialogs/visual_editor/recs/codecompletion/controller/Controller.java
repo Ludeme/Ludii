@@ -75,7 +75,7 @@ public class Controller implements iController {
         // 2. context sensitivity
         List<Instance> match = model.getMatch(context.getKey());
         // 3. type-meatching
-        List<SuggestionInstance> unorderedPicklist = grammar.filterOutInvalid(contextString,match,1);
+        List<SuggestionInstance> unorderedPicklist = grammar.filterOutInvalid(contextString,match);
         // 4. Calculate Number of Matching words & Remove duplicate predictions
         //TODO: change unite Duplicate Predictions to accept Suggestion Instances
         List<Pair<Instance, Integer>> uniquePredictions = NGramUtils.uniteDuplicatePredictions(null, context);

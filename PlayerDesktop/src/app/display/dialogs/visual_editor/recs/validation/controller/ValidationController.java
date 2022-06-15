@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.recs.validation.controller;
 
+import app.display.dialogs.visual_editor.recs.Converter;
 import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
@@ -58,7 +59,7 @@ public class ValidationController {
                 int id = (int) (Math.random() * (validationIDs.size()-1)); // select one random id
                 String gameDescription = db.getDescription(id);
 
-                gameDescription = Preprocessing.preprocess(gameDescription); // preprocess
+                gameDescription = Converter.toConstructor(gameDescription);//Preprocessing.preprocess(gameDescription); // preprocess
 
                 String[] split = gameDescription.split(" ");
 

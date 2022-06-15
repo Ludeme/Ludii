@@ -1,14 +1,9 @@
 package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 
-import app.display.dialogs.editor.EditorHelpDataHelper;
 import app.display.dialogs.editor.SuggestionInstance;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model.iGrammar;
-import app.display.dialogs.visual_editor.recs.utils.StringUtils;
-import grammar.Grammar;
-import main.EditorHelpData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,31 +36,19 @@ public class TypeMatching implements iGrammar {
      * This method takes a list of instances with matching keys to the context and filters out the ones
      * that do not match the context, leaving only valid choices behind.
      *
+     * It expects a wildcard [#] at the position where a recommendation should be made
+     *
      * @param match
      * @return
      */
     @Override
-    public List<SuggestionInstance> filterOutInvalid(String contextString, List<Instance> match, int caretPosition) {
-        // 1. get list of Suggestion Instances from Grammar
-        boolean isPartial = false;
-        List<SuggestionInstance> suggestionInstances = new ArrayList<>();
-        final List<String> allCandidates = Grammar.grammar().classPaths(contextString, caretPosition, isPartial);
+    public List<SuggestionInstance> filterOutInvalid(String contextString, List<Instance> match) {
+        // 1. find the [#]
+        // 2. find the nearest ( before, and determine which ludeme it belongs to
+        // 3. find out which constructor it belongs to
+        // 4. find all possible parameters
 
-        for(String candidate: allCandidates) {
-            System.out.println("candidate: " + candidate);
-        }
-
-        final List<SuggestionInstance> suggestionsFromClasspaths = EditorHelpDataHelper.suggestionsForClasspaths(EditorHelpData.get(), allCandidates, isPartial);
-
-        final String charsBefore = StringUtils.charsBeforeCursor(contextString, caretPosition);
-        //System.out.println("### charsBefore:" + charsBefore);
-
-        for (final SuggestionInstance si: suggestionsFromClasspaths)
-        {
-            if (!isPartial || matches(charsBefore, si.getSubstitution()))
-                suggestionInstances.add(si);
-        }
-        return suggestionInstances;
+        return null;
     }
 
     @Override

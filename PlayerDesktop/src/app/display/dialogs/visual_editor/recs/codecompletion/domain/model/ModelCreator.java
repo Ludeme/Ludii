@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 
+import app.display.dialogs.visual_editor.recs.Converter;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelFilehandler;
 import app.display.dialogs.visual_editor.recs.display.ProgressBar;
@@ -57,7 +58,7 @@ public class ModelCreator {
                     String curGameDescription = db.getDescription(gameID);
 
                     //apply preprocessing
-                    String cleanGameDescription = Preprocessing.preprocess(curGameDescription);
+                    String cleanGameDescription = Converter.toConstructor(curGameDescription);//Preprocessing.preprocess(curGameDescription);
 
                     //add all instances of length in {2,...,N}
                     for(int j = 2; j <= N; j++) {
