@@ -67,6 +67,14 @@ public class LConnectionComponent extends JComponent {
     }
 
     public void updatePosition(){
+        if(connected_to != null) {
+            if(connected_to.node().collapsed() != isCollapsed){
+                isCollapsed = connected_to.node().collapsed();
+                connectionPointComponent.repaint();
+                connectionPointComponent.revalidate();
+            }
+        }
+
         if(this.getParent() == null || this.getParent().getParent() == null || this.getParent().getParent().getParent() == null) return;
         int x = connectionPointComponent.getX() + this.getX() + this.getParent().getX() + this.getParent().getParent().getX() + this.getParent().getParent().getParent().getX() + RADIUS;
         int y = connectionPointComponent.getY() + this.getY() + this.getParent().getY() + this.getParent().getParent().getY() + this.getParent().getParent().getParent().getY() + RADIUS;
@@ -75,16 +83,6 @@ public class LConnectionComponent extends JComponent {
             connectionPointPosition = new ImmutablePoint(p);
         }
         connectionPointPosition.update(p);
-
-        if(connected_to != null) {
-            if(connected_to.node().collapsed() != isCollapsed){
-                isCollapsed = connected_to.node().collapsed();
-                connectionPointComponent.repaint();
-                connectionPointComponent.revalidate();
-                System.out.println("brrrrrrrrrrrrrrrrrrrrrt");
-            }
-        }
-
     }
 
     public ImmutablePoint getConnectionPointPosition(){
@@ -113,6 +111,7 @@ public class LConnectionComponent extends JComponent {
                 else{
                     if(isCollapsed){
                         connected_to.setCollapsed(false);
+                        graphPanel.repaint();
                         updatePosition();
                         return;
                     }

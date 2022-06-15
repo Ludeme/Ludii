@@ -22,6 +22,7 @@ public class NodePopupMenu extends JPopupMenu {
 
         collapse.addActionListener(e -> {
             nodeComponent.node().setCollapsed(!nodeComponent.node().collapsed());
+            graphPanel.nodeComponent(nodeComponent.node().parentNode()).updatePositions(); // update position to notify about collapsed child
             graphPanel.repaint();
         });
 

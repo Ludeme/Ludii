@@ -169,6 +169,14 @@ public class LudemeNodeComponent extends JPanel
         return inputArea;
     }
 
+    /**
+     *
+     * @return the header of the node component
+     */
+    public LHeader header()
+    {
+        return header;
+    }
 
     /**
      *
