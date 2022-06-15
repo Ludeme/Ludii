@@ -470,8 +470,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         {
             super.mouseClicked(e);
 
-            System.out.println(Arrays.toString(((LudemeNode) graph.getRoot()).providedInputs()));
-
             if(connectLudemeWindow.isVisible())
             {
                 ch.cancelNewConnection();

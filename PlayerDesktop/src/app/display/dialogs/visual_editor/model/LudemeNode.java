@@ -479,8 +479,38 @@ public class LudemeNode implements iLudemeNode, iGNode
     public String stringRepresentation()
     {
         StringBuilder sb = new StringBuilder();
-        //sb.append(s)
-        return ""; // TODO
+        // append token of this node's symbol
+        sb.append("(").append(tokenTitle());
+        // append all inputs
+        for(Object input : providedInputs)
+        {
+            if(input == null) continue; // if no input provided, skip it
+            sb.append(" ");
+
+            if(input instanceof LudemeNode)
+            {
+                sb.append(((LudemeNode) input).stringRepresentation());
+            }
+            else if(input instanceof LudemeNode[])
+            {
+                sb.append("{");
+                for(LudemeNode node : (LudemeNode[]) input) {
+                    if(node == null) continue;
+                    sb.append(node.stringRepresentation()).append(" ");
+                }
+                sb.append("}");
+            }
+            else if(input instanceof String)
+            {
+                sb.append("\"").append(input).append("\"");
+            }
+            else
+            {
+                sb.append(input);
+            }
+        }
+        sb.append(")");
+        return sb.toString(); // TODO
     }
 
     /**
@@ -490,6 +520,20 @@ public class LudemeNode implements iLudemeNode, iGNode
     public String title()
     {
         StringBuilder title = new StringBuilder(symbol().name());
+        if(selectedClause().args() == null) return title.toString();
+        // if selected clause starts with constants, add these to the title
+        int index = 0;
+        while(selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant)){
+            title.append(" ").append(selectedClause().args().get(index).symbol().name());
+            index++;
+        }
+        return title.toString();
+    }
+
+
+    private String tokenTitle()
+    {
+        StringBuilder title = new StringBuilder(symbol().token());
         if(selectedClause().args() == null) return title.toString();
         // if selected clause starts with constants, add these to the title
         int index = 0;
