@@ -217,7 +217,7 @@ public class LudemeNode implements iLudemeNode, iGNode
         // the complete subtree of this node becomes invisible if collapsed or visible if not collapsed
         for(LudemeNode child : children)
         {
-            if(!child.parentNode().collapsed()) child.setSubtreeVisible(!collapsed);
+            child.setSubtreeVisible(!collapsed);
         }
     }
 
@@ -486,7 +486,7 @@ public class LudemeNode implements iLudemeNode, iGNode
             }
             else if(input instanceof LudemeNode[])
             {
-                sb.append("{");
+                sb.append("{ ");
                 for(LudemeNode node : (LudemeNode[]) input) {
                     if(node == null) continue;
                     sb.append(node.stringRepresentation()).append(" ");
