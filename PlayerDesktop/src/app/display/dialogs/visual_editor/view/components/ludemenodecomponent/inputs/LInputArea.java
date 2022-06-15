@@ -139,7 +139,6 @@ public class LInputArea extends JPanel {
      */
     private List<NodeArgument> nodeArguments(Clause clause){
         List<NodeArgument> nodeArguments = new ArrayList<>();
-        System.out.println(clause.symbol());
         // if the clause.args() == null, get the required arguments from the clause's symbol
         if(clause.args() == null){
             // List of clauses for that symbol
