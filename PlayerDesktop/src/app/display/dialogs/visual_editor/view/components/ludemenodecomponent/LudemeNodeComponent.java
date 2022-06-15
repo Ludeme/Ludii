@@ -394,7 +394,7 @@ public class LudemeNodeComponent extends JPanel
         setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
         if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
         else setBorder(DesignPalette.LUDEME_NODE_BORDER);
-        setVisible(visible());
+        System.out.println(node().id() + " is visible: " + visible());
     }
 
 }
