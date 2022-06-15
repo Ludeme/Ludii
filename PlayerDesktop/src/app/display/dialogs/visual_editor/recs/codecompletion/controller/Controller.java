@@ -1,12 +1,13 @@
 package app.display.dialogs.visual_editor.recs.codecompletion.controller;
 
+import app.display.dialogs.editor.SuggestionInstance;
+import app.display.dialogs.visual_editor.recs.Converter;
 import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller.iController;
 import app.display.dialogs.visual_editor.recs.utils.*;
-import utils.*;
 
 import java.io.File;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Controller implements iController {
 
     private int N;
     private ModelLibrary lib;
-    private Grammar grammar;
+    private TypeMatching grammar;
     private NGram model;
     private DocHandler docHandler;
 
@@ -52,7 +53,7 @@ public class Controller implements iController {
         docHandler = DocHandler.getInstance();
         lib = ModelLibrary.getInstance();
         model = lib.getModel(N);
-        grammar = Grammar.getInstance();
+        grammar = TypeMatching.getInstance();
     }
 
     /**
@@ -69,14 +70,15 @@ public class Controller implements iController {
     @Override
     public List<Ludeme> getPicklist(String contextString) {
         // 1. acquire context and preprocess it
-        String cleanContextString = Preprocessing.preprocess(contextString);
+        String cleanContextString = Converter.toConstructor(contextString);
         Context context = NGramUtils.createContext(cleanContextString);
         // 2. context sensitivity
         List<Instance> match = model.getMatch(context.getKey());
         // 3. type-meatching
-        List<Instance> unorderedPicklist = grammar.filterOutInvalid(context,match);
+        List<SuggestionInstance> unorderedPicklist = grammar.filterOutInvalid(contextString,match,1);
         // 4. Calculate Number of Matching words & Remove duplicate predictions
-        List<Pair<Instance, Integer>> uniquePredictions = NGramUtils.uniteDuplicatePredictions(unorderedPicklist, context);
+        //TODO: change unite Duplicate Predictions to accept Suggestion Instances
+        List<Pair<Instance, Integer>> uniquePredictions = NGramUtils.uniteDuplicatePredictions(null, context);
         // 5. Sorting after matching words and multiplicity
         List<Instance> picklist = BucketSort.sort(uniquePredictions, MAX_PICKLIST_LENGTH);
         // convert to ludemes

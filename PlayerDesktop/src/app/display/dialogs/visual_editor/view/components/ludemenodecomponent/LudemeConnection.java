@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
+import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 
@@ -39,6 +40,14 @@ public class LudemeConnection {
 
     public LConnectionComponent getConnectionComponent(){
         return CONNECTION_COMPONENT;
+    }
+
+    public LudemeNode ingoingNode(){
+        return INGOING_CONNECTION_COMPONENT.getHeader().ludemeNodeComponent().node();
+    }
+
+    public LudemeNode outgoingNode(){
+        return CONNECTION_COMPONENT.getLudemeNodeComponent().node();
     }
 
     @Override
