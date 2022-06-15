@@ -111,6 +111,7 @@ public class LConnectionComponent extends JComponent {
                 else{
                     if(isCollapsed){
                         connected_to.setCollapsed(false);
+                        connected_to.setVisible(true);
                         graphPanel.repaint();
                         updatePosition();
                         return;

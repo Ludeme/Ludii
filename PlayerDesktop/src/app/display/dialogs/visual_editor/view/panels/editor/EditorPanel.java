@@ -142,12 +142,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
             zoomFactor0 = zoomFactor;
             g2.transform(at);
         }
-
-        for(LudemeNodeComponent lnc : nodeComponents)
-        {
-            lnc.setVisible(lnc.visible());
-        }
-
+        
         boolean showBackgroundDots = true;
         if(showBackgroundDots)
         {

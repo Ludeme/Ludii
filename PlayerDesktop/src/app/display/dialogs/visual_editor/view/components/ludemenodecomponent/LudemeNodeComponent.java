@@ -436,6 +436,7 @@ public class LudemeNodeComponent extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
+        setVisible(visible());
         int preferredHeight = preferredHeight();
 
         setMinimumSize(new Dimension(width(), preferredHeight));
