@@ -49,7 +49,7 @@ public class LudemeNode implements iLudemeNode, iGNode
      * a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
      * possible clauses is narrowed down to the ones that match the provided arguments.
      */
-    private boolean dynamic = false; // TODO: Not hard-coded
+    private boolean dynamic = false;
     /**
      * whether this node (and thus its children) are visible (collapsed) or not.
      */
@@ -93,13 +93,6 @@ public class LudemeNode implements iLudemeNode, iGNode
             this.selectedClause = null;
             this.providedInputs = null;
         }
-        /* TODO: Fix such that this is not needed. Issue: Structural nodes should not be added to the graph
-        if(symbol.rule().rhs() != null) this.selectedClause = symbol.rule().rhs().get(0);
-        while(selectedClause.args() == null) {
-            selectedClause = selectedClause.symbol().rule().rhs().get(0);
-        }
-        this.providedInputs = new Object[selectedClause.args().size()];
-         */
         if(dynamic && !dynamicPossible()) dynamic = false;
     }
 
@@ -396,8 +389,6 @@ public class LudemeNode implements iLudemeNode, iGNode
         return depth;
     }
 
-    // TODO: Should be probably in iGNode ?
-
     /**
      * Set the position of this node
      * @param x the x coordinate to set
@@ -416,7 +407,7 @@ public class LudemeNode implements iLudemeNode, iGNode
     @Override
     public void setParent(iLudemeNode ludemeNode)
     {
-        this.parent = (LudemeNode) ludemeNode; // TODO: should it be casted?
+        this.parent = (LudemeNode) ludemeNode;
     }
 
     /**
@@ -512,7 +503,7 @@ public class LudemeNode implements iLudemeNode, iGNode
             }
         }
         sb.append(")");
-        return sb.toString(); // TODO
+        return sb.toString();
     }
 
     /**

@@ -184,6 +184,11 @@ public class NodeArgument
         return possibleSymbolInputs;
     }
 
+    /**
+     * TODO: Add comment
+     * @param symbol
+     * @return
+     */
     private boolean isTerminal(Symbol symbol)
     {
         if(symbol.isTerminal()) return true;
@@ -195,6 +200,36 @@ public class NodeArgument
             }
         }
         return true;
+    }
+
+    public boolean isTerminal()
+    {
+        if(args().size() > 1) return false;
+        return isTerminal(arg().symbol());
+    }
+
+    public boolean terminalDropdown()
+    {
+        for(Clause clause : arg().symbol().rule().rhs())
+        {
+            if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<Symbol> constantInputs(){
+        List<Symbol> constantInputs = new ArrayList<>();
+        for(Clause clause : arg().symbol().rule().rhs())
+        {
+            if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+            {
+                constantInputs.add(clause.symbol());
+            }
+        }
+        return constantInputs;
     }
 
     /**

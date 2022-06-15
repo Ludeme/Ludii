@@ -128,8 +128,8 @@ public class LInputField extends JComponent {
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 
 
-        if(inputSymbol.isTerminal()){ // TODO: does that work?
-            inputFieldComponent = getTerminalComponent(input.arg());
+        if(input.isTerminal()){ // TODO: does that work?
+            inputFieldComponent = getTerminalComponent(input);
             inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.width()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
             inputFieldComponent.addMouseListener(userInputListener);
 
@@ -184,26 +184,28 @@ public class LInputField extends JComponent {
 
     }
 
-    private JComponent getTerminalComponent(ClauseArg arg){
-        if(!arg.symbol().isTerminal()) return null;
+    private JComponent getTerminalComponent(NodeArgument argument){
+        ClauseArg arg = argument.arg();
+
+        if(argument.terminalDropdown())
+        {
+            JComboBox<Symbol> dropdown = new JComboBox<>();
+            dropdown.setFont(DesignPalette.LUDEME_INPUT_FONT);
+            dropdown.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+            for(Symbol s : argument.constantInputs())
+            {
+                dropdown.addItem(s);
+            }
+            return dropdown;
+        }
+
         switch(arg.symbol().name()){
             case "Integer":
                 return new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
             case "String":
                 return new JTextField();
             default:
-                if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Structural)) { // TODO: Eh, keine ahnung
-                    JComboBox<Symbol> comboBox = new JComboBox<>();
-                    if(true) {
-                        System.out.println(arg);
-                        return new JTextField("!!");
-                    }
-                    for (ClauseArg ca : arg.symbol().rule().rhs().get(0).args()) {
-                        comboBox.addItem(ca.symbol());
-                    }
-                    return comboBox;
-                }
-                else return new JTextField("??");
+                return new JTextField("??"); // TODO: This should never happen!
         }
     }
 
