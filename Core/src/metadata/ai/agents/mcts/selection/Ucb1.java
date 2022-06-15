@@ -31,7 +31,7 @@ public class Ucb1 extends Selection
 	 * @example (ucb1)
 	 * @example (ucb1 0.6)
 	 */
-	public Ucb1(@Opt final Double explorationConstant)
+	public Ucb1(@Opt final Float explorationConstant)
 	{
 		if (explorationConstant == null)
 			this.explorationConstant = Math.sqrt(2.0);
