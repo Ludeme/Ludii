@@ -43,6 +43,7 @@ public class LInputField extends JComponent {
 
     public LInputField(LudemeNodeComponent ludemeNodeComponent, NodeArgument nodeArgument){
         this.LNC = ludemeNodeComponent;
+
         nodeArgumentList.add(nodeArgument);
         if(nodeArgument.optional()) isOptional = true;
         isSingle = true;

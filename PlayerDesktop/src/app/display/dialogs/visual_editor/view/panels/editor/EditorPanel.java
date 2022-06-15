@@ -7,6 +7,9 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -64,6 +67,10 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     private static final boolean DEBUG = true;
 
+    // Recommendations
+    private NGramController controller;
+    private int N;
+
     public EditorPanel(int width, int height)
     {
         setLayout(null);
@@ -90,6 +97,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(edges);
+
+        N = 7;
+        controller = new NGramController(N);
     }
 
     public EditorPanel()
@@ -131,6 +141,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
             at.scale(zoomFactor, zoomFactor);
             zoomFactor0 = zoomFactor;
             g2.transform(at);
+        }
+
+        for(LudemeNodeComponent lnc : nodeComponents)
+        {
+            lnc.setVisible(lnc.visible());
         }
 
         boolean showBackgroundDots = true;
@@ -185,7 +200,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
             if(ii.indexFirst() < upUntilIndex) upUntilIndex = ii.indexFirst();
         }
 
-        connectLudemeWindow.updateList(ch.getSelectedConnectionComponent().getRequiredSymbols());
+
+        List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
+        String gameDescription = ""; // TODO: Insert [#] as wild card for completion
+
+        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
+        connectLudemeWindow.updateList(typeMatched);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();

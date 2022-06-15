@@ -27,6 +27,8 @@ public class LConnectionComponent extends JComponent {
     private ConnectionPointComponent connectionPointComponent;
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
 
+    private boolean isCollapsed = false;
+
     private LudemeNodeComponent connected_to;
     boolean isOptional = false;
 
@@ -73,6 +75,16 @@ public class LConnectionComponent extends JComponent {
             connectionPointPosition = new ImmutablePoint(p);
         }
         connectionPointPosition.update(p);
+
+        if(connected_to != null) {
+            if(connected_to.node().collapsed() != isCollapsed){
+                isCollapsed = connected_to.node().collapsed();
+                connectionPointComponent.repaint();
+                connectionPointComponent.revalidate();
+                System.out.println("brrrrrrrrrrrrrrrrrrrrrt");
+            }
+        }
+
     }
 
     public ImmutablePoint getConnectionPointPosition(){
@@ -99,6 +111,11 @@ public class LConnectionComponent extends JComponent {
                     graphPanel.ch().startNewConnection(LConnectionComponent.this);
                 }
                 else{
+                    if(isCollapsed){
+                        connected_to.setCollapsed(false);
+                        updatePosition();
+                        return;
+                    }
                     // if already connected: remove connection
                     if(getConnectedTo() != null) {
                         graphPanel.ch().removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), LConnectionComponent.this);
@@ -158,12 +175,6 @@ public class LConnectionComponent extends JComponent {
                 g2.fillOval(x, y, getRadius()*2, getRadius()*2);
             }
             else {
-                // fill a new oval with transparent colour (to make the filled out oval disappear)
-                /*g2.setColor(new Color(0,0,0,0));
-                g2.fillOval(x, y, radius*2, radius*2);
-                // draw unfilled oval
-                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
-                g2.drawOval(x, y, radius*2, radius*2);*/
 
                 if(!isOptional) {
                     g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);

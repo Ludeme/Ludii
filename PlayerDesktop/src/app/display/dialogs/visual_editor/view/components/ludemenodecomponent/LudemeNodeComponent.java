@@ -234,6 +234,30 @@ public class LudemeNodeComponent extends JPanel
         return inputArea.getPreferredSize().height + header.getPreferredSize().height;
     }
 
+    private List<LudemeNodeComponent> collapsedSubtreeNodes()
+    {
+        List<LudemeNodeComponent> nodes = new ArrayList<>();
+        for(LudemeNode node : node().childrenNodes())
+        {
+            if(node.collapsed())
+            {
+                nodes.addAll(subtree(graphPanel().nodeComponent(node)));
+            }
+        }
+        return nodes;
+    }
+
+    private List<LudemeNodeComponent> subtree(LudemeNodeComponent root)
+    {
+        List<LudemeNodeComponent> nodes = new ArrayList<>();
+        nodes.add(root);
+        for(LudemeNode node : root.node().childrenNodes())
+        {
+            nodes.addAll(subtree(graphPanel().nodeComponent(node)));
+        }
+        return nodes;
+    }
+
     /**
      *
      * @return the Ingoing Connection Component of the node component, situated on the top of the node (LHeader)
@@ -304,6 +328,15 @@ public class LudemeNodeComponent extends JPanel
                     lnc.updatePositions();
                 });
             }
+
+            List<LudemeNodeComponent> collapsedChildren = collapsedSubtreeNodes();
+            if(collapsedChildren.size() >= 1){
+                collapsedChildren.forEach(lnc -> {
+                    if (!lnc.equals(LudemeNodeComponent.this)) lnc.setLocation(lnc.getLocation().x+posDif.x, lnc.getLocation().y+posDif.y);
+                    lnc.updatePositions();
+                });
+            }
+
             updatePositions();
             graphPanel().repaint();
         }
@@ -405,7 +438,7 @@ public class LudemeNodeComponent extends JPanel
         setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
         if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
         else setBorder(DesignPalette.LUDEME_NODE_BORDER);
-        setVisible(visible());
+        System.out.println(node().id() + " is visible: " + visible());
     }
 
 }

@@ -1,8 +1,5 @@
 package app.display.dialogs.visual_editor.recs.codecompletion.controller;
 
-import app.display.dialogs.editor.SuggestionInstance;
-import app.display.dialogs.visual_editor.recs.Converter;
-import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
@@ -15,13 +12,12 @@ import java.util.List;
 /**
  * @author filreh
  */
-public class Controller implements iController {
+public class NGramController implements iController {
 
     private static final int MAX_PICKLIST_LENGTH = 50;
 
     private int N;
     private ModelLibrary lib;
-    private TypeMatching grammar;
     private NGram model;
     private DocHandler docHandler;
 
@@ -29,7 +25,7 @@ public class Controller implements iController {
      * Standard constructor
      * @param N
      */
-    public Controller(int N) {
+    public NGramController(int N) {
         this.N = N;
         initModel();
     }
@@ -38,7 +34,7 @@ public class Controller implements iController {
      * This constructor is only for validation
      * @param model
      */
-    public Controller(NGram model) {
+    public NGramController(NGram model) {
         this.N = model.getN();
         initModel();
         this.model = model;
@@ -53,7 +49,6 @@ public class Controller implements iController {
         docHandler = DocHandler.getInstance();
         lib = ModelLibrary.getInstance();
         model = lib.getModel(N);
-        grammar = TypeMatching.getInstance();
     }
 
     /**
@@ -68,22 +63,18 @@ public class Controller implements iController {
      * @return list of candidate predictions sort after matching words with context, multiplicity
      */
     @Override
-    public List<Ludeme> getPicklist(String contextString) {
+    public List<Instance> getPicklist(String contextString) {
         // 1. acquire context and preprocess it
-        String cleanContextString = Converter.toConstructor(contextString);
+        // TODO: look if there is the wildcard [#] in there and cut it and everything after it off
+        String cleanContextString = Preprocessing.preprocess(contextString);
         Context context = NGramUtils.createContext(cleanContextString);
         // 2. context sensitivity
         List<Instance> match = model.getMatch(context.getKey());
-        // 3. type-meatching
-        List<SuggestionInstance> unorderedPicklist = grammar.filterOutInvalid(contextString,match,1);
         // 4. Calculate Number of Matching words & Remove duplicate predictions
-        //TODO: change unite Duplicate Predictions to accept Suggestion Instances
         List<Pair<Instance, Integer>> uniquePredictions = NGramUtils.uniteDuplicatePredictions(null, context);
         // 5. Sorting after matching words and multiplicity
         List<Instance> picklist = BucketSort.sort(uniquePredictions, MAX_PICKLIST_LENGTH);
-        // convert to ludemes
-        List<Ludeme> picklistLudemes = Instance2Ludeme.foreachInstance2ludeme(picklist);
-        return picklistLudemes;
+        return picklist;
     }
 
     /**
@@ -100,8 +91,8 @@ public class Controller implements iController {
      * @return list of candidate predictions sort after matching words with context, multiplicity
      */
     @Override
-    public List<Ludeme> getPicklist(String context, int maxLength) {
-        List<Ludeme> picklist = getPicklist(context);
+    public List<Instance> getPicklist(String context, int maxLength) {
+        List<Instance> picklist = getPicklist(context);
         if(picklist.size() >= maxLength) {
             picklist = picklist.subList(0,maxLength);
         }
@@ -123,12 +114,12 @@ public class Controller implements iController {
      * @return
      */
     @Override
-    public List<Ludeme> getPicklist(String context, String begunWord) {
+    public List<Instance> getPicklist(String context, String begunWord) {
         String cleanBegunWord = Preprocessing.preprocessBegunWord(begunWord);
         System.out.println("CONTROLLER: context -> "+context);
-        List<Ludeme> preliminaryPicklist = getPicklist(context);
-        List<Ludeme> picklist = NGramUtils.filterByBegunWord(cleanBegunWord,preliminaryPicklist);
-        return picklist;
+        List<Instance> preliminaryPicklist = getPicklist(context);
+        //List<Symbol> picklist = NGramUtils.filterByBegunWord(cleanBegunWord,preliminaryPicklist);//TODO
+        return null;
     }
 
     /**
@@ -147,8 +138,8 @@ public class Controller implements iController {
      * @return
      */
     @Override
-    public List<Ludeme> getPicklist(String context, String begunWord, int maxLength) {
-        List<Ludeme> picklist;
+    public List<Instance> getPicklist(String context, String begunWord, int maxLength) {
+        List<Instance> picklist;
         if(StringUtils.equals(begunWord,"")) {
             picklist = getPicklist(context,maxLength);
         } else {

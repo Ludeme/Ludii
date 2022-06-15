@@ -3,7 +3,6 @@ package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelFilehandler;
 import app.display.dialogs.visual_editor.recs.display.ProgressBar;
-import app.display.dialogs.visual_editor.recs.utils.FileUtils;
 import app.display.dialogs.visual_editor.recs.utils.NGramUtils;
 
 import javax.swing.*;
@@ -11,7 +10,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 /**

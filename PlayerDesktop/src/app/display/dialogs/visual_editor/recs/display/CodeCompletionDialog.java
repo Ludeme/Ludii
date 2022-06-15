@@ -1,6 +1,6 @@
 package app.display.dialogs.visual_editor.recs.display;
 
-import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
@@ -24,12 +24,12 @@ public class CodeCompletionDialog {
     private  JPanel buttonPanel;
 
     private int selectedN;
-    private Controller controller;
+    private NGramController NGramController;
 
-    public CodeCompletionDialog(JFrame frame, Controller controller) {
+    public CodeCompletionDialog(JFrame frame, NGramController NGramController) {
         listener = new Listener();
-        this.controller = controller;
-        selectedN = controller.getN();
+        this.NGramController = NGramController;
+        selectedN = NGramController.getN();
         label = new JLabel("Select the value of the Code Completion model parameter N:");
         button = new JButton("Change N");
         button.addActionListener(listener);
@@ -71,7 +71,7 @@ public class CodeCompletionDialog {
             dialog.dispose();
             ModelLibrary lib = ModelLibrary.getInstance();
             NGram model = lib.getModel(selectedN);
-            controller.changeModel(model);
+            NGramController.changeModel(model);
         }
 
         /**

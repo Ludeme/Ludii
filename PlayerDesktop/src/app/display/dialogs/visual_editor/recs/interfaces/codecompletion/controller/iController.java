@@ -1,7 +1,9 @@
 package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller;
 
 import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import main.grammar.Symbol;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public interface iController {
      * @param context
      * @return list of candidate predictions sort after matching words with context, multiplicity
      */
-    List<Ludeme> getPicklist(String context);
+    List<Instance> getPicklist(String context);
     /**
      * Code Completion method for Visual Editor
      *
@@ -33,7 +35,7 @@ public interface iController {
      * @param maxLength
      * @return list of candidate predictions sort after matching words with context, multiplicity
      */
-    List<Ludeme> getPicklist(String context, int maxLength);
+    List<Instance> getPicklist(String context, int maxLength);
 
     /**
      * Code Completion method for Text Editor
@@ -47,7 +49,7 @@ public interface iController {
      * @param begunWord
      * @return
      */
-    List<Ludeme> getPicklist(String context, String begunWord);
+    List<Instance> getPicklist(String context, String begunWord);
 
     /**
      * Code Completion method for Text Editor
@@ -63,7 +65,7 @@ public interface iController {
      * @param maxLength
      * @return
      */
-    List<Ludeme> getPicklist(String context, String begunWord, int maxLength);
+    List<Instance> getPicklist(String context, String begunWord, int maxLength);
 
     /**
      * This method switches out the current model, remember to update the N parameter

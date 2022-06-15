@@ -223,7 +223,20 @@ public class LudemeNode implements iLudemeNode, iGNode
         // the complete subtree of this node becomes invisible if collapsed or visible if not collapsed
         for(LudemeNode child : children)
         {
-            child.setCollapsed(collapsed);
+            child.setSubtreeVisible(!collapsed);
+        }
+    }
+
+    /**
+     * Sets the visibility of this node's subtree
+     * @param visible the visibility to set
+     */
+    private void setSubtreeVisible(boolean visible)
+    {
+        setVisible(visible);
+        for(LudemeNode child : children)
+        {
+            child.setSubtreeVisible(visible);
         }
     }
 
@@ -448,6 +461,14 @@ public class LudemeNode implements iLudemeNode, iGNode
         this.children.remove(children);
     }
 
+    /**
+     *
+     * @return List of children of this node
+     */
+    public List<LudemeNode> childrenNodes()
+    {
+        return children;
+    }
 
 
     /**
