@@ -1,5 +1,5 @@
 package app.display.dialogs.visual_editor.recs.display;
-import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.GameFileHandler;
 import app.display.dialogs.visual_editor.recs.utils.NGramUtils;
@@ -29,7 +29,7 @@ public class TextEditor {
     private JFrame frame;
     private  JButton button;
     private JTextPane textArea;
-    private Controller controller;
+    private NGramController NGramController;
     private Listener listener;
     private JPanel panel;
     private JScrollPane scrollPane;
@@ -68,7 +68,7 @@ public class TextEditor {
 
     private void init() {
         setMode(lightMode);
-        controller = new Controller(N);
+        NGramController = new NGramController(N);
         fileChooser = new JFileChooser("res/");
         frame = new JFrame("Editing: "+gameName);
         listener = new Listener();
@@ -133,7 +133,7 @@ public class TextEditor {
              * @param e
              */
             public void windowClosing(WindowEvent e) {
-                controller.close();
+                NGramController.close();
             }
         });
         frame.setSize(new Dimension(1280,720));
@@ -161,7 +161,7 @@ public class TextEditor {
             e2.printStackTrace();
             return;
         }
-        suggestion = new SuggestionPanel(textArea, position, location, controller);
+        suggestion = new SuggestionPanel(textArea, position, location, NGramController);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -339,7 +339,7 @@ public class TextEditor {
             } else if (s.equals("Change appearance")) {
                 AppearanceDialog appearanceDialog = new AppearanceDialog(TextEditor.this);
             } else if (s.equals("Change Code Completion Model")) {
-                CodeCompletionDialog ccDialog = new CodeCompletionDialog(frame,controller);
+                CodeCompletionDialog ccDialog = new CodeCompletionDialog(frame, NGramController);
             } else if (s.equals("Open Game from File")) {
                 OpenGameFromFileDialog gameFromFileDialog = new OpenGameFromFileDialog(TextEditor.this);
             }

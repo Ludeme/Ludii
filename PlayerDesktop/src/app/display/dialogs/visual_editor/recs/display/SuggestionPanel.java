@@ -1,7 +1,7 @@
 package app.display.dialogs.visual_editor.recs.display;
 
 
-import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
 import main.grammar.Symbol;
 
@@ -16,15 +16,15 @@ import java.util.List;
 public class SuggestionPanel {
     private final JTextPane textarea;
     private final int position;
-    private final Controller controller;
+    private final NGramController NGramController;
     private final JList<Symbol> list;
     private final JPopupMenu popupMenu;
     private final int insertionPosition;
     private int startBegunWord, endBegunWord;
     private boolean isBegunWord;
 
-    public SuggestionPanel(JTextPane textarea, int position, Point location, Controller controller) {
-        this.controller = controller;
+    public SuggestionPanel(JTextPane textarea, int position, Point location, NGramController NGramController) {
+        this.NGramController = NGramController;
         this.textarea = textarea;
         this.position = position;
         this.insertionPosition = position;
@@ -73,7 +73,7 @@ public class SuggestionPanel {
                 isBegunWord = true;
             }
         }
-        List<Instance> picklist = controller.getPicklist(contextString, begunWord,10);
+        List<Instance> picklist = NGramController.getPicklist(contextString, begunWord,10);
         Symbol[] data = picklist.toArray(new Symbol[0]);
         JList<Symbol> list = new JList<>(data);
         list.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));

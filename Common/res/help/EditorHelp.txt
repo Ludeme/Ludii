@@ -4726,7 +4726,7 @@ NEW CTOR
 (features [{<featureSet>}])
 PARAM JAVADOC: [{<featureSet>}]: A sequence of multiple feature sets (typically each applying to a different player).
 EXAMPLE: (features { (featureSet P1 { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) }) (featureSet P2 { (pair "rel:to=<{}>:pat=<els=[-{}]>" -1.0) }) })
-REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70–75).
+REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70ï¿½75).
 TYPE: metadata.ai.features.trees.classifiers.BinaryLeaf
 TYPE JAVADOC: Describes a leaf node in a binary classification tree for features; it contains  only a predicted probability for "top move".
 NEW CTOR
@@ -5370,7 +5370,7 @@ PARAM JAVADOC: [<siteType>]: The GraphElementType for the specified sites [Verte
 PARAM JAVADOC: [<lineStyle>]: Line style [Thin].
 PARAM JAVADOC: [<colour>]: The colour of the line.
 PARAM JAVADOC: [scale:<float>]: The scale of the line.
-PARAM JAVADOC: [curve:{<float>}]: The control points for the line to create a Bézier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
+PARAM JAVADOC: [curve:{<float>}]: The control points for the line to create a Bï¿½zier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
 PARAM JAVADOC: [<curveType>]: Type of curve [Spline].
 EXAMPLE: (show Line { {1 0} {2 4} })
 NEW CTOR
@@ -5512,9 +5512,9 @@ CONST JAVADOC: Hashi: Custom style for the Hashi puzzle board.
 CONST JAVADOC: Kakuro: Custom style for the Kakuro puzzle board.
 CONST JAVADOC: Sudoku: Custom style for the Sudoku board.
 TYPE: metadata.graphics.util.ControllerType
-TYPE JAVADOC: Defines supported controller types for handling user interactions for particular topologies.
-CONST JAVADOC: BasicController: Basic user interaction controller.
-CONST JAVADOC: PyramidalController: User interaction controller for games played on pyramidal topologies.
+TYPE JAVADOC: Defines supported NGramController types for handling user interactions for particular topologies.
+CONST JAVADOC: BasicController: Basic user interaction NGramController.
+CONST JAVADOC: PyramidalController: User interaction NGramController for games played on pyramidal topologies.
 TYPE: metadata.graphics.util.CurveType
 TYPE JAVADOC: Supported style types for drawing curves.
 CONST JAVADOC: Spline: Spline curve based on relative distances.

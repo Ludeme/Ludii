@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model;
 
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import main.grammar.Symbol;
 
 import java.util.List;
@@ -13,5 +14,5 @@ public interface iTypeMatch {
      * @param possibleSymbols
      * @return
      */
-    List<Symbol> typematch(String gameDescription, List<Symbol> possibleSymbols);
+    List<Symbol> typematch(String gameDescription, NGramController NGramController, List<Symbol> possibleSymbols);
 }

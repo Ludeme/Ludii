@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author filreh
  */
-public class Controller implements iController {
+public class NGramController implements iController {
 
     private static final int MAX_PICKLIST_LENGTH = 50;
 
@@ -25,7 +25,7 @@ public class Controller implements iController {
      * Standard constructor
      * @param N
      */
-    public Controller(int N) {
+    public NGramController(int N) {
         this.N = N;
         initModel();
     }
@@ -34,7 +34,7 @@ public class Controller implements iController {
      * This constructor is only for validation
      * @param model
      */
-    public Controller(NGram model) {
+    public NGramController(NGram model) {
         this.N = model.getN();
         initModel();
         this.model = model;
@@ -65,6 +65,7 @@ public class Controller implements iController {
     @Override
     public List<Instance> getPicklist(String contextString) {
         // 1. acquire context and preprocess it
+        // TODO: look if there is the wildcard [#] in there and cut it and everything after it off
         String cleanContextString = Preprocessing.preprocess(contextString);
         Context context = NGramUtils.createContext(cleanContextString);
         // 2. context sensitivity

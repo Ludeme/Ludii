@@ -1,11 +1,9 @@
 package app.display.dialogs.visual_editor.recs.validation.controller;
 
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
-import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
-import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
-import main.grammar.Symbol;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +37,7 @@ public class ValidationController {
 
             //model creation with the testIDs
             NGram model = ModelCreator.createModel(N, testIDs, true);
-            Controller controller = new Controller(model);
+            NGramController NGramController = new NGramController(model);
 
             //times
             long currentTime;
@@ -82,7 +80,7 @@ public class ValidationController {
                 //1. take the start time in nano seconds
                 long startTime = System.nanoTime();
                 //2. get the picklist, length 7 suffices
-                List<Instance> picklist = controller.getPicklist(context,7);
+                List<Instance> picklist = NGramController.getPicklist(context,7);
                 //3. take the stop time in nano seconds
                 long endTime = System.nanoTime();
                 long duration = endTime - startTime;
