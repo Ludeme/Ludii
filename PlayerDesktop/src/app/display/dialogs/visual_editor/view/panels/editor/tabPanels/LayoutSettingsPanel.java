@@ -49,16 +49,19 @@ public class LayoutSettingsPanel extends JPanel
         redraw.addActionListener(e -> {
             lh.evaluateGraphWeights();
             executeDFSLayout(graphPanel);
+            graphPanel.deselectEverything();
         });
 
         alignX.addActionListener(e -> {
             NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS);
             graphPanel.drawGraph(graphPanel.graph());
+            graphPanel.deselectEverything();
         });
 
         alignY.addActionListener(e -> {
             NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS);
             graphPanel.drawGraph(graphPanel.graph());
+            graphPanel.deselectEverything();
         });
 
         ChangeListener sliderUpdateListener = e -> {

@@ -176,12 +176,81 @@ public final class GraphRoutines
         GraphRoutines.SM = SM;
     }
 
-    public static String repeatString(String str, int n)
+    public static void findAllPaths(ArrayList<List<Integer>> paths, iGraph graph, int root, List<Integer> p)
     {
-        String repStr = ""; // if error occur change to String repStr = str;
-        for (int i = 0; i < n; i++) {
-            repStr = repStr.concat(str);
-        }
-        return repStr;
+        // current node
+        iGNode node = graph.getNode(root);
+        p.add(root);
+        node.children().forEach(cid -> {
+            iGNode c = graph.getNode(cid);
+            List<Integer> pTemp = new ArrayList<>(p);
+            pTemp.add(cid);
+            if (c.children().isEmpty())
+            {
+                paths.add(pTemp);
+            }
+            else
+            {
+                findAllPaths(paths, graph, cid, p);
+            }
+        });
     }
+
+    public static HashMap<Integer, List<Integer>> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph)
+    {
+        // Initialize
+        HashMap<Integer, List<Integer>> Gup = new HashMap<>();
+        List<Integer> LE = new ArrayList<>(paths.get(0));
+        // iterate each path
+        for (int i = 1; i < paths.size(); i++)
+        {
+            List<Integer> leCandidates = new ArrayList<>();
+            List<Integer> P = new ArrayList<>(paths.get(0));
+            // cursor on Lower Envelop
+            int j = LE.size()-1;
+            // cursor on current path
+            int k = P.size()-1;
+            // iterating through LE and current path to add edges into Gup
+            while (j == 0 || k == 0)
+            {
+                iGNode upper = graph.getNode(LE.get(j));
+                iGNode lower = graph.getNode(P.get(k));
+                // check all the cases for upper and lower nodes x coordinates intersecting
+                // add edges for upward visibility graph
+                // construct next LE
+                if ((int)(upper.pos().getX()) == (int)(lower.pos().getX()))
+                {
+                    Gup.get(P.get(k)).add(LE.get(j));
+                    j--;
+                    k--;
+                }
+                else if ((int)(upper.pos().getX()) > (int)(lower.pos().getX()))
+                {
+                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()+lower.width()))
+                    {
+                        leCandidates.add(0, upper.id());
+                    }
+                    if ((int)(upper.pos().getX()) <= (int)(lower.pos().getX()+lower.width()))
+                    {
+                        if (!Gup.containsKey(P.get(k))) Gup.put(P.get(k), new ArrayList<>());
+                        Gup.get(P.get(k)).add(LE.get(j));
+                    }
+                    j--;
+                }
+                else if ((int)(upper.pos().getX()) < (int)(lower.pos().getX()))
+                {
+                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()))
+                    {
+                        if (!Gup.containsKey(P.get(k))) Gup.put(P.get(k), new ArrayList<>());
+                        Gup.get(P.get(k)).add(LE.get(j));
+                    }
+                    k--;
+                }
+                leCandidates.add(0, P.get(k));
+            }
+            LE = new ArrayList<>(leCandidates);
+        }
+        return Gup;
+    }
+
 }

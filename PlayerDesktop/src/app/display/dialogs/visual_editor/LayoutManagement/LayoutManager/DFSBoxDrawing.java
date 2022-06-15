@@ -1,11 +1,13 @@
 package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 
 
+import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -121,6 +123,27 @@ public class DFSBoxDrawing implements LayoutMethod
         }
     }
 
+    private void compactBox()
+    {
+        // 1. Find all paths
+        ArrayList<List<Integer>> paths = new ArrayList<>();
+        GraphRoutines.findAllPaths(paths, graph, root, new ArrayList<>());
+        // 2. Compute upward visibility graph
+        HashMap<Integer, List<Integer>> Gup = GraphRoutines.findUpwardVisibilityGraph(paths, graph);
+        // 3. Move nodes upward according to G_up and specified metrics
+        moveNodeUpward(Gup, graph);
+    }
+
+    private void moveNodeUpward(HashMap<Integer, List<Integer>> gup, iGraph graph)
+    {
+        // 1. For each path i
+        //  if i==0: skip
+        //  else:
+        // 2. Iterate through each vertex on path
+        // 3. For all vertices that have outward edges in Gup: find minimum distant to upper dist
+        // 4. Uniformly move upward all boxes on path i by (dist - MIN_GAP)
+    }
+
     public void updateAllWeights(Double offset, Double distance, Double spread)
     {
         DOS_MAP.forEach((id, w) -> {
@@ -152,6 +175,7 @@ public class DFSBoxDrawing implements LayoutMethod
         Vector2D oPos = graph.getNode(root).pos();
         initWeights();
         initPlacement(root,0);
+        compactBox();
         translateByRoot(graph, root, oPos);
     }
 

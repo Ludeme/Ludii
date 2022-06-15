@@ -25,16 +25,23 @@ public final class NodePlacementRoutines
 
     /**
      * Translate node placement by oPos vector with respect to root
-     * @param r
-     * @param oPos
-     * @param graph
+     * @param r root node id
+     * @param oPos original root position
+     * @param graph graph in operation
      */
     public static void translateByRoot(iGraph graph, int r, Vector2D oPos)
     {
         Vector2D t = graph.getNode(r).pos().sub(oPos);
-        graph.getNodeList().forEach((i,v) -> {
-            v.setPos(v.pos().sub(t));
-        });
+        // iterate through descendants of a root node
+        List<Integer> Q = new ArrayList<>();
+        Q.add(r);
+        while (!Q.isEmpty())
+        {
+            int nid = Q.remove(0);
+            iGNode n = graph.getNode(nid);
+            n.setPos(n.pos().sub(t));
+            Q.addAll(n.children());
+        }
     }
 
     /**
@@ -127,21 +134,27 @@ public final class NodePlacementRoutines
 
     public static void alignNodes(List<iGNode> nodes, int axis)
     {
+        if (nodes.isEmpty()) return;
+        // find min posX and posY in a list
         double posX = nodes.get(0).pos().getX();
         double posY = nodes.get(0).pos().getY();
-        if (nodes.isEmpty()) return;
+        for (iGNode n:
+             nodes) {
+            if (n.pos().getX() < posX) posX = n.pos().getX();
+            if (n.pos().getY() < posY) posY = n.pos().getY();
+        }
         if (axis == X_AXIS)
         {
             for (int i = 1; i < nodes.size(); i++)
             {
-                nodes.get(i).setPos(new Vector2D(posX+nodes.get(i-1).height()+NODE_GAP*i, posY));
+                nodes.get(i).setPos(new Vector2D(nodes.get(i-1).pos().getX()+nodes.get(i-1).width()+NODE_GAP*i, posY));
             }
         }
         else if (axis == Y_AXIS)
         {
             for (int i = 1; i < nodes.size(); i++)
             {
-                nodes.get(i).setPos(new Vector2D(posX, posY+nodes.get(i-1).height()+NODE_GAP*i));
+                nodes.get(i).setPos(new Vector2D(posX, nodes.get(i-1).pos().getY()+nodes.get(i-1).height()+NODE_GAP*i));
             }
         }
     }
