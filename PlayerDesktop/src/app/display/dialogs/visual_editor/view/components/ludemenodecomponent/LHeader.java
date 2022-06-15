@@ -2,6 +2,8 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.DocumentationReader;
+import app.display.dialogs.visual_editor.view.HelpInformation;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import main.grammar.Clause;
 import main.grammar.Symbol;
@@ -98,6 +100,12 @@ public class LHeader extends JComponent
         revalidate();
         repaint();
         setVisible(true);
+
+
+        // get help
+        HelpInformation help = DocumentationReader.instance().documentation().get(LN.symbol());
+        setToolTipText(help.toHTML());
+
     }
 
     /**

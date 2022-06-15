@@ -210,6 +210,7 @@ public class NodeArgument
 
     public boolean terminalDropdown()
     {
+        if(arg().symbol().rule() == null) return false;
         for(Clause clause : arg().symbol().rule().rhs())
         {
             if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
