@@ -7,6 +7,9 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -64,6 +67,10 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     private static final boolean DEBUG = true;
 
+    // Recommendations
+    private NGram model;
+    private int N;
+
     public EditorPanel(int width, int height)
     {
         setLayout(null);
@@ -90,6 +97,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(edges);
+
+        N = 7;
+        model = ModelLibrary.getInstance().getModel(N);
     }
 
     public EditorPanel()
@@ -193,7 +203,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
         String gameDescription = ""; // TODO: Insert [#] as wild card for completion
-        connectLudemeWindow.updateList(possibleSymbols);
+
+        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,possibleSymbols);
+        connectLudemeWindow.updateList(typeMatched);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();

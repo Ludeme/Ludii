@@ -1,4 +1,4 @@
-package app.display.dialogs.visual_editor.recs;
+package app.display.dialogs.visual_editor.recs.codecompletion.domain.model;
 
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 import main.grammar.Description;

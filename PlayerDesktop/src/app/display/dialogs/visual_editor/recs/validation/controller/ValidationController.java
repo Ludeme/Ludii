@@ -1,13 +1,12 @@
 package app.display.dialogs.visual_editor.recs.validation.controller;
 
-import app.display.dialogs.visual_editor.recs.Converter;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
 import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.Controller;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.LudiiGameDatabase;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.ModelCreator;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
+import main.grammar.Symbol;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class ValidationController {
                 int id = (int) (Math.random() * (validationIDs.size()-1)); // select one random id
                 String gameDescription = db.getDescription(id);
 
-                gameDescription = Converter.toConstructor(gameDescription);//Preprocessing.preprocess(gameDescription); // preprocess
+                gameDescription = Preprocessing.preprocess(gameDescription); // preprocess
 
                 String[] split = gameDescription.split(" ");
 
@@ -83,7 +82,7 @@ public class ValidationController {
                 //1. take the start time in nano seconds
                 long startTime = System.nanoTime();
                 //2. get the picklist, length 7 suffices
-                List<Ludeme> picklist = controller.getPicklist(context,7);
+                List<Instance> picklist = controller.getPicklist(context,7);
                 //3. take the stop time in nano seconds
                 long endTime = System.nanoTime();
                 long duration = endTime - startTime;
@@ -96,8 +95,8 @@ public class ValidationController {
                 boolean top7 = false;
 
                 for(int k = 0; k < 7 && k < picklist.size(); k++) {
-                    Ludeme ludeme = picklist.get(k);
-                    if (StringUtils.equals(ludeme.getKeyword(), cutOut)) {
+                    Instance instance = picklist.get(k);
+                    if (StringUtils.equals(instance.getPrediction(), cutOut)) {
                         // set the variables
                         if (k <= 6) {
                             top7 = true;
