@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
+import app.display.dialogs.visual_editor.Main;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
@@ -97,8 +98,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
         lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(edges);
 
-        N = 7;
-        //controller = new NGramController(N);
+        this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
+        this.N = controller.getN();
     }
 
     public EditorPanel()

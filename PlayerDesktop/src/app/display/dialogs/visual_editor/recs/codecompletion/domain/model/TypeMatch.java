@@ -44,7 +44,7 @@ public class TypeMatch implements iTypeMatch {
 
         System.out.println(" # Possible Symbols from grammar");
         for(Symbol symbol : possibleSymbols) {
-            System.out.println("Symbol: " + symbol.name() + " token: " + symbol.token());
+            System.out.println("Symbol: " + symbol.name() + " token: " + symbol.token() + " type: " + symbol.ludemeType());
         }
 
         /*// 2. create a new picklist to output

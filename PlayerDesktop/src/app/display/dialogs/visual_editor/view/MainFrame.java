@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view;
 
 
+import app.display.dialogs.visual_editor.Main;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
@@ -42,6 +43,7 @@ public class MainFrame extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 DocHandler.getInstance().close();
+                Main.controller().close();
                 super.windowClosing(e);
             }
         });
