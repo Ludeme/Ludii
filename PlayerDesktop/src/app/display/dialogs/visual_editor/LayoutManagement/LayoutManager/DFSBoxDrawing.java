@@ -38,6 +38,8 @@ public class DFSBoxDrawing implements LayoutMethod
     private final int PADDING_X = 10;
     private final int PADDING_Y = 10;
 
+    public static final int MIN_NODE_GAP = 50;
+
     private List<LudemeNodeComponent> selectedNodes;
 
     /**
@@ -155,6 +157,7 @@ public class DFSBoxDrawing implements LayoutMethod
                 // check all the cases for upper and lower nodes x coordinates intersecting
                 // add edges for upward visibility graph
                 // construct next LE
+                // CASE#1: left corner coordinates match
                 if ((int)(upper.pos().getX()) == (int)(lower.pos().getX()))
                 {
                     addMinDistToGup(Gup, P, k, nodeDist);
@@ -163,10 +166,12 @@ public class DFSBoxDrawing implements LayoutMethod
                 }
                 else if ((int)(upper.pos().getX()) > (int)(lower.pos().getX()))
                 {
+                    // check if right corner of upper exceeds right corner of lower to add to LE candidates
                     if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()+lower.width()))
                     {
                         leCandidates.add(0, upper.id());
                     }
+                    // CASE#2: left corner of upper is within lower
                     if ((int)(upper.pos().getX()) <= (int)(lower.pos().getX()+lower.width()))
                     {
                         addMinDistToGup(Gup, P, k, nodeDist);
@@ -175,6 +180,7 @@ public class DFSBoxDrawing implements LayoutMethod
                 }
                 else if ((int)(upper.pos().getX()) < (int)(lower.pos().getX()))
                 {
+                    // CASE#2: right corner of upper is within lower
                     if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()))
                     {
                         addMinDistToGup(Gup, P, k, nodeDist);
@@ -239,7 +245,7 @@ public class DFSBoxDrawing implements LayoutMethod
         freeY = 0;
         Vector2D oPos = graph.getNode(root).pos();
         initPlacement(root,0);
-        // compactBox();
+        compactBox();
         translateByRoot(graph, root, oPos);
     }
 
