@@ -41,10 +41,12 @@ public class NodePopupMenu extends JPopupMenu {
             {
                 for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
                 {
+                    if(!graphPanel.graph().isDefine() &&  graphPanel.graph().getRoot() == lnc.node()) continue; // cant remove root node
                     graphPanel.removeNode(lnc.node());
                 }
             }
             else {
+                if(!graphPanel.graph().isDefine() &&  graphPanel.graph().getRoot() == nodeComponent.node()) return; // cant remove root node
                 graphPanel.removeNode(nodeComponent.node());
             }
         });

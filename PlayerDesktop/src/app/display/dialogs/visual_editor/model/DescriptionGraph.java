@@ -21,12 +21,17 @@ public class DescriptionGraph implements iGraph {
     List<LudemeNode> allLudemeNodes = new ArrayList<>();
     HashMap<Integer, iGNode> nodeMap = new HashMap<>();
     List<Edge> edgeList = new ArrayList<>();
+    private boolean isDefine = false;
 
     LudemeNode ROOT;
 
+
     public DescriptionGraph()
     {
-
+    }
+    public DescriptionGraph(boolean isDefine)
+    {
+        this.isDefine = isDefine;
     }
 
     public DescriptionGraph(LudemeNode root){
@@ -191,6 +196,11 @@ public class DescriptionGraph implements iGraph {
         }
 
         return graphNew;
+    }
+
+    public boolean isDefine()
+    {
+        return isDefine;
     }
 
 }
