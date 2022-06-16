@@ -1,10 +1,27 @@
 package app.display.dialogs.visual_editor.recs.utils;
 
 import main.grammar.Clause;
+import main.grammar.Symbol;
 
-public class HumanReadableClause {
+public class HumanReadable {
     public static String makeReadable(Clause clause) {
-        String clauseString = clause.toString();
+        return makeReadable(clause.toString());
+    }
+
+    public static String makeReadable(Symbol symbol) {
+        String symbolString = symbol.toString(true);
+        // remove <>
+        symbolString = symbolString.replaceAll("<","");
+        symbolString = symbolString.replaceAll(">","");
+        //remove package names as in e.g. rules.rules -> rules
+        if(symbolString.contains(".")) {
+            int lastDotPos = symbolString.lastIndexOf(".");
+            symbolString = symbolString.substring(lastDotPos + 1);
+        }
+        return symbolString;
+    }
+
+    public static String makeReadable(String clauseString) {
         // remove <>
         clauseString = clauseString.replaceAll("<","");
         clauseString = clauseString.replaceAll(">","");
