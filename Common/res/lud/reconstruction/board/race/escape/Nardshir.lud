@@ -21,7 +21,7 @@
             ]
             use:Vertex
         )
-        (dice d:6 num:2)
+        (dice d:[2..6] num:2)
         (piece "Disc" Each)
         (hand Each)
     })
