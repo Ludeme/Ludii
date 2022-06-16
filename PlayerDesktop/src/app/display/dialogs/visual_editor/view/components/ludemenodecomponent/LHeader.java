@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.recs.utils.HumanReadableClause;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.DocumentationReader;
 import app.display.dialogs.visual_editor.view.HelpInformation;
@@ -74,9 +75,9 @@ public class LHeader extends JComponent
         if(LN.clauses() != null) {
             for (int i = 0; i < LN.clauses().size(); i++) {
                 Clause clause = LN.clauses().get(i);
-                items[i] = new JMenuItem(clause.toString());
+                items[i] = new JMenuItem(HumanReadableClause.makeReadable(clause));
                 items[i].addActionListener(e1 -> {
-                    System.out.println("Selected clause: " + clause.toString());
+                    System.out.println("Selected clause: " + HumanReadableClause.makeReadable(clause));
                     ludemeNodeComponent.changeCurrentClause(clause);
                     repaint();
                 });
