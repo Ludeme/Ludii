@@ -73,12 +73,8 @@ public class AddLudemeWindow extends JPanel {
 
         searchField = new JTextField();
 
-        // remove duplicates TODO: Not sort after code completion
+        // remove duplicates
         symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
-
-        //TODO: List of ludemes is sorted here RECS
-        // TODO: get list of ludemes and connections from editorpanel
-        //ludemeList.sort(Comparator.comparing(Object::toString));
 
         listModel = new DefaultListModel<Symbol>();
         for (Symbol l : symbolList) {
