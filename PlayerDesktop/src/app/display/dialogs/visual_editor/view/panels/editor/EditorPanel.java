@@ -283,9 +283,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
      */
     public void addNodeToSelections(LudemeNodeComponent lnc)
     {
-        SELECTED = true;
-        lnc.setSelected(true);
-        selectedLnc.add(lnc);
+        if (!selectedLnc.contains(lnc))
+        {
+            SELECTED = true;
+            lnc.setSelected(true);
+            selectedLnc.add(lnc);
+        }
     }
 
     public boolean isSELECTION_MODE()
