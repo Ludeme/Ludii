@@ -545,12 +545,14 @@ public class LudemeNode implements iLudemeNode, iGNode
 
     public String codeCompletionGameDescription(LudemeNode stopAt, int untilIndex, String marker)
     {
+        if(stopAt == this) return stringRepresentationUntilInputIndex(untilIndex, marker);
         StringBuilder sb = new StringBuilder();
         // append token of this node's symbol
         sb.append("(").append(tokenTitle());
         // append all inputs
-        for(Object input : providedInputs())
+        for(int i = 0; i < providedInputs().length; i++)
         {
+            Object input = providedInputs()[i];
             if(input == null) continue; // if no input provided, skip it
             sb.append(" ");
 
@@ -664,6 +666,7 @@ public class LudemeNode implements iLudemeNode, iGNode
             }
             System.out.println("----" + Arrays.toString(copy.providedInputs()));
         }
+        System.out.println("[COPY] copied " + copy.title());
         return copy;
     }
 
