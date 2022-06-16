@@ -35,7 +35,7 @@ public class LayoutSettingsPanel extends JPanel
         lh = graphPanel.getLayoutHandler();
 
         dSl = new JSlider(0, 100);
-        oSl = new JSlider(-100, 100);
+        oSl = new JSlider(0, 100);
         sSl = new JSlider(0, 100);
 
         JLabel distanceText = new JLabel("Distance: " + getSliderValue(dSl));
