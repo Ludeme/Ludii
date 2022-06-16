@@ -25,7 +25,7 @@ public class NodePopupMenu extends JPopupMenu {
         duplicate.addActionListener(e -> {
             int x_shift = 0;
             int y_shift = nodeComponent.getHeight() + (int)(nodeComponent.getHeight() * 0.1);
-            LudemeNode copy = nodeComponent.node().copy();
+            LudemeNode copy = nodeComponent.node().copy(x_shift, y_shift);
             graphPanel.addNode(copy);
             graphPanel.repaint();
         });
