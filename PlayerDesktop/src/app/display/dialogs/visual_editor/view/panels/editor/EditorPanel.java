@@ -98,7 +98,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         ch = new ConnectionHandler(edges);
 
         N = 7;
-        controller = new NGramController(N);
+        //controller = new NGramController(N);
     }
 
     public EditorPanel()
