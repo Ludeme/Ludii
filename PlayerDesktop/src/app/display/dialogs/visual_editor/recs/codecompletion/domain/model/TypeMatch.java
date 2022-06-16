@@ -32,10 +32,22 @@ public class TypeMatch implements iTypeMatch {
      */
     @Override
     public List<Symbol> typematch(String gameDescription, NGramController controller, List<Symbol> possibleSymbols) {
+        System.out.println("--------------------------------------");
+        System.out.println(" # Game Description");
+        System.out.println(gameDescription);
         // 1. get the picklist from the NGram model
         List<Instance> instancePicklist = controller.getPicklist(gameDescription);
+        System.out.println(" # Ordered Picklist by N-Gram");
+        for(Instance instance : instancePicklist) {
+            System.out.println("Completion: " + instance.getPrediction());
+        }
 
-        // 2. create a new picklist to output
+        System.out.println(" # Possible Symbols from grammar");
+        for(Symbol symbol : possibleSymbols) {
+            System.out.println("Symbol: " + symbol.name());
+        }
+
+        /*// 2. create a new picklist to output
         List<Symbol> picklist = new ArrayList<>();
         for(int i = 0; i < instancePicklist.size(); i++) {
             Instance cur = instancePicklist.get(i);
@@ -44,7 +56,7 @@ public class TypeMatch implements iTypeMatch {
         }
 
         // then in the end return picklist
-
+        */
         return possibleSymbols;
     }
 }

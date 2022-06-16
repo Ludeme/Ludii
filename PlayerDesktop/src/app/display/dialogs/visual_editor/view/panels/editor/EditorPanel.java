@@ -8,6 +8,7 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -195,7 +196,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
-        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().codeCompletionGameDescription((LudemeNode) graph().getRoot(), ch.getSelectedConnectionComponent().getInputField().getInputIndex(), "[#]"); // TODO: Insert [#] as wild card for completion
+        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().codeCompletionGameDescription((LudemeNode) graph().getRoot(), ch.getSelectedConnectionComponent().getInputField().getInputIndex(), COMPLETION_WILDCARD);
         System.out.println(gameDescription);
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         connectLudemeWindow.updateList(possibleSymbols);

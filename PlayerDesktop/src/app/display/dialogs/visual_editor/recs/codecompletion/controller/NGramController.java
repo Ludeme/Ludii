@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller.iController;
 import app.display.dialogs.visual_editor.recs.utils.*;
+import main.grammar.Symbol;
 
 import java.io.File;
 import java.util.List;
@@ -67,6 +68,12 @@ public class NGramController implements iController {
     @Override
     public List<Instance> getPicklist(String contextString) {
         // 0. if there is the wildcard COMPLETION_WILDCARD in there and cut it and everything after it off
+        if(contextString.contains(COMPLETION_WILDCARD)) {
+            System.out.println(contextString);
+            int pos = contextString.lastIndexOf(COMPLETION_WILDCARD);
+            contextString = contextString.substring(0,pos);
+            System.out.println(contextString);
+        }
         // 1. acquire context and preprocess it
         String cleanContextString = Preprocessing.preprocess(contextString);
         Context context = NGramUtils.createContext(cleanContextString);
