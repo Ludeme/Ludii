@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
+import static app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController.COMPLETION_WILDCARD;
 
 public class EditorPanel extends JPanel implements IGraphPanel
 {
@@ -99,7 +100,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         ch = new ConnectionHandler(edges);
 
         N = 7;
-        //controller = new NGramController(N);
+        controller = new NGramController(N);
     }
 
     public EditorPanel()
@@ -197,9 +198,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
-        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().stringRepresentationUntilInputIndex(ch.getSelectedConnectionComponent().getInputField().getInputIndex(), "[#]"); // TODO: Insert [#] as wild card for completion
+        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().stringRepresentationUntilInputIndex(ch.getSelectedConnectionComponent().getInputField().getInputIndex(), COMPLETION_WILDCARD);
 
-        //List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
+        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);

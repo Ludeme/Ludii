@@ -16,6 +16,8 @@ public class NGramController implements iController {
 
     private static final int MAX_PICKLIST_LENGTH = 50;
 
+    public static final String COMPLETION_WILDCARD = "[#]";
+
     private int N;
     private ModelLibrary lib;
     private NGram model;
@@ -64,8 +66,8 @@ public class NGramController implements iController {
      */
     @Override
     public List<Instance> getPicklist(String contextString) {
+        // 0. if there is the wildcard COMPLETION_WILDCARD in there and cut it and everything after it off
         // 1. acquire context and preprocess it
-        // TODO: look if there is the wildcard [#] in there and cut it and everything after it off
         String cleanContextString = Preprocessing.preprocess(contextString);
         Context context = NGramUtils.createContext(cleanContextString);
         // 2. context sensitivity
