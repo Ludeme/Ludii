@@ -8,6 +8,17 @@
                 (shift 0 6 (rectangle 1 6) )
                 (shift 7 6 (rectangle 1 6) )
             })
+            [
+             {
+                 (track "Track1" {24 11..0 12..23} P1 directed:True)
+                 (track "Track2" {25 23..12 0..11} P2 directed:True)
+                 } 
+             {
+                 (track "Track1" {24 0..23} P1 directed:True)
+                 (track "Track2" {25 23..0} P2 directed:True)
+                 } 
+            | 
+            ]
             use:Vertex
         )
         (dice d:6 num:2)
@@ -16,8 +27,8 @@
     })
     (rules
         (start (place "Disc" "Hand" count:15))
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#]) // I can't describe this alone: "Single pieces are removed from the board and must reenter when an opposing piece lands on the same space."
+        (end [#])
     )
 )
 
