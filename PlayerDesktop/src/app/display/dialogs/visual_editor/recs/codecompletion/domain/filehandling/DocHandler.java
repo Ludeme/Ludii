@@ -11,7 +11,8 @@ import java.util.*;
  * Class is a singleton
  */
 public class DocHandler {
-    public static final String DOC_LOCATION = "PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/documents.txt";
+    // TODO: refactor paths in similar way
+    public static final String DOC_LOCATION = Objects.requireNonNull(DocHandler.class.getResource("/recs/documents.txt")).getPath();
     public static final String GRAMMAR = "grammar_location";
     public static final String GAMES = "games_location";
     public static final String MODELS = "models_location";

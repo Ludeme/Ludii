@@ -32,7 +32,7 @@ public class DocumentationReader
 
     DocumentationReader()
     {
-        helpFile = new File(System.getProperty("user.dir")+"\\Common\\res\\help\\EditorHelp.txt"); // TODO: not absolute path
+        helpFile = new File(System.getProperty("user.dir")+"\\Ludii\\Common\\res\\help\\EditorHelp.txt"); // TODO: not absolute path
         for(Symbol symbol : grammar.symbols())
         {
             try {
