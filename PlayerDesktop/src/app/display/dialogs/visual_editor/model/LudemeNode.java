@@ -506,6 +506,46 @@ public class LudemeNode implements iLudemeNode, iGNode
         return sb.toString();
     }
 
+
+    public String stringRepresentationUntilInputIndex(int index, String marker)
+    {
+        StringBuilder sb = new StringBuilder();
+        // append token of this node's symbol
+        sb.append("(").append(tokenTitle());
+        // append all inputs
+        for(int i = 0; i < index; i++)
+        {
+        Object input = providedInputs[i];
+            if(input == null) continue; // if no input provided, skip it
+            sb.append(" ");
+
+            if(input instanceof LudemeNode)
+            {
+                sb.append(((LudemeNode) input).stringRepresentation());
+            }
+            else if(input instanceof LudemeNode[])
+            {
+                sb.append("{ ");
+                for(LudemeNode node : (LudemeNode[]) input) {
+                    if(node == null) continue;
+                    sb.append(node.stringRepresentation()).append(" ");
+                }
+                sb.append("}");
+            }
+            else if(input instanceof String)
+            {
+                sb.append("\"").append(input).append("\"");
+            }
+            else
+            {
+                sb.append(input);
+            }
+        }
+        sb.append(" " + marker);
+        sb.append(")");
+        return sb.toString();
+    }
+
     /**
      * The title consists of the symbol and any Constants followed by the constructor
      * @return The title of this node
