@@ -12,7 +12,7 @@ public class Main {
     private static NGramController controller;
 
     public static void main(String[] args) {
-        controller = new NGramController(7);
+        //controller = new NGramController(7); TODO: [FILIP] CHANGED
         editPanel = new EditorPanel(5000,5000);
         MainFrame f = new MainFrame(editPanel);
         //MainFrame f2 = new MainFrame(new EditorPanel(5000,5000));

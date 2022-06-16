@@ -12,7 +12,8 @@ import java.util.*;
  */
 public class DocHandler {
     // TODO: refactor paths in similar way
-    public static final String DOC_LOCATION = Objects.requireNonNull(DocHandler.class.getResource("/recs/documents.txt")).getPath();
+    public static final String DOC_LOCATION = System.getProperty("user.dir")+"\\PlayerDesktop\\src\\app\\display\\dialogs\\visual_editor\\resources\\recs\\documents.txt"; // TODO: not absolute path
+            //Objects.requireNonNull(DocHandler.class.getResource("resources/recs/documents.txt")).getPath(); TODO: [FILIP] CHANGED
     public static final String GRAMMAR = "grammar_location";
     public static final String GAMES = "games_location";
     public static final String MODELS = "models_location";
@@ -35,6 +36,7 @@ public class DocHandler {
     private String gamesNamesLocation;
 
     public static DocHandler getInstance() {
+
         // create object if it's not already created
         if(docHandler == null) {
             docHandler = new DocHandler();

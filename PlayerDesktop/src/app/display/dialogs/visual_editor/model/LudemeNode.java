@@ -627,10 +627,9 @@ public class LudemeNode implements iLudemeNode, iGNode
 
     /**
      * Copies a node
-     * @param includeInputs whether the inputs of the node should be copied too
      * @return a copy of the node
      */
-    public LudemeNode copy(boolean includeInputs)
+    public LudemeNode copy()
     {
         LudemeNode copy = new LudemeNode(symbol(), x, y);
         copy.setVisible(visible());
@@ -667,6 +666,24 @@ public class LudemeNode implements iLudemeNode, iGNode
             System.out.println("----" + Arrays.toString(copy.providedInputs()));
         }
         System.out.println("[COPY] copied " + copy.title()); */
+        return copy;
+    }
+
+    /**
+     * Copies a node
+     * @param x_shift The x-shift of the new copied node
+     * @param y_shift The y-shift of the new copied node
+     * @return a copy of the node
+     */
+    public LudemeNode copy(int x_shift, int y_shift)
+    {
+        LudemeNode copy = new LudemeNode(symbol(), x+x_shift, y+y_shift);
+        copy.setVisible(visible());
+        copy.setCollapsed(collapsed());
+        copy.setDynamic(dynamic());
+        copy.setSelectedClause(selectedClause());
+        copy.setHeight(height());
+
         return copy;
     }
 

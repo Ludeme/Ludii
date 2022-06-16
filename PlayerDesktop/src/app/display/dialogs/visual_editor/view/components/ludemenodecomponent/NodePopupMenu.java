@@ -23,7 +23,9 @@ public class NodePopupMenu extends JPopupMenu {
         add(duplicate);
 
         duplicate.addActionListener(e -> {
-            LudemeNode copy = nodeComponent.node().copy(true);
+            int x_shift = 0;
+            int y_shift = nodeComponent.getHeight() + (int)(nodeComponent.getHeight() * 0.1);
+            LudemeNode copy = nodeComponent.node().copy();
             graphPanel.addNode(copy);
             graphPanel.repaint();
         });
@@ -35,7 +37,16 @@ public class NodePopupMenu extends JPopupMenu {
         });
 
         delete.addActionListener(e -> {
-            graphPanel.removeNode(nodeComponent.node());
+            if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
+            {
+                for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
+                {
+                    graphPanel.removeNode(lnc.node());
+                }
+            }
+            else {
+                graphPanel.removeNode(nodeComponent.node());
+            }
         });
 
         dynamic.addActionListener(e -> {

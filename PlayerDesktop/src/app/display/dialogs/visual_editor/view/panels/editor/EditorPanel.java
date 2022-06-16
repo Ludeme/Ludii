@@ -98,8 +98,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
         lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(edges);
 
-        this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
-        this.N = controller.getN();
+        //TODO: [FILIP] CHANGED
+        //this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
+        //this.N = controller.getN();
     }
 
     public EditorPanel()
@@ -199,7 +200,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
         String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().getLudemeNodeComponent().node(),  ch.getSelectedConnectionComponent().getInputField().getInputIndex(), COMPLETION_WILDCARD);
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
-        connectLudemeWindow.updateList(typeMatched);
+        connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();
