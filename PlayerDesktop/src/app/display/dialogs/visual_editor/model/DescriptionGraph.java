@@ -151,6 +151,7 @@ public class DescriptionGraph implements iGraph {
         return ROOT.stringRepresentation();
     }
 
+
     public DescriptionGraph clone(){
 
         ArrayList<Integer> indeces = new ArrayList<>();

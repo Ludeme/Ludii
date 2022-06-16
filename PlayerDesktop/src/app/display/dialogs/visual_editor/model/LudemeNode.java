@@ -8,10 +8,7 @@ import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Node representation of a ludeme in the current description
@@ -546,6 +543,55 @@ public class LudemeNode implements iLudemeNode, iGNode
         return sb.toString();
     }
 
+    public String codeCompletionGameDescription(LudemeNode root, int untilIndex, String marker)
+    {
+        StringBuilder sb = new StringBuilder();
+        // append token of this node's symbol
+        sb.append("(").append(root.tokenTitle());
+        // append all inputs
+        for(Object input : root.providedInputs())
+        {
+            if(input == null) continue; // if no input provided, skip it
+            sb.append(" ");
+
+            if(input instanceof LudemeNode)
+            {
+                if(input == this)
+                {
+                    sb.append(((LudemeNode) input).stringRepresentationUntilInputIndex(untilIndex, marker));
+                }
+                else {
+                    sb.append(((LudemeNode) input).stringRepresentation());
+                }
+            }
+            else if(input instanceof LudemeNode[])
+            {
+                sb.append("{ ");
+                for(LudemeNode node : (LudemeNode[]) input) {
+                    if(node == null) continue;
+                    if(input == this)
+                    {
+                        sb.append(((LudemeNode) input).stringRepresentationUntilInputIndex(untilIndex, marker)).append(" ");
+                    }
+                    else {
+                        sb.append(((LudemeNode) input).stringRepresentation()).append(" ");
+                    }
+                }
+                sb.append("}");
+            }
+            else if(input instanceof String)
+            {
+                sb.append("\"").append(input).append("\"");
+            }
+            else
+            {
+                sb.append(input);
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
     /**
      * The title consists of the symbol and any Constants followed by the constructor
      * @return The title of this node
@@ -575,6 +621,50 @@ public class LudemeNode implements iLudemeNode, iGNode
             index++;
         }
         return title.toString();
+    }
+
+    /**
+     * Copies a node
+     * @param includeInputs whether the inputs of the node should be copied too
+     * @return a copy of the node
+     */
+    public LudemeNode copy(boolean includeInputs)
+    {
+        LudemeNode copy = new LudemeNode(symbol(), x, y);
+        copy.setVisible(visible());
+        copy.setCollapsed(collapsed());
+        copy.setDynamic(dynamic());
+        copy.setSelectedClause(selectedClause());
+        copy.setHeight(height());
+
+        if(includeInputs)
+        {
+            for(int index = 0; index < providedInputs().length; index++)
+            {
+                Object input = providedInputs()[index];
+                System.out.println("adding input " + input);
+                if(input instanceof LudemeNode)
+                {
+                    LudemeNode inputNode = ((LudemeNode) input).copy(includeInputs);
+                    copy.setProvidedInput(index, inputNode);
+                }
+                else if(input instanceof LudemeNode[])
+                {
+                    LudemeNode[] inputNodeCollection = new LudemeNode[((LudemeNode[]) input).length];
+                    for(int j = 0; j < ((LudemeNode[]) input).length; j++)
+                    {
+                        inputNodeCollection[j] = (((LudemeNode[]) input)[j]).copy(includeInputs);
+                    }
+                    copy.setProvidedInput(index, inputNodeCollection);
+                }
+                else
+                {
+                    copy.setProvidedInput(index, input);
+                }
+            }
+            System.out.println("----" + Arrays.toString(copy.providedInputs()));
+        }
+        return copy;
     }
 
     @Override

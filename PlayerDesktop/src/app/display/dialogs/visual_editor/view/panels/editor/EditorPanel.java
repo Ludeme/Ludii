@@ -8,8 +8,6 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -25,7 +23,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
@@ -197,8 +194,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
-        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().stringRepresentationUntilInputIndex(ch.getSelectedConnectionComponent().getInputField().getInputIndex(), "[#]"); // TODO: Insert [#] as wild card for completion
-
+        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().codeCompletionGameDescription((LudemeNode) graph().getRoot(), ch.getSelectedConnectionComponent().getInputField().getInputIndex(), "[#]"); // TODO: Insert [#] as wild card for completion
+        System.out.println(gameDescription);
         //List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);
@@ -215,7 +212,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return node;
     }
 
-    private void addLudemeNodeComponent(LudemeNode node, boolean connect)
+    public void addLudemeNodeComponent(LudemeNode node, boolean connect)
     {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         addLudemeWindow.setVisible(false);
