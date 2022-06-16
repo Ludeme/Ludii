@@ -232,7 +232,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
 
-    public ConnectionHandler ch()
+    public ConnectionHandler connectionHandler()
     {
         return ch;
     }
@@ -296,7 +296,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return SELECTION_MODE;
     }
 
-    public List<LudemeNodeComponent> getSelectedLnc()
+    public List<LudemeNodeComponent> selectedLnc()
     {
         return selectedLnc;
     }

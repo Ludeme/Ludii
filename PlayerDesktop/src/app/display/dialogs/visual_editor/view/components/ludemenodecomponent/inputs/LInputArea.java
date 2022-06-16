@@ -692,7 +692,7 @@ public class LInputArea extends JPanel {
             }
 
             if(DEBUG) System.out.println("[LIA] adding connection!");
-            LNC.graphPanel().ch().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).ingoingConnectionComponent());
+            LNC.graphPanel().connectionHandler().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).ingoingConnectionComponent());
 
         }
     }
@@ -701,8 +701,8 @@ public class LInputArea extends JPanel {
         if(DEBUG) System.out.println("[LIA] updateConstructor()");
         System.out.println("Provided input fields 586: " + providedInputFields);
         // TODO: Remove all edges of this ludeme node AND MODEL
-        LNC.graphPanel().ch().cancelNewConnection();
-        LNC.graphPanel().ch().removeAllConnections(LNC.node());
+        LNC.graphPanel().connectionHandler().cancelNewConnection();
+        LNC.graphPanel().connectionHandler().removeAllConnections(LNC.node());
 
         inputFields = getInputFields(LNC);
         drawInputFields();

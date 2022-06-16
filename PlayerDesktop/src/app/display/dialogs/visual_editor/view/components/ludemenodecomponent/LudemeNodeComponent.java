@@ -7,7 +7,6 @@ import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Clause;
 
@@ -330,7 +329,7 @@ public class LudemeNodeComponent extends JPanel
             // if selection was performed move all others selected nodes with respect to the dragged one
             if (selected)
             {
-                List<LudemeNodeComponent> Q = ((EditorPanel) graphPanel()).getSelectedLnc();
+                List<LudemeNodeComponent> Q = graphPanel().selectedLnc();
                 Q.forEach(lnc -> {
                     if (!lnc.equals(LudemeNodeComponent.this)) lnc.setLocation(lnc.getLocation().x+posDif.x, lnc.getLocation().y+posDif.y);
                     lnc.updatePositions();
@@ -420,7 +419,7 @@ public class LudemeNodeComponent extends JPanel
 
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);
-                graphPanel().ch().cancelNewConnection();
+                graphPanel().connectionHandler().cancelNewConnection();
             }
             else {
                 graphPanel().clickedOnNode(LudemeNodeComponent.this);
