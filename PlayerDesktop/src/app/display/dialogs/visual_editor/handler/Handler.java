@@ -2,7 +2,6 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
@@ -10,9 +9,10 @@ import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSett
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import main.grammar.Clause;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
+import java.awt.*;
 
 public class Handler {
 
@@ -31,6 +31,8 @@ public class Handler {
     public static ArrayList<DescriptionGraph> history = new ArrayList<>();
 
     public static MainPanel mainPanel;
+
+    private static List<LudemeNodeComponent> copyList = new ArrayList<>();
 
     private static final boolean DEBUG = true;
 
@@ -95,7 +97,7 @@ public class Handler {
         if (mainPanel != null)
         {
             Rectangle view = mainPanel.getPanel().getViewport().getViewRect();
-            mainPanel.setView(x-view.width/2, y-view.height/2);
+            //mainPanel.setView(x-view.width/2, y-view.height/2);
         }
     }
 
@@ -127,5 +129,17 @@ public class Handler {
     }
 
     public static void setAutoplacement(boolean var) {editorPanel.setAutoplacement(var);}
+
+    public static List<LudemeNodeComponent> copyList()
+    {
+        return copyList;
+    }
+
+    public static void setCopyList(List<LudemeNodeComponent> copyList)
+    {
+        Handler.copyList = copyList;
+    }
+
+
 
 }

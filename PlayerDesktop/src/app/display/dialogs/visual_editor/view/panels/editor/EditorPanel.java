@@ -467,7 +467,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         private void openPopupMenu(MouseEvent e)
         {
-            JPopupMenu popupMenu = new EditorPopupMenu(EditorPanel.this);
+            JPopupMenu popupMenu = new EditorPopupMenu(EditorPanel.this, e.getX(), e.getY());
             popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
 

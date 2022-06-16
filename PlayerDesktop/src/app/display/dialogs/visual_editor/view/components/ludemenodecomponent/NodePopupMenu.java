@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -19,12 +20,28 @@ public class NodePopupMenu extends JPopupMenu {
         JMenuItem observe = new JMenuItem("Observe");
         JMenuItem collapse = new JMenuItem("Collapse");
         JMenuItem duplicate = new JMenuItem("Duplicate");
+        JMenuItem copyBtn = new JMenuItem("Copy");
 
         add(delete);
         add(dynamic);
         add(observe);
         add(collapse);
         add(duplicate);
+        add(copyBtn);
+
+        copyBtn.addActionListener(e -> {
+            graphPanel.addNodeToSelections(nodeComponent);
+            List<LudemeNodeComponent> toCopy = new ArrayList<>();
+            if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 0)
+            {
+                toCopy = graphPanel.selectedLnc();
+            }
+            else
+            {
+                toCopy.add(nodeComponent);
+            }
+            Handler.setCopyList(toCopy);
+        });
 
         duplicate.addActionListener(e -> {
             if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
