@@ -80,7 +80,7 @@ public class NGramController implements iController {
         // 2. context sensitivity
         List<Instance> match = model.getMatch(context.getKey());
         // 4. Calculate Number of Matching words & Remove duplicate predictions
-        List<Pair<Instance, Integer>> uniquePredictions = NGramUtils.uniteDuplicatePredictions(null, context);
+        List<Pair<Instance, Integer>> uniquePredictions = NGramUtils.uniteDuplicatePredictions(match, context);
         // 5. Sorting after matching words and multiplicity
         List<Instance> picklist = BucketSort.sort(uniquePredictions, MAX_PICKLIST_LENGTH);
         return picklist;

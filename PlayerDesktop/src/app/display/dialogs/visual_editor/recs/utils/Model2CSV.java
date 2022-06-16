@@ -56,6 +56,7 @@ public class Model2CSV {
                     i++;
                 }
                 wordsAsString = wordsAsString.replaceAll(COMMA,COMMA_REPLACEMENT);
+                System.out.println("KEY: " + key);
                 lines.add(key+COMMA+wordsAsString+COMMA+instance.getMultiplicity());
 
                 //makes sure the key is only written on the first occurrence
