@@ -7,16 +7,12 @@ import java.util.regex.Pattern;
 import main.FileHandling;
 
 /**
- * Simple "experiment" to count the number of games we have in every
- * category. The following categories are excluded:
- * - bad
- * - bad_playout
- * - wip
- * - reconstruction
+ * Simple "experiment" to count the number of reconstruction we have in every
+ * category. 
  * 
- * @author Dennis Soemers
+ * @author Eric Piette
  */
-public class CountGames
+public class CountReconstruction
 {
 	/** Num spaces per indentation level for printing */
 	private static final int NUM_INDENT_SPACES = 4;
@@ -28,12 +24,15 @@ public class CountGames
 	public static void main(final String[] args)
 	{		
 		final String[] allGames = FileHandling.listGames();
-		final Category rootCategory = new Category("All Games");
+		final Category rootCategory = new Category("All Games to reconstruct");
 		
 		int widestStringLength = 0;
 		
 		for (String game : allGames)
 		{
+			if(!game.contains("reconstruction"))
+				continue;
+			
 			game = game.replaceAll(Pattern.quote("\\"), "/");
 			final String[] gameParts = game.split(Pattern.quote("/"));
 			
@@ -62,7 +61,6 @@ public class CountGames
 					part.equals("bad") ||
 					part.equals("bad_playout") ||
 							part.equals("wip") || part.equals("wishlist") || part.equals("WishlistDLP")
-							|| part.equals("reconstruction")
 						||
 							part.equals("test") || part.equals("subgame") || part.equals("proprietary")
 				)
