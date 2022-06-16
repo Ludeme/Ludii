@@ -34,7 +34,7 @@ public class TypeMatch implements iTypeMatch {
      */
     @Override
     public List<Symbol> typematch(String gameDescription, NGramController controller, List<Symbol> possibleSymbols) {
-        boolean verbose = false;
+        boolean verbose = true;
 
         if(verbose)System.out.println("--------------------------------------");
         if(verbose)System.out.println(" # Game Description");
@@ -77,6 +77,9 @@ public class TypeMatch implements iTypeMatch {
                 //System.out.println("Prediction: "+ prediction + " Name: " + token + " equals? " + StringUtils.equals(prediction,token));
                 if(StringUtils.equals(prediction,token)) {
                     //add the symbol to the picklist, since this is done in the correct order of the instancelist it preserves the order
+                    for(Symbol symbol : picklist) {
+
+                    }
                     picklist.add(curSymbol);
                     // delete the symbol out of the array
                     possibleSymbolsArray[j] = null;
