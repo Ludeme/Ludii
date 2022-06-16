@@ -29,11 +29,11 @@ public class DFSBoxDrawing implements LayoutMethod
     private final double wX;
     private int root;
 
-    private HashMap<Integer, Double[]> DOS_MAP;
+    private double[] DOS_MAP;
 
-    private final double DEFAULT_DISTANCE = 0.3;
-    private final double DEFAULT_OFFSET = 0.5;
-    private final double DEFAULT_SPREAD = 0.4;
+    private final double DEFAULT_DISTANCE = 0.1;
+    private final double DEFAULT_OFFSET = 0.1;
+    private final double DEFAULT_SPREAD = 0.1;
 
     private final int PADDING_X = 10;
     private final int PADDING_Y = 10;
@@ -58,18 +58,15 @@ public class DFSBoxDrawing implements LayoutMethod
         this.wX = wX;
         this.wY = wY;
 
-        DOS_MAP = new HashMap<>();
+        DOS_MAP = new double[3];
         initWeights();
     }
 
     private void initWeights()
     {
-        graph.getNodeList().forEach((id,n) ->{
-            if (!n.children().isEmpty())
-            {
-                if (!DOS_MAP.containsKey(id)) DOS_MAP.put(id, new Double[]{DEFAULT_DISTANCE, DEFAULT_OFFSET, DEFAULT_SPREAD});
-            }
-        });
+        DOS_MAP[0] = DEFAULT_SPREAD;
+        DOS_MAP[1] = DEFAULT_OFFSET;
+        DOS_MAP[2] = DEFAULT_DISTANCE;
     }
 
     private void initPlacement(int nodeId, int freeX)
@@ -77,7 +74,7 @@ public class DFSBoxDrawing implements LayoutMethod
         if (graph.getNode(nodeId).children() == null || graph.getNode(nodeId).children().size() == 0)
         {
             Vector2D piInit = new Vector2D(freeX, freeY);
-            freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP.get(graph.getNode(nodeId).parent())[2]) + graph.getNode(nodeId).height() + PADDING_X;
+            freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + graph.getNode(nodeId).height() + PADDING_X;
 
             graph.getNode(nodeId).setPos(piInit);
         }
@@ -88,7 +85,7 @@ public class DFSBoxDrawing implements LayoutMethod
             iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
 
             nodeCh.forEach((s) -> {
-                initPlacement(s, (int) (freeX + graph.getNode(s).width() * wY * (DOS_MAP.get(graph.getNode(s).parent())[0])) + graph.getNode(s).width() + PADDING_X);
+                initPlacement(s, (int) (freeX + graph.getNode(s).width() * wY * DOS_MAP[2]) + graph.getNode(s).width() + PADDING_X);
                 // freeX + getNodeDepth(graph, s)*graph.getNode(s).getWidth()*wX
 
 
@@ -113,10 +110,10 @@ public class DFSBoxDrawing implements LayoutMethod
             double X0 = nFirst.pos().getY();
             double X1 = nLast.pos().getY();
 
-            double wOffset = DOS_MAP.get(nodeId)[1];
+            double wOffset = DOS_MAP[1];
             double yCoord;
 
-            yCoord = (X1 - X0) * ((wOffset + 1)/2) + X0;
+            yCoord = (X1 - X0) * wOffset + X0;
 
             Vector2D piInit = new Vector2D(freeX, yCoord);
             nV.setPos(piInit);
@@ -219,23 +216,16 @@ public class DFSBoxDrawing implements LayoutMethod
         }
     }
 
-    public void updateAllWeights(Double offset, Double distance, Double spread)
+    public void updateWeights(Double offset, Double distance, Double spread)
     {
-        DOS_MAP.forEach((id, w) -> {
-            updateSubtreeWeights(offset, distance, spread, id);
-        });
+        DOS_MAP[0] = spread;
+        DOS_MAP[1] = offset;
+        DOS_MAP[2] = distance;
     }
 
-    public void updateSubtreeWeights(Double offset, Double distance, Double spread, int p)
+    public void updateAllWeights(double[] weights)
     {
-        if (distance != null) DOS_MAP.get(p)[0] = distance;
-        if (offset != null) DOS_MAP.get(p)[1] = offset;
-        if (spread != null) DOS_MAP.get(p)[2] = spread;
-    }
-
-    public void updateAllWeights(HashMap<Integer, Double[]> weights)
-    {
-        DOS_MAP = new HashMap<>(weights);
+        DOS_MAP = weights.clone();
     }
 
     public void setSelectedNodes(List<LudemeNodeComponent> selectedNodes)
@@ -248,9 +238,8 @@ public class DFSBoxDrawing implements LayoutMethod
     {
         freeY = 0;
         Vector2D oPos = graph.getNode(root).pos();
-        initWeights();
         initPlacement(root,0);
-        compactBox();
+        // compactBox();
         translateByRoot(graph, root, oPos);
     }
 

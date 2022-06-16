@@ -12,10 +12,15 @@ import java.util.*;
  */
 public final class GraphRoutines
 {
+    /**
+     * Tuning constants for metric evaluation
+     * TODO: find appropriate values
+     */
     private static double DM = 3000;
     private static double OM = 150;
     private static double SM = 3500;
 
+    private static final double VISUAL_CONSTANT = 2500;
 
     /**
      * Update of depth for graph nodes by BFS traversal
@@ -112,11 +117,14 @@ public final class GraphRoutines
      * Evaluate subtree configurations of
      * @param graph graph
      * @param root starting from a root
-     * @return HashMap of indices and configurations
+     * @return
      */
-    public static HashMap<Integer, Double[]> getSubtreeDOS(iGraph graph, int root)
+    public static double[] getTreeDOS(iGraph graph, int root)
     {
-        HashMap<Integer, Double[]> DOS_MAP = new HashMap<>();
+        double[] DOS_MAP = new double[3];
+        HashMap<Integer, List<Double>> layerDist = new HashMap<>();
+        HashMap<Integer, List<Double>> layerOffset = new HashMap<>();
+        HashMap<Integer, List<Double>> layerSpread = new HashMap<>();
 
         List<Integer> Q = new ArrayList<>();
         Q.add(root);
@@ -131,38 +139,62 @@ public final class GraphRoutines
                 // DOS
                 List<Integer> children = graph.getNode(n).children();
                 int N = children.size();
-                double Xdiffmean;
-                double Ydiffmean;
-                Xdiffmean = children.stream().mapToDouble(id -> Math.abs(node.pos().getX() - graph.getNode(id).pos().getX())).sum();
-                Ydiffmean = children.stream().mapToDouble(id -> node.pos().getY() - graph.getNode(id).pos().getY()).sum();
+                double xDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().getX()).sum() / N) - node.pos().getX();
+                double yDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().getY()).sum() / N) - node.pos().getY();
 
-                Xdiffmean /= N;
-                Ydiffmean /= N;
+                int depth = graph.getNode(children.get(0)).depth();
+                double D = (Math.max(0, Math.min(xDiffMean, VISUAL_CONSTANT))) / VISUAL_CONSTANT;
+                double O = (Math.max(-VISUAL_CONSTANT,Math.min(yDiffMean, VISUAL_CONSTANT)) + VISUAL_CONSTANT) / (2*VISUAL_CONSTANT);
 
                 double Smean = 0;
                 // order children by Y coordinate
-                Collections.sort(children, new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer o1, Integer o2) {
-                        return (int)(graph.getNode(o1).pos().getY() - graph.getNode(o2).pos().getY());
-                    }
-                });
-                for (int i = 0; i < children.size() - 1; i++) {
+                children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().getY() - graph.getNode(o2).pos().getY()));
+                for (int i = 0; i < children.size() - 1; i++)
+                {
                     Smean += Math.abs(graph.getNode(children.get(i)).pos().getY() - graph.getNode(children.get(i+1)).pos().getY());
                 }
-                Smean /= N;
+                double S = Math.max(0, Math.min(Smean, VISUAL_CONSTANT)) / VISUAL_CONSTANT;
 
-                double D = Math.max(0.0, Math.min(1.0, Xdiffmean/DM));
-                double O = Math.max(-1.0, Math.min(1.0, Ydiffmean/OM));
-                double S = Math.max(0.0, Math.min(1.0, Smean/SM));
+                addWeight(depth, D, layerDist); // H
+                addWeight(depth, O, layerOffset); // V
+                addWeight(depth, S, layerSpread); // S
 
-                DOS_MAP.put(n, new Double[]{D,O,S});
                 // Add children to the Q
                 Q.addAll(children);
             }
         }
+        DOS_MAP[0] = getAvgWeight(layerDist);
+        DOS_MAP[1] = getAvgWeight(layerOffset);
+        DOS_MAP[2] = getAvgWeight(layerSpread);
         return DOS_MAP;
     }
+
+    private static void addWeight(int d, double w, HashMap<Integer, List<Double>> weightMap)
+    {
+        if (!weightMap.containsKey(d)) weightMap.put(d, new ArrayList<>());
+        weightMap.get(d).add(w);
+    }
+
+    private static double getAvgWeight(HashMap<Integer, List<Double>> weightMap)
+    {
+        List<Integer> keys = new ArrayList<>(weightMap.keySet());
+        double avg = 0.0;
+        for (int i = 0; i < keys.size(); i++)
+        {
+            double localAvg = 0.0;
+            int k = keys.get(i);
+            List<Double> list = weightMap.get(k);
+            for (int j = 0; j < list.size(); j++)
+            {
+                localAvg += list.get(j);
+            }
+            localAvg /= list.size();
+            // TODO: take a weighted average such that higher layers have more significance
+            avg += localAvg;
+        }
+        return avg / keys.size();
+    }
+
 
     public static void setDM(double DM) {
         GraphRoutines.DM = DM;

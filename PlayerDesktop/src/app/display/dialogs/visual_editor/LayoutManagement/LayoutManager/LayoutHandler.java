@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
 
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs;
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
@@ -36,25 +37,19 @@ public class LayoutHandler {
 
     public void updateDFSWeights(double offset, double distance, double spread)
     {
-        ((DFSBoxDrawing) layout).updateAllWeights(offset, distance, spread);
+        ((DFSBoxDrawing) layout).updateWeights(offset, distance, spread);
     }
 
-    public void updateDFSWeights(HashMap<Integer, Double[]> weights)
+    public void updateDFSWeights(double[] weights)
     {
         ((DFSBoxDrawing) layout).updateAllWeights(weights);
     }
 
     public void evaluateGraphWeights()
     {
-        HashMap<Integer, Double[]> weights = GraphRoutines.getSubtreeDOS(graph, root);
+        double[] weights = GraphRoutines.getTreeDOS(graph, root);
+        Handler.lsPanel.updateSliderValues(weights[0], weights[1], weights[2]);
         updateDFSWeights(weights);
-        if (LayoutConfigs.DEBUG)
-        {
-            System.out.println("Graph weights");
-            weights.forEach((id, w) -> {
-                System.out.println("Subtree #" + id + ": " + Arrays.toString(w));
-            });
-        }
     }
 
     // ################
