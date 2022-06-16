@@ -24,6 +24,8 @@ public class ProgressBar {
     }
 
     private void init(){
+        int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         progress = 0.0;
         TextEditor textEditor = TextEditor.getInstance();
         if (textEditor == null) {
@@ -35,16 +37,16 @@ public class ProgressBar {
         panel = new JPanel();
         progressBar = new JProgressBar((int) progress);
         label = new JLabel(operationDescription);
-        progressBar.setPreferredSize(new Dimension(650, 60));
+        progressBar.setPreferredSize(new Dimension((int)(screenWidth*0.16), (int)(screenHeight*0.03)));
         progressBar.setStringPainted(true);
-        label.setFont(new Font("Dialog", Font.BOLD, 20));
+        label.setFont(new Font("Dialog", Font.BOLD, (int)(screenWidth*(1.0/90.0))));
         label.setLabelFor(progressBar);
         panel.add(label);
         panel.add(progressBar);
         dialog.add(panel);
         Image img = new ImageIcon(DocHandler.getInstance().getLogoLocation()).getImage();
         dialog.setIconImage(img);
-        dialog.setSize(700, 190);
+        dialog.setSize((int)(screenWidth*0.18), (int)(screenHeight*0.09));
         dialog.setLocationRelativeTo(null);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setResizable(false);
