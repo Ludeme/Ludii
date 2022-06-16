@@ -6,8 +6,6 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
 import main.grammar.Symbol;
 
@@ -16,7 +14,7 @@ import java.util.List;
 public interface IGraphPanel {
     void drawGraph(DescriptionGraph graph);
     DescriptionGraph graph();
-    ConnectionHandler ch();
+    ConnectionHandler connectionHandler();
     LudemeNodeComponent nodeComponent(LudemeNode node);
     int selectedRootId();
     List<iGNode> selectedNodes();

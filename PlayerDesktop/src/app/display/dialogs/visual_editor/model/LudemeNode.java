@@ -639,7 +639,7 @@ public class LudemeNode implements iLudemeNode, iGNode
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());
 
-        if(includeInputs)
+        /*if(includeInputs)
         {
             for(int index = 0; index < providedInputs().length; index++)
             {
@@ -666,7 +666,7 @@ public class LudemeNode implements iLudemeNode, iGNode
             }
             System.out.println("----" + Arrays.toString(copy.providedInputs()));
         }
-        System.out.println("[COPY] copied " + copy.title());
+        System.out.println("[COPY] copied " + copy.title()); */
         return copy;
     }
 

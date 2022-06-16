@@ -106,7 +106,7 @@ public class LConnectionComponent extends JComponent {
                 if(!fill){
                     // Start drawing connection
                     setFill(!fill);
-                    graphPanel.ch().startNewConnection(LConnectionComponent.this);
+                    graphPanel.connectionHandler().startNewConnection(LConnectionComponent.this);
                 }
                 else{
                     if(isCollapsed){
@@ -118,13 +118,13 @@ public class LConnectionComponent extends JComponent {
                     }
                     // if already connected: remove connection
                     if(getConnectedTo() != null) {
-                        graphPanel.ch().removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), LConnectionComponent.this);
+                        graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), LConnectionComponent.this);
                         setConnectedTo(null);
                     }
                     else {
                         // end drawing connection
                         setFill(!fill);
-                        graphPanel.ch().cancelNewConnection();
+                        graphPanel.connectionHandler().cancelNewConnection();
                     }
                 }
             }
