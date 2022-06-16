@@ -9,30 +9,30 @@
                 (shift 7 6 (rectangle 1 6) )
             })
             {
-        		(track "Track1" [#] P1 directed:True)
-        		(track "Track2" [#] P1 directed:True)
+            (track "Track1" [#] P1 directed:True)
+            (track "Track2" [#] P1 directed:True)
             }
             use:Vertex
         )
         <Dice:dice>
         (piece "Disc" Each
-            	(move
-                		(from (from) level:(level))
-                		(to ("NextSiteFrom" (from))
-                			if:(or 
-                					(not (is Enemy (who at:(to)))) 
-                					(and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
-                				)
-                			(apply 
-                				(if (is Enemy (who at:(to))) 
-                					(fromTo
-                						(from (to))
-                						(to (mapEntry Next))
-                					)
-                				)	
-                			)
-                		)
-                	)			
+            (move
+                (from (from) level:(level))
+                (to ("NextSiteFrom" (from))
+                    if:(or 
+                        (not (is Enemy (who at:(to)))) 
+                        (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
+                    )
+                    (apply 
+                        (if (is Enemy (who at:(to))) 
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry Next))
+                            )
+                        )	
+                    )
+                )
+            )			
         ) 
         (map {(pair 1 [1..23] ) (pair 2 [1..23])}) // starting point
     })  
@@ -48,19 +48,19 @@
             (place Stack "Disc1" 12 count:5)
         })
         (play 
-                (do 
-                    (if (not "SameTurn") (roll))
-                    next:(forEach Die 
-                            if:("DieNotUsed")
-                            (forEach Piece top:True                
-                                    (then 
-                                        (if (not (all DiceUsed))
-                                            (moveAgain)
-                                        )
-                                    )
-                                )
+            (do 
+                (if (not "SameTurn") (roll))
+                next:(forEach Die 
+                    if:("DieNotUsed")
+                    (forEach Piece top:True                
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
                         )
-                )		
+                    )
+                )
+            )		
         )
         (end [#])
     )
@@ -79,15 +79,15 @@
 (rulesets { 
     
     (ruleset "Ruleset/Two Four-Sided Dice (Incomplete)" {
-    	"Dice/Two Four-Sided Dice"
+        "Dice/Two Four-Sided Dice"
     })
-	
+    
     (ruleset "Ruleset/Two Cubic Dice (Incomplete)" {
-    	"Dice/Two Cubic Dice"
+        "Dice/Two Cubic Dice"
     })
-	
+    
     (ruleset "Ruleset/Three Cubic Dice (Incomplete)" {
-    	"Dice/Three Cubic Dice"
+        "Dice/Three Cubic Dice"
     })
     
 })

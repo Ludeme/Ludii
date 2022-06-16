@@ -29,53 +29,53 @@
         )
         (dice d:6 num:3)
         (piece "Disc" Each
-            	(move
-                		(from (from) level:(level))
-                		(to ("NextSiteFrom" (from))
-                			if:(if (is In (to) (sites Next))
-                				(or 
-                					(is Empty (to))
-                					(and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
-                				)
-                				(or 
-                					(not (is Enemy (who at:(to)))) 
-                					(and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
-                				)
-                				)
-                			(apply 
-                				(if (is Enemy (who at:(to))) 
-                					(fromTo
-                						(from (to))
-                						(to (mapEntry Next))
-                					)
-                				)	
-                			)
-                		)
-                	)	
+            (move
+                (from (from) level:(level))
+                (to ("NextSiteFrom" (from))
+                    if:(if (is In (to) (sites Next))
+                        (or 
+                            (is Empty (to))
+                            (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
+                        )
+                        (or 
+                            (not (is Enemy (who at:(to)))) 
+                            (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
+                        )
+                    )
+                    (apply 
+                        (if (is Enemy (who at:(to))) 
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry Next))
+                            )
+                        )	
+                    )
+                )
+            )	
         )
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
         (map {(pair 1 23 ) (pair 2 11)}) // starting point
     })
     (rules
-    	(start {
+        (start {
             (place Stack "Disc1" 23 count:("NumPieces"))
             (place Stack "Disc2" 11 count:("NumPieces"))
-    	})
+        })
         (play 
-                (do 
-                    (if (not "SameTurn") (roll))
-                    next:(forEach Die 
-                            if:("DieNotUsed")
-                            (forEach Piece top:True                
-                                    (then 
-                                        (if (not (all DiceUsed))
-                                            (moveAgain)
-                                        )
-                                    )
-                                )
+            (do 
+                (if (not "SameTurn") (roll))
+                next:(forEach Die 
+                    if:("DieNotUsed")
+                    (forEach Piece top:True                
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
                         )
-                )		
+                    )
+                )
+            )		
         )
         (end [#])
     )

@@ -29,22 +29,22 @@
         )
         (dice [#])
         (piece "Disc" Each
-        	(move
-        		(from (from) level:(level))
-        		(to ("NextSiteFrom" (from))
-        			if:(or (not (is Enemy (who at:(to)))) (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to)))))
-        			(apply 
-        				(if (is Enemy (who at:(to))) (remove (to)))	
-        			)
-        		)
-        	)
+            (move
+                (from (from) level:(level))
+                (to ("NextSiteFrom" (from))
+                    if:(or (not (is Enemy (who at:(to)))) (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to)))))
+                    (apply 
+                        (if (is Enemy (who at:(to))) (remove (to)))	
+                    )
+                )
+            )
         )
         (hand Each)
     })
     (rules
         (start {
-        	(place Stack "Disc1"  (handSite P1) count:"NumPieces")
-        	(place Stack "Disc2"  (handSite P2) count:"NumPieces")
+            (place Stack "Disc1"  (handSite P1) count:"NumPieces")
+            (place Stack "Disc2"  (handSite P2) count:"NumPieces")
         })
         phases:{
         (phase "Entering"
@@ -69,20 +69,20 @@
         )
         
         (phase "Playing" 
-        	(play
-        			(do 
-                        (if (not "SameTurn") (roll))
-                        next:(forEach Die
-                                if:("DieNotUsed")
-                        		(forEach Piece top:True)
-                                (then 
-                                        (if (not (all DiceUsed))
-                                            (moveAgain)
-                                        )
-                                    )
+            (play
+                (do 
+                    (if (not "SameTurn") (roll))
+                    next:(forEach Die
+                        if:("DieNotUsed")
+                        (forEach Piece top:True)
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
                         )
-        		)
-        	)
+                    )
+                )
+            )
         )
         }
         (end (if (> ("NumPieces") (count Pieces Next)) (result Mover Win)))
