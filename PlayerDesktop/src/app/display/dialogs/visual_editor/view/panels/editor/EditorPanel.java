@@ -8,8 +8,6 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -25,10 +23,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
+import static app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController.COMPLETION_WILDCARD;
 
 public class EditorPanel extends JPanel implements IGraphPanel
 {
@@ -99,7 +97,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         ch = new ConnectionHandler(edges);
 
         N = 7;
-        //controller = new NGramController(N);
+        controller = new NGramController(N);
     }
 
     public EditorPanel()
@@ -142,7 +140,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
             zoomFactor0 = zoomFactor;
             g2.transform(at);
         }
-        
+
         boolean showBackgroundDots = true;
         if(showBackgroundDots)
         {
@@ -197,9 +195,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
-        String gameDescription = ""; // TODO: Insert [#] as wild card for completion
-
-        //List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
+        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().codeCompletionGameDescription((LudemeNode) graph().getRoot(), ch.getSelectedConnectionComponent().getInputField().getInputIndex(), "[#]"); // TODO: Insert [#] as wild card for completion
+        System.out.println(gameDescription);
+        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
@@ -215,7 +213,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return node;
     }
 
-    private void addLudemeNodeComponent(LudemeNode node, boolean connect)
+    public void addLudemeNodeComponent(LudemeNode node, boolean connect)
     {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         addLudemeWindow.setVisible(false);

@@ -14,11 +14,19 @@ public class NodePopupMenu extends JPopupMenu {
         JMenuItem dynamic = new JMenuItem("(Un)Set Dynamic");
         JMenuItem observe = new JMenuItem("Observe");
         JMenuItem collapse = new JMenuItem("Collapse");
+        JMenuItem duplicate = new JMenuItem("Duplicate");
 
         add(delete);
         add(dynamic);
         add(observe);
         add(collapse);
+        add(duplicate);
+
+        duplicate.addActionListener(e -> {
+            LudemeNode copy = nodeComponent.node().copy(true);
+            (((EditorPanel) graphPanel)).addLudemeNodeComponent(copy, false);
+            graphPanel.repaint();
+        });
 
         collapse.addActionListener(e -> {
             nodeComponent.node().setCollapsed(!nodeComponent.node().collapsed());

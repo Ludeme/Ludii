@@ -192,6 +192,7 @@ public class NodeArgument
     private boolean isTerminal(Symbol symbol)
     {
         if(symbol.isTerminal()) return true;
+        if(symbol.rule().rhs().size() == 0) return false; // TODO: check whether correct
         for(Clause clause : symbol.rule().rhs())
         {
             if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
@@ -210,6 +211,7 @@ public class NodeArgument
 
     public boolean terminalDropdown()
     {
+        if(arg().symbol().rule() == null) return false;
         for(Clause clause : arg().symbol().rule().rhs())
         {
             if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))

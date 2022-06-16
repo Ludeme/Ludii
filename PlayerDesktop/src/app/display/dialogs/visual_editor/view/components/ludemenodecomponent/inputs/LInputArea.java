@@ -92,27 +92,6 @@ public class LInputArea extends JPanel {
         // List of clause arguments of currently selected clause
         Clause selectedClause = LNC.node().selectedClause();
         List<NodeArgument> inputs = nodeArguments(selectedClause);
-        /*
-        if(selectedClause.args() == null) {
-            for(Clause c : selectedClause.symbol().rule().rhs()){
-                for(int i = 0; i < c.args().size(); i++){
-                    ClauseArg arg = c.args().get(i);
-                    NodeInput nodeInput = new NodeInput(c, arg);
-                    inputs.add(nodeInput);
-                    // if argument was part of or group, skip the rest of the group
-                    i = i + nodeInput.size() - 1;
-                }
-            }
-        } else {
-            for (int i = 0; i < selectedClause.args().size(); i++) {
-                ClauseArg arg = selectedClause.args().get(i);
-                NodeInput nodeInput = new NodeInput(selectedClause, arg);
-                inputs.add(nodeInput);
-                NodeArgument ii = new NodeArgument(selectedClause, nodeInput);
-                // if argument was part of or group, skip the rest of the group
-                i = i + nodeInput.size() - 1;
-            }
-        }*/
 
         System.out.println("These are the inputs: ");
         System.out.println(inputs);
@@ -160,7 +139,6 @@ public class LInputArea extends JPanel {
      */
     private List<NodeArgument> nodeArguments(Clause clause){
         List<NodeArgument> nodeArguments = new ArrayList<>();
-        System.out.println(clause.symbol());
         // if the clause.args() == null, get the required arguments from the clause's symbol
         if(clause.args() == null){
             // List of clauses for that symbol
@@ -173,6 +151,18 @@ public class LInputArea extends JPanel {
                 nodeArguments.add(nodeArgument);
                 // if argument was part of or group, skip the rest of the group
                 i = i + nodeArgument.size() - 1;
+            }
+        }
+        // remove constant symbols which are part of the constructor
+        for(NodeArgument nodeArgument : new ArrayList<>(nodeArguments))
+        {
+            if(nodeArgument.size() == 1 && nodeArgument.arg().symbol().ludemeType().equals(Symbol.LudemeType.Constant) && nodeArgument.arg().symbol().rule() == null)
+            {
+                nodeArguments.remove(nodeArgument);
+            }
+            else
+            {
+                break;
             }
         }
         return nodeArguments;
