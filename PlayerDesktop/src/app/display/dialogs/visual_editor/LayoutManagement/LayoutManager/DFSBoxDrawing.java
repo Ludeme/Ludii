@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.NodePlacementRoutines.translateByRoot;
 
@@ -149,10 +150,12 @@ public class DFSBoxDrawing implements LayoutMethod
             // cursor on current path
             int k = P.size()-1;
             // iterating through LE and current path to add edges into Gup
-            while (j != 0 || k != 0)
+            while (j != 0 && k != 0)
             {
+                int currentPk = P.get(k);
                 iGNode upper = graph.getNode(LE.get(j));
                 iGNode lower = graph.getNode(P.get(k));
+                if (upper.equals(lower)) break;
                 int nodeDist = (int)(lower.pos().getY()-upper.pos().getY()-upper.height());
                 // check all the cases for upper and lower nodes x coordinates intersecting
                 // add edges for upward visibility graph
@@ -160,6 +163,11 @@ public class DFSBoxDrawing implements LayoutMethod
                 // CASE#1: left corner coordinates match
                 if ((int)(upper.pos().getX()) == (int)(lower.pos().getX()))
                 {
+                    // check if right corner of upper exceeds right corner of lower to add to LE candidates
+                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()+lower.width()))
+                    {
+                        leCandidates.add(0, upper.id());
+                    }
                     addMinDistToGup(Gup, P, k, nodeDist);
                     j--;
                     k--;
@@ -187,9 +195,10 @@ public class DFSBoxDrawing implements LayoutMethod
                     }
                     k--;
                 }
-                leCandidates.add(0, P.get(k));
+                leCandidates.add(0, currentPk);
             }
             LE = new ArrayList<>(leCandidates);
+            LE.addAll(0, paths.get(i).stream().limit(k+1).collect(Collectors.toList()));
         }
         return Gup;
     }
@@ -202,6 +211,7 @@ public class DFSBoxDrawing implements LayoutMethod
 
     private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph)
     {
+        List<Integer> subTree = new ArrayList<>();
         List<Integer> P;
         // keep track of T_i-1 nodes
         for (int i = 1; i < paths.size(); i++)
@@ -216,8 +226,14 @@ public class DFSBoxDrawing implements LayoutMethod
             for (int j = 1; j < P.size(); j++)
             {
                 iGNode n = graph.getNode(P.get(j));
+                // TODO: add min gap
                 int dist = minDist - 0;
-                n.setPos(new Vector2D(n.pos().getX(), n.pos().getY() + Math.max(dist, minDist)));
+                if (!subTree.contains(P.get(j)))
+                {
+                    n.setPos(new Vector2D(n.pos().getX(), n.pos().getY() - Math.max(dist, minDist)));
+                    subTree.add(P.get(j));
+                }
+
             }
         }
     }

@@ -208,10 +208,11 @@ public final class GraphRoutines
         GraphRoutines.SM = SM;
     }
 
-    public static void findAllPaths(ArrayList<List<Integer>> paths, iGraph graph, int root, List<Integer> p)
+    public static void findAllPaths(ArrayList<List<Integer>> paths, iGraph graph, int root, List<Integer> pprime)
     {
         // current node
         iGNode node = graph.getNode(root);
+        List<Integer> p = new ArrayList<>(pprime);
         p.add(root);
         node.children().forEach(cid -> {
             iGNode c = graph.getNode(cid);
