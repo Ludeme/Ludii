@@ -104,7 +104,7 @@ public class LHeader extends JComponent
 
         // get help
         HelpInformation help = DocumentationReader.instance().documentation().get(LN.symbol());
-        setToolTipText(help.toHTML());
+        if(help != null) setToolTipText(help.toHTML());
 
     }
 

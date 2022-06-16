@@ -61,30 +61,6 @@ public class LInputArea extends JPanel {
             List<NodeArgument> inputInformationList = new ArrayList<>();
             for(Clause clause : LNC.node().clauses()) inputInformationList.addAll(nodeArguments(clause));
             inputInformationList = inputInformationList.stream().distinct().collect(Collectors.toList()); // remove duplicates
-            /*List<NodeArgument> inputInformationList = new ArrayList<>();
-            for(Clause clause : LNC.node().clauses()) {
-                if (clause.args() == null) {
-                    for (Clause c : clause.symbol().rule().rhs()) {
-                        for (int i = 0; i < c.args().size(); i++) {
-                            ClauseArg arg = c.args().get(i);
-                            NodeInput nodeInput = new NodeInput(c, arg);
-                            NodeArgument ii = new NodeArgument(c, nodeInput);
-                            inputInformationList.add(ii);
-                            // if argument was part of or group, skip the rest of the group
-                            i = i + nodeInput.size() - 1;
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < clause.args().size(); i++) {
-                        ClauseArg arg = clause.args().get(i);
-                        NodeInput nodeInput = new NodeInput(clause, arg);
-                        NodeArgument ii = new NodeArgument(clause, nodeInput);
-                        inputInformationList.add(ii);
-                        // if argument was part of or group, skip the rest of the group
-                        i = i + nodeInput.size() - 1;
-                    }
-                }
-            }*/
             fields.add(new LInputField(ludemeNodeComponent, inputInformationList));
             return fields;
         }
@@ -139,6 +115,15 @@ public class LInputArea extends JPanel {
      */
     private List<NodeArgument> nodeArguments(Clause clause){
         List<NodeArgument> nodeArguments = new ArrayList<>();
+
+        // if its a predefined node just return one clause argument
+        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+        {
+            ClauseArg clauseArg = new ClauseArg(clause.symbol(), null, false, 0, 0);
+            nodeArguments.add(new NodeArgument(clause, clauseArg));
+            return nodeArguments;
+        }
+
         // if the clause.args() == null, get the required arguments from the clause's symbol
         if(clause.args() == null){
             // List of clauses for that symbol

@@ -54,8 +54,16 @@ public class NodeArgument
                 index++;
             }
         }
-        INDEX_FIRST = clause.args().indexOf(arg);
-        INDEX_LAST = clause.args().indexOf(arg) + ARGS.size() - 1;
+        if(clause.args() == null)
+        {
+            INDEX_FIRST = 0;
+            INDEX_LAST = 0;
+        }
+        else
+        {
+            INDEX_FIRST = clause.args().indexOf(arg);
+            INDEX_LAST = clause.args().indexOf(arg) + ARGS.size() - 1;
+        }
 
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
 
@@ -335,6 +343,7 @@ public class NodeArgument
     @Override
     public String toString()
     {
+        System.out.println(ARGS);
         return "[ " + INDEX_FIRST + ", " + ARGS.stream().map(ClauseArg::toString).collect(Collectors.joining(", ")) + " ]";
     }
 

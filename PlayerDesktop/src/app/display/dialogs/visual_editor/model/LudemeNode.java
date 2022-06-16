@@ -25,7 +25,7 @@ public class LudemeNode implements iLudemeNode, iGNode
     /** Symbol/Ludeme this node represents */
     private final Symbol SYMBOL;
     /** List of clauses this symbol encompasses */
-    private final List<Clause> CLAUSES;
+    private List<Clause> CLAUSES;
     /** Currently selected Clause by the user */
     private Clause selectedClause;
     /** Inputs to the Clause Arguments of the currently selected Clause provided by the user */
@@ -76,10 +76,16 @@ public class LudemeNode implements iLudemeNode, iGNode
         this.height = 100;
         if(CLAUSES != null)
         {
+            expandClauses();
             if(CLAUSES.size() > 0)
             {
                 this.selectedClause = CLAUSES.get(0);
-                this.providedInputs = new Object[selectedClause.args().size()];
+                if(selectedClause.args() == null) {
+                    this.providedInputs = new Object[0];
+                }
+                else {
+                    this.providedInputs = new Object[selectedClause.args().size()];
+                }
             }
             else
             {
@@ -101,6 +107,43 @@ public class LudemeNode implements iLudemeNode, iGNode
     public Symbol symbol()
     {
         return SYMBOL;
+    }
+
+    /**
+     * Clauses without a constructor (e.g. <match> in the "game" symbol) are expanded to the clauses of "match"
+     */
+    private void expandClauses()
+    {
+        List<Clause> newClauses = new ArrayList<>();
+        List<Clause> oldClauses = new ArrayList<>();
+        for(Clause clause : CLAUSES)
+        {
+            if(clause.symbol() != symbol()) {
+                oldClauses.add(clause);
+                newClauses.addAll(expandClauses(clause.symbol()));
+            }
+            else
+            {
+                newClauses.add(clause);
+            }
+        }
+        CLAUSES = newClauses;
+    }
+
+    private List<Clause> expandClauses(Symbol s)
+    {
+        List<Clause> clauses = new ArrayList<>();
+        for(Clause clause : s.rule().rhs())
+        {
+            if(clause.symbol() == s) {
+                clauses.add(clause);
+            }
+            else
+            {
+                clauses.addAll(expandClauses(clause.symbol()));
+            }
+        }
+        return clauses;
     }
 
     /**
@@ -600,7 +643,7 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     public String title()
     {
-        StringBuilder title = new StringBuilder(symbol().name());
+        StringBuilder title = new StringBuilder(selectedClause().symbol().name());
         if(selectedClause().args() == null) return title.toString();
         // if selected clause starts with constants, add these to the title
         int index = 0;
@@ -614,7 +657,7 @@ public class LudemeNode implements iLudemeNode, iGNode
 
     private String tokenTitle()
     {
-        StringBuilder title = new StringBuilder(symbol().token());
+        StringBuilder title = new StringBuilder(selectedClause().symbol().token());
         if(selectedClause().args() == null) return title.toString();
         // if selected clause starts with constants, add these to the title
         int index = 0;
