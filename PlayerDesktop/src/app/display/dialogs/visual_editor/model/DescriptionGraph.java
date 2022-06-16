@@ -151,6 +151,10 @@ public class DescriptionGraph implements iGraph {
         return ROOT.stringRepresentation();
     }
 
+    public String toLudCodeCompletion(LudemeNode nodeToMark, int inputIndex, String mark)
+    {
+        return ROOT.codeCompletionGameDescription(nodeToMark, inputIndex, mark);
+    }
 
     public DescriptionGraph clone(){
 

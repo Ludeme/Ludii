@@ -543,25 +543,25 @@ public class LudemeNode implements iLudemeNode, iGNode
         return sb.toString();
     }
 
-    public String codeCompletionGameDescription(LudemeNode root, int untilIndex, String marker)
+    public String codeCompletionGameDescription(LudemeNode stopAt, int untilIndex, String marker)
     {
         StringBuilder sb = new StringBuilder();
         // append token of this node's symbol
-        sb.append("(").append(root.tokenTitle());
+        sb.append("(").append(tokenTitle());
         // append all inputs
-        for(Object input : root.providedInputs())
+        for(Object input : providedInputs())
         {
             if(input == null) continue; // if no input provided, skip it
             sb.append(" ");
 
             if(input instanceof LudemeNode)
             {
-                if(input == this)
+                if(input == stopAt)
                 {
                     sb.append(((LudemeNode) input).stringRepresentationUntilInputIndex(untilIndex, marker));
                 }
                 else {
-                    sb.append(((LudemeNode) input).stringRepresentation());
+                    sb.append(((LudemeNode) input).codeCompletionGameDescription(stopAt, untilIndex, marker));
                 }
             }
             else if(input instanceof LudemeNode[])
@@ -569,12 +569,12 @@ public class LudemeNode implements iLudemeNode, iGNode
                 sb.append("{ ");
                 for(LudemeNode node : (LudemeNode[]) input) {
                     if(node == null) continue;
-                    if(input == this)
+                    if(node == stopAt)
                     {
-                        sb.append(((LudemeNode) input).stringRepresentationUntilInputIndex(untilIndex, marker)).append(" ");
+                        sb.append((node).stringRepresentationUntilInputIndex(untilIndex, marker)).append(" ");
                     }
                     else {
-                        sb.append(((LudemeNode) input).stringRepresentation()).append(" ");
+                        sb.append((node).codeCompletionGameDescription(stopAt, untilIndex, marker)).append(" ");
                     }
                 }
                 sb.append("}");

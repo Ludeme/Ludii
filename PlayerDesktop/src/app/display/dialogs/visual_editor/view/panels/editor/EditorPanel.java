@@ -196,8 +196,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
-        String gameDescription = ch.getSelectedConnectionComponent().getLudemeNodeComponent().node().codeCompletionGameDescription((LudemeNode) graph().getRoot(), ch.getSelectedConnectionComponent().getInputField().getInputIndex(), COMPLETION_WILDCARD);
-        System.out.println(gameDescription);
+        String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().getLudemeNodeComponent().node(),  ch.getSelectedConnectionComponent().getInputField().getInputIndex(), COMPLETION_WILDCARD);
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);
