@@ -17,6 +17,7 @@ public interface IGraphPanel {
     ConnectionHandler connectionHandler();
     LudemeNodeComponent nodeComponent(LudemeNode node);
     int selectedRootId();
+    void addNodeToSelections(LudemeNodeComponent lnc);
     List<iGNode> selectedNodes();
     List<LudemeNodeComponent> selectedLnc();
     LudemeNode addNode(Symbol symbol, int x, int y, boolean connect);

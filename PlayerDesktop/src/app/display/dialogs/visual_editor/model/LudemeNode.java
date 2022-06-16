@@ -638,34 +638,13 @@ public class LudemeNode implements iLudemeNode, iGNode
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());
 
-        /*if(includeInputs)
+        // copy terminal inputs
+        for(int i = 0; i < providedInputs().length; i++)
         {
-            for(int index = 0; index < providedInputs().length; index++)
-            {
-                Object input = providedInputs()[index];
-                System.out.println("adding input " + input);
-                if(input instanceof LudemeNode)
-                {
-                    LudemeNode inputNode = ((LudemeNode) input).copy(includeInputs);
-                    copy.setProvidedInput(index, inputNode);
-                }
-                else if(input instanceof LudemeNode[])
-                {
-                    LudemeNode[] inputNodeCollection = new LudemeNode[((LudemeNode[]) input).length];
-                    for(int j = 0; j < ((LudemeNode[]) input).length; j++)
-                    {
-                        inputNodeCollection[j] = (((LudemeNode[]) input)[j]).copy(includeInputs);
-                    }
-                    copy.setProvidedInput(index, inputNodeCollection);
-                }
-                else
-                {
-                    copy.setProvidedInput(index, input);
-                }
-            }
-            System.out.println("----" + Arrays.toString(copy.providedInputs()));
+            Object input = providedInputs()[i];
+            if(input == null || input instanceof LudemeNode || input instanceof LudemeNode[]) continue; // if no input provided or it is LudemeNode, skip it
+            copy.setProvidedInput(i, input);
         }
-        System.out.println("[COPY] copied " + copy.title()); */
         return copy;
     }
 

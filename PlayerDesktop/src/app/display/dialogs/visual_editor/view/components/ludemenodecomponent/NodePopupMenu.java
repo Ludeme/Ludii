@@ -2,11 +2,15 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class NodePopupMenu extends JPopupMenu {
     public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel) {
@@ -23,11 +27,81 @@ public class NodePopupMenu extends JPopupMenu {
         add(duplicate);
 
         duplicate.addActionListener(e -> {
-            int x_shift = 0;
-            int y_shift = nodeComponent.getHeight() + (int)(nodeComponent.getHeight() * 0.1);
-            LudemeNode copy = nodeComponent.node().copy(x_shift, y_shift);
-            graphPanel.addNode(copy);
-            graphPanel.repaint();
+            if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
+            {
+                HashMap<LudemeNode, LudemeNode> copies = new HashMap<>(); // <original, copy>
+                for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
+                {
+                    // copy each node
+                    if(!graphPanel.graph().isDefine() && graphPanel.graph().getRoot() == lnc.node()) continue; // cant duplicate root node
+                    int x_shift = 0;
+                    int y_shift = lnc.getHeight() + (int)(lnc.getHeight()*0.1);
+                    LudemeNode copy = lnc.node().copy(x_shift, y_shift);
+                    copies.put(lnc.node(), copy);
+                    // add the copy to the graph
+                    graphPanel.addNode(copy);
+                }
+                // now fill inputs
+                for(LudemeNode original : copies.keySet())
+                {
+                    LudemeNode copy = copies.get(original);
+                    Object[] inputs = original.providedInputs();
+
+                    for(int i = 0; i < inputs.length; i++)
+                    {
+                        Object input = inputs[i];
+                        if(input instanceof LudemeNode)
+                        {
+                            LudemeNode inputNode = (LudemeNode)input;
+                            LudemeNode copyInputNode = copies.get(inputNode);
+                            if(copyInputNode != null)
+                            {
+                                copy.setProvidedInput(i, copyInputNode);
+                            }
+                        }
+                        else if(input instanceof LudemeNode[])
+                        {
+                            LudemeNode[] copyInputs = new LudemeNode[((LudemeNode[])input).length];
+                            for(int j = 0; j < copyInputs.length; j++)
+                            {
+                                LudemeNode inputNode = ((LudemeNode[])input)[j];
+                                LudemeNode copyInputNode = copies.get(inputNode);
+                                if(copyInputNode != null)
+                                {
+                                    copyInputs[j] = copyInputNode;
+                                }
+                            }
+                            copy.setProvidedInput(i, copyInputs);
+                        }
+                        else
+                        {
+                            copy.setProvidedInput(i, input);
+                        }
+                    }
+                }
+                // deselect all previously selected nodes
+                graphPanel.deselectEverything();
+                // update provided inputs of all copies TODO: inefficient
+                for(LudemeNode original : copies.keySet())
+                {
+                    LudemeNode copy = copies.get(original);
+                    LudemeNodeComponent copyLnc = graphPanel.nodeComponent(copy);
+                    // select the copy
+                    graphPanel.addNodeToSelections(copyLnc);
+                    copyLnc.updateProvidedInputs();
+                }
+            }
+            else
+            {
+                if(!graphPanel.graph().isDefine() && graphPanel.graph().getRoot() == nodeComponent.node()) return; // cant duplicate root node
+                int x_shift = 0;
+                int y_shift = nodeComponent.getHeight() + (int)(nodeComponent.getHeight() * 0.1);
+                LudemeNode copy = nodeComponent.node().copy(x_shift, y_shift);
+                graphPanel.addNode(copy);
+                graphPanel.nodeComponent(copy).updateProvidedInputs();
+                graphPanel.repaint();
+            }
+
         });
 
         collapse.addActionListener(e -> {
@@ -37,6 +111,7 @@ public class NodePopupMenu extends JPopupMenu {
         });
 
         delete.addActionListener(e -> {
+            // TODO: maybe a handler for that?
             if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
             {
                 for(LudemeNodeComponent lnc : graphPanel.selectedLnc())

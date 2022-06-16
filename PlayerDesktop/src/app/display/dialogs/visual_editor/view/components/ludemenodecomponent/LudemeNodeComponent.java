@@ -69,7 +69,6 @@ public class LudemeNodeComponent extends JPanel
 
         add(header, BorderLayout.NORTH);
         add(inputArea, BorderLayout.CENTER);
-
         setLocation(x,y);
 
         int preferredHeight = preferredHeight();
