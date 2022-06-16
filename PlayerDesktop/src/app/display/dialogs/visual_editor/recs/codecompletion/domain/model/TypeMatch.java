@@ -39,15 +39,20 @@ public class TypeMatch implements iTypeMatch {
         List<Instance> instancePicklist = controller.getPicklist(gameDescription);
         System.out.println(" # Ordered Picklist by N-Gram");
         for(Instance instance : instancePicklist) {
-            System.out.println("Completion: " + instance.getPrediction());
+            String prediction = instance.getPrediction();
+            if(prediction.startsWith("(")) {
+                prediction = prediction.replaceAll("\\(","");
+            }
+            System.out.println("Completion: " + prediction);
         }
 
         System.out.println(" # Possible Symbols from grammar");
         for(Symbol symbol : possibleSymbols) {
+            // if the type is predefined, need to check for boolean, string and number
             System.out.println("Symbol: " + symbol.name() + " token: " + symbol.token() + " type: " + symbol.ludemeType());
         }
 
-        /*// 2. create a new picklist to output
+        // 2. create a new picklist to output
         List<Symbol> picklist = new ArrayList<>();
         for(int i = 0; i < instancePicklist.size(); i++) {
             Instance cur = instancePicklist.get(i);
@@ -56,7 +61,7 @@ public class TypeMatch implements iTypeMatch {
         }
 
         // then in the end return picklist
-        */
+
         return possibleSymbols;
     }
 }

@@ -10,14 +10,14 @@ import main.grammar.Symbol;
 import java.io.File;
 import java.util.List;
 
+import static app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing.COMPLETION_WILDCARD;
+
 /**
  * @author filreh
  */
 public class NGramController implements iController {
 
     private static final int MAX_PICKLIST_LENGTH = 50;
-
-    public static final String COMPLETION_WILDCARD = "[#]";
 
     private int N;
     private ModelLibrary lib;

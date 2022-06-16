@@ -10,13 +10,14 @@ import java.util.List;
  */
 public class Preprocessing {
     private static final boolean DEBUG = false;
-    public static final String NUMBER_WILDCARD = "NUMBER";
-    public static final String INTEGER_WILDCARD = "INTEGER";
-    public static final String FLOAT_WILDCARD = "FLOAT";
-    public static final String BOOLEAN_WILDCARD = "BOOLEAN";
-    public static final String STRING_WILDCARD = "STRING";
-    public static final String OPTION_WILDCARD = "STRING";
-    public static final String INSERT_REC_WILDCARD = "--REC--";
+    public static final String NUMBER_WILDCARD = "number";
+    public static final String INTEGER_WILDCARD = "int";
+    public static final String FLOAT_WILDCARD = "float";
+    public static final String BOOLEAN_WILDCARD = "boolean";
+    public static final String STRING_WILDCARD = "string";
+    public static final String OPTION_WILDCARD = "option";
+
+    public static final String COMPLETION_WILDCARD = "[#]";
     public final static boolean GENERIC_STRINGS = true;
     public final static boolean GENERIC_OPTIONS = true;
 

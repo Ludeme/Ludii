@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
-import static app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController.COMPLETION_WILDCARD;
+import static app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing.COMPLETION_WILDCARD;
 
 public class EditorPanel extends JPanel implements IGraphPanel
 {
