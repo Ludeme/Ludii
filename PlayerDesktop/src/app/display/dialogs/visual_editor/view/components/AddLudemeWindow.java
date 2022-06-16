@@ -1,17 +1,19 @@
 package app.display.dialogs.visual_editor.view.components;
 
+import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
+import app.display.dialogs.visual_editor.recs.utils.Pair;
+import app.display.dialogs.visual_editor.recs.utils.ReadableSymbol;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.grammar.Symbol;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddLudemeWindow extends JPanel {
@@ -58,7 +60,8 @@ public class AddLudemeWindow extends JPanel {
                 int index = theList.locationToIndex(mouseEvent.getPoint());
                 if (index >= 0) {
                     Object o = theList.getModel().getElementAt(index);
-                    graphPanel.addNode((Symbol) o, getLocation().x, getLocation().y, connect);
+                    ReadableSymbol rs = (ReadableSymbol) o;
+                    graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
                     searchField.setText("");
                     scrollableList.getVerticalScrollBar().setValue(0);
                 }
@@ -70,19 +73,20 @@ public class AddLudemeWindow extends JPanel {
 
     public void updateList(List<Symbol> symbolList){
 
-
         searchField = new JTextField();
 
-        // remove duplicates TODO: Not sort after code completion
+        // remove duplicates
         symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
 
-        //TODO: List of ludemes is sorted here RECS
-        // TODO: get list of ludemes and connections from editorpanel
-        //ludemeList.sort(Comparator.comparing(Object::toString));
+        // create readable strings
+        List<ReadableSymbol> readableList = new ArrayList<>();
+        for(int i = 0; i < symbolList.size(); i++) {
+            readableList.add(new ReadableSymbol(symbolList.get(i)));
+        }
 
-        listModel = new DefaultListModel<Symbol>();
-        for (Symbol l : symbolList) {
-            listModel.addElement(l);
+        listModel = new DefaultListModel<Pair<Symbol,String>>();
+        for (ReadableSymbol rs : readableList) {
+            listModel.addElement(rs);
         }
         list = new JList(listModel);
         scrollableList = new JScrollPane(list);

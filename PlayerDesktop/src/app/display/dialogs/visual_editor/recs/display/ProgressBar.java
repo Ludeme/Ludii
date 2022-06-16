@@ -39,7 +39,7 @@ public class ProgressBar {
         label = new JLabel(operationDescription);
         progressBar.setPreferredSize(new Dimension((int)(screenWidth*0.20), (int)(screenHeight*0.036)));
         progressBar.setStringPainted(true);
-        label.setFont(new Font("Dialog", Font.BOLD, (int)(screenWidth*(3.0/90.0))));
+        label.setFont(new Font("Dialog", Font.BOLD, 20));
         label.setLabelFor(progressBar);
         panel.add(label);
         panel.add(progressBar);
