@@ -1,4 +1,4 @@
-(define "NumPieces" 15)
+(define "NumPieces" [#])
 
 (define "DieNotUsed" (!= (pips) 0))
 
@@ -27,15 +27,15 @@
             } 
             use:Vertex
         )
-        (dice d:6 num:2)
+        (dice [#])
         (piece "Disc" Each
         	(move
         		(from (from) level:(level))
         		(to ("NextSiteFrom" (from))
-//        			if:(or (is Empty (to)) (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to)))))
-//        			(apply 
-//        				(if (is Enemy (who at:(to))) (remove (to)))	
-//        			)
+        			if:(or (is Empty (to)) (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to)))))
+        			(apply 
+        				(if (is Enemy (who at:(to))) (remove (to)))	
+        			)
         		)
         	)
         )
@@ -43,8 +43,8 @@
     })
     (rules
         (start {
-        	(place Stack "Disc1"  (handSite P1) count:15)
-        	(place Stack "Disc2"  (handSite P2) count:15)
+        	(place Stack "Disc1"  (handSite P1) count:"NumPieces")
+        	(place Stack "Disc2"  (handSite P2) count:"NumPieces")
         })
         phases:{
         (phase "Entering"
@@ -72,7 +72,15 @@
         	(play
         			(do 
                         (if (not "SameTurn") (roll))
-                        next:(forEach Piece top:True)
+                        next:(forEach Die
+                                if:("DieNotUsed")
+                        		(forEach Piece top:True)
+                                (then 
+                                        (if (not (all DiceUsed))
+                                            (moveAgain)
+                                        )
+                                    )
+                        )
         		)
         	)
         )
