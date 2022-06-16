@@ -3,11 +3,12 @@
     (equipment {
         (board [#]) 
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each (move [#]))
     })
     (rules 
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#])
+        (end [#])
     )
 )
 
