@@ -58,8 +58,8 @@ public class LudemeNodeComponent extends JPanel
         this.LN = ludemeNode;
         this.GRAPH_PANEL = graphPanel;
 
-        this.x = (int) ludemeNode.pos().getX();
-        this.y = (int) ludemeNode.pos().getY();
+        this.x = (int) ludemeNode.pos().x();
+        this.y = (int) ludemeNode.pos().y();
 
         // initialize components
         setLayout(new BorderLayout());
@@ -118,7 +118,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public void updateLudemePosition()
     {
-        LudemeNodeComponent.this.setLocation((int) LN.pos().getX(), (int) LN.pos().getY());
+        LudemeNodeComponent.this.setLocation((int) LN.pos().x(), (int) LN.pos().y());
     }
 
     /**

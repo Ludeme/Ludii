@@ -1,12 +1,11 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
-import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
+import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
-import app.display.dialogs.visual_editor.Main;
 
 import javax.swing.*;
 import java.util.HashMap;

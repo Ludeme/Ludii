@@ -169,7 +169,7 @@ public class DescriptionGraph implements iGraph {
 
         DescriptionGraph graphNew = new DescriptionGraph();
         for(LudemeNode node : getNodes()){
-            LudemeNode node_new = new LudemeNode(node.symbol(), (int)node.pos().getX(), (int)node.pos().getY());
+            LudemeNode node_new = new LudemeNode(node.symbol(), (int)node.pos().x(), (int)node.pos().y());
             node_new.setSelectedClause(node.selectedClause());
 
             if(to.contains(node)){

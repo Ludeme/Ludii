@@ -1,18 +1,12 @@
-package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
+package app.display.dialogs.visual_editor.LayoutManagement;
 
-import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
-import app.display.dialogs.visual_editor.LayoutManagement.LayoutConfigs;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
 
 /**
- * TODO: implement application to the trees with different roots
  * @author nic0gin
  */
 
@@ -20,13 +14,13 @@ public class LayoutHandler {
 
     private final iGraph graph;
     private int root;
-    private LayoutMethod layout;
+    private final DFSBoxDrawing layout;
 
     public LayoutHandler(iGraph graph, int root)
     {
         this.graph = graph;
         this.root = root;
-        layout = new DFSBoxDrawing(graph, root, 5, 4.0, 4.0);
+        layout = new DFSBoxDrawing(graph, root, 4.0, 4.0);
     }
 
     public void setRoot(int root) {
@@ -37,17 +31,17 @@ public class LayoutHandler {
 
     public void updateDFSWeights(double offset, double distance, double spread)
     {
-        ((DFSBoxDrawing) layout).updateWeights(offset, distance, spread);
+        layout.updateWeights(offset, distance, spread);
     }
 
     public void updateDFSWeights(double[] weights)
     {
-        ((DFSBoxDrawing) layout).updateAllWeights(weights);
+        layout.updateAllWeights(weights);
     }
 
     public void evaluateGraphWeights()
     {
-        double[] weights = GraphRoutines.getTreeDOS(graph, root);
+        double[] weights = GraphRoutines.treeDOS(graph, root);
         Handler.lsPanel.updateSliderValues(weights[0], weights[1], weights[2]);
         updateDFSWeights(weights);
     }
@@ -71,6 +65,6 @@ public class LayoutHandler {
 
     public void updateCompactness(double sliderValue)
     {
-        ((DFSBoxDrawing) layout).setCompactness(sliderValue);
+        layout.setCompactness(sliderValue);
     }
 }

@@ -1,7 +1,7 @@
 package app.display.dialogs.visual_editor.model;
 
 
-import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
+import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
 import main.grammar.Clause;
@@ -352,8 +352,8 @@ public class LudemeNode implements iLudemeNode, iGNode
     @Override
     public void setPos(Vector2D pos)
     {
-        x = (int) pos.getX();
-        y = (int) pos.getY();
+        x = (int) pos.x();
+        y = (int) pos.y();
     }
 
     /**

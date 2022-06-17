@@ -1,6 +1,6 @@
 package app.display.dialogs.visual_editor.model.interfaces;
 
-import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
+import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 
 import java.util.List;
 

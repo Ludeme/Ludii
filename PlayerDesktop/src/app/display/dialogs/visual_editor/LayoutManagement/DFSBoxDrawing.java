@@ -1,32 +1,26 @@
-package app.display.dialogs.visual_editor.LayoutManagement.LayoutManager;
+package app.display.dialogs.visual_editor.LayoutManagement;
 
 
-import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
-import app.display.dialogs.visual_editor.LayoutManagement.Math.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static app.display.dialogs.visual_editor.LayoutManagement.GraphDrawing.NodePlacementRoutines.translateByRoot;
+import static app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines.translateByRoot;
 
 /**
  * By Y. Miyadera et al (1998) https://doi.org/10.1016/s0020-0190(98)00068-4
  * @author nic0gin
  */
-public class DFSBoxDrawing implements LayoutMethod
+public class DFSBoxDrawing
 {
-    private iGraph graph;
-    private final int C3j;
+    private final iGraph graph;
     private int freeY;
-    // spread
     private final double wY;
-    // distance
     private final double wX;
     private int root;
 
@@ -42,19 +36,15 @@ public class DFSBoxDrawing implements LayoutMethod
 
     public static final int MIN_NODE_GAP = 50;
 
-    private List<LudemeNodeComponent> selectedNodes;
-
     /**
      *
      * @param graph graph
      * @param root
-     * @param C3j a non-negative integer constraint
      * @param wX maximum inner-subtree distance
      * @param wY maximum inner-subtree spread
      */
-    public DFSBoxDrawing(iGraph graph, int root, int C3j, double wY, double wX)
+    public DFSBoxDrawing(iGraph graph, int root, double wY, double wX)
     {
-        this.C3j = C3j;
         this.graph = graph;
         freeY = 0;
         this.root = root;
@@ -111,8 +101,8 @@ public class DFSBoxDrawing implements LayoutMethod
 
             iGNode nV = graph.getNode(nodeId);
 
-            double X0 = nFirst.pos().getY();
-            double X1 = nLast.pos().getY();
+            double X0 = nFirst.pos().y();
+            double X1 = nLast.pos().y();
 
             double wOffset = DOS_MAP[1];
             double yCoord;
@@ -157,15 +147,15 @@ public class DFSBoxDrawing implements LayoutMethod
                 iGNode upper = graph.getNode(LE.get(j));
                 iGNode lower = graph.getNode(P.get(k));
                 if (upper.equals(lower)) break;
-                int nodeDist = (int)(lower.pos().getY()-upper.pos().getY()-upper.height());
+                int nodeDist = (int)(lower.pos().y()-upper.pos().y()-upper.height());
                 // check all the cases for upper and lower nodes x coordinates intersecting
                 // add edges for upward visibility graph
                 // construct next LE
                 // CASE#1: left corner coordinates match
-                if ((int)(upper.pos().getX()) == (int)(lower.pos().getX()))
+                if ((int)(upper.pos().x()) == (int)(lower.pos().x()))
                 {
                     // check if right corner of upper exceeds right corner of lower to add to LE candidates
-                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()+lower.width()))
+                    if ((int)(upper.pos().x()+upper.width()) > (int)(lower.pos().x()+lower.width()))
                     {
                         leCandidates.add(0, upper.id());
                     }
@@ -173,24 +163,24 @@ public class DFSBoxDrawing implements LayoutMethod
                     j--;
                     k--;
                 }
-                else if ((int)(upper.pos().getX()) > (int)(lower.pos().getX()))
+                else if ((int)(upper.pos().x()) > (int)(lower.pos().x()))
                 {
                     // check if right corner of upper exceeds right corner of lower to add to LE candidates
-                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()+lower.width()))
+                    if ((int)(upper.pos().x()+upper.width()) > (int)(lower.pos().x()+lower.width()))
                     {
                         leCandidates.add(0, upper.id());
                     }
                     // CASE#2: left corner of upper is within lower
-                    if ((int)(upper.pos().getX()) <= (int)(lower.pos().getX()+lower.width()))
+                    if ((int)(upper.pos().x()) <= (int)(lower.pos().x()+lower.width()))
                     {
                         addMinDistToGup(Gup, P, k, nodeDist);
                     }
                     j--;
                 }
-                else if ((int)(upper.pos().getX()) < (int)(lower.pos().getX()))
+                else if ((int)(upper.pos().x()) < (int)(lower.pos().x()))
                 {
                     // CASE#2: right corner of upper is within lower
-                    if ((int)(upper.pos().getX()+upper.width()) > (int)(lower.pos().getX()))
+                    if ((int)(upper.pos().x()+upper.width()) > (int)(lower.pos().x()))
                     {
                         addMinDistToGup(Gup, P, k, nodeDist);
                     }
@@ -230,7 +220,7 @@ public class DFSBoxDrawing implements LayoutMethod
                 int dist = minDist - MIN_NODE_GAP;
                 if (!subTree.contains(P.get(j)))
                 {
-                    n.setPos(new Vector2D(n.pos().getX(), n.pos().getY() - Math.max(dist, 0)*compactness));
+                    n.setPos(new Vector2D(n.pos().x(), n.pos().y() - Math.max(dist, 0)*compactness));
                     subTree.add(P.get(j));
                 }
 
@@ -255,12 +245,6 @@ public class DFSBoxDrawing implements LayoutMethod
         DOS_MAP = weights.clone();
     }
 
-    public void setSelectedNodes(List<LudemeNodeComponent> selectedNodes)
-    {
-        this.selectedNodes = selectedNodes;
-    }
-
-    @Override
     public void applyLayout()
     {
         freeY = 0;
@@ -270,7 +254,6 @@ public class DFSBoxDrawing implements LayoutMethod
         translateByRoot(graph, root, oPos);
     }
 
-    @Override
     public void setRoot(int root) {
         this.root = root;
     }

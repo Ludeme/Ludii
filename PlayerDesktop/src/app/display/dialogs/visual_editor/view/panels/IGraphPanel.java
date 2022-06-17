@@ -1,7 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels;
 
 
-import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
+import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;

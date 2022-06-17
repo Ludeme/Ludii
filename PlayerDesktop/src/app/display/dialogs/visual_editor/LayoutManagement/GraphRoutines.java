@@ -16,10 +16,6 @@ public final class GraphRoutines
      * Tuning constants for metric evaluation
      * TODO: find appropriate values
      */
-    private static double DM = 3000;
-    private static double OM = 150;
-    private static double SM = 3500;
-
     private static final double VISUAL_CONSTANT = 2500;
 
     /**
@@ -57,17 +53,6 @@ public final class GraphRoutines
     public static int getNodeDepth(iGraph graph, int v)
     {
         return graph.getNode(v).depth();
-    }
-
-    /**
-     * Get index of a node w.r.t. its parent's list
-     * @param graph
-     * @param v index of a node w.r.t. node list
-     * @return
-     */
-    public static int getChildIndex(iGraph graph, int v)
-    {
-        return graph.getNode(graph.getNode(v).parent()).children().indexOf(v)+1;
     }
 
     /**
@@ -111,15 +96,13 @@ public final class GraphRoutines
         return Layer;
     }
 
-    // TODO: account for node height/width
-
     /**
      * Evaluate subtree configurations of
      * @param graph graph
      * @param root starting from a root
-     * @return
+     * @return layout metrics
      */
-    public static double[] getTreeDOS(iGraph graph, int root)
+    public static double[] treeDOS(iGraph graph, int root)
     {
         double[] DOS_MAP = new double[3];
         HashMap<Integer, List<Double>> layerDist = new HashMap<>();
@@ -139,8 +122,8 @@ public final class GraphRoutines
                 // DOS
                 List<Integer> children = graph.getNode(n).children();
                 int N = children.size();
-                double xDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().getX()).sum() / N) - node.pos().getX();
-                double yDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().getY()).sum() / N) - node.pos().getY();
+                double xDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().x()).sum() / N) - node.pos().x();
+                double yDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().y()).sum() / N) - node.pos().y();
 
                 int depth = graph.getNode(children.get(0)).depth();
                 double D = (Math.max(0, Math.min(xDiffMean, VISUAL_CONSTANT))) / (2*VISUAL_CONSTANT);
@@ -148,10 +131,10 @@ public final class GraphRoutines
 
                 double Smean = 0;
                 // order children by Y coordinate
-                children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().getY() - graph.getNode(o2).pos().getY()));
+                children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().y() - graph.getNode(o2).pos().y()));
                 for (int i = 0; i < children.size() - 1; i++)
                 {
-                    Smean += Math.abs(graph.getNode(children.get(i)).pos().getY() - graph.getNode(children.get(i+1)).pos().getY());
+                    Smean += Math.abs(graph.getNode(children.get(i)).pos().y() - graph.getNode(children.get(i+1)).pos().y());
                 }
                 double S = Math.max(0, Math.min(Smean, VISUAL_CONSTANT)) / (2*VISUAL_CONSTANT);
 
@@ -179,14 +162,14 @@ public final class GraphRoutines
     {
         List<Integer> keys = new ArrayList<>(weightMap.keySet());
         double avg = 0.0;
-        for (int i = 0; i < keys.size(); i++)
+        for (Integer key : keys)
         {
             double localAvg = 0.0;
-            int k = keys.get(i);
+            int k = key;
             List<Double> list = weightMap.get(k);
-            for (int j = 0; j < list.size(); j++)
+            for (Double aDouble : list)
             {
-                localAvg += list.get(j);
+                localAvg += aDouble;
             }
             localAvg /= list.size();
             // TODO: take a weighted average such that higher layers have more significance
@@ -195,26 +178,14 @@ public final class GraphRoutines
         return avg / keys.size();
     }
 
-
-    public static void setDM(double DM) {
-        GraphRoutines.DM = DM;
-    }
-
-    public static void setOM(double OM) {
-        GraphRoutines.OM = OM;
-    }
-
-    public static void setSM(double SM) {
-        GraphRoutines.SM = SM;
-    }
-
     public static void findAllPaths(ArrayList<List<Integer>> paths, iGraph graph, int root, List<Integer> pprime)
     {
         // current node
         iGNode node = graph.getNode(root);
         List<Integer> p = new ArrayList<>(pprime);
         p.add(root);
-        node.children().forEach(cid -> {
+        node.children().forEach(cid ->
+        {
             iGNode c = graph.getNode(cid);
             List<Integer> pTemp = new ArrayList<>(p);
             pTemp.add(cid);
