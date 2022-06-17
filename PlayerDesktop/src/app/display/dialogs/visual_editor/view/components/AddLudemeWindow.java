@@ -60,10 +60,12 @@ public class AddLudemeWindow extends JPanel {
                 int index = theList.locationToIndex(mouseEvent.getPoint());
                 if (index >= 0) {
                     Object o = theList.getModel().getElementAt(index);
-                    ReadableSymbol rs = (ReadableSymbol) o;
-                    graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
-                    searchField.setText("");
-                    scrollableList.getVerticalScrollBar().setValue(0);
+                    if(o != null) {
+                        ReadableSymbol rs = (ReadableSymbol) o;
+                        graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                        searchField.setText("");
+                        scrollableList.getVerticalScrollBar().setValue(0);
+                    }
                 }
             }
         };
@@ -78,15 +80,20 @@ public class AddLudemeWindow extends JPanel {
         // remove duplicates
         symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
 
+
+        List<ReadableSymbol> ludemeList_copy = new ArrayList<>();
+
         listModel = new DefaultListModel<ReadableSymbol>();
         for (Symbol s : symbolList) {
-            listModel.addElement(new ReadableSymbol(s));
+            if(s != null) {
+                ReadableSymbol rs = new ReadableSymbol(s);
+                listModel.addElement(rs);
+                ludemeList_copy.add(rs);
+            }
         }
 
         list = new JList(listModel);
         scrollableList = new JScrollPane(list);
-
-        List<Symbol> ludemeList_copy = symbolList;
 
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -102,10 +109,11 @@ public class AddLudemeWindow extends JPanel {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 listModel = new DefaultListModel<Symbol>();
-                for(Symbol l : ludemeList_copy){
+                for(ReadableSymbol rs : ludemeList_copy){
+                    Symbol l = rs.getSymbol();
                     // TODO: Improve
                     if(l.name().contains(searchField.getText())){
-                        listModel.addElement(l);
+                        listModel.addElement(rs);
                     }
                 }
                 list.setModel(listModel);
