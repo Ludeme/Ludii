@@ -17,6 +17,7 @@ public class LayoutSettingsPanel extends JPanel
     private final JSlider dSl;
     private final JSlider oSl;
     private final JSlider sSl;
+    private final JSlider cSl;
     private final LayoutHandler lh;
     private final JLabel selectedComponent;
 
@@ -37,10 +38,12 @@ public class LayoutSettingsPanel extends JPanel
         dSl = new JSlider(0, 100);
         oSl = new JSlider(0, 100);
         sSl = new JSlider(0, 100);
+        cSl = new JSlider(0, 100);
 
         JLabel distanceText = new JLabel("Distance: " + getSliderValue(dSl));
         JLabel offsetText = new JLabel("Offset: " + getSliderValue(oSl));
         JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
+        JLabel compactnessText = new JLabel("Compactness: " + getSliderValue(cSl));
 
         Button redraw = new Button("Arrange graph");
         Button alignX = new Button("Align vertically");
@@ -68,6 +71,7 @@ public class LayoutSettingsPanel extends JPanel
             distanceText.setText("Distance: " + getSliderValue(dSl));
             offsetText.setText("Offset: " + getSliderValue(oSl));
             spreadText.setText("Spread: " + getSliderValue(sSl));
+            compactnessText.setText("Compactness: " + getSliderValue(cSl));
             updateWeights();
             executeDFSLayout(graphPanel);
         };
@@ -75,6 +79,7 @@ public class LayoutSettingsPanel extends JPanel
         dSl.addChangeListener(sliderUpdateListener);
         oSl.addChangeListener(sliderUpdateListener);
         sSl.addChangeListener(sliderUpdateListener);
+        cSl.addChangeListener(sliderUpdateListener);
 
         // adding sliders
         add(selectedComponent);
@@ -84,6 +89,8 @@ public class LayoutSettingsPanel extends JPanel
         add(oSl);
         add(spreadText);
         add(sSl);
+        add(compactnessText);
+        add(cSl);
         // redraw button
         redraw.setMaximumSize(new Dimension(550, 25));
         alignX.setMaximumSize(new Dimension(550, 25));
@@ -105,15 +112,16 @@ public class LayoutSettingsPanel extends JPanel
 
     private void updateWeights()
     {
-        lh.updateDFSWeights(getSliderValue(oSl),
-                getSliderValue(dSl),
-                getSliderValue(sSl));
+        lh.updateCompactness(getSliderValue(cSl));
+        lh.updateDFSWeights(getSliderValue(oSl)/2.0,
+                getSliderValue(dSl)/2.0,
+                getSliderValue(sSl)/2.0);
     }
 
     public void updateSliderValues(double d, double o, double s)
     {
         dSl.setValue((int)(d * 100));
-        oSl.setValue((int)(o * 100));
+        oSl.setValue((int)(o * 2 * 100));
         sSl.setValue((int)(s * 100));
     }
 

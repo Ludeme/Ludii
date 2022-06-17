@@ -143,8 +143,8 @@ public final class GraphRoutines
                 double yDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().getY()).sum() / N) - node.pos().getY();
 
                 int depth = graph.getNode(children.get(0)).depth();
-                double D = (Math.max(0, Math.min(xDiffMean, VISUAL_CONSTANT))) / VISUAL_CONSTANT;
-                double O = (Math.max(-VISUAL_CONSTANT,Math.min(yDiffMean, VISUAL_CONSTANT)) + VISUAL_CONSTANT) / (2*VISUAL_CONSTANT);
+                double D = (Math.max(0, Math.min(xDiffMean, VISUAL_CONSTANT))) / (2*VISUAL_CONSTANT);
+                double O = (Math.max(-VISUAL_CONSTANT,Math.min(yDiffMean, VISUAL_CONSTANT)) + VISUAL_CONSTANT) / (4*VISUAL_CONSTANT);
 
                 double Smean = 0;
                 // order children by Y coordinate
@@ -153,7 +153,7 @@ public final class GraphRoutines
                 {
                     Smean += Math.abs(graph.getNode(children.get(i)).pos().getY() - graph.getNode(children.get(i+1)).pos().getY());
                 }
-                double S = Math.max(0, Math.min(Smean, VISUAL_CONSTANT)) / VISUAL_CONSTANT;
+                double S = Math.max(0, Math.min(Smean, VISUAL_CONSTANT)) / (2*VISUAL_CONSTANT);
 
                 addWeight(depth, D, layerDist); // H
                 addWeight(depth, O, layerOffset); // V

@@ -35,6 +35,7 @@ public class DFSBoxDrawing implements LayoutMethod
     private final double DEFAULT_DISTANCE = 0.1;
     private final double DEFAULT_OFFSET = 0.1;
     private final double DEFAULT_SPREAD = 0.1;
+    private double compactness = 0.5;
 
     private final int PADDING_X = 10;
     private final int PADDING_Y = 10;
@@ -226,11 +227,10 @@ public class DFSBoxDrawing implements LayoutMethod
             for (int j = 1; j < P.size(); j++)
             {
                 iGNode n = graph.getNode(P.get(j));
-                // TODO: add min gap
-                int dist = minDist - 0;
+                int dist = minDist - MIN_NODE_GAP;
                 if (!subTree.contains(P.get(j)))
                 {
-                    n.setPos(new Vector2D(n.pos().getX(), n.pos().getY() - Math.max(dist, minDist)));
+                    n.setPos(new Vector2D(n.pos().getX(), n.pos().getY() - Math.max(dist, 0)*compactness));
                     subTree.add(P.get(j));
                 }
 
@@ -243,6 +243,11 @@ public class DFSBoxDrawing implements LayoutMethod
         DOS_MAP[0] = spread;
         DOS_MAP[1] = offset;
         DOS_MAP[2] = distance;
+    }
+
+    public void setCompactness(double compactness)
+    {
+        this.compactness = compactness;
     }
 
     public void updateAllWeights(double[] weights)

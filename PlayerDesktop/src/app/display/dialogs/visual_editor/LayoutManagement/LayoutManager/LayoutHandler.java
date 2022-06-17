@@ -69,4 +69,8 @@ public class LayoutHandler {
         layout.applyLayout();
     }
 
+    public void updateCompactness(double sliderValue)
+    {
+        ((DFSBoxDrawing) layout).setCompactness(sliderValue);
+    }
 }
