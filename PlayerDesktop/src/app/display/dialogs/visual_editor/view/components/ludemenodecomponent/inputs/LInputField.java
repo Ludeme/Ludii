@@ -19,36 +19,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LInputField extends JComponent {
+/**
+ * A component represent a ClauseArgument / NodeArgument in the LudemeNodeComponent
+ * If a LInputField contains 1x NodeArgument: It's a standard field
+ * If a LInputField contains more than 1 NodeArgument: It's a "merged" field, the user can select one of the NodeArguments
+ * @author Filipp Dokienko
+ */
 
-    /*
-        A LInputField can either have 1x NodeArgument -> Standard Field
-                                list of NodeArgument -> "Merged" Field
-     */
-
+public class LInputField extends JComponent
+{
+    /** LudemeNodeComponent that contains this LInputField */
     private final LudemeNodeComponent LNC;
+    /** List of NodeArguments that can be selected */
     List<NodeArgument>nodeArgumentList = new ArrayList<>();
+    /** Whether this LInputField contains only one NodeArgument */
     boolean isSingle;
+    /** Whether this LInputField is optional */
     public boolean isOptional = false;
 
-    private static final boolean DEBUG = true;
-
-    public List<LInputField> children = new ArrayList<>(); // list of children in case of collection
+    /** For NodeArguments that are collections, there is a "parent" LInputField, from which "children" LInputFields are created */
     public LInputField parent = null;
+    public List<LInputField> children = new ArrayList<>();
 
+    /** Label of this LInputField */
+    private JLabel label;
+    /** Label indicating whether this LInputField is optional */
+    private final JLabel optionalLabel = new JLabel("(optional)");
 
     JComponent inputFieldComponent;
     LConnectionComponent connectionComponent;
-    public JLabel label;
 
+
+    private static final boolean DEBUG = true;
+
+    /**
+     * Constructor for a LInputField that contains only one NodeArgument
+     * @param ludemeNodeComponent
+     * @param nodeArgument
+     */
     public LInputField(LudemeNodeComponent ludemeNodeComponent, NodeArgument nodeArgument){
         this.LNC = ludemeNodeComponent;
-
         nodeArgumentList.add(nodeArgument);
-        if(nodeArgument.optional()) isOptional = true;
         isSingle = true;
+        if(nodeArgument.optional()) isOptional = true;
         constructInputField(nodeArgument);
-        setOpaque(false);
     }
 
     public LInputField(LudemeNodeComponent ludemeNodeComponent, List<NodeArgument> nodeArgumentList){
@@ -64,7 +78,6 @@ public class LInputField extends JComponent {
         }
         isSingle = false;
         constructInputField(nodeArgumentList);
-        setOpaque(false);
     }
 
     public LInputField(LInputField parent){
@@ -74,19 +87,131 @@ public class LInputField extends JComponent {
         constructCollectionField(parent);
         parent.children.add(this);
         this.parent = parent;
-        setOpaque(false);
     }
 
-    private void constructCollectionField(LInputField parent){
-        if(parent.getNodeArgument().arg().label() == null){
-            label = new JLabel(parent.getNodeArgument().arg().symbol().name());
-        } else {
-            label = new JLabel(parent.getNodeArgument().arg().label());
-        }
+
+    /**
+     * Given a NodeArgument, this method constructs a LInputField
+     * @param nodeArgument
+     */
+    private void constructInputField(NodeArgument nodeArgument)
+    {
+        removeAll(); // reset field
+        ClauseArg arg = nodeArgument.arg();
+
+        label = new JLabel(arg.symbol().name());
+        if(arg.label() != null)
+            label = new JLabel(arg.label());
+
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+
+        // Terminal Node Arguments have no connection component
+        if(!nodeArgument.separateNode() && nodeArgument.isTerminal())
+        {
+            inputFieldComponent = getTerminalComponent(nodeArgument);
+            inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.width()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
+            inputFieldComponent.addMouseListener(userInputListener);
+
+            setLayout(new FlowLayout(FlowLayout.LEFT));
+            add(Box.createHorizontalStrut(10)); // TODO: Set in DesignPalette
+            add(label);
+            add(inputFieldComponent);
+        }
+        // Non-Terminal Node Arguments have a connection component
+        else
+        {
+            setLayout(new FlowLayout(FlowLayout.RIGHT));
+            if(nodeArgument.optional()) add(optionalLabel);
+            add(label);
+
+            // if it's an optional argument, make the font italic
+            if(nodeArgument.optional())
+            {
+                optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
+                optionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+                add(optionalLabel);
+            }
+            else if (nodeArgument.choice())
+            {
+                label.setText("Choice");
+                LInputButton addChoiceButton = new LInputButton(DesignPalette.CHOICE_ICON_ACTIVE, DesignPalette.CHOICE_ICON_HOVER);
+
+                add(Box.createHorizontalStrut(10)); // TODO: Set in DesignPalette
+                add(addChoiceButton);
+            }
+            else if(nodeArgument.collection())
+            {
+                LInputButton addItemButton = new LInputButton(DesignPalette.COLLECTION_ICON_ACTIVE, DesignPalette.COLLECTION_ICON_HOVER);
+
+                add(Box.createHorizontalStrut(10)); // TODO: Set in DesignPalette
+                add(addItemButton);
+
+                addItemButton.addActionListener(e -> {
+                    addCollectionItem();
+                });
+            }
+
+            add(Box.createHorizontalStrut(5)); // TODO: Set in DesignPalette
+
+            // create connection component to connect to another LudemeConnectionComponent
+            connectionComponent = new LConnectionComponent(this, label.getPreferredSize().height, (int) (label.getPreferredSize().height * 0.4), false);
+            add(connectionComponent);
+            inputFieldComponent = connectionComponent;
+        }
+
+    }
+
+    /**
+     * Given a list of NodeArguments, create one LInputField where the user can decide what NodeArgument to use
+     *      Use-Case 1: If the node is dynamic, add all currently available NodeArguments
+     *      Use-Case 2: If there are multiple consequent optional arguments, merge them into one field
+     * @param nodeArgumentList
+     */
+    private void constructInputField(List<NodeArgument> nodeArgumentList){
+        removeAll();
+        // check whether this is a list of only optional arguments
+        boolean isOptionalNotAdditional = true;
+        for(NodeArgument nodeArgument : nodeArgumentList){
+            if(!nodeArgument.optional()){
+                isOptionalNotAdditional = false;
+            }
+        }
+        if(isOptionalNotAdditional) label = new JLabel("Optional Arguments");
+        else label = new JLabel("Additional Arguments");
+        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(label);
+
+        add(Box.createHorizontalStrut(5));
+        connectionComponent = new LConnectionComponent(this, label.getPreferredSize().height, (int) (label.getPreferredSize().height * 0.4), false);
+        add(connectionComponent);
+        inputFieldComponent = connectionComponent;
+
+    }
+
+    /**
+     * Adds a new collection child to LInputField parent
+     * @param parent
+     */
+    private void constructCollectionField(LInputField parent)
+    {
+        NodeArgument nodeArgument = parent.nodeArgument();
+        ClauseArg arg = nodeArgument.arg();
+
+        label = new JLabel(arg.symbol().name());
+        if(arg.label() != null)
+            label = new JLabel(arg.label());
+
+        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+
+        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        add(label);
+
+        // Button to remove this collection child
         LInputButton removeItemButton = new LInputButton(DesignPalette.COLLECTION_REMOVE_ICON_ACTIVE, DesignPalette.COLLECTION_REMOVE_ICON_HOVER);
 
         add(Box.createHorizontalStrut(10));
@@ -96,97 +221,60 @@ public class LInputField extends JComponent {
             removeCollectionItem();
         });
 
-
         add(Box.createHorizontalStrut(5));
         connectionComponent = new LConnectionComponent(this, label.getPreferredSize().height, (int) (label.getPreferredSize().height * 0.4), false);
         add(connectionComponent);
         inputFieldComponent = connectionComponent;
     }
 
-    private void constructInputField(NodeArgument nodeArgument){
-        removeAll();
-
-        NodeArgument input = nodeArgument;
-        Symbol inputSymbol = input.arg().symbol();
-        Symbol.LudemeType inputType = inputSymbol.ludemeType();
-
-        /* TODO: Re-enable
-        if(input.size() == 1 && inputType.equals(Symbol.LudemeType.Primitive) || inputType.equals(Symbol.LudemeType.Primitive) && !input.arg().optional()){ // TODO: What about type "predefined"?
-            input = new NodeInput(inputSymbol.rule().rhs().get(0), inputSymbol.rule().rhs().get(0).args().get(0));
-        } else if(input.size() == 1 && inputSymbol.name().equals("Integer")){
-            input = new NodeInput(inputSymbol.rule().rhs().get(30), inputSymbol.rule().rhs().get(30).args().get(0));
-        } else if(input.size() == 1 && inputSymbol.name().equals("Dimension")){
-            input = new NodeInput(inputSymbol.rule().rhs().get(6), inputSymbol.rule().rhs().get(6).args().get(0));
-        }*/
-
-        if(input.arg().label() != null){
-            label = new JLabel(input.arg().label());
-        } else {
-            label = new JLabel(input.arg().symbol().name());
-        }
-        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
-
-
-        if(input.isTerminal()){ // TODO: does that work?
-            inputFieldComponent = getTerminalComponent(input);
-            inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.width()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
-            inputFieldComponent.addMouseListener(userInputListener);
-
-            setLayout(new FlowLayout(FlowLayout.LEFT));
-            add(Box.createHorizontalStrut(10));
-            add(label);
-            add(inputFieldComponent);
-        }
-        else {
-            setLayout(new FlowLayout(FlowLayout.RIGHT));
-            add(label);
-
-            if(input.arg().optional()){
-                LInputButton addOptionalArgumentButton = new LInputButton(DesignPalette.OPTIONAL_ICON_ACTIVE, DesignPalette.OPTIONAL_ICON_HOVER);
-
-                // TODO: Button Listener
-
-                add(Box.createHorizontalStrut(10));
-                add(label);
-                add(Box.createHorizontalStrut(5));
-                add(addOptionalArgumentButton);
-
+    /**
+     * Adds this LInputField (children of a collection) below the last child of the parent
+     */
+    private void addCollectionItem()
+    {
+        // new item added below last collection item or this (parent)
+        LInputField last = null;
+        if(children.isEmpty()) last = this;
+        else last = children.get(children.size()-1);
+        LNC.inputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
+        // update provided inputs in handler
+        if(LNC.node().providedInputs()[inputIndexFirst()] instanceof LudemeNode[] collection)
+        {
+            if(collection.length < children.size() + 1)
+            {
+                Handler.addCollectionElement(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst());
             }
-
-            else if (input.size() > 1) {
-                label.setText("Choice");
-                LInputButton addChoiceButton = new LInputButton(DesignPalette.CHOICE_ICON_ACTIVE, DesignPalette.CHOICE_ICON_HOVER);
-
-                // TODO: Hover
-                // TODO: Button Listener
-
-                add(Box.createHorizontalStrut(10));
-                add(addChoiceButton);
-
-            }
-            else if(input.arg().nesting() > 0){
-                LInputButton addItemButton = new LInputButton(DesignPalette.COLLECTION_ICON_ACTIVE, DesignPalette.COLLECTION_ICON_HOVER);
-
-                add(Box.createHorizontalStrut(10));
-                add(addItemButton);
-
-                addItemButton.addActionListener(e -> {
-                    addCollectionItem();
-                });
-            }
-
-            add(Box.createHorizontalStrut(5));
-            connectionComponent = new LConnectionComponent(this, label.getPreferredSize().height, (int) (label.getPreferredSize().height * 0.4), false);
-            add(connectionComponent);
-            inputFieldComponent = connectionComponent;
         }
-
+        if(LNC.node().providedInputs()[inputIndexFirst()] == null)
+        {
+            Handler.addCollectionElement(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst());
+        }
     }
 
-    private JComponent getTerminalComponent(NodeArgument argument){
+    /**
+     * Removes this LInputField (children of a collection)
+     */
+    private void removeCollectionItem()
+    {
+        // Remove from model
+        Handler.removeCollectionElement(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst(), parent.children.indexOf(this) + 1);
+
+        LNC.graphPanel().connectionHandler().removeConnection(LNC.node(), this.getConnectionComponent());
+
+        LNC.inputArea().removeField(this);
+        parent.children.remove(this);
+    }
+
+    /**
+     *
+     * @param argument
+     * @return A JComponent for a given NordeArgument which is terminal
+     */
+    private JComponent getTerminalComponent(NodeArgument argument)
+    {
         ClauseArg arg = argument.arg();
 
+        // If the argument refers only to Terminal Constants, create a dropdown menu
         if(argument.terminalDropdown())
         {
             JComboBox<Symbol> dropdown = new JComboBox<>();
@@ -199,7 +287,10 @@ public class LInputField extends JComponent {
             return dropdown;
         }
 
-        switch(arg.symbol().name()){
+        // Otherwise, for every possible Predefined LudemeType create according JComponent
+        // TODO: Add remaining
+        switch(arg.symbol().name())
+        {
             case "Integer":
                 return new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
             case "String":
@@ -209,67 +300,6 @@ public class LInputField extends JComponent {
         }
     }
 
-    private void addCollectionItem(){
-        // new item added below last collection item or this (parent)
-        LInputField last = null;
-        if(children.isEmpty()) last = this;
-        else last = children.get(children.size()-1);
-        LNC.inputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
-    }
-    private void removeCollectionItem(){
-        IGraphPanel graphPanel = LNC.graphPanel();
-
-        // get current provided input array
-        LudemeNode[] oldProvidedInputs = (LudemeNode[]) LNC.node().providedInputs()[getInputIndex()];
-        if(oldProvidedInputs != null) {
-            // find this inputfields index in the provided inputs
-            int indexToRemove = parent.children.indexOf(this) + 1;
-            // decrease provided inputs array size
-            LudemeNode[] newProvidedInputs = new LudemeNode[oldProvidedInputs.length - 1];
-            for (int i = 0; i < indexToRemove; i++) {
-                newProvidedInputs[i] = oldProvidedInputs[i];
-            }
-            for (int i = indexToRemove + 1; i < oldProvidedInputs.length; i++) {
-                newProvidedInputs[i - 1] = oldProvidedInputs[i];
-            }
-
-            System.out.println("\u001B[32m" + "Calling from LIF 178" + "\u001B[0m");
-            Handler.updateInput(graphPanel.graph(), LNC.node(), getInputIndex(), newProvidedInputs);
-        }
-
-        graphPanel.connectionHandler().removeConnection(LNC.node(), this.getConnectionComponent());
-
-        LNC.inputArea().removeField(this);
-        parent.children.remove(this);
-    }
-
-
-    /*
-         Optional arguments merge
-     */
-    private void constructInputField(List<NodeArgument> nodeArgumentList){
-        removeAll();
-
-        label = new JLabel("Additional Arguments");
-        boolean isOptionalNotAdditional = true;
-        for(NodeArgument nodeArgument : nodeArgumentList){
-            if(!nodeArgument.optional()){
-                isOptionalNotAdditional = false;
-            }
-        }
-        if(isOptionalNotAdditional) label = new JLabel("Optional Arguments");
-        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
-
-        setLayout(new FlowLayout(FlowLayout.RIGHT));
-        add(label);
-
-        add(Box.createHorizontalStrut(5));
-        connectionComponent = new LConnectionComponent(this, label.getPreferredSize().height, (int) (label.getPreferredSize().height * 0.4), false);
-        add(connectionComponent);
-        inputFieldComponent = connectionComponent;
-
-    }
 
     // Updates the provided input list in the model whenever the mouse moves over this input field TODO: Not a good way to solve this
     MouseListener userInputListener = new MouseAdapter() {
@@ -280,16 +310,17 @@ public class LInputField extends JComponent {
         }
     };
 
+    // TODO
     public void updateUserInputs(){
         if(isSingle) {
-            System.out.println("[LIF] Updated input " + getInputIndex() + " to " + getUserInput());
+            System.out.println("[LIF] Updated input " + inputIndexFirst() + " to " + getUserInput());
             System.out.println("\u001B[32m"+"Calling from LIF 221"+"\u001B[0m");
-            Handler.updateInput(LNC.graphPanel().graph(), LNC.node(), getInputIndex(), getUserInput());
+            Handler.updateInput(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst(), getUserInput());
         }
     }
 
     /**
-     * Returns the user supplied input for an input field
+     * Returns the user supplied input for an input field TODO
      * @return
      */
     public Object getUserInput(){
@@ -309,7 +340,7 @@ public class LInputField extends JComponent {
         if(nodeArgumentList.size() > 1) {
             // TODO: My words: "Incorrect use here", but I do not remember why
         }
-        if (getNodeArgument().collection() && input instanceof LudemeNode[]) {
+        if (nodeArgument().collection() && input instanceof LudemeNode[]) {
             // collection inputs are connected to multiple nodes
             LudemeNode[] connectedTo = (LudemeNode[]) input;
             IGraphPanel graphPanel = LNC.graphPanel();
@@ -447,61 +478,114 @@ public class LInputField extends JComponent {
         return newInputField;
     }
 
-    public void addNodeArgument(NodeArgument nodeArgument){
+    /**
+     * Adds an additional NodeArgument to this input field.
+     * @param nodeArgument The NodeArgument to add.
+     */
+    public void addNodeArgument(NodeArgument nodeArgument)
+    {
         nodeArgumentList.add(nodeArgument);
     }
 
-    public void removeNodeArgument(NodeArgument nodeArgument){
-        nodeArgumentList.remove(nodeArgument);
-    }
-
-    public int getInputIndex(){
-        if(!isSingle) System.out.println("!!!! INCORRECT USE HERE");
+    /**
+     *
+     * @return The input index of the first NodeArgument in this LInputField
+     */
+    public int inputIndexFirst()
+    {
         return nodeArgumentList.get(0).indexFirst();
     }
 
-    public List<Symbol> getRequiredSymbols(){
+    /**
+     *
+     * @return A list of symbols this input field can be connected to
+     */
+    public List<Symbol> possibleSymbols()
+    {
         if(isSingle) return nodeArgumentList.get(0).possibleSymbolInputsExpanded();
 
-        List<Symbol> requiredLudemes = new ArrayList<>();
-        for(NodeArgument nodeArgument : nodeArgumentList){
-            requiredLudemes.addAll(nodeArgument.possibleSymbolInputsExpanded());
+        List<Symbol> possibleSymbols = new ArrayList<>();
+        for(NodeArgument nodeArgument : nodeArgumentList)
+        {
+            possibleSymbols.addAll(nodeArgument.possibleSymbolInputsExpanded());
         }
-        System.out.println(this + " nodeArgument: getPossibleSymbolInputs: " + requiredLudemes);
+        System.out.println(this + " nodeArgument: getPossibleSymbolInputs: " + possibleSymbols);
 
-        return requiredLudemes;
+        return possibleSymbols;
     }
 
-    public LConnectionComponent getConnectionComponent(){
+
+    /**
+     *
+     * @return the connection component used to provide an input to a non-terminal input field
+     *        or null if this input field represents a terminal input field
+     */
+    public LConnectionComponent getConnectionComponent()
+    {
         return connectionComponent;
     }
 
-    public LudemeNodeComponent getLudemeNodeComponent(){
+    /**
+     *
+     * @return the LudemeNodeComponent that this input field is part of
+     */
+    public LudemeNodeComponent ludemeNodeComponent()
+    {
         return LNC;
     }
 
-    public NodeArgument getNodeArgument(){
+    /**
+     *
+     * @return the node argument that this input field is representing
+     */
+    public NodeArgument nodeArgument()
+    {
         return nodeArgumentList.get(0);
     }
 
-    public List<NodeArgument> getNodeArguments(){
+    /**
+     *
+     * @return the list of NodeArguments that are merged into this input field
+     */
+    public List<NodeArgument> nodeArguments()
+    {
         return nodeArgumentList;
     }
 
-    public List<Integer> getInputIndices(){
+    /**
+     *
+     * @return List of indices of the NodeArguments this input field compromises
+     */
+    public List<Integer> getInputIndices()
+    {
         List<Integer> indices = new ArrayList<>();
         for(NodeArgument nodeArgument : nodeArgumentList) {
-            indices.add(nodeArgument.indexFirst());
+            indices.addAll(nodeArgument.indices());
         }
         return indices;
     }
 
-    public boolean isSingle(){
+    /**
+     *
+     * @return whether this input field is a single input field
+     */
+    public boolean isSingle()
+    {
         return isSingle;
     }
 
+    /**
+     *
+     * @return the JLabel of the inputfield
+     */
+    public JLabel label()
+    {
+        return label;
+    }
+
     @Override
-    public String toString(){
+    public String toString()
+    {
         return "Input Field of " + nodeArgumentList;
     }
 
@@ -509,8 +593,9 @@ public class LInputField extends JComponent {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+        // TODO: Required for scaling
+        //label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        //label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
     }
 
 }

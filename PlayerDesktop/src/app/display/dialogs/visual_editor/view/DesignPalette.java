@@ -114,6 +114,7 @@ public class DesignPalette
     // LUDEME BLOCK //
     public static Font LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  LUDEME_TITLE_FONT_SIZE);
     public static Font LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
+    public static Font LUDEME_INPUT_FONT_ITALIC = new Font("Roboto Italic", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
 
     // ~~ ICONS ~~ //
 

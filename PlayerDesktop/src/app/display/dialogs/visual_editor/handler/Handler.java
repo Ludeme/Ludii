@@ -72,6 +72,45 @@ public class Handler {
         }
     }
 
+    public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
+    {
+        if(DEBUG) System.out.println("[HANDLER] Adding collection element of " + node.title() + ", " + inputIndex);
+        LudemeNode[] oldCollection = (LudemeNode[]) node.providedInputs()[inputIndex];
+        if(oldCollection == null)
+        {
+            updateInput(graph, node, inputIndex, new LudemeNode[2]);
+            return;
+        }
+        LudemeNode[] newCollection = new LudemeNode[oldCollection.length + 1];
+        System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
+        updateInput(graph, node, inputIndex, newCollection);
+    }
+
+    /**
+     * if a collection element was removed, update the provided input array
+     * @param graph
+     * @param node
+     * @param inputIndex Index of collection argument in clause
+     * @param elementIndex Index of collection element
+     */
+    public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex, int elementIndex)
+    {
+        if(DEBUG) System.out.println("[HANDLER] Removed collection element of " + node.symbol().name() + ", " + inputIndex + " at " + elementIndex);
+
+        LudemeNode[] oldCollection = (LudemeNode[]) node.providedInputs()[inputIndex];
+        if(oldCollection == null) return;
+        LudemeNode[] newCollection = new LudemeNode[oldCollection.length - 1];
+        for(int i = 0; i < elementIndex; i++)
+        {
+            newCollection[i] = oldCollection[i];
+        }
+        for(int i = elementIndex + 1; i < oldCollection.length; i++)
+        {
+            newCollection[i - 1] = oldCollection[i];
+        }
+        updateInput(graph, node, inputIndex, newCollection);
+    }
+
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
         graph.addEdge(from.id(), to.id());
         // here form is the parent node

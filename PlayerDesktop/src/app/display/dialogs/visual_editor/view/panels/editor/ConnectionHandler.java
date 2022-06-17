@@ -102,10 +102,10 @@ public class ConnectionHandler
 
         // Update the provided input in the description graph
         // differentiate between an inputed provided to a collection and otherwise
-        if(source.getInputField().getNodeArgument().collection())
+        if(source.getInputField().nodeArgument().collection())
         {
             LudemeNode sourceNode = source.getLudemeNodeComponent().node();
-            NodeArgument sourceInput = source.getInputField().getNodeArgument();
+            NodeArgument sourceInput = source.getInputField().nodeArgument();
 
             // TODO: Perhaps this part should be put into LInputField.java addCollectionItem() method
 
@@ -151,9 +151,9 @@ public class ConnectionHandler
         }
         else
         {
-            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.getInputField().getInputIndex());
+            if(DEBUG) System.out.println("[EP] Adding connection: " + source.getLudemeNodeComponent().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.getInputField().inputIndexFirst());
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
-            Handler.updateInput(Handler.editorPanel.graph(), source.getLudemeNodeComponent().node(), source.getInputField().getInputIndex(), target.getHeader().ludemeNodeComponent().node());
+            Handler.updateInput(Handler.editorPanel.graph(), source.getLudemeNodeComponent().node(), source.getInputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
         }
 
         Handler.editorPanel.repaint();
@@ -175,9 +175,9 @@ public class ConnectionHandler
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().inputArea().updateComponent(node, null,true);
+                e.getConnectionComponent().getInputField().ludemeNodeComponent().inputArea().updateComponent(node, null,true);
                 System.out.println("\u001B[32m"+"Calling from EP 307"+"\u001B[0m");
-                Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().getInputIndex(), null);
+                Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().inputIndexFirst(), null);
             }
         }
         Handler.editorPanel.repaint();
@@ -195,12 +195,12 @@ public class ConnectionHandler
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().setFill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
-                e.getConnectionComponent().getInputField().getLudemeNodeComponent().inputArea().updateComponent(node, null, true);
+                e.getConnectionComponent().getInputField().ludemeNodeComponent().inputArea().updateComponent(node, null, true);
                 // check whether it was the element of a collection
-                if(connection.getInputField().isSingle() && connection.getInputField().getNodeArgument().collection())
+                if(connection.getInputField().isSingle() && connection.getInputField().nodeArgument().collection())
                 {
                     // if element of collection udpate the array
-                    LudemeNode[] providedInputs = (LudemeNode[]) node.providedInputs()[connection.getInputField().getInputIndex()];
+                    LudemeNode[] providedInputs = (LudemeNode[]) node.providedInputs()[connection.getInputField().inputIndexFirst()];
                     // find index which to remove from array
                     int indexToUpdate;
                     if(connection.getInputField().parent != null)
@@ -214,11 +214,11 @@ public class ConnectionHandler
                     // set to null
                     providedInputs[indexToUpdate] = null;
                     System.out.println("\u001B[32m"+"Calling from EP 339"+"\u001B[0m");
-                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().getLudemeNodeComponent().node(), connection.getInputField().getInputIndex(), providedInputs);
+                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().getLudemeNodeComponent().node(), connection.getInputField().inputIndexFirst(), providedInputs);
                 } else
                 {
                     System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
-                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().getInputIndex(), null);
+                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().getLudemeNodeComponent().node(), e.getConnectionComponent().getInputField().inputIndexFirst(), null);
                 }
             }
         }

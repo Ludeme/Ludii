@@ -35,8 +35,8 @@ public class LConnectionComponent extends JComponent {
 
     public LConnectionComponent(LInputField inputField, int height, int radius, boolean fill) {
         this.INPUT_FIELD = inputField;
-        height = INPUT_FIELD.label.getPreferredSize().height;
-        RADIUS = (int) (INPUT_FIELD.label.getPreferredSize().height * 0.4);
+        height = INPUT_FIELD.label().getPreferredSize().height;
+        RADIUS = (int) (INPUT_FIELD.label().getPreferredSize().height * 0.4);
         this.fill = fill;
         this.isOptional = INPUT_FIELD.isOptional;
 
@@ -52,7 +52,7 @@ public class LConnectionComponent extends JComponent {
 
         addMouseListener(clickListener);
 
-        connectionPointPosition.update(new Point(inputField.getLudemeNodeComponent().width(), inputField.getPreferredSize().height*inputField.getInputIndex()));
+        connectionPointPosition.update(new Point(inputField.ludemeNodeComponent().width(), inputField.getPreferredSize().height*inputField.inputIndexFirst()));
 
         revalidate();
         repaint();
@@ -62,8 +62,8 @@ public class LConnectionComponent extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        height = INPUT_FIELD.label.getPreferredSize().height;
-        RADIUS = (int) (INPUT_FIELD.label.getPreferredSize().height * 0.4);
+        height = INPUT_FIELD.label().getPreferredSize().height;
+        RADIUS = (int) (INPUT_FIELD.label().getPreferredSize().height * 0.4);
     }
 
     public void updatePosition(){
@@ -101,7 +101,7 @@ public class LConnectionComponent extends JComponent {
         @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
-            IGraphPanel graphPanel = INPUT_FIELD.getLudemeNodeComponent().graphPanel();
+            IGraphPanel graphPanel = INPUT_FIELD.ludemeNodeComponent().graphPanel();
             if(e.getButton() == MouseEvent.BUTTON1){
                 if(!fill){
                     // Start drawing connection
@@ -140,7 +140,7 @@ public class LConnectionComponent extends JComponent {
     }
 
     public LudemeNodeComponent getLudemeNodeComponent(){
-        return INPUT_FIELD.getLudemeNodeComponent();
+        return INPUT_FIELD.ludemeNodeComponent();
     }
 
     public LInputField getInputField(){
@@ -192,7 +192,7 @@ public class LConnectionComponent extends JComponent {
 
 
     public List<Symbol> getRequiredSymbols(){
-        return INPUT_FIELD.getRequiredSymbols();
+        return INPUT_FIELD.possibleSymbols();
         //return INPUT_FIELD.getRequiredLudemes(); TODO
     }
 

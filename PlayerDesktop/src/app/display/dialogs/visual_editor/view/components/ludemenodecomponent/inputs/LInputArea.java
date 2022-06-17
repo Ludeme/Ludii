@@ -120,7 +120,7 @@ public class LInputArea extends JPanel {
         if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
         {
             ClauseArg clauseArg = new ClauseArg(clause.symbol(), null, false, 0, 0);
-            nodeArguments.add(new NodeArgument(clause, clauseArg));
+            nodeArguments.add(new NodeArgument(clause, clauseArg, true));
             return nodeArguments;
         }
 
@@ -222,7 +222,7 @@ public class LInputArea extends JPanel {
 
         // find all NodeArgument containing the node's ludeme
         List<NodeArgument> IC = new ArrayList<>();
-        for (NodeArgument ii : lif0.getNodeArguments()) {
+        for (NodeArgument ii : lif0.nodeArguments()) {
             if (ii.possibleSymbolInputsExpanded().contains(symbol)) {
                 IC.add(ii);
             }
@@ -260,7 +260,7 @@ public class LInputArea extends JPanel {
         if (DEBUG) System.out.println("[DYNAMIC LIA]: IX = " + IX);
 
         // remove IC from lif0_ii
-        List<NodeArgument> lif0_ii = new ArrayList<>(lif0.getNodeArguments());
+        List<NodeArgument> lif0_ii = new ArrayList<>(lif0.nodeArguments());
         lif0_ii.removeAll(IC);
 
 
@@ -368,7 +368,7 @@ public class LInputArea extends JPanel {
             Symbol providedSymbol = node.symbol();
             if(DEBUG) System.out.println("  --> Looking for " + providedSymbol + " in " + inputFields);
             for(LInputField lif : inputFields){
-                for(NodeArgument ii : lif.getNodeArguments()){
+                for(NodeArgument ii : lif.nodeArguments()){
                     if(ii.possibleSymbolInputsExpanded().contains(providedSymbol) && LNC.node().providedInputs()[ii.indexFirst()] == null){
                         System.out.println("  ->  after: " + Arrays.toString(providedInputs)); // TODO: REMOVE
                         return lif;
@@ -389,7 +389,7 @@ public class LInputArea extends JPanel {
     public void removedConnectionDynamic(LudemeNode node, LInputField c_inputField){
 
         if(DEBUG){
-            System.out.println("[DYNAMIC LIA]: Removing Connection of " + LNC.node().symbol().name() + " from " + c_inputField.getNodeArguments());
+            System.out.println("[DYNAMIC LIA]: Removing Connection of " + LNC.node().symbol().name() + " from " + c_inputField.nodeArguments());
             System.out.println("[DYNAMIC LIA]: Active Constructors: " + activeClauses + "(" + activeClauses.size() + ")");
             System.out.println("[DYNAMIC LIA]: Inactive Constructors: " + inactiveClauses + "(" + inactiveClauses.size() + ")");
         }
@@ -400,7 +400,7 @@ public class LInputArea extends JPanel {
 
         List<NodeArgument> providedII = new ArrayList<>();
         for(LInputField lif : providedInputFields){
-            providedII.addAll(lif.getNodeArguments());
+            providedII.addAll(lif.nodeArguments());
         }
         // add ii with equivalent node to providedII
         for(NodeArgument ii : new ArrayList<>(providedII)){
@@ -410,7 +410,7 @@ public class LInputArea extends JPanel {
                 }
             }
         }
-        providedII.removeAll(c_inputField.getNodeArguments());
+        providedII.removeAll(c_inputField.nodeArguments());
 
         if(DEBUG) System.out.println("[DYNAMIC LIA]: Provided II: " + providedII);
 
@@ -522,7 +522,7 @@ public class LInputArea extends JPanel {
 
             // case 4
             if(lifAbove == null && lifBelow == null){
-                List<NodeArgument> lif0_iis = new ArrayList<NodeArgument>(c_inputField.getNodeArguments());
+                List<NodeArgument> lif0_iis = new ArrayList<NodeArgument>(c_inputField.nodeArguments());
                 LInputField lif0 = new LInputField(LNC, lif0_iis);
                 addInputFieldAbove(lif0, c_inputField);
                 removeField(c_inputField);
@@ -541,9 +541,9 @@ public class LInputArea extends JPanel {
                  */
 
                 List<NodeArgument> lif0_iis = new ArrayList<NodeArgument>();
-                lif0_iis.addAll(lifAbove.getNodeArguments());
-                lif0_iis.addAll(c_inputField.getNodeArguments());
-                lif0_iis.addAll(lifBelow.getNodeArguments());
+                lif0_iis.addAll(lifAbove.nodeArguments());
+                lif0_iis.addAll(c_inputField.nodeArguments());
+                lif0_iis.addAll(lifBelow.nodeArguments());
                 LInputField lif0 = new LInputField(LNC, lif0_iis);
                 addInputFieldAbove(lif0, lifAbove);
                 removeField(lifAbove);
@@ -562,8 +562,8 @@ public class LInputArea extends JPanel {
 
                  */
                 List<NodeArgument> lif0_iis = new ArrayList<NodeArgument>();
-                lif0_iis.addAll(lifBelow.getNodeArguments());
-                lif0_iis.addAll(c_inputField.getNodeArguments());
+                lif0_iis.addAll(lifBelow.nodeArguments());
+                lif0_iis.addAll(c_inputField.nodeArguments());
                 LInputField lif0 = new LInputField(LNC, lif0_iis);
                 addInputFieldAbove(lif0, lifBelow);
                 removeField(c_inputField);
@@ -582,8 +582,8 @@ public class LInputArea extends JPanel {
                  */
 
                 List<NodeArgument> lif0_iis = new ArrayList<NodeArgument>();
-                lif0_iis.addAll(lifAbove.getNodeArguments());
-                lif0_iis.addAll(c_inputField.getNodeArguments());
+                lif0_iis.addAll(lifAbove.nodeArguments());
+                lif0_iis.addAll(c_inputField.nodeArguments());
                 LInputField lif0 = new LInputField(LNC, lif0_iis);
                 addInputFieldAbove(lif0, lifAbove);
                 removeField(lifAbove);
@@ -594,7 +594,7 @@ public class LInputArea extends JPanel {
 
             // if there is only one input field it contains all new active II
             if(inputFields.size() == 1){
-                for(NodeArgument ii : newActiveII) if(!inputFields.get(0).getNodeArguments().contains(ii)) inputFields.get(0).addNodeArgument(ii);
+                for(NodeArgument ii : newActiveII) if(!inputFields.get(0).nodeArguments().contains(ii)) inputFields.get(0).addNodeArgument(ii);
             }
             else {
                 // TODO: CHECK WHETHER THIS IN THE NAME OF MIGHTY GOD WORKS
@@ -663,11 +663,11 @@ public class LInputArea extends JPanel {
         System.out.println("Provided input fields: " + providedInputFields);
         for(int i = 0; i < providedInputFields.size(); i++){
             LInputField providedInputField = providedInputFields.get(i); // input fields of "dynamic" node
-            NodeArgument ii = providedInputField.getNodeArgument();
+            NodeArgument ii = providedInputField.nodeArgument();
             LInputField newInputField = null;
 
             for(LInputField lif : inputFields){
-                for(NodeArgument inputInformation : lif.getNodeArguments()){
+                for(NodeArgument inputInformation : lif.nodeArguments()){
                     if(inputInformation.indexFirst() == ii.indexFirst()){
                         newInputField = lif;
                         break;
@@ -699,7 +699,7 @@ public class LInputArea extends JPanel {
         List<LInputField> newFields = new ArrayList<>();
         for(int i = 0; i < inputFields.size(); i++){
             LInputField inputField = inputFields.get(i);
-            if((inputField.isSingle || LNC.node().providedInputs()[inputField.getNodeArgument().indexFirst()] == null) && inputField.getNodeArgument().optional()){
+            if((inputField.isSingle || LNC.node().providedInputs()[inputField.nodeArgument().indexFirst()] == null) && inputField.nodeArgument().optional()){
                 consequentOptionalInputs.add(inputField);
             } else if(consequentOptionalInputs.size() == 1){
                 newFields.add(consequentOptionalInputs.get(0));
@@ -709,7 +709,7 @@ public class LInputArea extends JPanel {
                 // add merged input field
                 List<NodeArgument> additionalArguments = new ArrayList<>();
                 for(LInputField inputFieldOptional : consequentOptionalInputs) {
-                    additionalArguments.addAll(inputFieldOptional.getNodeArguments());
+                    additionalArguments.addAll(inputFieldOptional.nodeArguments());
                 }
                 newFields.add(new LInputField(LNC, additionalArguments));
                 newFields.add(inputField);
@@ -725,7 +725,7 @@ public class LInputArea extends JPanel {
         if(consequentOptionalInputs.size() > 1){
             List<NodeArgument> additionalArguments = new ArrayList<>();
             for(LInputField inputFieldOptional : consequentOptionalInputs){
-                additionalArguments.add(inputFieldOptional.getNodeArgument());
+                additionalArguments.add(inputFieldOptional.nodeArgument());
             }
             newFields.add(new LInputField(LNC, additionalArguments));
             consequentOptionalInputs = new ArrayList<>();
@@ -769,14 +769,14 @@ public class LInputArea extends JPanel {
 
     public void addInputFieldAbove(LInputField newInputField, LInputField inputFieldAbove){
         inputFields.add(inputFields.indexOf(inputFieldAbove), newInputField);
-        if(inputFieldAbove.getNodeArguments().size() == 0) inputFields.remove(inputFieldAbove);
+        if(inputFieldAbove.nodeArguments().size() == 0) inputFields.remove(inputFieldAbove);
         drawInputFields();
         if(DEBUG) System.out.println("[LIA] Adding " + newInputField + " above " + inputFieldAbove);
     }
 
     public void addInputFieldBelow(LInputField newInputField, LInputField inputFieldBelow){
         inputFields.add(inputFields.indexOf(inputFieldBelow) + 1, newInputField);
-        if(inputFieldBelow.getNodeArguments().size() == 0) inputFields.remove(inputFieldBelow);
+        if(inputFieldBelow.nodeArguments().size() == 0) inputFields.remove(inputFieldBelow);
         drawInputFields();
         if(DEBUG) System.out.println("[LIA] Adding " + newInputField + " below " + inputFieldBelow);
     }

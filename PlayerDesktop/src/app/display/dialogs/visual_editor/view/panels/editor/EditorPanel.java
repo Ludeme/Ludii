@@ -2,14 +2,12 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
-import app.display.dialogs.visual_editor.Main;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -190,15 +188,15 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
         // get game description up to current point
-        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().getNodeArguments().get(0).indexFirst();
-        for(NodeArgument ii : ch.getSelectedConnectionComponent().getInputField().getNodeArguments())
+        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().nodeArguments().get(0).indexFirst();
+        for(NodeArgument ii : ch.getSelectedConnectionComponent().getInputField().nodeArguments())
         {
             if(ii.indexFirst() < upUntilIndex) upUntilIndex = ii.indexFirst();
         }
 
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
-        String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().getLudemeNodeComponent().node(),  ch.getSelectedConnectionComponent().getInputField().getInputIndex(), COMPLETION_WILDCARD);
+        String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().getLudemeNodeComponent().node(),  ch.getSelectedConnectionComponent().getInputField().inputIndexFirst(), COMPLETION_WILDCARD);
         //List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         connectLudemeWindow.updateList(possibleSymbols);
         connectLudemeWindow.setVisible(true);

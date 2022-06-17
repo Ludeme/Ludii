@@ -25,12 +25,16 @@ public class NodeArgument
     private final int INDEX_FIRST;
     /** The index of the last ClauseArg in the list */
     private final int INDEX_LAST;
+    /** The list of all indices of all ClauseArgs of this NodeArgument */
+    private List<Integer> INDICES;
     /** The list of possible Symbols for this NodeArgument */
     private final List<Symbol> POSSIBLE_SYMBOL_INPUTS;
     /** The list of Symbols that may be provided as input for this NodeArgument
      *  Structural Symbols are not included in this list, but rather expanded to their rules.
      */
     private final List<Symbol> POSSIBLE_SYMBOL_INPUTS_EXPANDED;
+    /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
+    private final boolean SEPARATE_NODE;
 
     /**
      * Constructor for NodeInput
@@ -66,11 +70,47 @@ public class NodeArgument
         }
 
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
-
-        System.out.println("Symbol: " + arg.symbol());
-        System.out.println("POSSIBLE_SYMBOL_INPUTS: " + POSSIBLE_SYMBOL_INPUTS);
-
         this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
+        SEPARATE_NODE = false;
+    }
+
+    /**
+     * Constructor for NodeInput
+     * @param clause the clause this NodeArgument is part of
+     * @param arg the ClauseArg this NodeArgument represents
+     * @param separateNode if this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node
+     */
+    public NodeArgument(Clause clause, ClauseArg arg, boolean separateNode)
+    {
+        CLAUSE = clause;
+        // add argument to list
+        ARGS = new ArrayList<>();
+        ARGS.add(arg);
+        // if arg is part of OR-Group, add other components of OR-Group to it.
+        if(arg.orGroup() != 0)
+        {
+            int group = arg.orGroup();
+            int index = clause.args().indexOf(arg)+1;
+            while(index < clause.args().size() && clause.args().get(index).orGroup() == group)
+            {
+                ARGS.add(clause.args().get(index));
+                index++;
+            }
+        }
+        if(clause.args() == null)
+        {
+            INDEX_FIRST = 0;
+            INDEX_LAST = 0;
+        }
+        else
+        {
+            INDEX_FIRST = clause.args().indexOf(arg);
+            INDEX_LAST = clause.args().indexOf(arg) + ARGS.size() - 1;
+        }
+
+        this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
+        this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
+        SEPARATE_NODE = separateNode;
     }
 
     /**
@@ -305,6 +345,23 @@ public class NodeArgument
 
     /**
      *
+     * @return list of indices of the ClauseArgs in the list
+     */
+    public List<Integer> indices()
+    {
+        if(indices() != null) return INDICES;
+
+        List<Integer> indices = new ArrayList<>();
+        for(int i = 0; i < size(); i++)
+        {
+            indices.add(i+INDEX_FIRST);
+        }
+        this.INDICES = indices;
+        return indices;
+    }
+
+    /**
+     *
      * @return whether this NodeArgument is optional
      */
     public boolean optional()
@@ -330,6 +387,16 @@ public class NodeArgument
         return size() > 1;
     }
 
+    public boolean separateNode()
+    {
+        return SEPARATE_NODE;
+    }
+
+    /**
+     *
+     * @param o
+     * @return whether this NodeArgument is equal to another
+     */
     @Override
     public boolean equals(Object o){
         if(o instanceof NodeArgument)
