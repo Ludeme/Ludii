@@ -93,7 +93,7 @@
             (place "Chunin1" (coord "G4")) (place "Chunin2" (coord "G10"))
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end [#])
     )
 )
 
