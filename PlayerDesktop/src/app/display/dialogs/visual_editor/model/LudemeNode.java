@@ -555,35 +555,36 @@ public class LudemeNode implements iLudemeNode, iGNode
         // append all inputs
         for(int i = 0; i < index; i++)
         {
-        Object input = providedInputs[i];
-            if(input == null) continue; // if no input provided, skip it
-            sb.append(" ");
+            if(i >= providedInputs.length) break;
+            Object input = providedInputs[i];
+                if(input == null) continue; // if no input provided, skip it
+                sb.append(" ");
 
-            if(input instanceof LudemeNode)
-            {
-                sb.append(((LudemeNode) input).stringRepresentation());
-            }
-            else if(input instanceof LudemeNode[])
-            {
-                sb.append("{ ");
-                for(LudemeNode node : (LudemeNode[]) input) {
-                    if(node == null) continue;
-                    sb.append(node.stringRepresentation()).append(" ");
+                if(input instanceof LudemeNode)
+                {
+                    sb.append(((LudemeNode) input).stringRepresentation());
                 }
-                sb.append("}");
+                else if(input instanceof LudemeNode[])
+                {
+                    sb.append("{ ");
+                    for(LudemeNode node : (LudemeNode[]) input) {
+                        if(node == null) continue;
+                        sb.append(node.stringRepresentation()).append(" ");
+                    }
+                    sb.append("}");
+                }
+                else if(input instanceof String)
+                {
+                    sb.append("\"").append(input).append("\"");
+                }
+                else
+                {
+                    sb.append(input);
+                }
             }
-            else if(input instanceof String)
-            {
-                sb.append("\"").append(input).append("\"");
-            }
-            else
-            {
-                sb.append(input);
-            }
-        }
-        sb.append(" " + marker);
-        sb.append(")");
-        return sb.toString();
+            sb.append(" " + marker);
+            sb.append(")");
+            return sb.toString();
     }
 
     public String codeCompletionGameDescription(LudemeNode stopAt, int untilIndex, String marker)
