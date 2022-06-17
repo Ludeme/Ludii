@@ -42,9 +42,8 @@ public class MainFrame extends JFrame {
              */
             @Override
             public void windowClosing(WindowEvent e) {
-                // TODO: [FILIP] CHANGED
-                //DocHandler.getInstance().close();
-                //Main.controller().close();
+                DocHandler.getInstance().close();
+                Main.controller().close();
                 super.windowClosing(e);
             }
         });

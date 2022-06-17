@@ -2,12 +2,14 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutManager.LayoutHandler;
+import app.display.dialogs.visual_editor.Main;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -96,9 +98,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
         lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(edges);
 
-        //TODO: [FILIP] CHANGED
-        //this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
-        //this.N = controller.getN();
+
+        this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
+        this.N = controller.getN();
     }
 
     public EditorPanel()
@@ -197,8 +199,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
         String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().getLudemeNodeComponent().node(),  ch.getSelectedConnectionComponent().getInputField().inputIndexFirst(), COMPLETION_WILDCARD);
-        //List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
-        connectLudemeWindow.updateList(possibleSymbols);
+        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
+        connectLudemeWindow.updateList(typeMatched);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();
