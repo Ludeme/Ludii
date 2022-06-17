@@ -345,23 +345,6 @@ public class NodeArgument
 
     /**
      *
-     * @return list of indices of the ClauseArgs in the list
-     */
-    public List<Integer> indices()
-    {
-        if(indices() != null) return INDICES;
-
-        List<Integer> indices = new ArrayList<>();
-        for(int i = 0; i < size(); i++)
-        {
-            indices.add(i+INDEX_FIRST);
-        }
-        this.INDICES = indices;
-        return indices;
-    }
-
-    /**
-     *
      * @return whether this NodeArgument is optional
      */
     public boolean optional()

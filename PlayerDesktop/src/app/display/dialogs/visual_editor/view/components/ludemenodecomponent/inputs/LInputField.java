@@ -239,9 +239,9 @@ public class LInputField extends JComponent
         else last = children.get(children.size()-1);
         LNC.inputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
         // update provided inputs in handler
-        if(false)//TODO: LNC.node().providedInputs()[inputIndexFirst()] instanceof LudemeNode[] collection)
+        if(LNC.node().providedInputs()[inputIndexFirst()] instanceof LudemeNode[])
         {
-            LudemeNode[] collection = null;
+            LudemeNode[] collection = (LudemeNode[]) LNC.node().providedInputs()[inputIndexFirst()] ;
             if(collection.length < children.size() + 1)
             {
                 Handler.addCollectionElement(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst());
@@ -592,7 +592,7 @@ public class LInputField extends JComponent
     {
         List<Integer> indices = new ArrayList<>();
         for(NodeArgument nodeArgument : nodeArgumentList) {
-            indices.addAll(nodeArgument.indices());
+            indices.add(nodeArgument.indexFirst());
         }
         return indices;
     }
