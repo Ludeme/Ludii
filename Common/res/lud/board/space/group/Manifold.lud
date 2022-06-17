@@ -1,0 +1,267 @@
+// Shape matching utility
+
+(define "IfThisRotationDo"  // compiles but sometimes misses
+    (if
+        (= 0
+            (size Array
+                (difference
+                    (results
+                        from:(sites Group at:#4)
+                        to:(from)
+                        (+
+                            (+ (* 32 #1) (#2)) 
+                            (+
+                                (max
+                                    (results
+                                        from:(sites Group at:#4)
+                                        to:(from)
+                                        (- (* 32 #1))
+                                    )
+                                )
+                                (max
+                                    (results
+                                        from:(sites Group at:#4)
+                                        to:(from)
+                                        (- (#2))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (results
+                        from:(sites)
+                        to:(from)
+                        (value Piece at:(from))
+                    )
+                )
+            )
+        )
+        #3
+    )
+)
+
+(define "DRow" (/ (value Piece at:(from)) 32))
+(define "DCol" (% (value Piece at:(from)) 32))
+
+(define "IsSameSizeAsShapeAtValue"
+    (= (size Array (array (sites))) (size Array (array (sites Group at:#1))))
+)
+
+(define "IfShapessMatchDo"
+    (if
+        ("IsSameSizeAsShapeAtValue" #2) 
+        (priority 
+            {
+            ("IfThisRotationDo" ("DRow")        ("DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")        ("DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1 #2) 
+            
+            ("IfThisRotationDo" (- "DRow")        (- "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")        (- "DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1 #2) 
+            }
+        )
+    )
+)
+
+//----------------------------------------------
+
+(define "RecordShapeVectorsAsValues" 
+    (set Var "LastRow" (row of:(max (array (sites Group at:(last To)))))
+        (then 
+            (set Var "LastCol" (max (results from:(sites Group at:(last To)) to:(from) (column of:(from))))
+                (then
+                    (forEach Site
+                        (sites Group at:(last To))
+                        (set Value at:(site) 
+                            (+
+                                (* 32 (- (var "LastRow") (row of:(site))))
+                                (- (var "LastCol") (column of:(site)))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+//----------------------------------
+// For each mover group find out how many matching groups there are and if that is less then the group multiply it by the group size and add to the score, otherwise square the group size and add it to the score
+
+(define "GroupSize" 
+    (size Group at:(var "KeySite"))
+)
+
+(define "BroodSize"
+    (count Value (var "KeySite") in:(values Remembered "ShapeCount"))
+)
+
+(define "ManifoldBroodSize"
+    (+
+        (count Value (var "KeySite") in:(values Remembered "ShapeCount"))
+        (count Value (+ 1000 (var "KeySite")) in:(values Remembered "ShapeCount"))
+    )
+)
+
+(define "RecordMultiplier" 
+    (if
+        (= 0 "BroodSize")
+        (set State at:(var "KeySite") (* (% "ManifoldBroodSize" 2) (- 2 (% "GroupSize" 2))))
+        (set State at:(var "KeySite") 0)
+    )
+)
+
+(define "CountShapesOf"
+    (forEach Value
+        (values Remembered)
+        (and
+            {
+            (set Var "KeySite" (value)
+                (then
+                    (forEach Group
+                        if:(= #1 (who at:(to)))
+                        ("IfShapessMatchDo"
+                            (remember Value "ShapeCount"
+                                (+ 
+                                    (if (> (var "KeySite") (regionSite (sites) index:0)) 0 1000)
+                                    (var "KeySite")
+                                ) 
+                            )
+                            (var "KeySite") 
+                        )
+                    )
+                )
+            )
+            }
+            (then ("RecordMultiplier"))
+        )
+        (then (forget Value All))
+    )
+)
+
+(define "ScorePlayer"
+    (forEach Group
+        if:(= #1 (who at:(to)))
+        (remember Value (regionSite (sites) index:0) unique:True)
+        (then
+            (and
+                {
+                ("CountShapesOf" #1)
+                (set Score Mover 0
+                    (then
+                        (forEach Piece (addScore Mover (state at:(from))))
+                    )
+                )     
+                }
+            )
+        )
+    )
+)
+
+(define "PlaceHex"
+    (do 
+        (forEach Site 
+            (sites Occupied by:Mover)
+            (set State at:(site) 0)
+        )
+        next:(move Add (piece (id "Hex" Mover)) (to (sites Empty))
+            (then ("RecordShapeVectorsAsValues"))
+        )
+        (then ("ScorePlayer" (mover)))
+    )
+)
+
+//--------------------------------------------------------- 
+(game "Manifold"
+    (players 2)
+    (equipment
+        {
+        (board <Board:size> use:Cell)
+        (piece "Hex" Each maxState:7 maxValue:1023) // 32rows * 32columns for recording vectors
+        (piece "Disc" Neutral)
+        }
+    )
+    (rules
+        (play
+            (if 
+                (or
+                    (= 0 (count Moves))
+                    (!= 0 (count MovesThisTurn))//(is Prev Mover)
+                )
+                ("PlaceHex")
+                (or
+                    (move Pass)
+                    (and
+                        {
+                        ("PlaceHex")
+                        } 
+                        (then (moveAgain))
+                    )
+                )
+                (then (forget Value All))
+            )
+        )
+        (end
+            (if
+                (all Passed)
+                (byScore)
+            )
+        )
+    )
+)   
+
+//---------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4" <(hex Hexagon 4)> "A boad of size 4 is currently selected.")
+    (item "5" <(hex Hexagon 5)> "A boad of size 5 is currently selected.")*
+    (item "6" <(hex Hexagon 6)> "A boad of size 6 is currently selected.")
+    (item "7" <(hex Hexagon 7)> "A boad of size 7 is currently selected.")
+    (item "8" <(hex Hexagon 8)> "A boad of size 8 is currently selected.")
+    (item "9" <(hex Hexagon 9)> "A boad of size 9 is currently selected.")
+    }
+) 
+
+(option "Brood Values" <Graphics> args:{ <values> }
+    {
+    (item "Hide" <> "Nothing is currently printed on the pieces.")*
+    (item "Show" <(show Piece State "Hex" Middle)> "Each brood currently has one piece that shows how many points it is worth.")
+    }
+)
+
+//---------------
+
+(metadata
+    (info
+        {
+        }
+    )
+    (graphics
+        {
+        (board Colour Phase0 (colour 100 200 250 120))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour Cream))
+        (player Colour Neutral (colour 72 144 160 190))
+        (piece Scale Neutral .6)
+        (piece Foreground P1 state:1 image:"1" edgeColour:(colour White) scale:.3)
+        (piece Foreground P2 state:1 image:"1" edgeColour:(colour Black) scale:.3)
+        (piece Foreground P1 state:2 image:"2" edgeColour:(colour White) scale:.3)
+        (piece Foreground P2 state:2 image:"2" edgeColour:(colour Black) scale:.3)
+        }
+    )
+    (ai (heuristics (score)))
+)
