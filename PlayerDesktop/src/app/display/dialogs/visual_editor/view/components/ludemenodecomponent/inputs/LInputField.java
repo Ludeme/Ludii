@@ -12,9 +12,9 @@ import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,7 +111,8 @@ public class LInputField extends JComponent
         {
             inputFieldComponent = getTerminalComponent(nodeArgument);
             inputFieldComponent.setPreferredSize(new Dimension(((int)((LNC.width()-label.getPreferredSize().width)*0.8)),inputFieldComponent.getPreferredSize().height));
-            inputFieldComponent.addMouseListener(userInputListener);
+            inputFieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+            inputFieldComponent.addKeyListener(userInputListener_keyListener);
 
             setLayout(new FlowLayout(FlowLayout.LEFT));
             add(Box.createHorizontalStrut(10)); // TODO: Set in DesignPalette
@@ -300,17 +301,42 @@ public class LInputField extends JComponent
         }
     }
 
-
-    // Updates the provided input list in the model whenever the mouse moves over this input field TODO: Not a good way to solve this
-    MouseListener userInputListener = new MouseAdapter() {
+    /**
+     * Listens for changes to a terminal component and updates the model accordingly
+     */
+    PropertyChangeListener userInputListener_propertyChange = new PropertyChangeListener()
+    {
         @Override
-        public void mouseExited(MouseEvent e) {
-            super.mouseMoved(e);
+        public void propertyChange(PropertyChangeEvent evt)
+        {
             updateUserInputs();
         }
     };
 
-    // TODO
+    /**
+     * Listens for changes via keys to a terminal component and updates the model accordingly
+     */
+    KeyListener userInputListener_keyListener = new KeyListener()
+    {
+        @Override
+        public void keyTyped(KeyEvent e)
+        {
+            updateUserInputs();
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e)
+        {
+            updateUserInputs();
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e)
+        {
+        }
+    };
+
+        // TODO
     public void updateUserInputs(){
         if(isSingle) {
             System.out.println("[LIF] Updated input " + inputIndexFirst() + " to " + getUserInput());
