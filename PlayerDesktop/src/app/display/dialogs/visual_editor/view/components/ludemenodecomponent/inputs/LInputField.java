@@ -92,7 +92,7 @@ public class LInputField extends JComponent
 
     /**
      * Given a NodeArgument, this method constructs a LInputField
-     * @param nodeArgument
+     * @param nodeArgument NodeArgument that is represented by this LInputField
      */
     private void constructInputField(NodeArgument nodeArgument)
     {
@@ -167,7 +167,7 @@ public class LInputField extends JComponent
      * Given a list of NodeArguments, create one LInputField where the user can decide what NodeArgument to use
      *      Use-Case 1: If the node is dynamic, add all currently available NodeArguments
      *      Use-Case 2: If there are multiple consequent optional arguments, merge them into one field
-     * @param nodeArgumentList
+     * @param nodeArgumentList List of NodeArguments that are represented by this LInputField
      */
     private void constructInputField(List<NodeArgument> nodeArgumentList){
         removeAll();
@@ -195,7 +195,7 @@ public class LInputField extends JComponent
 
     /**
      * Adds a new collection child to LInputField parent
-     * @param parent
+     * @param parent LInputField that is the parent of the new collection child
      */
     private void constructCollectionField(LInputField parent)
     {
@@ -336,25 +336,28 @@ public class LInputField extends JComponent
         }
     };
 
-        // TODO
-    public void updateUserInputs(){
-        if(isSingle) {
-            System.out.println("[LIF] Updated input " + inputIndexFirst() + " to " + getUserInput());
-            System.out.println("\u001B[32m"+"Calling from LIF 221"+"\u001B[0m");
-            Handler.updateInput(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst(), getUserInput());
-        }
+    /**
+     * Updates the model with the current user input
+     * Only works for single input fields
+     */
+    public void updateUserInputs()
+    {
+        Handler.updateInput(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst(), getUserInput());
     }
 
     /**
-     * Returns the user supplied input for an input field TODO
-     * @return
+     *
+     * @return the user supplied input for an input field
+     * Only works for single input fields
      */
-    public Object getUserInput(){
-        if(nodeArgumentList.size() > 1) System.out.println("!!!! INCORRECT USE HERE");
-        if(inputFieldComponent == connectionComponent){
-            // then its ludeme input
+    public Object getUserInput()
+    {
+        if(!isSingle) return null;
+        if(inputFieldComponent == connectionComponent) // Ludeme Input
+        {
             return connectionComponent.getConnectedTo().node();
         }
+        // Terminal Inputs
         if(inputFieldComponent instanceof JTextField) return ((JTextField)inputFieldComponent).getText();
         if(inputFieldComponent instanceof JSpinner) return ((JSpinner)inputFieldComponent).getValue();
         if(inputFieldComponent instanceof JComboBox) return ((JComboBox)inputFieldComponent).getSelectedItem();
@@ -362,7 +365,9 @@ public class LInputField extends JComponent
         return null;
     }
 
-    public void setUserInput(Object input){
+    // TODO
+    public void setUserInput(Object input)
+    {
         if(nodeArgumentList.size() > 1) {
             // TODO: My words: "Incorrect use here", but I do not remember why
         }
@@ -398,7 +403,7 @@ public class LInputField extends JComponent
         }
         if(inputFieldComponent instanceof JTextField) ((JTextField)inputFieldComponent).setText((String)input);
         if(inputFieldComponent instanceof JSpinner) ((JSpinner)inputFieldComponent).setValue(input);
-        if(inputFieldComponent instanceof JComboBox) ((JComboBox)inputFieldComponent).setSelectedItem(input);
+        if(inputFieldComponent instanceof JComboBox) ((JComboBox<?>)inputFieldComponent).setSelectedItem(input);
     }
 
     public void setUserInput(Object input, int index){
