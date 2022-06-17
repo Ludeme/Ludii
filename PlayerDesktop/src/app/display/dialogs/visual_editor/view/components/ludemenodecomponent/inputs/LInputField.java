@@ -239,8 +239,9 @@ public class LInputField extends JComponent
         else last = children.get(children.size()-1);
         LNC.inputArea().addInputFieldBelow(new LInputField(LInputField.this), last);
         // update provided inputs in handler
-        if(LNC.node().providedInputs()[inputIndexFirst()] instanceof LudemeNode[] collection)
+        if(false)//TODO: LNC.node().providedInputs()[inputIndexFirst()] instanceof LudemeNode[] collection)
         {
+            LudemeNode[] collection = null;
             if(collection.length < children.size() + 1)
             {
                 Handler.addCollectionElement(LNC.graphPanel().graph(), LNC.node(), inputIndexFirst());

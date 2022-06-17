@@ -60,8 +60,8 @@ public class AddLudemeWindow extends JPanel {
                 int index = theList.locationToIndex(mouseEvent.getPoint());
                 if (index >= 0) {
                     Object o = theList.getModel().getElementAt(index);
-                    //ReadableSymbol rs = (ReadableSymbol) o; TODO: [FILIP]
-                    graphPanel.addNode((Symbol) o, getLocation().x, getLocation().y, connect);
+                    ReadableSymbol rs = (ReadableSymbol) o;
+                    graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
                     searchField.setText("");
                     scrollableList.getVerticalScrollBar().setValue(0);
                 }
@@ -78,24 +78,11 @@ public class AddLudemeWindow extends JPanel {
         // remove duplicates
         symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
 
-        listModel = new DefaultListModel<Symbol>();
-        for (Symbol l : symbolList) {
-            listModel.addElement(l);
-        }
-        /*
-        TODO: [FILIP]
-        // create readable strings
-        List<ReadableSymbol> readableList = new ArrayList<>();
-        for(int i = 0; i < symbolList.size(); i++) {
-            readableList.add(new ReadableSymbol(symbolList.get(i)));
+        listModel = new DefaultListModel<ReadableSymbol>();
+        for (Symbol s : symbolList) {
+            listModel.addElement(new ReadableSymbol(s));
         }
 
-        listModel = new DefaultListModel<Pair<Symbol,String>>();
-        for (ReadableSymbol rs : readableList) {
-            listModel.addElement(rs);
-        }
-
-         */
         list = new JList(listModel);
         scrollableList = new JScrollPane(list);
 
