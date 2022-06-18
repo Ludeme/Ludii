@@ -69,6 +69,8 @@ public class NodeArgument
             INDEX_LAST = clause.args().indexOf(arg) + ARGS.size() - 1;
         }
 
+        System.out.println("ARgs: " + args());
+
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
         this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
         SEPARATE_NODE = false;
@@ -181,8 +183,16 @@ public class NodeArgument
         List<Symbol> possibleSymbolInputs = new ArrayList<>();
         // Ignore constant symbols
         if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Constant)) return possibleSymbolInputs;
+        if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Primitive))
+        {
+            // TODO:
+            System.out.println("Catched primitive symbol!");
+            return possibleSymbolInputs;
+        }
+        //System.out.println("Expanding arg: " + arg);
+
         // If the argument has no rules, but another returnType, then expand it instead
-        if(arg.symbol().rule().rhs().size() == 0)
+        if(arg.symbol().rule().rhs().size() == 0 && arg.symbol().returnType() != arg.symbol())
         {
             ClauseArg arg2 = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
             return possibleSymbolInputsExpanded(visited, arg2);
@@ -370,9 +380,19 @@ public class NodeArgument
         return size() > 1;
     }
 
+    // TODO: Add comment
     public boolean separateNode()
     {
         return SEPARATE_NODE;
+    }
+
+    /**
+     *
+     * @return the ludemeType of the first ClauseArg in the list
+     */
+    public Symbol.LudemeType ludemeType()
+    {
+        return arg().symbol().ludemeType();
     }
 
     /**

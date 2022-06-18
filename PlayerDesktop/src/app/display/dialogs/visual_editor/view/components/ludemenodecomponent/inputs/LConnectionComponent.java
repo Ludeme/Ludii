@@ -52,7 +52,7 @@ public class LConnectionComponent extends JComponent {
 
         addMouseListener(clickListener);
 
-        connectionPointPosition.update(new Point(inputField.ludemeNodeComponent().width(), inputField.getPreferredSize().height*inputField.inputIndexFirst()));
+        //connectionPointPosition.update(new Point(inputField.ludemeNodeComponent().width(), inputField.getPreferredSize().height*inputField.inputIndexFirst()));
 
         revalidate();
         repaint();
@@ -106,7 +106,7 @@ public class LConnectionComponent extends JComponent {
                 if(!fill){
                     // Start drawing connection
                     setFill(!fill);
-                    graphPanel.connectionHandler().startNewConnection(LConnectionComponent.this);
+                    graphPanel.connectionHandler().startNewConnection(null);
                 }
                 else{
                     if(isCollapsed){
@@ -118,7 +118,7 @@ public class LConnectionComponent extends JComponent {
                     }
                     // if already connected: remove connection
                     if(getConnectedTo() != null) {
-                        graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), LConnectionComponent.this);
+                        graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.getLudemeNodeComponent().node(), null);
                         setConnectedTo(null);
                     }
                     else {

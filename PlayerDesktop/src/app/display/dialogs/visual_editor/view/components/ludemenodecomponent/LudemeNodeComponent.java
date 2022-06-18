@@ -6,6 +6,7 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputAreaNew;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Clause;
@@ -44,7 +45,7 @@ public class LudemeNodeComponent extends JPanel
     private boolean subtree = false;
     /** Sub-Components of the node */
     private final LHeader header;
-    private final LInputArea inputArea;
+    private final LInputAreaNew inputArea;
 
 
 
@@ -65,7 +66,7 @@ public class LudemeNodeComponent extends JPanel
         setLayout(new BorderLayout());
 
         header = new LHeader(this);
-        inputArea = new LInputArea(this);
+        inputArea = new LInputAreaNew(this);
 
         add(header, BorderLayout.NORTH);
         add(inputArea, BorderLayout.CENTER);
@@ -95,7 +96,7 @@ public class LudemeNodeComponent extends JPanel
     public void changeCurrentClause(Clause clause)
     {
         Handler.updateCurrentClause(graphPanel().graph(), node(), clause);
-        inputArea.updateConstructor();
+        inputArea.changedSelectedClause();
         revalidate();
         repaint();
     }
@@ -109,7 +110,7 @@ public class LudemeNodeComponent extends JPanel
             return;
         }
         position.update(getLocation());
-        inputArea.updatePosition();
+        inputArea.updateConnectionPointPositions();
         header.updatePosition();
     }
 
@@ -135,7 +136,8 @@ public class LudemeNodeComponent extends JPanel
      */
     public void updateComponentDimension()
     {
-        if(inputArea == null) {
+        if(inputArea == null)
+        {
             return;
         }
 
@@ -162,7 +164,7 @@ public class LudemeNodeComponent extends JPanel
      *
      * @return the InputArea of the node component
      */
-    public LInputArea inputArea()
+    public LInputAreaNew inputArea()
     {
         return inputArea;
     }
@@ -281,7 +283,7 @@ public class LudemeNodeComponent extends JPanel
     {
         if(!LN.dynamicPossible()) return;
         LN.setDynamic(!LN.dynamic());
-        inputArea().setDynamic(LN.dynamic());
+        // TODO: inputArea().setDynamic(LN.dynamic());
         node().setDynamic(LN.dynamic());
     }
 

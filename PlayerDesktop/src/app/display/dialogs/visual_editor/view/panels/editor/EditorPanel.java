@@ -96,7 +96,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         addLudemeNodeComponent(gameLudemeNode, false);
 
         lm = new LayoutHandler(graph, graph.getRoot().id());
-        ch = new ConnectionHandler(edges);
+        ch = new ConnectionHandler(this);
 
 
         this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
@@ -190,15 +190,15 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
         // get game description up to current point
-        int upUntilIndex = ch.getSelectedConnectionComponent().getInputField().nodeArguments().get(0).indexFirst();
-        for(NodeArgument ii : ch.getSelectedConnectionComponent().getInputField().nodeArguments())
+        int upUntilIndex = ch.getSelectedConnectionComponent().inputField().nodeArguments().get(0).indexFirst();
+        for(NodeArgument ii : ch.getSelectedConnectionComponent().inputField().nodeArguments())
         {
             if(ii.indexFirst() < upUntilIndex) upUntilIndex = ii.indexFirst();
         }
 
 
-        List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().getRequiredSymbols();
-        String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().getLudemeNodeComponent().node(),  ch.getSelectedConnectionComponent().getInputField().inputIndexFirst(), COMPLETION_WILDCARD);
+        List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().possibleSymbolInputs();
+        String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().lnc().node(),  ch.getSelectedConnectionComponent().inputField().inputIndexFirst(), COMPLETION_WILDCARD);
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         connectLudemeWindow.updateList(typeMatched);
         connectLudemeWindow.setVisible(true);
@@ -318,7 +318,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         this.graph = graph;
         removeAll();
         nodeComponents.clear();
-        edges.clear();
+        ch.clearEdges();
         ch.setSelectedConnectionComponent(null);
         List<LudemeNode> nodes = graph.getNodes();
         for(LudemeNode node : nodes)
@@ -409,7 +409,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         LudemeNode node = lnc.node();
         if(ch.getSelectedConnectionComponent() != null)
         {
-            if(ch.getSelectedConnectionComponent().getRequiredSymbols().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
+            if(ch.getSelectedConnectionComponent().possibleSymbolInputs().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
             {
                 ch.finishNewConnection(lnc);
             }
@@ -488,11 +488,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 if(ch.getSelectedConnectionComponent() != null)
                 {
                     // if user has no chocie for next ludeme -> automatically add required ludeme
-                    if(ch.getSelectedConnectionComponent().getRequiredSymbols().size() == 1)
+                    if(ch.getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
                     {
-                        addNode(ch.getSelectedConnectionComponent().getRequiredSymbols().get(0), e.getX(), e.getY(), true);
+                        addNode(ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), e.getX(), e.getY(), true);
                     }
-                    else if(!connectLudemeWindow.isVisible() && ch.getSelectedConnectionComponent().getRequiredSymbols().size() > 1)
+                    else if(!connectLudemeWindow.isVisible() && ch.getSelectedConnectionComponent().possibleSymbolInputs().size() > 1)
                     {
                         showCurrentlyAvailableLudemes(e.getX(), e.getY());
                     }

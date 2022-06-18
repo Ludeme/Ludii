@@ -150,6 +150,7 @@ public class LInputArea extends JPanel {
                 break;
             }
         }
+        System.out.println("Node Arguments: " + nodeArguments);
         return nodeArguments;
     }
 
@@ -677,7 +678,7 @@ public class LInputArea extends JPanel {
             }
 
             if(DEBUG) System.out.println("[LIA] adding connection!");
-            LNC.graphPanel().connectionHandler().addConnection(newInputField.getConnectionComponent(), providedInputFieldsConnections.get(i).ingoingConnectionComponent());
+            LNC.graphPanel().connectionHandler().addConnection(null, providedInputFieldsConnections.get(i).ingoingConnectionComponent());
 
         }
     }
