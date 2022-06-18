@@ -473,7 +473,7 @@ public class LInputAreaNew extends JPanel
     {
         // TODO: this is inefficient, but the one below doesnt work. Maybe because the ArrayList is altered in the process before (but id stays the same!)
         int index = currentNodeArgumentsLists.indexOf(inputField.nodeArguments());
-        if(index > currentNodeArgumentsLists.size() - 1) return null;
+        if(index >= currentNodeArgumentsLists.size() - 1) return null;
         List<NodeArgument> nodeArguments = currentNodeArgumentsLists.get(index + 1);
         for(LInputFieldNew lif : currentInputFields.values())
         {
