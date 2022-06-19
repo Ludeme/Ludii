@@ -58,116 +58,6 @@ public class LInputAreaNew extends JPanel
     private final boolean DEBUG = true;
 
 
-
-
-    private void providedNodeArgument(NodeArgument nodeArgument)
-    {
-        // add all node arguments with the same symbol to the providedNodeArguments list
-        for(NodeArgument activeNA : new ArrayList<>(activeNodeArguments))
-        {
-            if(activeNA.arg().symbol().equals(nodeArgument.arg().symbol()))
-            {
-                providedNodeArguments.add(activeNA);
-            }
-        }
-        // check whether all active clauses satisfy the provided node argument
-        List<Clause> notSatisfiedClauses = new ArrayList<>();
-        for(Clause activeClause : activeClauses)
-        {
-            if(!clauseSatisfiesArgument(activeClause, nodeArgument))
-            {
-                notSatisfiedClauses.add(activeClause);
-            }
-        }
-        // remove the not satisfied clauses from the active clauses and add them to the inactive clauses
-        activeClauses.removeAll(notSatisfiedClauses);
-        inactiveClauses.addAll(notSatisfiedClauses);
-        // update the list of active and inactive node arguments
-        for(Clause notSatisfiedClause : notSatisfiedClauses) {
-            // Get NodeArguments from notSatisfiedClause
-            List<NodeArgument> notSatisfiedClauseArguments = nodeArguments.get(notSatisfiedClause);
-            // Add all previously activeNodeArguments that are in the list of notSatisfiedClauseArguments to the list of inactiveNodeArguments
-            for (NodeArgument notSatisfiedClauseArgument : notSatisfiedClauseArguments) {
-                if (activeNodeArguments.contains(notSatisfiedClauseArgument)) {
-                    removeActiveNodeArgument(notSatisfiedClauseArgument); // remove the argument from the active list and updates input fields accordingly
-                }
-            }
-        }
-
-        // update the inputfield for the provided node argument is done in addedConnection() TOOD: is this true?
-
-        // print out variables
-        System.out.println("ActiveClauses: " + activeClauses);
-        System.out.println("InactiveClauses: " + inactiveClauses);
-        System.out.println("ProvidedNodeArguments: " + providedNodeArguments);
-        System.out.println("ActiveNodeArguments: " + activeNodeArguments);
-        System.out.println("InactiveNodeArguments: " + inactiveNodeArguments);
-
-    }
-
-    private void removeActiveNodeArgument(NodeArgument nodeArgument)
-    {
-        // find inputfield for argument
-        LInputFieldNew inputField = null;
-        for(LInputFieldNew lif : currentInputFields.values())
-        {
-            if(lif.nodeArguments().contains(nodeArgument))
-            {
-                inputField = lif;
-                break;
-            }
-        }
-        /*for(List<NodeArgument> nodeArgumentList : currentNodeArgumentsLists) {
-            if (nodeArgumentList.contains(nodeArgument)) {
-                inputField = currentInputFields.get(nodeArgumentList);
-                break;
-            }
-        }*/
-
-        // remove inputfield from currentInputFields
-        //currentNodeArgumentsLists.get(currentNodeArgumentsLists.indexOf(inputField.nodeArguments())).remove(nodeArgument);
-
-        // Remove the NodeArgument from the merged InputField
-        inputField.removeNodeArgument(nodeArgument);
-        // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly
-        if(inputField.nodeArguments().size() == 1)
-        {
-            inputField.reconstruct();
-        }
-
-        if(inputField.nodeArguments().size() == 0)
-        {
-            currentNodeArgumentsLists.remove(inputField.nodeArguments());
-            currentInputFields.remove(inputField.nodeArguments());
-        }
-
-        activeNodeArguments.remove(nodeArgument);
-        inactiveNodeArguments.add(nodeArgument);
-
-        // TODO: is map updated automatically?
-    }
-
-    /**
-     *
-     * @param clause Clause to check
-     * @param nodeArgument NodeArgument that was added
-     * @return whether the provided node argument satisfies a clause, i.e. whether this clause satisfies the newly added node argument
-     */
-    private boolean clauseSatisfiesArgument(Clause clause, NodeArgument nodeArgument)
-    {
-        // check whether the clause contains the node argument's symbol
-        for (ClauseArg clauseArg : clause.args())
-        {
-            Symbol argSymbol = clauseArg.symbol();
-            if (argSymbol.equals(nodeArgument.arg().symbol()))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     /**
      * Constructor
      * @param LNC LudemeNodeComponent that this LInputAreaNew is associated with
@@ -636,8 +526,6 @@ public class LInputAreaNew extends JPanel
             max_index = Math.max(max_index, providedNA.indexFirst());
         }
 
-        System.out.println("Reading node arguments: " + min_index + " " + max_index + ": " + inputField.nodeArguments() );
-
         for(NodeArgument nodeArgument : inputField.nodeArguments())
         {
             if(nodeArgument.indexFirst() <= min_index && !providedNodeArguments.contains(nodeArgument))
@@ -648,17 +536,15 @@ public class LInputAreaNew extends JPanel
             {
                 nodeArguments2.add(nodeArgument);
             }
-            else if(nodeArgument != inputFieldNew.nodeArguments().get(0))
-            {
-                System.err.println("A NodeArgument disappeared from the merged InputField: " + nodeArgument);
-            }
         }
 
-        System.out.println("---------");
-        System.out.println("ABOVE: " + nodeArguments1);
-        System.out.println("BETWEEN: " + inputFieldNew.nodeArguments());
-        System.out.println("BELOW: " + nodeArguments2);
-        System.out.println("---------");
+        if(DEBUG) {
+            System.out.println("---------");
+            System.out.println("ABOVE: " + nodeArguments1);
+            System.out.println("BETWEEN: " + inputFieldNew.nodeArguments());
+            System.out.println("BELOW: " + nodeArguments2);
+            System.out.println("---------");
+        }
 
         // Create the new InputFields
         LInputFieldNew inputField1 = new LInputFieldNew(this, nodeArguments1);
@@ -792,6 +678,114 @@ public class LInputAreaNew extends JPanel
         return null;
     }
 
+    /**
+     * For Dynamic Nodes.
+     * When a new NodeArgument is provided by the user, update the list of available node arguments to input
+     * @param nodeArgument NodeArgument that was provided by the user
+     */
+    private void providedNodeArgument(NodeArgument nodeArgument)
+    {
+        // add all node arguments with the same symbol to the providedNodeArguments list
+        for(NodeArgument activeNA : new ArrayList<>(activeNodeArguments))
+        {
+            if(activeNA.arg().symbol().equals(nodeArgument.arg().symbol()))
+            {
+                providedNodeArguments.add(activeNA);
+            }
+        }
+        // check whether all active clauses satisfy the provided node argument
+        List<Clause> notSatisfiedClauses = new ArrayList<>();
+        for(Clause activeClause : activeClauses)
+        {
+            if(!clauseSatisfiesArgument(activeClause, nodeArgument))
+            {
+                notSatisfiedClauses.add(activeClause);
+            }
+        }
+        // remove the not satisfied clauses from the active clauses and add them to the inactive clauses
+        activeClauses.removeAll(notSatisfiedClauses);
+        inactiveClauses.addAll(notSatisfiedClauses);
+        // update the list of active and inactive node arguments
+        for(Clause notSatisfiedClause : notSatisfiedClauses) {
+            // Get NodeArguments from notSatisfiedClause
+            List<NodeArgument> notSatisfiedClauseArguments = nodeArguments.get(notSatisfiedClause);
+            // Add all previously activeNodeArguments that are in the list of notSatisfiedClauseArguments to the list of inactiveNodeArguments
+            for (NodeArgument notSatisfiedClauseArgument : notSatisfiedClauseArguments) {
+                if (activeNodeArguments.contains(notSatisfiedClauseArgument)) {
+                    removeActiveNodeArgument(notSatisfiedClauseArgument); // remove the argument from the active list and updates input fields accordingly
+                }
+            }
+        }
+
+        // update the inputfield for the provided node argument is done in addedConnection() TOOD: is this true?
+
+        // print out variables
+        System.out.println("ActiveClauses: " + activeClauses);
+        System.out.println("InactiveClauses: " + inactiveClauses);
+        System.out.println("ProvidedNodeArguments: " + providedNodeArguments);
+        System.out.println("ActiveNodeArguments: " + activeNodeArguments);
+        System.out.println("InactiveNodeArguments: " + inactiveNodeArguments);
+
+    }
+
+    /**
+     * For Dynamic Nodes.
+     * A NodeArgument was removed from the active node arguments list.
+     * @param nodeArgument NodeArgument that was removed from the active node arguments list
+     */
+    private void removeActiveNodeArgument(NodeArgument nodeArgument)
+    {
+        // find inputfield for argument
+        LInputFieldNew inputField = null;
+        for(LInputFieldNew lif : currentInputFields.values())
+        {
+            if(lif.nodeArguments().contains(nodeArgument))
+            {
+                inputField = lif;
+                break;
+            }
+        }
+
+        // Remove the NodeArgument from the merged InputField
+        assert inputField != null;
+        inputField.removeNodeArgument(nodeArgument);
+        // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly
+        if(inputField.nodeArguments().size() == 1)
+        {
+            inputField.reconstruct();
+        }
+
+        if(inputField.nodeArguments().size() == 0)
+        {
+            currentNodeArgumentsLists.remove(inputField.nodeArguments());
+            currentInputFields.remove(inputField.nodeArguments());
+        }
+
+        activeNodeArguments.remove(nodeArgument);
+        inactiveNodeArguments.add(nodeArgument);
+
+        // TODO: is map updated automatically?
+    }
+
+    /**
+     *
+     * @param clause Clause to check
+     * @param nodeArgument NodeArgument that was added
+     * @return whether the provided node argument satisfies a clause, i.e. whether this clause satisfies the newly added node argument
+     */
+    private boolean clauseSatisfiesArgument(Clause clause, NodeArgument nodeArgument)
+    {
+        // check whether the clause contains the node argument's symbol
+        for (ClauseArg clauseArg : clause.args())
+        {
+            Symbol argSymbol = clauseArg.symbol();
+            if (argSymbol.equals(nodeArgument.arg().symbol()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     /**
