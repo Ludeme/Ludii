@@ -37,7 +37,131 @@ public class LInputAreaNew extends JPanel
     /** List of LInputFields for the current Clause of the associated LudemeNodeComponent */
     private LinkedHashMap<List<NodeArgument>, LInputFieldNew> currentInputFields;
 
+
+    /** Variables for a dynamic node
+     *  How it works: Initially the user can provide node arguments / inputs for any clause the node has.
+     *                Whenever an argument is provided, clauses that do not include that argument are removed from the list of active clauses.
+     *                The list of possible arguments is updated whenever an argument is provided.
+     */
+    /** Clauses that satisfy currently provided inputs */
+    private List<Clause> activeClauses = new ArrayList<>();
+    /** Clauses that do not satisfy currently provided inputs */
+    private List<Clause> inactiveClauses = new ArrayList<>();
+    /** NodeArguments that are currently provided */
+    private List<NodeArgument> providedNodeArguments = new ArrayList<>();
+    /** NodeArguments that can be provided to satisfy active clauses */
+    private List<NodeArgument> activeNodeArguments = new ArrayList<>();
+    /** NodeArguments that cannot be provided to satisfy active clauses */
+    private List<NodeArgument> inactiveNodeArguments = new ArrayList<>();
+
+
     private final boolean DEBUG = true;
+
+
+
+
+    private void providedNodeArgument(NodeArgument nodeArgument)
+    {
+        providedNodeArguments.add(nodeArgument);
+        // check whether all active clauses satisfy the provided node argument
+        List<Clause> notSatisfiedClauses = new ArrayList<>();
+        for(Clause activeClause : activeClauses)
+        {
+            if(!clauseSatisfiesArgument(activeClause, nodeArgument))
+            {
+                notSatisfiedClauses.add(activeClause);
+            }
+        }
+        // remove the not satisfied clauses from the active clauses and add them to the inactive clauses
+        activeClauses.removeAll(notSatisfiedClauses);
+        inactiveClauses.addAll(notSatisfiedClauses);
+        // update the list of active and inactive node arguments
+        List<NodeArgument> notSatisfiedNodeArguments = new ArrayList<>();
+        for(Clause notSatisfiedClause : notSatisfiedClauses) {
+            // Get NodeArguments from notSatisfiedClause
+            List<NodeArgument> notSatisfiedClauseArguments = nodeArguments.get(notSatisfiedClause);
+            // Add all previously activeNodeArguments that are in the list of notSatisfiedClauseArguments to the list of inactiveNodeArguments
+            for (NodeArgument notSatisfiedClauseArgument : notSatisfiedClauseArguments) {
+                if (activeNodeArguments.contains(notSatisfiedClauseArgument)) {
+                    removeActiveNodeArgument(notSatisfiedClauseArgument); // remove the argument from the active list and updates input fields accordingly
+                }
+            }
+
+        }
+
+        // update the inputfield for the provided node argument is done in addedConnection() TOOD: is this true?
+
+        // print out variables
+        System.out.println("ActiveClauses: " + activeClauses);
+        System.out.println("InactiveClauses: " + inactiveClauses);
+        System.out.println("ProvidedNodeArguments: " + providedNodeArguments);
+        System.out.println("ActiveNodeArguments: " + activeNodeArguments);
+        System.out.println("InactiveNodeArguments: " + inactiveNodeArguments);
+
+    }
+
+    private void removeActiveNodeArgument(NodeArgument nodeArgument)
+    {
+        // find inputfield for argument
+        LInputFieldNew inputField = null;
+        for(LInputFieldNew lif : currentInputFields.values())
+        {
+            if(lif.nodeArguments().contains(nodeArgument))
+            {
+                inputField = lif;
+                break;
+            }
+        }
+        /*for(List<NodeArgument> nodeArgumentList : currentNodeArgumentsLists) {
+            if (nodeArgumentList.contains(nodeArgument)) {
+                inputField = currentInputFields.get(nodeArgumentList);
+                break;
+            }
+        }*/
+
+        // remove inputfield from currentInputFields
+        //currentNodeArgumentsLists.get(currentNodeArgumentsLists.indexOf(inputField.nodeArguments())).remove(nodeArgument);
+
+        // Remove the NodeArgument from the merged InputField
+        inputField.removeNodeArgument(nodeArgument);
+        // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly
+        if(inputField.nodeArguments().size() == 1)
+        {
+            inputField.reconstruct();
+        }
+
+        if(inputField.nodeArguments().size() == 0)
+        {
+            currentNodeArgumentsLists.remove(inputField.nodeArguments());
+            currentInputFields.remove(inputField.nodeArguments());
+        }
+
+        activeNodeArguments.remove(nodeArgument);
+        inactiveNodeArguments.add(nodeArgument);
+
+        // TODO: is map updated automatically?
+    }
+
+    /**
+     *
+     * @param clause Clause to check
+     * @param nodeArgument NodeArgument that was added
+     * @return whether the provided node argument satisfies a clause, i.e. whether this clause satisfies the newly added node argument
+     */
+    private boolean clauseSatisfiesArgument(Clause clause, NodeArgument nodeArgument)
+    {
+        // check whether the clause contains the node argument's symbol
+        for (ClauseArg clauseArg : clause.args())
+        {
+            Symbol argSymbol = clauseArg.symbol();
+            if (argSymbol.equals(nodeArgument.arg().symbol()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Constructor
@@ -47,7 +171,20 @@ public class LInputAreaNew extends JPanel
     {
         this.LNC = LNC;
         nodeArguments = generateNodeArguments();
-        currentNodeArguments = currentNodeArguments();
+        if(dynamic())
+        {
+            activeClauses = new ArrayList<>(LNC.node().clauses());
+            inactiveClauses = new ArrayList<>();
+            providedNodeArguments = new ArrayList<>();
+            activeNodeArguments = new ArrayList<>();
+            for(List<NodeArgument> nas: nodeArguments.values()) activeNodeArguments.addAll(nas);
+            inactiveNodeArguments = new ArrayList<>();
+            currentNodeArguments = activeNodeArguments;
+        }
+        else
+        {
+            currentNodeArguments = currentNodeArguments();
+        }
         currentNodeArgumentsLists = generateNodeArgumentsLists(currentNodeArguments);
         currentInputFields = generateInputFields(currentNodeArgumentsLists);
         drawInputFields(currentInputFields);
@@ -78,6 +215,13 @@ public class LInputAreaNew extends JPanel
     private List<NodeArgument> generateNodeArguments(Clause clause)
     {
         List<NodeArgument> nodeArguments = new ArrayList<>();
+        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+        {
+            System.out.println("yeeep");
+            NodeArgument nodeArgument = new NodeArgument(clause);
+            nodeArguments.add(nodeArgument);
+            return nodeArguments;
+        }
         List<ClauseArg> clauseArgs = clause.args();
         for(int i = 0; i < clauseArgs.size(); i++)
         {
@@ -101,12 +245,50 @@ public class LInputAreaNew extends JPanel
      */
     private List<List<NodeArgument>> generateNodeArgumentsLists(List<NodeArgument> nodeArguments)
     {
+        if(dynamic()) return generateDynamicNodeArgumentsLists(nodeArguments);
         List<List<NodeArgument>> nodeArgumentsLists = new ArrayList<>();
         List<NodeArgument> currentNodeArgumentsList = new ArrayList<>(); // List of NodeArguments currently being added to the current list
         for (NodeArgument nodeArgument : nodeArguments) {
 
             // If optional and not filled, add it to the current list
             if(nodeArgument.optional() && !isArgumentProvided(nodeArgument))
+            {
+                currentNodeArgumentsList.add(nodeArgument);
+            }
+            else // If not optional, add it to a new empty list and add it to the list of lists
+            {
+                // if the current list is not empty, add it to the list of lists and clear it (happens when previous nodeArguments were optional)
+                if (!currentNodeArgumentsList.isEmpty()) {
+                    nodeArgumentsLists.add(currentNodeArgumentsList);
+                    currentNodeArgumentsList = new ArrayList<>();
+                }
+                List<NodeArgument> list = new ArrayList<>();
+                list.add(nodeArgument);
+                nodeArgumentsLists.add(list);
+            }
+        }
+        // if the current list is not empty, add it to the list of lists and clear it (happens when previous nodeArguments were optional)
+        if(!currentNodeArgumentsList.isEmpty())
+        {
+            nodeArgumentsLists.add(currentNodeArgumentsList);
+        }
+        return nodeArgumentsLists;
+    }
+
+    /**
+     * Groups consequent NodeArguments together in one list
+     * Only if the NodeArgument is not provided with input by the user
+     * @param nodeArguments List of NodeArguments to group into lists
+     * @return List of lists of NodeArguments where each list corresponds to a LInputField
+     */
+    private List<List<NodeArgument>> generateDynamicNodeArgumentsLists(List<NodeArgument> nodeArguments)
+    {
+        List<List<NodeArgument>> nodeArgumentsLists = new ArrayList<>();
+        List<NodeArgument> currentNodeArgumentsList = new ArrayList<>(); // List of NodeArguments currently being added to the current list
+        for (NodeArgument nodeArgument : nodeArguments) {
+
+            // Only if not provided with input by the user
+            if(!providedNodeArguments.contains(nodeArgument))
             {
                 currentNodeArgumentsList.add(nodeArgument);
             }
@@ -226,10 +408,6 @@ public class LInputAreaNew extends JPanel
      */
     public LInputFieldNew addedConnection(LudemeNodeComponent lnc, LInputFieldNew inputField)
     {
-        // If the input field only contains one NodeArgument, it is the one that the user provided input for
-        if(!inputField.isMerged()) return inputField;
-        // Otherwise it is a merged one.
-        // Therefore, the NodeArgument which corresponds to the NodeArgument that the user provided input for is removed from the merged InputField
         // Find the NodeArgument that the user provided input for
         NodeArgument providedNodeArgument = null;
         for(NodeArgument nodeArgument : inputField.nodeArguments())
@@ -244,6 +422,44 @@ public class LInputAreaNew extends JPanel
             }
             if(providedNodeArgument != null) break;
         }
+        // Update active and inactive variables for dynamic nodes
+        if(dynamic()) providedNodeArgument(providedNodeArgument);
+        // If the input field only contains one NodeArgument, it is the one that the user provided input for
+        if(!inputField.isMerged()) return inputField;
+        // Otherwise it is a merged one.
+        // Therefore, the NodeArgument which corresponds to the NodeArgument that the user provided input for is removed from the merged InputField
+
+        // Single out the NodeArgument that the user provided input for and return the new InputField
+        return singleOutInputField(providedNodeArgument, inputField);
+    }
+
+
+    /**
+     * Notifies the Input Area that the user has provided terminal input for a NodeArgument
+     * @param symbol The symbol of the NodeArgument that the user provided input for
+     * @param inputField LInputField that the user has provided input for
+     * @return The LInputField associated with the NodeArgument that the user provided input for
+     */
+    public LInputFieldNew addedConnection(Symbol symbol, LInputFieldNew inputField)
+    {
+        // Find the NodeArgument that the user provided input for
+        NodeArgument providedNodeArgument = null;
+        for(NodeArgument nodeArgument : inputField.nodeArguments())
+        {
+            for(ClauseArg arg : nodeArgument.args())
+            {
+                if(arg.symbol().equals(symbol))
+                {
+                    providedNodeArgument = nodeArgument;
+                    break;
+                }
+            }
+            if(providedNodeArgument != null) break;
+        }
+        providedNodeArgument.setSeparateNode(true);
+        System.out.println("providedNodeArgument: " + providedNodeArgument + ", " + providedNodeArgument.separateNode());
+        // Update active and inactive variables for dynamic nodes
+        if(dynamic()) providedNodeArgument(providedNodeArgument);
         // Single out the NodeArgument that the user provided input for and return the new InputField
         return singleOutInputField(providedNodeArgument, inputField);
     }
@@ -551,6 +767,15 @@ public class LInputAreaNew extends JPanel
     public LudemeNodeComponent LNC()
     {
         return LNC;
+    }
+
+    /**
+     *
+     * @return Whether the node is dynamic or not
+     */
+    private boolean dynamic()
+    {
+        return LNC.node().dynamic();
     }
 
     @Override

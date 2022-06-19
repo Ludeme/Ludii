@@ -120,7 +120,7 @@ public class LInputArea extends JPanel {
         if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
         {
             ClauseArg clauseArg = new ClauseArg(clause.symbol(), null, false, 0, 0);
-            nodeArguments.add(new NodeArgument(clause, clauseArg, true));
+            //nodeArguments.add(new NodeArgument(clause, clauseArg, true));
             return nodeArguments;
         }
 

@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.components;
 import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.recs.utils.Pair;
 import app.display.dialogs.visual_editor.recs.utils.ReadableSymbol;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.grammar.Symbol;
 
@@ -62,7 +63,19 @@ public class AddLudemeWindow extends JPanel {
                     Object o = theList.getModel().getElementAt(index);
                     if(o != null) {
                         ReadableSymbol rs = (ReadableSymbol) o;
-                        graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                        // if the symbol is a terminal, dont create a node. Instead create an inputfield
+                        if(rs.getSymbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+                        {
+                            // get the node that is being added to
+                            LudemeNodeComponent lnc = graphPanel.connectionHandler().getSelectedConnectionComponent().lnc();
+                            lnc.addTerminal(rs.getSymbol());
+                            graphPanel.connectionHandler().cancelNewConnection();
+                            setVisible(false);
+                        }
+                        else
+                        {
+                            graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                        }
                         searchField.setText("");
                         scrollableList.getVerticalScrollBar().setValue(0);
                     }

@@ -10,6 +10,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Clause;
+import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.awt.*;
@@ -97,6 +98,17 @@ public class LudemeNodeComponent extends JPanel
     {
         Handler.updateCurrentClause(graphPanel().graph(), node(), clause);
         inputArea.changedSelectedClause();
+        revalidate();
+        repaint();
+    }
+
+    /**
+     * Adds a terminal inputfield to the node
+     * @param symbol the symbol of the terminal inputfield
+     */
+    public void addTerminal(Symbol symbol)
+    {
+        inputArea.addedConnection(symbol, graphPanel().connectionHandler().getSelectedConnectionComponent().inputField());
         revalidate();
         repaint();
     }

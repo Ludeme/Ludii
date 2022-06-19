@@ -34,7 +34,7 @@ public class NodeArgument
      */
     private final List<Symbol> POSSIBLE_SYMBOL_INPUTS_EXPANDED;
     /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
-    private final boolean SEPARATE_NODE;
+    private boolean SEPARATE_NODE;
 
     /**
      * Constructor for NodeInput
@@ -69,50 +69,26 @@ public class NodeArgument
             INDEX_LAST = clause.args().indexOf(arg) + ARGS.size() - 1;
         }
 
-        System.out.println("ARgs: " + args());
-
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
         this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
         SEPARATE_NODE = false;
     }
 
     /**
-     * Constructor for NodeInput
+     * Constructor for NodeInput which is a Terminal
      * @param clause the clause this NodeArgument is part of
-     * @param arg the ClauseArg this NodeArgument represents
-     * @param separateNode if this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node
      */
-    public NodeArgument(Clause clause, ClauseArg arg, boolean separateNode)
+    public NodeArgument(Clause clause)
     {
         CLAUSE = clause;
         // add argument to list
         ARGS = new ArrayList<>();
-        ARGS.add(arg);
-        // if arg is part of OR-Group, add other components of OR-Group to it.
-        if(arg.orGroup() != 0)
-        {
-            int group = arg.orGroup();
-            int index = clause.args().indexOf(arg)+1;
-            while(index < clause.args().size() && clause.args().get(index).orGroup() == group)
-            {
-                ARGS.add(clause.args().get(index));
-                index++;
-            }
-        }
-        if(clause.args() == null)
-        {
-            INDEX_FIRST = 0;
-            INDEX_LAST = 0;
-        }
-        else
-        {
-            INDEX_FIRST = clause.args().indexOf(arg);
-            INDEX_LAST = clause.args().indexOf(arg) + ARGS.size() - 1;
-        }
-
-        this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
-        this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
-        SEPARATE_NODE = separateNode;
+        ARGS.add(new ClauseArg(clause.symbol(), null, false, 0, 0));
+        INDEX_FIRST = 0;
+        INDEX_LAST = 0;
+        POSSIBLE_SYMBOL_INPUTS = new ArrayList<>();
+        POSSIBLE_SYMBOL_INPUTS_EXPANDED = new ArrayList<>();
+        SEPARATE_NODE = true;
     }
 
     /**
@@ -263,7 +239,7 @@ public class NodeArgument
 
     public boolean isTerminal()
     {
-        if(args().size() > 1) return false;
+        if(separateNode()) return true;
         return isTerminal(arg().symbol());
     }
 
@@ -323,6 +299,7 @@ public class NodeArgument
      */
     public ClauseArg arg()
     {
+        if(ARGS.size() == 0) return null;
         return ARGS.get(0);
     }
 
@@ -378,6 +355,10 @@ public class NodeArgument
     public boolean choice()
     {
         return size() > 1;
+    }
+
+    public void setSeparateNode(boolean separateNode) {
+        this.SEPARATE_NODE = separateNode;
     }
 
     // TODO: Add comment

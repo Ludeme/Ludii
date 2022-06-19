@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ public class LInputFieldNew extends JComponent
         optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
         optionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 
+
         if(nodeArguments.size() == 1)
             construct(nodeArguments.get(0));
         else
@@ -73,7 +76,10 @@ public class LInputFieldNew extends JComponent
 
         if(nodeArgument.isTerminal())
         {
-            constructTerminal(nodeArgument);
+            // If the selected NodeArgument is a terminal NodeArgument stemming from a merged input field (i.e. optional or dynamic)
+            // (nodeArguments.get(0).separateNode())
+            // Add an option to remove this argument again
+            constructTerminal(nodeArgument, nodeArgument.separateNode() || nodeArgument.optional());
         }
         else
         {
@@ -93,6 +99,7 @@ public class LInputFieldNew extends JComponent
         label.setText("Arguments");
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+        add(label);
         // add optional label
         if(optional()) add(optionalLabel);
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
@@ -104,9 +111,9 @@ public class LInputFieldNew extends JComponent
     /**
      * Constructs a LInputField for a terminal NodeArgument
      * @param nodeArgument NodeArgument to construct a LInputField for
-     *                     TODO: Add cross to remove if optional
+     * @param removable Whether the LInputField can be removed
      */
-    private void constructTerminal(NodeArgument nodeArgument)
+    private void constructTerminal(NodeArgument nodeArgument, boolean removable)
     {
         fieldComponent = generateTerminalComponent(nodeArgument);
         // set size
@@ -119,6 +126,17 @@ public class LInputFieldNew extends JComponent
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
         add(label);
         add(fieldComponent);
+        if(removable) {
+            JLabel removeLabel = new JLabel("X");
+            add(removeLabel);
+            removeLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    System.out.println("remove field: " + nodeArgument);
+                }
+            });
+        }
     }
 
     /**
