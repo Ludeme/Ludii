@@ -430,7 +430,7 @@ public class LInputField extends JComponent
 
     public LInputField setToSingle(int inputIndex){
         for(NodeArgument ii : nodeArgumentList){
-            if(ii.indexFirst() == inputIndex){
+            if(ii.index() == inputIndex){
                 System.out.println("[LIF]: Setting " + ii + "(index="+inputIndex+") to single");
                 return setToSingle(ii);
             }
@@ -476,9 +476,9 @@ public class LInputField extends JComponent
         List<NodeArgument> above_ii = new ArrayList<>();
         List<NodeArgument> below_ii = new ArrayList<>();
         for(NodeArgument ii : nodeArgumentList){
-            if(ii.indexFirst() < nodeArgument.indexFirst()){
+            if(ii.index() < nodeArgument.index()){
                 above_ii.add(ii);
-            } else if(ii.indexFirst() > nodeArgument.indexFirst()){
+            } else if(ii.index() > nodeArgument.index()){
                 below_ii.add(ii);
             }
         }
@@ -525,7 +525,7 @@ public class LInputField extends JComponent
      */
     public int inputIndexFirst()
     {
-        return nodeArgumentList.get(0).indexFirst();
+        return nodeArgumentList.get(0).index();
     }
 
     /**
@@ -592,7 +592,7 @@ public class LInputField extends JComponent
     {
         List<Integer> indices = new ArrayList<>();
         for(NodeArgument nodeArgument : nodeArgumentList) {
-            indices.add(nodeArgument.indexFirst());
+            indices.add(nodeArgument.index());
         }
         return indices;
     }

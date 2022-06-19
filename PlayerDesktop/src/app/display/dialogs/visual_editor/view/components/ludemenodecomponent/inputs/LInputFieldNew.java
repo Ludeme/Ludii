@@ -200,6 +200,21 @@ public class LInputFieldNew extends JComponent
     public void removeNodeArgument(NodeArgument nodeArgument)
     {
         nodeArguments.remove(nodeArgument);
+        if(nodeArguments.size() == 1) reconstruct();
+    }
+
+    /**
+     * Adds a NodeArgument to the list of NodeArguments
+     * @param nodeArgument
+     */
+    public void addNodeArgument(NodeArgument nodeArgument)
+    {
+        if(nodeArgument.size() == 1)
+        {
+            nodeArguments.add(nodeArgument);
+            reconstruct();
+        }
+        else nodeArguments.add(nodeArgument);
     }
 
     /**
@@ -403,7 +418,7 @@ public class LInputFieldNew extends JComponent
      */
     public int inputIndexFirst()
     {
-        return nodeArgument(0).indexFirst();
+        return nodeArgument(0).index();
     }
 
     /**
@@ -413,7 +428,7 @@ public class LInputFieldNew extends JComponent
     public List<Integer> inputIndices() {
         List<Integer> indices = new ArrayList<>();
         for (NodeArgument nodeArgument : nodeArguments) {
-            indices.add(nodeArgument.indexFirst());
+            indices.add(nodeArgument.index());
         }
         return indices;
     }

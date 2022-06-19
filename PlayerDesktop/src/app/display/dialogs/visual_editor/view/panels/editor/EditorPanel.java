@@ -190,10 +190,10 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         if(DEBUG) System.out.println("[EP] Show list of connectable ludemes");
         // get game description up to current point
-        int upUntilIndex = ch.getSelectedConnectionComponent().inputField().nodeArguments().get(0).indexFirst();
+        int upUntilIndex = ch.getSelectedConnectionComponent().inputField().nodeArguments().get(0).index();
         for(NodeArgument ii : ch.getSelectedConnectionComponent().inputField().nodeArguments())
         {
-            if(ii.indexFirst() < upUntilIndex) upUntilIndex = ii.indexFirst();
+            if(ii.index() < upUntilIndex) upUntilIndex = ii.index();
         }
 
 

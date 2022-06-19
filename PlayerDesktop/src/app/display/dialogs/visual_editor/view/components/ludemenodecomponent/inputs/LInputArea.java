@@ -79,7 +79,7 @@ public class LInputArea extends JPanel {
         // Create NodeArgument for each clause argument
         for(int i = 0; i < inputs.size(); i++){
             NodeArgument ii = inputs.get(i);
-            if(ii.optional() && LNC.node().providedInputs()[ii.indexFirst()] == null){
+            if(ii.optional() && LNC.node().providedInputs()[ii.index()] == null){
                 consequentOptionalInputs.add(ii);
                 continue;
             } else if (consequentOptionalInputs.size() == 1) {
@@ -255,7 +255,7 @@ public class LInputArea extends JPanel {
         // get all InputIndices of every ii in IC
         List<Integer> IX = new ArrayList<>();
         for (NodeArgument ii : IC) {
-            IX.add(ii.indexFirst());
+            IX.add(ii.index());
         }
         if (DEBUG) System.out.println("[DYNAMIC LIA]: IX = " + IX);
 
@@ -278,10 +278,10 @@ public class LInputArea extends JPanel {
             //                  if constructor(j) == constructor(i) && index(j) > index(ii) -> lif02_iis.add(j)
             for (NodeArgument ii : IC) {
                 for (NodeArgument j : lif0_ii) {
-                    if (j.clause() == ii.clause() && j.indexFirst() < ii.indexFirst()) {
+                    if (j.clause() == ii.clause() && j.index() < ii.index()) {
                         lif01_iis.add(j);
                     }
-                    else if (j.clause() == ii.clause() && j.indexFirst() > ii.indexFirst()) {
+                    else if (j.clause() == ii.clause() && j.index() > ii.index()) {
                         lif02_iis.add(j);
                     }
                 }
@@ -369,7 +369,7 @@ public class LInputArea extends JPanel {
             if(DEBUG) System.out.println("  --> Looking for " + providedSymbol + " in " + inputFields);
             for(LInputField lif : inputFields){
                 for(NodeArgument ii : lif.nodeArguments()){
-                    if(ii.possibleSymbolInputsExpanded().contains(providedSymbol) && LNC.node().providedInputs()[ii.indexFirst()] == null){
+                    if(ii.possibleSymbolInputsExpanded().contains(providedSymbol) && LNC.node().providedInputs()[ii.index()] == null){
                         System.out.println("  ->  after: " + Arrays.toString(providedInputs)); // TODO: REMOVE
                         return lif;
                     }
@@ -405,7 +405,7 @@ public class LInputArea extends JPanel {
         // add ii with equivalent node to providedII
         for(NodeArgument ii : new ArrayList<>(providedII)){
             for(NodeArgument ii2 : allNodeArguments){
-                if(ii2.arg().symbol().name().equals(ii.arg().symbol().name()) && ii2.indexFirst() == ii.indexFirst()){
+                if(ii2.arg().symbol().name().equals(ii.arg().symbol().name()) && ii2.index() == ii.index()){
                     if(!providedII.contains(ii2)) providedII.add(ii2);
                 }
             }
@@ -620,21 +620,21 @@ public class LInputArea extends JPanel {
                     if(lifBelow != null && !lifBelow.isSingle()) lifBelow = null;
 
                     // add any ii in newActiveII with smaller indices than ii in correspondingII, but bigger than previous corresponding ii's min index to lifAbove
-                    int maxIndexInCorrespondingII = correspondingII.get(0).indexFirst();
+                    int maxIndexInCorrespondingII = correspondingII.get(0).index();
                     for(NodeArgument ii : correspondingII){
-                        maxIndexInCorrespondingII = Math.max(maxIndexInCorrespondingII, ii.indexFirst());
+                        maxIndexInCorrespondingII = Math.max(maxIndexInCorrespondingII, ii.index());
                     }
                     for(NodeArgument ii : newActiveII){
-                        if(ii.indexFirst() > minIndex && ii.indexFirst() <= maxIndexInCorrespondingII){
+                        if(ii.index() > minIndex && ii.index() <= maxIndexInCorrespondingII){
                             lifAbove.addNodeArgument(ii);
                             addedNodeArguments.add(ii);
                         }
                     }
 
                     // update minIndex
-                    minIndex = correspondingII.get(0).indexFirst();
+                    minIndex = correspondingII.get(0).index();
                     for(NodeArgument correspondingII_ii : correspondingII){
-                        minIndex = Math.min(minIndex, correspondingII_ii.indexFirst());
+                        minIndex = Math.min(minIndex, correspondingII_ii.index());
                     }
                 }
                 // add any ii in newActiveII not added to the last non-single lif
@@ -668,7 +668,7 @@ public class LInputArea extends JPanel {
 
             for(LInputField lif : inputFields){
                 for(NodeArgument inputInformation : lif.nodeArguments()){
-                    if(inputInformation.indexFirst() == ii.indexFirst()){
+                    if(inputInformation.index() == ii.index()){
                         newInputField = lif;
                         break;
                     }
@@ -699,7 +699,7 @@ public class LInputArea extends JPanel {
         List<LInputField> newFields = new ArrayList<>();
         for(int i = 0; i < inputFields.size(); i++){
             LInputField inputField = inputFields.get(i);
-            if((inputField.isSingle || LNC.node().providedInputs()[inputField.nodeArgument().indexFirst()] == null) && inputField.nodeArgument().optional()){
+            if((inputField.isSingle || LNC.node().providedInputs()[inputField.nodeArgument().index()] == null) && inputField.nodeArgument().optional()){
                 consequentOptionalInputs.add(inputField);
             } else if(consequentOptionalInputs.size() == 1){
                 newFields.add(consequentOptionalInputs.get(0));

@@ -214,7 +214,7 @@ public class LInputAreaNew extends JPanel
      */
     private boolean isArgumentProvided(NodeArgument nodeArgument)
     {
-        return LNC.node().providedInputs()[nodeArgument.indexFirst()] != null;
+        return LNC.node().providedInputs()[nodeArgument.index()] != null;
     }
 
     /**
@@ -396,12 +396,12 @@ public class LInputAreaNew extends JPanel
         }
 
         // Case 1
-        if(nodeArgument.indexFirst() == inputField.nodeArguments().get(0).indexFirst())
+        if(nodeArgument.index() == inputField.nodeArguments().get(0).index())
         {
             addInputFieldAbove(newInputField, inputField);
         }
         // Case 2
-        else if(nodeArgument.indexFirst() == inputField.nodeArguments().get(inputField.nodeArguments().size() - 1).indexFirst())
+        else if(nodeArgument.index() == inputField.nodeArguments().get(inputField.nodeArguments().size() - 1).index())
         {
             addInputFieldBelow(newInputField, inputField);
         }
@@ -479,11 +479,11 @@ public class LInputAreaNew extends JPanel
         List<NodeArgument> nodeArguments2 = new ArrayList<>();
         for(NodeArgument nodeArgument : inputField.nodeArguments())
         {
-            if(nodeArgument.indexFirst() < inputFieldNew.nodeArguments().get(0).indexFirst())
+            if(nodeArgument.index() < inputFieldNew.nodeArguments().get(0).index())
             {
                 nodeArguments1.add(nodeArgument);
             }
-            else if(nodeArgument.indexFirst() > inputFieldNew.nodeArguments().get(0).indexFirst())
+            else if(nodeArgument.index() > inputFieldNew.nodeArguments().get(0).index())
             {
                 nodeArguments2.add(nodeArgument);
             }
@@ -522,17 +522,17 @@ public class LInputAreaNew extends JPanel
         int max_index = 0;
         for(NodeArgument providedNA : providedNodeArguments) {
             if(!inputField.nodeArguments().contains(providedNA)) continue;
-            min_index = Math.min(min_index, providedNA.indexFirst());
-            max_index = Math.max(max_index, providedNA.indexFirst());
+            min_index = Math.min(min_index, providedNA.index());
+            max_index = Math.max(max_index, providedNA.index());
         }
 
         for(NodeArgument nodeArgument : inputField.nodeArguments())
         {
-            if(nodeArgument.indexFirst() <= min_index && !providedNodeArguments.contains(nodeArgument))
+            if(nodeArgument.index() <= min_index && !providedNodeArguments.contains(nodeArgument))
             {
                 nodeArguments1.add(nodeArgument);
             }
-            else if(nodeArgument.indexFirst() >= max_index && !providedNodeArguments.contains(nodeArgument))
+            else if(nodeArgument.index() >= max_index && !providedNodeArguments.contains(nodeArgument))
             {
                 nodeArguments2.add(nodeArgument);
             }
@@ -561,31 +561,108 @@ public class LInputAreaNew extends JPanel
     }
 
 
+    private void removedConnectionDynamic(LInputFieldNew inputField)
+    {
+        // get input fields above and below (null if there is no input field above or below)
+        LInputFieldNew inputFieldAbove = inputFieldAbove(inputField);
+        LInputFieldNew inputFieldBelow = inputFieldBelow(inputField);
+
+        // check where the input field can be merged into
+        // for dynamic: field above/below must be unfilled
+        boolean canBeMergedIntoAbove = inputFieldAbove != null && !providedNodeArguments.contains(inputFieldAbove.nodeArgument(0));
+        boolean canBeMergedIntoBelow = inputFieldBelow != null && !providedNodeArguments.contains(inputFieldBelow.nodeArgument(0));
+        // update active node arguments etc.
+        // get freed up node arguments (now active, before inactive)
+        List<List<NodeArgument>> freedUpArguments = removedProvidedNodeArgument(inputField.nodeArgument(0));
+        List<NodeArgument> freedUpAbove = freedUpArguments.get(0);
+        List<NodeArgument> freedUpBelow = freedUpArguments.get(1);
+
+        if(!canBeMergedIntoBelow && !canBeMergedIntoAbove)
+        {
+            System.err.println("Cannot remove connection, because there is no place to merge the input field! [dynamic]");
+            return;
+        }
+        // if can be merged into both, combine the three inputfields into one
+        if(canBeMergedIntoAbove && canBeMergedIntoBelow) {
+            LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField, inputFieldBelow});
+            for(NodeArgument na : freedUpAbove) inputFieldNew.addNodeArgument(na);
+            for(NodeArgument na : freedUpBelow) inputFieldNew.addNodeArgument(na);
+        }
+        // if can be merged into above, merge into above
+        else if(canBeMergedIntoAbove) {
+            LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField});
+            // add freed up node arguments to input field
+            for(NodeArgument na : freedUpAbove) inputFieldNew.addNodeArgument(na);
+            // get input field below
+            LInputFieldNew inputFieldBelowMerged = inputFieldBelow(inputFieldNew);
+            if(inputFieldBelowMerged != null) {
+                // add freed up node arguments to input field
+                for(NodeArgument na : freedUpBelow) inputFieldBelowMerged.addNodeArgument(na);
+            } else
+            {
+                // add freed up node arguments to input field
+                for(NodeArgument na : freedUpBelow) inputFieldNew.addNodeArgument(na);
+            }
+        }
+        // if can be merged into below, merge into below
+        else if(canBeMergedIntoBelow) {
+            LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputField, inputFieldBelow});
+            // add freed up node arguments to input field
+            for(NodeArgument na : freedUpBelow) inputFieldNew.addNodeArgument(na);
+            // get input field below
+            LInputFieldNew inputFieldAboveMerged = inputFieldAbove(inputFieldNew);
+            if(inputFieldAboveMerged != null) {
+                // add freed up node arguments to input field
+                for(NodeArgument na : freedUpAbove) inputFieldAboveMerged.addNodeArgument(na);
+            } else
+            {
+                // add freed up node arguments to input field
+                for(NodeArgument na : freedUpAbove) inputFieldNew.addNodeArgument(na);
+            }
+        }
+
+        drawInputFields(currentInputFields);
+        setOpaque(false);
+        setVisible(true);
+
+
+    }
+
     public void removedConnection(LInputFieldNew inputField)
     {
+
+        if(!inputField.isMerged() && dynamic()) {
+            removedConnectionDynamic(inputField);
+            return;
+        }
 
         // if the inputfield is single and optional, check whether it can be merged into another inputfield
         if(!inputField.isMerged() && inputField.optional())
         {
-            // check whether there is a unfilled optional inputfield above AND below this one
+            // get input fields above and below (null if there is no input field above or below)
             LInputFieldNew inputFieldAbove = inputFieldAbove(inputField);
-            boolean canBeMergedIntoAbove = inputFieldAbove != null && !isArgumentProvided(inputFieldAbove.nodeArgument(0)) && inputFieldAbove.optional();
+            //boolean canBeMergedIntoAbove = inputFieldAbove != null && !isArgumentProvided(inputFieldAbove.nodeArgument(0)) && (inputFieldAbove.optional() || dynamic());
             LInputFieldNew inputFieldBelow = inputFieldBelow(inputField);
+            //boolean canBeMergedIntoBelow = inputFieldBelow != null && !isArgumentProvided(inputFieldBelow.nodeArgument(0)) && (inputFieldBelow.optional() || dynamic());
+
+
+            // check where the input field can be merged into
+            // for optional: field above/below must be unfilled & optional
+            boolean canBeMergedIntoAbove = inputFieldAbove != null && !isArgumentProvided(inputFieldAbove.nodeArgument(0)) && inputFieldAbove.optional();
             boolean canBeMergedIntoBelow = inputFieldBelow != null && !isArgumentProvided(inputFieldBelow.nodeArgument(0)) && inputFieldBelow.optional();
+
+
             if(!canBeMergedIntoBelow && !canBeMergedIntoAbove) return;
             // if can be merged into both, combine the three inputfields into one
             if(canBeMergedIntoAbove && canBeMergedIntoBelow) {
-                System.out.println("Merging between");
                 LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField, inputFieldBelow});
             }
             // if can be merged into above, merge into above
             else if(canBeMergedIntoAbove) {
-                System.out.println("Merging above");
                 LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField});
             }
             // if can be merged into below, merge into below
             else if(canBeMergedIntoBelow) {
-                System.out.println("Merging below");
                 LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputField, inputFieldBelow});
             }
         }
@@ -787,6 +864,87 @@ public class LInputAreaNew extends JPanel
         return false;
     }
 
+    private boolean clauseSatisfiesArguments(Clause clause, List<NodeArgument> nodeArguments)
+    {
+        for(NodeArgument na : nodeArguments)
+        {
+            if(!clauseSatisfiesArgument(clause, na))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    private List<List<NodeArgument>> removedProvidedNodeArgument(NodeArgument nodeArgument)
+    {
+        // find which node arguments to remove from the provided node arguments list
+        List<NodeArgument> nodeArgumentsToRemove = new ArrayList<>();
+        List<NodeArgument> freedNodeArgumentsBelow = new ArrayList<>();
+        List<NodeArgument> freedNodeArgumentsAbove = new ArrayList<>();
+        // get max index from inputfield above, and min index from inputfield below
+        // all node arguments with the same symbol as the removed node argument and between the min and max index are removed from the provided node arguments list
+        for(NodeArgument providedNA : providedNodeArguments)
+        {
+            if(providedNA.arg().symbol().equals(nodeArgument.arg().symbol()))
+            {
+                if(providedNA.index() >= nodeArgument.index())
+                {
+                    nodeArgumentsToRemove.add(providedNA);
+                    freedNodeArgumentsAbove.add(providedNA);
+                }
+                else if(providedNA.index() <= nodeArgument.index())
+                {
+                    nodeArgumentsToRemove.add(providedNA);
+                    freedNodeArgumentsBelow.add(providedNA);
+                }
+            }
+        }
+        // update the list of provided node arguments
+        providedNodeArguments.removeAll(nodeArgumentsToRemove);
+
+        // check which clauses are now satisfied by the provided arguments
+        List<Clause> satisfiedClauses = new ArrayList<>();
+        for(Clause inactiveClause : inactiveClauses)
+        {
+            if(clauseSatisfiesArguments(inactiveClause, providedNodeArguments))
+            {
+                satisfiedClauses.add(inactiveClause);
+            }
+        }
+
+        // add their nodearguments to the active node arguments list
+        for(Clause satisfiedClause : satisfiedClauses) {
+            for(NodeArgument na: nodeArguments.get(satisfiedClause)) {
+                activeNodeArguments.add(na);
+                inactiveNodeArguments.remove(na);
+
+                if(na == nodeArgument) continue;
+
+                if(na.index() <= nodeArgument.index())
+                {
+                    freedNodeArgumentsBelow.add(na);
+                }
+                else
+                {
+                    freedNodeArgumentsAbove.add(na);
+                }
+
+            }
+        }
+
+        // add the satisfied clauses to the active clauses and remove them from the inactive clauses
+        activeClauses.addAll(satisfiedClauses);
+        inactiveClauses.removeAll(satisfiedClauses);
+
+        List<List<NodeArgument>> freedNodeArguments = new ArrayList<>();
+        freedNodeArguments.add(freedNodeArgumentsBelow);
+        freedNodeArguments.add(freedNodeArgumentsAbove);
+
+        return freedNodeArguments;
+    }
+
 
     /**
      * Updates the positions of all LInputFields' connection components
@@ -801,7 +959,6 @@ public class LInputAreaNew extends JPanel
             }
         }
     }
-
 
     /**
      *

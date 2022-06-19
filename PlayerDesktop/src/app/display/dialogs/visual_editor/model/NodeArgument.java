@@ -21,12 +21,8 @@ public class NodeArgument
     private final Clause CLAUSE;
     /** The list of ClauseArgs this NodeArgument encompasses */
     private final List<ClauseArg> ARGS;
-    /** The index of the first ClauseArg in the list */
-    private final int INDEX_FIRST;
-    /** The index of the last ClauseArg in the list */
-    private final int INDEX_LAST;
-    /** The list of all indices of all ClauseArgs of this NodeArgument */
-    private List<Integer> INDICES;
+    /** The index of the ClauseArg in the Clause */
+    private final int INDEX;
     /** The list of possible Symbols for this NodeArgument */
     private final List<Symbol> POSSIBLE_SYMBOL_INPUTS;
     /** The list of Symbols that may be provided as input for this NodeArgument
@@ -60,13 +56,11 @@ public class NodeArgument
         }
         if(clause.args() == null)
         {
-            INDEX_FIRST = 0;
-            INDEX_LAST = 0;
+            INDEX = 0;
         }
         else
         {
-            INDEX_FIRST = clause.args().indexOf(arg);
-            INDEX_LAST = clause.args().indexOf(arg) + ARGS.size() - 1;
+            INDEX = clause.args().indexOf(arg);
         }
 
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
@@ -84,8 +78,7 @@ public class NodeArgument
         // add argument to list
         ARGS = new ArrayList<>();
         ARGS.add(new ClauseArg(clause.symbol(), null, false, 0, 0));
-        INDEX_FIRST = 0;
-        INDEX_LAST = 0;
+        INDEX = 0;
         POSSIBLE_SYMBOL_INPUTS = new ArrayList<>();
         POSSIBLE_SYMBOL_INPUTS_EXPANDED = new ArrayList<>();
         SEPARATE_NODE = true;
@@ -312,21 +305,13 @@ public class NodeArgument
 
     /**
      *
-     * @return the index of the first ClauseArg in the list
+     * @return the index of the ClauseArg in the clause
      */
-    public int indexFirst()
+    public int index()
     {
-        return INDEX_FIRST;
+        return INDEX;
     }
 
-    /**
-     *
-     * @return the index of the last ClauseArg in the list
-     */
-    public int indexLast()
-    {
-        return INDEX_LAST;
-    }
 
     /**
      *
@@ -392,7 +377,7 @@ public class NodeArgument
     @Override
     public String toString()
     {
-        return "[ " + INDEX_FIRST + ", " + ARGS.stream().map(ClauseArg::toString).collect(Collectors.joining(", ")) + " ]";
+        return "[ " + INDEX + ", " + ARGS.stream().map(ClauseArg::toString).collect(Collectors.joining(", ")) + " ]";
     }
 
 }
