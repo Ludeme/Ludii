@@ -34,7 +34,7 @@ public class TypeMatch implements iTypeMatch {
      */
     @Override
     public List<Symbol> typematch(String gameDescription, NGramController controller, List<Symbol> possibleSymbols) {
-        boolean verbose = true;
+        boolean verbose = false;
 
         if(verbose)System.out.println("--------------------------------------");
         if(verbose)System.out.println(" # Game Description");

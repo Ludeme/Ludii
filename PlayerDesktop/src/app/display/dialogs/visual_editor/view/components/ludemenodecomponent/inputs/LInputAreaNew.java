@@ -62,7 +62,14 @@ public class LInputAreaNew extends JPanel
 
     private void providedNodeArgument(NodeArgument nodeArgument)
     {
-        providedNodeArguments.add(nodeArgument);
+        // add all node arguments with the same symbol to the providedNodeArguments list
+        for(NodeArgument activeNA : new ArrayList<>(activeNodeArguments))
+        {
+            if(activeNA.arg().symbol().equals(nodeArgument.arg().symbol()))
+            {
+                providedNodeArguments.add(activeNA);
+            }
+        }
         // check whether all active clauses satisfy the provided node argument
         List<Clause> notSatisfiedClauses = new ArrayList<>();
         for(Clause activeClause : activeClauses)
@@ -76,7 +83,6 @@ public class LInputAreaNew extends JPanel
         activeClauses.removeAll(notSatisfiedClauses);
         inactiveClauses.addAll(notSatisfiedClauses);
         // update the list of active and inactive node arguments
-        List<NodeArgument> notSatisfiedNodeArguments = new ArrayList<>();
         for(Clause notSatisfiedClause : notSatisfiedClauses) {
             // Get NodeArguments from notSatisfiedClause
             List<NodeArgument> notSatisfiedClauseArguments = nodeArguments.get(notSatisfiedClause);
@@ -86,7 +92,6 @@ public class LInputAreaNew extends JPanel
                     removeActiveNodeArgument(notSatisfiedClauseArgument); // remove the argument from the active list and updates input fields accordingly
                 }
             }
-
         }
 
         // update the inputfield for the provided node argument is done in addedConnection() TOOD: is this true?
@@ -485,6 +490,21 @@ public class LInputAreaNew extends JPanel
         nodeArguments.add(nodeArgument);
         LInputFieldNew newInputField = new LInputFieldNew(this, nodeArguments);
 
+        // Dynamic nodes have a special case, only case 3
+        if(dynamic()) {
+            splitAndAddBetween(newInputField, inputField);
+            // Remove the NodeArgument from the merged InputField
+            inputField.removeNodeArgument(nodeArgument);
+            // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly
+            if(inputField.nodeArguments().size() == 1)
+            {
+                inputField.reconstruct();
+            }
+            // Redraw
+            drawInputFields(currentInputFields);
+            return newInputField;
+        }
+
         // Case 1
         if(nodeArgument.indexFirst() == inputField.nodeArguments().get(0).indexFirst())
         {
@@ -557,6 +577,13 @@ public class LInputAreaNew extends JPanel
      */
     private void splitAndAddBetween(LInputFieldNew inputFieldNew, LInputFieldNew inputField)
     {
+        // different for dynamic nodes
+        if(dynamic()) {
+            splitAndAddBetweenDynamic(inputFieldNew, inputField);
+            return;
+        }
+
+        // Find the NodeArgument that the user provided input for
         // Split the merged InputField into two InputFields
         List<NodeArgument> nodeArguments1 = new ArrayList<>();
         List<NodeArgument> nodeArguments2 = new ArrayList<>();
@@ -575,6 +602,64 @@ public class LInputAreaNew extends JPanel
                 System.err.println("A NodeArgument disappeared from the merged InputField");
             }
         }
+        // Create the new InputFields
+        LInputFieldNew inputField1 = new LInputFieldNew(this, nodeArguments1);
+        LInputFieldNew inputField2 = new LInputFieldNew(this, nodeArguments2);
+        // Add inputField1 above the old merged InputField
+        if(!nodeArguments1.isEmpty()) addInputFieldAbove(inputField1, inputField);
+        // Add the new single InputField between the two InputFields
+        addInputFieldAbove(inputFieldNew, inputField);
+        // Add inputField2 below the new single InputField
+        if(!nodeArguments2.isEmpty()) addInputFieldAbove(inputField2, inputField);
+        // Remove the old merged InputField
+        currentNodeArgumentsLists.remove(inputField.nodeArguments());
+        currentInputFields.remove(inputField.nodeArguments());
+    }
+
+    /**
+     * Splits a merged InputField into two InputFields and singles out the NodeArgument that the user provided input for
+     * @param inputFieldNew The new single InputField
+     * @param inputField The merged InputField to split
+     */
+    private void splitAndAddBetweenDynamic(LInputFieldNew inputFieldNew, LInputFieldNew inputField)
+    {
+        // Find the NodeArgument that the user provided input for
+        // Split the merged InputField into two InputFields
+        List<NodeArgument> nodeArguments1 = new ArrayList<>(); // nodeArguments1 contains active node arguments which index is smaller than the max_index of provided node arguments excluding provided arguments
+        List<NodeArgument> nodeArguments2 = new ArrayList<>(); // nodeArguments2 contains active node arguments which index is greater than the max_index of provided node arguments excluding provided arguments
+
+        int min_index = 100000;
+        int max_index = 0;
+        for(NodeArgument providedNA : providedNodeArguments) {
+            if(!inputField.nodeArguments().contains(providedNA)) continue;
+            min_index = Math.min(min_index, providedNA.indexFirst());
+            max_index = Math.max(max_index, providedNA.indexFirst());
+        }
+
+        System.out.println("Reading node arguments: " + min_index + " " + max_index + ": " + inputField.nodeArguments() );
+
+        for(NodeArgument nodeArgument : inputField.nodeArguments())
+        {
+            if(nodeArgument.indexFirst() < min_index && !providedNodeArguments.contains(nodeArgument))
+            {
+                nodeArguments1.add(nodeArgument);
+            }
+            else if(nodeArgument.indexFirst() > max_index && !providedNodeArguments.contains(nodeArgument))
+            {
+                nodeArguments2.add(nodeArgument);
+            }
+            else if(nodeArgument != inputFieldNew.nodeArguments().get(0))
+            {
+                System.err.println("A NodeArgument disappeared from the merged InputField: " + nodeArgument);
+            }
+        }
+
+        System.out.println("---------");
+        System.out.println("ABOVE: " + nodeArguments1);
+        System.out.println("BETWEEN: " + inputFieldNew.nodeArguments());
+        System.out.println("BELOW: " + nodeArguments2);
+        System.out.println("---------");
+
         // Create the new InputFields
         LInputFieldNew inputField1 = new LInputFieldNew(this, nodeArguments1);
         LInputFieldNew inputField2 = new LInputFieldNew(this, nodeArguments2);

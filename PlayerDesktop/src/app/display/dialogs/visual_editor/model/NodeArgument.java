@@ -129,7 +129,6 @@ public class NodeArgument
             return possibleSymbolInputs;
         }
         // if the clause has no constructor, expand to its own clauses
-        System.out.println("Expanding clause: " + clause);
         if(clause.args() == null)
         {
             for(Clause clause2 : clause.symbol().rule().rhs())
@@ -177,7 +176,6 @@ public class NodeArgument
         {
             for(Clause clause : arg.symbol().rule().rhs())
             {
-                System.out.println("Further expanding clause: " + clause);
                 if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Structural)) {
                     possibleSymbolInputs.addAll(possibleSymbolInputsExpanded(visited, clause));
                 }
@@ -394,7 +392,6 @@ public class NodeArgument
     @Override
     public String toString()
     {
-        System.out.println(ARGS);
         return "[ " + INDEX_FIRST + ", " + ARGS.stream().map(ClauseArg::toString).collect(Collectors.joining(", ")) + " ]";
     }
 

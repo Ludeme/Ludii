@@ -46,7 +46,7 @@ public class LudemeNode implements iLudemeNode, iGNode
      * a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
      * possible clauses is narrowed down to the ones that match the provided arguments.
      */
-    private boolean dynamic = false;
+    private boolean dynamic = true;
     /**
      * whether this node (and thus its children) are visible (collapsed) or not.
      */

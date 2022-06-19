@@ -428,8 +428,6 @@ public class LudemeNodeComponent extends JPanel
             LudemeNodeComponent.this.y = e.getY();
             Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
 
-            System.out.println(node().stringRepresentation());
-
             if(e.getButton() == MouseEvent.BUTTON3){
                 openPopupMenu(e);
                 graphPanel().connectionHandler().cancelNewConnection();

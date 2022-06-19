@@ -150,7 +150,6 @@ public class LInputArea extends JPanel {
                 break;
             }
         }
-        System.out.println("Node Arguments: " + nodeArguments);
         return nodeArguments;
     }
 
