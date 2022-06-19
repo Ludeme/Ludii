@@ -640,11 +640,11 @@ public class LInputAreaNew extends JPanel
 
         for(NodeArgument nodeArgument : inputField.nodeArguments())
         {
-            if(nodeArgument.indexFirst() < min_index && !providedNodeArguments.contains(nodeArgument))
+            if(nodeArgument.indexFirst() <= min_index && !providedNodeArguments.contains(nodeArgument))
             {
                 nodeArguments1.add(nodeArgument);
             }
-            else if(nodeArgument.indexFirst() > max_index && !providedNodeArguments.contains(nodeArgument))
+            else if(nodeArgument.indexFirst() >= max_index && !providedNodeArguments.contains(nodeArgument))
             {
                 nodeArguments2.add(nodeArgument);
             }
