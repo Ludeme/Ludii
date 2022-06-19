@@ -561,6 +561,12 @@ public class LInputAreaNew extends JPanel
     }
 
 
+    /**
+     * For Dynamic Nodes.
+     * Called when the connection of a input field is removed
+     * Attempts to merge the input field into the input field above or below (or both)
+     * @param inputField the input field which connection is removed
+     */
     private void removedConnectionDynamic(LInputFieldNew inputField)
     {
         // get input fields above and below (null if there is no input field above or below)
@@ -628,6 +634,11 @@ public class LInputAreaNew extends JPanel
 
     }
 
+    /**
+     * Called when the connection of a input field is removed
+     * Attempts to merge the input field into the input field above or below (or both)
+     * @param inputField the input field which connection is removed
+     */
     public void removedConnection(LInputFieldNew inputField)
     {
 

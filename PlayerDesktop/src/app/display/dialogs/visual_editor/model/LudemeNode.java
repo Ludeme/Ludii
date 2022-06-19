@@ -96,7 +96,7 @@ public class LudemeNode implements iLudemeNode, iGNode
             this.selectedClause = null;
             this.providedInputs = null;
         }
-        if(dynamic && !dynamicPossible()) dynamic = false;
+        setDynamic(dynamic);
     }
 
     /**
@@ -202,7 +202,21 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     public void setDynamic(boolean dynamic)
     {
+        if(dynamic && !dynamicPossible()) return;
         this.dynamic = dynamic;
+        if(dynamic)
+        {
+            // set current clause to biggest
+            for(Clause c : CLAUSES)
+            {
+                if(c.args() == null) continue;
+                if(c.args().size() > selectedClause.args().size())
+                {
+                    selectedClause = c;
+                    providedInputs = new Object[selectedClause.args().size()];
+                }
+            }
+        }
     }
 
     /**

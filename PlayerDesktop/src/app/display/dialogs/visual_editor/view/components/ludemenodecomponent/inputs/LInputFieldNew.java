@@ -133,7 +133,7 @@ public class LInputFieldNew extends JComponent
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    System.out.println("remove field: " + nodeArgument);
+                    inputArea().removedConnection(LInputFieldNew.this);
                 }
             });
         }
