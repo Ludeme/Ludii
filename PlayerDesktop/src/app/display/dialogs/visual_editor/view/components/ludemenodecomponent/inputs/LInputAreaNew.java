@@ -82,7 +82,7 @@ public class LInputAreaNew extends JPanel
         }
         currentNodeArgumentsLists = generateNodeArgumentsLists(currentNodeArguments);
         currentInputFields = generateInputFields(currentNodeArgumentsLists);
-        drawInputFields(currentInputFields);
+        drawInputFields();
         setOpaque(false);
         setVisible(true);
     }
@@ -232,13 +232,18 @@ public class LInputAreaNew extends JPanel
         return inputFields;
     }
 
-    private void drawInputFields(HashMap<List<NodeArgument>, LInputFieldNew> inputFields)
+    private void drawInputFields()
     {
         removeAll();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(LEFT_ALIGNMENT);
 
-        for (LInputFieldNew inputField : inputFields.values()) {
+        if(dynamic() && activeClauses.size() == 1)
+        {
+            addRemainingInputFields();
+        }
+
+        for (LInputFieldNew inputField : currentInputFields.values()) {
             inputField.setAlignmentX(LEFT_ALIGNMENT);
             add(inputField);
         }
@@ -263,7 +268,7 @@ public class LInputAreaNew extends JPanel
         currentNodeArguments = currentNodeArguments();
         currentNodeArgumentsLists = generateNodeArgumentsLists(currentNodeArguments);
         currentInputFields = generateInputFields(currentNodeArgumentsLists);
-        drawInputFields(currentInputFields);
+        drawInputFields();
         setOpaque(false);
         setVisible(true);
     }
@@ -391,7 +396,7 @@ public class LInputAreaNew extends JPanel
                 inputField.reconstruct();
             }
             // Redraw
-            drawInputFields(currentInputFields);
+            drawInputFields();
             return newInputField;
         }
 
@@ -417,7 +422,7 @@ public class LInputAreaNew extends JPanel
             inputField.reconstruct();
         }
         // Redraw
-        drawInputFields(currentInputFields);
+        drawInputFields();
         return newInputField;
     }
 
@@ -627,7 +632,7 @@ public class LInputAreaNew extends JPanel
             }
         }
 
-        drawInputFields(currentInputFields);
+        drawInputFields();
         setOpaque(false);
         setVisible(true);
 
@@ -677,7 +682,7 @@ public class LInputAreaNew extends JPanel
                 LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputField, inputFieldBelow});
             }
         }
-        drawInputFields(currentInputFields);
+        drawInputFields();
         setOpaque(false);
         setVisible(true);
     }
@@ -804,16 +809,99 @@ public class LInputAreaNew extends JPanel
                 }
             }
         }
+    }
 
-        // update the inputfield for the provided node argument is done in addedConnection() TOOD: is this true?
+    /**
+     * For Dynamic Nodes.
+     * When the remaining NodeArguments to be provided by the user are known, add a inputfield for each
+     */
+    private void addRemainingInputFields()
+    {
+        List<NodeArgument> argumentsToAdd = new ArrayList<>(activeNodeArguments);
+        // if more than 1 clause is active, the first clause is picked as the one to add the inputfields of
+        if(activeClauses.size() > 1)
+        {
+            for(int i = 1; i < activeClauses.size(); i++)
+            {
+                argumentsToAdd.removeAll(nodeArguments.get(activeClauses.get(i)));
+                inactiveNodeArguments.addAll(nodeArguments.get(activeClauses.get(i)));
+            }
+        }
+        argumentsToAdd.removeAll(providedNodeArguments);
+        // remove all equivalent nodearguments that are provided already but in argumentsToAdd
+        for(NodeArgument providedNA : providedNodeArguments)
+        {
+            for(NodeArgument argumentToAdd : argumentsToAdd)
+            {
+                if(providedNA.index() == argumentToAdd.index() && providedNA.arg().symbol() == argumentToAdd.arg().symbol())
+                {
+                    argumentsToAdd.remove(argumentToAdd);
+                    break;
+                }
+            }
+        }
+        providedNodeArguments.addAll(argumentsToAdd);
+        activeNodeArguments.addAll(argumentsToAdd);
 
-        // print out variables
-        System.out.println("ActiveClauses: " + activeClauses);
-        System.out.println("InactiveClauses: " + inactiveClauses);
-        System.out.println("ProvidedNodeArguments: " + providedNodeArguments);
-        System.out.println("ActiveNodeArguments: " + activeNodeArguments);
-        System.out.println("InactiveNodeArguments: " + inactiveNodeArguments);
+        // sort the argumentsToAdd list ascending by their index
+        argumentsToAdd.sort(Comparator.comparingInt(NodeArgument::index));
 
+        System.out.println("Provided NodeArguments: " + providedNodeArguments);
+        System.out.println("argumentsToAdd: " + argumentsToAdd);
+
+        // add all inputfields with a lower index than the first existing input field first
+        LInputFieldNew first = currentInputFields.values().iterator().next();
+        LInputFieldNew last = first;
+        while(!argumentsToAdd.isEmpty() && argumentsToAdd.get(0).index() <= first.inputIndices().get(first.inputIndices().size()-1))
+        {
+            // add a new inputfield for the next argument above the current inputfield
+            List<NodeArgument> nodeArguments = new ArrayList<>();
+            nodeArguments.add(argumentsToAdd.get(0));
+            LInputFieldNew newInputField = new LInputFieldNew(this, nodeArguments);
+            System.out.println("Adding inputfield: " + newInputField.nodeArgument(0) + " above " + first.nodeArguments());
+            addInputFieldAbove(newInputField, first);
+            argumentsToAdd.remove(0);
+        }
+
+        currentNodeArgumentsLists.remove(first.nodeArguments());
+        currentInputFields.remove(first.nodeArguments());
+
+
+        for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
+        {
+            if(inputField.isMerged())
+            {
+                // remove this field from the currentInputFields map
+                currentNodeArgumentsLists.remove(inputField.nodeArguments());
+                currentInputFields.remove(inputField.nodeArguments());
+                continue;
+            }
+            last = inputField;
+            int lif_index = inputField.inputIndexFirst();
+            while(!argumentsToAdd.isEmpty() && argumentsToAdd.get(0).index() <= lif_index)
+            {
+                // add a new inputfield for the next argument below the current inputfield
+                List<NodeArgument> nodeArguments = new ArrayList<>();
+                nodeArguments.add(argumentsToAdd.get(0));
+                LInputFieldNew newInputField = new LInputFieldNew(this, nodeArguments);
+                System.out.println("Adding inputfield: " + newInputField.nodeArgument(0) + " above " + inputField.nodeArguments());
+                addInputFieldAbove(newInputField, inputField);
+                argumentsToAdd.remove(0);
+            }
+        }
+        // remaining argumentsToAdd are added as new inputfields below the last inputfield
+        for (NodeArgument argument : argumentsToAdd)
+        {
+            List<NodeArgument> nodeArguments = new ArrayList<>();
+            nodeArguments.add(argument);
+            LInputFieldNew newInputField = new LInputFieldNew(this, nodeArguments);
+            System.out.println("Adding inputfield: " + newInputField.nodeArgument(0) + " below " + last.nodeArguments());
+            addInputFieldBelow(newInputField, last);
+            last = newInputField;
+        }
+
+
+        LNC.node().setSelectedClause(activeClauses.get(0));
     }
 
     /**
@@ -827,7 +915,7 @@ public class LInputAreaNew extends JPanel
         LInputFieldNew inputField = null;
         for(LInputFieldNew lif : currentInputFields.values())
         {
-            if(lif.nodeArguments().contains(nodeArgument))
+            if(lif.isMerged() && lif.nodeArguments().contains(nodeArgument))
             {
                 inputField = lif;
                 break;
@@ -835,24 +923,25 @@ public class LInputAreaNew extends JPanel
         }
 
         // Remove the NodeArgument from the merged InputField
-        assert inputField != null;
-        inputField.removeNodeArgument(nodeArgument);
-        // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly
-        if(inputField.nodeArguments().size() == 1)
-        {
-            inputField.reconstruct();
-        }
-
-        if(inputField.nodeArguments().size() == 0)
-        {
-            currentNodeArgumentsLists.remove(inputField.nodeArguments());
-            currentInputFields.remove(inputField.nodeArguments());
+        if(inputField != null) {
+            inputField.removeNodeArgument(nodeArgument);
+            // If the merged InputField now only contains one NodeArgument, notify it to update it accordingly (shouldnt happen)
+            if (inputField.nodeArguments().size() == 0) {
+                for(LInputFieldNew lif : currentInputFields.values())
+                {
+                    if(lif == inputField)
+                    {
+                        currentInputFields.remove(inputField.nodeArguments());
+                        currentNodeArgumentsLists.remove(lif.nodeArguments());
+                    }
+                }
+                //currentNodeArgumentsLists.remove(inputField.nodeArguments());
+                //currentInputFields.remove(inputField.nodeArguments());
+            }
         }
 
         activeNodeArguments.remove(nodeArgument);
         inactiveNodeArguments.add(nodeArgument);
-
-        // TODO: is map updated automatically?
     }
 
     /**

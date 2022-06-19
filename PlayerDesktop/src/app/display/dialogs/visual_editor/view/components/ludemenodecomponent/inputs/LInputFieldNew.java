@@ -42,7 +42,6 @@ public class LInputFieldNew extends JComponent
 
     public LInputFieldNew(LInputAreaNew LIA, List<NodeArgument> nodeArguments)
     {
-        System.out.println("Constructing LInputFieldNew: " + nodeArguments);
         this.LIA = LIA;
         this.nodeArguments = nodeArguments;
         optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);

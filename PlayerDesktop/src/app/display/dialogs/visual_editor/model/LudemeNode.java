@@ -46,7 +46,7 @@ public class LudemeNode implements iLudemeNode, iGNode
      * a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
      * possible clauses is narrowed down to the ones that match the provided arguments.
      */
-    private boolean dynamic = true;
+    private boolean dynamic = false;
     /**
      * whether this node (and thus its children) are visible (collapsed) or not.
      */
@@ -96,7 +96,14 @@ public class LudemeNode implements iLudemeNode, iGNode
             this.selectedClause = null;
             this.providedInputs = null;
         }
-        setDynamic(dynamic);
+        if(CLAUSES == null || CLAUSES.size() == 0)
+        {
+            this.dynamic = false;
+        }
+        if(dynamicPossible())
+        {
+            this.dynamic = true;
+        }
     }
 
     /**
@@ -202,7 +209,10 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     public void setDynamic(boolean dynamic)
     {
-        if(dynamic && !dynamicPossible()) return;
+        if(dynamic && !dynamicPossible()) {
+            this.dynamic=false;
+            return;
+        }
         this.dynamic = dynamic;
         if(dynamic)
         {
