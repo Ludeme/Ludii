@@ -56,6 +56,9 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     private boolean visible = true;
 
+    // Variables for dynamic nodes
+
+
     /**
      * Constructor for a new LudemeNode
      * @param symbol Symbol/Ludeme this node represents

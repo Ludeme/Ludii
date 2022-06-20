@@ -2,15 +2,12 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponentNew;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import java.util.List;
@@ -30,7 +27,7 @@ public class ConnectionHandler
     /** Stores the Edges */
     private final List<LudemeConnection> edges;
     /** The currently selected LudemeNodeComponent's Connection Component */
-    private LConnectionComponentNew selectedConnectionComponent;
+    private LConnectionComponent selectedConnectionComponent;
 
     private static final boolean DEBUG = true;
 
@@ -76,7 +73,7 @@ public class ConnectionHandler
      * Starts a new connection
      * @param source the LudemeNodeComponent to connect from
      */
-    public void startNewConnection(LConnectionComponentNew source)
+    public void startNewConnection(LConnectionComponent source)
     {
         if(DEBUG) System.out.println("[EP] Start connection: " + source.connectionPointPosition() + " , " + source.possibleSymbolInputs());
         // if a previous connection component was selected, deselect it
@@ -112,7 +109,7 @@ public class ConnectionHandler
      * @param source the LudemeNodeComponent's Connection Component to connect from
      * @param target the LudemeNodeComponent's Connection Component to connect to
      */
-    public void addConnection(LConnectionComponentNew source, LIngoingConnectionComponent target)
+    public void addConnection(LConnectionComponent source, LIngoingConnectionComponent target)
     {
         // update the positions of the connection components
         source.updatePosition();
@@ -224,7 +221,7 @@ public class ConnectionHandler
     }
 
     // removes all outgoing conenctions of the node's ("node") connection component "connection"
-    public void removeConnection(LudemeNode node, LConnectionComponentNew connection)
+    public void removeConnection(LudemeNode node, LConnectionComponent connection)
     {
         // TODO if(connection.lnc().dynamic()) connection.lnc().inputArea().removedConnectionDynamic(node, connection.inputField());
         for(LudemeConnection e : new ArrayList<>(edges))
@@ -285,12 +282,12 @@ public class ConnectionHandler
         if(selectedConnectionComponent != null && mousePosition != null) paintNewConnection(g2, mousePosition);
     }
 
-    public LConnectionComponentNew getSelectedConnectionComponent()
+    public LConnectionComponent getSelectedConnectionComponent()
     {
         return selectedConnectionComponent;
     }
 
-    public void setSelectedConnectionComponent(LConnectionComponentNew selectedConnectionComponent)
+    public void setSelectedConnectionComponent(LConnectionComponent selectedConnectionComponent)
     {
         this.selectedConnectionComponent = selectedConnectionComponent;
     }

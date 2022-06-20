@@ -6,7 +6,6 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputAreaNew;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Clause;
@@ -46,7 +45,7 @@ public class LudemeNodeComponent extends JPanel
     private boolean subtree = false;
     /** Sub-Components of the node */
     private final LHeader header;
-    private final LInputAreaNew inputArea;
+    private final LInputArea inputArea;
 
 
 
@@ -67,7 +66,7 @@ public class LudemeNodeComponent extends JPanel
         setLayout(new BorderLayout());
 
         header = new LHeader(this);
-        inputArea = new LInputAreaNew(this);
+        inputArea = new LInputArea(this);
 
         add(header, BorderLayout.NORTH);
         add(inputArea, BorderLayout.CENTER);
@@ -176,7 +175,7 @@ public class LudemeNodeComponent extends JPanel
      *
      * @return the InputArea of the node component
      */
-    public LInputAreaNew inputArea()
+    public LInputArea inputArea()
     {
         return inputArea;
     }
