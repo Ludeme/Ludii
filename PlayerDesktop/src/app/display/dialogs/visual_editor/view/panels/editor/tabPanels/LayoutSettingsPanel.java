@@ -45,9 +45,10 @@ public class LayoutSettingsPanel extends JPanel
         JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
         JLabel compactnessText = new JLabel("Compactness: " + getSliderValue(cSl));
 
-        Button redraw = new Button("Arrange graph");
-        Button alignX = new Button("Align vertically");
-        Button alignY = new Button("Align horizontally");
+        Dimension buttonDim = new Dimension(150, 20);
+        JButton redraw = createButton("Arrange graph", buttonDim);
+        JButton alignX = createButton("Align vertically", buttonDim);
+        JButton alignY = createButton("Align horizontally", buttonDim);
 
         redraw.addActionListener(e -> {
             lh.evaluateGraphWeights();
@@ -81,7 +82,7 @@ public class LayoutSettingsPanel extends JPanel
         sSl.addChangeListener(sliderUpdateListener);
         cSl.addChangeListener(sliderUpdateListener);
 
-        // adding sliders
+        // # Adding sliders #
         add(selectedComponent);
         add(distanceText);
         add(dSl);
@@ -91,17 +92,43 @@ public class LayoutSettingsPanel extends JPanel
         add(sSl);
         add(compactnessText);
         add(cSl);
-        // redraw button
-        redraw.setMaximumSize(new Dimension(550, 25));
-        alignX.setMaximumSize(new Dimension(550, 25));
-        alignY.setMaximumSize(new Dimension(550, 25));
-        add(redraw);
-        add(alignX);
-        add(alignY);
-        // adding check boxes
+
+        // # Adding buttons #
+        Box buttonBox = Box.createVerticalBox();
+        addAButton(redraw, buttonBox);
+        addAButton(alignX, buttonBox);
+        addAButton(alignY, buttonBox);
+        add(buttonBox);
+
+        // # Adding check boxes #
         add(autoUpdateWeights);
         add(autoPlacement);
         add(layerPlacement);
+    }
+
+    private static void addAButton(JButton button, Container container)
+    {
+        button.setAlignmentX(Component.LEFT_ALIGNMENT);
+        button.setPreferredSize(new Dimension(200, 20));
+        button.setMinimumSize(new Dimension(200, 20));
+        container.add(button);
+    }
+
+    private JButton createButton(String text, Dimension size)
+    {
+        JButton button = new JButton(text);
+        button.setPreferredSize(size);
+        button.setMinimumSize(size);
+        button.setMaximumSize(size);
+        return button;
+    }
+
+    private Component createStrut()
+    {
+        JComponent component = (JComponent) Box.createVerticalStrut(5);
+        component.setMinimumSize(new Dimension(0, 0));
+        component.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+        return component;
     }
 
     public static LayoutSettingsPanel getLayoutSettingsPanel()

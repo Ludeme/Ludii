@@ -24,8 +24,14 @@ public class MainPanel extends JPanel {
         //panel.getVerticalScrollBar().setValue(editor_panel.getHeight()/2);
         //panel.getHorizontalScrollBar().setValue(editor_panel.getWidth()/2);
 
-        JSplitPane splitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, new EditorSidebar());
-        splitPanel.setResizeWeight(0.9);
+        JPanel splitPanel = new JPanel();
+        splitPanel.setLayout(new BorderLayout());
+        splitPanel.add(panel, BorderLayout.CENTER);
+        splitPanel.add(new EditorSidebar(), BorderLayout.EAST);
+
+        //JSplitPane splitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, new EditorSidebar());
+        //splitPanel.setResizeWeight(0.9);
+
         add(splitPanel, BorderLayout.CENTER);
 
         MouseAdapter ma = new MouseAdapter() {
