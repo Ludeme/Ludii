@@ -247,7 +247,7 @@ public class LInputAreaNew extends JPanel
         {
             addRemainingInputFields();
         }
-        else if(dynamic() && activeClause)
+        else if(dynamic() && activeClauses.size() > 1 && activeClause)
         {
             removeUnprovidedInputFields();
             mergeUnprovidedMergedInputFields();
@@ -585,7 +585,6 @@ public class LInputAreaNew extends JPanel
      */
     private void removedConnectionDynamic(LInputFieldNew inputField)
     {
-
         // get input fields above and below (null if there is no input field above or below)
         LInputFieldNew inputFieldAbove = inputFieldAbove(inputField);
         LInputFieldNew inputFieldBelow = inputFieldBelow(inputField);
@@ -650,12 +649,6 @@ public class LInputAreaNew extends JPanel
                 for(NodeArgument na : freedUpAbove) if(!providedNodeArguments.contains(na)) inputFieldNew.addNodeArgument(na);
             }
         }
-
-        drawInputFields();
-        setOpaque(false);
-        setVisible(true);
-
-
     }
 
     /**
@@ -668,6 +661,9 @@ public class LInputAreaNew extends JPanel
 
         if(!inputField.isMerged() && dynamic()) {
             removedConnectionDynamic(inputField);
+            drawInputFields();
+            setOpaque(false);
+            setVisible(true);
             return;
         }
 
@@ -862,7 +858,10 @@ public class LInputAreaNew extends JPanel
     }
 
     /**
+     * For Dynamic Nodes.
      * Empty single InputFields should be merged together
+     * Called when there is no more single active clause anymore.
+     * Every automatically singled-out inputfields that are not provided with input should be merged together
      */
     private void removeUnprovidedInputFields()
     {
@@ -883,25 +882,6 @@ public class LInputAreaNew extends JPanel
                 removedConnectionDynamic(inputField);
                 removeUnprovidedInputFields();
                 break;
-            }
-        }
-
-
-        if(true) return;
-        List<LInputFieldNew> consequentInputFields = new ArrayList<>();
-        LInputFieldNew lastMerged = null;
-        for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
-        {
-            if(inputField.isMerged())
-            {
-                lastMerged = inputField;
-                continue;
-            }
-            if(!providedNodeArguments.contains(inputField.nodeArgument(0)))
-            {
-                System.out.println("Removing input field " + inputField.nodeArgument(0).arg().symbol());
-                currentInputFields.remove(inputField.nodeArguments());
-                currentNodeArgumentsLists.remove(inputField.nodeArguments());
             }
         }
     }
