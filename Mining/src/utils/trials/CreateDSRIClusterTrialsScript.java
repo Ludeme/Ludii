@@ -24,6 +24,7 @@ public class CreateDSRIClusterTrialsScript
 {
 	public static void main(final String[] args)
 	{
+		String folderGen = "Gen" + File.separator;
 		String bashName = "";
 		String jobName = "";
 		
@@ -47,7 +48,11 @@ public class CreateDSRIClusterTrialsScript
 		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
 		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
-		final String mainScriptName = "allRun.sh";
+		final String mainScriptName = folderGen + "allRun.sh";
+		
+		final File genFolderFile = new File(folderGen + jobName);
+		if(!genFolderFile.exists())
+			genFolderFile.mkdirs();
 		
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
 		{
@@ -109,24 +114,24 @@ public class CreateDSRIClusterTrialsScript
 					mainWriter.println(createBashJob(bashName));
 
 					// Write bash file for a specific ruleset
-					final String rulesetScriptName = "run"+ bashName +".sh";
+					final String rulesetScriptName = folderGen + "run"+ bashName +".sh";
 					try (final PrintWriter rulesetWriter = new UnixPrintWriter(new File(rulesetScriptName), "UTF-8"))
 					{
 						rulesetWriter.println(createRulesetBashJob(jobName));		
-						final File jobFolderFile = new File(jobName);
+						final File jobFolderFile = new File(folderGen + jobName);
 						if(!jobFolderFile.exists())
 							jobFolderFile.mkdirs();
 					}
 					
 					// Write YML file for a specific ruleset
-					final String YMLName = jobName + File.separator + jobName +".yml";
+					final String YMLName = folderGen + jobName + File.separator + jobName +".yml";
 					try (final PrintWriter ymlWriter = new UnixPrintWriter(new File(YMLName), "UTF-8"))
 					{
 						ymlWriter.println(createYML(jobName));
 					}
 					
 					// Write Docker file for a specific ruleset
-					final String dockerName = jobName + File.separator + "Dockerfile";
+					final String dockerName = folderGen + jobName + File.separator + "Dockerfile";
 					try (final PrintWriter dockerWriter = new UnixPrintWriter(new File(dockerName), "UTF-8"))
 					{
 						dockerWriter.print(beginDockerFile);
@@ -156,24 +161,24 @@ public class CreateDSRIClusterTrialsScript
 						mainWriter.println(createBashJob(bashName));
 						
 						// Write bash file for a specific ruleset
-						final String rulesetScriptName = "run"+ bashName +".sh";
+						final String rulesetScriptName = folderGen + "run"+ bashName +".sh";
 						try (final PrintWriter rulesetWriter = new UnixPrintWriter(new File(rulesetScriptName), "UTF-8"))
 						{
 							rulesetWriter.println(createRulesetBashJob(jobName));
-							final File jobFolderFile = new File(jobName);
+							final File jobFolderFile = new File(folderGen + jobName);
 							if(!jobFolderFile.exists())
 								jobFolderFile.mkdirs();
 						}
 						
 						// Write YML file for a specific ruleset
-						final String YMLName = jobName + File.separator + jobName +".yml";
+						final String YMLName = folderGen + jobName + File.separator + jobName +".yml";
 						try (final PrintWriter ymlWriter = new UnixPrintWriter(new File(YMLName), "UTF-8"))
 						{
 							ymlWriter.println(createYML(jobName));
 						}
 						
 						// Write Docker file for a specific ruleset
-						final String dockerName = jobName + File.separator + "Dockerfile";
+						final String dockerName = folderGen + jobName + File.separator + "Dockerfile";
 						try (final PrintWriter dockerWriter = new UnixPrintWriter(new File(dockerName), "UTF-8"))
 						{
 							dockerWriter.print(beginDockerFile);
