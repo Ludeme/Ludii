@@ -53,7 +53,8 @@ public class LInputAreaNew extends JPanel
     private List<NodeArgument> activeNodeArguments = new ArrayList<>();
     /** NodeArguments that cannot be provided to satisfy active clauses */
     private List<NodeArgument> inactiveNodeArguments = new ArrayList<>();
-
+    /** Whether there is an active clause (only one active clause left) */
+    private boolean activeClause = false;
 
     private final boolean DEBUG = true;
 
@@ -238,9 +239,14 @@ public class LInputAreaNew extends JPanel
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(LEFT_ALIGNMENT);
 
-        if(dynamic() && activeClauses.size() == 1)
+        if(dynamic() && activeClauses.size() == 1 && !activeClause)
         {
             addRemainingInputFields();
+        }
+        else if(dynamic() && activeClause)
+        {
+            removeUnprovidedInputFields();
+            mergeUnprovidedMergedInputFields();
         }
 
         for (LInputFieldNew inputField : currentInputFields.values()) {
@@ -259,7 +265,8 @@ public class LInputAreaNew extends JPanel
     /**
      * If the selected clause is changed, this method is called to update the current list of NodeArguments and list of lists of NodeArguments and redraw the InputArea
      */
-    public void changedSelectedClause(){
+    public void changedSelectedClause()
+    {
         // TODO: Remove all edges of this ludeme node AND MODEL
         LNC.graphPanel().connectionHandler().cancelNewConnection();
         LNC.graphPanel().connectionHandler().removeAllConnections(LNC.node());
@@ -574,6 +581,7 @@ public class LInputAreaNew extends JPanel
      */
     private void removedConnectionDynamic(LInputFieldNew inputField)
     {
+
         // get input fields above and below (null if there is no input field above or below)
         LInputFieldNew inputFieldAbove = inputFieldAbove(inputField);
         LInputFieldNew inputFieldBelow = inputFieldBelow(inputField);
@@ -594,41 +602,48 @@ public class LInputAreaNew extends JPanel
             return;
         }
         // if can be merged into both, combine the three inputfields into one
-        if(canBeMergedIntoAbove && canBeMergedIntoBelow) {
+        if(canBeMergedIntoAbove && canBeMergedIntoBelow)
+        {
             LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField, inputFieldBelow});
-            for(NodeArgument na : freedUpAbove) inputFieldNew.addNodeArgument(na);
-            for(NodeArgument na : freedUpBelow) inputFieldNew.addNodeArgument(na);
+            for(NodeArgument na : freedUpAbove) if(!providedNodeArguments.contains(na)) inputFieldNew.addNodeArgument(na);
+            for(NodeArgument na : freedUpBelow) if(!providedNodeArguments.contains(na)) inputFieldNew.addNodeArgument(na);
         }
         // if can be merged into above, merge into above
-        else if(canBeMergedIntoAbove) {
+        else if(canBeMergedIntoAbove)
+        {
             LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField});
             // add freed up node arguments to input field
-            for(NodeArgument na : freedUpAbove) inputFieldNew.addNodeArgument(na);
+            for(NodeArgument na : freedUpAbove) if(!providedNodeArguments.contains(na)) inputFieldNew.addNodeArgument(na);
             // get input field below
             LInputFieldNew inputFieldBelowMerged = inputFieldBelow(inputFieldNew);
-            if(inputFieldBelowMerged != null) {
-                // add freed up node arguments to input field
-                for(NodeArgument na : freedUpBelow) inputFieldBelowMerged.addNodeArgument(na);
-            } else
+            if(inputFieldBelowMerged != null)
             {
                 // add freed up node arguments to input field
-                for(NodeArgument na : freedUpBelow) inputFieldNew.addNodeArgument(na);
+                for(NodeArgument na : freedUpBelow) if(!providedNodeArguments.contains(na)) inputFieldBelowMerged.addNodeArgument(na);
+            }
+            else
+            {
+                // add freed up node arguments to input field
+                for(NodeArgument na : freedUpBelow) if(!providedNodeArguments.contains(na)) inputFieldNew.addNodeArgument(na);
             }
         }
         // if can be merged into below, merge into below
-        else if(canBeMergedIntoBelow) {
+        else if(canBeMergedIntoBelow)
+        {
             LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputField, inputFieldBelow});
             // add freed up node arguments to input field
-            for(NodeArgument na : freedUpBelow) inputFieldNew.addNodeArgument(na);
+            for(NodeArgument na : freedUpBelow) if(!providedNodeArguments.contains(na)) inputFieldNew.addNodeArgument(na);
             // get input field below
             LInputFieldNew inputFieldAboveMerged = inputFieldAbove(inputFieldNew);
-            if(inputFieldAboveMerged != null) {
-                // add freed up node arguments to input field
-                for(NodeArgument na : freedUpAbove) inputFieldAboveMerged.addNodeArgument(na);
-            } else
+            if(inputFieldAboveMerged != null)
             {
                 // add freed up node arguments to input field
-                for(NodeArgument na : freedUpAbove) inputFieldNew.addNodeArgument(na);
+                for(NodeArgument na : freedUpAbove) if(!providedNodeArguments.contains(na)) inputFieldAboveMerged.addNodeArgument(na);
+            }
+            else
+            {
+                // add freed up node arguments to input field
+                for(NodeArgument na : freedUpAbove) if(!providedNodeArguments.contains(na)) inputFieldNew.addNodeArgument(na);
             }
         }
 
@@ -671,15 +686,15 @@ public class LInputAreaNew extends JPanel
             if(!canBeMergedIntoBelow && !canBeMergedIntoAbove) return;
             // if can be merged into both, combine the three inputfields into one
             if(canBeMergedIntoAbove && canBeMergedIntoBelow) {
-                LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField, inputFieldBelow});
+                mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField, inputFieldBelow});
             }
             // if can be merged into above, merge into above
             else if(canBeMergedIntoAbove) {
-                LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField});
+                mergeInputFields(new LInputFieldNew[]{inputFieldAbove, inputField});
             }
             // if can be merged into below, merge into below
             else if(canBeMergedIntoBelow) {
-                LInputFieldNew inputFieldNew = mergeInputFields(new LInputFieldNew[]{inputField, inputFieldBelow});
+                mergeInputFields(new LInputFieldNew[]{inputField, inputFieldBelow});
             }
         }
         drawInputFields();
@@ -810,9 +825,13 @@ public class LInputAreaNew extends JPanel
             }
         }
     }
-
-    private void addRemainingInputFields2()
+    /**
+     * For Dynamic Nodes.
+     * When the remaining NodeArguments to be provided by the user are known, add a inputfield for each
+     */
+    private void addRemainingInputFields()
     {
+        activeClause = true;
         // expand all input fields that are not yet expanded
         List<NodeArgument> addedNodeArguments = new ArrayList<>(); // NodeArguments for which a LInputFieldNew was added
         for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
@@ -834,130 +853,80 @@ public class LInputAreaNew extends JPanel
             currentInputFields.remove(inputField.nodeArguments());
         }
 
-        // update providedNodeArguments
-        for(NodeArgument na : addedNodeArguments)
+        LNC().node().setSelectedClause(activeClauses.get(0));
+    }
+
+    /**
+     * Empty single InputFields should be merged together
+     */
+    private void removeUnprovidedInputFields()
+    {
+        activeClause = false;
+        // try to merge empty input fields
+        for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
         {
-            // add all node arguments with the same symbol to the providedNodeArguments list
-            for(NodeArgument activeNA : new ArrayList<>(activeNodeArguments))
+            if(!currentInputFields.containsValue(inputField)) continue;
+            if(inputField.isMerged()) continue;
+
+            // check whether can be merged
+            LInputFieldNew inputFieldAbove = inputFieldAbove(inputField);
+            LInputFieldNew inputFieldBelow = inputFieldBelow(inputField);
+            if((inputFieldAbove == null || providedNodeArguments.contains(inputFieldAbove.nodeArgument(0))) && (inputFieldBelow == null || providedNodeArguments.contains(inputFieldBelow.nodeArgument(0)))) continue;
+
+            if(!providedNodeArguments.contains(inputField.nodeArgument(0)))
             {
-                if(!activeClauses.contains(activeNA.clause())) continue;
-                if(!providedNodeArguments.contains(activeNA) && activeNA.arg().symbol().equals(na.arg().symbol()))
-                {
-                    providedNodeArguments.add(activeNA);
-                }
+                removedConnectionDynamic(inputField);
+                removeUnprovidedInputFields();
+                break;
+            }
+        }
+
+
+        if(true) return;
+        List<LInputFieldNew> consequentInputFields = new ArrayList<>();
+        LInputFieldNew lastMerged = null;
+        for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
+        {
+            if(inputField.isMerged())
+            {
+                lastMerged = inputField;
+                continue;
+            }
+            if(!providedNodeArguments.contains(inputField.nodeArgument(0)))
+            {
+                System.out.println("Removing input field " + inputField.nodeArgument(0).arg().symbol());
+                currentInputFields.remove(inputField.nodeArguments());
+                currentNodeArgumentsLists.remove(inputField.nodeArguments());
             }
         }
     }
 
     /**
-     * For Dynamic Nodes.
-     * When the remaining NodeArguments to be provided by the user are known, add a inputfield for each
+     * If merged inputfields are both unprovided for, they can be merged together
      */
-    private void addRemainingInputFields()
+    private void mergeUnprovidedMergedInputFields()
     {
-        addRemainingInputFields2(); if(true) return;
-        List<NodeArgument> argumentsToAdd = new ArrayList<>(activeNodeArguments);
-        // if more than 1 clause is active, the first clause is picked as the one to add the inputfields of
-        if(activeClauses.size() > 1)
-        {
-            for(int i = 1; i < activeClauses.size(); i++)
-            {
-                argumentsToAdd.removeAll(nodeArguments.get(activeClauses.get(i)));
-                inactiveNodeArguments.addAll(nodeArguments.get(activeClauses.get(i)));
-            }
-        }
-        argumentsToAdd.removeAll(providedNodeArguments);
-        // remove all equivalent nodearguments that are provided already but in argumentsToAdd
-        for(NodeArgument providedNA : providedNodeArguments)
-        {
-            for(NodeArgument argumentToAdd : argumentsToAdd)
-            {
-                if(providedNA.index() == argumentToAdd.index() && providedNA.arg().symbol() == argumentToAdd.arg().symbol())
-                {
-                    argumentsToAdd.remove(argumentToAdd);
-                    break;
-                }
-            }
-        }
-        // remove all node arguments that have a single input field already
-        for(LInputFieldNew inputField : currentInputFields.values())
-        {
-            for(NodeArgument argumentToAdd : argumentsToAdd)
-            {
-                if(!inputField.isMerged() && inputField.nodeArgument(0) == argumentToAdd)
-                {
-                    argumentsToAdd.remove(argumentToAdd);
-                    break;
-                }
-            }
-        }
-
-        providedNodeArguments.addAll(argumentsToAdd);
-        activeNodeArguments.addAll(argumentsToAdd);
-
-        // sort the argumentsToAdd list ascending by their index
-        argumentsToAdd.sort(Comparator.comparingInt(NodeArgument::index));
-
-        System.out.println("Provided NodeArguments: " + providedNodeArguments);
-        System.out.println("argumentsToAdd: " + argumentsToAdd);
-
-        // add all inputfields with a lower index than the first existing input field first
-        LInputFieldNew first = currentInputFields.values().iterator().next();
-        LInputFieldNew last = first;
-        while(!argumentsToAdd.isEmpty() && argumentsToAdd.get(0).index() <= first.inputIndices().get(first.inputIndices().size()-1))
-        {
-            // add a new inputfield for the next argument above the current inputfield
-            List<NodeArgument> nodeArguments = new ArrayList<>();
-            nodeArguments.add(argumentsToAdd.get(0));
-            LInputFieldNew newInputField = new LInputFieldNew(this, nodeArguments);
-            System.out.println("Adding inputfield: " + newInputField.nodeArgument(0) + " above " + first.nodeArguments());
-            addInputFieldAbove(newInputField, first);
-            argumentsToAdd.remove(0);
-        }
-
-        if(first.isMerged())
-        {
-            currentNodeArgumentsLists.remove(first.nodeArguments());
-            currentInputFields.remove(first.nodeArguments());
-        }
-
+        List<LInputFieldNew> consequentInputFields = new ArrayList<>();
         for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
         {
-            if(inputField.isMerged())
-            {
-                // remove this field from the currentInputFields map
-                currentNodeArgumentsLists.remove(inputField.nodeArguments());
-                currentInputFields.remove(inputField.nodeArguments());
-                continue;
+            if (!inputField.isMerged()) {
+                if(consequentInputFields.size() > 1)
+                {
+                    // convert consequentInputFields to an array
+                    LInputFieldNew[] consequentInputFieldsArray = new LInputFieldNew[consequentInputFields.size()];
+                    for(int i = 0; i < consequentInputFields.size(); i++) consequentInputFieldsArray[i] = consequentInputFields.get(i);
+                    mergeInputFields(consequentInputFieldsArray);
+                    mergeUnprovidedMergedInputFields();
+                    consequentInputFields.clear();
+                    break;
+                }
             }
-            last = inputField;
-            int lif_index = inputField.inputIndexFirst();
-            while(!argumentsToAdd.isEmpty() && argumentsToAdd.get(0).index() <= lif_index)
+            else
             {
-                // add a new inputfield for the next argument below the current inputfield
-                List<NodeArgument> nodeArguments = new ArrayList<>();
-                nodeArguments.add(argumentsToAdd.get(0));
-                LInputFieldNew newInputField = new LInputFieldNew(this, nodeArguments);
-                System.out.println("Adding inputfield: " + newInputField.nodeArgument(0) + " above " + inputField.nodeArguments());
-                addInputFieldAbove(newInputField, inputField);
-                argumentsToAdd.remove(0);
+                consequentInputFields.add(inputField);
             }
         }
-        // remaining argumentsToAdd are added as new inputfields below the last inputfield
-        for (NodeArgument argument : argumentsToAdd)
-        {
-            List<NodeArgument> nodeArguments = new ArrayList<>();
-            nodeArguments.add(argument);
-            LInputFieldNew newInputField = new LInputFieldNew(this, nodeArguments);
-            System.out.println("Adding inputfield: " + newInputField.nodeArgument(0) + " below " + last.nodeArguments());
-            addInputFieldBelow(newInputField, last);
-            last = newInputField;
-        }
-
-
-        LNC.node().setSelectedClause(activeClauses.get(0));
     }
-
     /**
      * For Dynamic Nodes.
      * A NodeArgument was removed from the active node arguments list.

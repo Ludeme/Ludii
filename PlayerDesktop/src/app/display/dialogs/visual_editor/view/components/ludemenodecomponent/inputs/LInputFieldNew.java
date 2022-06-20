@@ -219,6 +219,7 @@ public class LInputFieldNew extends JComponent
      */
     public void addNodeArgument(NodeArgument nodeArgument)
     {
+        if(nodeArguments().contains(nodeArgument)) return;
         if(nodeArgument.size() == 1)
         {
             nodeArguments.add(nodeArgument);
