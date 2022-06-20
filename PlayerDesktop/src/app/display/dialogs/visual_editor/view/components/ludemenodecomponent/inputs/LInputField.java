@@ -468,4 +468,10 @@ public class LInputField extends JComponent
     {
         return label;
     }
+
+    @Override
+    public String toString()
+    {
+        return "LIF: " + label.getText() + ", " + nodeArguments;
+    }
 }

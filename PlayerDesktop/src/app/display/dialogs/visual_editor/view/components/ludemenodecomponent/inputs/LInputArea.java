@@ -35,7 +35,7 @@ public class LInputArea extends JPanel
     /** List of lists of NodeArguments for the current Clause of the associated LudemeNodeComponent */
     private List<List<NodeArgument>> currentNodeArgumentsLists;
     /** List of LInputFields for the current Clause of the associated LudemeNodeComponent */
-    private LinkedHashMap<List<NodeArgument>, LInputField> currentInputFields;
+    public LinkedHashMap<List<NodeArgument>, LInputField> currentInputFields;
 
 
     /** Variables for a dynamic node
@@ -209,6 +209,8 @@ public class LInputArea extends JPanel
             mergeUnprovidedMergedInputFields();
         }
 
+        unmergeSameSymbolFields();
+
         for (LInputField inputField : currentInputFields.values()) {
             inputField.setAlignmentX(LEFT_ALIGNMENT);
             add(inputField);
@@ -239,6 +241,45 @@ public class LInputArea extends JPanel
         setOpaque(false);
         setVisible(true);
     }
+
+    private void unmergeSameSymbolFields()
+    {
+        for(LInputField inputField : currentInputFields.values())
+        {
+            // attempt to unmerge the same symbol fields
+            if(inputField.isMerged())
+            {
+                unmergeSameSymbolField(inputField);
+            }
+        }
+    }
+
+
+    private void unmergeSameSymbolField(LInputField inputField)
+    {
+        // if every node argument symbol is the same, unmerge them
+       for(NodeArgument nodeArgument : inputField.nodeArguments())
+       {
+           if(nodeArgument.arg().symbol() != inputField.nodeArguments().get(0).arg().symbol())
+           {
+               return;
+           }
+       }
+       // then it is the same symbol, unmerge them
+        // notify currentNodeArgumentsLists and currentInputFields of the change
+        int index = currentNodeArgumentsLists.indexOf(inputField.nodeArguments());
+        for(int i = 1 ; i < inputField.nodeArguments().size() ; i++)
+        {
+            inputField.removeNodeArgument(inputField.nodeArguments().get(0));
+        }
+        currentNodeArgumentsLists.set(index, inputField.nodeArguments());
+
+
+
+    }
+
+
+
 
     /**
      * Method which syncs the Ludeme Node Component with provided inputs (stored in the Ludeme Node).
@@ -295,7 +336,6 @@ public class LInputArea extends JPanel
         if(!inputField.isMerged()) return inputField;
         // Otherwise it is a merged one.
         // Therefore, the NodeArgument which corresponds to the NodeArgument that the user provided input for is removed from the merged InputField
-
         // Single out the NodeArgument that the user provided input for and return the new InputField
         return singleOutInputField(providedNodeArgument, inputField);
     }
@@ -400,6 +440,7 @@ public class LInputArea extends JPanel
      */
     private void addInputFieldAbove(LInputField inputFieldNew, LInputField inputField)
     {
+        if(DEBUG) System.out.println("Adding InputField " + inputFieldNew + " above " + inputField);
         // Add the new InputField before the other InputField in the currentNodeArgumentsLists list
         int index = currentNodeArgumentsLists.indexOf(inputField.nodeArguments());
         currentNodeArgumentsLists.add(index, inputFieldNew.nodeArguments());
@@ -407,7 +448,14 @@ public class LInputArea extends JPanel
         LinkedHashMap<List<NodeArgument>, LInputField> newInputFields = new LinkedHashMap<>();
         for(List<NodeArgument> nodeArgumentsList : currentNodeArgumentsLists)
         {
-            newInputFields.put(nodeArgumentsList, currentInputFields.getOrDefault(nodeArgumentsList, inputFieldNew));
+            if(nodeArgumentsList == inputFieldNew.nodeArguments())
+            {
+                newInputFields.put(nodeArgumentsList, inputFieldNew);
+            }
+            else
+            {
+                newInputFields.put(nodeArgumentsList, getCurrentInputField(nodeArgumentsList));
+            }
         }
         currentInputFields = newInputFields;
     }
@@ -419,6 +467,7 @@ public class LInputArea extends JPanel
      */
     private void addInputFieldBelow(LInputField inputFieldNew, LInputField inputField)
     {
+        if(DEBUG) System.out.println("Adding InputField " + inputFieldNew + " below " + inputField);
         // Add the new InputField after the other InputField in the currentNodeArgumentsLists list
         int index = currentNodeArgumentsLists.indexOf(inputField.nodeArguments()) + 1;
         currentNodeArgumentsLists.add(index, inputFieldNew.nodeArguments());
@@ -426,9 +475,27 @@ public class LInputArea extends JPanel
         LinkedHashMap<List<NodeArgument>, LInputField> newInputFields = new LinkedHashMap<>();
         for(List<NodeArgument> nodeArgumentsList : currentNodeArgumentsLists)
         {
-            newInputFields.put(nodeArgumentsList, currentInputFields.getOrDefault(nodeArgumentsList, inputFieldNew));
+            if(nodeArgumentsList == inputFieldNew.nodeArguments())
+            {
+                newInputFields.put(nodeArgumentsList, inputFieldNew);
+            }
+            else
+            {
+                newInputFields.put(nodeArgumentsList, getCurrentInputField(nodeArgumentsList));
+            }
         }
         currentInputFields = newInputFields;
+    }
+
+    private LInputField getCurrentInputField(List<NodeArgument> nodeArgumentsList) {
+        LInputField l = currentInputFields.get(nodeArgumentsList);
+        if (l != null) return l;
+        for (LInputField lif : currentInputFields.values()) {
+            if (lif.nodeArguments().equals(nodeArgumentsList)) {
+                return lif;
+            }
+        }
+        return null;
     }
 
 
@@ -474,6 +541,7 @@ public class LInputArea extends JPanel
         // Add inputField2 below the new single InputField
         if(!nodeArguments2.isEmpty()) addInputFieldAbove(inputField2, inputField);
         // Remove the old merged InputField
+        if(DEBUG) System.out.println("Removing old InputField " + inputField);
         currentNodeArgumentsLists.remove(inputField.nodeArguments());
         currentInputFields.remove(inputField.nodeArguments());
     }
@@ -528,6 +596,7 @@ public class LInputArea extends JPanel
         // Add inputField2 below the new single InputField
         if(!nodeArguments2.isEmpty()) addInputFieldAbove(inputField2, inputField);
         // Remove the old merged InputField
+        if(DEBUG) System.out.println("Removing old InputField " + inputField);
         currentNodeArgumentsLists.remove(inputField.nodeArguments());
         currentInputFields.remove(inputField.nodeArguments());
     }
@@ -678,6 +747,7 @@ public class LInputArea extends JPanel
         // remove the old nodeArguments from the currentNodeArgumentsLists list
         for(LInputField inputField : inputFields)
         {
+            if(DEBUG) System.out.println("Removing old InputField " + inputField);
             currentNodeArgumentsLists.remove(inputField.nodeArguments());
         }
         // update the currentInputFields map
@@ -776,9 +846,8 @@ public class LInputArea extends JPanel
             List<NodeArgument> notSatisfiedClauseArguments = nodeArguments.get(notSatisfiedClause);
             // Add all previously activeNodeArguments that are in the list of notSatisfiedClauseArguments to the list of inactiveNodeArguments
             for (NodeArgument notSatisfiedClauseArgument : notSatisfiedClauseArguments) {
-                if (activeNodeArguments.contains(notSatisfiedClauseArgument)) {
+                if (activeNodeArguments.contains(notSatisfiedClauseArgument))
                     removeActiveNodeArgument(notSatisfiedClauseArgument); // remove the argument from the active list and updates input fields accordingly
-                }
             }
         }
     }
@@ -806,6 +875,7 @@ public class LInputArea extends JPanel
             }
 
             // remove the current input field
+            if(DEBUG) System.out.println("Removing old InputField " + inputField);
             currentNodeArgumentsLists.remove(inputField.nodeArguments());
             currentInputFields.remove(inputField.nodeArguments());
         }
@@ -895,6 +965,7 @@ public class LInputArea extends JPanel
                 {
                     if(lif == inputField)
                     {
+                        if(DEBUG) System.out.println("Removing old InputField " + inputField);
                         currentInputFields.remove(inputField.nodeArguments());
                         currentNodeArgumentsLists.remove(lif.nodeArguments());
                     }
