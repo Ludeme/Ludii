@@ -4571,6 +4571,8 @@ TYPE JAVADOC: Interface for generic metadata item.  Classes to be included as me
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
 SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Selection
+SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
 SUBCLASS: metadata.ai.Ai
 SUBCLASS: metadata.ai.AIItem
@@ -4668,6 +4670,8 @@ TYPE JAVADOC: General function hint for this game.Metadata containing hints for 
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
 SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Selection
+SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
 SUBCLASS: metadata.ai.features.Features
 SUBCLASS: metadata.ai.features.FeatureSet
@@ -4736,8 +4740,19 @@ REMARKS: Some examples of names that Ludii can currently recognise are ``Random'
 TYPE: metadata.ai.agents.mcts.Mcts
 TYPE JAVADOC: Describes a Monte-Carlo tree search agent.
 NEW CTOR
-(mcts)
+(mcts [<selection>])
+PARAM JAVADOC: [<selection>]: The Selection strategy to be used by this MCTS agent [UCB1].
 EXAMPLE: (mcts)
+TYPE: metadata.ai.agents.mcts.selection.Selection
+TYPE JAVADOC: Abstract class for Selection strategies for MCTS in AI metadata
+SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
+TYPE: metadata.ai.agents.mcts.selection.Ucb1
+TYPE JAVADOC: Describes the UCB1 selection strategy, which is one of the most straightforward  and simple Selection strategies, used by the standard UCT variant of MCTS.
+NEW CTOR
+(ucb1 [<float>])
+PARAM JAVADOC: [<float>]: The value to use for the exploration constant [square root of 2].
+EXAMPLE: (ucb1)
+EXAMPLE: (ucb1 0.6)
 TYPE: metadata.ai.agents.minimax.AlphaBeta
 TYPE JAVADOC: Describes an Alpha-Beta search agent.
 NEW CTOR
@@ -5802,9 +5817,9 @@ SUBCLASS: metadata.recon.concept.Concept
 TYPE: metadata.recon.concept.Concept
 TYPE JAVADOC: Specifies the what concept values are required.
 NEW CTOR
-(concept <string> (<double>  | <boolean>))
+(concept <string> (<float>  | <boolean>))
 PARAM JAVADOC: <string>: The name of the concept.
-PARAM JAVADOC: <double>: The double value.
+PARAM JAVADOC: <float>: The double value.
 PARAM JAVADOC: <boolean>: The boolean value.
 EXAMPLE: (concept "Num Players" 6)
 DEFINE: AlquerqueBoard
