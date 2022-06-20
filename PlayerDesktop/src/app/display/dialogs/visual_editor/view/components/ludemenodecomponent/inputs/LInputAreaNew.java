@@ -325,7 +325,7 @@ public class LInputAreaNew extends JPanel
         {
             for(ClauseArg arg : nodeArgument.args())
             {
-                if(arg.symbol().equals(lnc.node().symbol()))
+                if(arg.symbol().equals(lnc.node().symbol()) || arg.symbol().returnType().equals(lnc.node().symbol()))
                 {
                     providedNodeArgument = nodeArgument;
                     break;
