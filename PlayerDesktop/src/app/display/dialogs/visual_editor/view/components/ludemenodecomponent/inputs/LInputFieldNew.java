@@ -54,6 +54,17 @@ public class LInputFieldNew extends JComponent
             construct(nodeArguments);
     }
 
+
+    public LInputFieldNew(LInputAreaNew LIA, NodeArgument nodeArgument) {
+        this.LIA = LIA;
+        this.nodeArguments = new ArrayList<>();
+        this.nodeArguments.add(nodeArgument);
+        optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
+        optionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+
+        construct(nodeArgument);
+    }
+
     /**
      * Constructs the JComponent representing the LInputField for a single NodeArgument
      * @param nodeArgument

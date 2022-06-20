@@ -811,12 +811,51 @@ public class LInputAreaNew extends JPanel
         }
     }
 
+    private void addRemainingInputFields2()
+    {
+        // expand all input fields that are not yet expanded
+        List<NodeArgument> addedNodeArguments = new ArrayList<>(); // NodeArguments for which a LInputFieldNew was added
+        for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
+        {
+            if(!inputField.isMerged()) continue;
+            List<NodeArgument> lif_arguments = inputField.nodeArguments();
+            lif_arguments.sort(Comparator.comparingInt(NodeArgument::index)); // sort ascending by index
+
+            for(NodeArgument na: lif_arguments)
+            {
+                LInputFieldNew lif = new LInputFieldNew(this, na);
+                addedNodeArguments.add(na);
+                // add this field above the current input field
+                addInputFieldAbove(lif, inputField);
+            }
+
+            // remove the current input field
+            currentNodeArgumentsLists.remove(inputField.nodeArguments());
+            currentInputFields.remove(inputField.nodeArguments());
+        }
+
+        // update providedNodeArguments
+        for(NodeArgument na : addedNodeArguments)
+        {
+            // add all node arguments with the same symbol to the providedNodeArguments list
+            for(NodeArgument activeNA : new ArrayList<>(activeNodeArguments))
+            {
+                if(!activeClauses.contains(activeNA.clause())) continue;
+                if(activeNA.arg().symbol().equals(na.arg().symbol()))
+                {
+                    providedNodeArguments.add(activeNA);
+                }
+            }
+        }
+    }
+
     /**
      * For Dynamic Nodes.
      * When the remaining NodeArguments to be provided by the user are known, add a inputfield for each
      */
     private void addRemainingInputFields()
     {
+        addRemainingInputFields2(); if(true) return;
         List<NodeArgument> argumentsToAdd = new ArrayList<>(activeNodeArguments);
         // if more than 1 clause is active, the first clause is picked as the one to add the inputfields of
         if(activeClauses.size() > 1)
@@ -840,6 +879,19 @@ public class LInputAreaNew extends JPanel
                 }
             }
         }
+        // remove all node arguments that have a single input field already
+        for(LInputFieldNew inputField : currentInputFields.values())
+        {
+            for(NodeArgument argumentToAdd : argumentsToAdd)
+            {
+                if(!inputField.isMerged() && inputField.nodeArgument(0) == argumentToAdd)
+                {
+                    argumentsToAdd.remove(argumentToAdd);
+                    break;
+                }
+            }
+        }
+
         providedNodeArguments.addAll(argumentsToAdd);
         activeNodeArguments.addAll(argumentsToAdd);
 
@@ -863,9 +915,11 @@ public class LInputAreaNew extends JPanel
             argumentsToAdd.remove(0);
         }
 
-        currentNodeArgumentsLists.remove(first.nodeArguments());
-        currentInputFields.remove(first.nodeArguments());
-
+        if(first.isMerged())
+        {
+            currentNodeArgumentsLists.remove(first.nodeArguments());
+            currentInputFields.remove(first.nodeArguments());
+        }
 
         for(LInputFieldNew inputField : new HashSet<>(currentInputFields.values()))
         {
