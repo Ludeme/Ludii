@@ -841,7 +841,7 @@ public class LInputAreaNew extends JPanel
             for(NodeArgument activeNA : new ArrayList<>(activeNodeArguments))
             {
                 if(!activeClauses.contains(activeNA.clause())) continue;
-                if(activeNA.arg().symbol().equals(na.arg().symbol()))
+                if(!providedNodeArguments.contains(activeNA) && activeNA.arg().symbol().equals(na.arg().symbol()))
                 {
                     providedNodeArguments.add(activeNA);
                 }
