@@ -46,7 +46,7 @@ public class LudemeNode implements iLudemeNode, iGNode
      * a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
      * possible clauses is narrowed down to the ones that match the provided arguments.
      */
-    private boolean dynamic = false;
+    private boolean dynamic = true;
     /**
      * whether this node (and thus its children) are visible (collapsed) or not.
      */
@@ -57,6 +57,25 @@ public class LudemeNode implements iLudemeNode, iGNode
     private boolean visible = true;
 
     // Variables for dynamic nodes
+    /** HashMap of NodeArguments keyed by the clause they correspond to */
+    private final HashMap<Clause, List<NodeArgument>> nodeArguments;
+    /** List of NodeArguments for the current Clause of the associated LudemeNodeComponent */
+    private List<NodeArgument> currentNodeArguments;
+    /** List of lists of NodeArguments for the current Clause of the associated LudemeNodeComponent */
+    private List<List<NodeArgument>> currentNodeArgumentsLists;
+    /** Clauses that satisfy currently provided inputs */
+    private List<Clause> activeClauses = new ArrayList<>();
+    /** Clauses that do not satisfy currently provided inputs */
+    private List<Clause> inactiveClauses = new ArrayList<>();
+    /** NodeArguments that are currently provided */
+    private List<NodeArgument> providedNodeArguments = new ArrayList<>();
+    /** NodeArguments that can be provided to satisfy active clauses */
+    private List<NodeArgument> activeNodeArguments = new ArrayList<>();
+    /** NodeArguments that cannot be provided to satisfy active clauses */
+    private List<NodeArgument> inactiveNodeArguments = new ArrayList<>();
+    /** Whether there is an active clause (only one active clause left) */
+    private boolean activeClause = false;
+
 
 
     /**
@@ -106,6 +125,22 @@ public class LudemeNode implements iLudemeNode, iGNode
         if(dynamicPossible())
         {
             this.dynamic = true;
+        }
+
+        nodeArguments = generateNodeArguments();
+        if(dynamic())
+        {
+            activeClauses = new ArrayList<>(clauses());
+            inactiveClauses = new ArrayList<>();
+            providedNodeArguments = new ArrayList<>();
+            activeNodeArguments = new ArrayList<>();
+            for(List<NodeArgument> nas: nodeArguments.values()) activeNodeArguments.addAll(nas);
+            inactiveNodeArguments = new ArrayList<>();
+            currentNodeArguments = activeNodeArguments;
+        }
+        else
+        {
+            currentNodeArguments = nodeArguments.get(selectedClause());
         }
     }
 
@@ -309,6 +344,130 @@ public class LudemeNode implements iLudemeNode, iGNode
     public boolean collapsed(){
         return collapsed;
     }
+
+
+    // Methods for Dynamic Nodes
+
+
+    /**
+     *
+     * @return a HashMap of NodeArguments keyed by the clause they correspond to
+     */
+    private HashMap<Clause, List<NodeArgument>> generateNodeArguments()
+    {
+        HashMap<Clause, List<NodeArgument>> nodeArguments = new HashMap<>();
+        for (Clause clause : clauses())
+        {
+            nodeArguments.put(clause, generateNodeArguments(clause));
+        }
+        return nodeArguments;
+    }
+
+    /**
+     * Generates a list of lists of NodeArguments for a given Clause
+     * @param clause Clause to generate the list of lists of NodeArguments for
+     * @return List of lists of NodeArguments for the given Clause
+     */
+    private List<NodeArgument> generateNodeArguments(Clause clause)
+    {
+        List<NodeArgument> nodeArguments = new ArrayList<>();
+        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+        {
+            NodeArgument nodeArgument = new NodeArgument(clause);
+            nodeArguments.add(nodeArgument);
+            return nodeArguments;
+        }
+        List<ClauseArg> clauseArgs = clause.args();
+        for(int i = 0; i < clauseArgs.size(); i++)
+        {
+            ClauseArg clauseArg = clauseArgs.get(i);
+            // Some clauses have Constant clauseArgs followed by the constructor keyword. They should not be included in the InputArea
+            if(nodeArguments.isEmpty() && clauseArg.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+                continue;
+            NodeArgument nodeArgument = new NodeArgument(clause, clauseArg);
+            nodeArguments.add(nodeArgument);
+            // if the clauseArg is part of a OR-Group, they all are added to the NodeArgument automatically, and hence can be skipped in the next iteration
+            i = i + nodeArgument.size() - 1;
+        }
+        return nodeArguments;
+    }
+
+
+
+
+    /**
+     *
+     * @return a HashMap of NodeArguments keyed by the clause they correspond to
+     */
+    public HashMap<Clause, List<NodeArgument>> nodeArguments()
+    {
+        return nodeArguments;
+    }
+
+    /**
+     *
+     * @return the List of NodeArguments for the current Clause of the associated LudemeNodeComponent
+     */
+    public List<NodeArgument> currentNodeArguments()
+    {
+        return nodeArguments().get(selectedClause());
+    }
+
+
+    /**
+     * Sets the current node arguments
+      * @param nodeArguments the node arguments to set
+     */
+    public void setCurrentNodeArguments(List<NodeArgument> nodeArguments)
+    {
+        this.nodeArguments.put(selectedClause(), nodeArguments);
+    }
+
+    /**
+     *
+     * @return The list of active clauses
+     */
+    public List<Clause> activeClauses()
+    {
+        return activeClauses;
+    }
+
+    /**
+     *
+     * @return The list of inactive clauses
+     */
+    public List<Clause> inactiveClauses()
+    {
+        return inactiveClauses;
+    }
+
+    /**
+     *
+     * @return The list of active Node Arguments
+     */
+    public List<NodeArgument> activeNodeArguments()
+    {
+        return activeNodeArguments;
+    }
+
+    /**
+     *
+     * @return The list of inactive Node Arguments
+     */
+    public List<NodeArgument> inactiveNodeArguments()
+    {
+        return inactiveNodeArguments;
+    }
+
+    /**
+     *
+     * @return The list of provided node arguments
+     */
+    public List<NodeArgument> providedNodeArguments()
+    {
+        return providedNodeArguments;
+    }
+
 
     /**
      *

@@ -44,15 +44,15 @@ public class LInputArea extends JPanel
      *                The list of possible arguments is updated whenever an argument is provided.
      */
     /** Clauses that satisfy currently provided inputs */
-    private List<Clause> activeClauses = new ArrayList<>();
+    private List<Clause> activeClauses;
     /** Clauses that do not satisfy currently provided inputs */
-    private List<Clause> inactiveClauses = new ArrayList<>();
+    private List<Clause> inactiveClauses;
     /** NodeArguments that are currently provided */
-    private List<NodeArgument> providedNodeArguments = new ArrayList<>();
+    private List<NodeArgument> providedNodeArguments;
     /** NodeArguments that can be provided to satisfy active clauses */
-    private List<NodeArgument> activeNodeArguments = new ArrayList<>();
+    private List<NodeArgument> activeNodeArguments;
     /** NodeArguments that cannot be provided to satisfy active clauses */
-    private List<NodeArgument> inactiveNodeArguments = new ArrayList<>();
+    private List<NodeArgument> inactiveNodeArguments;
     /** Whether there is an active clause (only one active clause left) */
     private boolean activeClause = false;
 
@@ -66,71 +66,27 @@ public class LInputArea extends JPanel
     public LInputArea(LudemeNodeComponent LNC)
     {
         this.LNC = LNC;
-        nodeArguments = generateNodeArguments();
+        nodeArguments = nodeArguments();
         if(dynamic())
         {
-            activeClauses = new ArrayList<>(LNC.node().clauses());
-            inactiveClauses = new ArrayList<>();
-            providedNodeArguments = new ArrayList<>();
-            activeNodeArguments = new ArrayList<>();
-            for(List<NodeArgument> nas: nodeArguments.values()) activeNodeArguments.addAll(nas);
-            inactiveNodeArguments = new ArrayList<>();
+            activeClauses = LNC.node().activeClauses();
+            if(activeClauses.size() == 1) activeClause = true;
+            inactiveClauses = LNC.node().inactiveClauses();
+            providedNodeArguments = LNC.node().providedNodeArguments();
+            activeNodeArguments = LNC.node().activeNodeArguments();
+            //for(List<NodeArgument> nas: nodeArguments.values()) activeNodeArguments.addAll(nas);
+            inactiveNodeArguments = LNC.node().inactiveNodeArguments();
             currentNodeArguments = activeNodeArguments;
         }
         else
         {
-            currentNodeArguments = currentNodeArguments();
+            currentNodeArguments = LNC.node().currentNodeArguments();
         }
         currentNodeArgumentsLists = generateNodeArgumentsLists(currentNodeArguments);
         currentInputFields = generateInputFields(currentNodeArgumentsLists);
         drawInputFields();
         setOpaque(false);
         setVisible(true);
-    }
-
-
-    /**
-     *
-     * @return a HashMap of NodeArguments keyed by the clause they correspond to
-     */
-    private HashMap<Clause, List<NodeArgument>> generateNodeArguments()
-    {
-        HashMap<Clause, List<NodeArgument>> nodeArguments = new HashMap<>();
-        for (Clause clause : LNC.node().clauses())
-        {
-            nodeArguments.put(clause, generateNodeArguments(clause));
-        }
-        return nodeArguments;
-    }
-
-    /**
-     * Generates a list of lists of NodeArguments for a given Clause
-     * @param clause Clause to generate the list of lists of NodeArguments for
-     * @return List of lists of NodeArguments for the given Clause
-     */
-    private List<NodeArgument> generateNodeArguments(Clause clause)
-    {
-        List<NodeArgument> nodeArguments = new ArrayList<>();
-        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
-        {
-            System.out.println("yeeep");
-            NodeArgument nodeArgument = new NodeArgument(clause);
-            nodeArguments.add(nodeArgument);
-            return nodeArguments;
-        }
-        List<ClauseArg> clauseArgs = clause.args();
-        for(int i = 0; i < clauseArgs.size(); i++)
-        {
-            ClauseArg clauseArg = clauseArgs.get(i);
-            // Some clauses have Constant clauseArgs followed by the constructor keyword. They should not be included in the InputArea
-            if(nodeArguments.isEmpty() && clauseArg.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
-                continue;
-            NodeArgument nodeArgument = new NodeArgument(clause, clauseArg);
-            nodeArguments.add(nodeArgument);
-            // if the clauseArg is part of a OR-Group, they all are added to the NodeArgument automatically, and hence can be skipped in the next iteration
-            i = i + nodeArgument.size() - 1;
-        }
-        return nodeArguments;
     }
 
     /**
@@ -1096,7 +1052,7 @@ public class LInputArea extends JPanel
      */
     public List<NodeArgument> currentNodeArguments()
     {
-        return nodeArguments().get(selectedClause());
+        return LNC().node().currentNodeArguments();
     }
 
     /**
@@ -1105,7 +1061,7 @@ public class LInputArea extends JPanel
      */
     public HashMap<Clause, List<NodeArgument>> nodeArguments()
     {
-        return nodeArguments;
+        return LNC().node().nodeArguments();
     }
 
     /**
