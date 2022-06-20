@@ -77,7 +77,7 @@ public class GameParser
                 break;
             case Terminal:
                 // Return lhs and the object
-                System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
+                //System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
                 break;
             case Class:
                 // TODO: debug this!
@@ -111,7 +111,7 @@ public class GameParser
                     }
                 }
 
-                System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
+                //System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
 
                 // Initialize ludeme node with found Symbol and correct rhs
                 LudemeNode ln = new LudemeNode(grammar.Grammar.grammar().symbols().get(0), 0, 0);
