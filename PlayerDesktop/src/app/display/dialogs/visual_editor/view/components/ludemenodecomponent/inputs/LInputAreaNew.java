@@ -233,6 +233,10 @@ public class LInputAreaNew extends JPanel
         return inputFields;
     }
 
+    /**
+     * Draws the HashMap of LInputFields
+     * Handles the merging/singling out of LInputFields of the dynamic constructor
+     */
     private void drawInputFields()
     {
         removeAll();
@@ -707,7 +711,8 @@ public class LInputAreaNew extends JPanel
      * @param inputFields The InputFields to merge
      * @return The merged InputField
      */
-    private LInputFieldNew mergeInputFields(LInputFieldNew[] inputFields) {
+    private LInputFieldNew mergeInputFields(LInputFieldNew[] inputFields)
+    {
         List<NodeArgument> nodeArguments = new ArrayList<>();
         for(LInputFieldNew inputField : inputFields)
         {
@@ -766,7 +771,7 @@ public class LInputAreaNew extends JPanel
      */
     private LInputFieldNew inputFieldBelow(LInputFieldNew inputField)
     {
-        // TODO: this is inefficient, but the one below doesnt work. Maybe because the ArrayList is altered in the process before (but id stays the same!)
+        // this is inefficient, but the one below doesnt work. Maybe because the ArrayList is altered in the process before (but id stays the same!)
         int index = currentNodeArgumentsLists.indexOf(inputField.nodeArguments());
         if(index >= currentNodeArgumentsLists.size() - 1) return null;
         List<NodeArgument> nodeArguments = currentNodeArgumentsLists.get(index + 1);
@@ -987,6 +992,12 @@ public class LInputAreaNew extends JPanel
         return false;
     }
 
+    /**
+     *
+     * @param clause
+     * @param nodeArguments
+     * @return Whether a clause satisfies a list of node arguments
+     */
     private boolean clauseSatisfiesArguments(Clause clause, List<NodeArgument> nodeArguments)
     {
         for(NodeArgument na : nodeArguments)
@@ -1000,6 +1011,13 @@ public class LInputAreaNew extends JPanel
     }
 
 
+    /**
+     * For Dynamic Nodes.
+     * Called when a provided node argument was deleted (connection was removed)
+     * @param nodeArgument NodeArgument that was deleted
+     * @return A list of two lists of NodeArguments. They contain node arguments that are now active but previously were inactive. The first list contains node arguments with an index
+     *         lower than the index of the deleted node argument. The second list contains node arguments with an index higher than the index of the deleted node argument.
+     */
     private List<List<NodeArgument>> removedProvidedNodeArgument(NodeArgument nodeArgument)
     {
         // find which node arguments to remove from the provided node arguments list
