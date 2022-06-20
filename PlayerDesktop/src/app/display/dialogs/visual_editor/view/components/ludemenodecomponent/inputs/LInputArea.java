@@ -626,7 +626,7 @@ public class LInputArea extends JPanel
         List<NodeArgument> freedUpAbove = freedUpArguments.get(0);
         List<NodeArgument> freedUpBelow = freedUpArguments.get(1);
 
-        if(activeClause) return;
+        if(activeClauses.size() == 1) return;
 
         if(!canBeMergedIntoBelow && !canBeMergedIntoAbove)
         {
