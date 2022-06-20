@@ -121,6 +121,10 @@ public class ConnectionHandler
             source.fill(false);
             source = source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField()).connectionComponent();
         }
+        else
+        {
+            source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField());
+        }
 
         // update the positions of the connection components
         source.updatePosition();

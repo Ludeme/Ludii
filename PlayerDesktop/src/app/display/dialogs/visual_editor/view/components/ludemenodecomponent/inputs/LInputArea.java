@@ -209,7 +209,7 @@ public class LInputArea extends JPanel
             mergeUnprovidedMergedInputFields();
         }
 
-        unmergeSameSymbolFields();
+        if(activeClauses.size() > 1) unmergeSameSymbolFields();
 
         for (LInputField inputField : currentInputFields.values()) {
             inputField.setAlignmentX(LEFT_ALIGNMENT);
@@ -316,6 +316,7 @@ public class LInputArea extends JPanel
      */
     public LInputField addedConnection(LudemeNodeComponent lnc, LInputField inputField)
     {
+        System.out.println("Adding connection " + lnc.node().title() + " -> " + inputField);
         // Find the NodeArgument that the user provided input for
         NodeArgument providedNodeArgument = null;
         for(NodeArgument nodeArgument : inputField.nodeArguments())
@@ -349,6 +350,7 @@ public class LInputArea extends JPanel
      */
     public LInputField addedConnection(Symbol symbol, LInputField inputField)
     {
+        System.out.println("Adding connection " + symbol + " -> " + inputField);
         // Find the NodeArgument that the user provided input for
         NodeArgument providedNodeArgument = null;
         for(NodeArgument nodeArgument : inputField.nodeArguments())
@@ -624,6 +626,8 @@ public class LInputArea extends JPanel
         List<NodeArgument> freedUpAbove = freedUpArguments.get(0);
         List<NodeArgument> freedUpBelow = freedUpArguments.get(1);
 
+        if(activeClause) return;
+
         if(!canBeMergedIntoBelow && !canBeMergedIntoAbove)
         {
             System.err.println("Cannot remove connection, because there is no place to merge the input field! [dynamic]");
@@ -683,7 +687,7 @@ public class LInputArea extends JPanel
      */
     public void removedConnection(LInputField inputField)
     {
-
+        if(DEBUG) System.out.println("removedConnection: " + inputField);
         if(!inputField.isMerged() && dynamic()) {
             removedConnectionDynamic(inputField);
             drawInputFields();
