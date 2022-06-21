@@ -148,10 +148,12 @@ public class CreateDSRIClusterTrialsScript
 				}
 				else
 				{
-					for(final String rulesetName : rulesetNames)
+					for(int idRuleset = 0; idRuleset < rulesetNames.size(); idRuleset++)
 					{
+						final String rulesetJobName = "Ruleset" + idRuleset;
+						final String rulesetName = rulesetNames.get(idRuleset);
 						// Get the name of the bash file.
-						bashName = fileName + "-" + StringRoutines.cleanGameName(rulesetName.substring(8));
+						bashName = fileName + "-" + StringRoutines.cleanGameName(rulesetJobName.substring(8));
 						// Get the name of the job.
 						jobName = bashName+agentName+"Trials";
 						jobName = jobName.toLowerCase();
