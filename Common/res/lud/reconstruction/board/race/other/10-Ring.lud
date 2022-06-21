@@ -1,0 +1,28 @@
+(game "10-Ring"
+    (players 2) 
+    (equipment { 
+        (board (concentric {10}) use:Vertex)
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (show Line { {9 0} })
+    })
+    
+)

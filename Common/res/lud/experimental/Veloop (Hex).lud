@@ -193,8 +193,8 @@
         (board Colour Symbols (colour Black))
         (player Colour P1 (colour Black))
         (player Colour P2 (colour LightOrange))
-        //   (stackType Default .5)
-        (stackType None)
+        (stackType Default .4)
+        // (stackType None)
         (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
         }
     )

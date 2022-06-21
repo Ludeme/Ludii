@@ -21,6 +21,7 @@ import main.StringRoutines;
 import main.grammar.Report;
 import main.options.Ruleset;
 import metadata.ai.Ai;
+import metadata.ai.agents.BestAgent;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
 import metadata.ai.heuristics.terms.ComponentValues;
@@ -37,7 +38,6 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
-import metadata.ai.misc.BestAgent;
 import metadata.ai.misc.Pair;
 import other.GameLoader;
 import search.minimax.AlphaBetaSearch;
@@ -187,11 +187,11 @@ public class InitBestAgentsData
 				e.printStackTrace();
 			}
 		}
-		else if (aiMetadata.bestAgent() != null)
+		else if (aiMetadata.agent() != null)
 		{
 			try (final PrintWriter writer = new PrintWriter(bestAgentFile, "UTF-8"))
 			{
-				writer.println(aiMetadata.bestAgent().toString());
+				writer.println(aiMetadata.agent().toString());
 			}
 			catch (final FileNotFoundException | UnsupportedEncodingException e)
 			{

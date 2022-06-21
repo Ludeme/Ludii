@@ -185,7 +185,6 @@
                                 (move 
                                     (from (sites Hand Mover))
                                     (to (sites Board))
-                                    stack:True
                                     (then
                                         (if ("ACaptureIsMade")
                                             (if (is Active (who at:(last To) level:(- (size Stack at:(last To)) 1)))

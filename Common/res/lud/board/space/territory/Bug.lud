@@ -1,0 +1,320 @@
+// Bugs
+// When adding a piece record the vectors from the min site in the new group to each piece in the value of the piece.
+// Check last opponents grown group for adjacent same size friendly and check just grown group for adjacent same size opponent's groups.
+// When comparing pieces 
+
+// Shape date is saved as a vector from the largest site in a group to each site of the group
+// Groups are the same shape and orientation if the size is the same and every value in one group matches a value in the other.
+// For other orientations, transfoms are applied to the values.
+// max is chosen as the (0,0) point as comparisons are presumed to start with the min sites, and will thus fail early
+
+//-------------------------------
+// Bug matching Utility
+
+(define "IfThisRotationDo"  // compiles but sometimes misses
+    (if
+        (= 0
+            (size Array
+                (difference
+                    (results
+                        from:(sites Group at:(last To))
+                        to:(from)
+                        (+
+                            (+ (* 32 #1) (#2)) 
+                            (+
+                                (max
+                                    (results
+                                        from:(sites Group at:(last To))
+                                        to:(from)
+                                        (- (* 32 #1))
+                                ))
+                                (max
+                                    (results
+                                        from:(sites Group at:(last To))
+                                        to:(from)
+                                        (- (#2))
+                            )))
+                    ))
+                    (results
+                        from:(sites)
+                        to:(from)
+                        (value Piece at:(from))
+        ))))
+        #3
+))
+
+(define "DRow" (/ (value Piece at:(from)) 32))
+(define "DCol" (% (value Piece at:(from)) 32))
+
+(define "IfBugsMatchDo"
+    (forEach Group
+        if:(is Next (who at:(to)))
+        (if
+            (and
+                ("IsSameSizeAsSelectedBug") 
+                ("IsBugAdjacentToSelectedBug") 
+            )
+            (priority // Remove and grow again if matches any rotation - Otherwise do nothing
+                {
+                ("IfThisRotationDo" ("DRow") ("DCol") #1) 
+                ("IfThisRotationDo" ("DRow") (- "DRow" "DCol") #1) 
+                ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1) 
+                ("IfThisRotationDo" ("DCol") ("DRow") #1) 
+                ("IfThisRotationDo" (- "DCol") (- "DRow" "DCol") #1) 
+                ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1) 
+                
+                ("IfThisRotationDo" (- "DRow") (- "DCol") #1) 
+                ("IfThisRotationDo" (- "DRow") (- "DCol" "DRow") #1) 
+                ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1) 
+                ("IfThisRotationDo" (- "DCol") (- "DRow") #1) 
+                ("IfThisRotationDo" ("DCol") (- "DCol" "DRow") #1) 
+                ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1) 
+                }
+                #2
+))))
+
+//----------------------------------------------
+// Marking Edible Bugs after Growth Moves
+
+(define "RecordTheGrowingBugsShapeVectorsAsValues" 
+    (and 
+        (forget Value All)
+        (set Var "LastRow" (row of:(max (array (sites Group at:(last To)))))
+            (then 
+                (set Var "LastCol" (max (results from:(sites Group at:(last To)) to:(from) (column of:(from))))
+                    (then
+                        (forEach Site
+                            (sites Group at:(last To))
+                            (set Value at:(site) 
+                                (+
+                                    (* 32 (- (var "LastRow") (row of:(site))))
+                                    (- (var "LastCol") (column of:(site)))
+))))))))) 
+
+(define "ThenMarkTheGrowingBudAsEdible"
+    (then
+        (forEach Site
+            (sites Group at:(last To))
+            (set State at:(site) 1)
+            (then (moveAgain))
+)))
+
+(define "MarkTheSelectedBugsAsEdible"
+    (forEach Site (sites) (set State at:(site) 1))
+)
+
+(define "FindWhatThereIsToEat" 
+    (and
+        (forEach Site 
+            (sites Group at:(last To))
+            (set State at:(site) 0)
+        )
+        (priority
+            (do 
+                ("RecordTheGrowingBugsShapeVectorsAsValues") 
+                next:("IfBugsMatchDo" ("MarkTheSelectedBugsAsEdible") ("ThenMarkTheGrowingBudAsEdible")) 
+            )
+            ("RecordTheGrowingBugsShapeVectorsAsValues") 
+)))
+
+//--------------------------------------------------
+// Eating Utilities
+
+(define "IsBugAdjacentToSelectedBug" 
+    (< 0 (size Array (array (intersection (sites) (sites Around (sites Group at:(last To))))))) 
+)
+
+(define "IsSameSizeAsSelectedBug"
+    (= (size Array (array (sites))) (size Array (array (sites Group at:(last To)))))
+)
+
+(define "EatAllNeighboringBugsAndGrow"
+    ("IfBugsMatchDo"
+        (forEach Value (array (sites)) (remember Value (value))) // this is an action parameter, as is the then clause below...
+        (then
+            (and
+                {
+                (remove (sites (values Remembered)))
+                (forEach Site
+                    (sites Group at:(last To))
+                    (set State at:(site) 0)
+                )
+                (moveAgain)
+                }
+))))
+
+//----------------------------------
+//Growth Utilities
+
+(define "SizeLargestBug" (max (union (sizes Group Mover) (sizes Group Next))))
+
+(define "SizeOfArbitraryAdjacentMoversBug"
+    (count Sites in:(sites Group at:(regionSite (sites Around (to) if:(is Mover (who at:(to)))) index:0)))
+)
+
+(define "BugSizeAfterPlacement"
+    (+ 1 (count Sites in:(sites Group from:(sites Around (to) if:(is Mover (who at:(to)))))))
+)
+
+(define "PlacementDoesntMergeBugs"
+    (=
+        ("BugSizeAfterPlacement")
+        (+ 1 ("SizeOfArbitraryAdjacentMoversBug"))
+))
+
+(define "BugNot2Big"
+    (<=
+        ("BugSizeAfterPlacement")
+        ("SizeLargestBug")
+))
+
+(define "RequiredGrowth"  
+    (move Add
+        (to (sites Empty)
+            if:(and ("PlacementDoesntMergeBugs") ("BugNot2Big"))
+            #1
+        )
+        #2
+)) 
+
+//-----------
+
+(define "IsNext2BugThatAte"
+    (is In (to) (sites Around (sites Group at:(last From))))
+)
+
+(define "BonusGrowth"   
+    (move Add
+        (to (sites Empty)
+            if:(and ("IsNext2BugThatAte") ("PlacementDoesntMergeBugs"))
+        )
+        #1
+)) 
+
+//-----------------------
+
+(define "BugCanStillGrow"
+    (< 0
+        (count Sites
+            in:(difference
+                (intersection (sites Empty) (sites Around (sites Group at:(last To))))
+                (sites Around (difference (sites Occupied by:Mover) (sites Group at:(last To))))
+))))
+
+(define "PlayerChoosesAHungryBug"
+    (do
+        (forEach Group 
+            if:(and 
+                (is Mover (who at:(to)))
+                (= 1 (state at:(to)))
+            )
+            (move Select
+                (from (max (array (sites))))
+                (then
+                    ("EatAllNeighboringBugsAndGrow")
+        )))
+        ifAfterwards:("BugCanStillGrow") 
+))
+
+//--------------------------------------------------------- 
+(game "Bug" 
+    (players 2)
+    (equipment
+        {
+        (board <Board:type> use:Cell)
+        (piece "Hex" Each maxValue:1023) // 32rows * 32columns for recording vectors
+        }
+    )
+    (rules
+        (play
+            (if
+                (not (is Mover Prev))
+                (if
+                    (> 1 ("SizeLargestBug"))
+                    (move Add (to (sites Board)))
+                    ("RequiredGrowth" (apply (set Var "Last2Grow" (mover))) (then ("FindWhatThereIsToEat")))
+                )
+                (if
+                    (= 0 (size Array (values Remembered)))
+                    ("PlayerChoosesAHungryBug")
+                    ("BonusGrowth" (then ("FindWhatThereIsToEat")))
+                )
+                (then ("Score"))
+        ))
+        (end
+            (if
+                (and
+                    (no Moves Mover)
+                    (not (is Prev Mover))
+                ) 
+                (if
+                    (= (var "Last2Grow") (mover))
+                    (result Mover Loss)
+                )
+                (result Mover Win)
+))))   
+
+//----------------------------------
+
+(define "Score"
+    (and
+        (set Score Mover 0)
+        (set Score Next 
+            (count Sites
+                in:(sites To ("RequiredGrowth" ~ ~ ))
+))))
+
+//---------------
+
+(option "Board" <Board> args:{ <type> <graphics> }
+    {
+    (item "Hex3" <(hex Hexagon 3)> "3 Hexagon")**
+    (item "Hex 343434" <(hex Limping 3)>  "343434 Hexagon")
+    (item "Hex4" <(hex Hexagon 4) > "4 Hexagon")
+    (item "Hex 454545" <(hex Limping 4)> "454545 Hexagon")
+    (item "Hex5" <(hex Hexagon 5)> "5 Hexagon")
+    (item "Hex 565656" <(hex Limping 5)> "565656 Hexagon")
+    (item "Hex6" <(hex Hexagon 6)> "6 Hexagon")
+    (item "Hex7" <(hex Hexagon 7)> "7 Hexagon")
+    }
+) 
+
+//----------------------------------
+
+(metadata
+    (info
+        {
+        
+        }
+    )
+    
+    (graphics
+        {
+        (board Colour Phase0 (colour 100 200 250 120))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour Cream))
+        (region Colour (sites State 1) (colour 80 160 200 140)) 
+        (region Colour
+            (sites To
+                (forEach Group 
+                    if:(and
+                        {
+                        (is Mover Prev)
+                        (is Mover (who at:(to))) 
+                        (= 1 (state at:(to)))
+                        }
+                    )
+                    (select (from (max (array (sites)))))
+            ))
+            (colour 72 144 160 190)
+        )
+        (show Score AtEnd)
+        }
+    )
+)

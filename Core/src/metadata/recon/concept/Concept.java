@@ -8,7 +8,7 @@ import metadata.recon.ReconItem;
 /**
  * Specifies the what concept values are required.
  * 
- * @author Matthew.Stephenson
+ * @author Matthew.Stephenson and Eric.Piette
  */
 public class Concept implements ReconItem
 {
@@ -31,7 +31,7 @@ public class Concept implements ReconItem
 	public Concept
 	(
 			final String conceptName, 
-		@Or final Double valueDouble,
+		@Or final Float valueDouble,
 		@Or final Boolean valueBoolean
 	)
 	{

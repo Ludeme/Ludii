@@ -202,6 +202,26 @@ public class ProportionalPolicyClassificationTree extends Policy
 		return distribution;
 	}
 	
+	@Override
+	public float computeLogit(final Context context, final Move move)
+	{
+		final DecisionTreeNode decisionTreeRoot;
+		
+		if (decisionTreeRoots.length == 1)
+			decisionTreeRoot = decisionTreeRoots[0];
+		else
+			decisionTreeRoot = decisionTreeRoots[context.state().mover()];
+		
+		final BaseFeatureSet featureSet;
+		
+		if (featureSets.length == 1)
+			featureSet = featureSets[0];
+		else
+			featureSet = featureSets[context.state().mover()];
+		
+		return decisionTreeRoot.predict(featureSet.computeFeatureVector(context, move, true));
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override

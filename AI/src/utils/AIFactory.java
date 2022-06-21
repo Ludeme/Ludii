@@ -22,6 +22,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import game.Game;
+import main.FileHandling;
+import main.grammar.Report;
+import metadata.ai.Ai;
 import other.AI;
 import policies.GreedyPolicy;
 import policies.ProportionalPolicyClassificationTree;
@@ -676,6 +679,26 @@ public class AIFactory
 				e.printStackTrace();
 			}
 		}
+		else if (algName.equalsIgnoreCase("From AI.DEF"))
+		{
+			try
+			{
+				final String aiMetadataStr = FileHandling.loadTextContentsFromFile(aiObj.getString("AI.DEF File"));
+				final Ai aiMetadata = 
+						(Ai)compiler.Compiler.compileObject
+						(
+							aiMetadataStr, 
+							"metadata.ai.Ai",
+							new Report()
+						);
+				
+				return createAI(aiMetadata.agent().constructAgentString());
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		System.err.println("WARNING: Failed to construct AI from JSON: " + json.toString(4));
 		return null;
@@ -697,9 +720,9 @@ public class AIFactory
 		else
 			bestAgent = "UCT";
 		
-		if (game.metadata().ai().bestAgent() != null)
+		if (game.metadata().ai().agent() != null)
 		{
-			bestAgent = game.metadata().ai().bestAgent().agent();
+			bestAgent = game.metadata().ai().agent().constructAgentString();
 		}
 		
 		final AI ai = createAI(bestAgent);

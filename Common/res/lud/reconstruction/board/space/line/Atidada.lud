@@ -1,0 +1,42 @@
+(game "Atidada"
+    (players 2)
+    
+    (equipment { 
+        (board (concentric Square rings:[#]) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move [#])
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:[3 | 6 | 20]))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                [#]
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                [#]
+            )
+        )
+        }
+        
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)

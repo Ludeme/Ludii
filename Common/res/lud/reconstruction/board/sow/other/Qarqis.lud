@@ -1,0 +1,27 @@
+(game "Qarqis"
+    (players 2) 
+    (equipment { 
+        (mancalaBoard [2 | 4] [2..40] store:None [#])
+        (piece "Seed" Each)
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

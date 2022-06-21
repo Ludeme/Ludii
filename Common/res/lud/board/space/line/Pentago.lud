@@ -69,10 +69,10 @@
     (equipment { 
         (board (square 6) use:Vertex)
         (piece "Ball" Each)
-        (regions "BottomLeft" (expand origin:(coord "A1") steps:3))
-        (regions "BottomRight" (expand origin:(coord "D1") steps:3))
-        (regions "TopLeft" (expand origin:(coord "A4") steps:3))
-        (regions "TopRight" (expand origin:(coord "D4") steps:3))
+        (regions "BottomLeft" (expand origin:(coord "B2") All))
+        (regions "BottomRight" (expand origin:(coord "E2") All))
+        (regions "TopLeft" (expand origin:(coord "B5") All))
+        (regions "TopRight" (expand origin:(coord "E5") All))
     })
     (rules
         phases:{

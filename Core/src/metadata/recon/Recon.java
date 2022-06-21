@@ -14,7 +14,7 @@ import metadata.recon.concept.Concept;
 /**
  * Reconstruction metadata.
  * 
- * @author Matthew.Stephenson
+ * @author Matthew.Stephenson and Eric.Piette
  */
 public class Recon implements Serializable
 {

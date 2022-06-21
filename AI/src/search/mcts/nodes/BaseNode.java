@@ -702,14 +702,14 @@ public abstract class BaseNode
     {
     	final List<ExItExperience> experiences = new ArrayList<ExItExperience>();
     	experiences.add(generateExItExperience(1.f));
-    	final State myState = this.contextRef().state();
-    	
-    	for (int i = 0; i < numLegalMoves(); ++i)
-    	{
-    		final BaseNode child = childForNthLegalMove(i);
-    		if (child != null && child.numVisits() > 0 && child.isValueProven(myState.playerToAgent(myState.mover())) && child.numLegalMoves() > 0)
-    			experiences.add(child.generateExItExperience(((float) child.numVisits() / numVisits())));
-    	}
+//    	final State myState = this.contextRef().state();
+//    	
+//    	for (int i = 0; i < numLegalMoves(); ++i)
+//    	{
+//    		final BaseNode child = childForNthLegalMove(i);
+//    		if (child != null && child.numVisits() > 0 && child.isValueProven(myState.playerToAgent(myState.mover())) && child.numLegalMoves() > 0)
+//    			experiences.add(child.generateExItExperience(((float) child.numVisits() / numVisits())));
+//    	}
     	
     	return experiences;
     }

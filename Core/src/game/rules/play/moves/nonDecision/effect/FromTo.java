@@ -288,7 +288,7 @@ public final class FromTo extends Effect
 						}
 						else if (levelFrom == null && countFn == null)
 						{
-							if (copyTo)
+							if (copyTo) {
 								actionMove = new ActionCopy
 										(
 											realTypeFrom, 
@@ -302,7 +302,9 @@ public final class FromTo extends Effect
 											Constants.OFF, 
 											false
 										);
-							else
+							}
+							else 
+							{
 								actionMove = ActionMove.construct
 									(
 										realTypeFrom, 
@@ -314,8 +316,9 @@ public final class FromTo extends Effect
 										Constants.UNDEFINED, 
 										Constants.OFF, 
 										Constants.OFF,
-										false
+										stack
 									);
+							}
 							
 							actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
 						}
