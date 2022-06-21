@@ -150,12 +150,12 @@ public class CreateDSRIClusterTrialsScript
 				{
 					for(int idRuleset = 0; idRuleset < rulesetNames.size(); idRuleset++)
 					{
-						final String rulesetJobName = "Ruleset" + idRuleset;
+						final String rulesetJobName = "Ruleset" + idRuleset; // Need to modify the name of the job bc DSRI has a limit of 58 chars
 						final String rulesetName = rulesetNames.get(idRuleset);
 						// Get the name of the bash file.
-						bashName = fileName + "-" + StringRoutines.cleanGameName(rulesetJobName.substring(8));
+						bashName = fileName + "-" + rulesetJobName;
 						// Get the name of the job.
-						jobName = bashName+agentName+"Trials";
+						jobName = fileName + "-" + rulesetJobName+agentName+"Trials";
 						jobName = jobName.toLowerCase();
 						jobName = jobName.replace("_", "");
 
@@ -240,7 +240,7 @@ public class CreateDSRIClusterTrialsScript
 		return "apiVersion: batch/v1\n"
 	    		+ "kind: Job\n"
 	    		+ "metadata:\n"
-	    		+ "  name:"+jobName+"\n"
+	    		+ "  name: "+jobName+"\n"
 	    		+ "  labels:\n"
 	    		+ "    app: \""+jobName+"\"\n"
 	    		+ "spec:\n"
