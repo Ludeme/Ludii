@@ -1,32 +1,39 @@
 (define "Breakthrough_ai"
     (bestAgent "AlphaBeta")
     trainedHeuristics:(heuristics {
-        (sidesProximity)
-        (centreProximity pieceWeights:{
-            (pair "Pawn1" 0.08369076)
-            (pair "Pawn2" 0.15986244)
+        (lineCompletionHeuristic weight:0.0)
+        (mobilitySimple weight:0.0)
+        (influence weight:0.0)
+        (ownRegionsCount weight:0.0)
+        (centreProximity weight:0.0 pieceWeights:{
         })
-        (cornerProximity pieceWeights:{
-            (pair "Pawn1" 0.054390416)
-            (pair "Pawn2" 0.05467271)
+        (cornerProximity weight:0.0 pieceWeights:{
         })
-        (lineCompletionHeuristic weight:0.4820981)
         (material pieceWeights:{
-            (pair "Pawn1" 0.20666432)
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
         })
-        (mobilitySimple weight:0.46489596)
-        (influence weight:0.25199297)
-        (ownRegionsCount weight:-2.2544231)
-        (playerRegionsProximity player:2 pieceWeights:{
-            (pair "Pawn1" 0.94359654)
+        (sidesProximity pieceWeights:{
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
         })
-        (regionProximity region:0 pieceWeights:{
-            (pair "Pawn1" 0.11981888)
-            (pair "Pawn2" -0.06697424)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
+        })
+        (playerRegionsProximity weight:0.0 player:2 pieceWeights:{
+        })
+        (regionProximity weight:0.0 region:0 pieceWeights:{
         })
         (regionProximity region:1 pieceWeights:{
-            (pair "Pawn1" 0.2220754)
-            (pair "Pawn2" 0.21575865)
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
+        })
+        (unthreatenedMaterial weight:0.0 pieceWeights:{
+        })
+        (threatenedMaterial weight:0.0 pieceWeights:{
+        })
+        (threatenedMaterialMultipleCount weight:0.0 pieceWeights:{
         })
     })
     trainedFeatureTrees:(featureTrees 

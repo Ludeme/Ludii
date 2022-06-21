@@ -61,6 +61,11 @@ public class AIRegistry
 		registerAI("Score Bounded MCTS", 19, (game) -> {return AIFactory.createAI("Score Bounded MCTS").supportsGame(game);}, null);
 		registerAI("Heuristic Sampling", 20, (game) -> {return AIFactory.createAI("Heuristic Sampling").supportsGame(game);}, null);
 		registerAI("One-Ply (No Heuristic)", 21, (game) -> {return AIFactory.createAI("One-Ply (No Heuristic)").supportsGame(game);}, null);
+		registerAI("Bob the Basic AI", 22, (game) -> {return true;}, null);
+		registerAI("Best First Search", 23, (game) -> {return AIFactory.createAI("Best First Search").supportsGame(game);}, null);
+		registerAI("Hybrid BFS", 24, (game) -> {return AIFactory.createAI("Hybrid BFS").supportsGame(game);}, null);
+		registerAI("Biased BFS", 25, (game) -> {return AIFactory.createAI("Biased BFS").supportsGame(game);}, null);
+		registerAI("Lazy BFS", 26, (game) -> {return AIFactory.createAI("Lazy BFS").supportsGame(game);}, null);
 		registerAI("From JAR", -1, (game) -> {return false;}, null);	// We have special handling for From JAR in dropdown menus
 	}
 	

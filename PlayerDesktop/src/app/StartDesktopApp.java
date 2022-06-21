@@ -10,7 +10,7 @@ public class StartDesktopApp
 	private static DesktopApp desktopApp = null;
 	
 	public static void main(final String[] args)
-	{		
+	{
 		// The actual launching
 		if (args.length == 0)
 		{

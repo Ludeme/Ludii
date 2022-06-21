@@ -76,10 +76,10 @@ public class AlphaBetaSearch extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	/** Our heuristic value function estimator */
-	private Heuristics heuristicValueFunction = null;
+	protected Heuristics heuristicValueFunction = null;
 	
 	/** If true, we read our heuristic function to use from game's metadata */
-	private final boolean heuristicsFromMetadata;
+	final boolean heuristicsFromMetadata;
 	
 	/** We'll automatically return our move after at most this number of seconds if we only have one move */
 	protected double autoPlaySeconds = 0.0;
@@ -129,11 +129,17 @@ public class AlphaBetaSearch extends ExpertPolicy
 	/** Do we want to allow using Transposition Table? */
 	protected boolean allowTranspositionTable = true;
 	
-	/** Transposiiton Table */
+	/** Transposition Table */
 	protected TranspositionTable transpositionTable = null;
 	
 	/** Do we allow any search depth, or only odd, or only even? */
 	protected AllowedSearchDepths allowedSearchDepths = AllowedSearchDepths.Any;
+
+	//-------------------------------------------------------------------------
+	
+	/** Number of different states evaluated, for an analysis report.
+	 * It is possible that some states are counted several times. */
+	protected int nbStatesEvaluated;
 	
 	//-------------------------------------------------------------------------
 	
@@ -213,6 +219,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 		provedWin = false;
 		final int depthLimit = maxDepth > 0 ? maxDepth : Integer.MAX_VALUE;
 		lastSearchedRootContext = context;
+		nbStatesEvaluated = 0;
 		
 		if (transpositionTable != null)
 			transpositionTable.allocate();
@@ -422,7 +429,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 			if (System.currentTimeMillis() >= stopTime || wantsInterrupt)
 			{
 				// we need to return
-				analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + ".";
+				analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + " (" + Integer.toString(nbStatesEvaluated)+" states were explored).";
 				return bestMoveCompleteSearch;
 			}
 			
@@ -444,7 +451,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 			moveScores.fill(0, numRootMoves, 0.f);
 		}
 		
-		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + ".";
+		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed search of depth " + searchDepth + " (" + Integer.toString(nbStatesEvaluated)+" states were explored).";
 		return bestMoveCompleteSearch;
 	}
 	
@@ -475,6 +482,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 		final float originalAlpha = inAlpha;
 		float alpha = inAlpha;
 		float beta = inBeta;
+
+		nbStatesEvaluated += 1;
 		
 		final long zobrist = state.fullHash();
 		final ABTTData tableData;
@@ -484,6 +493,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 			
 			if (tableData != null)
 			{
+				nbStatesEvaluated -= 1; //we had already explored this node
+				
 				if (tableData.depth >= depth)
 				{
 					// Already searched deep enough for data in TT, use results
@@ -511,6 +522,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 		{
 			tableData = null;
 		}
+		
 		
 		if (trial.over() || !context.active(maximisingPlayer))
 		{
@@ -1006,8 +1018,11 @@ public class AlphaBetaSearch extends ExpertPolicy
 	@Override
 	public void initAI(final Game game, final int playerID)
 	{
+		//System.out.println("initAI of Alpha-Beta called");
+		
 		if (heuristicsFromMetadata)
 		{
+			
 			// Read heuristics from game metadata
 			final metadata.ai.Ai aiMetadata = game.metadata().ai();
 			if (aiMetadata != null && aiMetadata.heuristics() != null)
@@ -1147,7 +1162,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	 * 
 	 * @author Dennis Soemers
 	 */
-	private class ScoredMove implements Comparable<ScoredMove>
+	protected class ScoredMove implements Comparable<ScoredMove>
 	{
 		/** The move */
 		public final Move move;
