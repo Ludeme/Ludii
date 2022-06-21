@@ -41,6 +41,11 @@ public class Mcts implements Agent
 			this.selection = selection;
 		else
 			this.selection = new Ucb1(null);
+		
+		if (this.selection.requiresLearnedSelectionPolicy())
+		{
+			// TODO check whether a learned selection policy was specified
+		}
 	}
 	
 	//-------------------------------------------------------------------------

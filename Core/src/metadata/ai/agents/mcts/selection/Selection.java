@@ -11,5 +11,15 @@ public abstract class Selection implements AIItem
 {
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Do we require a learned selection policy?
+	 */
+	public boolean requiresLearnedSelectionPolicy()
+	{
+		return false;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
