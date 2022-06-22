@@ -88,6 +88,10 @@ public class Handler {
 
     public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
     {
+        if(node.providedInputs()[inputIndex] == null)
+        {
+            node.setProvidedInput(inputIndex, new Object[1]);
+        }
         if(elementIndex >= ((Object[])(node.providedInputs()[inputIndex])).length) addCollectionElement(graph, node, inputIndex);
         Object[] in = (Object[]) node.providedInputs()[inputIndex];
         in[elementIndex] = input;

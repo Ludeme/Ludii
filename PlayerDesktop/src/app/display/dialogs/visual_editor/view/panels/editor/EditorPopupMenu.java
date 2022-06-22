@@ -53,19 +53,24 @@ public class EditorPopupMenu extends JPopupMenu {
                                 copy.setProvidedInput(i, copyInputNode);
                             }
                         }
-                        else if(input instanceof LudemeNode[])
+                        else if(input instanceof Object[])
                         {
-                            LudemeNode[] copyInputs = new LudemeNode[((LudemeNode[])input).length];
-                            for(int j = 0; j < copyInputs.length; j++)
+                            boolean isLudemeNode = false;
+                            for(Object o : (Object[]) input) if(o instanceof LudemeNode) { isLudemeNode = true; break; }
+                            if(isLudemeNode)
                             {
-                                LudemeNode inputNode = ((LudemeNode[])input)[j];
-                                LudemeNode copyInputNode = copies.get(inputNode);
-                                if(copyInputNode != null)
+                                Object[] copyInputs = new LudemeNode[((Object[])input).length];
+                                for(int j = 0; j < copyInputs.length; j++)
                                 {
-                                    copyInputs[j] = copyInputNode;
+                                    LudemeNode inputNode = (LudemeNode) ((Object[])input)[j];
+                                    LudemeNode copyInputNode = copies.get(inputNode);
+                                    if(copyInputNode != null)
+                                    {
+                                        copyInputs[j] = copyInputNode;
+                                    }
                                 }
+                                copy.setProvidedInput(i, copyInputs);
                             }
-                            copy.setProvidedInput(i, copyInputs);
                         }
                         else
                         {

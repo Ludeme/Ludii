@@ -144,6 +144,20 @@ public class ConnectionHandler
         // Update the provided input in the description graph
         // differentiate between an inputed provided to a collection and otherwise
 
+        if(source.inputField().nodeArgument(0).collection())
+        {
+            LudemeNode sourceNode = source.lnc().node();
+            int collectionElementIndex = 0;
+            if(source.inputField().parent() != null) collectionElementIndex = source.inputField().parent().children().indexOf(source.inputField())+1;
+            Handler.setCollectionInput(graphPanel.graph(), sourceNode, source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
+        }
+        else
+        {
+            if(DEBUG) System.out.println("[EP] Adding connection: " + source.lnc().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.inputField().inputIndexFirst());
+            System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
+            Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
+        }
+
         /* TODO if(source.inputField().nodeArgument(0).collection())
         {
             LudemeNode sourceNode = source.lnc().node();
@@ -191,12 +205,12 @@ public class ConnectionHandler
             System.out.println("\u001B[32m"+"Calling from EP 237"+"\u001B[0m");
             Handler.updateInput(Handler.editorPanel.graph(), sourceNode, sourceInput.indexFirst(), providedInput);
         }
-        else */
+        else
         {
             if(DEBUG) System.out.println("[EP] Adding connection: " + source.lnc().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.inputField().inputIndexFirst());
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
             Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
-        }
+        } */
 
         graphPanel.repaint();
     }
@@ -239,6 +253,23 @@ public class ConnectionHandler
                 e.getConnectionComponent().setConnectedTo(null);
                 e.getConnectionComponent().inputField().inputArea().removedConnection(e.getConnectionComponent().inputField());
 
+                if(connection.inputField().nodeArgument(0).collection())
+                {
+                    if(connection.inputField().nodeArgument(0).collection())
+                    {
+                        LudemeNode sourceNode = connection.lnc().node();
+                        int collectionElementIndex = 0;
+                        if(connection.inputField().parent() != null) collectionElementIndex = connection.inputField().children().indexOf(connection.inputField())+1;
+                        // public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
+                        Handler.setCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().inputIndexFirst(), null, collectionElementIndex);
+                    }
+                }
+                else
+                {
+                    System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
+                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
+                }
+
                 // TODO: e.getConnectionComponent().inputField().inputArea().updateComponent(node, null, true);
                 // check whether it was the element of a collection
                 /* TODO
@@ -260,11 +291,11 @@ public class ConnectionHandler
                     providedInputs[indexToUpdate] = null;
                     System.out.println("\u001B[32m"+"Calling from EP 339"+"\u001B[0m");
                     Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().lnc().node(), connection.inputField().inputIndexFirst(), providedInputs);
-                } else*/
+                } else
                 {
                     System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
                     Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
-                }
+                } */
 
             }
         }

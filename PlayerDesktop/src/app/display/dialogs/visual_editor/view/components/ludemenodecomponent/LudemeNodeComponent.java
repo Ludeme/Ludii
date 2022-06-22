@@ -470,7 +470,9 @@ public class LudemeNodeComponent extends JPanel
         if(!visible) return;
         for(LudemeNode ln : node().childrenNodes())
         {
-            graphPanel().nodeComponent(ln).setVisible(ln.visible());
+            LudemeNodeComponent lnc = graphPanel().nodeComponent(ln);
+            if(lnc!=null)
+                lnc.setVisible(ln.visible());
         }
     }
 

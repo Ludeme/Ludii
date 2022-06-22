@@ -730,9 +730,10 @@ public class LudemeNode implements iLudemeNode, iGNode
                 for(Object obj : (Object[]) input)
                 {
                     if(obj == null) continue;
-                    sb.append(obj.toString()).append(", ");
+                    if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).stringRepresentation()).append(" ");
+                    else sb.append(obj.toString()).append(" "); // TODO: is a comma required??
                 }
-                sb.deleteCharAt(sb.length()-2);
+                //sb.deleteCharAt(sb.length()-2);
                 sb.append("}");
             }
             else if(input instanceof String)
@@ -782,9 +783,10 @@ public class LudemeNode implements iLudemeNode, iGNode
                     for(Object obj : (Object[]) input)
                     {
                         if(obj == null) continue;
-                        sb.append(obj.toString()).append(", ");
+                        if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).stringRepresentation());
+                        else sb.append(obj.toString()).append(" "); // TODO: is a comma required??
                     }
-                    sb.deleteCharAt(sb.length()-2);
+                    //sb.deleteCharAt(sb.length()-2);
                     sb.append("}");
                 }
                 else if(input instanceof String)
@@ -833,7 +835,8 @@ public class LudemeNode implements iLudemeNode, iGNode
                     {
                         sb.append((node).stringRepresentationUntilInputIndex(untilIndex, marker)).append(" ");
                     }
-                    else {
+                    else
+                    {
                         sb.append((node).codeCompletionGameDescription(stopAt, untilIndex, marker)).append(" ");
                     }
                 }
@@ -900,8 +903,18 @@ public class LudemeNode implements iLudemeNode, iGNode
         for(int i = 0; i < providedInputs().length; i++)
         {
             Object input = providedInputs()[i];
-            if(input == null || input instanceof LudemeNode || input instanceof LudemeNode[]) continue; // if no input provided or it is LudemeNode, skip it
-            copy.setProvidedInput(i, input);
+            if(input == null || input instanceof LudemeNode) continue; // if no input provided or it is LudemeNode, skip it
+            boolean isLudemeCollection = false;
+            if(input instanceof Object[])
+            {
+                for (Object o : (Object[]) input)
+                    if (o instanceof LudemeNode)
+                    {
+                        isLudemeCollection = true;
+                        break;
+                    }
+            }
+            if(!isLudemeCollection) copy.setProvidedInput(i, input);
         }
         return copy;
     }
@@ -921,6 +934,23 @@ public class LudemeNode implements iLudemeNode, iGNode
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());
 
+        // copy terminal inputs
+        for(int i = 0; i < providedInputs().length; i++)
+        {
+            Object input = providedInputs()[i];
+            if(input == null || input instanceof LudemeNode) continue; // if no input provided or it is LudemeNode, skip it
+            boolean isLudemeCollection = false;
+            if(input instanceof Object[])
+            {
+                for (Object o : (Object[]) input)
+                    if (o instanceof LudemeNode)
+                    {
+                        isLudemeCollection = true;
+                        break;
+                    }
+            }
+            if(!isLudemeCollection) copy.setProvidedInput(i, input);
+        }
         return copy;
     }
 

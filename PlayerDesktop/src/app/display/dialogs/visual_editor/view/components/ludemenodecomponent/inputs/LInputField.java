@@ -504,6 +504,38 @@ public class LInputField extends JComponent
             // TODO: My words: "Incorrect use here", but I do not remember why
         }
 
+        if(nodeArgument(0).collection() && input instanceof Object[])
+        {
+            IGraphPanel graphPanel = inputArea().LNC().graphPanel();
+            Object[] inputs = (Object[]) input;
+            for(int i = 1; i < inputs.length; i++)
+            {
+                addCollectionItem();
+            }
+            for(int i = 0; i < inputs.length; i++)
+            {
+                Object input_i = inputs[i];
+                if(input_i == null) continue;
+                if(input_i instanceof LudemeNode)
+                {
+                    // get correct collection component
+                    LConnectionComponent connectionComponentChild;
+                    if (i == 0)
+                        connectionComponentChild = connectionComponent;
+                    else
+                        connectionComponentChild = children.get(i-1).connectionComponent();
+                    graphPanel.connectionHandler().addConnection(connectionComponentChild, graphPanel.nodeComponent(((LudemeNode)input_i)).ingoingConnectionComponent());
+                }
+                else
+                {
+                    if (i == 0)
+                        setUserInput(input_i);
+                    else
+                        children().get(i-1).setUserInput(input_i);
+                }
+            }
+        }
+
         /*if (nodeArgument().collection() && input instanceof LudemeNode[]) {
             // collection inputs are connected to multiple nodes
             LudemeNode[] connectedTo = (LudemeNode[]) input;
@@ -528,15 +560,18 @@ public class LInputField extends JComponent
                     graphPanel.connectionHandler().addConnection(null, graphPanel.nodeComponent(node).ingoingConnectionComponent());
                 }
             }
-        }
-        else */if(fieldComponent == connectionComponent){
+        }*/
+        else if(fieldComponent == connectionComponent)
+        {
             // then its ludeme input
             IGraphPanel graphPanel = inputArea().LNC().graphPanel();
             graphPanel.connectionHandler().addConnection(connectionComponent, graphPanel.nodeComponent((LudemeNode) input).ingoingConnectionComponent());
         }
-        if(fieldComponent instanceof JTextField) ((JTextField)fieldComponent).setText((String)input);
-        if(fieldComponent instanceof JSpinner) ((JSpinner)fieldComponent).setValue(input);
-        if(fieldComponent instanceof JComboBox) ((JComboBox<?>)fieldComponent).setSelectedItem(input);
+        else {
+            if (fieldComponent instanceof JTextField) ((JTextField) fieldComponent).setText((String) input);
+            if (fieldComponent instanceof JSpinner) ((JSpinner) fieldComponent).setValue(input);
+            if (fieldComponent instanceof JComboBox) ((JComboBox<?>) fieldComponent).setSelectedItem(input);
+        }
     }
 
     /**
@@ -705,7 +740,7 @@ public class LInputField extends JComponent
      *
      * @return The parent/root input field of a collection
      */
-    private LInputField parent()
+    public LInputField parent()
     {
         return parent;
     }
@@ -714,7 +749,7 @@ public class LInputField extends JComponent
      *
      * @return The list of elements/children of a collection
      */
-    private List<LInputField> children()
+    public List<LInputField> children()
     {
         return children;
     }
