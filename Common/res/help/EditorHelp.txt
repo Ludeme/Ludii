@@ -4571,6 +4571,7 @@ TYPE JAVADOC: Interface for generic metadata item.  Classes to be included as me
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
 SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
 SUBCLASS: metadata.ai.agents.mcts.selection.Selection
 SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
@@ -4670,6 +4671,7 @@ TYPE JAVADOC: General function hint for this game.Metadata containing hints for 
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
 SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
 SUBCLASS: metadata.ai.agents.mcts.selection.Selection
 SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
@@ -4743,8 +4745,15 @@ NEW CTOR
 (mcts [<selection>])
 PARAM JAVADOC: [<selection>]: The Selection strategy to be used by this MCTS agent [UCB1].
 EXAMPLE: (mcts)
+TYPE: metadata.ai.agents.mcts.selection.Ag0
+TYPE JAVADOC: Describes the selection strategy also used by AlphaGo Zero (and AlphaZero).  Requires that a learned selection policy (based on features) has been   described for the MCTS agent that uses this selection strategy.
+NEW CTOR
+(ag0 [<float>])
+PARAM JAVADOC: [<float>]: The value to use for the exploration constant [2.5].
+EXAMPLE: (ag0)
 TYPE: metadata.ai.agents.mcts.selection.Selection
 TYPE JAVADOC: Abstract class for Selection strategies for MCTS in AI metadata
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
 SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 TYPE: metadata.ai.agents.mcts.selection.Ucb1
 TYPE JAVADOC: Describes the UCB1 selection strategy, which is one of the most straightforward  and simple Selection strategies, used by the standard UCT variant of MCTS.
