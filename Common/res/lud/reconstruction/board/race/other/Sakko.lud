@@ -5,11 +5,15 @@
             (rectangle 3 13)
             use:Vertex
         )
+        (dice d:6 from:0 num:3)
+        (piece "Marker" Each)
+        (piece "King" Each)
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#]) // 13 pieces per player + a king per player.
+        (play [#])
+        (end [#])
     )
 )
 
@@ -31,7 +35,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
