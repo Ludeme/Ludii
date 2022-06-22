@@ -6,10 +6,17 @@
             use:Edge
         )
         (piece "Marker" Each)
+        (dice d:2 from:0 num:3)
+        (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
     })
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play 
+        	(do (roll)
+        		next:[#]
+        	)
+        )
+        (end [#])
     )
 )
 
