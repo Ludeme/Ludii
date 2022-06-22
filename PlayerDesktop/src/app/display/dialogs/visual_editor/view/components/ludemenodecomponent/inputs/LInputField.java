@@ -36,10 +36,19 @@ public class LInputField extends JComponent
     private JComponent fieldComponent;
     /** If the LInputField is not terminal, it has a connection point which is used to connect to other Nodes */
     private LConnectionComponent connectionComponent = null;
+    /** If the LInputField is part of a collection (its element), the root/first element of that collection is the parent */
+    private LInputField parent = null;
+    /** If the LInputField is the root of a collection, store its elements/children in a list */
+    private List<LInputField> children = new ArrayList<>();
     /** Label of the InputField */
     private final JLabel label = new JLabel();
     private final JLabel optionalLabel = new JLabel("(optional)");
 
+    /**
+     * Constructor for a single or merged input field
+     * @param LIA Input Area this field belongs to
+     * @param nodeArguments NodeArgument(s) this field represents
+     */
     public LInputField(LInputArea LIA, List<NodeArgument> nodeArguments)
     {
         this.LIA = LIA;
@@ -55,6 +64,11 @@ public class LInputField extends JComponent
     }
 
 
+    /**
+     * Constructor for a single input field
+     * @param LIA Input Area this field belongs to
+     * @param nodeArgument NodeArgument this field represents
+     */
     public LInputField(LInputArea LIA, NodeArgument nodeArgument) {
         this.LIA = LIA;
         this.nodeArguments = new ArrayList<>();
@@ -63,6 +77,19 @@ public class LInputField extends JComponent
         optionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 
         construct(nodeArgument);
+    }
+
+    /**
+     * Constructor for a input field which is part of a collection
+     * @param parentCollectionInputField Parent InputField of collection
+     */
+    public LInputField(LInputField parentCollectionInputField)
+    {
+        this.LIA = parentCollectionInputField.inputArea();
+        this.parent = parentCollectionInputField;
+        this.nodeArguments = new ArrayList<>(parentCollectionInputField.nodeArguments());
+        parent.addChildren(this);
+        construct(nodeArgument(0));
     }
 
     /**
@@ -84,7 +111,12 @@ public class LInputField extends JComponent
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 
-        if(nodeArgument.isTerminal())
+        // If collection
+        if(parent != null)
+        {
+            constructCollection(parent);
+        }
+        else if(nodeArgument.isTerminal())
         {
             // If the selected NodeArgument is a terminal NodeArgument stemming from a merged input field (i.e. optional or dynamic)
             // (nodeArguments.get(0).separateNode())
@@ -136,6 +168,17 @@ public class LInputField extends JComponent
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
         add(label);
         add(fieldComponent);
+        if(nodeArgument.collection())
+        {
+            LInputButton addItemButton = new LInputButton(DesignPalette.COLLECTION_ICON_ACTIVE, DesignPalette.COLLECTION_ICON_HOVER);
+
+            add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(addItemButton);
+
+            addItemButton.addActionListener(e -> {
+                addCollectionItem();
+            });
+        }
         if(removable) {
             JLabel removeLabel = new JLabel("X");
             add(removeLabel);
@@ -162,8 +205,84 @@ public class LInputField extends JComponent
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         if(nodeArgument.optional()) add(optionalLabel);
         add(label);
+        if(nodeArgument.collection())
+        {
+            LInputButton addItemButton = new LInputButton(DesignPalette.COLLECTION_ICON_ACTIVE, DesignPalette.COLLECTION_ICON_HOVER);
+
+            add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(addItemButton);
+
+            addItemButton.addActionListener(e -> {
+                addCollectionItem();
+            });
+        }
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
         add(connectionComponent);
+    }
+
+    /**
+     * Constructs a new collection child/element input field , below the last child of the collection root/parent
+     * @param parent
+     */
+    private void constructCollection(LInputField parent)
+    {
+        NodeArgument nodeArgument = parent.nodeArgument(0);
+        // create connection component
+        connectionComponent = new LConnectionComponent(this, false);
+        fieldComponent = connectionComponent; // user interacts with the connection component
+
+        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        if(nodeArgument.optional()) add(optionalLabel);
+        add(label);
+
+        LInputButton removeItemButton = new LInputButton(DesignPalette.COLLECTION_REMOVE_ICON_ACTIVE, DesignPalette.COLLECTION_REMOVE_ICON_HOVER);
+
+        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+        add(removeItemButton);
+
+        removeItemButton.addActionListener(e -> {
+            removeCollectionItem();
+        });
+
+        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+        add(connectionComponent);
+    }
+
+    /**
+     * Adds a children collection input field
+     */
+    private void addCollectionItem()
+    {
+        LInputField last; // get last children/element of collection
+        if(children.isEmpty()) last = this;
+        else last = children.get(children.size()-1);
+        inputArea().addInputFieldBelow(new LInputField(this), last); // add children field below last element
+        // update provided inputs in handler
+        if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] instanceof LudemeNode[])
+        {
+            LudemeNode[] collection = (LudemeNode[]) inputArea().LNC().node().providedInputs()[inputIndexFirst()] ;
+            if(collection.length < children.size() + 1)
+            {
+                Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst());
+            }
+        }
+        if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] == null)
+        {
+            Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst());
+        }
+        inputArea().drawInputFields();
+    }
+
+    /**
+     * Removes this LInputField (children/element of a collection)
+     */
+    private void removeCollectionItem()
+    {
+        Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), parent.children().indexOf(this) + 1);
+        inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
+        inputArea().LNC().inputArea().removeInputField(this);
+        parent.children.remove(this);
+        inputArea().drawInputFields();
     }
 
     /**
@@ -458,6 +577,33 @@ public class LInputField extends JComponent
             possibleSymbolInputs.addAll(nodeArgument.possibleSymbolInputsExpanded());
         }
         return possibleSymbolInputs;
+    }
+
+    /**
+     *
+     * @return The parent/root input field of a collection
+     */
+    private LInputField parent()
+    {
+        return parent;
+    }
+
+    /**
+     *
+     * @return The list of elements/children of a collection
+     */
+    private List<LInputField> children()
+    {
+        return children;
+    }
+
+    /**
+     * Adds a children/element input field to the collection
+     * @param child Element to add
+     */
+    private void addChildren(LInputField child)
+    {
+        children.add(child);
     }
 
     /**

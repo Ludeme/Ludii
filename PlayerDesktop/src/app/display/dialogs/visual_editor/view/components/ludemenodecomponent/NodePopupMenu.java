@@ -155,7 +155,7 @@ public class NodePopupMenu extends JPopupMenu {
             message += "Constructor: " + node.selectedClause() + "\n";
             message += "Dynamic: " + node.dynamic() + "\n";
             message += "Provided Inputs: " + Arrays.toString(node.providedInputs()) + "\n";
-            message += "Fields: " + nodeComponent.inputArea().currentInputFields.values().toString() + "\n";
+            message += "Fields: " + nodeComponent.inputArea().currentInputFields + "\n";
             message += "Provided LIFs: " + node.providedNodeArguments() + "\n";
             message += "Active LIFs: " + node.activeNodeArguments() + "\n";
             message += "Active C: (" + node.activeClauses().size() + ") " +node.activeClauses() + "\n";
