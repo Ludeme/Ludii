@@ -77,48 +77,22 @@ public class GameParser
                 break;
             case Terminal:
                 // Return lhs and the object
-                //System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
+                System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
                 break;
             case Class:
                 // TODO: debug this!
                 String lhs = c.symbol().rule().lhs().returnType().token();
-                String grammarLabel = c.symbol().grammarLabel();
-                List<Clause> rhsList = c.symbol().rule().rhs();
-                String rhs = null;
-                Clause rhsClause = null;
-                for (Clause clause : rhsList) {
-                    if (clause.args() != null && c.args().size() == clause.args().size()) {
-                        List<ClauseArg> iRhs = clause.args();
-                        for (int j = 0; j < cArgs.size(); j++) {
-                            Symbol s = cArgs.get(j).symbol();
-                            if (s != null)
-                            {
-                                if (s.returnType().token().equals(
-                                        iRhs.get(j).symbol().returnType().token())) {
-                                    counter++;
-                                }
-                            }
+                Symbol nodeSymbol = c.symbol();
 
-                        }
-
-                        if (counter > matched || rhsList.size() == 1)
-                        {
-                            matched = counter;
-                            counter = 0;
-                            rhs = clause.toString();
-                            rhsClause = clause;
-                        }
-                    }
-                }
-
-                //System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
+                // System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
 
                 // Initialize ludeme node with found Symbol and correct rhs
-                LudemeNode ln = new LudemeNode(grammar.Grammar.grammar().symbols().get(0), 0, 0);
-                //Handler.addNode(GRAPH, ln);
-
-                //Constructor constructor = findConstructor(ln, rhsClause);
-                //Handler.updateCurrentConstructor(GRAPH, ln, constructor);
+                LudemeNode ln = new LudemeNode(nodeSymbol, 0, 0);
+                Handler.addNode(GRAPH, ln);
+                for (int i = 0; i < c.args().size(); i++)
+                {
+                        ln.setProvidedInput(i, c.object());
+                }
 
                 // Output correct lhs + rhs
                 // Apply method for the arguments of c

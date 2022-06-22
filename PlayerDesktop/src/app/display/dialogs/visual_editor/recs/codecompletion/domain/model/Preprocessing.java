@@ -26,7 +26,8 @@ public class Preprocessing {
      * @param gameDescription
      * @return
      */
-    public static String preprocess(String gameDescription) {
+    public static String preprocess(String gameDescription)
+    {
         if(DEBUG)System.out.println("Raw:"+gameDescription);
         gameDescription = removeMetadata(gameDescription);
         if(DEBUG)System.out.println("Removed Metadata:"+gameDescription);
@@ -45,7 +46,8 @@ public class Preprocessing {
      * @param gameDescription
      * @return
      */
-    public static String removeMetadata(String gameDescription) {
+    public static String removeMetadata(String gameDescription)
+    {
         String metadataLudeme = "(metadata";
         if(gameDescription.contains(metadataLudeme)) {
             int startMetadata = gameDescription.lastIndexOf(metadataLudeme);
@@ -60,13 +62,16 @@ public class Preprocessing {
      * @param gameDescription
      * @return
      */
-    public static String removeComments(String gameDescription) {
+    public static String removeComments(String gameDescription)
+    {
         String commentLudeme = "//";
         String[] lines = gameDescription.split("\n");
         String noComments = "";
-        for(int i = 0; i < lines.length; i++) {
+        for(int i = 0; i < lines.length; i++)
+        {
             String line = lines[i];
-            if(line.contains(commentLudeme)) {
+            if(line.contains(commentLudeme))
+            {
                 int commentLocation = line.lastIndexOf(commentLudeme);
                 line = line.substring(0,commentLocation);
             }

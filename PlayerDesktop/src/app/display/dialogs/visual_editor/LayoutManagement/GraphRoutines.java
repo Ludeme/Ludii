@@ -14,7 +14,6 @@ public final class GraphRoutines
 {
     /**
      * Tuning constants for metric evaluation
-     * TODO: find appropriate values
      */
     private static final double VISUAL_CONSTANT = 2500;
 
@@ -34,7 +33,8 @@ public final class GraphRoutines
         {
             int finalD = d;
             nextLayer.clear();
-            layer.forEach((v) -> {
+            layer.forEach((v) ->
+            {
                 graph.getNode(v).setDepth(finalD);
                 nextLayer.addAll(graph.getNode(v).children());
             });
