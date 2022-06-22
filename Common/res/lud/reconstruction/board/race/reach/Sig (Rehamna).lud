@@ -1,22 +1,36 @@
-(game "Sig (Rehamna)"
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+//------------------------------------------------------------------------------
+
+(game "Sig (Rehamna)" // Capture should be there.
     (players 2)
     (equipment {
         (board 
             (rectangle 4 12) 
+            [#]
             use:Vertex
         )
-        (piece "Stick" Each)
+        (piece "Stick" Each (move [#]))
         (dice d:2 from:0 num:6)        
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
+        (map "Throw" {(pair 0 0) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 6)})
     })
     (rules 
         (start {  
             (place "Stick1" (sites Bottom) state:1)
             (place "Stick2" (sites Top) state:1)
         })
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play (do (roll) next:[#])) // A throw of 1 is required for each piece's first move.
+        (end 
+            (if 
+                (and
+                    (all Sites (difference (sites Next) (sites Occupied by:Mover)) if:(not (is Friend (who at:(site))))) 
+                    (not (no Pieces Mover))
+                )
+                (result Mover Win)
+            )
+        )
     )
 )
 
@@ -41,7 +55,6 @@
         (show Edges Hidden)    
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Scale "Stick" 0.5)
-        
     })
     
 )

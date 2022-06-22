@@ -11,7 +11,12 @@
     })  
     
     (rules 
-        (play (forEach Piece))
+        (play
+            (do (roll)
+                next:(forEach Piece)
+            )
+            
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
