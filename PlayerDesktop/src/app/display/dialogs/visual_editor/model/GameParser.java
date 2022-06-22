@@ -77,7 +77,7 @@ public class GameParser
                 break;
             case Terminal:
                 // Return lhs and the object
-                System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
+                // TODO: Not Java 8 (do not know how to replace) System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
                 break;
             case Class:
                 // TODO: debug this!

@@ -209,7 +209,7 @@ public class LInputArea extends JPanel
             mergeUnprovidedMergedInputFields();
         }
 
-        if(activeClauses.size() > 1) unmergeSameSymbolFields();
+        //if(activeClauses.size() > 1) unmergeSameSymbolFields();
 
         for (LInputField inputField : currentInputFields.values()) {
             inputField.setAlignmentX(LEFT_ALIGNMENT);
@@ -627,6 +627,77 @@ public class LInputArea extends JPanel
         List<NodeArgument> freedUpBelow = freedUpArguments.get(1);
 
         if(activeClauses.size() == 1) return;
+
+        // check whether there is a single-outed field which is not provided which contains a freed up node argument. if so, remove those arguments
+       /* List<LInputField> singleOutedFields = new ArrayList<>();
+        List<LInputField> providedFields = new ArrayList<>();
+        for(LInputField lif : currentInputFields.values())
+        {
+            if(lif.isMerged()) continue;
+            if(!providedNodeArguments.contains(lif.nodeArgument(0)))
+            {
+                singleOutedFields.add(lif);
+            }
+            else
+            {
+                providedFields.add(lif);
+            }
+        }
+        // for each freed up node argument, check whether there is a single-outed field which contains that node argument with an index between the index of a provided field before and after the removed field
+        for(NodeArgument freedUpNA : new ArrayList<>(freedUpAbove))
+        {
+            for(LInputField lif : singleOutedFields)
+            {
+                int first_index = -1;
+                int last_index = -1;
+
+                for(LInputField lif_p : providedFields)
+                {
+                    if(lif_p.inputIndexFirst() > lif.inputIndexFirst())
+                    {
+                        last_index = lif_p.inputIndexFirst();
+                        if(providedFields.indexOf(lif_p) == 0) first_index = lif.inputIndexFirst();
+                        else first_index = providedFields.get(providedFields.indexOf(lif_p)-1).inputIndexFirst();
+                        break;
+                    }
+                }
+                if(first_index == -1) first_index = providedFields.get(providedFields.size()-1).inputIndexFirst();
+                if(last_index == -1) last_index = 10000;
+
+                if(lif.nodeArgument(0).arg().symbol().equals(freedUpNA.arg().symbol()) && freedUpNA.index() >= first_index && freedUpNA.index() <= last_index)
+                {
+                    freedUpAbove.remove(freedUpNA);
+                    break;
+                }
+            }
+        }
+        for(NodeArgument freedUpNA : new ArrayList<>(freedUpBelow))
+        {
+            for(LInputField lif : singleOutedFields)
+            {
+                int first_index = -1;
+                int last_index = -1;
+
+                for(LInputField lif_p : providedFields)
+                {
+                    if(lif_p.inputIndexFirst() > lif.inputIndexFirst())
+                    {
+                        last_index = lif_p.inputIndexFirst();
+                        if(providedFields.indexOf(lif_p) == 0) first_index = lif.inputIndexFirst();
+                        else first_index = providedFields.get(providedFields.indexOf(lif_p)-1).inputIndexFirst();
+                        break;
+                    }
+                }
+                if(first_index == -1) first_index = providedFields.get(providedFields.size()-1).inputIndexFirst();
+                if(last_index == -1) last_index = 10000;
+
+                if(lif.nodeArgument(0).arg().symbol().equals(freedUpNA.arg().symbol()) && freedUpNA.index() >= first_index && freedUpNA.index() <= last_index)
+                {
+                    freedUpBelow.remove(freedUpNA);
+                    break;
+                }
+            }
+        }*/
 
         if(!canBeMergedIntoBelow && !canBeMergedIntoAbove)
         {
