@@ -4,6 +4,7 @@ package app.display.dialogs.visual_editor.model;
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -47,13 +48,9 @@ public class LudemeNode implements iLudemeNode, iGNode
      * possible clauses is narrowed down to the ones that match the provided arguments.
      */
     private boolean dynamic = false;
-    /**
-     * whether this node (and thus its children) are visible (collapsed) or not.
-     */
+    /** whether this node (and thus its children) are visible (collapsed) or not. */
     private boolean collapsed = false;
-    /**
-     * whether this node is visible
-     */
+    /** whether this node is visible */
     private boolean visible = true;
 
     // Variables for dynamic nodes
@@ -124,7 +121,7 @@ public class LudemeNode implements iLudemeNode, iGNode
         }
         if(dynamicPossible())
         {
-            this.dynamic = true;
+            this.dynamic = false; // TODO
         }
 
         nodeArguments = generateNodeArguments();
@@ -314,13 +311,16 @@ public class LudemeNode implements iLudemeNode, iGNode
     public void setCollapsed(boolean collapsed)
     {
         if(parentNode() == null) return;
-        this.collapsed = collapsed;
         this.visible = !collapsed;
+        if(!collapsed) this.collapsed = collapsed;
         // the complete subtree of this node becomes invisible if collapsed or visible if not collapsed
-        for(LudemeNode child : children)
+        setSubtreeVisible(!collapsed);
+        if(collapsed) this.collapsed = collapsed;
+        /*for(LudemeNode child : children)
         {
             child.setSubtreeVisible(!collapsed);
-        }
+            //child.setSubtreeVisible(!collapsed);
+        }*/
     }
 
     /**
@@ -329,11 +329,17 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     private void setSubtreeVisible(boolean visible)
     {
-        if(visible && collapsed) return;
-        setVisible(visible);
-        for(LudemeNode child : children)
+        List<LudemeNode> currentChildren = new ArrayList<>(children);
+        while(!currentChildren.isEmpty())
         {
-            child.setSubtreeVisible(visible);
+            for(LudemeNode child : new ArrayList<>(children))
+            {
+                currentChildren.remove(child);
+                if(child.parent.collapsed() || (child != this && child.collapsed)) continue;
+                System.out.println("Set " + child.title() + " visible= " + visible);
+                child.setVisible(visible);
+                currentChildren.addAll(child.children);
+            }
         }
     }
 

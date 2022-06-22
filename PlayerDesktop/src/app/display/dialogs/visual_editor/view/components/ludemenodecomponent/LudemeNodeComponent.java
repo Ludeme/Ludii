@@ -445,7 +445,9 @@ public class LudemeNodeComponent extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        setVisible(visible());
+        // if was invisible before but now visible, redraw children too
+        if(isVisible() != visible())
+            setVisible(visible());
         int preferredHeight = preferredHeight();
 
         setMinimumSize(new Dimension(width(), preferredHeight));
@@ -458,6 +460,18 @@ public class LudemeNodeComponent extends JPanel
         setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
         if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
         else setBorder(DesignPalette.LUDEME_NODE_BORDER);
+    }
+
+    @Override
+    public void setVisible(boolean visible)
+    {
+        super.setVisible(visible);
+        // make children visible too
+        if(!visible) return;
+        for(LudemeNode ln : node().childrenNodes())
+        {
+            graphPanel().nodeComponent(ln).setVisible(ln.visible());
+        }
     }
 
 }
