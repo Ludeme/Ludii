@@ -351,6 +351,11 @@ public class LInputField extends JComponent
         else last = children.get(children.size()-1);
         inputArea().addInputFieldBelow(new LInputField(this), last); // add children field below last element
         // update provided inputs in handler
+        if(isTerminal())
+        {
+            inputArea().drawInputFields();
+            return;
+        }
         if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] instanceof Object[])
         {
             Object[] collection = (Object[]) inputArea().LNC().node().providedInputs()[inputIndexFirst()] ;
@@ -548,7 +553,9 @@ public class LInputField extends JComponent
             }
             else
             {
-                Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst());
+                int index = 0;
+                if(parent != null) index = parent.children.indexOf(this)+1;
+                Handler.setCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput(), index);
             }
         }
         else {

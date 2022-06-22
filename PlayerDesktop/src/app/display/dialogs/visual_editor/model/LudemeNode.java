@@ -724,6 +724,17 @@ public class LudemeNode implements iLudemeNode, iGNode
                 }
                 sb.append("}");
             }
+            else if(input instanceof Object[])
+            {
+                sb.append("{ ");
+                for(Object obj : (Object[]) input)
+                {
+                    if(obj == null) continue;
+                    sb.append(obj.toString()).append(", ");
+                }
+                sb.deleteCharAt(sb.length()-2);
+                sb.append("}");
+            }
             else if(input instanceof String)
             {
                 sb.append("\"").append(input).append("\"");
@@ -758,10 +769,22 @@ public class LudemeNode implements iLudemeNode, iGNode
                 else if(input instanceof LudemeNode[])
                 {
                     sb.append("{ ");
-                    for(LudemeNode node : (LudemeNode[]) input) {
+                    for(LudemeNode node : (LudemeNode[]) input)
+                    {
                         if(node == null) continue;
                         sb.append(node.stringRepresentation()).append(" ");
                     }
+                    sb.append("}");
+                }
+                else if(input instanceof Object[])
+                {
+                    sb.append("{ ");
+                    for(Object obj : (Object[]) input)
+                    {
+                        if(obj == null) continue;
+                        sb.append(obj.toString()).append(", ");
+                    }
+                    sb.deleteCharAt(sb.length()-2);
                     sb.append("}");
                 }
                 else if(input instanceof String)

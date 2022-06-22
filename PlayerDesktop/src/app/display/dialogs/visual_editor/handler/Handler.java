@@ -75,15 +75,23 @@ public class Handler {
     public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
     {
         if(DEBUG) System.out.println("[HANDLER] Adding collection element of " + node.title() + ", " + inputIndex);
-        LudemeNode[] oldCollection = (LudemeNode[]) node.providedInputs()[inputIndex];
+        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
         if(oldCollection == null)
         {
-            updateInput(graph, node, inputIndex, new LudemeNode[2]);
+            updateInput(graph, node, inputIndex, new Object[2]);
             return;
         }
-        LudemeNode[] newCollection = new LudemeNode[oldCollection.length + 1];
+        Object[] newCollection = new Object[oldCollection.length + 1];
         System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
         updateInput(graph, node, inputIndex, newCollection);
+    }
+
+    public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
+    {
+        if(elementIndex >= ((Object[])(node.providedInputs()[inputIndex])).length) addCollectionElement(graph, node, inputIndex);
+        Object[] in = (Object[]) node.providedInputs()[inputIndex];
+        in[elementIndex] = input;
+        node.setProvidedInput(inputIndex, in);
     }
 
     /**
