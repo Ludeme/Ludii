@@ -24,12 +24,12 @@
 )
 
 (define "InPromotionZone"
-	    (is In #1 (sites Mover "Promotion"))	
-	)
+    (is In #1 (sites Mover "Promotion"))	
+)
 
 (define "Promote"
-	    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
-	)
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
 
 //------------------------------------------------------------------------------
 
@@ -40,33 +40,33 @@
         (piece "King" Each ("StepMove"))
         (piece "GoldGeneral" Each (move [#])) // does not move left, right, or backward
         (piece "Keima" Each 
-                (forEach Direction 
-                    Forward 
-                    (to 
-                        if:True 
-                        (apply 
-                            (forEach Direction 
-                                (from (to)) 
-                                (directions {FR FL}) 
-                                (if (not (is Friend (who at:(to)))) 
-                                    (move 
-                                        (from) 
-                                        (to 
-                                            (apply 
-                                                if:(is Enemy (who at:(to)))
-                                                (add 
-                                                    (piece (mapEntry "Captured" (what at:(to)))) 
-                                                    (to (mapEntry "Where" (what at:(to))))
-                                                )
+            (forEach Direction 
+                Forward 
+                (to 
+                    if:True 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            (directions {FR FL}) 
+                            (if (not (is Friend (who at:(to)))) 
+                                (move 
+                                    (from) 
+                                    (to 
+                                        (apply 
+                                            if:(is Enemy (who at:(to)))
+                                            (add 
+                                                (piece (mapEntry "Captured" (what at:(to)))) 
+                                                (to (mapEntry "Where" (what at:(to))))
                                             )
                                         )
                                     )
                                 )
                             )
                         )
-                    ) 
+                    )
                 ) 
-            )
+            ) 
+        )
         
         // Lance
         (piece "Kyosha" Each
@@ -80,7 +80,7 @@
                 Forward 
                 (then 
                     (if ("InPromotionZone" (last To))
-                            ("Promote") 
+                        ("Promote") 
                     ) 
                 )
             )
@@ -94,9 +94,9 @@
     (rules
         (play [#])
         (end 
-        	(if (= 2 (count Pieces Next)) 
-        		(result Mover Win)
-        	)
+            (if (= 2 (count Pieces Next)) 
+                (result Mover Win)
+            )
         )
     )
 )
