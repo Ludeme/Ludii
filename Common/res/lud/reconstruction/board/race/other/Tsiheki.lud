@@ -5,13 +5,15 @@
             (rectangle 1 25)
             use:Edge
         )
-        (piece "Marker" Each)
+        (piece "Stick" Each (move [#]))
         (dice d:2 from:0 num:4)
+        (map "Throw" {(pair 0 0) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 16)})
         (hand Each)
     })
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#]) // 4 sticks per players
+        (play [#]) // When the opponent throws the same amount as the player's last throw, the player moves their pieces backward the same amount.
+        (end [#])
     )
 )
 
