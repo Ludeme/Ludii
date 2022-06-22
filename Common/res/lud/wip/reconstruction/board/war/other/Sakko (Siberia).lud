@@ -1,7 +1,12 @@
+(define "Sakko" 6)
+
+//------------------------------------------------------------------------------
+
 (game "Sakko (Siberia)"
     (players 2)  
     (equipment { 
         (board (rectangle 3 13))
+        (dice d:6 from:0 num:3)
         (piece "Marker" Each)
     })  
     
