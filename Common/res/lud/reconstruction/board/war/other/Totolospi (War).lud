@@ -1,5 +1,7 @@
+//Pieces may move along the diagonal, but not across it. Players may move one or more pieces, based on certain positions the pieces are in. Opponent's pieces may be captured. Pieces always move toward the bottom right corner.
+
 (game "Totolospi (War)"
-    (players 2) 
+    (players {(player NE) (player SW)}) 
     (equipment { 
         (board
             (add
@@ -12,7 +14,7 @@
             )
             use:Vertex
         )
-        (piece "Marker" Each)
+        (piece "Marker" Each (move [#]))
     })
     (rules
         (start {
@@ -23,8 +25,8 @@
                 (expand (intersection (sites Top) (sites Right)) steps:9)
             )
         })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play [#])
+        (end [#])
     )
 )
 
@@ -48,8 +50,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
 )
-
