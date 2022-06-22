@@ -44,7 +44,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     private double zoomFactor = 1.0;
     private double zoomFactor0 = 1.0;
     private boolean zoomed = false;
-
+    private boolean busy = false;
 
     List<Symbol> symbols = Grammar.grammar().symbols();
 
@@ -101,32 +101,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
         this.N = controller.getN();
-    }
-
-    public EditorPanel()
-    {
-        setLayout(null);
-        //setPreferredSize(DesignPalette.DEFAULT_FRAME_SIZE);
-        setBackground(DesignPalette.BACKGROUND_EDITOR);
-
-        addMouseListener(clickListener);
-        addMouseMotionListener(motionListener);
-        addMouseWheelListener(wheelListener);
-        addMouseWheelListener(wheelListener2);
-
-        add(addLudemeWindow);
-        add(connectLudemeWindow);
-
-
-        /*
-        graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
-        Handler.gameDescriptionGraph = graph;
-
-        LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
-        graph.setRoot(gameLudemeNode);
-        addLudemeNodeComponent(gameLudemeNode, false);
-
-        lm = new LayoutHandler(graph, graph.getRoot().id());
     }
 
     @Override
@@ -312,8 +286,14 @@ public class EditorPanel extends JPanel implements IGraphPanel
     // # Implementation of IGraphPanel interface methods #
 
     @Override
+    public boolean isBusy() {
+        return busy;
+    }
+
+    @Override
     public void drawGraph(DescriptionGraph graph)
     {
+        busy = true;
         if(DEBUG) System.out.println("\n[EP] Redrawing graph\n");
         this.graph = graph;
         removeAll();
@@ -337,6 +317,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         add(addLudemeWindow);
         add(connectLudemeWindow);
+
+        busy = false;
 
         revalidate();
         repaint();

@@ -485,7 +485,6 @@ public class LInputField extends JComponent
         @Override
         public void keyPressed(KeyEvent e)
         {
-            updateUserInputs();
         }
 
         @Override
@@ -500,6 +499,7 @@ public class LInputField extends JComponent
      */
     public void setUserInput(Object input)
     {
+        if(input == null) return;
         if(nodeArguments.size() > 1) {
             // TODO: My words: "Incorrect use here", but I do not remember why
         }
@@ -535,32 +535,6 @@ public class LInputField extends JComponent
                 }
             }
         }
-
-        /*if (nodeArgument().collection() && input instanceof LudemeNode[]) {
-            // collection inputs are connected to multiple nodes
-            LudemeNode[] connectedTo = (LudemeNode[]) input;
-            IGraphPanel graphPanel = LNC.graphPanel();
-
-            for(int i = 1; i < connectedTo.length; i++){
-                // create a new input field for each node
-                addCollectionItem();
-            }
-
-            for(int i = 0; i < connectedTo.length; i++){
-                LudemeNode node = connectedTo[i];
-                if(node != null) {
-                    // get correct connection component
-                    LConnectionComponent connectionComponentChild;
-                    int childrenIndex = i-1;
-                    if (childrenIndex < 0){
-                        connectionComponentChild = connectionComponent;
-                    } else {
-                        connectionComponentChild = children.get(childrenIndex).getConnectionComponent();
-                    }
-                    graphPanel.connectionHandler().addConnection(null, graphPanel.nodeComponent(node).ingoingConnectionComponent());
-                }
-            }
-        }*/
         else if(fieldComponent == connectionComponent)
         {
             // then its ludeme input
@@ -568,6 +542,7 @@ public class LInputField extends JComponent
             graphPanel.connectionHandler().addConnection(connectionComponent, graphPanel.nodeComponent((LudemeNode) input).ingoingConnectionComponent());
         }
         else {
+            System.out.println("else: " + input);
             if (fieldComponent instanceof JTextField) ((JTextField) fieldComponent).setText((String) input);
             if (fieldComponent instanceof JSpinner) ((JSpinner) fieldComponent).setValue(input);
             if (fieldComponent instanceof JComboBox) ((JComboBox<?>) fieldComponent).setSelectedItem(input);
@@ -580,6 +555,7 @@ public class LInputField extends JComponent
      */
     private void updateUserInputs()
     {
+        if(inputArea().LNC().graphPanel().isBusy()) return;
         if(nodeArguments.get(0).collection()) {
             if (LIA.LNC().node().providedInputs()[inputIndexFirst()] == null) {
                 Object[] in = new Object[1];

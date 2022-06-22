@@ -12,6 +12,7 @@ import main.grammar.Symbol;
 import java.util.List;
 
 public interface IGraphPanel {
+    boolean isBusy();
     void drawGraph(DescriptionGraph graph);
     DescriptionGraph graph();
     ConnectionHandler connectionHandler();
