@@ -112,6 +112,8 @@ public class GenerateTrialsCluster
 			
 		// Check if the game has a ruleset.
 		final List<Ruleset> rulesetsInGame = game.description().rulesets();
+		
+		// Has many rulesets.
 		if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) 
 		{
 			for (int rs = 0; rs < rulesetsInGame.size(); rs++)
