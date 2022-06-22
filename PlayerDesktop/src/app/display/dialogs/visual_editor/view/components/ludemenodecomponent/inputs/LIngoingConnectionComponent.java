@@ -45,6 +45,19 @@ public class LIngoingConnectionComponent extends JComponent {
         RADIUS = (int) (lHeader.title().getSize().height * 0.4);
     }
 
+    private LInputField connectionFrom;
+
+    public void setInputField(LInputField inputField)
+    {
+        connectionFrom = inputField;
+    }
+
+    // lif that connects to it
+    public LInputField inputField()
+    {
+        return connectionFrom;
+    }
+
         public void updatePosition(){
             int x = connectionPointComponent.getX() + this.getX() + this.getParent().getX() + this.getParent().getParent().getX() + this.getParent().getParent().getParent().getX() + RADIUS;
             int y = connectionPointComponent.getY() + this.getY() + this.getParent().getY() + this.getParent().getParent().getY() + this.getParent().getParent().getParent().getY() + RADIUS;

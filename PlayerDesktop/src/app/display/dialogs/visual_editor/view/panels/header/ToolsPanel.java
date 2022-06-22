@@ -17,7 +17,7 @@ public class ToolsPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         HeaderButton undoBtn = new HeaderButton(DesignPalette.UNDO_INACTIVE, DesignPalette.UNDO_INACTIVE, DesignPalette.UNDO_HOVER, "Undo", false, false);
-        HeaderButton redoBtn = new HeaderButton(DesignPalette.UNDO_INACTIVE, DesignPalette.UNDO_INACTIVE, DesignPalette.REDO_HOVER, "Redo", false, false);
+        HeaderButton redoBtn = new HeaderButton(DesignPalette.REDO_ACTIVE, DesignPalette.REDO_INACTIVE, DesignPalette.REDO_HOVER, "Redo", false, false);
 
         setBackground(Color.WHITE);
 

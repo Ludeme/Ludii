@@ -81,14 +81,14 @@ public class LConnectionComponent extends JComponent
                 }
                 else
                 {
-                    if(connectionIsCollapsed)
+                    /*if(connectionIsCollapsed)
                     {
                         connectedTo.setCollapsed(false);
                         connectedTo.setVisible(true);
                         graphPanel.repaint();
                         updatePosition();
                         return;
-                    }
+                    }*/
                     // if already connected: remove connection
                     if(connectedTo != null)
                     {
@@ -113,7 +113,7 @@ public class LConnectionComponent extends JComponent
     public void updatePosition()
     {
         // Update whether the node this ConnectionComponent is connected to is collapsed
-        if(connectedTo != null)
+        /*if(connectedTo != null)
         {
             if(connectedTo.node().collapsed() != connectionIsCollapsed)
             {
@@ -121,7 +121,7 @@ public class LConnectionComponent extends JComponent
                 connectionPointComponent.repaint();
                 connectionPointComponent.revalidate();
             }
-        }
+        }*/
 
         // Update the position of the ConnectionPointComponent
         if(this.getParent() == null || this.getParent().getParent() == null || this.getParent().getParent().getParent() == null) return;

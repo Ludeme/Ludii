@@ -101,6 +101,7 @@ public class ConnectionHandler
     public void finishNewConnection(LudemeNodeComponent target)
     {
         addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
+        target.ingoingConnectionComponent().setInputField(selectedConnectionComponent.inputField());
         selectedConnectionComponent = null;
     }
 

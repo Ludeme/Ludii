@@ -122,7 +122,11 @@ public class NodePopupMenu extends JPopupMenu {
         });
 
         collapse.addActionListener(e -> {
+            System.out.println();
             nodeComponent.node().setCollapsed(!nodeComponent.node().collapsed());
+
+            nodeComponent.header().inputField().notifyCollapsed();
+
             graphPanel.nodeComponent(nodeComponent.node().parentNode()).updatePositions(); // update position to notify about collapsed child
             graphPanel.repaint();
         });

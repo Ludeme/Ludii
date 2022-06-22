@@ -336,7 +336,6 @@ public class LudemeNode implements iLudemeNode, iGNode
             {
                 currentChildren.remove(child);
                 if(child.parent.collapsed() || (child != this && child.collapsed)) continue;
-                System.out.println("Set " + child.title() + " visible= " + visible);
                 child.setVisible(visible);
                 currentChildren.addAll(child.children);
             }

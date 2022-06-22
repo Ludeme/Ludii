@@ -97,9 +97,9 @@ public class Handler {
     {
         if(DEBUG) System.out.println("[HANDLER] Removed collection element of " + node.symbol().name() + ", " + inputIndex + " at " + elementIndex);
 
-        LudemeNode[] oldCollection = (LudemeNode[]) node.providedInputs()[inputIndex];
+        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
         if(oldCollection == null) return;
-        LudemeNode[] newCollection = new LudemeNode[oldCollection.length - 1];
+        Object[] newCollection = new Object[oldCollection.length - 1];
         for(int i = 0; i < elementIndex; i++)
         {
             newCollection[i] = oldCollection[i];
@@ -127,6 +127,10 @@ public class Handler {
         else node.setSelectedClause(c);
     }
 
+    public static void setCollapsed(DescriptionGraph graph, LudemeNodeComponent lnc, boolean collapsed)
+    {
+        lnc.setCollapsed(collapsed);
+    }
     public static String getLudString(DescriptionGraph graph){
         return graph.toLud();
     }

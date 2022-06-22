@@ -6,6 +6,7 @@ import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.DocumentationReader;
 import app.display.dialogs.visual_editor.view.HelpInformation;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import main.grammar.Clause;
 
 import javax.swing.*;
@@ -142,6 +143,11 @@ public class LHeader extends JComponent
     public JLabel title()
     {
         return title;
+    }
+
+    public LInputField inputField()
+    {
+        return ingoingConnectionComponent().inputField();
     }
 
     /**

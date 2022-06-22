@@ -153,7 +153,6 @@ public class DesignPalette
     public static final ImageIcon REDO_INACTIVE = getIcon("editor/inactive/redo.png");
     public static final ImageIcon REDO_HOVER =getIcon("editor/hover/redo.png");
 
-
     // LUDEME BLOCK //
     public static final ImageIcon CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
     public static final ImageIcon CHOICE_ICON_HOVER = getIcon("node/hover/choice.png");
@@ -164,6 +163,12 @@ public class DesignPalette
     public static final ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
     public static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
     public static final ImageIcon DOWN_ICON = getIcon("node/active/down.png");
+
+    public static final ImageIcon COLLAPSE_ICON = getIcon("node/active/collapse.png");
+    public static final ImageIcon COLLAPSE_ICON_HOVER = getIcon("node/hover/collapse.png");
+
+    public static final ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
+    public static final ImageIcon UNCOLLAPSE_ICON_HOVER = getIcon("node/hover/uncollapse.png");
 
 
 
