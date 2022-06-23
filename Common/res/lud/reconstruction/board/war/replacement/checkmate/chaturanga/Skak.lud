@@ -140,9 +140,9 @@
                 "EnPassant"
                 }
                 (then
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (moveAgain)
+                    )
                 )
             )
         )
