@@ -43,10 +43,10 @@ public class LInputField extends JComponent
     /** Label of the InputField */
     private final JLabel label = new JLabel();
     private final JLabel optionalLabel = new JLabel("(optional)");
-    private final JLabel terminalOptionalLabel = new JLabel("x");
+    private final JLabel terminalOptionalLabel = new JLabel("+");
     private LInputButton uncollapseButton = new LInputButton(DesignPalette.UNCOLLAPSE_ICON, DesignPalette.UNCOLLAPSE_ICON_HOVER);
     private static float buttonWidthPercentage = 1f;
-    private boolean active = true;
+    private boolean active = false;
 
     /**
      * Constructor for a single or merged input field
@@ -472,10 +472,12 @@ public class LInputField extends JComponent
     {
         if(isActive()) return;
         if(!isTerminal()) return;
+        active = true;
         System.out.println("Activating");
         fieldComponent.setEnabled(true);
         label.setEnabled(true);
         terminalOptionalLabel.setText("X");
+        if(!nodeArgument(0).collection()) Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
         repaint();
     }
 
@@ -483,10 +485,22 @@ public class LInputField extends JComponent
     {
         if(!isActive()) return;
         if(!isTerminal()) return;
+        active = false;
+
         System.out.println("Deactivating");
+
+        inputArea().LNC().graphPanel().setBusy(true);
+
         fieldComponent.setEnabled(false);
         label.setEnabled(false);
         terminalOptionalLabel.setText("+");
+
+        inputArea().removedConnection(LInputField.this);
+        // notify handler
+        Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
+        inputArea().LNC().graphPanel().setBusy(false);
+
+
         repaint();
     }
 
@@ -523,16 +537,10 @@ public class LInputField extends JComponent
             super.mouseClicked(e);
             if(isActive())
             {
-                inputArea().LNC().graphPanel().setBusy(true);
-                inputArea().removedConnection(LInputField.this);
-                // notify handler
-                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
-                inputArea().LNC().graphPanel().setBusy(false);
                 deactivate();
             }
             else
             {
-                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
                 activate();
             }
         }
@@ -626,6 +634,7 @@ public class LInputField extends JComponent
     public Object getUserInput()
     {
         if(isMerged()) return null;
+        if(!isActive()) return null;
         if(fieldComponent == connectionComponent) // Ludeme Input
         {
             return connectionComponent.connectedTo().node();
