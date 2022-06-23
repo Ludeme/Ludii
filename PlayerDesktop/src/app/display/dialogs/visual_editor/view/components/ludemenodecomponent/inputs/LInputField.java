@@ -296,7 +296,6 @@ public class LInputField extends JComponent
 
         if(collapsed())
         {
-            add(uncollapseButton);
             uncollapseButton.setActive();
             uncollapseButton.setPreferredSize(new Dimension((int) (connectionComponent.getSize().width*buttonWidthPercentage), (int) (connectionComponent.getSize().height*buttonWidthPercentage)));
             uncollapseButton.setSize(uncollapseButton.getPreferredSize());
@@ -308,6 +307,7 @@ public class LInputField extends JComponent
                 connectionComponent().connectedTo().setVisible(true);
                 inputArea().LNC().graphPanel().repaint();
             });
+            add(uncollapseButton);
         }
         else if(!nodeArgument.isTerminal())
         {
@@ -597,6 +597,7 @@ public class LInputField extends JComponent
             // then its ludeme input
             IGraphPanel graphPanel = inputArea().LNC().graphPanel();
             graphPanel.connectionHandler().addConnection(connectionComponent, graphPanel.nodeComponent((LudemeNode) input).ingoingConnectionComponent());
+            if(((LudemeNode) input).collapsed()) notifyCollapsed();
         }
         else {
             System.out.println("else: " + input);

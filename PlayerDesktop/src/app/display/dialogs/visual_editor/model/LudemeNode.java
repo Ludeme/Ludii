@@ -310,7 +310,11 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     public void setCollapsed(boolean collapsed)
     {
-        if(parentNode() == null) return;
+        if(parentNode() == null)
+        {
+            this.collapsed = collapsed;
+            return;
+        }
         this.visible = !collapsed;
         if(!collapsed) this.collapsed = collapsed;
         // the complete subtree of this node becomes invisible if collapsed or visible if not collapsed
@@ -332,7 +336,7 @@ public class LudemeNode implements iLudemeNode, iGNode
         List<LudemeNode> currentChildren = new ArrayList<>(children);
         while(!currentChildren.isEmpty())
         {
-            for(LudemeNode child : new ArrayList<>(children))
+            for(LudemeNode child : new ArrayList<>(currentChildren))
             {
                 currentChildren.remove(child);
                 if(child.parent.collapsed() || (child != this && child.collapsed)) continue;
@@ -893,8 +897,8 @@ public class LudemeNode implements iLudemeNode, iGNode
     public LudemeNode copy()
     {
         LudemeNode copy = new LudemeNode(symbol(), x, y);
-        copy.setVisible(visible());
         copy.setCollapsed(collapsed());
+        copy.setVisible(visible());
         copy.setDynamic(dynamic());
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());
@@ -928,8 +932,8 @@ public class LudemeNode implements iLudemeNode, iGNode
     public LudemeNode copy(int x_shift, int y_shift)
     {
         LudemeNode copy = new LudemeNode(symbol(), x+x_shift, y+y_shift);
-        copy.setVisible(visible());
         copy.setCollapsed(collapsed());
+        copy.setVisible(visible());
         copy.setDynamic(dynamic());
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());

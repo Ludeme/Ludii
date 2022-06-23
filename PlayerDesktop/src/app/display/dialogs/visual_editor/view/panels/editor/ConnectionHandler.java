@@ -101,7 +101,6 @@ public class ConnectionHandler
     public void finishNewConnection(LudemeNodeComponent target)
     {
         addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
-        target.ingoingConnectionComponent().setInputField(selectedConnectionComponent.inputField());
         selectedConnectionComponent = null;
     }
 
@@ -127,6 +126,7 @@ public class ConnectionHandler
             source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField());
         }
 
+
         // update the positions of the connection components
         source.updatePosition();
         target.updatePosition();
@@ -135,6 +135,7 @@ public class ConnectionHandler
         target.setFill(true);
         // update the connection in the source
         source.setConnectedTo(target.getHeader().ludemeNodeComponent());
+        target.setInputField(source.inputField());
 
         // Add an edge
         Handler.addEdge(graphPanel.graph(), source.lnc().node(), target.getHeader().ludemeNodeComponent().node());
@@ -157,61 +158,7 @@ public class ConnectionHandler
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
             Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
         }
-
-        /* TODO if(source.inputField().nodeArgument(0).collection())
-        {
-            LudemeNode sourceNode = source.lnc().node();
-            NodeArgument sourceInput = source.inputField().nodeArgument(0);
-
-            // TODO: Perhaps this part should be put into LInputField.java addCollectionItem() method
-
-            LudemeNode[] providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.indexFirst()];
-
-            // get children of collection
-            List<LInputField> children;
-            int numberOfChildren;
-            if(source.inputField().parent != null)
-            {
-                children = source.inputField().parent.children;
-                numberOfChildren = source.inputField().parent.children.size();
-            }
-            else
-            {
-                children = source.inputField().children;
-                numberOfChildren = source.inputField().children.size();
-            }
-
-            // The provided input class just be an array. If it is null, then create it NOTE!: the first collection inputfield is not counted as a child, therefore numberOfChildren+1
-            if(sourceNode.providedInputs()[sourceInput.indexFirst()] == null)
-            {
-                providedInput = new LudemeNode[numberOfChildren+1];
-            }
-            else
-            {
-                providedInput = (LudemeNode[]) sourceNode.providedInputs()[sourceInput.indexFirst()];
-            }
-            // if the array is not big enough, expand it.
-            if(providedInput.length < numberOfChildren+1)
-            {
-                LudemeNode[] newProvidedInput = new LudemeNode[numberOfChildren+1];
-                System.arraycopy(providedInput, 0, newProvidedInput, 0, providedInput.length);
-                providedInput = newProvidedInput;
-            }
-            // get the index of the current input field w.r.t collection field
-            int i = children.indexOf(source.inputField()) + 1; // + 1 because the first input field is not counted as a child
-            //if(i==-1) i = 0;
-            providedInput[i] = target.getHeader().ludemeNodeComponent().node();
-            // TODO: REMOVE LATER
-            System.out.println("\u001B[32m"+"Calling from EP 237"+"\u001B[0m");
-            Handler.updateInput(Handler.editorPanel.graph(), sourceNode, sourceInput.indexFirst(), providedInput);
-        }
-        else
-        {
-            if(DEBUG) System.out.println("[EP] Adding connection: " + source.lnc().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.inputField().inputIndexFirst());
-            System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
-            Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
-        } */
-
+        
         graphPanel.repaint();
     }
 
