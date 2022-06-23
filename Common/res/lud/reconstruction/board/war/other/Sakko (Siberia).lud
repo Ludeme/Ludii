@@ -5,7 +5,7 @@
 (game "Sakko (Siberia)"
     (players 2)  
     (equipment { 
-        (board (rectangle 3 13) [#])
+        (board (rectangle 3 13) [#] use:Vertex)
         (dice d:6 from:0 num:3)
         (piece "Marker" Each [#])
         (piece "King" Each [#])
