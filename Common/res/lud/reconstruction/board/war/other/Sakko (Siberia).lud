@@ -5,19 +5,25 @@
 (game "Sakko (Siberia)"
     (players 2)  
     (equipment { 
-        (board (rectangle 3 13))
+        (board (rectangle 3 13) [#])
         (dice d:6 from:0 num:3)
-        (piece "Marker" Each)
+        (piece "Marker" Each [#])
+        (piece "King" Each [#])
+        (piece "King" Neutral)
     })  
     
     (rules 
+    	(start {
+    		(place "King0" (centrePoint))
+    		[#]
+    	})
         (play
             (do (roll)
-                next:(forEach Piece)
+                next:[#] // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
             )
             
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
