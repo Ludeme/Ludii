@@ -291,6 +291,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
+    public void setBusy(boolean b)
+    {
+     busy = b;
+    }
+
+    @Override
     public void drawGraph(DescriptionGraph graph)
     {
         busy = true;

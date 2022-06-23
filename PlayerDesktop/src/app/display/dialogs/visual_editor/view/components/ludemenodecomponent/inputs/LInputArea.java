@@ -233,10 +233,13 @@ public class LInputArea extends JPanel
     public void changedSelectedClause()
     {
         // TODO: Remove all edges of this ludeme node AND MODEL
+
         LNC.graphPanel().connectionHandler().cancelNewConnection();
         LNC.graphPanel().connectionHandler().removeAllConnections(LNC.node());
 
+        LNC.graphPanel().setBusy(true);
         removeAll();
+        LNC.graphPanel().setBusy(false);
         currentNodeArguments = currentNodeArguments();
         currentNodeArgumentsLists = generateNodeArgumentsLists(currentNodeArguments);
         currentInputFields = generateInputFields(currentNodeArgumentsLists);

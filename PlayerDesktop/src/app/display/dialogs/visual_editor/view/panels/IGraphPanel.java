@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface IGraphPanel {
     boolean isBusy();
+    void setBusy(boolean b);
     void drawGraph(DescriptionGraph graph);
     DescriptionGraph graph();
     ConnectionHandler connectionHandler();
