@@ -43,8 +43,10 @@ public class LInputField extends JComponent
     /** Label of the InputField */
     private final JLabel label = new JLabel();
     private final JLabel optionalLabel = new JLabel("(optional)");
+    private final JLabel terminalOptionalLabel = new JLabel("x");
     private LInputButton uncollapseButton = new LInputButton(DesignPalette.UNCOLLAPSE_ICON, DesignPalette.UNCOLLAPSE_ICON_HOVER);
     private static float buttonWidthPercentage = 1f;
+    private boolean active = true;
 
     /**
      * Constructor for a single or merged input field
@@ -187,9 +189,9 @@ public class LInputField extends JComponent
             });
         }
         if(removable) {
-            JLabel removeLabel = new JLabel("X");
-            add(removeLabel);
-            removeLabel.addMouseListener(new MouseAdapter() {
+            terminalOptionalLabel.setText("X");
+            add(terminalOptionalLabel);
+            terminalOptionalLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
@@ -198,7 +200,6 @@ public class LInputField extends JComponent
                     // notify handler
                     Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
                     inputArea().LNC().graphPanel().setBusy(false);
-
                 }
             });
         }
@@ -469,6 +470,50 @@ public class LInputField extends JComponent
     {
         System.out.println("The connection of " + this + " was collapsed!");
         reconstruct();
+    }
+
+    public boolean isActive()
+    {
+        return active;
+    }
+
+    public void activate()
+    {
+        if(isActive()) return;
+        if(!isTerminal()) return;
+        fieldComponent.setEnabled(true);
+        label.setEnabled(true);
+        terminalOptionalLabel.setText("X");
+        terminalOptionalLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                inputArea().LNC().graphPanel().setBusy(true);
+                inputArea().removedConnection(LInputField.this);
+                // notify handler
+                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
+                inputArea().LNC().graphPanel().setBusy(false);
+                deactivate();
+            }
+        });
+    }
+
+    public void deactivate()
+    {
+        if(!isActive()) return;
+        if(!isTerminal()) return;
+        fieldComponent.setEnabled(false);
+        label.setEnabled(false);
+        terminalOptionalLabel.setText("+");
+        terminalOptionalLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                // notify handler
+                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
+                activate();
+            }
+        });
     }
 
     /**
