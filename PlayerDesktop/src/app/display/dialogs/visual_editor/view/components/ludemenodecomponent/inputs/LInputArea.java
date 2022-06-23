@@ -212,6 +212,8 @@ public class LInputArea extends JPanel
             mergeUnprovidedMergedInputFields();
         }
 
+        removeEmptyFields();
+
         //if(activeClauses.size() > 1) unmergeSameSymbolFields();
 
         for (LInputField inputField : currentInputFields) {
@@ -225,6 +227,14 @@ public class LInputArea extends JPanel
         LNC.updateComponentDimension();
         LNC.updatePositions();
         repaint();
+    }
+
+    private void removeEmptyFields()
+    {
+        for(LInputField lif : new ArrayList<>(currentInputFields))
+        {
+            if(lif.nodeArguments().size() == 0) removeInputField(lif);
+        }
     }
 
     /**
