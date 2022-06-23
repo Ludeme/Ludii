@@ -189,19 +189,10 @@ public class LInputField extends JComponent
             });
         }
         if(removable) {
-            terminalOptionalLabel.setText("X");
+            terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
             add(terminalOptionalLabel);
-            terminalOptionalLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-                    inputArea().LNC().graphPanel().setBusy(true);
-                    System.out.println(inputArea().removedConnection(LInputField.this));
-                    // notify handler
-                    Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
-                    inputArea().LNC().graphPanel().setBusy(false);
-                }
-            });
+            if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] != null) activate();
+            else deactivate();
         }
     }
 
@@ -481,39 +472,22 @@ public class LInputField extends JComponent
     {
         if(isActive()) return;
         if(!isTerminal()) return;
+        System.out.println("Activating");
         fieldComponent.setEnabled(true);
         label.setEnabled(true);
         terminalOptionalLabel.setText("X");
-        terminalOptionalLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                inputArea().LNC().graphPanel().setBusy(true);
-                inputArea().removedConnection(LInputField.this);
-                // notify handler
-                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
-                inputArea().LNC().graphPanel().setBusy(false);
-                deactivate();
-            }
-        });
+        repaint();
     }
 
     public void deactivate()
     {
         if(!isActive()) return;
         if(!isTerminal()) return;
+        System.out.println("Deactivating");
         fieldComponent.setEnabled(false);
         label.setEnabled(false);
         terminalOptionalLabel.setText("+");
-        terminalOptionalLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                // notify handler
-                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
-                activate();
-            }
-        });
+        repaint();
     }
 
     /**
@@ -540,6 +514,27 @@ public class LInputField extends JComponent
         @Override
         public void keyReleased(KeyEvent e)
         {
+        }
+    };
+
+    MouseAdapter terminalOptionalLabelListener = new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            super.mouseClicked(e);
+            if(isActive())
+            {
+                inputArea().LNC().graphPanel().setBusy(true);
+                inputArea().removedConnection(LInputField.this);
+                // notify handler
+                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
+                inputArea().LNC().graphPanel().setBusy(false);
+                deactivate();
+            }
+            else
+            {
+                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
+                activate();
+            }
         }
     };
 
