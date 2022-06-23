@@ -324,9 +324,9 @@ public class LInputArea extends JPanel
         NodeArgument providedNodeArgument = null;
         for(NodeArgument nodeArgument : inputField.nodeArguments())
         {
-            for(ClauseArg arg : nodeArgument.args())
+            for(Symbol s : nodeArgument.possibleSymbolInputsExpanded())
             {
-                if(arg.symbol().equals(lnc.node().symbol()) || arg.symbol().returnType().equals(lnc.node().symbol()))
+                if(s.equals(lnc.node().symbol()) || s.returnType().equals(lnc.node().symbol()))
                 {
                     providedNodeArgument = nodeArgument;
                     break;
@@ -406,6 +406,10 @@ public class LInputArea extends JPanel
             if(inputField.nodeArguments().size() == 1)
             {
                 inputField.reconstruct();
+            }
+            if(inputField.nodeArguments().size() == 0)
+            {
+                removeInputField(inputField);
             }
             // Redraw
             drawInputFields();
