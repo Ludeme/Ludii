@@ -5,6 +5,8 @@ import app.display.dialogs.visual_editor.recs.utils.Pair;
 import app.display.dialogs.visual_editor.recs.utils.ReadableSymbol;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import main.grammar.Clause;
+import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import javax.swing.*;
@@ -64,7 +66,7 @@ public class AddLudemeWindow extends JPanel {
                     if(o != null) {
                         ReadableSymbol rs = (ReadableSymbol) o;
                         // if the symbol is a terminal, dont create a node. Instead create an inputfield
-                        if(rs.getSymbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+                        if(rs.getSymbol().ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(rs.getSymbol()))
                         {
                             // get the node that is being added to
                             LudemeNodeComponent lnc = graphPanel.connectionHandler().getSelectedConnectionComponent().lnc();
@@ -83,7 +85,20 @@ public class AddLudemeWindow extends JPanel {
             }
         };
         list.addMouseListener(mouseListener);
+    }
 
+    private boolean isConstantTerminal(Symbol s)
+    {
+        if(s.rule() == null) return false;
+        for(Clause c : s.rule().rhs())
+        {
+            if(c.args() == null) continue;
+            for(ClauseArg ca : c.args())
+            {
+                if(!ca.symbol().ludemeType().equals(Symbol.LudemeType.Constant)) return false;
+            }
+        }
+        return true;
     }
 
     public void updateList(List<Symbol> symbolList){
