@@ -168,21 +168,18 @@ public class ConnectionHandler
 
     public void removeAllConnections(LudemeNode node, boolean onlyOutgoingConnections)
     {
+
         for(LudemeConnection e : new ArrayList<>(edges))
         {
-            if(e.getConnectionComponent().lnc().node().equals(node)
-                    || (!onlyOutgoingConnections
-                    && e.getIngoingConnectionComponent().getHeader().ludemeNodeComponent().node().equals(node)))
-            {
-                edges.remove(e);
-                e.getIngoingConnectionComponent().setFill(false); // header
-                e.getConnectionComponent().fill(false); // input
-                e.getConnectionComponent().setConnectedTo(null);
-                // TODO: e.getConnectionComponent().inputField().inputArea().updateComponent(node, null,true);
-                System.out.println("\u001B[32m"+"Calling from EP 307"+"\u001B[0m");
-                Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
-            }
+            if(e.outgoingNode() != node && !(!onlyOutgoingConnections && e.ingoingNode() == node)) continue;
+
+            edges.remove(e);
+            LudemeNodeComponent source = e.getConnectionComponent().inputField().inputArea().LNC();
+            source.inputArea().removedConnection(e.getConnectionComponent().inputField());
+            e.getIngoingConnectionComponent().setFill(false); // the node source was connected to is not connected anymore
+            Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
         }
+        
         graphPanel.repaint();
     }
 
