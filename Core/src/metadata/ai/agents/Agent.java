@@ -11,11 +11,6 @@ import metadata.ai.AIItem;
 public interface Agent extends AIItem
 {
 	
-	/** 
-	 * Build a string that the AI Factory can use to create an AI 
-	 * 
-	 * @return The string to build the AI
-	 */
-	public String constructAgentString();
+	// Nothing here
 
 }

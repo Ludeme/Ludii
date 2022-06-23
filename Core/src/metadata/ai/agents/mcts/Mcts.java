@@ -51,14 +51,6 @@ public class Mcts implements Agent
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public String constructAgentString()
-	{
-		return "algorithm=MCTS";		// TODO selection
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
 	public String toString()
 	{
 		return "(mcts " + selection + ")";
