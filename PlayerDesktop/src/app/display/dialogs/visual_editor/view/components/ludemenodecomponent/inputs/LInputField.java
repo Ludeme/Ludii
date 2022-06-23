@@ -186,7 +186,7 @@ public class LInputField extends JComponent
             });
         }
         if(removable) {
-            terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
+            if(terminalOptionalLabel.getMouseListeners().length == 0) terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
             add(terminalOptionalLabel);
             if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] != null) activate();
             else
@@ -475,7 +475,6 @@ public class LInputField extends JComponent
 
     public void activate()
     {
-        if(isActive()) return;
         if(!isTerminal()) return;
         active = true;
         System.out.println("Activating");
@@ -488,7 +487,6 @@ public class LInputField extends JComponent
 
     public void deactivate()
     {
-        if(!isActive()) return;
         if(!isTerminal()) return;
         active = false;
 
@@ -540,6 +538,7 @@ public class LInputField extends JComponent
         @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
+            System.out.println("Clicked");
             if(isActive())
             {
                 deactivate();
