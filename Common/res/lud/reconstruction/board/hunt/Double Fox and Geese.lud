@@ -1,4 +1,4 @@
-(game "Treble Fox and Geese"
+(game "Double Fox and Geese"
 	    (players 2)  
 	    (equipment {
 	    	(board [#] use:Vertex) // More than 33 vertices on this board
@@ -6,7 +6,7 @@
 	    	(piece "Geese" #)
 	    })
 	    (rules
-	        (start [#]) // 3 or 4 foxes and 50 to 60 geese
+	        (start [#]) // 2 foxes and 30 geese
 	        (play [#])
 	        (end [#])
 	    )
