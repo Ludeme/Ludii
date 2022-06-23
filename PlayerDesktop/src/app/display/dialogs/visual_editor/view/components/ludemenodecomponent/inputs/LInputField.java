@@ -409,7 +409,7 @@ public class LInputField extends JComponent
             return new JTextField();
         }
         // A Integer Spinner
-        if(arg.symbol().name().equals("Integer"))
+        if(arg.symbol().name().equals("Integer") || arg.symbol().name().equals("int")) //TODO: actually "int" is a different breed
         {
             return new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
         }
@@ -531,6 +531,7 @@ public class LInputField extends JComponent
         @Override
         public void keyReleased(KeyEvent e)
         {
+            updateUserInputs();
         }
     };
 

@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.model;
 
+import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -40,6 +41,38 @@ public class NodeArgument
     public NodeArgument(Clause clause, ClauseArg arg)
     {
         CLAUSE = clause;
+
+        if(clause.args() == null)
+        {
+            INDEX = 0;
+        }
+        else
+        {
+            INDEX = clause.args().indexOf(arg);
+        }
+
+        if(arg.symbol().returnType() != arg.symbol()) arg = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
+
+        /* check whether its a function label
+        String replaceWith = "";
+        for(String[] p : Grammar.grammar().getFunctions())
+        {
+            if(p[0].equals(arg.symbol().name()))
+            {
+                replaceWith = p[1];
+                break;
+            }
+        }
+        if(!replaceWith.equals(""))
+        {
+            List<Symbol> symbolWithPartialKeyword = Grammar.grammar().symbolsWithPartialKeyword(replaceWith);
+            for(Symbol s : symbolWithPartialKeyword) if(s.token().equals(replaceWith) && s!=arg.symbol())
+            {
+                arg = new ClauseArg(s, arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
+                break;
+            }
+        }*/
+
         // add argument to list
         ARGS = new ArrayList<>();
         ARGS.add(arg);
@@ -53,14 +86,6 @@ public class NodeArgument
                 ARGS.add(clause.args().get(index));
                 index++;
             }
-        }
-        if(clause.args() == null)
-        {
-            INDEX = 0;
-        }
-        else
-        {
-            INDEX = clause.args().indexOf(arg);
         }
 
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
