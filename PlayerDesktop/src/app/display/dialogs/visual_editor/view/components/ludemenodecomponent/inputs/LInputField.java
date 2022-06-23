@@ -193,7 +193,12 @@ public class LInputField extends JComponent
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
+                    inputArea().LNC().graphPanel().setBusy(true);
                     inputArea().removedConnection(LInputField.this);
+                    // notify handler
+                    Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
+                    inputArea().LNC().graphPanel().setBusy(false);
+
                 }
             });
         }

@@ -765,9 +765,9 @@ public class LInputArea extends JPanel
      */
     private LInputField inputFieldAbove(LInputField inputField)
     {
-        int index = inputFieldIndex(inputField);
-        if(index <= 0) return null;
-        return currentInputFields.get(index-1);
+        int index = inputFieldIndex(inputField)-1;
+        if(index < 0) return null;
+        return currentInputFields.get(index);
     }
 
     /**
@@ -778,9 +778,9 @@ public class LInputArea extends JPanel
     private LInputField inputFieldBelow(LInputField inputField)
     {
         // this is inefficient, but the one below doesnt work. Maybe because the ArrayList is altered in the process before (but id stays the same!)
-        int index = inputFieldIndex(inputField);
+        int index = inputFieldIndex(inputField) + 1;
         if(index >= currentInputFields.size()) return null;
-        return currentInputFields.get(index+1);
+        return currentInputFields.get(index);
     }
 
     /**
