@@ -437,6 +437,7 @@ public class LInputArea extends JPanel
         {
             inputField.reconstruct();
         }
+        newInputField.activate();
         // Redraw
         drawInputFields();
         return newInputField;
