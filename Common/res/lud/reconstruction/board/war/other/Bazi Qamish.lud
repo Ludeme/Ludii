@@ -1,27 +1,11 @@
 (game "Bazi Qamish"
     (players 2)
-    
-    (equipment 
-        { 
-        (board (rectangle 4 <Board:size>))
-        (hand Each)
-        }
-    )  
+    (equipment [#])  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#])
+        (end [#])
     )
-)
-
-//------------------------------------------------------------------------------
-
-(option "Board Size" <Board> args:{ <size> }
-    {
-    (item "13" <13>  "The board has 13 columns.") 
-    (item "19" <19>  "The board has 19 columns.")  
-    (item "21" <21>  "The board has 21 columns.")  
-    (item "29" <29>  "The board has 29 columns.") 
-    }
 )
 
 //------------------------------------------------------------------------------
@@ -42,11 +26,5 @@
         (origin  "This game was played in Persia, around 1694.")
         }
     )
-    
-    (graphics {
-        (board Colour Phase0 (colour 223 178 110))
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
-    })
     
 )
