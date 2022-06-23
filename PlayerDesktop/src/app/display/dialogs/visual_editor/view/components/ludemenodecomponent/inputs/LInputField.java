@@ -639,7 +639,7 @@ public class LInputField extends JComponent
     public Object getUserInput()
     {
         if(isMerged()) return null;
-        if(!isActive()) return null;
+        if(optional() && !isActive()) return null;
         if(fieldComponent == connectionComponent) // Ludeme Input
         {
             return connectionComponent.connectedTo().node();
