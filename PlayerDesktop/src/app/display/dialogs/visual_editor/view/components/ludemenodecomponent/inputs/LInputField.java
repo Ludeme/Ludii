@@ -164,9 +164,6 @@ public class LInputField extends JComponent
         fieldComponent = generateTerminalComponent(nodeArgument);
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());
-        // add listeners to update provided inputs when modified
-        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
-        fieldComponent.addKeyListener(userInputListener_keyListener);
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
@@ -192,8 +189,16 @@ public class LInputField extends JComponent
             terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
             add(terminalOptionalLabel);
             if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] != null) activate();
-            else deactivate();
+            else
+            {
+                fieldComponent.setEnabled(false);
+                label.setEnabled(false);
+                terminalOptionalLabel.setText("+");
+            }
         }
+        // add listeners to update provided inputs when modified
+        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        fieldComponent.addKeyListener(userInputListener_keyListener);
     }
 
     /**
