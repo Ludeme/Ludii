@@ -179,7 +179,7 @@ public class ConnectionHandler
             e.getIngoingConnectionComponent().setFill(false); // the node source was connected to is not connected anymore
             Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
         }
-        
+
         graphPanel.repaint();
     }
 

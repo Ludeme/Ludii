@@ -718,6 +718,15 @@ public class LInputField extends JComponent
 
     /**
      *
+     * @return whether this input field is a choice
+     */
+    public boolean choice()
+    {
+        return nodeArgument(0).choice();
+    }
+
+    /**
+     *
      * @return the connection component used to provide an input to a non-terminal input field
      *        or null if this input field represents a terminal input field
      */
@@ -812,6 +821,11 @@ public class LInputField extends JComponent
     public JLabel label()
     {
         return label;
+    }
+
+    public void setLabelText(String text)
+    {
+        label.setText(text);
     }
 
     @Override

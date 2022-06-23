@@ -365,7 +365,15 @@ public class LInputArea extends JPanel
         // Update active and inactive variables for dynamic nodes
         if(dynamic()) providedNodeArgument(providedNodeArgument);
         // If the input field only contains one NodeArgument, it is the one that the user provided input for
-        if(!inputField.isMerged()) return inputField;
+        if(!inputField.isMerged())
+        {
+            // if the field is a choice, update its label
+            if(inputField.choice())
+            {
+                inputField.setLabelText(providedNodeArgument.arg().symbol().name());
+            }
+            return inputField;
+        }
         // Otherwise it is a merged one.
         // Therefore, the NodeArgument which corresponds to the NodeArgument that the user provided input for is removed from the merged InputField
         // Single out the NodeArgument that the user provided input for and return the new InputField
@@ -804,6 +812,11 @@ public class LInputArea extends JPanel
                     }
                     else
                     {
+                        if(!newMerged.isMerged() && newMerged.choice())
+                        {
+                            // if the field is a choice, update its label
+                            newMerged.setLabelText("Choice");
+                        }
                         // otherwise move it to the top of the block
                     }
                     drawInputFields();
@@ -811,22 +824,33 @@ public class LInputArea extends JPanel
                     setVisible(true);
                     return true;
                 }
-                else return false;
+                else
+                {
+                    return false;
+                }
 
             }
+
             // if can be merged into both, combine the three inputfields into one
             if(canBeMergedIntoAbove && canBeMergedIntoBelow) {
-                mergeInputFields(new LInputField[]{inputFieldAbove, inputField, inputFieldBelow});
+                inputField = mergeInputFields(new LInputField[]{inputFieldAbove, inputField, inputFieldBelow});
             }
             // if can be merged into above, merge into above
             else if(canBeMergedIntoAbove) {
-                mergeInputFields(new LInputField[]{inputFieldAbove, inputField});
+                inputField = mergeInputFields(new LInputField[]{inputFieldAbove, inputField});
             }
             // if can be merged into below, merge into below
             else if(canBeMergedIntoBelow) {
-                mergeInputFields(new LInputField[]{inputField, inputFieldBelow});
+                inputField = mergeInputFields(new LInputField[]{inputField, inputFieldBelow});
             }
         }
+
+        // if the field is a choice, update its label
+        if(inputField.choice())
+        {
+            inputField.setLabelText("Choice");
+        }
+
         drawInputFields();
         setOpaque(false);
         setVisible(true);
