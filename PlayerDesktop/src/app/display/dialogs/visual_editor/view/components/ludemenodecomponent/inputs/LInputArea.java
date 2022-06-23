@@ -675,8 +675,9 @@ public class LInputArea extends JPanel
      * Called when the connection of a input field is removed
      * Attempts to merge the input field into the input field above or below (or both)
      * @param inputField the input field which connection is removed
+     * @return whether the input field was merged
      */
-    public void removedConnection(LInputField inputField)
+    public boolean removedConnection(LInputField inputField)
     {
         if(DEBUG) System.out.println("removedConnection: " + inputField);
         if(!inputField.isMerged() && dynamic()) {
@@ -684,7 +685,7 @@ public class LInputArea extends JPanel
             drawInputFields();
             setOpaque(false);
             setVisible(true);
-            return;
+            return true;
         }
 
         // if the inputfield is single and optional, check whether it can be merged into another inputfield
@@ -703,7 +704,85 @@ public class LInputArea extends JPanel
             boolean canBeMergedIntoBelow = inputFieldBelow != null && !isArgumentProvided(inputFieldBelow.nodeArgument(0)) && inputFieldBelow.optional();
 
 
-            if(!canBeMergedIntoBelow && !canBeMergedIntoAbove) return;
+            // if cannot be merged into above or below field, then find suitable LInputField to merge into
+            if(!canBeMergedIntoBelow && !canBeMergedIntoAbove)
+            {
+
+
+                // check whether this is a block of subsequent symbols (e.g. int)
+                if((inputFieldAbove != null && inputFieldAbove.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol())) || (inputFieldBelow != null && inputFieldBelow.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol())))
+                {
+                    // find this block
+                    List<LInputField> block = new ArrayList<>();
+                    // find first element
+                    LInputField e = inputFieldAbove;
+                    if(e == null) e = inputField;
+                    while(inputFieldAbove!=null && !inputFieldAbove.isMerged() && inputFieldAbove.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()))
+                    {
+                        e = inputFieldAbove;
+                        inputFieldAbove = inputFieldAbove(inputFieldAbove);
+                    }
+                    // add remaining elements to list
+                    block.add(e);
+                    LInputField current = inputFieldBelow(e);
+                    while(current != null && !current.isMerged() && current.nodeArgument(0).arg().symbol().equals(e.nodeArgument(0).arg().symbol()))
+                    {
+                        block.add(current);
+                        current = inputFieldBelow(current);
+                    }
+                    // find whether there is another unprovided input field in the block. if yes, then merge them together
+                    LInputField newMerged = inputField;
+                    for(LInputField lif : block)
+                    {
+                        if(lif == inputField) continue;
+                        if(!isArgumentProvided(lif.nodeArgument(0)))
+                        {
+                            newMerged = mergeInputFields(new LInputField[]{lif, inputField});
+                            break;
+                        }
+                    }
+                    // check whether the (maybe merged) input field can be merged into a field above/below the block
+                    LInputField lif_b_block = inputFieldBelow(block.get(block.size()-1));
+                    LInputField lif_a_block = inputFieldAbove(block.get(0));
+                    canBeMergedIntoAbove = lif_a_block != null && !isArgumentProvided(lif_a_block.nodeArgument(0)) && lif_a_block.optional();
+                    canBeMergedIntoBelow = lif_b_block != null && !isArgumentProvided(lif_b_block.nodeArgument(0)) && lif_b_block.optional();
+                    if(canBeMergedIntoAbove && canBeMergedIntoBelow)
+                    {
+                        // check whether one of those contains the symbol already
+                        for(NodeArgument na : lif_a_block.nodeArguments())
+                            if(na.arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()))
+                            {
+                                canBeMergedIntoBelow = false;
+                                break;
+                            }
+                        if(canBeMergedIntoBelow) {
+                            for (NodeArgument na : lif_b_block.nodeArguments())
+                                if (na.arg().symbol().equals(inputField.nodeArgument(0).arg().symbol())) {
+                                    canBeMergedIntoAbove = false;
+                                    break;
+                                }
+                        }
+                    }
+                    if(canBeMergedIntoBelow)
+                    {
+                        mergeInputFields(new LInputField[]{newMerged, lif_b_block});
+                    }
+                    else if(canBeMergedIntoAbove)
+                    {
+                        mergeInputFields(new LInputField[]{lif_a_block, newMerged});
+                    }
+                    else
+                    {
+                        // otherwise move it to the top of the block
+                    }
+                    drawInputFields();
+                    setOpaque(false);
+                    setVisible(true);
+                    return true;
+                }
+                else return false;
+
+            }
             // if can be merged into both, combine the three inputfields into one
             if(canBeMergedIntoAbove && canBeMergedIntoBelow) {
                 mergeInputFields(new LInputField[]{inputFieldAbove, inputField, inputFieldBelow});
@@ -720,6 +799,7 @@ public class LInputArea extends JPanel
         drawInputFields();
         setOpaque(false);
         setVisible(true);
+        return true;
     }
 
     /**
