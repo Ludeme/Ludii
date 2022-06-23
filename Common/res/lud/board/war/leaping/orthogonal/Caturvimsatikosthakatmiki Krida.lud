@@ -20,17 +20,30 @@
                     Orthogonal 
                     (to if:(is Empty (to)))
                 )
+                (if (= 1 (state at:(from)))
+                    (move 
+                        Slide
+                        Orthogonal
+                        (between
+                            (exact 2)
+                            if:(is Empty (between))
+                        )
+                        (then 
+                            (set State at:(last To) 0)
+                        )
+                    )
+                )
             })			
         )
     })  
     
     (rules 
         (start {
-            (place "Marker1" (sites Bottom))
-            (place "Marker2" (sites Top))
+            (place "Marker1" (sites Bottom) state:1)
+            (place "Marker2" (sites Top) state:1)
         })
         (play (forEach Piece))
-        (end (if (<= (count Pieces Next) 4) (result Mover Win)))
+        (end (if (< (count Pieces Next) 4) (result Mover Win)))
     )
 )
 

@@ -10,11 +10,11 @@
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
     })
     (rules 
-    	(start [#])
+        (start [#])
         (play 
-        	(do (roll)
-        		next:[#]
-        	)
+            (do (roll)
+                next:[#]
+            )
         )
         (end [#])
     )

@@ -16,14 +16,14 @@
         (map "Throw" {(pair 0 5) (pair 1 0) (pair 2 0) (pair 3 10)})
     })
     (rules 
-        	(start [#]) // One stick per player, all of which begin in one of the larger gaps (but we dunno which one).
-            (play 
-            	(do (roll)
-            		next:[#]
-            	)
+        (start [#]) // One stick per player, all of which begin in one of the larger gaps (but we dunno which one).
+        (play 
+            (do (roll)
+                next:[#]
             )
-            (end [#])
         )
+        (end [#])
+    )
 )
 
 //------------------------------------------------------------------------------

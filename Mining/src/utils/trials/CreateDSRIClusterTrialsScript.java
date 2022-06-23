@@ -217,7 +217,7 @@ public class CreateDSRIClusterTrialsScript
 	 */
 	public static String createBashJob(final String jobName)
 	{
-		return "bash run"+jobName+".sh";
+		return "bash run"+jobName+".sh&";
 	}
 	
 	/**
