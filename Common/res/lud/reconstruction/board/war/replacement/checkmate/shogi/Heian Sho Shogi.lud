@@ -37,7 +37,7 @@
     (players 2) 
     (equipment { 
         (board [(square 8) | (rectangle 8 9)])
-        (piece "King" Each ("StepMove"))
+        (piece "King" Each (move [#]))
         (piece "GoldGeneral" Each (move [#])) // does not move left, right, or backward
         (piece "Keima" Each 
             (forEach Direction 
@@ -85,13 +85,15 @@
                 )
             )
         )
+        [#]
         (regions "Promotion" P1 (expand (sites Top) steps:2))
         (regions "Promotion" P2 (expand (sites Bottom) steps:2))
         (map "Promoted" { 
-            (pair (id "Fuhyo" P1) (id "GoldGeneral" P1)) (pair (id "Fuhyo" P2) (id "GoldGeneral" P2)) 
+            (pair (id "Fuhyo" P1) (id "GoldGeneral" P1)) (pair (id "Fuhyo" P2) (id "GoldGeneral" P2)) [#] 
         })
     })
     (rules
+    	(start [#])
         (play [#])
         (end 
             (if (= 2 (count Pieces Next)) 
