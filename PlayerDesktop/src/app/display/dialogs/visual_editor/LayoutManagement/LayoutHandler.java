@@ -3,7 +3,14 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.UPDATE_COUNTER;
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
 
 /**
@@ -15,6 +22,10 @@ public class LayoutHandler {
     private final iGraph graph;
     private int root;
     private final DFSBoxDrawing layout;
+
+    public static Timer animationTimer;
+
+    private static boolean layoutExecuted = false;
 
     public LayoutHandler(iGraph graph, int root)
     {
@@ -53,7 +64,9 @@ public class LayoutHandler {
         LayoutHandler lm = graphPanel.getLayoutHandler();
         lm.evaluateGraphWeights();
         lm.executeLayout(graphPanel.graph().getRoot().id());
-        graphPanel.drawGraph(graphPanel.graph());
+        layoutExecuted = true;
+
+
     }
 
     public void executeLayout(int root)
@@ -61,10 +74,33 @@ public class LayoutHandler {
         updateNodeDepth(graph, graph.getRoot().id());
         layout.setRoot(root);
         layout.applyLayout();
+        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn())
+        {
+            HashMap<Integer, Vector2D> incrementMap = GraphRoutines.computeNodeIncrements(graph, root);
+            // animate change
+            animationTimer = new Timer(16, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (GraphRoutines.animateGraphNodes(graph, root, incrementMap))
+                    {
+                        ((Timer)e.getSource()).stop();
+                    }
+                }
+            });
+            if (layoutExecuted) animationTimer.start();
+            layoutExecuted = false;
+            System.out.println("Finished layout");
+        }
+        else
+        {
+            Handler.updateNodePositions();
+            System.out.println("Finished layout");
+        }
     }
 
     public void updateCompactness(double sliderValue)
     {
         layout.setCompactness(sliderValue);
     }
+
 }

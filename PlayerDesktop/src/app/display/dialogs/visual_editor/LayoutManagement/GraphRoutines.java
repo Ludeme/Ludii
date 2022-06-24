@@ -1,10 +1,14 @@
 package app.display.dialogs.visual_editor.LayoutManagement;
 
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import java.util.*;
+
+import static java.lang.Math.abs;
 
 /**
  * Graph manipulation procedures
@@ -15,7 +19,17 @@ public final class GraphRoutines
     /**
      * Tuning constants for metric evaluation
      */
-    private static final double VISUAL_CONSTANT = 2500;
+    public static final double VISUAL_CONSTANT = 2500;
+
+    /**
+     * Animation updates
+     */
+    public static final int ANIMATION_UPDATES = 60;
+
+    /**
+     * Animation update counter
+     */
+    public static int UPDATE_COUNTER = 0;
 
     /**
      * Update of depth for graph nodes by BFS traversal
@@ -42,6 +56,55 @@ public final class GraphRoutines
             d++;
         }
 
+    }
+
+    /**
+     * compute animation nodes increments
+     * set nodes positions to the old ones
+     * @param graph
+     * @param r root id
+     */
+    public static HashMap<Integer, Vector2D> computeNodeIncrements(iGraph graph, int r)
+    {
+        HashMap<Integer, Vector2D> incrementsMap = new HashMap<>();
+
+        List<Integer> Q = new ArrayList<>();
+        Q.add(r);
+        while (!Q.isEmpty())
+        {
+            int nid = Q.remove(0);
+            iGNode n = graph.getNode(nid);
+            // compute increments
+            double incX = (n.newPos().x() - n.oldPos().x()) / ANIMATION_UPDATES;
+            double incY = (n.newPos().y() - n.oldPos().y()) / ANIMATION_UPDATES;
+            incrementsMap.put(nid, new Vector2D(incX, incY));
+            // update pos to oldPos
+            n.setPos(new Vector2D(n.oldPos().x(), n.oldPos().y()));
+            Q.addAll(n.children());
+        }
+        return incrementsMap;
+    }
+
+    public static boolean animateGraphNodes(iGraph graph, int r, HashMap<Integer, Vector2D> increments)
+    {
+        List<Integer> Q = new ArrayList<>();
+        Q.add(r);
+        while (!Q.isEmpty())
+        {
+            int nid = Q.remove(0);
+            iGNode n = graph.getNode(nid);
+            n.setPos(new Vector2D(n.oldPos().x()+increments.get(nid).x()*UPDATE_COUNTER,
+                    n.oldPos().y()+increments.get(nid).y()*UPDATE_COUNTER));
+            Q.addAll(n.children());
+        }
+        UPDATE_COUNTER++;
+        Handler.updateNodePositions();
+        if (UPDATE_COUNTER == ANIMATION_UPDATES)
+        {
+            System.out.println("Stop timer");
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -134,7 +197,7 @@ public final class GraphRoutines
                 children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().y() - graph.getNode(o2).pos().y()));
                 for (int i = 0; i < children.size() - 1; i++)
                 {
-                    Smean += Math.abs(graph.getNode(children.get(i)).pos().y() - graph.getNode(children.get(i+1)).pos().y());
+                    Smean += abs(graph.getNode(children.get(i)).pos().y() - graph.getNode(children.get(i+1)).pos().y());
                 }
                 double S = Math.max(0, Math.min(Smean, VISUAL_CONSTANT)) / (2*VISUAL_CONSTANT);
 
