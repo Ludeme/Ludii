@@ -177,6 +177,7 @@ public class ConnectionHandler
             LudemeNodeComponent source = e.getConnectionComponent().inputField().inputArea().LNC();
             source.inputArea().removedConnection(e.getConnectionComponent().inputField());
             e.getIngoingConnectionComponent().setFill(false); // the node source was connected to is not connected anymore
+            e.getConnectionComponent().fill(false); // the node source is not connected anymore
             Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
         }
 

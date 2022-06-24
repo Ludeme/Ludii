@@ -33,6 +33,8 @@ public class NodeArgument
     /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
     private boolean SEPARATE_NODE;
 
+    public final ClauseArg originalArg;
+
     /**
      * Constructor for NodeInput
      * @param clause the clause this NodeArgument is part of
@@ -52,6 +54,8 @@ public class NodeArgument
         }
 
         if(arg.symbol().returnType() != arg.symbol()) arg = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
+
+        this.originalArg = arg;
 
         /* check whether its a function label
         String replaceWith = "";
@@ -115,6 +119,7 @@ public class NodeArgument
         // add argument to list
         ARGS = new ArrayList<>();
         ARGS.add(new ClauseArg(clause.symbol(), null, false, 0, 0));
+        originalArg = null;
         INDEX = 0;
         POSSIBLE_SYMBOL_INPUTS = new ArrayList<>();
         POSSIBLE_SYMBOL_INPUTS_EXPANDED = new ArrayList<>();
