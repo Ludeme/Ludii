@@ -88,6 +88,18 @@ public class NodeArgument
             }
         }
 
+        // if this is a choice between collection or not, default to collection
+        if(ARGS.size() == 2)
+        {
+            if(ARGS.get(0).symbol().equals(ARGS.get(1).symbol()))
+            {
+                // get index of non-collection
+                int index = 0;
+                if(ARGS.get(0).andGroup()==0) index = 1;
+                ARGS.remove(index);
+            }
+        }
+
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
         this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
         SEPARATE_NODE = false;
@@ -382,6 +394,14 @@ public class NodeArgument
     public Symbol.LudemeType ludemeType()
     {
         return arg().symbol().ludemeType();
+    }
+
+    public void setActiveChoiceArg(ClauseArg activeArg)
+    {
+        ClauseArg temp = ARGS.get(0);
+        int index = ARGS.indexOf(activeArg);
+        ARGS.set(0, activeArg);
+        ARGS.set(index, temp);
     }
 
     /**

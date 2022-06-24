@@ -3,8 +3,10 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
+import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
@@ -131,9 +133,32 @@ public class LInputField extends JComponent
 
     private final ActionListener addItemButtonListener = e -> addCollectionItem();
     private final ActionListener removeItemButtonListener = e -> removeCollectionItem();
-
     private final ActionListener choiceButtonListener = e -> {
+        JPopupMenu popup = new JPopupMenu();
+        JMenuItem[] items = new JMenuItem[nodeArgument(0).size()];
 
+        for(int i = 0; i < nodeArgument(0).size(); i++)
+        {
+            items[i] = new JMenuItem(nodeArgument(0).args().get(i).toString());
+            int finalI = i;
+            if(nodeArgument(0).isTerminal()) {
+                items[i].addActionListener(e1 -> {
+                    nodeArgument(0).setActiveChoiceArg(nodeArgument(0).args().get(finalI));
+                    if (getUserInput() != null) {
+                        inputArea().removedConnection(this);
+                    }
+                    reconstruct();
+                /*remove(choiceButton);
+                add(connectionComponent);
+                connectionComponent().connectedTo().setCollapsed(false);
+                connectionComponent().connectedTo().setVisible(true);
+                inputArea().LNC().graphPanel().repaint();*/
+                });
+            }
+            popup.add(items[i]);
+        }
+
+        popup.show(choiceButton, 0, 0);
     };
 
     /**
@@ -681,6 +706,7 @@ public class LInputField extends JComponent
         if(optional() && !isActive()) return null;
         if(fieldComponent == connectionComponent) // Ludeme Input
         {
+            if(connectionComponent.connectedTo() == null) return null;
             return connectionComponent.connectedTo().node();
         }
 
