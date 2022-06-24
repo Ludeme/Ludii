@@ -120,7 +120,6 @@ public class LInputField extends JComponent
         removeItemButton.addActionListener(removeItemButtonListener);
 
         choiceButton.addActionListener(choiceButtonListener);
-
     }
 
     private final ActionListener uncollapseButtonListener = e -> {
@@ -178,6 +177,9 @@ public class LInputField extends JComponent
         {
             label.setText("Choice");
         }
+
+        label.setToolTipText(inputArea().LNC().node().parameterDescription(nodeArgument(0).originalArg));
+        optionalLabel.setToolTipText(inputArea().LNC().node().parameterDescription(nodeArgument(0).originalArg));
 
         // If collection
         if(parent != null)
