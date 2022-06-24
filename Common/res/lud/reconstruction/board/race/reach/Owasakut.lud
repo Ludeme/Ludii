@@ -9,13 +9,17 @@
                 )
                 edges:{{28 29} {11 9} {8 10}}
             )
+            [#]
             use:Edge
         )
-        (piece "Marker" Each)
+        (piece "Stick" Each (move [#]))
+        (dice d:2 from:0 num:3)
+        (map "Throw" {(pair 0 5) (pair 1 2) (pair 2 3) (pair 3 10)})
     })
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#])
+        (end [#])
     )
 )
 
@@ -61,7 +65,7 @@
         (show Edges (colour Hidden))
         (show Symbol "disc" Vertex (sites Board Vertex) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (board Background image:"disc" edgeColour:(colour Black) scale:0.1)
-        
+        (piece Colour "Die" state:1 fillColour:(colour Black))
     })
     
 )
