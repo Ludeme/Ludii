@@ -61,6 +61,7 @@ public class AddLudemeWindow extends JPanel {
             public void mouseClicked(MouseEvent mouseEvent) {
                 JList theList = (JList) mouseEvent.getSource();
                 int index = theList.locationToIndex(mouseEvent.getPoint());
+                graphPanel.addSelectionIndex(index+1); // plus one because we want the position, but indices start at 0
 
                 if (index >= 0) {
                     Object o = theList.getModel().getElementAt(index);

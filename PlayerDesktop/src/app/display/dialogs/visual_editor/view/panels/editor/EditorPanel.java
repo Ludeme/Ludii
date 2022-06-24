@@ -173,7 +173,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         {
             if(ii.index() < upUntilIndex) upUntilIndex = ii.index();
         }
-
         long start = System.nanoTime();
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().possibleSymbolInputs();
         String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().lnc().node(),  ch.getSelectedConnectionComponent().inputField().inputIndexFirst(), COMPLETION_WILDCARD);
