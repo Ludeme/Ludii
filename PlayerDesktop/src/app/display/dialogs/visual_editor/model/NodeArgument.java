@@ -34,6 +34,7 @@ public class NodeArgument
     private boolean SEPARATE_NODE;
 
     public final ClauseArg originalArg;
+    public final List<ClauseArg> originalArgs = new ArrayList<>();
 
     /**
      * Constructor for NodeInput
@@ -42,6 +43,7 @@ public class NodeArgument
      */
     public NodeArgument(Clause clause, ClauseArg arg)
     {
+        this.originalArg = arg;
         CLAUSE = clause;
 
         if(clause.args() == null)
@@ -55,27 +57,6 @@ public class NodeArgument
 
         if(arg.symbol().returnType() != arg.symbol()) arg = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
 
-        this.originalArg = arg;
-
-        /* check whether its a function label
-        String replaceWith = "";
-        for(String[] p : Grammar.grammar().getFunctions())
-        {
-            if(p[0].equals(arg.symbol().name()))
-            {
-                replaceWith = p[1];
-                break;
-            }
-        }
-        if(!replaceWith.equals(""))
-        {
-            List<Symbol> symbolWithPartialKeyword = Grammar.grammar().symbolsWithPartialKeyword(replaceWith);
-            for(Symbol s : symbolWithPartialKeyword) if(s.token().equals(replaceWith) && s!=arg.symbol())
-            {
-                arg = new ClauseArg(s, arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
-                break;
-            }
-        }*/
 
         // add argument to list
         ARGS = new ArrayList<>();
@@ -91,6 +72,8 @@ public class NodeArgument
                 index++;
             }
         }
+
+        originalArgs.addAll(ARGS);
 
         // if this is a choice between collection or not, default to collection
         if(ARGS.size() == 2)

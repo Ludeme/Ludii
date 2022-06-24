@@ -396,7 +396,7 @@ public class LudemeNode implements iLudemeNode, iGNode
             NodeArgument nodeArgument = new NodeArgument(clause, clauseArg);
             nodeArguments.add(nodeArgument);
             // if the clauseArg is part of a OR-Group, they all are added to the NodeArgument automatically, and hence can be skipped in the next iteration
-            i = i + nodeArgument.size() - 1;
+            i = i + nodeArgument.originalArgs.size() - 1;
         }
         return nodeArguments;
     }
