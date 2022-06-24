@@ -69,8 +69,10 @@ public class DFSBoxDrawing
         {
             Vector2D piInit = new Vector2D(freeX, freeY);
             freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + graph.getNode(nodeId).height() + PADDING_X;
-
+            // update node position
+            graph.getNode(nodeId).setOldPos(graph.getNode(nodeId).pos());
             graph.getNode(nodeId).setPos(piInit);
+            //graph.getNode(nodeId).setNewPos(piInit);
         }
         else
         {
@@ -110,8 +112,10 @@ public class DFSBoxDrawing
             yCoord = (X1 - X0) * wOffset + X0;
 
             Vector2D piInit = new Vector2D(freeX, yCoord);
+            // update node position
+            nV.setOldPos(nV.pos());
             nV.setPos(piInit);
-
+            //nV.setNewPos(piInit);
         }
     }
 

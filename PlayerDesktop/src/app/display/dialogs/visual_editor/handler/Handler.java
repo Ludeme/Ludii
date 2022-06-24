@@ -196,6 +196,9 @@ public class Handler {
         Handler.copyList = copyList;
     }
 
-
+    public static void updateNodePositions()
+    {
+        editorPanel.updateNodePositions();
+    }
 
 }

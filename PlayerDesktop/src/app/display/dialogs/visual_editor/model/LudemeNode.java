@@ -43,6 +43,10 @@ public class LudemeNode implements iLudemeNode, iGNode
     private final List<LudemeNode> children = new ArrayList<>();
     /** x and y coordinates of this node in the graph */
     private int x,y;
+    /** old position coordinates of this node needed for animation */
+    private int oldX, oldY;
+    /** new position coordinates of this node needed for animation */
+    private int newX, newY;
     /** whether this node is dynamic or not.
      * a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
      * possible clauses is narrowed down to the ones that match the provided arguments.
@@ -555,6 +559,16 @@ public class LudemeNode implements iLudemeNode, iGNode
         return new Vector2D(x, y);
     }
 
+    @Override
+    public Vector2D oldPos() {
+        return new Vector2D(oldX, oldY);
+    }
+
+    @Override
+    public Vector2D newPos() {
+        return new Vector2D(newX, newY);
+    }
+
     /**
      * Set the position of this node in the graph
      * @param pos the position to set
@@ -648,6 +662,18 @@ public class LudemeNode implements iLudemeNode, iGNode
     {
         this.x = x;
         this.y = y;
+    }
+
+    public void setOldPos(Vector2D pos)
+    {
+        this.oldX = (int) pos.x();
+        this.oldY = (int) pos.y();
+    }
+
+    public void setNewPos(Vector2D pos)
+    {
+        this.newX = (int) pos.x();
+        this.newY = (int) pos.y();
     }
 
     /**

@@ -24,6 +24,7 @@ public class LayoutSettingsPanel extends JPanel
     private static LayoutSettingsPanel lsPanel;
 
     private final JCheckBox autoPlacement = new JCheckBox("Automatic placement");
+    private final JCheckBox animatePlacement = new JCheckBox("Animate layout");
 
     private LayoutSettingsPanel(IGraphPanel graphPanel)
     {
@@ -100,6 +101,7 @@ public class LayoutSettingsPanel extends JPanel
 
         // # Adding check boxes #
         add(autoPlacement);
+        add(animatePlacement);
     }
 
     private static void addAButton(JButton button, Container container)
@@ -152,9 +154,7 @@ public class LayoutSettingsPanel extends JPanel
 
     private void executeDFSLayout(IGraphPanel graphPanel)
     {
-        int root = graphPanel.selectedRootId();
-        graphPanel.getLayoutHandler().executeLayout(root);
-        graphPanel.drawGraph(graphPanel.graph());
+        graphPanel.getLayoutHandler().executeLayout(graphPanel.selectedRootId());
     }
 
     public void setSelectedComponent(String node, boolean subtree)
@@ -174,4 +174,5 @@ public class LayoutSettingsPanel extends JPanel
 
     public boolean isAutoPlacementOn() {return autoPlacement.isSelected();}
 
+    public boolean isAnimatePlacementOn() {return animatePlacement.isSelected();}
 }

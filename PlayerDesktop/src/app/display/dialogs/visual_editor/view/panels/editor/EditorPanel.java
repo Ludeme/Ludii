@@ -345,6 +345,17 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
+    public void updateNodePositions()
+    {
+        for (LudemeNodeComponent lc : nodeComponents)
+        {
+            lc.updateLudemePosition();
+        }
+        revalidate();
+        repaint();
+    }
+
+    @Override
     public DescriptionGraph graph() {
         return graph;
     }
