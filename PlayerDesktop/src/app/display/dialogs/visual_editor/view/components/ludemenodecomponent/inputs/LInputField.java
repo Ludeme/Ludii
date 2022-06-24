@@ -206,12 +206,12 @@ public class LInputField extends JComponent
         // reset the component
         removeAll();
         setLayout(new FlowLayout(FlowLayout.RIGHT));
+        // add optional label
+        if(optional()) add(optionalLabel);
         label.setText("Arguments");
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
         add(label);
-        // add optional label
-        if(optional()) add(optionalLabel);
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
         connectionComponent = new LConnectionComponent(this, false);
         fieldComponent = connectionComponent;
