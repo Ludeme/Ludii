@@ -12,14 +12,22 @@
                 )
                 cells:{ { 21 22 23 24 25 26 49 47 45 43 10 9 8 7 6 5 42 44 46 48 } }
             )
+            [#]
         )
         (hand Each) 
-        (dice d:2 from:0 num:6)
-        (piece "Pawn" Each) // 4 pieces per player
+        (dice d:2 from:0 num:4)
+        (map "Throw" {(pair 0 1) (pair 1 0) (pair 2 0) (pair 3 0) (pair 4 1)})
+        (piece "Marker" Each) // 1 piece per player
     })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start {
+    		(place "Marker1" 16)
+    		(place "Marker2" 0)
+    		(place "Marker3" 23)
+    		(place "Marker4" 11)
+    	})
+        (play [#])
+        (end [#])
     )
 )
 
