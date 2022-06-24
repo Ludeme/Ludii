@@ -113,7 +113,7 @@ public class DesignPalette
 
     public static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
     public static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
-    public static Color BACKGROUND_LUDEME_BODY_RULES = new Color(248, 242, 255);
+    public static Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
 
 
     public static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
