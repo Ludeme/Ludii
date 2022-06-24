@@ -18,8 +18,9 @@
         (piece "Pawn" Each) // 4 pieces per player
     })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#]) // One mouth up alows a piece to enter the board, six mouths up grants the player another throw.
+        (end [#])
     )
 )
 
