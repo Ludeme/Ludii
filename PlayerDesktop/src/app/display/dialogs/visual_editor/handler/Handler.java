@@ -4,6 +4,7 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.UserActions.AddedNodeAction;
+import app.display.dialogs.visual_editor.model.UserActions.ChangedClauseAction;
 import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
 import app.display.dialogs.visual_editor.model.UserActions.RemovedNodeAction;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -64,7 +65,7 @@ public class Handler {
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeAdded(node, false);
-        if(recordUserActions) performedUserActions.add(new AddedNodeAction(editorPanel, node));
+        addAction(new AddedNodeAction(graphPanel, node));
     }
 
     /**
@@ -108,7 +109,7 @@ public class Handler {
     {
         if(DEBUG) System.out.println("Removing node: " + node.title());
 
-        if(recordUserActions) performedUserActions.add(new RemovedNodeAction(editorPanel, node));
+        addAction(new RemovedNodeAction(graphPanelMap.get(graph), node));
 
         // Remove the node from the graph
         graph.removeNode(node);
@@ -260,8 +261,12 @@ public class Handler {
 
 
     public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c){
+        Clause oldClause = node.selectedClause();
         if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
         else node.setSelectedClause(c);
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node), c);
+        addAction(new ChangedClauseAction(graphPanel, node, oldClause, node.selectedClause()));
     }
 
     public static void setCollapsed(DescriptionGraph graph, LudemeNodeComponent lnc, boolean collapsed)
@@ -308,7 +313,9 @@ public class Handler {
         if(performedUserActions.isEmpty()) return;
         IUserAction lastAction = performedUserActions.pop();
         undoneUserActions.add(lastAction);
+        Handler.recordUserActions = false;
         lastAction.undo();
+        Handler.recordUserActions = true;
         System.out.println("undone: " + lastAction.toString());
     }
 
@@ -317,9 +324,19 @@ public class Handler {
         if(undoneUserActions.isEmpty()) return;
         IUserAction lastUndoneAction = undoneUserActions.pop();
         performedUserActions.add(lastUndoneAction);
+        Handler.recordUserActions = false;
         lastUndoneAction.redo();
+        Handler.recordUserActions = true;
         System.out.println("redone: " + lastUndoneAction.toString());
     }
+
+    private static void addAction(IUserAction action)
+    {
+        if(!recordUserActions) return;
+        performedUserActions.add(action);
+        undoneUserActions.clear();
+    }
+
 
     public static void selectNode(LudemeNodeComponent node)
     {

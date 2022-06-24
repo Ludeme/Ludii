@@ -20,6 +20,7 @@ import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
+import main.grammar.Clause;
 import main.grammar.Symbol;
 
 import javax.swing.*;
@@ -313,6 +314,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
         LConnectionComponent source = from.inputArea().currentInputFields.get(inputFieldIndex).connectionComponent();
         LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
         ch.addConnection(source, target);
+    }
+
+    @Override
+    public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
+        lnc.changeCurrentClause(clause);
     }
 
     @Override

@@ -5,6 +5,11 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
+/**
+ * Created when a node is removed from the graph.
+ * @author Filipp Dokienko
+ */
+
 public class RemovedNodeAction implements IUserAction
 {
     private final IGraphPanel graphPanel;
@@ -98,7 +103,6 @@ public class RemovedNodeAction implements IUserAction
     @Override
     public void undo()
     {
-        Handler.recordUserActions = false;
         Handler.addNode(graph, removedNode);
         // ensure that all of its connections are added to the graph
         for (int i = 0; i < removedData.length; i++)
@@ -110,7 +114,6 @@ public class RemovedNodeAction implements IUserAction
         if(parent != null) Handler.addEdge(graph, parent, removedNode, parentInputFieldIndex);
         graphPanel().repaint();
         isUndone = false;
-        Handler.recordUserActions = true;
     }
 
     /**
@@ -118,11 +121,9 @@ public class RemovedNodeAction implements IUserAction
      */
     @Override
     public void redo() {
-        Handler.recordUserActions = false;
         Handler.removeNode(graph, removedNode);
         graphPanel().repaint();
         isUndone = true;
-        Handler.recordUserActions = true;
     }
 
     @Override

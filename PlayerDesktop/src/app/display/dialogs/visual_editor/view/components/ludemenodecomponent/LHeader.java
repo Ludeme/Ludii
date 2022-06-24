@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.view.DesignPalette;
@@ -78,7 +79,8 @@ public class LHeader extends JComponent
                 items[i] = new JMenuItem(HumanReadable.makeReadable(clause));
                 items[i].addActionListener(e1 -> {
                     System.out.println("Selected clause: " + HumanReadable.makeReadable(clause));
-                    ludemeNodeComponent.changeCurrentClause(clause);
+                    Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clause);
+                    //ludemeNodeComponent.changeCurrentClause(clause);
                     repaint();
                 });
                 popup.add(items[i]);

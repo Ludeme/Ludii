@@ -76,7 +76,6 @@ public class AddedNodeAction implements IUserAction
     @Override
     public void undo()
     {
-        Handler.recordUserActions = false;
         parent = addedNode.parentNode();
         removedData = addedNode.providedInputs();
         if(addedNode.parentNode() != null) {
@@ -108,7 +107,6 @@ public class AddedNodeAction implements IUserAction
         Handler.removeNode(graph, addedNode);
         graphPanel().repaint();
         isUndone = true;
-        Handler.recordUserActions = true;
     }
 
     /**
