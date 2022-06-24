@@ -2,17 +2,20 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.UserActions.AddedNodeAction;
+import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import main.grammar.Clause;
+import main.grammar.Symbol;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
+import java.util.*;
 import java.awt.*;
+import java.util.List;
 
 public class Handler {
 
@@ -34,33 +37,96 @@ public class Handler {
 
     private static List<LudemeNodeComponent> copyList = new ArrayList<>();
 
+    //private static List<IUserAction> performedUserActions = new ArrayList<>();
+
+    private static Stack<IUserAction> performedUserActions = new Stack<>();
+    private static Queue<IUserAction> undoneUserActions = new LinkedList<>();
+
+    private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
     private static final boolean DEBUG = true;
 
-
-    private static void addToHistory(DescriptionGraph graph){
-        //history.set(history.size()-1, history.get(history.size()-1).clone());
-        //history.add(graph);
-    }
-
-    private static void resetHistory(DescriptionGraph graph){
-        //history.clear();
-        //history.add(graph);
-    }
-
-    public static void addNode(DescriptionGraph graph, LudemeNode node){
-        //graph = graph.clone();
-        graph.addNode(node);
-        addToHistory(graph);
-    }
-    public static void removeNode(DescriptionGraph graph, LudemeNode node){
-        //graph = graph.clone();
-        graph.removeNode(node);
-        //addToHistory(graph);
-        for(int childrenId: node.children()){
-            LudemeNode childrenNode = graph.getNode(childrenId);
-            childrenNode.setParent(null);
+    /**
+     * Assigns a IGraphPanel to a DescriptionGraph
+     * @param graph
+     * @param graphPanel
+     */
+    public static void addGraphPanel(DescriptionGraph graph, IGraphPanel graphPanel)
+    {
+        if(!graphPanelMap.containsKey(graph)) {
+            graphPanelMap.put(graph, graphPanel);
         }
+    }
+
+    /**
+     * Adds a node to the graph
+     * @param graph
+     * @param node
+     */
+    public static void addNode(DescriptionGraph graph, LudemeNode node ){
+        if(graph.getNodes().isEmpty()) graph.setRoot(node);
+        graph.addNode(node);
+        // notify graph panel
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyNodeAdded(node, false);
+        performedUserActions.add(new AddedNodeAction(editorPanel, node));
+    }
+
+    /**
+     * Adds a node to the graph
+     * @param graph
+     * @param node
+     * @param connect Whether the node will be connected after insertion
+     */
+    public static void addNode(DescriptionGraph graph, LudemeNode node, boolean connect){
+        if(graph.getNodes().isEmpty()) graph.setRoot(node);
+        graph.addNode(node);
+        // notify graph panel
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyNodeAdded(node, connect);
+        performedUserActions.add(new AddedNodeAction(editorPanel, node));
+    }
+
+    /**
+     * Creates and adds a node to the graph
+     * @param graph Graph to add the node to
+     * @param symbol The symbol of the node to be created
+     * @param x The x-position of the node
+     * @param y The y-position of the node
+     * @param connect Whether the node will be connected after insertion
+     * @return The created node
+     */
+    public static LudemeNode addNode(DescriptionGraph graph, Symbol symbol, int x, int y, boolean connect)
+    {
+        LudemeNode node = new LudemeNode(symbol, x, y);
+        addNode(graph, node, connect);
+        return node;
+    }
+
+    /**
+     * Removes a node from the graph.
+     * @param graph The graph that contains the node.
+     * @param node The node to remove.
+     */
+    public static void removeNode(DescriptionGraph graph, LudemeNode node)
+    {
+        if(DEBUG) System.out.println("Removing node: " + node.title());
+
+        // Remove the node from the graph
+        graph.removeNode(node);
+        // notify its children that it's parent is null
+        node.childrenNodes().forEach(child -> child.setParent(null));
+        // notify its parent that it's child is null
         if(node.parentNode() != null) node.parentNode().removeChildren(node);
+        // reset the parent's inputs
+        if(node.parentNode() != null)
+        {
+            // find index of the node in the parent's inputs
+            int index = Arrays.asList(node.parentNode().providedInputs()).indexOf(node);
+            Handler.updateInput(graph, node.parentNode(), index, null);
+        }
+        // notify graph panel
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
         // TODO: Remove edges
     }
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
@@ -177,6 +243,24 @@ public class Handler {
         toolsPanel.deactivateSelection();
         toolsPanel.repaint();
         toolsPanel.revalidate();
+    }
+
+    public static void undo()
+    {
+        if(performedUserActions.isEmpty()) return;
+        IUserAction lastAction = performedUserActions.pop();
+        undoneUserActions.add(lastAction);
+        lastAction.undo();
+        System.out.println("undone: " + lastAction.toString());
+    }
+
+    public static void redo()
+    {
+        if(undoneUserActions.isEmpty()) return;
+        IUserAction lastUndoneAction = undoneUserActions.poll();
+        performedUserActions.add(lastUndoneAction);
+        lastUndoneAction.redo();
+        System.out.println("redone: " + lastUndoneAction.toString());
     }
 
     public static void selectNode(LudemeNodeComponent node)

@@ -77,7 +77,8 @@ public class NodePopupMenu extends JPopupMenu {
                     LudemeNode copy = lnc.node().copy(x_shift, y_shift);
                     copies.put(lnc.node(), copy);
                     // add the copy to the graph
-                    graphPanel.addNode(copy);
+                    Handler.addNode(graphPanel.graph(), copy);
+                    //graphPanel.addNode(copy);
                 }
                 // now fill inputs
                 for(LudemeNode original : copies.keySet())
@@ -140,7 +141,8 @@ public class NodePopupMenu extends JPopupMenu {
                 int x_shift = 0;
                 int y_shift = nodeComponent.getHeight() + (int)(nodeComponent.getHeight() * 0.1);
                 LudemeNode copy = nodeComponent.node().copy(x_shift, y_shift);
-                graphPanel.addNode(copy);
+                Handler.addNode(graphPanel.graph(), copy);
+                //graphPanel.addNode(copy);
                 graphPanel.nodeComponent(copy).updateProvidedInputs();
                 graphPanel.repaint();
             }
@@ -164,12 +166,14 @@ public class NodePopupMenu extends JPopupMenu {
                 for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
                 {
                     if(!graphPanel.graph().isDefine() &&  graphPanel.graph().getRoot() == lnc.node()) continue; // cant remove root node
-                    graphPanel.removeNode(lnc.node());
+                    Handler.removeNode(graphPanel.graph(), nodeComponent.node());
+                    //graphPanel.removeNode(lnc.node());
                 }
             }
             else {
                 if(!graphPanel.graph().isDefine() &&  graphPanel.graph().getRoot() == nodeComponent.node()) return; // cant remove root node
-                graphPanel.removeNode(nodeComponent.node());
+                Handler.removeNode(graphPanel.graph(), nodeComponent.node());
+                //graphPanel.removeNode(nodeComponent.node());
             }
         });
 

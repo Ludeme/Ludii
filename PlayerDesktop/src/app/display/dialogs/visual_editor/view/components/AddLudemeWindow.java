@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.components;
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.recs.utils.Pair;
 import app.display.dialogs.visual_editor.recs.utils.ReadableSymbol;
@@ -78,7 +79,8 @@ public class AddLudemeWindow extends JPanel {
                         }
                         else
                         {
-                            graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                            Handler.addNode(graphPanel.graph(), rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                            //graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
                         }
                         searchField.setText("");
                         scrollableList.getVerticalScrollBar().setValue(0);
