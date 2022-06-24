@@ -39,7 +39,7 @@ public class NGramController implements iController {
      */
     public NGramController(NGram model) {
         this.N = model.getN();
-        initModel();
+        docHandler = DocHandler.getInstance();
         this.model = model;
     }
 
@@ -69,10 +69,8 @@ public class NGramController implements iController {
     public List<Instance> getPicklist(String contextString) {
         // 0. if there is the wildcard COMPLETION_WILDCARD in there and cut it and everything after it off
         if(contextString.contains(COMPLETION_WILDCARD)) {
-            System.out.println(contextString);
             int pos = contextString.lastIndexOf(COMPLETION_WILDCARD);
             contextString = contextString.substring(0,pos);
-            System.out.println(contextString);
         }
         // 1. acquire context and preprocess it
         String cleanContextString = Preprocessing.preprocess(contextString);

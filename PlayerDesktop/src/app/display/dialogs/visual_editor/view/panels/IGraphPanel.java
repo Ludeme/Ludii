@@ -31,4 +31,5 @@ public interface IGraphPanel {
     void updateGraph();
     void deselectEverything();
     void repaint();
+    void addSelectionIndex(int index);
 }

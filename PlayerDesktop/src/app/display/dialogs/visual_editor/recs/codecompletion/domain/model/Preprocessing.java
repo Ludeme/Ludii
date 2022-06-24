@@ -151,6 +151,7 @@ public class Preprocessing {
             char curChar = chars[i];
             char nextChar = i < (chars.length - 1) ? chars[(i + 1)] : chars[i];
             switch (curChar) {
+                case '-':
                 case '0':
                 case '1':
                 case '2':

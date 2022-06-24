@@ -70,6 +70,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
     // Recommendations
     private NGramController controller;
     private int N;
+    private List<Long> latencies;
+    private List<Integer> selectedCompletion;
 
     public EditorPanel(int width, int height)
     {
@@ -101,6 +103,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
         this.N = controller.getN();
+        latencies = new ArrayList<>();
+        selectedCompletion = new ArrayList<>();
     }
 
     @Override
@@ -170,10 +174,13 @@ public class EditorPanel extends JPanel implements IGraphPanel
             if(ii.index() < upUntilIndex) upUntilIndex = ii.index();
         }
 
-
+        long start = System.nanoTime();
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().possibleSymbolInputs();
         String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().lnc().node(),  ch.getSelectedConnectionComponent().inputField().inputIndexFirst(), COMPLETION_WILDCARD);
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
+        long finish = System.nanoTime();
+        long latency = finish - start;
+        latencies.add(latency);
         connectLudemeWindow.updateList(typeMatched);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
@@ -250,6 +257,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
         SELECTED = false;
         repaint();
         revalidate();
+    }
+
+    @Override
+    public void addSelectionIndex(int index) {
+        selectedCompletion.add(index);
     }
 
     /**
@@ -620,5 +632,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
         }
     };
 
+    public List<Long> getLatencies() {
+        return latencies;
+    }
+
+    public List<Integer> getSelectedCompletion() {
+        return selectedCompletion;
+    }
 
 }

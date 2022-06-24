@@ -8,18 +8,18 @@ import java.util.List;
  */
 public class CrossValidation {
     private final int amtGames;
+    private final double trainingProbability;
     private final double testProbability;
-    private final double validationProbability;
 
-    private List<Integer> testIDs, validationIDs;
+    private List<Integer> trainingIDs, testIDs;
 
-    public CrossValidation(int amtGames, double testProbability) {
+    public CrossValidation(int amtGames, double trainingProbability) {
         this.amtGames = amtGames;
-        this.testProbability = testProbability;
-        this.validationProbability = 1.0 - testProbability;
+        this.trainingProbability = trainingProbability;
+        this.testProbability = 1.0 - trainingProbability;
 
+        trainingIDs = new ArrayList<>();
         testIDs = new ArrayList<>();
-        validationIDs = new ArrayList<>();
 
         selectIDs();
     }
@@ -32,20 +32,20 @@ public class CrossValidation {
         for(int id = 0; id < amtGames; id++) {
             double u = Math.random();
 
-            if(u < testProbability) {
-                testIDs.add(id);
+            if(u < trainingProbability) {
+                trainingIDs.add(id);
             } else {
-                validationIDs.add(id);
+                testIDs.add(id);
             }
         }
     }
 
-    public List<Integer> getTestIDs() {
-        return testIDs;
+    public List<Integer> getTrainingIDs() {
+        return trainingIDs;
     }
 
-    public List<Integer> getValidationIDs() {
-        return validationIDs;
+    public List<Integer> getTestIDs() {
+        return testIDs;
     }
 
 
