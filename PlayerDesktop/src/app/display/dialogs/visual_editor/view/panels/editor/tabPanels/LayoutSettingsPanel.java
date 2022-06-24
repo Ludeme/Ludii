@@ -23,9 +23,7 @@ public class LayoutSettingsPanel extends JPanel
 
     private static LayoutSettingsPanel lsPanel;
 
-    private final JCheckBox autoUpdateWeights = new JCheckBox("Automatically update weights");
     private final JCheckBox autoPlacement = new JCheckBox("Automatic placement");
-    private final JCheckBox layerPlacement = new JCheckBox("Layer placement");
 
     private LayoutSettingsPanel(IGraphPanel graphPanel)
     {
@@ -101,9 +99,7 @@ public class LayoutSettingsPanel extends JPanel
         add(buttonBox);
 
         // # Adding check boxes #
-        add(autoUpdateWeights);
         add(autoPlacement);
-        add(layerPlacement);
     }
 
     private static void addAButton(JButton button, Container container)
@@ -176,10 +172,6 @@ public class LayoutSettingsPanel extends JPanel
         frame.setResizable(false);
     }
 
-    public boolean isAutoUpdateWeightOn() {return autoUpdateWeights.isSelected();}
-
     public boolean isAutoPlacementOn() {return autoPlacement.isSelected();}
-
-    public boolean isLayerPlacementOn() {return layerPlacement.isSelected();}
 
 }

@@ -51,6 +51,8 @@ public class MainFrame extends JFrame {
         //setLayout(new FlowLayout());
         //add(new AddLudemeWindow(100,100,new Parser().getLudemes()));
 
+        setJMenuBar(new EditorMenuBar());
+
         setVisible(true);
 
     }

@@ -28,10 +28,6 @@ public class MainPanel extends JPanel {
         splitPanel.setLayout(new BorderLayout());
         splitPanel.add(panel, BorderLayout.CENTER);
         splitPanel.add(new EditorSidebar(), BorderLayout.EAST);
-
-        //JSplitPane splitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, new EditorSidebar());
-        //splitPanel.setResizeWeight(0.9);
-
         add(splitPanel, BorderLayout.CENTER);
 
         MouseAdapter ma = new MouseAdapter() {
