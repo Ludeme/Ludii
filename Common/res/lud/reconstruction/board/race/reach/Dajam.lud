@@ -14,12 +14,13 @@
             )
         )
         (hand Each) 
-        (dice d:2 from:0 num:6)
-        (piece "Pawn" Each) // 4 pieces per player
+        (dice d:2 from:0 num:[#])
+        (piece "Pawn" Each) 
     })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#]) // The number of mouths up equals the value of the throw; no mouths up = 12
+        (end [#])
     )
 )
 
