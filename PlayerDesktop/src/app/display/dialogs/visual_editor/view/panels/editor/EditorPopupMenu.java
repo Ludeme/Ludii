@@ -3,22 +3,22 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 
 public class EditorPopupMenu extends JPopupMenu {
 
     public EditorPopupMenu(IGraphPanel graphPanel, int x, int y) {
         JMenuItem newLudeme = new JMenuItem("New Ludeme");
-        JMenuItem duplicateScreen = new JMenuItem("Duplicate Screen");
-        JMenuItem repaintScreen = new JMenuItem("Repaint");
         JMenuItem paste = new JMenuItem("Paste");
 
-        add(paste);
+
 
         paste.addActionListener(e -> {
             if(Handler.copyList() != null)
@@ -100,16 +100,6 @@ public class EditorPopupMenu extends JPopupMenu {
             graphPanel.showAllAvailableLudemes(getX(), getY());
         });
 
-        duplicateScreen.addActionListener(e -> {
-            JFrame frame = new JFrame("Define Editor");
-            EditorPanel editorPanel = new EditorPanel(5000,5000);
-            frame.setContentPane(editorPanel);
-            editorPanel.drawGraph(graphPanel.graph());
-            frame.setVisible(true);
-            frame.setPreferredSize(frame.getPreferredSize());
-            frame.setSize(1200,800);
-        });
-
         compact.addActionListener(e -> {
             LayoutHandler.applyOnPanel(graphPanel);
         });
@@ -121,14 +111,20 @@ public class EditorPopupMenu extends JPopupMenu {
         lmMenu.add(compact);
         lmMenu.add(settings);
 
-        repaintScreen.addActionListener(e -> {
-            graphPanel.repaint();
-                });
+
+        int iconHeight = (int)(newLudeme.getPreferredSize().getHeight()*0.75);
+
+        ImageIcon newLudemeIcon = new ImageIcon(DesignPalette.ADD_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        newLudeme.setIcon(newLudemeIcon);
+        ImageIcon pasteIcon = new ImageIcon(DesignPalette.PASTE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        paste.setIcon(pasteIcon);
+
+        if(Handler.copyList().isEmpty()) paste.setEnabled(false);
+        else paste.setEnabled(true);
 
         add(newLudeme);
+        add(paste);
         add(lmMenu);
-        add(duplicateScreen);
-        add(repaintScreen);
     }
 
 }

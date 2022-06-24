@@ -4,10 +4,12 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
+import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,12 +24,31 @@ public class NodePopupMenu extends JPopupMenu {
         JMenuItem duplicate = new JMenuItem("Duplicate");
         JMenuItem copyBtn = new JMenuItem("Copy");
 
-        add(delete);
-        add(dynamic);
-        add(observe);
-        add(collapse);
-        add(duplicate);
-        add(copyBtn);
+        int iconHeight = (int)(copyBtn.getPreferredSize().getHeight()*0.75);
+
+        ImageIcon copyI = new ImageIcon(DesignPalette.COPY_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon duplicateI = new ImageIcon(DesignPalette.DUPLICATE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon deleteI = new ImageIcon(DesignPalette.DELETE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon collapseI = new ImageIcon(DesignPalette.COLLAPSE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+
+        copyBtn.setIcon(copyI);
+        duplicate.setIcon(duplicateI);
+        collapse.setIcon(collapseI);
+        delete.setIcon(deleteI);
+
+        if(graphPanel.graph().getRoot() != nodeComponent.node()) {
+            add(copyBtn);
+            add(duplicate);
+            add(collapse);
+            add(observe);
+            add(delete);
+        }
+
+
+
+        //        add(dynamic);
+
+
 
         copyBtn.addActionListener(e -> {
             graphPanel.addNodeToSelections(nodeComponent);

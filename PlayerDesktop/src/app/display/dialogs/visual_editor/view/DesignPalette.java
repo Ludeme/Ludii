@@ -164,11 +164,18 @@ public class DesignPalette
     public static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
     public static final ImageIcon DOWN_ICON = getIcon("node/active/down.png");
 
-    public static final ImageIcon COLLAPSE_ICON = getIcon("node/active/collapse.png");
-    public static final ImageIcon COLLAPSE_ICON_HOVER = getIcon("node/hover/collapse.png");
+    //public static final ImageIcon COLLAPSE_ICON = getIcon("node/active/collapse.png");
+    // static final ImageIcon COLLAPSE_ICON_HOVER = getIcon("node/hover/collapse.png");
 
     public static final ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
     public static final ImageIcon UNCOLLAPSE_ICON_HOVER = getIcon("node/hover/uncollapse.png");
+
+    public static final ImageIcon COLLAPSE_ICON = getIcon("popup/collapse.png");
+    public static final ImageIcon DELETE_ICON = getIcon("popup/delete.png");
+    public static final ImageIcon COPY_ICON = getIcon("popup/copy.png");
+    public static final ImageIcon PASTE_ICON = getIcon("popup/paste.png");
+    public static final ImageIcon DUPLICATE_ICON = getIcon("popup/duplicate.png");
+    public static final ImageIcon ADD_ICON = getIcon("popup/add.png");
 
 
 
