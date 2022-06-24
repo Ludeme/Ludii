@@ -20,12 +20,16 @@
                     )
                 )
             )
+            [#]
             use:Vertex
         )
+        (dice d:5 faces:{1 2 3 5 0} num:1)
+        (piece "Marker" Each (move [#]))
     })
     (rules
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play (do (roll) next:[#])) // Captures are made when landing on a space occupied by the opponent.
+        (end [#])
     )
 )
 
