@@ -103,6 +103,8 @@ public class LHeader extends JComponent
         setVisible(true);
 
 
+        title.setToolTipText(ludemeNodeComponent().node().description());
+
         // get help
         //HelpInformation help = DocumentationReader.instance().documentation().get(LN.symbol());
         //if(help != null) setToolTipText(help.toHTML());
