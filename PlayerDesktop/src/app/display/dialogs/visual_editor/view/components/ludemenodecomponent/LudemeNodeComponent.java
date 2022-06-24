@@ -457,7 +457,7 @@ public class LudemeNodeComponent extends JPanel
         LN.setWidth(getWidth());
         LN.setHeight(getHeight());
 
-        setBackground(DesignPalette.BACKGROUND_LUDEME_BODY);
+        setBackground(backgroundColour());
         if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
         else setBorder(DesignPalette.LUDEME_NODE_BORDER);
     }
@@ -473,6 +473,21 @@ public class LudemeNodeComponent extends JPanel
             LudemeNodeComponent lnc = graphPanel().nodeComponent(ln);
             if(lnc!=null)
                 lnc.setVisible(ln.visible());
+        }
+    }
+
+    /**
+     *
+     * @return The background colour according to the nodes package
+     */
+    private Color backgroundColour()
+    {
+        switch(node().packageName())
+        {
+            case "game.equipment": return DesignPalette.BACKGROUND_LUDEME_BODY_EQUIPMENT;
+            case "game.functions": return DesignPalette.BACKGROUND_LUDEME_BODY_FUNCTIONS;
+            case "game.rules": return DesignPalette.BACKGROUND_LUDEME_BODY_RULES;
+            default: return DesignPalette.BACKGROUND_LUDEME_BODY;
         }
     }
 
