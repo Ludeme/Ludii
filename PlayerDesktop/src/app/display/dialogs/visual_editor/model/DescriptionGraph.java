@@ -40,7 +40,6 @@ public class DescriptionGraph implements iGraph {
 
     @Override
     public void setRoot(iGNode node){
-        if (!allLudemeNodes.contains((LudemeNode) node)) allLudemeNodes.add((LudemeNode) node);
         this.ROOT = (LudemeNode) node;
     }
 
@@ -137,6 +136,25 @@ public class DescriptionGraph implements iGraph {
             if(edge.equals(e)) return;
         }
         edgeList.add(new Edge(from , to));
+    }
+
+    @Override
+    public void removeEdge(int from, int to) {
+        for(Edge e : edgeList) {
+            if(e.getNodeA() == from && e.getNodeB() == to) {
+                edgeList.remove(e);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void removeEdge(int containsId) {
+        for(Edge e : new ArrayList<>(edgeList)) {
+            if(e.getNodeA() == containsId ||e.getNodeB() == containsId) {
+                edgeList.remove(e);
+            }
+        }
     }
 
     @Override

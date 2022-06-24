@@ -100,7 +100,8 @@ public class ConnectionHandler
      */
     public void finishNewConnection(LudemeNodeComponent target)
     {
-        addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
+        //addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
+        Handler.addEdge(graphPanel.graph(), selectedConnectionComponent.inputField().inputArea().LNC().node(), target.node(), selectedConnectionComponent.inputField().inputIndexFirst());
         selectedConnectionComponent = null;
     }
 
@@ -111,6 +112,9 @@ public class ConnectionHandler
      */
     public void addConnection(LConnectionComponent source, LIngoingConnectionComponent target)
     {
+
+        if(DEBUG) System.out.println("adding connection from " + source.inputField() + " to " + target.getHeader().title().getText());
+
         // update the positions of the connection components
         source.updatePosition();
         target.updatePosition();
@@ -138,7 +142,7 @@ public class ConnectionHandler
         target.setInputField(source.inputField());
 
         // Add an edge
-        Handler.addEdge(graphPanel.graph(), source.lnc().node(), target.getHeader().ludemeNodeComponent().node());
+        // TODO Handler.addEdge(graphPanel.graph(), source.lnc().node(), target.getHeader().ludemeNodeComponent().node());
         LudemeConnection connection = new LudemeConnection(source, target);
         edges.add(connection);
 

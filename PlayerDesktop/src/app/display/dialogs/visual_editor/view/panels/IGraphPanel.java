@@ -14,9 +14,9 @@ import java.util.List;
 public interface IGraphPanel {
 
 
-    void notifyNodeRemoved(LudemeNodeComponent lnc);
     void notifyNodeAdded(LudemeNode node, boolean connect);
-
+    void notifyNodeRemoved(LudemeNodeComponent lnc);
+    void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, int inputFieldIndex);
 
 
     boolean isBusy();

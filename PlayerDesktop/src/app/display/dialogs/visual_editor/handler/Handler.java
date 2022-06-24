@@ -1,15 +1,18 @@
 package app.display.dialogs.visual_editor.handler;
 
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
+import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.UserActions.AddedNodeAction;
 import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
+import game.util.graph.Graph;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 
@@ -37,25 +40,16 @@ public class Handler {
 
     private static List<LudemeNodeComponent> copyList = new ArrayList<>();
 
-    //private static List<IUserAction> performedUserActions = new ArrayList<>();
+
 
     private static Stack<IUserAction> performedUserActions = new Stack<>();
-    private static Queue<IUserAction> undoneUserActions = new LinkedList<>();
+    private static Stack<IUserAction> undoneUserActions = new Stack<>();
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
+
+    private static HashMap<Graph, ConnectionHandler> connectionHandlerMap = new HashMap<>();
     private static final boolean DEBUG = true;
 
-    /**
-     * Assigns a IGraphPanel to a DescriptionGraph
-     * @param graph
-     * @param graphPanel
-     */
-    public static void addGraphPanel(DescriptionGraph graph, IGraphPanel graphPanel)
-    {
-        if(!graphPanelMap.containsKey(graph)) {
-            graphPanelMap.put(graph, graphPanel);
-        }
-    }
 
     /**
      * Adds a node to the graph
@@ -77,7 +71,8 @@ public class Handler {
      * @param node
      * @param connect Whether the node will be connected after insertion
      */
-    public static void addNode(DescriptionGraph graph, LudemeNode node, boolean connect){
+    public static void addNode(DescriptionGraph graph, LudemeNode node, boolean connect)
+    {
         if(graph.getNodes().isEmpty()) graph.setRoot(node);
         graph.addNode(node);
         // notify graph panel
@@ -124,11 +119,77 @@ public class Handler {
             int index = Arrays.asList(node.parentNode().providedInputs()).indexOf(node);
             Handler.updateInput(graph, node.parentNode(), index, null);
         }
+        // remove edge
+        // TODO: ConenctionHandler
+        graph.removeEdge(node.id());
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
         // TODO: Remove edges
     }
+
+
+    /**
+     * Adds and edge between two nodes.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     * @param inputFieldIndex The index of the inputfield where the connection stems from
+     */
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int inputFieldIndex){
+        // check whether the edge already exists
+        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
+
+        if(DEBUG) System.out.println("Adding edge: " + from.title() + " -> " + to.title() + ", inputFieldIndex: " + inputFieldIndex);
+
+        graph.addEdge(from.id(), to.id());
+        // here form is the parent node
+        from.addChildren(to);
+        to.setParent(from);
+
+        // notify graph panel to draw edge
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), inputFieldIndex);
+    }
+
+    /**
+     * Adds and edge between two nodes.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     */
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
+        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
+        graph.addEdge(from.id(), to.id());
+        // here form is the parent node
+        from.addChildren(to);
+        to.setParent(from);
+    }
+
+    /**
+     * Assigns a IGraphPanel to a DescriptionGraph
+     * @param graph
+     * @param graphPanel
+     */
+    public static void addGraphPanel(DescriptionGraph graph, IGraphPanel graphPanel)
+    {
+        if(!graphPanelMap.containsKey(graph)) {
+            graphPanelMap.put(graph, graphPanel);
+        }
+    }
+
+    /**
+     * Assigns a ConnectionHandler to a Graph
+     * @param graph
+     * @param connectionHandler
+     */
+    public static void addConnectionHandler(Graph graph, ConnectionHandler connectionHandler)
+    {
+        if(!connectionHandlerMap.containsKey(graph)) {
+            connectionHandlerMap.put(graph, connectionHandler);
+        }
+    }
+
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
         if(index < node.providedInputs().length) {
             // if the input is null but was a node before, remove the child from the parent
@@ -190,12 +251,6 @@ public class Handler {
         updateInput(graph, node, inputIndex, newCollection);
     }
 
-    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
-        graph.addEdge(from.id(), to.id());
-        // here form is the parent node
-        from.addChildren(to);
-        to.setParent(from);
-    }
     public static void updatePosition(DescriptionGraph graph, LudemeNode node, int x, int y){
         node.setPos(x, y);
     }
@@ -257,7 +312,7 @@ public class Handler {
     public static void redo()
     {
         if(undoneUserActions.isEmpty()) return;
-        IUserAction lastUndoneAction = undoneUserActions.poll();
+        IUserAction lastUndoneAction = undoneUserActions.pop();
         performedUserActions.add(lastUndoneAction);
         lastUndoneAction.redo();
         System.out.println("redone: " + lastUndoneAction.toString());

@@ -17,6 +17,9 @@ public class AddedNodeAction implements IUserAction
     private final DescriptionGraph graph;
     private final LudemeNode addedNode;
     private boolean isUndone = false;
+
+    private LudemeNode parent; // remembers the parent of the node
+    private int parentInputFieldIndex = -1; // remembers the input index of the removed node in its parent
     private Object[] removedData; // Inputs that were removed when the node was removed
 
 
@@ -73,7 +76,34 @@ public class AddedNodeAction implements IUserAction
     @Override
     public void undo()
     {
+        parent = addedNode.parentNode();
         removedData = addedNode.providedInputs();
+        if(addedNode.parentNode() != null) {
+            Object[] parentProvidedInputs = parent.providedInputs();
+            for (int i = 0; i < parentProvidedInputs.length; i++) {
+                if (parentProvidedInputs[i] == addedNode) {
+                    parentInputFieldIndex = i;
+                    break;
+                }
+            }
+            // then its a collection
+            if(parentInputFieldIndex == -1)
+            {
+                for(int i = 0; i < parentProvidedInputs.length; i++)
+                {
+                    if(!(parentProvidedInputs[i] instanceof Object[])) continue;
+                    for(int j = 0; j < ((Object[])parentProvidedInputs[i]).length; j++)
+                    {
+                        if(((Object[])parentProvidedInputs[i])[j] == addedNode)
+                        {
+                            parentInputFieldIndex = i + j;
+                            break;
+                        }
+                    }
+                    if(parentInputFieldIndex != -1) break;
+                }
+            }
+        }
         Handler.removeNode(graph, addedNode);
         graphPanel().repaint();
         isUndone = true;
@@ -89,8 +119,10 @@ public class AddedNodeAction implements IUserAction
         for (int i = 0; i < removedData.length; i++)
         {
             Object input = removedData[i];
+            if(input == null) continue;
             Handler.updateInput(graph, addedNode, i, input);
         }
+        if(parent != null) Handler.addEdge(graph, parent, addedNode, parentInputFieldIndex);//Handler.updateInput(graph, parent, parentInputIndex, addedNode);
         graphPanel().repaint();
         isUndone = false;
     }

@@ -14,6 +14,8 @@ import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
@@ -293,13 +295,22 @@ public class EditorPanel extends JPanel implements IGraphPanel
     // # Implementation of IGraphPanel interface methods #
 
     @Override
-    public void notifyNodeRemoved(LudemeNodeComponent lnc) {
+    public void notifyNodeRemoved(LudemeNodeComponent lnc)
+    {
         nodeComponents.remove(lnc);
         remove(lnc);
         ch.removeAllConnections(lnc.node(), false);
         repaint();
         if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
             LayoutHandler.applyOnPanel(EditorPanel.this);
+    }
+
+    @Override
+    public void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, int inputFieldIndex)
+    {
+        LConnectionComponent source = from.inputArea().currentInputFields.get(inputFieldIndex).connectionComponent();
+        LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
+        ch.addConnection(source, target);
     }
 
     @Override
