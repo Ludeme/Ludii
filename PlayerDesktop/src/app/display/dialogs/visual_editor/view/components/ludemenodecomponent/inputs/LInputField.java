@@ -178,8 +178,8 @@ public class LInputField extends JComponent
             label.setText("Choice");
         }
 
-        label.setToolTipText(inputArea().LNC().node().parameterDescription(nodeArgument(0).originalArg));
-        optionalLabel.setToolTipText(inputArea().LNC().node().parameterDescription(nodeArgument(0).originalArg));
+        label.setToolTipText(nodeArgument(0).parameterDescription());
+        optionalLabel.setToolTipText(nodeArgument(0).parameterDescription());
 
         // If collection
         if(parent != null)

@@ -1,5 +1,7 @@
 package app.display.dialogs.visual_editor.model;
 
+import app.display.dialogs.visual_editor.view.DocumentationReader;
+import app.display.dialogs.visual_editor.view.HelpInformation;
 import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
@@ -32,6 +34,7 @@ public class NodeArgument
     private final List<Symbol> POSSIBLE_SYMBOL_INPUTS_EXPANDED;
     /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
     private boolean SEPARATE_NODE;
+    private String parameterDescription = null;
 
     public final ClauseArg originalArg;
     public final List<ClauseArg> originalArgs = new ArrayList<>();
@@ -90,6 +93,8 @@ public class NodeArgument
         this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
         this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
         SEPARATE_NODE = false;
+
+        parameterDescription = readHelp();
     }
 
     /**
@@ -390,6 +395,21 @@ public class NodeArgument
         int index = ARGS.indexOf(activeArg);
         ARGS.set(0, activeArg);
         ARGS.set(index, temp);
+        parameterDescription = readHelp();
+    }
+
+    public String parameterDescription()
+    {
+        return parameterDescription;
+    }
+
+    private String readHelp()
+    {
+        DocumentationReader dr = DocumentationReader.instance();
+        HelpInformation hi = dr.documentation().get(CLAUSE.symbol());
+        if(hi.parameter(arg()) == null) return null;
+        String help = hi.parameter(arg());
+        return help;
     }
 
     /**
