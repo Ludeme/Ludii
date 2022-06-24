@@ -12,10 +12,10 @@
     })  
     (rules 
         (start {
-        	(place "Seed" (handSite P1) count:21)
-        	(place "Seed" (handSite P2) count:21)
+            (place "Seed" (handSite P1) count:21)
+            (place "Seed" (handSite P2) count:21)
         })
-    		
+        
         (play (forEach Piece))
         
         (end
