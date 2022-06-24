@@ -96,6 +96,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         Handler.editorPanel = this;
         Handler.addGraphPanel(graph, this);
 
+        Handler.recordUserActions = false;
         LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), 30, 30, false);
 
         //LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
@@ -110,6 +111,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         this.N = controller.getN();
         latencies = new ArrayList<>();
         selectedCompletion = new ArrayList<>();
+        Handler.recordUserActions = true;
     }
 
     @Override

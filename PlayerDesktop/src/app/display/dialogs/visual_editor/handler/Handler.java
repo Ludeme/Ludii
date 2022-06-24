@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.UserActions.AddedNodeAction;
 import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
+import app.display.dialogs.visual_editor.model.UserActions.RemovedNodeAction;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
@@ -44,6 +45,7 @@ public class Handler {
 
     private static Stack<IUserAction> performedUserActions = new Stack<>();
     private static Stack<IUserAction> undoneUserActions = new Stack<>();
+    public static boolean recordUserActions = true;
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
 
@@ -62,7 +64,7 @@ public class Handler {
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeAdded(node, false);
-        performedUserActions.add(new AddedNodeAction(editorPanel, node));
+        if(recordUserActions) performedUserActions.add(new AddedNodeAction(editorPanel, node));
     }
 
     /**
@@ -78,7 +80,7 @@ public class Handler {
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeAdded(node, connect);
-        performedUserActions.add(new AddedNodeAction(editorPanel, node));
+        if(recordUserActions) performedUserActions.add(new AddedNodeAction(editorPanel, node));
     }
 
     /**
@@ -106,6 +108,8 @@ public class Handler {
     {
         if(DEBUG) System.out.println("Removing node: " + node.title());
 
+        if(recordUserActions) performedUserActions.add(new RemovedNodeAction(editorPanel, node));
+
         // Remove the node from the graph
         graph.removeNode(node);
         // notify its children that it's parent is null
@@ -125,7 +129,6 @@ public class Handler {
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
-        // TODO: Remove edges
     }
 
 

@@ -76,6 +76,7 @@ public class AddedNodeAction implements IUserAction
     @Override
     public void undo()
     {
+        Handler.recordUserActions = false;
         parent = addedNode.parentNode();
         removedData = addedNode.providedInputs();
         if(addedNode.parentNode() != null) {
@@ -107,6 +108,7 @@ public class AddedNodeAction implements IUserAction
         Handler.removeNode(graph, addedNode);
         graphPanel().repaint();
         isUndone = true;
+        Handler.recordUserActions = true;
     }
 
     /**
@@ -114,6 +116,7 @@ public class AddedNodeAction implements IUserAction
      */
     @Override
     public void redo() {
+        Handler.recordUserActions = false;
         Handler.addNode(graph, addedNode);
         // ensure that all of its connections are added to the graph
         for (int i = 0; i < removedData.length; i++)
@@ -125,6 +128,7 @@ public class AddedNodeAction implements IUserAction
         if(parent != null) Handler.addEdge(graph, parent, addedNode, parentInputFieldIndex);//Handler.updateInput(graph, parent, parentInputIndex, addedNode);
         graphPanel().repaint();
         isUndone = false;
+        Handler.recordUserActions = true;
     }
 
     @Override
