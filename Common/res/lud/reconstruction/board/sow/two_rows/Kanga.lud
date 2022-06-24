@@ -20,25 +20,25 @@
     })  
     
     (rules 
-    	(start {
-    		(place "Seed" (handSite P1) count:6)
-    		(place "Seed" (handSite P2) count:6)
-    	})
-    	phases:{
-    		(phase "Placement"
-    			(play 
-    				(move 
-    					(from (sites Hand Mover))
-    					(to (sites Mover))
-    				)
-    			)
-    			(nextPhase Mover (is Empty (handSite Mover)) "Play")
-    		)
-    		(phase "Play"
-    			(play [#]) // Players capture holes from the other player Any holes with a single counter on the player's side are vulnerable to capture.
-    	        (end [#])
-    		)
-    	}
+        (start {
+            (place "Seed" (handSite P1) count:6)
+            (place "Seed" (handSite P2) count:6)
+        })
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (sites Hand Mover))
+                    (to (sites Mover))
+                )
+            )
+            (nextPhase Mover (is Empty (handSite Mover)) "Play")
+        )
+        (phase "Play"
+            (play [#]) // Players capture holes from the other player Any holes with a single counter on the player's side are vulnerable to capture.
+            (end [#])
+        )
+        }
     )
 )
 

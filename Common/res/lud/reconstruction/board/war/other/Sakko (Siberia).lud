@@ -13,10 +13,10 @@
     })  
     
     (rules 
-    	(start {
-    		(place "King0" (centrePoint))
-    		[#]
-    	})
+        (start {
+            (place "King0" (centrePoint))
+            [#]
+        })
         (play
             (do (roll)
                 next:[#] // Sakko can activate a piece. Replacement capture. // Conversion of the king (but we dunno what happens to the piece landing on it). 
