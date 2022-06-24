@@ -94,8 +94,12 @@ public class DocumentationReader
             {
                 String fullLine = line.substring(15);
                 String parameterStringName = fullLine.substring(0, fullLine.lastIndexOf(":"));
+
+                String[] split = parameterStringName.split(" ");
+                if(split.length > 1) parameterStringName = split[0].substring(0, split[0].length()-1);
+
                 ClauseArg arg = findClauseArg(currentClause, parameterStringName);
-                String parameterString = fullLine.substring(fullLine.lastIndexOf(":")+1);
+                String parameterString = fullLine.substring(parameterStringName.length()+2);
                 currentHelpInfo.addParameter(arg, parameterString);
             }
             else if(line.startsWith("EXAMPLE:"))
@@ -227,7 +231,7 @@ public class DocumentationReader
 
         EBNFClause ec = clauseMap.get(c);
 
-        if(string.contains(":"))
+        /*if(string.contains(":"))
         {
             for(EBNFClauseArg arg : ec.args())
             {
@@ -239,6 +243,13 @@ public class DocumentationReader
                 }
             }
         }
+
+        if(string.equals("int")) string = "<int>";
+        if(string.equals("ints")) string = "<ints>";
+        if(string.equals("[int]")) string = "[<int>]";
+        if(string.equals("[ints]")) string = "[<ints>]";
+        if(string.equals("{int}")) string = "{<int>}";
+        if(string.equals("{ints}")) string = "{<ints>}";*/
 
         String[] split = ec.toString().substring(1, ec.toString().length()-1).split(" ");
         int index = Arrays.asList(split).indexOf(string);
