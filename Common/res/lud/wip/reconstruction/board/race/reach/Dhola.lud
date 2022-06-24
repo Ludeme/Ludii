@@ -1,5 +1,5 @@
 (game "Dhola"  
-    (players 4)  
+    (players [2..4])  
     (equipment { 
         (board 
             (add
@@ -12,14 +12,16 @@
                 )
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
             )
+            [#]
         )
         (hand Each) 
         (dice d:2 from:0 num:5)
         (piece "Pawn" Each) // 4 pieces per player
     })  
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#])
+        (end [#])
     )
 )
 
