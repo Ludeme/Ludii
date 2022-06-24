@@ -1,10 +1,13 @@
 (game "Caseheapana"
     (players 2) 
     (equipment { 
-        (board (concentric {160}) use:Vertex)
+        (board (concentric {160}) use:Edge) // Players move in opposite directions around the circle
+        (piece "Stick" Each)
+        (dice d:2 from:0 num:3)
+        (map "Throw" [#]) // The throws are as follows: two flat and the notched side up = 15; three round sides = 10; three flat sides = 5; two flat up = 1; one flat and two round up = 1.
     })
     (rules
-        (play (forEach Piece))
+        (play (forEach Piece)) // When a player moves beyond the stone that is opposite the starting position, they may send the opponent's horse back to start when they land on it.
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
