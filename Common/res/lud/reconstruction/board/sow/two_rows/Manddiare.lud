@@ -10,15 +10,11 @@
     )  
     (rules 
         
-        (start (set Count <Board:size> to:(sites Track) ) )
+        (start [#])
         
-        (play (forEach Piece))
+        (play [#]) // When the final counter of the sowing lands in a hole, making it contain an even number of counters, these are captured.
         
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        (end [#])
     )
 )
 
