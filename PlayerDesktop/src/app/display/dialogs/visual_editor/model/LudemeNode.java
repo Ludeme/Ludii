@@ -52,6 +52,10 @@ public class LudemeNode implements iLudemeNode, iGNode
     private boolean collapsed = false;
     /** whether this node is visible */
     private boolean visible = true;
+    /** Which package this node belongs to.
+     * game, game.equipment, game.functions, game.rules
+     */
+    private String packageName;
 
     // Variables for dynamic nodes
     /** HashMap of NodeArguments keyed by the clause they correspond to */
@@ -138,6 +142,17 @@ public class LudemeNode implements iLudemeNode, iGNode
         else
         {
             currentNodeArguments = nodeArguments.get(selectedClause());
+        }
+        // package name
+        if(symbol.cls().getPackage() == null) packageName = "game";
+        else
+        {
+            String[] splitPackage = symbol.cls().getPackage().getName().split("\\.");
+            if(splitPackage.length == 1) packageName = splitPackage[0];
+            else
+            {
+                packageName = splitPackage[0] + "." + splitPackage[1];
+            }
         }
     }
 
@@ -956,6 +971,15 @@ public class LudemeNode implements iLudemeNode, iGNode
             if(!isLudemeCollection) copy.setProvidedInput(i, input);
         }
         return copy;
+    }
+
+    /**
+     *
+     * @return The package name of the symbol
+     */
+    public String packageName()
+    {
+        return packageName;
     }
 
     @Override

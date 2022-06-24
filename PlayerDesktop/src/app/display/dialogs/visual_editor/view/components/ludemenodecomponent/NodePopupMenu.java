@@ -183,6 +183,7 @@ public class NodePopupMenu extends JPopupMenu {
             message += "ID: " + node.id() + "\n";
             message += "Name: " + node.symbol().name() + "\n";
             message += "Constructor: " + node.selectedClause() + "\n";
+            message += "Package: " + node.packageName() + "\n";
             message += "Dynamic: " + node.dynamic() + "\n";
             message += "Provided Inputs: " + Arrays.toString(node.providedInputs()) + "\n";
             message += "Fields: " + nodeComponent.inputArea().currentInputFields + "\n";

@@ -105,7 +105,17 @@ public class DesignPalette
     public static Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
         // backgrounds
     public static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
-    public static Color BACKGROUND_LUDEME_TITLE = new Color(253,253,253);
+
+
+         // there are 3 classes: game.equipment, game.functions, and game.rules
+                    // game.rules: game.rules.play, game.rules.start, game.rules.end
+                    // game.functions: .region, .ints, .graph, .floats, .dim, .booleans
+
+    public static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
+    public static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
+    public static Color BACKGROUND_LUDEME_BODY_RULES = new Color(248, 242, 255);
+
+
     public static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
     public static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
         // fills
