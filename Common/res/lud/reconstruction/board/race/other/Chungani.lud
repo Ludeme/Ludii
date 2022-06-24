@@ -1,14 +1,17 @@
 (game "Chungani"
     (players 2)  
     (equipment { 
-        (board (rectangle 1 5)   
+        (board (rectangle 1 5) [#]  
             use:Vertex
         )
+        (piece "Bean" Each (move [#]))
+        (dice [#])
     })  
     
     (rules 
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	(start [#])
+        (play [#]) // Players moved the beans from one space to another according to the dice. The first space is worth ten, the second twenty, the third thirty, up to fifty.
+        (end [#])
     )
 )
 
@@ -33,7 +36,6 @@
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour Black) scale:0.9)
-        
     })
     
 )
