@@ -65,10 +65,11 @@ public class Handler {
     }
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
         if(index < node.providedInputs().length) {
-            //graph = graph.clone();
-            if(DEBUG) System.out.println("[HANDLER] Updating input of " + node.symbol().name() + ", " + index + " to " + input);
+            // if the input is null but was a node before, remove the child from the parent
+            if(input == null && node.providedInputs()[index] instanceof LudemeNode) {
+                node.removeChildren((LudemeNode) node.providedInputs()[index]);
+            }
             node.setProvidedInput(index, input);
-            if(DEBUG) System.out.println("[HANDLER] Provided Inputs: " + Arrays.toString(node.providedInputs()));
         }
     }
 
