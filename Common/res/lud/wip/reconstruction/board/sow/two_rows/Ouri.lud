@@ -6,10 +6,16 @@
             (track "Track" "1,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
-        }
-    )  
+        (hand Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
     (rules 
-        
+        (start {
+        	(place "Seed" (handSite P1) count:21)
+        	(place "Seed" (handSite P2) count:21)
+        })
+    		
         (play (forEach Piece))
         
         (end
@@ -38,6 +44,7 @@
     
     (graphics {
         (board Style Mancala)
+        (show AsHoles {1..10} Square)
     })
 )
 
