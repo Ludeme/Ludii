@@ -4,6 +4,8 @@ package app.display.dialogs.visual_editor.model;
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
+import app.display.dialogs.visual_editor.view.DocumentationReader;
+import app.display.dialogs.visual_editor.view.HelpInformation;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
@@ -56,6 +58,8 @@ public class LudemeNode implements iLudemeNode, iGNode
     private boolean collapsed = false;
     /** whether this node is visible */
     private boolean visible = true;
+    /** HelpInformation */
+    private final HelpInformation helpInformation;
     /** Which package this node belongs to.
      * game, game.equipment, game.functions, game.rules
      */
@@ -158,6 +162,7 @@ public class LudemeNode implements iLudemeNode, iGNode
                 packageName = splitPackage[0] + "." + splitPackage[1];
             }
         }
+        this.helpInformation = DocumentationReader.instance().help(SYMBOL);
     }
 
     /**
@@ -1006,6 +1011,27 @@ public class LudemeNode implements iLudemeNode, iGNode
     public String packageName()
     {
         return packageName;
+    }
+
+    /**
+     *
+     * @return The HelpInformation
+     */
+    public HelpInformation helpInformation()
+    {
+        return helpInformation;
+    }
+
+    public String description()
+    {
+        if(helpInformation == null) return "";
+        return helpInformation.description();
+    }
+
+    public String parameterDescription(ClauseArg arg)
+    {
+        if(helpInformation == null) return "";
+        return helpInformation.parameter(arg);
     }
 
     @Override

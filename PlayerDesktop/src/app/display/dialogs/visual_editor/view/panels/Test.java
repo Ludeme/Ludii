@@ -5,6 +5,9 @@ import app.display.dialogs.visual_editor.view.HelpInformation;
 import grammar.ClassEnumerator;
 import grammar.Grammar;
 import main.grammar.Symbol;
+import main.grammar.ebnf.EBNFClause;
+import main.grammar.ebnf.EBNFClauseArg;
+import main.grammar.ebnf.EBNFRule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +17,19 @@ public class Test {
     public static void main(String[] args) throws ClassNotFoundException {
         Grammar grammar = Grammar.grammar();
         System.out.println(");");
+
+        for(EBNFRule r : grammar.ebnf().rules().values())
+        {
+            for(EBNFClause c : r.rhs())
+            {
+                if(c.args() == null) continue;
+                for(EBNFClauseArg a : c.args())
+                {
+                    if(a.parameterName() != null)
+                        System.out.println(a.token());
+                }
+            }
+        }
 
         List<String> packageNames = new ArrayList<>();
         for(Symbol s : grammar.symbols())
