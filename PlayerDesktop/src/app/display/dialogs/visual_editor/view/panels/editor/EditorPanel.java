@@ -39,7 +39,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     private DescriptionGraph graph = new DescriptionGraph();
     private final List<LudemeNodeComponent> nodeComponents = new ArrayList<>();
-    private final List<LudemeConnection> edges = new ArrayList<>();
     private Point mousePosition;
 
     private final LayoutHandler lm;
@@ -378,6 +377,17 @@ public class EditorPanel extends JPanel implements IGraphPanel
         lnc.header().inputField().notifyCollapsed();
         if(!collapsed) lnc.setVisible(true);
         repaint();
+    }
+
+    @Override
+    public void notifyTerminalInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, Object input) {
+        lnc.updateProvidedInputs();
+    }
+
+    @Override
+    public void notifyInputsUpdated(LudemeNodeComponent lnc)
+    {
+        lnc.updateProvidedInputs();
     }
 
     @Override
