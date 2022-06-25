@@ -215,8 +215,8 @@ public class Handler {
         graph.removeEdge(from.id(), to.id());
         from.removeChildren(to);
         to.setParent(null);
-        //IGraphPanel graphPanel = graphPanelMap.get(graph);
-        // TODO: graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
     }
 
     /**

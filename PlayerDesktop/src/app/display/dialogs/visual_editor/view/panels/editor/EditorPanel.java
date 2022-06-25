@@ -358,6 +358,22 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
+    public void notifyEdgeRemoved(LudemeNodeComponent from, LudemeNodeComponent to) {
+        // find inputfield of from node
+        LInputField inputField = null;
+        for(LInputField ii : from.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(to.node().creatorArgument()))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+        assert inputField != null;
+        ch.removeConnection(from.node(), inputField.connectionComponent());
+    }
+
+    @Override
     public void notifyCollapsed(LudemeNodeComponent lnc, boolean collapsed) {
         lnc.header().inputField().notifyCollapsed();
         if(!collapsed) lnc.setVisible(true);

@@ -80,6 +80,7 @@ public class AddedConnectionAction implements IUserAction
     @Override
     public void redo() {
         //Handler.updateInput(graph, from, index, to);
+        Handler.addEdge(graph, from, to, nodeArgument);
         Handler.updateInput(graph, from, nodeArgument, to);
     }
 }
