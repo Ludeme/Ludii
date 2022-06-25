@@ -64,7 +64,7 @@ public class ProgressBar {
         progressBar.setValue(progressInt);
         progressBar.setVisible(true);
         label.setVisible(true);
-        System.out.println(progressInt);
+        //System.out.println(progressInt);
         dialog.invalidate();
         dialog.validate();
         dialog.repaint();

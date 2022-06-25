@@ -18,8 +18,9 @@ public class Report {
     public Report(int N, String location) {
         this.N = N;
         this.location = location;
-        recordedVariables = Arrays.asList(new String[]{"i","time_nano","time_milis", "time_s","time_min","time_h",
-                "top_1_precision","top_3_precision","top_5_precision","top_7_precision"});
+        recordedVariables = Arrays.asList(new String[]{"i","time_nano",
+                "top_1_precision_training","top_3_precision_training","top_5_precision_training","top_7_precision_training",
+                "top_1_precision_test","top_3_precision_test","top_5_precision_test","top_7_precision_test"});
         String tempHeader = "";
         for(String variable : recordedVariables) {
             tempHeader += variable + ",";
@@ -31,7 +32,7 @@ public class Report {
 
     /**
      * This requires a list of doubles with these values in this order:
-     * "i","time_nano","time_milis", "time_s","time_min","time_h",
+     * "i","time_nano",
      * "top_1_precision","top_3_precision","top_5_precision","top_7_precision"
      *
      * It also converts this list of values into one string
@@ -48,34 +49,30 @@ public class Report {
         long nano = (long) nanoDouble;
         line += nano + ",";
 
-        double milisDouble = record.get(2);
-        long milis = (long) milisDouble;
-        line += milis + ",";
-
-        double sDouble = record.get(3);
-        int s = (int) sDouble;
-        line += s + ",";
-
-        double minDouble = record.get(4);
-        int min = (int) minDouble;
-        line += min + ",";
-
-        double hDouble = record.get(5);
-        int h = (int) hDouble;
-        line += h + ",";
-
         // precision
-        double top1 = record.get(6);
-        line += top1 + ",";
+        double top1Training = record.get(2);
+        line += top1Training + ",";
 
-        double top3 = record.get(7);
-        line += top3 + ",";
+        double top3Training = record.get(3);
+        line += top3Training + ",";
 
-        double top5 = record.get(8);
-        line += top5 + ",";
+        double top5Training = record.get(4);
+        line += top5Training + ",";
 
-        double top7 = record.get(9);
-        line += top7;
+        double top7Training = record.get(5);
+        line += top7Training + ",";
+
+        double top1Test = record.get(6);
+        line += top1Test + ",";
+
+        double top3Test = record.get(7);
+        line += top3Test + ",";
+
+        double top5Test = record.get(8);
+        line += top5Test + ",";
+
+        double top7Test = record.get(9);
+        line += top7Test;
 
         lines.add(line);
     }

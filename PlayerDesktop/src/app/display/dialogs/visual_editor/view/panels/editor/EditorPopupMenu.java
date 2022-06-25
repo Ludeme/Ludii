@@ -34,7 +34,8 @@ public class EditorPopupMenu extends JPopupMenu {
                     LudemeNode copy = lnc.node().copy(x_shift, y_shift);
                     copies.put(lnc.node(), copy);
                     // add the copy to the graph
-                    graphPanel.addNode(copy);
+                    Handler.addNode(graphPanel.graph(), copy);
+                    //graphPanel.addNode(copy);
                 }
                 // now fill inputs
                 for(LudemeNode original : copies.keySet())
@@ -125,6 +126,17 @@ public class EditorPopupMenu extends JPopupMenu {
         add(newLudeme);
         add(paste);
         add(lmMenu);
+
+
+        JMenuItem undo = new JMenuItem("Undo");
+        undo.addActionListener(e -> {
+            Handler.undo();
+        });
+        add(undo);
+
+        JMenuItem redo = new JMenuItem("Redo");
+        redo.addActionListener(e -> Handler.redo());
+        add(redo);
     }
 
 }

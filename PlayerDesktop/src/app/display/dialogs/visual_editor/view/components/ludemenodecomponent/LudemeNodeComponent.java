@@ -95,7 +95,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public void changeCurrentClause(Clause clause)
     {
-        Handler.updateCurrentClause(graphPanel().graph(), node(), clause);
+        //Handler.updateCurrentClause(graphPanel().graph(), node(), clause);
         inputArea.changedSelectedClause();
         revalidate();
         repaint();

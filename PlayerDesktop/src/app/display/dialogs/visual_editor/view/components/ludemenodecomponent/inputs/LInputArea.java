@@ -888,7 +888,7 @@ public class LInputArea extends JPanel
      * @param inputField
      * @return The index of an inputfield in the currentInputFields list
      */
-    private int inputFieldIndex(LInputField inputField)
+    public int inputFieldIndex(LInputField inputField)
     {
         return currentInputFields.indexOf(inputField);
     }

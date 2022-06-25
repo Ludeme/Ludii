@@ -14,10 +14,14 @@ import app.display.dialogs.visual_editor.view.components.AddLudemeWindow;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
+import main.grammar.Clause;
 import main.grammar.Symbol;
 
 import javax.swing.*;
@@ -70,6 +74,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
     // Recommendations
     private NGramController controller;
     private int N;
+    private List<Long> latencies;
+    private List<Integer> selectedCompletion;
 
     public EditorPanel(int width, int height)
     {
@@ -90,10 +96,14 @@ public class EditorPanel extends JPanel implements IGraphPanel
         graph.setRoot(addNode(gameLudeme, 30, 30, false));*/
         Handler.gameDescriptionGraph = graph;
         Handler.editorPanel = this;
+        Handler.addGraphPanel(graph, this);
 
-        LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
+        Handler.recordUserActions = false;
+        LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), null, 30, 30, false);
+
+        //LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
         graph.setRoot(gameLudemeNode);
-        addLudemeNodeComponent(gameLudemeNode, false);
+        //addLudemeNodeComponent(gameLudemeNode, false);
 
         lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(this);
@@ -101,6 +111,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
         this.N = controller.getN();
+        latencies = new ArrayList<>();
+        selectedCompletion = new ArrayList<>();
+        Handler.recordUserActions = true;
     }
 
     @Override
@@ -169,24 +182,19 @@ public class EditorPanel extends JPanel implements IGraphPanel
         {
             if(ii.index() < upUntilIndex) upUntilIndex = ii.index();
         }
-
-
+        long start = System.nanoTime();
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().possibleSymbolInputs();
         String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().lnc().node(),  ch.getSelectedConnectionComponent().inputField().inputIndexFirst(), COMPLETION_WILDCARD);
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
-        connectLudemeWindow.updateList(typeMatched);
+        long finish = System.nanoTime();
+        long latency = finish - start;
+        latencies.add(latency);
+        connectLudemeWindow.updateList(ch.getSelectedConnectionComponent().inputField(), typeMatched);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();
         revalidate();
         repaint();
-    }
-
-    public LudemeNode createLudemeNode(Symbol symbol, int x, int y)
-    {
-        LudemeNode node = new LudemeNode(symbol, x, y);
-        Handler.addNode(graph, node);
-        return node;
     }
 
     public void addLudemeNodeComponent(LudemeNode node, boolean connect)
@@ -252,6 +260,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
         revalidate();
     }
 
+    @Override
+    public void addSelectionIndex(int index) {
+        selectedCompletion.add(index);
+    }
+
     /**
      * Select node and add it into selection list
      * @param lnc ludeme node component
@@ -284,6 +297,56 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
 
     // # Implementation of IGraphPanel interface methods #
+
+    @Override
+    public void notifyNodeRemoved(LudemeNodeComponent lnc)
+    {
+        nodeComponents.remove(lnc);
+        remove(lnc);
+        ch.removeAllConnections(lnc.node(), false);
+        repaint();
+        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
+            LayoutHandler.applyOnPanel(EditorPanel.this);
+    }
+
+    @Override
+    public void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, int inputFieldIndex)
+    {
+        LConnectionComponent source = from.inputArea().currentInputFields.get(inputFieldIndex).connectionComponent();
+        LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
+        ch.addConnection(source, target);
+    }
+
+     public void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument)
+     {
+         LInputField inputField = null;
+         for(LInputField ii : from.inputArea().currentInputFields)
+         {
+             if(ii.nodeArguments().contains(inputFieldArgument))
+             {
+                 inputField = ii;
+                 break;
+             }
+         }
+         if(inputField == null)
+         {
+             System.out.println("[EP] Error: input field not found");
+             return;
+         }
+         LConnectionComponent source = inputField.connectionComponent();
+         LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
+         ch.addConnection(source, target);
+     }
+
+    @Override
+    public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
+        lnc.changeCurrentClause(clause);
+    }
+
+    @Override
+    public void notifyNodeAdded(LudemeNode node, boolean connect) {
+        addLudemeNodeComponent(node, connect);
+    }
 
     @Override
     public boolean isBusy() {
@@ -374,25 +437,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
-    public void addNode(LudemeNode node)
-    {
-        Handler.addNode(graph, node);
-        addLudemeNodeComponent(node, false);
-        repaint();
-    }
-
-    @Override
-    public LudemeNode addNode(Symbol symbol, int x, int y, boolean connect)
-    {
-        LudemeNode node = new LudemeNode(symbol, x, y);
-        Handler.addNode(graph, node);
-        addLudemeNodeComponent(node, connect);
-        repaint();
-        if(DEBUG) System.out.println("[EP] Added node: " + node.symbol().name());
-        return node;
-    }
-
-    @Override
     public void showAllAvailableLudemes(int x, int y)
     {
         addLudemeWindow.setVisible(true);
@@ -413,20 +457,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 ch.finishNewConnection(lnc);
             }
         }
-    }
-
-    @Override
-    public void removeNode(LudemeNode node)
-    {
-        if(DEBUG) System.out.println("[EP] Removing node " + node.symbol().name());
-        LudemeNodeComponent lc = nodeComponent(node);
-        nodeComponents.remove(lc);
-        ch.removeAllConnections(node, false);
-        Handler.removeNode(graph, node);
-        remove(lc);
-        repaint();
-        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
-            LayoutHandler.applyOnPanel(EditorPanel.this);
     }
 
     @Override
@@ -489,7 +519,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
                     // if user has no chocie for next ludeme -> automatically add required ludeme
                     if(ch.getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
                     {
-                        addNode(ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), e.getX(), e.getY(), true);
+                        Handler.addNode(graph, ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), ch.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
+                        //addNode(ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), e.getX(), e.getY(), true);
                     }
                     else if(!connectLudemeWindow.isVisible() && ch.getSelectedConnectionComponent().possibleSymbolInputs().size() > 1)
                     {
@@ -631,5 +662,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
         }
     };
 
+    public List<Long> getLatencies() {
+        return latencies;
+    }
+
+    public List<Integer> getSelectedCompletion() {
+        return selectedCompletion;
+    }
 
 }

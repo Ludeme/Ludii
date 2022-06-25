@@ -100,6 +100,7 @@ public class ModelCreator {
         //discard of the progressbar
         pb.close();
         //if the model is only created for validation purposes, it is not written to a file
+        System.out.println("VALIDATION:"+validation);
         if(!validation) {
             ModelFilehandler.writeModel(model);
         }

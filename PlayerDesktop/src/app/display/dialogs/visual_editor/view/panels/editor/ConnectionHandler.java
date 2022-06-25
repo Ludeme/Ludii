@@ -1,7 +1,9 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -100,7 +102,9 @@ public class ConnectionHandler
      */
     public void finishNewConnection(LudemeNodeComponent target)
     {
-        addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
+        //addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
+        Handler.addEdge(graphPanel.graph(), selectedConnectionComponent.inputField().inputArea().LNC().node(), target.node(), selectedConnectionComponent.inputField().inputArea().inputFieldIndex(selectedConnectionComponent.inputField()));
+        //Handler.addEdge(graphPanel.graph(), selectedConnectionComponent.inputField().inputArea().LNC().node(), target.node(), selectedConnectionComponent.inputField().inputArea().inputFieldIndex(selectedConnectionComponent.inputField()));
         selectedConnectionComponent = null;
     }
 
@@ -111,6 +115,9 @@ public class ConnectionHandler
      */
     public void addConnection(LConnectionComponent source, LIngoingConnectionComponent target)
     {
+
+        if(DEBUG) System.out.println("adding connection from " + source.inputField() + " to " + target.getHeader().title().getText());
+
         // update the positions of the connection components
         source.updatePosition();
         target.updatePosition();
@@ -138,7 +145,7 @@ public class ConnectionHandler
         target.setInputField(source.inputField());
 
         // Add an edge
-        Handler.addEdge(graphPanel.graph(), source.lnc().node(), target.getHeader().ludemeNodeComponent().node());
+        // TODO Handler.addEdge(graphPanel.graph(), source.lnc().node(), target.getHeader().ludemeNodeComponent().node());
         LudemeConnection connection = new LudemeConnection(source, target);
         edges.add(connection);
 
@@ -150,13 +157,15 @@ public class ConnectionHandler
             LudemeNode sourceNode = source.lnc().node();
             int collectionElementIndex = 0;
             if(source.inputField().parent() != null) collectionElementIndex = source.inputField().parent().children().indexOf(source.inputField())+1;
-            Handler.setCollectionInput(graphPanel.graph(), sourceNode, source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
+            Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
+            Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
         }
         else
         {
             if(DEBUG) System.out.println("[EP] Adding connection: " + source.lnc().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.inputField().inputIndexFirst());
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
             Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
+            Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node());
         }
         
         graphPanel.repaint();
@@ -179,6 +188,7 @@ public class ConnectionHandler
             e.getIngoingConnectionComponent().setFill(false); // the node source was connected to is not connected anymore
             e.getConnectionComponent().fill(false); // the node source is not connected anymore
             Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
+            Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
         }
 
         graphPanel.repaint();
@@ -193,6 +203,7 @@ public class ConnectionHandler
             if(e.getConnectionComponent().equals(connection))
             {
                 edges.remove(e);
+                Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode()); // TODO: Below should happen in notifyEdgeRemoved()
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().fill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
@@ -206,13 +217,15 @@ public class ConnectionHandler
                         int collectionElementIndex = 0;
                         if(connection.inputField().parent() != null) collectionElementIndex = connection.inputField().children().indexOf(connection.inputField())+1;
                         // public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
-                        Handler.setCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().inputIndexFirst(), null, collectionElementIndex);
+                        Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().inputIndexFirst(), null, collectionElementIndex);
+                        Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().nodeArgument(0), null, collectionElementIndex);
                     }
                 }
                 else
                 {
                     System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
-                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
+                    Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
+                    Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
                 }
 
                 // TODO: e.getConnectionComponent().inputField().inputArea().updateComponent(node, null, true);
@@ -244,7 +257,7 @@ public class ConnectionHandler
 
             }
         }
-        Handler.editorPanel.repaint();
+        graphPanel.repaint();
     }
 
     public void paintNewConnection(Graphics2D g2, Point mousePosition)
