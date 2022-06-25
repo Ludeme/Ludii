@@ -40,6 +40,8 @@ public class Handler {
 
     private static Stack<IUserAction> performedUserActions = new Stack<>();
     private static Stack<IUserAction> undoneUserActions = new Stack<>();
+    public static IUserAction currentUndoAction;
+    public static IUserAction currentRedoAction;
     public static boolean recordUserActions = true;
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
@@ -298,6 +300,7 @@ public class Handler {
         {
             node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
         }
+        if(input instanceof Object[]) System.out.println(Arrays.toString((Object[]) input));
         node.setProvidedInput(nodeArgument, input);
     }
 
@@ -352,7 +355,7 @@ public class Handler {
      */
     public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input, int elementIndex)
     {
-        if(DEBUG) System.out.println("[HANDLER] updateCollectionInput(graph, node, nodeArgument, input, elementIndex) Updating collection input of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex);
+        if(DEBUG) System.out.println("[HANDLER] updateCollectionInput(graph, node, nodeArgument, input, elementIndex) Updating collection input of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex + " to " + input);
         if(node.providedInputsMap().get(nodeArgument) == null)
         {
             node.setProvidedInput(nodeArgument, new Object[1]);
@@ -377,6 +380,17 @@ public class Handler {
         Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
         if(oldCollection == null) return;
         Object[] newCollection = new Object[oldCollection.length - 1];
+
+        if(currentUndoAction instanceof AddedCollectionAction)
+        {
+            if(((AddedCollectionAction) currentUndoAction).isUpdated(node, nodeArgument, elementIndex))
+            {
+                // get input
+                Object input = oldCollection[elementIndex];
+                ((AddedCollectionAction) currentUndoAction).setInput(input);
+            }
+        }
+
         for(int i = 0; i < elementIndex; i++)
         {
             newCollection[i] = oldCollection[i];
@@ -456,29 +470,31 @@ public class Handler {
     public static void undo()
     {
         if(performedUserActions.isEmpty()) return;
-        IUserAction lastAction = performedUserActions.pop();
-        if(DEBUG) System.out.println("[HANDLER] undo() Undoing " + lastAction.actionType());
-        undoneUserActions.add(lastAction);
+        currentUndoAction = performedUserActions.pop();
+        if(DEBUG) System.out.println("[HANDLER] undo() Undoing " + currentUndoAction.actionType());
+        undoneUserActions.add(currentUndoAction);
         Handler.recordUserActions = false;
-        lastAction.undo();
-        lastAction.graphPanel().repaint();
+        currentUndoAction.undo();
+        currentUndoAction.graphPanel().repaint();
         Handler.recordUserActions = true;
-        if(DEBUG) System.out.println("[HANDLER] undo() Completed " + lastAction.actionType());
+        if(DEBUG) System.out.println("[HANDLER] undo() Completed " + currentUndoAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
+        currentUndoAction = null;
     }
 
     public static void redo()
     {
         if(undoneUserActions.isEmpty()) return;
-        IUserAction lastUndoneAction = undoneUserActions.pop();
-        if(DEBUG) System.out.println("[HANDLER] redo() Redoing " + lastUndoneAction.actionType());
-        performedUserActions.add(lastUndoneAction);
+        currentRedoAction = undoneUserActions.pop();
+        if(DEBUG) System.out.println("[HANDLER] redo() Redoing " + currentRedoAction.actionType());
+        performedUserActions.add(currentRedoAction);
         Handler.recordUserActions = false;
-        lastUndoneAction.redo();
-        lastUndoneAction.graphPanel().repaint();
+        currentRedoAction.redo();
+        currentRedoAction.graphPanel().repaint();
         Handler.recordUserActions = true;
-        if(DEBUG) System.out.println("[HANDLER] redo() Completed " + lastUndoneAction.actionType());
+        if(DEBUG) System.out.println("[HANDLER] redo() Completed " + currentRedoAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
+        currentRedoAction = null;
     }
 
     private static void addAction(IUserAction action)

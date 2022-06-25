@@ -20,7 +20,7 @@ public class AddedCollectionAction implements IUserAction
     private final NodeArgument nodeArgument;
     private final int parentIndex;
     private final int elementIndex;
-    private final Object collectionInput;
+    private Object collectionInput;
     private boolean isUndone = false;
 
     /**
@@ -42,6 +42,17 @@ public class AddedCollectionAction implements IUserAction
         this.elementIndex = elementIndex;
         this.collectionInput = input;
     }
+
+    public boolean isUpdated(LudemeNode node, NodeArgument nodeArgument, int elementIndex)
+    {
+        return node==affectedNode && nodeArgument==this.nodeArgument && elementIndex==this.elementIndex;
+    }
+
+    public void setInput(Object input)
+    {
+        this.collectionInput = input;
+    }
+
     /**
      * @return The type of the action
      */
@@ -91,6 +102,7 @@ public class AddedCollectionAction implements IUserAction
         Handler.addCollectionElement(graph, affectedNode, nodeArgument);
         if(collectionInput != null)
         {
+            System.out.println("INPUT:: " + collectionInput + ", " + elementIndex);
             Handler.updateCollectionInput(graph, affectedNode, nodeArgument, collectionInput, elementIndex);
         }
         isUndone = true;

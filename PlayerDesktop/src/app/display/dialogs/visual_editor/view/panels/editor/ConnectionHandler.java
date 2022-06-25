@@ -157,7 +157,6 @@ public class ConnectionHandler
             LudemeNode sourceNode = source.lnc().node();
             int collectionElementIndex = 0;
             if(source.inputField().parent() != null) collectionElementIndex = source.inputField().parent().children().indexOf(source.inputField())+1;
-            //Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
             Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
         }
         else
@@ -231,7 +230,7 @@ public class ConnectionHandler
                             collectionElementIndex = connection.inputField().parent().children().indexOf(connection.inputField())+1;
                         // public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
                         //Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().inputIndexFirst(), null, collectionElementIndex);
-                        Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().nodeArgument(0), null, collectionElementIndex);
+                    Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().nodeArgument(0), null, collectionElementIndex);
                 }
                 else
                 {

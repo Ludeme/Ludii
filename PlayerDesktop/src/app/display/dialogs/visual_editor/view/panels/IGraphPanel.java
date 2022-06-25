@@ -27,7 +27,7 @@ public interface IGraphPanel {
     void notifyInputsUpdated(LudemeNodeComponent lnc);
     void notifyCollectionAdded(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex);
     void notifyCollectionRemoved(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex);
-
+    void notifyCollectionInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex, Object input);
     void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
 
 
