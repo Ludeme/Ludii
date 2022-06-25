@@ -225,12 +225,22 @@ public class Handler {
     public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c)
     {
         Clause oldClause = node.selectedClause();
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        IUserAction action = new ChangedClauseAction(graphPanel, node, oldClause, c);
+        addAction(action);
+        // remove all edges from the node
+        for(Object input : node.providedInputsMap().values())
+            if(input instanceof LudemeNode)
+            {
+                if(performedUserActions.peek() == action)
+                    Handler.recordUserActions = false;
+                removeEdge(graph, node, (LudemeNode) input);
+                if(performedUserActions.peek() == action)
+                    Handler.recordUserActions = true;
+            }
         if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
         else node.setSelectedClause(c);
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node), c);
-        addAction(new ChangedClauseAction(graphPanel, node, oldClause, node.selectedClause()));
-    }
+        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node), c);}
 
     /**
      * Assigns a IGraphPanel to a DescriptionGraph
@@ -254,6 +264,7 @@ public class Handler {
     public static void updateInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input)
     {
         if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, nodeArgument, input) -> Updating input: " + node.title() + ", " + nodeArgument + " -> " + input);
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
         if(input instanceof LudemeNode)
         {
             // if the input does not originate from a node creation, record the adding of the edge
@@ -262,11 +273,11 @@ public class Handler {
             {
                 if(!(((AddedNodeAction) lastAction).addedNode() == (LudemeNode) input && ((AddedNodeAction) lastAction).addedNode().creatorArgument() == nodeArgument))
                 {
-                    addAction(new AddedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) input, nodeArgument));
+                    addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
                 }
             }
             else {
-                addAction(new AddedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) input, nodeArgument));
+                addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
             }
         }
         if(input == null)
@@ -277,7 +288,6 @@ public class Handler {
                 LudemeNode previouslyConnectedNode = (LudemeNode) oldInput;
                 addAction(new RemovedConnectionAction(graphPanelMap.get(graph), node, previouslyConnectedNode, nodeArgument));
             }
-
         }
         // if the input is null but was a node before, remove the child from the parent
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
