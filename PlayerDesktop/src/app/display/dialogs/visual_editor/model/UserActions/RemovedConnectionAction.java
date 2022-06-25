@@ -7,11 +7,11 @@ import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 /**
- * Created when a connection between two nodes is established.
+ * Created when a connection between two nodes is removed.
  * @author Filipp Dokienko
  */
 
-public class AddedConnectionAction implements IUserAction
+public class RemovedConnectionAction implements IUserAction
 {
 
     private final IGraphPanel graphPanel;
@@ -22,7 +22,7 @@ public class AddedConnectionAction implements IUserAction
     //private final int index;
     private boolean isUndone = false;
 
-    public AddedConnectionAction(IGraphPanel graphPanel, LudemeNode from, LudemeNode to, NodeArgument nodeArgument)
+    public RemovedConnectionAction(IGraphPanel graphPanel, LudemeNode from, LudemeNode to, NodeArgument nodeArgument)
     {
         this.graphPanel = graphPanel;
         this.graph = graphPanel.graph();
@@ -37,7 +37,7 @@ public class AddedConnectionAction implements IUserAction
      */
     @Override
     public ActionType actionType() {
-        return ActionType.ADDED_INPUT;
+        return ActionType.REMOVED_INPUT;
     }
 
     /**
@@ -69,9 +69,8 @@ public class AddedConnectionAction implements IUserAction
      */
     @Override
     public void undo() {
-        //Handler.updateInput(graph, from, index, null);
-        Handler.removeEdge(graph, from, to);
-        Handler.updateInput(graph, from, nodeArgument, null);
+        Handler.addEdge(graph, from, to, nodeArgument);
+        Handler.updateInput(graph, from, nodeArgument, to);
         isUndone = true;
     }
 
@@ -80,9 +79,8 @@ public class AddedConnectionAction implements IUserAction
      */
     @Override
     public void redo() {
-        //Handler.updateInput(graph, from, index, to);
-        Handler.addEdge(graph, from, to, nodeArgument);
-        Handler.updateInput(graph, from, nodeArgument, to);
+        Handler.removeEdge(graph, from, to);
+        Handler.updateInput(graph, from, nodeArgument, null);
         isUndone = true;
     }
 }

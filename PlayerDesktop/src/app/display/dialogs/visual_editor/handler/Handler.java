@@ -70,8 +70,8 @@ public class Handler {
         graph.addNode(node);
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifyNodeAdded(node, connect);
         addAction(new AddedNodeAction(graphPanel, node));
+        graphPanel.notifyNodeAdded(node, connect);
         if(recordUserActions && node.parentNode() != null && (node.parentNode().providedInputsMap().get(node.creatorArgument()) instanceof Object[]))
         {
             Object[] collectionInput = (Object[]) node.parentNode().providedInputsMap().get(node.creatorArgument());
@@ -244,9 +244,6 @@ public class Handler {
         }
     }
 
-
-
-
     /**
      * Updates the input of a node.
      * @param graph The graph that contains the node.
@@ -257,7 +254,31 @@ public class Handler {
     public static void updateInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input)
     {
         if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, nodeArgument, input) -> Updating input: " + node.title() + ", " + nodeArgument + " -> " + input);
-        if(input instanceof LudemeNode) addAction(new AddedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) input, nodeArgument));
+        if(input instanceof LudemeNode)
+        {
+            // if the input does not originate from a node creation, record the adding of the edge
+            IUserAction lastAction = performedUserActions.peek();
+            if(lastAction instanceof AddedNodeAction)
+            {
+                if(!(((AddedNodeAction) lastAction).addedNode() == (LudemeNode) input && ((AddedNodeAction) lastAction).addedNode().creatorArgument() == nodeArgument))
+                {
+                    addAction(new AddedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) input, nodeArgument));
+                }
+            }
+            else {
+                addAction(new AddedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) input, nodeArgument));
+            }
+        }
+        if(input == null)
+        {
+            Object oldInput = node.providedInputsMap().get(nodeArgument);
+            if(oldInput instanceof LudemeNode)
+            {
+                LudemeNode previouslyConnectedNode = (LudemeNode) oldInput;
+                addAction(new RemovedConnectionAction(graphPanelMap.get(graph), node, previouslyConnectedNode, nodeArgument));
+            }
+
+        }
         // if the input is null but was a node before, remove the child from the parent
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
         {
@@ -401,12 +422,13 @@ public class Handler {
     {
         if(performedUserActions.isEmpty()) return;
         IUserAction lastAction = performedUserActions.pop();
+        if(DEBUG) System.out.println("[HANDLER] undo() Undoing " + lastAction.actionType());
         undoneUserActions.add(lastAction);
         Handler.recordUserActions = false;
         lastAction.undo();
         lastAction.graphPanel().repaint();
         Handler.recordUserActions = true;
-        System.out.println("undone: " + lastAction.toString());
+        if(DEBUG) System.out.println("[HANDLER] undo() Completed " + lastAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
     }
 
@@ -414,12 +436,13 @@ public class Handler {
     {
         if(undoneUserActions.isEmpty()) return;
         IUserAction lastUndoneAction = undoneUserActions.pop();
+        if(DEBUG) System.out.println("[HANDLER] redo() Redoing " + lastUndoneAction.actionType());
         performedUserActions.add(lastUndoneAction);
         Handler.recordUserActions = false;
         lastUndoneAction.redo();
         lastUndoneAction.graphPanel().repaint();
         Handler.recordUserActions = true;
-        System.out.println("redone: " + lastUndoneAction.toString());
+        if(DEBUG) System.out.println("[HANDLER] redo() Completed " + lastUndoneAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
     }
 

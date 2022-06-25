@@ -39,6 +39,11 @@ public class AddedNodeAction implements IUserAction
         this.addedNode = addedNode;
     }
 
+    public LudemeNode addedNode()
+    {
+        return addedNode;
+    }
+
     /**
      * @return The type of the action
      */
