@@ -225,6 +225,7 @@ public class Handler {
     public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c)
     {
         Clause oldClause = node.selectedClause();
+        if(oldClause == c) return;
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         IUserAction action = new ChangedClauseAction(graphPanel, node, oldClause, c);
         addAction(action);
