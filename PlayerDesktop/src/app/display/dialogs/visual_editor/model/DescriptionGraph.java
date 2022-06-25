@@ -179,43 +179,6 @@ public class DescriptionGraph implements iGraph {
         return ROOT.codeCompletionGameDescription(nodeToMark, inputIndex, mark);
     }
 
-    public DescriptionGraph clone(){
-
-        ArrayList<Integer> indeces = new ArrayList<>();
-        ArrayList<LudemeNode> from = new ArrayList<>();
-        ArrayList<LudemeNode> to = new ArrayList<>();
-
-        DescriptionGraph graphNew = new DescriptionGraph();
-        for(LudemeNode node : getNodes()){
-            LudemeNode node_new = new LudemeNode(node.symbol(), (int)node.pos().x(), (int)node.pos().y());
-            node_new.setSelectedClause(node.selectedClause());
-
-            if(to.contains(node)){
-                int index = to.indexOf(node);
-                int inputIndex = indeces.get(index);
-                from.get(index).setProvidedInput(inputIndex, node);
-
-                to.remove(index);
-                indeces.remove(index);
-                from.remove(index);
-
-            }
-
-            for(int i = 0; i < node.providedInputs().length; i++){
-                Object in = node.providedInputs()[i];
-                if(in instanceof LudemeNode){
-                    indeces.add(i);
-                    from.add(node_new);
-                    to.add((LudemeNode) in);
-                } else {
-                    node_new.setProvidedInput(i, in);
-                }
-            }
-        }
-
-        return graphNew;
-    }
-
     public boolean isDefine()
     {
         return isDefine;

@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.AddedNodeAction;
 import app.display.dialogs.visual_editor.model.UserActions.ChangedClauseAction;
 import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
@@ -36,8 +37,6 @@ public class Handler {
 
     public static LayoutSettingsPanel lsPanel;
 
-    public static ArrayList<DescriptionGraph> history = new ArrayList<>();
-
     public static MainPanel mainPanel;
 
     private static List<LudemeNodeComponent> copyList = new ArrayList<>();
@@ -50,7 +49,6 @@ public class Handler {
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
 
-    private static HashMap<Graph, ConnectionHandler> connectionHandlerMap = new HashMap<>();
     private static final boolean DEBUG = true;
 
 
@@ -59,13 +57,9 @@ public class Handler {
      * @param graph
      * @param node
      */
-    public static void addNode(DescriptionGraph graph, LudemeNode node ){
-        if(graph.getNodes().isEmpty()) graph.setRoot(node);
-        graph.addNode(node);
-        // notify graph panel
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifyNodeAdded(node, false);
-        addAction(new AddedNodeAction(graphPanel, node));
+    public static void addNode(DescriptionGraph graph, LudemeNode node )
+    {
+        addNode(graph, node, false);
     }
 
     /**
@@ -81,7 +75,24 @@ public class Handler {
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeAdded(node, connect);
-        if(recordUserActions) performedUserActions.add(new AddedNodeAction(editorPanel, node));
+        addAction(new AddedNodeAction(graphPanel, node));
+    }
+
+    /**
+     * Creates and adds a node to the graph
+     * @param graph Graph to add the node to
+     * @param symbol The symbol of the node to be created
+     * @param nodeArgument The NodeArgument which created this node
+     * @param x The x-position of the node
+     * @param y The y-position of the node
+     * @param connect Whether the node will be connected after insertion
+     * @return The created node
+     */
+    public static LudemeNode addNode(DescriptionGraph graph, Symbol symbol, NodeArgument nodeArgument, int x, int y, boolean connect)
+    {
+        LudemeNode node = new LudemeNode(symbol, nodeArgument, x, y);
+        addNode(graph, node, connect);
+        return node;
     }
 
     /**
@@ -122,7 +133,12 @@ public class Handler {
         {
             // find index of the node in the parent's inputs
             int index = Arrays.asList(node.parentNode().providedInputs()).indexOf(node);
-            Handler.updateInput(graph, node.parentNode(), index, null);
+            if(index>=0 && !(node.parentNode().providedInputs()[index] instanceof Object[])) Handler.updateInput(graph, node.parentNode(), index, null); // TODO: what about collection?
+
+            List<NodeArgument> args = new ArrayList<>(node.parentNode().providedInputsMap().keySet());
+            List<Object> inputs = Collections.singletonList(node.parentNode().providedInputsMap().values());
+            int index2 = inputs.indexOf(node);
+            if(index>=0) Handler.updateInput(graph, node.parentNode(), args.get(index2), null); // TODO: what about collection?
         }
         // remove edge
         // TODO: ConenctionHandler
@@ -162,12 +178,26 @@ public class Handler {
      * @param from The node that the edge starts from.
      * @param to The node that the edge ends at.
      */
-    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to)
+    {
         for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);
         to.setParent(from);
+    }
+
+    /**
+     * Updates the current clause of a node.
+     */
+    public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c)
+    {
+        Clause oldClause = node.selectedClause();
+        if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
+        else node.setSelectedClause(c);
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node), c);
+        addAction(new ChangedClauseAction(graphPanel, node, oldClause, node.selectedClause()));
     }
 
     /**
@@ -182,18 +212,6 @@ public class Handler {
         }
     }
 
-    /**
-     * Assigns a ConnectionHandler to a Graph
-     * @param graph
-     * @param connectionHandler
-     */
-    public static void addConnectionHandler(Graph graph, ConnectionHandler connectionHandler)
-    {
-        if(!connectionHandlerMap.containsKey(graph)) {
-            connectionHandlerMap.put(graph, connectionHandler);
-        }
-    }
-
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
         if(index < node.providedInputs().length) {
             // if the input is null but was a node before, remove the child from the parent
@@ -202,6 +220,43 @@ public class Handler {
             }
             node.setProvidedInput(index, input);
         }
+    }
+
+
+    /**
+     * Updates the input of a node.
+     * @param graph The graph that contains the node.
+     * @param node The node to update.
+     * @param nodeArgument The argument of the node to update.
+     * @param input The new input.
+     */
+    public static void updateInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input)
+    {
+        // if the input is null but was a node before, remove the child from the parent
+        if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
+        {
+            node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
+        }
+        node.setProvidedInput(nodeArgument, input);
+    }
+
+    /**
+     * Adds an empty collection input to collection of a node
+     * @param graph The graph that contains the node.
+     * @param node  The node to update.
+     * @param nodeArgument The argument of the node to update, which is a collection.
+     */
+    public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument)
+    {
+        Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
+        if(oldCollection == null)
+        {
+            updateInput(graph, node, nodeArgument, new Object[2]);
+            return;
+        }
+        Object[] newCollection = new Object[oldCollection.length + 1];
+        System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
+        updateInput(graph, node, nodeArgument, newCollection);
     }
 
     public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
@@ -218,7 +273,29 @@ public class Handler {
         updateInput(graph, node, inputIndex, newCollection);
     }
 
-    public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
+
+    /**
+     * Updates the input of a collection field
+     * @param graph
+     * @param node
+     * @param nodeArgument
+     * @param input
+     * @param elementIndex The index of the element within the collection
+     */
+    public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input, int elementIndex)
+    {
+        if(node.providedInputsMap().get(nodeArgument) == null)
+        {
+            node.setProvidedInput(nodeArgument, new Object[1]);
+        }
+
+        if(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) addCollectionElement(graph, node, nodeArgument);
+        Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
+        in[elementIndex] = input;
+        Handler.updateInput(graph, node, nodeArgument, in);
+    }
+
+    public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
     {
         if(node.providedInputs()[inputIndex] == null)
         {
@@ -228,6 +305,29 @@ public class Handler {
         Object[] in = (Object[]) node.providedInputs()[inputIndex];
         in[elementIndex] = input;
         node.setProvidedInput(inputIndex, in);
+    }
+
+    /**
+     * if a collection element was removed, update the provided input array
+     * @param graph
+     * @param node
+     * @param nodeArgument
+     * @param elementIndex Index of collection element
+     */
+    public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, int elementIndex)
+    {
+        Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
+        if(oldCollection == null) return;
+        Object[] newCollection = new Object[oldCollection.length - 1];
+        for(int i = 0; i < elementIndex; i++)
+        {
+            newCollection[i] = oldCollection[i];
+        }
+        for(int i = elementIndex + 1; i < oldCollection.length; i++)
+        {
+            newCollection[i - 1] = oldCollection[i];
+        }
+        updateInput(graph, node, nodeArgument, newCollection);
     }
 
     /**
@@ -260,14 +360,7 @@ public class Handler {
     }
 
 
-    public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c){
-        Clause oldClause = node.selectedClause();
-        if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
-        else node.setSelectedClause(c);
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node), c);
-        addAction(new ChangedClauseAction(graphPanel, node, oldClause, node.selectedClause()));
-    }
+
 
     public static void setCollapsed(DescriptionGraph graph, LudemeNodeComponent lnc, boolean collapsed)
     {
@@ -334,7 +427,8 @@ public class Handler {
     {
         if(!recordUserActions) return;
         performedUserActions.add(action);
-        undoneUserActions.clear();
+        System.out.println("set undone user actions to empty");
+        undoneUserActions = new Stack<>();
     }
 
 

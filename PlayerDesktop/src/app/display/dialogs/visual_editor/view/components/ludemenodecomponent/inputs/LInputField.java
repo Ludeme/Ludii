@@ -3,10 +3,8 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
@@ -429,11 +427,13 @@ public class LInputField extends JComponent
             if(collection.length < children.size() + 1)
             {
                 Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst());
+                Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
             }
         }
         if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] == null)
         {
             Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst());
+            Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
         }
         inputArea().drawInputFields();
     }
@@ -444,6 +444,7 @@ public class LInputField extends JComponent
     private void removeCollectionItem()
     {
         Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), parent.children().indexOf(this) + 1);
+        Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), parent.children().indexOf(this) + 1);
         inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
         inputArea().LNC().inputArea().removeInputField(this);
         parent.children.remove(this);
@@ -546,7 +547,11 @@ public class LInputField extends JComponent
         fieldComponent.setEnabled(true);
         label.setEnabled(true);
         terminalOptionalLabel.setText("X");
-        if(!nodeArgument(0).collection()) Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
+        if(!nodeArgument(0).collection())
+        {
+            Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
+            Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput());
+        }
         repaint();
     }
 
@@ -566,6 +571,7 @@ public class LInputField extends JComponent
         inputArea().removedConnection(LInputField.this);
         // notify handler
         Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
+        Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), null);
         inputArea().LNC().graphPanel().setBusy(false);
 
 
@@ -692,11 +698,13 @@ public class LInputField extends JComponent
             {
                 int index = 0;
                 if(parent != null) index = parent.children.indexOf(this)+1;
-                Handler.setCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput(), index);
+                Handler.updateCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput(), index);
+                Handler.updateCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput(), index);
             }
         }
         else {
             Handler.updateInput(LIA.LNC().graphPanel().graph(), LIA.LNC().node(), inputIndexFirst(), getUserInput());
+            Handler.updateInput(LIA.LNC().graphPanel().graph(), LIA.LNC().node(), nodeArgument(0), getUserInput());
         }
     }
 
