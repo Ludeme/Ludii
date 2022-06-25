@@ -274,6 +274,7 @@ public class Handler {
     public static void updateInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input)
     {
         if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, nodeArgument, input) -> Updating input: " + node.title() + ", " + nodeArgument + " -> " + input);
+        if(input instanceof LudemeNode) addAction(new AddedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) input, nodeArgument));
         // if the input is null but was a node before, remove the child from the parent
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
         {
