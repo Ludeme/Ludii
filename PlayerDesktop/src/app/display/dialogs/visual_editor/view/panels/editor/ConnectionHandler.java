@@ -215,6 +215,7 @@ public class ConnectionHandler
         {
             if(e.getConnectionComponent().equals(connection))
             {
+                System.out.println("[CH] removing connection from " + node.symbol().name() + " to " + e.ingoingNode().symbol().name());
                 edges.remove(e);
                 Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode()); // TODO: Below should happen in notifyEdgeRemoved()
                 e.getIngoingConnectionComponent().setFill(false); // header

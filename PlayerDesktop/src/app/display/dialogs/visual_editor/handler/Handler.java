@@ -224,6 +224,15 @@ public class Handler {
         graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
     }
 
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex){
+        if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to, elementIndex) -> Removing edge: " + from.title() + " -> " + to.title());
+        graph.removeEdge(from.id(), to.id());
+        from.removeChildren(to);
+        to.setParent(null);
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), elementIndex);
+    }
+
     /**
      * Updates the current clause of a node.
      */
@@ -361,6 +370,8 @@ public class Handler {
             node.setProvidedInput(nodeArgument, new Object[1]);
         }
 
+        if(input == null && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) return;
+
         if(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) addCollectionElement(graph, node, nodeArgument);
         Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
         in[elementIndex] = input;
@@ -377,16 +388,22 @@ public class Handler {
      */
     public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, int elementIndex)
     {
+        if(DEBUG) System.out.println("[HANDLER] removeCollectionElement(graph, node, nodeArgument, elementIndex) Removing collection element of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex);
         Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
         if(oldCollection == null) return;
+
+        // get input
+        Object input = oldCollection[elementIndex];
+
+        IUserAction action = new RemovedCollectionAction(graphPanelMap.get(graph), node, nodeArgument, elementIndex, input);
+        addAction(action);
+
         Object[] newCollection = new Object[oldCollection.length - 1];
 
         if(currentUndoAction instanceof AddedCollectionAction)
         {
             if(((AddedCollectionAction) currentUndoAction).isUpdated(node, nodeArgument, elementIndex))
             {
-                // get input
-                Object input = oldCollection[elementIndex];
                 ((AddedCollectionAction) currentUndoAction).setInput(input);
             }
         }
@@ -399,7 +416,14 @@ public class Handler {
         {
             newCollection[i - 1] = oldCollection[i];
         }
+
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = false;
         updateInput(graph, node, nodeArgument, newCollection);
+        if(input instanceof LudemeNode)
+            removeEdge(graph, node, (LudemeNode) input, elementIndex);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = true;
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyCollectionRemoved(graphPanel.nodeComponent(node), nodeArgument, elementIndex);
     }

@@ -22,6 +22,7 @@ public interface IGraphPanel {
     void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument);
     void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument, int elementIndex);
     void notifyEdgeRemoved(LudemeNodeComponent from, LudemeNodeComponent to);
+    void notifyEdgeRemoved(LudemeNodeComponent from, LudemeNodeComponent to, int elementIndex);
     void notifyCollapsed(LudemeNodeComponent lnc, boolean collapsed);
     void notifyTerminalInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, Object input);
     void notifyInputsUpdated(LudemeNodeComponent lnc);

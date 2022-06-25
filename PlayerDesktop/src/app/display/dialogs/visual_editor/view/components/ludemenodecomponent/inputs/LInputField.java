@@ -496,17 +496,12 @@ public class LInputField extends JComponent
      */
     private void removeCollectionItem()
     {
-        //Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), parent.children().indexOf(this) + 1);
         Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), parent.children().indexOf(this) + 1);
-        //inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
-        //inputArea().LNC().inputArea().removeInputField(this);
-        //parent.children.remove(this);
-        //inputArea().drawInputFields();
     }
 
     public void notifyCollectionRemoved()
     {
-        //inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
+        System.out.println("notified about removal");
         inputArea().LNC().inputArea().removeInputField(this);
         parent.children.remove(this);
         inputArea().drawInputFields();
