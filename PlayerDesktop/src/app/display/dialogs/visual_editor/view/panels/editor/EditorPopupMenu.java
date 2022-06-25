@@ -41,7 +41,7 @@ public class EditorPopupMenu extends JPopupMenu {
                 for(LudemeNode original : copies.keySet())
                 {
                     LudemeNode copy = copies.get(original);
-                    Object[] inputs = original.providedInputs();
+                    Object[] inputs = original.providedInputsMap().values().toArray(new Object[0]);
                     for(int i = 0; i < inputs.length; i++)
                     {
                         Object input = inputs[i];
@@ -51,7 +51,7 @@ public class EditorPopupMenu extends JPopupMenu {
                             LudemeNode copyInputNode = copies.get(inputNode);
                             if(copyInputNode != null)
                             {
-                                copy.setProvidedInput(i, copyInputNode);
+                                // [TODO: Changed LudemeNode ] copy.setProvidedInput(i, copyInputNode);
                             }
                         }
                         else if(input instanceof Object[])
@@ -70,12 +70,12 @@ public class EditorPopupMenu extends JPopupMenu {
                                         copyInputs[j] = copyInputNode;
                                     }
                                 }
-                                copy.setProvidedInput(i, copyInputs);
+                                // [TODO: Changed LudemeNode ]  copy.setProvidedInput(i, copyInputs);
                             }
                         }
                         else
                         {
-                            copy.setProvidedInput(i, input);
+                            // [TODO: Changed LudemeNode ]  copy.setProvidedInput(i, input);
                         }
                     }
                 }

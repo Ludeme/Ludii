@@ -91,7 +91,7 @@ public class GameParser
                 Handler.addNode(GRAPH, ln);
                 for (int i = 0; i < c.args().size(); i++)
                 {
-                        ln.setProvidedInput(i, c.object());
+                        // [ TODO : providedInputs changed ] ln.setProvidedInput(i, c.object());
                 }
 
                 // Output correct lhs + rhs
@@ -99,7 +99,7 @@ public class GameParser
                 for (int i = 0; i < cArgs.size(); i++) {
                     Call call = cArgs.get(i);
                     if (!call.type().equals(Call.CallType.Class)) continue;
-                    Handler.updateInput(GRAPH, ln, i, call.object());
+                    // [TODO: Changed LudemeNode ] Handler.updateInput(GRAPH, ln, i, call.object());
 
                     constructGraph(call, d+1, ln);
                 }

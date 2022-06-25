@@ -174,7 +174,8 @@ public class LInputArea extends JPanel
      */
     private boolean isArgumentProvided(NodeArgument nodeArgument)
     {
-        return LNC.node().providedInputs()[nodeArgument.index()] != null;
+        return LNC.node().providedInputsMap().get(nodeArgument) != null;
+        //return LNC.node().providedInputs()[nodeArgument.index()] != null;
     }
 
     /**
@@ -301,7 +302,7 @@ public class LInputArea extends JPanel
      */
     public void updateProvidedInputs(){
         // Fill existing inputs
-        Object[] providedInputs = LNC.node().providedInputs();
+        Object[] providedInputs = LNC.node().providedInputsMap().values().toArray(new Object[0]);
         for(int input_index = 0; input_index < providedInputs.length; input_index++){
             Object providedInput = providedInputs[input_index];
             if(providedInput != null){

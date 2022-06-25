@@ -128,9 +128,9 @@ public class Handler {
         if(node.parentNode() != null)
         {
             // find index of the node in the parent's inputs
-            int index = Arrays.asList(node.parentNode().providedInputs()).indexOf(node);
-            if(index>=0 && !(node.parentNode().providedInputs()[index] instanceof Object[]))
-                Handler.updateInput(graph, node.parentNode(), index, null); // TODO: what about collection?
+            //int index = Arrays.asList(node.parentNode().providedInputs()).indexOf(node);
+            //if(index>=0 && !(node.parentNode().providedInputs()[index] instanceof Object[]))
+            //    Handler.updateInput(graph, node.parentNode(), index, null); // TODO: what about collection?
 
             List<NodeArgument> args = new ArrayList<>(node.parentNode().providedInputsMap().keySet());
             List<Object> inputs = new ArrayList<>(node.parentNode().providedInputsMap().values());
@@ -252,7 +252,7 @@ public class Handler {
         }
     }
 
-    public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
+    /*public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
         if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, index, input) -> Updating input: " + node.title() + ", index: " + index + ", input: " + input);
         if(index < node.providedInputs().length) {
             // if the input is null but was a node before, remove the child from the parent
@@ -261,7 +261,7 @@ public class Handler {
             }
             node.setProvidedInput(index, input);
         }
-    }
+    }*/
 
 
     /**
@@ -303,7 +303,7 @@ public class Handler {
         updateInput(graph, node, nodeArgument, newCollection);
     }
 
-    public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
+    /*public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
     {
         if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + inputIndex);
         Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
@@ -315,7 +315,7 @@ public class Handler {
         Object[] newCollection = new Object[oldCollection.length + 1];
         System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
         updateInput(graph, node, inputIndex, newCollection);
-    }
+    }*/
 
 
     /**
@@ -340,7 +340,7 @@ public class Handler {
         Handler.updateInput(graph, node, nodeArgument, in);
     }
 
-    public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
+    /*public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
     {
         if(node.providedInputs()[inputIndex] == null)
         {
@@ -350,7 +350,7 @@ public class Handler {
         Object[] in = (Object[]) node.providedInputs()[inputIndex];
         in[elementIndex] = input;
         node.setProvidedInput(inputIndex, in);
-    }
+    }*/
 
     /**
      * if a collection element was removed, update the provided input array
@@ -382,7 +382,7 @@ public class Handler {
      * @param inputIndex Index of collection argument in clause
      * @param elementIndex Index of collection element
      */
-    public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex, int elementIndex)
+    /*public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex, int elementIndex)
     {
         if(DEBUG) System.out.println("[HANDLER] Removed collection element of " + node.symbol().name() + ", " + inputIndex + " at " + elementIndex);
 
@@ -398,8 +398,15 @@ public class Handler {
             newCollection[i - 1] = oldCollection[i];
         }
         updateInput(graph, node, inputIndex, newCollection);
-    }
+    }*/
 
+    /**
+     *
+     * @param graph
+     * @param node
+     * @param x
+     * @param y
+     */
     public static void updatePosition(DescriptionGraph graph, LudemeNode node, int x, int y){
         node.setPos(x, y);
     }

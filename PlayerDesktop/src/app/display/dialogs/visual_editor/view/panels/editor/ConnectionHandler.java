@@ -157,14 +157,14 @@ public class ConnectionHandler
             LudemeNode sourceNode = source.lnc().node();
             int collectionElementIndex = 0;
             if(source.inputField().parent() != null) collectionElementIndex = source.inputField().parent().children().indexOf(source.inputField())+1;
-            Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
+            //Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
             Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
         }
         else
         {
             if(DEBUG) System.out.println("[EP] Adding connection: " + source.lnc().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.inputField().inputIndexFirst());
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
-            Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
+            //Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
             Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node());
         }
         
@@ -196,12 +196,12 @@ public class ConnectionHandler
             {
                 if(collectionElementIndex == -1) collectionElementIndex = 0;
                 Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null, collectionElementIndex);
-                Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null, collectionElementIndex);
+                //Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null, collectionElementIndex);
             }
             else
             {
                 Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
-                Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
+                //Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
             }
         }
 
@@ -230,12 +230,13 @@ public class ConnectionHandler
                         if(connection.inputField().parent() != null)
                             collectionElementIndex = connection.inputField().parent().children().indexOf(connection.inputField())+1;
                         // public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
-                        Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().inputIndexFirst(), null, collectionElementIndex);Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().nodeArgument(0), null, collectionElementIndex);
+                        //Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().inputIndexFirst(), null, collectionElementIndex);
+                        Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().nodeArgument(0), null, collectionElementIndex);
                 }
                 else
                 {
                     System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
-                    Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
+                    //Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
                     Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
                 }
             }

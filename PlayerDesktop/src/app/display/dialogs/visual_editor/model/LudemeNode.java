@@ -3,7 +3,6 @@ package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
-import app.display.dialogs.visual_editor.model.interfaces.iLudemeNode;
 import app.display.dialogs.visual_editor.view.DocumentationReader;
 import app.display.dialogs.visual_editor.view.HelpInformation;
 import main.grammar.Clause;
@@ -17,7 +16,7 @@ import java.util.*;
  * @author Filipp Dokienko
  */
 
-public class LudemeNode implements iLudemeNode, iGNode
+public class LudemeNode implements iGNode
 {
 
     /** ID of last node */
@@ -33,7 +32,7 @@ public class LudemeNode implements iLudemeNode, iGNode
     /** Currently selected Clause by the user */
     private Clause selectedClause;
     /** Inputs to the Clause Arguments of the currently selected Clause provided by the user */
-    private Object[] providedInputs;
+    //private Object[] providedInputs;
     /** Map of NodeArgument and its corresponding input */
     private LinkedHashMap<NodeArgument, Object> providedInputsMap;
     /** HashMap of Nodes this node is connected to (as a parent) and their order */
@@ -122,20 +121,20 @@ public class LudemeNode implements iLudemeNode, iGNode
             {
                 this.selectedClause = CLAUSES.get(0);
                 if(selectedClause.args() == null) {
-                    this.providedInputs = new Object[0];
+                    //this.providedInputs = new Object[0];
                 }
                 else {
-                    this.providedInputs = new Object[selectedClause.args().size()];
+                    //this.providedInputs = new Object[selectedClause.args().size()];
                 }
             }
             else
             {
                 this.selectedClause = null;
-                this.providedInputs = new Object[0];
+                //this.providedInputs = new Object[0];
             }
         } else {
             this.selectedClause = null;
-            this.providedInputs = null;
+            //this.providedInputs = null;
         }
         if(CLAUSES == null || CLAUSES.size() == 0)
         {
@@ -183,7 +182,6 @@ public class LudemeNode implements iLudemeNode, iGNode
      *
      * @return the symbol this node represents
      */
-    @Override
     public Symbol symbol()
     {
         return SYMBOL;
@@ -261,7 +259,7 @@ public class LudemeNode implements iLudemeNode, iGNode
     {
         this.selectedClause = selectedClause;
         this.currentNodeArguments = nodeArguments.get(selectedClause());
-        this.providedInputs = new Object[selectedClause.args().size()];
+        //this.providedInputs = new Object[selectedClause.args().size()];
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments) providedInputsMap.put(na, null);
     }
@@ -270,7 +268,6 @@ public class LudemeNode implements iLudemeNode, iGNode
      *
      * @return the currently selected clause
      */
-    @Override
     public Clause selectedClause()
     {
         return selectedClause;
@@ -280,11 +277,11 @@ public class LudemeNode implements iLudemeNode, iGNode
      *
      * @return the array of provided inputs
      */
-    @Override
+    /*@Override
     public Object[] providedInputs()
     {
         return providedInputs;
-    }
+    }*/
 
     public LinkedHashMap<NodeArgument, Object> providedInputsMap()
     {
@@ -293,14 +290,13 @@ public class LudemeNode implements iLudemeNode, iGNode
 
     /**
      * Sets the provided inputs to the given array
-     * @param index the index of the supplied argument to set
-     * @param input the input to set
+     *  index the index of the supplied argument to set
+     *  input the input to set
      */
-    @Override
-    public void setProvidedInput(int index, Object input)
+    /*public void setProvidedInput(int index, Object input)
     {
         providedInputs[index] = input;
-    }
+    }*/
 
     public void setProvidedInput(NodeArgument arg, Object input)
     {
@@ -334,7 +330,7 @@ public class LudemeNode implements iLudemeNode, iGNode
                 if(c.args().size() > selectedClause.args().size())
                 {
                     selectedClause = c;
-                    providedInputs = new Object[selectedClause.args().size()];
+                    //providedInputs = new Object[selectedClause.args().size()];
                 }
             }
         }
@@ -737,10 +733,9 @@ public class LudemeNode implements iLudemeNode, iGNode
      * Sets the parent of this node
      * @param ludemeNode the parent to set
      */
-    @Override
-    public void setParent(iLudemeNode ludemeNode)
+    public void setParent(LudemeNode ludemeNode)
     {
-        this.parent = (LudemeNode) ludemeNode;
+        this.parent = ludemeNode;
     }
 
     /**
@@ -801,14 +796,13 @@ public class LudemeNode implements iLudemeNode, iGNode
      *
      * @return The .lud equivalent representation of this node
      */
-    @Override
     public String stringRepresentation()
     {
         StringBuilder sb = new StringBuilder();
         // append token of this node's symbol
         sb.append("(").append(tokenTitle());
         // append all inputs
-        for(Object input : providedInputs)
+        for(Object input : providedInputsMap.values())
         {
             if(input == null) continue; // if no input provided, skip it
             sb.append(" ");
@@ -860,8 +854,8 @@ public class LudemeNode implements iLudemeNode, iGNode
         // append all inputs
         for(int i = 0; i < index; i++)
         {
-            if(i >= providedInputs.length) break;
-            Object input = providedInputs[i];
+            if(i >= providedInputsMap.values().size()) break;
+            Object input = new ArrayList<>(providedInputsMap.values()).get(i);
                 if(input == null) continue; // if no input provided, skip it
                 sb.append(" ");
 
@@ -912,9 +906,9 @@ public class LudemeNode implements iLudemeNode, iGNode
         // append token of this node's symbol
         sb.append("(").append(tokenTitle());
         // append all inputs
-        for(int i = 0; i < providedInputs().length; i++)
+        for(int i = 0; i < providedInputsMap().values().size(); i++)
         {
-            Object input = providedInputs()[i];
+            Object input = new ArrayList<>(providedInputsMap.values()).get(i);
             if(input == null) continue; // if no input provided, skip it
             sb.append(" ");
 
@@ -1012,8 +1006,9 @@ public class LudemeNode implements iLudemeNode, iGNode
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());
 
+
         // copy terminal inputs
-        for(int i = 0; i < providedInputs().length; i++)
+        /*for(int i = 0; i < providedInputs().length; i++)
         {
             Object input = providedInputs()[i];
             if(input == null || input instanceof LudemeNode) continue; // if no input provided or it is LudemeNode, skip it
@@ -1028,7 +1023,7 @@ public class LudemeNode implements iLudemeNode, iGNode
                     }
             }
             if(!isLudemeCollection) copy.setProvidedInput(i, input);
-        }
+        }*/
 
         for(NodeArgument na : providedInputsMap.keySet())
         {
