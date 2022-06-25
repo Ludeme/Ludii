@@ -9,8 +9,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-
-import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.UPDATE_COUNTER;
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
 
 /**
@@ -80,6 +78,7 @@ public class LayoutHandler {
         {
             HashMap<Integer, Vector2D> incrementMap = GraphRoutines.computeNodeIncrements(graph, root);
             // animate change
+            GraphRoutines.updateCounter = 0;
             animationTimer = new Timer(3, e -> {
                 if (GraphRoutines.animateGraphNodes(graph, root, incrementMap))
                 {
@@ -87,13 +86,10 @@ public class LayoutHandler {
                 }
             });
             animationTimer.start();
-            //layoutExecuted = false;
-            System.out.println("Finished layout");
         }
         else
         {
             Handler.updateNodePositions();
-            System.out.println("Finished layout");
         }
     }
 

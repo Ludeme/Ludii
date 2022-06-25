@@ -24,12 +24,12 @@ public final class GraphRoutines
     /**
      * Animation updates
      */
-    public static final int ANIMATION_UPDATES = 20;
+    public static final int ANIMATION_UPDATES = 25;
 
     /**
      * Animation update counter
      */
-    public static int UPDATE_COUNTER = 0;
+    public static int updateCounter = 0;
 
     /**
      * Update of depth for graph nodes by BFS traversal
@@ -85,26 +85,51 @@ public final class GraphRoutines
         return incrementsMap;
     }
 
+    /**
+     * compute animation nodes increments
+     * set nodes positions to the old ones
+     * @param nodes list of nodes
+     */
+    public static HashMap<Integer, Vector2D> computeNodeIncrements(List<iGNode> nodes)
+    {
+        HashMap<Integer, Vector2D> incrementsMap = new HashMap<>();
+
+        nodes.forEach(n -> {
+            double incX = (n.newPos().x() - n.oldPos().x()) / (ANIMATION_UPDATES-1);
+            double incY = (n.newPos().y() - n.oldPos().y()) / (ANIMATION_UPDATES-1);
+            incrementsMap.put(n.id(), new Vector2D(incX, incY));
+            // update pos to oldPos
+            n.setPos(new Vector2D(n.oldPos().x(), n.oldPos().y()));
+        });
+
+        return incrementsMap;
+    }
+
     public static boolean animateGraphNodes(iGraph graph, int r, HashMap<Integer, Vector2D> increments)
     {
+
         List<Integer> Q = new ArrayList<>();
         Q.add(r);
         while (!Q.isEmpty())
         {
             int nid = Q.remove(0);
             iGNode n = graph.getNode(nid);
-            n.setPos(new Vector2D(n.oldPos().x()+increments.get(nid).x()*UPDATE_COUNTER,
-                    n.oldPos().y()+increments.get(nid).y()*UPDATE_COUNTER));
+            n.setPos(new Vector2D(n.oldPos().x()+increments.get(nid).x()*updateCounter,
+                    n.oldPos().y()+increments.get(nid).y()*updateCounter));
             Q.addAll(n.children());
         }
-        UPDATE_COUNTER++;
+        updateCounter++;
         Handler.updateNodePositions();
-        if (UPDATE_COUNTER == ANIMATION_UPDATES)
-        {
-            UPDATE_COUNTER = 0;
-            return true;
-        }
-        return false;
+        return updateCounter == ANIMATION_UPDATES;
+    }
+
+    public static boolean animateGraphNodes(List<iGNode> nodes, HashMap<Integer, Vector2D> increments)
+    {
+        nodes.forEach(n -> n.setPos(new Vector2D(n.oldPos().x()+increments.get(n.id()).x()*updateCounter,
+                n.oldPos().y()+increments.get(n.id()).y()*updateCounter)));
+        Handler.updateNodePositions();
+        updateCounter++;
+        return updateCounter == ANIMATION_UPDATES;
     }
 
     /**

@@ -58,15 +58,15 @@ public class LayoutSettingsPanel extends JPanel
         });
 
         alignX.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS);
-            graphPanel.drawGraph(graphPanel.graph());
-            graphPanel.deselectEverything();
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, animatePlacement.isSelected());
+            // graphPanel.updateNodePositions();
+            // graphPanel.deselectEverything();
         });
 
         alignY.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS);
-            graphPanel.drawGraph(graphPanel.graph());
-            graphPanel.deselectEverything();
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS, animatePlacement.isSelected());
+            // graphPanel.updateNodePositions();
+            // graphPanel.deselectEverything();
         });
 
         ChangeListener sliderUpdateListener = e -> {

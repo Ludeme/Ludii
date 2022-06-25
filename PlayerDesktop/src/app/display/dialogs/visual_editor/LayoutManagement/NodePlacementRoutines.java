@@ -1,8 +1,10 @@
 package app.display.dialogs.visual_editor.LayoutManagement;
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,12 +43,14 @@ public final class NodePlacementRoutines
         }
     }
 
-    public static void alignNodes(List<iGNode> nodes, int axis)
+    public static void alignNodes(List<iGNode> nodes, int axis, boolean animate)
     {
         if (nodes.isEmpty()) return;
         // find min posX and posY in a list
         double posX = nodes.get(0).pos().x();
         double posY = nodes.get(0).pos().y();
+        nodes.get(0).setOldPos(nodes.get(0).pos());
+        nodes.get(0).setNewPos(nodes.get(0).pos());
         for (iGNode n:
              nodes) {
             if (n.pos().x() < posX) posX = n.pos().x();
@@ -56,15 +60,37 @@ public final class NodePlacementRoutines
         {
             for (int i = 1; i < nodes.size(); i++)
             {
+                nodes.get(i).setOldPos(nodes.get(i).pos());
                 nodes.get(i).setPos(new Vector2D(nodes.get(i-1).pos().x()+nodes.get(i-1).width()+NODE_GAP*i, posY));
+                nodes.get(i).setNewPos(nodes.get(i).pos());
             }
         }
         else if (axis == Y_AXIS)
         {
             for (int i = 1; i < nodes.size(); i++)
             {
+                nodes.get(i).setOldPos(nodes.get(i).pos());
                 nodes.get(i).setPos(new Vector2D(posX, nodes.get(i-1).pos().y()+nodes.get(i-1).height()+NODE_GAP*i));
+                nodes.get(i).setNewPos(nodes.get(i).pos());
             }
+        }
+
+        if (animate)
+        {
+            HashMap<Integer, Vector2D> incrementMap = GraphRoutines.computeNodeIncrements(nodes);
+            // animate change
+            GraphRoutines.updateCounter = 0;
+            Timer animationTimer = new Timer(3, e -> {
+                if (GraphRoutines.animateGraphNodes(nodes, incrementMap))
+                {
+                    ((Timer)e.getSource()).stop();
+                }
+            });
+            animationTimer.start();
+        }
+        else
+        {
+            Handler.updateNodePositions();
         }
     }
 
