@@ -391,6 +391,37 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
+    public void notifyCollectionAdded(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex) {
+        // find parent inputfield
+        LInputField inputField = null;
+        for(LInputField ii : lnc.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(inputFieldArgument))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+        inputField.notifyCollectionAdded();
+    }
+
+    @Override
+    public void notifyCollectionRemoved(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex) {
+        // find removed inputfield
+        LInputField inputField = null;
+        for(LInputField ii : lnc.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(inputFieldArgument))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+        inputField = lnc.inputArea().currentInputFields.get(lnc.inputArea().inputFieldIndex(inputField) + elementIndex);
+        inputField.notifyCollectionRemoved();
+    }
+
+    @Override
     public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
         lnc.changeCurrentClause(clause);
     }

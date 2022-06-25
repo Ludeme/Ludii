@@ -25,6 +25,8 @@ public interface IGraphPanel {
     void notifyCollapsed(LudemeNodeComponent lnc, boolean collapsed);
     void notifyTerminalInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, Object input);
     void notifyInputsUpdated(LudemeNodeComponent lnc);
+    void notifyCollectionAdded(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex);
+    void notifyCollectionRemoved(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex);
 
     void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
 

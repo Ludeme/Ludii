@@ -21,6 +21,8 @@ public interface IUserAction
         COLLAPSED, // User collapsed a node
         ADDED_INPUT, // User added a new input to a node
         REMOVED_INPUT, // User removed an input from a node
+        ADDED_COLLECTION, // User added a new collection to a node
+        REMOVED_COLLECTION, // User removed a collection from a node
         ACTIVATE_OPTIONAL_TERMINAL, // User activated an optional terminal
         DEACTIVATE_OPTIONAL_TERMINAL // User deactivated an optional terminal
     }

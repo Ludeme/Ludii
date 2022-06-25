@@ -310,15 +310,34 @@ public class Handler {
     public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument)
     {
         if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + nodeArgument);
+
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+
         Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
+
         if(oldCollection == null)
         {
+            IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, -404, 1, null);
+            addAction(action);
+            if(performedUserActions.peek() == action)
+                Handler.recordUserActions = false;
             updateInput(graph, node, nodeArgument, new Object[2]);
+            if(performedUserActions.peek() == action)
+                Handler.recordUserActions = true;
+            graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, 1);
             return;
         }
         Object[] newCollection = new Object[oldCollection.length + 1];
         System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
+        IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, -404, oldCollection.length, null);
+        addAction(action);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = false;
         updateInput(graph, node, nodeArgument, newCollection);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = true;
+
+        graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, newCollection.length - 1);
     }
 
 
@@ -367,6 +386,8 @@ public class Handler {
             newCollection[i - 1] = oldCollection[i];
         }
         updateInput(graph, node, nodeArgument, newCollection);
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyCollectionRemoved(graphPanel.nodeComponent(node), nodeArgument, elementIndex);
     }
 
 

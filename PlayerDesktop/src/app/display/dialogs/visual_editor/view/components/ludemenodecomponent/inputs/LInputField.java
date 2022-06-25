@@ -405,14 +405,18 @@ public class LInputField extends JComponent
      */
     public void addCollectionItem()
     {
-        LInputField last; // get last children/element of collection
+        /*LInputField last; // get last children/element of collection
         if(children.isEmpty()) last = this;
         else last = children.get(children.size()-1);
         inputArea().addInputFieldBelow(new LInputField(this), last); // add children field below last element
+         */
+        Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
+        if(true) return;
         // update provided inputs in handler
         if(isTerminal())
         {
-            inputArea().drawInputFields();
+            //inputArea().drawInputFields();
+            notifyCollectionAdded();
             return;
         }
         if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) instanceof Object[])
@@ -420,15 +424,22 @@ public class LInputField extends JComponent
             Object[] collection = (Object[]) inputArea().LNC().node().providedInputsMap().get(nodeArgument(0));
             if(collection.length < children.size() + 1)
             {
-                //Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst());
                 Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
             }
         }
         if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) == null)
         {
-            //Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst());
             Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
         }
+        //inputArea().drawInputFields();
+    }
+
+    public void notifyCollectionAdded()
+    {
+        LInputField last; // get last children/element of collection
+        if(children.isEmpty()) last = this;
+        else last = children.get(children.size()-1);
+        inputArea().addInputFieldBelow(new LInputField(this), last); // add children field below last element
         inputArea().drawInputFields();
     }
 
@@ -439,7 +450,15 @@ public class LInputField extends JComponent
     {
         //Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), parent.children().indexOf(this) + 1);
         Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), parent.children().indexOf(this) + 1);
-        inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
+        //inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
+        //inputArea().LNC().inputArea().removeInputField(this);
+        //parent.children.remove(this);
+        //inputArea().drawInputFields();
+    }
+
+    public void notifyCollectionRemoved()
+    {
+        //inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
         inputArea().LNC().inputArea().removeInputField(this);
         parent.children.remove(this);
         inputArea().drawInputFields();
