@@ -195,8 +195,8 @@ public class ConnectionHandler
             if(e.getConnectionComponent().inputField().nodeArgument(0).collection())
             {
                 if(collectionElementIndex == -1) collectionElementIndex = 0;
-                Handler.removeCollectionElement(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), collectionElementIndex);
-                Handler.removeCollectionElement(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), collectionElementIndex);
+                Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null, collectionElementIndex);
+                Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null, collectionElementIndex);
             }
             else
             {

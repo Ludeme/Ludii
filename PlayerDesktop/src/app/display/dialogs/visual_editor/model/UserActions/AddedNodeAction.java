@@ -107,6 +107,7 @@ public class AddedNodeAction implements IUserAction
             if (input instanceof Object[]) {
                 Handler.updateInput(graph, addedNode, arg, input);
                 for (int i = 0; i < ((Object[]) input).length; i++) {
+                    if(!(((Object[]) input)[i] instanceof LudemeNode)) continue;
                     Handler.addEdge(graph, addedNode, (LudemeNode) ((Object[]) input)[i], arg, i);
                 }
             } else Handler.updateInput(graph, addedNode, arg, input);

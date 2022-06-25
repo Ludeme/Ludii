@@ -38,6 +38,15 @@ public class RemovedNodeAction implements IUserAction
 
         parent = removedNode.parentNode();
         removedData = new LinkedHashMap<>(removedNode.providedInputsMap());
+        for(NodeArgument arg : removedNode.providedInputsMap().keySet())
+        {
+            if(removedData.get(arg) instanceof Object[])
+            {
+                Object[] copy = Arrays.copyOf((Object[])removedData.get(arg), ((Object[])removedData.get(arg)).length);
+                removedData.put(arg, null);
+                removedData.put(arg, copy);
+            }
+        }
     }
 
     public void setCollectionIndex(int index)
@@ -94,9 +103,10 @@ public class RemovedNodeAction implements IUserAction
             if(input instanceof LudemeNode) Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
             if(input instanceof Object[])
             {
-                Handler.updateInput(graph, removedNode, arg, input);
+                //Handler.updateInput(graph, removedNode, arg, input);
                 for(int i = 0; i < ((Object[]) input).length; i++)
                 {
+                    if(!(((Object[]) input)[i] instanceof LudemeNode)) continue;
                     Handler.addEdge(graph, removedNode, (LudemeNode) ((Object[]) input)[i], arg, i);
                 }
             }
