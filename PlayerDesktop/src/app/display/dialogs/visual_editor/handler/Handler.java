@@ -8,11 +8,9 @@ import app.display.dialogs.visual_editor.model.UserActions.*;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
-import game.util.graph.Graph;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 
@@ -42,7 +40,6 @@ public class Handler {
 
     private static Stack<IUserAction> performedUserActions = new Stack<>();
     private static Stack<IUserAction> undoneUserActions = new Stack<>();
-    private IUserAction currentUserAction;
     public static boolean recordUserActions = true;
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
@@ -127,11 +124,6 @@ public class Handler {
         // reset the parent's inputs
         if(node.parentNode() != null)
         {
-            // find index of the node in the parent's inputs
-            //int index = Arrays.asList(node.parentNode().providedInputs()).indexOf(node);
-            //if(index>=0 && !(node.parentNode().providedInputs()[index] instanceof Object[]))
-            //    Handler.updateInput(graph, node.parentNode(), index, null); // TODO: what about collection?
-
             List<NodeArgument> args = new ArrayList<>(node.parentNode().providedInputsMap().keySet());
             List<Object> inputs = new ArrayList<>(node.parentNode().providedInputsMap().values());
             int index2 = inputs.indexOf(node);
@@ -252,16 +244,7 @@ public class Handler {
         }
     }
 
-    /*public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
-        if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, index, input) -> Updating input: " + node.title() + ", index: " + index + ", input: " + input);
-        if(index < node.providedInputs().length) {
-            // if the input is null but was a node before, remove the child from the parent
-            if(input == null && node.providedInputs()[index] instanceof LudemeNode) {
-                node.removeChildren((LudemeNode) node.providedInputs()[index]);
-            }
-            node.setProvidedInput(index, input);
-        }
-    }*/
+
 
 
     /**
@@ -303,19 +286,6 @@ public class Handler {
         updateInput(graph, node, nodeArgument, newCollection);
     }
 
-    /*public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
-    {
-        if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + inputIndex);
-        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
-        if(oldCollection == null)
-        {
-            updateInput(graph, node, inputIndex, new Object[2]);
-            return;
-        }
-        Object[] newCollection = new Object[oldCollection.length + 1];
-        System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
-        updateInput(graph, node, inputIndex, newCollection);
-    }*/
 
 
     /**
@@ -340,17 +310,6 @@ public class Handler {
         Handler.updateInput(graph, node, nodeArgument, in);
     }
 
-    /*public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
-    {
-        if(node.providedInputs()[inputIndex] == null)
-        {
-            node.setProvidedInput(inputIndex, new Object[1]);
-        }
-        if(elementIndex >= ((Object[])(node.providedInputs()[inputIndex])).length) addCollectionElement(graph, node, inputIndex);
-        Object[] in = (Object[]) node.providedInputs()[inputIndex];
-        in[elementIndex] = input;
-        node.setProvidedInput(inputIndex, in);
-    }*/
 
     /**
      * if a collection element was removed, update the provided input array
@@ -375,30 +334,7 @@ public class Handler {
         updateInput(graph, node, nodeArgument, newCollection);
     }
 
-    /**
-     * if a collection element was removed, update the provided input array
-     * @param graph
-     * @param node
-     * @param inputIndex Index of collection argument in clause
-     * @param elementIndex Index of collection element
-     */
-    /*public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex, int elementIndex)
-    {
-        if(DEBUG) System.out.println("[HANDLER] Removed collection element of " + node.symbol().name() + ", " + inputIndex + " at " + elementIndex);
 
-        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
-        if(oldCollection == null) return;
-        Object[] newCollection = new Object[oldCollection.length - 1];
-        for(int i = 0; i < elementIndex; i++)
-        {
-            newCollection[i] = oldCollection[i];
-        }
-        for(int i = elementIndex + 1; i < oldCollection.length; i++)
-        {
-            newCollection[i - 1] = oldCollection[i];
-        }
-        updateInput(graph, node, inputIndex, newCollection);
-    }*/
 
     /**
      *
@@ -426,11 +362,6 @@ public class Handler {
         graphPanel.notifyCollapsed(graphPanel.nodeComponent(node), collapse);
     }
 
-
-    public static void setCollapsed(DescriptionGraph graph, LudemeNodeComponent lnc, boolean collapsed)
-    {
-        lnc.setCollapsed(collapsed);
-    }
     public static String getLudString(DescriptionGraph graph){
         return graph.toLud();
     }
@@ -522,5 +453,75 @@ public class Handler {
     {
         editorPanel.updateNodePositions();
     }
+
+
+
+    // OLD METHODS WITH PROVIDED INPUTS AS Object[]
+
+
+        /*public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
+        if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, index, input) -> Updating input: " + node.title() + ", index: " + index + ", input: " + input);
+        if(index < node.providedInputs().length) {
+            // if the input is null but was a node before, remove the child from the parent
+            if(input == null && node.providedInputs()[index] instanceof LudemeNode) {
+                node.removeChildren((LudemeNode) node.providedInputs()[index]);
+            }
+            node.setProvidedInput(index, input);
+        }
+    }*/
+
+
+    /*public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
+    {
+        if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + inputIndex);
+        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
+        if(oldCollection == null)
+        {
+            updateInput(graph, node, inputIndex, new Object[2]);
+            return;
+        }
+        Object[] newCollection = new Object[oldCollection.length + 1];
+        System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
+        updateInput(graph, node, inputIndex, newCollection);
+    }*/
+
+        /*public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
+    {
+        if(node.providedInputs()[inputIndex] == null)
+        {
+            node.setProvidedInput(inputIndex, new Object[1]);
+        }
+        if(elementIndex >= ((Object[])(node.providedInputs()[inputIndex])).length) addCollectionElement(graph, node, inputIndex);
+        Object[] in = (Object[]) node.providedInputs()[inputIndex];
+        in[elementIndex] = input;
+        node.setProvidedInput(inputIndex, in);
+    }*/
+
+
+    /**
+     * if a collection element was removed, update the provided input array
+     * @param graph
+     * @param node
+     * @param inputIndex Index of collection argument in clause
+     * @param elementIndex Index of collection element
+     */
+    /*public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex, int elementIndex)
+    {
+        if(DEBUG) System.out.println("[HANDLER] Removed collection element of " + node.symbol().name() + ", " + inputIndex + " at " + elementIndex);
+
+        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
+        if(oldCollection == null) return;
+        Object[] newCollection = new Object[oldCollection.length - 1];
+        for(int i = 0; i < elementIndex; i++)
+        {
+            newCollection[i] = oldCollection[i];
+        }
+        for(int i = elementIndex + 1; i < oldCollection.length; i++)
+        {
+            newCollection[i - 1] = oldCollection[i];
+        }
+        updateInput(graph, node, inputIndex, newCollection);
+    }*/
+
 
 }
