@@ -358,6 +358,13 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
+    public void notifyCollapsed(LudemeNodeComponent lnc, boolean collapsed) {
+        lnc.header().inputField().notifyCollapsed();
+        if(!collapsed) lnc.setVisible(true);
+        repaint();
+    }
+
+    @Override
     public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
         lnc.changeCurrentClause(clause);
     }

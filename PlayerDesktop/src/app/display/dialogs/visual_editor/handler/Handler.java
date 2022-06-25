@@ -406,7 +406,19 @@ public class Handler {
         node.setPos(x, y);
     }
 
-
+    /**
+     * (Un-)Collapses a node
+     * @param graph The graph that contains the node.
+     * @param node The node to update.
+     * @param collapse Whether the node should be collapsed or not.
+     */
+    public static void collapseNode(DescriptionGraph graph, LudemeNode node, boolean collapse)
+    {
+        if(DEBUG) System.out.println("[HANDLER] collapse(graph, node) Collapsing " + node.title() + ": " + collapse);
+        node.setCollapsed(collapse);
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyCollapsed(graphPanel.nodeComponent(node), collapse);
+    }
 
 
     public static void setCollapsed(DescriptionGraph graph, LudemeNodeComponent lnc, boolean collapsed)

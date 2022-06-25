@@ -123,9 +123,7 @@ public class LInputField extends JComponent
     private final ActionListener uncollapseButtonListener = e -> {
         remove(uncollapseButton);
         add(connectionComponent);
-        connectionComponent().connectedTo().setCollapsed(false);
-        connectionComponent().connectedTo().setVisible(true);
-        inputArea().LNC().graphPanel().repaint();
+        Handler.collapseNode(inputArea().LNC().graphPanel().graph(), connectionComponent().connectedTo().node(), false);
     };
 
     private final ActionListener addItemButtonListener = e -> addCollectionItem();
@@ -145,11 +143,6 @@ public class LInputField extends JComponent
                         inputArea().removedConnection(this);
                     }
                     reconstruct();
-                /*remove(choiceButton);
-                add(connectionComponent);
-                connectionComponent().connectedTo().setCollapsed(false);
-                connectionComponent().connectedTo().setVisible(true);
-                inputArea().LNC().graphPanel().repaint();*/
                 });
             }
             popup.add(items[i]);

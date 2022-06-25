@@ -18,6 +18,8 @@ public interface IUserAction
         ADDED_NODE, // User added a new Ludeme
         REMOVED_NODE, // User removed a Ludeme
         CHANGED_CLAUSE, // User changed a clause
+        COLLAPSED, // User collapsed a node
+        UNCOLLPASED, // User uncollapsed a node
         ADDED_INPUT, // User added a new input to a node
         REMOVED_INPUT, // User removed an input from a node
         ACTIVATE_OPTIONAL_TERMINAL, // User activated an optional terminal
