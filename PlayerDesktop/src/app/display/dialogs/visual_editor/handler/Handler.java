@@ -4,10 +4,7 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.model.UserActions.AddedNodeAction;
-import app.display.dialogs.visual_editor.model.UserActions.ChangedClauseAction;
-import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
-import app.display.dialogs.visual_editor.model.UserActions.RemovedNodeAction;
+import app.display.dialogs.visual_editor.model.UserActions.*;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
@@ -417,6 +414,7 @@ public class Handler {
         if(DEBUG) System.out.println("[HANDLER] collapse(graph, node) Collapsing " + node.title() + ": " + collapse);
         node.setCollapsed(collapse);
         IGraphPanel graphPanel = graphPanelMap.get(graph);
+        addAction(new CollapsedAction(graphPanel, node, collapse));
         graphPanel.notifyCollapsed(graphPanel.nodeComponent(node), collapse);
     }
 
