@@ -184,11 +184,24 @@ public class ConnectionHandler
 
             edges.remove(e);
             LudemeNodeComponent source = e.getConnectionComponent().inputField().inputArea().LNC();
+            int collectionElementIndex = -1;
+            if(e.getConnectionComponent().inputField().parent() != null)
+            {
+                collectionElementIndex = e.getConnectionComponent().inputField().parent().children().indexOf(e.getConnectionComponent().inputField())+1;
+            }
             source.inputArea().removedConnection(e.getConnectionComponent().inputField());
             e.getIngoingConnectionComponent().setFill(false); // the node source was connected to is not connected anymore
             e.getConnectionComponent().fill(false); // the node source is not connected anymore
-            Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
-            Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
+            if(e.getConnectionComponent().inputField().nodeArgument(0).collection())
+            {
+                Handler.removeCollectionElement(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), collectionElementIndex);
+                Handler.removeCollectionElement(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), collectionElementIndex);
+            }
+            else
+            {
+                Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
+                Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
+            }
         }
 
         graphPanel.repaint();
@@ -227,34 +240,6 @@ public class ConnectionHandler
                     Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
                     Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
                 }
-
-                // TODO: e.getConnectionComponent().inputField().inputArea().updateComponent(node, null, true);
-                // check whether it was the element of a collection
-                /* TODO
-                if(!connection.inputField().isMerged() && connection.inputField().nodeArgument(0).collection())
-                {
-                    // if element of collection udpate the array
-                    LudemeNode[] providedInputs = (LudemeNode[]) node.providedInputs()[connection.inputField().inputIndexFirst()];
-                    // find index which to remove from array
-                    int indexToUpdate;
-                    if(connection.inputField().parent != null)
-                    {
-                        indexToUpdate = connection.inputField().parent.children.indexOf(connection.inputField()) + 1;
-                    }
-                    else
-                    {
-                        indexToUpdate = 0;
-                    }
-                    // set to null
-                    providedInputs[indexToUpdate] = null;
-                    System.out.println("\u001B[32m"+"Calling from EP 339"+"\u001B[0m");
-                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().lnc().node(), connection.inputField().inputIndexFirst(), providedInputs);
-                } else
-                {
-                    System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
-                    Handler.updateInput(Handler.editorPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
-                } */
-
             }
         }
         graphPanel.repaint();

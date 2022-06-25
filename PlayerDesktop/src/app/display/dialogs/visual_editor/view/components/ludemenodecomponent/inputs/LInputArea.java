@@ -479,6 +479,11 @@ public class LInputArea extends JPanel
         return newInputField;
     }
 
+    public void addCollectionItem(LInputField inputField)
+    {
+        inputField.addCollectionItem();
+    }
+
     /**
      * Adds an InputField to the current input fields
      * @param inputField InputField to add

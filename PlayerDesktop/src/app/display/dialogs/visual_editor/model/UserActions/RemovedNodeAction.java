@@ -22,6 +22,7 @@ public class RemovedNodeAction implements IUserAction
     private boolean isUndone = false;
     private LudemeNode parent; // remembers the parent of the node
     private LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was removed
+    private int collectionIndex = -1; // If the node was removed from a collection, this is the index of the node in the collection
 
 
     /**
@@ -37,6 +38,12 @@ public class RemovedNodeAction implements IUserAction
 
         parent = removedNode.parentNode();
         removedData = new LinkedHashMap<>(removedNode.providedInputsMap());
+    }
+
+    public void setCollectionIndex(int index)
+    {
+        System.out.println("RemovedNodeAction.setCollectionIndex: " + index);
+        collectionIndex = index;
     }
 
     /**
@@ -85,11 +92,25 @@ public class RemovedNodeAction implements IUserAction
             Object input = removedData.get(arg);
             if(input == null) continue;
             if(input instanceof LudemeNode) Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
-            Handler.updateInput(graph, removedNode, arg, input);
+            if(input instanceof Object[])
+            {
+                Handler.updateInput(graph, removedNode, arg, input);
+                for(int i = 0; i < ((Object[]) input).length; i++)
+                {
+                    Handler.addEdge(graph, removedNode, (LudemeNode) ((Object[]) input)[i], arg, i);
+                }
+            }
+            else Handler.updateInput(graph, removedNode, arg, input);
             removedNode.setProvidedInput(arg, removedData.get(arg));
         }
 
-        if(parent != null) Handler.addEdge(graph, parent, removedNode, removedNode.creatorArgument());
+        if(parent != null)
+        {
+            if(collectionIndex == -1)
+                Handler.addEdge(graph, parent, removedNode, removedNode.creatorArgument());
+            else
+                Handler.addEdge(graph, parent, removedNode, removedNode.creatorArgument(), collectionIndex);
+        }
         graphPanel().repaint();
         isUndone = false;
     }

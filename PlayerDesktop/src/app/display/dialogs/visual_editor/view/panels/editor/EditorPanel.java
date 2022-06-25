@@ -317,26 +317,45 @@ public class EditorPanel extends JPanel implements IGraphPanel
         ch.addConnection(source, target);
     }
 
-     public void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument)
-     {
-         LInputField inputField = null;
-         for(LInputField ii : from.inputArea().currentInputFields)
-         {
-             if(ii.nodeArguments().contains(inputFieldArgument))
-             {
-                 inputField = ii;
-                 break;
-             }
-         }
-         if(inputField == null)
-         {
-             System.out.println("[EP] Error: input field not found");
-             return;
-         }
-         LConnectionComponent source = inputField.connectionComponent();
-         LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
-         ch.addConnection(source, target);
-     }
+    public void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument)
+    {
+        LInputField inputField = null;
+        for(LInputField ii : from.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(inputFieldArgument))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+        LConnectionComponent source = inputField.connectionComponent();
+        LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
+        ch.addConnection(source, target);
+    }
+
+    public void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument, int elementIndex)
+    {
+        LInputField inputField = null;
+        for(LInputField ii : from.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(inputFieldArgument))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+
+        if(elementIndex > 0)
+        {
+            int index = inputFieldArgument.index() + elementIndex;
+            while(index >= from.inputArea().currentInputFields.size()) from.inputArea().addCollectionItem(inputField);
+            inputField = from.inputArea().currentInputFields.get(index);
+        }
+
+        LConnectionComponent source = inputField.connectionComponent();
+        LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
+        ch.addConnection(source, target);
+    }
 
     @Override
     public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {

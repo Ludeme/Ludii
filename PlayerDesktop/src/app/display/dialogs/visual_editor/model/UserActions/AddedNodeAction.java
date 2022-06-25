@@ -90,8 +90,6 @@ public class AddedNodeAction implements IUserAction
      */
     @Override
     public void redo() {
-
-
         Handler.addNode(graph, addedNode);
         for(NodeArgument arg : removedData.keySet()) {
             Object input = removedData.get(arg);

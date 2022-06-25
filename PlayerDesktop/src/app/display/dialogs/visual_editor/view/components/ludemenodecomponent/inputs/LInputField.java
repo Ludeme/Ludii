@@ -409,7 +409,7 @@ public class LInputField extends JComponent
     /**
      * Adds a children collection input field
      */
-    private void addCollectionItem()
+    public void addCollectionItem()
     {
         LInputField last; // get last children/element of collection
         if(children.isEmpty()) last = this;

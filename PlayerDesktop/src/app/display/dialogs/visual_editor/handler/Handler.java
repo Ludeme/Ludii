@@ -45,6 +45,7 @@ public class Handler {
 
     private static Stack<IUserAction> performedUserActions = new Stack<>();
     private static Stack<IUserAction> undoneUserActions = new Stack<>();
+    private IUserAction currentUserAction;
     public static boolean recordUserActions = true;
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
@@ -70,6 +71,7 @@ public class Handler {
      */
     public static void addNode(DescriptionGraph graph, LudemeNode node, boolean connect)
     {
+        if(DEBUG) System.out.println("[HANDLER] addNode(graph. node, connect) Adding node: " + node.title());
         if(graph.getNodes().isEmpty()) graph.setRoot(node);
         graph.addNode(node);
         // notify graph panel
@@ -102,9 +104,16 @@ public class Handler {
      */
     public static void removeNode(DescriptionGraph graph, LudemeNode node)
     {
-        if(DEBUG) System.out.println("Removing node: " + node.title());
+        if(DEBUG) System.out.println("[HANDLER] removeNode(graph, node) -> Removing node: " + node.title());
 
         addAction(new RemovedNodeAction(graphPanelMap.get(graph), node));
+        // if the action is added, and the node was part of a collection, notify the action about the collection element index
+        if(recordUserActions && node.parentNode() != null && (node.parentNode().providedInputsMap().get(node.creatorArgument()) instanceof Object[]))
+        {
+            Object[] collectionInput = (Object[]) node.parentNode().providedInputsMap().get(node.creatorArgument());
+            int elementIndex = Arrays.asList(collectionInput).indexOf(node);
+            ((RemovedNodeAction) performedUserActions.peek()).setCollectionIndex(elementIndex);
+        }
 
         // Remove the node from the graph
         graph.removeNode(node);
@@ -117,12 +126,14 @@ public class Handler {
         {
             // find index of the node in the parent's inputs
             int index = Arrays.asList(node.parentNode().providedInputs()).indexOf(node);
-            if(index>=0 && !(node.parentNode().providedInputs()[index] instanceof Object[])) Handler.updateInput(graph, node.parentNode(), index, null); // TODO: what about collection?
+            if(index>=0 && !(node.parentNode().providedInputs()[index] instanceof Object[]))
+                Handler.updateInput(graph, node.parentNode(), index, null); // TODO: what about collection?
 
             List<NodeArgument> args = new ArrayList<>(node.parentNode().providedInputsMap().keySet());
             List<Object> inputs = new ArrayList<>(node.parentNode().providedInputsMap().values());
             int index2 = inputs.indexOf(node);
-            if(index2>=0 && !(node.parentNode().providedInputsMap().get(args.get(index2)) instanceof Object[])) Handler.updateInput(graph, node.parentNode(), args.get(index2), null); // TODO: what about collection?
+            if(index2>=0 && !(node.parentNode().providedInputsMap().get(args.get(index2)) instanceof Object[]))
+                Handler.updateInput(graph, node.parentNode(), args.get(index2), null); // TODO: what about collection?
         }
         // remove edge
         // TODO: ConenctionHandler
@@ -142,7 +153,7 @@ public class Handler {
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument){
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
-        if(DEBUG) System.out.println("Adding edge: " + from.title() + " -> " + to.title());
+        if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);
@@ -158,13 +169,41 @@ public class Handler {
      * @param graph The graph that contains the nodes.
      * @param from The node that the edge starts from.
      * @param to The node that the edge ends at.
+     * @param nodeArgument The nodeArgument of the field
+     * @param elementIndex If the edge is part of a collection, the index of the element in the collection
+     */
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument, int elementIndex){
+        // check whether the edge already exists
+        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
+        if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title());
+        graph.addEdge(from.id(), to.id());
+        // here form is the parent node
+        from.addChildren(to);
+        to.setParent(from);
+
+        // if the edge is part of a collection, adjust the collection size
+        while(elementIndex+1>((Object[])from.providedInputsMap().get(nodeArgument)).length)
+        {
+            addCollectionElement(graph, from, nodeArgument);
+        }
+
+        // notify graph panel to draw edge
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), nodeArgument, elementIndex);
+    }
+
+    /**
+     * Adds and edge between two nodes.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
      * @param inputFieldIndex The index of the inputfield where the connection stems from
      */
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int inputFieldIndex){
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
 
-        if(DEBUG) System.out.println("Adding edge: " + from.title() + " -> " + to.title() + ", inputFieldIndex: " + inputFieldIndex);
+        if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, inputFieldIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", inputFieldIndex: " + inputFieldIndex);
 
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
@@ -177,7 +216,7 @@ public class Handler {
     }
 
     public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
-        if(DEBUG) System.out.println("Removing edge: " + from.title() + " -> " + to.title());
+        if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to) -> Removing edge: " + from.title() + " -> " + to.title());
         graph.removeEdge(from.id(), to.id());
         from.removeChildren(to);
         to.setParent(null);
@@ -211,6 +250,7 @@ public class Handler {
     }
 
     public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
+        if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, index, input) -> Updating input: " + node.title() + ", index: " + index + ", input: " + input);
         if(index < node.providedInputs().length) {
             // if the input is null but was a node before, remove the child from the parent
             if(input == null && node.providedInputs()[index] instanceof LudemeNode) {
@@ -230,6 +270,7 @@ public class Handler {
      */
     public static void updateInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input)
     {
+        if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, nodeArgument, input) -> Updating input: " + node.title() + ", " + nodeArgument + " -> " + input);
         // if the input is null but was a node before, remove the child from the parent
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
         {
@@ -246,6 +287,7 @@ public class Handler {
      */
     public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument)
     {
+        if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + nodeArgument);
         Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
         if(oldCollection == null)
         {
@@ -259,7 +301,7 @@ public class Handler {
 
     public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
     {
-        if(DEBUG) System.out.println("[HANDLER] Adding collection element of " + node.title() + ", " + inputIndex);
+        if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + inputIndex);
         Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
         if(oldCollection == null)
         {
@@ -282,6 +324,7 @@ public class Handler {
      */
     public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input, int elementIndex)
     {
+        if(DEBUG) System.out.println("[HANDLER] updateCollectionInput(graph, node, nodeArgument, input, elementIndex) Updating collection input of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex);
         if(node.providedInputsMap().get(nodeArgument) == null)
         {
             node.setProvidedInput(nodeArgument, new Object[1]);
