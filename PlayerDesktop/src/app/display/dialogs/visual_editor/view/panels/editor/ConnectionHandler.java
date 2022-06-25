@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
@@ -103,6 +104,7 @@ public class ConnectionHandler
     {
         //addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
         Handler.addEdge(graphPanel.graph(), selectedConnectionComponent.inputField().inputArea().LNC().node(), target.node(), selectedConnectionComponent.inputField().inputArea().inputFieldIndex(selectedConnectionComponent.inputField()));
+        //Handler.addEdge(graphPanel.graph(), selectedConnectionComponent.inputField().inputArea().LNC().node(), target.node(), selectedConnectionComponent.inputField().inputArea().inputFieldIndex(selectedConnectionComponent.inputField()));
         selectedConnectionComponent = null;
     }
 

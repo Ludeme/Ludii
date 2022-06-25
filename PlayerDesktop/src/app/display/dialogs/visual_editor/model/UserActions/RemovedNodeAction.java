@@ -111,7 +111,7 @@ public class RemovedNodeAction implements IUserAction
             if(input == null) continue;
             Handler.updateInput(graph, removedNode, i, input);
         }
-        if(parent != null) Handler.addEdge(graph, parent, removedNode, parentInputFieldIndex);
+        if(parent != null) Handler.addEdge(graph, parent, removedNode, removedNode.creatorArgument());
         graphPanel().repaint();
         isUndone = false;
     }

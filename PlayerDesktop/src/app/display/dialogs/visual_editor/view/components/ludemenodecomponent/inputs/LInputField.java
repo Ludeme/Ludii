@@ -653,7 +653,8 @@ public class LInputField extends JComponent
                         connectionComponentChild = connectionComponent;
                     else
                         connectionComponentChild = children.get(i-1).connectionComponent();
-                    Handler.addEdge(graphPanel.graph(), connectionComponentChild.inputField().inputArea().LNC().node(), (LudemeNode) input_i, connectionComponentChild.inputField().inputIndexFirst());
+                    //Handler.addEdge(graphPanel.graph(), connectionComponentChild.inputField().inputArea().LNC().node(), (LudemeNode) input_i, connectionComponentChild.inputField().inputIndexFirst());
+                    Handler.addEdge(graphPanel.graph(), connectionComponentChild.inputField().inputArea().LNC().node(), (LudemeNode) input_i, connectionComponentChild.inputField().nodeArgument(0));
                     //graphPanel.connectionHandler().addConnection(connectionComponentChild, graphPanel.nodeComponent(((LudemeNode)input_i)).ingoingConnectionComponent());
                 }
                 else
@@ -668,7 +669,8 @@ public class LInputField extends JComponent
         else if(fieldComponent == connectionComponent)
         {
             // then its ludeme input
-            Handler.addEdge(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), (LudemeNode) input, inputIndexFirst());
+            //Handler.addEdge(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), (LudemeNode) input, inputIndexFirst());
+            Handler.addEdge(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), (LudemeNode) input, nodeArgument(0));
             //IGraphPanel graphPanel = inputArea().LNC().graphPanel();
             //graphPanel.connectionHandler().addConnection(connectionComponent, graphPanel.nodeComponent((LudemeNode) input).ingoingConnectionComponent());
             if(((LudemeNode) input).collapsed()) notifyCollapsed();
