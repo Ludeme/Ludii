@@ -37,7 +37,6 @@ public class RemovedNodeAction implements IUserAction
 
         parent = removedNode.parentNode();
         removedData = new LinkedHashMap<>(removedNode.providedInputsMap());
-        System.out.println("RemovedNodeAction: " + removedData.values());
     }
 
     /**
@@ -82,12 +81,10 @@ public class RemovedNodeAction implements IUserAction
     public void undo()
     {
         Handler.addNode(graph, removedNode);
-        System.out.println("RemovedNodeAction: " + removedData.values());
-
         for(NodeArgument arg : removedData.keySet()) {
             Object input = removedData.get(arg);
             if(input == null) continue;
-            if(input instanceof LudemeNode) Handler.addEdge(graph, (LudemeNode) input, removedNode, arg);
+            if(input instanceof LudemeNode) Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
             Handler.updateInput(graph, removedNode, arg, input);
             removedNode.setProvidedInput(arg, removedData.get(arg));
         }
