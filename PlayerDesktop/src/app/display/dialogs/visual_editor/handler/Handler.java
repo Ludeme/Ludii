@@ -106,7 +106,9 @@ public class Handler {
     {
         if(DEBUG) System.out.println("[HANDLER] removeNode(graph, node) -> Removing node: " + node.title());
 
-        addAction(new RemovedNodeAction(graphPanelMap.get(graph), node));
+        IUserAction action = new RemovedNodeAction(graphPanelMap.get(graph), node);
+        addAction(action);
+        if(performedUserActions.peek() == action) Handler.recordUserActions = false;
         // if the action is added, and the node was part of a collection, notify the action about the collection element index
         if(recordUserActions && node.parentNode() != null && (node.parentNode().providedInputsMap().get(node.creatorArgument()) instanceof Object[]))
         {
@@ -136,6 +138,7 @@ public class Handler {
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
+        if(performedUserActions.peek() == action) Handler.recordUserActions = true;
     }
 
     /**
