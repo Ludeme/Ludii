@@ -194,6 +194,7 @@ public class ConnectionHandler
             e.getConnectionComponent().fill(false); // the node source is not connected anymore
             if(e.getConnectionComponent().inputField().nodeArgument(0).collection())
             {
+                if(collectionElementIndex == -1) collectionElementIndex = 0;
                 Handler.removeCollectionElement(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), collectionElementIndex);
                 Handler.removeCollectionElement(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), collectionElementIndex);
             }

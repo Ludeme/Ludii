@@ -78,6 +78,12 @@ public class Handler {
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeAdded(node, connect);
         addAction(new AddedNodeAction(graphPanel, node));
+        if(recordUserActions && node.parentNode() != null && (node.parentNode().providedInputsMap().get(node.creatorArgument()) instanceof Object[]))
+        {
+            Object[] collectionInput = (Object[]) node.parentNode().providedInputsMap().get(node.creatorArgument());
+            int elementIndex = Arrays.asList(collectionInput).indexOf(node);
+            ((AddedNodeAction) performedUserActions.peek()).setCollectionIndex(elementIndex);
+        }
     }
 
     /**
