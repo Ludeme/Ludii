@@ -201,6 +201,7 @@ public class ConnectionHandler
             if(e.getConnectionComponent().equals(connection))
             {
                 edges.remove(e);
+                Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode()); // TODO: Below should happen in notifyEdgeRemoved()
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().fill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);

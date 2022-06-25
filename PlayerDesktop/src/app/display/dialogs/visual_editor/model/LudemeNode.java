@@ -27,7 +27,7 @@ public class LudemeNode implements iLudemeNode, iGNode
     /** Symbol/Ludeme this node represents */
     private final Symbol SYMBOL;
     /** The Node Argument which created this node */
-    private NodeArgument NODE_ARGUMENT;
+    private NodeArgument NODE_ARGUMENT_CREATOR;
     /** List of clauses this symbol encompasses */
     private List<Clause> CLAUSES;
     /** Currently selected Clause by the user */
@@ -84,7 +84,6 @@ public class LudemeNode implements iLudemeNode, iGNode
     /** NodeArguments that cannot be provided to satisfy active clauses */
     private List<NodeArgument> inactiveNodeArguments = new ArrayList<>();
 
-
     /**
      * Constructor for a new LudemeNode
      * @param symbol Symbol/Ludeme this node represents
@@ -95,7 +94,6 @@ public class LudemeNode implements iLudemeNode, iGNode
     {
        this(symbol, null, x, y);
     }
-
 
     /**
      * Constructor for a new LudemeNode
@@ -111,7 +109,7 @@ public class LudemeNode implements iLudemeNode, iGNode
 
         this.ID = LAST_ID++;
         this.SYMBOL = symbol;
-        this.NODE_ARGUMENT = argument;
+        this.NODE_ARGUMENT_CREATOR = argument;
         this.CLAUSES = symbol.rule().rhs();
         this.x = x;
         this.y = y;
@@ -195,18 +193,18 @@ public class LudemeNode implements iLudemeNode, iGNode
      *
      * @return The Node Argument which created this node
      */
-    public NodeArgument argument()
+    public NodeArgument creatorArgument()
     {
-        return NODE_ARGUMENT;
+        return NODE_ARGUMENT_CREATOR;
     }
 
     /**
      * Called if another NodeArgument is provided with this node
      * @param argument
      */
-    public void setNodeArgument(NodeArgument argument)
+    public void setCreatorArgument(NodeArgument argument)
     {
-        this.NODE_ARGUMENT = argument;
+        this.NODE_ARGUMENT_CREATOR = argument;
     }
 
     /**
@@ -1007,7 +1005,7 @@ public class LudemeNode implements iLudemeNode, iGNode
      */
     public LudemeNode copy(int x_shift, int y_shift)
     {
-        LudemeNode copy = new LudemeNode(symbol(), argument(),x+x_shift, y+y_shift);
+        LudemeNode copy = new LudemeNode(symbol(), creatorArgument(),x+x_shift, y+y_shift);
         copy.setCollapsed(collapsed());
         copy.setVisible(visible());
         copy.setDynamic(dynamic());

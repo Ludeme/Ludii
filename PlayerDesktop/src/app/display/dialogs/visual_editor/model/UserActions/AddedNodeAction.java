@@ -78,6 +78,7 @@ public class AddedNodeAction implements IUserAction
     {
         parent = addedNode.parentNode();
         removedData = addedNode.providedInputs();
+        // find the index of the removed node in its parent
         if(addedNode.parentNode() != null) {
             Object[] parentProvidedInputs = parent.providedInputs();
             for (int i = 0; i < parentProvidedInputs.length; i++) {
@@ -122,7 +123,7 @@ public class AddedNodeAction implements IUserAction
             if(input == null) continue;
             Handler.updateInput(graph, addedNode, i, input);
         }
-        if(parent != null) Handler.addEdge(graph, parent, addedNode, parentInputFieldIndex);//Handler.updateInput(graph, parent, parentInputIndex, addedNode);
+        if(parent != null) Handler.addEdge(graph, parent, addedNode, addedNode.creatorArgument());//Handler.updateInput(graph, parent, parentInputIndex, addedNode);
         graphPanel().repaint();
         isUndone = false;
     }

@@ -4,6 +4,7 @@ package app.display.dialogs.visual_editor.view.panels;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
@@ -18,6 +19,7 @@ public interface IGraphPanel {
     void notifyNodeAdded(LudemeNode node, boolean connect);
     void notifyNodeRemoved(LudemeNodeComponent lnc);
     void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, int inputFieldIndex);
+    void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument);
     void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
 
 

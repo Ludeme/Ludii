@@ -1,10 +1,12 @@
 package app.display.dialogs.visual_editor.view.components;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.recs.utils.Pair;
 import app.display.dialogs.visual_editor.recs.utils.ReadableSymbol;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
@@ -30,13 +32,15 @@ public class AddLudemeWindow extends JPanel {
     IGraphPanel graphPanel;
     boolean connect;
 
+    private LInputField initiator;
+
 
 
     public AddLudemeWindow(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect){
         this.graphPanel = graphPanel;
         this.connect = connect;
 
-        updateList(symbolList);
+        updateList(null, symbolList);
 
     }
 
@@ -79,7 +83,19 @@ public class AddLudemeWindow extends JPanel {
                         }
                         else
                         {
-                            Handler.addNode(graphPanel.graph(), rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                            System.out.println(initiator);
+                            // find matching NodeArgument
+                            NodeArgument match = null;
+                            for(NodeArgument na : initiator.nodeArguments())
+                            {
+                                if(na.possibleSymbolInputsExpanded().contains(rs.getSymbol()))
+                                {
+                                    match = na;
+                                    break;
+                                }
+                            }
+                            System.out.println(match);
+                            Handler.addNode(graphPanel.graph(), rs.getSymbol(), match, getLocation().x, getLocation().y, connect);
                             //graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
                         }
                         searchField.setText("");
@@ -105,7 +121,9 @@ public class AddLudemeWindow extends JPanel {
         return true;
     }
 
-    public void updateList(List<Symbol> symbolList){
+    public void updateList(LInputField initiator, List<Symbol> symbolList){
+
+        this.initiator = initiator;
 
         searchField = new JTextField();
 

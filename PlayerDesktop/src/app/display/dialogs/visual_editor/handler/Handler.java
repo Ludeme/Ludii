@@ -96,22 +96,6 @@ public class Handler {
     }
 
     /**
-     * Creates and adds a node to the graph
-     * @param graph Graph to add the node to
-     * @param symbol The symbol of the node to be created
-     * @param x The x-position of the node
-     * @param y The y-position of the node
-     * @param connect Whether the node will be connected after insertion
-     * @return The created node
-     */
-    public static LudemeNode addNode(DescriptionGraph graph, Symbol symbol, int x, int y, boolean connect)
-    {
-        LudemeNode node = new LudemeNode(symbol, x, y);
-        addNode(graph, node, connect);
-        return node;
-    }
-
-    /**
      * Removes a node from the graph.
      * @param graph The graph that contains the node.
      * @param node The node to remove.
@@ -136,9 +120,9 @@ public class Handler {
             if(index>=0 && !(node.parentNode().providedInputs()[index] instanceof Object[])) Handler.updateInput(graph, node.parentNode(), index, null); // TODO: what about collection?
 
             List<NodeArgument> args = new ArrayList<>(node.parentNode().providedInputsMap().keySet());
-            List<Object> inputs = Collections.singletonList(node.parentNode().providedInputsMap().values());
+            List<Object> inputs = new ArrayList<>(node.parentNode().providedInputsMap().values());
             int index2 = inputs.indexOf(node);
-            if(index>=0) Handler.updateInput(graph, node.parentNode(), args.get(index2), null); // TODO: what about collection?
+            if(index2>=0 && !(node.parentNode().providedInputsMap().get(args.get(index2)) instanceof Object[])) Handler.updateInput(graph, node.parentNode(), args.get(index2), null); // TODO: what about collection?
         }
         // remove edge
         // TODO: ConenctionHandler
@@ -148,6 +132,26 @@ public class Handler {
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
     }
 
+    /**
+     * Adds and edge between two nodes.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     * @param nodeArgument The nodeArgument of the field
+     */
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument){
+        // check whether the edge already exists
+        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
+        if(DEBUG) System.out.println("Adding edge: " + from.title() + " -> " + to.title());
+        graph.addEdge(from.id(), to.id());
+        // here form is the parent node
+        from.addChildren(to);
+        to.setParent(from);
+
+        // notify graph panel to draw edge
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), nodeArgument);
+    }
 
     /**
      * Adds and edge between two nodes.
@@ -172,19 +176,13 @@ public class Handler {
         graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), inputFieldIndex);
     }
 
-    /**
-     * Adds and edge between two nodes.
-     * @param graph The graph that contains the nodes.
-     * @param from The node that the edge starts from.
-     * @param to The node that the edge ends at.
-     */
-    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to)
-    {
-        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
-        graph.addEdge(from.id(), to.id());
-        // here form is the parent node
-        from.addChildren(to);
-        to.setParent(from);
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
+        if(DEBUG) System.out.println("Removing edge: " + from.title() + " -> " + to.title());
+        graph.removeEdge(from.id(), to.id());
+        from.removeChildren(to);
+        to.setParent(null);
+        //IGraphPanel graphPanel = graphPanelMap.get(graph);
+        // TODO: graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
     }
 
     /**

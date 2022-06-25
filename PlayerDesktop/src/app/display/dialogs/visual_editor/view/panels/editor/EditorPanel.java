@@ -16,6 +16,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
@@ -98,7 +99,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         Handler.addGraphPanel(graph, this);
 
         Handler.recordUserActions = false;
-        LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), 30, 30, false);
+        LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), null, 30, 30, false);
 
         //LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
         graph.setRoot(gameLudemeNode);
@@ -188,7 +189,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         long finish = System.nanoTime();
         long latency = finish - start;
         latencies.add(latency);
-        connectLudemeWindow.updateList(typeMatched);
+        connectLudemeWindow.updateList(ch.getSelectedConnectionComponent().inputField(), typeMatched);
         connectLudemeWindow.setVisible(true);
         connectLudemeWindow.setLocation(mousePosition);
         connectLudemeWindow.searchField.requestFocus();
@@ -315,6 +316,27 @@ public class EditorPanel extends JPanel implements IGraphPanel
         LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
         ch.addConnection(source, target);
     }
+
+     public void notifyEdgeAdded(LudemeNodeComponent from, LudemeNodeComponent to, NodeArgument inputFieldArgument)
+     {
+         LInputField inputField = null;
+         for(LInputField ii : from.inputArea().currentInputFields)
+         {
+             if(ii.nodeArguments().contains(inputFieldArgument))
+             {
+                 inputField = ii;
+                 break;
+             }
+         }
+         if(inputField == null)
+         {
+             System.out.println("[EP] Error: input field not found");
+             return;
+         }
+         LConnectionComponent source = inputField.connectionComponent();
+         LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
+         ch.addConnection(source, target);
+     }
 
     @Override
     public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
@@ -497,7 +519,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
                     // if user has no chocie for next ludeme -> automatically add required ludeme
                     if(ch.getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
                     {
-                        Handler.addNode(graph, ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), e.getX(), e.getY(), true);
+                        Handler.addNode(graph, ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), ch.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
                         //addNode(ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), e.getX(), e.getY(), true);
                     }
                     else if(!connectLudemeWindow.isVisible() && ch.getSelectedConnectionComponent().possibleSymbolInputs().size() > 1)
