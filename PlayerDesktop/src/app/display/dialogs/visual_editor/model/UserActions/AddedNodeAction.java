@@ -6,6 +6,7 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 /**
@@ -81,6 +82,15 @@ public class AddedNodeAction implements IUserAction
     {
         parent = addedNode.parentNode();
         removedData = new LinkedHashMap<>(addedNode.providedInputsMap());
+        for(NodeArgument arg : addedNode.providedInputsMap().keySet())
+        {
+            if(removedData.get(arg) instanceof Object[])
+            {
+                Object[] copy = Arrays.copyOf((Object[])removedData.get(arg), ((Object[])removedData.get(arg)).length);
+                removedData.put(arg, null);
+                removedData.put(arg, copy);
+            }
+        }
         // find the index of the removed node in its parent
         Handler.removeNode(graph, addedNode);
         graphPanel().repaint();
@@ -104,24 +114,24 @@ public class AddedNodeAction implements IUserAction
             Object input = removedData.get(arg);
             if (input == null) continue;
             if (input instanceof LudemeNode) Handler.addEdge(graph, addedNode, (LudemeNode) input, arg);
-            if (input instanceof Object[]) {
+            else if (input instanceof Object[]) {
                 Handler.updateInput(graph, addedNode, arg, input);
                 for (int i = 0; i < ((Object[]) input).length; i++) {
-                    if(!(((Object[]) input)[i] instanceof LudemeNode)) continue;
+                    if (!(((Object[]) input)[i] instanceof LudemeNode)) continue;
                     Handler.addEdge(graph, addedNode, (LudemeNode) ((Object[]) input)[i], arg, i);
                 }
             } else Handler.updateInput(graph, addedNode, arg, input);
             addedNode.setProvidedInput(arg, removedData.get(arg));
-
-            if (parent != null) {
-                if (collectionIndex == -1)
-                    Handler.addEdge(graph, parent, addedNode, addedNode.creatorArgument());
-                else
-                    Handler.addEdge(graph, parent, addedNode, addedNode.creatorArgument(), collectionIndex);
-            }
-            graphPanel().repaint();
-            isUndone = false;
         }
+
+        if (parent != null) {
+            if (collectionIndex == -1)
+                Handler.addEdge(graph, parent, addedNode, addedNode.creatorArgument());
+            else
+                Handler.addEdge(graph, parent, addedNode, addedNode.creatorArgument(), collectionIndex);
+        }
+        graphPanel().repaint();
+        isUndone = false;
     }
 
     @Override

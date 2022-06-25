@@ -465,8 +465,10 @@ public class Handler {
         undoneUserActions.add(lastAction);
         Handler.recordUserActions = false;
         lastAction.undo();
+        lastAction.graphPanel().repaint();
         Handler.recordUserActions = true;
         System.out.println("undone: " + lastAction.toString());
+        toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
     }
 
     public static void redo()
@@ -476,16 +478,18 @@ public class Handler {
         performedUserActions.add(lastUndoneAction);
         Handler.recordUserActions = false;
         lastUndoneAction.redo();
+        lastUndoneAction.graphPanel().repaint();
         Handler.recordUserActions = true;
         System.out.println("redone: " + lastUndoneAction.toString());
+        toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
     }
 
     private static void addAction(IUserAction action)
     {
         if(!recordUserActions) return;
         performedUserActions.add(action);
-        System.out.println("set undone user actions to empty");
         undoneUserActions = new Stack<>();
+        toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
     }
 
 

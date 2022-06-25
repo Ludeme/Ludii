@@ -101,7 +101,7 @@ public class RemovedNodeAction implements IUserAction
             Object input = removedData.get(arg);
             if(input == null) continue;
             if(input instanceof LudemeNode) Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
-            if(input instanceof Object[])
+            else if(input instanceof Object[])
             {
                 //Handler.updateInput(graph, removedNode, arg, input);
                 for(int i = 0; i < ((Object[]) input).length; i++)

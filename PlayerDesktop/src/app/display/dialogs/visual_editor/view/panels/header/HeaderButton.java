@@ -45,28 +45,13 @@ public class HeaderButton extends JButton {
         addMouseListener(hoverMouseListener);
     }
 
-    public HeaderButton(ImageIcon activeIcon, ImageIcon inactiveIcon, String text, boolean active) {
-        super(text);
-        this.ACTIVE_ICON = activeIcon;
-        this.INACTIVE_ICON = inactiveIcon;
-        this.HOVER_ICON = null;
-        this.active = active;
-
-        if(active){
-            setActive();
-        } else {
-            setInactive();
-        }
-        setFont(new Font("Roboto Bold", 0, 12));
-
-        // make transparent
-        setBorder(BorderFactory.createEmptyBorder());
-        setFocusPainted(false);
-        setOpaque(false);
-        setContentAreaFilled(false);
-        setBorderPainted(false);
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        super.setEnabled(enabled);
+        if(enabled) setActive();
+        else setInactive();
     }
-
     public void setActive(){
         active = true;
         setForeground(ACTIVE_COLOR);
@@ -104,17 +89,17 @@ public class HeaderButton extends JButton {
         @Override
         public void mousePressed(MouseEvent e) {
             super.mousePressed(e);
-            if (!selectable) setActive();
+            //if (!selectable) setActive();
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
             super.mouseReleased(e);
-            if (!selectable) setInactive();
+            //if (!selectable) setInactive();
         }
 
         public void mouseEntered(MouseEvent e) {
-            if(!active) {
+            if((selectable && !active) || (!selectable && active)) {
                 setHover();
             }
         }
