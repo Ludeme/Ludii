@@ -23,6 +23,8 @@ public class LayoutSettingsPanel extends JPanel
 
     private static LayoutSettingsPanel lsPanel;
 
+    private boolean changeListen = true;
+
     private final JCheckBox autoPlacement = new JCheckBox("Automatic placement");
     private final JCheckBox animatePlacement = new JCheckBox("Animate layout");
 
@@ -51,7 +53,7 @@ public class LayoutSettingsPanel extends JPanel
 
         redraw.addActionListener(e -> {
             lh.evaluateGraphWeights();
-            executeDFSLayout(graphPanel);
+            executeDFSLayout(graphPanel, animatePlacement.isSelected());
             graphPanel.deselectEverything();
         });
 
@@ -72,8 +74,11 @@ public class LayoutSettingsPanel extends JPanel
             offsetText.setText("Offset: " + getSliderValue(oSl));
             spreadText.setText("Spread: " + getSliderValue(sSl));
             compactnessText.setText("Compactness: " + getSliderValue(cSl));
-            updateWeights();
-            executeDFSLayout(graphPanel);
+            if (changeListen)
+            {
+                updateWeights();
+                executeDFSLayout(graphPanel, false);
+            }
         };
 
         dSl.addChangeListener(sliderUpdateListener);
@@ -101,6 +106,7 @@ public class LayoutSettingsPanel extends JPanel
 
         // # Adding check boxes #
         add(autoPlacement);
+        animatePlacement.setSelected(true);
         add(animatePlacement);
     }
 
@@ -145,16 +151,18 @@ public class LayoutSettingsPanel extends JPanel
 
     public void updateSliderValues(double d, double o, double s)
     {
+        changeListen = false;
         dSl.setValue((int)(d * 100));
         oSl.setValue((int)(o * 2 * 100));
         sSl.setValue((int)(s * 100));
+        changeListen = true;
     }
 
     private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
 
-    private void executeDFSLayout(IGraphPanel graphPanel)
+    private void executeDFSLayout(IGraphPanel graphPanel, boolean animated)
     {
-        graphPanel.getLayoutHandler().executeLayout(graphPanel.selectedRootId());
+        graphPanel.getLayoutHandler().executeLayout(graphPanel.selectedRootId(), animated);
     }
 
     public void setSelectedComponent(String node, boolean subtree)

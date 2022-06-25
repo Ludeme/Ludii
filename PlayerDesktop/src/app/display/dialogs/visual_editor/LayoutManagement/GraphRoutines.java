@@ -24,7 +24,7 @@ public final class GraphRoutines
     /**
      * Animation updates
      */
-    public static final int ANIMATION_UPDATES = 60;
+    public static final int ANIMATION_UPDATES = 20;
 
     /**
      * Animation update counter
@@ -33,7 +33,7 @@ public final class GraphRoutines
 
     /**
      * Update of depth for graph nodes by BFS traversal
-     * @param graph
+     * @param graph graph in operation
      * @param r root id
      */
     public static void updateNodeDepth(iGraph graph, int r)
@@ -61,7 +61,7 @@ public final class GraphRoutines
     /**
      * compute animation nodes increments
      * set nodes positions to the old ones
-     * @param graph
+     * @param graph graph in operation
      * @param r root id
      */
     public static HashMap<Integer, Vector2D> computeNodeIncrements(iGraph graph, int r)
@@ -101,7 +101,7 @@ public final class GraphRoutines
         Handler.updateNodePositions();
         if (UPDATE_COUNTER == ANIMATION_UPDATES)
         {
-            System.out.println("Stop timer");
+            UPDATE_COUNTER = 0;
             return true;
         }
         return false;
@@ -109,9 +109,9 @@ public final class GraphRoutines
 
     /**
      * Get depth of a node from the graph
-     * @param graph
+     * @param graph graph in operation
      * @param v index of a node
-     * @return
+     * @return depth of a node
      */
     public static int getNodeDepth(iGraph graph, int v)
     {
@@ -120,43 +120,13 @@ public final class GraphRoutines
 
     /**
      * Get number of siblings of a node
-     * @param graph
+     * @param graph graph in operation
      * @param v index of a node
-     * @return
+     * @return number of siblings
      */
     public static int getNumSiblings(iGraph graph, int v)
     {
         return graph.getNode(graph.getNode(v).parent()).children().size();
-    }
-
-    public static List<Integer> getLayerNodes(iGraph graph, int j, int r)
-    {
-        List<Integer> Q = new ArrayList<>();
-        List<Integer> Visited = new ArrayList<>();
-        List<Integer> Layer = new ArrayList<>();
-
-        int d = 0;
-        Visited.add(r);
-        Q.add(r);
-        while (!Q.isEmpty())
-        {
-            int n = Q.remove(0);
-
-            if (d == j) Layer.add(n);
-            else
-            {
-                List<Integer> children = graph.getNode(n).children();
-                children.forEach((v) -> {
-                    if (!Visited.contains(v))
-                    {
-                        Q.add(v);
-                        Visited.add(v);
-                    }
-                });
-                d++;
-            }
-        }
-        return Layer;
     }
 
     /**

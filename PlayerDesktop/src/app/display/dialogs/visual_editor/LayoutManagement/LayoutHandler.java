@@ -63,32 +63,31 @@ public class LayoutHandler {
     {
         LayoutHandler lm = graphPanel.getLayoutHandler();
         lm.evaluateGraphWeights();
-        lm.executeLayout(graphPanel.graph().getRoot().id());
+        lm.executeLayout(graphPanel.graph().getRoot().id(), false);
         layoutExecuted = true;
 
 
     }
 
-    public void executeLayout(int root)
+    public void executeLayout(int root, boolean animated)
     {
+        // check if has children
+        if (graph.getNode(root).children().isEmpty()) return;
         updateNodeDepth(graph, graph.getRoot().id());
         layout.setRoot(root);
         layout.applyLayout();
-        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn())
+        if (animated)
         {
             HashMap<Integer, Vector2D> incrementMap = GraphRoutines.computeNodeIncrements(graph, root);
             // animate change
-            animationTimer = new Timer(16, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (GraphRoutines.animateGraphNodes(graph, root, incrementMap))
-                    {
-                        ((Timer)e.getSource()).stop();
-                    }
+            animationTimer = new Timer(3, e -> {
+                if (GraphRoutines.animateGraphNodes(graph, root, incrementMap))
+                {
+                    ((Timer)e.getSource()).stop();
                 }
             });
-            if (layoutExecuted) animationTimer.start();
-            layoutExecuted = false;
+            animationTimer.start();
+            //layoutExecuted = false;
             System.out.println("Finished layout");
         }
         else
