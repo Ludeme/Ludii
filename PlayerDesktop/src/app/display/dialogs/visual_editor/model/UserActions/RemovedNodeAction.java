@@ -3,7 +3,11 @@ package app.display.dialogs.visual_editor.model.UserActions;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 /**
  * Created when a node is removed from the graph.
@@ -17,8 +21,7 @@ public class RemovedNodeAction implements IUserAction
     private final LudemeNode removedNode;
     private boolean isUndone = false;
     private LudemeNode parent; // remembers the parent of the node
-    private int parentInputFieldIndex = -1; // remembers the input index of the removed node in its parent
-    private Object[] removedData; // Inputs that were removed when the node was removed
+    private LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was removed
 
 
     /**
@@ -33,33 +36,8 @@ public class RemovedNodeAction implements IUserAction
         this.removedNode = removedNode;
 
         parent = removedNode.parentNode();
-        removedData = removedNode.providedInputs();
-        if(removedNode.parentNode() != null) {
-            Object[] parentProvidedInputs = parent.providedInputs();
-            for (int i = 0; i < parentProvidedInputs.length; i++) {
-                if (parentProvidedInputs[i] == removedNode) {
-                    parentInputFieldIndex = i;
-                    break;
-                }
-            }
-            // then its a collection
-            if(parentInputFieldIndex == -1)
-            {
-                for(int i = 0; i < parentProvidedInputs.length; i++)
-                {
-                    if(!(parentProvidedInputs[i] instanceof Object[])) continue;
-                    for(int j = 0; j < ((Object[])parentProvidedInputs[i]).length; j++)
-                    {
-                        if(((Object[])parentProvidedInputs[i])[j] == removedNode)
-                        {
-                            parentInputFieldIndex = i + j;
-                            break;
-                        }
-                    }
-                    if(parentInputFieldIndex != -1) break;
-                }
-            }
-        }
+        removedData = new LinkedHashMap<>(removedNode.providedInputsMap());
+        System.out.println("RemovedNodeAction: " + removedData.values());
     }
 
     /**
@@ -104,13 +82,16 @@ public class RemovedNodeAction implements IUserAction
     public void undo()
     {
         Handler.addNode(graph, removedNode);
-        // ensure that all of its connections are added to the graph
-        for (int i = 0; i < removedData.length; i++)
-        {
-            Object input = removedData[i];
+        System.out.println("RemovedNodeAction: " + removedData.values());
+
+        for(NodeArgument arg : removedData.keySet()) {
+            Object input = removedData.get(arg);
             if(input == null) continue;
-            Handler.updateInput(graph, removedNode, i, input);
+            if(input instanceof LudemeNode) Handler.addEdge(graph, (LudemeNode) input, removedNode, arg);
+            Handler.updateInput(graph, removedNode, arg, input);
+            removedNode.setProvidedInput(arg, removedData.get(arg));
         }
+
         if(parent != null) Handler.addEdge(graph, parent, removedNode, removedNode.creatorArgument());
         graphPanel().repaint();
         isUndone = false;

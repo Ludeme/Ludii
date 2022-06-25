@@ -116,12 +116,14 @@ public class AddedNodeAction implements IUserAction
     @Override
     public void redo() {
         Handler.addNode(graph, addedNode);
+        System.out.println("removeData: " + removedData);
         // ensure that all of its connections are added to the graph
         for (int i = 0; i < removedData.length; i++)
         {
             Object input = removedData[i];
             if(input == null) continue;
-            Handler.updateInput(graph, addedNode, i, input);
+            if(input instanceof LudemeNode) Handler.addEdge(graph, addedNode, (LudemeNode) input, i);
+            else Handler.updateInput(graph, addedNode, i, input);
         }
         if(parent != null) Handler.addEdge(graph, parent, addedNode, addedNode.creatorArgument());//Handler.updateInput(graph, parent, parentInputIndex, addedNode);
         graphPanel().repaint();
