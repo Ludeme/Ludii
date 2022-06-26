@@ -412,7 +412,7 @@ public class Handler
 
         if(input == null && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) return;
 
-        if(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) addCollectionElement(graph, node, nodeArgument);
+        while(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) addCollectionElement(graph, node, nodeArgument);
         Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
         in[elementIndex] = input;
         Handler.updateInput(graph, node, nodeArgument, in);
@@ -519,10 +519,12 @@ public class Handler
                     Object[] inputCollectionCopy = new Object[inputCollection.length];
                     for (int i = 0; i < inputCollection.length; i++) {
                         // if input element is a node
-                        if (inputCollection[i] instanceof LudemeNode) {
+                        if (inputCollection[i] instanceof LudemeNode)
+                        {
                             LudemeNode inputNode = (LudemeNode) inputCollection[i];
                             // if input node is in the list of nodes to copy, copy it
-                            if (nodes.contains(inputNode)) {
+                            if (nodes.contains(inputNode))
+                            {
                                 LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
                                 inputCollectionCopy[i] = inputNodeCopy;
                                 copy.addChildren(inputNodeCopy);
@@ -608,6 +610,7 @@ public class Handler
                                 addEdge(graph, parent, inputNode, argument, i);
                             }
                         }
+                        else if(i>0) addCollectionElement(graph, parent, argument);
                     }
                     if(parent.providedInputsMap().get(argument) == placeholder)
                     {
