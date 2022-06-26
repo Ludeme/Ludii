@@ -68,6 +68,7 @@ public class EditorPopupMenu extends JPopupMenu {
         add(newLudeme);
         add(paste);
         add(lmMenu);
+        add(collapse);
 
 
         JMenuItem undo = new JMenuItem("Undo");

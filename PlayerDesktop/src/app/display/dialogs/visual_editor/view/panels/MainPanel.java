@@ -146,6 +146,13 @@ public class MainPanel extends JPanel {
             }
         });
 
+        panel.getActionMap().put("delete", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Handler.remove(graphPanel.graph());
+            }
+        });
+
     }
 
     public Dimension getViewPort()

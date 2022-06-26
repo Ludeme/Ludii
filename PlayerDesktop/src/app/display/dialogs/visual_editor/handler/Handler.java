@@ -102,6 +102,7 @@ public class Handler
      */
     public static void removeNode(DescriptionGraph graph, LudemeNode node)
     {
+        if(graph.getRoot() == node) return;
         if(DEBUG) System.out.println("[HANDLER] removeNode(graph, node) -> Removing node: " + node.title());
 
         IUserAction action = new RemovedNodeAction(graphPanelMap.get(graph), node);
@@ -164,6 +165,21 @@ public class Handler
         if(performedUserActions.peek() == action) Handler.recordUserActions = false;
         for(LudemeNode n : nodes) removeNode(graph, n);
         if(performedUserActions.peek() == action) Handler.recordUserActions = true;
+    }
+
+    public static void remove(DescriptionGraph graph)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        List<LudemeNode> selectedNodes = selectedNodes(graph);
+        if(selectedNodes.isEmpty()) return;
+        if(selectedNodes.size() == 1)
+        {
+            removeNode(graph, selectedNodes.get(0));
+        }
+        else
+        {
+            removeNodes(graph, selectedNodes);
+        }
     }
 
     /**
