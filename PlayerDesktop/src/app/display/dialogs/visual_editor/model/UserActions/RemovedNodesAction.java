@@ -211,12 +211,9 @@ public class RemovedNodesAction implements IUserAction
      */
     @Override
     public void redo() {
-        List<RemovedNodeAction> removedReverse = new ArrayList<>(removedNodeActions);
-        Collections.reverse(removedReverse);
-        for(RemovedNodeAction action : removedReverse)
+        for(LudemeNode n : removedNodes)
         {
-            action.redo();
+            Handler.removeNode(graph, n);
         }
-        isUndone = false;
     }
 }
