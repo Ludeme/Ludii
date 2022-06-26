@@ -286,11 +286,12 @@ public class Handler
         for(Object input : node.providedInputsMap().values())
             if(input instanceof LudemeNode)
             {
-                if(performedUserActions.peek() == action)
+                if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+                {
                     Handler.recordUserActions = false;
-                removeEdge(graph, node, (LudemeNode) input);
-                if(performedUserActions.peek() == action)
+                    removeEdge(graph, node, (LudemeNode) input);
                     Handler.recordUserActions = true;
+                }
             }
         if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
         else node.setSelectedClause(c);

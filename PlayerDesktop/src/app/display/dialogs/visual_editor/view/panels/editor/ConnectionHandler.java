@@ -217,7 +217,29 @@ public class ConnectionHandler
             {
                 System.out.println("[CH] removing connection from " + node.symbol().name() + " to " + e.ingoingNode().symbol().name());
                 edges.remove(e);
-                Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode()); // TODO: Below should happen in notifyEdgeRemoved()
+                if(e.ingoingNode().creatorArgument() != null && e.ingoingNode().creatorArgument().collection())
+                {
+                    // find index in collection
+                    int elementIndex = -1;
+                    for(Object input : e.outgoingNode().providedInputsMap().values())
+                    {
+                        if(!(input instanceof Object[])) continue;
+                        Object[] currentCollection = (Object[]) input;
+                        for(int i = 0; i < currentCollection.length; i++)
+                        {
+                            if(currentCollection[i] == e.ingoingNode())
+                            {
+                                elementIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode(), elementIndex);
+                }
+                else {
+                    Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode());
+                }
+                // TODO: Below should happen in notifyEdgeRemoved()
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().fill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
