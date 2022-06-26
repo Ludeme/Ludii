@@ -108,6 +108,8 @@ public class AddedNodeAction implements IUserAction
         collectionIndex = index;
     }
 
+
+
     /**
      * Redoes the action
      */

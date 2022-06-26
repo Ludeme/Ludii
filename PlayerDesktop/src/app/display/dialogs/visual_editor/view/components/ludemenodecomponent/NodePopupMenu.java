@@ -155,12 +155,19 @@ public class NodePopupMenu extends JPopupMenu {
             // TODO: maybe a handler for that?
             if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
             {
+                List<LudemeNode> nodes = new ArrayList<>();
+                for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
+                {
+                    nodes.add(lnc.node());
+                }
+                Handler.removeNodes(graphPanel.graph(), nodes);
+                /*
                 for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
                 {
                     if(!graphPanel.graph().isDefine() &&  graphPanel.graph().getRoot() == lnc.node()) continue; // cant remove root node
                     Handler.removeNode(graphPanel.graph(), nodeComponent.node());
                     //graphPanel.removeNode(lnc.node());
-                }
+                }*/
             }
             else {
                 if(!graphPanel.graph().isDefine() &&  graphPanel.graph().getRoot() == nodeComponent.node()) return; // cant remove root node

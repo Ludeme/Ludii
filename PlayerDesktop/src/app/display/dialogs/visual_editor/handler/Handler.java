@@ -11,6 +11,7 @@ import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
+import gameDistance.utils.apted.node.Node;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 
@@ -140,6 +141,33 @@ public class Handler {
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
+        if(performedUserActions.peek() == action) Handler.recordUserActions = true;
+    }
+
+    /**
+     * Removes a list of nodes from the graph
+     * @param graph
+     * @param nodes
+     */
+    public static void removeNodes(DescriptionGraph graph, List<LudemeNode> nodes)
+    {
+        if(DEBUG) System.out.println("[HANDLER] removeNodes(graph, nodes) -> Removing nodes: " + nodes.size());
+
+        // remove root node
+        for(LudemeNode node : nodes)
+        {
+            if(graph.getRoot() == node)
+            {
+                nodes.remove(node);
+                break;
+            }
+        }
+
+        IUserAction action = new RemovedNodesAction(graphPanelMap.get(graph), nodes);
+        addAction(action);
+
+        if(performedUserActions.peek() == action) Handler.recordUserActions = false;
+        for(LudemeNode n : nodes) removeNode(graph, n);
         if(performedUserActions.peek() == action) Handler.recordUserActions = true;
     }
 
