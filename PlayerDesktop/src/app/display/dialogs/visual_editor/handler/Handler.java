@@ -654,6 +654,26 @@ public class Handler
         }
     }
 
+    public static void expand(DescriptionGraph graph)
+    {
+        List<LudemeNode> selectedNodes = selectedNodes(graph);
+        // find all subtree root
+        List<LudemeNode> toExpand = new ArrayList<>();
+        for(LudemeNode node : selectedNodes)
+        {
+            if(node.parentNode() == null)
+            {
+                for(LudemeNode child : node.childrenNodes())
+                {
+                    if(child.collapsed()) toExpand.add(child);
+                }
+            }
+        }
+        for (LudemeNode node : toExpand) {
+            collapseNode(graph, node, false);
+        }
+    }
+
     public static List<LudemeNode> selectedNodes(DescriptionGraph graph)
     {
         IGraphPanel graphPanel = graphPanelMap.get(graph);
