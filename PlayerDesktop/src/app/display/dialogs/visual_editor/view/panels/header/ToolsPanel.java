@@ -29,7 +29,7 @@ public class ToolsPanel extends JPanel {
 
         selectBtn.addActionListener(e -> {
             if (!selectBtn.isActive()) Handler.activateSelectionMode();
-            else Handler.deactivateSelectionMode();
+            // else Handler.deactivateSelectionMode();
         });
         add(selectBtn);
         add(Box.createHorizontalStrut(30));
@@ -56,11 +56,9 @@ public class ToolsPanel extends JPanel {
 
     public void updateUndoRedoBtns(Stack<IUserAction> performedActions, Stack<IUserAction> undoneActions)
     {
-        if(performedActions.isEmpty()) undoBtn.setEnabled(false);
-        else undoBtn.setEnabled(true);
+        undoBtn.setEnabled(!performedActions.isEmpty());
 
-        if(undoneActions.isEmpty()) redoBtn.setEnabled(false);
-        else redoBtn.setEnabled(true);
+        redoBtn.setEnabled(!undoneActions.isEmpty());
     }
 
     public void deactivateSelection()

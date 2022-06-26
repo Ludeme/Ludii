@@ -49,8 +49,8 @@ public class Handler {
 
     /**
      * Adds a node to the graph
-     * @param graph
-     * @param node
+     * @param graph graph in operation
+     * @param node node to be added
      */
     public static void addNode(DescriptionGraph graph, LudemeNode node )
     {
@@ -59,8 +59,8 @@ public class Handler {
 
     /**
      * Adds a node to the graph
-     * @param graph
-     * @param node
+     * @param graph graph in operation
+     * @param node node to be added
      * @param connect Whether the node will be connected after insertion
      */
     public static void addNode(DescriptionGraph graph, LudemeNode node, boolean connect)
@@ -248,8 +248,8 @@ public class Handler {
 
     /**
      * Assigns a IGraphPanel to a DescriptionGraph
-     * @param graph
-     * @param graphPanel
+     * @param graph graph to be assigned
+     * @param graphPanel graph panel
      */
     public static void addGraphPanel(DescriptionGraph graph, IGraphPanel graphPanel)
     {
@@ -275,7 +275,7 @@ public class Handler {
             IUserAction lastAction = performedUserActions.peek();
             if(lastAction instanceof AddedNodeAction)
             {
-                if(!(((AddedNodeAction) lastAction).addedNode() == (LudemeNode) input && ((AddedNodeAction) lastAction).addedNode().creatorArgument() == nodeArgument))
+                if(!(((AddedNodeAction) lastAction).addedNode() == input && ((AddedNodeAction) lastAction).addedNode().creatorArgument() == nodeArgument))
                 {
                     addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
                 }
@@ -394,12 +394,13 @@ public class Handler {
 
     /**
      *
-     * @param graph
-     * @param node
-     * @param x
-     * @param y
+     * @param graph graph in operation
+     * @param node node in operation
+     * @param x x coordinate
+     * @param y y coordinate
      */
-    public static void updatePosition(DescriptionGraph graph, LudemeNode node, int x, int y){
+    public static void updatePosition(DescriptionGraph graph, LudemeNode node, int x, int y)
+    {
         node.setPos(x, y);
     }
 
@@ -443,6 +444,7 @@ public class Handler {
     public static void deactivateSelectionMode()
     {
         editorPanel.exitSelectionMode();
+        toolsPanel.deactivateSelection();
         editorPanel.repaint();
     }
 
