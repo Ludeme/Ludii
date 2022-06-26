@@ -381,6 +381,21 @@ public class LInputArea extends JPanel
         return singleOutInputField(providedNodeArgument, inputField);
     }
 
+    /**
+     * Notifies the Input Area that the user has provided terminal input for a NodeArgument
+     * @param nodeArgument The NodeArgument that the user provided input for
+     * @param inputField LInputField that the user has provided input for
+     * @return The LInputField associated with the NodeArgument that the user provided input for
+     */
+    public LInputField addedConnection(NodeArgument nodeArgument, LInputField inputField)
+    {
+        nodeArgument.setSeparateNode(true);
+        System.out.println("providedNodeArgument: " + nodeArgument + ", " + nodeArgument.separateNode());
+        // Update active and inactive variables for dynamic nodes
+        if(dynamic()) providedNodeArgument(nodeArgument);
+        // Single out the NodeArgument that the user provided input for and return the new InputField
+        return singleOutInputField(nodeArgument, inputField);
+    }
 
     /**
      * Notifies the Input Area that the user has provided terminal input for a NodeArgument
@@ -405,12 +420,7 @@ public class LInputArea extends JPanel
             }
             if(providedNodeArgument != null) break;
         }
-        providedNodeArgument.setSeparateNode(true);
-        System.out.println("providedNodeArgument: " + providedNodeArgument + ", " + providedNodeArgument.separateNode());
-        // Update active and inactive variables for dynamic nodes
-        if(dynamic()) providedNodeArgument(providedNodeArgument);
-        // Single out the NodeArgument that the user provided input for and return the new InputField
-        return singleOutInputField(providedNodeArgument, inputField);
+        return addedConnection(providedNodeArgument, inputField);
     }
 
     /**

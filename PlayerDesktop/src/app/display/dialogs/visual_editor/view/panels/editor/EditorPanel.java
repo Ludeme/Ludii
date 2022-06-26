@@ -70,6 +70,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     private static final boolean DEBUG = true;
 
+    public static JLabel listener = new JLabel();
+
     // Recommendations
     private NGramController controller;
     private int N;
@@ -346,7 +348,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         if(elementIndex > 0)
         {
-            int index = inputFieldArgument.index() + elementIndex;
+            int index = inputField.inputArea().inputFieldIndex(inputField) + elementIndex;
             while(index >= from.inputArea().currentInputFields.size()) from.inputArea().addCollectionItem(inputField);
             inputField = from.inputArea().currentInputFields.get(index);
         }
@@ -368,6 +370,23 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 break;
             }
         }
+        assert inputField != null;
+        ch.removeConnection(from.node(), inputField.connectionComponent());
+    }
+
+    @Override
+    public void notifyEdgeRemoved(LudemeNodeComponent from, LudemeNodeComponent to, int elementIndex) {
+        // find inputfield of from node
+        LInputField inputField = null;
+        for(LInputField ii : from.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(to.node().creatorArgument()))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+        inputField = from.inputArea().currentInputFields.get(from.inputArea().inputFieldIndex(inputField) + elementIndex);
         assert inputField != null;
         ch.removeConnection(from.node(), inputField.connectionComponent());
     }
@@ -422,8 +441,52 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
+    public void notifyCollectionInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex, Object input) {
+        // find parent inputfield
+        /*LInputField inputField = null;
+        for(LInputField ii : lnc.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(inputFieldArgument))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+        if(elementIndex > 0) inputField = inputField.parent().children().get(elementIndex-1);
+        inputField.setUserInput(input);*/
+    }
+
+    @Override
     public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
         lnc.changeCurrentClause(clause);
+    }
+
+    @Override
+    public void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated) {
+        LInputField inputField = null;
+        for(LInputField ii : lnc.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(inputFieldArgument))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+
+        if(!inputField.isMerged())
+        {
+            if (activated) inputField.notifyActivated();
+            else inputField.notifyDeactivated();
+        }
+        else
+        {
+            lnc.addTerminal(inputFieldArgument, inputField);
+        }
+    }
+
+    @Override
+    public JPanel panel() {
+        return this;
     }
 
     @Override

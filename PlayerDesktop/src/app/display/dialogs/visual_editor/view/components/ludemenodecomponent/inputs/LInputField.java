@@ -218,9 +218,20 @@ public class LInputField extends JComponent
      */
     private void constructTerminal(NodeArgument nodeArgument, boolean removable)
     {
+
+        // check whether a input already exists to auto-fill it
+        Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
+
         fieldComponent = generateTerminalComponent(nodeArgument);
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());
+
+        // add listeners to update provided inputs when modified
+        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+
+        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        fieldComponent.addKeyListener(userInputListener_keyListener);
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
@@ -261,9 +272,23 @@ public class LInputField extends JComponent
                 terminalOptionalLabel.setText("+");
             }
         }
-        // add listeners to update provided inputs when modified
-        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
-        fieldComponent.addKeyListener(userInputListener_keyListener);
+
+        if(input != null)
+        {
+            if(nodeArgument.collection())
+            {
+                Object[] inputArray = (Object[]) input;
+                int elementIndex = 0;
+                if(parent != null) elementIndex = parent.children.indexOf(this) + 1;
+                if(inputArray[elementIndex] != null)
+                    setUserInput(inputArray[elementIndex]);
+            }
+            else
+            {
+                setUserInput(input);
+            }
+        }
+
     }
 
     /**
@@ -370,10 +395,17 @@ public class LInputField extends JComponent
 
     private void constructCollectionTerminal(NodeArgument nodeArgument)
     {
+        // check whether a input already exists to auto-fill it
+        Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
+
         fieldComponent = generateTerminalComponent(nodeArgument);
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());
+
         // add listeners to update provided inputs when modified
+        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+
         fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
         fieldComponent.addKeyListener(userInputListener_keyListener);
 
@@ -397,6 +429,22 @@ public class LInputField extends JComponent
         fieldComponent.setSize(fieldComponent.getPreferredSize());
 
         add(removeItemButton);
+
+        if(input != null)
+        {
+            if(nodeArgument.collection())
+            {
+                Object[] inputArray = (Object[]) input;
+                int elementIndex = 0;
+                if(parent != null) elementIndex = parent.children.indexOf(this) + 1;
+                if(inputArray[elementIndex] != null)
+                    setUserInput(inputArray[elementIndex]);
+            }
+            else
+            {
+                setUserInput(input);
+            }
+        }
 
     }
 
@@ -448,17 +496,12 @@ public class LInputField extends JComponent
      */
     private void removeCollectionItem()
     {
-        //Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), parent.children().indexOf(this) + 1);
         Handler.removeCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), parent.children().indexOf(this) + 1);
-        //inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
-        //inputArea().LNC().inputArea().removeInputField(this);
-        //parent.children.remove(this);
-        //inputArea().drawInputFields();
     }
 
     public void notifyCollectionRemoved()
     {
-        //inputArea().LNC().graphPanel().connectionHandler().removeConnection(inputArea().LNC().node(), this.connectionComponent());
+        System.out.println("notified about removal");
         inputArea().LNC().inputArea().removeInputField(this);
         parent.children.remove(this);
         inputArea().drawInputFields();
@@ -555,6 +598,22 @@ public class LInputField extends JComponent
     public void activate()
     {
         if(!isTerminal()) return;
+        Handler.activateOptionalTerminalField(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), true);
+        /*active = true;
+        System.out.println("Activating");
+        fieldComponent.setEnabled(true);
+        label.setEnabled(true);
+        terminalOptionalLabel.setText("X");
+        if(!nodeArgument(0).collection())
+        {
+            //Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
+            Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput());
+        }
+        repaint();*/
+    }
+
+    public void notifyActivated()
+    {
         active = true;
         System.out.println("Activating");
         fieldComponent.setEnabled(true);
@@ -571,6 +630,11 @@ public class LInputField extends JComponent
     public void deactivate()
     {
         if(!isTerminal()) return;
+
+        Handler.activateOptionalTerminalField(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), false);
+
+        /*
+
         active = false;
 
         System.out.println("Deactivating");
@@ -588,6 +652,24 @@ public class LInputField extends JComponent
         inputArea().LNC().graphPanel().setBusy(false);
 
 
+        repaint();*/
+    }
+
+    public void notifyDeactivated()
+    {
+        active = false;
+        System.out.println("Deactivating");
+
+        inputArea().LNC().graphPanel().setBusy(true);
+
+        fieldComponent.setEnabled(false);
+        label.setEnabled(false);
+        terminalOptionalLabel.setText("+");
+
+        inputArea().removedConnection(LInputField.this);
+        // notify handler
+        Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), null);
+        inputArea().LNC().graphPanel().setBusy(false);
         repaint();
     }
 
@@ -713,7 +795,6 @@ public class LInputField extends JComponent
             {
                 int index = 0;
                 if(parent != null) index = parent.children.indexOf(this)+1;
-                //Handler.updateCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput(), index);
                 Handler.updateCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput(), index);
             }
         }

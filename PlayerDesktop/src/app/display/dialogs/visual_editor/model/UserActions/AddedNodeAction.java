@@ -108,6 +108,8 @@ public class AddedNodeAction implements IUserAction
         collectionIndex = index;
     }
 
+
+
     /**
      * Redoes the action
      */
@@ -120,10 +122,11 @@ public class AddedNodeAction implements IUserAction
             if (input == null) continue;
             if (input instanceof LudemeNode) Handler.addEdge(graph, addedNode, (LudemeNode) input, arg);
             else if (input instanceof Object[]) {
+                Object[] collection = (Object[]) input;
                 Handler.updateInput(graph, addedNode, arg, input);
-                for (int i = 0; i < ((Object[]) input).length; i++) {
-                    if (!(((Object[]) input)[i] instanceof LudemeNode)) continue;
-                    Handler.addEdge(graph, addedNode, (LudemeNode) ((Object[]) input)[i], arg, i);
+                for (int i = 0; i < collection.length; i++) {
+                    if (!(collection[i] instanceof LudemeNode)) continue;
+                    Handler.addEdge(graph, addedNode, (LudemeNode) collection[i], arg, i);
                 }
             } else Handler.updateInput(graph, addedNode, arg, input);
             addedNode.setProvidedInput(arg, removedData.get(arg));

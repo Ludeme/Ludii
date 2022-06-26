@@ -40,6 +40,8 @@ public class Handler {
 
     private static Stack<IUserAction> performedUserActions = new Stack<>();
     private static Stack<IUserAction> undoneUserActions = new Stack<>();
+    public static IUserAction currentUndoAction;
+    public static IUserAction currentRedoAction;
     public static boolean recordUserActions = true;
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
@@ -142,6 +144,33 @@ public class Handler {
     }
 
     /**
+     * Removes a list of nodes from the graph
+     * @param graph
+     * @param nodes
+     */
+    public static void removeNodes(DescriptionGraph graph, List<LudemeNode> nodes)
+    {
+        if(DEBUG) System.out.println("[HANDLER] removeNodes(graph, nodes) -> Removing nodes: " + nodes.size());
+
+        // remove root node
+        for(LudemeNode node : nodes)
+        {
+            if(graph.getRoot() == node)
+            {
+                nodes.remove(node);
+                break;
+            }
+        }
+
+        IUserAction action = new RemovedNodesAction(graphPanelMap.get(graph), nodes);
+        addAction(action);
+
+        if(performedUserActions.peek() == action) Handler.recordUserActions = false;
+        for(LudemeNode n : nodes) removeNode(graph, n);
+        if(performedUserActions.peek() == action) Handler.recordUserActions = true;
+    }
+
+    /**
      * Adds and edge between two nodes.
      * @param graph The graph that contains the nodes.
      * @param from The node that the edge starts from.
@@ -151,7 +180,7 @@ public class Handler {
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument){
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
-        if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
+        if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);
@@ -173,7 +202,7 @@ public class Handler {
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument, int elementIndex){
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
-        if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title());
+        if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", elementIndex: " + elementIndex);
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);
@@ -220,6 +249,15 @@ public class Handler {
         to.setParent(null);
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
+    }
+
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex){
+        if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to, elementIndex) -> Removing edge: " + from.title() + " -> " + to.title());
+        graph.removeEdge(from.id(), to.id());
+        from.removeChildren(to);
+        to.setParent(null);
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), elementIndex);
     }
 
     /**
@@ -298,6 +336,7 @@ public class Handler {
         {
             node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
         }
+        if(input instanceof Object[]) System.out.println(Arrays.toString((Object[]) input));
         node.setProvidedInput(nodeArgument, input);
     }
 
@@ -352,11 +391,13 @@ public class Handler {
      */
     public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input, int elementIndex)
     {
-        if(DEBUG) System.out.println("[HANDLER] updateCollectionInput(graph, node, nodeArgument, input, elementIndex) Updating collection input of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex);
+        if(DEBUG) System.out.println("[HANDLER] updateCollectionInput(graph, node, nodeArgument, input, elementIndex) Updating collection input of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex + " to " + input);
         if(node.providedInputsMap().get(nodeArgument) == null)
         {
             node.setProvidedInput(nodeArgument, new Object[1]);
         }
+
+        if(input == null && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) return;
 
         if(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) addCollectionElement(graph, node, nodeArgument);
         Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
@@ -374,9 +415,26 @@ public class Handler {
      */
     public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, int elementIndex)
     {
+        if(DEBUG) System.out.println("[HANDLER] removeCollectionElement(graph, node, nodeArgument, elementIndex) Removing collection element of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex);
         Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
         if(oldCollection == null) return;
+
+        // get input
+        Object input = oldCollection[elementIndex];
+
+        IUserAction action = new RemovedCollectionAction(graphPanelMap.get(graph), node, nodeArgument, elementIndex, input);
+        addAction(action);
+
         Object[] newCollection = new Object[oldCollection.length - 1];
+
+        if(currentUndoAction instanceof AddedCollectionAction)
+        {
+            if(((AddedCollectionAction) currentUndoAction).isUpdated(node, nodeArgument, elementIndex))
+            {
+                ((AddedCollectionAction) currentUndoAction).setInput(input);
+            }
+        }
+
         for(int i = 0; i < elementIndex; i++)
         {
             newCollection[i] = oldCollection[i];
@@ -385,7 +443,14 @@ public class Handler {
         {
             newCollection[i - 1] = oldCollection[i];
         }
+
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = false;
         updateInput(graph, node, nodeArgument, newCollection);
+        if(input instanceof LudemeNode)
+            removeEdge(graph, node, (LudemeNode) input, elementIndex);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = true;
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyCollectionRemoved(graphPanel.nodeComponent(node), nodeArgument, elementIndex);
     }
@@ -417,6 +482,19 @@ public class Handler {
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         addAction(new CollapsedAction(graphPanel, node, collapse));
         graphPanel.notifyCollapsed(graphPanel.nodeComponent(node), collapse);
+    }
+
+    public static void activateOptionalTerminalField(DescriptionGraph graph, LudemeNode node, NodeArgument argument, boolean activate)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        IUserAction action = new ActivateOptionalTerminalAction(graphPanel, node, argument, activate);
+
+        addAction(action);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = false;
+        graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, activate);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = true;
     }
 
     public static String getLudString(DescriptionGraph graph){
@@ -458,29 +536,31 @@ public class Handler {
     public static void undo()
     {
         if(performedUserActions.isEmpty()) return;
-        IUserAction lastAction = performedUserActions.pop();
-        if(DEBUG) System.out.println("[HANDLER] undo() Undoing " + lastAction.actionType());
-        undoneUserActions.add(lastAction);
+        currentUndoAction = performedUserActions.pop();
+        if(DEBUG) System.out.println("[HANDLER] undo() Undoing " + currentUndoAction.actionType());
+        undoneUserActions.add(currentUndoAction);
         Handler.recordUserActions = false;
-        lastAction.undo();
-        lastAction.graphPanel().repaint();
+        currentUndoAction.undo();
+        currentUndoAction.graphPanel().repaint();
         Handler.recordUserActions = true;
-        if(DEBUG) System.out.println("[HANDLER] undo() Completed " + lastAction.actionType());
+        if(DEBUG) System.out.println("[HANDLER] undo() Completed " + currentUndoAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
+        currentUndoAction = null;
     }
 
     public static void redo()
     {
         if(undoneUserActions.isEmpty()) return;
-        IUserAction lastUndoneAction = undoneUserActions.pop();
-        if(DEBUG) System.out.println("[HANDLER] redo() Redoing " + lastUndoneAction.actionType());
-        performedUserActions.add(lastUndoneAction);
+        currentRedoAction = undoneUserActions.pop();
+        if(DEBUG) System.out.println("[HANDLER] redo() Redoing " + currentRedoAction.actionType());
+        performedUserActions.add(currentRedoAction);
         Handler.recordUserActions = false;
-        lastUndoneAction.redo();
-        lastUndoneAction.graphPanel().repaint();
+        currentRedoAction.redo();
+        currentRedoAction.graphPanel().repaint();
         Handler.recordUserActions = true;
-        if(DEBUG) System.out.println("[HANDLER] redo() Completed " + lastUndoneAction.actionType());
+        if(DEBUG) System.out.println("[HANDLER] redo() Completed " + currentRedoAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
+        currentRedoAction = null;
     }
 
     private static void addAction(IUserAction action)
