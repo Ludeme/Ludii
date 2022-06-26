@@ -139,7 +139,12 @@ public class MainPanel extends JPanel {
             }
         });
 
-
+        panel.getActionMap().put("collapse", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Handler.collapse(graphPanel.graph());
+            }
+        });
 
     }
 

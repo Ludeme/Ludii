@@ -616,6 +616,35 @@ public class Handler
         node.setPos(x, y);
     }
 
+    public static void collapse(DescriptionGraph graph)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        List<LudemeNode> selectedNodes = selectedNodes(graph);
+        // find all subtree root's children
+        List<LudemeNode> toCollapse = new ArrayList<>();
+        for(LudemeNode node : selectedNodes)
+        {
+            if(node.parentNode() == null) continue;
+            if(node.parentNode().parentNode() == null) toCollapse.add(node);
+        }
+        System.out.println("[HANDLER] collapse(graph) Collapsing " + toCollapse.size() + " nodes");
+        for(LudemeNode node : toCollapse)
+        {
+            collapseNode(graph, node, true);
+        }
+    }
+
+    public static List<LudemeNode> selectedNodes(DescriptionGraph graph)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        List<LudemeNode> nodes = new ArrayList<>();
+        for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
+        {
+            nodes.add(lnc.node());
+        }
+        return nodes;
+    }
+
     /**
      * (Un-)Collapses a node
      * @param graph The graph that contains the node.

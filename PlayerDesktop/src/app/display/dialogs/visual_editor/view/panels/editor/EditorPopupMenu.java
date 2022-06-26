@@ -45,6 +45,10 @@ public class EditorPopupMenu extends JPopupMenu {
         lmMenu.add(compact);
         lmMenu.add(settings);
 
+        JMenuItem collapse = new JMenuItem("Collapse");
+        collapse.addActionListener(e -> {
+            Handler.collapse(graphPanel.graph());
+        });
 
         int iconHeight = (int)(newLudeme.getPreferredSize().getHeight()*0.75);
 
@@ -52,9 +56,14 @@ public class EditorPopupMenu extends JPopupMenu {
         newLudeme.setIcon(newLudemeIcon);
         ImageIcon pasteIcon = new ImageIcon(DesignPalette.PASTE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
         paste.setIcon(pasteIcon);
+        ImageIcon collapseIcon = new ImageIcon(DesignPalette.COLLAPSE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        collapse.setIcon(collapseIcon);
 
-        //if(Handler.copyList().isEmpty()) paste.setEnabled(false);
-        //else paste.setEnabled(true);
+        if(Handler.copyList().isEmpty()) paste.setEnabled(false);
+        else paste.setEnabled(true);
+
+        if(Handler.selectedNodes(graphPanel.graph()).isEmpty()) collapse.setEnabled(false);
+        else collapse.setEnabled(true);
 
         add(newLudeme);
         add(paste);
