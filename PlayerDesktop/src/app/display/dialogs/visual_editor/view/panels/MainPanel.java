@@ -1,11 +1,13 @@
 package app.display.dialogs.visual_editor.view.panels;
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -63,6 +65,7 @@ public class MainPanel extends JPanel {
         };
 
 
+        setKeyBinding(editor_panel);
 
         editor_panel.addMouseListener(ma);
         editor_panel.addMouseMotionListener(ma);
@@ -85,4 +88,47 @@ public class MainPanel extends JPanel {
             editor_panel.scrollRectToVisible(view);
         }
     }
+
+    private void setKeyBinding(IGraphPanel graphPanel)
+    {
+        JPanel panel = graphPanel.panel();
+
+
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control z"), "undo");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control y"), "redo");
+        //panel.getInputMap().put(KeyStroke.getKeyStroke("control s"), "save");
+        //panel.getInputMap().put(KeyStroke.getKeyStroke("control o"), "open");
+        //panel.getInputMap().put(KeyStroke.getKeyStroke("control n"), "new");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control c"), "copy");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control v"), "paste");
+        //panel.getInputMap().put(KeyStroke.getKeyStroke("control x"), "cut");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control a"), "selectAll");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control d"), "delete");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control h"), "documentation");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control i"), "info");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control l"), "layout");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control w"), "collapse");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control r"), "run");
+        panel.getInputMap().put(KeyStroke.getKeyStroke("control shift d"), "duplicate");
+
+
+
+        panel.getActionMap().put("undo", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Handler.undo();
+            }
+        });
+
+        panel.getActionMap().put("redo", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Handler.redo();
+            }
+        });
+
+
+
+    }
+
 }

@@ -11,6 +11,7 @@ import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 
+import javax.swing.*;
 import java.util.List;
 
 public interface IGraphPanel {
@@ -31,6 +32,8 @@ public interface IGraphPanel {
     void notifyCollectionInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex, Object input);
     void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
     void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated);
+
+    JPanel panel();
 
 
     boolean isBusy();

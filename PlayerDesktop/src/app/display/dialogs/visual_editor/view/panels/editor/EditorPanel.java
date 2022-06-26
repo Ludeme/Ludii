@@ -70,6 +70,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     private static final boolean DEBUG = true;
 
+    public static JLabel listener = new JLabel();
+
     // Recommendations
     private NGramController controller;
     private int N;
@@ -89,6 +91,19 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         add(addLudemeWindow);
         add(connectLudemeWindow);
+
+        getInputMap().put(KeyStroke.getKeyStroke("control Z"), "undo");
+        getInputMap().put(KeyStroke.getKeyStroke("control Y"), "redo");
+
+
+
+        getActionMap().put("undo", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("undo");
+                Handler.undo();
+            }
+        });
 
 
         /*
@@ -480,6 +495,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
         {
             lnc.addTerminal(inputFieldArgument, inputField);
         }
+    }
+
+    @Override
+    public JPanel panel() {
+        return this;
     }
 
     @Override
