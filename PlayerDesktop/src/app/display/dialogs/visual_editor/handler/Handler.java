@@ -640,12 +640,23 @@ public class Handler
     {
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         List<LudemeNode> selectedNodes = selectedNodes(graph);
+        if(selectedNodes.isEmpty()) return;
+        if(selectedNodes.size() == 1)
+        {
+            if(selectedNodes.get(0).parentNode() != null) collapseNode(graph, selectedNodes.get(0), true);
+            return;
+        }
+        List<LudemeNode> roots = new ArrayList<>();
+        for(LudemeNode node : selectedNodes)
+        {
+            if(node.parentNode() == null) roots.add(node);
+            else if(!selectedNodes.contains(node.parentNode())) roots.add(node.parentNode());
+        }
         // find all subtree root's children
         List<LudemeNode> toCollapse = new ArrayList<>();
         for(LudemeNode node : selectedNodes)
         {
-            if(node.parentNode() == null) continue;
-            if(node.parentNode().parentNode() == null) toCollapse.add(node);
+            if(roots.contains(node.parentNode())) toCollapse.add(node);
         }
         System.out.println("[HANDLER] collapse(graph) Collapsing " + toCollapse.size() + " nodes");
         for(LudemeNode node : toCollapse)
@@ -661,14 +672,14 @@ public class Handler
         List<LudemeNode> toExpand = new ArrayList<>();
         for(LudemeNode node : selectedNodes)
         {
-            if(node.parentNode() == null)
+            for(LudemeNode child : node.childrenNodes())
             {
-                for(LudemeNode child : node.childrenNodes())
-                {
-                    if(child.collapsed()) toExpand.add(child);
-                }
+                toExpand.add(child);
             }
         }
+
+        System.out.println("[HANDLER] expand(graph) Expanding " + toExpand.size() + " nodes");
+
         for (LudemeNode node : toExpand) {
             collapseNode(graph, node, false);
         }
