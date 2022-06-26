@@ -263,7 +263,7 @@ public class LInputField extends JComponent
         }
         if(removable) {
             add(terminalOptionalLabel);
-            if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null) activate();
+            if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null) notifyActivated();
             //if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] != null) activate();
             else
             {
