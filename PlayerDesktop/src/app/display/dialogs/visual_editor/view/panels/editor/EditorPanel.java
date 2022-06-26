@@ -92,19 +92,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         add(addLudemeWindow);
         add(connectLudemeWindow);
 
-        getInputMap().put(KeyStroke.getKeyStroke("control Z"), "undo");
-        getInputMap().put(KeyStroke.getKeyStroke("control Y"), "redo");
-
-
-
-        getActionMap().put("undo", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("undo");
-                Handler.undo();
-            }
-        });
-
 
         /*
         graph.setRoot(addNode(gameLudeme, 30, 30, false));*/

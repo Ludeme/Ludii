@@ -94,22 +94,22 @@ public class MainPanel extends JPanel {
         JPanel panel = graphPanel.panel();
 
 
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control z"), "undo");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control y"), "redo");
-        //panel.getInputMap().put(KeyStroke.getKeyStroke("control s"), "save");
-        //panel.getInputMap().put(KeyStroke.getKeyStroke("control o"), "open");
-        //panel.getInputMap().put(KeyStroke.getKeyStroke("control n"), "new");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control c"), "copy");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control v"), "paste");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Z"), "undo");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Y"), "redo");
+        //panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control S"), "save");
+        //panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control O"), "open");
+        //panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control N"), "new");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control C"), "copy");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control V"), "paste");
         //panel.getInputMap().put(KeyStroke.getKeyStroke("control x"), "cut");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control a"), "selectAll");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control d"), "delete");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control h"), "documentation");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control i"), "info");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control l"), "layout");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control w"), "collapse");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control r"), "run");
-        panel.getInputMap().put(KeyStroke.getKeyStroke("control shift d"), "duplicate");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control A"), "selectAll");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control D"), "delete");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control H"), "documentation");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control I"), "info");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control L"), "layout");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control W"), "collapse");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control R"), "run");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control shift D"), "duplicate");
 
 
 
