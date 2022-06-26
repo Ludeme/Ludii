@@ -663,6 +663,7 @@ public class Handler
         {
             collapseNode(graph, node, true);
         }
+        graphPanelMap.get(graph).deselectEverything();
     }
 
     public static void expand(DescriptionGraph graph)
@@ -683,6 +684,7 @@ public class Handler
         for (LudemeNode node : toExpand) {
             collapseNode(graph, node, false);
         }
+        graphPanelMap.get(graph).deselectEverything();
     }
 
     public static List<LudemeNode> selectedNodes(DescriptionGraph graph)
