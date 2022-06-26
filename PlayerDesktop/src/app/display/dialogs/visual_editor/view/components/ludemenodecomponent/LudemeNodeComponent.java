@@ -141,6 +141,17 @@ public class LudemeNodeComponent extends JPanel
         LN.setPos(position.x, position.y);
     }
 
+    public void syncPositionsWithLN()
+    {
+        if(inputArea == null || header == null) {
+            return;
+        }
+        setLocation(new Point((int)LN.pos().x(), (int)LN.pos().y()));
+        position.update(getLocation());
+        inputArea.updateConnectionPointPositions();
+        header.updatePosition();
+    }
+
     /**
      * TODO: This is what?
      */

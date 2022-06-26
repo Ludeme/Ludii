@@ -68,7 +68,7 @@ public class DesignPalette
     {
         SCALAR = scalar;
         System.out.println("[SCALING] SCALAR: " + SCALAR);
-        NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
+        // NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
         LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * SCALAR);
         LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
         INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);
@@ -79,11 +79,11 @@ public class DesignPalette
         HEADER_TITLE_CONNECTION_SPACE = (int) (DEFAULT_HEADER_TITLE_CONNECTION_SPACE * SCALAR);
         CONNECTION_STROKE_WIDTH = DEFAULT_CONNECTION_STROKE_WIDTH * SCALAR;
         NODE_BORDER_WIDTH = (int) (DEFAULT_NODE_BORDER_WIDTH * SCALAR);
-        BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * SCALAR);
-        BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * SCALAR);
+        BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * (1.0/SCALAR));
+        BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * (1.0/SCALAR));
 
-        LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  LUDEME_TITLE_FONT_SIZE);
-        LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
+        LUDEME_TITLE_FONT = new Font("Roboto Bold", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
+        LUDEME_INPUT_FONT = new Font("Robot Regular", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
         LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
         LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(DesignPalette.LUDEME_SELECTION_COLOR, NODE_BORDER_WIDTH);
@@ -96,7 +96,7 @@ public class DesignPalette
     // ~~ COLORS ~~ //
 
     // PANELS //
-    public static Color BACKGROUND_EDITOR = new Color(244,244,244);;
+    public static Color BACKGROUND_EDITOR = new Color(244,244,244);
     public static Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
 
     // LUDEME BLOCK //
@@ -130,8 +130,8 @@ public class DesignPalette
     }
 
     // LUDEME BLOCK //
-    public static Font LUDEME_TITLE_FONT = new Font("Roboto Bold", 0,  LUDEME_TITLE_FONT_SIZE);
-    public static Font LUDEME_INPUT_FONT = new Font("Robot Regular", 0, LUDEME_INPUT_FONT_SIZE);
+    public static Font LUDEME_TITLE_FONT = new Font("Roboto Bold", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
+    public static Font LUDEME_INPUT_FONT = new Font("Robot Regular", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
     public static Font LUDEME_INPUT_FONT_ITALIC = new Font("Roboto Italic", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
 
     // ~~ ICONS ~~ //

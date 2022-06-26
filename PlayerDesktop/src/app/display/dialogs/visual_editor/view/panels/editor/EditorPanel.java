@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
+import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.Main;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
@@ -329,6 +330,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 break;
             }
         }
+        assert inputField != null;
         LConnectionComponent source = inputField.connectionComponent();
         LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
         ch.addConnection(source, target);
@@ -348,11 +350,13 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         if(elementIndex > 0)
         {
+            assert inputField != null;
             int index = inputField.inputArea().inputFieldIndex(inputField) + elementIndex;
             while(index >= from.inputArea().currentInputFields.size()) from.inputArea().addCollectionItem(inputField);
             inputField = from.inputArea().currentInputFields.get(index);
         }
 
+        assert inputField != null;
         LConnectionComponent source = inputField.connectionComponent();
         LIngoingConnectionComponent target = to.header().ingoingConnectionComponent();
         ch.addConnection(source, target);
@@ -473,6 +477,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
             }
         }
 
+        assert inputField != null;
         if(!inputField.isMerged())
         {
             if (activated) inputField.notifyActivated();
@@ -559,6 +564,16 @@ public class EditorPanel extends JPanel implements IGraphPanel
         for (LudemeNodeComponent lc : nodeComponents)
         {
             lc.updateLudemePosition();
+        }
+        revalidate();
+        repaint();
+    }
+
+    public void syncNodePositions()
+    {
+        for (LudemeNodeComponent lc : nodeComponents)
+        {
+            lc.syncPositionsWithLN();
         }
         revalidate();
         repaint();
@@ -772,6 +787,16 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     // # Mouse wheel listeners #
 
+    /*
+    Notes on proper scaling:
+    - node is a box with 4 coords: (x1,y1);(x2,y2);(x3,y3);(x4,y4);
+    - s is a scaling factor
+    1. translate (x1,y1): (x1-w/2, -1*(y1-h/2)) = (x', y')
+    2. scale (x',y') by s: (x'*s, y'*s) = (xs, ys)
+    3. scale h, w by s: hs = h*s, ws = w*s
+    4. translate (xs, ys) back: (xs+w/2, -1*ys+h/2)
+     */
+
     MouseWheelListener wheelListener = new MouseAdapter()
     {
         @Override
@@ -779,15 +804,41 @@ public class EditorPanel extends JPanel implements IGraphPanel
             double amount = Math.pow(1.01, e.getScrollAmount());
             if(e.getWheelRotation() > 0)
             {
-                DesignPalette.scale((float) (Math.max(DesignPalette.SCALAR / amount, DesignPalette.MIN_SCALAR)));
+                float scalar = (float) (Math.min(DesignPalette.SCALAR * amount, DesignPalette.MAX_SCALAR));
+                //float scalar = 0.95f;
+                DesignPalette.scale(scalar);
+                scaleNodes(0.95);
             }
             else
             {
-                DesignPalette.scale((float) (Math.min(DesignPalette.SCALAR * amount, DesignPalette.MAX_SCALAR)));
+                float scalar = (float) (Math.max(DesignPalette.SCALAR / amount, DesignPalette.MIN_SCALAR));
+                //float scalar = 1.05f;
+                DesignPalette.scale(scalar);
+                scaleNodes(1.05);
             }
+            //updateNodePositions();
+            syncNodePositions();
             repaint();
         }
     };
+
+    private void scaleNodes(double scalar)
+    {
+        graph.getNodes().forEach(ludemeNode -> {
+            Vector2D scaledPos = getScaledCoords(ludemeNode.pos(), scalar, Handler.getViewPortSize().width, Handler.getViewPortSize().height);
+            ludemeNode.setPos(scaledPos);
+            // ludemeNode.setWidth((int) (ludemeNode.width()*scalar));
+        });
+    }
+
+    private Vector2D getScaledCoords(Vector2D pos, double scalar, double W, double H)
+    {
+        double xp = pos.x()-W/2;
+        double yp = (pos.y()-H/2)*-1;
+        xp*=scalar;
+        yp*=scalar;
+        return new Vector2D(xp+W/2, -1*yp+H/2);
+    }
 
     MouseWheelListener wheelListener2 = new MouseAdapter() {
         @Override

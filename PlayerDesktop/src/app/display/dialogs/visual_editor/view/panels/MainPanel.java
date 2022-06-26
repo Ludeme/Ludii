@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.panels;
 
+import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
@@ -7,9 +8,7 @@ import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class MainPanel extends JPanel {
 
@@ -63,7 +62,6 @@ public class MainPanel extends JPanel {
             }
 
         };
-
 
         setKeyBinding(editor_panel);
 
@@ -129,6 +127,11 @@ public class MainPanel extends JPanel {
 
 
 
+    }
+
+    public Dimension getViewPort()
+    {
+        return panel.getViewport().getSize();
     }
 
 }

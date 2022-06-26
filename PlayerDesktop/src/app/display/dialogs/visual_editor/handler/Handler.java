@@ -637,7 +637,7 @@ public class Handler {
         node.setProvidedInput(inputIndex, in);
     }*/
 
-
+    /*
     /**
      * if a collection element was removed, update the provided input array
      * @param graph
@@ -663,5 +663,9 @@ public class Handler {
         updateInput(graph, node, inputIndex, newCollection);
     }*/
 
+    public static Dimension getViewPortSize()
+    {
+        return mainPanel.getViewPort();
+    }
 
 }
