@@ -346,7 +346,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         if(elementIndex > 0)
         {
-            int index = inputFieldArgument.index() + elementIndex;
+            int index = inputField.inputArea().inputFieldIndex(inputField) + elementIndex;
             while(index >= from.inputArea().currentInputFields.size()) from.inputArea().addCollectionItem(inputField);
             inputField = from.inputArea().currentInputFields.get(index);
         }

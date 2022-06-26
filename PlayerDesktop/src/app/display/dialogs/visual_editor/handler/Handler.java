@@ -181,7 +181,7 @@ public class Handler {
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument){
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
-        if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
+        if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);
@@ -203,7 +203,7 @@ public class Handler {
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument, int elementIndex){
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
-        if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title());
+        if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", elementIndex: " + elementIndex);
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
         from.addChildren(to);

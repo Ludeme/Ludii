@@ -47,6 +47,29 @@ public class RemovedNodeAction implements IUserAction
                 removedData.put(arg, copy);
             }
         }
+
+        // find collection index
+        LinkedHashMap<NodeArgument, Object> parentInputs = parent.providedInputsMap();
+        if(parentInputs.containsValue(removedNode)) collectionIndex = -1;
+        else
+        {
+            for(NodeArgument arg : parentInputs.keySet())
+            {
+                if(parentInputs.get(arg) instanceof Object[])
+                {
+                    Object[] collection = (Object[])parentInputs.get(arg);
+                    for(int i = 0; i < collection.length; i++)
+                    {
+                        if(collection[i] == removedNode)
+                        {
+                            collectionIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void setCollectionIndex(int index)
@@ -97,20 +120,18 @@ public class RemovedNodeAction implements IUserAction
     public void undo()
     {
         Handler.addNode(graph, removedNode);
-        for(NodeArgument arg : removedData.keySet()) {
+        for (NodeArgument arg : removedData.keySet()) {
             Object input = removedData.get(arg);
-            if(input == null) continue;
-            if(input instanceof LudemeNode) Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
-            else if(input instanceof Object[])
-            {
-                //Handler.updateInput(graph, removedNode, arg, input);
-                for(int i = 1; i < ((Object[])input).length; i++) graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(removedNode), arg, i);
-                for(int i = 0; i < ((Object[]) input).length; i++)
-                {
-                    if((((Object[]) input)[i] instanceof LudemeNode)) Handler.addEdge(graph, removedNode, (LudemeNode) ((Object[]) input)[i], arg, i);
+            if (input == null) continue;
+            if (input instanceof LudemeNode) Handler.addEdge(graph, removedNode, (LudemeNode) input, arg);
+            else if (input instanceof Object[]) {
+                Object[] collection = (Object[]) input;
+                Handler.updateInput(graph, removedNode, arg, input);
+                for (int i = 0; i < collection.length; i++) {
+                    if (!(collection[i] instanceof LudemeNode)) continue;
+                    Handler.addEdge(graph, removedNode, (LudemeNode) collection[i], arg, i);
                 }
-            }
-            else Handler.updateInput(graph, removedNode, arg, input);
+            } else Handler.updateInput(graph, removedNode, arg, input);
             removedNode.setProvidedInput(arg, removedData.get(arg));
         }
 
