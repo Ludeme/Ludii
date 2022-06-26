@@ -24,7 +24,7 @@ public interface IUserAction
         ADDED_COLLECTION, // User added a new collection to a node
         REMOVED_COLLECTION, // User removed a collection from a node
         ACTIVATE_OPTIONAL_TERMINAL, // User activated an optional terminal
-        DEACTIVATE_OPTIONAL_TERMINAL // User deactivated an optional terminal
+        PASTED // User pasted one or more nodes
     }
 
     /**

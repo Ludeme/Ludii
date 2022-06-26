@@ -34,10 +34,6 @@ public class Handler
 
     public static MainPanel mainPanel;
 
-    private static List<LudemeNodeComponent> copyList = new ArrayList<>();
-
-
-
     private static Stack<IUserAction> performedUserActions = new Stack<>();
     private static Stack<IUserAction> undoneUserActions = new Stack<>();
     public static IUserAction currentUndoAction;
@@ -530,6 +526,7 @@ public class Handler
         if(currentCopy.isEmpty()) return;
         if(DEBUG) System.out.println("[HANDLER] paste(graph, x, y) Pasting " + currentCopy.size() + " nodes");
         IGraphPanel graphPanel = graphPanelMap.get(graph);
+
         recordUserActions = false;
 
         // old copy
@@ -604,8 +601,9 @@ public class Handler
         }
         graphPanel.repaint();
         recordUserActions = true;
+        IUserAction action = new PasteAction(graphPanel, oldCopy);
+        addAction(action);
     }
-
     /**
      *
      * @param graph graph in operation
@@ -728,14 +726,14 @@ public class Handler
 
     public static void setAutoplacement(boolean var) {editorPanel.setAutoplacement(var);}
 
-    public static List<LudemeNodeComponent> copyList()
+    public static List<LudemeNode> copyList()
     {
-        return copyList;
+        return currentCopy;
     }
 
-    public static void setCopyList(List<LudemeNodeComponent> copyList)
+    public static void setCopyList(List<LudemeNode> copyList)
     {
-        Handler.copyList = copyList;
+        Handler.currentCopy = copyList;
     }
 
     public static void updateNodePositions()

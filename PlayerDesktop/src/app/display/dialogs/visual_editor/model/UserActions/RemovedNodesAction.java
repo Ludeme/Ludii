@@ -27,7 +27,7 @@ public class RemovedNodesAction implements IUserAction
     {
         this.graphPanel = graphPanel;
         this.graph = graphPanel.graph();
-        this.removedNodes = removedNodes;
+        this.removedNodes = new ArrayList<>(removedNodes);
 
         // sort removed nodes such that their depth descends
         Collections.sort(removedNodes, (n1, n2) -> n2.depth() - n1.depth());
@@ -138,7 +138,7 @@ public class RemovedNodesAction implements IUserAction
         for(LudemeNode n : removedNodes) assignInputs(n);
 
         // add last edges to non-removed components
-        Handler.addEdge(graph, removedNodes.get(0).parentNode(),removedNodes.get(0), removedNodes.get(0).creatorArgument());
+        if(removedNodes.get(0).parentNode() != null) Handler.addEdge(graph, removedNodes.get(0).parentNode(),removedNodes.get(0), removedNodes.get(0).creatorArgument());
 
         isUndone = false;
     }
