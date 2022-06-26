@@ -30,6 +30,7 @@ public interface IGraphPanel {
     void notifyCollectionRemoved(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex);
     void notifyCollectionInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex, Object input);
     void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
+    void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated);
 
 
     boolean isBusy();

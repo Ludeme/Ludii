@@ -11,7 +11,6 @@ import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
-import gameDistance.utils.apted.node.Node;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 
@@ -482,6 +481,19 @@ public class Handler {
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         addAction(new CollapsedAction(graphPanel, node, collapse));
         graphPanel.notifyCollapsed(graphPanel.nodeComponent(node), collapse);
+    }
+
+    public static void activateOptionalTerminalField(DescriptionGraph graph, LudemeNode node, NodeArgument argument, boolean activate)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        IUserAction action = new ActivateOptionalTerminalAction(graphPanel, node, argument, activate);
+
+        addAction(action);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = false;
+        graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, activate);
+        if(performedUserActions.peek() == action)
+            Handler.recordUserActions = true;
     }
 
     public static String getLudString(DescriptionGraph graph){

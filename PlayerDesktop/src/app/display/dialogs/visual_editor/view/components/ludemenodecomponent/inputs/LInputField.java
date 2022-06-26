@@ -598,6 +598,22 @@ public class LInputField extends JComponent
     public void activate()
     {
         if(!isTerminal()) return;
+        Handler.activateOptionalTerminalField(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), true);
+        /*active = true;
+        System.out.println("Activating");
+        fieldComponent.setEnabled(true);
+        label.setEnabled(true);
+        terminalOptionalLabel.setText("X");
+        if(!nodeArgument(0).collection())
+        {
+            //Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
+            Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput());
+        }
+        repaint();*/
+    }
+
+    public void notifyActivated()
+    {
         active = true;
         System.out.println("Activating");
         fieldComponent.setEnabled(true);
@@ -614,6 +630,11 @@ public class LInputField extends JComponent
     public void deactivate()
     {
         if(!isTerminal()) return;
+
+        Handler.activateOptionalTerminalField(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), false);
+
+        /*
+
         active = false;
 
         System.out.println("Deactivating");
@@ -631,6 +652,24 @@ public class LInputField extends JComponent
         inputArea().LNC().graphPanel().setBusy(false);
 
 
+        repaint();*/
+    }
+
+    public void notifyDeactivated()
+    {
+        active = false;
+        System.out.println("Deactivating");
+
+        inputArea().LNC().graphPanel().setBusy(true);
+
+        fieldComponent.setEnabled(false);
+        label.setEnabled(false);
+        terminalOptionalLabel.setText("+");
+
+        inputArea().removedConnection(LInputField.this);
+        // notify handler
+        Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), null);
+        inputArea().LNC().graphPanel().setBusy(false);
         repaint();
     }
 

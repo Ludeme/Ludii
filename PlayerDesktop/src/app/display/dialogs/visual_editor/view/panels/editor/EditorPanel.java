@@ -460,6 +460,29 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
+    public void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated) {
+        LInputField inputField = null;
+        for(LInputField ii : lnc.inputArea().currentInputFields)
+        {
+            if(ii.nodeArguments().contains(inputFieldArgument))
+            {
+                inputField = ii;
+                break;
+            }
+        }
+
+        if(!inputField.isMerged())
+        {
+            if (activated) inputField.notifyActivated();
+            else inputField.notifyDeactivated();
+        }
+        else
+        {
+            lnc.addTerminal(inputFieldArgument, inputField);
+        }
+    }
+
+    @Override
     public void notifyNodeAdded(LudemeNode node, boolean connect) {
         addLudemeNodeComponent(node, connect);
     }

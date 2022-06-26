@@ -3,9 +3,11 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Clause;
@@ -108,6 +110,19 @@ public class LudemeNodeComponent extends JPanel
     public void addTerminal(Symbol symbol)
     {
         inputArea.addedConnection(symbol, graphPanel().connectionHandler().getSelectedConnectionComponent().inputField());
+        revalidate();
+        repaint();
+    }
+
+    /**
+     * Adds a terminal inputfield to the node
+     * @param nodeArgument the nodeargument of the terminal inputfield
+     * @param inputField the inputfield containing the nodeArgument
+     */
+    public void addTerminal(NodeArgument nodeArgument, LInputField inputField)
+    {
+        System.out.println(nodeArgument);
+        inputArea.addedConnection(nodeArgument, inputField);
         revalidate();
         repaint();
     }
