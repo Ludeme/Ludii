@@ -103,9 +103,6 @@ public class LudemeNode implements iGNode
      */
     public LudemeNode(Symbol symbol, NodeArgument argument, int x, int y)
     {
-
-        System.out.println("Creating new LudemeNode: " + symbol.grammarLabel());
-
         this.ID = LAST_ID++;
         this.SYMBOL = symbol;
         this.NODE_ARGUMENT_CREATOR = argument;
@@ -146,6 +143,79 @@ public class LudemeNode implements iGNode
         }
 
         nodeArguments = generateNodeArguments();
+        if(dynamic())
+        {
+            activeClauses = new ArrayList<>(clauses());
+            inactiveClauses = new ArrayList<>();
+            providedNodeArguments = new ArrayList<>();
+            activeNodeArguments = new ArrayList<>();
+            for(List<NodeArgument> nas: nodeArguments.values()) activeNodeArguments.addAll(nas);
+            inactiveNodeArguments = new ArrayList<>();
+            currentNodeArguments = activeNodeArguments;
+        }
+        else
+        {
+            currentNodeArguments = nodeArguments.get(selectedClause());
+        }
+
+        providedInputsMap = new LinkedHashMap<>();
+        for(NodeArgument na : currentNodeArguments) providedInputsMap.put(na, null);
+
+        // package name
+        if(symbol.cls().getPackage() == null) PACKAGE_NAME = "game";
+        else
+        {
+            String[] splitPackage = symbol.cls().getPackage().getName().split("\\.");
+            if(splitPackage.length == 1) PACKAGE_NAME = splitPackage[0];
+            else
+            {
+                PACKAGE_NAME = splitPackage[0] + "." + splitPackage[1];
+            }
+        }
+        this.helpInformation = DocumentationReader.instance().help(SYMBOL);
+    }
+
+    /**
+     * Constructor for a new LudemeNode
+     * @param symbol Symbol/Ludeme this node represents
+     * @param argument The Node Argument which created this node
+     * @param x x coordinate of this node in the graph
+     * @param y y coordinate of this node in the graph
+     */
+    public LudemeNode(Symbol symbol, NodeArgument argument, HashMap<Clause, List<NodeArgument>> nodeArguments, int x, int y)
+    {
+        this.ID = LAST_ID++;
+        this.SYMBOL = symbol;
+        this.NODE_ARGUMENT_CREATOR = argument;
+        this.CLAUSES = symbol.rule().rhs();
+        this.x = x;
+        this.y = y;
+        this.nodeArguments = nodeArguments;
+        this.width = 100; // width and height are hard-coded for now, updated later
+        this.height = 100;
+        if(CLAUSES != null)
+        {
+            expandClauses();
+            if(CLAUSES.size() > 0)
+            {
+                this.selectedClause = CLAUSES.get(0);
+            }
+            else
+            {
+                this.selectedClause = null;
+            }
+        } else {
+            this.selectedClause = null;
+        }
+        if(CLAUSES == null || CLAUSES.size() == 0)
+        {
+            this.dynamic = false;
+        }
+        if(dynamicPossible())
+        {
+            this.dynamic = false; // TODO
+        }
+
         if(dynamic())
         {
             activeClauses = new ArrayList<>(clauses());
@@ -999,31 +1069,12 @@ public class LudemeNode implements iGNode
      */
     public LudemeNode copy(int x_shift, int y_shift)
     {
-        LudemeNode copy = new LudemeNode(symbol(), creatorArgument(),x+x_shift, y+y_shift);
+        LudemeNode copy = new LudemeNode(symbol(), creatorArgument(),nodeArguments,x+x_shift, y+y_shift);
         copy.setCollapsed(collapsed());
         copy.setVisible(visible());
         copy.setDynamic(dynamic());
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());
-
-
-        // copy terminal inputs
-        /*for(int i = 0; i < providedInputs().length; i++)
-        {
-            Object input = providedInputs()[i];
-            if(input == null || input instanceof LudemeNode) continue; // if no input provided or it is LudemeNode, skip it
-            boolean isLudemeCollection = false;
-            if(input instanceof Object[])
-            {
-                for (Object o : (Object[]) input)
-                    if (o instanceof LudemeNode)
-                    {
-                        isLudemeCollection = true;
-                        break;
-                    }
-            }
-            if(!isLudemeCollection) copy.setProvidedInput(i, input);
-        }*/
 
         for(NodeArgument na : providedInputsMap.keySet())
         {
@@ -1073,6 +1124,26 @@ public class LudemeNode implements iGNode
     {
         if(helpInformation == null) return "";
         return helpInformation.parameter(arg);
+    }
+
+    public int x()
+    {
+        return x;
+    }
+
+    public int y()
+    {
+        return y;
+    }
+
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    public void setY(int y)
+    {
+        this.y = y;
     }
 
     @Override

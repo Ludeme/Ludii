@@ -49,17 +49,19 @@ public class NodePopupMenu extends JPopupMenu {
 
 
         copyBtn.addActionListener(e -> {
-            graphPanel.addNodeToSelections(nodeComponent);
-            List<LudemeNodeComponent> toCopy = new ArrayList<>();
+            List<LudemeNode> copy = new ArrayList<>();
             if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 0)
             {
-                toCopy = graphPanel.selectedLnc();
+                for(LudemeNodeComponent lnc : graphPanel.selectedLnc()) copy.add(lnc.node());
             }
             else
             {
-                toCopy.add(nodeComponent);
+                copy.add(nodeComponent.node());
             }
-            Handler.setCopyList(toCopy);
+            // remove root node from copy list
+            copy.remove(graphPanel.graph().getRoot());
+
+            Handler.copy(graphPanel.graph(), copy);
         });
 
         duplicate.addActionListener(e -> {

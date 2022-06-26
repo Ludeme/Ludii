@@ -49,6 +49,7 @@ public class RemovedNodeAction implements IUserAction
         }
 
         // find collection index
+        if(parent==null) return;
         LinkedHashMap<NodeArgument, Object> parentInputs = parent.providedInputsMap();
         if(parentInputs.containsValue(removedNode)) collectionIndex = -1;
         else

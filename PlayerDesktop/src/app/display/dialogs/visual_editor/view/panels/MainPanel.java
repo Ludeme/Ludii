@@ -125,6 +125,20 @@ public class MainPanel extends JPanel {
             }
         });
 
+        panel.getActionMap().put("copy", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Handler.copy(graphPanel.graph());
+            }
+        });
+
+        panel.getActionMap().put("paste", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Handler.paste(graphPanel.graph(), -1, -1);
+            }
+        });
+
 
 
     }

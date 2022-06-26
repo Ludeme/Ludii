@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.*;
+import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
@@ -14,14 +15,13 @@ import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import main.grammar.Clause;
 import main.grammar.Symbol;
 
+import javax.swing.*;
 import java.util.*;
 import java.awt.*;
 import java.util.List;
 
-public class Handler {
-
-    // TODO: History for Undo/Redo
-
+public class Handler
+{
     public static DescriptionGraph gameDescriptionGraph;
 
     // Single EditorPanel
@@ -456,6 +456,155 @@ public class Handler {
     }
 
 
+    private static List<LudemeNode> currentCopy = new ArrayList<LudemeNode>(); // current copy
+
+
+    public static void copy(DescriptionGraph graph)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        List<LudemeNode> toCopy = new ArrayList<>();
+        for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
+        {
+            if(graph.getRoot() == lnc.node()) continue;
+            toCopy.add(lnc.node());
+        }
+        copy(graph, toCopy);
+    }
+
+    public static void copy(DescriptionGraph graph, List<LudemeNode> nodes)
+    {
+        if(nodes.isEmpty()) return;
+        if(DEBUG) System.out.println("[HANDLER] copy(graph, nodes) Copying " + nodes.size() + " nodes");
+        currentCopy.clear();
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+
+        HashMap<LudemeNode, LudemeNode> copiedNodes = new HashMap<>(); // <original, copy>
+
+        // create copies
+        for(LudemeNode node : nodes) copiedNodes.put(node, node.copy());
+        // fill inputs (connections and collections)
+        for(LudemeNode node : nodes) {
+            LudemeNode copy = copiedNodes.get(node);
+            // iterate each original node's provided inputs
+            for (NodeArgument arg : node.providedInputsMap().keySet()) {
+                Object input = node.providedInputsMap().get(arg);
+                // input is a node
+                if (input instanceof LudemeNode) {
+                    LudemeNode inputNode = (LudemeNode) input;
+                    // if input node is in the list of nodes to copy, copy it
+                    if (nodes.contains(inputNode)) {
+                        LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
+                        copy.setProvidedInput(arg, inputNodeCopy);
+                        copy.addChildren(inputNodeCopy);
+                        inputNodeCopy.setParent(copy);
+                    }
+                }
+                // input is a collection
+                else if (input instanceof Object[])
+                {
+                    Object[] inputCollection = (Object[]) input;
+                    Object[] inputCollectionCopy = new Object[inputCollection.length];
+                    for (int i = 0; i < inputCollection.length; i++) {
+                        // if input element is a node
+                        if (inputCollection[i] instanceof LudemeNode) {
+                            LudemeNode inputNode = (LudemeNode) inputCollection[i];
+                            // if input node is in the list of nodes to copy, copy it
+                            if (nodes.contains(inputNode)) {
+                                LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
+                                inputCollectionCopy[i] = inputNodeCopy;
+                                copy.addChildren(inputNodeCopy);
+                                inputNodeCopy.setParent(copy);
+                            }
+                        }
+                    }
+                    copy.setProvidedInput(arg, inputCollectionCopy);
+                }
+            }
+        }
+        // store copied nodes
+        currentCopy = new ArrayList<>(copiedNodes.values());
+    }
+
+    public static void paste(DescriptionGraph graph, int x, int y)
+    {
+        if(currentCopy.isEmpty()) return;
+        if(DEBUG) System.out.println("[HANDLER] paste(graph, x, y) Pasting " + currentCopy.size() + " nodes");
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        recordUserActions = false;
+
+        // old copy
+        List<LudemeNode> oldCopy = new ArrayList<>(currentCopy);
+        currentCopy.clear();
+        copy(graph, oldCopy);
+
+        // find left-most node
+        LudemeNode leftMostNode = oldCopy.get(0);
+        for(LudemeNode node : oldCopy)
+        {
+            if(node.x() < leftMostNode.x()) leftMostNode = node;
+        }
+
+        int x_shift, y_shift;
+
+        if(x == -1 && y == -1)
+        {
+            Point v = mainPanel.getPanel().getViewport().getViewPosition();
+            x_shift = v.x;
+            y_shift = v.y;
+        }
+        else
+        {
+            x_shift = x - leftMostNode.x();
+            y_shift = y - leftMostNode.y();
+        }
+
+        // add nodes to graph
+        for(LudemeNode node : oldCopy)
+        {
+            node.setX(node.x() + x_shift);
+            node.setY(node.y() + y_shift);
+            addNode(graph, node);
+        }
+        // update all edges
+        for(LudemeNode parent : oldCopy)
+        {
+            for(NodeArgument argument : parent.providedInputsMap().keySet())
+            {
+                Object input = parent.providedInputsMap().get(argument);
+                if(input instanceof LudemeNode)
+                {
+                    LudemeNode inputNode = (LudemeNode) input;
+                    if(oldCopy.contains(inputNode))
+                    {
+                        addEdge(graph, parent, inputNode, argument);
+                    }
+                }
+                else if(input instanceof Object[])
+                {
+                    Object[] inputCollection = (Object[]) input;
+                    Object[] placeholder = new Object[1];
+                    parent.setProvidedInput(argument, placeholder);
+                    for(int i = 0; i < inputCollection.length; i++)
+                    {
+                        if(inputCollection[i] instanceof LudemeNode)
+                        {
+                            LudemeNode inputNode = (LudemeNode) inputCollection[i];
+                            if(oldCopy.contains(inputNode))
+                            {
+                                addEdge(graph, parent, inputNode, argument, i);
+                            }
+                        }
+                    }
+                    if(parent.providedInputsMap().get(argument) == placeholder)
+                    {
+                        parent.setProvidedInput(argument, inputCollection);
+                    }
+                }
+            }
+        }
+        graphPanel.repaint();
+        recordUserActions = true;
+    }
 
     /**
      *

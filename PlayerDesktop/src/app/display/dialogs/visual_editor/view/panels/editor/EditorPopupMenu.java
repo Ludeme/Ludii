@@ -21,76 +21,9 @@ public class EditorPopupMenu extends JPopupMenu {
 
 
         paste.addActionListener(e -> {
-            if(Handler.copyList() != null)
-            {
-                int x_shift = x - Handler.copyList().get(0).position().x;
-                int y_shift = y - Handler.copyList().get(0).position().y;
-                HashMap<LudemeNode, LudemeNode> copies = new HashMap<>(); // <original, copy>
-                for(LudemeNodeComponent lnc : Handler.copyList())
-                {
-                    // copy each node
-                    if(!graphPanel.graph().isDefine() && graphPanel.graph().getRoot() == lnc.node()) continue; // cant duplicate root node
-
-                    LudemeNode copy = lnc.node().copy(x_shift, y_shift);
-                    copies.put(lnc.node(), copy);
-                    // add the copy to the graph
-                    Handler.addNode(graphPanel.graph(), copy);
-                    //graphPanel.addNode(copy);
-                }
-                // now fill inputs
-                for(LudemeNode original : copies.keySet())
-                {
-                    LudemeNode copy = copies.get(original);
-                    Object[] inputs = original.providedInputsMap().values().toArray(new Object[0]);
-                    for(int i = 0; i < inputs.length; i++)
-                    {
-                        Object input = inputs[i];
-                        if(input instanceof LudemeNode)
-                        {
-                            LudemeNode inputNode = (LudemeNode)input;
-                            LudemeNode copyInputNode = copies.get(inputNode);
-                            if(copyInputNode != null)
-                            {
-                                // [TODO: Changed LudemeNode ] copy.setProvidedInput(i, copyInputNode);
-                            }
-                        }
-                        else if(input instanceof Object[])
-                        {
-                            boolean isLudemeNode = false;
-                            for(Object o : (Object[]) input) if(o instanceof LudemeNode) { isLudemeNode = true; break; }
-                            if(isLudemeNode)
-                            {
-                                Object[] copyInputs = new LudemeNode[((Object[])input).length];
-                                for(int j = 0; j < copyInputs.length; j++)
-                                {
-                                    LudemeNode inputNode = (LudemeNode) ((Object[])input)[j];
-                                    LudemeNode copyInputNode = copies.get(inputNode);
-                                    if(copyInputNode != null)
-                                    {
-                                        copyInputs[j] = copyInputNode;
-                                    }
-                                }
-                                // [TODO: Changed LudemeNode ]  copy.setProvidedInput(i, copyInputs);
-                            }
-                        }
-                        else
-                        {
-                            // [TODO: Changed LudemeNode ]  copy.setProvidedInput(i, input);
-                        }
-                    }
-                }
-                // deselect all previously selected nodes
-                graphPanel.deselectEverything();
-                // update provided inputs of all copies TODO: inefficient
-                for(LudemeNode original : copies.keySet())
-                {
-                    LudemeNode copy = copies.get(original);
-                    LudemeNodeComponent copyLnc = graphPanel.nodeComponent(copy);
-                    // select the copy
-                    graphPanel.addNodeToSelections(copyLnc);
-                    copyLnc.updateProvidedInputs();
-                }
-            }
+            Handler.paste(graphPanel.graph(), x, y);
+            // deselect all previously selected nodes
+            graphPanel.deselectEverything();
         });
 
         JMenu lmMenu = new JMenu("Graph Layout");
@@ -120,8 +53,8 @@ public class EditorPopupMenu extends JPopupMenu {
         ImageIcon pasteIcon = new ImageIcon(DesignPalette.PASTE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
         paste.setIcon(pasteIcon);
 
-        if(Handler.copyList().isEmpty()) paste.setEnabled(false);
-        else paste.setEnabled(true);
+        //if(Handler.copyList().isEmpty()) paste.setEnabled(false);
+        //else paste.setEnabled(true);
 
         add(newLudeme);
         add(paste);
