@@ -146,15 +146,16 @@ public class DocumentationReader
     private static Clause findClause(Symbol s, String string)
     {
 
+        string = string.replaceAll("\\s+", " ");
         // get ebnfclause
         EBNFClause ec;
         String temp = "";
         try {
-            ec = new EBNFClause(string);
+            ec = new EBNFClause(string.replaceAll("\\s+", " "));
         }
         catch (Exception e)
         {
-            System.out.println("Couldnt parse clause: "+string);
+            System.out.println("Couldnt parse clause: "+string.replaceAll("\\s+", " "));
             return null;
         }
         // get decomposed clause string
@@ -230,30 +231,52 @@ public class DocumentationReader
         if(c==null) return null;
 
         EBNFClause ec = clauseMap.get(c);
+        String[] split = ec.toString().substring(1, ec.toString().length()-1).split(" ");
 
-        /*if(string.contains(":"))
+        if(ec.toString().contains("|"))
         {
-            for(EBNFClauseArg arg : ec.args())
+            List<String> splitlist = new LinkedList<>(Arrays.asList(split));
+            while(splitlist.contains("|"))
             {
-                if(arg.parameterName() == null) continue;
-                if(string.contains(arg.parameterName()))
+                int indexOfBar = splitlist.indexOf("|");
+                // element before
+                char type = splitlist.get(indexOfBar-1).charAt(0);
+                int fromIndex = indexOfBar-1;
+                int untilIndex = indexOfBar;
+                while(untilIndex+2 < splitlist.size() && splitlist.get(untilIndex+2).equals("|"))
                 {
-                    string = string.replaceAll(arg.parameterName()+":","");
-                    break;
+                    untilIndex+=2;
+                }
+                untilIndex+=1;
+
+                splitlist.set(fromIndex, splitlist.get(fromIndex).substring(1));
+                splitlist.set(untilIndex, splitlist.get(untilIndex).substring(0, splitlist.get(untilIndex).length()-1));
+                char closeType = ' ';
+                if(type == '[') closeType = ']';
+                else if(type == '{') closeType = '}';
+                if(type == '[' || type == '{')
+                {
+                    for(int i = fromIndex; i<=untilIndex; i++)
+                    {
+                        if(splitlist.get(i).equals("|")) continue;
+                        splitlist.set(i, type+splitlist.get(i)+closeType);
+                    }
+                }
+                for(int i = fromIndex; i<=untilIndex; i++)
+                {
+                    if(splitlist.get(i).equals("|")) splitlist.set(i, "[REMOVE]");
+                }
+                // remove all [REMOVE] from splitlist
+                while(splitlist.contains("[REMOVE]"))
+                {
+                    splitlist.remove("[REMOVE]");
                 }
             }
+            split = splitlist.toArray(new String[splitlist.size()]);
         }
 
-        if(string.equals("int")) string = "<int>";
-        if(string.equals("ints")) string = "<ints>";
-        if(string.equals("[int]")) string = "[<int>]";
-        if(string.equals("[ints]")) string = "[<ints>]";
-        if(string.equals("{int}")) string = "{<int>}";
-        if(string.equals("{ints}")) string = "{<ints>}";*/
-
-        String[] split = ec.toString().substring(1, ec.toString().length()-1).split(" ");
         int index = Arrays.asList(split).indexOf(string);
-        if(index <= 0)
+        if(index <= 0 || index > c.args().size())
             return null;
         return c.args().get(index-1);
     }
