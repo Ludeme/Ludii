@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.view.panels;
 
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
@@ -62,6 +63,28 @@ public class MainPanel extends JPanel {
             }
 
         };
+
+        setFocusable(true);
+        // key listener check if ctrl is pressed/released
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if (e.getKeyCode() == 17)
+                {
+                    LudemeNodeComponent.cltrPressed = true;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                if (e.getKeyCode() == 17)
+                {
+                    LudemeNodeComponent.cltrPressed = false;
+                }
+            }
+        });
 
         setKeyBinding(editor_panel);
 

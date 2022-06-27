@@ -46,7 +46,7 @@ public class LudemeNodeComponent extends JPanel
     private final LHeader header;
     private final LInputArea inputArea;
     /** Check if ctrl is pressed */ //TODO: change value of ctlrPressed when ctrl is pressed or released
-    private boolean cltrPressed = false;
+    public static boolean cltrPressed = false;
 
     /**
      * Constructor for the LudemeNodeComponent

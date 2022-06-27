@@ -831,7 +831,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         graph.getNodes().forEach(ludemeNode -> {
             Vector2D scaledPos = getScaledCoords(ludemeNode.pos(), scalar, Handler.getViewPortSize().width, Handler.getViewPortSize().height);
             ludemeNode.setPos(scaledPos);
-            // ludemeNode.setWidth((int) (ludemeNode.width()*scalar));
         });
     }
 
