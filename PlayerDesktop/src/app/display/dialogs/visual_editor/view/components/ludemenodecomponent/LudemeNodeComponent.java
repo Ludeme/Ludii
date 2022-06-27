@@ -89,18 +89,6 @@ public class LudemeNodeComponent extends JPanel
     }
 
     /**
-     * Changes the currently selected clause of the node
-     * @param clause The clause that was selected
-     */
-    public void changeCurrentClause(Clause clause)
-    {
-        //Handler.updateCurrentClause(graphPanel().graph(), node(), clause);
-        inputArea.changedSelectedClause();
-        revalidate();
-        repaint();
-    }
-
-    /**
      * Adds a terminal inputfield to the node
      * @param symbol the symbol of the terminal inputfield
      */

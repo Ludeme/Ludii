@@ -109,9 +109,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         Handler.recordUserActions = false;
         LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), null, 30, 30, false);
 
-        //LudemeNode gameLudemeNode = createLudemeNode(Grammar.grammar().symbolsByName("Game").get(0), 30, 30);
         graph.setRoot(gameLudemeNode);
-        //addLudemeNodeComponent(gameLudemeNode, false);
 
         lm = new LayoutHandler(graph, graph.getRoot().id());
         ch = new ConnectionHandler(this);
@@ -121,6 +119,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
         this.N = controller.getN();
         latencies = new ArrayList<>();
         selectedCompletion = new ArrayList<>();
+
+        Handler.updateCurrentClause(graph, gameLudemeNode, gameLudemeNode.clauses().get(1));
+
         Handler.recordUserActions = true;
     }
 
@@ -477,7 +478,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     @Override
     public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
-        lnc.changeCurrentClause(clause);
+        lnc.inputArea().changedSelectedClause();
+        //revalidate();
+        //repaint();
     }
 
     @Override
