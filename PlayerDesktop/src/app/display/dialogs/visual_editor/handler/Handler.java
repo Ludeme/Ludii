@@ -773,6 +773,12 @@ public class Handler
         return nodes;
     }
 
+    public static void selectAll(DescriptionGraph graph)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.selectAllNodes();
+    }
+
     /**
      * (Un-)Collapses a node
      * @param graph The graph that contains the node.
@@ -979,10 +985,5 @@ public class Handler
     public static Dimension getViewPortSize()
     {
         return mainPanel.getViewPort();
-    }
-
-    public static void selectAll()
-    {
-        editorPanel.selectAllNodes();
     }
 }

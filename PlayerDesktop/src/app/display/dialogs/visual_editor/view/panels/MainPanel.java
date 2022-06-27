@@ -189,7 +189,7 @@ public class MainPanel extends JPanel {
         panel.getActionMap().put("selectAll", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Handler.selectAll();
+                Handler.selectAll(graphPanel.graph());
             }
         });
 

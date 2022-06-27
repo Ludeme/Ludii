@@ -46,6 +46,7 @@ public interface IGraphPanel {
     void addNodeToSelections(LudemeNodeComponent lnc);
     List<iGNode> selectedNodes();
     List<LudemeNodeComponent> selectedLnc();
+    void selectAllNodes();
     void showAllAvailableLudemes(int x, int y);
     void clickedOnNode(LudemeNodeComponent lnc);
     LayoutHandler getLayoutHandler();
