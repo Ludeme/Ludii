@@ -28,7 +28,7 @@ public class DesignPalette
     public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
 
     private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 12;
-    private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * SCALAR);
+    private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
 
     private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 14;
     private static int LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
@@ -67,6 +67,7 @@ public class DesignPalette
     public static void scale(float scalar)
     {
         SCALAR *= scalar;
+        SCALAR = (float) Math.min(2.0, Math.max(0.85, SCALAR));
         System.out.println("[SCALING] SCALAR: " + SCALAR);
         NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * (1.0/SCALAR));
         LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));

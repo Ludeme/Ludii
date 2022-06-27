@@ -817,8 +817,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 float scalar = (float) (Math.max(DesignPalette.SCALAR / amount, DesignPalette.MIN_SCALAR));
                 //float scalar = 1.05f;
                 //zoomScalar *= 0.95f;
-                DesignPalette.scale(0.98f);
-                scaleNodes(1.02);
+                DesignPalette.scale(1.0f/1.02f);
+                scaleNodes(1.0/0.98);
             }
             //updateNodePositions();
             syncNodePositions();

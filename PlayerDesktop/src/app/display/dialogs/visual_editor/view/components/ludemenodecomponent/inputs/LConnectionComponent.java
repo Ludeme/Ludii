@@ -227,7 +227,7 @@ public class LConnectionComponent extends JComponent
      */
     private int radius()
     {
-        return (int)(INPUT_FIELD.label().getPreferredSize().height * 0.4);
+        return (int)(INPUT_FIELD.label().getPreferredSize().height * 0.4 * (1.0/DesignPalette.SCALAR));
     }
 
     /**

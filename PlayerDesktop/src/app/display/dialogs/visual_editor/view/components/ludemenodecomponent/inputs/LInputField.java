@@ -1009,6 +1009,14 @@ public class LInputField extends JComponent
     }
 
     @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+
+    }
+
+    @Override
     public String toString()
     {
         return "LIF: " + label.getText() + ", " + nodeArguments;
