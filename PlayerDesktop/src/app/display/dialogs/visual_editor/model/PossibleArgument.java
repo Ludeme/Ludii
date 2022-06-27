@@ -25,8 +25,11 @@ public class PossibleArgument
             return;
 
         Symbol symbol = clause.symbol();
+        if(symbol.rule() == null) return;
         for(Clause c : symbol.rule().rhs())
         {
+            if(c == clause)
+                continue;
             possibleArguments.add(new PossibleArgument(c));
         }
 
@@ -35,6 +38,11 @@ public class PossibleArgument
     public Clause clause()
     {
         return clause;
+    }
+
+    public List<PossibleArgument> possibleArguments()
+    {
+        return possibleArguments;
     }
 
     @Override
