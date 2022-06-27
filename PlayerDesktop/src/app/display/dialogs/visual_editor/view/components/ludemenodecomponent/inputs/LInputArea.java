@@ -218,7 +218,8 @@ public class LInputArea extends JPanel
 
         //if(activeClauses.size() > 1) unmergeSameSymbolFields();
 
-        for (LInputField inputField : currentInputFields) {
+        for (LInputField inputField : currentInputFields)
+        {
             inputField.setAlignmentX(LEFT_ALIGNMENT);
             add(inputField);
         }

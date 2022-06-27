@@ -15,10 +15,7 @@ import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +45,8 @@ public class LudemeNodeComponent extends JPanel
     /** Sub-Components of the node */
     private final LHeader header;
     private final LInputArea inputArea;
-
-
+    /** Check if ctrl is pressed */ //TODO: change value of ctlrPressed when ctrl is pressed or released
+    private boolean cltrPressed = false;
 
     /**
      * Constructor for the LudemeNodeComponent
@@ -409,7 +406,7 @@ public class LudemeNodeComponent extends JPanel
             // when double click is performed on a node add its descendant into selection list
             if (e.getClickCount() == 1 && !selected)
             {
-                graphPanel().deselectEverything();
+                if (!cltrPressed) graphPanel().deselectEverything();
                 Handler.selectNode(LudemeNodeComponent.this);
                 subtree = false;
             }

@@ -46,7 +46,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     private ConnectionHandler ch;
 
     private double zoomFactor = 1.0;
-    private double zoomFactor0 = 1.0;
+    private double zoomScalar = 1.0;
     private boolean zoomed = false;
     private boolean busy = false;
 
@@ -123,15 +123,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // TODO: fix zooming
-        // Scaling works but not visible
-        if (zoomed) {
-            AffineTransform at = new AffineTransform();
-            at.scale(zoomFactor, zoomFactor);
-            zoomFactor0 = zoomFactor;
-            g2.transform(at);
-        }
 
         boolean showBackgroundDots = true;
         if(showBackgroundDots)
@@ -425,6 +416,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 break;
             }
         }
+        assert inputField != null;
         inputField.notifyCollectionAdded();
     }
 
@@ -651,6 +643,16 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return nodeList;
     }
 
+    public void selectAllNodes()
+    {
+        for (LudemeNodeComponent lnc: nodeComponents)
+        {
+            addNodeToSelections(lnc);
+        }
+        repaint();
+        revalidate();
+    }
+
     // # Mouse listeners #
 
     MouseListener clickListener = new MouseAdapter()
@@ -806,15 +808,17 @@ public class EditorPanel extends JPanel implements IGraphPanel
             {
                 float scalar = (float) (Math.min(DesignPalette.SCALAR * amount, DesignPalette.MAX_SCALAR));
                 //float scalar = 0.95f;
-                DesignPalette.scale(scalar);
-                scaleNodes(0.95);
+                //zoomScalar *= 1.05f;
+                DesignPalette.scale(1.02f);
+                scaleNodes(0.98);
             }
             else
             {
                 float scalar = (float) (Math.max(DesignPalette.SCALAR / amount, DesignPalette.MIN_SCALAR));
                 //float scalar = 1.05f;
-                DesignPalette.scale(scalar);
-                scaleNodes(1.05);
+                //zoomScalar *= 0.95f;
+                DesignPalette.scale(0.98f);
+                scaleNodes(1.02);
             }
             //updateNodePositions();
             syncNodePositions();

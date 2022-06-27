@@ -804,6 +804,8 @@ public class Handler
     public static void selectNode(LudemeNodeComponent node)
     {
         editorPanel.addNodeToSelections(node);
+        editorPanel.repaint();
+        editorPanel.revalidate();
     }
 
     public static void setAutoplacement(boolean var) {editorPanel.setAutoplacement(var);}
@@ -897,4 +899,8 @@ public class Handler
         return mainPanel.getViewPort();
     }
 
+    public static void selectAll()
+    {
+        editorPanel.selectAllNodes();
+    }
 }
