@@ -10,7 +10,7 @@ import java.util.List;
 public class Test2 {
 
     public static void main(String[] args) {
-        Symbol s = Grammar.grammar().symbolsWithPartialKeyword("moves").get(0);
+        Symbol s = Grammar.grammar().symbolsWithPartialKeyword("string").get(0);
 
 
         List<PossibleArgument> possibleArguments = new ArrayList<>();

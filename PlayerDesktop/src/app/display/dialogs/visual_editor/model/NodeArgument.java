@@ -8,7 +8,9 @@ import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,12 +28,12 @@ public class NodeArgument
     private final List<ClauseArg> ARGS;
     /** The index of the ClauseArg in the Clause */
     private final int INDEX;
-    /** The list of possible Symbols for this NodeArgument */
-    private final List<Symbol> POSSIBLE_SYMBOL_INPUTS;
+    /** List of possible Arguments as Input */
+    private final List<PossibleArgument> POSSIBLE_ARGS;
     /** The list of Symbols that may be provided as input for this NodeArgument
      *  Structural Symbols are not included in this list, but rather expanded to their rules.
      */
-    private final List<Symbol> POSSIBLE_SYMBOL_INPUTS_EXPANDED;
+    private final List<Symbol> POSSIBLE_SYMBOL_INPUTS;
     /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
     private boolean SEPARATE_NODE;
     private String parameterDescription = null;
@@ -47,23 +49,15 @@ public class NodeArgument
     public NodeArgument(Clause clause, ClauseArg arg)
     {
         this.originalArg = arg;
-        CLAUSE = clause;
-
-        if(clause.args() == null)
-        {
-            INDEX = 0;
-        }
-        else
-        {
-            INDEX = clause.args().indexOf(arg);
-        }
+        this.CLAUSE = clause;
+        this.INDEX = clause.args().indexOf(arg);
 
         if(arg.symbol().returnType() != arg.symbol()) arg = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
 
 
         // add argument to list
-        ARGS = new ArrayList<>();
-        ARGS.add(arg);
+        this.ARGS = new ArrayList<>();
+        this.ARGS.add(arg);
         // if arg is part of OR-Group, add other components of OR-Group to it.
         if(arg.orGroup() != 0)
         {
@@ -71,30 +65,72 @@ public class NodeArgument
             int index = clause.args().indexOf(arg)+1;
             while(index < clause.args().size() && clause.args().get(index).orGroup() == group)
             {
-                ARGS.add(clause.args().get(index));
+                this.ARGS.add(clause.args().get(index));
                 index++;
             }
         }
 
-        originalArgs.addAll(ARGS);
+        originalArgs.addAll(this.ARGS);
 
         // if this is a choice between collection or not, default to collection
-        if(ARGS.size() == 2)
+        if(this.ARGS.size() == 2)
         {
-            if(ARGS.get(0).symbol().equals(ARGS.get(1).symbol()))
+            if(this.ARGS.get(0).symbol().equals(this.ARGS.get(1).symbol()))
             {
                 // get index of non-collection
                 int index = 0;
-                if(ARGS.get(0).andGroup()==0) index = 1;
-                ARGS.remove(index);
+                if(this.ARGS.get(0).andGroup()==0) index = 1;
+                this.ARGS.remove(index);
             }
         }
 
-        this.POSSIBLE_SYMBOL_INPUTS = possibleSymbolInputs(args());
-        this.POSSIBLE_SYMBOL_INPUTS_EXPANDED = possibleSymbolInputsExpanded(args());
+        this.POSSIBLE_ARGS = new ArrayList<>();
+        for(ClauseArg ca : ARGS)
+            computePossibleArguments(ca);
+
+        Set<Symbol> possibleArguments = new HashSet<>();
+        for(PossibleArgument pa : POSSIBLE_ARGS) possibleArguments.addAll(expandPossibleArgument(pa));
+
+
+        Set<Symbol> possibleSymbols = new HashSet<>();
+        for(Symbol s : possibleArguments)
+        {
+            if(s.ludemeType().equals(Symbol.LudemeType.Constant)) continue;
+            possibleSymbols.add(s);
+        }
+
+        POSSIBLE_SYMBOL_INPUTS = new ArrayList<>(possibleSymbols);
+
         SEPARATE_NODE = false;
 
         parameterDescription = readHelp();
+    }
+
+    private Set<Symbol> expandPossibleArgument(PossibleArgument PA)
+    {
+        Set<Symbol> symbols = new HashSet<>();
+
+        if(PA.possibleArguments().size() == 0) symbols.add(PA.clause().symbol());
+        else
+        {
+            for(PossibleArgument p : PA.possibleArguments())
+            {
+                symbols.addAll(expandPossibleArgument(p));
+            }
+        }
+
+        return symbols;
+    }
+
+    private void computePossibleArguments(ClauseArg arg)
+    {
+        if(arg.symbol().rule() == null)
+        {
+            return;
+        }
+        for(Clause c : arg.symbol().rule().rhs()) {
+            POSSIBLE_ARGS.add(new PossibleArgument(c));
+        }
     }
 
     /**
@@ -109,110 +145,9 @@ public class NodeArgument
         ARGS.add(new ClauseArg(clause.symbol(), null, false, 0, 0));
         originalArg = null;
         INDEX = 0;
+        this.POSSIBLE_ARGS = new ArrayList<>();
         POSSIBLE_SYMBOL_INPUTS = new ArrayList<>();
-        POSSIBLE_SYMBOL_INPUTS_EXPANDED = new ArrayList<>();
         SEPARATE_NODE = true;
-    }
-
-    /**
-     *
-     * @param arguments the list of ClauseArgs this NodeArgument encompasses
-     * @return list of Symbols that may be provided as input for this NodeArgument with Structural symbols expanded
-     */
-    private List<Symbol> possibleSymbolInputsExpanded(List<ClauseArg> arguments)
-    {
-        List<Symbol> possibleSymbolInputs = new ArrayList<>();
-        List<Clause> visitedClauses = new ArrayList<>();
-        for(ClauseArg arg : arguments)
-        {
-            if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Constant)) continue;
-            possibleSymbolInputs.addAll(possibleSymbolInputsExpanded(visitedClauses, arg));
-        }
-        return possibleSymbolInputs.stream().distinct().collect(Collectors.toList()); // return duplicates
-    }
-
-    /**
-     * Finds all possible Symbols that may be provided as input for a given Clause if its Structural
-     * @param visited the list of Clauses that have already been visited
-     * @param clause the Clause to find possible Symbols for
-     * @return list of Symbols that may be provided as input for the given Clause
-     */
-    private List<Symbol> possibleSymbolInputsExpanded(List<Clause> visited, Clause clause)
-    {
-        List<Symbol> possibleSymbolInputs = new ArrayList<>();
-        // if clause is already visited, return empty list
-        if(visited.contains(clause)) return possibleSymbolInputs;
-        visited.add(clause);
-        // ignore constant symbols
-        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant)) return possibleSymbolInputs;
-        // if clause is not structural, just return its symbol
-        if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Structural))
-        {
-            possibleSymbolInputs.add(clause.symbol());
-            return possibleSymbolInputs;
-        }
-        // if the clause has no constructor, expand to its own clauses
-        if(clause.args() == null)
-        {
-            for(Clause clause2 : clause.symbol().rule().rhs())
-            {
-                possibleSymbolInputs.addAll(possibleSymbolInputsExpanded(visited, clause2));
-            }
-        }
-        else
-        {
-            for(ClauseArg arg : clause.args())
-            {
-                possibleSymbolInputs.addAll(possibleSymbolInputsExpanded(visited, arg));
-            }
-        }
-        return possibleSymbolInputs;
-    }
-
-    /**
-     * Finds all possible Symbols that may be provided as input for a given Clause Argument
-     * If an argument has no constructor, then it is expanded to its own possible clauses. However, each clause may only be visited/expanded once
-     * @param visited list of Clauses that have already been visited to not visit them again
-     * @param arg the ClauseArg to get possible Symbols for
-     * @return list of Symbols that may be provided as input for a given Clause Argument
-     */
-    private List<Symbol> possibleSymbolInputsExpanded(List<Clause> visited, ClauseArg arg)
-    {
-        List<Symbol> possibleSymbolInputs = new ArrayList<>();
-        // Ignore constant symbols
-        if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Constant)) return possibleSymbolInputs;
-        if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Primitive))
-        {
-            // TODO:
-            System.out.println("Catched primitive symbol!");
-            return possibleSymbolInputs;
-        }
-        //System.out.println("Expanding arg: " + arg);
-
-        // If the argument has no rules, but another returnType, then expand it instead
-        if(arg.symbol().rule().rhs().size() == 0 && arg.symbol().returnType() != arg.symbol())
-        {
-            ClauseArg arg2 = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
-            return possibleSymbolInputsExpanded(visited, arg2);
-        }
-        if(arg.symbol().ludemeType().equals(Symbol.LudemeType.Structural) && !isTerminal(arg.symbol()))
-        {
-            for(Clause clause : arg.symbol().rule().rhs())
-            {
-                if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Structural)) {
-                    possibleSymbolInputs.addAll(possibleSymbolInputsExpanded(visited, clause));
-                }
-                else
-                {
-                    possibleSymbolInputs.add(clause.symbol());
-                }
-            }
-        }
-        else
-        {
-            possibleSymbolInputs.add(arg.symbol());
-        }
-        return possibleSymbolInputs;
     }
 
     /**
@@ -221,22 +156,7 @@ public class NodeArgument
      */
     public List<Symbol> possibleSymbolInputsExpanded()
     {
-        return POSSIBLE_SYMBOL_INPUTS_EXPANDED;
-    }
-
-    /**
-     *
-     * @param arguments the list of ClauseArgs this NodeArgument encompasses
-     * @return list of Symbols that may be provided as input for this NodeArgument
-     */
-    private List<Symbol> possibleSymbolInputs(List<ClauseArg> arguments)
-    {
-        List<Symbol> possibleSymbolInputs = new ArrayList<>();
-        for(ClauseArg arg : arguments)
-        {
-            if(!possibleSymbolInputs.contains(arg.symbol())) possibleSymbolInputs.add(arg.symbol());
-        }
-        return possibleSymbolInputs;
+        return POSSIBLE_SYMBOL_INPUTS;
     }
 
     /**
@@ -287,15 +207,6 @@ public class NodeArgument
             }
         }
         return constantInputs;
-    }
-
-    /**
-     *
-     * @return list of Symbols that may be provided as input for this NodeArgument
-     */
-    public List<Symbol> possibleSymbolInputs()
-    {
-        return POSSIBLE_SYMBOL_INPUTS;
     }
 
     /**
