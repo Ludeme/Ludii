@@ -719,8 +719,8 @@ public class LudemeNode implements iGNode
     @Override
     public void setPos(Vector2D pos)
     {
-        x = (int) pos.x();
-        y = (int) pos.y();
+        x = (int) Math.round(pos.x());
+        y = (int) Math.round(pos.y());
     }
 
     /**
@@ -809,14 +809,14 @@ public class LudemeNode implements iGNode
 
     public void setOldPos(Vector2D pos)
     {
-        this.oldX = (int) pos.x();
-        this.oldY = (int) pos.y();
+        this.oldX = (int) Math.round(pos.x());
+        this.oldY = (int) Math.round(pos.y());
     }
 
     public void setNewPos(Vector2D pos)
     {
-        this.newX = (int) pos.x();
-        this.newY = (int) pos.y();
+        this.newX = (int) Math.round(pos.x());
+        this.newY = (int) Math.round(pos.y());
     }
 
     /**
