@@ -74,16 +74,21 @@ public class LHeader extends JComponent
         constructorPanel.add(Box.createHorizontalStrut(0));
         constructorPanel.setOpaque(false);
 
+        add(connectionAndTitle, BorderLayout.LINE_START);
+
         if(LN.clauses() != null && LN.clauses().size() > 1) {
             JPopupMenu popup = constructClausePopup();
 
             clauseBtn.addActionListener(e -> {
                 popup.show(clauseBtn, 0, clauseBtn.getHeight());
             });
+
+            add(constructorPanel, BorderLayout.LINE_END);
+
         }
 
-        add(connectionAndTitle, BorderLayout.LINE_START);
-        add(constructorPanel, BorderLayout.LINE_END);
+
+
 
         // space between this and input area and top of LNC
         setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0));
