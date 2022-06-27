@@ -47,6 +47,10 @@
         (show Symbol "square" ("Squares") fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (show Symbol "rectangle" ("Fortresses") fillColour:(colour Grey) edgeColour:(colour Black) scaleX:1.2 scaleY:0.2)
         (show Symbol "rectangle" (difference (sites Board) (union {("Circles") ("Squares") ("Fortresses")})) fillColour:(colour White) edgeColour:(colour Black) scaleX:1 scaleY:0.2)
+        
+        (board StyleThickness InnerEdges 0.3)
+        (show Line { {1 0} {2 3} } Thick (colour Black))
+        (show Symbol "兵站" Vertex 0)
     })
     
 )
