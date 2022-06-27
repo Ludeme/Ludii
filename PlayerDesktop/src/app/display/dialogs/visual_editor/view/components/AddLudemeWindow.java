@@ -86,17 +86,21 @@ public class AddLudemeWindow extends JPanel {
                             System.out.println(initiator);
                             // find matching NodeArgument
                             NodeArgument match = null;
-                            for(NodeArgument na : initiator.nodeArguments())
+                            if(initiator == null)
                             {
-                                if(na.possibleSymbolInputsExpanded().contains(rs.getSymbol()))
-                                {
-                                    match = na;
-                                    break;
-                                }
+                                Handler.addNode(graphPanel.graph(), rs.getSymbol(), null, getLocation().x, getLocation().y, false);
                             }
-                            System.out.println(match);
-                            Handler.addNode(graphPanel.graph(), rs.getSymbol(), match, getLocation().x, getLocation().y, connect);
-                            //graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                            else {
+                                for (NodeArgument na : initiator.nodeArguments()) {
+                                    if (na.possibleSymbolInputsExpanded().contains(rs.getSymbol())) {
+                                        match = na;
+                                        break;
+                                    }
+                                }
+                                System.out.println(match);
+                                Handler.addNode(graphPanel.graph(), rs.getSymbol(), match, getLocation().x, getLocation().y, connect);
+                                //graphPanel.addNode(rs.getSymbol(), getLocation().x, getLocation().y, connect);
+                            }
                         }
                         searchField.setText("");
                         scrollableList.getVerticalScrollBar().setValue(0);

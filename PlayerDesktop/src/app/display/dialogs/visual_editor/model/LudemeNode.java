@@ -30,9 +30,8 @@ public class LudemeNode implements iGNode
     /** List of clauses this symbol encompasses */
     private List<Clause> CLAUSES;
     /** Currently selected Clause by the user */
+    public LinkedHashMap<Symbol, List<Clause>> SYMBOL_CLAUSE_MAP = new LinkedHashMap<>(); // for each clause the symbols it contains
     private Clause selectedClause;
-    /** Inputs to the Clause Arguments of the currently selected Clause provided by the user */
-    //private Object[] providedInputs;
     /** Map of NodeArgument and its corresponding input */
     private LinkedHashMap<NodeArgument, Object> providedInputsMap;
     /** HashMap of Nodes this node is connected to (as a parent) and their order */
@@ -172,6 +171,22 @@ public class LudemeNode implements iGNode
                 PACKAGE_NAME = splitPackage[0] + "." + splitPackage[1];
             }
         }
+
+
+        for(Clause c : CLAUSES)
+        {
+            if(SYMBOL_CLAUSE_MAP.containsKey(c.symbol()))
+            {
+                SYMBOL_CLAUSE_MAP.get(c.symbol()).add(c);
+            }
+            else
+            {
+                List<Clause> l = new ArrayList<>();
+                l.add(c);
+                SYMBOL_CLAUSE_MAP.put(c.symbol(), l);
+            }
+        }
+
         this.helpInformation = DocumentationReader.instance().help(SYMBOL);
     }
 

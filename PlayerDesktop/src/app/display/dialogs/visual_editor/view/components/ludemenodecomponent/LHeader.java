@@ -4,15 +4,15 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.view.DesignPalette;
-import app.display.dialogs.visual_editor.view.DocumentationReader;
-import app.display.dialogs.visual_editor.view.HelpInformation;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import main.grammar.Clause;
+import main.grammar.Symbol;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Header component of a LudemeNodeComponent
@@ -24,6 +24,8 @@ public class LHeader extends JComponent
 {
     /** LudemeNodeComponent this header belongs to */
     private final LudemeNodeComponent LNC;
+    /** Ludeme Node */
+    private final LudemeNode LN;
     /** Ingoing connection component */
     private LIngoingConnectionComponent ingoingConnectionComponent;
     /** Label for the title */
@@ -36,7 +38,7 @@ public class LHeader extends JComponent
     public LHeader(LudemeNodeComponent ludemeNodeComponent)
     {
         LNC = ludemeNodeComponent;
-        LudemeNode LN = LNC.node();
+        this.LN = LNC.node();
 
         setLayout(new BorderLayout());
         // initialize title
@@ -70,21 +72,9 @@ public class LHeader extends JComponent
         constructorPanel.add(clauseBtn);
         constructorPanel.add(Box.createHorizontalStrut(0));
         constructorPanel.setOpaque(false);
-        JPopupMenu popup = new JPopupMenu();
-        JMenuItem[] items = new JMenuItem[LN.clauses().size()];
 
-        if(LN.clauses() != null) {
-            for (int i = 0; i < LN.clauses().size(); i++) {
-                Clause clause = LN.clauses().get(i);
-                items[i] = new JMenuItem(HumanReadable.makeReadable(clause));
-                items[i].addActionListener(e1 -> {
-                    System.out.println("Selected clause: " + HumanReadable.makeReadable(clause));
-                    Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clause);
-                    //ludemeNodeComponent.changeCurrentClause(clause);
-                    repaint();
-                });
-                popup.add(items[i]);
-            }
+        if(LN.clauses() != null && LN.clauses().size() > 1) {
+            JPopupMenu popup = constructClausePopup();
 
             clauseBtn.addActionListener(e -> {
                 popup.show(clauseBtn, 0, clauseBtn.getHeight());
@@ -111,6 +101,61 @@ public class LHeader extends JComponent
         //HelpInformation help = DocumentationReader.instance().documentation().get(LN.symbol());
         //if(help != null) setToolTipText(help.toHTML());
 
+    }
+
+    public JPopupMenu constructClausePopup()
+    {
+        JPopupMenu popup = new JPopupMenu();
+
+        // if a symbol encompasses multiple clauses, create a menu for this symbol
+        // otherwise just show the clause
+        // when clicking on a clause, the current selected clause is repainted
+
+        for(Symbol s : LN.SYMBOL_CLAUSE_MAP.keySet())
+        {
+            if(LN.SYMBOL_CLAUSE_MAP.keySet().size() == 1)
+            {
+                List<Clause> clauses = LN.SYMBOL_CLAUSE_MAP.get(s);
+                for(Clause c : clauses)
+                {
+                    JMenuItem item = new JMenuItem(c.toString());
+                    item.addActionListener(e -> {
+                        Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), c);
+                        repaint();
+                    });
+                    popup.add(item);
+                }
+                break;
+            }
+
+            List<Clause> clauses = LN.SYMBOL_CLAUSE_MAP.get(s);
+            if(clauses.size() == 1)
+            {
+                JMenuItem item = new JMenuItem(s.name());
+                item.addActionListener(e -> {
+                    Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(0));
+                    repaint();
+                });
+                popup.add(item);
+            }
+            else
+            {
+                JMenu menu = new JMenu(s.name());
+                JMenuItem[] subitems = new JMenuItem[clauses.size()];
+                for(int j = 0; j < clauses.size(); j++)
+                {
+                    subitems[j] = new JMenuItem(clauses.get(j).toString());
+                    int finalJ = j;
+                    subitems[j].addActionListener(e -> {
+                        Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(finalJ));
+                        repaint();
+                    });
+                    menu.add(subitems[j]);
+                }
+                popup.add(menu);
+            }
+        }
+        return popup;
     }
 
     /**
