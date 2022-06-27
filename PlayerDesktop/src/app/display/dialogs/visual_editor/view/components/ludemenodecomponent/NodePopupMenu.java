@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.NodeHelp;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 
 import javax.swing.*;
@@ -201,5 +202,8 @@ public class NodePopupMenu extends JPopupMenu {
             JOptionPane.showMessageDialog((EditorPanel) graphPanel, message);
         });
 
+        JMenuItem help = new JMenuItem("Help");
+        help.addActionListener(e -> new NodeHelp(nodeComponent.node()));
+        add(help);
     }
 }
