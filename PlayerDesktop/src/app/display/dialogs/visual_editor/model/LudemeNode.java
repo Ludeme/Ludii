@@ -1137,7 +1137,8 @@ public class LudemeNode implements iGNode
     public String description()
     {
         if(helpInformation == null) return "";
-        return helpInformation.description();
+        if(selectedClause.symbol() == symbol()) return helpInformation.description();
+        else return DocumentationReader.instance().documentation().get(selectedClause.symbol()).description();
     }
 
     public String parameterDescription(ClauseArg arg)

@@ -4,6 +4,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.recs.utils.HumanReadable;
 import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.DocumentationReader;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import main.grammar.Clause;
@@ -139,6 +140,7 @@ public class LHeader extends JComponent
             if(clauses.size() == 1)
             {
                 JMenuItem item = new JMenuItem(s.name());
+                item.setToolTipText(DocumentationReader.instance().documentation().get(s).description());
                 item.addActionListener(e -> {
                     Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(0));
                     repaint();
@@ -148,6 +150,7 @@ public class LHeader extends JComponent
             else
             {
                 JMenu menu = new JMenu(s.name());
+                menu.setToolTipText(DocumentationReader.instance().documentation().get(s).description());
                 JMenuItem[] subitems = new JMenuItem[clauses.size()];
                 for(int j = 0; j < clauses.size(); j++)
                 {
@@ -219,6 +222,7 @@ public class LHeader extends JComponent
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
         title.setSize(title.getPreferredSize());
+        title.setToolTipText(ludemeNodeComponent().node().description());
 
         setBorder(DesignPalette.HEADER_PADDING_BORDER);
     }
