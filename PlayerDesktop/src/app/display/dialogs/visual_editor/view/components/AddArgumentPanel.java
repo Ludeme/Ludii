@@ -150,6 +150,7 @@ public class AddArgumentPanel extends JPanel
     private boolean isConstantTerminal(Symbol s)
     {
         if(s.rule() == null) return false;
+        if(s.rule().rhs().size() == 1 && (s.rule().rhs().get(0).args().isEmpty() || s.rule().rhs().get(0).args().get(0).symbol() == s)) return false;
         for(Clause c : s.rule().rhs())
         {
             if(c.args() == null) continue;

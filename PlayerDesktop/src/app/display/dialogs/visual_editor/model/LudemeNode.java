@@ -1047,6 +1047,7 @@ public class LudemeNode implements iGNode
      */
     public String title()
     {
+        if(selectedClause.args() != null && selectedClause.args().isEmpty()) return selectedClause.symbol().name();
         StringBuilder title = new StringBuilder(selectedClause().symbol().name());
         if(selectedClause().args() == null) return title.toString();
         // if selected clause starts with constants, add these to the title
