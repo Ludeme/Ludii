@@ -107,7 +107,7 @@ public class Handler
 
         IUserAction action = new RemovedNodeAction(graphPanelMap.get(graph), node);
         addAction(action);
-        if(performedUserActions.peek() == action) Handler.recordUserActions = false;
+        if(lastActionEquals(action)) Handler.recordUserActions = false;
         // if the action is added, and the node was part of a collection, notify the action about the collection element index
         if(recordUserActions && node.parentNode() != null && (node.parentNode().providedInputsMap().get(node.creatorArgument()) instanceof Object[]))
         {
@@ -137,7 +137,7 @@ public class Handler
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
-        if(performedUserActions.peek() == action) Handler.recordUserActions = true;
+        if(lastActionEquals(action)) Handler.recordUserActions = true;
     }
 
     /**
@@ -162,9 +162,9 @@ public class Handler
         IUserAction action = new RemovedNodesAction(graphPanelMap.get(graph), nodes);
         addAction(action);
 
-        if(performedUserActions.peek() == action) Handler.recordUserActions = false;
+        if(lastActionEquals(action)) Handler.recordUserActions = false;
         for(LudemeNode n : nodes) removeNode(graph, n);
-        if(performedUserActions.peek() == action) Handler.recordUserActions = true;
+        if(lastActionEquals(action)) Handler.recordUserActions = true;
     }
 
     public static void remove(DescriptionGraph graph)
@@ -286,7 +286,7 @@ public class Handler
         for(Object input : node.providedInputsMap().values())
             if(input instanceof LudemeNode)
             {
-                if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+                if(lastActionEquals(action))
                 {
                     Handler.recordUserActions = false;
                     removeEdge(graph, node, (LudemeNode) input);
@@ -371,10 +371,10 @@ public class Handler
         {
             IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, -404, 1, null);
             addAction(action);
-            if(performedUserActions.peek() == action)
+            if(lastActionEquals(action))
                 Handler.recordUserActions = false;
             updateInput(graph, node, nodeArgument, new Object[2]);
-            if(performedUserActions.peek() == action)
+            if(lastActionEquals(action))
                 Handler.recordUserActions = true;
             graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, 1);
             return;
@@ -383,10 +383,10 @@ public class Handler
         System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
         IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, -404, oldCollection.length, null);
         addAction(action);
-        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+        if(lastActionEquals(action))
             Handler.recordUserActions = false;
         updateInput(graph, node, nodeArgument, newCollection);
-        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+        if(lastActionEquals(action))
             Handler.recordUserActions = true;
 
         graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, newCollection.length - 1);
@@ -457,12 +457,12 @@ public class Handler
             newCollection[i - 1] = oldCollection[i];
         }
 
-        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+        if(lastActionEquals(action))
             Handler.recordUserActions = false;
         updateInput(graph, node, nodeArgument, newCollection);
         if(input instanceof LudemeNode)
             removeEdge(graph, node, (LudemeNode) input, elementIndex);
-        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+        if(lastActionEquals(action))
             Handler.recordUserActions = true;
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyCollectionRemoved(graphPanel.nodeComponent(node), nodeArgument, elementIndex);
@@ -540,22 +540,87 @@ public class Handler
         currentCopy = new ArrayList<>(copiedNodes.values());
     }
 
-    public static void paste(DescriptionGraph graph, int x, int y)
+    public static List<LudemeNode> copyTemporarily(DescriptionGraph graph, List<LudemeNode> nodes)
     {
-        if(currentCopy.isEmpty()) return;
-        if(DEBUG) System.out.println("[HANDLER] paste(graph, x, y) Pasting " + currentCopy.size() + " nodes");
+        if(nodes.isEmpty()) return new ArrayList<>();
+        if(DEBUG) System.out.println("[HANDLER] copy(graph, nodes) Copying " + nodes.size() + " nodes");
         IGraphPanel graphPanel = graphPanelMap.get(graph);
 
+        HashMap<LudemeNode, LudemeNode> copiedNodes = new HashMap<>(); // <original, copy>
+
+        // create copies
+        for(LudemeNode node : nodes) copiedNodes.put(node, node.copy());
+        // fill inputs (connections and collections)
+        for(LudemeNode node : nodes) {
+            LudemeNode copy = copiedNodes.get(node);
+            // iterate each original node's provided inputs
+            for (NodeArgument arg : node.providedInputsMap().keySet()) {
+                Object input = node.providedInputsMap().get(arg);
+                // input is a node
+                if (input instanceof LudemeNode) {
+                    LudemeNode inputNode = (LudemeNode) input;
+                    // if input node is in the list of nodes to copy, copy it
+                    if (nodes.contains(inputNode)) {
+                        LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
+                        copy.setProvidedInput(arg, inputNodeCopy);
+                        copy.addChildren(inputNodeCopy);
+                        inputNodeCopy.setParent(copy);
+                    }
+                }
+                // input is a collection
+                else if (input instanceof Object[])
+                {
+                    Object[] inputCollection = (Object[]) input;
+                    Object[] inputCollectionCopy = new Object[inputCollection.length];
+                    for (int i = 0; i < inputCollection.length; i++) {
+                        // if input element is a node
+                        if (inputCollection[i] instanceof LudemeNode)
+                        {
+                            LudemeNode inputNode = (LudemeNode) inputCollection[i];
+                            // if input node is in the list of nodes to copy, copy it
+                            if (nodes.contains(inputNode))
+                            {
+                                LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
+                                inputCollectionCopy[i] = inputNodeCopy;
+                                copy.addChildren(inputNodeCopy);
+                                inputNodeCopy.setParent(copy);
+                            }
+                        }
+                    }
+                    copy.setProvidedInput(arg, inputCollectionCopy);
+                }
+            }
+        }
+        // store copied nodes
+        return new ArrayList<>(copiedNodes.values());
+    }
+
+    public static void duplicate(DescriptionGraph graph, List<LudemeNode> nodes)
+    {
+        // remove root node
+        nodes.remove(graph.getRoot());
+        if(nodes.isEmpty()) return;
+        // get left most node
+        LudemeNode leftMostNode = nodes.get(0);
+        for(LudemeNode node : nodes) if(node.x() < leftMostNode.x()) leftMostNode = node;
+        int y = leftMostNode.y() + leftMostNode.height();
+        paste(graph, copyTemporarily(graph, nodes), 0, y);
+    }
+
+    public static void duplicate(DescriptionGraph graph)
+    {
+        List<LudemeNode> nodes = selectedNodes(graph);
+        duplicate(graph, nodes);
+    }
+
+    public static void paste(DescriptionGraph graph, List<LudemeNode> nodes, int x, int y)
+    {
+        if(DEBUG) System.out.println("[HANDLER] paste(graph, x, y) Pasting " + nodes.size() + " nodes");
         recordUserActions = false;
-
-        // old copy
-        List<LudemeNode> oldCopy = new ArrayList<>(currentCopy);
-        currentCopy.clear();
-        copy(graph, oldCopy);
-
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
         // find left-most node
-        LudemeNode leftMostNode = oldCopy.get(0);
-        for(LudemeNode node : oldCopy)
+        LudemeNode leftMostNode = nodes.get(0);
+        for(LudemeNode node : nodes)
         {
             if(node.x() < leftMostNode.x()) leftMostNode = node;
         }
@@ -575,14 +640,14 @@ public class Handler
         }
 
         // add nodes to graph
-        for(LudemeNode node : oldCopy)
+        for(LudemeNode node : nodes)
         {
             node.setX(node.x() + x_shift);
             node.setY(node.y() + y_shift);
             addNode(graph, node);
         }
         // update all edges
-        for(LudemeNode parent : oldCopy)
+        for(LudemeNode parent : nodes)
         {
             for(NodeArgument argument : parent.providedInputsMap().keySet())
             {
@@ -590,7 +655,7 @@ public class Handler
                 if(input instanceof LudemeNode)
                 {
                     LudemeNode inputNode = (LudemeNode) input;
-                    if(oldCopy.contains(inputNode))
+                    if(nodes.contains(inputNode))
                     {
                         addEdge(graph, parent, inputNode, argument);
                     }
@@ -605,7 +670,7 @@ public class Handler
                         if(inputCollection[i] instanceof LudemeNode)
                         {
                             LudemeNode inputNode = (LudemeNode) inputCollection[i];
-                            if(oldCopy.contains(inputNode))
+                            if(nodes.contains(inputNode))
                             {
                                 addEdge(graph, parent, inputNode, argument, i);
                             }
@@ -621,8 +686,18 @@ public class Handler
         }
         graphPanel.repaint();
         recordUserActions = true;
-        IUserAction action = new PasteAction(graphPanel, oldCopy);
+        IUserAction action = new PasteAction(graphPanel, nodes);
         addAction(action);
+    }
+
+    public static void paste(DescriptionGraph graph, int x, int y)
+    {
+        if(currentCopy.isEmpty()) return;
+        // old copy
+        List<LudemeNode> oldCopy = new ArrayList<>(currentCopy);
+        currentCopy.clear();
+        copy(graph, oldCopy);
+        paste(graph, oldCopy, x, y);
     }
     /**
      *
@@ -719,10 +794,10 @@ public class Handler
         IUserAction action = new ActivateOptionalTerminalAction(graphPanel, node, argument, activate);
 
         addAction(action);
-        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+        if(lastActionEquals(action))
             Handler.recordUserActions = false;
         graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, activate);
-        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
+        if(lastActionEquals(action))
             Handler.recordUserActions = true;
     }
 
@@ -762,6 +837,12 @@ public class Handler
         toolsPanel.revalidate();
     }
 
+    private static boolean lastActionEquals(IUserAction action)
+    {
+        if(performedUserActions.isEmpty()) return false;
+        return performedUserActions.peek() == action;
+    }
+
     public static void undo()
     {
         if(performedUserActions.isEmpty()) return;
@@ -795,6 +876,7 @@ public class Handler
     private static void addAction(IUserAction action)
     {
         if(!recordUserActions) return;
+        if(DEBUG) System.out.println("Adding action: " + action.actionType());
         performedUserActions.add(action);
         undoneUserActions = new Stack<>();
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
