@@ -30,7 +30,7 @@ public class LudemeNode implements iGNode
     /** List of clauses this symbol encompasses */
     private List<Clause> CLAUSES;
     /** Currently selected Clause by the user */
-    public LinkedHashMap<Symbol, List<Clause>> SYMBOL_CLAUSE_MAP = new LinkedHashMap<>(); // for each clause the symbols it contains
+    private LinkedHashMap<Symbol, List<Clause>> SYMBOL_CLAUSE_MAP = new LinkedHashMap<>(); // for each clause the symbols it contains
     private Clause selectedClause;
     /** Map of NodeArgument and its corresponding input */
     private LinkedHashMap<NodeArgument, Object> providedInputsMap;
@@ -511,6 +511,11 @@ public class LudemeNode implements iGNode
         return collapsed;
     }
 
+
+    public LinkedHashMap<Symbol, List<Clause>> symbolClauseMap()
+    {
+        return SYMBOL_CLAUSE_MAP;
+    }
 
     // Methods for Dynamic Nodes
 

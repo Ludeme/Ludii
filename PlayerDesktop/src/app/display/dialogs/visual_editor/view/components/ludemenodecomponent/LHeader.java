@@ -12,6 +12,7 @@ import main.grammar.Symbol;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -110,12 +111,13 @@ public class LHeader extends JComponent
         // if a symbol encompasses multiple clauses, create a menu for this symbol
         // otherwise just show the clause
         // when clicking on a clause, the current selected clause is repainted
+        LinkedHashMap<Symbol, List<Clause>> symbolClauseMap = LN.symbolClauseMap();
 
-        for(Symbol s : LN.SYMBOL_CLAUSE_MAP.keySet())
+        for(Symbol s : symbolClauseMap.keySet())
         {
-            if(LN.SYMBOL_CLAUSE_MAP.keySet().size() == 1)
+            if(symbolClauseMap.keySet().size() == 1)
             {
-                List<Clause> clauses = LN.SYMBOL_CLAUSE_MAP.get(s);
+                List<Clause> clauses = symbolClauseMap.get(s);
                 for(Clause c : clauses)
                 {
                     JMenuItem item = new JMenuItem(c.toString());
@@ -128,7 +130,7 @@ public class LHeader extends JComponent
                 break;
             }
 
-            List<Clause> clauses = LN.SYMBOL_CLAUSE_MAP.get(s);
+            List<Clause> clauses = symbolClauseMap.get(s);
             if(clauses.size() == 1)
             {
                 JMenuItem item = new JMenuItem(s.name());
