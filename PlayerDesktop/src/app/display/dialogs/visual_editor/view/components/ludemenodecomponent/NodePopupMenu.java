@@ -69,10 +69,7 @@ public class NodePopupMenu extends JPopupMenu {
 
             if(nodeComponent.selected() && graphPanel.selectedLnc().size() > 1)
             {
-                for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
-                {
-                    Handler.duplicate(graphPanel.graph());
-                }
+                Handler.duplicate(graphPanel.graph());
             }
             else
             {

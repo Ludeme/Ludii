@@ -604,7 +604,7 @@ public class Handler
         LudemeNode leftMostNode = nodes.get(0);
         for(LudemeNode node : nodes) if(node.x() < leftMostNode.x()) leftMostNode = node;
         int y = leftMostNode.y() + leftMostNode.height();
-        paste(graph, copyTemporarily(graph, nodes), 0, y);
+        paste(graph, copyTemporarily(graph, nodes), leftMostNode.x(), y);
     }
 
     public static void duplicate(DescriptionGraph graph)
