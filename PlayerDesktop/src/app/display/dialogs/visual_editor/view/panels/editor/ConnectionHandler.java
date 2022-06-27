@@ -102,9 +102,7 @@ public class ConnectionHandler
      */
     public void finishNewConnection(LudemeNodeComponent target)
     {
-        //addConnection(selectedConnectionComponent, target.ingoingConnectionComponent());
         Handler.addEdge(graphPanel.graph(), selectedConnectionComponent.inputField().inputArea().LNC().node(), target.node(), selectedConnectionComponent.inputField().inputArea().inputFieldIndex(selectedConnectionComponent.inputField()));
-        //Handler.addEdge(graphPanel.graph(), selectedConnectionComponent.inputField().inputArea().LNC().node(), target.node(), selectedConnectionComponent.inputField().inputArea().inputFieldIndex(selectedConnectionComponent.inputField()));
         selectedConnectionComponent = null;
     }
 
@@ -132,6 +130,9 @@ public class ConnectionHandler
         {
             source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField());
         }
+
+        // update creator argument
+        target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source.inputField().nodeArgument(0));
 
 
         // update the positions of the connection components

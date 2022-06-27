@@ -16,6 +16,6 @@ public class ReadableSymbol {
 
     @Override
     public String toString() {
-        return HumanReadable.makeReadable(symbol);
+        return symbol.name();
     }
 }
