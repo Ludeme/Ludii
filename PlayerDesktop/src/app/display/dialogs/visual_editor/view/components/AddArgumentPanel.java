@@ -16,6 +16,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -48,6 +50,7 @@ public class AddArgumentPanel extends JPanel
     IGraphPanel graphPanel;
     boolean connect;
     private LInputField initiator;
+    private List<ReadableSymbol> currentSymbols;
 
     public AddArgumentPanel(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect)
     {
@@ -57,6 +60,8 @@ public class AddArgumentPanel extends JPanel
         list.addMouseListener(mouseListener);
 
         updateList(null, symbolList);
+
+        searchField.getDocument().addDocumentListener(searchListener);
     }
 
     public void updateList(LInputField initiator, List<Symbol> symbolList)
@@ -64,13 +69,13 @@ public class AddArgumentPanel extends JPanel
         this.initiator = initiator;
         // remove duplicates
         symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
-        List<ReadableSymbol> readableSymbolsList = new ArrayList<>();
+        currentSymbols = new ArrayList<>();
         listModel.clear();
         for(Symbol symbol : symbolList)
         {
             ReadableSymbol rs = new ReadableSymbol(symbol);
             listModel.addElement(rs);
-            readableSymbolsList.add(rs);
+            currentSymbols.add(rs);
         }
         drawComponents();
     }
@@ -155,5 +160,33 @@ public class AddArgumentPanel extends JPanel
         }
         return true;
     }
+
+    private DocumentListener searchListener = new DocumentListener()
+    {
+        @Override
+        public void insertUpdate(DocumentEvent e)
+        {
+            changedUpdate(e);
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e)
+        {
+            changedUpdate(e);
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e)
+        {
+            listModel.clear();
+            for(ReadableSymbol rs : currentSymbols)
+            {
+                if(rs.getSymbol().name().toLowerCase().contains(searchField.getText().toLowerCase()) || rs.getSymbol().token().toLowerCase().contains(searchField.getText().toLowerCase())
+                        || rs.getSymbol().grammarLabel().toLowerCase().contains(searchField.getText().toLowerCase()))
+                    listModel.addElement(rs);
+            }
+            repaint();
+        }
+    };
 
 }
