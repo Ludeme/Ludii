@@ -25,9 +25,6 @@ public class MainFrame extends JFrame {
     }
 
     private void initialize(EditorPanel editor_panel){
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch(Exception ignored){}
         DesignPalette.initializeFonts();
         setTitle("Ludii Visual Editor");
         setIconImage((DesignPalette.LUDII_ICON).getImage());

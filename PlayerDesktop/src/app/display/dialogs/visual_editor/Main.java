@@ -12,6 +12,10 @@ public class Main {
     private static NGramController controller;
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch(Exception ignored){}
+
         controller = new NGramController(7);
         editPanel = new EditorPanel(5000,5000);
         MainFrame f = new MainFrame(editPanel);
