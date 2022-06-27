@@ -25,6 +25,8 @@
     (graphics {
         (piece Colour "Die" state:0 fillColour:(colour White))
         (piece Colour "Die" state:1 fillColour:(colour Black))
+        (piece Foreground "Die" state:0 image:"Goose" fillColour:(colour White) scale:0.5)
+        (piece Foreground "Die" state:1 image:"Cow" fillColour:(colour White) scale:0.5)
     })
     
 )
