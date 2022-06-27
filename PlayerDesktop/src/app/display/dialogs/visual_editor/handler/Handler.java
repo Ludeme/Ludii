@@ -383,10 +383,10 @@ public class Handler
         System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
         IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, -404, oldCollection.length, null);
         addAction(action);
-        if(performedUserActions.peek() == action)
+        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
             Handler.recordUserActions = false;
         updateInput(graph, node, nodeArgument, newCollection);
-        if(performedUserActions.peek() == action)
+        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
             Handler.recordUserActions = true;
 
         graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, newCollection.length - 1);
@@ -457,12 +457,12 @@ public class Handler
             newCollection[i - 1] = oldCollection[i];
         }
 
-        if(performedUserActions.peek() == action)
+        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
             Handler.recordUserActions = false;
         updateInput(graph, node, nodeArgument, newCollection);
         if(input instanceof LudemeNode)
             removeEdge(graph, node, (LudemeNode) input, elementIndex);
-        if(performedUserActions.peek() == action)
+        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
             Handler.recordUserActions = true;
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyCollectionRemoved(graphPanel.nodeComponent(node), nodeArgument, elementIndex);
@@ -719,10 +719,10 @@ public class Handler
         IUserAction action = new ActivateOptionalTerminalAction(graphPanel, node, argument, activate);
 
         addAction(action);
-        if(performedUserActions.peek() == action)
+        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
             Handler.recordUserActions = false;
         graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, activate);
-        if(performedUserActions.peek() == action)
+        if(!performedUserActions.isEmpty() && performedUserActions.peek() == action)
             Handler.recordUserActions = true;
     }
 
