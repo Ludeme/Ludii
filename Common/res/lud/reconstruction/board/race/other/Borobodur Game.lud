@@ -32,7 +32,7 @@
     })  
     
     (rules 
-    	(start [#])
+        (start [#])
         (play (do (roll) next:[#])) // Not all pieces are on the board at the same time. More than one piece can occupy a space.
         (end [#])
     )

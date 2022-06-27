@@ -27,7 +27,7 @@
         (piece "Marker" Each (move [#]))
     })
     (rules
-    	(start [#])
+        (start [#])
         (play (do (roll) next:[#])) // Captures are made when landing on a space occupied by the opponent.
         (end [#])
     )

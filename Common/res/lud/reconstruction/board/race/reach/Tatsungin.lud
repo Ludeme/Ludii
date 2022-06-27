@@ -7,7 +7,7 @@
         (dice d:2 from:0 num:8)
     })
     (rules 
-    	(start [#])
+        (start [#])
         (play (do (roll) next:[#]))
         (end [#])
     )
