@@ -1,0 +1,133 @@
+(define "MarshallMove") // no movement restrictions but must remain in the palace 
+
+//------------------------------------------------------------------------------
+
+(game "Gwangsanghui" 
+    (players 2)
+    (equipment {
+        (board (rectangle 14 15) use:Vertex) 
+        (piece "Disc" Each)
+        (regions "PalaceP1" P1 { 15..17 30..32 45..47 21..23 36..38 51..53 27..29 42..44 57..59 150..152 165..167 180..182 156..158 171..173 186..188 162..164 177..179 192..194 } )
+        (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 } )
+        
+        // Marshall
+        (piece "Jiang" Each ("MarshallMove")) 
+        
+        // Advisor
+        (piece "Shi" Each ("MarshallMove")) 
+        
+        // Elephant
+        (piece "Xiang" Each
+//            (forEach Direction 
+//                Orthogonal 
+//                (to 
+//                    if:(is Empty (to)) 
+//                    (apply 
+//                        (forEach Direction 
+//                            (from (to)) 
+//                            (directions {FR FL} of:All) 
+//                            (to
+//                                if:(is Empty (to))
+//                                (apply
+//                                (forEach Direction 
+//                                    (from (to)) 
+//                                    (directions {FR FL} of:All) 
+//                                    (if (not (is Friend (who at:(to)))) 
+//                                        (move 
+//                                            (from) 
+//                                            (to 
+//                                                (apply 
+//                                                    if:(is Enemy (who at:(to)))
+//                                                    (remove (to))
+//                                                )
+//                                            )
+//                                        )
+//                                    )
+//                                ) 
+//                                )
+//                            )
+//                        )
+//                    ) 		
+//                )
+//            )
+        )
+        
+        // Chariot
+        (piece "Ju" Each)
+        
+        // Canon
+        (piece "Pao" Each)
+        
+        // Horse
+        (piece "Ma" Each)
+        
+        // Vanguard
+        (piece "Jian" Each)
+        
+        // Rearguard
+        (piece "Gong" Each)
+        
+        // Elite Officer
+        (piece "Bai" Each)
+        
+        // Traveler
+        (piece "Hai" Each)
+        
+        // Ambush
+        (piece "Pian" Each)
+        
+        // Infantry
+        (piece "Zu" Each)
+        
+        // Cavalry
+        (piece "Qi" Each)
+        
+        // Cavalry
+        (piece "Zhou" Each)
+        
+    })
+    (rules
+        (start {
+            (place "Jiang1" coord:"H3") (place "Jiang2" coord:"H12")
+            (place "Shi1" {"N2" "B2" "G2" "I2"}) (place "Shi2" {"N13" "B13" "G13" "I13"})
+            (place "Xiang1" {"F2" "J2" "C2" "M2"}) (place "Xiang2" {"F13" "J13" "M13" "C13"})
+            (place "Ju1" {"E2" "K2" "A2" "O2"}) (place "Ju2" {"E13" "K13" "O13" "A13"})
+            (place "Pao1" {"G4" "I4" "M4" "C4"}) (place "Pao2" {"G11" "I11" "C11" "M11"})
+            (place "Ma1" {"F4" "J4" "O4" "A4"}) (place "Ma2" {"F11" "J11" "A11" "O11"})
+            (place "Jian1" coord:"H5") (place "Jian2" coord:"H10")
+            (place "Gong1" coord:"H1") (place "Gong2" coord:"H14")
+            (place "Bai1" {"D3" "L3"}) (place "Bai2" {"D12" "L12"})
+            (place "Hai1" {"D5" "L5"}) (place "Hai2" {"D10" "L10"})
+            (place "Pian1" {"D1" "L1"}) (place "Pian2" {"D14" "L14"})
+            (place "Zu1" {"E6" "F6" "G6" "I6" "J6" "K6"}) (place "Zu2" {"E9" "F9" "G9" "I9" "J9" "K9"})
+            (place "Zu1" {"A6" "B6" "C6" "M6" "N6" "O6"}) (place "Zu2" {"A9" "B9" "C9" "M9" "N9" "O9"})
+            (place "Zhou1" {"B3" "N3"}) (place "Zhou2" {"B12" "N12"})
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (no Sunken)
+        (show Line {{15 47} {45 17} {21 53} {51 23} {57 29} {27 59} {180 152} {150 182} {162 194} {192 164} {158 186} {156 188}} (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (board Background image:"square.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.25)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (piece Style ExtendedXiangqi)
+    })
+)
