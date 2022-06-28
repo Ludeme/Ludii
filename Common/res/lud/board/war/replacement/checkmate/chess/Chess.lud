@@ -98,17 +98,6 @@
     )
 )
 
-(define "CaptureForwardDiagonal"
-    (move
-        Step 
-        (directions {FR FL}) 
-        (to 
-            if:(is Enemy (who at:(to))) 
-            (apply (remove (to)))
-        )
-    )
-)
-
 (define "InitialPawnMove"
     (if (is In (from) (sites Start (piece (what at:(from)))))
         "DoubleStep"
