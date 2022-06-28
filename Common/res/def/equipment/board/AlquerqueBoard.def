@@ -3,7 +3,7 @@
 
 (define "AlquerqueBoard"
     (board 
-        (rectangle #1 #2 diagonals:Alternating)
+        ("AlquerqueGraph" #1 #2)
         use:Vertex
     )
 )

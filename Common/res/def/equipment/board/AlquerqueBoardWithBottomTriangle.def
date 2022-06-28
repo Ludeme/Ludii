@@ -3,10 +3,7 @@
 
 (define "AlquerqueBoardWithBottomTriangle"
     (board 
-        (merge 
-            (shift 0 2 (square 5 diagonals:Alternating)) 
-            (wedge 3)
-        ) 
+        ("AlquerqueGraphWithBottomTriangle") 
         use:Vertex
     ) 
 )

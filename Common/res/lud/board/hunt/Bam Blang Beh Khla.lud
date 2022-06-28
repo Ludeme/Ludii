@@ -18,8 +18,7 @@
         )
         (piece "Tiger" P1 (or "HopCapture" "StepToEmpty"))
         (piece "Goat" P2 "StepToEmpty")
-        }
-    )  
+    })  
     (rules 
         (start {
             (place "Tiger1" (sites Top))
@@ -54,7 +53,6 @@
         (graphics {
             (piece Families {"Abstract" "Themed"})
             (show Edges Diagonal Hidden)
-            
         })
         
         (ai

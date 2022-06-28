@@ -3,14 +3,11 @@
 // #2 = The full dimension of the board.
 // #3 = The default site type of the board.
 // #4 = The type of the diagonals of each tiling.
-// @example ("CrossBoard" 3 7 diagonals:Alternating use:Vertex)
+// @example ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
 
 (define "CrossBoard"
     (board 
-        (merge 
-            (shift 0 (/ (- #2 #1) 2) (rectangle #1 #2 #4) )
-            (shift (/ (- #2 #1) 2) 0 (rectangle #2 #1 #4) ) 
-        )
+        ("CrossGraph" #1 #2 #4)
         #3
     )
 )
