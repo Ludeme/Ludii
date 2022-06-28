@@ -208,6 +208,7 @@ public class LudemeNode implements iGNode
         this.nodeArguments = nodeArguments;
         this.width = 100; // width and height are hard-coded for now, updated later
         this.height = 100;
+
         if(CLAUSES != null)
         {
             expandClauses();
@@ -296,11 +297,9 @@ public class LudemeNode implements iGNode
     private void expandClauses()
     {
         List<Clause> newClauses = new ArrayList<>();
-        List<Clause> oldClauses = new ArrayList<>();
         for(Clause clause : CLAUSES)
         {
             if(clause.symbol() != symbol()) {
-                oldClauses.add(clause);
                 newClauses.addAll(expandClauses(clause.symbol()));
             }
             else
@@ -316,6 +315,7 @@ public class LudemeNode implements iGNode
         List<Clause> clauses = new ArrayList<>();
         for(Clause clause : s.rule().rhs())
         {
+            if(clauses.contains(clause) || this.clauses().contains(clause)) continue;
             if(clause.symbol() == s) {
                 clauses.add(clause);
             }
