@@ -2778,6 +2778,7 @@ SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.And
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Append
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.If
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Or
+SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Seq
 TYPE: game.rules.play.moves.decision.Decision
 TYPE JAVADOC: Defines moves that involve a decision by the player.
 SUBCLASS: game.rules.play.moves.decision.Move
@@ -3004,6 +3005,7 @@ SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.And
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Append
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.If
 SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Or
+SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Seq
 REMARKS: Non-decision moves include move operators that might combine further decision moves.
 TYPE: game.rules.play.moves.nonDecision.effect.Add
 TYPE JAVADOC: Places one or more component(s) at a collection of sites or at one specific  site.
@@ -3136,6 +3138,7 @@ SUBCLASS: game.rules.play.moves.nonDecision.effect.take.Take
 SUBCLASS: game.rules.play.moves.nonDecision.effect.Trigger
 SUBCLASS: game.rules.play.moves.nonDecision.effect.Vote
 SUBCLASS: game.rules.play.moves.nonDecision.operators.foreach.ForEach
+SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Seq
 TYPE: game.rules.play.moves.nonDecision.effect.Enclose
 TYPE JAVADOC: Applies a move to an enclosed group.
 NEW CTOR
@@ -3423,7 +3426,7 @@ PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (avoidStoredState (forEach Piece))
 REMARKS: Example: Arimaa.
 TYPE: game.rules.play.moves.nonDecision.effect.requirement.Do
-TYPE JAVADOC: Applies a sequence of moves in a specified order, according to given  conditions.
+TYPE JAVADOC: Applies two moves in order, according to given conditions.
 NEW CTOR
 (do <moves> [next:<moves>] [ifAfterwards:<boolean>] [<then>])
 PARAM JAVADOC: <moves>: Moves to be applied first.
@@ -3809,6 +3812,12 @@ NEW CTOR
 PARAM JAVADOC: {<moves>}: The list of moves.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (or { (set Score P1 100) (set Score P2 100) (set Score P3 100) })
+TYPE: game.rules.play.moves.nonDecision.operators.logical.Seq
+TYPE JAVADOC: Applies a sequence of moves one by one.
+NEW CTOR
+(seq {<moves>})
+PARAM JAVADOC: {<moves>}: Moves to apply one by one.
+EXAMPLE: (seq {(remove 1) (remove 2)})
 TYPE: game.rules.start.Deal
 TYPE JAVADOC: To deal different components between players.
 NEW CTOR
@@ -4551,13 +4560,21 @@ EXAMPLE: (to (last To) level:(level))
 TYPE: metadata.Metadata
 TYPE JAVADOC: The metadata of a game.
 NEW CTOR
-(metadata [<info>] [<graphics>] [<ai>])
+(metadata [<info>] [<graphics>] [<ai>] [<recon>])
 PARAM JAVADOC: [<info>]: The info metadata.
 PARAM JAVADOC: [<graphics>]: The graphics metadata.
 PARAM JAVADOC: [<ai>]: Metadata for AIs playing this game.
+PARAM JAVADOC: [<recon>]: The metadata related to reconstruction.
 EXAMPLE: (metadata (info { (description "Description of The game") (source "Source of the game") (version "1.0.0") (classification "board/space/territory") (origin "Origin of the game.") }) (graphics { (board Style Go) (player Colour P1 (colour Black)) (player Colour P2 (colour White)) }) (ai (bestAgent "UCT")) )
 TYPE: metadata.MetadataItem
 TYPE JAVADOC: Interface for generic metadata item.  Classes to be included as metadata should inherit form this.
+SUBCLASS: metadata.ai.agents.Agent
+SUBCLASS: metadata.ai.agents.BestAgent
+SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
+SUBCLASS: metadata.ai.agents.mcts.selection.Selection
+SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
+SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
 SUBCLASS: metadata.ai.Ai
 SUBCLASS: metadata.ai.AIItem
 SUBCLASS: metadata.ai.features.Features
@@ -4567,6 +4584,7 @@ SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTree
 SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTreeNode
 SUBCLASS: metadata.ai.features.trees.classifiers.If
 SUBCLASS: metadata.ai.features.trees.classifiers.Leaf
+SUBCLASS: metadata.ai.features.trees.FeatureTrees
 SUBCLASS: metadata.ai.features.trees.logits.If
 SUBCLASS: metadata.ai.features.trees.logits.Leaf
 SUBCLASS: metadata.ai.features.trees.logits.LogitNode
@@ -4599,7 +4617,6 @@ SUBCLASS: metadata.ai.heuristics.transformations.DivNumInitPlacement
 SUBCLASS: metadata.ai.heuristics.transformations.HeuristicTransformation
 SUBCLASS: metadata.ai.heuristics.transformations.LogisticFunction
 SUBCLASS: metadata.ai.heuristics.transformations.Tanh
-SUBCLASS: metadata.ai.misc.BestAgent
 SUBCLASS: metadata.ai.misc.Pair
 SUBCLASS: metadata.graphics.board.Board
 SUBCLASS: metadata.graphics.GraphicsItem
@@ -4647,8 +4664,17 @@ SUBCLASS: metadata.info.database.Version
 SUBCLASS: metadata.info.Info
 SUBCLASS: metadata.info.InfoItem
 SUBCLASS: metadata.Metadata
+SUBCLASS: metadata.recon.concept.Concept
+SUBCLASS: metadata.recon.ReconItem
 TYPE: metadata.ai.AIItem
 TYPE JAVADOC: General function hint for this game.Metadata containing hints for AI agents for this game.
+SUBCLASS: metadata.ai.agents.Agent
+SUBCLASS: metadata.ai.agents.BestAgent
+SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
+SUBCLASS: metadata.ai.agents.mcts.selection.Selection
+SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
+SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
 SUBCLASS: metadata.ai.features.Features
 SUBCLASS: metadata.ai.features.FeatureSet
 SUBCLASS: metadata.ai.features.trees.classifiers.BinaryLeaf
@@ -4656,6 +4682,7 @@ SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTree
 SUBCLASS: metadata.ai.features.trees.classifiers.DecisionTreeNode
 SUBCLASS: metadata.ai.features.trees.classifiers.If
 SUBCLASS: metadata.ai.features.trees.classifiers.Leaf
+SUBCLASS: metadata.ai.features.trees.FeatureTrees
 SUBCLASS: metadata.ai.features.trees.logits.If
 SUBCLASS: metadata.ai.features.trees.logits.Leaf
 SUBCLASS: metadata.ai.features.trees.logits.LogitNode
@@ -4688,18 +4715,58 @@ SUBCLASS: metadata.ai.heuristics.transformations.DivNumInitPlacement
 SUBCLASS: metadata.ai.heuristics.transformations.HeuristicTransformation
 SUBCLASS: metadata.ai.heuristics.transformations.LogisticFunction
 SUBCLASS: metadata.ai.heuristics.transformations.Tanh
-SUBCLASS: metadata.ai.misc.BestAgent
 TYPE: metadata.ai.Ai
 TYPE JAVADOC: Defines metadata that can help AIs in the Ludii app to play this game at a  stronger level.
 NEW CTOR
-(ai [<bestAgent>] [<heuristics>] [trainedHeuristics:<heuristics>] [<features>] [trainedFeatures:<features>])
-PARAM JAVADOC: [<bestAgent>]: Can be used to specify the agent that is expected to perform best in this game. This algorithm will be used when the ``Ludii AI" option is selected in the Ludii app.
+(ai [<agent>] [<heuristics>] [trainedHeuristics:<heuristics>] [<features>] [trainedFeatures:<features>] [trainedFeatureTrees:<featureTrees>])
+PARAM JAVADOC: [<agent>]: Can be used to specify the agent that is expected to perform best in this game. This algorithm will be used when the ``Ludii AI" option is selected in the Ludii app.
 PARAM JAVADOC: [<heuristics>]: Heuristics to be used by Alpha-Beta agents. These may be handcrafted heuristics.
 PARAM JAVADOC: [trainedHeuristics:<heuristics>]: Heuristics trained or otherwise generated by some sort of automated process. Alpha-Beta agents will only use these if the previous parameter (for potentially handcrafted heuristics) is not used.
 PARAM JAVADOC: [<features>]: Feature sets (possibly handcrafted) to be used for biasing MCTS-based agents. If not specified, Biased MCTS will not be available as an AI for this game in Ludii.
 PARAM JAVADOC: [trainedFeatures:<features>]: Automatically-trained feature sets. Will be used instead of the regular ``features'' parameter if that one is left unspecified.
+PARAM JAVADOC: [trainedFeatureTrees:<featureTrees>]: Automatically-trained decision trees of features. Will be used instead of the regular ``features'' or ``trainedFeatures'' parameters if those are left unspecified.
 EXAMPLE: (ai (bestAgent "UCT"))
 REMARKS: Specifying AI metadata for games is not mandatory.
+TYPE: metadata.ai.agents.Agent
+TYPE JAVADOC: Describes an agent (either by name of expected best agent, or as a   complete setup).
+SUBCLASS: metadata.ai.agents.BestAgent
+SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
+TYPE: metadata.ai.agents.BestAgent
+TYPE JAVADOC: Describes the name of an algorithm or agent that is typically expected to  be the best-performing algorithm available in Ludii for this game.
+NEW CTOR
+(bestAgent <string>)
+PARAM JAVADOC: <string>: The name of the (expected) best agent for this game.
+EXAMPLE: (bestAgent "UCT")
+REMARKS: Some examples of names that Ludii can currently recognise are ``Random'', ``Flat MC'', ``Alpha-Beta'', ``UCT'', ``MC-GRAVE'', and ``Biased MCTS''.
+TYPE: metadata.ai.agents.mcts.Mcts
+TYPE JAVADOC: Describes a Monte-Carlo tree search agent.
+NEW CTOR
+(mcts [<selection>])
+PARAM JAVADOC: [<selection>]: The Selection strategy to be used by this MCTS agent [UCB1].
+EXAMPLE: (mcts)
+TYPE: metadata.ai.agents.mcts.selection.Ag0
+TYPE JAVADOC: Describes the selection strategy also used by AlphaGo Zero (and AlphaZero).  Requires that a learned selection policy (based on features) has been   described for the MCTS agent that uses this selection strategy.
+NEW CTOR
+(ag0 [<float>])
+PARAM JAVADOC: [<float>]: The value to use for the exploration constant [2.5].
+EXAMPLE: (ag0)
+TYPE: metadata.ai.agents.mcts.selection.Selection
+TYPE JAVADOC: Abstract class for Selection strategies for MCTS in AI metadata
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
+SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
+TYPE: metadata.ai.agents.mcts.selection.Ucb1
+TYPE JAVADOC: Describes the UCB1 selection strategy, which is one of the most straightforward  and simple Selection strategies, used by the standard UCT variant of MCTS.
+NEW CTOR
+(ucb1 [<float>])
+PARAM JAVADOC: [<float>]: The value to use for the exploration constant [square root of 2].
+EXAMPLE: (ucb1)
+EXAMPLE: (ucb1 0.6)
+TYPE: metadata.ai.agents.minimax.AlphaBeta
+TYPE JAVADOC: Describes an Alpha-Beta search agent.
+NEW CTOR
+(alphaBeta)
+EXAMPLE: (alphaBeta)
 TYPE: metadata.ai.features.FeatureSet
 TYPE JAVADOC: Defines a single feature set, which may be applicable to either a  single specific player in a game, or to all players in a game.
 NEW CTOR
@@ -4727,6 +4794,13 @@ NEW CTOR
 PARAM JAVADOC: [{<featureSet>}]: A sequence of multiple feature sets (typically each applying to a different player).
 EXAMPLE: (features { (featureSet P1 { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) }) (featureSet P2 { (pair "rel:to=<{}>:pat=<els=[-{}]>" -1.0) }) })
 REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70�75).
+TYPE: metadata.ai.features.trees.FeatureTrees
+TYPE JAVADOC: Describes one or more sets of features (local, geometric patterns),   represented as decision / regression trees.
+NEW CTOR
+(featureTrees [logitTrees:{<logitTree>}] [decisionTrees:{<decisionTree>}])
+PARAM JAVADOC: [logitTrees:{<logitTree>}]: One or more logit trees (each for the All role or for a specific player).
+PARAM JAVADOC: [decisionTrees:{<decisionTree>}]: One or more decision trees (each for the All role or for a specific player).
+EXAMPLE: (featureTrees logitTrees:{ (logitTree P1 (if "rel:to=<{}>:pat=<els=[f{0}]>" then:(leaf { (pair "Intercept" 1.0) }) else:(leaf { (pair "Intercept" -1.0) }))) })
 TYPE: metadata.ai.features.trees.classifiers.BinaryLeaf
 TYPE JAVADOC: Describes a leaf node in a binary classification tree for features; it contains  only a predicted probability for "top move".
 NEW CTOR
@@ -5011,13 +5085,6 @@ NEW CTOR
 (tanh)
 EXAMPLE: (tanh)
 REMARKS: This guarantees that all transformed heuristic scores will lie in $[-1, 1]$. May map too many different values only to the limits of this interval in practice.
-TYPE: metadata.ai.misc.BestAgent
-TYPE JAVADOC: Describes the name of an algorithm or agent that is typically expected to  be the best-performing algorithm available in Ludii for this game.
-NEW CTOR
-(bestAgent <string>)
-PARAM JAVADOC: <string>: The name of the (expected) best agent for this game.
-EXAMPLE: (bestAgent "UCT")
-REMARKS: Some examples of names that Ludii can currently recognise are ``Random'', ``Flat MC'', ``Alpha-Beta'', ``UCT'', ``MC-GRAVE'', and ``Biased MCTS''.
 TYPE: metadata.ai.misc.Pair
 TYPE JAVADOC: Defines a pair of a String and a floating point value. Typically used  in AI metadata to assign a numeric value (such as a heuristic score, or  some other weight) to a specific piece name.
 NEW CTOR
@@ -5512,9 +5579,9 @@ CONST JAVADOC: Hashi: Custom style for the Hashi puzzle board.
 CONST JAVADOC: Kakuro: Custom style for the Kakuro puzzle board.
 CONST JAVADOC: Sudoku: Custom style for the Sudoku board.
 TYPE: metadata.graphics.util.ControllerType
-TYPE JAVADOC: Defines supported NGramController types for handling user interactions for particular topologies.
-CONST JAVADOC: BasicController: Basic user interaction NGramController.
-CONST JAVADOC: PyramidalController: User interaction NGramController for games played on pyramidal topologies.
+TYPE JAVADOC: Defines supported controller types for handling user interactions for particular topologies.
+CONST JAVADOC: BasicController: Basic user interaction controller.
+CONST JAVADOC: PyramidalController: User interaction controller for games played on pyramidal topologies.
 TYPE: metadata.graphics.util.CurveType
 TYPE JAVADOC: Supported style types for drawing curves.
 CONST JAVADOC: Spline: Spline curve based on relative distances.
@@ -5753,112 +5820,123 @@ NEW CTOR
 PARAM JAVADOC: <string>: Ludii version in String form.
 EXAMPLE: (version "1.0.0")
 REMARKS: The version format is (Major version).(Minor version).(Build number). For example, the first major version for public release is "1.0.0".
+TYPE: metadata.recon.ReconItem
+TYPE JAVADOC: Metadata containing some specific reconstruction requirements.
+SUBCLASS: metadata.recon.concept.Concept
+TYPE: metadata.recon.concept.Concept
+TYPE JAVADOC: Specifies the what concept values are required.
+NEW CTOR
+(concept <string> (<float>  | <boolean>))
+PARAM JAVADOC: <string>: The name of the concept.
+PARAM JAVADOC: <float>: The double value.
+PARAM JAVADOC: <boolean>: The boolean value.
+EXAMPLE: (concept "Num Players" 6)
 DEFINE: AlquerqueBoard
-DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
+DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals.
 DEFINE EXAMPLE: ("AlquerqueBoard" 5 5)
 DEFINE: HoundsAndJackalsBoard
-DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals board. This board defines tracks for two players, hardcoded in a particular shape. 
+DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals board. This board defines tracks for two players, hardcoded in a particular shape.
 DEFINE EXAMPLE: ("HoundsAndJackalsBoard")
 DEFINE: LascaBoard
-DEFINE JAVADOC: Defines the original Lasca board. 
+DEFINE JAVADOC: Defines the original Lasca board.
 DEFINE EXAMPLE: ("LascaBoard")
 DEFINE: HandEmpty
-DEFINE JAVADOC: Checks if all the sites in a specific hand are empty. #1 = The owner of the hand, can be a RoleType or the index of the owner. 
+DEFINE JAVADOC: Checks if all the sites in a specific hand are empty. #1 = The owner of the hand, can be a RoleType or the index of the owner.
 DEFINE EXAMPLE: ("HandEmpty" Mover)
 DEFINE: IsInCheck
-DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used. 
+DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used.
 DEFINE EXAMPLE: ("IsInCheck" "Osho" Next)
 DEFINE EXAMPLE: ("IsInCheck" "King" Mover at:(to))
 DEFINE: NewTurn
-DEFINE JAVADOC: Checks if this is new turn, i.e. the current move is not the previous mover. 
+DEFINE JAVADOC: Checks if this is new turn, i.e. the current move is not the previous mover.
 DEFINE EXAMPLE: ("NewTurn")
 DEFINE: NoSites
-DEFINE JAVADOC: Checks if a region has no sites. #1 = The region. 
+DEFINE JAVADOC: Checks if a region has no sites. #1 = The region.
 DEFINE EXAMPLE: ("NoSites" (sites Empty))
 DEFINE: SameTurn
-DEFINE JAVADOC: Checks if the previous mover is the same player than the current mover, consequently this is the same turn. 
+DEFINE JAVADOC: Checks if the previous mover is the same player than the current mover, consequently this is the same turn.
 DEFINE EXAMPLE: ("SameTurn")
 DEFINE: OccupiedNbors
-DEFINE JAVADOC: Returns the number of pieces owned by a player around a given site. #1 = The site to test around. #2 = The owner of the pieces to count. 
+DEFINE JAVADOC: Returns the number of pieces owned by a player around a given site. #1 = The site to test around. #2 = The owner of the pieces to count.
 DEFINE EXAMPLE: ("OccupiedNbors" (to) Mover)
 DEFINE: NoMoves
-DEFINE JAVADOC: Checks if the next player has no legal moves and apply a specific result to the next player. This ludemeplex can be used only in an ending condition. #1 = The result to apply. 
+DEFINE JAVADOC: Checks if the next player has no legal moves and apply a specific result to the next player. This ludemeplex can be used only in an ending condition. #1 = The result to apply.
 DEFINE EXAMPLE: ("NoMoves" Loss)
 DEFINE: HopCapture
-DEFINE JAVADOC: Defines a hop move in all the adjacent directions over an enemy to an empty site. The enemy piece is removed. 
+DEFINE JAVADOC: Defines a hop move in all the adjacent directions over an enemy to an empty site. The enemy piece is removed.
 DEFINE EXAMPLE: ("HopCapture")
 DEFINE: HopDiagonalCapture
-DEFINE JAVADOC: Defines a hop move in all the diagonal directions over an enemy to an empty site. The enemy piece is removed. 
+DEFINE JAVADOC: Defines a hop move in all the diagonal directions over an enemy to an empty site. The enemy piece is removed.
 DEFINE EXAMPLE: ("HopDiagonalCapture")
 DEFINE: HopDiagonalSequenceCapture
-DEFINE JAVADOC: Defines a sequence of hop move in all the diagonal directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the diagonal directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopDiagonalSequenceCapture")
 DEFINE EXAMPLE: ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: HopDiagonalSequenceCaptureAgain
-DEFINE JAVADOC: Defines a sequence of hop move in all the diagonal directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the diagonal directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopDiagonalSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: HopOrthogonalCapture
-DEFINE JAVADOC: Defines a hop move in all the orthogonal directions over an enemy to an empty site. The enemy piece is removed. 
+DEFINE JAVADOC: Defines a hop move in all the orthogonal directions over an enemy to an empty site. The enemy piece is removed.
 DEFINE EXAMPLE: ("HopOrthogonalCapture")
 DEFINE: HopOrthogonalSequenceCapture
-DEFINE JAVADOC: Defines a sequence of hop move in all the orthogonal directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the orthogonal directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopOrthogonalSequenceCapture")
 DEFINE EXAMPLE: ("HopOrthogonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: HopOrthogonalSequenceCaptureAgain
-DEFINE JAVADOC: Defines a sequence of hop move in all the orthogonal directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the orthogonal directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopOrthogonalSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopOrthogonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: HopRotationalCapture
-DEFINE JAVADOC: Defines a hop move in all the rotational directions over an enemy to an empty site. The enemy piece is removed. 
+DEFINE JAVADOC: Defines a hop move in all the rotational directions over an enemy to an empty site. The enemy piece is removed.
 DEFINE EXAMPLE: ("HopRotationalCapture")
 DEFINE: HopRotationalSequenceCapture
-DEFINE JAVADOC: Defines a sequence of hop move in all the rotational directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the rotational directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopRotationalSequenceCapture")
 DEFINE: HopRotationalSequenceCaptureAgain
-DEFINE JAVADOC: Defines a sequence of hop move in all the rotational directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the rotational directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopRotationalSequenceCaptureAgain")
 DEFINE: HopSequenceCapture
-DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopSequenceCapture")
 DEFINE EXAMPLE: ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: HopSequenceCaptureAgain
-DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: StepBackwardToEmpty
-DEFINE JAVADOC: Defines a step move to the backward direction according to the facing direction of the piece in the 'from' location to an empty site. 
+DEFINE JAVADOC: Defines a step move to the backward direction according to the facing direction of the piece in the 'from' location to an empty site.
 DEFINE EXAMPLE: ("StepBackwardToEmpty")
 DEFINE: StepDiagonalToEmpty
-DEFINE JAVADOC: Defines a step move to all the diagonal directions to an empty site. 
+DEFINE JAVADOC: Defines a step move to all the diagonal directions to an empty site.
 DEFINE EXAMPLE: ("StepDiagonalToEmpty")
 DEFINE: StepForwardsToEmpty
-DEFINE JAVADOC: Defines a step move to all the forwards directions according to the facing direction of the piece in the ``from'' location to an empty site. 
+DEFINE JAVADOC: Defines a step move to all the forwards directions according to the facing direction of the piece in the ``from'' location to an empty site.
 DEFINE EXAMPLE: ("StepForwardsToEmpty")
 DEFINE: StepForwardToEmpty
-DEFINE JAVADOC: Defines a step move to the forward direction according to the facing direction of the piece in the 'from' location to an empty site. 
+DEFINE JAVADOC: Defines a step move to the forward direction according to the facing direction of the piece in the 'from' location to an empty site.
 DEFINE EXAMPLE: ("StepForwardToEmpty")
 DEFINE: StepOrthogonalToEmpty
-DEFINE JAVADOC: Defines a step move to all the orthogonal directions to an empty site. 
+DEFINE JAVADOC: Defines a step move to all the orthogonal directions to an empty site.
 DEFINE EXAMPLE: ("StepOrthogonalToEmpty")
 DEFINE: StepRotationalToEmpty
-DEFINE JAVADOC: Defines a step move to all the rotational directions to an empty site. 
+DEFINE JAVADOC: Defines a step move to all the rotational directions to an empty site.
 DEFINE EXAMPLE: ("StepRotationalToEmpty")
 DEFINE: StepToEmpty
-DEFINE JAVADOC: Defines a step move to all the adjacent directions to an empty site. 
+DEFINE JAVADOC: Defines a step move to all the adjacent directions to an empty site.
 DEFINE EXAMPLE: ("StepToEmpty")
 DEFINE: DominoWalk
-DEFINE JAVADOC: Defines a graphics turtle walk to build a domino as a large piece. 
+DEFINE JAVADOC: Defines a graphics turtle walk to build a domino as a large piece.
 DEFINE EXAMPLE: ("DominoWalk")
 DEFINE: GiraffeWalk
-DEFINE JAVADOC: Defines a graphics turtle walk to get the locations where can move a Chess giraffe. 
+DEFINE JAVADOC: Defines a graphics turtle walk to get the locations where can move a Chess giraffe.
 DEFINE EXAMPLE: ("GiraffeWalk")
 DEFINE: KnightWalk
-DEFINE JAVADOC: Defines a graphics turtle walk to get the locations where can move a Chess knight. 
+DEFINE JAVADOC: Defines a graphics turtle walk to get the locations where can move a Chess knight.
 DEFINE EXAMPLE: ("KnightWalk")
 DEFINE: LWalk
-DEFINE JAVADOC: Defines a graphics turtle walk to build a large L piece. 
+DEFINE JAVADOC: Defines a graphics turtle walk to build a large L piece.
 DEFINE EXAMPLE: ("LWalk")
 DEFINE: TWalk
-DEFINE JAVADOC: Defines a graphics turtle walk to build a large T piece. 
+DEFINE JAVADOC: Defines a graphics turtle walk to build a large T piece.
 DEFINE EXAMPLE: ("TWalk")
