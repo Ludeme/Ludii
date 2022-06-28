@@ -166,6 +166,7 @@ public class NodeArgument
      */
     private boolean isTerminal(Symbol symbol)
     {
+        // TODO [FLAG]    Add   if(true) return symbol.isTerminal();
         if(symbol.isTerminal()) return true;
         if(symbol.rule().rhs().size() == 0) return false; // TODO: check whether correct
         for(Clause clause : symbol.rule().rhs())

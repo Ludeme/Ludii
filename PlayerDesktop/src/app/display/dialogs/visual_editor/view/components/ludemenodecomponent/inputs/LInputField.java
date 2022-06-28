@@ -178,6 +178,8 @@ public class LInputField extends JComponent
         {
             constructCollection(parent);
         }
+        // TODO [FLAG] Replace below with
+        // else if(nodeArgument.isTerminal() && (nodeArgument.arg().symbol().rule() == null || nodeArgument.arg().symbol().rule().rhs().size() == 0))
         else if(nodeArgument.isTerminal())
         {
             // If the selected NodeArgument is a terminal NodeArgument stemming from a merged input field (i.e. optional or dynamic)
@@ -952,6 +954,7 @@ public class LInputField extends JComponent
      */
     public List<Symbol> possibleSymbolInputs()
     {
+        // TODO [FLAG] remove below
         if(isTerminal()) return null;
         if(!isMerged()) return nodeArgument(0).possibleSymbolInputsExpanded();
         List<Symbol> possibleSymbolInputs = new ArrayList<>();

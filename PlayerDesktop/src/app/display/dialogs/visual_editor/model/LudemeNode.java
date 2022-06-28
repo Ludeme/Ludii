@@ -544,7 +544,7 @@ public class LudemeNode implements iGNode
     private List<NodeArgument> generateNodeArguments(Clause clause)
     {
         List<NodeArgument> nodeArguments = new ArrayList<>();
-        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
+        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined)) // TODO [FLAG]      Add   && clause.args() == null)
         {
             NodeArgument nodeArgument = new NodeArgument(clause);
             nodeArguments.add(nodeArgument);
