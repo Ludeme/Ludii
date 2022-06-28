@@ -18,38 +18,30 @@
         
         // Elephant
         (piece "Xiang" Each
-//            (forEach Direction 
-//                Orthogonal 
-//                (to 
-//                    if:(is Empty (to)) 
-//                    (apply 
-//                        (forEach Direction 
-//                            (from (to)) 
-//                            (directions {FR FL} of:All) 
-//                            (to
-//                                if:(is Empty (to))
-//                                (apply
-//                                (forEach Direction 
-//                                    (from (to)) 
-//                                    (directions {FR FL} of:All) 
-//                                    (if (not (is Friend (who at:(to)))) 
-//                                        (move 
-//                                            (from) 
-//                                            (to 
-//                                                (apply 
-//                                                    if:(is Enemy (who at:(to)))
-//                                                    (remove (to))
-//                                                )
-//                                            )
-//                                        )
-//                                    )
-//                                ) 
-//                                )
-//                            )
-//                        )
-//                    ) 		
-//                )
-//            )
+            (forEach Direction 
+                Orthogonal 
+                (to 
+                    if:(is Empty (to)) 
+                                (apply
+                                    (forEach Direction 
+                                        (from (to)) 
+                                        (directions {FR FL} of:All) 
+                                        (between (exact 2) if:(is Empty (between)))
+                                        (if (not (is Friend (who at:(to)))) 
+                                            (move 
+                                                (from) 
+                                                (to 
+                                                    (apply 
+                                                        if:(is Enemy (who at:(to)))
+                                                        (remove (to))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    ) 
+                    ) 		
+                )
+            )
         )
         
         // Chariot
