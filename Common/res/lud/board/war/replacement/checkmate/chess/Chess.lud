@@ -182,16 +182,9 @@
                 ) 
             )
         )
-        (piece "Knight" Each 
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+        
+        ("ChessKnight" "Knight")
+        
         (piece "Queen" Each 
             (move
                 Slide 
