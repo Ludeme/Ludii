@@ -15,7 +15,8 @@ public class RemovedNodesAction implements IUserAction
     private final IGraphPanel graphPanel;
     private final DescriptionGraph graph;
     private final List<LudemeNode> removedNodes;
-    private List<RemovedNodeAction> removedNodeActions = new ArrayList<>();
+    private final List<LudemeNode> removedNodesSorted;
+
 
     private HashMap<LudemeNode, LinkedHashMap<NodeArgument, Object>> copiedInputs = new HashMap<>();
     private HashMap<LudemeNode, LinkedHashMap<NodeArgument, Integer>> copiedNodeInputIds = new HashMap<>();
@@ -29,11 +30,12 @@ public class RemovedNodesAction implements IUserAction
         this.graphPanel = graphPanel;
         this.graph = graphPanel.graph();
         this.removedNodes = new ArrayList<>(removedNodes);
+        this.removedNodesSorted = new ArrayList<>(removedNodes);
 
         // sort removed nodes such that their depth descends
-        Collections.sort(removedNodes, (n1, n2) -> n2.depth() - n1.depth());
+        removedNodesSorted.sort((n1, n2) -> n2.depth() - n1.depth());
 
-        for(LudemeNode node : removedNodes)
+        for(LudemeNode node : removedNodesSorted)
         {
             copiedInputs.put(node, copyInputs(node));
             copiedNodeInputIds.put(node, copyIds(node));
@@ -49,7 +51,6 @@ public class RemovedNodesAction implements IUserAction
             if(copiedInputs.get(arg) instanceof Object[])
             {
                 Object[] copy = Arrays.copyOf((Object[])copiedInputs.get(arg), ((Object[])copiedInputs.get(arg)).length);
-                copiedInputs.put(arg, null);
                 copiedInputs.put(arg, copy);
             }
         }
@@ -141,7 +142,7 @@ public class RemovedNodesAction implements IUserAction
     private void assignParent(LudemeNode node)
     {
         if(node.parentNode() != null) return;
-        for(LudemeNode n : removedNodes)
+        for(LudemeNode n : removedNodesSorted)
         {
             LinkedHashMap<NodeArgument, Integer> ids = copiedNodeInputIds.get(n);
             if(ids.containsValue(node.id()))
@@ -149,6 +150,19 @@ public class RemovedNodesAction implements IUserAction
                 node.setParent(n);
                 Handler.addEdge(graph, n, node, node.creatorArgument());
                 return;
+            }
+        }
+        for(LudemeNode ln : copiedCollectionNodeIds.keySet())
+        {
+            LinkedHashMap<NodeArgument, Object[]> ids = copiedCollectionNodeIds.get(ln);
+            for(NodeArgument arg : ids.keySet())
+            {
+                if(Arrays.asList(ids.get(arg)).contains(node.id()))
+                {
+                    node.setParent(ln);
+                    Handler.addEdge(graph, ln, node, arg);
+                    return;
+                }
             }
         }
     }
@@ -191,22 +205,22 @@ public class RemovedNodesAction implements IUserAction
     }
 
     public void undo() {
-        addAllNodes(removedNodes);
-        for(LudemeNode n : removedNodes) assignParent(n);
-        for(LudemeNode n : removedNodes) assignInputs(n);
+        addAllNodes(removedNodesSorted);
+        for(LudemeNode n : removedNodesSorted) assignParent(n);
+        for(LudemeNode n : removedNodesSorted) assignInputs(n);
 
         // add last edges to non-removed components
-        if(removedNodes.get(0).parentNode() != null) Handler.addEdge(graph, removedNodes.get(0).parentNode(),removedNodes.get(0), removedNodes.get(0).creatorArgument());
-        /*for(LudemeNode n : removedNodes)
-            if(n.parentNode() != null && !removedNodes.contains(n.parentNode()))
-                Handler.addEdge(graph, n.parentNode(),n, n.creatorArgument());*/
+        //if(removedNodes.get(0).parentNode() != null) Handler.addEdge(graph, removedNodes.get(0).parentNode(),removedNodes.get(0), removedNodes.get(0).creatorArgument());
+        for(LudemeNode n : removedNodesSorted)
+            if(n.parentNode() != null && !removedNodesSorted.contains(n.parentNode()))
+                Handler.addEdge(graph, n.parentNode(),n, n.creatorArgument());
 
-        /*List<LudemeNodeComponent> lncs = new ArrayList<>();
-        for(LudemeNode n : removedNodes)
+        List<LudemeNodeComponent> lncs = new ArrayList<>();
+        for(LudemeNode n : removedNodesSorted)
         {
             lncs.add(graphPanel.nodeComponent(n));
-        }*/
-       // graphPanel.updateCollapsed(lncs);
+        }
+        graphPanel.updateCollapsed(lncs);
 
         isUndone = false;
     }

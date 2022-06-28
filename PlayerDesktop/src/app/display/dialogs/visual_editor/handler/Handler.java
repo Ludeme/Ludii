@@ -103,7 +103,6 @@ public class Handler
     public static void removeNode(DescriptionGraph graph, LudemeNode node)
     {
         if(graph.getRoot() == node) return;
-        if(!graph.getNodes().contains(node)) return;
         if(DEBUG) System.out.println("[HANDLER] removeNode(graph, node) -> Removing node: " + node.title());
 
         IUserAction action = new RemovedNodeAction(graphPanelMap.get(graph), node);
@@ -148,9 +147,6 @@ public class Handler
      */
     public static void removeNodes(DescriptionGraph graph, List<LudemeNode> nodes)
     {
-        // remove duplicates
-        nodes = new ArrayList<>(new HashSet<>(nodes));
-
         if(DEBUG) System.out.println("[HANDLER] removeNodes(graph, nodes) -> Removing nodes: " + nodes.size());
 
         // remove root node and already deleted nodes
@@ -159,12 +155,10 @@ public class Handler
             if(graph.getRoot() == node)
             {
                 nodes.remove(node);
-            }
-            if(!graph.getNodes().contains(node))
-            {
-                nodes.remove(node);
+                break;
             }
         }
+
 
         IUserAction action = new RemovedNodesAction(graphPanelMap.get(graph), nodes);
         addAction(action);
