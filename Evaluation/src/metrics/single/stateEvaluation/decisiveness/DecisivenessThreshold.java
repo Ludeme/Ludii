@@ -41,7 +41,7 @@ public class DecisivenessThreshold extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -49,6 +49,10 @@ public class DecisivenessThreshold extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		// Cannot perform move/state evaluation for matches.
+		if (game.hasSubgames() || game.isSimultaneousMoveGame())
+			return null;
+		
 		double avgDecisivenessThreshold = 0.0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{

@@ -12,7 +12,7 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * Difference between the winning players state evaluation and the 'maximum state evaluation of any player.
+ * Difference between the winning players state evaluation and the maximum state evaluation of any player.
  * 
  * @author matthew.stephenson
  */

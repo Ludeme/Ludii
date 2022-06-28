@@ -47,7 +47,7 @@
                     }
                     (then 
                         (if (= (mapEntry "Goal" Mover) (last To))
-                            (fromTo (from (last To)) (to "SacredLine") stack:True)
+                            (fromTo (from (last To)) (to "SacredLine"))
                         )
                     )
                 )
@@ -165,7 +165,7 @@
         (useFor "Ruleset/Locus Ludi  Knock-Off Mode (Scholarly)" (id "786"))
         (source "Schädler 2009.")
         (id "137")
-        (version "1.3.3")
+        (version "1.3.4")
         (classification "board/race/reach")
         (credit "Eric Piette")
         }

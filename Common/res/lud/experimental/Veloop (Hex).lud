@@ -1,0 +1,201 @@
+// Veloop 
+
+(define "SwapSites" 
+    (intersection (sites Around #1 Adjacent) (sites Around #2 Adjacent))
+)
+
+(define "Placement"
+    (move Select
+        (from  #1 if:(> 2 (count Stack at:(from))))
+        (to <Board:placementVector>
+            if:(and
+                {
+                (is In (to) (sites Occupied by:Mover top:True))
+                (= 2 (count Sites in:("SwapSites" (to) (from))))
+                (or
+                    (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Mover top:True))))
+                    (= 1 (count Sites in:(intersection ("SwapSites" (to) (from)) (sites Occupied by:Next top:True))))
+                )
+                }
+        ))
+        (then
+            (and
+                {
+                // use stacking concept instead of replace concept -
+                // physical boards would use stacks to track which can be played onto    
+                //     (remove (last From))  // not used
+                (add
+                    (piece (id "Disc" Mover))
+                    (to (last From))
+                    stack:True
+                )
+                (forEach Site
+                    ("SwapSites" (last To) (last From))
+                    (remember Value (site))
+                )
+                }
+))))
+(define "SwapSite"  (arrayValue (values Remembered) index:#1))
+(define "SwapPiece" (what at:("SwapSite" #1) level:(topLevel at:("SwapSite" #1))))
+
+(define "MakeSwap"
+    (if
+        (is Empty ("SwapSite" 1))
+        (fromTo (from ("SwapSite" 0)) (to ("SwapSite" 1)))
+        (if (is Empty ("SwapSite" 0))
+            (fromTo (from ("SwapSite" 1)) (to ("SwapSite" 0)))
+            (set Var "Piece1" ("SwapPiece" 1)
+                (then
+                    (add
+                        (piece ("SwapPiece" 0))
+                        (to ("SwapSite" 1)
+                            (apply (remove (to)))
+                        )
+                        (then
+                            (add
+                                (piece (var "Piece1"))
+                                (to ("SwapSite" 0)
+                                    (apply (remove (to)))
+        )))))))
+        (then
+            (and
+                {
+                ("SetScoreOf" Mover)
+                ("SetScoreOf" Next)
+                (forget Value All)
+                <Protocol:turn>
+                }
+))))
+
+//--------------------------
+(game "Veloop (Hex)"
+    (players 2)
+    (equipment
+        {
+        (board (renumber (rotate 90 <Board:type>)) use:Cell)
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (start
+            {
+            (place "Disc1" <Board:bStart>)
+            (place "Disc2" <Board:wStart>)
+            }
+        )
+        (play
+            (priority
+                ("Placement" (sites Empty))
+                ("Placement" (sites Occupied by:Next))
+                (then 
+                    ("MakeSwap")
+        )))
+        (end 
+            (if 
+                (!= 0 (+ (score P1) (score P2)))
+                (byScore)
+)))) 
+
+(define "SetScoreOf"
+    (set Score #1 (- 0 (count Sites in:(difference (sites Occupied by:#1) ("UnconfinedStiesOf" #1)))))
+) 
+
+(define "UnconfinedStiesOf"
+    (forEach
+        (sites Board)
+        if:(!= Infinity
+            (count Steps Adjacent
+                (step Adjacent
+                    (to if:(or (is Empty (to)) (is #1 (who at:(to)))))
+                )
+                (site)
+                (sites Outer)
+))))  
+
+//--------------------------------------
+
+(define "DiagonalVector" (sites Around (from) Diagonal))
+
+(option "Board" <Board> args:{ <type> <bStart> <wStart> <placementVector>}
+    {
+    (item "Hex3" <(hex Hexagon 3)> <7> <12> <"DiagonalVector"> "Order 4 Hexagon")
+    (item "Hex 343434" <(hex Limping 3)> <10> <16> <"DiagonalVector"> "Edge 343434 Hexagon")**
+    (item "Hex4" <(hex Hexagon 4)> <15> <22> <"DiagonalVector"> "Order 4 Hexagon")
+    (item "Hex 454545" <(hex Limping 4)> <20> <28> <"DiagonalVector"> "Edge 454545 Hexagon")
+    //  (item "Hex 565656" <(hex Limping 5)> <32> <42> <"DiagonalVector"> "Edge 565656 Hexagon")
+    }
+) 
+
+(option "Move Protocol" <Protocol> args:{ <turn> }
+    {
+    (item "Alternating" < > "Turns alternate")**
+    (item "122..." <(if (and (not (is Prev Mover)) (< -1 (counter))) (moveAgain))> " First player takes one turn, then players alternate taking 2 turns each")
+    }
+)
+
+//--------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Veloop is an original game with a loop forming goal. 
+            
+            There are two versions: this shorter Hexagonal grid game, and a longer game played on a square grid.
+            While the game in theory can cycle cooperatively, in practice it is decisive.
+            
+            The concept to form a loop by means of placements that also involve forced stone swapping. The swapping allows either surrounding an opponent's stone with a loop, or enveloping it into a loop by swapping, possibly forming the loop with the swap at the same time.
+            
+            The game, when played by competitive players, typically needs only a limited space. This is enforced with a minimal board. The board, in turn, affects play by providing greater security for pieces along the edges, and by forcing the board to reach densities that limit move choices.
+            
+            This area restriction is offset by a soft phase change that allows placement over existing opponent's pieces when no placement to an empty site would allow swapping. This phase greatly increases the opportunity for game-ending moves by opening up many move choices, but it also allows cycles. To ensure the game is finite, any given site may only be over-placed once.  (On a physical board this would be tracked by stacking, in this implementation, it is tracked by shading the site.)
+            
+            If there are no moves left for either player, the game is a draw. However, on all but the smallest board sizes offered here, games typically end with a winner, even before the piece replacement phase is reached. 
+            
+        The larger size boards additionally minimize the edge effects and the transition to the replacement phase.  Playing on even larger boards, does not affect play very much.")
+        (rules "Goal: Form an orthogonally connected path of friendly stones that surrounds at least one non-friendly stone.
+            
+            Set-up:
+            Two stones, one of each colour, are placed next to each other adjacent to the center of the board. 
+            Then Black starts.
+            
+            Play:  
+            Each turn has two parts that both must be completed: A PLACEMENT and a SWAP.
+            
+            -- The PLACEMENT is made diagonally from a selected stone of the same color.
+            
+            -- The SWAP is done by exchanging the contents of the 2 cells that lie between the selected stone and the placed stone. For a SWAP to be valid, the contents of these cells must be different, i.e.: two stones of different color, or an empty space and a stone. 
+            
+            If a turn cannot be completed with a placement to an empty position, the placement must be made by replacing an opponent's stone. The removed stone may be of either color. The diagonal placement and swap rules must still be followed.  Once a site has been used for replacement, that site cannot be used again.
+            
+            Voluntary passing is not allowed. If both players must pass consecutively, the game ends in a draw.
+            
+            Optional Variants: 
+            -- Larger Board to reduce the strategic effect of the edge squares. / Smaller board to focus on replacement play as a significant part of the game.
+        -- Double move protocol for a shorter, more tactical game, that maintains a balance of material on every turn.")
+        (id "1984")
+        (version "1.3.4")
+        (classification "experimental")
+        (author "Dale Walton")
+        (credit "Dale Walton")
+        (date "16-05-2022")
+        }
+    )
+    
+    (graphics
+        {
+        (board Colour Phase0 (colour 200 250 210 120))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (board Colour Symbols (colour Black))
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour LightOrange))
+        (stackType Default .4)
+        // (stackType None)
+        (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
+        }
+    )
+)

@@ -208,7 +208,7 @@ public class Match extends Game
 		}
 		else
 		{
-			metadata = new Metadata(null, null, null);
+			metadata = new Metadata(null, null, null, null);
 		}
 	}
 	
@@ -778,6 +778,12 @@ public class Match extends Game
 				crash |= subgame.willCrash(this);
 
 		return crash;
+	}
+	
+	@Override
+	public boolean isStacking()
+	{
+		return false;
 	}
 
 }

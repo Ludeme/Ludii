@@ -1,0 +1,32 @@
+(game "Taptana"
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Disc" P1 (move [#])) 
+        (piece "Disc" P2 (move [#])) 
+    })  
+    (rules 
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Taptána was a game played in Peru. Famously, it is said to have been played by the last Inka emperor, Atahualpa, while he was imprisoned. The board is very similar to Spanish Alquerque, and cannot be dated to before the Spanish conquest.")
+        (aliases {"Taptána" "Comina" "Tapta" "Atapta" "Komina"})
+        (rules "Played on an Alquerque board.")
+        (source "DLP evidence.")
+        (id "336")
+        (version "1.3.4")
+        (classification "board/war/leaping/lines/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+)

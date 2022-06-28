@@ -1,0 +1,34 @@
+(game "Mbenga Alignment Game"  
+    (players 2)  
+    
+    (equipment { 
+        ("AlquerqueBoard" 3 3)
+        (hand Each)
+        (piece "Marker" Each)
+    }) 
+    
+    (rules 
+        (start (place "Marker" "Hand" count:[3..9]))
+        
+        (play (move (from (handSite Mover)) (to (sites Empty))) )
+        
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "This game was played by the Mbenga people of central africa in the late nineteenth and early twentieth century. It is a simple alignment game simililar to others played throughout the world.")
+        (rules "3x3 intersecting lines with diagonals. Players alternate turns placing a piece on the board. The first player to place three of their pieces in a row wins.")
+        (source "DLP evidence.")
+        (id "1374")
+        (version "1.3.4")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Central Africa, from around 1903 to 1907.")
+        }
+    )
+)

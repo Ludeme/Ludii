@@ -23,8 +23,8 @@
     
     (rules 
         (start {
-            (place "Disc1" (sites Left)) 
-            (place "Disc2" (sites Right))
+            (place "Disc1" (sites Top)) 
+            (place "Disc2" (sites Bottom))
         })
         (play (forEach Piece) )
         (end ("NoMoves" Loss))  
@@ -41,7 +41,7 @@
         (rules "The board is a square with diagonals drawn, with the bottom side of the square marked with an X. Two pieces per player, which begin on opposite corners of the square, one player to the left of the side with the X and the other to the right. Players alternate  turns moving  one of their pieces along the lines of the board to an empty adjacent point. Players cannot move along the line marked with an X. When one player  cannot move, the opponent wins.")
         (source "Son 1985: 44.")
         (id "1929")
-        (version "1.3.3")
+        (version "1.3.4")
         (classification "board/space/blocking")
         (origin  "This game was played in Vietnam, from around 1940 to 1941.")
         }

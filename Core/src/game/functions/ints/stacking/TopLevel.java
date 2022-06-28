@@ -69,12 +69,12 @@ public final class TopLevel extends BaseIntFunction
 		if (cid > 0)
 		{
 			realType = SiteType.Cell;
-			if((loc - context.sitesFrom()[cid]) >= context.containers()[cid].topology().getGraphElements(realType).size())
+			if ((loc - context.sitesFrom()[cid]) >= context.containers()[cid].topology().getGraphElements(realType).size())
 				return Constants.OFF;
 		}
 		else
 		{
-			if(loc >= context.containers()[cid].topology().getGraphElements(realType).size())
+			if (loc >= context.containers()[cid].topology().getGraphElements(realType).size())
 				return Constants.OFF;
 			if (realType == null)
 				realType = context.board().defaultSite();
@@ -84,7 +84,7 @@ public final class TopLevel extends BaseIntFunction
 			
 		final int sizeStack = cs.sizeStack(loc, realType);
 		if (sizeStack != 0)
-			return cs.sizeStack(loc, realType) - 1;
+			return sizeStack - 1;
 				
 		return 0;
 	}

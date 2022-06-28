@@ -41,7 +41,7 @@ public class CornerProximity extends HeuristicTerm
 	private FVector pieceWeights = null;
 	
 	/** The maximum distance that exists in our Corners distance table */
-	private final int maxDistance = -1;
+	private int maxDistance = -1;
 	
 	//-------------------------------------------------------------------------
 	
@@ -215,9 +215,8 @@ public class CornerProximity extends HeuristicTerm
 	/**
 	 * Helper method for constructors
 	 * @param game
-	 * @return Computed max dist
 	 */
-	private final static int computeMaxDist(final Game game)
+	private final void computeMaxDist(final Game game)
 	{
 		final int[] distances = game.distancesToCorners();
 		
@@ -231,11 +230,11 @@ public class CornerProximity extends HeuristicTerm
 					max = distances[i];
 			}
 			
-			return max;
+			maxDistance = max;
 		}
 		else
 		{
-			return 0;
+			maxDistance = 0;
 		}
 	}
 	

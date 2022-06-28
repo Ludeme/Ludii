@@ -44,7 +44,7 @@
         )>
         "Played on a Alquerque Board with less diagonal."
     ) 
-    (item "No Diagonal"    <(board (square 5) use:Vertex)> "Played on a Alquerque Board with no diagonal.") 
+    (item "No Diagonal" <(board (square 5) use:Vertex)> "Played on a Alquerque Board with no diagonal.") 
 })
 
 (option "Play Rules" <Jump> args:{ <hare> }
@@ -84,7 +84,7 @@
         (useFor "Ruleset/Murray (Described)" (id "598"))
         (source "Murray 1951: 99")
         (id "383")
-        (version "1.3.3")
+        (version "1.3.4")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in Spain, from around 1221 to 1284.")
@@ -94,7 +94,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 

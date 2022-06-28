@@ -1,0 +1,258 @@
+(define "OverflowMove"
+    (move Select
+        (from 
+            (sites Occupied by:P1)
+        )
+        (to 
+            (sites Around (from))
+            if:(and
+                (not ("EnoughSpaceInDirection" (to)))
+                (not ("ZeroEmptyInRangeInDirection" (to)))
+            )
+        )
+        (then
+            (forEach Site
+                (sites Direction 
+                    from:(last From)
+                    (directions Cell from:(last From) to:(last To))
+                    distance:(size Stack at:(last From))
+                )
+                (add (piece "Disc1") (to (site)) stack:True)
+            )
+        )
+    )
+)
+
+(define "ContainedMove"
+    (move Select
+        (from 
+            (sites Occupied by:P1)
+        )
+        (to
+            (sites Around (from) NotEmpty)
+            if:(and 
+                (or
+                    ("EnoughSpaceInDirection" (to))
+                    ("ZeroEmptyInRangeInDirection" (to))
+                )
+                (all Sites
+                    (sites Around (from) NotEmpty)
+                    if:(not
+                        (and
+                            (<
+                                (count Sites 
+                                    in:(sites Direction
+                                        from:(from)
+                                        (directions Cell from:(from) to:(to))
+                                        stop:(is Empty (to))
+                                        distance:(size Stack at:(from))
+                                    )
+                                )
+                                (count Sites 
+                                    in:(sites Direction
+                                        from:(from)
+                                        (directions Cell from:(from) to:(site))
+                                        stop:(is Empty (to))
+                                        distance:(size Stack at:(from))
+                                    )
+                                )
+                            )
+                            (or
+                                ("EnoughSpaceInDirection" (site))
+                                ("ZeroEmptyInRangeInDirection" (site))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (then
+            (forEach Site
+                (sites Direction
+                    from:(last From)
+                    (directions Cell from:(last From) to:(last To))
+                    stop:(is Empty (to))
+                    distance:(size Stack at:(last From))
+                )
+                (if
+                    (= 
+                        ("DistanceToEndSquare") 
+                        (count Steps (last From) (site))
+                    )
+                    (add (piece "Disc1")
+                        (to (site)) 
+                        count:(- 
+                            (size Stack at:(last From))
+                            (- ("DistanceToEndSquare") 1)
+                        )
+                        stack:True
+                    )
+                    (add (piece "Disc1")
+                        (to (site)) 
+                        stack:True
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "ZeroEmptyInRangeInDirection"
+    (= 0
+        (count Sites
+            in:(intersection
+                (sites Empty)
+                (sites Direction
+                    from:(from)
+                    (directions Cell from:(from) to:#1)
+                    distance:(size Stack at:(from))
+                )
+            )
+        )
+    )
+)
+
+(define "EnoughSpaceInDirection"
+    (<=
+        (size Stack at:(from))
+        (count Sites 
+            in:(sites Direction
+                from:(from)
+                (directions Cell from:(from) to:#1)
+                distance:(size Stack at:(from))
+            )
+        )
+    )
+)
+
+(define "DistanceToEndSquare"
+    (count Sites
+        in:(sites Direction
+            from:(last From)
+            (directions Cell from:(last From) to:(last To))
+            stop:(is Empty (to))
+            distance:(size Stack at:(last From))
+        )
+    )
+)
+
+(define "UpdateScores"
+    (and
+        (set Score P1 
+            (count Sites 
+                in:(forEach 
+                    (sites Phase 1) 
+                    if:(is Occupied (site))
+                )
+            )
+        )
+        (set Score P2 
+            (count Sites 
+                in:(forEach 
+                    (sites Phase 0) 
+                    if:(is Occupied (site))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Overflow"
+    (players 2)
+    (equipment
+        {
+        (board (square <Board>))
+        (piece "Disc" P1)
+        }
+    )
+    (rules
+        (start {
+            (place "Disc1" (sites Board))
+            (set Score P1 (count Sites in:(sites Phase 1)))
+            (set Score P2 (count Sites in:(sites Phase 0)))
+        })
+        (play
+            (do
+                (or
+                    ("ContainedMove")
+                    ("OverflowMove")
+                    (then (remove (last From) count:(size Stack at:(last From))))
+                )
+                ifAfterwards:(= 1 (count Groups))
+                (then 
+                    ("UpdateScores")
+                )
+            )
+        )
+        (end 
+            (if 
+                (= 0
+                    (* (score P1) (score P2))
+                )
+                (byScore)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "3"    <3>  "A 3x3 board is currently selected")
+    (item "4"    <4>  "A 4x4 board is currently selected")
+    (item "5"    <5>  "A 5x5 board is currently selected")
+    (item "6"    <6>  "A 6x6 board is currently selected")*
+    (item "7"    <7>  "A 7x7 board is currently selected")
+    (item "8"    <8>  "A 8x8 board is currently selected")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Overflow is a drawless Mancala-inspired game invented by Michael Amundsen in April 2022.")
+        (rules "Overflow is played on a checkered board initially filled with neutral stackable pieces, one per square.
+            The dark squares make up the house of the Dark player, and the light squares make up the house of the Light player. The goal is to empty your opponent's house.
+            
+            There are two types of moves in Overflow, both of which are sowing moves, somewhat akin to what you see in mancalas. All moves are bound by the restriction that there must always be exactly one orthodiagonally connected group of stacks on the board. The one kind of sowing only drops pieces onto already occupied squares and the other kind spills out of both the group of already occupied squares and out of the board itself, hence the names: contained moves and overflow moves.
+            
+            Sowing in general:
+            Sowing in general is picking up a stack from any square and distributing its pieces along one of the 8 directions onto a contiguous line of squares – usually placing one of the N pieces from the chosen stack in each of the N or so squares in the sowing direction. The details are given below.
+            
+            Overflow moves:
+            An overflow move involves sowing into empty squares – possibly in addition to occupied squares – and over the edge of the board. It's important to remember that these two things always go together in this game, namely (1) sowing over the edge and (2) sowing into empty squares. That is to say, if you are to sow into one or more empty squares, the number of squares in the chosen sowing direction must be smaller than the number of stones in the chosen stack. The pieces that end up outside the board are removed from the game.
+            
+            Contained moves:
+            Contained moves only sow onto already occupied squares. A contained move must sow the chosen stack as far as possible. If it's impossible to sow each of the pieces in the stack into an occupied square of its own, you place the remainder of the pieces on the last occupied square you reached. You are not obligated to chose the stack that can be sown the farthest, but whatever stack you chose, if you do not make an overflow move move with it, you must chose a sowing direction that allows you to sow onto as many occupied squares as possible.
+            
+            You may always chose freely between contained moves and overflow moves when both kinds are available.
+            
+        Note that no stack will have both a contained move and an overflow move available in the same direction. All moves are completely determined by the choice of stack and direction.")
+        (id "1975")
+        (version "1.3.4")
+        (classification "board/space/blocking")
+        (author "Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
+    (graphics {
+        (player Colour P1 (colour 250 221 144))
+        (player Colour P2 (colour 200 150 75))
+        (piece Colour P1 fillColour:(colour LightGrey))
+        (piece Scale P1 0.7)
+        (board Style Chess)
+        (stackType Count)
+    })
+    (ai
+        (bestAgent "Alpha-Beta")
+        (heuristics 
+            (score)
+        )
+    )
+)

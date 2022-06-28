@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import game.Game;
 import compiler.Compiler;
+import game.Game;
 import main.FileHandling;
 import main.grammar.Description;
 import other.GameLoader;
@@ -275,6 +275,9 @@ public class CompilationTest
 				failedGames.add(fileName);
 				System.err.println("** FAILED TO COMPILE: " + fileName + ".");
 			}
+			
+			// Uncomment this to generate QR codes for all games.
+			//QrCodeGeneration.makeQRCode(game, 5, 2, false);
 		}
 		final long stopAt = System.nanoTime();
 		final double secs = (stopAt - startAt) / 1000000000.0;

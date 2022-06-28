@@ -5,9 +5,9 @@ import java.io.IOException;
 import game.Game;
 import main.FileHandling;
 import main.grammar.Report;
+import metadata.ai.agents.BestAgent;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
-import metadata.ai.misc.BestAgent;
 import policies.softmax.SoftmaxPolicyLinear;
 import search.mcts.MCTS;
 import search.mcts.backpropagation.AlphaGoBackprop;
@@ -83,7 +83,7 @@ public class AgentCheckpoint
 				final BestAgent bestAgent = (BestAgent)compiler.Compiler.compileObject
 						(
 							FileHandling.loadTextContentsFromFile(agentsParams.bestAgentsDataDir + "/BestAgent.txt"), 
-							"metadata.ai.misc.BestAgent",
+							"metadata.ai.agents.BestAgent",
 							new Report()
 						);
 
@@ -132,7 +132,7 @@ public class AgentCheckpoint
 				}
 				else if (bestAgent.agent().equals("Random"))
 				{
-					// Don't wanna train with Random, so we'll take UCT instead
+					// Don't want to train with Random, so we'll take UCT instead
 					ai = MCTS.createUCT();
 				}
 				else

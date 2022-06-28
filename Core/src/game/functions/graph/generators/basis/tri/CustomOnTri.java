@@ -182,6 +182,7 @@ public class CustomOnTri extends Basis
 		final BitSet concepts = new BitSet();
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.TriangleTiling.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

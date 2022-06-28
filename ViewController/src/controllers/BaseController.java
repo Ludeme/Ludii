@@ -96,8 +96,9 @@ public abstract class BaseController implements Controller
 		}
 		else
 		{
+			final double furthestDistanceMultiplier = bridge.settingsVC().furthestDistanceMultiplier();
 			containerStyle = bridge.getContainerStyle(container.index());
-			final double cellDistance = containerStyle.cellRadiusPixels() * 0.9;
+			final double cellDistance = containerStyle.cellRadiusPixels() * furthestDistanceMultiplier;
 			furthestPossibleDistance = Math.max(furthestPossibleDistance, cellDistance);
 		}
 		return furthestPossibleDistance;

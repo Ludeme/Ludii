@@ -82,8 +82,7 @@ public final class Push extends Effect
 		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
 		final TopologyElement fromV = topology.getGraphElements(realType).get(from);
 		final ContainerState cs = context.state().containerStates()[0];
-		final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(realType, fromV, null, null, null,
-				context);
+		final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(realType, fromV, null, null, null, context);
 
 		if (directions.isEmpty())
 			return moves;

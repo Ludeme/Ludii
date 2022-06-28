@@ -3,6 +3,7 @@ package metrics.single.duration;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
@@ -28,7 +29,7 @@ public class DurationMoves extends Metric
 			"Duration Moves", 
 			"Number of moves in a game.", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			Concept.DurationMoves
 		);
 	}
@@ -36,7 +37,7 @@ public class DurationMoves extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,

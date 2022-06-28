@@ -242,6 +242,10 @@ public class UserPreferences
 			if (selectedJarFile != null && selectedJarFile.exists())
 				json.put("LastSelectedJarFile", selectedJarFile.getCanonicalPath());
 			
+			final File selectedAiDefFile = DesktopApp.aiDefFileChooser().getSelectedFile();
+			if (selectedAiDefFile != null && selectedAiDefFile.exists())
+				json.put("LastSelectedAiDefFile", selectedAiDefFile.getCanonicalPath());
+			
 			final File selectedGameFile = DesktopApp.gameFileChooser().getSelectedFile();
 			if (selectedGameFile != null && selectedGameFile.exists())
 				json.put("LastSelectedGameFile", selectedGameFile.getCanonicalPath());
@@ -526,6 +530,7 @@ public class UserPreferences
 			// Load last-selected filepaths in filechoosers
 			DesktopApp.setLastSelectedJsonPath(json.optString("LastSelectedJsonFile", DesktopApp.lastSelectedJsonPath()));
 			DesktopApp.setLastSelectedJarPath(json.optString("LastSelectedJarFile", DesktopApp.lastSelectedJarPath()));
+			DesktopApp.setLastSelectedAiDefPath(json.optString("LastSelectedAiDefFile", DesktopApp.lastSelectedAiDefPath()));
 			DesktopApp.setLastSelectedGamePath(json.optString("LastSelectedGameFile", DesktopApp.lastSelectedGamePath()));
 			DesktopApp.setLastSelectedSaveGamePath(json.optString("LastSelectedSaveGameFile", DesktopApp.lastSelectedSaveGamePath()));
 			DesktopApp.setLastSelectedLoadTrialPath(json.optString("LastSelectedLoadTrialFile", DesktopApp.lastSelectedLoadTrialPath()));

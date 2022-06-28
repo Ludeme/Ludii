@@ -1,0 +1,29 @@
+(game "Arb'ata 'Ashara"
+    (players 2)  
+    (equipment { 
+        (board (rectangle 3 [3..30])   
+            use:Vertex
+        )
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+    })
+    
+)

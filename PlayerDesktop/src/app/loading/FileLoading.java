@@ -70,6 +70,7 @@ public class FileLoading
 		DesktopApp.setJsonFileChooser(createFileChooser(DesktopApp.lastSelectedJsonPath(), ".json", "JSON files (.json)"));
 		DesktopApp.setJarFileChooser(createFileChooser(DesktopApp.lastSelectedJarPath(), ".jar", "JAR files (.jar)"));
 		DesktopApp.setGameFileChooser(createFileChooser(DesktopApp.lastSelectedGamePath(), ".lud", "LUD files (.lud)"));
+		DesktopApp.setAiDefFileChooser(createFileChooser(DesktopApp.lastSelectedAiDefPath(), "ai.def", "AI.DEF files (ai.def)"));
 
 		// Also create file chooser for saving played games
 		DesktopApp.setSaveGameFileChooser(new JFileChooser(DesktopApp.lastSelectedSaveGamePath()));

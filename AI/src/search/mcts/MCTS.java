@@ -32,9 +32,9 @@ import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
+import policies.Policy;
 import policies.softmax.SoftmaxFromMetadataPlayout;
 import policies.softmax.SoftmaxFromMetadataSelection;
-import policies.softmax.SoftmaxPolicy;
 import policies.softmax.SoftmaxPolicyLinear;
 import policies.softmax.SoftmaxPolicyLogitTree;
 import search.mcts.backpropagation.AlphaGoBackprop;
@@ -217,7 +217,7 @@ public class MCTS extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	/** A learned policy to use in Selection phase */
-	protected SoftmaxPolicy learnedSelectionPolicy = null;
+	protected Policy learnedSelectionPolicy = null;
 	
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
@@ -628,6 +628,8 @@ public class MCTS extends ExpertPolicy
 							current.addVirtualVisit();
 							current.startNewIteration(context);
 							
+							Context playoutContext = null;
+							
 							while (current.contextRef().trial().status() == null)
 							{
 								BaseNode prevNode = current;
@@ -669,6 +671,8 @@ public class MCTS extends ExpertPolicy
 											);
 										}
 										
+										playoutContext = current.playoutContext();
+										
 										break;	// stop Selection phase
 									}
 									
@@ -687,13 +691,12 @@ public class MCTS extends ExpertPolicy
 								}
 							}
 							
-							final Context playoutContext = current.playoutContext();
 							Trial endTrial = current.contextRef().trial();
 							int numPlayoutActions = 0;
 							
 							if (!endTrial.over() && playoutValueWeight > 0.0)
 							{
-								// did not reach a terminal game state yet
+								// Did not reach a terminal game state yet
 								
 								/********************************
 											Play-out
@@ -706,6 +709,11 @@ public class MCTS extends ExpertPolicy
 								
 								lastNumPlayoutActions += 
 										(playoutContext.trial().numMoves() - numActionsBeforePlayout);
+							}
+							else
+							{
+								// Reached a terminal game state
+								playoutContext = current.contextRef();
 							}
 							
 							/***************************
@@ -721,6 +729,7 @@ public class MCTS extends ExpertPolicy
 					}
 					catch (final Exception e)
 					{
+						System.err.println("MCTS error in game: " + context.game().name());
 						e.printStackTrace();	// Need to do this here since we don't retrieve runnable's Future result
 					}
 					finally
@@ -743,7 +752,7 @@ public class MCTS extends ExpertPolicy
 
 		lastNumMctsIterations = numIterations.get();
 		
-		final Move returnMove = finalMoveSelectionStrategy.selectMove(rootThisCall);
+		final Move returnMove = finalMoveSelectionStrategy.selectMove(this, rootThisCall);
 		
 		if (!wantsInterrupt)
 		{
@@ -878,9 +887,9 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * @return Learned (linear or logits tree, softmax) policy for Selection phase
+	 * @return Learned (linear or tree) policy for Selection phase
 	 */
-	public SoftmaxPolicy learnedSelectionPolicy()
+	public Policy learnedSelectionPolicy()
 	{
 		return learnedSelectionPolicy;
 	}
@@ -929,7 +938,7 @@ public class MCTS extends ExpertPolicy
 	 * Sets the learned policy to use in Selection phase
 	 * @param policy The policy.
 	 */
-	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
+	public void setLearnedSelectionPolicy(final Policy policy)
 	{
 		learnedSelectionPolicy = policy;
 	}
@@ -1362,7 +1371,7 @@ public class MCTS extends ExpertPolicy
 		boolean treeReuse = false;
 		boolean useScoreBounds = false;
 		int numThreads = 1;
-		SoftmaxPolicy learnedSelectionPolicy = null;
+		Policy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
 		QInit qinit = QInit.PARENT;
 		String friendlyName = "MCTS";
@@ -1516,7 +1525,7 @@ public class MCTS extends ExpertPolicy
 				if (lineParts[0].toLowerCase().endsWith("playout"))
 				{
 					// our playout strategy is our learned Selection policy
-					learnedSelectionPolicy = (SoftmaxPolicyLinear) playout;
+					learnedSelectionPolicy = (Policy) playout;
 				}
 				else if 
 				(

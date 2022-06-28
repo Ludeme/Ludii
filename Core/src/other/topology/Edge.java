@@ -332,6 +332,7 @@ public final class Edge extends TopologyElement implements Serializable
 	public void optimiseMemory()
 	{
 		((ArrayList<Cell>) cells).trimToSize();
+		((ArrayList<Edge>) adjacent).trimToSize();
 	}
 	
 	//-------------------------------------------------------------------------

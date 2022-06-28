@@ -29,6 +29,9 @@ public class LogitTreeMoveSelector extends PlayoutMoveSelector
 	/** Do we want to play greedily? */
 	protected final boolean greedy;
 	
+	/** Temperature for the distribution */
+	protected final double temperature;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -36,17 +39,20 @@ public class LogitTreeMoveSelector extends PlayoutMoveSelector
 	 * @param featureSets Feature sets (one per player, or just a shared one at index 0)
 	 * @param rootNodes Regression tree root nodes (one per player, or just a shared one at index 0)
 	 * @param greedy Do we want to play greedily?
+	 * @param temperature
 	 */
 	public LogitTreeMoveSelector
 	(
 		final BaseFeatureSet[] featureSets, 
 		final LogitTreeNode[] rootNodes,
-		final boolean greedy
+		final boolean greedy,
+		final double temperature
 	)
 	{
 		this.featureSets = featureSets;
 		this.rootNodes = rootNodes;
 		this.greedy = greedy;
+		this.temperature = temperature;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -83,7 +89,7 @@ public class LogitTreeMoveSelector extends PlayoutMoveSelector
 		}
 
 		final FVector distribution = FVector.wrap(logits);
-		distribution.softmax();
+		distribution.softmax(temperature);
 		
 		int numLegalMoves = maybeLegalMoves.size();
 		

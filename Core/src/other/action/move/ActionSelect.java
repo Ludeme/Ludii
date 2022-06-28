@@ -1,10 +1,14 @@
 package other.action.move;
 
+import java.util.BitSet;
+
+import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
+import other.concept.Concept;
 import other.context.Context;
 
 /**
@@ -108,7 +112,7 @@ public final class ActionSelect extends BaseAction
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Action undo(final Context context, boolean discard)
+	public Action undo(final Context context, final boolean discard)
 	{
 		return this;
 	}
@@ -302,6 +306,25 @@ public final class ActionSelect extends BaseAction
 		sb.append(')');
 
 		return sb.toString();
+	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public BitSet concepts(final Context context, final Moves movesLudeme)
+	{
+		final BitSet ludemeConcept = (movesLudeme != null) ? movesLudeme.concepts(context.game()) : new BitSet();
+		final BitSet concepts = new BitSet();
+
+		// ---- Swap Pieces concepts
+
+		if (ludemeConcept.get(Concept.SwapPiecesEffect.id()))
+			concepts.set(Concept.SwapPiecesEffect.id(), true);
+
+		if (ludemeConcept.get(Concept.SwapPiecesDecision.id()))
+			concepts.set(Concept.SwapPiecesDecision.id(), true);
+
+		return concepts;
 	}
 		
 	//-------------------------------------------------------------------------

@@ -1,0 +1,68 @@
+(game "Traffic Lights"  
+    (players 2)  
+    (equipment { 
+        (board <Board:size>) 
+        (piece "Square" Shared)
+        (piece "Triangle" Shared)
+        (piece "Disc" Shared)
+    })  
+    (rules 
+        (play
+            (or {
+                (move Add (piece "Square") (to (sites Empty)))
+                (move Select
+                    (from (sites Occupied by:Shared component:"Square"))
+                    (then
+                        (promote (last To) (piece {"Triangle"}) Shared)
+                    )
+                )
+                (move Select
+                    (from (sites Occupied by:Shared component:"Triangle"))
+                    (then
+                        (promote (last To) (piece {"Disc"}) Shared)
+                    )
+                )
+            })
+        )
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> } {
+    (item "3x3"    <(square 3)>   "The game is played on a 3x3 board.")   
+    (item "3x4"    <(rectangle 3 4)>   "The game is played on a 3x4 board.")*   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Many variants on the concept of noughts and crosses exist. This version was created by Alan Parr. It is played on a 3x3 or 3x4 board with a supply of red, yellow, and green markers.")
+        (rules "The object is to get a line of three of the same color.
+            
+            On each turn, you may do ONE of the following:
+            
+            (1) Put a red counter in an empty square.
+            (2) Replace a red counter with a yellow one.
+        (3) Replace a yellow counter with a green one.")
+        (id "1973")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/1893/traffic-lights\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.4")
+        (classification "board/space/line")
+        (author "Alan Parr")
+        (credit "Eric Piette")
+        (date "1985")
+        }
+    )
+    
+    (graphics {
+        (piece Colour Shared "Square" fillColour:(colour Red))
+        (piece Colour Shared "Triangle" fillColour:(colour Yellow))
+        (piece Colour Shared "Disc" fillColour:(colour Green))
+    })
+    
+)

@@ -1,0 +1,285 @@
+// Off-Shore
+
+(define "Corner" // NNW E for example
+    (intersection
+        (sites Direction from:#1 #2)
+        (sites Direction from:#1 #3)
+))
+
+(define "HexHullSites"
+    (union
+        {
+        ("Corner" #1 NNW E) 
+        ("Corner" #1 NNE SSE) 
+        ("Corner" #1 E SSW) 
+        ("Corner" #1 SSE W) 
+        ("Corner" #1 SSW NNW) 
+        ("Corner" #1 W NNE) 
+        }
+))
+
+(define "SquareHullSites"
+    (union
+        {
+        ("Corner" #1 N E) 
+        ("Corner" #1 S E) 
+        ("Corner" #1 S W) 
+        ("Corner" #1 N W) 
+        }
+))
+
+(define "P1Territory"
+    (difference
+        (union
+            (sites (values Remembered "P1")) 
+            (difference (sites Occupied by:P1) (handSite P1 0))
+        ) 
+        (sites (values Remembered "P2"))
+)) 
+
+(define "P2Territory"
+    (difference
+        (union
+            (sites (values Remembered "P2")) 
+            (difference (sites Occupied by:P2) (handSite P2 0))
+        ) 
+        (sites (values Remembered "P1"))
+)) 
+
+(define "CommonTerritory"
+    (intersection
+        (union (sites (values Remembered "P2")) (difference (sites Occupied by:P2) (handSite P2 0)))
+        (union (sites (values Remembered "P1")) (difference (sites Occupied by:P1) (handSite P1 0)))
+))
+
+(define "Scoring"
+    (and
+        {
+        (set Score P1 (count Sites in:(intersection (sites Empty) (sites (values Remembered "P1")))))
+        (set Score P2 (count Sites in:(intersection (sites Empty) (sites (values Remembered "P2")))))
+        (set Value at:(handSite P1 0) (size Array (sizes Group Orthogonal P1)))
+        (set Value at:(handSite P2 0) (size Array (sizes Group Orthogonal P2)))
+        }
+))
+
+(define "CaptureWithin" 
+    (forEach Group Orthogonal
+        if:(is In (to) (intersection (sites Board) (sites Occupied by:Next)))
+        (if
+            (no Pieces Next in:(difference (sites) (sites (values Remembered #2))))
+            (and
+                (forEach Site (<Board:hullType> (sites))
+                    (forget Value #1 (site))
+                )
+                (remove (sites))
+))))
+
+(define "RecordTerritoryOfRevisedGroup"
+    (forEach Site (<Board:hullType> (sites Group at:(last To) Orthogonal))
+        (if 
+            (= (mover) 1)
+            (remember Value "P1" (site) unique:True)
+            (remember Value "P2" (site) unique:True)
+))) 
+
+(define "EmptySitesOutsideEnemyTerritoryFor" 
+    (difference (sites Empty) (sites (values Remembered #1)))
+)
+(define "UpdateTotalMoverGroupCount" 
+    (set Value at:(handSite Mover 0) (size Array (sizes Group Orthogonal Mover)))
+)
+
+(define "UpdateGroupSizeValue4PiecesConnected2Placement"
+    (forEach Site 
+        (sites Group at:(last To) Orthogonal)
+        (set Value at:(site) (count Sites in:(sites Group at:(last To) Orthogonal)))
+))
+
+(define "SitesInOversizedGroups" 
+    (forEach
+        of:(intersection (sites Board) (sites Occupied by:Mover)) 
+        (if
+            (>
+                (value Piece at:(site)) 
+                (value Piece at:(handSite Mover 0))
+            )
+            (sites Around (site) Orthogonal)
+)))
+
+(define "IsNotAnIsolatedPlacement"
+    (< 0 (count Pieces Mover in:(sites Around (last To) Orthogonal)))
+)
+
+//--------------------------
+(game "OffShore"
+    (players 2)
+    (equipment
+        {
+        (board <Board:type> use:Cell)
+        (hand Each size:1)
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (start
+            {
+            (place "Disc1" (handSite P1 0) value:0) 
+            (place "Disc2" (handSite P2 0) value:0) 
+            }
+        )
+        (play
+            (or
+                (move Pass)
+                (move Add
+                    (to
+                        (difference
+                            (union
+                                {  // "{}" needed because 2nd item might not exist...
+                                (if
+                                    (= 1 (mover)) 
+                                    ("EmptySitesOutsideEnemyTerritoryFor" "P2")
+                                    ("EmptySitesOutsideEnemyTerritoryFor" "P1")
+                                )
+                                (<RestrictionEasementFor:placement>)
+                                }
+                            )
+                            ("SitesInOversizedGroups")
+                        )
+                    )
+                    (then
+                        (do 
+                            ("UpdateGroupSizeValue4PiecesConnected2Placement")
+                            next:("UpdateTotalMoverGroupCount")
+                            (then
+                                (if 
+                                    ("IsNotAnIsolatedPlacement")
+                                    ("RecordTerritoryOfRevisedGroup")
+                                    (then
+                                        (priority
+                                            (if 
+                                                (= (mover) 1)
+                                                ("CaptureWithin" "P2" "P1")
+                                                ("CaptureWithin" "P1" "P2")
+                                                (then ("Scoring"))
+                                            )
+                                            ("Scoring")
+        )))))))))
+        (end 
+            (if 
+                (all Passed)
+                {
+                (if
+                    (> (score Mover) (score Next))
+                    (result Mover Win)
+                )
+                (if
+                    (< (score Mover) (score Next))
+                    (result Mover Loss)
+                )
+                } 
+                (result Mover Win)
+)))) 
+
+//--------------------------------------
+
+(option "Board" <Board> args:{ <type> <hullType> }
+    {
+    (item "Square" <(square Square 8)> <"SquareHullSites"> "8 Square")
+    (item "Go 13" <(square Square 12)> <"SquareHullSites"> "18 Square")
+    (item "Go" <(square Square 18)> <"SquareHullSites"> "18 Square")
+    (item "Hex 343434" <(hex Limping 3)> <"HexHullSites"> "343434 Hexagon")
+    (item "Hex4" <(hex Hexagon 4)> <"HexHullSites"> "4 Hexagon")***
+    (item "Hex 454545" <(hex Limping 4)> <"HexHullSites"> "454545 Hexagon")
+    (item "Hex5" <(hex Hexagon 5)> <"HexHullSites"> "5 Hexagon")
+    (item "Hex6" <(hex Hexagon 6)> <"HexHullSites"> "6 Hexagon")
+    (item "Hex7" <(hex Hexagon 7)> <"HexHullSites"> "7 Hexagon")
+    }
+) 
+
+(option "Variant" <RestrictionEasementFor> args:{ <placement> }
+    {
+    (item "Strong Territory" 
+        < >
+        "No placement within Enemy territory."
+    ) 
+    (item "Weak Territory"
+        <(sites Around (intersection (sites Board) (sites Occupied by:Mover)) Orthogonal if:(is Empty (to)))>
+        "Placement within Enemy territory is allowed if adjacent to a Friendly group."
+    )
+    }
+)
+
+//------------------------------------------------------------------------------
+
+// need to add Cascade if Value = 1, and Cascade if Piece is of mover.
+(metadata
+    (info
+        {
+        (description "Off-shore is a territorial game where territory is based on 3 pillars:
+            -- Territory defined by the convex hulls of groups,
+            -- Group expansion limited to those groups that are not larger in size than the count of the current number of friendly groups.
+            -- The capture of enemy groups by expanding one's territory to encompass them.
+            
+            A further minor point is that placement into enemy territory is restricted, thus preventing suicide placements, and indeed for standard play, preventing any expansion into the territory at all.
+            
+            Some of the implications are:
+            -- groups can be captured from two sides, no need to surround.
+            -- to expand or merge groups, one must first have played enough isolated stones during the game. This rule prevents the game from being a simple race to cut off large corners.
+            -- capturing a group therefore also reduces the captured player's expansion potential due to loss of a group, in addition to the reduction in playble space.
+            -- merging groups is a powerful key type of move that creates strategic focus, but also reduces future growth potential by reducing the group count.
+            -- cells adjacent to stones along the edges of opponent's territory are likely to remain open for play, but care is needed to ensure that, when placing stones there, they are (or can be) connected to regions where the opponent is less able to expand his territory.
+            
+        The game was inspired by investigating possible new ways of defining territory and capture.")
+        (rules "Definitions:
+            -- Each of a player's stones belongs to exactly one group. 
+            -- The group it belongs to contains all the stones that connect to it by virtue of being next to one another (across an edge).
+            -- A player's territory is the union of all the cells that are within the convex hulls of the player's groups. 
+            
+            In simpler language:
+            Imagine a line of cells that goes through just one stone of a group and leaves the rest of that group to one side. Surround the group with six of these lines and they will exactly contain all the territory of the stones of that group. A player's territory is then the combined territory of every group, counting cells only once where any of the group territories overlap.
+            
+            -- A player's score is the number of empty cells in their territory.
+            
+            Play:
+            The mover places a stone onto an empty site, with the following two limitations:
+        1) No placing in the opponent's territory.
+    2) No placing next to a friendly group that has more stones than there are friendly groups.
+    (Note that the resulting size of a group is irrelevant.)
+    
+    After the placement, every opponent's group that lies completely within the mover's territory is removed.
+    
+    Passing is voluntary. 
+    When both players pass consecutively, the higher score wins. In case of a tie, the last to play wins.
+    
+    Various boards are optional. 
+Weak Territory, allowing placement next to a friendly group in enemy territory is optional.")
+(id "1988")
+(version "1.3.4")
+(classification "experimental")
+(author "Dale Walton")
+(credit "Dale Walton")
+(date "2022")
+}
+)
+
+(graphics
+    {
+    (board Colour Phase0 (colour 100 200 250 120))
+    (board Colour OuterEdges (colour Black))
+    (board Colour InnerEdges (colour Black))
+    (board StyleThickness OuterEdges 1.5)
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness InnerVertices 0.4)
+    (board StyleThickness OuterVertices 0.4)
+    (board Colour Symbols (colour Black))
+    (player Colour P1 (colour Black))
+    (player Colour P2 (colour LightOrange))
+    (region Colour ("P1Territory")     (colour  60 120 170 120)) 
+    (region Colour ("CommonTerritory") (colour 120 155 185 120))  
+    (region Colour ("P2Territory")     (colour 180 190 200 120))
+    (show Piece Value Middle valueOutline:False scale:.8)
+    (hand Placement P1 scale:.1 offsetX:0.05 offsetY:0.75 vertical:True)
+    (hand Placement P2 scale:.1 offsetX:0.95 offsetY:0.75 vertical:True)
+    }
+)
+)

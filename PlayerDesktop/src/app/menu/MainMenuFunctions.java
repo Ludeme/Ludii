@@ -51,10 +51,10 @@ import app.loading.GameLoading;
 import app.loading.MiscLoading;
 import app.loading.TrialLoading;
 import app.manualGeneration.ManualGeneration;
-import app.util.QrCodeGeneration;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
+import app.utils.QrCodeGeneration;
 import app.views.tools.ToolView;
 import approaches.random.Generator;
 import features.feature_sets.BaseFeatureSet;
@@ -259,6 +259,7 @@ public class MainMenuFunctions extends JMenuBar
 			EventQueue.invokeLater(() -> 
 	    	{
 		    	Thumbnails.generateThumbnails(app, false);
+		    	QrCodeGeneration.makeQRCode(game, 5, 2, false);
 	    	});
 		}
 		else if (source.getText().equals("Export Thumbnails (ruleset)"))
@@ -1344,7 +1345,93 @@ public class MainMenuFunctions extends JMenuBar
 		final JMenuItem source = (JMenuItem) (e.getSource());
 		final Context context = app.contextSnapshot().getContext(app);
 
-		if (source.getText().equals("Show Legal Moves"))
+		JMenuItem rootParent = (JMenu)((JPopupMenu)source.getParent()).getInvoker();
+		while (rootParent.getParent() instanceof JPopupMenu)
+			rootParent = (JMenu)((JPopupMenu)rootParent.getParent()).getInvoker();
+		
+		if (rootParent.getText().equals("Options"))
+		{
+			// Check if an in-game option or ruleset has been selected
+			if (e.getStateChange() == ItemEvent.SELECTED)
+			{
+				final Game game = context.game();
+				final GameOptions gameOptions = game.description().gameOptions();
+				
+				// First, check if a predefined ruleset has been selected. Also check parent in case default ruleset variation selected.
+				final JMenu sourceParent = (JMenu)((JPopupMenu)source.getParent()).getInvoker();
+				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText()) || GameUtil.checkMatchingRulesets(app, game, sourceParent.getText());
+	
+				// Second, check if an option has been selected
+				if (!rulesetSelected && gameOptions.numCategories() > 0 && source.getParent() != null)
+				{
+					final JMenu parent = (JMenu)((JPopupMenu)source.getParent()).getInvoker();
+					
+					final List<String> currentOptions = app.manager().settingsManager().userSelections().selectedOptionStrings();
+	
+					for (int cat = 0; cat < gameOptions.numCategories(); cat++)
+					{
+						final List<Option> options = gameOptions.categories().get(cat).options();
+						if (options.isEmpty())
+							continue; // no options in this group
+	
+						if (!options.get(0).menuHeadings().get(0).equals(parent.getText()))
+							continue; // not this option group
+	
+						for (final Option option : options)
+						{
+							if (option.menuHeadings().get(1).equals(source.getText()))
+							{
+								// Match!
+								final String selectedOptString = StringRoutines.join("/", option.menuHeadings());
+								
+								// Remove any other selected options in the same category
+								for (int i = 0; i < currentOptions.size(); ++i)
+								{
+									final String currOption = currentOptions.get(i);
+									
+									if 
+									(
+										currOption.substring(0, currOption.lastIndexOf("/")).equals(
+												selectedOptString.substring(0, selectedOptString.lastIndexOf("/"))
+												)
+									)
+									{
+										// Found one in same category, so remove it
+										currentOptions.remove(i);
+										break;	// Should be no more than just this one
+									}
+								}
+								
+								// Now add the option we newly selected
+								currentOptions.add(selectedOptString);
+								app.manager().settingsManager().userSelections().setSelectOptionStrings(currentOptions);
+								gameOptions.setOptionsLoaded(true);
+								
+								// Since we selected an option, we should try to auto-select ruleset
+								app.manager().settingsManager().userSelections().setRuleset
+								(
+									game.description().autoSelectRuleset
+									(
+										app.manager().settingsManager().userSelections().selectedOptionStrings()
+									)
+								);
+								
+								try
+								{
+									GameSetup.compileAndShowGame(app, game.description().raw(), false);
+								}
+								catch (final Exception exception)
+								{
+									GameUtil.resetGame(app, false);
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		else if (source.getText().equals("Show Legal Moves"))
 		{
 			app.bridge().settingsVC().setShowPossibleMoves(!app.bridge().settingsVC().showPossibleMoves());
 		}
@@ -1535,86 +1622,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else
 		{
-			// Check if an in-game option or ruleset has been selected
-			if (e.getStateChange() == ItemEvent.SELECTED)
-			{
-				final Game game = context.game();
-				final GameOptions gameOptions = game.description().gameOptions();
-				
-				// First, check if a predefined ruleset has been selected. Also check parent in case default ruleset variation selected.
-				final JMenu sourceParent = (JMenu)((JPopupMenu)source.getParent()).getInvoker();
-				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText()) || GameUtil.checkMatchingRulesets(app, game, sourceParent.getText());
-	
-				// Second, check if an option has been selected
-				if (!rulesetSelected && gameOptions.numCategories() > 0 && source.getParent() != null)
-				{
-					final JMenu parent = (JMenu)((JPopupMenu)source.getParent()).getInvoker();
-					
-					final List<String> currentOptions = 
-							app.manager().settingsManager().userSelections().selectedOptionStrings();
-	
-					for (int cat = 0; cat < gameOptions.numCategories(); cat++)
-					{
-						final List<Option> options = gameOptions.categories().get(cat).options();
-						if (options.isEmpty())
-							continue; // no options in this group
-	
-						if (!options.get(0).menuHeadings().get(0).equals(parent.getText()))
-							continue; // not this option group
-	
-						for (final Option option : options)
-						{
-							if (option.menuHeadings().get(1).equals(source.getText()))
-							{
-								// Match!
-								final String selectedOptString = StringRoutines.join("/", option.menuHeadings());
-								
-								// Remove any other selected options in the same category
-								for (int i = 0; i < currentOptions.size(); ++i)
-								{
-									final String currOption = currentOptions.get(i);
-									
-									if 
-									(
-										currOption.substring(0, currOption.lastIndexOf("/")).equals(
-												selectedOptString.substring(0, selectedOptString.lastIndexOf("/"))
-									)
-									)
-									{
-										// Found one in same category, so remove it
-										currentOptions.remove(i);
-										break;	// Should be no more than just this one
-									}
-								}
-								
-								// Now add the option we newly selected
-								currentOptions.add(selectedOptString);
-								app.manager().settingsManager().userSelections().setSelectOptionStrings(currentOptions);
-								gameOptions.setOptionsLoaded(true);
-								
-								// Since we selected an option, we should try to auto-select ruleset
-								app.manager().settingsManager().userSelections().setRuleset
-								(
-									game.description().autoSelectRuleset
-									(
-										app.manager().settingsManager().userSelections().selectedOptionStrings()
-									)
-								);
-								
-								try
-								{
-									GameSetup.compileAndShowGame(app, game.description().raw(), false);
-								}
-								catch (final Exception exception)
-								{
-									GameUtil.resetGame(app, false);
-								}
-								break;
-							}
-						}
-					}
-				}
-			}
+			System.out.println("NO MATCHING MENU OPTION FOUND");
 		}
 
 		EventQueue.invokeLater(() ->

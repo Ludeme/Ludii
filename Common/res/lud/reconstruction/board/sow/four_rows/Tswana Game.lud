@@ -1,0 +1,32 @@
+(game "Tswana Game"
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 4 4 store:None)
+        (piece "Seed" Shared)
+    })   
+    (rules
+        (start {
+            (set Count 2 to:(sites Board))
+        })
+        (play [#]) 
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game is a mancala-style board game played by the Tswana people of southern Africa.")
+        (rules "4x4 board. Two counters per hole.")
+        (source "DLP evidence.")
+        (id "1345")
+        (version "1.3.4")
+        (classification "board/sow/four rows/reconstruction")
+        (origin  "This game was played in Southern Africa, around 1972.")
+        }
+    )
+    
+)

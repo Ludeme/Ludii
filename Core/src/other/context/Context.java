@@ -20,6 +20,7 @@ import game.functions.ints.board.Id;
 import game.functions.region.RegionFunction;
 import game.match.Subgame;
 import game.players.Player;
+import game.rules.Rules;
 import game.rules.end.End;
 import game.rules.play.moves.Moves;
 import game.types.play.RoleType;
@@ -1161,6 +1162,17 @@ public class Context
 			return subcontext.board();
 
 		return game.board();
+	}
+	
+	/**
+	 * @return Reference to main board.
+	 */
+	public Rules rules()
+	{
+		if (subcontext != null)
+			return subcontext.rules();
+
+		return game.rules();
 	}
 	
 	/**

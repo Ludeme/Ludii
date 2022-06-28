@@ -117,23 +117,60 @@
 (metadata
     (info
         {
-        
-        }
-    )
+        (description "Hexifact is a Hex grid based place-or-jump game with a goal of maximizing the product of one's largest 2 groups.
+            
+            It is fairly opaque, and thus suited to small boards. Large boards will work, but the games will be long, and it will be unclear how the outcome was derived from the earlier positions. 
+            The reason for the opacity is that connection of groups must be accomplished through jumping opponent's pieces, which themselves are frequently changing position.
+            
+            To minimise this instability, no location on the board is allowed to have more than 3 adjacent friendly pieces. 
+            Also passing is allowed to avoid forced moves that de-optimise the scores.   
+            
+            Also, the standard version only allows a jump if the player made a placement on the previous turn.
+        This significantly reduced the game complexity compared to allowing each piece to move once before the next placement turn.")
+        (rules "Goal:Score the product of the sizes of your two largest groups. Highest score wins. 
+            In case of a tie, the last to play wins.
+            
+            Groups are based on the orthogonal connections between adjacent pieces.
+            
+            Play:
+            Boards starts empty. The darker color starts by placing anywhere.
+            Thereafter, a turn is either a placement or a jump (but not both) according to the following rules. There are no captures. Passing is allowed.
+            
+            Placement: 
+            Pieces must be placed on an empty site that is BOTH:
+            - adjacent to an opponent's stone(s) and 
+            - not adjacent to one's own stones. 
+            
+            Jumping:
+            A stone jumps in a straight line over any number of opponent's stones. The piece must land at an empty site that is directly after the last opponent's piece in the jump. The stone may not pass over empty sites nor over sites occupied by friendly stones.
+            
+            Restrictions on play:
+        1) At no time during play may any stone be adjacent to more than 3 stones of the same color.
+    2) Jumps are limited by the Jumping restriction selected in the Options. (See below)
     
-    (graphics 
-        {
-        (player Colour P1 (colour 229 92 0))
-        (player Colour P2 (colour Cream))
-        (board Style Graph)
-        (board StyleThickness InnerEdges .2)
-        (board StyleThickness OuterEdges .2)
-        (board StyleThickness InnerVertices .5)
-        (show Edges Diagonal <BoardShape:DiagShow>)
-        (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
-        //    (show Piece State)
-        }
-    )
-    
-    (ai (heuristics (score weight:2)))
+The game ends when both players pass. ")
+(id "1968")
+(version "1.3.4")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "06-04-2022")
+}
+)
+
+(graphics 
+    {
+    (player Colour P1 (colour 229 92 0))
+    (player Colour P2 (colour Cream))
+    (board Style Graph)
+    (board StyleThickness InnerEdges .2)
+    (board StyleThickness OuterEdges .2)
+    (board StyleThickness InnerVertices .5)
+    (show Edges Diagonal <BoardShape:DiagShow>)
+    (piece Foreground "Disc" state:1 image:"square.svg" fillColour:(colour 0 0 0 50) scale:0.4)
+    //    (show Piece State)
+    }
+)
+
+(ai (heuristics (score weight:2)))
 )

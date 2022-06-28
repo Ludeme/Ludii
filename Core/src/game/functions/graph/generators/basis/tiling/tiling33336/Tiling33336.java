@@ -166,6 +166,7 @@ public class Tiling33336 extends Basis
 		final BitSet concepts = new BitSet();
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.SemiRegularTiling.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

@@ -1,0 +1,34 @@
+(game "Yakamaido"
+    (players 2)
+    
+    (equipment 
+        { 
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+        (hand Each)
+        (piece "Disc" Each (move [#])) 
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Yakamaido is a game that was played by the Mono people of California during the nineteenth or early twentieth century.")
+        (rules "Three concentric squares, with lines connecting the corners and the midpoints of the sides.")
+        (source "DLP evidence.")
+        (id "1070")
+        (version "1.3.4")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in California, around 1907.")
+        }
+    )
+    
+)

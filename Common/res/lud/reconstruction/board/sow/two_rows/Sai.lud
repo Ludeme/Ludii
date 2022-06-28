@@ -1,0 +1,41 @@
+(game "Sai"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 7 store:None
+            (track "Track" "0,E,N,W" loop:True)		
+        )
+        (piece "Seed" Shared)
+    })  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ) )
+        
+        (play [#]) // Counters are captured when the final counter falls in a hole making it contain four counters.
+        
+        (end
+            [#]
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Sai is a two-row mancala-style board game played on the island of Flores in Indonesia.")
+        (rules "2x7 board. Four counters in each hole. Counters are captured when the final counter falls in a hole making it contain four counters. ")
+        (source "DLP evidence.")
+        (id "1257")
+        (version "1.3.4")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

@@ -4,6 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import other.move.Move;
 import other.state.State;
+import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;
 
 /**
@@ -17,7 +18,7 @@ public final class MaxAvgScore implements FinalMoveSelectionStrategy
 	//-------------------------------------------------------------------------
 
 	@Override
-	public Move selectMove(final BaseNode rootNode)
+	public Move selectMove(final MCTS mcts, final BaseNode rootNode)
 	{
 		int bestIdx = -1;
         double maxAvgScore = Double.NEGATIVE_INFINITY;

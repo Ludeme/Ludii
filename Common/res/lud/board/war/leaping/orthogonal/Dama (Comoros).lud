@@ -1,0 +1,151 @@
+(define "PromotedHopOrthogonalSequenceCapture" 
+    (move Hop
+        #1
+        #2
+        (between 
+            before:(count Rows) 
+            after:(count Rows)
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        (difference Orthogonal OppositeDirection)
+                        (between 
+                            before:(count Rows) 
+                            after:(count Rows)
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+(define "HopMan" 
+    (move
+        Hop 
+        (from #1) 
+        (directions {Forward Rightward Leftward}) 
+        (between 
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Dama (Comoros)"  
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
+    (rules 
+        (start { 
+            (place "Counter1" (union (sites Row 1) (sites Row 2)))
+            (place "Counter2" (union (sites Row 5) (sites Row 6)))
+        })
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    (if "IsUnpromoted"
+                        ("HopMan" (last To)
+                            (then 
+                                (if (can Move ("HopMan" (last To)) ) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                        ("PromotedHopOrthogonalSequenceCapture" (from (last To)) (difference Orthogonal OppositeDirection))
+                    )
+                    (move Pass)
+                )
+                (or { 
+                    (forEach Piece "Counter" 
+                        ("HopMan" (from)
+                            (then 
+                                (if (can Move ("HopMan" (last To)) ) 
+                                    (moveAgain) 
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        ) 
+                    )
+                    (forEach Piece "DoubleCounter" ("PromotedHopOrthogonalSequenceCapture" (from) Orthogonal))
+                    (forEach Piece "Counter" 
+                        (move
+                            Step 
+                            (directions {Forward Rightward Leftward}) 
+                            (to if:(is Empty (to)))
+                        )
+                        (then 
+                            (if "JumpToPromotionZone"
+                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                            )
+                        )
+                    )
+                    (forEach Piece "DoubleCounter" (move Slide Orthogonal))
+                })
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win)))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dama is the name of a game with leaping captures played in several parts of the world. This version is played in Comoros.
+            
+        ")
+        (rules "8x8 board. 16 pieces per player, lined up in the second and third rows (first row on each side is empty). Pieces move forward or horizontally one space, and capture opponents' pieces by jumping in these directions. When they reach the opposite side, they become a king and can jump opponents' pieces from any distance orthogonally. Multiple captures cannot be made by moving 180 degrees from the previous jump. Pieces can be promoted to king mid-jump. Winning is achieved by capturing all of the other player's pieces or by blocking them so they cannot move.
+        ")
+        (source "De Voogt 2019: 5-6.")
+        (id "1990")
+        (version "1.3.4")
+        (classification "board/war/leaping/orthogonal")
+        (credit "Eric Piette")
+        (origin  "This game was played in Comoros, around 2018.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Defined" "Isometric"})
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

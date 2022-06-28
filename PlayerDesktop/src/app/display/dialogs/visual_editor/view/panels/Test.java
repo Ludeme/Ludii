@@ -2,37 +2,44 @@ package app.display.dialogs.visual_editor.view.panels;
 
 import app.display.dialogs.visual_editor.view.DocumentationReader;
 import app.display.dialogs.visual_editor.view.HelpInformation;
+import app.utils.GameSetup;
+import approaches.random.Generator;
+import compiler.Compiler;
+import game.Game;
 import grammar.ClassEnumerator;
 import grammar.Grammar;
-import main.grammar.Clause;
-import main.grammar.ClauseArg;
-import main.grammar.Symbol;
+import main.FileHandling;
+import main.StringRoutines;
+import main.grammar.*;
+import main.grammar.ebnf.EBNF;
 import main.grammar.ebnf.EBNFClause;
 import main.grammar.ebnf.EBNFClauseArg;
 import main.grammar.ebnf.EBNFRule;
+import main.options.UserSelections;
+import parser.Parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Test {
-    public static void main(String[] args) throws ClassNotFoundException {
-        Grammar grammar = Grammar.grammar();
-        System.out.println(");");
 
-        for(EBNFRule r : grammar.ebnf().rules().values())
+    public static void main(String[] args) throws ClassNotFoundException {
+
+
+        System.out.println(findRules("what"));
+
+        System.exit(1);
+
+        for(EBNFRule r : Grammar.grammar().ebnf().rules().values())
         {
-            for(EBNFClause c : r.rhs())
-            {
-                if(c.args() == null) continue;
-                for(EBNFClauseArg a : c.args())
-                {
-                    if(a.parameterName() != null)
-                        System.out.println(a.token());
-                }
-            }
+            System.out.println(r);
         }
 
+        System.exit(2);
+
+        Grammar grammar = Grammar.grammar();
 
         for(Symbol s : grammar.symbols())
         {

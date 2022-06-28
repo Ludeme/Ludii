@@ -43,7 +43,7 @@ public class BoardCoverageDefault extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -71,7 +71,7 @@ public class BoardCoverageDefault extends Metric
 				sitesCovered.addAll(Utils.boardDefaultSitesCovered(context));
 			}
 			
-			numSitesCovered += ((double) sitesCovered.size()) / game.board().topology().getGraphElements(game.board().defaultSite()).size();
+			numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getGraphElements(context.board().defaultSite()).size();
 		}
 
 		return numSitesCovered / trials.length;

@@ -207,6 +207,14 @@ public final class NoPieces extends BaseBooleanFunction
 		concepts.set(Concept.NoPiece.id(), true);
 		concepts.or(whoFn.concepts(game));
 
+		if(role != null)
+		{
+			if(role.equals(RoleType.Mover))
+				concepts.set(Concept.NoPieceMover.id(), true);
+			else if(role.equals(RoleType.Next))
+				concepts.set(Concept.NoPieceNext.id(), true);
+		}
+		
 		if (whereFn != null)
 			concepts.or(whereFn.concepts(game));
 

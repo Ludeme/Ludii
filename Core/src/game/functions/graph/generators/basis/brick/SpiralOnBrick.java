@@ -101,6 +101,7 @@ public class SpiralOnBrick extends Basis
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.BrickTiling.id(), true);
 		concepts.set(Concept.SpiralShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

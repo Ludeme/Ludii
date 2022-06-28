@@ -165,7 +165,14 @@ public class NoRepeat extends MetaRule
 	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.PositionalSuperko.id(), true);
+		if (type == RepetitionType.PositionalInTurn)
+			concepts.set(Concept.TurnKo.id(), true);
+		else if (type == RepetitionType.Positional)
+			concepts.set(Concept.PositionalSuperko.id(), true);
+		else if (type == RepetitionType.SituationalInTurn)
+			concepts.set(Concept.SituationalTurnKo.id(), true);
+		else if (type == RepetitionType.Situational)
+			concepts.set(Concept.SituationalSuperko.id(), true);
 		return concepts;
 	}
 

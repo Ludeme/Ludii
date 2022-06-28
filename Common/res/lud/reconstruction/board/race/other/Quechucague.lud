@@ -1,0 +1,60 @@
+(game "Quechucague"
+    (players 2)
+    (equipment {
+        (board
+            (merge
+                (add
+                    (remove
+                        (concentric {4 4 4 16})
+                        vertices:{1 5 9 16..26 2 6 10}
+                    )
+                    vertices:{{0 0}}
+                )
+                (shift 1 0
+                    (add
+                        (remove
+                            (concentric {4 4 4 16})
+                            vertices:{12..22 0 4 8 1 5 9}
+                        )
+                        vertices:{{0 0}}
+                    )
+                )
+            )
+            [#]
+            use:Vertex
+        )
+        (dice d:5 faces:{1 2 3 5 0} num:1)
+        (piece "Marker" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play (do (roll) next:[#])) // Captures are made when landing on a space occupied by the opponent.
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Quechucague is a game played by the Mapuche people of Chile that has been documented since the seventeenth century. It appears to have been both a race game and a capturing game. ")
+        (aliases {"Kechukawe" "Quechucayu" "Quechuncague" "Quechucan" "'Quechu"})
+        (rules "Semicircular board, ten spaces across the bottom, eight arcing, and three connecting the fifth and sixth in the bottom row to the fourth and fifth in the arc. Five-sided die with 1, 2, 3, 5, 0 as values. Captures are made when landing on a space occupied by the opponent. Race game. ")
+        (source "DLP evidence.")
+        (id "337")
+        (version "1.3.2")
+        (classification "board/race/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Chile, from around 1646 to 1758.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour Black) scale:0.9)
+        
+    })
+    
+)

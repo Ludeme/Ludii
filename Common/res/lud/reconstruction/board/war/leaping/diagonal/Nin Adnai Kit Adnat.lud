@@ -1,0 +1,33 @@
+(game "Nin Adnai Kit Adnat"
+    (players 2)  
+    (equipment {
+        (board (square [#]))
+        (piece "Disc" P1 (move [#]))
+        (piece "Square" P2 (move [#]))
+    }) 
+    (rules
+        (start [#])
+        (play [#]) 
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Nin Adnai Kit Adnat (\"It is my move, it is your move\") was a capturing game played by the Mi'kmaq people of Nova Scotia. ")
+        (aliases {"Adenágank"})
+        (rules "Draughts-like game. Played on a checkerboard. One player plays as round pieces, the other as square pieces.
+        ")
+        (source "DLP evidence.")
+        (id "1235")
+        (version "1.3.4")
+        (classification "board/war/leaping/diagonal/reconstruction")
+        (origin  "This game was played in Nova Scotia, around 1899.")
+        }
+    )
+    
+)

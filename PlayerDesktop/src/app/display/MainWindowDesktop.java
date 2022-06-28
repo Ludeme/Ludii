@@ -51,7 +51,7 @@ import util.LocationUtil;
  *
  * @author Matthew.Stephenson and cambolbro and Eric.Piette 
  */
-public final class MainWindowDesktop extends JPanel implements MouseListener, MouseMotionListener
+public class MainWindowDesktop extends JPanel implements MouseListener, MouseMotionListener
 {
 	final DesktopApp app;
 	
@@ -131,7 +131,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		panels.add(boardPanel);
 		
 		// create the player panel
-		playerPanel = new PlayerView(app, portraitMode);
+		playerPanel = new PlayerView(app, portraitMode, false);
 		panels.add(playerPanel);
 
 		// Create tool panel
@@ -180,7 +180,12 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 			
 			app.updateTabs(app.contextSnapshot().getContext(app));
 
-			g2d.setColor(Color.white);
+			// Set application background colour.
+			if (app.settingsPlayer().usingExhibitionApp())
+				g2d.setColor(new Color(146,223,243));
+			else
+				g2d.setColor(Color.white);
+			
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 
 			// Paint each panel
@@ -251,7 +256,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	 * (e.g. pass or swap buttons, player swatches or names, tool/tab views)
 	 * If activateButton is True, then the overlapped button is also pressed.
 	 */
-	private boolean checkPointOverlapsButton(final MouseEvent e, final boolean pressButton)
+	protected boolean checkPointOverlapsButton(final MouseEvent e, final boolean pressButton)
 	{
 		if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerSwatchList))
 		{

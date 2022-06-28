@@ -14,6 +14,7 @@ import app.utils.BufferedImageUtil;
 import app.utils.DrawnImageInfo;
 import game.Game;
 import game.equipment.container.Container;
+import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import metadata.graphics.util.PieceStackType;
@@ -135,8 +136,8 @@ public class MoveAnimation
 		final Point startPoint = app.bridge().getContainerStyle(containerIdFrom).screenPosn(graphPointStart);
 		final Point endPoint = app.bridge().getContainerStyle(containerIdTo).screenPosn(graphEndStart);
 		
-		final List<DrawnImageInfo> startDrawnInfo = MoveAnimation.getMovingPieceImages(app, moveFrom, startPoint.x, startPoint.y, true);
-		final List<DrawnImageInfo> endDrawnInfo = MoveAnimation.getMovingPieceImages(app, moveFrom, endPoint.x, endPoint.y, true);
+		final List<DrawnImageInfo> startDrawnInfo = MoveAnimation.getMovingPieceImages(app, move, moveFrom, startPoint.x, startPoint.y, true);
+		final List<DrawnImageInfo> endDrawnInfo = MoveAnimation.getMovingPieceImages(app, move, moveFrom, endPoint.x, endPoint.y, true);
 		
 		final List<BufferedImage> pieceImages = new ArrayList<>();
 		final List<Point> startPoints = new ArrayList<>();
@@ -151,6 +152,14 @@ public class MoveAnimation
 		{
 			endPoints.add(d.imageInfo().drawPosn());
 		}
+		
+		// Placeholders in case no images/points found
+		if (startPoints.size() == 0)
+			startPoints.add(new Point(0,0));
+		if (endPoints.size() == 0)
+			endPoints.add(new Point(0,0));
+		if (pieceImages.size() == 0)
+			pieceImages.add(new BufferedImage(1,1,1));
 		
 		return new AnimationParameters
 				(
@@ -300,12 +309,19 @@ public class MoveAnimation
 	/**
 	 * Draw the piece being moved.
 	 */
-	public static List<DrawnImageInfo> getMovingPieceImages(final PlayerApp app, final Location selectedLocation, final int x, final int y, final boolean drawingAnimation)
+	public static List<DrawnImageInfo> getMovingPieceImages(final PlayerApp app, final Move move, final Location selectedLocation, final int x, final int y, final boolean drawingAnimation)
 	{						
 		final List<DrawnImageInfo> allMovingPieceImages = new ArrayList<>();
 		
 		final Context context = app.contextSnapshot().getContext(app);
 		final Moves legal = context.game().moves(context);
+		
+		if (move != null)
+		{
+			// Replace legal moves with the specific move being done.
+			final Moves moves = new BaseMoves(null);
+			moves.moves().add(move);
+		}
 		
 		// If all moves from this location involve the same level range, then use that level range.
 		final int[] levelMinMax = StackVisuals.getLevelMinAndMax(legal, selectedLocation);
@@ -340,6 +356,9 @@ public class MoveAnimation
 						// If adding a piece at the site, get the what of the move (first action that matches selected location) instead.
 						if (what == 0)
 						{
+							if (move != null)
+								what = move.what();
+							
 							for (final Move m : legal.moves())
 							{
 								if (m.getFromLocation().equals(selectedLocation))
@@ -363,7 +382,7 @@ public class MoveAnimation
 									break;
 							}
 						}
-						
+
 						// If a piece was found
 						if (what > 0)
 						{

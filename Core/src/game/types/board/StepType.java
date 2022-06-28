@@ -5,7 +5,7 @@ package game.types.board;
  * 
  * @author cambolbro and Eric.Piette
  * 
- * @remarks For example, the movement of a Chess knight may be described as {\tt (walkToSites \{ \{F F R F\} \{F F L F\} \})}.
+ * @remarks For example, the movement of a Chess knight may be described as {\tt (walkToSites \{ \{F F R F\} \{F F L F\} \})}. Please note that a walk cannot leave the playing area and return.
  */
 public enum StepType
 {

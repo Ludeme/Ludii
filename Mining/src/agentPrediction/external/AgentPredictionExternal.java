@@ -108,7 +108,7 @@ public class AgentPredictionExternal
         		final String arg2 = "Classification";
         		final String arg3 = conceptNameString;
         		final String arg4 = conceptValueString;
-	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
+	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/External/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
 	
 	            // Read file output
 	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -172,7 +172,7 @@ public class AgentPredictionExternal
             		final String arg2 =  agentName.replaceAll(" ", "_");
             		final String arg3 = conceptNameString;
             		final String arg4 =  conceptValueString;
-            		final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
+            		final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/External/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
             		
      	            // Read file output
      	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));

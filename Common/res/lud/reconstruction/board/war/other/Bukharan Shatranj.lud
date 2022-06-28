@@ -1,0 +1,32 @@
+(game "Bukharan Shatranj"
+    (players 2)  
+    (equipment {
+        (board (square 8))
+        (piece "Queen" Each (move [#])) // The first move is by the queen, which jumps two spaces forward orthogonally, and then is reduced to a weak piece
+        (piece "Bishop" Each (move Hop Diagonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (if (is Enemy (who at:(to))) (remove (to)))))))
+        [#]
+    }) 
+    (rules
+        (start [#])
+        (play [#])  // No castling.
+        (end [#]) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Bukharan Shatranj is a capturing game that was played in Samarkand, Uzbekistan in the nineteenth century. ")
+        (rules "8x8 board. The first move is by the queen, which jumps two spaces forward orthogonally, and then is reduced to a weak piece. No castling. Bishops move two spaces diagonally, leaping over the first square. ")
+        (source "DLP evidence.")
+        (id "1324")
+        (version "1.3.4")
+        (classification "board/war/reconstruction")
+        (origin  "This game was played in Uzbekistan, around 1877.")
+        }
+    )
+    
+)

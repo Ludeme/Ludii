@@ -1,0 +1,55 @@
+(define "InitSitesP1" 
+    (union {
+        (expand (intersection (sites Bottom) (sites Left)) steps:8)
+        (expand (intersection (sites Top) (sites Right)) steps:8)
+        (difference (expand (sites Centre)) (sites Centre))
+    })		
+)
+
+//------------------------------------------------------------------------------
+
+(game "ReconsComment"
+    (players 2) 
+    (equipment { 
+        (board (square 13) use:Vertex)
+        (dice d:6 num:3) 
+        (piece "Marker" Each)
+    })
+    (rules
+        (start {
+            (place "Marker1" 
+                (difference 
+                    ("InitSitesP1")
+                    (sites Outer)
+                )
+            )
+            (place "Marker2" 
+                (difference 
+                    (sites Board)
+                    (union
+                        ("InitSitesP1")
+                        (union (sites Centre) (sites Outer))
+                    )
+                )
+            )
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+        //        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (graphics {
+        (board style Board)
+        (show Edges Diagonal Hidden)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+

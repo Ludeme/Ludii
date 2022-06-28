@@ -307,7 +307,7 @@ public abstract class MultiMetricFramework extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -315,8 +315,12 @@ public abstract class MultiMetricFramework extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		final Double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
+		// Zero player games cannot be computed.
+		if (game.hasSubgames() || game.isSimultaneousMoveGame() || game.players().count() == 0)
+			return null;
 		
+		final Double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
+
 		switch (multiMetricValue())
 		{
 			case Average: return metricAverage(metricValues);
@@ -333,7 +337,7 @@ public abstract class MultiMetricFramework extends Metric
 			case MaxIncrease: return metricMaxIncrease(metricValues);
 			case MaxDecrease: return metricMaxDecrease(metricValues);
 			
-			default: return -1;
+			default: return null;
 		}
 	}
 

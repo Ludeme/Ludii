@@ -184,9 +184,9 @@
         {
         (board "BoardUsed" use:Vertex)
         (hand Each size:15)
-        (piece "1Dot" Each )
-        (piece "2Dot" Each )
-        (piece "3Dot" Each )
+        (piece "1Dot" Each)
+        (piece "2Dot" Each)
+        (piece "3Dot" Each)
         }
     )
     (rules
@@ -310,7 +310,7 @@ A player who stalemates the opponent loses: the player who is unable to move sco
 Otherwise, each Double-run that is owned by the player who just completed the turn scores the value of the pair in that double-run.
 A double-run belong to the opponent is scored by the opponent, and has twice the value.")
 (id "1963")
-(version "1.3.3")
+(version "1.3.4")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")
@@ -334,8 +334,8 @@ A double-run belong to the opponent is scored by the opponent, and has twice the
     (show Edges Diagonal <BoardShape:DiagShow>)
     //    (show Piece State)
     
-    (hand Placement P2 scale:<BoardShape:bugFix> offsetX:0.95 offsetY:<BoardShape:fix2> vertical:True)
-    (hand Placement P1 scale:<BoardShape:bugFix> offsetX:0.05 offsetY:<BoardShape:fix2> vertical:True)
+    (hand Placement P2 offsetX:0.95 vertical:True)
+    (hand Placement P1 offsetX:0.05 vertical:True)
     }
 )
 (ai (heuristics (score weight:2)))

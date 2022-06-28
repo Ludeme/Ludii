@@ -184,6 +184,9 @@ public class RectangleOnSquare extends Basis
 				concepts.set(Concept.RectangleShape.id(), true);
 		}
 
+		concepts.set(Concept.RegularShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
+		
 		return concepts;
 	}
 

@@ -60,19 +60,8 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 	 */
 	protected BaseFeatureSet[] featureSets;
 	
-	/** 
-	 * If >= 0, we'll only actually use this softmax policy in MCTS play-outs
-	 * for up to this many actions. If a play-out still did not terminate
-	 * after this many play-out actions, we revert to a random play-out
-	 * strategy as fallback
-	 */
-	protected int playoutActionLimit = -1;
-	
-	/** Auto-end playouts in a draw if they take more turns than this */
-	protected int playoutTurnLimit = -1;
-	
-	/** Epsilon for epsilon-greedy playouts */
-	protected double epsilon = 0.0;
+	/** Temperature for distribution */
+	protected double temperature = 1.0;
 	
 	/** Do we want to play greedily? */
 	protected boolean greedy = false;
@@ -220,7 +209,7 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		}
 		
 		final FVector distribution = FVector.wrap(logits);
-		distribution.softmax();
+		distribution.softmax(temperature);
 		
 		return distribution;
 	}
@@ -234,9 +223,9 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 		if (epsilon < 1.0)
 		{
 			if (epsilon <= 0.0)
-				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy);
+				playoutMoveSelector = new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy, temperature);
 			else
-				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy), epsilon);
+				playoutMoveSelector = new EpsilonGreedyWrapper(new LogitTreeMoveSelector(featureSets, regressionTreeRoots, greedy, temperature), epsilon);
 		}
 		else
 		{
@@ -305,6 +294,10 @@ public class SoftmaxPolicyLogitTree extends SoftmaxPolicy
 			else if (input.toLowerCase().startsWith("greedy="))
 			{
 				greedy = Boolean.parseBoolean(input.substring("greedy=".length()));
+			}
+			else if (input.toLowerCase().startsWith("temperature="))
+			{
+				temperature = Double.parseDouble(input.substring("temperature=".length()));
 			}
 		}
 		

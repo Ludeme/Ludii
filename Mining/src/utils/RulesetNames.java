@@ -27,9 +27,14 @@ public class RulesetNames
 	//-------------------------------------------------------------------------
 	
 	/** 
-	 * Filepath for our CSV file. NOTE: the filepath has been hardcoded for use from Eclipse.
+	 * Filepath for our CSV file. Since this only works with access to private repo 
+	 * anyway, the filepath has been hardcoded for use from Eclipse.
+	 * 
+	 * This would usually be private and final, but making it public and non-final
+	 * is very useful for editing the filepath when running on cluster (where LudiiPrivate
+	 * is not available).
 	 */
-	private static final String FILEPATH = "../../Ludii/Mining/res/concepts/input/GameRulesets.csv";
+	public static String FILEPATH = "../../Ludii/Mining/res/concepts/input/GameRulesets.csv";
 
 	/** List of game names loaded from CSV */
 	private static List<String> gameNames = null;

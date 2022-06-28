@@ -40,7 +40,7 @@ public class DecisivenessMoves extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -48,6 +48,10 @@ public class DecisivenessMoves extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		// Cannot perform move/state evaluation for matches.
+		if (game.hasSubgames() || game.isSimultaneousMoveGame() || game.isSimulationMoveGame())
+			return null;
+		
 		double avgDecisivenessThreshold = 0.0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
@@ -80,9 +84,9 @@ public class DecisivenessMoves extends Metric
 				try {
 					context.game().apply(context, trial.getMove(i));
 				}
-				catch(Exception e) // To avoid a few exceptions in rare cases.
+				catch(final Exception e) // To avoid a few exceptions in rare cases.
 				{
-					return 0;
+					return null;
 				}
 			}
 			

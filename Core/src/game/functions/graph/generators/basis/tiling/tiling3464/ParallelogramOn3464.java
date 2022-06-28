@@ -159,6 +159,7 @@ public class ParallelogramOn3464 extends Basis
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.SemiRegularTiling.id(), true);
 		concepts.set(Concept.ParallelogramShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

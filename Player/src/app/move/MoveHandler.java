@@ -2,14 +2,10 @@ package app.move;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.List;
 
 import app.PlayerApp;
 import app.utils.PuzzleSelectionType;
-import features.Feature;
-import features.feature_sets.BaseFeatureSet;
-import features.spatial.FeatureUtils;
-import features.spatial.instances.FeatureInstance;
+import game.equipment.component.Component;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
@@ -25,7 +21,6 @@ import other.location.Location;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.Vertex;
-import policies.softmax.SoftmaxFromMetadataSelection;
 import util.ContainerUtil;
 
 /**
@@ -124,7 +119,7 @@ public class MoveHandler
 			return false;
 		}
 
-		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves))
+		if (possibleMoves.size() > 1 || (possibleMoves.size() > 0 && forceMultiplePossibleMoves && !app.settingsPlayer().usingExhibitionApp()))
 		{
 			// If several different moves are possible.
 			return handleMultiplePossibleMoves(app, possibleMoves, context);
@@ -134,6 +129,14 @@ public class MoveHandler
 			if (MoveHandler.moveChecks(app, possibleMoves.get(0)))
 			{
 				app.manager().ref().applyHumanMoveToGame(app.manager(), possibleMoves.get(0));
+				
+				if (app.settingsPlayer().usingExhibitionApp())
+				{
+					// Disable play buttons until tests have been passed.
+					app.settingsPlayer().setTestsPassed(false);
+					app.checkButtonsEnabled();
+				}
+				
 				return true; // move found
 			}
 		}
@@ -145,49 +148,53 @@ public class MoveHandler
 	
 	private static void printMoveFeatures(final PlayerApp app, final Context context, final FastArrayList<Move> possibleMoves)
 	{
+		// Not supported anymore because decision trees in metadata mess up the implementation
+		System.err.println("Printing move features is not currently supported.");
+		
+		
 		// Don't apply move, but print active features for all matching moves
-		final SoftmaxFromMetadataSelection softmax = app.settingsPlayer().featurePrintingSoftmax();
-		softmax.initIfNeeded(context.game(), context.state().mover());
-		
-		final BaseFeatureSet[] featureSets = softmax.featureSets();
-		final BaseFeatureSet featureSet;
-		if (featureSets[0] != null)
-			featureSet = featureSets[0];
-		else
-			featureSet = featureSets[context.state().mover()];
-		
-		if (app.settingsPlayer().printMoveFeatures())
-		{
-			for (final Move move : possibleMoves)
-			{
-				final List<Feature> activeFeatures = featureSet.computeActiveFeatures(context, move);
-				System.out.println("Listing active features for move: " + move);
-				
-				for (final Feature activeFeature : activeFeatures)
-					System.out.println(activeFeature);
-			}
-		}
-			
-		if (app.settingsPlayer().printMoveFeatureInstances())
-		{
-			for (final Move move : possibleMoves)
-			{
-				final List<FeatureInstance> activeFeatureInstances = 
-						featureSet.getActiveSpatialFeatureInstances
-						(
-							context.state(), 
-							FeatureUtils.fromPos(context.trial().lastMove()),
-							FeatureUtils.toPos(context.trial().lastMove()),
-							FeatureUtils.fromPos(move),
-							FeatureUtils.toPos(move), 
-							move.mover()
-						);
-				System.out.println("Listing active feature instances for move: " + move);
-				
-				for (final FeatureInstance activeFeatureInstance : activeFeatureInstances)
-					System.out.println(activeFeatureInstance);
-			}
-		}
+//		final SoftmaxFromMetadataSelection softmax = app.settingsPlayer().featurePrintingSoftmax();
+//		softmax.initIfNeeded(context.game(), context.state().mover());
+//		
+//		final BaseFeatureSet[] featureSets = softmax.featureSets();
+//		final BaseFeatureSet featureSet;
+//		if (featureSets[0] != null)
+//			featureSet = featureSets[0];
+//		else
+//			featureSet = featureSets[context.state().mover()];
+//		
+//		if (app.settingsPlayer().printMoveFeatures())
+//		{
+//			for (final Move move : possibleMoves)
+//			{
+//				final List<Feature> activeFeatures = featureSet.computeActiveFeatures(context, move);
+//				System.out.println("Listing active features for move: " + move);
+//				
+//				for (final Feature activeFeature : activeFeatures)
+//					System.out.println(activeFeature);
+//			}
+//		}
+//			
+//		if (app.settingsPlayer().printMoveFeatureInstances())
+//		{
+//			for (final Move move : possibleMoves)
+//			{
+//				final List<FeatureInstance> activeFeatureInstances = 
+//						featureSet.getActiveSpatialFeatureInstances
+//						(
+//							context.state(), 
+//							FeatureUtils.fromPos(context.trial().lastMove()),
+//							FeatureUtils.toPos(context.trial().lastMove()),
+//							FeatureUtils.fromPos(move),
+//							FeatureUtils.toPos(move), 
+//							move.mover()
+//						);
+//				System.out.println("Listing active feature instances for move: " + move);
+//				
+//				for (final FeatureInstance activeFeatureInstance : activeFeatureInstances)
+//					System.out.println(activeFeatureInstance);
+//			}
+//		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -626,6 +633,40 @@ public class MoveHandler
 		}
 
 		return true;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Returns the component associated with the to position of the last move.
+	 */
+	public static Component getLastMovedPiece(final PlayerApp app)
+	{
+		final Context context = app.manager().ref().context();
+		final Move lastMove = context.trial().lastMove();
+		if (lastMove != null)
+		{
+			try
+			{
+				final int containerId = ContainerUtil.getContainerId(context, lastMove.getToLocation().site(), lastMove.getToLocation().siteType());	
+				final int what = context.containerState(containerId).what(lastMove.getToLocation().site(), lastMove.getToLocation().siteType());
+				
+				// TODO update exhib rules so that you can only drag to correct site on shared hand.s
+				if (containerId == 3)
+					return null;
+				
+				if (context.trial().numberRealMoves() <= 0 || what == 0)
+					return null;
+				
+				final Component lastMoveComponent = context.game().equipment().components()[what];
+				return lastMoveComponent;
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+		}
+		return null;
 	}
 	
 	//-------------------------------------------------------------------------

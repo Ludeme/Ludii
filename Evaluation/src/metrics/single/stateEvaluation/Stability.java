@@ -42,7 +42,7 @@ public class Stability extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -50,6 +50,10 @@ public class Stability extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
+		// Cannot perform move/state evaluation for matches.
+		if (game.hasSubgames() || game.isSimultaneousMoveGame())
+			return null;
+		
 		double avgStability = 0.0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{

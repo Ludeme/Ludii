@@ -91,7 +91,7 @@ public final class ForEach extends BaseRegionFunction
 		@Name final BooleanFunction If
 	)
 	{
-		return new ForEachSite(region,If);
+		return new ForEachSite(region, If);
 	}
 	
 	/**

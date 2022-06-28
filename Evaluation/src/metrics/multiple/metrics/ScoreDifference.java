@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
+import main.Constants;
 import metrics.Evaluation;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -29,7 +30,7 @@ public class ScoreDifference extends MultiMetricFramework
 			"Score Difference " + multiMetricValue.name(), 
 			"Difference in player scores.", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			concept,
 			multiMetricValue
 		);

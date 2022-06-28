@@ -9,12 +9,10 @@
         (piece "Disc" Each)
     })
     (rules
-        (start 
-            { 
+        (start { 
             (place Stack "Disc1"  12 count:15)
             (place Stack "Disc2"  25 count:15)
-            }
-        )
+        })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )

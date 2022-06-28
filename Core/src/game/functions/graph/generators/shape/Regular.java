@@ -122,6 +122,7 @@ public class Regular extends BaseGraphFunction
 	{
 		final BitSet concepts = new BitSet();
 		concepts.set(Concept.RegularShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

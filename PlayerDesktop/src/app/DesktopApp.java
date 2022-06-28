@@ -102,6 +102,11 @@ public class DesktopApp extends PlayerApp
 	private static JFileChooser jarFileChooser;
 	
 	/**
+	 * Reference to file chooser we use for selecting AI.DEF files (containing AI configurations)
+	 */
+	private static JFileChooser aiDefFileChooser;
+	
+	/**
 	 * Reference to file chooser we use for selecting LUD files
 	 */
 	private static JFileChooser gameFileChooser;
@@ -130,6 +135,9 @@ public class DesktopApp extends PlayerApp
 	
 	/** Last selected filepath for JSON file chooser (loaded from preferences) */
 	private static String lastSelectedJarPath;
+	
+	/** Last selected filepath for AI.DEF file chooser (loaded from preferences) */
+	private static String lastSelectedAiDefPath;
 	
 	/** Last selected filepath for Game file chooser (loaded from preferences) */
 	private static String lastSelectedGamePath;
@@ -716,8 +724,6 @@ public class DesktopApp extends PlayerApp
 							.put("JAR File", jarFile.getAbsolutePath())
 							.put("Class Name", choice)
 							);
-					
-					
 				}
 			}
 			else
@@ -761,6 +767,38 @@ public class DesktopApp extends PlayerApp
 		else
 		{
 			System.err.println("Could not find JSON file.");
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public JSONObject getNameFromAiDef()
+	{
+		// we'll have to go through file chooser
+		final JFileChooser fileChooser = DesktopApp.aiDefFileChooser();
+		fileChooser.setDialogTitle("Select AI.DEF file containing AI.");
+		final int aiDefReturnVal = fileChooser.showOpenDialog(DesktopApp.frame());
+		final File aiDefFile;
+
+		if (aiDefReturnVal == JFileChooser.APPROVE_OPTION)
+			aiDefFile = fileChooser.getSelectedFile();
+		else
+			aiDefFile = null;
+
+		if (aiDefFile != null && aiDefFile.exists())
+		{
+			return new JSONObject().put
+					(
+						"AI",
+						new JSONObject()
+						.put("algorithm", "From AI.DEF")
+						.put("AI.DEF File", aiDefFile.getAbsolutePath())
+					);
+		}
+		else
+		{
+			System.err.println("Could not find AI.DEF file.");
 		}
 		
 		return null;
@@ -964,6 +1002,32 @@ public class DesktopApp extends PlayerApp
 	public void repaint(final Rectangle rect)
 	{
 		view.repaint(rect);
+	}
+
+	@Override
+	public void checkButtonsEnabled()
+	{
+		// do nothing
+	}
+
+	public static JFileChooser aiDefFileChooser()
+	{
+		return aiDefFileChooser;
+	}
+
+	public static void setAiDefFileChooser(final JFileChooser aiDefFileChooser)
+	{
+		DesktopApp.aiDefFileChooser = aiDefFileChooser;
+	}
+
+	public static String lastSelectedAiDefPath()
+	{
+		return lastSelectedAiDefPath;
+	}
+
+	public static void setLastSelectedAiDefPath(final String lastSelectedAiDefPath)
+	{
+		DesktopApp.lastSelectedAiDefPath = lastSelectedAiDefPath;
 	}
 
 }

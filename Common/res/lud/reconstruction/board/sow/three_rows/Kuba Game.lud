@@ -1,0 +1,44 @@
+(game "Kuba Game"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 3 [3 | #] 
+            {
+            (track [#])
+            (track [#])
+            }
+        )
+        (piece "Seed" Shared)
+    })  
+    (rules 
+        (start [#])
+        (play 
+            (move Select 
+                (from [#])
+                (then (sow [#]))
+            )
+        )
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "This three-row mancala-style board game is attested on a statue of Shyaam a-Mbul a-Ngoong, ruler of the Kuba Kingdom of central Africa. It is the westernmost documented three-row mancala game.")
+        (rules "Three-row mancala board with two stores. Three holes in each row?")
+        (source "DLP evidence.")
+        (id "1516")
+        (version "1.3.4")
+        (classification "board/sow/three rows/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Democratic Republic of Congo, from around 1750 to 1799.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

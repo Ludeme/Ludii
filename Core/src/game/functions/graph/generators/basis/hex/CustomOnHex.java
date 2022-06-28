@@ -207,6 +207,7 @@ public class CustomOnHex extends Basis
 		final BitSet concepts = new BitSet();
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.HexTiling.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 

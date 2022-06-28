@@ -248,9 +248,10 @@ public class IsLine extends BaseBooleanFunction
 
 			final List<Radial> radials = graph.trajectories().radials(type, locn)
 					.distinctInDirection(dirn.absoluteDirection());
+			
 			for (final Radial radial : radials)
 			{
-				int count = whats.contains(whatLocn) ? 1 : 0;
+				int count = 1;
 				for (int indexPath = 1; indexPath < radial.steps().length; indexPath++)
 				{
 					final int index = radial.steps()[indexPath].id();
@@ -259,11 +260,13 @@ public class IsLine extends BaseBooleanFunction
 					{
 						count++;
 						if (!exact)
+						{
 							if (count == len)
 							{
 								context.setTo(origTo);
 								return true;
 							}
+						}
 					}
 					else if (contiguous)
 					{
@@ -285,11 +288,13 @@ public class IsLine extends BaseBooleanFunction
 							{
 								oppositeCount++;
 								if (!exact)
+								{
 									if (oppositeCount == len)
 									{
 										context.setTo(origTo);
 										return true;
 									}
+								}
 							}
 							else if (contiguous)
 							{

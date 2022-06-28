@@ -1,0 +1,279 @@
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+)
+
+(define "HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1) 
+)
+
+(define "PieceHasMoved"
+    (set State at:#1 0) 
+)
+
+(define "RememberPieceHasMoved"
+    (then 
+        (if 
+            (= (state at:(last To)) 1) 
+            ("PieceHasMoved" (last To))
+        ) 
+    ) 
+)
+
+(define "CaptureToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (remove 
+                (to) 
+            )
+        )
+    ) 
+)
+
+(define "KingNotCheckedAndToEmpty"
+    (and 
+        (is Empty (to)) 
+        (not ("IsInCheck" "King" Mover at:(to)))
+    )   
+)
+
+(define "DecideToCastle"
+    (move
+        Slide 
+        (from (mapEntry #1 (mover))) 
+        #2 
+        (between 
+            (exact #3) 
+            if:#4
+        ) 
+        (to 
+            if:True
+            (apply ("PieceHasMoved" (from)))
+        )
+        #5
+    )
+)
+
+(define "CastleRook"
+    (slide 
+        (from (mapEntry #1 (mover))) 
+        #2 
+        (between 
+            (exact #3) 
+            if:#4
+        ) 
+        (to 
+            if:True
+            (apply ("PieceHasMoved" (from)))
+        )
+    )
+)
+
+(define "SmallCastling"
+    ("DecideToCastle" "King" E 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookRight" W 2 True)))
+)
+
+(define "BigCastling"
+    ("DecideToCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookLeft" E 3 True)))
+)
+
+(define "SetEnPassantLocation"
+    (then 
+        (set Pending (ahead (last To) Backward))
+    )
+)
+
+(define "DoubleStep"
+    (move
+        Slide 
+        Forward 
+        (between (exact 2) if:(is Empty (between))) 
+        (to if:(is Empty (to))) 
+        "SetEnPassantLocation"
+    )
+)
+
+(define "InLocationEnPassant"
+    (and 
+        (is Pending) 
+        (= (to) (value Pending)) 
+    )
+)
+
+(define "EnPassant"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to if:"InLocationEnPassant") 
+        (then 
+            (remove 
+                (ahead (last To) Backward)
+            )
+        )
+    )
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Skak"  
+    (players {(player N) (player S)})  
+    (equipment { 
+        (board (square 8)) 
+        
+        (piece "Pawn" Each 
+            (or {
+                (if (is In (from) (sites Start (piece (what at:(from)))))
+                    "DoubleStep"
+                )
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                "EnPassant"
+                }
+                (then
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        
+        (piece "Rook" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+                "RememberPieceHasMoved"
+            )
+        )
+        (piece "King" Each 
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+                "RememberPieceHasMoved"
+            )
+        )
+        (piece "Bishop" Each 
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Knight" Each 
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Queen" Each 
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            ) 
+        )
+        
+        (map "King" {(pair 1 "E1") (pair 2 "E8")})
+        (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
+        (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
+    })  
+    (rules 
+        (start [#])
+        
+        (play 
+            (if "SameTurn"
+                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
+                (do 
+                    (or 
+                        (forEach Piece)
+                        (if (and 
+                                ("HasNeverMoved" "King")
+                                (not ("IsInCheck" "King" Mover)) 
+                            )
+                            (or
+                                (if (and 
+                                        ("HasNeverMoved" "RookLeft")
+                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                                    )
+                                    "BigCastling"
+                                )
+                                (if (and 
+                                        ("HasNeverMoved" "RookRight")
+                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                                    )
+                                    "SmallCastling"
+                                )
+                            )
+                        )
+                    )
+                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                )
+            )
+        )
+        
+        (end {
+            (if (and 
+                    ("IsInCheck" "King" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (= 1 (count Pieces Next)) (result Mover Win))
+            (if (no Moves Mover)  (result Mover Draw)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ultimately originates from Indian Chaturanga, arrived in Western Europe during the Middle Ages as Shatranj. Over several centuries, after seeming experimentation with movement, the adoption of the modern movement of the queen and bishop made chess what it is today. Modern Chess appeared sometimes during the fourteenth or fifteenth Century, when the vizier piece was replaced by the queen. It since has become perhaps the most popular game in the world, with massive international competitions.")
+        (aliases {"Mad Queen's Chess" "Queen's Chess" "Échecs" "Schach" "Ajedrez" "Xadrez" "Scacchi"})
+        (rules "Played on an 8x8 board with pieces with specialized moves: Pawns (8): can move one space forward; Rooks (2): can move any number of spaces orthogonally; Bishops (2): can move any number of spaces diagonally; Knight (2): moves in any direction, one space orthogonally with one space forward diagonally; Queens (1): can move any number of spaces orthogonally or diagonally; Kings (1): can move one space orthogonally or diagonally. Players capture pieces by moving onto a space occupied by an opponent's piece. Player wins when they capture the other player's king.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (id "44")
+        (version "1.3.4")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Eric Piette")
+        (origin  "This game was played in Europe, from around 1475 to 2022.")
+        }
+    )
+    
+    (graphics {
+        (show Check "King")
+        (piece Scale "Pawn" 0.825)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+        (board Style Chess)
+    })
+    
+)

@@ -1,0 +1,49 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Owana"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 4
+            (track "Track" "1,E,N,W" loop:True)
+        )        
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+    })  
+    (rules 
+        (start (set Count 4 to:(sites Track) ) )
+        
+        (play [#])
+        
+        (end {
+            (if (= 0 ("PiecesOwnedBy" P1)) (result P2 Win)) 
+            (if (= 0 ("PiecesOwnedBy" P2)) (result P1 Win)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Owana is a two-row mancala-style board game played by children in the Republic of Congo.")
+        (rules "2x4 holes board with two stores. Four counters per hole. Players sow in an anti-clockwise direction. The player who captures all of the opponent's counters wins.")
+        (source "DLP evidence.")
+        (id "1349")
+        (version "1.3.4")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Republic of Congo, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

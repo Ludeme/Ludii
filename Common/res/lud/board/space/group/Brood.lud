@@ -1,0 +1,299 @@
+// Shape matching utility
+
+(define "IfThisRotationDo"  // compiles but sometimes misses
+    (if
+        (= 0
+            (size Array
+                (difference
+                    (results
+                        from:(sites Group at:#4)
+                        to:(from)
+                        (+
+                            (+ (* 32 #1) (#2)) 
+                            (+
+                                (max
+                                    (results
+                                        from:(sites Group at:#4)
+                                        to:(from)
+                                        (- (* 32 #1))
+                                    )
+                                )
+                                (max
+                                    (results
+                                        from:(sites Group at:#4)
+                                        to:(from)
+                                        (- (#2))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (results
+                        from:(sites)
+                        to:(from)
+                        (value Piece at:(from))
+                    )
+                )
+            )
+        )
+        #3
+    )
+)
+
+(define "DRow" (/ (value Piece at:(from)) 32))
+(define "DCol" (% (value Piece at:(from)) 32))
+
+(define "IsSameSizeAsShapeAtValue"
+    (= (size Array (array (sites))) (size Array (array (sites Group at:#1))))
+)
+
+(define "IfShapessMatchDo"
+    (if
+        ("IsSameSizeAsShapeAtValue" #2) 
+        (priority 
+            {
+            ("IfThisRotationDo" ("DRow")        ("DCol") #1 #2) 
+            ("IfThisRotationDo" ("DRow")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow" "DCol") ("DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")        ("DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")        (- "DRow" "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DCol" "DRow") ("DCol") #1 #2) 
+            
+            ("IfThisRotationDo" (- "DRow")        (- "DCol") #1 #2) 
+            ("IfThisRotationDo" (- "DRow")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol" "DRow") (- "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DCol")        (- "DRow") #1 #2) 
+            ("IfThisRotationDo" ("DCol")        (- "DCol" "DRow") #1 #2) 
+            ("IfThisRotationDo" (- "DRow" "DCol") (- "DCol") #1 #2) 
+            }
+        )
+    )
+)
+
+//----------------------------------------------
+
+(define "RecordShapeVectorsAsValues" 
+    (set Var "LastRow" (row of:(max (array (sites Group at:(last To)))))
+        (then 
+            (set Var "LastCol" (max (results from:(sites Group at:(last To)) to:(from) (column of:(from))))
+                (then
+                    (forEach Site
+                        (sites Group at:(last To))
+                        (set Value at:(site) 
+                            (+
+                                (* 32 (- (var "LastRow") (row of:(site))))
+                                (- (var "LastCol") (column of:(site)))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+//----------------------------------
+// For each mover group find out how many matching groups there are and if that is less then the group multiply it by the group size and add to the score, otherwise square the group size and add it to the score
+
+(define "GroupSize" 
+    (size Group at:(var "KeySite"))
+)
+
+(define "BroodSize"
+    (count Value (var "KeySite") in:(values Remembered "ShapeCount"))
+)
+
+(define "RecordMultiplier" 
+    (forEach Site
+        (sites Group at:(var "KeySite")) 
+        (set State at:(site) (min ("BroodSize") ("GroupSize")))
+    )
+)
+
+(define "CountShapesOf"
+    (forEach Value
+        (values Remembered)
+        (and
+            {
+            (set Var "KeySite" (value)
+                (then
+                    (forEach Group
+                        if:(= #1 (who at:(to)))
+                        ("IfShapessMatchDo"
+                            (remember Value "ShapeCount"
+                                (var "KeySite")
+                            )
+                            (var "KeySite") 
+                        )
+                    )
+                )
+            )
+            }
+            (then ("RecordMultiplier"))
+        )
+        (then (forget Value All))
+    )
+)
+
+(define "ScorePlayer"
+    (forEach Group
+        if:(= #1 (who at:(to)))
+        (remember Value (regionSite (sites) index:0) unique:True)
+        (then
+            (and
+                {
+                ("CountShapesOf" #1)
+                (set Score Mover 0
+                    (then
+                        (forEach Piece (addScore Mover (state at:(from))))
+                    )
+                )     
+                }
+            )
+        )
+    )
+)
+
+(define "PlaceHex"
+    (do 
+        (forEach Site 
+            (sites Occupied by:Mover)
+            (set State at:(site) 0)
+        )
+        next:(move Add (piece (id "Hex" Mover)) (to (sites Empty))
+            (then ("RecordShapeVectorsAsValues"))
+        )
+        (then ("ScorePlayer" (mover)))
+    )
+)
+
+//--------------------------------------------------------- 
+(game "Brood" 
+    (players 2)
+    (equipment
+        {
+        (board <Board:size> use:Cell)
+        (piece "Hex" Each maxState:7 maxValue:1023) // 32rows * 32columns for recording vectors
+        (piece "Disc" Neutral)
+        (hand Shared)
+        }
+    )
+    (rules
+        <Protocol:pie>
+        <Protocol:setup>
+        (play
+            <Protocol:protocol>
+        )
+        (end
+            (if
+                <Protocol:endCondition>
+                (byScore)
+            )
+        )
+    )
+)   
+
+//---------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4" <(hex Hexagon 4)> "A boad of size 4 is currently selected.")
+    (item "5" <(hex Hexagon 5)> "A boad of size 5 is currently selected.")*
+    (item "6" <(hex Hexagon 6)> "A boad of size 6 is currently selected.")
+    (item "7" <(hex Hexagon 7)> "A boad of size 7 is currently selected.")
+    (item "8" <(hex Hexagon 8)> "A boad of size 8 is currently selected.")
+    (item "9" <(hex Hexagon 9)> "A boad of size 9 is currently selected.")
+    }
+) 
+
+(option "Piece Values" <Graphics> args:{ <values> }
+    {
+    (item "Hide" <> "Nothing is currently printed on the pieces.")*
+    (item "Show" <(show Piece State "Hex" Middle)> "Each piece currently shows the lesser of its brood's order and its brood's size.")
+    }
+)
+
+(option "Placement Protocol" <Protocol> args:{ <pie> <setup> <protocol> <endCondition> }
+    {
+    (item "12*" 
+        <>
+        <>
+        <
+        (if 
+            (or
+                (= 0 (count Moves))
+                (!= 0 (count MovesThisTurn))//(is Prev Mover)
+            )
+            ("PlaceHex")
+            (or
+                (move Pass)
+                (and
+                    {
+                    ("PlaceHex")
+                    } 
+                    (then (moveAgain))
+                )
+            )
+            (then (forget Value All))
+        )
+        >
+        <(all Passed)> 
+        "The 12* placement protocol is currently in effect. This is the protocol described in the rules above."
+    )*
+    (item "11*" 
+        <(meta (swap))> 
+        <(start {(place "Disc0" (handSite Shared))})>
+        <
+        (if
+            (!= 0 (count MovesThisTurn))
+            (move Add (piece "Disc0")
+                (to (sites Empty))
+                (then (if (= 1 (count MovesThisTurn)) (moveAgain)))
+            )
+            (or
+                ("PlaceHex")
+                (if
+                    (< 1 (count Sites in:(sites Empty)))
+                    (move Select (from (handSite Shared)) (then (moveAgain)))
+                )
+            )
+            (then (forget Value All))
+        )
+        >
+        <(is Full)> 
+        "With the current option, instead of the placement protocol described above, the following protocol is followed:
+        On your turn, you must either place 1 stone of your color or 2 stones of a neutral color. You may not do both. 
+        To place a piece of your color, you simply click an empty cell. 
+        To place two neutrals, first click the neutral piece above the board, then two empty cells. 
+        On the second player's first turn, they may chose to swap sides instead of making a placement.
+        The game ends when the board is full.
+        "
+    )
+    }
+)
+
+//---------------
+
+(metadata
+    (info
+        {
+        }
+    )
+    (graphics
+        {
+        (board Colour Phase0 (colour 100 200 250 120))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour Cream))
+        (player Colour Neutral (colour 72 144 160 190))
+        (piece Scale Neutral .6)
+        <Graphics:values>
+        }
+    )
+    (ai (heuristics (score)))
+)

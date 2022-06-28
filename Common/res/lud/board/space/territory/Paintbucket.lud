@@ -1,0 +1,146 @@
+(define "FlipGroup"
+    (add 
+        (to 
+            (sites Group at:(last From) Orthogonal)
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "FlipGroupAndCountFriendly"
+    (do
+        (add 
+            (to 
+                (sites Group at:(last From) Orthogonal)
+                (apply (remove (to)))
+            )
+        )
+        next:(and
+            (set Score P1 (count Groups Orthogonal if:(= (id P1) (who at:(to)))))
+            (set Score P2 (count Groups Orthogonal if:(= (id P2) (who at:(to)))))
+        )
+    )
+)
+
+(define "FlipGroupAndCountEnemy"
+    (do
+        (add 
+            (to 
+                (sites Group at:(last From) Orthogonal)
+                (apply (remove (to)))
+            )
+        )
+        next:(and
+            (set Score P1 (* -1 (count Groups Orthogonal if:(= (id P2) (who at:(to))))))
+            (set Score P2 (* -1 (count Groups Orthogonal if:(= (id P1) (who at:(to))))))
+        )
+    )
+)
+
+(define "FlipGroupAndCalculateDifference"
+    (do
+        (add 
+            (to 
+                (sites Group at:(last From) Orthogonal)
+                (apply (remove (to)))
+            )
+        )
+        next:(and
+            (set Score P1 
+                (-
+                    (count Groups Orthogonal if:(= (id P1) (who at:(to))))
+                    (count Groups Orthogonal if:(= (id P2) (who at:(to))))
+                )
+            )
+            (set Score P2 
+                (-
+                    (count Groups Orthogonal if:(= (id P2) (who at:(to))))
+                    (count Groups Orthogonal if:(= (id P1) (who at:(to))))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Paintbucket"
+    (players 2)
+    (equipment
+        {
+        (board (square <Board>))
+        (tile "Square" Each)
+        }
+    )
+    (rules
+        (start 
+            {
+            (place "Square1" (sites Phase 0))
+            (place "Square2" (sites Phase 1))
+            <Score:start>
+            }
+        )
+        (play
+            (move Select
+                (from (sites Occupied by:Next))
+                (then <Score:running>)
+            )
+        )
+        (end 
+            (if 
+                (no Pieces Next) 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <board> }
+    {
+    (item "6x6"    <6>  "A 6x6 board is currently selected")
+    (item "8x8"    <8>  "An 8x8 board is currently selected.")*
+    (item "10x10" <10>  "A 10x10 board is currently selected")
+    (item "12x12" <12>  "A 12x12 board is currently selected")
+    }
+)
+
+(option "Heuristic" <Score> args:{ <running> <start> }
+    {
+    (item "Maximize # of Friendly Groups"    <("FlipGroupAndCountFriendly")> <(set Score P1 (count Sites in:(sites Occupied by:P1))) (set Score P2 (count Sites in:(sites Occupied by:P2)))> "A running count of your number of groups is show as a heuristic.")
+    (item "Minimize # of Enemy Groups"    <("FlipGroupAndCountEnemy")> <(set Score P1 (* -1 (count Sites in:(sites Occupied by:P2)))) (set Score P2 (* -1 (count Sites in:(sites Occupied by:P1))))> "A running count of (the inverse of) the number of enemy groups is show as a heuristic.")
+    (item "Maximize Friendly Minus Enemy Groups"   <("FlipGroupAndCalculateDifference")> <>  "A running count of your number of groups minus the number of enemy groups is kept.")
+    (item "None"   <("FlipGroup")> <>  "No heuristic is used.")*
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "PAINTBUCKET is a flipping game of elimination for two players, White and Black.
+        Paintbucket was designed by Michael Amundsen and Alek Erickson in 2022.")
+        (rules "DEFINITION: A group is a maximal set of orthogonally adjacent like-colored pieces.
+            GAMEPLAY: On your turn, flip an enemy group.
+        OBJECTIVE: Eliminate the enemy pieces.")
+        (id "1977")
+        (version "1.3.4")
+        (classification "board/space/territory")
+        (author "Alek Erickson and Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2022")
+        }
+    )
+    (graphics {
+        (player Colour P1 (colour 239 227 179))
+        (player Colour P2 (colour 127 127 127))
+    })
+    (ai
+        (bestAgent "Alpha-Beta")
+        (heuristics 
+            (score)
+        )
+    )
+)

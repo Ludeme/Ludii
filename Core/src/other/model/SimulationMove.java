@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import main.Status;
@@ -182,12 +183,43 @@ public final class SimulationMove extends Model
 		final boolean forceNotThreaded,
 		final AgentMoveCallback inPreAgentMoveCallback, 
 		final AgentMoveCallback inPostAgentMoveCallback,
-		final boolean startNewStep,
+		final boolean checkMoveValid,
 		final MoveMessageCallback moveMessageCallback
 	)
 	{
+		if (!ready)
+		{
+			// we're already running our current step, so don't start a new one
+			return;
+		}
+		
+		while (true)
+		{
+			final ThinkingThread thinkingThread = currentThinkingThread;
+			
+			if (thinkingThread == null || !thinkingThread.isAlive())
+				break;
+			
+			// TODO uncomment below if we move to Java >= 9
+			//Thread.onSpinWait();
+		}
+		
+		final Game game = context.game();
 		ready = false;
 		running = true;
+		final Trial trial = context.trial();
+		if (!trial.over())
+		{
+			final FastArrayList<Move> legalMoves = new FastArrayList<Move>(context.game().moves(context).moves());
+		    game.apply(context, legalMoves.get(0));
+		}
+
+		final FastArrayList<Move> legalMoves = new FastArrayList<Move>(context.game().moves(context).moves());
+		if (legalMoves.isEmpty())
+			context.trial().setStatus(new Status(0));
+
+		running = false;
+		ready = true;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -288,5 +320,31 @@ public final class SimulationMove extends Model
 	public boolean callsGameMoves()
 	{
 		return true;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The specified move, else a random move if it's not valid.
+	 */
+	static Move checkMoveValid
+	(
+		final boolean checkMoveValid, final Context context, 
+		final Move move, final MoveMessageCallback callBack
+	) 
+	{
+		if (checkMoveValid && !context.model().verifyMoveLegal(context, move))
+		{
+			final FastArrayList<Move> legalMoves = context.game().moves(context).moves();
+			final Move randomMove = legalMoves.get(ThreadLocalRandom.current().nextInt(legalMoves.size()));
+			
+			final String msg =  "illegal move detected: " + move.actions() + 
+								", instead applying: " + randomMove;
+			callBack.call(msg);
+			System.out.println(msg);
+			
+			return randomMove;
+		}
+		return move;
 	}
 }

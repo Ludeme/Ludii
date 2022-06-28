@@ -1,6 +1,7 @@
 package game.functions.graph.generators.basis.tiling.tiling3464;
 
 import java.awt.geom.Point2D;
+import java.util.BitSet;
 
 import annotations.Hide;
 import annotations.Opt;
@@ -12,6 +13,7 @@ import game.functions.dim.math.Add;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.Basis;
 import game.util.graph.Poly;
+import other.concept.Concept;
 
 //-----------------------------------------------------------------------------
 
@@ -172,6 +174,16 @@ public class Tiling3464 extends Basis
 	public void preprocess(Game game)
 	{
 		// Nothing to do.
+	}
+	
+	@Override
+	public BitSet concepts(final Game game)
+	{
+		final BitSet concepts = new BitSet();
+		concepts.or(super.concepts(game));
+		concepts.set(Concept.SemiRegularTiling.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
+		return concepts;
 	}
 	
 	//-------------------------------------------------------------------------

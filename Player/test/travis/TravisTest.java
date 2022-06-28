@@ -216,6 +216,7 @@ public class TravisTest
 			excludedCustomPlayouts.add("Lifeline");
 			excludedCustomPlayouts.add("Shisen-Sho");
 			excludedCustomPlayouts.add("Allemande");
+			excludedCustomPlayouts.add("Chains of Thought");
 
 			if (!containsPartOf(excludedCustomPlayouts, game.name()))
 				testCustomPlayouts();
@@ -229,6 +230,7 @@ public class TravisTest
 			excludedTensors.add("Lifeline");
 			excludedTensors.add("Shisen-Sho");
 			excludedTensors.add("Allemande");
+			excludedTensors.add("Chains of Thought");
 
 			if (!containsPartOf(excludedTensors, game.name()))
 				testStateMoveTensors();
@@ -243,6 +245,7 @@ public class TravisTest
 			excludedPlayoutPerOption.add("Lifeline");
 			excludedPlayoutPerOption.add("Shisen-Sho");
 			excludedPlayoutPerOption.add("Allemande");
+			excludedPlayoutPerOption.add("Chains of Thought");
 
 			if (!containsPartOf(excludedPlayoutPerOption, game.name()))
 				testPlayoutPerOption((USE_TIME) ? (hour < MIN_HOUR || hour > MAX_HOUR) : true);
@@ -259,6 +262,7 @@ public class TravisTest
 			excludedParallelPlayouts.add("Lifeline");
 			excludedParallelPlayouts.add("Shisen-Sho");
 			excludedParallelPlayouts.add("Allemande");
+			excludedParallelPlayouts.add("Chains of Thought");
 
 			if (!containsPartOf(excludedParallelPlayouts, game.name()))
 				testParallelPlayouts(true);
@@ -289,6 +293,7 @@ public class TravisTest
 			excludedSerialisation.add("Lifeline");
 			excludedSerialisation.add("Shisen-Sho");
 			excludedSerialisation.add("Allemande");
+			excludedSerialisation.add("Chains of Thought");
 
 			if (!containsPartOf(excludedSerialisation, game.name()))
 				testTrialSerialisation();

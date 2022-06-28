@@ -1,0 +1,74 @@
+(define "NextHoleFrom" (trackSite Move from:#1 steps:#2))
+
+//-------------------------------------------------------------------------
+
+(game "Lelac"
+    (players 2)
+    (equipment {
+        (board 
+            (concentric {0 10}) 
+            (track "Track" {0..9} loop:True)
+            use:Vertex
+        )
+        (piece "Square" Shared)
+        (dice d:6 num:1)
+        (regions P1 (expand (sites Bottom) steps:2)) 
+        (regions P2 (expand (sites Top) steps:2))  
+    })
+    (rules
+        (start (set Count 1 to:(sites Board)))
+        (play
+            (do (roll)
+                next:(move 
+                    (from 
+                        (if (is Prev Mover)
+                            (sites {(last From)})
+                            (forEach (sites Mover) if:(is Occupied (site)))
+                        )
+                    )
+                    (to
+                        ("NextHoleFrom" (from) (count Pips))	
+                    )
+                    (then
+                        (if (is Occupied (last From)) (moveAgain))
+                    )
+                )
+            )
+        )
+        (end 
+            (forEach Player
+                if:(all Sites (sites Player) if:(and (is Next Player) (is Empty (site))))
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Lelac is a two-player strategy game related to mancalas.")
+        (rules "The game is played on a board with ten round pits arranged in a circle. Each player owns the semicircle closest to him. The game requires ten seeds and one standard six-faced die. At the start of the game, each pit contains one seed.
+            
+            During their turn, a player rolls a die. He then chooses one of his nonempty pits to sow. They take one seed from the sown pit, and move it counterclockwise according to the die value rolled. Then, they must roll to move each remaining seed from the sown pit. The turn only ends once the sown pit is empty. So, for example, if a player chooses to sow a pit with 4 seeds after his initial roll, 3 additional rolls will be needed.
+            
+        A player wins when all ten seeds are on their part of the board at the end of their turn.")
+        (id "1794")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/317995/lelac\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.4")
+        (classification "board/race/fill")
+        (author "Mike Zapawa")
+        (credit "Eric Piette")
+        (date "2020")
+        }
+    )
+    (graphics {
+        (piece Scale "Square" 0.4)
+        (show Edges Hidden)
+        (board Colour OuterVertices (colour Hidden))
+        (show Symbol "disc" (sites Board) fillColour:(colour Hidden) edgeColour:(colour Brown))
+        (hand Placement Shared scale:0.1 offsetX:0.45 offsetY:0.5)
+    })
+)

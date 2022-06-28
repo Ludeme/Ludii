@@ -24,7 +24,7 @@ public abstract class Metric
 	/** Brief description of what this metric measures. */ 
 	private final String notes;  
 	
-	/** Range of possible values. -1 indicates no bound.*/
+	/** Range of possible values.*/
 	private final Range<Double, Double> range;
 	
 	/** Concept associated with this Metric. */
@@ -97,7 +97,7 @@ public abstract class Metric
 	 * @param trials At least one trial to be measured, may be multiple trials.
 	 * @return Evaluation of the specified trial(s) according to this metric.
 	 */
-	public abstract double apply
+	public abstract Double apply
 	(
 		final Game game,
 		final Evaluation evaluation,

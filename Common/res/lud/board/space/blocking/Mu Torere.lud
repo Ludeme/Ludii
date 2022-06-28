@@ -44,14 +44,11 @@
     (item "Complete"         
         <(move
             Step 
-            (to if:(or 
-                    (and 
-                        (not "Centre") 
-                        ("IsEmpty")
-                    ) 
-                    (and 
+            (to if:(and
+                    ("IsEmpty")
+                    (or
+                        (not "Centre")
                         (is Related Adjacent (from) (sites Occupied by:Next))
-                        (and ("IsEmpty") ("Centre"))
                     )
                 ) 
             )
@@ -98,7 +95,7 @@
         (useFor "Ruleset/Simple (Suggested)" (id "559"))
         (source "Murray 1951: 93")
         (id "81")
-        (version "1.3.3")
+        (version "1.3.4")
         (classification "board/space/blocking")
         (credit "Eric Piette")
         (origin  "This game was played in New Zealand, around 1912.")

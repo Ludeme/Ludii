@@ -1,0 +1,47 @@
+(game "Lothal Game"
+    (players 2)  
+    (equipment { 
+        (board 
+            (remove
+                (merge {
+                    (rectangle 1 5)
+                    (rectangle 5 1)
+                    (shift 0 4 (rectangle 1 5))
+                    (shift 4 0 (rectangle 5 1))
+                })
+                cells:{6}
+            )
+        )
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This board comes from the Harappan site of Lothal in modern India.")
+        (rules "Sixteen squares arranged in a single square-shaped track, with five spaces on a side.")
+        (source "DLP evidence.")
+        (id "1020")
+        (version "1.3.4")
+        (classification "board/race/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 2125BCE to 1660BCE.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

@@ -87,6 +87,11 @@ public class IdRuleset
 		{
 			e.printStackTrace();
 		}
+		catch (final NullPointerException e)
+		{
+			System.err.println("Try cleaning your Eclipse projects!");
+			e.printStackTrace();
+		}
 
 		
 		System.err.println("NOT FOUND");

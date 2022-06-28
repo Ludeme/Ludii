@@ -84,7 +84,7 @@ public final class FirstMoveOnTrack extends Effect
 
 		final int originSiteValue = context.site();
 
-		for (int i = 0; i < track.elems().length;i++)
+		for (int i = 0; i < track.elems().length; i++)
 		{
 			final int site = track.elems()[i].site;
 			if (site < 0)

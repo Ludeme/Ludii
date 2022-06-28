@@ -457,17 +457,17 @@ public class Directions extends DirectionsFunction implements Serializable
 			final ContainerState cs = context.containerState(containerId);
 			final int what = cs.what(site, graphType);
 			
-			if (what < 1 && newComponent == null) // we need a component to return a relative direction according to it.
-				return new ArrayList<AbsoluteDirection>();
+//			if ( &newComponent == null) // we need a component to return a relative direction according to it.
+//				return new ArrayList<AbsoluteDirection>();
 			
-			final Component component = (newComponent != null) ? newComponent : context.components()[what];
+			final Component component = (newComponent != null) ? newComponent : (what >= 1) ? context.components()[what] : null;
 
 			final List<DirectionFacing> directionsSupported = (bySite) ? element.supportedDirections(relativeDirectionType)
 					: topology.supportedDirections(relativeDirectionType, graphType);
 
 			// If no facing direction, we consider the piece to face to the north.
 			DirectionFacing facingDirection = (newFacing != null) ? newFacing
-					: (component.getDirn() != null) ? component.getDirn() : CompassDirection.N;
+					: (component != null) ? ((component.getDirn() != null) ? component.getDirn() : CompassDirection.N) : CompassDirection.N;
 			
 			// We apply the rotation here.
 			int rotation = (newRotation == null) ? cs.rotation(site, graphType) : newRotation.intValue();

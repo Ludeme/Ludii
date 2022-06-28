@@ -50,7 +50,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * If this is set to true, we allow for the user of a Feature Set cache that
+	 * If this is set to true, we allow for the use of a Feature Set cache that
 	 * recognises when we try to load exactly the same feature set and returns
 	 * the same object instead of constructing a new one.
 	 * 

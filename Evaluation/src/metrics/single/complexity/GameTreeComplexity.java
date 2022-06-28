@@ -3,6 +3,7 @@ package metrics.single.complexity;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
@@ -12,7 +13,8 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * Game Tree Complexity Estimate.
+ * Estimate of the number of possible distinct play traces. 
+ * https://www.pipmodern.com/post/complexity-state-space-game-tree
  * 
  * @author matthew.stephenson
  */
@@ -29,9 +31,9 @@ public class GameTreeComplexity extends Metric
 		super
 		(
 			"Game Tree Complexity", 
-			"Game Tree Complexity Estimate.", 
+			"Estimate of the number of possible distinct play traces. ", 
 			0.0, 
-			-1,
+			Constants.INFINITY,
 			Concept.GameTreeComplexity
 		);
 	}
@@ -39,7 +41,7 @@ public class GameTreeComplexity extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,

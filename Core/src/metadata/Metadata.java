@@ -9,6 +9,7 @@ import game.Game;
 import metadata.ai.Ai;
 import metadata.graphics.Graphics;
 import metadata.info.Info;
+import metadata.recon.Recon;
 
 /**
  * The metadata of a game.
@@ -30,12 +31,16 @@ public class Metadata implements MetadataItem, Serializable
 	/** Our AI-related metadata (heuristics, features, etc.). */
 	private final Ai ai;
 	
+	/** Our Recon-related metadata (heuristics, features, etc.). */
+	private final Recon recon;
+	
 	//-----------------------------------------------------------------------
 
 	/**
 	 * @param info     The info metadata.
 	 * @param graphics The graphics metadata.
 	 * @param ai       Metadata for AIs playing this game.
+	 * @param recon    The metadata related to reconstruction.
 	 * 
 	 * @example (metadata (info { (description "Description of The game") (source
 	 *          "Source of the game") (version "1.0.0") (classification
@@ -47,7 +52,8 @@ public class Metadata implements MetadataItem, Serializable
 	(
 		@Opt final Info info,
 		@Opt final Graphics graphics,
-		@Opt final Ai ai
+		@Opt final Ai ai,
+		@Opt final Recon recon 
 	)
 	{
 		// Set info metadata.
@@ -76,7 +82,13 @@ public class Metadata implements MetadataItem, Serializable
 		if (ai != null)
 			this.ai = ai;
 		else
-			this.ai = new Ai(null, null, null, null, null);
+			this.ai = new Ai(null, null, null, null, null, null);
+		
+		// Set Recon metadata.
+		if (recon != null)
+			this.recon = recon;
+		else
+			this.recon = new Recon(null, null);
 	}
 
 	/**
@@ -87,7 +99,8 @@ public class Metadata implements MetadataItem, Serializable
 	{
 		this.info 	  = new Info(null, null);
 		this.graphics = new Graphics(null, null);
-		this.ai 	  = new Ai(null, null, null, null, null);		
+		this.ai 	  = new Ai(null, null, null, null, null, null);	
+		this.recon 	  = new Recon(null, null);	
 	}
 	
 	//-------------------------------------------------------------------------
@@ -116,6 +129,14 @@ public class Metadata implements MetadataItem, Serializable
 		return ai;
 	}
 	
+	/**
+	 * @return Our Recon metadata
+	 */
+	public Recon recon()
+	{
+		return recon;
+	}
+	
 	//-------------------------------------------------------------------------
 
 	@Override
@@ -131,6 +152,8 @@ public class Metadata implements MetadataItem, Serializable
 			sb.append(graphics.toString());
 		if (ai != null)
 			sb.append(ai.toString());
+		if (recon != null)
+			sb.append(recon.toString());
 		
 		sb.append(")\n");
 		

@@ -47,6 +47,9 @@ public class Referee
 
 	/** Update visualisation of what AI is thinking every x milliseconds */
 	public static final int AI_VIS_UPDATE_TIME = 40;
+	
+	/** Thread for checking model to make moves. */
+	private RefereeStepThread moveThread = null;
 
 	//-------------------------------------------------------------------------
 
@@ -422,171 +425,182 @@ public class Referee
 				else
 				{
 					allowHumanBasedStepStart.set(model.expectsHumanInput());
-					final Thread thread = new Thread(() -> 
+					
+					if (moveThread != null && moveThread.isAlive())
+						moveThread.runnable.shouldTerminate = true;
+					
+					moveThread = new RefereeStepThread(new RefereeStepRunnable()
 					{
-						final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.aiSelected());
-
-						List<AI> agents = null;
-						if (!manager.settingsManager().agentsPaused())
+						@Override
+						public void run()
 						{
-							agents = AIDetails.convertToAIList(manager.aiSelected());
-						}
-
-						// make sure any AIs are initialised
-						if (agents != null)
-						{
-							for (int p = 1; p <= context.game().players().count(); ++p)
+							final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.aiSelected());
+	
+							List<AI> agents = null;
+							if (!manager.settingsManager().agentsPaused())
 							{
-								if (agents.get(p) == null)
-									continue;
-
-								if (!agents.get(p).supportsGame(context.game()))
+								agents = AIDetails.convertToAIList(manager.aiSelected());
+							}
+	
+							// make sure any AIs are initialised
+							if (agents != null)
+							{
+								for (int p = 1; p <= context.game().players().count(); ++p)
 								{
-
-									final AI oldAI = manager.aiSelected()[p].ai();
-									final AI newAI = AIUtils.defaultAiForGame(context.game());
-
-									final JSONObject json = new JSONObject()
-												.put("AI", new JSONObject()
-												.put("algorithm", newAI.friendlyName())
+									if (agents.get(p) == null)
+										continue;
+	
+									if (!agents.get(p).supportsGame(context.game()))
+									{
+	
+										final AI oldAI = manager.aiSelected()[p].ai();
+										final AI newAI = AIUtils.defaultAiForGame(context.game());
+	
+										final JSONObject json = new JSONObject()
+													.put("AI", new JSONObject()
+													.put("algorithm", newAI.friendlyName())
+												);
+	
+										manager.aiSelected()[p] = new AIDetails(manager, json, p, "Ludii AI");
+	
+										EventQueue.invokeLater(() -> 
+										{
+											manager.getPlayerInterface().addTextToStatusPanel
+											(
+												oldAI.friendlyName() + " does not support this game. Switching to default AI for this game: " 
+												+ 
+												newAI.friendlyName() + ".\n"
 											);
-
-									manager.aiSelected()[p] = new AIDetails(manager, json, p, "Ludii AI");
-
-									EventQueue.invokeLater(() -> 
-									{
-										manager.getPlayerInterface().addTextToStatusPanel
-										(
-											oldAI.friendlyName() + " does not support this game. Switching to default AI for this game: " 
-											+ 
-											newAI.friendlyName() + ".\n"
-										);
-									});
-								}
-
-								agents.get(p).initIfNeeded(context.game(), p);
-							}
-						}
-						
-						final Trial startInstanceTrial = context.currentInstanceContext().trial();
-
-						model.startNewStep
-						(
-							context,
-							agents,
-							thinkTime,
-							-1, -1,
-							manager.settingsManager().minimumAgentThinkTime(),
-							false, 		// don't block
-							true, 		// force use of threads
-							false,		// don't force use of no threads
-							new AgentMoveCallback()
-							{
-								@Override
-								public long call(final Move move)
-								{
-									preMoveApplication(manager, move);
-									return 0L;
-								}
-							},
-							new AgentMoveCallback()
-							{
-
-								@Override
-								public long call(final Move move)
-								{
-									postMoveApplication(manager, move, false);
-									return -1L;
-								}
-							},
-							true,
-							new MoveMessageCallback()
-							{
-								@Override
-								public void call(final String message)
-								{
-									manager.getPlayerInterface().addTextToStatusPanel(message);
+										});
+									}
+	
+									agents.get(p).initIfNeeded(context.game(), p);
 								}
 							}
-						);
-
-						while (!model.isReady())
-						{
-							manager.setLiveAIs(model.getLiveAIs());
-							allowHumanBasedStepStart.set(model.expectsHumanInput());
-							try
-							{
-								final List<AI> liveAIs = manager.liveAIs();
-								if (liveAIs != null && !liveAIs.isEmpty())
-								{
-									EventQueue.invokeAndWait(() ->
-									{
-										manager.getPlayerInterface().repaint();
-									});
-								}
-
-								Thread.sleep(AI_VIS_UPDATE_TIME);
-							}
-							catch (final InterruptedException | InvocationTargetException e)
-							{
-								e.printStackTrace();
-							}
-						}
-
-						EventQueue.invokeLater(() -> 
-						{
-							manager.getPlayerInterface().repaint();
-						});
-						
-						allowHumanBasedStepStart.set(false);
-						manager.setLiveAIs(null);
-						
-						// If we transitioned to new instance, we need to pause
-						if (startInstanceTrial != context.currentInstanceContext().trial())
-							manager.settingsManager().setAgentsPaused(manager, true);
-
-						if (!manager.settingsManager().agentsPaused())
-						{
-							final List<AI> ais = model.getLastStepAIs();
 							
-							EventQueue.invokeLater(() ->
-							{
-								for (int i = 0; i < ais.size(); ++i)
+							final Trial startInstanceTrial = context.currentInstanceContext().trial();
+	
+							model.startNewStep
+							(
+								context,
+								agents,
+								thinkTime,
+								-1, -1,
+								manager.settingsManager().minimumAgentThinkTime(),
+								false, 		// don't block
+								true, 		// force use of threads
+								false,		// don't force use of no threads
+								new AgentMoveCallback()
 								{
-									final AI ai = ais.get(i);
-
-									if (ai != null)
+									@Override
+									public long call(final Move move)
 									{
-										final String analysisReport = ai.generateAnalysisReport();
-										if (analysisReport != null)
-											manager.getPlayerInterface().addTextToAnalysisPanel(analysisReport + "\n");
+										preMoveApplication(manager, move);
+										return 0L;
+									}
+								},
+								new AgentMoveCallback()
+								{
+	
+									@Override
+									public long call(final Move move)
+									{
+										postMoveApplication(manager, move, false);
+										return -1L;
+									}
+								},
+								true,
+								new MoveMessageCallback()
+								{
+									@Override
+									public void call(final String message)
+									{
+										manager.getPlayerInterface().addTextToStatusPanel(message);
 									}
 								}
-							});
-
-							if (!context().trial().over())
+							);
+	
+							while (!model.isReady() && !shouldTerminate)
 							{
-								wantNextMoveCall.set(true);
-								nextMove(manager, false);
+								manager.setLiveAIs(model.getLiveAIs());
+								allowHumanBasedStepStart.set(model.expectsHumanInput());
+								try
+								{
+									final List<AI> liveAIs = manager.liveAIs();
+									if (liveAIs != null && !liveAIs.isEmpty())
+									{
+										EventQueue.invokeAndWait(() ->
+										{
+											manager.getPlayerInterface().repaint();
+										});
+									}
+	
+									Thread.sleep(AI_VIS_UPDATE_TIME);
+								}
+								catch (final InterruptedException | InvocationTargetException e)
+								{
+									e.printStackTrace();
+								}
+							}
+							
+							if (shouldTerminate)
+								return;
+	
+							EventQueue.invokeLater(() -> 
+							{
+								manager.getPlayerInterface().repaint();
+							});
+							
+							allowHumanBasedStepStart.set(false);
+							manager.setLiveAIs(null);
+							
+							// If we transitioned to new instance, we need to pause
+							if (startInstanceTrial != context.currentInstanceContext().trial())
+								manager.settingsManager().setAgentsPaused(manager, true);
+	
+							if (!manager.settingsManager().agentsPaused())
+							{
+								final List<AI> ais = model.getLastStepAIs();
+								
+								EventQueue.invokeLater(() ->
+								{
+									for (int i = 0; i < ais.size(); ++i)
+									{
+										final AI ai = ais.get(i);
+	
+										if (ai != null)
+										{
+											final String analysisReport = ai.generateAnalysisReport();
+											if (analysisReport != null)
+												manager.getPlayerInterface().addTextToAnalysisPanel(analysisReport + "\n");
+										}
+									}
+								});
+	
+								if (!context().trial().over())
+								{
+									wantNextMoveCall.set(true);
+									nextMove(manager, false);
+								}
+								else
+								{
+									allowHumanBasedStepStart.set(true);
+								}
 							}
 							else
 							{
 								allowHumanBasedStepStart.set(true);
 							}
 						}
-						else
-						{
-							allowHumanBasedStepStart.set(true);
-						}
 					});
 
-					thread.setDaemon(true);
-					thread.start();
+					moveThread.setDaemon(true);
+					moveThread.start();
 
-					// don't return until the model has at least started running (or maybe instantly completed)
-					while (!wantNextMoveCall.get() && thread.isAlive() && (model.isReady() || !model.isRunning()))
+					// Don't return until the model has at least started running (or maybe instantly completed)
+					while (!wantNextMoveCall.get() && moveThread != null && moveThread.isAlive() && (model.isReady() || !model.isRunning()))
 					{
-						// don't return from call yet, keep calling thread occupied until
+						// Don't return from call yet, keep calling thread occupied until
 						// model is at least properly running (or maybe already finished)
 					}
 				}
@@ -698,5 +712,40 @@ public class Referee
 	}
     
     //-------------------------------------------------------------------------
+	
+	/**
+	 * Runnable for per-step threads in Referee
+	 * 
+	 * @author Dennis Soemers
+	 */
+	protected static abstract class RefereeStepRunnable implements Runnable
+	{
+		/** We can set this to true to indicate that we want to terminate, for example when loading a new game */
+		public boolean shouldTerminate = false;
+	}
+	
+	/**
+	 * Per-step thread for referee
+	 * 
+	 * @author Dennis Soemers
+	 */
+	protected static class RefereeStepThread extends Thread
+	{
+		
+		/** Our runnable */
+		public final RefereeStepRunnable runnable;
+		
+		/**
+		 * Constructor
+		 * @param runnable
+		 */
+		public RefereeStepThread(final RefereeStepRunnable runnable)
+		{
+			super(runnable);
+			this.runnable = runnable;
+		}
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

@@ -388,7 +388,7 @@ public class ActionSetValue extends BaseAction
 	public BitSet concepts(final Context context, final Moves movesLudeme)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.SetSiteState.id(), true);
+		concepts.set(Concept.SetValue.id(), true);
 
 		return concepts;
 	}

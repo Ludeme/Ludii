@@ -1,0 +1,127 @@
+// Ecosys 
+// Place a stone to an empty site with the following limitation.
+// A stone must not be placed next to a group that has more stones than there are friendly groups.
+// Last to play wins.
+
+(define "ToToSites"
+    (to
+        (difference
+            (sites Empty)
+            (forEach
+                of:(sites Occupied by:Mover) 
+                (if 
+                    (>= (value Piece at:(site)) (score Mover))
+                    (sites Around (site) <Board:directions>)
+            )) 
+))) 
+
+(define "SetNewGroupValue"
+    (forEach Site 
+        (sites Group at:(last To) <Board:directions>)
+        (set Value at:(site) (count Sites in:(sites Group at:(last To) <Board:directions>)))
+))
+//--------------------------
+(game "Ecosys"
+    (players 2)
+    (equipment
+        {
+        (<Board:type>)
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (start (set Score Each 0))
+        (play
+            (move Add
+                ("ToToSites")
+                (then
+                    (and
+                        ("SetNewGroupValue")
+                        (set Score Mover (size Array (sizes Group <Board:directions> Mover))) 
+        ))))
+        (end 
+            (if 
+                (no Moves Next)
+                (result Mover Win)
+)))) 
+
+//--------------------------------------
+
+(option "Board" <Board> args:{ <type> <directions> <graphics> }
+    {
+    (item "Square 5" <(board (square Square 5) use:Vertex)> <All> <"SquareGraphics"> "5 Square")
+    (item "Square 7" <(board (square Square 7) use:Vertex)> <All> <"SquareGraphics"> "7 Square")
+    (item "Go 9" <(board (square Square 9) use:Vertex)> <All> <"SquareGraphics"> "9 Square")**
+    (item "Go 13" <(board (square Square 13) use:Vertex)> <All> <"SquareGraphics"> "13 Square")
+    (item "Go 19" <(board (square Square 19) use:Vertex)> <All> <"SquareGraphics"> "19 Square")
+    (item "Hex 343434" <(board (hex Limping 3) use:Cell)> <Adjacent> <"HexGraphics"> "343434 Hexagon")
+    (item "Hex4" <(board (hex Hexagon 4) use:Cell)> <Adjacent> <"HexGraphics"> "4 Hexagon")
+    (item "Hex 454545" <(board (hex Limping 4) use:Cell)> <Adjacent> <"HexGraphics"> "454545 Hexagon")
+    (item "Hex5" <(board (hex Hexagon 5) use:Cell)> <Adjacent> <"HexGraphics"> "5 Hexagon")
+    (item "Hex6" <(board (hex Hexagon 6) use:Cell)> <Adjacent> <"HexGraphics"> "6 Hexagon")
+    (item "Hex7" <(board (hex Hexagon 7) use:Cell)> <Adjacent> <"HexGraphics"> "7 Hexagon")
+    }
+) 
+
+(define "HexGraphics"
+    (graphics
+        {
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board StyleThickness OuterEdges 1.5)
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness InnerVertices 0.4)
+        (board StyleThickness OuterVertices 0.4)
+        (board Colour Symbols (colour Black))
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour LightOrange))
+        (region Colour (sites Occupied by:P1) (colour  60 120 170 120)) 
+        (region Colour (sites Occupied by:P2) (colour 195 195 200 120))
+        (show Piece Value Middle valueOutline:False scale:.8)
+        }
+))
+
+(define "SquareGraphics"
+    (graphics
+        {
+        (board Style Go)
+        (piece Background image:"square.svg" edgeColour:(colour 100 100 100 255))
+        (piece Foreground image:"cross.svg" edgeColour:(colour 100 100 100 255))
+        (piece Colour strokeColour:(colour 100 100 100 255))
+        (piece Scale .26)
+        (show Piece Value CornerLeft valueOutline:True scale:1.5)
+        }
+))
+
+//--------------------------------------
+
+(metadata
+    (info
+        {
+        (description "EcoSys is a game from a comment by Michael Amundsen about my concurrently developed game 'Off-Shore', causing me to strip away all elements of that game except for the placement rule:
+            'A stone must not be placed next to a group that has the same or more stones than there are friendly groups.'
+            
+            It turns out that this rules is very similar to that found in Mark Steere's Bamboo 2021 - On a hexagon, the games differ only by whether merging is alowed to form groups larger than the number of groups or not.
+            
+            The game does not work on a square grid with orthogonal connectivity due to the ability to create large numbers of groups using crosscuts. It works best on grids with high connectivity.
+            
+            Given the opacity of the opening play, I have chosen to use a relatively small square grid with orthogonal plus diagonal connectivity for groups. It is of an odd order to discourage mirror play.
+            
+        In 3D, a cubic close packing grid would be appropriate in an order-3 rhombic dodecahedron (93-cell).")
+        (rules "With the board empty, Black starts.
+            
+            Players take turns in alternation, placing a stone on to an empty cell.
+            However, a stone must not be placed next to a group that already has the same (or more) stones as there are friendly groups.
+            
+        The game is lost by the first player forced to place a stone next to a friendly group that has as many (or more) stones as there are friendly groups.")
+        (id "1987")
+        (version "1.3.4")
+        (classification "experimental")
+        (author "Dale Walton")
+        (credit "Dale Walton")
+        (date "2022")
+        }
+    )
+    (<Board:graphics>)
+)
+

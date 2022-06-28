@@ -16,7 +16,7 @@ import other.topology.TopologyElement;
 import other.trial.Trial;
 
 /**
- * Percentage of all board sites which a piece was placed on at some point.
+ * Percentage of all board sites (cell, vertex and edge) which a piece was placed on at some point.
  * 
  * @author matthew.stephenson
  */
@@ -33,7 +33,7 @@ public class BoardCoverageFull extends Metric
 		super
 		(
 			"Board Coverage Full", 
-			"Percentage of all board sites which a piece was placed on at some point.", 
+			"Percentage of all board sites (cell, vertex and edge) which a piece was placed on at some point.", 
 			0.0, 
 			1.0,
 			Concept.BoardCoverageFull
@@ -43,7 +43,7 @@ public class BoardCoverageFull extends Metric
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double apply
+	public Double apply
 	(
 			final Game game,
 			final Evaluation evaluation,
@@ -71,7 +71,7 @@ public class BoardCoverageFull extends Metric
 				sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			}
 			
-			numSitesCovered += ((double) sitesCovered.size()) / game.board().topology().getAllGraphElements().size();
+			numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllGraphElements().size();
 		}
 
 		return numSitesCovered / trials.length;

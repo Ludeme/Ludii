@@ -173,6 +173,7 @@ public class StarOn3464 extends Basis
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.SemiRegularTiling.id(), true);
 		concepts.set(Concept.StarShape.id(), true);
+		concepts.set(Concept.PolygonShape.id(), true);
 		return concepts;
 	}
 
