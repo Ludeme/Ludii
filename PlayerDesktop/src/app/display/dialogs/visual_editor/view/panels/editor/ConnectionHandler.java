@@ -132,8 +132,7 @@ public class ConnectionHandler
         }
 
         // update creator argument
-        target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source.inputField().nodeArgument(0));
-
+        target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source.inputField().nodeArgument(0)); // TODO
 
         // update the positions of the connection components
         source.updatePosition();
@@ -146,7 +145,6 @@ public class ConnectionHandler
         target.setInputField(source.inputField());
 
         // Add an edge
-        // TODO Handler.addEdge(graphPanel.graph(), source.lnc().node(), target.getHeader().ludemeNodeComponent().node());
         LudemeConnection connection = new LudemeConnection(source, target);
         edges.add(connection);
 
@@ -163,6 +161,7 @@ public class ConnectionHandler
         else
         {
             if(DEBUG) System.out.println("[EP] Adding connection: " + source.lnc().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.inputField().inputIndexFirst());
+            // update creator argument
             System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
             //Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
             Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node());
