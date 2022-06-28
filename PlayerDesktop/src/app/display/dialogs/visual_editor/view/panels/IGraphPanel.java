@@ -32,6 +32,7 @@ public interface IGraphPanel {
     void notifyCollectionInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex, Object input);
     void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
     void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated);
+    void updateCollapsed(List<LudemeNodeComponent> lncs);
 
     JPanel panel();
 

@@ -4,6 +4,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import game.rules.meta.no.No;
 
@@ -101,7 +102,7 @@ public class RemovedNodesAction implements IUserAction
      */
     @Override
     public ActionType actionType() {
-        return ActionType.ADDED_NODE;
+        return ActionType.REMOVED_NODE;
     }
 
     /**
@@ -128,20 +129,6 @@ public class RemovedNodesAction implements IUserAction
         return isUndone;
     }
 
-    /**
-     * Undoes the action
-     */
-    @Override
-    public void undo() {
-        addAllNodes(removedNodes);
-        for(LudemeNode n : removedNodes) assignParent(n);
-        for(LudemeNode n : removedNodes) assignInputs(n);
-
-        // add last edges to non-removed components
-        if(removedNodes.get(0).parentNode() != null) Handler.addEdge(graph, removedNodes.get(0).parentNode(),removedNodes.get(0), removedNodes.get(0).creatorArgument());
-
-        isUndone = false;
-    }
 
     private void addAllNodes(List<LudemeNode> nodes)
     {
@@ -156,7 +143,6 @@ public class RemovedNodesAction implements IUserAction
         if(node.parentNode() != null) return;
         for(LudemeNode n : removedNodes)
         {
-            LinkedHashMap<NodeArgument, Object> inputs = copiedInputs.get(n);
             LinkedHashMap<NodeArgument, Integer> ids = copiedNodeInputIds.get(n);
             if(ids.containsValue(node.id()))
             {
@@ -204,16 +190,31 @@ public class RemovedNodesAction implements IUserAction
         }
     }
 
+    public void undo() {
+        addAllNodes(removedNodes);
+        for(LudemeNode n : removedNodes) assignParent(n);
+        for(LudemeNode n : removedNodes) assignInputs(n);
 
+        // add last edges to non-removed components
+        if(removedNodes.get(0).parentNode() != null) Handler.addEdge(graph, removedNodes.get(0).parentNode(),removedNodes.get(0), removedNodes.get(0).creatorArgument());
+        /*for(LudemeNode n : removedNodes)
+            if(n.parentNode() != null && !removedNodes.contains(n.parentNode()))
+                Handler.addEdge(graph, n.parentNode(),n, n.creatorArgument());*/
 
+        /*List<LudemeNodeComponent> lncs = new ArrayList<>();
+        for(LudemeNode n : removedNodes)
+        {
+            lncs.add(graphPanel.nodeComponent(n));
+        }*/
+       // graphPanel.updateCollapsed(lncs);
+
+        isUndone = false;
+    }
     /**
      * Redoes the action
      */
     @Override
     public void redo() {
-        for(LudemeNode n : removedNodes)
-        {
-            Handler.removeNode(graph, n);
-        }
+        Handler.removeNodes(graph, removedNodes, false);
     }
 }

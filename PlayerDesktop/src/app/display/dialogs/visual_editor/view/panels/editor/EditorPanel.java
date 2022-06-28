@@ -232,6 +232,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
 
+
+
     public ConnectionHandler connectionHandler()
     {
         return ch;
@@ -504,6 +506,16 @@ public class EditorPanel extends JPanel implements IGraphPanel
         else
         {
             lnc.addTerminal(inputFieldArgument, inputField);
+        }
+    }
+
+    @Override
+    public void updateCollapsed(List<LudemeNodeComponent> lncs) {
+        for(LudemeNodeComponent lnc : lncs)
+        {
+            if(lnc.node().collapsed())
+                if(lnc.header().inputField() != null)
+                    lnc.header().inputField().notifyCollapsed();
         }
     }
 
