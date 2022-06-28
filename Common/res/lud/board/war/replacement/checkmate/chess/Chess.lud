@@ -162,16 +162,9 @@
                 "RememberPieceHasMoved"
             )
         )
-        (piece "King" Each 
-            (move
-                Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
+
+        ("ChessKing" "King" ("RememberPieceHasMoved"))
+        
         (piece "Bishop" Each 
             (move
                 Slide 

@@ -1,0 +1,17 @@
+// Defines a piece moving like a king in Chess.
+// #1 = The name of the piece.
+// #2 = The consequences.
+// @example ("ChessKing" "King")
+
+(define "ChessKing"
+(piece #1 Each 
+        (move
+        		Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndResetCounter"
+                ) 
+            #2
+        )
+    )
+)
