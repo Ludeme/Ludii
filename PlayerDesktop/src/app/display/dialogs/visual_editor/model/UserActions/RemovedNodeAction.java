@@ -4,10 +4,13 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created when a node is removed from the graph.
@@ -144,6 +147,11 @@ public class RemovedNodeAction implements IUserAction
                 Handler.addEdge(graph, parent, removedNode, removedNode.creatorArgument(), collectionIndex);
         }
         graphPanel().repaint();
+
+        List<LudemeNodeComponent> lncs = new ArrayList<>();
+        lncs.add(graphPanel.nodeComponent(removedNode));
+        graphPanel.updateCollapsed(lncs);
+
         isUndone = false;
     }
 

@@ -103,6 +103,7 @@ public class Handler
     public static void removeNode(DescriptionGraph graph, LudemeNode node)
     {
         if(graph.getRoot() == node) return;
+        if(!graph.getNodes().contains(node)) return;
         if(DEBUG) System.out.println("[HANDLER] removeNode(graph, node) -> Removing node: " + node.title());
 
         IUserAction action = new RemovedNodeAction(graphPanelMap.get(graph), node);
@@ -147,15 +148,21 @@ public class Handler
      */
     public static void removeNodes(DescriptionGraph graph, List<LudemeNode> nodes)
     {
+        // remove duplicates
+        nodes = new ArrayList<>(new HashSet<>(nodes));
+
         if(DEBUG) System.out.println("[HANDLER] removeNodes(graph, nodes) -> Removing nodes: " + nodes.size());
 
-        // remove root node
-        for(LudemeNode node : nodes)
+        // remove root node and already deleted nodes
+        for(LudemeNode node : new ArrayList<>(nodes))
         {
             if(graph.getRoot() == node)
             {
                 nodes.remove(node);
-                break;
+            }
+            if(!graph.getNodes().contains(node))
+            {
+                nodes.remove(node);
             }
         }
 
@@ -807,6 +814,17 @@ public class Handler
             Handler.recordUserActions = true;
     }
 
+    private static Set<LudemeNode> subtree(LudemeNode node)
+    {
+        Set<LudemeNode> subtree = new HashSet<>();
+        subtree.add(node);
+        for(LudemeNode child : node.childrenNodes())
+        {
+            subtree.addAll(subtree(child));
+        }
+        return subtree;
+    }
+
     public static String getLudString(DescriptionGraph graph){
         return graph.toLud();
     }
@@ -912,75 +930,6 @@ public class Handler
     {
         editorPanel.updateNodePositions();
     }
-
-
-
-    // OLD METHODS WITH PROVIDED INPUTS AS Object[]
-
-
-        /*public static void updateInput(DescriptionGraph graph, LudemeNode node, int index, Object input){
-        if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, index, input) -> Updating input: " + node.title() + ", index: " + index + ", input: " + input);
-        if(index < node.providedInputs().length) {
-            // if the input is null but was a node before, remove the child from the parent
-            if(input == null && node.providedInputs()[index] instanceof LudemeNode) {
-                node.removeChildren((LudemeNode) node.providedInputs()[index]);
-            }
-            node.setProvidedInput(index, input);
-        }
-    }*/
-
-
-    /*public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex)
-    {
-        if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + inputIndex);
-        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
-        if(oldCollection == null)
-        {
-            updateInput(graph, node, inputIndex, new Object[2]);
-            return;
-        }
-        Object[] newCollection = new Object[oldCollection.length + 1];
-        System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
-        updateInput(graph, node, inputIndex, newCollection);
-    }*/
-
-        /*public static void updateCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
-    {
-        if(node.providedInputs()[inputIndex] == null)
-        {
-            node.setProvidedInput(inputIndex, new Object[1]);
-        }
-        if(elementIndex >= ((Object[])(node.providedInputs()[inputIndex])).length) addCollectionElement(graph, node, inputIndex);
-        Object[] in = (Object[]) node.providedInputs()[inputIndex];
-        in[elementIndex] = input;
-        node.setProvidedInput(inputIndex, in);
-    }*/
-
-    /*
-    /**
-     * if a collection element was removed, update the provided input array
-     * @param graph
-     * @param node
-     * @param inputIndex Index of collection argument in clause
-     * @param elementIndex Index of collection element
-     */
-    /*public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, int inputIndex, int elementIndex)
-    {
-        if(DEBUG) System.out.println("[HANDLER] Removed collection element of " + node.symbol().name() + ", " + inputIndex + " at " + elementIndex);
-
-        Object[] oldCollection = (Object[]) node.providedInputs()[inputIndex];
-        if(oldCollection == null) return;
-        Object[] newCollection = new Object[oldCollection.length - 1];
-        for(int i = 0; i < elementIndex; i++)
-        {
-            newCollection[i] = oldCollection[i];
-        }
-        for(int i = elementIndex + 1; i < oldCollection.length; i++)
-        {
-            newCollection[i - 1] = oldCollection[i];
-        }
-        updateInput(graph, node, inputIndex, newCollection);
-    }*/
 
     public static Dimension getViewPortSize()
     {
