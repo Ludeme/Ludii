@@ -3,11 +3,8 @@
     (equipment {
         (board 
             (merge
-                (shift 0 -2 (wedge 3)) 
-                (merge 
-                    (rotate 45 (shift 1.5 4.2 (square 2 diagonals:Solid)))
-                    (square 5 diagonals:Alternating)
-                )
+            	("AlquerqueGraphWithBottomTriangle")
+                (rotate 45 (shift 1.5 6.2 (square 2 diagonals:Solid)))
             )
             use:Vertex
         )
