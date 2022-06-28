@@ -295,7 +295,36 @@ public class EditorPanel extends JPanel implements IGraphPanel
             SELECTED = true;
             lnc.setSelected(true);
             selectedLnc.add(lnc);
+
+            // add collapsed subtrees too
+            for(LudemeNode child : lnc.node().childrenNodes())
+            {
+                LudemeNodeComponent childLnc = nodeComponent(child);
+                if(childLnc.node().collapsed())
+                {
+                    for(LudemeNodeComponent lncc : subtree(childLnc))
+                    {
+                        if(selectedLnc.contains(lncc)) continue;
+                        lncc.setSelected(true);
+                        selectedLnc.add(lncc);
+                    }
+                }
+            }
         }
+        System.out.println("[EP] Selected " + selectedLnc.size() + " nodes");
+    }
+
+    private List<LudemeNodeComponent> subtree(LudemeNodeComponent lnc)
+    {
+        List<LudemeNodeComponent> subtree = new ArrayList<>();
+        subtree.add(lnc);
+        for(LudemeNode child : lnc.node().childrenNodes())
+        {
+            LudemeNodeComponent childLnc = nodeComponent(child);
+            subtree.add(childLnc);
+            subtree.addAll(subtree(childLnc));
+        }
+        return subtree;
     }
 
     public boolean isSELECTION_MODE()

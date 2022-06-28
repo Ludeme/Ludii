@@ -338,6 +338,9 @@ public class LudemeNodeComponent extends JPanel
      */
     MouseMotionListener dragListener = new MouseAdapter()
     {
+
+         boolean marked = false;
+
         @Override
         public void mouseDragged(MouseEvent e)
         {
@@ -359,13 +362,15 @@ public class LudemeNodeComponent extends JPanel
                     lnc.updatePositions();
                 });
             }
-
-            List<LudemeNodeComponent> collapsedChildren = collapsedSubtreeNodes();
-            if(collapsedChildren.size() >= 1){
-                collapsedChildren.forEach(lnc -> {
-                    if (!lnc.equals(LudemeNodeComponent.this)) lnc.setLocation(lnc.getLocation().x+posDif.x, lnc.getLocation().y+posDif.y);
-                    lnc.updatePositions();
-                });
+            else {
+                List<LudemeNodeComponent> collapsedChildren = collapsedSubtreeNodes();
+                if (collapsedChildren.size() >= 1) {
+                    collapsedChildren.forEach(lnc -> {
+                        if (!lnc.selected() && !lnc.equals(LudemeNodeComponent.this))
+                            lnc.setLocation(lnc.getLocation().x + posDif.x, lnc.getLocation().y + posDif.y);
+                        lnc.updatePositions();
+                    });
+                }
             }
 
             updatePositions();
