@@ -151,18 +151,7 @@
             )
         )
         
-        (piece "Rook" Each 
-            (move
-                Slide 
-                Orthogonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-                "RememberPieceHasMoved"
-            )
-        )
-        
+        ("ChessRook" "Rook" ("RememberPieceHasMoved"))
         ("ChessKing" "King" ("RememberPieceHasMoved"))
         
         ("ChessBishop" "Bishop")
