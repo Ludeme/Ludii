@@ -26,10 +26,6 @@ import java.util.Random;
 public class Test {
 
     public static void main(String[] args) throws ClassNotFoundException {
-
-
-        System.out.println(findRules("what"));
-
         System.exit(1);
 
         for(EBNFRule r : Grammar.grammar().ebnf().rules().values())
