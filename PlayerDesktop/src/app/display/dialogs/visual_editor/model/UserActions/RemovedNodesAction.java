@@ -215,6 +215,6 @@ public class RemovedNodesAction implements IUserAction
      */
     @Override
     public void redo() {
-        Handler.removeNodes(graph, removedNodes, false);
+        Handler.removeNodes(graph, removedNodes);
     }
 }
