@@ -164,10 +164,10 @@ public class LInputField extends JComponent
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
         // if its a choice, add an indication icon
-        if(nodeArgument.choice())
+        /*if(nodeArgument.choice())
         {
             label.setText("Choice");
-        }
+        }*/
 
         label.setToolTipText(nodeArgument(0).parameterDescription());
         optionalLabel.setToolTipText(nodeArgument(0).parameterDescription());

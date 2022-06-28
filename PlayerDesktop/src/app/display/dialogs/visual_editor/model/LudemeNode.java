@@ -1064,6 +1064,7 @@ public class LudemeNode implements iGNode
     {
         StringBuilder title = new StringBuilder(selectedClause().symbol().token());
         if(selectedClause().args() == null) return title.toString();
+        if(selectedClause.args().size() == 0) return title.toString();
         // if selected clause starts with constants, add these to the title
         int index = 0;
         while(selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant)){
