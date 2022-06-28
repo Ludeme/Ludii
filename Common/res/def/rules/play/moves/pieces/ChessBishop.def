@@ -1,15 +1,15 @@
-// Defines a piece moving like a knight in Chess.
+// Defines a piece moving like a bishop in Chess.
 // #1 = The name of the piece.
 // #2 = The consequences.
-// @example ("ChessKnight" "Knight")
+// @example ("ChessBishop" "Bishop")
 
-(define "ChessKnight"
+(define "ChessBishop"
     (piece #1 Each 
         (move
-            Leap 
-            "KnightWalk" 
+            Slide 
+            Diagonal 
             (to 
-                if:(not (is Friend (who at:(to)))) 
+                if:(is Enemy (who at:(to))) 
                 (apply 
                     (if (is Enemy (who at:(to)))
                         (remove 

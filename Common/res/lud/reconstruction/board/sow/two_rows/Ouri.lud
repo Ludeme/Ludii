@@ -17,46 +17,46 @@
         })
         
         phases:{
-    		(phase "FirstMove"
-    			(play
-    	            (forEach Value min:1 max:(count Cell at:(handSite Mover))
-    				(move
-    					(from (handSite Mover))
-    					(to (sites Mover))
-    					count:(value)
-        				(then (set Value Mover (count at:(last To))))
-    				)
-    				)
-    			)
-    			(nextPhase "SecondMove")
-    		)
-    		(phase "SecondMove"
-        			(play
-        	            (forEach Value min:(+ 1 (count at:(last To))) max:(count Cell at:(handSite Mover))
-        				(move
-        					(from (handSite Mover))
-        					(to (sites Mover))
-        					count:(value)
-            				(then (set Value Mover (count at:(last To))))
-        				)
-        				)
-        			)
-        			(nextPhase "MainMove")
-        		)
-    		
-    		(phase "MainMove"
-        			(play
-        	            [#] // The first player must then place an even number of counters if they first played an odd number, and vice versa. If a player starts with an odd move, they must end with an even move (and vice versa) and use all their remaining counters
-        			)
-        		)
-    	}
+        (phase "FirstMove"
+            (play
+                (forEach Value min:1 max:(count Cell at:(handSite Mover))
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Mover))
+                        count:(value)
+                        (then (set Value Mover (count at:(last To))))
+                    )
+                )
+            )
+            (nextPhase "SecondMove")
+        )
+        (phase "SecondMove"
+            (play
+                (forEach Value min:(+ 1 (count at:(last To))) max:(count Cell at:(handSite Mover))
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Mover))
+                        count:(value)
+                        (then (set Value Mover (count at:(last To))))
+                    )
+                )
+            )
+            (nextPhase "MainMove")
+        )
+        
+        (phase "MainMove"
+            (play
+                [#] // The first player must then place an even number of counters if they first played an odd number, and vice versa. If a player starts with an odd move, they must end with an even move (and vice versa) and use all their remaining counters
+            )
+        )
+        }
         
         (end {
             (if  (no Moves Next)
                 (result Mover Win)
             )
             [#] // The game ends when a player has used all of their holes, and placed all of their counters in the sixth hole on their side.
-        }
+            }
         )
     )
 )

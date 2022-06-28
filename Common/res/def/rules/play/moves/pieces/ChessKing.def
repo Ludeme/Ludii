@@ -4,13 +4,20 @@
 // @example ("ChessKing" "King")
 
 (define "ChessKing"
-(piece #1 Each 
+    (piece #1 Each 
         (move
-        		Step 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndResetCounter"
+            Step 
+            (to 
+                if:(not (is Friend (who at:(to)))) 
+                (apply 
+                    (if (is Enemy (who at:(to)))
+                        (remove 
+                            (to) 
+                            (then (set Counter))
+                        )
+                    )
                 ) 
+            ) 
             #2
         )
     )

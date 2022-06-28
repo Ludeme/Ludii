@@ -162,19 +162,10 @@
                 "RememberPieceHasMoved"
             )
         )
-
+        
         ("ChessKing" "King" ("RememberPieceHasMoved"))
         
-        (piece "Bishop" Each 
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndResetCounter"
-                ) 
-            )
-        )
+        ("ChessBishop" "Bishop")
         
         ("ChessKnight" "Knight")
         
