@@ -10,8 +10,7 @@
         ) 
         (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty") )
         (piece "Dog" P2 "StepToEmpty") 
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Dog2" (difference (expand (sites Top) steps:2) (sites {"C5"})))
@@ -56,7 +55,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 
