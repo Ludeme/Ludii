@@ -19,17 +19,6 @@
     ) 
 )
 
-(define "CaptureToPieceAndResetCounter"
-    (apply 
-        (if (is Enemy (who at:(to)))
-            (remove 
-                (to) 
-                (then (set Counter))
-            )
-        )
-    ) 
-)
-
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
