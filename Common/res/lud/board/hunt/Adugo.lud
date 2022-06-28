@@ -1,13 +1,7 @@
 (game "Adugo"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge 
-                (shift 0 2 (square 5 diagonals:Alternating)) 
-                (wedge 3)
-            ) 
-            use:Vertex
-        ) 
+        ("AlquerqueBoardWithBottomTriangle") 
         (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty") )
         (piece "Dog" P2 "StepToEmpty") 
     })  

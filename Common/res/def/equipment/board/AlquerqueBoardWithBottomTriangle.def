@@ -1,0 +1,12 @@
+// Defines a rectangular board with Alquerque-style alternating diagonals with a triangle extension at the bottom.
+// @example ("AlquerqueBoardWithBottomTriangle")
+
+(define "AlquerqueBoardWithBottomTriangle"
+    (board 
+        (merge 
+            (shift 0 2 (square 5 diagonals:Alternating)) 
+            (wedge 3)
+        ) 
+        use:Vertex
+    ) 
+)
