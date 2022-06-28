@@ -1,0 +1,24 @@
+// Defines a piece moving like a queen in Chess.
+// #1 = The name of the piece.
+// #2 = The consequences.
+// @example ("ChessQueen" "Queen")
+
+(define "ChessQueen"
+    (piece #1 Each 
+        (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to)))    
+                    (apply 
+                            (if (is Enemy (who at:(to)))
+                                (remove 
+                                    (to) 
+                                    (then (set Counter))
+                                )
+                            )
+                        ) 
+                ) 
+                #2
+            ) 
+    )
+)
