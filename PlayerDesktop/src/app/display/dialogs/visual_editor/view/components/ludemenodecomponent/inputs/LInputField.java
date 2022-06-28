@@ -136,8 +136,9 @@ public class LInputField extends JComponent
         {
             items[i] = new JMenuItem(nodeArgument(0).args().get(i).toString());
             int finalI = i;
-            if(nodeArgument(0).isTerminal()) {
+            if(true || nodeArgument(0).isTerminal()) {
                 items[i].addActionListener(e1 -> {
+                    System.out.println("Selected: " + nodeArgument(0).args().get(finalI).toString());
                     nodeArgument(0).setActiveChoiceArg(nodeArgument(0).args().get(finalI));
                     if (getUserInput() != null) {
                         inputArea().removedConnection(this);

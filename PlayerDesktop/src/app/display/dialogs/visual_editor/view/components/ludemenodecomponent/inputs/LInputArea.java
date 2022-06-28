@@ -832,7 +832,7 @@ public class LInputArea extends JPanel
                         if(!newMerged.isMerged() && newMerged.choice())
                         {
                             // if the field is a choice, update its label
-                            newMerged.setLabelText("Choice");
+                            //newMerged.setLabelText("Choice");
                         }
                         // otherwise move it to the top of the block
                     }
@@ -863,10 +863,10 @@ public class LInputArea extends JPanel
         }
 
         // if the field is a choice, update its label
-        if(inputField.choice())
+        /*if(inputField.choice())
         {
             inputField.setLabelText("Choice");
-        }
+        }*/
 
         drawInputFields();
         setOpaque(false);
