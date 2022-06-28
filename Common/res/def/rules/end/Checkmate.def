@@ -1,0 +1,12 @@
+// If the next player is checkmate, the mover is winning. This ludemeplex can be used only in an ending condition.
+// #1 = The name of the piece to check.
+// @example ("Checkmate" "King")
+
+(define "Checkmate"
+    (if (and 
+            ("IsInCheck" #1 Next)
+            (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" #1 Next)))) )
+        ) 
+        (result Mover Win)
+    )
+)
