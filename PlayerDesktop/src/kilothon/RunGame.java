@@ -1,7 +1,5 @@
 package kilothon;
 
-import static org.junit.Assert.fail;
-
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -84,7 +82,7 @@ public class RunGame extends Thread
 		catch (InvocationTargetException | InterruptedException e)
 		{
 			e.printStackTrace();
-			fail();
+			throw new RuntimeException(e);
 		}
 	}
 

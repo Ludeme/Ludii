@@ -51,6 +51,7 @@ public abstract class SpatialFeature extends Feature
 	}
 
 	//-------------------------------------------------------------------------
+    private static final int[] NULL_POSITION = new int[]{-1};
 
 	/** The feature's pattern */
 	protected Pattern pattern;
@@ -234,7 +235,7 @@ public abstract class SpatialFeature extends Feature
 						TIntArrayList possibleLastToPositions;
 						if (lastToWalk == null)
 						{
-							possibleLastToPositions = TIntArrayList.wrap(-1);
+							possibleLastToPositions = TIntArrayList.wrap(NULL_POSITION);
 						}
 						else
 						{
@@ -280,7 +281,7 @@ public abstract class SpatialFeature extends Feature
 								TIntArrayList possibleLastFromPositions;
 								if (lastFromWalk == null)
 								{
-									possibleLastFromPositions = TIntArrayList.wrap(-1);
+									possibleLastFromPositions = TIntArrayList.wrap(NULL_POSITION);
 								}
 								else
 								{
@@ -326,7 +327,7 @@ public abstract class SpatialFeature extends Feature
 										TIntArrayList possibleToPositions;
 										if (toWalk == null)
 										{
-											possibleToPositions = TIntArrayList.wrap(-1);
+											possibleToPositions = TIntArrayList.wrap(NULL_POSITION);
 										}
 										else
 										{
@@ -373,7 +374,7 @@ public abstract class SpatialFeature extends Feature
 											TIntArrayList possibleFromPositions;
 											if (fromWalk == null)
 											{
-												possibleFromPositions = TIntArrayList.wrap(-1);
+												possibleFromPositions = TIntArrayList.wrap(NULL_POSITION);
 											}
 											else
 											{

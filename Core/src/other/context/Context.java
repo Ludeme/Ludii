@@ -30,6 +30,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import main.Constants;
 import main.math.BitTwiddling;
 import metadata.Metadata;
+import org.apache.commons.rng.simple.internal.SeedFactory;
 import other.GameLoader;
 import other.UndoData;
 import other.model.MatchModel;
@@ -56,7 +57,7 @@ public class Context
 	 * Such Context objects should only be created by search algorithms such as
 	 * MCTS, and for those we do not need reproducibility.
 	 */
-	private static SplitMix64 sharedRNG = new SplitMix64();
+	private static SplitMix64 sharedRNG = splitMix64();
 
 	//-------------------------------------------------------------------------
 
@@ -161,7 +162,7 @@ public class Context
 	 */
 	public Context(final Game game, final Trial trial)
 	{
-		this(game, trial, new SplitMix64(), null);
+		this(game, trial, splitMix64(), null);
 	}
 	
 	/**
@@ -245,7 +246,7 @@ public class Context
 	 */
 	public static Context copyWithSeed(final Context other)
 	{
-		final Context copy = new Context(other, null, new SplitMix64());
+		final Context copy = new Context(other, null, splitMix64());
 		copy.rng.restoreState(other.rng.saveState());
 		return copy;
 	}
@@ -1736,4 +1737,12 @@ public class Context
 		
 		trial.addUndoData(endData);
 	}
+
+    /**
+     * TODO: find a better place for this
+     * @return 
+     */
+    public static SplitMix64 splitMix64() {
+        return new SplitMix64(SeedFactory.createLong());
+    }
 }

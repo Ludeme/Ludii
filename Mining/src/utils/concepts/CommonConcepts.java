@@ -1,7 +1,5 @@
 package utils.concepts;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -221,17 +219,17 @@ public class CommonConcepts
 			}
 			catch (final FileNotFoundException ex)
 			{
-				fail("Unable to open file '" + ludPath + "'");
+				throw new RuntimeException("Unable to open file '" + ludPath + "'", ex);
 			}
 			catch (final IOException ex)
 			{
-				fail("Error reading file '" + ludPath + "'");
+				throw new RuntimeException("Error reading file '" + ludPath + "'", ex);
 			}
 
 			// Parse and compile the game
 			final Game game = (Game)Compiler.compileTest(new Description(desc), false);
 			if (game == null)
-				fail("COMPILATION FAILED for the file : " + ludPath);
+				throw new RuntimeException("COMPILATION FAILED for the file : " + ludPath);
 			else
 				games.add(game);
 

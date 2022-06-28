@@ -29,6 +29,8 @@ import other.move.Move;
 import other.trial.Trial;
 import utils.AIUtils;
 
+import static other.context.Context.splitMix64;
+
 /**
  * A Unit Test to load Trials from the TravisTrials repository, and check if they
  * all still play out the same way in the current Ludii codebase.
@@ -50,7 +52,7 @@ public class TestTrialsIntegrity
 
 		final long startAt = System.nanoTime();
 		final File startFolder = new File("../Common/res/lud");
-		final SplitMix64 rng = new SplitMix64();
+		final SplitMix64 rng = splitMix64();
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
 

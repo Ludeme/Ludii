@@ -178,7 +178,7 @@ public class FindBestBaseAgentScriptsGen
 							if (supportStochasticGames && !mctsSupportsStochastic[4][i5])
 								continue;
 							
-							combos.add(TIntArrayList.wrap(i1, i2, i3, i4, i5));
+							combos.add(TIntArrayList.wrap(new int[]{i1, i2, i3, i4, i5}));
 						}
 					}
 				}

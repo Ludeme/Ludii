@@ -1,7 +1,5 @@
 package test.instructionGeneration;
 
-import static org.junit.Assert.fail;
-
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -103,7 +101,7 @@ public class TestInstructionGeneration
 			catch (InvocationTargetException | InterruptedException e)
 			{
 				e.printStackTrace();
-				fail();
+				throw new RuntimeException(e);
 			}
 		}
 	}

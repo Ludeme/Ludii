@@ -49,6 +49,8 @@ import other.trial.Trial;
 import tensor.TestStateMoveTensors;
 import utils.AIUtils;
 
+import static other.context.Context.splitMix64;
+
 /**
  * Unit Test for Travis uniting many other JUnit tests:
  * 
@@ -781,7 +783,7 @@ public class TravisTest
 
 	public void testIntegrity() throws FileNotFoundException, IOException
 	{
-		final SplitMix64 rng = new SplitMix64();
+		final SplitMix64 rng = splitMix64();
 
 		final File folder = new File("../Common/res" + pathGameCompiled);
 		if (folder.getName().contains(".lud"))
@@ -1085,7 +1087,7 @@ public class TravisTest
 	 */
 	public List<List<String>> combinationsKept(final String optionToCheck, final List<List<String>> optionCombinations)
 	{
-		final SplitMix64 rng = new SplitMix64();
+		final SplitMix64 rng = splitMix64();
 		final List<List<String>> optionCombinationsKept = new ArrayList<List<String>>();
 
 		if (!optionCombinations.isEmpty())

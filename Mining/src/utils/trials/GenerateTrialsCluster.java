@@ -1,7 +1,5 @@
 package utils.trials;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -175,7 +173,7 @@ public class GenerateTrialsCluster
 						catch (final IOException e)
 						{
 							e.printStackTrace();
-							fail("Crashed when trying to save trial to file.");
+							throw new RuntimeException("Crashed when trying to save trial to file.", e);
 						}
 					}
 				}
@@ -221,7 +219,7 @@ public class GenerateTrialsCluster
 				catch (final IOException e)
 				{
 					e.printStackTrace();
-					fail("Crashed when trying to save trial to file.");
+                    throw new RuntimeException("Crashed when trying to save trial to file.", e);
 				}
 			}
 		}

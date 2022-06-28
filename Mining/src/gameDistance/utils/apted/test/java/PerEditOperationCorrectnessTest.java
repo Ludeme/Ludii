@@ -27,6 +27,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import gameDistance.utils.apted.costmodel.PerEditOperationStringNodeDataCostModel;
 import gameDistance.utils.apted.distance.APTED;
@@ -53,82 +54,6 @@ public class PerEditOperationCorrectnessTest {
    */
   private final TestCase testCase;
 
-  /**
-   * This class represents a single test case from the JSON file. JSON keys
-   * are mapped to fiels of this class.
-   */
-  // [TODO] Verify if this is the best placement for this class.
-  private static class TestCase {
-
-    /**
-     * Test identifier to quickly find failed test case in JSON file.
-     */
-    private int testID;
-
-    /**
-     * Source tree as string.
-     */
-    private String t1;
-
-    /**
-     * Destination tree as string.
-     */
-    private String t2;
-
-    /**
-     * Correct distance value between source and destination trees.
-     */
-    private int d;
-
-    /**
-     * Used in printing the test case details on failure with '(name = "{0}")'.
-     *
-     * @return test case details.
-     * @see CorrectnessTest#data()
-     */
-    @Override
-	public String toString() {
-      return "testID:" + testID + ",t1:" + t1 + ",t2:" + t2 + ",d:" + d;
-    }
-
-    /**
-     * Returns identifier of this test case.
-     *
-     * @return test case identifier.
-     */
-    public int getTestID() {
-      return testID;
-    }
-
-    /**
-     * Returns source tree of this test case.
-     *
-     * @return source tree.
-     */
-    public String getT1() {
-      return t1;
-    }
-
-    /**
-     * Returns destination tree of this test case.
-     *
-     * @return destination tree.
-     */
-    public String getT2() {
-      return t2;
-    }
-
-    /**
-     * Returns correct distance value between source and destination trees
-     * of this test case.
-     *
-     * @return correct distance.
-     */
-    public int getD() {
-      return d;
-    }
-
-  }
 
   /**
    * Constructs a single test for a single test case. Used for parameterised
@@ -166,5 +91,10 @@ public class PerEditOperationCorrectnessTest {
     final float correctResult = apmted.computeEditDistance(t1, t2);
     assertEquals(correctResult, result, 0.0001);
   }
+
+    @Parameters
+    public static Iterable<TestCase> testCase() {
+        return TestCase.loadFromFile("/mini.json");
+    }
 
 }
