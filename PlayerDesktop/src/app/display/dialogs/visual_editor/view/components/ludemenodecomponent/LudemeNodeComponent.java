@@ -443,6 +443,8 @@ public class LudemeNodeComponent extends JPanel
             Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
 
             if(e.getButton() == MouseEvent.BUTTON3){
+                if(!selected) graphPanel().deselectEverything();
+                graphPanel().addNodeToSelections(LudemeNodeComponent.this);
                 openPopupMenu(e);
                 graphPanel().connectionHandler().cancelNewConnection();
             }
