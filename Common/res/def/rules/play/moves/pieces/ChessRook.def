@@ -6,20 +6,20 @@
 (define "ChessRook"
     (piece #1 Each 
         (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:(is Enemy (who at:(to)))    
-                    (apply 
-                            (if (is Enemy (who at:(to)))
-                                (remove 
-                                    (to) 
-                                    (then (set Counter))
-                                )
-                            )
-                        ) 
+            Slide 
+            Orthogonal
+            (to 
+                if:(is Enemy (who at:(to)))    
+                (apply 
+                    (if (is Enemy (who at:(to)))
+                        (remove 
+                            (to) 
+                            (then (set Counter))
+                        )
+                    )
                 ) 
-                #2
             ) 
+            #2
+        ) 
     )
 )

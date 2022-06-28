@@ -6,19 +6,19 @@
 (define "ChessQueen"
     (piece #1 Each 
         (move
-                Slide 
-                (to 
-                    if:(is Enemy (who at:(to)))    
-                    (apply 
-                            (if (is Enemy (who at:(to)))
-                                (remove 
-                                    (to) 
-                                    (then (set Counter))
-                                )
-                            )
-                        ) 
+            Slide 
+            (to 
+                if:(is Enemy (who at:(to)))    
+                (apply 
+                    (if (is Enemy (who at:(to)))
+                        (remove 
+                            (to) 
+                            (then (set Counter))
+                        )
+                    )
                 ) 
-                #2
             ) 
+            #2
+        ) 
     )
 )

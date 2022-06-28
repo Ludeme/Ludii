@@ -124,6 +124,12 @@
     )
 )
 
+(define "InitialPawnMove"
+    (if (is In (from) (sites Start (piece (what at:(from)))))
+        "DoubleStep"
+    )
+)
+
 //------------------------------------------------------------------------------
 
 (game "Chess"  
@@ -131,33 +137,24 @@
     (equipment { 
         (board (square 8)) 
         
-        (piece "Pawn" Each 
-            (or {
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                "StepForwardToEmpty" 
-                "CaptureForwardDiagonal"
+        ("ChessPawn" "Pawn"
+            (or 
+                "InitialPawnMove"
                 "EnPassant"
-                }
-                (then
-                    (and
-                        (if (is In (last To) (sites Mover "Promotion")) 
-                            (moveAgain)
-                        )
-                        (set Counter)
+            )
+            (then
+                (and
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (moveAgain)
                     )
+                    (set Counter)
                 )
             )
         )
-        
         ("ChessRook" "Rook" ("RememberPieceHasMoved"))
         ("ChessKing" "King" ("RememberPieceHasMoved"))
-        
         ("ChessBishop" "Bishop")
-        
         ("ChessKnight" "Knight")
-        
         ("ChessQueen" "Queen")
         
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
