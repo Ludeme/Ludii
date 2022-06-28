@@ -3,6 +3,8 @@ package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
+import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
+import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
 import app.display.dialogs.visual_editor.view.DocumentationReader;
 import app.display.dialogs.visual_editor.view.HelpInformation;
 import main.grammar.Clause;
@@ -882,33 +884,20 @@ public class LudemeNode implements iGNode
     }
 
 
-    /**
-     *
-     * @return The .lud equivalent representation of this node
-     */
-    public String stringRepresentation()
+    public String toLud()
     {
         StringBuilder sb = new StringBuilder();
-        // append token of this node's symbol
-        sb.append("(").append(tokenTitle());
+        sb.append("(");
+        sb.append(tokenTitle());
         // append all inputs
-        for(Object input : providedInputsMap.values())
+        for (NodeArgument arg : providedInputsMap().keySet())
         {
-            if(input == null) continue; // if no input provided, skip it
+            Object input = providedInputsMap().get(arg);
+            if(input == null) continue;
             sb.append(" ");
-
             if(input instanceof LudemeNode)
             {
-                sb.append(((LudemeNode) input).stringRepresentation());
-            }
-            else if(input instanceof LudemeNode[])
-            {
-                sb.append("{ ");
-                for(LudemeNode node : (LudemeNode[]) input) {
-                    if(node == null) continue;
-                    sb.append(node.stringRepresentation()).append(" ");
-                }
-                sb.append("}");
+                sb.append(((LudemeNode) input).toLud());
             }
             else if(input instanceof Object[])
             {
@@ -916,10 +905,9 @@ public class LudemeNode implements iGNode
                 for(Object obj : (Object[]) input)
                 {
                     if(obj == null) continue;
-                    if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).stringRepresentation()).append(" ");
-                    else sb.append(obj.toString()).append(" "); // TODO: is a comma required??
+                    if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).toLud());
+                    else sb.append(obj).append(" ");
                 }
-                //sb.deleteCharAt(sb.length()-2);
                 sb.append("}");
             }
             else if(input instanceof String)
@@ -935,96 +923,54 @@ public class LudemeNode implements iGNode
         return sb.toString();
     }
 
-
-    public String stringRepresentationUntilInputIndex(int index, String marker)
+    public String toLudCodeCompletion(List<NodeArgument> argsOfInputField)
     {
-        StringBuilder sb = new StringBuilder();
-        // append token of this node's symbol
-        sb.append("(").append(tokenTitle());
-        // append all inputs
-        for(int i = 0; i < index; i++)
-        {
-            if(i >= providedInputsMap.values().size()) break;
-            Object input = new ArrayList<>(providedInputsMap.values()).get(i);
-                if(input == null) continue; // if no input provided, skip it
-                sb.append(" ");
+        LudemeNode root = this;
+        while(root.parentNode() != null) root = root.parentNode();
 
-                if(input instanceof LudemeNode)
-                {
-                    sb.append(((LudemeNode) input).stringRepresentation());
-                }
-                else if(input instanceof LudemeNode[])
-                {
-                    sb.append("{ ");
-                    for(LudemeNode node : (LudemeNode[]) input)
-                    {
-                        if(node == null) continue;
-                        sb.append(node.stringRepresentation()).append(" ");
-                    }
-                    sb.append("}");
-                }
-                else if(input instanceof Object[])
+        String rootLud = root.toLud();
+        String thisLud = toLud();
+
+        // compute code completion lud for this node
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        sb.append(tokenTitle());
+        // append all inputs
+        for (NodeArgument arg : providedInputsMap().keySet())
+        {
+            Object input = providedInputsMap().get(arg);
+
+            if(argsOfInputField.contains(arg))
+            {
+                if(input instanceof Object[])
                 {
                     sb.append("{ ");
                     for(Object obj : (Object[]) input)
                     {
                         if(obj == null) continue;
-                        if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).stringRepresentation());
-                        else sb.append(obj.toString()).append(" "); // TODO: is a comma required??
+                        if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).toLud());
+                        else sb.append(obj).append(" ");
                     }
-                    //sb.deleteCharAt(sb.length()-2);
-                    sb.append("}");
                 }
-                else if(input instanceof String)
-                {
-                    sb.append("\"").append(input).append("\"");
-                }
-                else
-                {
-                    sb.append(input);
-                }
+                sb.append(" ").append(Preprocessing.COMPLETION_WILDCARD);
+                // replace thisLud with sb
+                return rootLud.replace(thisLud, sb.toString());
             }
-            sb.append(" " + marker);
-            sb.append(")");
-            return sb.toString();
-    }
 
-    public String codeCompletionGameDescription(LudemeNode stopAt, int untilIndex, String marker)
-    {
-        if(stopAt == this) return stringRepresentationUntilInputIndex(untilIndex, marker);
-        StringBuilder sb = new StringBuilder();
-        // append token of this node's symbol
-        sb.append("(").append(tokenTitle());
-        // append all inputs
-        for(int i = 0; i < providedInputsMap().values().size(); i++)
-        {
-            Object input = new ArrayList<>(providedInputsMap.values()).get(i);
-            if(input == null) continue; // if no input provided, skip it
+            if(input == null) continue;
             sb.append(" ");
-
             if(input instanceof LudemeNode)
             {
-                if(input == stopAt)
-                {
-                    sb.append(((LudemeNode) input).stringRepresentationUntilInputIndex(untilIndex, marker));
-                }
-                else {
-                    sb.append(((LudemeNode) input).codeCompletionGameDescription(stopAt, untilIndex, marker));
-                }
+                sb.append(((LudemeNode) input).toLud());
             }
-            else if(input instanceof LudemeNode[])
+            else if(input instanceof Object[])
             {
                 sb.append("{ ");
-                for(LudemeNode node : (LudemeNode[]) input) {
-                    if(node == null) continue;
-                    if(node == stopAt)
-                    {
-                        sb.append((node).stringRepresentationUntilInputIndex(untilIndex, marker)).append(" ");
-                    }
-                    else
-                    {
-                        sb.append((node).codeCompletionGameDescription(stopAt, untilIndex, marker)).append(" ");
-                    }
+                for(Object obj : (Object[]) input)
+                {
+                    if(obj == null) continue;
+                    if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).toLud());
+                    else sb.append(obj).append(" ");
                 }
                 sb.append("}");
             }
@@ -1038,8 +984,9 @@ public class LudemeNode implements iGNode
             }
         }
         sb.append(")");
-        return sb.toString();
+        return rootLud.replace(thisLud, sb.toString());
     }
+
 
     /**
      * The title consists of the symbol and any Constants followed by the constructor
@@ -1171,6 +1118,6 @@ public class LudemeNode implements iGNode
 
     @Override
     public String toString(){
-        return stringRepresentation();
+        return toLud();
     }
 }

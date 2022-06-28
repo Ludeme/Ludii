@@ -196,7 +196,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         }
         long start = System.nanoTime();
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().possibleSymbolInputs();
-        String gameDescription = graph().toLudCodeCompletion(ch.getSelectedConnectionComponent().lnc().node(),  ch.getSelectedConnectionComponent().inputField().inputIndexFirst(), COMPLETION_WILDCARD);
+        String gameDescription = ch.getSelectedConnectionComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(ch.getSelectedConnectionComponent().inputField().nodeArguments());
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription,controller,possibleSymbols);
         long finish = System.nanoTime();
         long latency = finish - start;

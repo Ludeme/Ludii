@@ -171,12 +171,7 @@ public class DescriptionGraph implements iGraph {
     }
 
     public String toLud() {
-        return ROOT.stringRepresentation();
-    }
-
-    public String toLudCodeCompletion(LudemeNode nodeToMark, int inputIndex, String mark)
-    {
-        return ROOT.codeCompletionGameDescription(nodeToMark, inputIndex, mark);
+        return ROOT.toLud();
     }
 
     public boolean isDefine()
