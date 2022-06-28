@@ -1,6 +1,7 @@
 // Defines a piece moving like a bishop in Chess.
 // #1 = The name of the piece.
-// #2 = The consequences.
+// #2 = Consequences of the capture effect.
+// #3 = The consequences of the moves.
 // @example ("ChessBishop" "Bishop")
 
 (define "ChessBishop"
@@ -14,12 +15,12 @@
                     (if (is Enemy (who at:(to)))
                         (remove 
                             (to) 
-                            (then (set Counter))
+                            #2
                         )
                     )
                 ) 
             ) 
-            #2
+            #3
         )
     )
 )
