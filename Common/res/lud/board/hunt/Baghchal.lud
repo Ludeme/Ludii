@@ -5,8 +5,7 @@
         (hand P1)
         (piece "Goat" P1 "StepToEmpty") 
         (piece "Tiger" P2 (or "HopCapture" "StepToEmpty") )
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Tiger2" (sites Corners))

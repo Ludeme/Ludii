@@ -28,16 +28,16 @@
             )
         )
         (piece "Dog" P2 N <Moves:dog>) 
-    } )  
+    })  
     (rules 
         (start { 
             (place "Dog2" (union (expand (sites Bottom)) (sites {"A3" "I3"})))
             (place "MountainLion1" (coord "E7"))
-        } )
+        })
         
         (play (forEach Piece)) 
         
-        (end  {
+        (end {
             (if (no Pieces P2) (result P1 Win))
             (if (no Moves P1) (result P2 Win))
             (if (no Moves P2) (result Mover Draw))
@@ -94,7 +94,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 

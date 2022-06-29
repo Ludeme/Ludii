@@ -1,28 +1,14 @@
-(define "HopMove"
-    (move Hop
-        #1
-        #2
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        (difference Orthogonal OppositeDirection)
-                        (between 
-                            if:(is Enemy (who at:(between)))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                ) 
-                (moveAgain)
+(define "CaptureAgain"
+    (then 
+        (if (can Move 
+                ("HopCapture"
+                    (from (last To)) 
+                    (difference Orthogonal OppositeDirection)
+                )
             )
+            (moveAgain)
         )
-    )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -35,7 +21,11 @@
         (piece "Tiger" P1 
             (or
                 ("StepToEmpty")
-                ("HopMove")
+                ("HopCapture"
+                    ~
+                    ~
+                    ("CaptureAgain")
+                )
             )
         )
         (regions "CentralSites" (sites {6 8 16 18}))
@@ -64,7 +54,11 @@
             (play 
                 (if ("SameTurn")
                     (or 
-                        ("HopMove" (from (last To)) (difference Orthogonal OppositeDirection))
+                        ("HopCapture" 
+                            (from (last To)) 
+                            (difference Orthogonal OppositeDirection)
+                            ("CaptureAgain")
+                        )
                         (move Pass)
                     )
                     (forEach Piece top:True)

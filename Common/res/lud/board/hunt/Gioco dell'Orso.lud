@@ -47,7 +47,7 @@
                     (then 
                         (if (not 
                                 (can Move 
-                                		("StepToEmpty" (from (where "Bear" P2)))
+                                    ("StepToEmpty" (from (where "Bear" P2)))
                                 )
                             )
                             (and {
@@ -78,7 +78,7 @@
                     (then 
                         (if (not 
                                 (can Move 
-                                	("StepToEmpty" (from (where "Bear" P1)))
+                                    ("StepToEmpty" (from (where "Bear" P1)))
                                 )
                             )
                             (addScore P1 (- (count Moves) (+ (score P2) 6)))
