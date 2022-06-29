@@ -7,8 +7,8 @@
         )
         <Version:hand>
         
-        (piece "Pawn" P1 (move Step <Army> (to if:(is Empty (to)))))
-        (piece "Pawn" P2 N (move Step <Tower> (to if:(is Empty (to)))))
+        (piece "Pawn" P1 ("StepToEmpty" <Army>))
+        (piece "Pawn" P2 N ("StepToEmpty" <Tower>))
         (regions "Home" P2 (sites {"B1" "C2" "A2"}))
         (regions "Home" P1 (sites {"B2"}))
     })  
