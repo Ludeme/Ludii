@@ -266,6 +266,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
      */
     public void deselectEverything()
     {
+        System.out.println("Deselecting");
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = nodeComponent(n);
             lnc.setSelected(false);
@@ -771,7 +772,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
             if (SELECTED)
             {
                 LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent("Empty", false);
-                deselectEverything();
+                //deselectEverything();
             }
 
             repaint();

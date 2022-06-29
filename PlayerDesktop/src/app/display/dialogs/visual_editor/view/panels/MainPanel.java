@@ -70,6 +70,7 @@ public class MainPanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
+                System.out.println(e.getKeyCode());
                 if (e.getKeyCode() == 17)
                 {
                     LudemeNodeComponent.cltrPressed = true;

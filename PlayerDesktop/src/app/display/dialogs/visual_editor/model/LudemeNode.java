@@ -396,6 +396,11 @@ public class LudemeNode implements iGNode
         }
     }
 
+    public void setProvidedInput(ClauseArg arg, Object input)
+    {
+        // TODO:
+    }
+
     /**
      * Sets this node to be dynamic or not
      * @param dynamic the dynamic to set

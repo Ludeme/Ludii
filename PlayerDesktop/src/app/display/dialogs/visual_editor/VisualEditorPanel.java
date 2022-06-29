@@ -31,9 +31,15 @@ public class VisualEditorPanel
 	private final PlayerApp app;
 	
 	//-------------------------------------------------------------------------
-	
+
+	public static void main(String[] args)
+	{
+		new VisualEditorPanel(null);
+	}
+
 	public VisualEditorPanel(final PlayerApp app)
 	{
+
 		this.app = app;
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
