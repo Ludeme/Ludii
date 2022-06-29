@@ -1,0 +1,28 @@
+(game "Liubo" 
+    (players 2)  
+    (equipment {
+        (board [#]) // We have a pic for this one but we do not know what is playable.... So I can't do it for sure.
+        (piece "Marker" Each (move [#])) // 6 pieces per player.
+        (dice d:2 from:0 num:6)
+    }) 
+    (rules
+        (start [#]) 
+        (play
+            (do (roll)
+                [#]
+            )
+        )
+        (end [#]) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)

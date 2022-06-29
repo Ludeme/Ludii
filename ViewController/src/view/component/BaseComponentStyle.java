@@ -62,6 +62,8 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	protected ValueDisplayInfo showValue = new ValueDisplayInfo();
 	protected ValueDisplayInfo showLocalState = new ValueDisplayInfo();
 	
+	protected boolean drawStringVisuals = false;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -97,6 +99,9 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		String SVGNameLocal = component.getNameWithoutNumber();
 		SVGNameLocal = genericMetadataChecks(context, containerIndex, imageState, imageValue);
 		String SVGPath = ImageUtil.getImageFullPath(SVGNameLocal);
+		
+		if (drawStringVisuals)
+			SVGPath = null;
 		
 		SVGPath = hiddenWhatCheck(context, hiddenBitset, SVGPath);
 		hiddenWhoCheck(context, hiddenBitset);

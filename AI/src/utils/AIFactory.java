@@ -25,6 +25,10 @@ import game.Game;
 import main.FileHandling;
 import main.grammar.Report;
 import metadata.ai.Ai;
+import metadata.ai.agents.Agent;
+import metadata.ai.agents.BestAgent;
+import metadata.ai.agents.mcts.Mcts;
+import metadata.ai.agents.minimax.AlphaBeta;
 import other.AI;
 import policies.GreedyPolicy;
 import policies.ProportionalPolicyClassificationTree;
@@ -692,7 +696,7 @@ public class AIFactory
 							new Report()
 						);
 				
-				return createAI(aiMetadata.agent().constructAgentString());
+				return fromDefAgent(aiMetadata.agent());
 			}
 			catch (final IOException e)
 			{
@@ -722,11 +726,61 @@ public class AIFactory
 		
 		if (game.metadata().ai().agent() != null)
 		{
-			bestAgent = game.metadata().ai().agent().constructAgentString();
+			return fromDefAgent(game.metadata().ai().agent());
 		}
 		
 		final AI ai = createAI(bestAgent);
 		return ai;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param agent
+	 * @return AI constructed from agent metadata in some .def file
+	 */
+	public static AI fromDefAgent(final Agent agent)
+	{
+		if (agent instanceof BestAgent)
+			return fromDefBestAgent((BestAgent) agent);
+		else if (agent instanceof AlphaBeta)
+			return fromDefAlphaBetaAgent((AlphaBeta) agent);
+		else if (agent instanceof Mcts)
+			return fromDefMctsAgent((Mcts) agent);
+		
+		System.err.println("AIFactory failed to load from def agent: " + agent);
+		return null;
+	}
+	
+	/**
+	 * @param agent
+	 * @return AI built from a best-agent string
+	 */
+	public static AI fromDefBestAgent(final BestAgent agent)
+	{
+		return createAI(agent.agent());
+	}
+	
+	/**
+	 * @param agent
+	 * @return AlphaBeta AI built from AlphaBeta metadata
+	 */
+	public static AlphaBetaSearch fromDefAlphaBetaAgent(final AlphaBeta agent)
+	{
+		if (agent.heuristics() == null)
+			return new AlphaBetaSearch();
+		else
+			return new AlphaBetaSearch(agent.heuristics());
+	}
+	
+	/**
+	 * @param agent
+	 * @return MCTS AI built from Mcts metadata
+	 */
+	public static MCTS fromDefMctsAgent(final Mcts agent)
+	{
+		System.err.println("Loading MCTS from def not yet implemented!");
+		return null;
 	}
 	
 	//-------------------------------------------------------------------------

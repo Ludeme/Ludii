@@ -1,0 +1,24 @@
+// Defines a piece moving like a pawn in Chess (En Passant, Initial double step moves and promotion are not described in this ludemeplex).
+// #1 = The name of the piece.
+// #2 = Other moves which can be added to the pawn pieces.
+// #3 = The consequences.
+// @example ("ChessPawn" "Pawn")
+
+(define "ChessPawn"
+    (piece #1 Each 
+        (or {
+            "StepForwardToEmpty" 
+            (move
+                Step 
+                (directions {FR FL}) 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    (apply (remove (to)))
+                )
+            )
+            #2
+            }
+            #3
+        )
+    )
+)

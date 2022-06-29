@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 (game "Heian Dai Shogi"
-	(players {(player N) (player S)})  
+    (players {(player N) (player S)})  
     (equipment { 
         (board (square 13))
         (piece "Pawn" Each (move [#]))
@@ -46,27 +46,27 @@
         (piece "Knight" Each (move [#]))
         
         (piece "SideMover" Each // Moves ortho forward one space OR slide ortho left and right
-        		(or
+            (or
                 ("StepMove" (directions Forward))
                 ("SlideMove" (directions (directions {Leftward Rightward})))
                 (then [#])
-                )
+            )
         ) 
         
         (piece "SavageTiger" Each // Diago one space
-                ("StepMove" (directions Diagonal) (then [#]))
+            ("StepMove" (directions Diagonal) (then [#]))
         ) 
         
         (piece "FlyingDragon" Each // Slide diago
-                ("SlideMove" (directions Diagonal) (then [#]))
+            ("SlideMove" (directions Diagonal) (then [#]))
         ) 
         
         (piece "RunningChariot" Each // slide forward and backward
-                ("SlideMove" (directions {Forward Backward}) (then [#]))
+            ("SlideMove" (directions {Forward Backward}) (then [#]))
         ) 
         
         (piece "Chunin" Each // step forward or backward
-                ("StepMove" (directions {Forward Backward}) (then [#]))
+            ("StepMove" (directions {Forward Backward}) (then [#]))
         ) 
     })
     (rules
@@ -92,7 +92,7 @@
             // Row 4
             (place "Chunin1" (coord "G4")) (place "Chunin2" (coord "G10"))
         })
-        (play (forEach Piece))
+        (play [#])
         (end [#])
     )
 )

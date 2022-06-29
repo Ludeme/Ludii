@@ -5,8 +5,7 @@
         (hand P2) 
         (piece "Tiger" P1 (or "HopCapture" "StepToEmpty" )) 
         (piece "Dog" P2 "StepToEmpty") 
-        }
-    )  
+    })  
     (rules 
         (start  {
             (place "Tiger1" <Board:initTiger>)
@@ -88,7 +87,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 

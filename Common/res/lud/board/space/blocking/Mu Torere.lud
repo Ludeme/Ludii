@@ -45,12 +45,12 @@
         <(move
             Step 
             (to if:(and
-					("IsEmpty")
-					(or
-						(not "Centre")
-						(is Related Adjacent (from) (sites Occupied by:Next))
-					)
-				) 
+                    ("IsEmpty")
+                    (or
+                        (not "Centre")
+                        (is Related Adjacent (from) (sites Occupied by:Next))
+                    )
+                ) 
             )
         )>
         "The game is played with all the rules"

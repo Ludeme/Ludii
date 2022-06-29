@@ -1,0 +1,33 @@
+(game "Smasandyutakankarikrida (Large Triangles)" 
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (shift -2 -4 (wedge 5))
+                (rectangle 5 5 diagonals:Alternating)
+                (shift -2 4 (rotate 180 (wedge 5)))
+            })
+            use:Vertex
+        )
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+)

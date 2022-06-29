@@ -410,7 +410,7 @@ NEW CTOR
 PARAM JAVADOC: <string>: The event triggered.
 PARAM JAVADOC: <int>: Index of the player or the component.
 PARAM JAVADOC: <roleType>: The Role type corresponding to the index.
-EXAMPLE: (is Triggered "Checkmate" Next)
+EXAMPLE: (is Triggered "Lost" Next)
 NEW CTOR
 (is <isSimpleType>)
 PARAM JAVADOC: <isSimpleType>: The type of query to perform.
@@ -3391,7 +3391,7 @@ PARAM JAVADOC: [<to>]: The condition on the pieces surrounding [(to if:(isFriend
 PARAM JAVADOC: [except:<int>]: The number of exceptions allowed to apply the effect [0].
 PARAM JAVADOC: [with:<piece>]: The piece which should at least be in the surrounded pieces.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
-EXAMPLE: (surround (from (last To)) Orthogonal (between if:(is Friend (who at:(between))) (apply (trigger "Checkmate" (mover))) ) (to if:(not (is In (to) (sites Empty))) ) )
+EXAMPLE: (surround (from (last To)) Orthogonal (between if:(is Friend (who at:(between))) (apply (trigger "Lost" (mover))) ) (to if:(not (is In (to) (sites Empty))) ) )
 TYPE: game.rules.play.moves.nonDecision.effect.Then
 TYPE JAVADOC: Defines the subsequents of a move, to be applied after the move.
 NEW CTOR
@@ -4571,6 +4571,7 @@ TYPE JAVADOC: Interface for generic metadata item.  Classes to be included as me
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
 SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
 SUBCLASS: metadata.ai.agents.mcts.selection.Selection
 SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
@@ -4670,6 +4671,7 @@ TYPE JAVADOC: General function hint for this game.Metadata containing hints for 
 SUBCLASS: metadata.ai.agents.Agent
 SUBCLASS: metadata.ai.agents.BestAgent
 SUBCLASS: metadata.ai.agents.mcts.Mcts
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
 SUBCLASS: metadata.ai.agents.mcts.selection.Selection
 SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 SUBCLASS: metadata.ai.agents.minimax.AlphaBeta
@@ -4743,8 +4745,15 @@ NEW CTOR
 (mcts [<selection>])
 PARAM JAVADOC: [<selection>]: The Selection strategy to be used by this MCTS agent [UCB1].
 EXAMPLE: (mcts)
+TYPE: metadata.ai.agents.mcts.selection.Ag0
+TYPE JAVADOC: Describes the selection strategy also used by AlphaGo Zero (and AlphaZero).  Requires that a learned selection policy (based on features) has been   described for the MCTS agent that uses this selection strategy.
+NEW CTOR
+(ag0 [<float>])
+PARAM JAVADOC: [<float>]: The value to use for the exploration constant [2.5].
+EXAMPLE: (ag0)
 TYPE: metadata.ai.agents.mcts.selection.Selection
 TYPE JAVADOC: Abstract class for Selection strategies for MCTS in AI metadata
+SUBCLASS: metadata.ai.agents.mcts.selection.Ag0
 SUBCLASS: metadata.ai.agents.mcts.selection.Ucb1
 TYPE: metadata.ai.agents.mcts.selection.Ucb1
 TYPE JAVADOC: Describes the UCB1 selection strategy, which is one of the most straightforward  and simple Selection strategies, used by the standard UCT variant of MCTS.
@@ -4756,7 +4765,8 @@ EXAMPLE: (ucb1 0.6)
 TYPE: metadata.ai.agents.minimax.AlphaBeta
 TYPE JAVADOC: Describes an Alpha-Beta search agent.
 NEW CTOR
-(alphaBeta)
+(alphaBeta [<heuristics>])
+PARAM JAVADOC: [<heuristics>]: The heuristics to be used by this agent. Will default to heuristics from the game file's metadata if left unspecified [null].
 EXAMPLE: (alphaBeta)
 TYPE: metadata.ai.features.FeatureSet
 TYPE JAVADOC: Defines a single feature set, which may be applicable to either a  single specific player in a game, or to all players in a game.
@@ -5528,6 +5538,7 @@ CONST JAVADOC: OuterVertices: Intersections of lines on the board, along the per
 TYPE: metadata.graphics.util.ComponentStyleType
 TYPE JAVADOC: Supported style types for rendering particular components.
 CONST JAVADOC: Piece: Style for pieces.
+CONST JAVADOC: Text: Style for text/numbers.
 CONST JAVADOC: Tile: Style for tiles (components that fill a cell and may have marked paths).
 CONST JAVADOC: Card: Style for playing cards.
 CONST JAVADOC: Die: Style for die components used as playing pieces.
@@ -5822,15 +5833,6 @@ PARAM JAVADOC: <string>: The name of the concept.
 PARAM JAVADOC: <float>: The double value.
 PARAM JAVADOC: <boolean>: The boolean value.
 EXAMPLE: (concept "Num Players" 6)
-DEFINE: AlquerqueBoard
-DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
-DEFINE EXAMPLE: ("AlquerqueBoard" 5 5)
-DEFINE: HoundsAndJackalsBoard
-DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals board. This board defines tracks for two players, hardcoded in a particular shape. 
-DEFINE EXAMPLE: ("HoundsAndJackalsBoard")
-DEFINE: LascaBoard
-DEFINE JAVADOC: Defines the original Lasca board. 
-DEFINE EXAMPLE: ("LascaBoard")
 DEFINE: HandEmpty
 DEFINE JAVADOC: Checks if all the sites in a specific hand are empty. #1 = The owner of the hand, can be a RoleType or the index of the owner. 
 DEFINE EXAMPLE: ("HandEmpty" Mover)
@@ -5847,14 +5849,86 @@ DEFINE EXAMPLE: ("NoSites" (sites Empty))
 DEFINE: SameTurn
 DEFINE JAVADOC: Checks if the previous mover is the same player than the current mover, consequently this is the same turn. 
 DEFINE EXAMPLE: ("SameTurn")
+DEFINE: AlquerqueBoard
+DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals. 
+DEFINE EXAMPLE: ("AlquerqueBoard" 5 5)
+DEFINE: AlquerqueBoardWithBottomAndTopTriangles
+DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with a triangle extension at the bottom and another at the top. 
+DEFINE EXAMPLE: ("AlquerqueBoardWithBottomAndTopTriangles")
+DEFINE: AlquerqueBoardWithBottomTriangle
+DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with a triangle extension at the bottom. 
+DEFINE EXAMPLE: ("AlquerqueBoardWithBottomTriangle")
+DEFINE: AlquerqueBoardWithFourTriangles
+DEFINE JAVADOC: Defines a rectangular board with Alquerque-style alternating diagonals with four triangle extensions on each side. 
+DEFINE EXAMPLE: ("AlquerqueBoardWithFourTriangles")
+DEFINE: CrossBoard
+DEFINE JAVADOC: Defines a regular cross board tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The default site type of the board. #4 = The type of the diagonals of each tiling. 
+DEFINE EXAMPLE: ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
+DEFINE: HoundsAndJackalsBoard
+DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals board. This board defines tracks for two players, hardcoded in a particular shape. 
+DEFINE EXAMPLE: ("HoundsAndJackalsBoard")
+DEFINE: LascaBoard
+DEFINE JAVADOC: Defines the original Lasca board. 
+DEFINE EXAMPLE: ("LascaBoard")
+DEFINE: ThreeMenMorrisBoard
+DEFINE JAVADOC: Defines a Three Men's Morris board. 
+DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
+DEFINE: ThreeMenMorrisBoardWithLeftAndRightTriangles
+DEFINE JAVADOC: Defines a Three Men's Morris board with two triangle extensions at the left and right. 
+DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
+DEFINE: AlquerqueGraph
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals. 
+DEFINE EXAMPLE: ("AlquerqueGraph" 5 5)
+DEFINE: AlquerqueGraphWithBottomAndTopTriangles
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with a triangle extension at the bottom and another at the top. 
+DEFINE EXAMPLE: ("AlquerqueGraphWithBottomAndTopTriangles")
+DEFINE: AlquerqueGraphWithBottomTriangle
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with a triangle extension at the bottom. 
+DEFINE EXAMPLE: ("AlquerqueGraphWithBottomTriangle")
+DEFINE: AlquerqueGraphWithFourTriangles
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with four triangle extension on each side. 
+DEFINE EXAMPLE: ("AlquerqueGraphWithFourTriangles")
+DEFINE: CrossGraph
+DEFINE JAVADOC: Defines a regular cross graph tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The type of the diagonals of each tiling. 
+DEFINE EXAMPLE: ("CrossGraph" 3 7 diagonals:Alternating)
+DEFINE: HoundsAndJackalsGraph
+DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals graph. 
+DEFINE EXAMPLE: ("HoundsAndJackalsGraph")
+DEFINE: LascaGraph
+DEFINE JAVADOC: Defines the original Lasca graph. 
+DEFINE EXAMPLE: ("LascaGraph")
+DEFINE: ThreeMenMorrisGraphWithLeftAndRightTriangles
+DEFINE JAVADOC: Defines a Three Men's Morris graph with two triangle extensions at the left and right. 
+DEFINE EXAMPLE: ("ThreeMenMorrisGraphWithLeftAndRightTriangles")
+DEFINE: ChessBishop
+DEFINE JAVADOC: Defines a piece moving like a bishop in Chess. #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences of the moves. 
+DEFINE EXAMPLE: ("ChessBishop" "Bishop")
+DEFINE: ChessKing
+DEFINE JAVADOC: Defines a piece moving like a king in Chess (castling is not described in this ludemeplex). #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences of the moves. 
+DEFINE EXAMPLE: ("ChessKing" "King")
+DEFINE: ChessKnight
+DEFINE JAVADOC: Defines a piece moving like a knight in Chess. #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences. 
+DEFINE EXAMPLE: ("ChessKnight" "Knight")
+DEFINE: ChessPawn
+DEFINE JAVADOC: Defines a piece moving like a pawn in Chess (En Passant, Initial double step moves and promotion are not described in this ludemeplex). #1 = The name of the piece. #2 = Other moves which can be added to the pawn pieces. #3 = The consequences. 
+DEFINE EXAMPLE: ("ChessPawn" "Pawn")
+DEFINE: ChessQueen
+DEFINE JAVADOC: Defines a piece moving like a queen in Chess. #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences of the moves. 
+DEFINE EXAMPLE: ("ChessQueen" "Queen")
+DEFINE: ChessRook
+DEFINE JAVADOC: Defines a piece moving like a rook in Chess. #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences of the moves. 
+DEFINE EXAMPLE: ("ChessRook" "Rook")
 DEFINE: OccupiedNbors
 DEFINE JAVADOC: Returns the number of pieces owned by a player around a given site. #1 = The site to test around. #2 = The owner of the pieces to count. 
 DEFINE EXAMPLE: ("OccupiedNbors" (to) Mover)
+DEFINE: Checkmate
+DEFINE JAVADOC: If the next player is checkmate, the mover is winning. This ludemeplex can be used only in an ending condition. #1 = The name of the piece to check. 
+DEFINE EXAMPLE: ("Checkmate" "King")
 DEFINE: NoMoves
 DEFINE JAVADOC: Checks if the next player has no legal moves and apply a specific result to the next player. This ludemeplex can be used only in an ending condition. #1 = The result to apply. 
 DEFINE EXAMPLE: ("NoMoves" Loss)
 DEFINE: HopCapture
-DEFINE JAVADOC: Defines a hop move in all the adjacent directions over an enemy to an empty site. The enemy piece is removed. 
+DEFINE JAVADOC: Defines a hop move in all the directions specified (by default Adjacent) over an enemy to an empty site. The enemy piece is removed. #1 = The from site. #2 = Directions of the hop. #3 = The consequences. 
 DEFINE EXAMPLE: ("HopCapture")
 DEFINE: HopDiagonalCapture
 DEFINE JAVADOC: Defines a hop move in all the diagonal directions over an enemy to an empty site. The enemy piece is removed. 
@@ -5895,6 +5969,9 @@ DEFINE: HopSequenceCaptureAgain
 DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
+DEFINE: SlideCapture
+DEFINE JAVADOC: Defines a slide move to capture an enemy piece. #1 = Directions of the slide. #2 = Between conditions to specify (by default sliding on empty sites). #3 = Consequences of the capture effect. #4 = The consequences of the moves. 
+DEFINE EXAMPLE: ("SlideCapture" Orthogonal)
 DEFINE: StepBackwardToEmpty
 DEFINE JAVADOC: Defines a step move to the backward direction according to the facing direction of the piece in the 'from' location to an empty site. 
 DEFINE EXAMPLE: ("StepBackwardToEmpty")
@@ -5914,7 +5991,7 @@ DEFINE: StepRotationalToEmpty
 DEFINE JAVADOC: Defines a step move to all the rotational directions to an empty site. 
 DEFINE EXAMPLE: ("StepRotationalToEmpty")
 DEFINE: StepToEmpty
-DEFINE JAVADOC: Defines a step move to all the adjacent directions to an empty site. 
+DEFINE JAVADOC: Defines a step move to all the directions specified (adjacent by default) to an empty site. #1 = The direction(s) to step. 
 DEFINE EXAMPLE: ("StepToEmpty")
 DEFINE: DominoWalk
 DEFINE JAVADOC: Defines a graphics turtle walk to build a domino as a large piece. 

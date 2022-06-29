@@ -83,15 +83,18 @@
                 (forEach Piece) 
             )
         )
-        (end  
+        (end { 
+            (if (is Cycle)
+                (result Mover Draw)
+            )
             (if 
                 (or 
                     (= (where "Lion" Next) Off) 
                     (is In (where "Lion" Mover) (sites Mover "LastRank"))
                 ) 
                 (result Mover Win)
-            )	
-        )
+            )
+        })
     )
 )
 

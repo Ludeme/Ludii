@@ -217,7 +217,7 @@ public class UpdateAIMetadata
 						new Report()
 					);
 					
-					if (bestAgent.constructAgentString().equals("AlphaBetaMetadata"))
+					if (bestAgent.agent().equals("AlphaBetaMetadata"))
 						bestAgent = new BestAgent("Alpha-Beta");
 
 					stringsToWrite.add(bestAgent.toString());

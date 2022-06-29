@@ -19,15 +19,8 @@
                 )
             )
         )
-        (piece "Hen" P2 N
-            (move 
-                Step 
-                (directions {FR FL}) 
-                (to if:(is Empty (to)))
-            )		
-        )
-        }
-    )  
+        (piece "Hen" P2 N ("StepToEmpty" (directions {FR FL})))
+    })  
     (rules 
         (start { 
             (place "Fox1" (intersection (sites Top) (union (sites Left) (difference (expand (sites Right)) (sites Right)))) state:1)
@@ -48,9 +41,7 @@
             (nextPhase "Movement")
         )
         
-        (phase "Movement"
-            (play (forEach Piece))
-        )
+        (phase "Movement" (play (forEach Piece)))
         }
         
         (end {
@@ -81,7 +72,6 @@
     (graphics {
         (board Style Chess)
         (piece Families {"Abstract" "Themed"})
-        
     })
     
     (ai

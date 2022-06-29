@@ -14,13 +14,7 @@
 (game "Asalto"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Marker" P1 (or ("HopCapture") "StepToEmpty" ) )
         (piece "Marker" P2 "StepToEmpty") 
     })  
@@ -62,7 +56,7 @@
             (if
                 (or
                     (or (no Pieces P1) (no Moves P1))
-                    (= 0 (count Sites in:(difference (expand (sites Top) steps:2) (sites Occupied by:P2)))) 
+                    (all Sites (expand (sites Top) steps:2) if:(= (who at:(site)) P2))
                 )
                 (result P2 Win)
             )
@@ -89,7 +83,6 @@
     )
     
     (graphics {
-        
         (region Colour Edge {70 71 65 66 67 68 69 63 64 58 59 60 61 62 40 41} regionSiteType:Edge (colour Red))
     })
     

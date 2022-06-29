@@ -1,9 +1,0 @@
-// Defines a rectangular board with Alquerque-style alternating diagonals.
-// @example ("AlquerqueBoard" 5 5)
-
-(define "AlquerqueBoard"
-    (board 
-        (rectangle #1 #2 diagonals:Alternating)
-        use:Vertex
-    )
-)

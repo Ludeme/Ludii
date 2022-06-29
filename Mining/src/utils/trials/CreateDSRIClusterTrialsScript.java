@@ -24,17 +24,17 @@ public class CreateDSRIClusterTrialsScript
 {
 	public static void main(final String[] args)
 	{
-		String folderGen = "Gen" + File.separator;
 		String bashName = "";
 		String jobName = "";
 		
 		// For runAll.sh
-		String deleteAll = "oc delete jobs --all\n"
-				+ "oc delete builds --all\n"
-				+ "oc delete buildconfigs --all\n\n";
+//		String deleteAll = "oc delete jobs --all\n"
+//				+ "oc delete builds --all\n"
+//				+ "oc delete buildconfigs --all\n\n";
+		String deleteAll ="";
 		
 	    // For Dockerfile
-	    String beginDockerFile ="FROM openjdk:18-oraclelinux7\n"
+	    String beginDockerFile ="FROM ghcr.io/maastrichtu-ids/openjdk:18\n"
 	    		+ "RUN mkdir -p /app\n"
 	    		+ "WORKDIR /app\n"
 				+ "ENTRYPOINT [\"java\", \"-jar\", \"/data/ludii.jar\"]\n"
@@ -48,6 +48,8 @@ public class CreateDSRIClusterTrialsScript
 		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
 		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+
+		String folderGen = "Gen" + agentName + File.separator;
 		final String mainScriptName = folderGen + "allRun.sh";
 		
 		final File genFolderFile = new File(folderGen + jobName);
@@ -104,7 +106,7 @@ public class CreateDSRIClusterTrialsScript
 				if(rulesetNames.isEmpty())
 				{
 					// Get the name of the bash file.
-					bashName = fileName;
+					bashName = "job"+fileName;
 					// Get the name of the job.
 					jobName = bashName+agentName+"Trials";
 					jobName = jobName.toLowerCase();
@@ -153,9 +155,9 @@ public class CreateDSRIClusterTrialsScript
 						final String rulesetJobName = "Ruleset" + idRuleset; // Need to modify the name of the job bc DSRI has a limit of 58 chars
 						final String rulesetName = rulesetNames.get(idRuleset);
 						// Get the name of the bash file.
-						bashName = fileName + "-" + rulesetJobName;
+						bashName = "job"+fileName + "-" + rulesetJobName;
 						// Get the name of the job.
-						jobName = fileName + "-" + rulesetJobName+agentName+"Trials";
+						jobName = "job"+fileName + "-" + rulesetJobName+agentName+"Trials";
 						jobName = jobName.toLowerCase();
 						jobName = jobName.replace("_", "");
 
@@ -257,6 +259,13 @@ public class CreateDSRIClusterTrialsScript
 	    		+ "          volumeMounts:\n"
 	    		+ "            - mountPath: /data\n"
 	    		+ "              name: data\n"
+	    		+ "      resources:\n"
+	    		+ "        requests:\n"
+	    		+ "          cpu: \"1\"\n"
+	    		+ "          memory: \"4G\"\n"
+	    		+ "        limits:\n"
+	    		+ "          cpu: \"2\"\n"
+	    		+ "          memory: \"8G\"\n"
 	    		+ "      volumes:\n"
 	    		+ "        - name: data\n"
 	    		+ "          persistentVolumeClaim:\n"

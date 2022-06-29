@@ -1,0 +1,28 @@
+(game "Tami"  
+    (players 2)
+    
+    (equipment { 
+        (mancalaBoard #)
+        (piece "Seed" Shared)
+        [#]
+    })  
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

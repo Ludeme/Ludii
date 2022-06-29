@@ -35,8 +35,10 @@ public final class BestAgent implements Agent
 	
 	//-------------------------------------------------------------------------
 	
-	@Override
-	public String constructAgentString()
+	/**
+	 * @return The agent string
+	 */
+	public String agent()
 	{
 		return agent;
 	}

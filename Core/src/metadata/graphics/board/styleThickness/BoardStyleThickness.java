@@ -29,7 +29,7 @@ public class BoardStyleThickness implements GraphicsItem
 	 * @param boardGraphicsType The board graphics type to which the colour is to be applied (must be InnerEdge or OuterEdge).
 	 * @param thickness			The assigned thickness scale for the specified boardGraphicsType.
 	 * 
-	 * @example (boardStyleThickness OuterEdges 2.0)
+	 * @example (board StyleThickness OuterEdges 2.0)
 	 */
 	public BoardStyleThickness
 	(

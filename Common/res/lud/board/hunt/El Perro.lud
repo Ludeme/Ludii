@@ -1,38 +1,23 @@
-(define "Hop" 
-    (move Hop 
-        (from #1) 
-        Adjacent
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-//------------------------------------------------------------------------------
-
 (game "El Perro"
     (players 2)  
     (equipment { 
         ("AlquerqueBoard" 5 5)
         (piece "Goat" P2
-            (move Step
+            ("StepToEmpty" 
                 (if (= (value Player Mover) 1)
                     (directions {S SE SW E W})
                     (directions {N NE NW E W})
                 )
-                (to if:(is Empty (to)))
             )
         )
         (piece "Dog" P1 
             (or 
-                ("Hop" 
-                    (from)
-                    (then (if (can Move ("Hop" (last To)) ) (moveAgain) )) 
-                ) 
-                "StepToEmpty"
+                ("HopCapture"
+                    (from (from))
+                    Adjacent
+                    (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                )
+                ("StepToEmpty")
             )
         )
     })  
@@ -45,10 +30,11 @@
         (play
             (if ("SameTurn")
                 (or
-                    ("Hop" 
-                        (last To)
-                        (then (if (can Move ("Hop" (last To)) ) (moveAgain) )) 
-                    ) 
+                    ("HopCapture"
+                        (from (last To))
+                        Adjacent
+                        (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                    )
                     (move Pass)
                 )
                 (forEach Piece)
@@ -56,13 +42,12 @@
                     (if (not 
                             (can Move
                                 (forEach Piece 
-                                    (step
+                                    ("StepToEmpty" 
                                         (if (= (value Player P2) 1)
                                             (directions {S SE SW})
                                             (directions {N NE NW})
                                         )	
-                                        (to if:(is Empty (to)))
-                                    )	
+                                    )
                                     P2
                                 )
                             )

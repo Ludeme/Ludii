@@ -1,6 +1,8 @@
 package metadata.ai.agents.minimax;
 
+import annotations.Opt;
 import metadata.ai.agents.Agent;
+import metadata.ai.heuristics.Heuristics;
 
 /**
  * Describes an Alpha-Beta search agent.
@@ -12,22 +14,36 @@ public class AlphaBeta implements Agent
 	
 	//-------------------------------------------------------------------------
 	
+	/** The heuristics we want to use. If null, will just use from game file's metadata */
+	protected final Heuristics heuristics;
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Constructor
 	 * 
+	 * @param heuristics The heuristics to be used by this agent. Will default
+	 * to heuristics from the game file's metadata if left unspecified [null].
+	 * 
 	 * @example (alphaBeta)
 	 */
-	public AlphaBeta()
+	public AlphaBeta
+	(
+		@Opt final Heuristics heuristics
+	)
 	{
-		// Do nothing
+		this.heuristics = heuristics;
 	}
 	
 	//-------------------------------------------------------------------------
 	
-	@Override
-	public String constructAgentString()
+	/**
+	 * @return Our heuristics (can be null if we just want to use from game 
+	 * file's metadata)
+	 */
+	public Heuristics heuristics()
 	{
-		return "algorithm=AlphaBeta";
+		return heuristics;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -35,7 +51,10 @@ public class AlphaBeta implements Agent
 	@Override
 	public String toString()
 	{
-		return "(alphaBeta)";
+		if (heuristics == null)
+			return "(alphaBeta)";
+		else
+			return "(alphaBeta " + heuristics.toString() + ")";
 	}
 	
 	//-------------------------------------------------------------------------

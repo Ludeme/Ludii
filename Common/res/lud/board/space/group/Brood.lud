@@ -179,27 +179,14 @@
         }
     )
     (rules
-        (start {(place "Disc0" (handSite Shared))})
+        <Protocol:pie>
+        <Protocol:setup>
         (play
-            (if
-                (!= 0 (count MovesThisTurn))
-                (move Add (piece "Disc0")
-                    (to (sites Empty))
-                    (then (if (= 1 (count MovesThisTurn)) (moveAgain)))
-                )
-                (or
-                    ("PlaceHex")
-                    (if
-                        (< 1 (count Sites in:(sites Empty)))
-                        (move Select (from (handSite Shared)) (then (moveAgain)))
-                    )
-                )
-                (then (forget Value All))
-            )
+            <Protocol:protocol>
         )
         (end
             (if
-                (is Full)
+                <Protocol:endCondition>
                 (byScore)
             )
         )
@@ -223,6 +210,65 @@
     {
     (item "Hide" <> "Nothing is currently printed on the pieces.")*
     (item "Show" <(show Piece State "Hex" Middle)> "Each piece currently shows the lesser of its brood's order and its brood's size.")
+    }
+)
+
+(option "Placement Protocol" <Protocol> args:{ <pie> <setup> <protocol> <endCondition> }
+    {
+    (item "12*" 
+        <>
+        <>
+        <
+        (if 
+            (or
+                (= 0 (count Moves))
+                (!= 0 (count MovesThisTurn))//(is Prev Mover)
+            )
+            ("PlaceHex")
+            (or
+                (move Pass)
+                (and
+                    {
+                    ("PlaceHex")
+                    } 
+                    (then (moveAgain))
+                )
+            )
+            (then (forget Value All))
+        )
+        >
+        <(all Passed)> 
+        "The 12* placement protocol is currently in effect. This is the protocol described in the rules above."
+    )*
+    (item "11*" 
+        <(meta (swap))> 
+        <(start {(place "Disc0" (handSite Shared))})>
+        <
+        (if
+            (!= 0 (count MovesThisTurn))
+            (move Add (piece "Disc0")
+                (to (sites Empty))
+                (then (if (= 1 (count MovesThisTurn)) (moveAgain)))
+            )
+            (or
+                ("PlaceHex")
+                (if
+                    (< 1 (count Sites in:(sites Empty)))
+                    (move Select (from (handSite Shared)) (then (moveAgain)))
+                )
+            )
+            (then (forget Value All))
+        )
+        >
+        <(is Full)> 
+        "With the current option, instead of the placement protocol described above, the following protocol is followed:
+        On your turn, you must either place 1 stone of your color or 2 stones of a neutral color. You may not do both. 
+        To place a piece of your color, you simply click an empty cell. 
+        To place two neutrals, first click the neutral piece above the board, then two empty cells. 
+        On the second player's first turn, they may chose to swap sides instead of making a placement.
+        The game ends when the board is full.
+        "
+    )
     }
 )
 

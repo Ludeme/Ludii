@@ -8,12 +8,7 @@
                 ("StepToEmpty")
             )		
         )
-        (piece "Hen" P2
-            (move Step
-                (directions {Rightward Leftward Forwards})
-                (to if:(is Empty (to)))
-            )
-        )
+        (piece "Hen" P2 ("StepToEmpty" (directions {Rightward Leftward Forwards})))
     })  
     
     (rules 

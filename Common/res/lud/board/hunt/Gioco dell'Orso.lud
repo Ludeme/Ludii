@@ -47,10 +47,7 @@
                     (then 
                         (if (not 
                                 (can Move 
-                                    (step 
-                                        (from (where "Bear" P2))
-                                        (to if:(is Empty (to)))
-                                    )
+                                    ("StepToEmpty" (from (where "Bear" P2)))
                                 )
                             )
                             (and {
@@ -81,10 +78,7 @@
                     (then 
                         (if (not 
                                 (can Move 
-                                    (step 
-                                        (from (where "Bear" P1))
-                                        (to if:(is Empty (to)))
-                                    )
+                                    ("StepToEmpty" (from (where "Bear" P1)))
                                 )
                             )
                             (addScore P1 (- (count Moves) (+ (score P2) 6)))
@@ -169,7 +163,6 @@
         (show Line {{9 11}} curve:{0.4 0.2 0.6 0.2} Bezier)
         (show Line {{12 14}} curve:{0.8 0.4 0.8 0.6} Bezier)
         (show Line {{5 15}} curve:{0.4 0.8 0.6 0.8} Bezier)
-        
     })
     
     (ai

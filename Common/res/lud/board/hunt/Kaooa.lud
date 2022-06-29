@@ -8,8 +8,7 @@
         (hand Each) 
         (piece "Marker" P1 (or ("HopSequenceCapture") "StepToEmpty") ) 
         (piece "Marker" P2 "StepToEmpty") 
-        }
-    )  
+    })  
     (rules 
         (start {
             (place "Marker1" (handSite P1) count:1)
@@ -66,7 +65,6 @@
     )
     
     (graphics {
-        
         (show Edges Diagonal Hidden)
     })
     

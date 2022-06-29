@@ -87,27 +87,27 @@ public class AgentCheckpoint
 							new Report()
 						);
 
-				if (bestAgent.constructAgentString().equals("AlphaBeta") || bestAgent.constructAgentString().equals("Alpha-Beta"))
+				if (bestAgent.agent().equals("AlphaBeta") || bestAgent.agent().equals("Alpha-Beta"))
 				{
 					ai = new AlphaBetaSearch(agentsParams.bestAgentsDataDir + "/BestHeuristics.txt");
 				}
-				else if (bestAgent.constructAgentString().equals("AlphaBetaMetadata"))
+				else if (bestAgent.agent().equals("AlphaBetaMetadata"))
 				{
 					ai = new AlphaBetaSearch();
 				}
-				else if (bestAgent.constructAgentString().equals("UCT"))
+				else if (bestAgent.agent().equals("UCT"))
 				{
 					ai = (ExpertPolicy) AIFactory.createAI("UCT");
 				}
-				else if (bestAgent.constructAgentString().equals("MC-GRAVE"))
+				else if (bestAgent.agent().equals("MC-GRAVE"))
 				{
 					ai = (ExpertPolicy) AIFactory.createAI("MC-GRAVE");
 				}
-				else if (bestAgent.constructAgentString().equals("MC-BRAVE"))
+				else if (bestAgent.agent().equals("MC-BRAVE"))
 				{
 					ai = (ExpertPolicy) AIFactory.createAI("MC-BRAVE");
 				}
-				else if (bestAgent.constructAgentString().equals("Biased MCTS"))
+				else if (bestAgent.agent().equals("Biased MCTS"))
 				{
 					final Features features = (Features)compiler.Compiler.compileObject
 							(
@@ -119,7 +119,7 @@ public class AgentCheckpoint
 					// TODO compare features string to features string in training process, use that if same?
 					ai = MCTS.createBiasedMCTS(features, agentsParams.playoutFeaturesEpsilon);
 				}
-				else if (bestAgent.constructAgentString().equals("Biased MCTS (Uniform Playouts)"))
+				else if (bestAgent.agent().equals("Biased MCTS (Uniform Playouts)"))
 				{
 					final Features features = (Features)compiler.Compiler.compileObject
 							(
@@ -130,14 +130,14 @@ public class AgentCheckpoint
 
 					ai = MCTS.createBiasedMCTS(features, 1.0);
 				}
-				else if (bestAgent.constructAgentString().equals("Random"))
+				else if (bestAgent.agent().equals("Random"))
 				{
 					// Don't want to train with Random, so we'll take UCT instead
 					ai = MCTS.createUCT();
 				}
 				else
 				{
-					System.err.println("Unrecognised best agent: " + bestAgent.constructAgentString());
+					System.err.println("Unrecognised best agent: " + bestAgent.agent());
 					return null;
 				}
 			}

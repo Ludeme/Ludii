@@ -1,0 +1,9 @@
+// Defines a rectangular graph with Alquerque-style alternating diagonals with a triangle extension at the bottom.
+// @example ("AlquerqueGraphWithBottomTriangle")
+
+(define "AlquerqueGraphWithBottomTriangle"
+    (merge 
+        (shift 0 2 (square 5 diagonals:Alternating)) 
+        (wedge 3)
+    ) 
+)
