@@ -138,7 +138,7 @@ public class DesignPalette
     // ~~ ICONS ~~ //
 
     // FRAME //
-    public static final ImageIcon LUDII_ICON = new ImageIcon(getIconURL("logo-clover-c.png"));
+    public static final ImageIcon LUDII_ICON = new ImageIcon(DesignPalette.class.getResource("/ludii-logo-64x64.png"));
     // HEADER EDITORS //
     public static final ImageIcon GAME_EDITOR_ACTIVE = getIcon("editor/active/game_editor.png");
     public static final ImageIcon GAME_EDITOR_INACTIVE = getIcon("editor/inactive/game_editor.png");
@@ -201,7 +201,7 @@ public class DesignPalette
 
     private static URL getIconURL(String path)
     {
-        return DesignPalette.class.getResource("/icons/"+path);
+        return DesignPalette.class.getResource("/visual_editor/"+path);
     }
 
     private static ImageIcon getIcon(String path)
