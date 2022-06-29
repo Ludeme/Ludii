@@ -19,7 +19,11 @@ public final class NodePlacementRoutines
 
     public static final int Y_AXIS = 1;
 
-    private static final int NODE_GAP = 50;
+    private static final int NODE_GAP = 25;
+
+    public static final int DEFAULT_X_POS = 20;
+
+    public static final int DEFAULT_Y_POS = 20;
 
     /**
      * Translate node placement by oPos vector with respect to root
@@ -45,7 +49,7 @@ public final class NodePlacementRoutines
 
     public static void alignNodes(List<iGNode> nodes, int axis, boolean animate)
     {
-        if (nodes.isEmpty()) return;
+        if (nodes.isEmpty() || (animate && GraphRoutines.updateCounter != 0)) return;
         // find min posX and posY in a list
         double posX = nodes.get(0).pos().x();
         double posY = nodes.get(0).pos().y();
@@ -75,7 +79,7 @@ public final class NodePlacementRoutines
             }
         }
 
-        if (animate)
+        if (animate && GraphRoutines.updateCounter == 0)
         {
             HashMap<Integer, Vector2D> incrementMap = GraphRoutines.computeNodeIncrements(nodes);
             // animate change
@@ -84,6 +88,7 @@ public final class NodePlacementRoutines
                 if (GraphRoutines.animateGraphNodes(nodes, incrementMap))
                 {
                     ((Timer)e.getSource()).stop();
+                    GraphRoutines.updateCounter = 0;
                 }
             });
             animationTimer.start();

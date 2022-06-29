@@ -1,6 +1,9 @@
 package app.display.dialogs.visual_editor.view;
 
+import app.display.dialogs.visual_editor.handler.EditorMenuBarHandler;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class EditorMenuBar extends JMenuBar {
@@ -9,7 +12,12 @@ public class EditorMenuBar extends JMenuBar {
         JMenu file = new JMenu("File"); // operations with file being edited
         // adding file menu items
         addJMenuItem(file, "New", null);
-        addJMenuItem(file, "Open...", null);
+        addJMenuItem(file, "Open...", new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditorMenuBarHandler.openDescriptionFile();
+            }
+        });
         addJMenuItem(file, "Open recent", null);
         addJMenuItem(file, "Close file", null);
         addJMenuItem(file, "Save", null);

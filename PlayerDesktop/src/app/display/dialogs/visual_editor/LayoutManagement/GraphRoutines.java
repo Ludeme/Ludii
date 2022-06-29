@@ -107,7 +107,6 @@ public final class GraphRoutines
 
     public static boolean animateGraphNodes(iGraph graph, int r, HashMap<Integer, Vector2D> increments)
     {
-
         List<Integer> Q = new ArrayList<>();
         Q.add(r);
         while (!Q.isEmpty())

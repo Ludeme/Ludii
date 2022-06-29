@@ -1,8 +1,10 @@
 package app.display.dialogs.visual_editor.model;
 
+import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.MainFrame;
+import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import compiler.Arg;
 import compiler.ArgClass;
@@ -48,7 +50,7 @@ public class GameParser
         final Map<String, Boolean> hasCompiled = new HashMap<>();
         rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
 
-        constructGraph(callTree.args().get(0), 0, null);
+        constructGraph(callTree.args().get(0), 0, Handler.editorPanel.graph());
 
         //EditorPanel ep = new EditorPanel(4000, 4000);
         //JFrame jf = new MainFrame(ep);
@@ -56,12 +58,56 @@ public class GameParser
 
     }
 
+    public static void ParseFileToGraph(File file, IGraphPanel graphPanel)
+    {
+        StringBuilder sb = new StringBuilder();
+        try (final BufferedReader rdr = new BufferedReader(new FileReader(file.getAbsolutePath())))
+        {
+            String line;
+            while ((line = rdr.readLine()) != null)
+                sb.append(line + "\n");
+        }
+        catch (final IOException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        // creating a call tree from game description
+        Description test_desc = new Description(Constants.BASIC_GAME_DESCRIPTION);
+        parser.Parser.expandAndParse(test_desc, new UserSelections(new ArrayList<>()),new Report(),false);
+        Token tokenTree_test = new Token(test_desc.expanded(), new Report());
+        Grammar gm = grammar.Grammar.grammar();
+        final ArgClass rootClass = (ArgClass) Arg.createFromToken(grammar.Grammar.grammar(), tokenTree_test);
+        assert rootClass != null;
+        rootClass.matchSymbols(gm, new Report());
+        // Attempt to compile the game
+        Class<?> clsRoot = null;
+        try
+        {
+            clsRoot = Class.forName("game.Game");
+        } catch (final ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        // Create call tree with dummy root
+        Call callTree = new Call(Call.CallType.Null);
+        final Map<String, Boolean> hasCompiled = new HashMap<>();
+        rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
+
+
+        // constructing a graph from call tree
+        constructGraph(callTree.args().get(0), 0, graphPanel.graph());
+
+    }
+
     /**
      * Prints out all the necessary information to construct ludeme graph
-     * @param c
-     * @param d
+     * @param c parent call
+     * @param d depth
+     * @param graph graph in operation
      */
-    private static void constructGraph(Call c, int d, LudemeNode pLn)
+    private static Object constructGraph(Call c, int d, DescriptionGraph graph)
     {
         List<Call> cArgs = c.args();
         int matched = 0;
@@ -70,45 +116,67 @@ public class GameParser
         {
             case Array:
                 // Apply method for the arguments of c
-                for (Call call : cArgs)
+                Object[] objects = new Object[cArgs.size()];
+                for (int i = 0; i < cArgs.size(); i++)
                 {
-                    constructGraph(call, d+1, null);
+                    objects[i] = constructGraph(cArgs.get(i), d+1, graph);
                 }
-                break;
+                return objects;
             case Terminal:
-                // Return lhs and the object
-                // TODO: Not Java 8 (do not know how to replace) System.out.println("    ".repeat(d)+"LHS: "+c.symbol().returnType().toString()+" RHS: "+c.object().toString());
-                break;
+                return c.object();
             case Class:
-                // TODO: debug this!
-                String lhs = c.symbol().rule().lhs().returnType().token();
-                Symbol nodeSymbol = c.symbol();
-
-                // System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
-
-                // Initialize ludeme node with found Symbol and correct rhs
-                //LudemeNode ln = new LudemeNode(nodeSymbol, 0, 0);
-                //Handler.addNode(GRAPH, ln);
-                for (int i = 0; i < c.args().size(); i++)
+                // TODO: debug this! currently the "OR group" is considered as multiple arguments :/
+                Symbol ludemeSymbol = c.symbol();
+                List<Clause> rhsList = c.symbol().rule().rhs();
+                Clause currentClause = null;
+                for (Clause clause : rhsList)
                 {
-                        // [ TODO : providedInputs changed ] ln.setProvidedInput(i, c.object());
+                    if (clause.args() != null && c.args().size() == clause.args().size())
+                    {
+                        List<ClauseArg> iRhs = clause.args();
+                        for (int j = 0; j < cArgs.size(); j++)
+                        {
+                            Symbol s = cArgs.get(j).symbol();
+                            if (s != null)
+                            {
+                                if (s.returnType().token().equals(
+                                        iRhs.get(j).symbol().returnType().token()))
+                                {
+                                    counter++;
+                                }
+                            }
+
+                        }
+                        if (counter > matched || rhsList.size() == 1)
+                        {
+                            matched = counter;
+                            counter = 0;
+                            currentClause = clause;
+                        }
+                    }
                 }
 
-                // Output correct lhs + rhs
-                // Apply method for the arguments of c
-                for (int i = 0; i < cArgs.size(); i++) {
+                // creating ludeme node from call class
+                LudemeNode ln = new LudemeNode(ludemeSymbol, NodePlacementRoutines.DEFAULT_X_POS,
+                        NodePlacementRoutines.DEFAULT_Y_POS);
+                Handler.addNode(graph, ln);
+                // TODO: add edge to graph model
+                // setting up current clause constructor
+                Handler.updateCurrentClause(graph, ln, currentClause);
+                // providing argument to the ludeme node
+                for (int i = 0; i < cArgs.size(); i++)
+                {
                     Call call = cArgs.get(i);
-                    if (!call.type().equals(Call.CallType.Class)) continue;
-                    // [TODO: Changed LudemeNode ] Handler.updateInput(GRAPH, ln, i, call.object());
-
-                    //constructGraph(call, d+1, ln);
+                    Object input = constructGraph(call, d+1, graph);
+                    Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
                 }
+                return ln;
 
-                break;
             default:
-                break;
+                return null;
         }
     }
+
 
     private static StringBuilder descriptionToString(String gamePath)
     {

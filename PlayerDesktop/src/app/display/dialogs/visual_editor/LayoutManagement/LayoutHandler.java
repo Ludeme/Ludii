@@ -70,7 +70,7 @@ public class LayoutHandler {
     public void executeLayout(int root, boolean animated)
     {
         // check if has children
-        if (graph.getNode(root).children().isEmpty()) return;
+        if (graph.getNode(root).children().isEmpty() || GraphRoutines.updateCounter != 0) return;
         updateNodeDepth(graph, graph.getRoot().id());
         layout.setRoot(root);
         layout.applyLayout();
@@ -83,6 +83,7 @@ public class LayoutHandler {
                 if (GraphRoutines.animateGraphNodes(graph, root, incrementMap))
                 {
                     ((Timer)e.getSource()).stop();
+                    GraphRoutines.updateCounter = 0;
                 }
             });
             animationTimer.start();
