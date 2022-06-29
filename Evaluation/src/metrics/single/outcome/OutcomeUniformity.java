@@ -34,7 +34,7 @@ public class OutcomeUniformity extends Metric
 			"Inverse of the per-player variance in outcomes over all trials, averaged over all players.", 
 			0.0, 
 			1.0,
-			Concept.AdvantageP1		// FIXME update this
+			Concept.OutcomeUniformity
 		);
 	}
 	

@@ -81,7 +81,7 @@ public final class Surround extends Effect
 	 * @param then     The moves applied after that move is applied.
 	 * 
 	 * @example (surround (from (last To)) Orthogonal (between if:(is Friend (who
-	 *          at:(between))) (apply (trigger "Checkmate" (mover))) ) (to if:(not
+	 *          at:(between))) (apply (trigger "Lost" (mover))) ) (to if:(not
 	 *          (is In (to) (sites Empty))) ) )
 	 */
 	public Surround

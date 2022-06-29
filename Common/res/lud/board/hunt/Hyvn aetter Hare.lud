@@ -1,7 +1,6 @@
 (game "Hyvn aetter Hare"
     (players 2)  
-    (equipment 
-        {
+    (equipment {
         (board 
             (splitCrossings
                 (merge
@@ -14,8 +13,7 @@
         (piece "Hare" P1 "StepToEmpty") 
         (piece "Dog" P2 "StepToEmpty") 
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Hare1" (handSite P1) count:1)
@@ -145,7 +143,6 @@
     
     (graphics {
         (piece Families {"Abstract" "Themed"})
-        
     })
     
     (ai 

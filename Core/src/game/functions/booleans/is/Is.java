@@ -379,7 +379,7 @@ public class Is extends BaseBooleanFunction
 	 * @param index  Index of the player or the component.
 	 * @param role   The Role type corresponding to the index.
 	 *
-	 * @example (is Triggered "Checkmate" Next)
+	 * @example (is Triggered "Lost" Next)
 	 */
 	public static BooleanFunction construct
 	(
