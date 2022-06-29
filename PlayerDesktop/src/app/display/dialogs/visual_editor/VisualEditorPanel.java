@@ -41,7 +41,7 @@ public class VisualEditorPanel
 
 		}
 
-		controller = new NGramController(7);
+		controller = new NGramController(5);
 		editPanel = new EditorPanel(5000,5000);
 		MainFrame f = new MainFrame(editPanel);
 	}
