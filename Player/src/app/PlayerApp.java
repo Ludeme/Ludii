@@ -196,7 +196,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		final BufferedImage componentImage = graphicsCache().getComponentImage(bridge, imageInfo.containerIndex(), imageInfo.component(), imageInfo.component().owner(), imageInfo.localState(), imageInfo.value(), imageInfo.site(), imageInfo.level(), imageInfo.graphElementType(), imageInfo.imageSize(), context, hiddenValue, imageInfo.rotation(), false);
 
 		// Exhibition glowing selected pieces
-		if (settingsPlayer().usingExhibitionApp() && imageInfo.component().equals(MoveHandler.getLastMovedPiece(this)) && context.game().equipment().containers().length == 4)
+		if (settingsPlayer().usingExhibitionApp() && imageInfo.component().equals(MoveHandler.getLastMovedPiece(this)) && context.game().equipment().containers().length > 1)
 		{
 			//g2d.setColor(new Color(253,253,150,100));
 			//g2d.fillOval(imageInfo.drawPosn().x, imageInfo.drawPosn().y, imageInfo.imageSize(), imageInfo.imageSize());

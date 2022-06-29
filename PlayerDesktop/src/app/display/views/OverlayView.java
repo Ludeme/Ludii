@@ -85,10 +85,10 @@ public final class OverlayView extends View
 			
 			final Font exhbitionLabelFont = new Font("Cantarell", Font.PLAIN, 24);
 			g2d.setFont(exhbitionLabelFont);
-			if (app.manager().ref().context().equipment().containers().length > 3)
+			if (app.manager().ref().context().equipment().containers().length > 1)
 			{
 				g2d.drawString("1. Choose a board", 30, 150);
-				g2d.drawString("2. Choose pieces (drag onto play area)", 30, 298);
+				g2d.drawString("2. Choose pieces (drag onto board)", 30, 298);
 				g2d.drawString("Movement", 30, 455);
 				g2d.drawString("  Direction", 30, 503);
 				g2d.drawString("   Capture", 30, 551);

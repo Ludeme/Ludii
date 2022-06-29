@@ -45,7 +45,7 @@ public final class BoardView extends View
 		if (exhibitionMode)
 		{
 			placement = new Rectangle(app.width()-boardSize + 30, 30, boardSize, boardSize);
-			app.bridge().getContainerStyle(0).setDefaultBoardScale(0.6);
+			app.bridge().getContainerStyle(0).setDefaultBoardScale(0.7);
 		}
 		else
 		{
