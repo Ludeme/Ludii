@@ -1,20 +1,9 @@
 (game "Gasetavl (Gedved)"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (shift 0 3 (rectangle 3 9 diagonals:Alternating))
-                (shift 3 0 (rectangle 9 3 diagonals:Alternating))
-            })
-            use:Vertex
-        )
+        ("CrossBoard" 3 9 use:Vertex diagonals:Alternating)
         (piece "Fox" P1 (or ("HopCapture") ("StepToEmpty")))
-        (piece "Geese" P2 N 
-            (move Step 
-                (directions {Rightward Forwards Leftward}) 
-                (to if:(is Empty (to)))
-            )
-        )
+        (piece "Geese" P2 N ("StepToEmpty" (directions {Rightward Forwards Leftward})))
     })
     (rules 
         (start {
