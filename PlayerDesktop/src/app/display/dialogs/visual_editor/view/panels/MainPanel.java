@@ -67,10 +67,19 @@ public class MainPanel extends JPanel {
         setFocusable(true);
         // key listener check if ctrl is pressed/released
         addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                if (e.getKeyCode() == 17)
+                {
+                    LudemeNodeComponent.cltrPressed = true;
+                }
+            }
+
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
-                System.out.println(e.getKeyCode());
                 if (e.getKeyCode() == 17)
                 {
                     LudemeNodeComponent.cltrPressed = true;

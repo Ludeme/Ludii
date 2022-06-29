@@ -50,9 +50,9 @@ public class GameParser
 
         constructGraph(callTree.args().get(0), 0, null);
 
-        EditorPanel ep = new EditorPanel(4000, 4000);
-        JFrame jf = new MainFrame(ep);
-        ep.drawGraph(GRAPH);
+        //EditorPanel ep = new EditorPanel(4000, 4000);
+        //JFrame jf = new MainFrame(ep);
+        //ep.drawGraph(GRAPH);
 
     }
 
@@ -87,8 +87,8 @@ public class GameParser
                 // System.out.println("    ".repeat(d)+"Return type: "+c.symbol().returnType().toString()+" LHS: "+lhs+" RHS: "+rhs);
 
                 // Initialize ludeme node with found Symbol and correct rhs
-                LudemeNode ln = new LudemeNode(nodeSymbol, 0, 0);
-                Handler.addNode(GRAPH, ln);
+                //LudemeNode ln = new LudemeNode(nodeSymbol, 0, 0);
+                //Handler.addNode(GRAPH, ln);
                 for (int i = 0; i < c.args().size(); i++)
                 {
                         // [ TODO : providedInputs changed ] ln.setProvidedInput(i, c.object());
@@ -101,7 +101,7 @@ public class GameParser
                     if (!call.type().equals(Call.CallType.Class)) continue;
                     // [TODO: Changed LudemeNode ] Handler.updateInput(GRAPH, ln, i, call.object());
 
-                    constructGraph(call, d+1, ln);
+                    //constructGraph(call, d+1, ln);
                 }
 
                 break;

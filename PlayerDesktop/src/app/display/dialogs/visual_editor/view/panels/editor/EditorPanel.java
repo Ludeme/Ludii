@@ -772,7 +772,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
             if (SELECTED)
             {
                 LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent("Empty", false);
-                //deselectEverything();
+                deselectEverything();
             }
 
             repaint();
