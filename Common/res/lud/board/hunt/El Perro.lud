@@ -13,10 +13,10 @@
         (piece "Dog" P1 
             (or 
                 ("HopCapture"
-                        (from (from))
-                        Adjacent
-                        (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
-                    )
+                    (from (from))
+                    Adjacent
+                    (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                )
                 ("StepToEmpty")
             )
         )
@@ -31,10 +31,10 @@
             (if ("SameTurn")
                 (or
                     ("HopCapture"
-                            (from (last To))
-                            Adjacent
-                            (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
-                        )
+                        (from (last To))
+                        Adjacent
+                        (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                    )
                     (move Pass)
                 )
                 (forEach Piece)
