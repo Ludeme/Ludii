@@ -77,8 +77,8 @@ public class DatabaseFunctions
 				String defineLudemeplexString = ludemeplexString.trim();
 				defineLudemeplexString = "(define \"\"DLP.Ludemeplexes." + ludemeplexId + "\"\" " + defineLudemeplexString + ")";
 				
-				outputLine += "\"" + defineLudemeplexString + "\"";
-				outputLine += "\"" + entry.getKey().toString() + "\"";
+				outputLine += "\"" + defineLudemeplexString + "\"";					// define version in .lud format
+				//outputLine += "\"" + entry.getKey().toString() + "\"";			// call tree string
 				outputLine += "," + allludemeplexescount.get(entry.getKey());		// total count
 				outputLine += "," + allLudemeplexes.get(entry.getKey()).size();		// # rulesets
 				outputLine += "\n";
