@@ -13,7 +13,7 @@ import other.move.Move;
 
 /**
  * Applies a sequence of moves one by one.
- * 
+ *
  * @author Eric.Piette
  */
 public final class Seq extends Effect
@@ -29,7 +29,7 @@ public final class Seq extends Effect
 
 	/**
 	 * @param moves   Moves to apply one by one.
-	 * 
+	 *
 	 * @example (seq {(remove 1) (remove 2)})
 	 */
 	public Seq
@@ -62,7 +62,7 @@ public final class Seq extends Effect
 				result.moves().add(appliedMove);
 			}
 		}
-		
+
 		// End result of the previous prior code
 //		if (then() != null)
 //			for (int j = 0; j < result.moves().size(); j++)
@@ -70,7 +70,7 @@ public final class Seq extends Effect
 
 		return result;
 	}
-	
+
 	@Override
 	public long gameFlags(final Game game)
 	{
@@ -91,7 +91,7 @@ public final class Seq extends Effect
 		final BitSet concepts = new BitSet();
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.CopyContext.id(), true);
-		
+
 		for(int i = 0; i < moves.length; i++)
 			concepts.or(moves[i].concepts(game));
 
@@ -148,7 +148,7 @@ public final class Seq extends Effect
 	{
 		boolean willCrash = false;
 		willCrash |= super.willCrash(game);
-		
+
 		for(int i = 0; i < moves.length; i++)
 			willCrash |= moves[i].willCrash(game);
 
@@ -167,13 +167,13 @@ public final class Seq extends Effect
 	public void preprocess(final Game game)
 	{
 		super.preprocess(game);
-		
+
 		for(int i = 0; i < moves.length; i++)
 			moves[i].preprocess(game);
 	}
 
 	//-------------------------------------------------------------------------
-	
+
 	@Override
 	public String toEnglish(final Game game)
 	{
@@ -181,17 +181,17 @@ public final class Seq extends Effect
 
 		for(int i = 0; i < moves.length-1; i++)
 			nextString += moves[i].toEnglish(game) + " ,";
-		
+
 		if(moves.length != 0)
 			nextString += moves[moves.length-1].toEnglish(game);
-		
+
 		String thenString = "";
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
-			
+
 		return nextString + thenString;
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 }

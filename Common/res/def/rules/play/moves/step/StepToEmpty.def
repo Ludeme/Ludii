@@ -3,7 +3,7 @@
 // @example ("StepToEmpty")
 
 (define "StepToEmpty"
-    (move Step 
+    (move Step
         #1
         (to if:(is Empty (to)))
     )
