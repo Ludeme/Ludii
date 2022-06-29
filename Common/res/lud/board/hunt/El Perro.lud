@@ -1,18 +1,3 @@
-(define "Hop" 
-    (move Hop 
-        (from #1) 
-        Adjacent
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        ) 
-        (to if:(is Empty (to))) 
-        #2
-    ) 
-)
-
-//------------------------------------------------------------------------------
-
 (game "El Perro"
     (players 2)  
     (equipment { 
@@ -27,11 +12,12 @@
         )
         (piece "Dog" P1 
             (or 
-                ("Hop" 
-                    (from)
-                    (then (if (can Move ("Hop" (last To)) ) (moveAgain) )) 
-                ) 
-                "StepToEmpty"
+                ("HopCapture"
+                        (from (from))
+                        Adjacent
+                        (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                    )
+                ("StepToEmpty")
             )
         )
     })  
@@ -44,10 +30,11 @@
         (play
             (if ("SameTurn")
                 (or
-                    ("Hop" 
-                        (last To)
-                        (then (if (can Move ("Hop" (last To)) ) (moveAgain) )) 
-                    ) 
+                    ("HopCapture"
+                            (from (last To))
+                            Adjacent
+                            (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                        )
                     (move Pass)
                 )
                 (forEach Piece)
