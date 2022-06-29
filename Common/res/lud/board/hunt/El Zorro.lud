@@ -1,20 +1,9 @@
 (game "El Zorro"  
     (players {(player N) (player S)})  
     (equipment { 
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Fox" P1 (or ("HopCapture") "StepToEmpty" ) )
-        (piece "Hen" P2 
-            (move Step
-                (directions {Rightward Leftward Forwards})
-                (to if:(is Empty (to)))
-            )
-        ) 
+        (piece "Hen" P2 ("StepToEmpty" (directions {Rightward Leftward Forwards}))) 
     })  
     (rules 
         (start { 
