@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * computed if that's leaf. If that's not a leaf, the concept is true if any
  * child is true.
  * 
- * Remarks: The next id in case of a new concept is the id 779.
+ * Remarks: The next id in case of a new concept is the id 780.
  * 
  * @author Eric.Piette
  */
@@ -7672,6 +7672,20 @@ public enum Concept
 		"4.5.5",
 		545, 
 		"Percentage of games which end via timeout.",
+		ConceptType.Behaviour,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.GameOutcome
+	),
+
+	/** Computed with playouts. */
+	OutcomeUniformity
+	(
+		"4.5.6",
+		779, 
+		"Inverse of average per-player variance in outcomes.",
 		ConceptType.Behaviour,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
