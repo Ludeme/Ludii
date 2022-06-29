@@ -2,13 +2,7 @@
     (players 2)  
     (equipment { 
         (board 
-            (merge 
-                {
-                (rectangle 3 3 diagonals:Alternating) 
-                (shift 0 2 (wedge 2)) 
-                (shift 0 -1 (rotate 180 (wedge 2))) 
-                }
-            )
+        	(rotate 90 ("ThreeMenMorrisGraphWithLeftAndRightTriangles"))
             use:Vertex
         )
         <Version:hand>
@@ -17,8 +11,7 @@
         (piece "Pawn" P2 N (move Step <Tower> (to if:(is Empty (to)))))
         (regions "Home" P2 (sites {"B1" "C2" "A2"}))
         (regions "Home" P1 (sites {"B2"}))
-        }
-    )  
+    })  
     
     (rules 
         <Version:start>
@@ -165,7 +158,6 @@
     (graphics {
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
-        
     })
     
 )
