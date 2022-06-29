@@ -1,39 +1,37 @@
 package app.display.dialogs.visual_editor.view.panels;
 
-import app.display.dialogs.visual_editor.view.DocumentationReader;
-import app.display.dialogs.visual_editor.view.HelpInformation;
-import app.utils.GameSetup;
-import approaches.random.Generator;
-import compiler.Compiler;
-import game.Game;
+import app.display.dialogs.visual_editor.documentation.DocumentationReader;
+import app.display.dialogs.visual_editor.documentation.HelpInformation;
 import grammar.ClassEnumerator;
 import grammar.Grammar;
-import main.FileHandling;
-import main.StringRoutines;
 import main.grammar.*;
-import main.grammar.ebnf.EBNF;
 import main.grammar.ebnf.EBNFClause;
 import main.grammar.ebnf.EBNFClauseArg;
 import main.grammar.ebnf.EBNFRule;
-import main.options.UserSelections;
-import parser.Parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 public class Test {
 
     public static void main(String[] args) throws ClassNotFoundException {
-        System.exit(1);
 
         for(EBNFRule r : Grammar.grammar().ebnf().rules().values())
         {
-            System.out.println(r);
+            //System.out.println(r);
+            for(EBNFClause c : r.rhs())
+            {
+                if(c.args() == null) continue;
+                for(EBNFClauseArg arg : c.args())
+                {
+                    if(arg.parameterName() != null)
+                    {
+                        System.out.println(arg.parameterName());
+                    }
+                }
+            }
         }
-
-        System.exit(2);
 
         Grammar grammar = Grammar.grammar();
 

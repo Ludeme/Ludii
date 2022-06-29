@@ -1,7 +1,6 @@
-package app.display.dialogs.visual_editor.view;
+package app.display.dialogs.visual_editor.documentation;
 
 import grammar.Grammar;
-import main.Status;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;

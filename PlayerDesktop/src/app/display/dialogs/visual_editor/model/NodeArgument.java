@@ -1,8 +1,7 @@
 package app.display.dialogs.visual_editor.model;
 
-import app.display.dialogs.visual_editor.view.DocumentationReader;
-import app.display.dialogs.visual_editor.view.HelpInformation;
-import grammar.Grammar;
+import app.display.dialogs.visual_editor.documentation.DocumentationReader;
+import app.display.dialogs.visual_editor.documentation.HelpInformation;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;

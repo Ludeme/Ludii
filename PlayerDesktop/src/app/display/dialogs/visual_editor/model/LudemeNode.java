@@ -3,10 +3,9 @@ package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
-import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
-import app.display.dialogs.visual_editor.view.DocumentationReader;
-import app.display.dialogs.visual_editor.view.HelpInformation;
+import app.display.dialogs.visual_editor.documentation.DocumentationReader;
+import app.display.dialogs.visual_editor.documentation.HelpInformation;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;

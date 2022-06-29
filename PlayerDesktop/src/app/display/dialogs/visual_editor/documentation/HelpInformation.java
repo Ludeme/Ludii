@@ -1,4 +1,4 @@
-package app.display.dialogs.visual_editor.view;
+package app.display.dialogs.visual_editor.documentation;
 
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
