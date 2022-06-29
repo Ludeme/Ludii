@@ -231,25 +231,6 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			// Create and lauch an instance of the visual editor
 			final VisualEditorPanel visual = new VisualEditorPanel(app);
-			
-			final JFrame frame = new JFrame("Visual Game Editor");
-			frame.setContentPane(visual);
-			frame.setSize(800, 800);
-			frame.setLocationRelativeTo(null);
-			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-			frame.setVisible(true);
-			
-			try
-			{
-				DesktopApp.frame().add(frame);
-			}
-			catch (final Exception ve)
-			{
-				// **
-				// ** TODO: Set up visual editor frame correctly. 
-				// **
-				System.out.println("Adding visual editor frame to main frame causes an exception: " + ve.getMessage());
-			}
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))

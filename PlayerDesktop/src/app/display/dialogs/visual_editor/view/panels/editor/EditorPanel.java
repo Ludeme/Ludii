@@ -3,7 +3,7 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
-import app.display.dialogs.visual_editor.Main;
+import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
@@ -27,12 +27,10 @@ import main.grammar.Symbol;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
-import static app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing.COMPLETION_WILDCARD;
 
 public class EditorPanel extends JPanel implements IGraphPanel
 {
@@ -115,7 +113,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         ch = new ConnectionHandler(this);
 
 
-        this.controller = Main.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
+        this.controller = VisualEditorPanel.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
         this.N = controller.getN();
         latencies = new ArrayList<>();
         selectedCompletion = new ArrayList<>();

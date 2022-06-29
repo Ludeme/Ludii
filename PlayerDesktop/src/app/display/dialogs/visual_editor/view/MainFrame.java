@@ -1,7 +1,7 @@
 package app.display.dialogs.visual_editor.view;
 
 
-import app.display.dialogs.visual_editor.Main;
+import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.utils.CSVUtils;
@@ -9,8 +9,6 @@ import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -21,6 +19,8 @@ public class MainFrame extends JFrame {
     private MainPanel main_panel;
 
     public MainFrame(EditorPanel editor_panel){
+
+
         initialize(editor_panel);
     }
 
@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
         setIconImage((DesignPalette.LUDII_ICON).getImage());
         setSize(DesignPalette.DEFAULT_FRAME_SIZE);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         main_panel = new MainPanel(editor_panel);
         Handler.setMainPanel(main_panel);
@@ -45,7 +45,7 @@ public class MainFrame extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 DocHandler.getInstance().close();
-                Main.controller().close();
+                VisualEditorPanel.controller().close();
                 String header = "latency_nano,selected_index";
                 List<Long> latencies = editor_panel.getLatencies();
                 List<Integer> selectedCompletion = editor_panel.getSelectedCompletion();
