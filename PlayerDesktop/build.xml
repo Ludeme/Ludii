@@ -334,6 +334,20 @@
         <ant antfile="build.xml" dir="${PlayerDesktop.location}" inheritAll="false" target="clean"/>
     	<ant antfile="build.xml" dir="${NetworkPrivate.location}" inheritAll="false" target="clean"/>
     </target>
+	<target depends="clean" name="cleanallpublic">
+	    <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${Language.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${Manager.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${Mining.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${Generation.location}" inheritAll="false" target="clean"/>
+		<ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="clean"/>
+	    <ant antfile="build.xml" dir="${PlayerDesktop.location}" inheritAll="false" target="clean"/>
+	</target>
     <target depends="build-subprojects,build-project" name="build"/>
 	<target depends="build-subprojects-without-junit,build-project" name="build-without-junit"/>
     <target name="build-subprojects">
@@ -522,7 +536,7 @@
 		<delete dir="bin"/>		<!-- Clean this because otherwise I get stuck with outdated luds in Eclipse -->
 	</target>
 	
-	<target name="export_jar_public" depends="cleanall,build-without-junit">
+	<target name="export_jar_public" depends="cleanallpublic,build-without-junit">
 			<mkdir dir="build" />
 			<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
 				<exclude name="**/lud/bad/**" />
