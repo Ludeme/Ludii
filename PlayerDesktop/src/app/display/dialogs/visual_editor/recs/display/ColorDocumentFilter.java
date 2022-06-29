@@ -184,7 +184,7 @@ public final class ColorDocumentFilter extends DocumentFilter
 
     private List<String> getLudemeRegex() {
         List<String> ludemes = new ArrayList<>();
-        Scanner sc = FileUtils.readFile("PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/highlighting/allLudemes.txt");
+        Scanner sc = FileUtils.readFile("src/app/display/dialogs/visual_editor/resources/recs/highlighting/allLudemes.txt");
         while (sc.hasNext()) {
             String nextLine = sc.nextLine();
             ludemes.add(nextLine);
@@ -194,7 +194,7 @@ public final class ColorDocumentFilter extends DocumentFilter
     }
     private List<String> getAttributeRegex() {
         List<String> attributes = new ArrayList<>();
-        Scanner sc = FileUtils.readFile("PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/highlighting/allAttributes.txt");
+        Scanner sc = FileUtils.readFile("src/app/display/dialogs/visual_editor/resources/recs/highlighting/allAttributes.txt");
         while (sc.hasNext()) {
             String nextLine = sc.nextLine();
             attributes.add(nextLine);
@@ -205,7 +205,7 @@ public final class ColorDocumentFilter extends DocumentFilter
 
     private List<String> getNumberRegex() {
         List<String> numbers = new ArrayList<>();
-        Scanner sc = FileUtils.readFile("PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/highlighting/allAttributes.txt");
+        Scanner sc = FileUtils.readFile("src/app/display/dialogs/visual_editor/resources/recs/highlighting/allAttributes.txt");
         numbers.add("[0-9]*\\.[0-9]*");
         numbers.add("[0-9]*\\.");
         numbers.add("[0-9]*");

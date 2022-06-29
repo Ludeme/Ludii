@@ -48,7 +48,7 @@ public class ValidationController {
     }
 
     public void validate(double trainingProportion, int replications, int iterations, int N) {
-        String location = "PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/validation/precision_and_time/"+System.currentTimeMillis()+"_"+N+".csv";
+        String location = "src/app/display/dialogs/visual_editor/resources/recs/validation/precision_and_time/"+System.currentTimeMillis()+"_"+N+".csv";
         Report report = new Report(N,location);
 
         // game database

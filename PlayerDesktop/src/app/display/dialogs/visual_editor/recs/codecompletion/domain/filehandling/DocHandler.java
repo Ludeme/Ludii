@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class DocHandler {
     // TODO: refactor paths in similar way
-    public static final String DOC_LOCATION = System.getProperty("user.dir")+"\\PlayerDesktop\\src\\app\\display\\dialogs\\visual_editor\\resources\\recs\\documents.txt"; // TODO: not absolute path
+    public static final String DOC_LOCATION = System.getProperty("user.dir")+"\\src\\app\\display\\dialogs\\visual_editor\\resources\\recs\\documents.txt"; // TODO: not absolute path
             //Objects.requireNonNull(DocHandler.class.getResource("resources/recs/documents.txt")).getPath(); TODO: [FILIP] CHANGED
     public static final String GRAMMAR = "grammar_location";
     public static final String GAMES = "games_location";

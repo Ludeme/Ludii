@@ -55,7 +55,7 @@ public class MainFrame extends JFrame {
                     lines.add(latencies.get(i)+","+selectedCompletion.get(i));
                 }
 
-                String path = "PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/validation/user_tests/";
+                String path = "src/app/display/dialogs/visual_editor/resources/recs/validation/user_tests/";
                 String fileName = "test_"+System.currentTimeMillis()+".csv";
 
                 CSVUtils.writeCSV(path+fileName,header,lines);

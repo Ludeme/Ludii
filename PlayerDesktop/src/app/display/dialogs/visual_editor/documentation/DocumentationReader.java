@@ -293,7 +293,7 @@ public class DocumentationReader
 
     DocumentationReader()
     {
-        helpFile = new File(System.getProperty("user.dir")+"\\Common\\res\\help\\EditorHelp.txt"); // TODO: not absolute path
+        helpFile = new File("..\\Common\\res\\help\\EditorHelp.txt"); // TODO: not absolute path
         try {
             readDoc();
         } catch (IOException e) {
