@@ -19,9 +19,9 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.grammar.Report;
 import main.options.Ruleset;
+import metadata.ai.agents.BestAgent;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
-import metadata.ai.misc.BestAgent;
 import other.GameLoader;
 import search.minimax.AlphaBetaSearch;
 
@@ -213,7 +213,7 @@ public class UpdateAIMetadata
 					BestAgent bestAgent = (BestAgent)compiler.Compiler.compileObject
 					(
 						FileHandling.loadTextContentsFromFile(bestAgentsFile.getAbsolutePath()), 
-						"metadata.ai.misc.BestAgent",
+						"metadata.ai.agents.BestAgent",
 						new Report()
 					);
 					
@@ -302,7 +302,7 @@ public class UpdateAIMetadata
 				final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
 				final String defStr = StringRoutines.quote(gameName + "_ai");
 				
-				if (defaultGame.metadata().ai().bestAgent() == null)
+				if (defaultGame.metadata().ai().agent() == null)
 				{
 					if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
 					{

@@ -1,0 +1,12 @@
+// Defines a rectangular graph with Alquerque-style alternating diagonals with four triangle extension on each side.
+// @example ("AlquerqueGraphWithFourTriangles")
+
+(define "AlquerqueGraphWithFourTriangles"
+    (merge { 
+        (shift  2 2 (square 5 diagonals:Alternating)) 
+        (shift  2 0 (wedge 3)) 
+        (shift  5 3 (rotate  90 (wedge 3))) 
+        (shift  2 6 (rotate 180 (wedge 3))) 
+        (shift -1 3 (rotate 270 (wedge 3))) 
+    }) 
+)

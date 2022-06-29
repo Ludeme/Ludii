@@ -1,0 +1,23 @@
+(game "Mandinka Game"
+    (players 2) 
+    (equipment { 
+        (board [#]) // Large holes in the board
+        (piece "Seed" Each) // around 30 counters
+    })
+    (rules
+        (start [#])
+        (play [#]) // Capture involved
+        (end [#]) // The player who capture the most wins.
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)

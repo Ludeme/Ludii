@@ -102,7 +102,6 @@
                 (move
                     (from (handSite Mover))
                     (to (sites "Gates"))
-                    stack:True
                     (then (set Value at:(last To) (last To)))
                 )
             )

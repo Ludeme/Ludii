@@ -785,7 +785,19 @@ public class BoardDesign extends ContainerDesign
 						(int) (s.scale() * boardStyle.cellRadiusPixels() * 2)
 					);
 			
-			SVGtoImage.loadFromFilePath(g2d, fullPath, rect, edgeColour, fillColour, rotation);
+			try
+			{
+				SVGtoImage.loadFromFilePath(g2d, fullPath, rect, edgeColour, fillColour, rotation);
+			}
+			catch (final Exception e2)
+			{
+				// could not find a suitable image, will draw string instead.
+				g2d.setColor(Color.BLACK);
+				final int fontSize = (int) (0.85 * boardStyle.cellRadius() * boardStyle.placement().width + 0.5);
+				final Font font = new Font("Arial", Font.PLAIN, fontSize);
+				g2d.setFont(font);
+				StringUtil.drawStringAtPoint(g2d, s.path(), e, drawPosn, true);
+			}
 		}
 		
 		// Draw indices on sites if specified.

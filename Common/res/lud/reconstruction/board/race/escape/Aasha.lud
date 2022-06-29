@@ -1,0 +1,69 @@
+// Details I can not describe: 
+// - Pieces has to go to the oval before the rest (but we do not know how and if this part of the track...)
+// - Pieces can "kill" one another, but we do not know how.
+// - Not sure of the ending rules.
+
+(game "Aasha"
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge {
+                (shift -1 5.5 (scale 1 3 (square 1)))
+                (rectangle 5 3)
+                (shift 1 0 (rectangle 10 1))
+                (shift 3 5.5 (scale 1 3 (square 1)))
+            })
+            {
+            (track "Track1" "22,0,4,S,E1,N" P1 directed:True)
+            (track "Track2" "23,21,16,S,W1,N" P2 directed:True)
+            }
+        )
+        (dice d:2 from:0 num:5)
+        (hand Each)
+        (piece "Marker" Each (move [#]))
+    })  
+    
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        (play 
+            (do (roll) 
+                next:[#]
+            )
+        )
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Aasha is a game that was played  in the Jewish community of Kochi, India in the twentieth century. Its resemblance, both in the unique board and the rules, to the ancient game 20 Squares may suggest that these games are related.")
+        (rules "3x5 board with a five square extension of the central track. The final track of the central row is marked with an X. Two oval depressions on either side of the long track. Twelve pieces per player. Five cowrie shells, one of which is broken on one side, used as dice. Pieces are entered into the oval depressions first, then onto the grid, each player from opposite corners and proceeding down the outer row and to the central track, and then off the board. Pieces \"kill\" one another.")
+        (source "DLP evidence.")
+        (id "871")
+        (version "1.3.2")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 1912 to 1995.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Line {{2 3}} curve:{0 1 0 1})
+        (show Line {{40 41}} curve:{0 1 0 1})
+        (show Line {{0 1}} curve:{0 -1 0 -1})
+        (show Line {{38 39}} curve:{0 -1 0 -1})
+        (show Line {{2 0}} curve:{-0.13 0 -0.13 0})
+        (show Line {{40 38}} curve:{-0.13 0 -0.13 0})
+        (show Line {{3 1}} curve:{0.13 0 0.13 0})
+        (show Line {{39 41}} curve:{0.13 0 0.13 0})
+        (show Line {{36 35} {34 37}})
+    })
+    
+)

@@ -1,0 +1,69 @@
+(define "NumPlayers" [2..16])
+(define "NumHolesCircle" (* 5 ("NumPlayers")))
+(define "LeftMost" 
+    (trackSite FirstSite 
+        from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
+        if:(is Mover (who at:(to)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Ngaya"
+    (players ("NumPlayers"))  
+    (equipment { 
+        (board 
+            (concentric {"NumHolesCircle"}) 
+            { 
+            (track "Track" [#] loop:True) // Circuit track.
+            }
+            use:Vertex
+        )
+        (piece "Seed" Each)
+    })  
+    
+    (rules
+        
+        (start (set Count 3 to:(sites Board)) )
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    ("LeftMost") 
+                )
+                (then
+                    (sow
+                        [#]	// When the final counter lands in an empty hole, the player moves again
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (forEach NonMover 
+                if:(no Pieces Player) 
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (player Colour P3 (colour Red))
+        (player Colour P4 (colour Blue))
+    })
+    
+)

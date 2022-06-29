@@ -44,7 +44,7 @@
         )>
         "Played on a Alquerque Board with less diagonal."
     ) 
-    (item "No Diagonal"    <(board (square 5) use:Vertex)> "Played on a Alquerque Board with no diagonal.") 
+    (item "No Diagonal" <(board (square 5) use:Vertex)> "Played on a Alquerque Board with no diagonal.") 
 })
 
 (option "Play Rules" <Jump> args:{ <hare> }
@@ -94,7 +94,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai 

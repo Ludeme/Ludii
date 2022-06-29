@@ -1,0 +1,24 @@
+(game "Tjyong Kyeng To"
+    (players 2) 
+    (equipment { 
+        (board [#]) // 108 squares, probably to express in the concepts.
+        (dice d:5 from:1 num:5)
+        (piece "Disc" Each (move [#]))
+    })
+    (rules
+        (start [#])
+        (play [#])
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)

@@ -1,7 +1,5 @@
 package policies.softmax;
 
-import other.context.Context;
-import other.move.Move;
 import policies.Policy;
 
 /**
@@ -16,12 +14,19 @@ public abstract class SoftmaxPolicy extends Policy
 	
 	//-------------------------------------------------------------------------
 	
-	/**
-	 * @param context
-	 * @param move
-	 * @return Logit for a single move in a single state
+	/** Epsilon for epsilon-greedy playouts */
+	protected double epsilon = 0.0;
+	
+	/** 
+	 * If >= 0, we'll only actually use this softmax policy in MCTS play-outs
+	 * for up to this many actions. If a play-out still did not terminate
+	 * after this many play-out actions, we revert to a random play-out
+	 * strategy as fallback
 	 */
-	public abstract float computeLogit(final Context context, final Move move);
+	protected int playoutActionLimit = -1;
+	
+	/** Auto-end playouts in a draw if they take more turns than this */
+	protected int playoutTurnLimit = -1;
 	
 	//-------------------------------------------------------------------------
 

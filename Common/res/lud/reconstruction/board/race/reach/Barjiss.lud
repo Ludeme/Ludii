@@ -1,0 +1,53 @@
+(game "Barjiss"  
+    (players 4)  
+    (equipment { 
+        (board 
+            (add
+                (hole
+                    (merge 
+                        (shift 0 8 (rectangle 3 19)) 
+                        (shift 8 0 (rectangle 19 3))
+                    )
+                    (poly {{8 8} {8 11} {11 11} {11 8}})
+                )
+                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
+            )
+            [#]
+        )
+        (hand Each) 
+        (dice d:2 from:0 num:6)
+        (piece "Pawn" Each) // 4 pieces per player
+    })  
+    (rules 
+        (start [#])
+        (play [#]) // One mouth up alows a piece to enter the board, six mouths up grants the player another throw.
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Barjiss is a race game played on a cross-shaped board by men, women, and children in Lebanon. The names for the throws of the cowrie shells are of Persian origin, suggesting that the game game to Lebanon from Iran.")
+        (rules "Four 3x8 rectangles, arranged into a cross-shaped board. Two players. Four pieces per player. Six cowrie shells, used as dice. The following throws are known: one mouth up alows a piece to enter the board, six mouths up grants the player another throw.
+        ")
+        (source "DLP evidence.")
+        (id "867")
+        (version "1.3.2")
+        (classification "board/race/reach/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Lebanon, around 1998.")
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+    })
+    
+)

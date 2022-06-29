@@ -23,8 +23,8 @@
     
     (rules 
         (start {
-            (place "Disc1" (sites Left)) 
-            (place "Disc2" (sites Right))
+            (place "Disc1" (sites Top)) 
+            (place "Disc2" (sites Bottom))
         })
         (play (forEach Piece) )
         (end ("NoMoves" Loss))  

@@ -6,7 +6,7 @@ import metadata.MetadataItem;
 
 /**
  * Metadata containing some specific reconstruction requirements.
- * @author Matthew.Stephenson
+ * @author Matthew.Stephenson and Eric.Piette
  */
 public interface ReconItem extends MetadataItem
 {

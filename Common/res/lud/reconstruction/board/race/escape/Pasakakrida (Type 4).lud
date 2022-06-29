@@ -1,0 +1,129 @@
+(game "Pasakakrida (Type 4)"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge {
+                (rectangle 1 6) 
+                (shift 7 0 (rectangle 1 6) )
+                (shift 0 6 (rectangle 1 6) )
+                (shift 7 6 (rectangle 1 6) )
+            })
+            {
+            (track "Track1" [#] P1 directed:True)
+            (track "Track2" [#] P1 directed:True)
+            }
+            use:Vertex
+        )
+        <Dice:dice>
+        (piece "Disc" Each
+            (move
+                (from (from) level:(level))
+                (to ("NextSiteFrom" (from))
+                    if:(or 
+                        (not (is Enemy (who at:(to)))) 
+                        (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
+                    )
+                    (apply 
+                        (if (is Enemy (who at:(to))) 
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry Next))
+                            )
+                        )	
+                    )
+                )
+            )
+        )
+    })  
+    (rules 
+        (start {
+            (place Stack "Disc1" 18 count:2)
+            (place Stack "Disc1" 19 count:2)
+            (place Stack "Disc1" 20 count:2)
+            (place Stack "Disc1" 21 count:2)
+            (place Stack "Disc1" 22 count:2)
+            (place Stack "Disc1" 14 count:2)
+            (place Stack "Disc1" 13 count:1)
+            (place Stack "Disc1" 0 count:1)
+            (place Stack "Disc1" 12 count:1)
+            (place Stack "Disc2" 17 count:15)
+        })
+        (play 
+            (do 
+                (if (not "SameTurn") (roll))
+                next:(forEach Die 
+                    if:("DieNotUsed")
+                    (forEach Piece top:True                
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )		
+        )
+        (end [#])
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Dice" <Dice> args:{ <dice> } {
+    (item "Two Four-Sided Dice"    <(dice d:4 faces:{2 3 4 5} num:2) >   "The game is played with two four-sided dice.")  
+    (item "Two Cubic Dice"    <(dice d:6 num:2) >   "The game is played with two cubic dice.")   
+    (item "Three Cubic Dice"    <(dice d:6 num:3)>   "The game is played with three cubic dice.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Two Four-Sided Dice (Incomplete)" {
+        "Dice/Two Four-Sided Dice"
+    })
+    
+    (ruleset "Ruleset/Two Six-Sided Dice (Incomplete)" {
+        "Dice/Two Cubic Dice"
+    })
+    
+    (ruleset "Ruleset/Three Six-Sided Dice (Incomplete)" {
+        "Dice/Three Cubic Dice"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Pasakakrida is a race game that was described in the Manasollasa, a twelfth-century CE Sanskrit text from India. The game could be played with either four-sided or six-sided dice.
+        ")
+        (useFor "Ruleset/Two Four-Sided Dice (Incomplete)" (rules "24 long rounded spaces, arranged in two rows of twelve, and each row split into two groups of six. Fifteen pieces per player, one with white pieces and the other with colored pieces. Two four-sided dice, with the values 2, 3, 4, 5. The pieces start in the following arrangement: White with two pieces in the second to sixth spaces from the top right, two in the second from the top left, one each in the top left, first from the top left, and the bottom left; 
+                the colored pieces all begin on the sixth space from the top left. Pieces are sent back to the beginning when another player's piece lands on an opponent's piece. A player's piece cannot land on a space that is occupied by more than one of the opponent's pieces. Pieces move according to the throws of the dice.
+        "))
+        (useFor "Ruleset/Two Four-Sided Dice (Incomplete)" (source "Bock-Raming 1995a."))
+        (useFor "Ruleset/Two Four-Sided Dice (Incomplete)" (id "1752"))
+        (useFor "Ruleset/Two Six-Sided Dice (Incomplete)" (rules "Two six-sided dice with the values 1-6."))
+        (useFor "Ruleset/Two Six-Sided Dice (Incomplete)" (source "Bock-Raming 1995a."))
+        (useFor "Ruleset/Two Six-Sided Dice (Incomplete)" (id "1753"))
+        (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (rules "Three six-sided dice with the values 1-6."))
+        (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (source "Bock-Raming 1995a."))
+        (useFor "Ruleset/Three Six-Sided Dice (Incomplete)" (id "1754"))
+        (source "Bock-Raming 1995: 114-115.")
+        (version "1.3.2")
+        (classification "board/race/escape/reconstruction")
+        (origin  "This game was played in India, from around 1126 to 1138.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType 0 Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
+    })
+    
+)

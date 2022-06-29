@@ -29,6 +29,7 @@ import metrics.single.outcome.AdvantageP1;
 import metrics.single.outcome.Balance;
 import metrics.single.outcome.Completion;
 import metrics.single.outcome.Drawishness;
+import metrics.single.outcome.OutcomeUniformity;
 import metrics.single.outcome.Timeouts;
 import metrics.single.stateEvaluation.LeadChange;
 import metrics.single.stateEvaluation.Stability;
@@ -102,6 +103,7 @@ public class Evaluation
 		reconstructionMetrics.add(new Balance());
 		reconstructionMetrics.add(new Completion());
 		reconstructionMetrics.add(new Drawishness());
+		reconstructionMetrics.add(new OutcomeUniformity());
 		
 		reconstructionMetrics.add(new PieceNumber(MultiMetricValue.Average, Concept.PieceNumberAverage));
 		reconstructionMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, Concept.BoardSitesOccupiedAverage));
@@ -148,6 +150,7 @@ public class Evaluation
 		conceptMetrics.add(new Completion());
 		conceptMetrics.add(new Drawishness());
 		conceptMetrics.add(new Timeouts());
+		conceptMetrics.add(new OutcomeUniformity());
 
 		// Multi -----------------------------------------------------------------------
 		

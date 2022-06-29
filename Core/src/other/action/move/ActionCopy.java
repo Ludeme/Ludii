@@ -174,7 +174,7 @@ public final class ActionCopy extends BaseAction
 		final int contIdB = typeTo.equals(SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState csB = context.state().containerStates()[contIdB];
 
-		if(alreadyApplied)
+		if (alreadyApplied)
 		{
 			if (game.isStacking())
 			{
@@ -195,7 +195,7 @@ public final class ActionCopy extends BaseAction
 		final Action actionMove = ActionMove.construct(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value, onStacking);
 		actionMove.apply(context, store);
 
-		final boolean requiresStack = context.game().isStacking();
+		final boolean requiresStack = game.isStacking();
 		if (!requiresStack)
 		{
 			csA.setSite(context.state(), from, csB.who(to, typeTo), csB.what(to, typeTo), originalCount,
@@ -211,13 +211,12 @@ public final class ActionCopy extends BaseAction
 
 			if (levelFrom == Constants.UNDEFINED || sizeStack == levelFrom)
 			{
-				csA.addItemGeneric(context.state(), from, what, who, context.game(), typeFrom);
+				csA.addItemGeneric(context.state(), from, what, who, game, typeFrom);
 				context.state().owned().add(who, what, from, csA.sizeStack(from, typeFrom) - 1, typeFrom);
 			}
 			else
 			{
-				csA.insert(context.state(), typeFrom, from, levelFrom, what, who, state, rotation, value,
-						context.game());
+				csA.insert(context.state(), typeFrom, from, levelFrom, what, who, state, rotation, value, game);
 				context.state().owned().add(who, what, from, levelFrom, typeFrom);
 			}
 		}
@@ -240,7 +239,7 @@ public final class ActionCopy extends BaseAction
 			typeTo = SiteType.Cell;
 				
 		final ContainerState cs = context.state().containerStates()[contID];
-		if (context.game().isStacking())
+		if (game.isStacking())
 		{
 			final int levelCopyIn = (levelTo == Constants.UNDEFINED) ? cs.sizeStack(to, typeTo) - 1 : levelTo;
 			cs.remove(context.state(), site, levelCopyIn, typeTo);
@@ -251,7 +250,7 @@ public final class ActionCopy extends BaseAction
 		else
 		{
 			final int currentCount = cs.count(site, typeTo);
-			if(currentCount <= 1)
+			if (currentCount <= 1)
 			{
 				cs.remove(context.state(), site, typeTo);
 			}

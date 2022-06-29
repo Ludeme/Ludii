@@ -1,0 +1,73 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Ashanti Alignment Game"
+    (players 2)
+    
+    (equipment { 
+        (board [#] use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                Step 
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:[#]))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if (no Pieces Next) (result Mover Win)))
+    )
+)
+---------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)

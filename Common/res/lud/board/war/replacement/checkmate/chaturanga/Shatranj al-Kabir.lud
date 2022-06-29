@@ -174,7 +174,7 @@
         (piece "Knight_rotated" Each
             (move
                 Leap 
-                { {F F F R F F} {F F F L F F} } 
+                { {F F F R F } {F F F L F } } 
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"
@@ -281,7 +281,7 @@
         (piece "Knight" Each
             (move
                 Leap 
-                { {F F F F R F F} {F F F F L F F} } 
+                "KnightWalk" 
                 (to 
                     if:(or (is Empty (to)) ("EnemyNotImmumned")) 
                     "CaptureToPiece"

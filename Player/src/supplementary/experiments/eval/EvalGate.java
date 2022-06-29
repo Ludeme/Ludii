@@ -20,9 +20,9 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.collections.ListUtils;
 import main.grammar.Report;
+import metadata.ai.agents.BestAgent;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
-import metadata.ai.misc.BestAgent;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
@@ -186,7 +186,7 @@ public class EvalGate
 				final BestAgent bestAgent = (BestAgent)compiler.Compiler.compileObject
 				(
 					FileHandling.loadTextContentsFromFile(bestAgentDataDirFilepath + "/BestAgent.txt"), 
-					"metadata.ai.misc.BestAgent",
+					"metadata.ai.agents.BestAgent",
 					report
 				);
 						

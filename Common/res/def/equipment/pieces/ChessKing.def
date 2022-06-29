@@ -1,0 +1,25 @@
+// Defines a piece moving like a king in Chess (castling is not described in this ludemeplex).
+// #1 = The name of the piece.
+// #2 = Consequences of the capture effect.
+// #3 = The consequences of the moves.
+// @example ("ChessKing" "King")
+
+(define "ChessKing"
+    (piece #1 Each 
+        (move
+            Step 
+            (to 
+                if:(not (is Friend (who at:(to)))) 
+                (apply 
+                    (if (is Enemy (who at:(to)))
+                        (remove 
+                            (to) 
+                            #2
+                        )
+                    )
+                ) 
+            ) 
+            #3
+        )
+    )
+)

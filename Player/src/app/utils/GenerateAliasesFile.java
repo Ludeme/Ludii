@@ -3,6 +3,7 @@ package app.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import game.Game;
-import other.GameLoader;
+import main.FileHandling;
+import main.StringRoutines;
 
 /**
  * Small class with main method to generate our resource file 
@@ -39,8 +40,9 @@ public class GenerateAliasesFile
 	/**
 	 * Our main method
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(final String[] args)
+	public static void main(final String[] args) throws IOException
 	{
 		final File startFolder = new File("../Common/res/lud/");
 		final List<File> gameDirs = new ArrayList<>();
@@ -104,10 +106,35 @@ public class GenerateAliasesFile
 			for (final File fileEntry : entries)
 			{
 				System.out.println("Processing: " + fileEntry.getAbsolutePath() + "...");
-				final Game game = GameLoader.loadGameFromFile(fileEntry);
-				final String[] aliases = game.metadata().info().getAliases();
 				
-				if (aliases != null && aliases.length > 0)
+				final String fileContents = FileHandling.loadTextContentsFromFile(fileEntry.getAbsolutePath());
+				final int metadataStart = fileContents.indexOf("(metadata");
+				final int metadataEnd = StringRoutines.matchingBracketAt(fileContents, metadataStart);
+				final String metadataString = fileContents.substring(metadataStart, metadataEnd);
+				
+				final List<String> aliases = new ArrayList<String>();
+				
+				final int aliasesStart = metadataString.indexOf("(aliases {") + "(aliases ".length();
+				if (aliasesStart >= "(aliases ".length())
+				{
+					final int aliasesEnd = StringRoutines.matchingBracketAt(metadataString, aliasesStart);
+					final String aliasStrings = metadataString.substring(aliasesStart + 1, aliasesEnd);
+					
+					int nextOpenQuoteIdx = aliasStrings.indexOf("\"", 0);
+					while (nextOpenQuoteIdx >= 0)
+					{
+						final int nextClosingQuoteIdx = StringRoutines.matchingQuoteAt(aliasStrings, nextOpenQuoteIdx);
+						
+						if (nextClosingQuoteIdx >= 0)
+						{
+							aliases.add(aliasStrings.substring(nextOpenQuoteIdx + 1, nextClosingQuoteIdx));
+						}
+						
+						nextOpenQuoteIdx = aliasStrings.indexOf("\"", nextClosingQuoteIdx + 1);
+					}
+				}
+								
+				if (aliases.size() > 0)
 				{
 					// First print the game path
 					final String fileEntryPath = fileEntry.getAbsolutePath().replaceAll(Pattern.quote("\\"), "/");

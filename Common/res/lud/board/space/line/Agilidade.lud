@@ -10,8 +10,7 @@
         use:Vertex) 
         (piece "discFlat" Each)
         (hand Each)
-        }
-    ) 
+    }) 
     (rules
         (start {
             (place Stack "discFlat1" (handSite P1) count:7)
@@ -21,7 +20,6 @@
             (move 
                 (from (handSite Mover)) 
                 (to (sites Board)) 
-                stack:True
             )
         )
         (end (if (is Line 3 byLevel:True) (result Mover Win)))

@@ -37,6 +37,9 @@ public class GenerateTrialsCluster
 	/** The move limit to use to generate the trials. */
 	private static int moveLimit;
 	
+	/** The move limit to use to generate the trials. */
+	private static String rootPath = File.separator + "data" + File.separator + "Trials" + File.separator;
+	
 	//----------------------------------------------------------------
 	
 	/**
@@ -92,14 +95,25 @@ public class GenerateTrialsCluster
 		game.start(new Context(game, new Trial(game)));
 			
 		System.out.println("Loading game: " + game.name());
-		final String gameFolderPath = "." + File.separator + game.name() ;
+		
+		final String testPath = rootPath + "Trials" + agentName;
+		final File testfile = new File(testPath);
+		System.out.println(testPath);
+		if(!testfile.exists())
+			System.out.println("not existing :(");
+		
+		final String gameFolderPath = rootPath + "Trials" + agentName + File.separator + game.name() ;
 		final File gameFolderFile = new File(gameFolderPath);
+		
+		System.out.println(gameFolderFile);
 			
 		if(!gameFolderFile.exists())
-			gameFolderFile.mkdir();
+			gameFolderFile.mkdirs();
 			
 		// Check if the game has a ruleset.
 		final List<Ruleset> rulesetsInGame = game.description().rulesets();
+		
+		// Has many rulesets.
 		if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) 
 		{
 			for (int rs = 0; rs < rulesetsInGame.size(); rs++)
@@ -119,7 +133,7 @@ public class GenerateTrialsCluster
 					final File rulesetFolderFile = new File(rulesetFolderPath);
 						
 					if(!rulesetFolderFile.exists())
-						rulesetFolderFile.mkdir();
+						rulesetFolderFile.mkdirs();
 
 					System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 						

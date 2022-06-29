@@ -16,6 +16,7 @@ public interface PlayerInterface
 {
 	JSONObject getNameFromJar();
 	JSONObject getNameFromJson();
+	JSONObject getNameFromAiDef();
 	void loadGameFromName(final String name, final List<String> options, final boolean debug);
 	void addTextToStatusPanel(final String text);
 	void addTextToAnalysisPanel(final String text);

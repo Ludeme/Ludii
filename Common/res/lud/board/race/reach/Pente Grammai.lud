@@ -47,7 +47,7 @@
                     }
                     (then 
                         (if (= (mapEntry "Goal" Mover) (last To))
-                            (fromTo (from (last To)) (to "SacredLine") stack:True)
+                            (fromTo (from (last To)) (to "SacredLine"))
                         )
                     )
                 )

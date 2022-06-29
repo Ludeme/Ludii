@@ -82,7 +82,7 @@ public class Metadata implements MetadataItem, Serializable
 		if (ai != null)
 			this.ai = ai;
 		else
-			this.ai = new Ai(null, null, null, null, null);
+			this.ai = new Ai(null, null, null, null, null, null);
 		
 		// Set Recon metadata.
 		if (recon != null)
@@ -99,7 +99,7 @@ public class Metadata implements MetadataItem, Serializable
 	{
 		this.info 	  = new Info(null, null);
 		this.graphics = new Graphics(null, null);
-		this.ai 	  = new Ai(null, null, null, null, null);	
+		this.ai 	  = new Ai(null, null, null, null, null, null);	
 		this.recon 	  = new Recon(null, null);	
 	}
 	

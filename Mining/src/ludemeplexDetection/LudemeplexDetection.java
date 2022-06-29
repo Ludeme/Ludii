@@ -118,12 +118,12 @@ public class LudemeplexDetection
 		System.out.println("//-------------------------------------------------------------------------");
 		
 		// Record ludemeplexes across all rulesets.
-//		for (final String[] gameRulesetName : chosenGames)
-//			recordLudemeplexesInGame(GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]));
-//		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
-//		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
-//		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
-//		System.out.println("Ludemeplexes Recorded");
+		for (final String[] gameRulesetName : chosenGames)
+			recordLudemeplexesInGame(GameLoader.loadGameFromName(gameRulesetName[0], gameRulesetName[1]));
+		DatabaseFunctions.storeLudemeplexInfo(allLudemeplexes, allLudemeplexesCount);
+		DatabaseFunctions.storeLudemesInLudemeplex(allLudemeplexes);
+		DatabaseFunctions.storeLudemeplexRulesetPairs(allLudemeplexes);
+		System.out.println("Ludemeplexes Recorded");
 			
 		System.out.println("//-------------------------------------------------------------------------");
 	

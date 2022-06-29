@@ -22,11 +22,7 @@
         (board (concentric Square rings:3) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
-            (move
-                Step 
-                (to if:(is Empty (to))) 
-                "IfLine3MoveAgain" 
-            )
+            [#] // Probably stepping or sliding.... That's the most obvious....
         )
     })  
     (rules 

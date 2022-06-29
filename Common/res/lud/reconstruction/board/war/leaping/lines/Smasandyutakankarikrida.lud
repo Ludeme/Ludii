@@ -15,9 +15,7 @@
             (or {
                 ("HopCapture") 
                 (move
-                    Step 
-                    (directions {Rightward Leftward Forwards} of:All) 
-                    (to if:(is Empty (to)))
+                    [#] // Even if Step and slide are the most likely moves.
                 )
             })		
         )

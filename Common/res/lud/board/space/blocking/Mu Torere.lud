@@ -44,14 +44,11 @@
     (item "Complete"         
         <(move
             Step 
-            (to if:(or 
-                    (and 
-                        (not "Centre") 
-                        ("IsEmpty")
-                    ) 
-                    (and 
+            (to if:(and
+                    ("IsEmpty")
+                    (or
+                        (not "Centre")
                         (is Related Adjacent (from) (sites Occupied by:Next))
-                        (and ("IsEmpty") ("Centre"))
                     )
                 ) 
             )

@@ -1,3 +1,7 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
 (game "Mak Khom"  
     (players 2)  
     
@@ -5,16 +9,37 @@
         (mancalaBoard 2 7 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
-        (piece "Seed" Shared)
-        }
-    )  
+        (piece "Seed" Shared)      
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+    })  
     (rules 
         
         (start (set Count 7 to:(sites Track) ) )
         
-        (play (forEach Piece))
+        phases:{
+        (phase "Opening"
+            (play
+                (move Select 
+                    (from 
+                        (mapEntry Mover) 
+                    )
+                    (then 
+                        (sow  
+                            origin:True
+                        )
+                    )
+                )		
+            )
+            (nextPhase Mover "Playing")
+        )
+        (phase "Playing"
+            (play (forEach Piece)) // When sowing, players may take the entire contents of a hole, or only part of them. The players agree on a number of counters which need to be captured in order to win.
+        )
+        }
         
-        (end
+        (end // Missing ending rules ?
             (if  (no Moves Next)
                 (result Mover Win)
             )

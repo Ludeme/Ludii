@@ -48,7 +48,6 @@
                 (fromTo
                     (from (last To))
                     (to (last From))
-                    stack: True
                 )
                 (remove (last To))        
             ) 
@@ -74,7 +73,6 @@
                 (fromTo
                     (from (last To))
                     (to (last From))
-                    stack: True
                 )
                 (remove (last To)) 
                 (moveAgain) 
@@ -151,7 +149,7 @@
                     (move
                         (from (last From) )
                         (to (last To)) 
-                        stack: True               
+                        stack:True               
                         (then 
                             (and 
                                 (remove (last To)) 

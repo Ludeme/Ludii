@@ -29,5 +29,191 @@
             (pair "Pawn2" 0.21575865)
         })
     })
-    
+    trainedFeatureTrees:(featureTrees 
+        logitTrees:{
+        (logitTree P1
+            (if "rel:from=<{}>:pat=<els=[R1{0,0,0}]>"
+                then:(if "rel:to=<{}>:pat=<els=[R1{0,0,0,0}, #{1/2,0}, -{1/4,1/4}, -{-1/4,-1/4}]>"
+                    then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, -{0,1/4,-1/2,0}, #{0,1/4,-1/2,-1/4,1/4,0,0}]>"
+                        then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[#{-1/2,0}, -{0,1/4,0,0,0}]>"
+                            then:(leaf { (pair "Intercept" 5.9197655) })
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{1/2}, e{0,1/4,1/4}]>"
+                                then:(leaf { (pair "Intercept" 5.657415) })
+                                else:(leaf { (pair "Intercept" 5.2160106) })
+                            )
+                        )
+                        else:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[e{0}, e{0,1/4,1/4,0,0}]>"
+                            then:(leaf { (pair "Intercept" 5.495014) })
+                            else:(if "rel:from=<{}>:pat=<els=[-{0,0,0}]>"
+                                then:(leaf { (pair "Intercept" 4.7183423) })
+                                else:(leaf { (pair "Intercept" 5.3131337) })
+                            )
+                        )
+                    )
+                    else:(if "rel:to=<{}>:pat=<els=[!-{}]>"
+                        then:(if "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[!f{1/4,1/4}, e{0,-1/4}, e{0,-1/4,-1/4,-1/4,-1/4,0,0,0}]>"
+                            then:(if "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[!-{-1/4,1/4}, -{0,-1/4,0,0,0,0}]>"
+                                then:(leaf { (pair "Intercept" 3.0473704) })
+                                else:(leaf { (pair "Intercept" 2.5772538) })
+                            )
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!e{-1/2,1/4}, -{0,1/4,1/4,0}, #{0,1/4,1/4,1/4,-1/4,0,0}]>"
+                                then:(leaf { (pair "Intercept" 2.4864037) })
+                                else:(leaf { (pair "Intercept" 1.9662168) })
+                            )
+                        )
+                        else:(if "rel:to=<{}>:pat=<els=[R0{0,0,0}]>"
+                            then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!e{-1/2,1/4}, -{0,1/4,1/4,0}, #{0,1/4,1/4,1/4,-1/4,0,0}]>"
+                                then:(leaf { (pair "Intercept" 1.8794982) })
+                                else:(leaf { (pair "Intercept" 1.1972957) })
+                            )
+                            else:(if "rel:to=<{}>:pat=<els=[e{0,1/4}]>"
+                                then:(leaf { (pair "Intercept" 1.7171671) })
+                                else:(leaf { (pair "Intercept" 2.5728145) })
+                            )
+                        )
+                    )
+                )
+                else:(if "rel:to=<{}>:pat=<els=[!-{}]>"
+                    then:(if "rel:from=<{}>:pat=<els=[R1{0,0}]>"
+                        then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[e{}, e{0,1/4,1/4,0,0,0}]>"
+                            then:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}, #{0,1/4,1/4,0,0}]>"
+                                then:(leaf { (pair "Intercept" 2.9797604) })
+                                else:(leaf { (pair "Intercept" 2.3957725) })
+                            )
+                            else:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{0,1/4}, #{0,1/4,1/4,0,0}]>"
+                                then:(leaf { (pair "Intercept" 2.3898613) })
+                                else:(leaf { (pair "Intercept" 1.6518531) })
+                            )
+                        )
+                        else:(if "rel:last_to=<{0,1/4}>:from=<{}>:to=<{0,1/4}>:pat=<els=[f{0,1/4,0}]>"
+                            then:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[!-{-1/4}, e{0,1/4}, e{0,1/4,1/4,1/4,1/4,0,0,0}]>"
+                                then:(leaf { (pair "Intercept" 4.900835) })
+                                else:(leaf { (pair "Intercept" 4.2608733) })
+                            )
+                            else:(if "rel:from=<{}>:to=<{0,-1/4}>:pat=<els=[-{-1/4,0}, #{0,-1/4,1/4,0}]>"
+                                then:(leaf { (pair "Intercept" 3.139092) })
+                                else:(leaf { (pair "Intercept" 3.8337) })
+                            )
+                        )
+                    )
+                    else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!e{-1/2,1/4}, -{0,1/4,1/4,0}, #{0,1/4,1/4,1/4,-1/4,0,0}]>"
+                        then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, #{0,1/4,-1/2,0,0}]>"
+                            then:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{1/2,0,0}, e{0,1/4,0,0,0,0}]>"
+                                then:(leaf { (pair "Intercept" 1.5811738) })
+                                else:(leaf { (pair "Intercept" 1.8415033) })
+                            )
+                            else:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{1/2,0,0}, e{0,1/4,0,0,0,0}]>"
+                                then:(leaf { (pair "Intercept" 1.0469058) })
+                                else:(leaf { (pair "Intercept" 1.3644496) })
+                            )
+                        )
+                        else:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[f{1/2,0,0}, e{0,1/4,0,0,0,0}]>"
+                            then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, #{0,1/4,-1/2,0,0}]>"
+                                then:(leaf { (pair "Intercept" 0.7486917) })
+                                else:(leaf { (pair "Intercept" 0.5525875) })
+                            )
+                            else:(if "rel:to=<{}>:pat=<els=[f{0,0}]>"
+                                then:(leaf { (pair "Intercept" 0.8531389) })
+                                else:(leaf { (pair "Intercept" 0.7132292) })
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (logitTree P2
+            (if "rel:to=<{}>:pat=<els=[f{0,0}]>"
+                then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/2,0,0,0}, !-{0,1/4,-1/2,-1/4}]>"
+                    then:(if "rel:from=<{}>:pat=<els=[R0{0,0}]>"
+                        then:(if "rel:to=<{}>:pat=<els=[e{0}]>"
+                            then:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, e{0,1/4,-1/2,-1/4}]>"
+                                then:(leaf { (pair "Intercept" 2.5173252) })
+                                else:(leaf { (pair "Intercept" 1.6624017) })
+                            )
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, e{0,1/4,-1/2,-1/4}]>"
+                                then:(leaf { (pair "Intercept" 3.3039663) })
+                                else:(leaf { (pair "Intercept" 2.5427465) })
+                            )
+                        )
+                        else:(if "rel:from=<{}>:pat=<els=[e{0}]>"
+                            then:(leaf { (pair "Intercept" 2.8605795) })
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R1{1/2,0,0,0}, !-{0,1/4,-1/2,-1/4}, -{0,1/4,1/4}]>"
+                                then:(leaf { (pair "Intercept" 3.8995917) })
+                                else:(leaf { (pair "Intercept" 4.362446) })
+                            )
+                        )
+                    )
+                    else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!e{1/2,1/4}, !e{1/4,1/4}, #{0,1/4,1/4,0,0}]>"
+                        then:(if "rel:to=<{}>:pat=<els=[e{0}]>"
+                            then:(if "rel:from=<{}>:pat=<els=[R0{0,0}]>"
+                                then:(leaf { (pair "Intercept" 1.0146596) })
+                                else:(leaf { (pair "Intercept" 0.5927672) })
+                            )
+                            else:(if "rel:from=<{}>:to=<{0,1/4}>:pat=<els=[-{0}, -{0,1/4}, !e{0,1/4,-1/4,1/4}, !e{0,1/4,-1/2,1/4}, #{0,1/4,1/4,1/4,1/4,0,0}]>"
+                                then:(leaf { (pair "Intercept" 1.8099452) })
+                                else:(leaf { (pair "Intercept" 1.3437988) })
+                            )
+                        )
+                        else:(if "rel:to=<{}>:pat=<els=[!-{0}]>"
+                            then:(if "rel:to=<{}>:pat=<els=[e{0}]>"
+                                then:(leaf { (pair "Intercept" 0.5822804) })
+                                else:(leaf { (pair "Intercept" 0.9743145) })
+                            )
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0}, e{0,1/4,1/2,0}]>"
+                                then:(leaf { (pair "Intercept" 2.060562) })
+                                else:(leaf { (pair "Intercept" 1.4253871) })
+                            )
+                        )
+                    )
+                )
+                else:(if "rel:to=<{}>:pat=<els=[!-{}]>"
+                    then:(if "rel:from=<{}>:pat=<els=[R0{0,0,0}]>"
+                        then:(if "rel:to=<{}>:pat=<els=[e{0}]>"
+                            then:(if "rel:to=<{}>:pat=<els=[R1{0,0}]>"
+                                then:(leaf { (pair "Intercept" 1.0160009) })
+                                else:(leaf { (pair "Intercept" 2.4539762) })
+                            )
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{1/2,0}, e{0,1/4,-1/2,-1/4}]>"
+                                then:(leaf { (pair "Intercept" 1.960382) })
+                                else:(leaf { (pair "Intercept" 1.2449185) })
+                            )
+                        )
+                        else:(if "rel:from=<{}>:pat=<els=[R0{0,0}]>"
+                            then:(if "rel:from=<{0,-1/4}>:to=<{}>:pat=<els=[e{1/4}, !f{0,-1/4,-1/2,0}]>"
+                                then:(leaf { (pair "Intercept" 1.4684029) })
+                                else:(leaf { (pair "Intercept" 2.636479) })
+                            )
+                            else:(if "rel:last_to=<{}>:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0,1/4,-1/4,1/4}]>"
+                                then:(leaf { (pair "Intercept" 4.272106) })
+                                else:(leaf { (pair "Intercept" 3.504163) })
+                            )
+                        )
+                    )
+                    else:(if "rel:to=<{}>:pat=<els=[R1{0,0}]>"
+                        then:(if "rel:to=<{}>:pat=<els=[!-{0}]>"
+                            then:(if "rel:to=<{}>:pat=<els=[R1{0,0,0}]>"
+                                then:(leaf { (pair "Intercept" 0.027499495) })
+                                else:(leaf { (pair "Intercept" 0.5993912) })
+                            )
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[-{0}, e{0,1/4,1/2,0}]>"
+                                then:(leaf { (pair "Intercept" 1.190158) })
+                                else:(leaf { (pair "Intercept" 0.6103654) })
+                            )
+                        )
+                        else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[R0{0,0}, -{}, !e{1/2,1/4}, !e{1/4,1/4}, #{0,1/4,1/4,0,0}]>"
+                            then:(if "rel:to=<{}>:pat=<els=[R1{0}]>"
+                                then:(leaf { (pair "Intercept" 4.812839) })
+                                else:(leaf { (pair "Intercept" 3.1682966) })
+                            )
+                            else:(if "rel:from=<{0,1/4}>:to=<{}>:pat=<els=[!-{1/2}, #{0,1/4,1/4,0,0}]>"
+                                then:(leaf { (pair "Intercept" 1.3013234) })
+                                else:(leaf { (pair "Intercept" 2.47103) })
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
 )

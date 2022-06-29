@@ -116,7 +116,8 @@
 
 (option "Board" <Board> args:{ <type> <bStart> <wStart> <placementVector>}
     {
-    (item "6X6 Checkers" <(square Square 6)> <{15}> <{21}> <"KnightVector"> "8x8 Square")
+    (item "5X5 Checkers" <(square Square 5)> <{7}> <{12}> <"KnightVector"> "5x5 Square")
+    (item "6X6 Checkers" <(square Square 6)> <{15}> <{21}> <"KnightVector"> "6x6 Square")
     (item "8x8 Checkers" <(square Square 8)> <{28}> <{36}> <"KnightVector"> "8x8 Square")**
     (item "12x12" <(square Square 12)> <{66}> <{78}> <"KnightVector"> "12x12 Square")
     }
@@ -189,8 +190,8 @@
         (board Colour Symbols (colour Black))
         (player Colour P1 (colour Black))
         (player Colour P2 (colour LightOrange))
-        //   (stackType Default .5)
-        (stackType None)
+        (stackType Default .4)
+        //   (stackType None)
         (region Colour (forEach (sites Board) if:(= 2 (count Stack at:(site)))) (colour 160 200 170))
         }
     )

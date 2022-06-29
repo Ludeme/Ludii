@@ -1,0 +1,13 @@
+// Defines a regular cross board tilled by squares (example: Pachisi).
+// #1 = The dimension of an arm of the cross.
+// #2 = The full dimension of the board.
+// #3 = The default site type of the board.
+// #4 = The type of the diagonals of each tiling.
+// @example ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
+
+(define "CrossBoard"
+    (board 
+        ("CrossGraph" #1 #2 #4)
+        #3
+    )
+)
