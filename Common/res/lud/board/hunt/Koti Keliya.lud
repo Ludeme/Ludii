@@ -9,21 +9,12 @@
                 (between (max 2)) 
             ) 
         )
-        (piece "Cow" P2 N 
-            (move 
-                Step 
-                (directions {FR FL}) 
-                (to if:(is Empty (to)))
-            )
-        ) 
-        }
-    )
+        (piece "Cow" P2 N ("StepToEmpty" (directions {FR FL}))) 
+    })
     (rules
-        (start 
-            {
+        (start {
             (place "Cow2" (difference (sites Bottom) (sites Phase 0)))
-            }
-        )
+        })
         
         phases:{
         (phase "Placement"

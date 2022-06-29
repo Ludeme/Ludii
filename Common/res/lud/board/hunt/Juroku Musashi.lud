@@ -9,7 +9,7 @@
                 ("StepToEmpty")
             ) 
         ) 
-    } )  
+    })  
     (rules 
         (start { 
             (place "Marker1" (difference (sites Outer) (expand (sites Bottom))))
@@ -111,7 +111,6 @@
     (graphics {
         (show Edges Diagonal Hidden)
         (piece Scale "Marker2" 1.5)
-        
     })
     
     (ai
