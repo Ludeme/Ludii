@@ -48,7 +48,7 @@ public class EvaluateUBFM
 	private static double thinkingTime = 1;
 	
 	/** Game played: */
-	private static final String gameName = "Chess";
+	private static final String gameName = "Breakthrough";
 	
 	/** Name of the file in which the results will be written: */
 	private String outputFile = "comparison_output.sav";
@@ -103,7 +103,7 @@ public class EvaluateUBFM
 							try
 							{
 								final BestFirstSearch UBFM_AI = new BestFirstSearch();
-								UBFM_AI.setSelectionPolicy(BestFirstSearch.SelectionPolicy.best);
+								UBFM_AI.setSelectionPolicy(BestFirstSearch.SelectionPolicy.safest);
 								//final AI UBFM_AI = new AlphaBetaSearch(heuristics);
 								final AI alphaBetaAI = new AlphaBetaSearch();
 								

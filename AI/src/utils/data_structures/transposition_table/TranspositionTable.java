@@ -23,7 +23,7 @@ public class TranspositionTable
 	
 	//-------------------------------------------------------------------------
 	
-	/** Number of bits from hashes to use as primary coed */
+	/** Number of bits from hashes to use as primary code */
 	private final int numBitsPrimaryCode;
 	
 	/** Max number of entries for which we've allocated space */

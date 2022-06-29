@@ -28,10 +28,11 @@ import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
 import training.expert_iteration.ExItExperience;
 import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.ExItExperience.ExItExperienceState;
+import utils.data_structures.ScoredMove;
 //import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
 //import search.minimax.AlphaBetaSearch.ScoredMove;
-import utils.data_structures.transposition_table.TranspositionTable;
-import utils.data_structures.transposition_table.TranspositionTable.ABTTData;
+import utils.data_structures.transposition_table.TranspositionTableBFS;
+import utils.data_structures.transposition_table.TranspositionTableBFS.BFSTTData;
 
 /**
  * Implementation of best-first minimax search
@@ -46,10 +47,7 @@ public class BestFirstSearch extends ExpertPolicy
 {
 	
 	/** Boolean to active additional outputs for debugging */
-	public boolean debugDisplay = true;
-	
-	/** Do we want to allow using Transposition Table? */
-	protected boolean allowTranspositionTable = true;
+	public boolean debugDisplay = false;
 	
 	/** Set to true to store a description of the search tree in the file Internship/searchTree.sav */
 	public boolean savingSearchTreeDescription = true;
@@ -57,10 +55,13 @@ public class BestFirstSearch extends ExpertPolicy
 	public String saveAdress = "search_trees_raw/default.sav";
 	
 	/** Set to true to activate a scouting phase with Alpha-Beta iterative deepening before the actual BFS algorithm */
-	protected boolean alphaBetaScouting = false;
+	protected boolean alphaBetaScouting = false; // won't work while bounds are not dealt with properly in minimax
 	
 	/** If there is a scouting phase, this is the proportion of the decision time dedicated to scouting */
 	protected final double scoutingTimeProportion = 0.4;
+	
+	/** If true, each exploration will be continued up to the end of the tree. */
+	protected boolean fullPlayouts = true;
 	
 	//-------------------------------------------------------------------------
 	
@@ -133,7 +134,7 @@ public class BestFirstSearch extends ExpertPolicy
 	protected boolean searchedFullTree = false;
 	
 	/** Transposition Table (public because it is manipulated for the heuristic learning)*/
-	public TranspositionTable transpositionTable = null;
+	public TranspositionTableBFS transpositionTable = null;
 
 	/** Do we allow any search depth, or only odd, or only even? */
 	protected AllowedSearchDepths allowedSearchDepths = AllowedSearchDepths.Any;
@@ -158,6 +159,20 @@ public class BestFirstSearch extends ExpertPolicy
 	
 	/** Selection policy used: */
 	protected SelectionPolicy selectionPolicy = SelectionPolicy.safest;
+	
+	/** A type for the exploration policy */
+	public enum ExplorationPolicy
+	{
+		best, // always picks the move that seems the best
+		epsilon_greedy, // with a probability epsilon, picks a uniformly random move, else picks the best
+		// to add: softmax
+	}
+	
+	/** Exploration policy used: */
+	protected ExplorationPolicy explorationPolicy = ExplorationPolicy.epsilon_greedy;
+	
+	/** Value of epsilon if epsilon_greedy policy is picked */
+	protected double epsilon = 0.2;
 	
 	/** Legal root moves from the root */
 	protected FastArrayList<Move> legalRootMoves;
@@ -247,6 +262,11 @@ public class BestFirstSearch extends ExpertPolicy
 		selectionPolicy = s;
 	}
 	
+	public void setIfFullPlayouts(Boolean b)
+	{
+		fullPlayouts = b;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -310,7 +330,7 @@ public class BestFirstSearch extends ExpertPolicy
 			callsOfSelectAction += 1;
 		}
 		
-		if (transpositionTable != null)
+		if ((transpositionTable != null)&&(!transpositionTable.isAllocated()))
 			transpositionTable.allocate();
 		
 		if (maxSeconds > 0)
@@ -327,33 +347,29 @@ public class BestFirstSearch extends ExpertPolicy
 				if (alphaBetaSlave.transpositionTable != null)
 					alphaBetaSlave.transpositionTable.allocate();
 
-				currentlyScouting = true;
-				
+				// currentlyScouting = true;
 				/** AlphaBeta Iterative deepening is used to build a primary evaluation of the first moves in the TT */
-				alphaBetaSlave.iterativeDeepening(game, context, maxSeconds*scoutingTimeProportion, depthLimit, initDepth);
-
-				this.transpositionTable = alphaBetaSlave.transpositionTable;
+				//alphaBetaSlave.iterativeDeepening(game, context, maxSeconds*scoutingTimeProportion, depthLimit, initDepth);
+				//this.transpositionTable = alphaBetaSlave.transpositionTable;
+				//currentlyScouting = false;
 				
-				currentlyScouting = false;
-				
-				if (debugDisplay)
-				{
-					System.out.println("Nb of entries in the TT:"+transpositionTable.nbEntries());
-					transpositionTable.dispValueStats();
-				}
 			};
+
+			if (game.players().count() > 2)
+				throw new RuntimeException("BFS not implemented for more than 2 players");
 			
 			// First do BFS (paranoid if > 2 players)
 			lastReturnedMove = BFSSelection(game, context, maxSeconds, Integer.MAX_VALUE);
 			
-			final long currentTime = System.currentTimeMillis();
-			
-			if (game.players().count() > 2 && currentTime < stopTime)
-				throw new RuntimeException("BFS not implemented for more than 2 players");
-			
-			if (transpositionTable != null)
-				// deallocates the transposition table even if it is the one shared with an alpha beta AI
-				transpositionTable.deallocate();
+			// if (transpositionTable != null)
+			// deallocates the transposition table even if it is the one shared with an alpha beta AI
+			// transpositionTable.deallocate();
+
+			if (debugDisplay)
+			{
+				System.out.println("Nb of entries in the TT:"+transpositionTable.nbEntries());
+				transpositionTable.dispValueStats();
+			}
 			
 			return lastReturnedMove;
 		}
@@ -371,34 +387,37 @@ public class BestFirstSearch extends ExpertPolicy
 		}
 	}
 	
-	private Move finalDecision(Integer bestMoveIndex)
+	private ScoredMove finalDecision(final BFSTTData tableData, boolean maximising)
 	{
-		// need to clean the full transposition table to avoid biasing the answer, if policy is safest
-		// or if the alpha-beta scouting uses the same table. /FIXME
-		if (transpositionTable != null)
-			transpositionTable.deallocate();
-		
 		switch (selectionPolicy)
 		{
 			case best:
-				return legalRootMoves.get(bestMoveIndex);
+				return tableData.sortedScoredMoves.get(0);
 			case safest:
+				ScoredMove scoredMove;
+				
 				if (debugDisplay) {
-					System.out.print("nbVisitsRootMoves:\n(");
-					for (int i=0; i<nbVisitsRootMoves.length;i++) {
-						System.out.print(nbVisitsRootMoves[i]+";");
-					};
-					System.out.println(")");
-					
-					System.out.print("rootMovesScores:\n(");
-					for (int i=0; i<nbVisitsRootMoves.length;i++) {
-						System.out.print(rootMovesScores[i]+";");
+					System.out.print("sortedScoredMoves:\n(");
+					for (int i=0; i<tableData.sortedScoredMoves.size();i++)
+					{
+						scoredMove = tableData.sortedScoredMoves.get(i);
+						System.out.print(Integer.toString(i)+": score "+Float.toString(scoredMove.score)+" ("+Integer.toString(scoredMove.nbVisits)+"); ");
 					};
 					System.out.println(")");
 				};
-				return legalRootMoves.get(indexOfSafestMove());
+				
+				ScoredMove safestScoredMove = tableData.sortedScoredMoves.get(0);
+				for (int i=0; i<tableData.sortedScoredMoves.size();i++)
+				{
+					scoredMove = tableData.sortedScoredMoves.get(i);
+					if ((scoredMove.nbVisits>safestScoredMove.nbVisits) || (scoredMove.nbVisits==safestScoredMove.nbVisits&&( (maximising&&scoredMove.score>safestScoredMove.score) || ((!maximising)&&scoredMove.score<safestScoredMove.score))))
+					{
+						safestScoredMove = scoredMove;
+					}
+				}
+				return safestScoredMove;
 			default:
-				return legalRootMoves.get(bestMoveIndex);
+				return tableData.sortedScoredMoves.get(0);
 		}
 	}
 	
@@ -454,25 +473,33 @@ public class BestFirstSearch extends ExpertPolicy
 			nbVisitsRootMoves[i] = 0;
 		}
 		
-		//float score = rootAlphaInit; // to check
-		float alpha = rootAlphaInit;
-		float beta = rootBetaInit;
-		
 		// Calling the recursive minimaxBFS strategy:
+		long zobrist = context.state().fullHash();
 		
 		final Context contextCopy = copyContext(context);
 		
 		legalRootMoves = game.moves(contextCopy).moves();
+
+		zobrist = context.state().fullHash();
 		
 		List<Long> initialNodeLabel = new ArrayList<Long>();
-		initialNodeLabel.add(contextCopy.state().stateHash());
+		initialNodeLabel.add(contextCopy.state().fullHash());
 		if (savingSearchTreeDescription)
-			searchTreeOutput.append("("+stringOfNodeLabel(initialNodeLabel)+","+Float.toString(getContextValue(contextCopy,maximisingPlayer,maximisingPlayer,alpha,beta))+","+Integer.toString((mover==maximisingPlayer)? 1:2)+"),\n");
-				
-		Pair<Integer,Float> minimaxResult = minimaxBFS(contextCopy,alpha,beta,maximisingPlayer,stopTime,1,depthLimit,legalRootMoves,initialNodeLabel);
+			searchTreeOutput.append("("+stringOfNodeLabel(initialNodeLabel)+","+Float.toString(getContextValue(contextCopy,maximisingPlayer,initialNodeLabel,0))+","+Integer.toString((mover==maximisingPlayer)? 1:2)+"),\n");
+		
+		while (System.currentTimeMillis() < stopTime && ( !wantsInterrupt))
+		{
+			
+			minimaxBFS(contextCopy,maximisingPlayer,stopTime,1,depthLimit,initialNodeLabel);
+		
+		};
+		
+		zobrist = context.state().fullHash();
+		final BFSTTData tableData = transpositionTable.retrieve(zobrist);
+		final ScoredMove finalChoice = finalDecision(tableData, mover==maximisingPlayer);
 		
 		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed an analysis that reached at some point a depth of " + maxDepthReached + ":\n";
-		analysisReport += "selected move has a value of "+Float.toString(minimaxResult.value())+",\n";
+		analysisReport += "best value observed: "+Float.toString(finalChoice.score)+",\n";
 		analysisReport += Integer.toString(nbStatesEvaluated)+" different states were evaluated";
 		analysisReport += "\n"+Integer.toString(callsOfMinimax)+" calls of minimax";
 		
@@ -512,7 +539,7 @@ public class BestFirstSearch extends ExpertPolicy
 		      e.printStackTrace();
 		}
 		
-		return finalDecision(minimaxResult.key());
+		return finalChoice.move;
 	}
 	
 	protected FVector estimateMoveValues
@@ -520,9 +547,8 @@ public class BestFirstSearch extends ExpertPolicy
 		final FastArrayList<Move> legalMoves,
 		final Context context,
 		final int maximisingPlayer,
-		final float inAlpha,
-		final float inBeta,
-		final List<Long> nodeLabel
+		final List<Long> nodeLabel,
+		final int depth
 	)
 	{
 		final int numLegalMoves = legalMoves.size();
@@ -542,15 +568,11 @@ public class BestFirstSearch extends ExpertPolicy
 			
 			final State newState = contextCopy.state();
 			final int newMover = newState.mover();
-			
-			final float heuristicScore = getContextValue(contextCopy,maximisingPlayer,mover,inAlpha,inBeta);
 
-			if (savingSearchTreeDescription)
-			{
-				nodeLabel.add(contextCopy.state().fullHash());
-				searchTreeOutput.append("("+stringOfNodeLabel(nodeLabel)+","+Float.toString(heuristicScore)+","+((newMover==maximisingPlayer)? 1:2)+"),\n");
-				nodeLabel.remove(nodeLabel.size()-1);
-			}
+			nodeLabel.add(contextCopy.state().fullHash());
+			final float heuristicScore = getContextValue(contextCopy,maximisingPlayer,nodeLabel,depth);
+			nodeLabel.remove(nodeLabel.size()-1);
+			
 			moveScores.set(i,heuristicScore);
 			
 		};
@@ -558,193 +580,171 @@ public class BestFirstSearch extends ExpertPolicy
 		return moveScores;
 	}
 	
-	protected Pair<Integer,Float> minimaxBFS
+	protected Float minimaxBFS
 	(
 		final Context context,
-		final float inAlpha,
-		final float inBeta,
 		final int maximisingPlayer,
 		final long stopTime,
 		final int analysisDepth,
 		final int depthLimit,
-		final FastArrayList<Move> legalMoves,
 		final List<Long> nodeLabel //used when we want to output the tree-search graph
 	)
 	{
 		final Trial trial = context.trial();
 		final State state = context.state();
-		
-		float alpha = inAlpha;
-		float beta = inBeta;
-		
-		callsOfMinimax += 1;
-		
-		// updating maxDepthReached
-		if (analysisDepth > maxDepthReached) {
-			maxDepthReached = analysisDepth;
-		}
-
-		if (trial.over() || !context.active(maximisingPlayer))
-		{
-			// terminal node (at least for maximizing player)
-			return new Pair<Integer,Float>( -1  , (float) (RankUtils.agentUtilities(context)[maximisingPlayer] * BETA_INIT));
-		};
-		
-
 		final Game game = context.game();
 		final int mover = state.playerToAgent(state.mover());
 		
+		final FastArrayList<Move> legalMoves = game.moves(context).moves();
 		final int numLegalMoves = legalMoves.size();
 		
-		/** 
-		 * ------------------------------------------------------------------------------
-		 * Computing a quick evaluation of all the possible moves to order them before exploration
-		 * ------------------------------------------------------------------------------
-		*/
-		final FVector moveScores = estimateMoveValues(legalMoves,context,maximisingPlayer,inAlpha,inBeta,nodeLabel);
+		callsOfMinimax += 1;
+		// updating maxDepthReached
+		if (analysisDepth > maxDepthReached)
+			maxDepthReached = analysisDepth;
 		
-		float estimatedScore;		
-		for (int i = 0; i < numLegalMoves; ++i)
+		/** First we check if the state is termninal (at least for maximizing player). 
+		 * If so we can just return the value of the value of the state for maximisingPlayer
+		 */
+		if (trial.over() || !context.active(maximisingPlayer))
+			return getContextValue(context,mover,nodeLabel,analysisDepth-1);
+
+		final long zobrist = context.state().fullHash();
+		final BFSTTData tableData = transpositionTable.retrieve(zobrist);
+		List<ScoredMove> sortedScoredMoves = null;
+		if (tableData != null)
+			if (tableData.sortedScoredMoves != null)
+				sortedScoredMoves = new ArrayList<ScoredMove>(tableData.sortedScoredMoves);
+		
+		float outputScore = 666; // this value shoud always we replaced before it is read
+		Boolean firstExploration = false;
+		
+		if (sortedScoredMoves == null) // we can suppose that it is an exact value in this case
 		{
-			estimatedScore = moveScores.get(i);
+			firstExploration = true;
 			
-			if (((mover == maximisingPlayer)&&(estimatedScore > inBeta)) || ((mover != maximisingPlayer)&&(estimatedScore < inAlpha)))
+			/** 
+			 * ------------------------------------------------------------------------------
+			 * In this case it is the first full analysis of this state.
+			 * Thus we compute a quick evaluation of all the possible moves to order them before exploration.
+			 * ------------------------------------------------------------------------------
+			*/
+			final FVector moveScores = estimateMoveValues(legalMoves,context,maximisingPlayer,nodeLabel,analysisDepth);
+
+			// Create a shuffled version of list of moves indices (random tie-breaking)
+			final FastArrayList<ScoredMove> tempScoredMoves = new FastArrayList<ScoredMove>(numLegalMoves);
+			for (int i=0; i<numLegalMoves; i++)
 			{
-				// in this case we can stop the search because this value or any other won't be used
-				return new Pair<Integer,Float>(i,estimatedScore);
-			};
-			
-			if (analysisDepth==1) {
-				rootMovesScores[i] = estimatedScore;
-				//rootValueEstimates.set(i,(float) scoreToValueEst(estimatedScore,inAlpha,inBeta));
+				tempScoredMoves.add(new ScoredMove(legalMoves.get(i), moveScores.get(i), 1));
 			}
-		};
-
-		// Create a shuffled version of list of moves indices (random tie-breaking)
-		final FastArrayList<Integer> tempMovesListIndices = new FastArrayList<Integer>(legalMoves.size());
-		for (int i=0; i<numLegalMoves; i++)
-		{
-			tempMovesListIndices.add(i);
-		}
-		final int[] sortedMoveIndices = new int[numLegalMoves];
-		for (int i=0; i<legalMoves.size(); i++)
-		{
-			sortedMoveIndices[i] = tempMovesListIndices.removeSwap(ThreadLocalRandom.current().nextInt(tempMovesListIndices.size()));
-		}
-
-		final List<ScoredMoveIndex> scoredMoveIndices = new ArrayList<ScoredMoveIndex>(numLegalMoves);
-		for (int i = 0; i < numLegalMoves; ++i)
-		{
-			scoredMoveIndices.add(new ScoredMoveIndex(sortedMoveIndices[i], moveScores.get(sortedMoveIndices[i])));
-		}
-		if (mover == maximisingPlayer)
-			Collections.sort(scoredMoveIndices);
-		else
-			Collections.sort(scoredMoveIndices,Collections.reverseOrder());
-		// (the natural order of scored Move Indices is decreasing)
-		
-		Integer bestMoveIndex = scoredMoveIndices.get(0).moveIndex;
-		float bestScore = scoredMoveIndices.get(0).score;
-		
-		if (analysisDepth >= depthLimit) {
-			return new Pair<Integer,Float>(bestMoveIndex,bestScore);
+			sortedScoredMoves = new ArrayList<ScoredMove>(numLegalMoves);
+			for (int i = 0; i < numLegalMoves; ++i)
+			{
+				sortedScoredMoves.add( tempScoredMoves.removeSwap(ThreadLocalRandom.current().nextInt(tempScoredMoves.size())) );
+			}
+			if (mover == maximisingPlayer)
+				Collections.sort(sortedScoredMoves);
+			else
+				Collections.sort(sortedScoredMoves,Collections.reverseOrder());
+			// (the natural order of scored Move Indices is decreasing)
+			
+			outputScore = sortedScoredMoves.get(0).score;
+			
 		}
 		
-		/** 
-		 * ------------------------------------------------------------------------------
-		 * This is were the real recursive exploration begins:
-		 * ------------------------------------------------------------------------------
-		*/
-		
-		float newAlpha;
-		float newBeta;
-		
-		while ((alpha <= bestScore)&&(bestScore <= beta))
+		if ((!firstExploration) || fullPlayouts)
 		{
+			/** 
+			 * ------------------------------------------------------------------------------
+			 * If we already explored this state (or if fullPlayout is true), then we will recursively explore the most promising move
+			 * at this state.
+			 * ------------------------------------------------------------------------------
+			*/
+			
 			final Context copyContext = copyContext(context); // could be replaced by a use of game.undo if it was reliable
 			
-			if (System.currentTimeMillis() >= stopTime || wantsInterrupt)
+			final int indexPicked;
+			
+			switch (explorationPolicy)
+			{
+			case best:
+				indexPicked = 0;
 				break;
-			
-			if (analysisDepth==1) {
-				nbVisitsRootMoves[bestMoveIndex] += 1;
-			}		
-			
-			game.apply(copyContext, legalMoves.get(bestMoveIndex));
-			
-			final long zobrist = copyContext.state().fullHash();
-			
-			if (mover == maximisingPlayer)
-			{
-				if ( numLegalMoves<=1 ) 
-				{
-					newAlpha = alpha;
-					newBeta = beta;
-				}
+			case epsilon_greedy:
+				if (ThreadLocalRandom.current().nextDouble(1.)<epsilon)
+					indexPicked = ThreadLocalRandom.current().nextInt(numLegalMoves);
 				else
-				{
-					// We might use the score of the second move as a new alpha
-					newAlpha = Math.max( alpha , scoredMoveIndices.get(1).score );
-					newBeta = beta;
-				}
-			}
-			else
-			{
-				if ( numLegalMoves<=1 )
-				{
-					newAlpha = alpha;
-					newBeta = beta;
-				}
-				else
-				{
-					// We might use the score of the second move as a new beta
-					newAlpha = alpha;
-					newBeta = Math.min( beta , scoredMoveIndices.get(1).score );
-				}
+					indexPicked = 0;
+				break;
+			default:
+				throw new RuntimeException("Unkown exploration policy");
 			}
 			
-			// Recursive call of minimaxBFS (we only need the value of the score):
 			
-			final FastArrayList<Move> nextLegalMoves = game.moves(copyContext).moves();
+			final Move bestMove = sortedScoredMoves.get(indexPicked).move;
+			final int previousNbVisits = sortedScoredMoves.get(indexPicked).nbVisits;
+			
+			// if (analysisDepth==1)
+			//     System.out.println("Value of selected move at root : "+Float.toString(sortedScoredMoves.get(indexPicked).score));
+			
+			game.apply(copyContext, bestMove);
 
 			nodeLabel.add(copyContext.state().fullHash());
 			
-			bestScore = minimaxBFS(copyContext,newAlpha,newBeta,maximisingPlayer,stopTime,analysisDepth+1,depthLimit,nextLegalMoves,nodeLabel).value();			
+			final Float scoreOfMostPromisingMove = minimaxBFS(copyContext,maximisingPlayer,stopTime,analysisDepth+1,depthLimit,nodeLabel);			
 			
 			nodeLabel.remove(nodeLabel.size()-1);
 			
-			if (analysisDepth==1) {
-				rootMovesScores[bestMoveIndex] = bestScore;
-				rootValueEstimates.set(bestMoveIndex,(float) scoreToValueEst(bestScore, inAlpha, inBeta));
-				estimatedRootScore = bestScore;
-			};
-			
-			// We can consider that this value for the node is more accurate than any previous value calculated
-			if (transpositionTable != null)
-				transpositionTable.store(null, zobrist, bestScore, 0, TranspositionTable.EXACT_VALUE);
-			
-			// Insert the updated scored move in the list of moves
-			scoredMoveIndices.set(0,new ScoredMoveIndex(bestMoveIndex, bestScore));
-			int k = 1;
-			while ((k<scoredMoveIndices.size() && (  ( (mover==maximisingPlayer) && (scoredMoveIndices.get(k).score>=bestScore) )  ||  ( (mover!=maximisingPlayer) && (scoredMoveIndices.get(k).score<=bestScore) )) ))
+			// re-inserting the new value in the list of scored moves, last among moves of equal values			
+			int k = indexPicked;
+			while ((k < numLegalMoves-1))
 			{
-				scoredMoveIndices.set(k-1, scoredMoveIndices.get(k));
-				k += 1;
+				if ( ((sortedScoredMoves.get(k+1).score >= scoreOfMostPromisingMove)&&(mover==maximisingPlayer)) || ((sortedScoredMoves.get(k+1).score <= scoreOfMostPromisingMove)&&(mover!=maximisingPlayer)))
+				{
+					sortedScoredMoves.set(k, sortedScoredMoves.get(k+1));
+					k += 1;
+				}
+				else
+				{
+					if (k > 0)
+					{
+						if (( ((sortedScoredMoves.get(k-1).score < scoreOfMostPromisingMove)&&(mover==maximisingPlayer)) || ((sortedScoredMoves.get(k-1).score > scoreOfMostPromisingMove)&&(mover!=maximisingPlayer))))
+						{
+							sortedScoredMoves.set(k, sortedScoredMoves.get(k-1));
+							k -= 1;
+							//System.out.println("bad move is actually not so bad");
+						}
+						else break;
+					}
+					else break;
+				}
+			};
+			sortedScoredMoves.set(k, new ScoredMove(bestMove,scoreOfMostPromisingMove,previousNbVisits+1));
+
+			outputScore = sortedScoredMoves.get(0).score;
+			/*
+			System.out.print("Sorted moves scores (maximising="+Boolean.toString(mover==maximisingPlayer)+"): ");
+			for (ScoredMove scoredMove : sortedScoredMoves)
+			{
+				System.out.print(Float.toString(scoredMove.score)+ ",");
 			}
-			scoredMoveIndices.set(k-1, new ScoredMoveIndex(bestMoveIndex, bestScore));
+			System.out.println(")");
+
+			if (analysisDepth==1)
+				System.out.println("Value became "+Float.toString(outputScore)); */
 			
-			if (bestMoveIndex == scoredMoveIndices.get(0).moveIndex) {
-				// If the best move did not change eventhough it was fully explored then we can keep it
-				break;
-			}
-			
-			bestMoveIndex = scoredMoveIndices.get(0).moveIndex;
-			bestScore = scoredMoveIndices.get(0).score;
+		}
+		
+		if (analysisDepth==1) {
+			//rootValueEstimates.set(bestMoveIndex,(float) scoreToValueEst(bestScore, inAlpha, inBeta));
+			estimatedRootScore = outputScore;
 		};
 		
-		//assert (state.stateHash()==copyContext.state().stateHash());
-		
-		return new Pair<Integer,Float>(bestMoveIndex,bestScore);
+		// We can consider that this value for the node is more accurate than any previous value calculated
+		if (transpositionTable != null)
+			transpositionTable.store(null, zobrist, outputScore, analysisDepth-1, TranspositionTableBFS.EXACT_VALUE,sortedScoredMoves);
+
+		return outputScore;
 	}
 	
 	/** 
@@ -755,24 +755,25 @@ public class BestFirstSearch extends ExpertPolicy
 	 * @param context
 	 * @param maximisingPlayer
 	 * @param previousMover
-	 * @param inAlpha
-	 * @param inBeta
+	 * @param nodeLabel
 	 * @return
 	 */
 	protected float getContextValue
 	(
 		final Context context,
 		final int maximisingPlayer,
-		final int previousMover,
-		final float inAlpha,
-		final float inBeta
+		final List<Long> nodeLabel,
+		final int depth // just used  to fill the depth field in the TT which is not important
 	)
 	{
 		boolean valueRetrievedFromMemory = false;
 		float heuristicScore = 0;
 		
 		final long zobrist = context.state().fullHash();
-		final ABTTData tableData;
+		final State state = context.state();
+		final int newMover = state.playerToAgent(state.mover());
+		
+		final BFSTTData tableData;
 		if (transpositionTable != null)
 		{
 			tableData = transpositionTable.retrieve(zobrist);
@@ -782,24 +783,11 @@ public class BestFirstSearch extends ExpertPolicy
 				// Already searched for data in TT, use results
 				switch(tableData.valueType)
 				{
-				case TranspositionTable.EXACT_VALUE:
+				case TranspositionTableBFS.EXACT_VALUE:
 					heuristicScore = tableData.value;
 					valueRetrievedFromMemory = true;
 					break;
-				case TranspositionTable.LOWER_BOUND:
-					if ((previousMover == maximisingPlayer)&&(tableData.value > inBeta)) {
-						heuristicScore = tableData.value;
-						// the value wouldn't be exact but we don't care since the principal path will change
-						valueRetrievedFromMemory = true;
-					};
-					break;
-				case TranspositionTable.UPPER_BOUND:
-					if ((previousMover != maximisingPlayer)&&(tableData.value < inAlpha)) {
-						heuristicScore = tableData.value;
-						valueRetrievedFromMemory = true;
-					};
-					break;
-				case TranspositionTable.INVALID_VALUE:
+				case TranspositionTableBFS.INVALID_VALUE:
 					System.err.println("INVALID TRANSPOSITION TABLE DATA: INVALID VALUE");
 					break;
 				default:
@@ -815,6 +803,7 @@ public class BestFirstSearch extends ExpertPolicy
 			{
 				// terminal node (at least for maximising player)
 				heuristicScore = (float) RankUtils.agentUtilities(context)[maximisingPlayer] * BETA_INIT;
+				//System.out.println("terminal node reached");
 			}
 			else {
 				heuristicScore = heuristicValueFunction().computeValue(
@@ -835,12 +824,15 @@ public class BestFirstSearch extends ExpertPolicy
 			
 			if (transpositionTable != null)
 			{
-				transpositionTable.store(null, zobrist, heuristicScore, 0, TranspositionTable.EXACT_VALUE);
+				transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableBFS.EXACT_VALUE, null);
 			}
 			
 			nbStatesEvaluated += 1;
 		};
 
+		if (savingSearchTreeDescription)
+			searchTreeOutput.append("("+stringOfNodeLabel(nodeLabel)+","+Float.toString(heuristicScore)+","+((newMover==maximisingPlayer)? 1:2)+"),\n");
+		
 		minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
 		maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
 		
@@ -943,12 +935,7 @@ public class BestFirstSearch extends ExpertPolicy
 		
 		numPlayersInGame = game.players().count();
 		
-		if (game.usesNoRepeatPositionalInGame() || game.usesNoRepeatPositionalInTurn())
-			transpositionTable = null;
-		else if (!allowTranspositionTable)
-			transpositionTable = null;
-		else
-			transpositionTable = new TranspositionTable(numBitsPrimaryCodeForTT);
+		transpositionTable = new TranspositionTableBFS(numBitsPrimaryCodeForTT);
 	
 		if (alphaBetaScouting)
 		{

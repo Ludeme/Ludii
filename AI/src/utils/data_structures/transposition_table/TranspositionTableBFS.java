@@ -1,10 +1,14 @@
 package utils.data_structures.transposition_table;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import other.move.Move;
+import utils.data_structures.ScoredMove;
 
 /**
- * Transposition table for BFS search.
- * 
- * copied from the classic Transposition table
+ * Transposition table for Best-First Search.
+ * Copied from AB-Transposition tables but adding a field for the sorted list of Scored Moves.
  * 
  * @author cyprien
  */
@@ -18,12 +22,18 @@ public class TranspositionTableBFS
 	public final static byte INVALID_VALUE			= (byte) 0x0;
 	/** An exact (maybe heuristic) value stored in Transposition Table */
 	public final static byte EXACT_VALUE			= (byte) 0x1;
-	
-	// No values for upper or lower bounds
+	/** A lower bound stored in Transposition Table */
+	public final static byte LOWER_BOUND			= (byte) (0x1 << 1);
+	/** A upper bound stored in Transposition Table */
+	public final static byte UPPER_BOUND			= (byte) (0x1 << 2);
+	/** An exact value marked (only used by the heuristic learning code) */
+	public final static byte MARKED_EXACT_VALUE			= (byte) (0x1 << 3);
+	/** An exact value validated (only used by the heuristic learning code) */
+	public final static byte VALIDATED_EXACT_VALUE			= (byte) (0x1 << 4);
 	
 	//-------------------------------------------------------------------------
 	
-	/** Number of bits from hashes to use as primary coed */
+	/** Number of bits from hashes to use as primary code */
 	private final int numBitsPrimaryCode;
 	
 	/** Max number of entries for which we've allocated space */
@@ -67,6 +77,15 @@ public class TranspositionTableBFS
 	}
 	
 	/**
+	 * Return true if and only if the table is allocated
+	 */
+	public boolean isAllocated()
+	{
+		return (table != null);
+	}
+	
+	
+	/**
 	 * @param fullHash
 	 * @return Stored data for given full hash (full 64bits code), or null if not found
 	 */
@@ -75,22 +94,31 @@ public class TranspositionTableBFS
 		final BFSTTEntry entry = table[(int) (fullHash >>> (Long.SIZE - numBitsPrimaryCode))];
 		if (entry == null)
 			return null;
-		if (entry.data != null && entry.data.fullHash == fullHash)
-			return entry.data;
+		else
+			for (BFSTTData data : entry.data)
+			{
+				if (data.fullHash == fullHash)
+					return data;
+			}
 		return null;
 	}
 	
 	/**
 	 * Stores new data for given full hash (full 64bits code)
+	 * @param bestMove 
 	 * @param fullHash
-	 * @param value
+	 * @param value 
+	 * @param depth 
 	 * @param valueType 
 	 */
 	public void store
 	(
+		final Move bestMove, 
 		final long fullHash,
 		final float value,
-		final byte valueType
+		final int depth,
+		final byte valueType,
+		final List<ScoredMove> sortedScoredMoves
 	)
 	{
 		final int idx = (int) (fullHash >>> (Long.SIZE - numBitsPrimaryCode));
@@ -99,35 +127,28 @@ public class TranspositionTableBFS
 		if (entry == null)
 		{
 			entry = new BFSTTEntry();
-			entry.data = new BFSTTData(fullHash, value, valueType);
+			entry.data.add( new BFSTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves));
 			table[idx] = entry;
 		}
 		else
 		{
-			// See if we have an empty slot in data
-			if (entry.data == null)
-			{
-				entry.data = new BFSTTData(fullHash, value, valueType);
-				return;
-			}
-
+			BFSTTData dataToSave =  new BFSTTData(bestMove, fullHash, value, depth, valueType, sortedScoredMoves);
 			
-			// Check if one of them has an identical full hash value
-			if (entry.data.fullHash == fullHash)
+			// We erase a previous entry if it has the same fullHash
+			for (int i =0; i<entry.data.size(); i++)
 			{
-				// We suppose that the method would only be called if the new value is more accurate than the previous one
-				
-				entry.data.fullHash = fullHash;
-				entry.data.value = value;
-				entry.data.valueType = valueType;
-				
-				return;
-			}
+				BFSTTData data = entry.data.get(i);
+				if (data.fullHash == fullHash)
+				{
+					// is the previous entry properly erased from memory?
+					entry.data.set(i, dataToSave);
+					return;
+				}
+			};
 			
-			// The slot is already filled, so its value is replaced
-			entry.data.fullHash = fullHash;
-			entry.data.value = value;
-			entry.data.valueType = valueType;
+			// If we arrive to this point it means that we had no previous data about this fullHash
+			entry.data.add( dataToSave );
+			
 		}
 	}
 	
@@ -141,50 +162,143 @@ public class TranspositionTableBFS
 	public static final class BFSTTData
 	{
 		
+		/** The best move according to previous AB search */
+		public Move bestMove = null;
+		
 		/** Full 64bits hash code for which this data was stored */
 		public long fullHash = -1L;
 		
 		/** The (maybe heuristic) value stored in Table */
 		public float value = Float.NaN;
 		
+		/** The depth to which the search tree was explored below the node corresponding to this data */
+		public int depth = -1;
+		
 		/** The type of value stored */
 		public byte valueType = INVALID_VALUE;
 		
+		/** The list of possible moves at this position, with their scores, sorted (can be null if we don't know) */
+		public List<ScoredMove> sortedScoredMoves = null;
+		
 		/**
 		 * Constructor
+		 * @param bestMove
 		 * @param fullHash
 		 * @param value
+		 * @param depth
 		 * @param valueType
 		 */
 		public BFSTTData
 		(
+			final Move bestMove, 
 			final long fullHash,
 			final float value,
-			final byte valueType
+			final int depth,
+			final byte valueType,
+			final List<ScoredMove> sortedScoredMoves
 		)
 		{
+			this.bestMove = bestMove;
 			this.fullHash = fullHash;
 			this.value = value;
+			this.depth = depth;
 			this.valueType = valueType;
+			this.sortedScoredMoves = sortedScoredMoves;
 		}
 		
 	}
 	
 	//-------------------------------------------------------------------------
 	
+	public int nbEntries()
+	{
+		int res = 0;
+		for (int i=0; i<maxNumEntries; i++)
+		{
+			if (table[i]!=null)
+				res += table[i].data.size();
+		}
+		return res;
+	}
+	
+	public int nbMarkedEntries()
+	{
+		int res = 0;
+		for (int i=0; i<maxNumEntries; i++)
+			if (table[i]!=null)
+				for (BFSTTData entry : table[i].data)
+					if (entry.valueType == MARKED_EXACT_VALUE)
+						res += 1;
+		return res;
+	}
+	
+	public void dispValueStats()
+	// (counts entries with double data as 1 entry)
+	{
+		
+		System.out.println("Number of entries:"+Integer.toString(nbEntries()));
+		
+		int maxDepth = 0;
+		for (int i=0; i<maxNumEntries; i++)
+		{
+			if (table[i]!=null)
+			{
+				for (BFSTTData data : table[i].data)
+				{
+					if (data.depth>maxDepth)
+						maxDepth = data.depth;
+				}
+			}
+		}
+		
+		int[][] counters = new int[maxDepth+1][7];
+		for (int i=0; i<maxNumEntries; i++)
+		{
+			if (table[i]!=null)
+			{
+				for (BFSTTData data : table[i].data)
+				{
+					int index = data.valueType;
+					switch (index)
+					{
+					case 0: break;
+					case 1: break;
+					case 2: break;
+					case 4: index = 3; break;
+					case 8: index = 4; break;
+					case 16: index = 5; break;
+					default: index = 6;
+					}
+					counters[data.depth][index] += 1;
+				}
+			}
+		}
+		
+		System.out.println("Search tree analysis:");
+		for (int i=0; i<maxDepth; i++)
+		{
+			System.out.print("At depth "+i+": ");
+			for (int k : new int[]{0,1,2,4,5,6})
+			{
+				System.out.print("value "+k+": "+counters[i][k]+", ");
+			}
+			System.out.println();
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * An entry in a Transposition Table for Alpha-Beta. Every entry contains
-	 * one slot.
-	 * NOTE: useless to distinguish from a data if there is only one slot
-	 * but we keep it to make the code similar to the one for alpha-beta
+	 * two slots.
 	 *
-	 * @author cmicheld
+	 * @author Dennis Soemers
 	 */
 	public static final class BFSTTEntry
 	{
 		
-		/** Data in our entry's first (and only) slot */
-		public BFSTTData data = null;
+		/** Data in our entry's first slot */
+		public List<BFSTTData> data = new ArrayList<BFSTTData>(3);
 		
 	}
 	
