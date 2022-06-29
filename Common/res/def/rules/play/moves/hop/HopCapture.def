@@ -6,8 +6,8 @@
 
 (define "HopCapture" 
     (move Hop 
-    	#1
-    	#2
+        #1
+        #2
         (between 
             if:(is Enemy (who at:(between))) 
             (apply (remove (between)))
