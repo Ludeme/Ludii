@@ -599,6 +599,15 @@ public class LInputField extends JComponent
         {
             return new JSpinner(new SpinnerNumberModel(1, 0.0, Float.MAX_VALUE, 0.1));
         }
+
+        if(arg.symbol().token().equals("boolean"))
+        {
+            JComboBox<String> dropdown = new JComboBox<>();
+            dropdown.addItem("True");
+            dropdown.addItem("False");
+            return dropdown;
+        }
+
         return new JTextField("Could not generate component: " + arg.symbol().name());
     }
 
