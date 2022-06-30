@@ -173,18 +173,15 @@ public class LInputField extends JComponent
         label.setToolTipText(nodeArgument(0).parameterDescription());
         optionalLabel.setToolTipText(nodeArgument(0).parameterDescription());
 
-        // TODO [FLAG] Replace below with
-        if(nodeArgument.canBePredefined())
-        {
-            System.out.println("####!!!! : " + nodeArgument);
-            System.out.println(nodeArgument.isTerminal());
-        }
-        // else if(nodeArgument.isTerminal() && (nodeArgument.arg().symbol().rule() == null || nodeArgument.arg().symbol().rule().rhs().size() == 0))
 
         // If collection
         if(parent != null)
         {
             constructCollection(parent);
+        }
+        else if(nodeArgument.canBePredefined())
+        {
+            constructHybrid(nodeArgument);
         }
         else if(nodeArgument.isTerminal())
         {
@@ -328,6 +325,59 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
             
+            add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(addItemButton);
+        }
+        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+
+        if(collapsed())
+        {
+            uncollapseButton.setActive();
+            uncollapseButton.setPreferredSize(buttonSize());
+            uncollapseButton.setSize(uncollapseButton.getPreferredSize());
+            add(uncollapseButton);
+        }
+        else
+        {
+            add(connectionComponent);
+        }
+    }
+
+    public void constructHybrid(NodeArgument nodeArgument)
+    {
+        // create connection component
+        if(connectionComponent == null)
+            connectionComponent = new LConnectionComponent(this, false);
+
+
+
+        fieldComponent = generateTerminalComponent(nodeArgument);
+        // set size
+        fieldComponent.setPreferredSize(terminalComponentSize());
+
+        // add listeners to update provided inputs when modified
+        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+
+        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        fieldComponent.addKeyListener(userInputListener_keyListener);
+
+        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        add(label);
+        add(fieldComponent);
+
+        if(nodeArgument.choice())
+        {
+            choiceButton.setPreferredSize(buttonSize());
+            choiceButton.setSize(choiceButton.getPreferredSize());
+            add(choiceButton);
+        }
+
+        if(nodeArgument.collection())
+        {
+            addItemButton.setPreferredSize(buttonSize());
+            addItemButton.setSize(addItemButton.getPreferredSize());
+
             add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
             add(addItemButton);
         }
@@ -545,7 +595,7 @@ public class LInputField extends JComponent
             return new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
         }
         // A floating point Spinner
-        if(arg.symbol().name().equals("Float"))
+        if(arg.symbol().token().equals("float"))
         {
             return new JSpinner(new SpinnerNumberModel(1, 0.0, Float.MAX_VALUE, 0.1));
         }
@@ -608,67 +658,40 @@ public class LInputField extends JComponent
     {
         if(!isTerminal()) return;
         Handler.activateOptionalTerminalField(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), true);
-        /*active = true;
-        System.out.println("Activating");
-        fieldComponent.setEnabled(true);
-        label.setEnabled(true);
-        terminalOptionalLabel.setText("X");
-        if(!nodeArgument(0).collection())
-        {
-            //Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
-            Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput());
-        }
-        repaint();*/
     }
 
     public void notifyActivated()
     {
         active = true;
-        System.out.println("Activating");
         fieldComponent.setEnabled(true);
         label.setEnabled(true);
         terminalOptionalLabel.setText("X");
         if(!nodeArgument(0).collection())
         {
-            //Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), getUserInput());
             Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput());
         }
+        repaint();
+    }
+
+    public void activateHybrid(boolean activate)
+    {
+        if(!isHybrid()) return;
+        fieldComponent.setEnabled(activate);
+        fieldComponent.setVisible(activate);
+        System.out.println(fieldComponent == null);
+        System.out.println("Activated Hybrid " + this + ": " + activate);
         repaint();
     }
 
     public void deactivate()
     {
         if(!isTerminal()) return;
-
         Handler.activateOptionalTerminalField(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), false);
-
-        /*
-
-        active = false;
-
-        System.out.println("Deactivating");
-
-        inputArea().LNC().graphPanel().setBusy(true);
-
-        fieldComponent.setEnabled(false);
-        label.setEnabled(false);
-        terminalOptionalLabel.setText("+");
-
-        inputArea().removedConnection(LInputField.this);
-        // notify handler
-        //Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), inputIndexFirst(), null);
-        Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), null);
-        inputArea().LNC().graphPanel().setBusy(false);
-
-
-        repaint();*/
     }
 
     public void notifyDeactivated()
     {
         active = false;
-        System.out.println("Deactivating");
-
         inputArea().LNC().graphPanel().setBusy(true);
 
         fieldComponent.setEnabled(false);
@@ -890,6 +913,11 @@ public class LInputField extends JComponent
     public boolean isMerged()
     {
         return nodeArguments.size() > 1;
+    }
+
+    public boolean isHybrid()
+    {
+        return nodeArguments.get(0).canBePredefined();
     }
 
     /**

@@ -374,6 +374,11 @@ public class LInputArea extends JPanel
             {
                 inputField.setLabelText(providedNodeArgument.arg().symbol().name());
             }
+            // if the field is hybrid, deactivate the terminal component
+            if(inputField.isHybrid())
+            {
+                inputField.activateHybrid(false);
+            }
             return inputField;
         }
         // Otherwise it is a merged one.
@@ -742,6 +747,11 @@ public class LInputArea extends JPanel
             setOpaque(false);
             setVisible(true);
             return true;
+        }
+
+        if(!inputField.isMerged() && inputField.isHybrid())
+        {
+            inputField.activateHybrid(true);
         }
 
         // if the inputfield is single and optional, check whether it can be merged into another inputfield

@@ -109,6 +109,7 @@ public class NodePopupMenu extends JPopupMenu {
             String message = "";
             message += "ID: " + node.id() + "\n";
             message += "Name: " + node.symbol().name() + "\n";
+            message += "Grammar Label: " + node.symbol().grammarLabel() + "\n";
             message += "Constructor: " + node.selectedClause() + "\n";
             message += "# Clauses: " + node.clauses().size() + "\n";
             message += "Creator: " + node.creatorArgument() + "\n";
