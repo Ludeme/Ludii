@@ -33,8 +33,6 @@ public class NodeArgument
      *  Structural Symbols are not included in this list, but rather expanded to their rules.
      */
     private final List<Symbol> POSSIBLE_SYMBOL_INPUTS;
-    /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
-    private boolean PREDEFINED;
     private String parameterDescription = null;
 
     public final ClauseArg originalArg;
@@ -99,9 +97,6 @@ public class NodeArgument
         }
 
         POSSIBLE_SYMBOL_INPUTS = new ArrayList<>(possibleSymbols);
-
-        PREDEFINED = false;
-
         parameterDescription = readHelp();
     }
 
@@ -146,7 +141,6 @@ public class NodeArgument
         INDEX = 0;
         this.POSSIBLE_ARGS = new ArrayList<>();
         POSSIBLE_SYMBOL_INPUTS = new ArrayList<>();
-        PREDEFINED = true;
     }
 
     /**
@@ -281,12 +275,6 @@ public class NodeArgument
     public boolean choice()
     {
         return size() > 1;
-    }
-
-    // TODO: Add comment
-    public boolean isPredefined()
-    {
-        return PREDEFINED;
     }
 
     /**

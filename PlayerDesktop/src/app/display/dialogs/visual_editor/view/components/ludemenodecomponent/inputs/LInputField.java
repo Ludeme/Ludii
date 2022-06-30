@@ -173,19 +173,25 @@ public class LInputField extends JComponent
         label.setToolTipText(nodeArgument(0).parameterDescription());
         optionalLabel.setToolTipText(nodeArgument(0).parameterDescription());
 
+        // TODO [FLAG] Replace below with
+        if(nodeArgument.canBePredefined())
+        {
+            System.out.println("####!!!! : " + nodeArgument);
+            System.out.println(nodeArgument.isTerminal());
+        }
+        // else if(nodeArgument.isTerminal() && (nodeArgument.arg().symbol().rule() == null || nodeArgument.arg().symbol().rule().rhs().size() == 0))
+
         // If collection
         if(parent != null)
         {
             constructCollection(parent);
         }
-        // TODO [FLAG] Replace below with
-        // else if(nodeArgument.isTerminal() && (nodeArgument.arg().symbol().rule() == null || nodeArgument.arg().symbol().rule().rhs().size() == 0))
         else if(nodeArgument.isTerminal())
         {
             // If the selected NodeArgument is a terminal NodeArgument stemming from a merged input field (i.e. optional or dynamic)
             // (nodeArguments.get(0).separateNode())
             // Add an option to remove this argument again
-            constructTerminal(nodeArgument, nodeArgument.isPredefined() || nodeArgument.optional());
+            constructTerminal(nodeArgument, nodeArgument.optional());
         }
         else
         {

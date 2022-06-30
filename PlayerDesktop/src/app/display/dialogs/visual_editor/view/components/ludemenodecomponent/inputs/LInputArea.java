@@ -764,7 +764,10 @@ public class LInputArea extends JPanel
             if(!canBeMergedIntoBelow && !canBeMergedIntoAbove)
             {
                 // check whether this is a block of subsequent symbols (e.g. int)
-                if((inputFieldAbove != null && inputFieldAbove.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()) && inputFieldAbove.nodeArgument(0).collection() == inputField.nodeArgument(0).collection()) || (inputFieldBelow != null && inputFieldBelow.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()) && inputFieldBelow.nodeArgument(0).collection() == inputField.nodeArgument(0).collection()))
+                if((inputFieldAbove != null && inputFieldAbove.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol())
+                        && inputFieldAbove.nodeArgument(0).collection() == inputField.nodeArgument(0).collection() && inputFieldAbove.nodeArgument(0).optional())
+                        || (inputFieldBelow != null && inputFieldBelow.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol())
+                        && inputFieldBelow.nodeArgument(0).collection() == inputField.nodeArgument(0).collection() && inputFieldBelow.nodeArgument(0).optional()))
                 {
                     // find this block
                     List<LInputField> block = new ArrayList<>();
