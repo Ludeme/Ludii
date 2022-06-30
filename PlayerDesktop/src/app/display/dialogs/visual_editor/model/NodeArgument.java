@@ -33,8 +33,6 @@ public class NodeArgument
      *  Structural Symbols are not included in this list, but rather expanded to their rules.
      */
     private final List<Symbol> POSSIBLE_SYMBOL_INPUTS;
-    /** If this is a Terminal NodeArgument, this indicates whether it should be displayed as a separate node */
-    private boolean SEPARATE_NODE;
     private String parameterDescription = null;
 
     public final ClauseArg originalArg;
@@ -89,7 +87,7 @@ public class NodeArgument
 
         Set<Symbol> possibleArguments = new HashSet<>();
         for(PossibleArgument pa : POSSIBLE_ARGS) possibleArguments.addAll(expandPossibleArgument(pa));
-
+        for(ClauseArg a : args()) if(terminalDropdown(a)) possibleArguments.add(a.symbol());
 
         Set<Symbol> possibleSymbols = new HashSet<>();
         for(Symbol s : possibleArguments)
@@ -99,9 +97,6 @@ public class NodeArgument
         }
 
         POSSIBLE_SYMBOL_INPUTS = new ArrayList<>(possibleSymbols);
-
-        SEPARATE_NODE = false;
-
         parameterDescription = readHelp();
     }
 
@@ -133,7 +128,7 @@ public class NodeArgument
     }
 
     /**
-     * Constructor for NodeInput which is a Terminal
+     * Constructor for PreDefined Arguments
      * @param clause the clause this NodeArgument is part of
      */
     public NodeArgument(Clause clause)
@@ -146,7 +141,6 @@ public class NodeArgument
         INDEX = 0;
         this.POSSIBLE_ARGS = new ArrayList<>();
         POSSIBLE_SYMBOL_INPUTS = new ArrayList<>();
-        SEPARATE_NODE = true;
     }
 
     /**
@@ -158,19 +152,12 @@ public class NodeArgument
         return POSSIBLE_SYMBOL_INPUTS;
     }
 
-    /**
-     * TODO: Add comment
-     * @param symbol
-     * @return
-     */
-    private boolean isTerminal(Symbol symbol)
+
+    private boolean terminalDropdown(ClauseArg arg)
     {
-        // TODO [FLAG]    Added two lines below
-        if(symbol.ludemeType().equals(Symbol.LudemeType.Predefined)) return true;
-        else if(true) return false;
-        if(symbol.isTerminal()) return true;
-        if(symbol.rule().rhs().size() == 0) return false; // TODO: check whether correct
-        for(Clause clause : symbol.rule().rhs())
+        if(arg.symbol().rule() == null) return false;
+        if(arg.symbol().rule().rhs().size() == 0) return false;
+        for(Clause clause : arg.symbol().rule().rhs())
         {
             if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
             {
@@ -182,21 +169,28 @@ public class NodeArgument
 
     public boolean isTerminal()
     {
-        if(separateNode()) return true;
-        return isTerminal(arg().symbol());
+        //if(separateNode()) return true;
+        if(arg().symbol().ludemeType().equals(Symbol.LudemeType.Predefined)) return true;
+        else return terminalDropdown();
     }
 
     public boolean terminalDropdown()
     {
-        if(arg().symbol().rule() == null) return false;
-        for(Clause clause : arg().symbol().rule().rhs())
+        return terminalDropdown(arg());
+    }
+
+    public boolean canBePredefined()
+    {
+        Symbol s = arg().symbol();
+        if(!s.ludemeType().equals(Symbol.LudemeType.Primitive)) return false;
+        if(s.rule() == null) return false;
+        if(s.rule().rhs().size() == 0) return false;
+        for(Clause clause : s.rule().rhs())
         {
-            if(!clause.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
-            {
-                return false;
-            }
+            if(clause.args() != null && clause.args().size() > 0) continue;
+            if(clause.args() == null && clause.symbol().ludemeType().equals(Symbol.LudemeType.Primitive)) return true;
         }
-        return true;
+        return false;
     }
 
     public List<Symbol> constantInputs(){
@@ -281,16 +275,6 @@ public class NodeArgument
     public boolean choice()
     {
         return size() > 1;
-    }
-
-    public void setSeparateNode(boolean separateNode) {
-        this.SEPARATE_NODE = separateNode;
-    }
-
-    // TODO: Add comment
-    public boolean separateNode()
-    {
-        return SEPARATE_NODE;
     }
 
     /**

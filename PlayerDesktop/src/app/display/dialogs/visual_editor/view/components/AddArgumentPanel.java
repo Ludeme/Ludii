@@ -110,7 +110,7 @@ public class AddArgumentPanel extends JPanel
 
             graphPanel.addSelectionIndex(index+1); // plus one because we want the position, but indices start at 0. For Code Completion Log
 
-            Symbol s = ((ReadableSymbol)listModel.getElementAt(index)).getSymbol();
+            Symbol s = listModel.getElementAt(index).getSymbol();
 
             // if the symbol is a terminal, do not create a new node. Instead create a new InputField
             if(s.ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(s))

@@ -374,6 +374,11 @@ public class LInputArea extends JPanel
             {
                 inputField.setLabelText(providedNodeArgument.arg().symbol().name());
             }
+            // if the field is hybrid, deactivate the terminal component
+            if(inputField.isHybrid())
+            {
+                inputField.activateHybrid(false);
+            }
             return inputField;
         }
         // Otherwise it is a merged one.
@@ -390,8 +395,6 @@ public class LInputArea extends JPanel
      */
     public LInputField addedConnection(NodeArgument nodeArgument, LInputField inputField)
     {
-        nodeArgument.setSeparateNode(true);
-        System.out.println("providedNodeArgument: " + nodeArgument + ", " + nodeArgument.separateNode());
         // Update active and inactive variables for dynamic nodes
         if(dynamic()) providedNodeArgument(nodeArgument);
         // Single out the NodeArgument that the user provided input for and return the new InputField
@@ -746,6 +749,11 @@ public class LInputArea extends JPanel
             return true;
         }
 
+        if(!inputField.isMerged() && inputField.isHybrid())
+        {
+            inputField.activateHybrid(true);
+        }
+
         // if the inputfield is single and optional, check whether it can be merged into another inputfield
         if(!inputField.isMerged() && inputField.optional())
         {
@@ -766,7 +774,10 @@ public class LInputArea extends JPanel
             if(!canBeMergedIntoBelow && !canBeMergedIntoAbove)
             {
                 // check whether this is a block of subsequent symbols (e.g. int)
-                if((inputFieldAbove != null && inputFieldAbove.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()) && inputFieldAbove.nodeArgument(0).collection() == inputField.nodeArgument(0).collection()) || (inputFieldBelow != null && inputFieldBelow.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()) && inputFieldBelow.nodeArgument(0).collection() == inputField.nodeArgument(0).collection()))
+                if((inputFieldAbove != null && inputFieldAbove.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol())
+                        && inputFieldAbove.nodeArgument(0).collection() == inputField.nodeArgument(0).collection() && inputFieldAbove.nodeArgument(0).optional())
+                        || (inputFieldBelow != null && inputFieldBelow.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol())
+                        && inputFieldBelow.nodeArgument(0).collection() == inputField.nodeArgument(0).collection() && inputFieldBelow.nodeArgument(0).optional()))
                 {
                     // find this block
                     List<LInputField> block = new ArrayList<>();

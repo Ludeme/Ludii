@@ -109,7 +109,9 @@ public class NodePopupMenu extends JPopupMenu {
             String message = "";
             message += "ID: " + node.id() + "\n";
             message += "Name: " + node.symbol().name() + "\n";
+            message += "Grammar Label: " + node.symbol().grammarLabel() + "\n";
             message += "Constructor: " + node.selectedClause() + "\n";
+            message += "# Clauses: " + node.clauses().size() + "\n";
             message += "Creator: " + node.creatorArgument() + "\n";
             message += "Package: " + node.packageName() + "\n";
             message += "Dynamic: " + node.dynamic() + "\n";
@@ -120,6 +122,7 @@ public class NodePopupMenu extends JPopupMenu {
             message += "Active C: (" + node.activeClauses().size() + ") " +node.activeClauses() + "\n";
             //message += "Inactive C: (" + + nodeComponent.inputArea().inactiveClauses.size() + ") " + nodeComponent.inputArea().inactiveClauses + "\n";
             message += "Width: " + nodeComponent.width() + "\n";
+            message += "Height: " + nodeComponent.getHeight() + "\n";
 
             JOptionPane.showMessageDialog((EditorPanel) graphPanel, message);
         });
