@@ -397,29 +397,7 @@ public class LudemeNodeComponent extends JPanel
         {
             super.mouseClicked(e);
             // when double click is performed on a node add its descendant into selection list
-            if (e.getClickCount() == 1 && !selected)
-            {
-                if (!cltrPressed) graphPanel().deselectEverything();
-                Handler.selectNode(LudemeNodeComponent.this);
-                subtree = false;
-            }
-            else if (e.getClickCount() >= 2 && !doubleSelected)
-            {
-                doubleSelected = true;
-                List<LudemeNodeComponent> Q = new ArrayList<>();
-                Q.add(LudemeNodeComponent.this);
-                while (!Q.isEmpty())
-                {
-                    LudemeNodeComponent lnc = Q.remove(0);
-                    Handler.selectNode(lnc);
-                    List<Integer> children = lnc.LN.children();
-                    children.forEach(v -> Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v))));
-                }
-                subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
-                graphPanel().repaint();
-                graphPanel().repaint();
-            }
-            LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent(LudemeNodeComponent.this.header.title().getText(), subtree);
+            handleNodeComponentSelection(e);
         }
 
         // When pressed, update position
@@ -430,6 +408,7 @@ public class LudemeNodeComponent extends JPanel
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
             Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
+            handleNodeComponentSelection(e);
         }
         // When released, update position
         // If right click, open popup menu
@@ -453,6 +432,32 @@ public class LudemeNodeComponent extends JPanel
             }
         }
     };
+
+    private void handleNodeComponentSelection(MouseEvent e) {
+        if (e.getClickCount() == 1 && !selected)
+        {
+            if (!cltrPressed) graphPanel().deselectEverything();
+            Handler.selectNode(LudemeNodeComponent.this);
+            subtree = false;
+        }
+        else if (e.getClickCount() >= 2 && !doubleSelected)
+        {
+            doubleSelected = true;
+            List<LudemeNodeComponent> Q = new ArrayList<>();
+            Q.add(LudemeNodeComponent.this);
+            while (!Q.isEmpty())
+            {
+                LudemeNodeComponent lnc = Q.remove(0);
+                Handler.selectNode(lnc);
+                List<Integer> children = lnc.LN.children();
+                children.forEach(v -> Q.add(GRAPH_PANEL.nodeComponent(GRAPH_PANEL.graph().getNode(v))));
+            }
+            subtree = !LudemeNodeComponent.this.LN.children().isEmpty();
+            graphPanel().repaint();
+            graphPanel().repaint();
+        }
+        LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent(LudemeNodeComponent.this.header.title().getText(), subtree);
+    }
 
     /**
      * Paints the node component
