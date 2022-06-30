@@ -94,20 +94,23 @@ public class DescriptionGraph implements iGraph {
         return allLudemeNodes;
     }
 
-    public List<LudemeNode> getNodes(Symbol symbol) {
+    public List<LudemeNode> getNodes(Symbol symbol)
+    {
         List<LudemeNode> result = new ArrayList<>();
         for(LudemeNode ln : allLudemeNodes) if(ln.symbol() == symbol) result.add(ln);
         return result;
     }
 
-    public List<LudemeNode> getNodes(String symbolName) {
+    public List<LudemeNode> getNodes(String symbolName)
+    {
         List<LudemeNode> result = new ArrayList<>();
         for(LudemeNode ln : allLudemeNodes) if(Objects.equals(ln.symbol().name(), symbolName)) result.add(ln);
         return result;
     }
 
     @Override
-    public int addNode(iGNode ludemeNode) {
+    public int addNode(iGNode ludemeNode)
+    {
         this.allLudemeNodes.add((LudemeNode) ludemeNode);
         int id = ludemeNode.id();
         nodeMap.put(id, ludemeNode);
@@ -115,14 +118,16 @@ public class DescriptionGraph implements iGraph {
     }
 
     @Override
-    public int removeNode(iGNode node) {
+    public int removeNode(iGNode node)
+    {
         this.allLudemeNodes.remove((LudemeNode) node);
         nodeMap.remove(node.id());
         return node.id();
     }
 
     @Override
-    public int removeNode(int id) {
+    public int removeNode(int id)
+    {
         iGNode node = getNode(id);
         nodeMap.remove(id);
         this.allLudemeNodes.remove((LudemeNode) node);
@@ -130,18 +135,23 @@ public class DescriptionGraph implements iGraph {
     }
 
     @Override
-    public void addEdge(int from, int to) {
+    public void addEdge(int from, int to)
+    {
         Edge e = new Edge(from, to);
-        for(Edge edge : edgeList) {
+        for(Edge edge : edgeList)
+        {
             if(edge.equals(e)) return;
         }
         edgeList.add(new Edge(from , to));
     }
 
     @Override
-    public void removeEdge(int from, int to) {
-        for(Edge e : edgeList) {
-            if(e.getNodeA() == from && e.getNodeB() == to) {
+    public void removeEdge(int from, int to)
+    {
+        for(Edge e : edgeList)
+        {
+            if(e.getNodeA() == from && e.getNodeB() == to)
+            {
                 edgeList.remove(e);
                 return;
             }
@@ -150,20 +160,24 @@ public class DescriptionGraph implements iGraph {
 
     @Override
     public void removeEdge(int containsId) {
-        for(Edge e : new ArrayList<>(edgeList)) {
-            if(e.getNodeA() == containsId ||e.getNodeB() == containsId) {
+        for(Edge e : new ArrayList<>(edgeList))
+        {
+            if(e.getNodeA() == containsId ||e.getNodeB() == containsId)
+            {
                 edgeList.remove(e);
             }
         }
     }
 
     @Override
-    public void addEdge(int from, int to, int field) {
+    public void addEdge(int from, int to, int field)
+    {
         Edge e = new Edge(from, to, field);
-        for(Edge edge : edgeList) {
+        for(Edge edge : edgeList)
+        {
             if(edge.equals(e)) return;
         }
-        edgeList.add(new Edge(from , to, field));
+        edgeList.add(e);
     }
 
     public void remove(LudemeNode ludemeNode) {

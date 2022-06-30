@@ -17,6 +17,8 @@ public class EditorMenuBarHandler
             File file = fc.getSelectedFile();
             GameParser.ParseFileToGraph(file, Handler.editorPanel);
         }
+        // TODO: arrange layout for every connected component in the graph i.e. iteratively change root
+        Handler.editorPanel.getLayoutHandler().executeLayout(1, true);
     }
 
 }

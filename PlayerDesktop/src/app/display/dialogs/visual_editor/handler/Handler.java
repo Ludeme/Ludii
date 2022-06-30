@@ -222,7 +222,7 @@ public class Handler
         to.setParent(from);
 
         // if the edge is part of a collection, adjust the collection size
-        while(elementIndex+1>((Object[])from.providedInputsMap().get(nodeArgument)).length)
+        while(from.providedInputsMap().get(nodeArgument) == null || elementIndex+1>((Object[])from.providedInputsMap().get(nodeArgument)).length)
         {
             addCollectionElement(graph, from, nodeArgument);
         }

@@ -50,7 +50,7 @@ public class GameParser
         final Map<String, Boolean> hasCompiled = new HashMap<>();
         rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
 
-        constructGraph(callTree.args().get(0), 0, Handler.editorPanel.graph());
+        constructGraph(callTree.args().get(0), 0, null, -1, null, Handler.editorPanel.graph());
 
         //EditorPanel ep = new EditorPanel(4000, 4000);
         //JFrame jf = new MainFrame(ep);
@@ -60,21 +60,20 @@ public class GameParser
 
     public static void ParseFileToGraph(File file, IGraphPanel graphPanel)
     {
-        StringBuilder sb = new StringBuilder();
-        try (final BufferedReader rdr = new BufferedReader(new FileReader(file.getAbsolutePath())))
-        {
-            String line;
-            while ((line = rdr.readLine()) != null)
-                sb.append(line + "\n");
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
-
+            StringBuilder sb = new StringBuilder();
+            try (final BufferedReader rdr = new BufferedReader(new FileReader(file.getAbsolutePath())))
+            {
+                String line;
+                while ((line = rdr.readLine()) != null)
+                    sb.append(line + "\n");
+            }
+            catch (final IOException e)
+            {
+                e.printStackTrace();
+            }
 
         // creating a call tree from game description
-        Description test_desc = new Description(Constants.BASIC_GAME_DESCRIPTION);
+        Description test_desc = new Description(sb.toString());
         parser.Parser.expandAndParse(test_desc, new UserSelections(new ArrayList<>()),new Report(),false);
         Token tokenTree_test = new Token(test_desc.expanded(), new Report());
         Grammar gm = grammar.Grammar.grammar();
@@ -97,8 +96,8 @@ public class GameParser
 
 
         // constructing a graph from call tree
-        constructGraph(callTree.args().get(0), 0, graphPanel.graph());
-
+        constructGraph(callTree.args().get(0), 0, null, -1, null, graphPanel.graph());
+        System.out.println("Done");
     }
 
     /**
@@ -107,7 +106,7 @@ public class GameParser
      * @param d depth
      * @param graph graph in operation
      */
-    private static Object constructGraph(Call c, int d, DescriptionGraph graph)
+    private static Object constructGraph(Call c, int d, LudemeNode parent, int collectionIndex, NodeArgument creatorArgument, DescriptionGraph graph)
     {
         List<Call> cArgs = c.args();
         int matched = 0;
@@ -119,13 +118,13 @@ public class GameParser
                 Object[] objects = new Object[cArgs.size()];
                 for (int i = 0; i < cArgs.size(); i++)
                 {
-                    objects[i] = constructGraph(cArgs.get(i), d+1, graph);
+                    objects[i] = constructGraph(cArgs.get(i), d+1, parent, i, creatorArgument, graph);
                 }
                 return objects;
             case Terminal:
                 return c.object();
             case Class:
-                // TODO: debug this! currently the "OR group" is considered as multiple arguments :/
+                // TODO: debug this!
                 Symbol ludemeSymbol = c.symbol();
                 List<Clause> rhsList = c.symbol().rule().rhs();
                 Clause currentClause = null;
@@ -159,17 +158,63 @@ public class GameParser
                 // creating ludeme node from call class
                 LudemeNode ln = new LudemeNode(ludemeSymbol, NodePlacementRoutines.DEFAULT_X_POS,
                         NodePlacementRoutines.DEFAULT_Y_POS);
+                ln.setCreatorArgument(creatorArgument);
                 Handler.addNode(graph, ln);
-                // TODO: add edge to graph model
                 // setting up current clause constructor
                 Handler.updateCurrentClause(graph, ln, currentClause);
                 // providing argument to the ludeme node
-                for (int i = 0; i < cArgs.size(); i++)
+                int orGroup = 0;
+                int orGroupFinished = -1;
+                // node argument cursor
+                int i = 0;
+                // clause argument cursor
+                int j = 0;
+                Object input = null;
+                while (i < ln.providedInputsMap().size())
                 {
-                    Call call = cArgs.get(i);
-                    Object input = constructGraph(call, d+1, graph);
-                    Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
+                    // check if input for orGroup was produced
+                    if (currentClause.args().get(j).orGroup() == orGroupFinished)
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        Call call = cArgs.get(j);
+                        input = constructGraph(call, d+1, ln, -1, ln.currentNodeArguments().get(i), graph);
+                        Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
+
+                        if (currentClause.args().get(j).orGroup() > orGroup)
+                        {
+                            orGroup = currentClause.args().get(j).orGroup();
+                            // check if orGroup is fully iterated
+                            if (j - 1 >= 0
+                                    && currentClause.args().get(j).orGroup() != currentClause.args().get(j-1).orGroup())
+                            {
+                                i++;
+                            }
+                            // check if one of inputs of orGroup was given already
+                            else if (input != null)
+                            {
+                                i++;
+                                orGroupFinished = orGroup;
+                            }
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                        j++;
+                    }
                 }
+                // add edge to graph model
+                if (parent != null)
+                {
+                    if (collectionIndex == -1)
+                        Handler.addEdge(graph, parent, ln, ln.creatorArgument());
+                    else
+                        Handler.addEdge(graph, parent, ln, ln.creatorArgument(), collectionIndex);
+                }
+
                 return ln;
 
             default:

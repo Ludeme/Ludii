@@ -50,9 +50,10 @@ public class LayoutHandler {
 
     public void evaluateGraphWeights()
     {
-        double[] weights = GraphRoutines.treeDOS(graph, root);
-        Handler.lsPanel.updateSliderValues(weights[0], weights[1], weights[2]);
-        updateDFSWeights(weights);
+        // TODO: improve functionality
+        //double[] weights = GraphRoutines.treeDOS(graph, root);
+        //Handler.lsPanel.updateSliderValues(weights[0], weights[1], weights[2]);
+        //updateDFSWeights(weights);
     }
 
     // ################
@@ -61,17 +62,15 @@ public class LayoutHandler {
     {
         LayoutHandler lm = graphPanel.getLayoutHandler();
         lm.evaluateGraphWeights();
-        lm.executeLayout(graphPanel.graph().getRoot().id(), false);
+        lm.executeLayout(graphPanel.selectedRootId(), false);
         layoutExecuted = true;
-
-
     }
 
     public void executeLayout(int root, boolean animated)
     {
         // check if has children
         if (graph.getNode(root).children().isEmpty() || GraphRoutines.updateCounter != 0) return;
-        updateNodeDepth(graph, graph.getRoot().id());
+        updateNodeDepth(graph, root);
         layout.setRoot(root);
         layout.applyLayout();
         if (animated)

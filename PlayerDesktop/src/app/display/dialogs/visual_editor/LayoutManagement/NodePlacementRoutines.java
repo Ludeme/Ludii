@@ -65,7 +65,7 @@ public final class NodePlacementRoutines
             for (int i = 1; i < nodes.size(); i++)
             {
                 nodes.get(i).setOldPos(nodes.get(i).pos());
-                nodes.get(i).setPos(new Vector2D(nodes.get(i-1).pos().x()+nodes.get(i-1).width()+NODE_GAP*i, posY));
+                nodes.get(i).setPos(new Vector2D(nodes.get(i-1).pos().x()+nodes.get(i-1).width()+NODE_GAP, posY));
                 nodes.get(i).setNewPos(nodes.get(i).pos());
             }
         }
@@ -74,7 +74,7 @@ public final class NodePlacementRoutines
             for (int i = 1; i < nodes.size(); i++)
             {
                 nodes.get(i).setOldPos(nodes.get(i).pos());
-                nodes.get(i).setPos(new Vector2D(posX, nodes.get(i-1).pos().y()+nodes.get(i-1).height()+NODE_GAP*i));
+                nodes.get(i).setPos(new Vector2D(posX, nodes.get(i-1).pos().y()+nodes.get(i-1).height()+NODE_GAP));
                 nodes.get(i).setNewPos(nodes.get(i).pos());
             }
         }

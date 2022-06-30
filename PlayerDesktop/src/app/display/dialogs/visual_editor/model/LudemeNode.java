@@ -836,30 +836,31 @@ public class LudemeNode implements iGNode
 
     /**
      * Adds a child to this node
-     * @param children the child to add
+     * @param child the child to add
      */
-    public void addChildren(LudemeNode children)
+    public void addChildren(LudemeNode child)
     {
         // Checks if child nodes was already added
-        if (!this.children.contains(children))
+        if (!this.children.contains(child))
         {
-            this.children.add(children);
+            this.children.add(child);
             // get order of new child in current constructor
             // TODO: something goes wrong for [optional] inputs
             int order = -1;
 
             for (ClauseArg arg : selectedClause.args())
             {
-                if (arg.symbol().name().equals(children.symbol().name()))
+                if (arg.symbol().name().equals(child.symbol().name()))
                 {
                     order = selectedClause.args().indexOf(arg);
                     break;
                 }
             }
 
-            childrenOrder.put(children, order);
+            childrenOrder.put(child, order);
             // placing child in correct order
-            for (int i = this.children.size()-1; i > 0; i--) {
+            for (int i = this.children.size()-1; i > 0; i--)
+            {
                 if (childrenOrder.get(this.children.get(i-1)) > childrenOrder.get(this.children.get(i)))
                 {
                     // swap i-1 and i
@@ -875,6 +876,10 @@ public class LudemeNode implements iGNode
      */
     public void removeChildren(LudemeNode children)
     {
+        if (id() == 12)
+        {
+            System.out.println("HHHmmm");
+        }
         this.children.remove(children);
     }
 
