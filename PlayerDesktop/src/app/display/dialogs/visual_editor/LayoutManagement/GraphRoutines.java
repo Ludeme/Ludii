@@ -6,7 +6,9 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import static java.lang.Math.abs;
 
@@ -118,7 +120,7 @@ public final class GraphRoutines
             Q.addAll(n.children());
         }
         updateCounter++;
-        Handler.updateNodePositions();
+        Handler.editorPanel.syncNodePositions();
         return updateCounter == ANIMATION_UPDATES;
     }
 
@@ -126,7 +128,7 @@ public final class GraphRoutines
     {
         nodes.forEach(n -> n.setPos(new Vector2D(n.oldPos().x()+increments.get(n.id()).x()*updateCounter,
                 n.oldPos().y()+increments.get(n.id()).y()*updateCounter)));
-        Handler.updateNodePositions();
+        Handler.editorPanel.syncNodePositions();
         updateCounter++;
         return updateCounter == ANIMATION_UPDATES;
     }
@@ -255,6 +257,31 @@ public final class GraphRoutines
                 findAllPaths(paths, graph, cid, p);
             }
         });
+    }
+
+    public static Rectangle getSubtreeArea(iGraph graph, int root)
+    {
+        List<iGNode> nodeList = new ArrayList<>();
+
+        int ltX = (int) graph.getNode(root).pos().x();
+        int ltY = (int) graph.getNode(root).pos().y();
+        int rbX = (int) graph.getNode(root).pos().x();
+        int rbY = (int) graph.getNode(root).pos().y();
+
+        List<Integer> Q = new ArrayList<>();
+        Q.add(root);
+        while (!Q.isEmpty())
+        {
+            int nId = Q.remove(0);
+            iGNode node = graph.getNode(nId);
+            if (node.pos().x() < ltX) ltX = (int) node.pos().x();
+            if (node.pos().x() + node.width() > rbX) rbX = (int) node.pos().x() + node.width();
+            if (node.pos().y() < ltY) ltY = (int) node.pos().y();
+            if (node.pos().y() + node.height() > rbY) rbY = (int) node.pos().y() + node.height();
+            Q.addAll(node.children());
+        }
+
+        return new Rectangle(ltX, ltY, rbX-ltX, rbY-ltY);
     }
 
 }

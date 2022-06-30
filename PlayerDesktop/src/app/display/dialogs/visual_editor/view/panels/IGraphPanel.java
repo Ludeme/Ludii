@@ -43,7 +43,6 @@ public interface IGraphPanel {
     DescriptionGraph graph();
     ConnectionHandler connectionHandler();
     LudemeNodeComponent nodeComponent(LudemeNode node);
-    int selectedRootId();
     void addNodeToSelections(LudemeNodeComponent lnc);
     List<iGNode> selectedNodes();
     List<LudemeNodeComponent> selectedLnc();
@@ -53,6 +52,7 @@ public interface IGraphPanel {
     LayoutHandler getLayoutHandler();
     void updateGraph();
     void updateNodePositions();
+    void syncNodePositions();
     void deselectEverything();
     void repaint();
     void addSelectionIndex(int index);

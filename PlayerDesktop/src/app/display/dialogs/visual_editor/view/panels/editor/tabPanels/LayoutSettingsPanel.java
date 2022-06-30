@@ -53,18 +53,18 @@ public class LayoutSettingsPanel extends JPanel
 
         redraw.addActionListener(e -> {
             lh.evaluateGraphWeights();
-            executeDFSLayout(graphPanel, animatePlacement.isSelected());
+            executeDFSLayout(graphPanel);
             graphPanel.deselectEverything();
         });
 
         alignX.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, animatePlacement.isSelected());
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, graphPanel);
             // graphPanel.updateNodePositions();
             // graphPanel.deselectEverything();
         });
 
         alignY.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS, animatePlacement.isSelected());
+            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS, graphPanel);
             // graphPanel.updateNodePositions();
             // graphPanel.deselectEverything();
         });
@@ -77,7 +77,7 @@ public class LayoutSettingsPanel extends JPanel
             if (changeListen)
             {
                 updateWeights();
-                executeDFSLayout(graphPanel, false);
+                executeDFSLayout(graphPanel);
             }
         };
 
@@ -160,9 +160,9 @@ public class LayoutSettingsPanel extends JPanel
 
     private double getSliderValue(JSlider slider) {return slider.getValue() / 100.0;}
 
-    private void executeDFSLayout(IGraphPanel graphPanel, boolean animated)
+    private void executeDFSLayout(IGraphPanel graphPanel)
     {
-        graphPanel.getLayoutHandler().executeLayout(graphPanel.selectedRootId(), animated);
+        graphPanel.getLayoutHandler().executeLayout();
     }
 
     public void setSelectedComponent(String node, boolean subtree)

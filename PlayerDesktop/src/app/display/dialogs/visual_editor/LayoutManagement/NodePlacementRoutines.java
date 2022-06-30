@@ -3,6 +3,8 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -47,9 +49,10 @@ public final class NodePlacementRoutines
         }
     }
 
-    public static void alignNodes(List<iGNode> nodes, int axis, boolean animate)
+    public static void alignNodes(List<iGNode> nodes, int axis, IGraphPanel graphPanel)
     {
-        if (nodes.isEmpty() || (animate && GraphRoutines.updateCounter != 0)) return;
+        if (nodes.isEmpty() || (LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn() &&
+                GraphRoutines.updateCounter != 0)) return;
         // find min posX and posY in a list
         double posX = nodes.get(0).pos().x();
         double posY = nodes.get(0).pos().y();
@@ -79,7 +82,8 @@ public final class NodePlacementRoutines
             }
         }
 
-        if (animate && GraphRoutines.updateCounter == 0)
+        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn() &&
+                GraphRoutines.updateCounter == 0)
         {
             HashMap<Integer, Vector2D> incrementMap = GraphRoutines.computeNodeIncrements(nodes);
             // animate change
@@ -95,7 +99,7 @@ public final class NodePlacementRoutines
         }
         else
         {
-            Handler.updateNodePositions();
+            graphPanel.syncNodePositions();
         }
     }
 

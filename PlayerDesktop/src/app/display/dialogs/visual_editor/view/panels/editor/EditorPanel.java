@@ -107,9 +107,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         Handler.recordUserActions = false;
         LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), null, 30, 30, false);
 
-        graph.setRoot(gameLudemeNode);
-
-        lm = new LayoutHandler(graph, graph.getRoot().id());
+        lm = new LayoutHandler(graph);
         ch = new ConnectionHandler(this);
 
 
@@ -269,6 +267,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         System.out.println("Deselecting");
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = nodeComponent(n);
+            graph.setSelectedRoot(null);
             lnc.setSelected(false);
             lnc.setDoubleSelected(false);
         });
@@ -352,8 +351,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         remove(lnc);
         ch.removeAllConnections(lnc.node(), false);
         repaint();
-        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
-            LayoutHandler.applyOnPanel(EditorPanel.this);
+        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn()) lm.executeLayout();
     }
 
     @Override
@@ -610,7 +608,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         {
             lc.revalidate();
             lc.updateProvidedInputs();
-            lc.updateLudemePosition();
+            lc.updatePositions();
         }
         revalidate();
         repaint();
@@ -621,12 +619,13 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         for (LudemeNodeComponent lc : nodeComponents)
         {
-            lc.updateLudemePosition();
+            lc.updatePositions();
         }
         revalidate();
         repaint();
     }
 
+    @Override
     public void syncNodePositions()
     {
         for (LudemeNodeComponent lc : nodeComponents)
@@ -682,20 +681,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
     public LayoutHandler getLayoutHandler()
     {
         return lm;
-    }
-
-    @Override
-    public int selectedRootId() {
-        if (!selectedLnc.isEmpty())
-        {
-            LudemeNodeComponent rootLnc = selectedLnc.get(0);
-            // TODO: implemented awfully, if performance is bad, refactor how the selection list is implemented
-            for (LudemeNode n:
-                    graph.getNodes()) {
-                if (nodeComponent(n).getBounds().intersects(rootLnc.getBounds())) return n.id();
-            }
-        }
-        return graph.getRoot().id();
     }
 
     @Override
@@ -755,8 +740,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
                     {
                         showCurrentlyAvailableLudemes(e.getX(), e.getY());
                     }
-                    if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
-                        LayoutHandler.applyOnPanel(EditorPanel.this);
+                    if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn()) lm.executeLayout();
                 }
             }
             else

@@ -35,6 +35,7 @@ public class NodePopupMenu extends JPopupMenu {
         collapse.setIcon(collapseI);
         delete.setIcon(deleteI);
 
+
         if(graphPanel.graph().getRoot() != nodeComponent.node()) {
             add(copyBtn);
             add(duplicate);
@@ -60,7 +61,7 @@ public class NodePopupMenu extends JPopupMenu {
                 copy.add(nodeComponent.node());
             }
             // remove root node from copy list
-            copy.remove(graphPanel.graph().getRoot());
+            //copy.remove(graphPanel.graph().getRoot());
 
             Handler.copy(graphPanel.graph(), copy);
         });

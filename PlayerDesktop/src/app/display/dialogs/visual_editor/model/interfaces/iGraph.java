@@ -7,30 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * An interface to be adopted by a main graph
+ * An interface to be adopted by displayable graph
  * @author nic0gin
  */
 public interface iGraph
 {
-    /**
-     * Retrieves the root of the graph
-     * @return
-     */
-    iGNode getRoot();
-
-    /**
-     * In case you want to change the current root node
-     * @param id new root id
-     */
-    void setRoot(int id);
-
-    void setRoot(iGNode node);
-
-    /**
-     *
-     * @return
-     */
-    HashMap<Integer, List<Integer>> getAdjacencyList();
 
     /**
      *
@@ -42,7 +23,7 @@ public interface iGraph
      *
      * @return
      */
-    HashMap<Integer, iGNode> getNodeList(); //TODO: change to node interface
+    HashMap<Integer, iGNode> getNodeList(); //TODO: do we need this?
 
     /**
      * get node by id
@@ -50,14 +31,6 @@ public interface iGraph
      * @return node instance
      */
     iGNode getNode(int id);
-
-    /**
-     * Adds disconnected empty node to the graph
-     * @return id
-     */
-    int addNode();
-
-    int addNode(String label);
 
     /**
      * Adds instance of a node to the graph
@@ -92,11 +65,39 @@ public interface iGraph
     void removeEdge(int containsId);
 
     /**
-     * add edge
-     * @param from
-     * @param to
-     * @param field
+     *
+     * @return list of roots id of all connected components in the graph
      */
-    void addEdge(int from, int to, int field);
+    List<Integer> connectedComponentRoots();
+
+    /**
+     * Add root id to the connected components list
+     * Add node to the list on creation, on removal and on the deletion of parent connection
+     * @param root id
+     */
+    void addConnectedComponentRoot(int root);
+
+    /**
+     * Remove root id from the connected components list
+     * Call on adding a parent node
+     * @param root id
+     */
+    void removeConnectedComponentRoot(int root);
+
+    /**
+     *
+     * @return selected root/sub-root
+     */
+    Integer selectedRoot();
+
+    /**
+     *
+     * @param root selected root/sub-root
+     */
+    void setSelectedRoot(Integer root);
+
+    void setRoot(iGNode root);
+
+    iGNode getRoot();
 
 }

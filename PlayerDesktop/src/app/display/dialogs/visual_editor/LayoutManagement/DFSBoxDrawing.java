@@ -22,7 +22,6 @@ public class DFSBoxDrawing
     private int freeY;
     private final double wY;
     private final double wX;
-    private int root;
 
     private double[] DOS_MAP;
 
@@ -39,15 +38,13 @@ public class DFSBoxDrawing
     /**
      *
      * @param graph graph
-     * @param root
      * @param wX maximum inner-subtree distance
      * @param wY maximum inner-subtree spread
      */
-    public DFSBoxDrawing(iGraph graph, int root, double wY, double wX)
+    public DFSBoxDrawing(iGraph graph, double wY, double wX)
     {
         this.graph = graph;
         freeY = 0;
-        this.root = root;
 
         this.wX = wX;
         this.wY = wY;
@@ -119,7 +116,7 @@ public class DFSBoxDrawing
         }
     }
 
-    private void compactBox()
+    private void compactBox(int root)
     {
         // 1. Find all paths
         ArrayList<List<Integer>> paths = new ArrayList<>();
@@ -249,16 +246,13 @@ public class DFSBoxDrawing
         DOS_MAP = weights.clone();
     }
 
-    public void applyLayout()
+    public void applyLayout(int root)
     {
         freeY = 0;
         Vector2D oPos = graph.getNode(root).pos();
         initPlacement(root,0);
-        compactBox();
+        compactBox(root);
         translateByRoot(graph, root, oPos);
     }
 
-    public void setRoot(int root) {
-        this.root = root;
-    }
 }

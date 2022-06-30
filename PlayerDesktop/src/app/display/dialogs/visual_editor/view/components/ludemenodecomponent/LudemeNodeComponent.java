@@ -138,14 +138,6 @@ public class LudemeNodeComponent extends JPanel
     }
 
     /**
-     * TODO: This is what?
-     */
-    public void updateLudemePosition()
-    {
-        LudemeNodeComponent.this.setLocation((int) LN.pos().x(), (int) LN.pos().y());
-    }
-
-    /**
      * Method which syncs the Ludeme Node Component with provided inputs (stored in the Ludeme Node).
      * Called when drawing a graph.
      */
@@ -433,7 +425,8 @@ public class LudemeNodeComponent extends JPanel
         }
     };
 
-    private void handleNodeComponentSelection(MouseEvent e) {
+    private void handleNodeComponentSelection(MouseEvent e)
+    {
         if (e.getClickCount() == 1 && !selected)
         {
             if (!cltrPressed) graphPanel().deselectEverything();
@@ -443,6 +436,7 @@ public class LudemeNodeComponent extends JPanel
         else if (e.getClickCount() >= 2 && !doubleSelected)
         {
             doubleSelected = true;
+            graphPanel().graph().setSelectedRoot(this.LN.id());
             List<LudemeNodeComponent> Q = new ArrayList<>();
             Q.add(LudemeNodeComponent.this);
             while (!Q.isEmpty())

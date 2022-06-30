@@ -21,6 +21,8 @@ public class DescriptionGraph implements iGraph {
     List<LudemeNode> allLudemeNodes = new ArrayList<>();
     HashMap<Integer, iGNode> nodeMap = new HashMap<>();
     List<Edge> edgeList = new ArrayList<>();
+    private final List<Integer> connectedComponentRoots = new ArrayList<>();
+    private Integer selectedRoot = null;
     private boolean isDefine = false;
 
     LudemeNode ROOT;
@@ -39,28 +41,6 @@ public class DescriptionGraph implements iGraph {
     }
 
     @Override
-    public void setRoot(iGNode node){
-        this.ROOT = (LudemeNode) node;
-    }
-
-    @Override
-    public iGNode getRoot() {
-        return ROOT;
-    }
-
-    @Override
-    public void setRoot(int id) {
-        this.ROOT = getNode(id);
-    }
-
-    @Override
-    public HashMap<Integer, List<Integer>> getAdjacencyList()
-    {
-        // TODO remove this
-        return null;
-    }
-
-    @Override
     public List<Edge> getEdgeList()
     {
         return edgeList;
@@ -73,21 +53,12 @@ public class DescriptionGraph implements iGraph {
     }
 
     @Override
-    public LudemeNode getNode(int id) {
+    public LudemeNode getNode(int id)
+    {
         for(LudemeNode ln : allLudemeNodes){
             if(ln.id() == id) return ln;
         }
         return null;
-    }
-
-    @Override
-    public int addNode() {
-        return 0;
-    }
-
-    @Override
-    public int addNode(String label) {
-        return 0;
     }
 
     public List<LudemeNode> getNodes() {
@@ -114,6 +85,7 @@ public class DescriptionGraph implements iGraph {
         this.allLudemeNodes.add((LudemeNode) ludemeNode);
         int id = ludemeNode.id();
         nodeMap.put(id, ludemeNode);
+        addConnectedComponentRoot(id);
         return id;
     }
 
@@ -122,6 +94,7 @@ public class DescriptionGraph implements iGraph {
     {
         this.allLudemeNodes.remove((LudemeNode) node);
         nodeMap.remove(node.id());
+        removeConnectedComponentRoot(node.id());
         return node.id();
     }
 
@@ -131,6 +104,7 @@ public class DescriptionGraph implements iGraph {
         iGNode node = getNode(id);
         nodeMap.remove(id);
         this.allLudemeNodes.remove((LudemeNode) node);
+        removeConnectedComponentRoot(node.id());
         return node.id();
     }
 
@@ -143,6 +117,7 @@ public class DescriptionGraph implements iGraph {
             if(edge.equals(e)) return;
         }
         edgeList.add(new Edge(from , to));
+        removeConnectedComponentRoot(to);
     }
 
     @Override
@@ -153,6 +128,7 @@ public class DescriptionGraph implements iGraph {
             if(e.getNodeA() == from && e.getNodeB() == to)
             {
                 edgeList.remove(e);
+                addConnectedComponentRoot(to);
                 return;
             }
         }
@@ -165,19 +141,49 @@ public class DescriptionGraph implements iGraph {
             if(e.getNodeA() == containsId ||e.getNodeB() == containsId)
             {
                 edgeList.remove(e);
+                addConnectedComponentRoot(e.getNodeB());
             }
         }
     }
 
     @Override
-    public void addEdge(int from, int to, int field)
+    public List<Integer> connectedComponentRoots()
     {
-        Edge e = new Edge(from, to, field);
-        for(Edge edge : edgeList)
-        {
-            if(edge.equals(e)) return;
-        }
-        edgeList.add(e);
+        return connectedComponentRoots;
+    }
+
+    @Override
+    public void addConnectedComponentRoot(int root)
+    {
+        if (!connectedComponentRoots.contains(root) && getNode(root) != null) connectedComponentRoots.add(root);
+    }
+
+    @Override
+    public void removeConnectedComponentRoot(int root)
+    {
+        if (connectedComponentRoots.contains(root)) connectedComponentRoots.remove((Object)root);
+    }
+
+    @Override
+    public Integer selectedRoot()
+    {
+        return selectedRoot;
+    }
+
+    @Override
+    public void setSelectedRoot(Integer root)
+    {
+        this.selectedRoot = root;
+    }
+
+    @Override
+    public void setRoot(iGNode root) {
+        this.ROOT = (LudemeNode) root;
+    }
+
+    @Override
+    public iGNode getRoot() {
+        return ROOT;
     }
 
     public void remove(LudemeNode ludemeNode) {

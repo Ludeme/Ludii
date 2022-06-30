@@ -4,7 +4,13 @@ import java.awt.*;
 
 public class FixedGroupSelection
 {
-    public static void drawGroupBox(int x, int y, int width, int height, Graphics2D g2d)
+
+    /**
+     * Padding for the fixed node group selection
+     */
+    private static final int PADDING = 10;
+
+    public static void drawGroupBox(Rectangle rect, Graphics2D g2d)
     {
         float[] dashingPattern = {10f, 4f};
         Stroke stroke = new BasicStroke(2f, BasicStroke.CAP_BUTT,
@@ -13,10 +19,9 @@ public class FixedGroupSelection
         g2d.setColor(new Color(51, 51, 51));
         g2d.setStroke(stroke);
 
-        g2d.drawRect(x, y, width, height);
+        g2d.drawRect(rect.x-PADDING, rect.y-PADDING, rect.width+PADDING, rect.height+PADDING);
 
         g2d.setColor(new Color(236, 221, 144, 50));
-        g2d.fillRect(x, y, width, height);
-
+        g2d.fillRect(rect.x+PADDING, rect.y+PADDING, rect.width+PADDING, rect.height+PADDING);
     }
 }

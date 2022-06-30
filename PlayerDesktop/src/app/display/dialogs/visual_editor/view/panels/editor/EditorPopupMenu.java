@@ -35,7 +35,7 @@ public class EditorPopupMenu extends JPopupMenu {
         });
 
         compact.addActionListener(e -> {
-            LayoutHandler.applyOnPanel(graphPanel);
+            graphPanel.getLayoutHandler().executeLayout();
         });
 
         settings.addActionListener(e -> {

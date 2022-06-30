@@ -769,6 +769,7 @@ public class LudemeNode implements iGNode
     public void setParent(LudemeNode ludemeNode)
     {
         this.parent = ludemeNode;
+
     }
 
     /**
@@ -813,10 +814,6 @@ public class LudemeNode implements iGNode
      */
     public void removeChildren(LudemeNode children)
     {
-        if (id() == 12)
-        {
-            System.out.println("HHHmmm");
-        }
         this.children.remove(children);
     }
 

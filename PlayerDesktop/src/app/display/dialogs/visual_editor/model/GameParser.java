@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.model;
 import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import app.display.dialogs.visual_editor.recs.display.ProgressBar;
 import app.display.dialogs.visual_editor.view.MainFrame;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
@@ -23,63 +24,41 @@ import java.util.regex.Pattern;
 public class GameParser
 {
 
-    private static DescriptionGraph GRAPH = new DescriptionGraph();
-
-    public static void main(String[] args) throws FileNotFoundException {
-        // Playing around with Ludii methods needed for text-to-graph parser
-        Description test_desc = new Description(Constants.BASIC_GAME_DESCRIPTION);
-
-        parser.Parser.expandAndParse(test_desc, new UserSelections(new ArrayList<>()),new Report(),false);
-        Token tokenTree_test = new Token(test_desc.expanded(), new Report());
-        grammar.Grammar gm = grammar.Grammar.grammar();
-        final ArgClass rootClass = (ArgClass) Arg.createFromToken(grammar.Grammar.grammar(), tokenTree_test);
-        assert rootClass != null;
-        rootClass.matchSymbols(gm, new Report());
-
-        // Attempt to compile the game
-        Class<?> clsRoot = null;
-        try
+    public static void ParseFileToGraph(File file, IGraphPanel graphPanel, ProgressBar progressBar)
+    {
+        // #1 file to string
+        StringBuilder sb = new StringBuilder();
+        try (final BufferedReader rdr = new BufferedReader(new FileReader(file.getAbsolutePath())))
         {
-            clsRoot = Class.forName("game.Game");
-        } catch (final ClassNotFoundException e)
+            String line;
+            while ((line = rdr.readLine()) != null)
+                sb.append(line + "\n");
+        }
+        catch (final IOException e)
         {
             e.printStackTrace();
         }
-        // Create call tree with dummy root
-        Call callTree = new Call(Call.CallType.Null);
-        final Map<String, Boolean> hasCompiled = new HashMap<>();
-        rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
-
-        constructGraph(callTree.args().get(0), 0, null, -1, null, Handler.editorPanel.graph());
-
-        //EditorPanel ep = new EditorPanel(4000, 4000);
-        //JFrame jf = new MainFrame(ep);
-        //ep.drawGraph(GRAPH);
-
-    }
-
-    public static void ParseFileToGraph(File file, IGraphPanel graphPanel)
-    {
-            StringBuilder sb = new StringBuilder();
-            try (final BufferedReader rdr = new BufferedReader(new FileReader(file.getAbsolutePath())))
-            {
-                String line;
-                while ((line = rdr.readLine()) != null)
-                    sb.append(line + "\n");
-            }
-            catch (final IOException e)
-            {
-                e.printStackTrace();
-            }
-
+        progressBar.updateProgress(1);
         // creating a call tree from game description
+        // #2 file to description
         Description test_desc = new Description(sb.toString());
+        progressBar.updateProgress(2);
+        // #3 expand and parse the description
         parser.Parser.expandAndParse(test_desc, new UserSelections(new ArrayList<>()),new Report(),false);
+        progressBar.updateProgress(3);
+        // #4 create token tree
         Token tokenTree_test = new Token(test_desc.expanded(), new Report());
         Grammar gm = grammar.Grammar.grammar();
+        progressBar.updateProgress(4);
+        // #5 create from token
         final ArgClass rootClass = (ArgClass) Arg.createFromToken(grammar.Grammar.grammar(), tokenTree_test);
         assert rootClass != null;
+        progressBar.updateProgress(5);
+        // #6 match symbols
+        progressBar.updateProgress(6);
         rootClass.matchSymbols(gm, new Report());
+        // #7 compile a call tree
+        progressBar.updateProgress(7);
         // Attempt to compile the game
         Class<?> clsRoot = null;
         try
@@ -93,11 +72,9 @@ public class GameParser
         Call callTree = new Call(Call.CallType.Null);
         final Map<String, Boolean> hasCompiled = new HashMap<>();
         rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
-
-
-        // constructing a graph from call tree
+        // #8 constructing a graph from call tree
         constructGraph(callTree.args().get(0), 0, null, -1, null, graphPanel.graph());
-        System.out.println("Done");
+        progressBar.updateProgress(8);
     }
 
     /**
