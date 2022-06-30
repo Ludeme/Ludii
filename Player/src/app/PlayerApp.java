@@ -85,8 +85,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void showOtherDialog(FastArrayList<Move> otherPossibleMoves);
 	public abstract void showInfoDialog();
 	
-	public abstract void checkButtonsEnabled();
-	
 	public abstract int width();
 	public abstract int height();
 	
