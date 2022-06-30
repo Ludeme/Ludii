@@ -390,8 +390,6 @@ public class LInputArea extends JPanel
      */
     public LInputField addedConnection(NodeArgument nodeArgument, LInputField inputField)
     {
-        nodeArgument.setSeparateNode(true);
-        System.out.println("providedNodeArgument: " + nodeArgument + ", " + nodeArgument.separateNode());
         // Update active and inactive variables for dynamic nodes
         if(dynamic()) providedNodeArgument(nodeArgument);
         // Single out the NodeArgument that the user provided input for and return the new InputField

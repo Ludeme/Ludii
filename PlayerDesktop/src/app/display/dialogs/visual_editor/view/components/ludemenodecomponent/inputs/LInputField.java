@@ -185,7 +185,7 @@ public class LInputField extends JComponent
             // If the selected NodeArgument is a terminal NodeArgument stemming from a merged input field (i.e. optional or dynamic)
             // (nodeArguments.get(0).separateNode())
             // Add an option to remove this argument again
-            constructTerminal(nodeArgument, nodeArgument.separateNode() || nodeArgument.optional());
+            constructTerminal(nodeArgument, nodeArgument.isPredefined() || nodeArgument.optional());
         }
         else
         {
