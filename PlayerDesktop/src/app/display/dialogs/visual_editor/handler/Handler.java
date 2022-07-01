@@ -77,13 +77,11 @@ public class Handler
     {
         boolean complete = true;
         for(LudemeNode ln : graph.getNodes())
-        {
-            if(!ln.isSatisfied())
+            if((graph.getRoot() == ln || ln.parentNode()!=null) && !ln.isSatisfied())
             {
                 System.out.println("Node " + ln.id() + " is not satisfied");
                 complete = false;
             }
-        }
         return complete;
     }
 
