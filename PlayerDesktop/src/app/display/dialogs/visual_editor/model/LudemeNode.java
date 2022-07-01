@@ -986,18 +986,18 @@ public class LudemeNode implements iGNode
         for(NodeArgument na : providedInputsMap.keySet())
         {
             Object input = providedInputsMap.get(na);
-            if(input == null || input instanceof LudemeNode) continue; // if no input provided or it is LudemeNode, skip it
+            if(input == null || input instanceof LudemeNode)
+                continue; // if no input provided or it is LudemeNode, skip it
             boolean isLudemeCollection = false;
             if(input instanceof Object[])
-            {
                 for (Object o : (Object[]) input)
                     if (o instanceof LudemeNode)
                     {
                         isLudemeCollection = true;
                         break;
                     }
-            }
-            if(!isLudemeCollection) copy.setProvidedInput(na, input);
+            if(!isLudemeCollection)
+                copy.setProvidedInput(na, input);
         }
 
         return copy;
@@ -1026,12 +1026,6 @@ public class LudemeNode implements iGNode
         if(helpInformation == null) return "";
         if(selectedClause.symbol() == symbol()) return helpInformation.description();
         else return DocumentationReader.instance().documentation().get(selectedClause.symbol()).description();
-    }
-
-    public String parameterDescription(ClauseArg arg)
-    {
-        if(helpInformation == null) return "";
-        return helpInformation.parameter(arg);
     }
 
     public int x()

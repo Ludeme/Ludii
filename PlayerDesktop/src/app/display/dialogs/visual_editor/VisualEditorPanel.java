@@ -40,15 +40,16 @@ public class VisualEditorPanel
 	{
 
 		this.app = app;
-		try {
+		try
+		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch(Exception ignored){
-
 		}
+		catch(Exception ignored){}
 
 		controller = new NGramController(5);
 		editPanel = new EditorPanel(5000,5000);
 		MainFrame f = new MainFrame(editPanel);
+		f.requestFocus();
 	}
 
 	private static EditorPanel editPanel;

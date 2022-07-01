@@ -262,7 +262,7 @@ public class LConnectionComponent extends JComponent
             }
             else
             {
-                if(!optional())
+                if(!optional() && !LConnectionComponent.this.inputField().isHybrid())
                 {
                     g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);
                 }

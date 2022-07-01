@@ -345,8 +345,6 @@ public class LInputField extends JComponent
         if(connectionComponent == null)
             connectionComponent = new LConnectionComponent(this, false);
 
-
-
         fieldComponent = generateTerminalComponent(nodeArgument);
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());

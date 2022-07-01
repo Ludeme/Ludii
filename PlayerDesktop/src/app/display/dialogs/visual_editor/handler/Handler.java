@@ -1,5 +1,7 @@
 package app.display.dialogs.visual_editor.handler;
 
+import app.DesktopApp;
+import app.PlayerApp;
 import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
@@ -12,6 +14,8 @@ import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
+import app.utils.GameUtil;
+import game.Game;
 import main.grammar.Clause;
 import main.grammar.Description;
 import main.grammar.Report;
@@ -60,10 +64,14 @@ public class Handler
         Report r = new Report();
         try
         {
+            Game game;
             if (VisualEditorPanel.app != null)
-                compiler.Compiler.compile(d, VisualEditorPanel.app.manager().settingsManager().userSelections(), r, false);
+            {
+                game = (Game) compiler.Compiler.compile(d, VisualEditorPanel.app.manager().settingsManager().userSelections(), r, false);
+                loadGame(game, VisualEditorPanel.app);
+            }
             else
-                compiler.Compiler.compile(d, new UserSelections(new ArrayList<String>()), r, false);
+                game = (Game) compiler.Compiler.compile(d, new UserSelections(new ArrayList<String>()), r, false);
         }
         catch(Exception ex)
         {
@@ -71,6 +79,14 @@ public class Handler
             System.out.println(r.errors());
         }
         return r.errors();
+    }
+
+    public static void loadGame(Game game, PlayerApp app)
+    {
+        app.manager().ref().setGame(app.manager(), game);
+        GameUtil.startGame(app);
+        app.restartGame();
+        DesktopApp.frame().requestFocus();
     }
 
     public static boolean isComplete(DescriptionGraph graph)
