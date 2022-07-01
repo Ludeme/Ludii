@@ -24,6 +24,33 @@ import java.util.regex.Pattern;
 public class GameParser
 {
 
+    /**
+     * Creates call tree from partial fully expanded game description
+     * @param description valid partial game description (brackets match)
+     * @return call tree with dummy root
+     */
+    public static Call createPartialCallTree(String description)
+    {
+        Token tokenTree_test = new Token(description, new Report());
+        Grammar gm = grammar.Grammar.grammar();
+        final ArgClass rootClass = (ArgClass) Arg.createFromToken(grammar.Grammar.grammar(), tokenTree_test);
+        assert rootClass != null;
+        rootClass.matchSymbols(gm, new Report());
+        Class<?> clsRoot = null;
+        try
+        {
+            clsRoot = Class.forName(rootClass.instances().get(0).symbol().path());
+        } catch (final ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        // Create call tree with dummy root
+        Call callTree = new Call(Call.CallType.Null);
+        final Map<String, Boolean> hasCompiled = new HashMap<>();
+        rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
+        return callTree;
+    }
+
     public static void ParseFileToGraph(File file, IGraphPanel graphPanel, ProgressBar progressBar)
     {
         // #1 file to string
