@@ -21,7 +21,8 @@ import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.u
  * @author nic0gin
  */
 
-public class LayoutHandler {
+public class LayoutHandler
+{
 
     private final iGraph graph;
     private final DFSBoxDrawing layout;
@@ -67,7 +68,8 @@ public class LayoutHandler {
         }
         else
         {
-            roots = new ArrayList<>(graph.selectedRoot());
+            roots = new ArrayList<>();
+            roots.add(graph.selectedRoot());
         }
 
 
