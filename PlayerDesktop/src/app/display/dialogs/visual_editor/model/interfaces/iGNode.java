@@ -21,14 +21,6 @@ public interface iGNode {
 
     Vector2D pos();
 
-    Vector2D oldPos();
-
-    Vector2D newPos();
-
-    void setOldPos(Vector2D pos);
-
-    void setNewPos(Vector2D pos);
-
     void setPos(Vector2D pos);
 
     int width();

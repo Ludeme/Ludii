@@ -117,9 +117,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public void updatePositions()
     {
-        if(inputArea == null || header == null) {
-            return;
-        }
+        if(inputArea == null || header == null) {return;}
         position.update(getLocation());
         inputArea.updateConnectionPointPositions();
         header.updatePosition();
@@ -128,9 +126,7 @@ public class LudemeNodeComponent extends JPanel
 
     public void syncPositionsWithLN()
     {
-        if(inputArea == null || header == null) {
-            return;
-        }
+        if(inputArea == null || header == null) {return;}
         setLocation(new Point((int)LN.pos().x(), (int)LN.pos().y()));
         position.update(getLocation());
         inputArea.updateConnectionPointPositions();

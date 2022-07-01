@@ -44,20 +44,22 @@ public final class NodePlacementRoutines
             int nid = Q.remove(0);
             iGNode n = graph.getNode(nid);
             n.setPos(n.pos().sub(t));
-            n.setNewPos(n.pos());
             Q.addAll(n.children());
         }
     }
 
     public static void alignNodes(List<iGNode> nodes, int axis, IGraphPanel graphPanel)
     {
-        if (nodes.isEmpty() || (LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn() &&
-                GraphRoutines.updateCounter != 0)) return;
+        boolean animate = LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn();
+        if (nodes.isEmpty() || ( animate &&
+                GraphAnimator.getGraphAnimator().updateCounter() != 0)) return;
+
+        // preserve initial node positions
+        if (animate) GraphAnimator.getGraphAnimator().preserveInitPositions(nodes);
+
         // find min posX and posY in a list
         double posX = nodes.get(0).pos().x();
         double posY = nodes.get(0).pos().y();
-        nodes.get(0).setOldPos(nodes.get(0).pos());
-        nodes.get(0).setNewPos(nodes.get(0).pos());
         for (iGNode n:
              nodes) {
             if (n.pos().x() < posX) posX = n.pos().x();
@@ -67,32 +69,26 @@ public final class NodePlacementRoutines
         {
             for (int i = 1; i < nodes.size(); i++)
             {
-                nodes.get(i).setOldPos(nodes.get(i).pos());
                 nodes.get(i).setPos(new Vector2D(nodes.get(i-1).pos().x()+nodes.get(i-1).width()+NODE_GAP, posY));
-                nodes.get(i).setNewPos(nodes.get(i).pos());
             }
         }
         else if (axis == Y_AXIS)
         {
             for (int i = 1; i < nodes.size(); i++)
             {
-                nodes.get(i).setOldPos(nodes.get(i).pos());
                 nodes.get(i).setPos(new Vector2D(posX, nodes.get(i-1).pos().y()+nodes.get(i-1).height()+NODE_GAP));
-                nodes.get(i).setNewPos(nodes.get(i).pos());
             }
         }
 
-        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn() &&
-                GraphRoutines.updateCounter == 0)
+        // preserve final
+        if (animate) GraphAnimator.getGraphAnimator().preserveFinalPositions();
+
+        if (animate && GraphAnimator.getGraphAnimator().updateCounter() == 0)
         {
-            HashMap<Integer, Vector2D> incrementMap = GraphRoutines.computeNodeIncrements(nodes);
-            // animate change
-            GraphRoutines.updateCounter = 0;
             Timer animationTimer = new Timer(3, e -> {
-                if (GraphRoutines.animateGraphNodes(nodes, incrementMap))
+                if (GraphAnimator.getGraphAnimator().animateGraphNodes())
                 {
                     ((Timer)e.getSource()).stop();
-                    GraphRoutines.updateCounter = 0;
                 }
             });
             animationTimer.start();

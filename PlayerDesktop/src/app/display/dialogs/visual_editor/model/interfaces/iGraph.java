@@ -88,13 +88,13 @@ public interface iGraph
      *
      * @return selected root/sub-root
      */
-    Integer selectedRoot();
+    int selectedRoot();
 
     /**
      *
      * @param root selected root/sub-root
      */
-    void setSelectedRoot(Integer root);
+    void setSelectedRoot(int root);
 
     void setRoot(iGNode root);
 

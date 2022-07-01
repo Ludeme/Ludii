@@ -264,13 +264,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
      */
     public void deselectEverything()
     {
-        System.out.println("Deselecting");
         graph.getNodes().forEach(n -> {
             LudemeNodeComponent lnc = nodeComponent(n);
-            graph.setSelectedRoot(null);
             lnc.setSelected(false);
             lnc.setDoubleSelected(false);
         });
+        graph.setSelectedRoot(-1);
         selectedLnc = new ArrayList<>();
         SELECTED = false;
         repaint();

@@ -22,7 +22,7 @@ public class DescriptionGraph implements iGraph {
     HashMap<Integer, iGNode> nodeMap = new HashMap<>();
     List<Edge> edgeList = new ArrayList<>();
     private final List<Integer> connectedComponentRoots = new ArrayList<>();
-    private Integer selectedRoot = null;
+    private int selectedRoot = -1;
     private boolean isDefine = false;
 
     LudemeNode ROOT;
@@ -165,13 +165,13 @@ public class DescriptionGraph implements iGraph {
     }
 
     @Override
-    public Integer selectedRoot()
+    public int selectedRoot()
     {
         return selectedRoot;
     }
 
     @Override
-    public void setSelectedRoot(Integer root)
+    public void setSelectedRoot(int root)
     {
         this.selectedRoot = root;
     }
