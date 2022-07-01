@@ -598,9 +598,9 @@ public class LInputField extends JComponent
 
         if(arg.symbol().token().equals("boolean"))
         {
-            JComboBox<String> dropdown = new JComboBox<>();
-            dropdown.addItem("True");
-            dropdown.addItem("False");
+            JComboBox<Symbol> dropdown = new JComboBox<>();
+            dropdown.addItem(new Symbol(Symbol.LudemeType.Constant, "True", "True", null));
+            dropdown.addItem(new Symbol(Symbol.LudemeType.Constant, "False", "False", null));
             return dropdown;
         }
 

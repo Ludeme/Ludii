@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.panels.header;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
 import app.display.dialogs.visual_editor.view.DesignPalette;
+import main.grammar.Description;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +47,7 @@ public class ToolsPanel extends JPanel {
             dialog.setSize(new Dimension(300, 200));
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-
+            Handler.compile();
 
         });
         add(play);
