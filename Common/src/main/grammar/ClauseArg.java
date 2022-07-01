@@ -9,9 +9,12 @@ package main.grammar;
  */
 public class ClauseArg
 {
-	/** Local parameter name. */
-	private String label = null;
+	/** Parameter name in the code base. */
+	private final String actualParameterName;
 
+	/** Local parameter name if parameter has @Name annotation, else null. */
+	private String label = null;
+	
 	/** Symbol representing parameter type. */
 	private Symbol symbol = null;
 
@@ -38,11 +41,12 @@ public class ClauseArg
 	 */
 	public ClauseArg
 	(
-		final Symbol symbol, final String label, final boolean optional, 
+		final Symbol symbol, final String actualParameterName, final String label, final boolean optional, 
 		final int orGroup, final int andGroup
 	)
 	{
 		this.symbol = symbol;
+		this.actualParameterName = new String(actualParameterName);
 		this.label = (label == null) ? null : new String(label);
 		this.optional = optional;
 		this.orGroup = orGroup;
@@ -56,8 +60,9 @@ public class ClauseArg
 	 */
 	public ClauseArg(final ClauseArg other)
 	{
-		label = (other.label == null) ? null : new String(other.label);
 		symbol = other.symbol;
+		actualParameterName = new String(other.actualParameterName);
+		label = (other.label == null) ? null : new String(other.label);
 		optional = other.optional;
 		orGroup = other.orGroup;
 		andGroup = other.andGroup;
@@ -67,7 +72,15 @@ public class ClauseArg
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @return Local parameter name.
+	 * @return Parameter name in the code base.
+	 */
+	public String actualParameterName()
+	{
+		return actualParameterName;
+	}
+
+	/**
+	 * @return Local parameter name if parameter has @Name annotation, else null.
 	 */
 	public String label()
 	{
