@@ -12,6 +12,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
+import javax.sound.midi.SysexMessage;
 import java.util.List;
 import java.awt.*;
 import java.awt.geom.Path2D;
@@ -195,12 +196,10 @@ public class ConnectionHandler
             {
                 if(collectionElementIndex == -1) collectionElementIndex = 0;
                 Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null, collectionElementIndex);
-                //Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null, collectionElementIndex);
             }
             else
             {
                 Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
-                //Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
             }
         }
 
@@ -234,11 +233,10 @@ public class ConnectionHandler
                             }
                         }
                     }
-                    Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode(), elementIndex);
+                    Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode(), elementIndex, false);
                 }
-                else {
-                    Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode());
-                }
+                else
+                    Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode(), false);
                 // TODO: Below should happen in notifyEdgeRemoved()
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().fill(false); // input
@@ -251,9 +249,8 @@ public class ConnectionHandler
                         int collectionElementIndex = 0;
                         if(connection.inputField().parent() != null)
                             collectionElementIndex = connection.inputField().parent().children().indexOf(connection.inputField())+1;
-                        // public static void setCollectionInput(DescriptionGraph graph, LudemeNode node, int inputIndex, Object input, int elementIndex)
-                        //Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().inputIndexFirst(), null, collectionElementIndex);
-                    Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().nodeArgument(0), null, collectionElementIndex);
+                        Handler.updateCollectionInput(graphPanel.graph(), sourceNode, connection.inputField().nodeArgument(0), null, collectionElementIndex);
+                        connection.inputField().updateUserInputs();
                 }
                 else
                 {

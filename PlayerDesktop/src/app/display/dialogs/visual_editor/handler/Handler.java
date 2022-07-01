@@ -312,21 +312,34 @@ public class Handler
     }
 
     public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
+        removeEdge(graph, from, to, true);
+    }
+
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, boolean notify){
         if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to) -> Removing edge: " + from.title() + " -> " + to.title());
         graph.removeEdge(from.id(), to.id());
         from.removeChildren(to);
         to.setParent(null);
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
+        if(notify) {
+            IGraphPanel graphPanel = graphPanelMap.get(graph);
+            graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
+        }
     }
 
     public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex){
+        removeEdge(graph, from, to, elementIndex, true);
+    }
+
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex, boolean notify){
         if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to, elementIndex) -> Removing edge: " + from.title() + " -> " + to.title());
         graph.removeEdge(from.id(), to.id());
         from.removeChildren(to);
         to.setParent(null);
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), elementIndex);
+        if(notify)
+        {
+            IGraphPanel graphPanel = graphPanelMap.get(graph);
+            graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), elementIndex);
+        }
     }
 
     /**
@@ -384,29 +397,20 @@ public class Handler
             if(lastAction instanceof AddedNodeAction)
             {
                 if(!(((AddedNodeAction) lastAction).addedNode() == input && ((AddedNodeAction) lastAction).addedNode().creatorArgument() == nodeArgument))
-                {
                     addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
-                }
             }
-            else {
+            else
                 addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
-            }
         }
         if(input == null)
         {
             Object oldInput = node.providedInputsMap().get(nodeArgument);
             if(oldInput instanceof LudemeNode)
-            {
-                LudemeNode previouslyConnectedNode = (LudemeNode) oldInput;
-                addAction(new RemovedConnectionAction(graphPanelMap.get(graph), node, previouslyConnectedNode, nodeArgument));
-            }
+                addAction(new RemovedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) oldInput, nodeArgument));
         }
         // if the input is null but was a node before, remove the child from the parent
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
-        {
             node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
-        }
-        if(input instanceof Object[]) System.out.println(Arrays.toString((Object[]) input));
         node.setProvidedInput(nodeArgument, input);
     }
 

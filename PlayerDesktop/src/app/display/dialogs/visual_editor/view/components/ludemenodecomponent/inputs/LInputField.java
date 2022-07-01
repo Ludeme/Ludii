@@ -136,16 +136,19 @@ public class LInputField extends JComponent
         {
             items[i] = new JMenuItem(nodeArgument(0).args().get(i).toString());
             int finalI = i;
-            if(true || nodeArgument(0).isTerminal()) {
-                items[i].addActionListener(e1 -> {
-                    System.out.println("Selected: " + nodeArgument(0).args().get(finalI).toString());
-                    nodeArgument(0).setActiveChoiceArg(nodeArgument(0).args().get(finalI));
-                    if (getUserInput() != null) {
-                        inputArea().removedConnection(this);
-                    }
-                    reconstruct();
-                });
-            }
+            items[i].addActionListener(e1 -> {
+                inputArea().LNC().graphPanel().setBusy(true);
+                System.out.println("Selected: " + nodeArgument(0).args().get(finalI).toString());
+                nodeArgument(0).setActiveChoiceArg(nodeArgument(0).args().get(finalI));
+                if (getUserInput() != null)
+                    if(getUserInput() instanceof LudemeNode)
+                        Handler.removeEdge(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(),(LudemeNode) getUserInput());
+                    else
+                        Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), null);
+                reconstruct();
+                inputArea().LNC().graphPanel().setBusy(false);
+                inputArea().repaint();
+            });
             popup.add(items[i]);
         }
 
@@ -736,8 +739,14 @@ public class LInputField extends JComponent
         if(!isHybrid()) return;
         fieldComponent.setEnabled(activate);
         fieldComponent.setVisible(activate);
-        System.out.println(fieldComponent == null);
-        System.out.println("Activated Hybrid " + this + ": " + activate);
+        if(activate)
+        {
+            LudemeNode node = inputArea().LNC().node();
+            if(node.providedInputsMap().get(nodeArgument(0)) == null)
+                Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput());
+            else if(node.providedInputsMap().get(nodeArgument(0)) instanceof Object[])
+                Handler.updateCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput(), elementIndex());
+        }
         repaint();
     }
 
@@ -761,6 +770,12 @@ public class LInputField extends JComponent
         Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), null);
         inputArea().LNC().graphPanel().setBusy(false);
         repaint();
+    }
+
+    public int elementIndex()
+    {
+        if(nodeArgument(0).collection() && parent() == null) return 0;
+        return parent().children.indexOf(this)+1;
     }
 
     /**
@@ -862,9 +877,17 @@ public class LInputField extends JComponent
         }
         else {
             System.out.println("else: " + input);
-            if (fieldComponent instanceof JTextField) ((JTextField) fieldComponent).setText((String) input);
-            if (fieldComponent instanceof JSpinner) ((JSpinner) fieldComponent).setValue(input);
-            if (fieldComponent instanceof JComboBox) ((JComboBox<?>) fieldComponent).setSelectedItem(input);
+            if (fieldComponent instanceof JTextField)
+                if(input instanceof String)
+                    ((JTextField) fieldComponent).setText((String) input);
+                else
+                    ((JTextField) fieldComponent).setText("");
+            if (fieldComponent instanceof JSpinner)
+                if(input instanceof Integer)
+                    ((JSpinner) fieldComponent).setValue(input);
+            if (fieldComponent instanceof JComboBox)
+                if(input instanceof Symbol)
+                    ((JComboBox<?>) fieldComponent).setSelectedItem(input);
         }
     }
 
@@ -872,7 +895,7 @@ public class LInputField extends JComponent
      * Updates the model with the current user input
      * Only works for single input fields
      */
-    private void updateUserInputs()
+    public void updateUserInputs()
     {
         if(inputArea().LNC().graphPanel().isBusy()) return;
         if(nodeArguments.get(0).collection()) {

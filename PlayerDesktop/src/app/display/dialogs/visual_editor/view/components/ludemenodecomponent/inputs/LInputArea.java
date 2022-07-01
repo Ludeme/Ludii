@@ -372,7 +372,7 @@ public class LInputArea extends JPanel
             // if the field is a choice, update its label
             if(inputField.choice())
             {
-                inputField.setLabelText(providedNodeArgument.arg().symbol().name());
+                inputField.setLabelText(providedNodeArgument.arg().actualParameterName());
             }
             // if the field is hybrid, deactivate the terminal component
             if(inputField.isHybrid())
