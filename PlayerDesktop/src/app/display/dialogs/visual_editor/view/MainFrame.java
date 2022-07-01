@@ -22,6 +22,7 @@ public class MainFrame extends JFrame {
 
 
         initialize(editor_panel);
+        editor_panel.requestFocus();
     }
 
     private void initialize(EditorPanel editor_panel){

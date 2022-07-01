@@ -161,8 +161,10 @@ public class LInputField extends JComponent
         // reset the component
         removeAll();
         // set label text
-        //label.setText(nodeArgument.arg().symbol().name());
-        label.setText(nodeArgument.arg().actualParameterName());
+        if(nodeArgument.arg().actualParameterName() != null)
+            label.setText(nodeArgument.arg().actualParameterName());
+        else
+            label.setText(nodeArgument.arg().symbol().name());
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
 
@@ -367,6 +369,8 @@ public class LInputField extends JComponent
             add(choiceButton);
         }
 
+        System.out.println("HYBRID: " + nodeArgument + ", is collection: " + nodeArgument.collection());
+
         if(nodeArgument.collection())
         {
             addItemButton.setPreferredSize(buttonSize());
@@ -397,7 +401,11 @@ public class LInputField extends JComponent
     private void constructCollection(LInputField parent)
     {
         NodeArgument nodeArgument = parent.nodeArgument(0);
-        if(nodeArgument.isTerminal())
+        if(nodeArgument.canBePredefined())
+        {
+            constructHybridCollection(nodeArgument);
+        }
+        else if(nodeArgument.isTerminal())
         {
             constructCollectionTerminal(nodeArgument);
         }
@@ -501,6 +509,53 @@ public class LInputField extends JComponent
 
     }
 
+    public void constructHybridCollection(NodeArgument nodeArgument)
+    {
+        // create connection component
+        if(connectionComponent == null)
+            connectionComponent = new LConnectionComponent(this, false);
+
+        fieldComponent = generateTerminalComponent(nodeArgument);
+        // set size
+        fieldComponent.setPreferredSize(terminalComponentSize());
+
+        // add listeners to update provided inputs when modified
+        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+
+        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        fieldComponent.addKeyListener(userInputListener_keyListener);
+
+        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        add(label);
+        add(fieldComponent);
+
+        removeItemButton.setPreferredSize(buttonSize());
+        removeItemButton.setSize(removeItemButton.getPreferredSize());
+
+        if(nodeArgument.choice())
+        {
+            choiceButton.setPreferredSize(buttonSize());
+            choiceButton.setSize(choiceButton.getPreferredSize());
+            add(choiceButton);
+        }
+
+        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+        add(removeItemButton);
+
+        if(collapsed())
+        {
+            uncollapseButton.setActive();
+            uncollapseButton.setPreferredSize(buttonSize());
+            uncollapseButton.setSize(uncollapseButton.getPreferredSize());
+            add(uncollapseButton);
+        }
+        else
+        {
+            add(connectionComponent);
+        }
+    }
+
     /**
      * Adds a children collection input field
      */
@@ -584,7 +639,7 @@ public class LInputField extends JComponent
             return new JTextField();
         }
         // A Integer Spinner
-        if(arg.symbol().name().equals("Integer") || arg.symbol().name().equals("int")) //TODO: actually "int" is a different breed
+        if(arg.symbol().name().equals("Integer") || arg.symbol().name().equals("int") || arg.symbol().token().equals("dim"))
         {
             return new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
         }

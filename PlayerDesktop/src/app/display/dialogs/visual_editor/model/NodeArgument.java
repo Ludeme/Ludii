@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.documentation.HelpInformation;
+import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -49,11 +50,6 @@ public class NodeArgument
         this.CLAUSE = clause;
         this.INDEX = clause.args().indexOf(arg);
 
-        // TODO: no.
-        if(arg.symbol().returnType() != arg.symbol())
-            arg = new ClauseArg(arg.symbol().returnType(), arg.actualParameterName(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
-
-
         // add argument to list
         this.args = new ArrayList<>();
         this.args.add(arg);
@@ -68,6 +64,30 @@ public class NodeArgument
                 index++;
             }
         }
+
+        for(ClauseArg c : new ArrayList<>(this.args))
+            if(c.symbol().returnType() != c.symbol())
+                for(String[] f : Grammar.grammar().getFunctions())
+                    if(f[0].equals(c.symbol().name()))
+                    {
+                        // find the symbol that matches f[1]
+                        List<Symbol> candidates = new ArrayList<>();
+                        if(Grammar.grammar().symbolsWithPartialKeyword(f[1]) != null) candidates.addAll(Grammar.grammar().symbolsWithPartialKeyword(f[1]));
+                        if(Grammar.grammar().symbolsWithPartialKeyword(f[1].substring(0, f[1].length()-1)) != null) candidates.addAll(Grammar.grammar().symbolsWithPartialKeyword(f[1].substring(0, f[1].length()-1)));
+                        Symbol match = null;
+                        for(Symbol s : candidates)
+                            if(s.grammarLabel().equals(f[1]) && s.rule().rhs().size() > 0)
+                            {
+                                match = s;
+                                break;
+                            }
+                        int nesting = c.nesting();
+                        ClauseArg newArg = new ClauseArg(match, c.actualParameterName(), c.label(), c.optional(), c.orGroup(), c.andGroup());
+                        newArg.setNesting(nesting);
+                        args.remove(c);
+                        args.add(newArg);
+                        break;
+                    }
 
         originalArgs.addAll(this.args);
 
@@ -174,7 +194,7 @@ public class NodeArgument
     public boolean canBePredefined()
     {
         Symbol s = arg().symbol();
-        if(!s.ludemeType().equals(Symbol.LudemeType.Primitive) || s.rule() == null || s.rule().rhs().size() == 0)
+        if(s.rule() == null || s.rule().rhs().size() == 0)
             return false;
         for(Clause clause : s.rule().rhs())
         {
