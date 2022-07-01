@@ -447,6 +447,19 @@ public class LudemeNode implements iGNode
         return collapsed;
     }
 
+    public boolean isSatisfied()
+    {
+        for(NodeArgument na : providedInputsMap.keySet())
+        {
+            if(!na.optional() && providedInputsMap.get(na) == null)
+                return false;
+            else if(!na.optional() && providedInputsMap.get(na) instanceof Object[])
+                for(Object o : (Object[])providedInputsMap.get(na))
+                    if(o == null)
+                        return false;
+        }
+        return true;
+    }
 
     public LinkedHashMap<Symbol, List<Clause>> symbolClauseMap()
     {

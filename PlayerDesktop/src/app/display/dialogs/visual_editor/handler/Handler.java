@@ -48,8 +48,14 @@ public class Handler
     private static final boolean DEBUG = true;
 
 
-    public static void compile()
+    public static List<String> compile()
     {
+        if(!isComplete(editorPanel.graph()))
+        {
+            System.out.println("Graph is not complete");
+            return null;
+        }
+
         Description d = editorPanel.graph().description();
         Report r = new Report();
         try
@@ -62,9 +68,23 @@ public class Handler
         catch(Exception ex)
         {
             System.out.println("Couldnt compile");
+            System.out.println(r.errors());
         }
+        return r.errors();
+    }
 
-        System.out.println(r.isError());
+    public static boolean isComplete(DescriptionGraph graph)
+    {
+        boolean complete = true;
+        for(LudemeNode ln : graph.getNodes())
+        {
+            if(!ln.isSatisfied())
+            {
+                System.out.println("Node " + ln.id() + " is not satisfied");
+                complete = false;
+            }
+        }
+        return complete;
     }
 
     /**
