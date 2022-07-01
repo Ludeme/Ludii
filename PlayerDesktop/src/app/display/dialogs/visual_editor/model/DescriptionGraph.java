@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
+import main.grammar.Description;
 import main.grammar.Symbol;
 
 import java.util.ArrayList;
@@ -38,6 +39,11 @@ public class DescriptionGraph implements iGraph {
 
     public DescriptionGraph(LudemeNode root){
         this.ROOT = root;
+    }
+
+    public Description description()
+    {
+        return new Description(ROOT.toLud());
     }
 
     @Override

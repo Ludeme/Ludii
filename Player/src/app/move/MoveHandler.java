@@ -129,14 +129,6 @@ public class MoveHandler
 			if (MoveHandler.moveChecks(app, possibleMoves.get(0)))
 			{
 				app.manager().ref().applyHumanMoveToGame(app.manager(), possibleMoves.get(0));
-				
-				if (app.settingsPlayer().usingExhibitionApp())
-				{
-					// Disable play buttons until tests have been passed.
-					app.settingsPlayer().setTestsPassed(false);
-					app.checkButtonsEnabled();
-				}
-				
 				return true; // move found
 			}
 		}
@@ -661,7 +653,7 @@ public class MoveHandler
 				final Component lastMoveComponent = context.game().equipment().components()[what];
 				return lastMoveComponent;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				return null;
 			}

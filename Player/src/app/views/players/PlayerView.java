@@ -99,7 +99,7 @@ public class PlayerView extends View
 			
 			// Place the shared hand in different location for exhibition app.
 			if (app.settingsPlayer().usingExhibitionApp())
-				place = new Rectangle(20, 290, app.width()-app.height(), boardSize/5);
+				place = new Rectangle(20, 290, (app.width()-app.height())/3, boardSize/5);
 			
 			final PlayerViewShared naturePlayerPage = new PlayerViewShared(app, place, numPlayers + 1, this);
 			app.getPanels().add(naturePlayerPage);

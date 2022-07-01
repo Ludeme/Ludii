@@ -2,6 +2,8 @@ package app.display.dialogs.visual_editor.view.panels;
 
 import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.documentation.HelpInformation;
+import approaches.random.Generator;
+import game.rules.Rule;
 import grammar.ClassEnumerator;
 import grammar.Grammar;
 import main.grammar.*;
@@ -16,22 +18,6 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) throws ClassNotFoundException {
-
-        for(EBNFRule r : Grammar.grammar().ebnf().rules().values())
-        {
-            //System.out.println(r);
-            for(EBNFClause c : r.rhs())
-            {
-                if(c.args() == null) continue;
-                for(EBNFClauseArg arg : c.args())
-                {
-                    if(arg.parameterName() != null)
-                    {
-                        System.out.println(arg.parameterName());
-                    }
-                }
-            }
-        }
 
         Grammar grammar = Grammar.grammar();
 

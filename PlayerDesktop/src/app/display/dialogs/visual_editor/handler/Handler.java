@@ -5,7 +5,6 @@ import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.*;
-import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
@@ -13,7 +12,10 @@ import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import main.grammar.Clause;
+import main.grammar.Description;
+import main.grammar.Report;
 import main.grammar.Symbol;
+import main.options.UserSelections;
 
 import javax.swing.*;
 import java.util.*;
@@ -44,6 +46,12 @@ public class Handler
 
     private static final boolean DEBUG = true;
 
+
+    public static void compile()
+    {
+        Description d = editorPanel.graph().description();
+        compiler.Compiler.compile(d,new UserSelections(new ArrayList<String>()), new Report(), false);
+    }
 
     /**
      * Adds a node to the graph

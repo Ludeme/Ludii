@@ -812,6 +812,8 @@ public class LudemeNode implements iGNode
             Object input = providedInputsMap().get(arg);
             if(input == null) continue;
             sb.append(" ");
+            if(arg.arg().label() != null)
+                sb.append(arg.arg().label()).append(":");
             if(input instanceof LudemeNode)
             {
                 sb.append(((LudemeNode) input).toLud());
@@ -861,6 +863,8 @@ public class LudemeNode implements iGNode
             {
                 if(input instanceof Object[])
                 {
+                    if(arg.arg().label() != null)
+                        sb.append(arg.arg().label()).append(":");
                     sb.append("{ ");
                     for(Object obj : (Object[]) input)
                     {
@@ -876,6 +880,8 @@ public class LudemeNode implements iGNode
 
             if(input == null) continue;
             sb.append(" ");
+            if(arg.arg().label() != null)
+                sb.append(arg.arg().label()).append(":");
             if(input instanceof LudemeNode)
             {
                 sb.append(((LudemeNode) input).toLud());
