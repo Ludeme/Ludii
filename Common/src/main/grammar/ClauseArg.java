@@ -46,7 +46,7 @@ public class ClauseArg
 	)
 	{
 		this.symbol = symbol;
-		this.actualParameterName = new String(actualParameterName);
+		this.actualParameterName = (actualParameterName == null) ? null : new String(actualParameterName);
 		this.label = (label == null) ? null : new String(label);
 		this.optional = optional;
 		this.orGroup = orGroup;
@@ -61,7 +61,7 @@ public class ClauseArg
 	public ClauseArg(final ClauseArg other)
 	{
 		symbol = other.symbol;
-		actualParameterName = new String(other.actualParameterName);
+		actualParameterName = (other.actualParameterName == null) ? null : new String(other.actualParameterName);
 		label = (other.label == null) ? null : new String(other.label);
 		optional = other.optional;
 		orGroup = other.orGroup;

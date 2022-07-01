@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.handler;
 
+import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
@@ -50,7 +51,20 @@ public class Handler
     public static void compile()
     {
         Description d = editorPanel.graph().description();
-        compiler.Compiler.compile(d,new UserSelections(new ArrayList<String>()), new Report(), false);
+        Report r = new Report();
+        try
+        {
+            if (VisualEditorPanel.app != null)
+                compiler.Compiler.compile(d, VisualEditorPanel.app.manager().settingsManager().userSelections(), r, false);
+            else
+                compiler.Compiler.compile(d, new UserSelections(new ArrayList<String>()), r, false);
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Couldnt compile");
+        }
+
+        System.out.println(r.isError());
     }
 
     /**

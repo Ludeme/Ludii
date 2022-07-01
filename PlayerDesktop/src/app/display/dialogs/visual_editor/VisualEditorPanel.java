@@ -26,10 +26,9 @@ import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 public class VisualEditorPanel
 {
 	private static final long serialVersionUID = 1L;
+	public static PlayerApp app;
 
 	@SuppressWarnings("unused")
-	private final PlayerApp app;
-	
 	//-------------------------------------------------------------------------
 
 	public static void main(String[] args)

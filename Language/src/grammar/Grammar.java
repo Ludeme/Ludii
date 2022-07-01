@@ -1292,9 +1292,9 @@ public class Grammar
 						andType = 2;
 					}
 				}
-				
-				final String actualParameterName = new String(label);
-				
+
+				final String actualParameterName = (label == null) ? null : new String(label);
+
 				if (!isNamed)
 					label = null;
 
