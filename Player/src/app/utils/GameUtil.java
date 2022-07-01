@@ -83,7 +83,6 @@ public class GameUtil
 		
 		// Start the game
 		GameUtil.startGame(app);
-		app.settingsPlayer().setTestsPassed(false);
 
 		updateRecentGames(app, app.manager().ref().context().game().name());
 		resetUIVariables(app);

@@ -1,0 +1,28 @@
+
+(game "Exhibition_example_0"  
+    (players 2)  
+    (equipment { 
+        (board (square 1) use:Vertex)
+        (hand Shared size:2)
+    })  
+    (rules 
+        (start {
+        })
+        (play 
+            (move Select
+                (from Cell (forEach (sites Board Cell) if:(is Occupied Cell (site))) ) 
+            )
+        )
+        (end (if (is Line 9999) (result Mover Win)))
+    )
+)
+
+(metadata 
+    
+    (graphics {
+        (piece Scale "Marker" 0.7)
+        (board Colour InnerEdges (colour 17 103 177))
+        (board Colour OuterEdges (colour 17 103 177))
+    })
+    
+)

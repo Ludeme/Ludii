@@ -49,7 +49,7 @@ public class NodeArgument
         this.CLAUSE = clause;
         this.INDEX = clause.args().indexOf(arg);
 
-        if(arg.symbol().returnType() != arg.symbol()) arg = new ClauseArg(arg.symbol().returnType(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
+        if(arg.symbol().returnType() != arg.symbol()) arg = new ClauseArg(arg.symbol().returnType(), arg.actualParameterName(), arg.label(), arg.optional(), arg.orGroup(), arg.andGroup());
 
 
         // add argument to list
@@ -136,7 +136,7 @@ public class NodeArgument
         CLAUSE = clause;
         // add argument to list
         ARGS = new ArrayList<>();
-        ARGS.add(new ClauseArg(clause.symbol(), null, false, 0, 0));
+        ARGS.add(new ClauseArg(clause.symbol(), null, null, false, 0, 0));
         originalArg = null;
         INDEX = 0;
         this.POSSIBLE_ARGS = new ArrayList<>();

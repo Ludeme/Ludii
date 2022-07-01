@@ -1004,12 +1004,6 @@ public class DesktopApp extends PlayerApp
 		view.repaint(rect);
 	}
 
-	@Override
-	public void checkButtonsEnabled()
-	{
-		// do nothing
-	}
-
 	public static JFileChooser aiDefFileChooser()
 	{
 		return aiDefFileChooser;

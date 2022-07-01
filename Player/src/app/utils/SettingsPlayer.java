@@ -88,9 +88,6 @@ public class SettingsPlayer
 	// If the exhibition app if being used
 	private boolean usingExhibitionApp = false;
 	
-	// If the created game has been tested  (must be done before it can be played)
-	private boolean testsPassed = false;
-	
 	// Placement of the board and its white margin. Used for detecting whether move to hands is done.
 	private Rectangle boardPlacement = new Rectangle();
 	private Rectangle boardMarginPlacement = new Rectangle();
@@ -819,16 +816,6 @@ public class SettingsPlayer
 	public void setBoardMarginPlacement(final Rectangle boardMarginPlacement)
 	{
 		this.boardMarginPlacement = boardMarginPlacement;
-	}
-
-	public boolean testsPassed()
-	{
-		return testsPassed;
-	}
-
-	public void setTestsPassed(final boolean testsPassed)
-	{
-		this.testsPassed = testsPassed;
 	}
 			
 	//-------------------------------------------------------------------------
