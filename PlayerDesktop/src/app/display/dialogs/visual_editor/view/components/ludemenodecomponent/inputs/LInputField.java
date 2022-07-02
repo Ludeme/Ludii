@@ -257,6 +257,7 @@ public class LInputField extends JComponent
         Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
+        updateUserInputs();
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());
 
@@ -403,6 +404,7 @@ public class LInputField extends JComponent
             connectionComponent = new LConnectionComponent(this, false);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
+        updateUserInputs();
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());
 
@@ -523,6 +525,7 @@ public class LInputField extends JComponent
         Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
+        updateUserInputs();
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());
 
@@ -594,6 +597,7 @@ public class LInputField extends JComponent
             connectionComponent = new LConnectionComponent(this, false);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
+        updateUserInputs();
         // set size
         fieldComponent.setPreferredSize(terminalComponentSize());
 

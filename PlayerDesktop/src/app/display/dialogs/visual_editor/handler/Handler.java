@@ -464,7 +464,15 @@ public class Handler
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
             node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
         node.setProvidedInput(nodeArgument, input);
-        if(liveCompile) compile();
+        if(liveCompile && isConnectedToRoot(graph, node)) compile();
+    }
+
+    private static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)
+    {
+        LudemeNode last = node;
+        while(last.parentNode() != null)
+            last = last.parentNode();
+        return last == graph.getRoot();
     }
 
     /**
