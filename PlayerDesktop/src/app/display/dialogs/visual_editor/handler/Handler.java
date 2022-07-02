@@ -22,6 +22,7 @@ import main.grammar.Report;
 import main.grammar.Symbol;
 import main.options.UserSelections;
 
+import javax.swing.*;
 import java.util.*;
 import java.awt.*;
 import java.util.List;
@@ -56,8 +57,13 @@ public class Handler
     public static boolean liveCompile = true;
 
 
-    // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
     public static Object[] compile()
+    {
+        return compile(false);
+    }
+
+    // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
+    public static Object[] compile(boolean openDialog)
     {
         if(!recordUserActions) return new Object[]{null, null, null};
         Object[] output = new Object[3];
@@ -78,6 +84,11 @@ public class Handler
                 lastCompile = output;
                 if(toolsPanel != null)
                     toolsPanel.play.updateCompilable(output);
+            }
+            if(openDialog)
+            {
+                Handler.markUncompilable();
+                JOptionPane.showMessageDialog(null, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
             }
             return output;
         }
@@ -105,6 +116,19 @@ public class Handler
             lastCompile = output;
             if(toolsPanel != null)
                 toolsPanel.play.updateCompilable(output);
+        }
+        if(output[0] == null && openDialog)
+        {
+            java.util.List<String> errors = (List<String>) output[1];
+            String errorMessage = "";
+            if (errors.isEmpty())
+                errorMessage = "Could not create \"game\" ludeme from description.";
+            else
+            {
+                errorMessage = errors.toString();
+                errorMessage = errorMessage.substring(1, errorMessage.length() - 1);
+            }
+            JOptionPane.showMessageDialog(null, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
         }
         return output;
     }

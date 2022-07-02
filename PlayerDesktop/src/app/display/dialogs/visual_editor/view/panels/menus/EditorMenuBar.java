@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.menus;
 
 import app.display.dialogs.visual_editor.handler.EditorMenuBarHandler;
+import app.display.dialogs.visual_editor.view.panels.menus.viewMenu.ViewMenu;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -37,7 +38,8 @@ public class EditorMenuBar extends JMenuBar {
 
         add(file);
         add(new EditMenu(this));
-        add(settings);
+        add(new ViewMenu(this));
+        //add(settings);
         add(new RunMenu(this));
         add(about);
     }

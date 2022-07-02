@@ -42,7 +42,7 @@ public class PlayButton extends JButton
                 errorMessage = errors.toString();
                 errorMessage = errorMessage.substring(1, errorMessage.length() - 1);
             }
-            JOptionPane.showMessageDialog(this, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
         }
         else
         {
