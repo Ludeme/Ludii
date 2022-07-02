@@ -65,6 +65,9 @@ public class LayoutHandler
         if (graph.selectedRoot() == -1)
         {
             roots = new ArrayList<>(graph.connectedComponentRoots());
+            // move root node at the top of the list
+            roots.remove((Object) graph.getRoot().id());
+            roots.add(0, graph.getRoot().id());
         }
         else
         {

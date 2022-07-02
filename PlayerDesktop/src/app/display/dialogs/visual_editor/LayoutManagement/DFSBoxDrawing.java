@@ -65,15 +65,20 @@ public class DFSBoxDrawing
     {
         if (graph.getNode(nodeId).children() == null ||
                 graph.getNode(nodeId).children().size() == 0 ||
-                graph.getNode(nodeId).fixed())
+                (graph.getNode(nodeId).fixed() && graph.selectedRoot() != nodeId))
         {
             Vector2D piInit = new Vector2D(freeX, freeY);
             if (graph.getNode(nodeId).fixed())
             {
-                freeY += GraphRoutines.getSubtreeArea(graph, nodeId).height * wX * (DOS_MAP[0]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
+                freeY += (graph.getNode(nodeId).pos().y() - GraphRoutines.getSubtreeArea(graph, nodeId).y);
+                piInit = new Vector2D(freeX, freeY);
+                freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
                 translateByRoot(graph, nodeId, piInit);
             }
-            else freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + graph.getNode(nodeId).height() + PADDING_X;
+            else
+            {
+                freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + graph.getNode(nodeId).height() + PADDING_X;
+            }
             // update node position
             graph.getNode(nodeId).setPos(piInit);
         }
