@@ -180,6 +180,10 @@ public class LInputField extends JComponent
         {
             constructCollection(parent);
         }
+        if(nodeArgument.collection2D())
+        {
+            constructNonTerminal(nodeArgument);
+        }
         else if(nodeArgument.canBePredefined())
         {
             constructHybrid(nodeArgument);

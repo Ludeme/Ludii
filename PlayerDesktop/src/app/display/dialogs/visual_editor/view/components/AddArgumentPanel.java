@@ -125,14 +125,15 @@ public class AddArgumentPanel extends JPanel
             else
             {
                 // Find the matching NodeArgument of the initiator InputField for the chosen symbol, if initiator is not null
-                if(initiator != null) {
+                if(initiator != null)
+                {
                     NodeArgument match = null;
-                    for (NodeArgument na : initiator.nodeArguments()) {
-                        if (na.possibleSymbolInputsExpanded().contains(s)) {
+                    for (NodeArgument na : initiator.nodeArguments())
+                        if (na.possibleSymbolInputsExpanded().contains(s))
+                        {
                             match = na;
                             break;
                         }
-                    }
                     System.out.println(match);
                     Handler.addNode(graphPanel.graph(), s, match, getLocation().x, getLocation().y, connect);
                 }

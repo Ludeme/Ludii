@@ -47,11 +47,6 @@ public class LudemeNode implements iGNode
     private final List<LudemeNode> children = new ArrayList<>();
     /** x and y coordinates of this node in the graph */
     private int x,y;
-    /** whether this node is dynamic or not.
-     * a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
-     * possible clauses is narrowed down to the ones that match the provided arguments.
-     */
-    private boolean dynamic = false;
     /** whether this node (and thus its children) are visible (collapsed) or not. */
     private boolean collapsed = false;
     /** whether this node is visible */
@@ -70,16 +65,6 @@ public class LudemeNode implements iGNode
     private final HashMap<Clause, List<NodeArgument>> nodeArguments;
     /** List of NodeArguments for the current Clause of the associated LudemeNodeComponent */
     private List<NodeArgument> currentNodeArguments;
-    /** Clauses that satisfy currently provided inputs */
-    private List<Clause> activeClauses = new ArrayList<>();
-    /** Clauses that do not satisfy currently provided inputs */
-    private List<Clause> inactiveClauses = new ArrayList<>();
-    /** NodeArguments that are currently provided */
-    private List<NodeArgument> providedNodeArguments = new ArrayList<>();
-    /** NodeArguments that can be provided to satisfy active clauses */
-    private List<NodeArgument> activeNodeArguments = new ArrayList<>();
-    /** NodeArguments that cannot be provided to satisfy active clauses */
-    private List<NodeArgument> inactiveNodeArguments = new ArrayList<>();
 
     /**
      * Constructor for a new LudemeNode
@@ -138,33 +123,14 @@ public class LudemeNode implements iGNode
         } else {
             this.selectedClause = null;
         }
-        if(CLAUSES == null || CLAUSES.size() == 0)
-        {
-            this.dynamic = false;
-        }
-        if(dynamicPossible())
-        {
-            this.dynamic = false; // TODO
-        }
 
         if(nodeArguments == null) nodeArguments = generateNodeArguments();
         this.nodeArguments = nodeArguments;
 
-        if(dynamic())
-        {
-            activeClauses = new ArrayList<>(clauses());
-            inactiveClauses = new ArrayList<>();
-            providedNodeArguments = new ArrayList<>();
-            activeNodeArguments = new ArrayList<>();
-            for(List<NodeArgument> nas: nodeArguments.values()) activeNodeArguments.addAll(nas);
-            inactiveNodeArguments = new ArrayList<>();
-            currentNodeArguments = activeNodeArguments;
-        }
-        else
-        {
-            currentNodeArguments = nodeArguments.get(selectedClause());
-            if(currentNodeArguments == null) currentNodeArguments = new ArrayList<>();
-        }
+
+        currentNodeArguments = nodeArguments.get(selectedClause());
+        if(currentNodeArguments == null) currentNodeArguments = new ArrayList<>();
+
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments) providedInputsMap.put(na, null);
 
@@ -196,6 +162,8 @@ public class LudemeNode implements iGNode
 
         this.helpInformation = DocumentationReader.instance().help(SYMBOL);
     }
+
+
 
     /**
      *
@@ -306,16 +274,6 @@ public class LudemeNode implements iGNode
         return providedInputsMap;
     }
 
-    /**
-     * Sets the provided inputs to the given array
-     *  index the index of the supplied argument to set
-     *  input the input to set
-     */
-    /*public void setProvidedInput(int index, Object input)
-    {
-        providedInputs[index] = input;
-    }*/
-
     public void setProvidedInput(NodeArgument arg, Object input)
     {
         if(providedInputsMap.containsKey(arg))
@@ -328,36 +286,6 @@ public class LudemeNode implements iGNode
         }
     }
 
-    public void setProvidedInput(ClauseArg arg, Object input)
-    {
-        // TODO:
-    }
-
-    /**
-     * Sets this node to be dynamic or not
-     * @param dynamic the dynamic to set
-     */
-    public void setDynamic(boolean dynamic)
-    {
-        if(dynamic && !dynamicPossible()) {
-            this.dynamic=false;
-            return;
-        }
-        this.dynamic = dynamic;
-        if(dynamic)
-        {
-            // set current clause to biggest
-            for(Clause c : CLAUSES)
-            {
-                if(c.args() == null) continue;
-                if(c.args().size() > selectedClause.args().size())
-                {
-                    selectedClause = c;
-                    //providedInputs = new Object[selectedClause.args().size()];
-                }
-            }
-        }
-    }
 
     /**
      *
@@ -373,14 +301,6 @@ public class LudemeNode implements iGNode
         return false;
     }
 
-    /**
-     *
-     * @return whether this node is dynamic
-     */
-    public boolean dynamic()
-    {
-        return dynamic;
-    }
 
     /**
      * Sets this node to be visible or not
@@ -536,61 +456,6 @@ public class LudemeNode implements iGNode
         currentNodeArguments = nodeArguments.get(selectedClause());
         if(currentNodeArguments == null) currentNodeArguments = new ArrayList<>();
         return currentNodeArguments;
-    }
-
-
-    /**
-     * Sets the current node arguments
-      * @param nodeArguments the node arguments to set
-     */
-    public void setCurrentNodeArguments(List<NodeArgument> nodeArguments)
-    {
-        this.nodeArguments.put(selectedClause(), nodeArguments);
-    }
-
-    /**
-     *
-     * @return The list of active clauses
-     */
-    public List<Clause> activeClauses()
-    {
-        return activeClauses;
-    }
-
-    /**
-     *
-     * @return The list of inactive clauses
-     */
-    public List<Clause> inactiveClauses()
-    {
-        return inactiveClauses;
-    }
-
-    /**
-     *
-     * @return The list of active Node Arguments
-     */
-    public List<NodeArgument> activeNodeArguments()
-    {
-        return activeNodeArguments;
-    }
-
-    /**
-     *
-     * @return The list of inactive Node Arguments
-     */
-    public List<NodeArgument> inactiveNodeArguments()
-    {
-        return inactiveNodeArguments;
-    }
-
-    /**
-     *
-     * @return The list of provided node arguments
-     */
-    public List<NodeArgument> providedNodeArguments()
-    {
-        return providedNodeArguments;
     }
 
 
@@ -993,7 +858,6 @@ public class LudemeNode implements iGNode
         LudemeNode copy = new LudemeNode(symbol(), creatorArgument(),nodeArguments,x+x_shift, y+y_shift);
         copy.setCollapsed(collapsed());
         copy.setVisible(visible());
-        copy.setDynamic(dynamic());
         copy.setSelectedClause(selectedClause());
         copy.setHeight(height());
 
@@ -1066,4 +930,113 @@ public class LudemeNode implements iGNode
     public String toString(){
         return toLud();
     }
+
+
+
+    //
+    //    UNUSED DYNAMIC-CONSTRUCTOR VARIABLES & METHODS
+    //
+
+    /*
+
+    // whether this node is dynamic or not.
+    // a dynamic node has no pre-selected clause. by providing any arguments to the node, the list of
+    // possible clauses is narrowed down to the ones that match the provided arguments.
+    //
+    private boolean dynamic = false;
+    // Clauses that satisfy currently provided inputs
+    private List<Clause> activeClauses = new ArrayList<>();
+    // Clauses that do not satisfy currently provided inputs
+    private List<Clause> inactiveClauses = new ArrayList<>();
+    // NodeArguments that are currently provided
+    private List<NodeArgument> providedNodeArguments = new ArrayList<>();
+    // NodeArguments that can be provided to satisfy active clauses
+    private List<NodeArgument> activeNodeArguments = new ArrayList<>();
+    // NodeArguments that cannot be provided to satisfy active clauses
+    private List<NodeArgument> inactiveNodeArguments = new ArrayList<>();
+
+
+
+
+    //@return whether this node is dynamic
+    public boolean dynamic()
+    {
+        return dynamic;
+    }
+
+
+    // @return The list of active clauses
+    public List<Clause> activeClauses()
+    {
+        return activeClauses;
+    }
+
+    // @return The list of inactive clauses
+    public List<Clause> inactiveClauses()
+    {
+        return inactiveClauses;
+    }
+
+    // @return The list of active Node Arguments
+    public List<NodeArgument> activeNodeArguments()
+    {
+        return activeNodeArguments;
+    }
+
+    // @return The list of inactive Node Arguments
+    public List<NodeArgument> inactiveNodeArguments()
+    {
+        return inactiveNodeArguments;
+    }
+
+    // @return The list of provided node arguments
+    public List<NodeArgument> providedNodeArguments()
+    {
+        return providedNodeArguments;
+    }
+
+
+    //Sets this node to be dynamic or not
+    //@param dynamic the dynamic to set
+    public void setDynamic(boolean dynamic)
+    {
+        if(dynamic && !dynamicPossible()) {
+            this.dynamic=false;
+            return;
+        }
+        this.dynamic = dynamic;
+        if(dynamic)
+        {
+            // set current clause to biggest
+            for(Clause c : CLAUSES)
+            {
+                if(c.args() == null) continue;
+                if(c.args().size() > selectedClause.args().size())
+                {
+                    selectedClause = c;
+                    //providedInputs = new Object[selectedClause.args().size()];
+                }
+            }
+        }
+    }
+
+
+    IN CONSTRUCTOR:
+
+    if(dynamic())
+        {
+            activeClauses = new ArrayList<>(clauses());
+            inactiveClauses = new ArrayList<>();
+            providedNodeArguments = new ArrayList<>();
+            activeNodeArguments = new ArrayList<>();
+            for(List<NodeArgument> nas: nodeArguments.values()) activeNodeArguments.addAll(nas);
+            inactiveNodeArguments = new ArrayList<>();
+            currentNodeArguments = activeNodeArguments;
+        }
+
+
+     */
+
+
+
 }

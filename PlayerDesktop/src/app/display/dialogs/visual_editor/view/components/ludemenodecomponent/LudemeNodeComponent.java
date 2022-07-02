@@ -290,27 +290,6 @@ public class LudemeNodeComponent extends JPanel
     }
 
     /**
-     * Switches the node to be a dynamic/un-dynamic node
-     * Dynamic nodes have no pre-selected clause
-     */
-    public void changeDynamic()
-    {
-        if(!LN.dynamicPossible()) return;
-        LN.setDynamic(!LN.dynamic());
-        // TODO: inputArea().setDynamic(LN.dynamic());
-        node().setDynamic(LN.dynamic());
-    }
-
-    /**
-     *
-     * @return whether the node is dynamic
-     */
-    public boolean dynamic()
-    {
-        return LN.dynamic();
-    }
-
-    /**
      *
      * @return whether this node is visible
      */
@@ -329,8 +308,6 @@ public class LudemeNodeComponent extends JPanel
      */
     MouseMotionListener dragListener = new MouseAdapter()
     {
-
-         boolean marked = false;
 
         @Override
         public void mouseDragged(MouseEvent e)
@@ -510,5 +487,27 @@ public class LudemeNodeComponent extends JPanel
             default: return DesignPalette.BACKGROUND_LUDEME_BODY;
         }
     }
+
+
+    // FOR DYNAMIC CONSTRUCTOR
+    /*
+     // Switches the node to be a dynamic/un-dynamic node
+     // Dynamic nodes have no pre-selected clause
+    public void changeDynamic()
+    {
+        if(!LN.dynamicPossible()) return;
+        LN.setDynamic(!LN.dynamic());
+        node().setDynamic(LN.dynamic());
+    }
+
+
+    // @return whether the node is dynamic
+    public boolean dynamic()
+    {
+        return LN.dynamic();
+    }
+     */
+
+
 
 }

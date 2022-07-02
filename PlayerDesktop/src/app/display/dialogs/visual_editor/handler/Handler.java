@@ -207,14 +207,11 @@ public class Handler
 
         // remove root node and already deleted nodes
         for(LudemeNode node : new ArrayList<>(nodes))
-        {
             if(graph.getRoot() == node)
             {
                 nodes.remove(node);
                 break;
-            }
         }
-
 
         IUserAction action = new RemovedNodesAction(graphPanelMap.get(graph), nodes);
         addAction(action);

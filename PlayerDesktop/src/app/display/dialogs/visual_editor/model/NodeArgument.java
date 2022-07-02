@@ -30,6 +30,7 @@ public class NodeArgument
     private final int INDEX;
     /** List of possible Arguments as Input */
     private final List<PossibleArgument> possibleArguments;
+    private final NodeArgument collection1DEquivalent;
     /** The list of Symbols that may be provided as input for this NodeArgument
      *  Structural Symbols are not included in this list, but rather expanded to their rules.
      */
@@ -121,15 +122,33 @@ public class NodeArgument
 
         possibleSymbolInputs = new ArrayList<>(possibleSymbols);
         parameterDescription = readHelp();
+
+        if(collection2D())
+            this.collection1DEquivalent = create1DEquivalent();
+        else
+            this.collection1DEquivalent = null;
+
     }
 
-    private Set<Symbol> expandPossibleArgument(PossibleArgument PA)
+    private NodeArgument create1DEquivalent()
+    {
+        System.out.println("Creating 1D Equivalent for " + this.args.get(0).symbol().name());
+        ClauseArg ca1d = new ClauseArg(this.args.get(0).symbol(), this.args.get(0).actualParameterName(), this.args.get(0).label(), this.args.get(0).optional(), 1, this.args.get(0).andGroup());
+        return new NodeArgument(this.CLAUSE, ca1d);
+    }
+
+    public NodeArgument collection1DEquivalent()
+    {
+        return this.collection1DEquivalent;
+    }
+
+    private Set<Symbol> expandPossibleArgument(PossibleArgument pa)
     {
         Set<Symbol> symbols = new HashSet<>();
-        if(PA.possibleArguments().size() == 0)
-            symbols.add(PA.clause().symbol());
+        if(pa.possibleArguments().size() == 0)
+            symbols.add(pa.clause().symbol());
         else
-            for(PossibleArgument p : PA.possibleArguments())
+            for(PossibleArgument p : pa.possibleArguments())
                 symbols.addAll(expandPossibleArgument(p));
 
         return symbols;
@@ -159,6 +178,10 @@ public class NodeArgument
         INDEX = 0;
         this.possibleArguments = new ArrayList<>();
         possibleSymbolInputs = new ArrayList<>();
+        if(collection2D())
+            this.collection1DEquivalent = create1DEquivalent();
+        else
+            this.collection1DEquivalent = null;
     }
 
     /**
@@ -280,6 +303,15 @@ public class NodeArgument
     public boolean collection()
     {
         return arg().nesting() > 0;
+    }
+
+    /**
+     *
+     * @return whether this NodeArgument is a 2D-Collection
+     */
+    public boolean collection2D()
+    {
+        return arg().nesting() == 2;
     }
 
     /**

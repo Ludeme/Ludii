@@ -17,7 +17,6 @@ import java.util.List;
 public class NodePopupMenu extends JPopupMenu {
     public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel) {
         JMenuItem delete = new JMenuItem("Delete");
-        JMenuItem dynamic = new JMenuItem("(Un)Set Dynamic");
         JMenuItem observe = new JMenuItem("Observe");
         JMenuItem collapse = new JMenuItem("Collapse");
         JMenuItem duplicate = new JMenuItem("Duplicate");
@@ -125,10 +124,6 @@ public class NodePopupMenu extends JPopupMenu {
             }
         });
 
-        dynamic.addActionListener(e -> {
-            nodeComponent.changeDynamic();
-        });
-
         observe.addActionListener(e -> {
             LudemeNode node = nodeComponent.node();
             String message = "";
@@ -140,12 +135,8 @@ public class NodePopupMenu extends JPopupMenu {
             message += "# Clauses: " + node.clauses().size() + "\n";
             message += "Creator: " + node.creatorArgument() + "\n";
             message += "Package: " + node.packageName() + "\n";
-            message += "Dynamic: " + node.dynamic() + "\n";
             message += "Provided Inputs: " + (node.providedInputsMap().values()) + "\n";
             message += "Fields: " + nodeComponent.inputArea().currentInputFields + "\n";
-            message += "Provided LIFs: " + node.providedNodeArguments() + "\n";
-            message += "Active LIFs: " + node.activeNodeArguments() + "\n";
-            message += "Active C: (" + node.activeClauses().size() + ") " +node.activeClauses() + "\n";
             //message += "Inactive C: (" + + nodeComponent.inputArea().inactiveClauses.size() + ") " + nodeComponent.inputArea().inactiveClauses + "\n";
             message += "Width: " + nodeComponent.width() + "\n";
             message += "Height: " + nodeComponent.getHeight() + "\n";

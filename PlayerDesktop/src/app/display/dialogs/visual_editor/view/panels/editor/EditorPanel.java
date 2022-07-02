@@ -734,9 +734,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
             super.mouseClicked(e);
 
             if(connectArgumentPanel.isVisible())
-            {
                 ch.cancelNewConnection();
-            }
             addLudemePanel.setVisible(false);
             connectArgumentPanel.setVisible(false);
             if(e.getButton() == MouseEvent.BUTTON1)
@@ -744,17 +742,20 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 // user is drawing a new connection
                 if(ch.getSelectedConnectionComponent() != null)
                 {
+                    // if its a 2D collection, connect to a 1D collection equivalent
+                    if(ch.getSelectedConnectionComponent().inputField().nodeArgument(0).collection2D())
+                    {
+                        NodeArgument na1d = ch.getSelectedConnectionComponent().inputField().nodeArgument(0).collection1DEquivalent();
+                        Handler.addNode(graph, na1d.arg().symbol(), ch.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
+                        System.out.println("brrrrrr");
+                    }
                     // if user has no chocie for next ludeme -> automatically add required ludeme
-                    if(ch.getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
-                    {
+                    else if(ch.getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
                         Handler.addNode(graph, ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), ch.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
-                        //addNode(ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), e.getX(), e.getY(), true);
-                    }
                     else if(!connectArgumentPanel.isVisible() && ch.getSelectedConnectionComponent().possibleSymbolInputs().size() > 1)
-                    {
                         showCurrentlyAvailableLudemes(e.getX(), e.getY());
-                    }
-                    if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn()) lm.executeLayout();
+                    if(LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
+                        lm.executeLayout();
                 }
 
                 // When selection was performed user can clear it out by clicking on blank area
