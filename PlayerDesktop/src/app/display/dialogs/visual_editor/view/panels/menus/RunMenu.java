@@ -17,10 +17,7 @@ public class RunMenu extends JMenu
         menuBar.addJCheckBoxMenuItem(this, "Auto Compile", Handler.liveCompile, autocompile);
     }
 
-    ActionListener autocompile = e -> {
-        boolean selected = ((JCheckBoxMenuItem) e.getSource()).isSelected();
-        Handler.liveCompile = selected;
-    };
+    ActionListener autocompile = e -> Handler.liveCompile = ((JCheckBoxMenuItem) e.getSource()).isSelected();
     ActionListener compile = e -> Handler.compile();
     ActionListener play = e -> Handler.play();
 
