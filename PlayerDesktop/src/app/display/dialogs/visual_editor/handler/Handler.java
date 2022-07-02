@@ -60,11 +60,10 @@ public class Handler
 
     public static boolean liveCompile = true;
 
-    public static IBackground currentBackground;
-
     public static final IBackground DotGridBackground = new DotGridBackground();
     public static final IBackground EmptyBackground = new EmptyBackground();
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
+    public static IBackground currentBackground = DotGridBackground;
 
     public static IBackground currentBackground()
     {
@@ -74,6 +73,8 @@ public class Handler
     public static void setBackground(IBackground background)
     {
         currentBackground = background;
+        for(IGraphPanel graphPanel : graphPanelMap.values())
+            graphPanel.repaint();
     }
 
 
