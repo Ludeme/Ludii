@@ -2,12 +2,12 @@
     (players 2)  
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
-        (piece "Marker" P1 (or ("HopSequenceCapture") ("StepToEmpty") ) )
+        (piece "Marker" P1 (or ("HopSequenceCapture") ("StepToEmpty")))
         (piece "Disc" P2 ("StepToEmpty")) 
     })  
     (rules 
         (start { 
-            (place "Disc2" (union (expand (sites Bottom)) (sites Row 2) ) )
+            (place "Disc2" (union (expand (sites Bottom)) (sites Row 2)))
             (place "Marker1" (centrePoint))
         })
         
