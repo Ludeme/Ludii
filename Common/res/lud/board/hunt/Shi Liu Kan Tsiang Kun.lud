@@ -12,13 +12,7 @@
             ("StepToEmpty"
                 ~
                 (then 
-                    (intervene 
-                        (from (last To))
-                        (to 
-                            if:(is Enemy (who at:(to)))
-                            (apply (remove (to)))
-                        )
-                    )
+                    ("InterveneCapture")
                 )
             )
         )
