@@ -58,6 +58,7 @@ public class Handler
     // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
     public static Object[] compile()
     {
+        if(!recordUserActions) return new Object[]{null, null, null};
         Object[] output = new Object[3];
         List<LudemeNode> unsatisfiedNodes = isComplete(editorPanel.graph());
         if(!unsatisfiedNodes.isEmpty())
@@ -66,9 +67,8 @@ public class Handler
             String errorMessage = "Nodes are missing required arguments:\n";
             for(LudemeNode node : unsatisfiedNodes)
             {
-                errorMessage += node.title() + "\n";
+                errorMessage += node.title() + ", \n";
             }
-            errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
             errors.add(errorMessage);
             output[1] = errors;
             output[2] = unsatisfiedNodes;
@@ -1009,6 +1009,7 @@ public class Handler
         Handler.recordUserActions = true;
         if(DEBUG) System.out.println("[HANDLER] undo() Completed " + currentUndoAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
+        if(liveCompile) compile();
         currentUndoAction = null;
     }
 
@@ -1024,6 +1025,7 @@ public class Handler
         Handler.recordUserActions = true;
         if(DEBUG) System.out.println("[HANDLER] redo() Completed " + currentRedoAction.actionType());
         toolsPanel.updateUndoRedoBtns(performedUserActions, undoneUserActions);
+        if(liveCompile) compile();
         currentRedoAction = null;
     }
 
