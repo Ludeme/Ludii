@@ -1,0 +1,17 @@
+// Defines a custodial capture in all the directions specified (by default Adjacent). The enemy piece is removed.
+// #1 = Directions of the capture.
+// #2 = The consequences.
+// @example ("Custodial")
+
+(define "Custodial"
+        (custodial 
+                (from (last To))
+                #1
+                (between 
+                    if:(is Enemy (who at:(between)))
+                    (apply (remove (between)))
+                )
+                (to if:(is Friend (who at:(to))))
+                #2
+            )
+)
