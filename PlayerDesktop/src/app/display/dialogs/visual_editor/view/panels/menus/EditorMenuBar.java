@@ -47,5 +47,13 @@ public class EditorMenuBar extends JMenuBar {
         jMenuItem.addActionListener(actionListener);
         menu.add(jMenuItem);
     }
+
+    public void addJMenuItem(JMenu menu, String itemName, ActionListener actionListener, KeyStroke keyStroke)
+    {
+        JMenuItem jMenuItem = new JMenuItem(itemName);
+        jMenuItem.addActionListener(actionListener);
+        jMenuItem.setAccelerator(keyStroke);
+        menu.add(jMenuItem);
+    }
 }
 
