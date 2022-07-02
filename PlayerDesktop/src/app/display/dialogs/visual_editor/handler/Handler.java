@@ -75,7 +75,8 @@ public class Handler
             if(liveCompile)
             {
                 lastCompile = output;
-                toolsPanel.play.updateCompilable(output);
+                if(toolsPanel != null)
+                    toolsPanel.play.updateCompilable(output);
             }
             return output;
         }
@@ -101,7 +102,8 @@ public class Handler
         if(liveCompile)
         {
             lastCompile = output;
-            toolsPanel.play.updateCompilable(output);
+            if(toolsPanel != null)
+                toolsPanel.play.updateCompilable(output);
         }
         return output;
     }
