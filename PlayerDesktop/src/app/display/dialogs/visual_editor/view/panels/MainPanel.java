@@ -125,6 +125,7 @@ public class MainPanel extends JPanel {
         JPanel panel = graphPanel.panel();
 
 
+        /*
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Z"), "undo");
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control Y"), "redo");
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control C"), "copy");
@@ -212,7 +213,7 @@ public class MainPanel extends JPanel {
                 Handler.duplicate(graphPanel.graph());
             }
         });
-
+*/
     }
 
     public Dimension getViewPort()

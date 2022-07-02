@@ -38,6 +38,7 @@ public class EditorMenuBar extends JMenuBar {
         add(file);
         add(new EditMenu(this));
         add(settings);
+        add(new RunMenu(this));
         add(about);
     }
 
@@ -52,6 +53,23 @@ public class EditorMenuBar extends JMenuBar {
     {
         JMenuItem jMenuItem = new JMenuItem(itemName);
         jMenuItem.addActionListener(actionListener);
+        jMenuItem.setAccelerator(keyStroke);
+        menu.add(jMenuItem);
+    }
+
+    public void addJCheckBoxMenuItem(JMenu menu, String itemName, boolean selected, ActionListener actionListener)
+    {
+        JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem(itemName);
+        jMenuItem.addActionListener(actionListener);
+        jMenuItem.setSelected(selected);
+        menu.add(jMenuItem);
+    }
+
+    public void addJCheckBoxMenuItem(JMenu menu, String itemName, boolean selected, ActionListener actionListener, KeyStroke keyStroke)
+    {
+        JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem(itemName);
+        jMenuItem.addActionListener(actionListener);
+        jMenuItem.setSelected(selected);
         jMenuItem.setAccelerator(keyStroke);
         menu.add(jMenuItem);
     }
