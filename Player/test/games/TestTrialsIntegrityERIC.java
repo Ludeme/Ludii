@@ -108,14 +108,14 @@ public class TestTrialsIntegrityERIC
 		}
 		
 		boolean gameReached = false;
-		final String gameToReached = "Kotra";
+		final String gameToReached = "";
 		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains(""))
+			if (fileEntry.getName().contains("La Liebre Perseguida"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
