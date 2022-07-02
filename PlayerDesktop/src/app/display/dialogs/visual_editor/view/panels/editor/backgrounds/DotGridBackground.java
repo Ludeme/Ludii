@@ -3,9 +3,6 @@ package app.display.dialogs.visual_editor.view.panels.editor.backgrounds;
 import app.display.dialogs.visual_editor.view.DesignPalette;
 
 import java.awt.*;
-
-import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
-
 public class DotGridBackground implements IBackground
 
 {

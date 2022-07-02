@@ -139,19 +139,13 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return symbolsWithoutConnection;
     }
 
-    IBackground background = new CartesianGridBackground();
-
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        boolean showBackgroundDots = true;
-        if(showBackgroundDots)
-        {
-            background.paint(mainPanel.getPanel().getViewport().getViewRect(), getWidth(), getHeight(), g2);
-        }
+        Handler.currentBackground.paint(mainPanel.getPanel().getViewport().getViewRect(), getWidth(), getHeight(), g2);
 
         // set color for edges
         g2.setColor(DesignPalette.LUDEME_CONNECTION_EDGE);

@@ -12,6 +12,10 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
+import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.DotGridBackground;
+import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.EmptyBackground;
+import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.IBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import app.display.dialogs.visual_editor.view.panels.header.ToolsPanel;
 import app.utils.GameUtil;
@@ -55,6 +59,22 @@ public class Handler
     public static Object[] lastCompile;
 
     public static boolean liveCompile = true;
+
+    public static IBackground currentBackground;
+
+    public static final IBackground DotGridBackground = new DotGridBackground();
+    public static final IBackground EmptyBackground = new EmptyBackground();
+    public static final IBackground CartesianGridBackground = new CartesianGridBackground();
+
+    public static IBackground currentBackground()
+    {
+        return currentBackground;
+    }
+
+    public static void setBackground(IBackground background)
+    {
+        currentBackground = background;
+    }
 
 
     public static Object[] compile()
