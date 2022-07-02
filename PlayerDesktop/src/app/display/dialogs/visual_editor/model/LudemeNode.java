@@ -56,6 +56,8 @@ public class LudemeNode implements iGNode
     private boolean collapsed = false;
     /** whether this node is visible */
     private boolean visible = true;
+    /** whether this node is a root of fixed node group */
+    private boolean fixed = false;
     /** HelpInformation */
     private final HelpInformation helpInformation;
     /** Which package this node belongs to.
@@ -721,6 +723,18 @@ public class LudemeNode implements iGNode
     public int depth()
     {
         return depth;
+    }
+
+    @Override
+    public boolean fixed()
+    {
+        return fixed;
+    }
+
+    public void setFixed(boolean fixed)
+    {
+        System.out.println("Fixed: " + fixed);
+        this.fixed = fixed;
     }
 
     /**

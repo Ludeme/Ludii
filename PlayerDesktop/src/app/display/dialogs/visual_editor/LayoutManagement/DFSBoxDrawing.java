@@ -4,6 +4,7 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import game.util.graph.Graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,10 +63,17 @@ public class DFSBoxDrawing
 
     private void initPlacement(int nodeId, int freeX)
     {
-        if (graph.getNode(nodeId).children() == null || graph.getNode(nodeId).children().size() == 0)
+        if (graph.getNode(nodeId).children() == null ||
+                graph.getNode(nodeId).children().size() == 0 ||
+                graph.getNode(nodeId).fixed())
         {
             Vector2D piInit = new Vector2D(freeX, freeY);
-            freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + graph.getNode(nodeId).height() + PADDING_X;
+            if (graph.getNode(nodeId).fixed())
+            {
+                freeY += GraphRoutines.getSubtreeArea(graph, nodeId).height * wX * (DOS_MAP[0]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
+                translateByRoot(graph, nodeId, piInit);
+            }
+            else freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + graph.getNode(nodeId).height() + PADDING_X;
             // update node position
             graph.getNode(nodeId).setPos(piInit);
         }
@@ -144,7 +152,12 @@ public class DFSBoxDrawing
                 iGNode upper = graph.getNode(LE.get(j));
                 iGNode lower = graph.getNode(P.get(k));
                 if (upper.equals(lower)) break;
-                int nodeDist = (int)(lower.pos().y()-upper.pos().y()-upper.height());
+
+                int upperHeight = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).height : upper.height();
+                int upperWidth = upper.fixed() ? GraphRoutines.getSubtreeArea(graph, upper.id()).width : upper.width();
+                int lowerWidth = lower.fixed() ? GraphRoutines.getSubtreeArea(graph, lower.id()).width : lower.width();
+
+                int nodeDist = (int)(lower.pos().y() - upper.pos().y() - upperHeight);
                 // check all the cases for upper and lower nodes x coordinates intersecting
                 // add edges for upward visibility graph
                 // construct next LE
@@ -152,7 +165,7 @@ public class DFSBoxDrawing
                 if ((int)(upper.pos().x()) == (int)(lower.pos().x()))
                 {
                     // check if right corner of upper exceeds right corner of lower to add to LE candidates
-                    if ((int)(upper.pos().x()+upper.width()) > (int)(lower.pos().x()+lower.width()))
+                    if ((int)(upper.pos().x()+ upperWidth) > (int)(lower.pos().x()+lowerWidth))
                     {
                         leCandidates.add(0, upper.id());
                     }
@@ -163,12 +176,12 @@ public class DFSBoxDrawing
                 else if ((int)(upper.pos().x()) > (int)(lower.pos().x()))
                 {
                     // check if right corner of upper exceeds right corner of lower to add to LE candidates
-                    if ((int)(upper.pos().x()+upper.width()) > (int)(lower.pos().x()+lower.width()))
+                    if ((int)(upper.pos().x()+ upperWidth) > (int)(lower.pos().x()+lowerWidth))
                     {
                         leCandidates.add(0, upper.id());
                     }
                     // CASE#2: left corner of upper is within lower
-                    if ((int)(upper.pos().x()) <= (int)(lower.pos().x()+lower.width()))
+                    if ((int)(upper.pos().x()) <= (int)(lower.pos().x()+lowerWidth))
                     {
                         addMinDistToGup(Gup, P, k, nodeDist);
                     }
@@ -177,7 +190,7 @@ public class DFSBoxDrawing
                 else if ((int)(upper.pos().x()) < (int)(lower.pos().x()))
                 {
                     // CASE#2: right corner of upper is within lower
-                    if ((int)(upper.pos().x()+upper.width()) > (int)(lower.pos().x()))
+                    if ((int)(upper.pos().x()+ upperWidth) > (int)(lower.pos().x()))
                     {
                         addMinDistToGup(Gup, P, k, nodeDist);
                     }

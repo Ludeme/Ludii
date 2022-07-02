@@ -31,4 +31,6 @@ public interface iGNode {
 
     int depth();
 
+    boolean fixed();
+
 }

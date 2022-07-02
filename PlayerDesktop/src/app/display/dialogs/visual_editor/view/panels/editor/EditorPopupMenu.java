@@ -28,7 +28,7 @@ public class EditorPopupMenu extends JPopupMenu {
 
         JMenu lmMenu = new JMenu("Graph Layout");
         JMenuItem compact = new JMenuItem("Arrange graph");
-        JMenuItem settings = new JMenuItem("Layout Settings");
+        // JMenuItem settings = new JMenuItem("Layout Settings");
 
         newLudeme.addActionListener(e -> {
             graphPanel.showAllAvailableLudemes(getX(), getY());
@@ -38,12 +38,12 @@ public class EditorPopupMenu extends JPopupMenu {
             graphPanel.getLayoutHandler().executeLayout();
         });
 
-        settings.addActionListener(e -> {
-            LayoutSettingsPanel.getSettingsFrame(graphPanel);
-        });
+        // settings.addActionListener(e -> {
+        //     LayoutSettingsPanel.getSettingsFrame(graphPanel);
+        // });
 
         lmMenu.add(compact);
-        lmMenu.add(settings);
+        // lmMenu.add(settings);
 
         JMenuItem collapse = new JMenuItem("Collapse");
         collapse.addActionListener(e -> {
@@ -69,6 +69,28 @@ public class EditorPopupMenu extends JPopupMenu {
         add(paste);
         add(lmMenu);
         add(collapse);
+
+        JMenuItem fix = new JMenuItem("Fix group");
+        fix.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(true);
+        });
+
+        JMenuItem unfix = new JMenuItem("Unfix group");
+        unfix.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(false);
+        });
+
+        if (graphPanel.graph().selectedRoot() != -1 &&
+                graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).fixed())
+        {
+            add(unfix);
+            graphPanel.repaint();
+        }
+        else if (graphPanel.graph().selectedRoot() != -1)
+        {
+            add(fix);
+            graphPanel.repaint();
+        }
 
 
         JMenuItem undo = new JMenuItem("Undo");

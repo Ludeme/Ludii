@@ -28,6 +28,9 @@ public class LayoutSettingsPanel extends JPanel
     private final JCheckBox autoPlacement = new JCheckBox("Automatic placement");
     private final JCheckBox animatePlacement = new JCheckBox("Animate layout");
 
+    private final JButton fixNodes;
+    private final JButton unfixNodes;
+
     private LayoutSettingsPanel(IGraphPanel graphPanel)
     {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -50,6 +53,11 @@ public class LayoutSettingsPanel extends JPanel
         JButton redraw = createButton("Arrange graph", buttonDim);
         JButton alignX = createButton("Align vertically", buttonDim);
         JButton alignY = createButton("Align horizontally", buttonDim);
+
+        fixNodes = createButton("Fix subtree", buttonDim);
+        fixNodes.setEnabled(false);
+        unfixNodes = createButton("Unfix subtree", buttonDim);
+        unfixNodes.setEnabled(false);
 
         redraw.addActionListener(e -> {
             lh.evaluateGraphWeights();
@@ -108,6 +116,26 @@ public class LayoutSettingsPanel extends JPanel
         add(autoPlacement);
         animatePlacement.setSelected(true);
         add(animatePlacement);
+
+        // # Adding fix buttons
+
+        fixNodes.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(true);
+            fixNodes.setEnabled(false);
+            unfixNodes.setEnabled(true);
+            graphPanel.repaint();
+        });
+        unfixNodes.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(false);
+            fixNodes.setEnabled(true);
+            unfixNodes.setEnabled(false);
+            graphPanel.repaint();
+        });
+
+        Box buttonFixBox = Box.createVerticalBox();
+        addAButton(fixNodes, buttonFixBox);
+        addAButton(unfixNodes, buttonFixBox);
+        add(buttonFixBox);
     }
 
     private static void addAButton(JButton button, Container container)
@@ -183,4 +211,13 @@ public class LayoutSettingsPanel extends JPanel
     public boolean isAutoPlacementOn() {return autoPlacement.isSelected();}
 
     public boolean isAnimatePlacementOn() {return animatePlacement.isSelected();}
+
+    public void enableFixButton() { fixNodes.setEnabled(true); }
+
+    public void disableFixButton() { fixNodes.setEnabled(false); }
+
+    public void enableUnfixButton() { unfixNodes.setEnabled(true); }
+
+    public void disableUnfixButton() { unfixNodes.setEnabled(false); }
+
 }

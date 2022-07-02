@@ -35,11 +35,35 @@ public class NodePopupMenu extends JPopupMenu {
         collapse.setIcon(collapseI);
         delete.setIcon(deleteI);
 
+        JMenuItem fix = new JMenuItem("Fix group");
+        fix.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(true);
+            graphPanel.repaint();
+        });
 
-        if(graphPanel.graph().getRoot() != nodeComponent.node()) {
+        JMenuItem unfix = new JMenuItem("Unfix group");
+        unfix.addActionListener(e -> {
+            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(false);
+            graphPanel.repaint();
+        });
+
+
+        if(graphPanel.graph().getRoot() != nodeComponent.node())
+        {
             add(copyBtn);
             add(duplicate);
             add(collapse);
+
+            if (graphPanel.graph().selectedRoot() != -1 &&
+                    graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).fixed())
+            {
+                add(unfix);
+            }
+            else if (graphPanel.graph().selectedRoot() != -1)
+            {
+                add(fix);
+            }
+
             add(observe);
             add(delete);
         }

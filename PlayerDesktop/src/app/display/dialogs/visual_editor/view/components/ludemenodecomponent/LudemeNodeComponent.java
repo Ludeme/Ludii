@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 
+import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
@@ -9,6 +10,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGroupSelection;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Clause;
 import main.grammar.Symbol;
@@ -42,6 +44,7 @@ public class LudemeNodeComponent extends JPanel
     private boolean selected = false;
     private boolean doubleSelected = false;
     private boolean subtree = false;
+    private Rectangle subtreeArea = null;
     /** Sub-Components of the node */
     private final LHeader header;
     private final LInputArea inputArea;
@@ -410,7 +413,7 @@ public class LudemeNodeComponent extends JPanel
             Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
 
             if(e.getButton() == MouseEvent.BUTTON3){
-                if(!selected) graphPanel().deselectEverything();
+                // if(!selected) graphPanel().deselectEverything();
                 graphPanel().addNodeToSelections(LudemeNodeComponent.this);
                 openPopupMenu(e);
                 graphPanel().connectionHandler().cancelNewConnection();
@@ -433,6 +436,10 @@ public class LudemeNodeComponent extends JPanel
         {
             doubleSelected = true;
             graphPanel().graph().setSelectedRoot(this.LN.id());
+
+            if (this.LN.fixed()) LayoutSettingsPanel.getLayoutSettingsPanel().enableUnfixButton();
+            else LayoutSettingsPanel.getLayoutSettingsPanel().enableFixButton();
+
             List<LudemeNodeComponent> Q = new ArrayList<>();
             Q.add(LudemeNodeComponent.this);
             while (!Q.isEmpty())
@@ -472,6 +479,7 @@ public class LudemeNodeComponent extends JPanel
         setBackground(backgroundColour());
         if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
         else setBorder(DesignPalette.LUDEME_NODE_BORDER);
+
     }
 
     @Override

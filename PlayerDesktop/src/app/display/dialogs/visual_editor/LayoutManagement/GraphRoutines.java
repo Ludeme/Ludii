@@ -165,7 +165,7 @@ public final class GraphRoutines
             iGNode c = graph.getNode(cid);
             List<Integer> pTemp = new ArrayList<>(p);
             pTemp.add(cid);
-            if (c.children().isEmpty())
+            if (c.children().isEmpty() || c.fixed())
             {
                 paths.add(pTemp);
             }

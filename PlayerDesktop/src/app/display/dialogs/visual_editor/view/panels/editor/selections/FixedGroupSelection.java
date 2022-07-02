@@ -19,9 +19,10 @@ public class FixedGroupSelection
         g2d.setColor(new Color(51, 51, 51));
         g2d.setStroke(stroke);
 
-        g2d.drawRect(rect.x-PADDING, rect.y-PADDING, rect.width+PADDING, rect.height+PADDING);
+        g2d.drawRect(rect.x-PADDING, rect.y-PADDING, rect.width+PADDING*2, rect.height+PADDING*2);
 
         g2d.setColor(new Color(236, 221, 144, 50));
-        g2d.fillRect(rect.x+PADDING, rect.y+PADDING, rect.width+PADDING, rect.height+PADDING);
+        g2d.fillRect(rect.x-PADDING, rect.y-PADDING, rect.width+PADDING*2, rect.height+PADDING*2);
+
     }
 }

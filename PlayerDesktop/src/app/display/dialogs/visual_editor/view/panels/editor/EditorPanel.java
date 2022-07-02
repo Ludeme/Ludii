@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
 
+import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.VisualEditorPanel;
@@ -18,6 +19,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGroupSelection;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
@@ -179,6 +181,17 @@ public class EditorPanel extends JPanel implements IGraphPanel
         // Draw selection area
         if (SELECTION_MODE && !SELECTING) SelectionBox.drawSelectionModeIdle(mousePosition, g2);
         if (SELECTION_MODE && SELECTING) SelectionBox.drawSelectionArea(mousePosition, mousePosition, g2);
+
+        // Draw fixed groups area
+        for(LudemeNodeComponent lc : nodeComponents)
+        {
+            if (lc.node().fixed())
+            {
+                Rectangle subtreeArea = GraphRoutines.getSubtreeArea(graph(), lc.node().id());
+                FixedGroupSelection.drawGroupBox(subtreeArea, (Graphics2D) g);
+            }
+        }
+
     }
 
     public void showCurrentlyAvailableLudemes(int x, int y)
@@ -270,6 +283,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
             lnc.setDoubleSelected(false);
         });
         graph.setSelectedRoot(-1);
+        LayoutSettingsPanel.getLayoutSettingsPanel().disableFixButton();
+        LayoutSettingsPanel.getLayoutSettingsPanel().disableUnfixButton();
         selectedLnc = new ArrayList<>();
         SELECTED = false;
         repaint();
@@ -741,6 +756,13 @@ public class EditorPanel extends JPanel implements IGraphPanel
                     }
                     if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn()) lm.executeLayout();
                 }
+
+                // When selection was performed user can clear it out by clicking on blank area
+                if (SELECTED)
+                {
+                    LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent("Empty", false);
+                    deselectEverything();
+                }
             }
             else
             {
@@ -749,13 +771,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 {
                     ch.cancelNewConnection();
                 }
-            }
-
-            // When selection was performed user can clear it out by clicking on blank area
-            if (SELECTED)
-            {
-                LayoutSettingsPanel.getLayoutSettingsPanel().setSelectedComponent("Empty", false);
-                deselectEverything();
             }
 
             repaint();
