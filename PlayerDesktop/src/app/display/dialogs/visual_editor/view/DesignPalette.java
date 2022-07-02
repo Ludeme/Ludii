@@ -58,10 +58,14 @@ public class DesignPalette
     public static int NODE_BORDER_WIDTH = (int) (DEFAULT_NODE_BORDER_WIDTH * SCALAR);
 
     private static final int DEFAULT_BACKGROUND_DOT_DIAMETER = 4;
+    private static final int DEFAULT_BACKGROUND_LINE_WIDTH = 1;
     public static int BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * SCALAR);
+    public static int BACKGROUND_LINE_WIDTH = DEFAULT_BACKGROUND_LINE_WIDTH;
 
     private static final int DEFAULT_BACKGROUND_DOT_PADDING = 25;
+    private static final int DEFAULT_BACKGROUND_LINE_PADDING = 25;
     public static int BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * SCALAR);
+    public static int BACKGROUND_LINE_PADDING = (int) (DEFAULT_BACKGROUND_LINE_PADDING * SCALAR);
 
 
     public static void scale(float scalar)
@@ -82,6 +86,7 @@ public class DesignPalette
         NODE_BORDER_WIDTH = (int) (DEFAULT_NODE_BORDER_WIDTH * (1.0/SCALAR));
         BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * (1.0/SCALAR));
         BACKGROUND_DOT_PADDING = (int) (DEFAULT_BACKGROUND_DOT_PADDING * (1.0/SCALAR));
+        BACKGROUND_LINE_PADDING = (int) (DEFAULT_BACKGROUND_LINE_PADDING * (1.0/SCALAR));
 
         LUDEME_TITLE_FONT = new Font("Roboto Bold", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
         LUDEME_INPUT_FONT = new Font("Robot Regular", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);

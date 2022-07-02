@@ -19,6 +19,9 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
+import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.DotGridBackground;
+import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.IBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGroupSelection;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
@@ -136,6 +139,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return symbolsWithoutConnection;
     }
 
+    IBackground background = new CartesianGridBackground();
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -145,24 +150,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         boolean showBackgroundDots = true;
         if(showBackgroundDots)
         {
-            // draw background points
-            // every 50 pixel a circle
-            int paddingHorizontal = 35;
-            int paddingvertical = 15;
-            int frequency = DesignPalette.BACKGROUND_DOT_PADDING;
-            int diameter = DesignPalette.BACKGROUND_DOT_DIAMETER;
-
-            // to improve performance, only draw points that are in the visible area
-            Rectangle viewRect = mainPanel.getPanel().getViewport().getViewRect();
-            for (int i = paddingHorizontal; i < getWidth() - paddingHorizontal; i += frequency)
-            {
-                for (int j = paddingvertical; j < getHeight() - paddingvertical; j += frequency)
-                {
-                    if(i < viewRect.x || i > viewRect.x + viewRect.width || j < viewRect.y || j > viewRect.y + viewRect.height) continue; // TODO this can be optimized by a lot by adding this offset to i and j
-                    g2.setColor(DesignPalette.BACKGROUND_VISUAL_HELPER);
-                    g2.fillOval(i, j, diameter, diameter);
-                }
-            }
+            background.paint(mainPanel.getPanel().getViewport().getViewRect(), getWidth(), getHeight(), g2);
         }
 
         // set color for edges

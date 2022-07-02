@@ -10,7 +10,7 @@ public class ViewMenu extends JMenu
     {
         super("View");
 
-        JMenu appearance = new JMenu("Appearance");
+        JMenu appearance = new JMenu("Colour Scheme");
         JMenu background = new JMenu("Background");
 
         add(appearance);
