@@ -140,6 +140,13 @@ public class DesignPalette
     // FRAME //
     public static final ImageIcon LUDII_ICON = new ImageIcon(DesignPalette.class.getResource("/ludii-logo-64x64.png"));
     // HEADER EDITORS //
+
+    public static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
+    public static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
+
+    public static final ImageIcon COMPILABLE_ICON = getIcon("editor/play.png");
+    public static final ImageIcon NOT_COMPILABLE_ICON = getIcon("editor/not_compilable.png");
+
     public static final ImageIcon GAME_EDITOR_ACTIVE = getIcon("editor/active/game_editor.png");
     public static final ImageIcon GAME_EDITOR_INACTIVE = getIcon("editor/inactive/game_editor.png");
     public static final ImageIcon GAME_EDITOR_HOVER = getIcon("editor/hover/game_editor.png");

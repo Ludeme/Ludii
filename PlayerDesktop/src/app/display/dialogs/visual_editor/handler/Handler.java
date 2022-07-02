@@ -22,7 +22,6 @@ import main.grammar.Report;
 import main.grammar.Symbol;
 import main.options.UserSelections;
 
-import javax.swing.*;
 import java.util.*;
 import java.awt.*;
 import java.util.List;
@@ -51,6 +50,10 @@ public class Handler
 
     private static final boolean DEBUG = true;
 
+    public static Object[] lastCompile;
+
+    public static boolean liveCompile = false;
+
 
     // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
     public static Object[] compile()
@@ -69,6 +72,11 @@ public class Handler
             errors.add(errorMessage);
             output[1] = errors;
             output[2] = unsatisfiedNodes;
+            if(liveCompile)
+            {
+                lastCompile = output;
+                toolsPanel.play.updateCompilable(output);
+            }
             return output;
         }
 
@@ -90,14 +98,20 @@ public class Handler
         }
 
         output[1] = r.errors();
-
+        if(liveCompile)
+        {
+            lastCompile = output;
+            toolsPanel.play.updateCompilable(output);
+        }
         return output;
     }
 
     public static boolean play()
     {
+        Object[] output = lastCompile;
         // first compile
-        Object[] output = compile();
+        if(lastCompile == null)
+            output = compile();
         if(output[0] == null)
             return false;
         Game game = (Game) output[0];
@@ -448,6 +462,7 @@ public class Handler
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
             node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
         node.setProvidedInput(nodeArgument, input);
+        if(liveCompile) compile();
     }
 
     /**
