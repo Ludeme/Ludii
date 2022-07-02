@@ -115,7 +115,7 @@ public class TestTrialsIntegrityERIC
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains("Shi Liu Kan Tsiang Kun"))
+			if (fileEntry.getName().contains("Yeung Luk Sz' Kon Tseung Kwan"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
