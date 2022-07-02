@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.panels.header;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
 import app.display.dialogs.visual_editor.view.DesignPalette;
+import game.Game;
 import main.grammar.Description;
 
 import javax.swing.*;
@@ -40,14 +41,36 @@ public class ToolsPanel extends JPanel {
         add(Box.createHorizontalStrut(30));
         JButton play = new JButton("Play");
         play.addActionListener((e) -> {
+
+            // try to compile
+            Object[] output = Handler.compile();
+            if(output[0] != null)
+            {
+                Handler.play((Game)output[0]);
+            }
+            else
+            {
+                java.util.List<String> errors = (java.util.List<String>)output[1];
+                String errorMessage = "";
+                if(errors.isEmpty())
+                    errorMessage = "Could not create \"game\" ludeme from description.";
+                else
+                {
+                    errorMessage = errors.toString();
+                    errorMessage = errorMessage.substring(1, errorMessage.length()-1);
+                }
+                JOptionPane.showMessageDialog(this, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
+            }
+
+
             // add dialog box here
-            JDialog dialog = new JDialog();
+            /*JDialog dialog = new JDialog();
             dialog.setTitle("Play");
             dialog.add(new JTextArea(Handler.getLudString(Handler.gameDescriptionGraph)));
             dialog.setSize(new Dimension(300, 200));
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-            Handler.compile();
+            Handler.compile();*/
 
         });
         add(play);

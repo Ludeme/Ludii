@@ -889,7 +889,11 @@ public class LInputField extends JComponent
      */
     PropertyChangeListener userInputListener_propertyChange = evt -> updateUserInputs();
 
-    ChangeListener userInputListener_change = evt -> updateUserInputs();
+    ChangeListener userInputListener_change = evt ->
+    {
+        ((JFormattedTextField) ((JSpinner) fieldComponent).getEditor().getComponent(0)).setValue(((JSpinner) fieldComponent).getValue());
+        updateUserInputs();
+    };
 
     ActionListener userInputListener_dropdown = evt -> updateUserInputs();
 

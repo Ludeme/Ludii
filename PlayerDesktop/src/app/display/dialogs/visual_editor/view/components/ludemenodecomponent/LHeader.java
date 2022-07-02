@@ -170,7 +170,7 @@ public class LHeader extends JComponent
 
     private String clauseTitle(Clause c)
     {
-        if(c.args() == null)
+        if(c.args() == null || c.args().size() == 0)
             return c.toString();
         if(c.args().get(0).symbol().ludemeType().equals(Symbol.LudemeType.Constant))
         {

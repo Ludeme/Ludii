@@ -52,33 +52,65 @@ public class Handler
     private static final boolean DEBUG = true;
 
 
-    public static List<String> compile()
+    // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
+    public static Object[] compile()
     {
-        if(!isComplete(editorPanel.graph()))
+        Object[] output = new Object[3];
+        List<LudemeNode> unsatisfiedNodes = isComplete(editorPanel.graph());
+        if(!unsatisfiedNodes.isEmpty())
         {
-            System.out.println("Graph is not complete");
-            return null;
+            List<String> errors = new ArrayList<>();
+            String errorMessage = "Nodes are missing required arguments: ";
+            for(LudemeNode node : unsatisfiedNodes)
+            {
+                errorMessage += node.title() + ", ";
+            }
+            errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
+            errors.add(errorMessage);
+            output[1] = errors;
+            output[2] = unsatisfiedNodes;
+            return output;
         }
 
         Description d = editorPanel.graph().description();
         Report r = new Report();
         try
         {
-            Game game;
             if (VisualEditorPanel.app != null)
             {
-                game = (Game) compiler.Compiler.compile(d, VisualEditorPanel.app.manager().settingsManager().userSelections(), r, false);
-                loadGame(game, VisualEditorPanel.app);
+                output[0] = (Game) compiler.Compiler.compile(d, VisualEditorPanel.app.manager().settingsManager().userSelections(), r, false);
             }
             else
-                game = (Game) compiler.Compiler.compile(d, new UserSelections(new ArrayList<String>()), r, false);
+                output[0] = (Game) compiler.Compiler.compile(d, new UserSelections(new ArrayList<String>()), r, false);
         }
         catch(Exception ex)
         {
             System.out.println("Couldnt compile");
             System.out.println(r.errors());
         }
-        return r.errors();
+
+        output[1] = r.errors();
+
+        return output;
+    }
+
+    public static boolean play()
+    {
+        // first compile
+        Object[] output = compile();
+        if(output[0] == null)
+            return false;
+        Game game = (Game) output[0];
+        // load game
+        loadGame(game, VisualEditorPanel.app);
+        return true;
+    }
+
+    public static boolean play(Game game)
+    {
+        // load game
+        loadGame(game, VisualEditorPanel.app);
+        return true;
     }
 
     public static void loadGame(Game game, PlayerApp app)
@@ -89,16 +121,15 @@ public class Handler
         DesktopApp.frame().requestFocus();
     }
 
-    public static boolean isComplete(DescriptionGraph graph)
+    public static List<LudemeNode> isComplete(DescriptionGraph graph)
     {
-        boolean complete = true;
+        List<LudemeNode> unsatisfiedNodes = new ArrayList<>();
         for(LudemeNode ln : graph.getNodes())
             if((graph.getRoot() == ln || ln.parentNode()!=null) && !ln.isSatisfied())
             {
-                System.out.println("Node " + ln.id() + " is not satisfied");
-                complete = false;
+                unsatisfiedNodes.add(ln);
             }
-        return complete;
+        return unsatisfiedNodes;
     }
 
     /**
