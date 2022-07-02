@@ -777,11 +777,12 @@ public class LInputField extends JComponent
         label.setEnabled(false);
         terminalOptionalLabel.setText("+");
 
+        inputArea().removedConnection(LInputField.this);
+
         boolean hasChildren = children.size() > 0;
         for(LInputField child : children)
             inputArea().removeInputField(child);
 
-        inputArea().removedConnection(LInputField.this);
         // notify handler
         Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), null);
         inputArea().LNC().graphPanel().setBusy(false);
