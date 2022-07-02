@@ -119,6 +119,7 @@ public class DesignPalette
 
     public static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
     public static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
+    public static Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
         // fills
     public static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
     public static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
@@ -201,6 +202,7 @@ public class DesignPalette
     public static BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     public static Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
     public static Border LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(DesignPalette.LUDEME_SELECTION_COLOR, NODE_BORDER_WIDTH);
+    public static Border LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(DesignPalette.LUDEME_UNCOMPILABLE_COLOR, NODE_BORDER_WIDTH);
 
     public static EmptyBorder INPUT_AREA_PADDING_BORDER = new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0);
     public static EmptyBorder HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);

@@ -32,6 +32,7 @@ public class PlayButton extends JButton
     {
         if(!compilable)
         {
+            Handler.markUncompilable();
             java.util.List<String> errors = (java.util.List<String>) Handler.lastCompile[1];
             String errorMessage = "";
             if (errors.isEmpty())

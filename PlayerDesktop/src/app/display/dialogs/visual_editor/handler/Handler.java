@@ -63,10 +63,10 @@ public class Handler
         if(!unsatisfiedNodes.isEmpty())
         {
             List<String> errors = new ArrayList<>();
-            String errorMessage = "Nodes are missing required arguments: ";
+            String errorMessage = "Nodes are missing required arguments:\n";
             for(LudemeNode node : unsatisfiedNodes)
             {
-                errorMessage += node.title() + ", ";
+                errorMessage += node.title() + "\n";
             }
             errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
             errors.add(errorMessage);
@@ -106,6 +106,15 @@ public class Handler
                 toolsPanel.play.updateCompilable(output);
         }
         return output;
+    }
+
+    public static void markUncompilable()
+    {
+        List<LudemeNode> unsatisfiedNodes = isComplete(editorPanel.graph());
+        List<LudemeNodeComponent> lncs = new ArrayList<>();
+        for(LudemeNode node : unsatisfiedNodes)
+            lncs.add(editorPanel.nodeComponent(node));
+        editorPanel.notifyUncompilable(lncs);
     }
 
     public static boolean play()
@@ -464,6 +473,12 @@ public class Handler
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
             node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
         node.setProvidedInput(nodeArgument, input);
+        if(node.isSatisfied() && graphPanel.nodeComponent(node) != null)
+        {
+            LudemeNodeComponent lnc = graphPanel.nodeComponent(node);
+            if(lnc.isMarkedUncompilable())
+                lnc.markUncompilable(false);
+        }
         if(liveCompile && isConnectedToRoot(graph, node)) compile();
     }
 

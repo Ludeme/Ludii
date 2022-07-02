@@ -526,37 +526,52 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
-    public void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated) {
+    public void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated)
+    {
         LInputField inputField = null;
         for(LInputField ii : lnc.inputArea().currentInputFields)
-        {
             if(ii.nodeArguments().contains(inputFieldArgument))
             {
                 inputField = ii;
                 break;
             }
-        }
 
         assert inputField != null;
         if(!inputField.isMerged())
         {
-            if (activated) inputField.notifyActivated();
-            else inputField.notifyDeactivated();
+            if (activated)
+                inputField.notifyActivated();
+            else
+                inputField.notifyDeactivated();
         }
         else
-        {
             lnc.addTerminal(inputFieldArgument, inputField);
-        }
     }
 
     @Override
     public void updateCollapsed(List<LudemeNodeComponent> lncs) {
         for(LudemeNodeComponent lnc : lncs)
-        {
             if(lnc.node().collapsed())
                 if(lnc.header().inputField() != null)
                     lnc.header().inputField().notifyCollapsed();
-        }
+    }
+
+    private List<LudemeNodeComponent> uncompilableNodes = new ArrayList<>();
+
+    @Override
+    public void notifyUncompilable(List<LudemeNodeComponent> lncs)
+    {
+        unmarkUncompilableNodes();
+        uncompilableNodes = lncs;
+        for(LudemeNodeComponent lnc : lncs)
+            lnc.markUncompilable(true);
+    }
+
+    private void unmarkUncompilableNodes()
+    {
+        for(LudemeNodeComponent lnc : uncompilableNodes)
+            lnc.markUncompilable(false);
+        uncompilableNodes.clear();
     }
 
     @Override

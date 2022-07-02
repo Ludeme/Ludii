@@ -37,6 +37,8 @@ public class LudemeNodeComponent extends JPanel
     private final LudemeNode LN;
     /** Graph Panel this node is in */
     private final IGraphPanel GRAPH_PANEL;
+    /** Whether this node is marked as uncompilable */
+    private boolean markedUncompilable = false;
     // Whether the node is "marked"/selected
     private boolean selected = false;
     private boolean doubleSelected = false;
@@ -298,6 +300,17 @@ public class LudemeNodeComponent extends JPanel
         node().setCollapsed(collapsed);
     }
 
+    public void markUncompilable(boolean uncompilable)
+    {
+        markedUncompilable = uncompilable;
+        repaint();
+    }
+
+    public boolean isMarkedUncompilable()
+    {
+        return markedUncompilable;
+    }
+
     /**
      * Drag Listener for the node component
      *  - When the node is dragged, the node is moved
@@ -451,8 +464,12 @@ public class LudemeNodeComponent extends JPanel
         LN.setHeight(getHeight());
 
         setBackground(backgroundColour());
-        if (selected) setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
-        else setBorder(DesignPalette.LUDEME_NODE_BORDER);
+        if (selected)
+            setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
+        else if (markedUncompilable)
+            setBorder(DesignPalette.LUDEME_NODE_BORDER_UNCOMPILABLE);
+        else
+            setBorder(DesignPalette.LUDEME_NODE_BORDER);
 
     }
 

@@ -9,7 +9,6 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
 import main.grammar.Clause;
-import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.util.List;
@@ -33,6 +32,7 @@ public interface IGraphPanel {
     void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
     void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated);
     void updateCollapsed(List<LudemeNodeComponent> lncs);
+    void notifyUncompilable(List<LudemeNodeComponent> lncs);
 
     JPanel panel();
 
