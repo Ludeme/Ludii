@@ -7,6 +7,7 @@ import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import main.grammar.Clause;
+import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import javax.swing.*;
@@ -125,7 +126,7 @@ public class LHeader extends JComponent
                 List<Clause> clauses = symbolClauseMap.get(s);
                 for(Clause c : clauses)
                 {
-                    JMenuItem item = new JMenuItem(c.toString());
+                    JMenuItem item = new JMenuItem(clauseTitle(c));
                     item.addActionListener(e -> {
                         Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), c);
                         repaint();
@@ -138,7 +139,7 @@ public class LHeader extends JComponent
             List<Clause> clauses = symbolClauseMap.get(s);
             if(clauses.size() == 1)
             {
-                JMenuItem item = new JMenuItem(s.name());
+                JMenuItem item = new JMenuItem(clauseTitle(clauses.get(0)));
                 item.setToolTipText(DocumentationReader.instance().documentation().get(s).description());
                 item.addActionListener(e -> {
                     Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(0));
@@ -153,7 +154,7 @@ public class LHeader extends JComponent
                 JMenuItem[] subitems = new JMenuItem[clauses.size()];
                 for(int j = 0; j < clauses.size(); j++)
                 {
-                    subitems[j] = new JMenuItem(clauses.get(j).toString());
+                    subitems[j] = new JMenuItem(clauseTitle(clauses.get(j)));
                     int finalJ = j;
                     subitems[j].addActionListener(e -> {
                         Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(finalJ));
@@ -165,6 +166,24 @@ public class LHeader extends JComponent
             }
         }
         return popup;
+    }
+
+    private String clauseTitle(Clause c)
+    {
+        if(c.args() == null)
+            return c.toString();
+        if(c.args().get(0).symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+        {
+            String s = "("+c.symbol().token();
+            for(ClauseArg ca : c.args())
+            {
+                if(ca.symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+                    s += " "+ca.symbol().token();
+                else
+                    return s+=")";
+            }
+        }
+        return c.toString();
     }
 
     /**
