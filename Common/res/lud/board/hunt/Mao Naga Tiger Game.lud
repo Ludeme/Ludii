@@ -1,7 +1,7 @@
 (game "Mao Naga Tiger Game"
     (players 2)  
     (equipment { 
-    	("AlquerqueBoardWithBottomAndTopTriangles")
+        ("AlquerqueBoardWithBottomAndTopTriangles")
         (piece "Human" P1 "StepToEmpty")
         (piece "Tiger" P2 (or "StepToEmpty" "HopCapture"))
     })  

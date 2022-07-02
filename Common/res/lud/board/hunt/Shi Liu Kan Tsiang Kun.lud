@@ -9,8 +9,8 @@
             use:Vertex
         )
         (piece "General" P1 
-            (move Step 
-                (to if:(is Empty (to)))
+            ("StepToEmpty"
+                ~
                 (then 
                     (intervene 
                         (from (last To))
@@ -37,12 +37,12 @@
                 )
             )
         ) 
-    } )  
+    })  
     (rules 
         (start { 
             (place "General1" (ahead (centrePoint) S))
             (place "Marker2" (difference (sites Outer) (expand (sites Top))))
-        } )
+        })
         
         (play (forEach Piece)) 
         
@@ -82,8 +82,8 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
+    
     (ai
         "Shi Liu Kan Tsiang Kun_ai"
     )
