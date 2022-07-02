@@ -26,14 +26,7 @@
             (move Step 
                 (to if:(and (not (is In (to) (expand (sites Top)))) (is Empty (to))))
                 (then 
-                    (custodial 
-                        (from (last To))
-                        (between 
-                            if:(is Enemy (who at:(between)))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Friend (who at:(to))))
-                    )
+                    ("CustodialCapture")
                 )
             )
         ) 
