@@ -52,7 +52,7 @@ public class Handler
 
     public static Object[] lastCompile;
 
-    public static boolean liveCompile = false;
+    public static boolean liveCompile = true;
 
 
     // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
