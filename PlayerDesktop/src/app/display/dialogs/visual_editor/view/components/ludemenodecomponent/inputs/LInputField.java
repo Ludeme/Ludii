@@ -9,6 +9,8 @@ import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultFormatter;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeListener;
@@ -259,11 +261,28 @@ public class LInputField extends JComponent
         fieldComponent.setPreferredSize(terminalComponentSize());
 
         // add listeners to update provided inputs when modified
-        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
-        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
 
-        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
-        fieldComponent.addKeyListener(userInputListener_keyListener);
+        if(fieldComponent instanceof JTextField)
+        {
+            for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+            fieldComponent.addKeyListener(userInputListener_keyListener);
+        }
+        else if(fieldComponent instanceof JSpinner)
+        {
+            for(ChangeListener listener : ((JSpinner)fieldComponent).getChangeListeners().clone()) ((JSpinner) fieldComponent).removeChangeListener(listener);
+            ((JSpinner) fieldComponent).addChangeListener(userInputListener_change);
+        }
+        else if(fieldComponent instanceof JComboBox)
+        {
+            for(ActionListener listener : ((JComboBox)fieldComponent).getActionListeners().clone()) ((JComboBox) fieldComponent).removeActionListener(listener);
+            ((JComboBox) fieldComponent).addActionListener(userInputListener_dropdown);
+        }
+        else
+        {
+            for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+            fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        }
+
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
@@ -388,11 +407,26 @@ public class LInputField extends JComponent
         fieldComponent.setPreferredSize(terminalComponentSize());
 
         // add listeners to update provided inputs when modified
-        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
-        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
-
-        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
-        fieldComponent.addKeyListener(userInputListener_keyListener);
+        if(fieldComponent instanceof JTextField)
+        {
+            for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+            fieldComponent.addKeyListener(userInputListener_keyListener);
+        }
+        else if(fieldComponent instanceof JSpinner)
+        {
+            for(ChangeListener listener : ((JSpinner)fieldComponent).getChangeListeners().clone()) ((JSpinner) fieldComponent).removeChangeListener(listener);
+            ((JSpinner) fieldComponent).addChangeListener(userInputListener_change);
+        }
+        else if(fieldComponent instanceof JComboBox)
+        {
+            for(ActionListener listener : ((JComboBox)fieldComponent).getActionListeners().clone()) ((JComboBox) fieldComponent).removeActionListener(listener);
+            ((JComboBox) fieldComponent).addActionListener(userInputListener_dropdown);
+        }
+        else
+        {
+            for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+            fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        }
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(label);
@@ -493,11 +527,26 @@ public class LInputField extends JComponent
         fieldComponent.setPreferredSize(terminalComponentSize());
 
         // add listeners to update provided inputs when modified
-        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
-        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
-
-        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
-        fieldComponent.addKeyListener(userInputListener_keyListener);
+        if(fieldComponent instanceof JTextField)
+        {
+            for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+            fieldComponent.addKeyListener(userInputListener_keyListener);
+        }
+        else if(fieldComponent instanceof JSpinner)
+        {
+            for(ChangeListener listener : ((JSpinner)fieldComponent).getChangeListeners().clone()) ((JSpinner) fieldComponent).removeChangeListener(listener);
+            ((JSpinner) fieldComponent).addChangeListener(userInputListener_change);
+        }
+        else if(fieldComponent instanceof JComboBox)
+        {
+            for(ActionListener listener : ((JComboBox)fieldComponent).getActionListeners().clone()) ((JComboBox) fieldComponent).removeActionListener(listener);
+            ((JComboBox) fieldComponent).addActionListener(userInputListener_dropdown);
+        }
+        else
+        {
+            for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+            fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        }
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
         add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
@@ -549,11 +598,26 @@ public class LInputField extends JComponent
         fieldComponent.setPreferredSize(terminalComponentSize());
 
         // add listeners to update provided inputs when modified
-        for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
-        for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
-
-        fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
-        fieldComponent.addKeyListener(userInputListener_keyListener);
+        if(fieldComponent instanceof JTextField)
+        {
+            for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+            fieldComponent.addKeyListener(userInputListener_keyListener);
+        }
+        else if(fieldComponent instanceof JSpinner)
+        {
+            for(ChangeListener listener : ((JSpinner)fieldComponent).getChangeListeners().clone()) ((JSpinner) fieldComponent).removeChangeListener(listener);
+            ((JSpinner) fieldComponent).addChangeListener(userInputListener_change);
+        }
+        else if(fieldComponent instanceof JComboBox)
+        {
+            for(ActionListener listener : ((JComboBox)fieldComponent).getActionListeners().clone()) ((JComboBox) fieldComponent).removeActionListener(listener);
+            ((JComboBox) fieldComponent).addActionListener(userInputListener_dropdown);
+        }
+        else
+        {
+            for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+            fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
+        }
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(label);
@@ -670,12 +734,16 @@ public class LInputField extends JComponent
         // A Integer Spinner
         if(arg.symbol().name().equals("Integer") || arg.symbol().name().equals("int") || arg.symbol().token().equals("dim"))
         {
-            return new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
+            JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+            ((DefaultFormatter) ((JFormattedTextField) spinner.getEditor().getComponent(0)).getFormatter()).setCommitsOnValidEdit(true);
+            return spinner;
         }
         // A floating point Spinner
         if(arg.symbol().token().equals("float"))
         {
-            return new JSpinner(new SpinnerNumberModel(1, 0.0, Float.MAX_VALUE, 0.1));
+            JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 0.01, Float.MAX_VALUE, 0.1));
+            ((DefaultFormatter) ((JFormattedTextField) spinner.getEditor().getComponent(0)).getFormatter()).setCommitsOnValidEdit(true);
+            return spinner;
         }
 
         if(arg.symbol().token().equals("boolean"))
@@ -820,6 +888,10 @@ public class LInputField extends JComponent
      * Listens for changes to a terminal component and updates the model accordingly
      */
     PropertyChangeListener userInputListener_propertyChange = evt -> updateUserInputs();
+
+    ChangeListener userInputListener_change = evt -> updateUserInputs();
+
+    ActionListener userInputListener_dropdown = evt -> updateUserInputs();
 
     /**
      * Listens for changes via keys to a terminal component and updates the model accordingly
