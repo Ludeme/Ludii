@@ -1,4 +1,4 @@
-package app.display.dialogs.visual_editor.view;
+package app.display.dialogs.visual_editor.view.panels.menus;
 
 import app.display.dialogs.visual_editor.handler.EditorMenuBarHandler;
 
@@ -36,11 +36,12 @@ public class EditorMenuBar extends JMenuBar {
         addJMenuItem(about, "Learn more about DLP", null);
 
         add(file);
+        add(new EditMenu(this));
         add(settings);
         add(about);
     }
 
-    public static void addJMenuItem(JMenu menu, String itemName, ActionListener actionListener)
+    public void addJMenuItem(JMenu menu, String itemName, ActionListener actionListener)
     {
         JMenuItem jMenuItem = new JMenuItem(itemName);
         jMenuItem.addActionListener(actionListener);

@@ -7,6 +7,7 @@ import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling
 import app.display.dialogs.visual_editor.recs.utils.CSVUtils;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;

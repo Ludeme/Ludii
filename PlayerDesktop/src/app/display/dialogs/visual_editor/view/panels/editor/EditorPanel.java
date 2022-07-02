@@ -104,6 +104,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         Handler.gameDescriptionGraph = graph;
         Handler.editorPanel = this;
+        Handler.currentGraphPanel = this;
         Handler.addGraphPanel(graph, this);
 
         Handler.recordUserActions = false;

@@ -47,6 +47,7 @@ public class Handler
     public static boolean recordUserActions = true;
 
     private static HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
+    public static IGraphPanel currentGraphPanel;
 
     private static final boolean DEBUG = true;
 
@@ -283,6 +284,11 @@ public class Handler
         if(lastActionEquals(action)) Handler.recordUserActions = false;
         for(LudemeNode n : nodes) removeNode(graph, n);
         if(lastActionEquals(action)) Handler.recordUserActions = true;
+    }
+
+    public static void remove()
+    {
+        remove(currentGraphPanel.graph());
     }
 
     public static void remove(DescriptionGraph graph)
@@ -608,6 +614,10 @@ public class Handler
 
     private static List<LudemeNode> currentCopy = new ArrayList<LudemeNode>(); // current copy
 
+    public static void copy()
+    {
+        copy(currentGraphPanel.graph());
+    }
 
     public static void copy(DescriptionGraph graph)
     {
@@ -750,6 +760,11 @@ public class Handler
         duplicate(graph, nodes);
     }
 
+    public static void duplicate()
+    {
+        duplicate(currentGraphPanel.graph());
+    }
+
     public static void paste(DescriptionGraph graph, List<LudemeNode> nodes, int x, int y)
     {
         if(DEBUG) System.out.println("[HANDLER] paste(graph, x, y) Pasting " + nodes.size() + " nodes");
@@ -827,6 +842,11 @@ public class Handler
         addAction(action);
     }
 
+    public static void paste(int x, int y)
+    {
+        paste(currentGraphPanel.graph(), x, y);
+    }
+
     public static void paste(DescriptionGraph graph, int x, int y)
     {
         if(currentCopy.isEmpty()) return;
@@ -846,6 +866,11 @@ public class Handler
     public static void updatePosition(DescriptionGraph graph, LudemeNode node, int x, int y)
     {
         node.setPos(x, y);
+    }
+
+    public static void collapse()
+    {
+        collapse(currentGraphPanel.graph());
     }
 
     public static void collapse(DescriptionGraph graph)
@@ -878,6 +903,11 @@ public class Handler
         graphPanelMap.get(graph).deselectEverything();
     }
 
+
+    public static void expand()
+    {
+        expand(currentGraphPanel.graph());
+    }
     public static void expand(DescriptionGraph graph)
     {
         List<LudemeNode> selectedNodes = selectedNodes(graph);
@@ -908,6 +938,16 @@ public class Handler
             nodes.add(lnc.node());
         }
         return nodes;
+    }
+
+    public static void selectAll()
+    {
+        selectAll(currentGraphPanel.graph());
+    }
+
+    public static void unselectAll()
+    {
+        currentGraphPanel.deselectEverything();
     }
 
     public static void selectAll(DescriptionGraph graph)
