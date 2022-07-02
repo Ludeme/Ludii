@@ -577,7 +577,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
     @Override
     public void setBusy(boolean b)
     {
-     busy = b;
+        System.out.println("setting busy: " + b);
+        busy = b;
     }
 
     @Override
@@ -683,12 +684,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         LudemeNode node = lnc.node();
         if(ch.getSelectedConnectionComponent() != null)
-        {
             if(ch.getSelectedConnectionComponent().possibleSymbolInputs().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
-            {
                 ch.finishNewConnection(lnc);
-            }
-        }
     }
 
     @Override
@@ -744,11 +741,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
                 {
                     // if its a 2D collection, connect to a 1D collection equivalent
                     if(ch.getSelectedConnectionComponent().inputField().nodeArgument(0).collection2D())
-                    {
-                        NodeArgument na1d = ch.getSelectedConnectionComponent().inputField().nodeArgument(0).collection1DEquivalent();
-                        Handler.addNode(graph, na1d.arg().symbol(), ch.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
-                        System.out.println("brrrrrr");
-                    }
+                        Handler.addNode(graph, ch.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY());
                     // if user has no chocie for next ludeme -> automatically add required ludeme
                     else if(ch.getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
                         Handler.addNode(graph, ch.getSelectedConnectionComponent().possibleSymbolInputs().get(0), ch.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);

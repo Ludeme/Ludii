@@ -59,12 +59,13 @@ public class LudemeNode implements iGNode
      * game, game.equipment, game.functions, game.rules
      */
     private final String PACKAGE_NAME;
-
-    // Variables for dynamic nodes
     /** HashMap of NodeArguments keyed by the clause they correspond to */
     private final HashMap<Clause, List<NodeArgument>> nodeArguments;
     /** List of NodeArguments for the current Clause of the associated LudemeNodeComponent */
     private List<NodeArgument> currentNodeArguments;
+    /** Whether this node is a 1D Collection-supply for a 2D-Collection */
+    private boolean is1DCollectionNode = false;
+
 
     /**
      * Constructor for a new LudemeNode
@@ -102,8 +103,10 @@ public class LudemeNode implements iGNode
         this.ID = LAST_ID++;
         this.SYMBOL = symbol;
         this.NODE_ARGUMENT_CREATOR = argument;
-        if(symbol.rule() == null) this.CLAUSES = new ArrayList<>();
-        else this.CLAUSES = symbol.rule().rhs();
+        if(symbol.rule() == null)
+            this.CLAUSES = new ArrayList<>();
+        else
+            this.CLAUSES = symbol.rule().rhs();
         this.x = x;
         this.y = y;
         this.width = 100; // width and height are hard-coded for now, are updated later
@@ -146,6 +149,49 @@ public class LudemeNode implements iGNode
                 SYMBOL_CLAUSE_MAP.put(c.symbol(), l);
             }
 
+        this.helpInformation = DocumentationReader.instance().help(SYMBOL);
+    }
+
+    /**
+     * Creates a LudemeNode which represents a 1D collection
+     * @param na2DCollection NodeArgument which represents the 2D collection, and this 1D collection is part of
+     * @param x x coordinate of this node in the graph
+     * @param y y coordinate of this node in the graph
+     */
+    public LudemeNode(NodeArgument na2DCollection, int x, int y)
+    {
+        this.ID = LAST_ID++;
+        this.is1DCollectionNode = true;
+        this.x = x;
+        this.y = y;
+        this.width = 100; // width and height are hard-coded for now, are updated later
+        this.height = 100;
+
+        NodeArgument na1DCollection = na2DCollection.collection1DEquivalent(na2DCollection.args().get(0));
+        this.SYMBOL = na1DCollection.arg().symbol();
+        this.CLAUSES = new ArrayList<>();
+        List<ClauseArg> clauseArgs = new ArrayList<>();
+        clauseArgs.add(na1DCollection.arg());
+        this.CLAUSES.add(new Clause(this.SYMBOL, clauseArgs, false));
+        // Expand clauses if possible
+        if(CLAUSES != null)
+        {
+            expandClauses();
+            if(CLAUSES.size() > 0)
+                this.selectedClause = CLAUSES.get(0);
+        }
+
+        this.NODE_ARGUMENT_CREATOR = na2DCollection;
+        this.nodeArguments = generateNodeArguments();
+        currentNodeArguments = nodeArguments.get(selectedClause());
+
+        // initialize the provided inputs map
+        providedInputsMap = new LinkedHashMap<>();
+        for(NodeArgument na : currentNodeArguments)
+            providedInputsMap.put(na, null);
+
+        // package name
+        this.PACKAGE_NAME = initPackageName();
         this.helpInformation = DocumentationReader.instance().help(SYMBOL);
     }
 
@@ -355,7 +401,11 @@ public class LudemeNode implements iGNode
         return SYMBOL_CLAUSE_MAP;
     }
 
-    // Methods for Dynamic Nodes
+
+    public boolean is1DCollectionNode()
+    {
+        return is1DCollectionNode;
+    }
 
 
     /**
@@ -650,6 +700,32 @@ public class LudemeNode implements iGNode
 
     public String toLud()
     {
+
+        if(is1DCollectionNode())
+        {
+            // get collection
+            Object[] collection = (Object[]) providedInputsMap().get(providedInputsMap().keySet().iterator().next());
+            if(collection == null)
+                return "{ } ";
+            StringBuilder b = new StringBuilder();
+            b.append("{");
+            for(int i = 0; i < collection.length; i++)
+            {
+                Object in = collection[i];
+                if(in == null)
+                    continue;
+                if(in instanceof String)
+                    b.append("\"" + in + "\"");
+                else if(in instanceof LudemeNode)
+                    b.append(((LudemeNode) in).toLud());
+                else
+                    b.append(in.toString());
+                b.append(" ");
+            }
+            b.append("} ");
+            return b.toString();
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append("(");
         sb.append(tokenTitle());
@@ -862,9 +938,14 @@ public class LudemeNode implements iGNode
 
     public String description()
     {
-        if(helpInformation == null) return "";
-        if(selectedClause.symbol() == symbol()) return helpInformation.description();
-        else return DocumentationReader.instance().documentation().get(selectedClause.symbol()).description();
+        if(helpInformation == null)
+            return "";
+        if(selectedClause == null)
+            return "";
+        if(selectedClause.symbol() == symbol())
+            return helpInformation.description();
+        else
+            return DocumentationReader.instance().documentation().get(selectedClause.symbol()).description();
     }
 
     public int x()

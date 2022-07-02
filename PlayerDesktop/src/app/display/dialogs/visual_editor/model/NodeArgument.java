@@ -30,7 +30,6 @@ public class NodeArgument
     private final int INDEX;
     /** List of possible Arguments as Input */
     private final List<PossibleArgument> possibleArguments;
-    private final NodeArgument collection1DEquivalent;
     /** The list of Symbols that may be provided as input for this NodeArgument
      *  Structural Symbols are not included in this list, but rather expanded to their rules.
      */
@@ -93,17 +92,31 @@ public class NodeArgument
 
         originalArgs.addAll(this.args);
 
-        // if this is a choice between collection or not, default to collection
+        // if contains a choice between a 1d collection or not, keep the 1d collection and remove the other
         if(this.args.size() == 2)
-        {
-            if(this.args.get(0).symbol().equals(this.args.get(1).symbol()))
+            if(args.get(0).symbol().equals(args.get(1).symbol()))
             {
-                // get index of non-collection
-                int index = 0;
-                if(this.args.get(0).andGroup()==0) index = 1;
-                this.args.remove(index);
+                if(args.get(0).nesting() == 0 && args.get(1).nesting() == 1)
+                    this.args.remove(0);
+                else if(args.get(0).nesting() == 1 && args.get(1).nesting() == 0)
+                    this.args.remove(1);
+            }
+        else if(this.args.size() == 3)
+        {
+            ClauseArg arg1 = args.get(0);
+            ClauseArg arg2 = args.get(1);
+            ClauseArg arg3 = args.get(2);
+            if(arg1.symbol().equals(arg2.symbol()) && arg1.symbol().equals(arg3.symbol()))
+            {
+                if(arg1.nesting() == 0 && arg2.nesting() == 1 && arg3.nesting() == 2)
+                    this.args.remove(arg1);
+                else if(arg1.nesting() == 1 && arg2.nesting() == 2 && arg3.nesting() == 0)
+                    this.args.remove(arg3);
+                else if(arg1.nesting() == 2 && arg2.nesting() == 0 && arg3.nesting() == 1)
+                    this.args.remove(arg2);
             }
         }
+
 
         this.possibleArguments = new ArrayList<>();
         for(ClauseArg ca : args)
@@ -122,24 +135,35 @@ public class NodeArgument
 
         possibleSymbolInputs = new ArrayList<>(possibleSymbols);
         parameterDescription = readHelp();
-
-        if(collection2D())
-            this.collection1DEquivalent = create1DEquivalent();
-        else
-            this.collection1DEquivalent = null;
-
     }
 
-    private NodeArgument create1DEquivalent()
+    /**
+     * Constructor for PreDefined Arguments
+     * @param clause the clause this NodeArgument is part of
+     */
+    public NodeArgument(Clause clause)
     {
-        System.out.println("Creating 1D Equivalent for " + this.args.get(0).symbol().name());
-        ClauseArg ca1d = new ClauseArg(this.args.get(0).symbol(), this.args.get(0).actualParameterName(), this.args.get(0).label(), this.args.get(0).optional(), 1, this.args.get(0).andGroup());
+        CLAUSE = clause;
+        // add argument to list
+        args = new ArrayList<>();
+        args.add(new ClauseArg(clause.symbol(), null, null, false, 0, 0));
+        args.get(0).setNesting(clause.args().get(0).nesting());
+        originalArg = null;
+        INDEX = 0;
+        this.possibleArguments = new ArrayList<>();
+        possibleSymbolInputs = new ArrayList<>();
+    }
+
+    private NodeArgument create1DEquivalent(ClauseArg ca)
+    {
+        ClauseArg ca1d = new ClauseArg(ca.symbol(), ca.actualParameterName(), ca.label(), false, 0, 0);
+        ca1d.setNesting(1);
         return new NodeArgument(this.CLAUSE, ca1d);
     }
 
-    public NodeArgument collection1DEquivalent()
+    public NodeArgument collection1DEquivalent(ClauseArg arg)
     {
-        return this.collection1DEquivalent;
+        return create1DEquivalent(arg);
     }
 
     private Set<Symbol> expandPossibleArgument(PossibleArgument pa)
@@ -162,26 +186,6 @@ public class NodeArgument
             return;
         for(Clause c : arg.symbol().rule().rhs())
             possibleArguments.add(new PossibleArgument(c));
-    }
-
-    /**
-     * Constructor for PreDefined Arguments
-     * @param clause the clause this NodeArgument is part of
-     */
-    public NodeArgument(Clause clause)
-    {
-        CLAUSE = clause;
-        // add argument to list
-        args = new ArrayList<>();
-        args.add(new ClauseArg(clause.symbol(), null, null, false, 0, 0));
-        originalArg = null;
-        INDEX = 0;
-        this.possibleArguments = new ArrayList<>();
-        possibleSymbolInputs = new ArrayList<>();
-        if(collection2D())
-            this.collection1DEquivalent = create1DEquivalent();
-        else
-            this.collection1DEquivalent = null;
     }
 
     /**
@@ -312,6 +316,11 @@ public class NodeArgument
     public boolean collection2D()
     {
         return arg().nesting() == 2;
+    }
+
+    public boolean collection2D(ClauseArg arg)
+    {
+        return arg.nesting() == 2;
     }
 
     /**

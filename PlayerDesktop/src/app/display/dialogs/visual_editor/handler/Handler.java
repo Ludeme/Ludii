@@ -151,6 +151,14 @@ public class Handler
         return node;
     }
 
+    public static LudemeNode addNode(DescriptionGraph graph, NodeArgument nodeArgument2DCollection, int x, int y)
+    {
+        LudemeNode node = new LudemeNode(nodeArgument2DCollection, x, y);
+        addNode(graph, node, true);
+        return node;
+    }
+
+
     /**
      * Removes a node from the graph.
      * @param graph The graph that contains the node.

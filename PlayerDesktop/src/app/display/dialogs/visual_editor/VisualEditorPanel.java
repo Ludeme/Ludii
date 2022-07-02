@@ -1,15 +1,5 @@
 package app.display.dialogs.visual_editor;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.GeneralPath;
-
 import javax.swing.*;
 
 import app.PlayerApp;
@@ -25,7 +15,6 @@ import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
  */
 public class VisualEditorPanel
 {
-	private static final long serialVersionUID = 1L;
 	public static PlayerApp app;
 
 	@SuppressWarnings("unused")
@@ -39,7 +28,7 @@ public class VisualEditorPanel
 	public VisualEditorPanel(final PlayerApp app)
 	{
 
-		this.app = app;
+		VisualEditorPanel.app = app;
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -56,7 +45,8 @@ public class VisualEditorPanel
 	private static NGramController controller;
 
 
-	public static NGramController controller() {
+	public static NGramController controller() 
+	{
 		return controller;
 	}
 
