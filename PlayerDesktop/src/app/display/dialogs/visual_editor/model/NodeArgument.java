@@ -81,6 +81,7 @@ public class NodeArgument
                                 match = s;
                                 break;
                             }
+                        if(match == null) match = c.symbol().returnType();
                         int nesting = c.nesting();
                         ClauseArg newArg = new ClauseArg(match, c.actualParameterName(), c.label(), c.optional(), c.orGroup(), c.andGroup());
                         newArg.setNesting(nesting);
@@ -136,6 +137,8 @@ public class NodeArgument
 
     private void computePossibleArguments(ClauseArg arg)
     {
+        if(arg.symbol() == null)
+            System.out.println();
         if(arg.symbol().rule() == null)
             return;
         for(Clause c : arg.symbol().rule().rhs())

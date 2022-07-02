@@ -195,6 +195,7 @@ public class LInputField extends JComponent
         {
             constructNonTerminal(nodeArgument);
         }
+
     }
 
     /**
@@ -294,6 +295,13 @@ public class LInputField extends JComponent
             {
                 setUserInput(input);
             }
+        }
+
+        if(input == null && removable)
+        {
+            fieldComponent.setEnabled(false);
+            addItemButton.setEnabled(false);
+            active = false;
         }
 
     }
@@ -717,7 +725,8 @@ public class LInputField extends JComponent
 
     public void activate()
     {
-        if(!isTerminal()) return;
+        if(!isTerminal())
+            return;
         Handler.activateOptionalTerminalField(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), true);
     }
 
@@ -725,7 +734,9 @@ public class LInputField extends JComponent
     {
         active = true;
         fieldComponent.setEnabled(true);
+        fieldComponent.repaint();
         label.setEnabled(true);
+        addItemButton.setEnabled(true);
         terminalOptionalLabel.setText("X");
         if(!nodeArgument(0).collection())
         {
@@ -762,6 +773,7 @@ public class LInputField extends JComponent
         inputArea().LNC().graphPanel().setBusy(true);
 
         fieldComponent.setEnabled(false);
+        addItemButton.setEnabled(false);
         label.setEnabled(false);
         terminalOptionalLabel.setText("+");
 
@@ -897,9 +909,16 @@ public class LInputField extends JComponent
      */
     public void updateUserInputs()
     {
-        if(inputArea().LNC().graphPanel().isBusy()) return;
-        if(nodeArguments.get(0).collection()) {
-            if (inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) == null) {
+        if(inputArea().LNC().graphPanel().isBusy())
+            return;
+        if(nodeArguments.get(0).collection() && parent() == null && !isActive())
+            return;
+        if(nodeArguments.get(0).collection() && parent() != null && !parent().isActive())
+            return;
+        if(nodeArguments.get(0).collection())
+        {
+            if (inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) == null)
+            {
                 Object[] in = new Object[1];
                 in[0] = getUserInput();
                 Handler.updateInput(LIA.LNC().graphPanel().graph(), LIA.LNC().node(), nodeArgument(0), in); // TODO: Verify this works
@@ -911,10 +930,8 @@ public class LInputField extends JComponent
                 Handler.updateCollectionInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput(), index);
             }
         }
-        else {
-            //Handler.updateInput(LIA.LNC().graphPanel().graph(), LIA.LNC().node(), inputIndexFirst(), getUserInput());
+        else
             Handler.updateInput(LIA.LNC().graphPanel().graph(), LIA.LNC().node(), nodeArgument(0), getUserInput());
-        }
     }
 
     /**
@@ -923,18 +940,24 @@ public class LInputField extends JComponent
      */
     public Object getUserInput()
     {
-        if(isMerged()) return null;
-        if(optional() && !isActive()) return null;
+        if(isMerged())
+            return null;
+        if(parent() == null && optional() && !isActive())
+            return null;
         if(fieldComponent == connectionComponent) // Ludeme Input
         {
-            if(connectionComponent.connectedTo() == null) return null;
+            if(connectionComponent.connectedTo() == null)
+                return null;
             return connectionComponent.connectedTo().node();
         }
 
         // Terminal Inputs
-        if(fieldComponent instanceof JTextField) return ((JTextField)fieldComponent).getText();
-        if(fieldComponent instanceof JSpinner) return ((JSpinner)fieldComponent).getValue();
-        if(fieldComponent instanceof JComboBox) return ((JComboBox)fieldComponent).getSelectedItem();
+        if(fieldComponent instanceof JTextField)
+            return ((JTextField)fieldComponent).getText();
+        if(fieldComponent instanceof JSpinner)
+            return ((JSpinner)fieldComponent).getValue();
+        if(fieldComponent instanceof JComboBox)
+            return ((JComboBox)fieldComponent).getSelectedItem();
 
         return null;
     }

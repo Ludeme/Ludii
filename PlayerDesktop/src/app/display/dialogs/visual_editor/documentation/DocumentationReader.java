@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Provides documentation/help for a symbol
+ * Reads EditorHelp.txt and stores help information for each symbol
  * @author Filipp Dokienko
  */
 
@@ -22,23 +22,26 @@ public class DocumentationReader
     private static File helpFile = null;
     private static HashMap<Symbol, HelpInformation> documentation = new HashMap<>();
     private static Grammar grammar = Grammar.grammar();
-    private static EBNF ebnf = grammar.ebnf();
 
     private static HashMap<Clause, EBNFClause> clauseMap = new HashMap<>();
 
 
     public static void main(String[] args)
     {
-        helpFile = new File(System.getProperty("user.dir")+"\\Common\\res\\help\\EditorHelp.txt"); // TODO: not absolute path
-        try {
+        helpFile = new File(System.getProperty("user.dir")+"\\Common\\res\\help\\EditorHelp.txt");
+        try
+        {
             readDoc();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
         System.out.println();
     }
 
-    public static void readDoc() throws IOException {
+    public static void readDoc() throws IOException
+    {
         // read helpFile by line
         BufferedReader reader = new BufferedReader(new FileReader(helpFile));
 
@@ -79,7 +82,8 @@ public class DocumentationReader
             }
             else if(line.startsWith("SUBCLASS:"))
             {
-                if(true) continue;
+                if(true)
+                    continue;
                 subclasses.add(findSymbol(line.substring(10)));
             }
             else if(line.startsWith("NEW CTOR"))
@@ -133,101 +137,130 @@ public class DocumentationReader
     private static Symbol findSymbol(String name)
     {
         for(Symbol symbol : grammar.symbols())
-        {
             if(symbol.path().equals(name))
-            {
                 return symbol;
-            }
-        }
         return null;
     }
 
     private static Clause findClause(Symbol s, String string)
     {
 
-        string = string.replaceAll("\\s+", " ");
-        // get ebnfclause
-        EBNFClause ec;
-        String temp = "";
-        try {
+        EBNFClause ec = null;
+        try
+        {
             ec = new EBNFClause(string.replaceAll("\\s+", " "));
         }
-        catch (Exception e)
+        catch(Exception ignored){}
+
+        String string2 = string;
+
+        for(Clause clause : s.rule().rhs())
         {
-            System.out.println("Couldnt parse clause: "+string.replaceAll("\\s+", " "));
-            return null;
-        }
-        // get decomposed clause string
-        String dstring = ec.toString();
-        for(EBNFClauseArg a : ec.args())
-        {
-            if(a.parameterName() == null) continue;
-            dstring = dstring.replaceAll(a.parameterName()+":","");
-        }
-
-        // replace int with <int>, ints with <ints>
-        if(dstring.contains(" ")) {
-            String dstring1 = dstring.substring(0, dstring.indexOf(" "));
-            String dstring2 = dstring.substring(dstring.indexOf(" ") + 1);
-            dstring2 = dstring2.replaceAll(" ints", " <ints>");
-            dstring2 = dstring2.replaceAll("\\[ints", "[<ints>");
-            dstring2 = dstring2.replaceAll("\\(ints", "(<ints>");
-            dstring2 = dstring2.replaceAll("\\{ints", "{<ints>");
-
-            dstring2 = dstring2.replaceAll(" int\\]", " <int>]");
-            dstring2 = dstring2.replaceAll(" int\\)", " <int>)");
-            dstring2 = dstring2.replaceAll(" int\\}", " <int>}");
-
-            dstring2 = dstring2.replaceAll("\\[int ", "[<int> ");
-            dstring2 = dstring2.replaceAll("\\[int]", "[<int>]");
-
-            dstring2 = dstring2.replaceAll("\\{int ", "{<int> ");
-            dstring2 = dstring2.replaceAll("\\{int}", "{<int>}");
-            dstring2 = dstring2.replaceAll(" int\\)", "<int>)");
-
-            while(dstring2.contains(" int ")) dstring2 = dstring2.replace(" int ", " <int> ");
-
-            if((dstring2.contains(" ") && dstring2.substring(0, dstring2.indexOf(" ")).equals("int")) || dstring2.equals("int")) {
-                dstring2 = dstring2.replaceFirst("int", "<int>");
+            if(clause.args() == null) continue;
+            String clauseString = clause.toString();
+            for(ClauseArg arg : clause.args())
+            {
+                string2 = string2.replace("<"+arg.symbol().token()+">", "<"+arg.symbol().grammarLabel()+">");
             }
-
-            //while(dstring2.contains(" int ")) dstring2 = dstring2.replace(" int ", " <int> ");
-
-            dstring = dstring1 + " " + dstring2;
-        }
-
-        for(Clause c : s.rule().rhs())
-        {
-            if(c.args() != null) {
-
-                if (c.toString().equals(dstring)) {
-                    clauseMap.put(c, ec);
-                    return c;
-                }
-
-                if(dstring.contains(" ")) {
-                    String dstring1 = dstring.substring(0, dstring.indexOf(" "));
-                    String dstring2 = dstring.substring(dstring.indexOf(" ") + 1);
-                    for (ClauseArg a : c.args()) {
-                        dstring2 = dstring2.replaceAll("<" + a.symbol().token() + ">", "<" + a.symbol().grammarLabel() + ">");
-                    }
-                    dstring = dstring1 + " " + dstring2;
-                }
-                temp = dstring;
-                if (c.toString().equals(dstring)) {
-                    clauseMap.put(c, ec);
-                    return c;
-                }
+            clauseString = clauseString.replaceAll("<int>", "int");
+            clauseString = clauseString.replaceAll("<ints>", "ints");
+            string2 = string2.replaceAll("<int>", "int");
+            string2 = string2.replaceAll("<ints>", "ints");
+            string2 = string2.replaceAll("\\s+", " ");
+            if(clauseString.equalsIgnoreCase(string2))
+            {
+                clauseMap.put(clause, ec);
+                return clause;
+            }
+            if(clauseToString(clause).equalsIgnoreCase(string2))
+            {
+                clauseMap.put(clause, ec);
+                return clause;
             }
         }
 
-        System.out.println("Couldnt match clause: "+string);
+        for(Clause clause : s.rule().rhs())
+        {
+            string2 = string2.replaceAll("<region>","<sites>");
+            string2 = string2.replaceAll("<rangefunction>","<range>");
+            string2 = string2.replaceAll("<intarrayfunction>","ints");
+            string2 = string2.replaceAll("<dimfunction>","<dim>");
+            if(clauseToString(clause).equalsIgnoreCase(string2))
+            {
+                clauseMap.put(clause, ec);
+                return clause;
+            }
+        }
+
+        System.out.println("Could not find clause: "+string);
+
         return null;
+    }
+
+    private static String clauseToString(Clause c)
+    {
+        int currentGroup = 0;
+        int lastGroup = 0;
+        String st = "";
+        st += "("+c.symbol().token()+" ";
+        if(c.args() != null)
+            for(ClauseArg cArg : c.args())
+            {
+                if(cArg.orGroup() > 0)
+                {
+                    if(currentGroup != cArg.orGroup())
+                    {
+                        if(currentGroup > 0)
+                            st += ") ";
+                        st += "(";
+                        currentGroup = cArg.orGroup();
+                    }
+                    else
+                        st += "|";
+                }
+                if(cArg.orGroup() == 0 && currentGroup > 0)
+                {
+                    st += ")";
+                    currentGroup = 0;
+                }
+                st += " " + cArg.toString() + " ";
+                lastGroup = cArg.orGroup();
+            }
+        if(lastGroup > 0)
+            st += ")";
+        st += ")";
+        st = st.replaceAll("\\s+", " ");
+        st = st.replaceAll("\\( ", "(");
+        st = st.replaceAll(" \\)", ")");
+        st = st.replaceAll("<int>","int");
+        st = st.replaceAll("<ints>","ints");
+        return st;
     }
 
     private static ClauseArg findClauseArg(Clause c, String string)
     {
-        if(c==null) return null;
+        if(c==null)
+            return null;
+
+        List<String> strings = new ArrayList<>();
+
+        String string2 = string;
+
+        List<ClauseArg> cas = c.args();
+        for(ClauseArg ca : cas)
+        {
+            String caString = ca.toString();
+            string2 = string2.replace( "<"+ca.symbol().token()+">", "<"+ca.symbol().grammarLabel()+">");
+            caString = caString.replaceAll("<int>", "int");
+            caString = caString.replaceAll("<ints>", "ints");
+            string2 = string2.replaceAll("<int>","int");
+            string2 = string2.replaceAll("<ints>","ints");
+            string2 = string2.toLowerCase();
+            caString = caString.toLowerCase();
+            strings.add(caString);
+            if(caString.equals(string2))
+                return ca;
+        }
 
         EBNFClause ec = clauseMap.get(c);
         String[] split = ec.toString().substring(1, ec.toString().length()-1).split(" ");
@@ -243,33 +276,31 @@ public class DocumentationReader
                 int fromIndex = indexOfBar-1;
                 int untilIndex = indexOfBar;
                 while(untilIndex+2 < splitlist.size() && splitlist.get(untilIndex+2).equals("|"))
-                {
                     untilIndex+=2;
-                }
                 untilIndex+=1;
 
                 splitlist.set(fromIndex, splitlist.get(fromIndex).substring(1));
                 splitlist.set(untilIndex, splitlist.get(untilIndex).substring(0, splitlist.get(untilIndex).length()-1));
                 char closeType = ' ';
-                if(type == '[') closeType = ']';
-                else if(type == '{') closeType = '}';
+                if(type == '[')
+                    closeType = ']';
+                else if(type == '{')
+                    closeType = '}';
                 if(type == '[' || type == '{')
                 {
                     for(int i = fromIndex; i<=untilIndex; i++)
                     {
-                        if(splitlist.get(i).equals("|")) continue;
+                        if(splitlist.get(i).equals("|"))
+                            continue;
                         splitlist.set(i, type+splitlist.get(i)+closeType);
                     }
                 }
                 for(int i = fromIndex; i<=untilIndex; i++)
-                {
-                    if(splitlist.get(i).equals("|")) splitlist.set(i, "[REMOVE]");
-                }
+                    if(splitlist.get(i).equals("|"))
+                        splitlist.set(i, "[REMOVE]");
                 // remove all [REMOVE] from splitlist
                 while(splitlist.contains("[REMOVE]"))
-                {
                     splitlist.remove("[REMOVE]");
-                }
             }
             split = splitlist.toArray(new String[splitlist.size()]);
         }
@@ -285,18 +316,20 @@ public class DocumentationReader
 
     public static DocumentationReader instance()
     {
-        if (instance == null) {
+        if (instance == null)
             instance = new DocumentationReader();
-        }
         return instance;
     }
 
     DocumentationReader()
     {
-        helpFile = new File("..\\Common\\res\\help\\EditorHelp.txt"); // TODO: not absolute path
-        try {
+        helpFile = new File("..\\Common\\res\\help\\EditorHelp.txt");
+        try
+        {
             readDoc();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
         System.out.println();
