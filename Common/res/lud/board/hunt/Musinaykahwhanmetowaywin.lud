@@ -1,17 +1,10 @@
 (game "Musinaykahwhanmetowaywin"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Marker" P1 (or ("HopSequenceCapture") ("StepToEmpty") ) )
         (piece "Disc" P2 ("StepToEmpty")) 
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Disc2" (union (expand (sites Bottom)) (sites Row 2) ) )
@@ -55,7 +48,6 @@
     
     (graphics {
         (piece Scale "Disc" 0.5)
-        
     })
     (ai
         "Musinaykahwhanmetowaywin_ai"
