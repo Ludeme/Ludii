@@ -31,8 +31,8 @@ public class LudemeNode implements iGNode
     /** List of clauses this symbol encompasses */
     private List<Clause> CLAUSES;
     /** Currently selected Clause by the user */
-    private LinkedHashMap<Symbol, List<Clause>> SYMBOL_CLAUSE_MAP = new LinkedHashMap<>(); // for each clause the symbols it contains
-    private Clause selectedClause;
+    private final LinkedHashMap<Symbol, List<Clause>> SYMBOL_CLAUSE_MAP = new LinkedHashMap<>(); // for each clause the symbols it contains
+    private Clause selectedClause = null;
     /** Map of NodeArgument and its corresponding input */
     private LinkedHashMap<NodeArgument, Object> providedInputsMap;
     /** HashMap of Nodes this node is connected to (as a parent) and their order */
@@ -106,63 +106,67 @@ public class LudemeNode implements iGNode
         else this.CLAUSES = symbol.rule().rhs();
         this.x = x;
         this.y = y;
-        this.width = 100; // width and height are hard-coded for now, updated later
+        this.width = 100; // width and height are hard-coded for now, are updated later
         this.height = 100;
 
+        // Expand clauses if possible
         if(CLAUSES != null)
         {
             expandClauses();
             if(CLAUSES.size() > 0)
-            {
                 this.selectedClause = CLAUSES.get(0);
-            }
-            else
-            {
-                this.selectedClause = null;
-            }
-        } else {
-            this.selectedClause = null;
         }
 
-        if(nodeArguments == null) nodeArguments = generateNodeArguments();
+        // Create a NodeArgument for each ClauseArg, if not provided as parameter
+        if(nodeArguments == null)
+            nodeArguments = generateNodeArguments();
         this.nodeArguments = nodeArguments;
 
-
+        // get the NodeArguments of the currently selected clause
         currentNodeArguments = nodeArguments.get(selectedClause());
-        if(currentNodeArguments == null) currentNodeArguments = new ArrayList<>();
+        if(currentNodeArguments == null)
+            currentNodeArguments = new ArrayList<>();
 
+        // initialize the provided inputs map
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments) providedInputsMap.put(na, null);
 
         // package name
-        if(symbol.cls().getPackage() == null) PACKAGE_NAME = "game";
-        else
-        {
-            String[] splitPackage = symbol.cls().getPackage().getName().split("\\.");
-            if(splitPackage.length == 1) PACKAGE_NAME = splitPackage[0];
-            else
-            {
-                PACKAGE_NAME = splitPackage[0] + "." + splitPackage[1];
-            }
-        }
+        this.PACKAGE_NAME = initPackageName();
 
+
+        // Create a map of symbols and their corresponding clauses, used in the pick-a-constructor menu to group clauses by symbols
         for(Clause c : CLAUSES)
-        {
             if(SYMBOL_CLAUSE_MAP.containsKey(c.symbol()))
-            {
                 SYMBOL_CLAUSE_MAP.get(c.symbol()).add(c);
-            }
             else
             {
                 List<Clause> l = new ArrayList<>();
                 l.add(c);
                 SYMBOL_CLAUSE_MAP.put(c.symbol(), l);
             }
-        }
 
         this.helpInformation = DocumentationReader.instance().help(SYMBOL);
     }
 
+
+    /**
+     *
+     * @return The package name this symbol/node belongs to
+     */
+    private String initPackageName()
+    {
+        String packageName = "game";
+        if(SYMBOL.cls().getPackage() != null)
+        {
+            String[] splitPackage = SYMBOL.cls().getPackage().getName().split("\\.");
+            if(splitPackage.length == 1)
+                packageName = splitPackage[0];
+            else
+                packageName = splitPackage[0] + "." + splitPackage[1];
+        }
+        return packageName;
+    }
 
 
     /**
@@ -199,15 +203,10 @@ public class LudemeNode implements iGNode
     {
         List<Clause> newClauses = new ArrayList<>();
         for(Clause clause : CLAUSES)
-        {
-            if(clause.symbol() != symbol()) {
+            if(clause.symbol() != symbol())
                 newClauses.addAll(expandClauses(clause.symbol()));
-            }
             else
-            {
                 newClauses.add(clause);
-            }
-        }
         CLAUSES = newClauses;
     }
 
@@ -216,14 +215,12 @@ public class LudemeNode implements iGNode
         List<Clause> clauses = new ArrayList<>();
         for(Clause clause : s.rule().rhs())
         {
-            if(clauses.contains(clause) || this.clauses().contains(clause)) continue;
-            if(clause.symbol() == s) {
+            if(clauses.contains(clause) || this.clauses().contains(clause))
+                continue;
+            if(clause.symbol() == s)
                 clauses.add(clause);
-            }
             else
-            {
                 clauses.addAll(expandClauses(clause.symbol()));
-            }
         }
         return clauses;
     }
@@ -245,7 +242,6 @@ public class LudemeNode implements iGNode
     {
         this.selectedClause = selectedClause;
         this.currentNodeArguments = nodeArguments.get(selectedClause());
-        //this.providedInputs = new Object[selectedClause.args().size()];
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments) providedInputsMap.put(na, null);
     }
@@ -261,14 +257,8 @@ public class LudemeNode implements iGNode
 
     /**
      *
-     * @return the array of provided inputs
+     * @return the map of NodeArguments keyed by the input provided by the user
      */
-    /*@Override
-    public Object[] providedInputs()
-    {
-        return providedInputs;
-    }*/
-
     public LinkedHashMap<NodeArgument, Object> providedInputsMap()
     {
         return providedInputsMap;
@@ -277,28 +267,9 @@ public class LudemeNode implements iGNode
     public void setProvidedInput(NodeArgument arg, Object input)
     {
         if(providedInputsMap.containsKey(arg))
-        {
             providedInputsMap.put(arg, input);
-        }
         else
-        {
             System.out.println("Error: setProvidedInput called with invalid argument");
-        }
-    }
-
-
-    /**
-     *
-     * @return whether it is possible to make this node dynamic
-     */
-    public boolean dynamicPossible()
-    {
-        if(CLAUSES.size() == 1) return false;
-        for(Clause clause : CLAUSES){
-            if(clause.args() == null) continue;
-            if(clause.args().size() > 1) return true;
-        }
-        return false;
     }
 
 
@@ -331,15 +302,12 @@ public class LudemeNode implements iGNode
             return;
         }
         this.visible = !collapsed;
-        if(!collapsed) this.collapsed = collapsed;
+        if(!collapsed)
+            this.collapsed = false;
         // the complete subtree of this node becomes invisible if collapsed or visible if not collapsed
         setSubtreeVisible(!collapsed);
-        if(collapsed) this.collapsed = collapsed;
-        /*for(LudemeNode child : children)
-        {
-            child.setSubtreeVisible(!collapsed);
-            //child.setSubtreeVisible(!collapsed);
-        }*/
+        if(collapsed)
+            this.collapsed = true;
     }
 
     /**
@@ -350,15 +318,14 @@ public class LudemeNode implements iGNode
     {
         List<LudemeNode> currentChildren = new ArrayList<>(children);
         while(!currentChildren.isEmpty())
-        {
             for(LudemeNode child : new ArrayList<>(currentChildren))
             {
                 currentChildren.remove(child);
-                if(child.parent.collapsed() || (child != this && child.collapsed)) continue;
+                if(child.parent.collapsed() || (child != this && child.collapsed))
+                    continue;
                 child.setVisible(visible);
                 currentChildren.addAll(child.children);
             }
-        }
     }
 
     /**
@@ -398,11 +365,10 @@ public class LudemeNode implements iGNode
     private HashMap<Clause, List<NodeArgument>> generateNodeArguments()
     {
         HashMap<Clause, List<NodeArgument>> nodeArguments = new HashMap<>();
-        if(clauses() == null) return nodeArguments;
+        if(clauses() == null)
+            return nodeArguments;
         for (Clause clause : clauses())
-        {
             nodeArguments.put(clause, generateNodeArguments(clause));
-        }
         return nodeArguments;
     }
 
@@ -414,7 +380,7 @@ public class LudemeNode implements iGNode
     private List<NodeArgument> generateNodeArguments(Clause clause)
     {
         List<NodeArgument> nodeArguments = new ArrayList<>();
-        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined)) // TODO [FLAG]      Add   && clause.args() == null)
+        if(clause.symbol().ludemeType().equals(Symbol.LudemeType.Predefined))
         {
             NodeArgument nodeArgument = new NodeArgument(clause);
             nodeArguments.add(nodeArgument);
@@ -435,17 +401,6 @@ public class LudemeNode implements iGNode
         return nodeArguments;
     }
 
-
-
-
-    /**
-     *
-     * @return a HashMap of NodeArguments keyed by the clause they correspond to
-     */
-    public HashMap<Clause, List<NodeArgument>> nodeArguments()
-    {
-        return nodeArguments;
-    }
 
     /**
      *
@@ -707,28 +662,25 @@ public class LudemeNode implements iGNode
             if(arg.arg().label() != null)
                 sb.append(arg.arg().label()).append(":");
             if(input instanceof LudemeNode)
-            {
                 sb.append(((LudemeNode) input).toLud());
-            }
             else if(input instanceof Object[])
             {
                 sb.append("{ ");
                 for(Object obj : (Object[]) input)
                 {
-                    if(obj == null) continue;
-                    if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).toLud());
-                    else sb.append(obj).append(" ");
+                    if(obj == null)
+                        continue;
+                    if(obj instanceof LudemeNode)
+                        sb.append(((LudemeNode)obj).toLud());
+                    else
+                        sb.append(obj).append(" ");
                 }
                 sb.append("}");
             }
             else if(input instanceof String)
-            {
                 sb.append("\"").append(input).append("\"");
-            }
             else
-            {
                 sb.append(input);
-            }
         }
         sb.append(")");
         return sb.toString();
@@ -737,7 +689,8 @@ public class LudemeNode implements iGNode
     public String toLudCodeCompletion(List<NodeArgument> argsOfInputField)
     {
         LudemeNode root = this;
-        while(root.parentNode() != null) root = root.parentNode();
+        while(root.parentNode() != null)
+            root = root.parentNode();
 
         String rootLud = root.toLud();
         String thisLud = toLud();
@@ -750,7 +703,6 @@ public class LudemeNode implements iGNode
         for (NodeArgument arg : providedInputsMap().keySet())
         {
             Object input = providedInputsMap().get(arg);
-
             if(argsOfInputField.contains(arg))
             {
                 if(input instanceof Object[])
@@ -760,9 +712,12 @@ public class LudemeNode implements iGNode
                     sb.append("{ ");
                     for(Object obj : (Object[]) input)
                     {
-                        if(obj == null) continue;
-                        if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).toLud());
-                        else sb.append(obj).append(" ");
+                        if(obj == null)
+                            continue;
+                        if(obj instanceof LudemeNode)
+                            sb.append(((LudemeNode)obj).toLud());
+                        else
+                            sb.append(obj).append(" ");
                     }
                 }
                 sb.append(" ").append(Preprocessing.COMPLETION_WILDCARD);
@@ -770,33 +725,31 @@ public class LudemeNode implements iGNode
                 return rootLud.replace(thisLud, sb.toString());
             }
 
-            if(input == null) continue;
+            if(input == null)
+                continue;
             sb.append(" ");
             if(arg.arg().label() != null)
                 sb.append(arg.arg().label()).append(":");
             if(input instanceof LudemeNode)
-            {
                 sb.append(((LudemeNode) input).toLud());
-            }
             else if(input instanceof Object[])
             {
                 sb.append("{ ");
                 for(Object obj : (Object[]) input)
                 {
-                    if(obj == null) continue;
-                    if(obj instanceof LudemeNode) sb.append(((LudemeNode)obj).toLud());
-                    else sb.append(obj).append(" ");
+                    if(obj == null)
+                        continue;
+                    if(obj instanceof LudemeNode)
+                        sb.append(((LudemeNode)obj).toLud());
+                    else
+                        sb.append(obj).append(" ");
                 }
                 sb.append("}");
             }
             else if(input instanceof String)
-            {
                 sb.append("\"").append(input).append("\"");
-            }
             else
-            {
                 sb.append(input);
-            }
         }
         sb.append(")");
         return rootLud.replace(thisLud, sb.toString());
@@ -809,13 +762,17 @@ public class LudemeNode implements iGNode
      */
     public String title()
     {
-        if(selectedClause == null) return symbol().name();
-        if(selectedClause.args() != null && selectedClause.args().isEmpty()) return selectedClause.symbol().name();
+        if(selectedClause == null)
+            return symbol().name();
+        if(selectedClause.args() != null && selectedClause.args().isEmpty())
+            return selectedClause.symbol().name();
         StringBuilder title = new StringBuilder(selectedClause().symbol().name());
-        if(selectedClause().args() == null) return title.toString();
+        if(selectedClause().args() == null)
+            return title.toString();
         // if selected clause starts with constants, add these to the title
         int index = 0;
-        while(selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant)){
+        while(selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+        {
             title.append(" ").append(selectedClause().args().get(index).symbol().name());
             index++;
         }
@@ -825,13 +782,17 @@ public class LudemeNode implements iGNode
 
     private String tokenTitle()
     {
-        if(selectedClause == null) return symbol().token();
+        if(selectedClause == null)
+            return symbol().token();
         StringBuilder title = new StringBuilder(selectedClause().symbol().token());
-        if(selectedClause().args() == null) return title.toString();
-        if(selectedClause.args().size() == 0) return title.toString();
+        if(selectedClause().args() == null)
+            return title.toString();
+        if(selectedClause.args().size() == 0)
+            return title.toString();
         // if selected clause starts with constants, add these to the title
         int index = 0;
-        while(selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant)){
+        while(selectedClause().args().get(index).symbol().ludemeType().equals(Symbol.LudemeType.Constant))
+        {
             title.append(" ").append(selectedClause().args().get(index).symbol().name());
             index++;
         }
@@ -1034,6 +995,17 @@ public class LudemeNode implements iGNode
             currentNodeArguments = activeNodeArguments;
         }
 
+
+    //@return whether it is possible to make this node dynamic
+    public boolean dynamicPossible()
+    {
+        if(CLAUSES.size() == 1) return false;
+        for(Clause clause : CLAUSES){
+            if(clause.args() == null) continue;
+            if(clause.args().size() > 1) return true;
+        }
+        return false;
+    }
 
      */
 

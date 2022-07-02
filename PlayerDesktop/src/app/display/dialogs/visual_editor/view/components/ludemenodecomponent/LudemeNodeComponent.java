@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 
-import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
@@ -10,9 +9,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGroupSelection;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
-import main.grammar.Clause;
 import main.grammar.Symbol;
 
 import javax.swing.*;

@@ -22,12 +22,12 @@ public class NodePopupMenu extends JPopupMenu {
         JMenuItem duplicate = new JMenuItem("Duplicate");
         JMenuItem copyBtn = new JMenuItem("Copy");
 
-        int iconHeight = (int)(copyBtn.getPreferredSize().getHeight()*0.75);
+        int iconDiameter = (int)(copyBtn.getPreferredSize().getHeight()*0.75);
 
-        ImageIcon copyI = new ImageIcon(DesignPalette.COPY_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
-        ImageIcon duplicateI = new ImageIcon(DesignPalette.DUPLICATE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
-        ImageIcon deleteI = new ImageIcon(DesignPalette.DELETE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
-        ImageIcon collapseI = new ImageIcon(DesignPalette.COLLAPSE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon copyI = new ImageIcon(DesignPalette.COPY_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon duplicateI = new ImageIcon(DesignPalette.DUPLICATE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon deleteI = new ImageIcon(DesignPalette.DELETE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon collapseI = new ImageIcon(DesignPalette.COLLAPSE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
 
         copyBtn.setIcon(copyI);
         duplicate.setIcon(duplicateI);
