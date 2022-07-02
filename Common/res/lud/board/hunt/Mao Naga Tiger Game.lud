@@ -1,14 +1,7 @@
 (game "Mao Naga Tiger Game"
     (players 2)  
     (equipment { 
-        (board 
-            (merge { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-            }) 
-            use:Vertex
-        )
+    	("AlquerqueBoardWithBottomAndTopTriangles")
         (piece "Human" P1 "StepToEmpty")
         (piece "Tiger" P2 (or "StepToEmpty" "HopCapture"))
     })  
@@ -18,9 +11,7 @@
             (place "Tiger2" (sites {"A5" "E5"}))
         })
         
-        (play 
-            (forEach Piece top:True)
-        )
+        (play (forEach Piece top:True))
         
         (end {
             (if (no Pieces P1) (result P2 Win))
@@ -49,7 +40,6 @@
     (graphics {
         (show Edges Diagonal Hidden)
         (stackType Count)
-        
     })
     
 )
