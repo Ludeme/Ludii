@@ -12,7 +12,7 @@
                 Step 
                 (directions {FR FL}) 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyOn" (to)) 
                     (apply (remove (to)))
                 )
             )
