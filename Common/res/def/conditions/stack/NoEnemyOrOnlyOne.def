@@ -1,0 +1,10 @@
+// Checks if no enemy or only one in a stack game.
+// #1 = The site.
+// @example ("NoEnemyOrOnlyOne" (to))
+
+(define "NoEnemyOrOnlyOne" 
+	    (if (not ("IsEnemyOn" #1))
+	        True
+	        ("IsEmptyOrSingletonStack" #1)
+	    )		
+)
