@@ -39,7 +39,7 @@ public class DesignPaletteDark extends DesignPalette
     // game.rules: game.rules.play, game.rules.start, game.rules.end
     // game.functions: .region, .ints, .graph, .floats, .dim, .booleans
 
-    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(51, 36, 45);
+    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(51, 46, 45);
     private static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(44, 56, 56);
     private static Color BACKGROUND_LUDEME_BODY_RULES = new Color(47, 44, 56);
     private static Color LUDEME_BORDER_COLOR = new Color(87,87,87);
@@ -51,6 +51,10 @@ public class DesignPaletteDark extends DesignPalette
     private static Color LUDEME_CONNECTION_EDGE = new Color(106, 129, 151);
     private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
     private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
+
+    private static final Color INPUT_FIELD_BACKGROUND = new Color(54, 59, 65);
+    private static final Color INPUT_FIELD_BORDER_COLOUR = new Color(97,97,97);
+    private static final Color INPUT_FIELD_FOREGROUND = new Color(150, 150, 150);
 
     @Override
     public Color BACKGROUND_EDITOR()
@@ -139,6 +143,21 @@ public class DesignPaletteDark extends DesignPalette
     public Color NOT_COMPILABLE_COLOR()
     {
         return NOT_COMPILABLE_COLOR;
+    }
+
+    public Color INPUT_FIELD_BACKGROUND()
+    {
+        return INPUT_FIELD_BACKGROUND;
+    }
+
+    public Color INPUT_FIELD_BORDER_COLOUR()
+    {
+        return INPUT_FIELD_BORDER_COLOUR;
+    }
+
+    public Color INPUT_FIELD_FOREGROUND()
+    {
+        return INPUT_FIELD_FOREGROUND;
     }
 
 

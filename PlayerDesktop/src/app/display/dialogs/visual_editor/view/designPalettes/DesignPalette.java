@@ -133,6 +133,10 @@ public class DesignPalette
     private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
     private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
 
+    private static final Color INPUT_FIELD_BACKGROUND = Color.WHITE;
+    private static final Color INPUT_FIELD_BORDER_COLOUR = new Color(176,176,176);
+    private static final Color INPUT_FIELD_FOREGROUND = new Color(51, 51, 51);
+
 
     public Color BACKGROUND_EDITOR()
     {
@@ -219,6 +223,22 @@ public class DesignPalette
     {
         return NOT_COMPILABLE_COLOR;
     }
+
+    public Color INPUT_FIELD_BACKGROUND()
+    {
+        return INPUT_FIELD_BACKGROUND;
+    }
+
+    public Color INPUT_FIELD_BORDER_COLOUR()
+    {
+        return INPUT_FIELD_BORDER_COLOUR;
+    }
+
+    public Color INPUT_FIELD_FOREGROUND()
+    {
+        return INPUT_FIELD_FOREGROUND;
+    }
+
 
     // ~~ FONTS ~~ //
     public static void initializeFonts() {
