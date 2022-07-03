@@ -17,7 +17,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyOn" (to)) 
         (fromTo (from (to)) (to (handSite (who at:(to)))))
     ) 
 )
@@ -27,9 +27,9 @@
         "RemoveAPiece"
         (if ("IsNotOffBoard" ("NextSiteOnTrack" #1)) 	 			
             (if (or
-                    (is In ("NextSiteOnTrack" #1) (sites Empty))
+                    (is Empty ("NextSiteOnTrack" #1))
                     (and 
-                        (is Enemy (who at:("NextSiteOnTrack" #1)))
+                        ("IsEnemyOn" ("NextSiteOnTrack" #1))
                         (not (is In ("NextSiteOnTrack" #1) (sites "SafeSites")))
                     )
                 )
