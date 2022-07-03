@@ -16,13 +16,6 @@
 
 (define "RemoveAPiece" (move Remove (from)))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (handSite Next)))
-    ) 
-)
-
 (define "MoveTo" ("NextSiteOnTrack" ("CountPips")))
 
 //------------------------------------------------------------------------------
@@ -49,9 +42,9 @@
                 "RemoveAPiece"
                 (if ("IsNotOffBoard" ("MoveTo"))	 			
                     (if (or
-                            (is In ("MoveTo") (sites Empty))
+                            (is Empty ("MoveTo"))
                             (and 
-                                (not (is Friend (who at:("MoveTo")))) 
+                                (not ("IsFriendOn" ("MoveTo"))) 
                                 (not (is In ("MoveTo") (sites "Replay")))
                             )
                         )
@@ -59,7 +52,7 @@
                             (from) 
                             (to 
                                 ("MoveTo")
-                                "CaptureEnemyPiece"
+                                ("CaptureEnemyPieceToHand")
                             )
                             (then ("ReplayInMovingOn" (sites "Replay")))
                         )
