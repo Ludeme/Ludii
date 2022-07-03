@@ -3,5 +3,5 @@
 // @example ("AllOwnedPiecesIn" (sites Top))
 
 (define "AllOwnedPiecesIn"
-	(all Sites (sites Occupied by:Mover) if:(is In (site) #1))
+    (all Sites (sites Occupied by:Mover) if:(is In (site) #1))
 )

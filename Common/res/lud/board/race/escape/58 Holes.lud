@@ -18,8 +18,8 @@
                 (if ("IsNotOffBoard" "MoveTo")  	 			
                     (if (is Empty "MoveTo")
                         (move 
-                        	(from) 
-                        	(to "MoveTo")
+                            (from) 
+                            (to "MoveTo")
                             (then ("ReplayInMovingOn" (sites "Replay")))
                         )
                     )
@@ -34,7 +34,7 @@
         (start {
             (place "Marker1" (handSite P1) count:5)
             (place "Marker2" (handSite P2) count:5)
-         })
+        })
         
         (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end (if (no Pieces Mover) (result Mover Win)))
@@ -54,11 +54,11 @@
 (rulesets { 
     
     (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
-            {
-            "Variant/Carnarvon and Carter"
-            }
-        )
-	
+        {
+        "Variant/Carnarvon and Carter"
+        }
+    )
+    
     (ruleset "Ruleset/Labyrinth (Incomplete)" {
         
     })

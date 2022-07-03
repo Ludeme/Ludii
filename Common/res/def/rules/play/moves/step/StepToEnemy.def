@@ -5,11 +5,11 @@
 
 (define "StepToEnemy"
     (move Step 
-            #1
-            (to 
-                if:("IsEnemyOn" (to)) 
-                (apply (remove (to)))
-            )
-            #2
+        #1
+        (to 
+            if:("IsEnemyOn" (to)) 
+            (apply (remove (to)))
         )
+        #2
+    )
 )

@@ -2,7 +2,7 @@
 // @example ("ReplayNotAllDiceUsed")
 
 (define "ReplayNotAllDiceUsed"
-        (if (not (all DiceUsed))
-            (moveAgain)
-        )
+    (if (not (all DiceUsed))
+        (moveAgain)
+    )
 )
