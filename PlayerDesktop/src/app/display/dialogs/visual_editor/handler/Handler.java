@@ -73,6 +73,8 @@ public class Handler
 
     public static DesignPalette currentPalette = lightPalette;
 
+    private static final int SENSITIVITY_REMOVAL = 6;
+
 
     public static void setPalette(DesignPalette palette)
     {
@@ -337,6 +339,14 @@ public class Handler
     public static void removeNodes(DescriptionGraph graph, List<LudemeNode> nodes)
     {
         if(DEBUG) System.out.println("[HANDLER] removeNodes(graph, nodes) -> Removing nodes: " + nodes.size());
+
+        // display dialog to confirm removal of nodes
+        if(nodes.size() >= SENSITIVITY_REMOVAL)
+        {
+            int userChoice = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove " + nodes.size() + " nodes?", "Remove nodes", JOptionPane.YES_NO_OPTION);
+            if(userChoice != JOptionPane.YES_OPTION)
+                return;
+        }
 
         // remove root node and already deleted nodes
         for(LudemeNode node : new ArrayList<>(nodes))
@@ -621,7 +631,7 @@ public class Handler
             node.setProvidedInput(nodeArgument, new Object[1]);
         }
 
-        if(input == null && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) return;
+        if(input == null && node.providedInputsMap().get(nodeArgument) instanceof Object[] && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) return;
 
         while(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) addCollectionElement(graph, node, nodeArgument);
         Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
