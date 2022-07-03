@@ -15,9 +15,19 @@ public class DefineEditor extends JPanel
         setLayout(new BorderLayout());
         GRAPH_PANEL = new DefineGraphPanel("Test", 10000, 10000);
         SCROLL_PANE = new JScrollPane(GRAPH_PANEL);
+        centerScrollPane(); // center scroll pane position
         add(SCROLL_PANE, BorderLayout.CENTER);
         GRAPH_PANEL.initialize(SCROLL_PANE);
         setVisible(true);
+    }
+
+    private void centerScrollPane()
+    {
+        Rectangle rect = SCROLL_PANE.getViewport().getViewRect();
+        int centerX = (SCROLL_PANE.getViewport().getViewSize().width - rect.width) / 2;
+        int centerY = (SCROLL_PANE.getViewport().getViewSize().height - rect.height) / 2;
+
+        SCROLL_PANE.getViewport().setViewPosition(new Point(centerX, centerY));
     }
 
     public IGraphPanel currentGraphPanel()

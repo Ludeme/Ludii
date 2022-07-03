@@ -111,6 +111,14 @@ public class GraphPanel extends JPanel implements IGraphPanel
         add(connectArgumentPanel);
     }
 
+    /**
+     * Whether this panel is of a define graph.
+     */
+    @Override
+    public boolean isDefineGraph() {
+        return false;
+    }
+
     private MouseAdapter panelDragListener = new MouseAdapter()
     {
 

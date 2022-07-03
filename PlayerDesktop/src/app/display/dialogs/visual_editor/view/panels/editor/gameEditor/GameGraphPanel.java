@@ -24,6 +24,8 @@ public class GameGraphPanel extends GraphPanel
     {
         super.initialize(scrollPane);
 
+        // Create a "game" root node
+
         Handler.recordUserActions = false;
         LudemeNode gameLudemeNode = Handler.addNode(graph(), Grammar.grammar().symbolsByName("Game").get(0), null,
                 scrollPane.getViewport().getViewRect().x + (int)(scrollPane.getViewport().getViewRect().getWidth()/2),

@@ -37,13 +37,11 @@ public class StartVisualEditor
 		catch(Exception ignored){}
 
 		controller = new NGramController(5);
-		editPanel = new GameGraphPanel(10000,10000);
 		//MainFrame f = new MainFrame(editPanel);
 		VisualEditorFrame f = new VisualEditorFrame();
 		f.requestFocus();
 	}
 
-	private static GameGraphPanel editPanel;
 	private static NGramController controller;
 
 

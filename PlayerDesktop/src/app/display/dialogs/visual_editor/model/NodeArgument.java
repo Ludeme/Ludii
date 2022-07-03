@@ -154,6 +154,37 @@ public class NodeArgument
         possibleSymbolInputs = new ArrayList<>();
     }
 
+    /**
+     * Creates a NodeArgument with a given list of possible symbol inputs
+     * Used for Define nodes
+     */
+    public NodeArgument(Symbol symbol, Clause clause, List<Symbol> viableInputs)
+    {
+        CLAUSE = clause;
+        args = new ArrayList<>();
+        originalArg = null;
+        INDEX = 1;
+
+        ClauseArg ca = new ClauseArg(symbol, "Macro", null, false, 0, 0);
+        args.add(ca);
+
+        this.possibleArguments = new ArrayList<>();
+        for(Symbol s : viableInputs)
+            computePossibleArguments(s);
+
+        Set<Symbol> possibleArguments = new HashSet<>();
+        for(PossibleArgument pa : this.possibleArguments) possibleArguments.addAll(expandPossibleArgument(pa));
+        for(ClauseArg a : args()) if(terminalDropdown(a)) possibleArguments.add(a.symbol());
+
+        Set<Symbol> possibleSymbols = new HashSet<>();
+        for(Symbol s : possibleArguments)
+        {
+            if(s.ludemeType().equals(Symbol.LudemeType.Constant)) continue;
+            possibleSymbols.add(s);
+        }
+        this.possibleSymbolInputs = new ArrayList<>(possibleSymbols);
+    }
+
     private NodeArgument create1DEquivalent(ClauseArg ca)
     {
         ClauseArg ca1d = new ClauseArg(ca.symbol(), ca.actualParameterName(), ca.label(), false, 0, 0);
@@ -185,6 +216,14 @@ public class NodeArgument
         if(arg.symbol().rule() == null)
             return;
         for(Clause c : arg.symbol().rule().rhs())
+            possibleArguments.add(new PossibleArgument(c));
+    }
+
+    private void computePossibleArguments(Symbol s)
+    {
+        if(s.rule() == null)
+            return;
+        for(Clause c : s.rule().rhs())
             possibleArguments.add(new PossibleArgument(c));
     }
 
@@ -297,6 +336,8 @@ public class NodeArgument
      */
     public boolean optional()
     {
+        if(arg() == null)
+            return false;
         return arg().optional();
     }
 
@@ -306,6 +347,8 @@ public class NodeArgument
      */
     public boolean collection()
     {
+        if(arg() == null)
+            return false;
         return arg().nesting() > 0;
     }
 
@@ -315,12 +358,9 @@ public class NodeArgument
      */
     public boolean collection2D()
     {
+        if(arg() == null)
+            return false;
         return arg().nesting() == 2;
-    }
-
-    public boolean collection2D(ClauseArg arg)
-    {
-        return arg.nesting() == 2;
     }
 
     /**
@@ -359,7 +399,7 @@ public class NodeArgument
     {
         DocumentationReader dr = DocumentationReader.instance();
         HelpInformation hi = dr.documentation().get(CLAUSE.symbol());
-        if(hi.parameter(arg()) == null)
+        if(hi == null || hi.parameter(arg()) == null)
             return null;
         return hi.parameter(arg());
     }

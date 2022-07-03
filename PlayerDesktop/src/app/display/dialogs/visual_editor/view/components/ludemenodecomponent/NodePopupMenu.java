@@ -60,8 +60,6 @@ public class NodePopupMenu extends JPopupMenu {
             {
                 add(fix);
             }
-
-            add(observe);
             add(delete);
         }
 
@@ -144,6 +142,7 @@ public class NodePopupMenu extends JPopupMenu {
 
         JMenuItem help = new JMenuItem("Help");
         help.addActionListener(e -> new NodeHelp(nodeComponent.node()));
+        add(observe);
         add(help);
     }
 }

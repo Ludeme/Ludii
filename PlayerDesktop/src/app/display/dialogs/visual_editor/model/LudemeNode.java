@@ -6,6 +6,7 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
 import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.documentation.HelpInformation;
+import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -193,6 +194,39 @@ public class LudemeNode implements iGNode
         // package name
         this.PACKAGE_NAME = initPackageName();
         this.helpInformation = DocumentationReader.instance().help(SYMBOL);
+    }
+
+    public LudemeNode(int x, int y, List<Symbol> viableDefineRoots, boolean isDefine)
+    {
+        assert isDefine;
+        Symbol s = new Symbol(Symbol.LudemeType.Ludeme, "Define","define",null);
+        List<ClauseArg> args = new ArrayList<>();
+        args.add(new ClauseArg(Grammar.grammar().symbolsWithPartialKeyword("string").get(0), "Name of Define", null, false, 0, 0));
+        Clause c = new Clause(s, args, true);
+        System.out.println();
+
+
+        this.ID = LAST_ID++;
+        this.x = x;
+        this.y = y;
+        this.SYMBOL = s;
+        this.CLAUSES = new ArrayList<>();
+        CLAUSES.add(c);
+        selectedClause = c;
+
+        helpInformation = null;
+        PACKAGE_NAME = "game";
+        nodeArguments = new HashMap<>();
+        List<NodeArgument> nas = new ArrayList<>();
+        nas.add(new NodeArgument(c, args.get(0)));
+        nas.add(new NodeArgument(s, c, viableDefineRoots));
+        nodeArguments.put(c, nas);
+        currentNodeArguments = nas;
+        providedInputsMap = new LinkedHashMap<>();
+        for(NodeArgument na : currentNodeArguments)
+            providedInputsMap.put(na, null);
+
+
     }
 
 

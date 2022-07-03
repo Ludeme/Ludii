@@ -22,6 +22,8 @@ public interface IGraphPanel {
 
     /** Initializes the graph panel. */
     void initialize(JScrollPane parentScrollPane);
+    /** Whether this panel is of a define graph. */
+    boolean isDefineGraph();
     /** Notifies the panel that a node was added to the graph. */
     void notifyNodeAdded(LudemeNode node, boolean connect);
     /** Notifies the panel that a node was removed from the graph. */
