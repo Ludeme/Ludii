@@ -4,6 +4,6 @@
 
 (define "NoEnemyOrOnlyOne" 
     (or (not ("IsEnemyOn" #1))
-        ("IsEmptyOrSingletonStack" #1)
+        ("IsSingletonStack" #1)
     )		
 )
