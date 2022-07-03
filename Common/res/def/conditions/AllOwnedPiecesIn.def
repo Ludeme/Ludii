@@ -1,0 +1,7 @@
+// Checks if all pieces on the board owned by the mover are in a region.
+// #1 = The region.
+// @example ("AllOwnedPiecesIn" (sites Top))
+
+(define "AllOwnedPiecesIn"
+	(all Sites (sites Occupied by:Mover) if:(is In (site) #1))
+)
