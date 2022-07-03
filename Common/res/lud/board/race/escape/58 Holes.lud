@@ -9,7 +9,7 @@
     (equipment { 
         "HoundsAndJackalsBoard"
         (hand Each) 
-        (dice d:2 from:0 num:4)
+        ("Stickdice" 4)
         (regions "Replay" {14 24 43 53})
         
         (piece "Marker" Each
@@ -20,11 +20,7 @@
                         (move 
                         	(from) 
                         	(to "MoveTo")
-                            (then 
-                                (if (is In (last To) (sites "Replay")) 
-                                    (moveAgain) 
-                                ) 
-                            )
+                            (then ("ReplayInMovingOn" (sites "Replay")))
                         )
                     )
                 )

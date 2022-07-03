@@ -61,12 +61,7 @@
                             	("MoveTo")
                                 "CaptureEnemyPiece"
                             )
-                            (then 
-                                (if 
-                                    (is In (last To) (sites "Replay")) 
-                                    (moveAgain) 
-                                ) 
-                            )
+                            (then ("ReplayInMovingOn" (sites "Replay")))
                         )
                     )
                 )
