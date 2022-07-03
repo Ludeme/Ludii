@@ -36,7 +36,7 @@ public class VisualEditorPanel
 		catch(Exception ignored){}
 
 		controller = new NGramController(5);
-		editPanel = new EditorPanel(5000,5000);
+		editPanel = new EditorPanel(10000,10000);
 		MainFrame f = new MainFrame(editPanel);
 		f.requestFocus();
 	}

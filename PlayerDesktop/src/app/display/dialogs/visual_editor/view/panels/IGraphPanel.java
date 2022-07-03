@@ -34,6 +34,7 @@ public interface IGraphPanel {
     void updateCollapsed(List<LudemeNodeComponent> lncs);
     void notifyUncompilable(List<LudemeNodeComponent> lncs);
 
+    JScrollPane parentScrollPane();
     JPanel panel();
 
 

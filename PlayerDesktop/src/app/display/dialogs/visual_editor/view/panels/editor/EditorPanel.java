@@ -74,6 +74,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     public static JLabel listener = new JLabel();
 
+    private JScrollPane parentScrollPane;
+
     // Recommendations
     private NGramController controller;
     private int N;
@@ -101,6 +103,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
     public void initialize(JScrollPane scrollPane)
     {
+        this.parentScrollPane = scrollPane;
         setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
 
         addMouseListener(clickListener);
@@ -127,6 +130,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         Handler.recordUserActions = true;
     }
+
+
     private List<Symbol> symbolsWithoutConnection()
     {
         List<Symbol> allSymbols = Grammar.grammar().symbols();
@@ -566,6 +571,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
     @Override
     public JPanel panel() {
         return this;
+    }
+
+    @Override
+    public JScrollPane parentScrollPane()
+    {
+        return parentScrollPane;
     }
 
     @Override
