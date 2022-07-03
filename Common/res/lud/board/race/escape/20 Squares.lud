@@ -43,9 +43,9 @@
         (regions "Replay" (sites {"A1" "A3" "D2" "H2" "L2"} ))
         
         (piece "UrPiece" Each
-            (if (= ("NextSiteOnTrack" ("CountPips")) End)
+            (if ("IsEndTrack" ("NextSiteOnTrack" ("CountPips")))
                 "RemoveAPiece"
-                (if (not (= ("NextSiteOnTrack" ("CountPips")) Off))  	 			
+                (if (not ("IsOffBoard" ("NextSiteOnTrack" ("CountPips"))))  	 			
                     (if (or
                             (is In ("NextSiteOnTrack" ("CountPips")) (sites Empty))
                             (and 
