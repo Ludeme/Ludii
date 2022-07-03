@@ -24,6 +24,11 @@ public class MainPanel extends JPanel {
         this.editor_panel = editor_panel;
         panel = new JScrollPane(editor_panel);
 
+        Rectangle rect = panel.getViewport().getViewRect();
+        int centerX = (panel.getViewport().getViewSize().width - rect.width) / 2;
+        int centerY = (panel.getViewport().getViewSize().height - rect.height) / 2;
+
+        panel.getViewport().setViewPosition(new Point(centerX, centerY));
 
         panel.getVerticalScrollBar().setOpaque(true);
         panel.getHorizontalScrollBar().setOpaque(true);
@@ -35,6 +40,8 @@ public class MainPanel extends JPanel {
         splitPanel.add(panel, BorderLayout.CENTER);
         splitPanel.add(new EditorSidebar(), BorderLayout.EAST);
         add(splitPanel, BorderLayout.CENTER);
+
+        editor_panel.initialize(panel);
 
         MouseAdapter ma = new MouseAdapter() {
 

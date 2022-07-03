@@ -13,7 +13,6 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddArgumentPanel;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
@@ -85,6 +84,23 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         setLayout(null);
         setPreferredSize(new Dimension(width, height));
+
+        Handler.gameDescriptionGraph = graph;
+        Handler.editorPanel = this;
+        Handler.currentGraphPanel = this;
+        Handler.addGraphPanel(graph, this);
+
+        this.symbolsWithoutConnection = symbolsWithoutConnection();
+
+        this.addLudemePanel = new AddArgumentPanel(symbolsWithoutConnection, this, false);
+        // window to add a new ludeme as an input
+        this.connectArgumentPanel = new AddArgumentPanel(symbolsWithoutConnection, this, true);
+        lm = new LayoutHandler(graph);
+        ch = new ConnectionHandler(this);
+    }
+
+    public void initialize(JScrollPane scrollPane)
+    {
         setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
 
         addMouseListener(clickListener);
@@ -92,26 +108,14 @@ public class EditorPanel extends JPanel implements IGraphPanel
         addMouseWheelListener(wheelListener);
         //addMouseWheelListener(wheelListener2);
 
-        this.symbolsWithoutConnection = symbolsWithoutConnection();
-
-        this.addLudemePanel = new AddArgumentPanel(symbolsWithoutConnection, this, false);
-        // window to add a new ludeme as an input
-        this.connectArgumentPanel = new AddArgumentPanel(symbolsWithoutConnection, this, true);
-
         add(addLudemePanel);
         add(connectArgumentPanel);
 
-
-        Handler.gameDescriptionGraph = graph;
-        Handler.editorPanel = this;
-        Handler.currentGraphPanel = this;
-        Handler.addGraphPanel(graph, this);
-
         Handler.recordUserActions = false;
-        LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), null, 30, 30, false);
-
-        lm = new LayoutHandler(graph);
-        ch = new ConnectionHandler(this);
+        LudemeNode gameLudemeNode = Handler.addNode(graph, Grammar.grammar().symbolsByName("Game").get(0), null,
+                scrollPane.getViewport().getViewRect().x + (int)(scrollPane.getViewport().getViewRect().getWidth()/2),
+                scrollPane.getViewport().getViewRect().y + (int)(scrollPane.getViewport().getViewRect().getHeight()/2),
+                false);
 
 
         this.controller = VisualEditorPanel.controller(); // this is done this way because controller.close() must be called before closing the editor, found in MainFrame.java
@@ -123,7 +127,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
         Handler.recordUserActions = true;
     }
-
     private List<Symbol> symbolsWithoutConnection()
     {
         List<Symbol> allSymbols = Grammar.grammar().symbols();
