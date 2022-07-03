@@ -1,0 +1,7 @@
+// Checks if an enemy is on a site. 
+// #1 = The site.
+// @example ("IsEnemyOn" (to))
+
+(define "IsEnemyOn"
+    (is Enemy (who at:#1))
+)
