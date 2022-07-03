@@ -1,14 +1,12 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
-
 (define "EnterAPiece" 
     (move
         (from (handSite Mover))
         (to (centrePoint)
-            if:(not (is Friend (who at:(to))))
+            if:(not ("IsFriendOn" (to)))
             (apply 
-                (if (is Enemy (who at:(to)))
+                (if ("IsEnemyOn" (to))
                     (fromTo 
                         (from (to))
                         (to (handSite (who at:(to))))
@@ -29,10 +27,7 @@
         (board 
             (add
                 (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
+                    ("CrossGraph" 3 19)
                     (poly {{8 8} {8 11} {11 11} {11 8}})
                 )
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
@@ -45,22 +40,23 @@
             } 
         )
         (hand Each) 
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (piece "Pawn" Each
-            (if (= Off ("SiteToMoveOnTrack" ("ThrowValue")))
+            (if ("IsOffBoard" ("NextSiteOnTrack" ("ThrowValue")))
                 (move Remove (from))
                 (move 
                     (from (from))
                     (to 
-                        ("SiteToMoveOnTrack" ("ThrowValue"))
-                        if:(or (is Empty (to))
+                        ("NextSiteOnTrack" ("ThrowValue"))
+                        if:(or 
+                        	(is Empty (to))
                             (and 
-                                (is Enemy (who at:(to)))
+                                ("IsEnemyOn" (to))
                                 (not (is In (to) (sites "SafeSites")))	
                             )
                         )
                         (apply 
-                            (if (is Enemy (who at:(to)))
+                            (if ("IsEnemyOn" (to))
                                 (fromTo 
                                     (from (to))
                                     (to (handSite (who at:(to))))
@@ -73,15 +69,14 @@
         )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
-        }
-    )  
+    })  
     (rules 
         (start (place "Pawn" "Hand" count:4))
         (play 
-            (do (roll) 
-                next:(or 
+            ("RollMove" 
+            	(or 
                     (forEach Piece) 
-                    (if (and ("IsSpecialThrow") (not (is Empty (handSite Mover))))
+                    (if (and ("IsSpecialThrow") (is Occupied (handSite Mover)))
                         ("EnterAPiece")
                     )
                 )

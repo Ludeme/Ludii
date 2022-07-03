@@ -8,7 +8,7 @@
 
 (define "AllPieceEscaped" (no Pieces Mover))
 
-(define "CanEscape" (not ("IsNotOffBoard" #1)))
+(define "CanEscape" ("IsOffBoard" #1))
 
 (define "MoveTo"
     (forEach Site
