@@ -1,0 +1,10 @@
+// Defines a backgammon board (without the style).
+// #1 = The tracks of the players.
+// @example ("BackgammonBoard")
+
+(define "BackgammonBoard"
+        (board (rectangle 2 13) 
+                #1 
+                use:Vertex
+            ) 
+)
