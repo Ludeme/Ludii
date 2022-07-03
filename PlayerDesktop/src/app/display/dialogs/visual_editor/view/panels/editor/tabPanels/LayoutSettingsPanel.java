@@ -165,7 +165,7 @@ public class LayoutSettingsPanel extends JPanel
 
     public static LayoutSettingsPanel getLayoutSettingsPanel()
     {
-        if (lsPanel == null) lsPanel = new LayoutSettingsPanel(Handler.gameEditorPanel);
+        if (lsPanel == null) lsPanel = new LayoutSettingsPanel(Handler.gameGraphPanel);
         return lsPanel;
     }
 

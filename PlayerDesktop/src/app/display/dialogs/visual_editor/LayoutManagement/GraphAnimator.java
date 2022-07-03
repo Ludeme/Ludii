@@ -64,7 +64,7 @@ public class GraphAnimator
                     nodeInitPositions.get(k).y()+v.y()*updateCounter));
                 });
         updateCounter++;
-        Handler.gameEditorPanel.syncNodePositions();
+        Handler.gameGraphPanel.syncNodePositions();
 
         if (updateCounter == ANIMATION_UPDATES)
         {
