@@ -1,52 +1,51 @@
 package app.display.dialogs.visual_editor.view;
 
-
 import app.display.dialogs.visual_editor.StartVisualEditor;
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
-import app.display.dialogs.visual_editor.recs.utils.CSVUtils;
-import app.display.dialogs.visual_editor.view.panels.MainPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainFrame extends JFrame {
+public class VisualEditorFrame extends JFrame
+{
 
-    private MainPanel main_panel;
+    // Frame Properties
+    private static final String TITLE = "Ludii Visual Editor";
+    private static final Dimension DEFAULT_FRAME_SIZE = DesignPalette.DEFAULT_FRAME_SIZE;
+    private static final ImageIcon FRAME_ICON = DesignPalette.LUDII_ICON;
+    private final VisualEditorPanel panel;
+    private final EditorMenuBar menuBar = new EditorMenuBar();
 
-    public MainFrame(GameGraphPanel editor_panel)
+
+    public VisualEditorFrame()
     {
-        initialize(editor_panel);
-        editor_panel.requestFocus();
-    }
+        // load fonts
+        DesignPalette.initializeFonts();
 
-    private void initialize(GameGraphPanel editor_panel){
-        Handler.currentPalette().initializeFonts();
-        setTitle("Ludii Visual Editor");
-        setIconImage((Handler.currentPalette().LUDII_ICON).getImage());
-        setSize(Handler.currentPalette().DEFAULT_FRAME_SIZE);
+        // set frame properties
+        setTitle(TITLE);
+        setIconImage(FRAME_ICON.getImage());
+        setSize(DEFAULT_FRAME_SIZE);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        main_panel = new MainPanel(editor_panel);
-        Handler.setMainPanel(main_panel);
-        add(main_panel);
-        addWindowListener(new WindowAdapter() {
-            /**
-             * Invoked when a window is in the process of being closed.
-             * The close operation can be overridden at this point.
-             *
-             * @param e
-             */
+        panel = new VisualEditorPanel(this);
+        add(panel);
+
+        addWindowListener(new WindowAdapter()
+        {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(WindowEvent e)
+            {
                 DocHandler.getInstance().close();
                 StartVisualEditor.controller().close();
+
+                // TODO: For Filip's testing
+                /*
                 String header = "latency_nano,selected_index";
                 List<Long> latencies = editor_panel.latencies();
                 List<Integer> selectedCompletion = editor_panel.selectedCompletion();
@@ -60,20 +59,12 @@ public class MainFrame extends JFrame {
                 String fileName = "test_"+System.currentTimeMillis()+".csv";
 
                 CSVUtils.writeCSV(path+fileName,header,lines);
-
+                */
                 super.windowClosing(e);
             }
         });
 
-        //setLayout(new FlowLayout());
-        //add(new AddLudemeWindow(100,100,new Parser().getLudemes()));
-
-        setJMenuBar(new EditorMenuBar());
-
+        setJMenuBar(menuBar);
         setVisible(true);
-
     }
-
-
-
 }

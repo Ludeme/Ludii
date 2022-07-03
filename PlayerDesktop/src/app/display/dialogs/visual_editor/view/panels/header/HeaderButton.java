@@ -20,6 +20,7 @@ public class HeaderButton extends JButton {
 
     private boolean selectable;
     private boolean active;
+    private boolean clickListenerOn = true;
 
     public HeaderButton(ImageIcon activeIcon, ImageIcon inactiveIcon, ImageIcon hoverIcon, String text, boolean active, boolean selectable)
     {
@@ -52,6 +53,11 @@ public class HeaderButton extends JButton {
         addMouseListener(hoverMouseListener);
     }
 
+    public void setClickListenerOn(boolean on)
+    {
+        clickListenerOn = on;
+    }
+
 
     public void updateDP()
     {
@@ -65,7 +71,8 @@ public class HeaderButton extends JButton {
     public void setEnabled(boolean enabled)
     {
         super.setEnabled(enabled);
-        if(enabled) setActive();
+        if(enabled)
+            setActive();
         else setInactive();
     }
     public void setActive()
@@ -94,56 +101,41 @@ public class HeaderButton extends JButton {
     MouseListener hoverMouseListener = new MouseAdapter()
     {
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(MouseEvent e)
+        {
             super.mouseClicked(e);
+            if(!clickListenerOn)
+                return;
             if (!active)
             {
-                if (selectable) setActive();
+                if (selectable)
+                    setActive();
             }
             else
-            {
                 if (selectable)
                 {
                     setInactive();
                     Handler.deactivateSelectionMode();
                 }
-            }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e)
-        {
-            super.mousePressed(e);
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e)
-        {
-            super.mouseReleased(e);
         }
 
         public void mouseEntered(MouseEvent e)
         {
             if((selectable && !active) || (!selectable && active))
-            {
                 setHover();
-            }
         }
 
         public void mouseExited(MouseEvent e)
         {
             if(!active)
-            {
                 setInactive();
-            }
             else
-            {
                 setActive();
-            }
         }
     };
 
-    public boolean isActive() {
+    public boolean isActive()
+    {
         return active;
     }
 }

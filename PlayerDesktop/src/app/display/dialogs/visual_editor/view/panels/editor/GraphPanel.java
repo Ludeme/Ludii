@@ -3,7 +3,7 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
-import app.display.dialogs.visual_editor.VisualEditorPanel;
+import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
@@ -102,9 +102,47 @@ public class GraphPanel extends JPanel implements IGraphPanel
         addMouseMotionListener(motionListener);
         addMouseWheelListener(wheelListener);
 
+        addMouseListener(panelDragListener);
+        addMouseMotionListener(panelDragListener);
+
+        addKeyListener(CTRL_listener);
+
         add(addLudemePanel);
         add(connectArgumentPanel);
     }
+
+    private MouseAdapter panelDragListener = new MouseAdapter()
+    {
+
+        private Point origin;
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+            origin = new Point(e.getPoint());
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+            if (origin != null && !isSelectionMode())
+            {
+                JViewport viewPort = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, GraphPanel.this);
+                if (viewPort != null)
+                {
+                    int deltaX = origin.x - e.getX();
+                    int deltaY = origin.y - e.getY();
+
+                    Rectangle view = viewPort.getViewRect();
+                    view.x += deltaX;
+                    view.y += deltaY;
+
+                    scrollRectToVisible(view);
+                }
+            }
+        }
+
+    };
 
     /**
      * Notifies the panel that a node was added to the graph.
@@ -579,7 +617,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         long start = System.nanoTime();
         List<Symbol> possibleSymbols = CONNECTION_HANDLER.getSelectedConnectionComponent().possibleSymbolInputs();
         String gameDescription = CONNECTION_HANDLER.getSelectedConnectionComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(CONNECTION_HANDLER.getSelectedConnectionComponent().inputField().nodeArguments());
-        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, VisualEditorPanel.controller(),possibleSymbols);
+        List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
         long finish = System.nanoTime();
         long latency = finish - start;
         latencies.add(latency);
@@ -738,7 +776,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
             setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
 
         // draw background
-        Handler.currentBackground().paint(parentScrollPane().getViewport().getViewRect(), getWidth(), getHeight(), g2);
+        if(parentScrollPane!=null) Handler.currentBackground().paint(parentScrollPane().getViewport().getViewRect(), getWidth(), getHeight(), g2);
 
         // set color for edges
         g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
@@ -888,6 +926,33 @@ public class GraphPanel extends JPanel implements IGraphPanel
             mousePosition = e.getPoint();
             if (SELECTING)
                 repaint();
+        }
+    };
+
+    // key listener check if ctrl is pressed/released
+    KeyAdapter CTRL_listener = new KeyAdapter()
+    {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            super.keyTyped(e);
+            if (e.getKeyCode() == 17)
+                LudemeNodeComponent.cltrPressed = true;
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e)
+        {
+            super.keyPressed(e);
+            if (e.getKeyCode() == 17)
+                LudemeNodeComponent.cltrPressed = true;
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e)
+        {
+            super.keyReleased(e);
+            if (e.getKeyCode() == 17)
+                LudemeNodeComponent.cltrPressed = false;
         }
     };
 

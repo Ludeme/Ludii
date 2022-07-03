@@ -21,13 +21,11 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.WindowConstants;
 
 import agentPrediction.external.AgentPredictionExternal;
 import agentPrediction.internal.AgentPredictionInternal;
@@ -43,7 +41,7 @@ import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
-import app.display.dialogs.visual_editor.VisualEditorPanel;
+import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.screenCapture.ScreenCapture;
 import app.display.util.Thumbnails;
 import app.display.views.tabs.TabView;
@@ -230,7 +228,7 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Visual Editor (Beta)"))
 		{
 			// Create and lauch an instance of the visual editor
-			final VisualEditorPanel visual = new VisualEditorPanel(app);
+			final StartVisualEditor visual = new StartVisualEditor(app);
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))

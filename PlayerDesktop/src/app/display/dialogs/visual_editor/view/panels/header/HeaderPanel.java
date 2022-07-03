@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.VisualEditorPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,12 +9,15 @@ import java.awt.*;
 public class HeaderPanel extends JPanel
 {
 
-    EditorPickerPanel editorPickerPanel;
-    ToolsPanel toolsPanel;
-    public HeaderPanel()
+    private final EditorPickerPanel editorPickerPanel;
+    private final ToolsPanel toolsPanel;
+    private final VisualEditorPanel visualEditorPanel;
+
+    public HeaderPanel(VisualEditorPanel visualEditorPanel)
     {
+        this.visualEditorPanel = visualEditorPanel;
         setLayout(new BorderLayout());
-        editorPickerPanel = new EditorPickerPanel();
+        editorPickerPanel = new EditorPickerPanel(visualEditorPanel);
         add(editorPickerPanel, BorderLayout.LINE_START);
         toolsPanel = new ToolsPanel();
         Handler.toolsPanel = toolsPanel;

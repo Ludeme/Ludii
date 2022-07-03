@@ -2,12 +2,13 @@ package app.display.dialogs.visual_editor.handler;
 
 import app.DesktopApp;
 import app.PlayerApp;
-import app.display.dialogs.visual_editor.VisualEditorPanel;
+import app.display.dialogs.visual_editor.StartVisualEditor;
 import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.*;
+import app.display.dialogs.visual_editor.view.VisualEditorPanel;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
@@ -47,6 +48,7 @@ public class Handler
     public static LayoutSettingsPanel lsPanel;
 
     public static MainPanel mainPanel;
+    public static VisualEditorPanel visualEditorPanel;
 
     private static Stack<IUserAction> performedUserActions = new Stack<>();
     private static Stack<IUserAction> undoneUserActions = new Stack<>();
@@ -75,6 +77,12 @@ public class Handler
 
     public static final int SENSITIVITY_COLLECTION_REMOVAL = 4;
     public static final int SENSITIVITY_REMOVAL = 6;
+
+
+    public static void updateCurrentGraphPanel(IGraphPanel graphPanel)
+    {
+        currentGraphPanel = graphPanel;
+    }
 
 
     public static void setPalette(DesignPalette palette)
@@ -144,9 +152,9 @@ public class Handler
         Report r = new Report();
         try
         {
-            if (VisualEditorPanel.app != null)
+            if (StartVisualEditor.app != null)
             {
-                output[0] = (Game) compiler.Compiler.compile(d, VisualEditorPanel.app.manager().settingsManager().userSelections(), r, false);
+                output[0] = (Game) compiler.Compiler.compile(d, StartVisualEditor.app.manager().settingsManager().userSelections(), r, false);
             }
             else
                 output[0] = (Game) compiler.Compiler.compile(d, new UserSelections(new ArrayList<String>()), r, false);
@@ -199,14 +207,14 @@ public class Handler
             return false;
         Game game = (Game) output[0];
         // load game
-        loadGame(game, VisualEditorPanel.app);
+        loadGame(game, StartVisualEditor.app);
         return true;
     }
 
     public static boolean play(Game game)
     {
         // load game
-        loadGame(game, VisualEditorPanel.app);
+        loadGame(game, StartVisualEditor.app);
         return true;
     }
 
@@ -1077,16 +1085,6 @@ public class Handler
     public static String getLudString(DescriptionGraph graph){
         return graph.toLud();
     }
-
-    public static void centerViewport(int x, int y)
-    {
-        if (mainPanel != null)
-        {
-            Rectangle view = mainPanel.getPanel().getViewport().getViewRect();
-            //mainPanel.setView(x-view.width/2, y-view.height/2);
-        }
-    }
-
     public static void setMainPanel(MainPanel mainPanel) {
         Handler.mainPanel = mainPanel;
     }
@@ -1185,6 +1183,6 @@ public class Handler
 
     public static Dimension getViewPortSize()
     {
-        return mainPanel.getViewPort();
+        return currentGraphPanel.parentScrollPane().getViewport().getSize();
     }
 }

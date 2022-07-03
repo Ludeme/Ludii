@@ -18,6 +18,7 @@ import java.util.Objects;
 public class DesignPalette
 {
     public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(1200,800);
+    public static final Dimension DEFAULT_GRAPHPANEL_SIZE = new Dimension(10000,10000);
 
     public static float SCALAR = 1f;
 

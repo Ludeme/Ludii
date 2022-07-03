@@ -1,0 +1,58 @@
+package app.display.dialogs.visual_editor.view;
+
+import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
+import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineEditor;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameEditor;
+import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class VisualEditorPanel extends JPanel
+{
+
+    // Game Editor
+    private final GameEditor gameEditor = new GameEditor();
+    // Define Editor
+    private final DefineEditor defineEditor = new DefineEditor();
+    // Whether the game, define, text, ... editor is currently active/selected
+    private JPanel ACTIVE_EDITOR = gameEditor;
+    // Layout Sidebar
+    private final EditorSidebar layoutSidebar = new EditorSidebar();
+    private final VisualEditorFrame visualEditorFrame;
+    public VisualEditorPanel(VisualEditorFrame visualEditorFrame)
+    {
+        this.visualEditorFrame = visualEditorFrame;
+        Handler.visualEditorPanel = this;
+
+        setLayout(new BorderLayout());
+
+        add(new HeaderPanel(this), BorderLayout.NORTH);
+
+        add(ACTIVE_EDITOR, BorderLayout.CENTER);
+        add(layoutSidebar, BorderLayout.EAST);
+
+        setFocusable(true);
+    }
+
+
+    public void openGameEditor()
+    {
+        remove(ACTIVE_EDITOR);
+        ACTIVE_EDITOR = gameEditor;
+        add(ACTIVE_EDITOR, BorderLayout.CENTER);
+        repaint();
+        Handler.updateCurrentGraphPanel(gameEditor.graphPanel());
+    }
+
+    public void openDefineEditor()
+    {
+        remove(ACTIVE_EDITOR);
+        ACTIVE_EDITOR = defineEditor;
+        add(ACTIVE_EDITOR, BorderLayout.CENTER);
+        repaint();
+        Handler.updateCurrentGraphPanel(defineEditor.currentGraphPanel());
+    }
+
+}
