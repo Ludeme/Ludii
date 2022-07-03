@@ -138,7 +138,7 @@ public class LHeader extends JComponent
             List<Clause> clauses = symbolClauseMap.get(s);
             if(clauses.size() == 1)
             {
-                JMenuItem item = new JMenuItem(clauseTitle(clauses.get(0)));
+                JMenuItem item = new JMenuItem(clauses.get(0).symbol().name());
                 item.setToolTipText(DocumentationReader.instance().documentation().get(s).description());
                 item.addActionListener(e -> {
                     Handler.updateCurrentClause(ludemeNodeComponent().graphPanel().graph(), ludemeNodeComponent().node(), clauses.get(0));

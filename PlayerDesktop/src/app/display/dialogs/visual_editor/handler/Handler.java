@@ -73,7 +73,8 @@ public class Handler
 
     public static DesignPalette currentPalette = lightPalette;
 
-    private static final int SENSITIVITY_REMOVAL = 6;
+    public static final int SENSITIVITY_COLLECTION_REMOVAL = 4;
+    public static final int SENSITIVITY_REMOVAL = 6;
 
 
     public static void setPalette(DesignPalette palette)
