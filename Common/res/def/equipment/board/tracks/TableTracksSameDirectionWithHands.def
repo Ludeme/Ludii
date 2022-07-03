@@ -1,0 +1,9 @@
+// Defines two table tracks following the same directions and using hand sites.
+// @example ("TableTracksSameDirectionWithHands")
+
+(define "TableTracksSameDirectionWithHands"
+        {
+        (track "Track1" {24 0..5 6..11 23..18 17..12} P1 directed:True)
+        (track "Track2" {25 0..5 6..11 23..18 17..12} P2 directed:True)
+        }
+)
