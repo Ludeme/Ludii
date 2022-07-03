@@ -22,8 +22,30 @@ public class PlayButton extends JButton
         //setContentAreaFilled(false);
         setBorderPainted(false);
         setBackground(Handler.currentPalette().COMPILABLE_COLOR());
-        setForeground(new Color(69,69,69));
+        setForeground(Handler.currentPalette().PLAY_BUTTON_FOREGROUND());
         addActionListener(actionListener);
+    }
+
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        if(compilable)
+        {
+            if (getBackground() != Handler.currentPalette().COMPILABLE_COLOR())
+            {
+                setBackground(Handler.currentPalette().COMPILABLE_COLOR());
+                setForeground(Handler.currentPalette().PLAY_BUTTON_FOREGROUND());
+            }
+        }
+        else
+        {
+            if (getBackground() != Handler.currentPalette().NOT_COMPILABLE_COLOR())
+            {
+                setBackground(Handler.currentPalette().NOT_COMPILABLE_COLOR());
+                setForeground(Handler.currentPalette().PLAY_BUTTON_FOREGROUND());
+            }
+        }
+
     }
 
     private final ActionListener actionListener = e ->

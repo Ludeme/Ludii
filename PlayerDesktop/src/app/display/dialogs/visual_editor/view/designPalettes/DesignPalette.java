@@ -133,6 +133,8 @@ public class DesignPalette
     private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
     private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
 
+    private static final Color PLAY_BUTTON_FOREGROUND = new Color(69,69,69);
+
     private static final Color INPUT_FIELD_BACKGROUND = Color.WHITE;
     private static final Color INPUT_FIELD_BORDER_COLOUR = new Color(176,176,176);
     private static final Color INPUT_FIELD_FOREGROUND = new Color(51, 51, 51);
@@ -222,6 +224,11 @@ public class DesignPalette
     public Color NOT_COMPILABLE_COLOR()
     {
         return NOT_COMPILABLE_COLOR;
+    }
+
+    public Color PLAY_BUTTON_FOREGROUND()
+    {
+        return PLAY_BUTTON_FOREGROUND;
     }
 
     public Color INPUT_FIELD_BACKGROUND()

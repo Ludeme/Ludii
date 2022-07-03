@@ -49,8 +49,10 @@ public class DesignPaletteDark extends DesignPalette
     private static Color LUDEME_CONNECTION_POINT = new Color(106, 129, 151);
     private static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(172,57,57);
     private static Color LUDEME_CONNECTION_EDGE = new Color(106, 129, 151);
-    private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
-    private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
+    private static final Color COMPILABLE_COLOR = new Color(96, 97, 93);
+    private static final Color NOT_COMPILABLE_COLOR = new Color(94,78,78);
+
+    private static final Color PLAY_BUTTON_FOREGROUND = new Color(186, 186, 186);
 
     private static final Color INPUT_FIELD_BACKGROUND = new Color(54, 59, 65);
     private static final Color INPUT_FIELD_BORDER_COLOUR = new Color(97,97,97);
@@ -137,6 +139,11 @@ public class DesignPaletteDark extends DesignPalette
     public Color COMPILABLE_COLOR()
     {
         return COMPILABLE_COLOR;
+    }
+
+    public Color PLAY_BUTTON_FOREGROUND()
+    {
+        return PLAY_BUTTON_FOREGROUND;
     }
 
     @Override

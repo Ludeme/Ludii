@@ -431,7 +431,7 @@ public class LInputArea extends JPanel
             inputField.activateHybrid(true);
 
         // if the inputfield is single and optional, check whether it can be merged into another inputfield
-        if(!inputField.isMerged() && inputField.optional())
+        if(!inputField.isMerged() && inputField.optional() && inputField.children().isEmpty())
         {
             // get input fields above and below (null if there is no input field above or below)
             LInputField inputFieldAbove = inputFieldAbove(inputField);
@@ -639,7 +639,8 @@ public class LInputArea extends JPanel
 
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
         setBorder(Handler.currentPalette().INPUT_AREA_PADDING_BORDER); // just space between this and bottom of LNC
     }

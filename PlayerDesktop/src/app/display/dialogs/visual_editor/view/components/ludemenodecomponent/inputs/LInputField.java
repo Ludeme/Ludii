@@ -360,8 +360,29 @@ public class LInputField extends JComponent
 
     private void loadFieldComponentColours()
     {
-        fieldComponent.setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
-        fieldComponent.setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+        if(fieldComponent == connectionComponent)
+            return;
+        if(fieldComponent instanceof JTextField)
+        {
+            fieldComponent.setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
+            fieldComponent.setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+        }
+        else if(fieldComponent instanceof JSpinner)
+        {
+
+            ((JFormattedTextField) ((JSpinner) fieldComponent).getEditor().getComponent(0)).setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
+            ((JFormattedTextField) ((JSpinner) fieldComponent).getEditor().getComponent(0)).setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+        }
+        else if(fieldComponent instanceof JComboBox)
+        {
+            ((JComboBox) fieldComponent).getEditor().getEditorComponent().setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
+            ((JComboBox) fieldComponent).getEditor().getEditorComponent().setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+        }
+        else
+        {
+            fieldComponent.setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
+            fieldComponent.setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+        }
         Border b = new LineBorder(Handler.currentPalette().INPUT_FIELD_BORDER_COLOUR(), 1);
         fieldComponent.setBorder(b);
     }
