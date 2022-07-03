@@ -3,8 +3,8 @@
 // @example ("NoEnemyOrOnlyOne" (to))
 
 (define "NoEnemyOrOnlyOne" 
-	    (if (not ("IsEnemyOn" #1))
-	        True
-	        ("IsEmptyOrSingletonStack" #1)
-	    )		
+    (if (not ("IsEnemyOn" #1))
+        True
+        ("IsEmptyOrSingletonStack" #1)
+    )		
 )

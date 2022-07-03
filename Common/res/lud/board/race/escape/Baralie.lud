@@ -1,58 +1,47 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
 
-(define "NextSiteFromDist6" 
-    (trackSite Move 
-        from:#1 
-        steps:6
-    )
-)
+(define "NextSiteFromDist6" ("NextSiteOnTrack" 6 from:#1))
 
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "RemoveAPiece" 
-    (move
-        Remove
-        (site) 
-    )		
-)
+(define "RemoveAPiece" (move Remove (site)))
 
 (define "Bar" (mapEntry (mover)))
 
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
-
 (define "AllPieceEscaped" (no Pieces Mover))
 
-(define "CanEscape" (= #1 Off))
+(define "CanEscape" (not ("IsNotOffBoard" #1)))
+
+(define "MoveTo"
+    (forEach Site
+        (sites Occupied by:Mover)
+        (if ("CanEscape" #1) 
+            ("RemoveAPiece")
+            (move 
+                (from (site))
+                (to #1
+                    if:("NoEnemyOrOnlyOne" (to))
+                    (apply 
+                        if:("IsEnemyOn" (to))  
+                        (fromTo 
+                            (from (to)) 
+                            (to ("Bar"))
+                        )
+                    )
+                )
+            )
+        )
+    )		
+)
 
 //-----------------------------------------------------------------------------
 
 (game "Baralie"  
     (players 2)  
     (equipment { 
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {6 0..5 7..12 25..20 18..13} P1 directed:True)
-            (track "Track2" {19 0..5 7..12 25..20 18..13} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" "BackgammonTracksSameDirectionWithBar") 
         (dice num:2)
         (map {(pair 1 19 ) (pair 2 6)}) // Bar
         (piece "Disc" Each) 
-    } )
+    })
     
     (rules
         (start { 
@@ -62,49 +51,12 @@
         })
         
         (play 
-            (do 
-                (if (not "SameTurn") (roll))
-                next:(if (all DiceUsed)
-                    (forEach Site
-                        (sites Occupied by:Mover)
-                        (if ("CanEscape" ("NextSiteFromDist6" (site))) 
-                            ("RemoveAPiece")
-                            (move 
-                                (from (site))
-                                (to ("NextSiteFromDist6" (site))
-                                    if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        if:(is Enemy (who at:(to))) 
-                                        (fromTo 
-                                            (from (to)) 
-                                            (to ("Bar"))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+            ("RollEachNewTurnMove"
+                (if (all DiceUsed)
+                    ("MoveTo" ("NextSiteFromDist6" (site)))
                     (forEach Die
                         if:("DieNotUsed")
-                        (forEach Site
-                            (sites Occupied by:Mover)
-                            (if ("CanEscape" ("NextSiteFrom" (site))) 
-                                ("RemoveAPiece")
-                                (move 
-                                    (from (site))
-                                    (to ("NextSiteFrom" (site))
-                                        if:("NotEnemyOrOnlyOne")
-                                        (apply 
-                                            if:(is Enemy (who at:(to))) 
-                                            (fromTo 
-                                                (from (to)) 
-                                                (to ("Bar"))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                        ("MoveTo" ("NextSiteFrom" (site)))
                         (then (moveAgain))
                     )
                 )

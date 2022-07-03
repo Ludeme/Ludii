@@ -8,13 +8,6 @@
     )
 )
 
-(define "NotEnemyOrOnlyOne" 
-    (if (not ("IsEnemyOn" (to)))
-        True
-        ("IsEmptyOrSingletonStack" (to))
-    )
-)
-
 (define "BarEmpty" (is Empty "Bar"))
 
 (define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
@@ -38,7 +31,7 @@
         (from #1)
         (to 
             ("NextSiteFrom" #1) 
-            if:("NotEnemyOrOnlyOne") 
+            if:("NoEnemyOrOnlyOne" (to))
             ("IfEnemyBlotIt")
         )
     )
@@ -108,9 +101,8 @@
         })
         
         (play 
-            (do 
-                (if (not "SameTurn") (roll))
-                next:(if "AllPieceInHome"
+            ("RollEachNewTurnMove"
+                (if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 
                         if:("DieNotUsed")

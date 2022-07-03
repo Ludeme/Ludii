@@ -1,0 +1,9 @@
+// Defines backgammon tracks following the same direction for each player in using the bar of the board.
+// @example ("BackgammonTracksSameDirectionWithBar")
+
+(define "BackgammonTracksSameDirectionWithBar"
+    {
+    (track "Track1" {6 0..5 7..12 25..20 18..13} P1 directed:True)
+    (track "Track2" {19 0..5 7..12 25..20 18..13} P2 directed:True)
+    } 
+)
