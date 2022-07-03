@@ -80,7 +80,7 @@
         )
         (piece "Marker" Each ("Move" ("ThrowValue")))
         (hand Each)
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (map {(pair P1 6) (pair P2 7) (pair P3 17) (pair P4 21)})
         (regions "SafeSites" (sites {3 19 16 34}))
     })

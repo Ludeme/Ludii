@@ -1,6 +1,6 @@
 (define "IfEnemyBlotIt"    
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyOn" (to)) 
         (fromTo 
             (from (to)) 
             (to (mapEntry (next)))
@@ -11,10 +11,10 @@
 (define "NotEnemyOrOnlyOne"    
     (or 
         (and 
-            (is Enemy (who at:(to))) 
+            ("IsEnemyOn" (to)) 
             (= (topLevel at:(to)) 0)
         ) 
-        (not (is Enemy (who at:(to))))
+        (not ("IsEnemyOn" (to)))
     )
 )
 
@@ -28,8 +28,6 @@
 )
 
 (define "Bar" (mapEntry (mover)))
-
-(define "DieNotUsed" (!= (pips) 0))
 
 (define "AllPieceInHome" 
     ("NoSites" 
