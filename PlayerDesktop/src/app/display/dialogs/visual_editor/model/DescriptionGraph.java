@@ -24,6 +24,7 @@ public class DescriptionGraph implements iGraph {
     private int selectedRoot = -1;
     private boolean isDefine = false;
     private String title;
+    private Symbol symbol;
     LudemeNode ROOT;
 
 
@@ -34,6 +35,7 @@ public class DescriptionGraph implements iGraph {
     {
         this.title = title;
         this.isDefine = isDefine;
+        this.symbol = new Symbol(Symbol.LudemeType.Ludeme, title, title, null);
     }
 
     public DescriptionGraph(LudemeNode root){
@@ -223,8 +225,9 @@ public class DescriptionGraph implements iGraph {
         Map<LudemeNode, List<NodeArgument>> parameters = Handler.defineParameters(this);
         List<NodeArgument> parameterNAs = new ArrayList<>();
         for(List<NodeArgument> lna : parameters.values()) parameterNAs.addAll(lna);
-        Symbol symbol = new Symbol(Symbol.LudemeType.Ludeme, lnRoot.providedInputsMap().values().iterator().next().toString(), lnRoot.providedInputsMap().values().iterator().next().toString(), null);
-        return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(1), parameterNAs, lnRoot.x(), lnRoot.y(), true);
+        //Symbol symbol = new Symbol(Symbol.LudemeType.Ludeme, lnRoot.providedInputsMap().values().iterator().next().toString(), lnRoot.providedInputsMap().values().iterator().next().toString(), null);
+        //return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(1), parameterNAs, lnRoot.x(), lnRoot.y(), true);
+        return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(0), parameterNAs, lnRoot.x(), lnRoot.y(), true);
     }
 
 }
