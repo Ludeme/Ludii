@@ -1,7 +1,7 @@
-// Checks if a site returned by a track is off board. 
+// Checks if a site returned by a track is not off board. 
 // #1 = The site.
-// @example ("IsNotOffBoard" ("NextSiteOnTrack" 3))
+// @example ("IsOffBoard" ("NextSiteOnTrack" 3))
 
-(define "IsNotOffBoard"
+(define "IsOffBoard"
     (!= #1 Off)
 )
