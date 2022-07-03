@@ -66,12 +66,12 @@ public class Handler
     public static final IBackground DotGridBackground = new DotGridBackground();
     public static final IBackground EmptyBackground = new EmptyBackground();
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
-    public static IBackground currentBackground = DotGridBackground;
+    private static IBackground currentBackground = DotGridBackground;
 
     public static DesignPalette lightPalette = DesignPaletteLight.instance();
     public static DesignPalette darkPalette = DesignPaletteDark.instance();
 
-    public static DesignPalette currentPalette = darkPalette;
+    public static DesignPalette currentPalette = lightPalette;
 
 
     public static void setPalette(DesignPalette palette)

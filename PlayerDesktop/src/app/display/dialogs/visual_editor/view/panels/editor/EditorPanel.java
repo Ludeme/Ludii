@@ -130,7 +130,12 @@ public class EditorPanel extends JPanel implements IGraphPanel
         List<Symbol> symbolsWithoutConnection = new ArrayList<>();
         for (Symbol symbol : allSymbols)
         {
-            if(symbol.ludemeType().equals(Symbol.LudemeType.Constant) || symbol.ludemeType().equals(Symbol.LudemeType.Predefined) || symbol.ludemeType().equals(Symbol.LudemeType.Structural) || symbol.ludemeType().equals(Symbol.LudemeType.Primitive) || symbol.ludemeType().equals(Symbol.LudemeType.SubLudeme)) continue;
+            if(symbol.ludemeType().equals(Symbol.LudemeType.Constant) ||
+                    symbol.ludemeType().equals(Symbol.LudemeType.Predefined) ||
+                    symbol.ludemeType().equals(Symbol.LudemeType.Structural) ||
+                    symbol.ludemeType().equals(Symbol.LudemeType.Primitive) ||
+                    symbol.ludemeType().equals(Symbol.LudemeType.SubLudeme))
+                continue;
             symbolsWithoutConnection.add(symbol);
         }
         return symbolsWithoutConnection;
@@ -143,11 +148,9 @@ public class EditorPanel extends JPanel implements IGraphPanel
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         if(getBackground() != Handler.currentPalette().BACKGROUND_EDITOR())
-        {
             setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
-        }
 
-        Handler.currentBackground.paint(mainPanel.getPanel().getViewport().getViewRect(), getWidth(), getHeight(), g2);
+        Handler.currentBackground().paint(mainPanel.getPanel().getViewport().getViewRect(), getWidth(), getHeight(), g2);
 
         // set color for edges
         g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
@@ -164,18 +167,18 @@ public class EditorPanel extends JPanel implements IGraphPanel
 
 
         // Draw selection area
-        if (SELECTION_MODE && !SELECTING) SelectionBox.drawSelectionModeIdle(mousePosition, g2);
-        if (SELECTION_MODE && SELECTING) SelectionBox.drawSelectionArea(mousePosition, mousePosition, g2);
+        if (SELECTION_MODE && !SELECTING)
+            SelectionBox.drawSelectionModeIdle(mousePosition, g2);
+        if (SELECTION_MODE && SELECTING)
+            SelectionBox.drawSelectionArea(mousePosition, mousePosition, g2);
 
         // Draw fixed groups area
         for(LudemeNodeComponent lc : nodeComponents)
-        {
             if (lc.node().fixed())
             {
                 Rectangle subtreeArea = GraphRoutines.getSubtreeArea(graph(), lc.node().id());
                 FixedGroupSelection.drawGroupBox(subtreeArea, (Graphics2D) g);
             }
-        }
 
     }
 
@@ -185,9 +188,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
         // get game description up to current point
         int upUntilIndex = ch.getSelectedConnectionComponent().inputField().nodeArguments().get(0).index();
         for(NodeArgument ii : ch.getSelectedConnectionComponent().inputField().nodeArguments())
-        {
-            if(ii.index() < upUntilIndex) upUntilIndex = ii.index();
-        }
+            if(ii.index() < upUntilIndex)
+                upUntilIndex = ii.index();
         long start = System.nanoTime();
         List<Symbol> possibleSymbols = ch.getSelectedConnectionComponent().possibleSymbolInputs();
         String gameDescription = ch.getSelectedConnectionComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(ch.getSelectedConnectionComponent().inputField().nodeArguments());
@@ -217,7 +219,8 @@ public class EditorPanel extends JPanel implements IGraphPanel
         add(lc);
         lc.updatePositions();
 
-        if(connect){ch.finishNewConnection(lc);}
+        if(connect)
+            ch.finishNewConnection(lc);
 
         // expand editor
         //expandEditorPanelSize(lc);
@@ -298,17 +301,15 @@ public class EditorPanel extends JPanel implements IGraphPanel
             {
                 LudemeNodeComponent childLnc = nodeComponent(child);
                 if(childLnc.node().collapsed())
-                {
                     for(LudemeNodeComponent lncc : subtree(childLnc))
                     {
-                        if(selectedLnc.contains(lncc)) continue;
+                        if(selectedLnc.contains(lncc))
+                            continue;
                         lncc.setSelected(true);
                         selectedLnc.add(lncc);
                     }
-                }
             }
         }
-        System.out.println("[EP] Selected " + selectedLnc.size() + " nodes");
     }
 
     private List<LudemeNodeComponent> subtree(LudemeNodeComponent lnc)
