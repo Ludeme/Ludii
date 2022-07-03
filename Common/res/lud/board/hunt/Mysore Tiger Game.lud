@@ -12,17 +12,14 @@
             use:Vertex
         )
         (hand P1) 
-        (piece "Human" P1
-            ("StepToEmpty")
-        )
+        (piece "Human" P1 ("StepToEmpty"))
         (piece "Tiger" P2
             (or 
                 ("StepToEmpty")
                 ("HopCapture")
             )
         )
-        }
-    )  
+    })  
     (rules 
         (start {
             (place "Human1" (handSite P1) count:3)
@@ -34,9 +31,7 @@
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Playing")
         )
-        (phase "Playing"
-            (play (forEach Piece))
-        )
+        (phase "Playing" (play (forEach Piece)))
         }
         
         (end {
@@ -66,7 +61,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

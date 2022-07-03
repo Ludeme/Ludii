@@ -1,0 +1,15 @@
+// Defines a step move to all the directions specified (adjacent by default) to a site occupied by an enemy piece. The enemy piece is removed.
+// #1 = The direction(s) to step.
+// #2 = The consequences.
+// @example ("StepToEnemy")
+
+(define "StepToEnemy"
+    (move Step 
+        #1
+        (to 
+            if:("IsEnemyOn" (to)) 
+            (apply (remove (to)))
+        )
+        #2
+    )
+)

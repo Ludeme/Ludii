@@ -13,34 +13,30 @@
     )
 )
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "RemoveAPiece" (move Remove (from)))
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyOn" (to)) 
         (fromTo (from (to)) (to (handSite (who at:(to)))))
     ) 
 )
 
-(define "DieNotUsed" (!= (pips) 0))
-
 (define "Move" 
-    (if (= ("SiteToMoveOnTrack" #1) End)
+    (if ("IsEndTrack" ("NextSiteOnTrack" #1))
         "RemoveAPiece"
-        (if (!= ("SiteToMoveOnTrack" #1) Off) 	 			
+        (if ("IsNotOffBoard" ("NextSiteOnTrack" #1)) 	 			
             (if (or
-                    (is In ("SiteToMoveOnTrack" #1) (sites Empty))
+                    (is Empty ("NextSiteOnTrack" #1))
                     (and 
-                        (is Enemy (who at:("SiteToMoveOnTrack" #1)))
-                        (not (is In ("SiteToMoveOnTrack" #1) (sites "SafeSites")))
+                        ("IsEnemyOn" ("NextSiteOnTrack" #1))
+                        (not (is In ("NextSiteOnTrack" #1) (sites "SafeSites")))
                     )
                 )
                 (move 
                     (from)
                     (to 
-                        ("SiteToMoveOnTrack" #1) 
+                        ("NextSiteOnTrack" #1) 
                         "CaptureEnemyPiece"
                     )
                 )
@@ -84,7 +80,7 @@
         )
         (piece "Marker" Each ("Move" ("ThrowValue")))
         (hand Each)
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (map {(pair P1 6) (pair P2 7) (pair P3 17) (pair P4 21)})
         (regions "SafeSites" (sites {3 19 16 34}))
     })

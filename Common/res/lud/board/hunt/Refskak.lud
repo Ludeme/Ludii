@@ -1,13 +1,7 @@
 (game "Refskak"
     (players 2)
     (equipment {
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (piece "Lamb" P1 "StepToEmpty")
         (piece "Fox" P2 (or "HopCapture" "StepToEmpty"))
     })

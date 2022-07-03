@@ -1,12 +1,6 @@
-(define "DieNotUsed" (!= (pips) 0))
+(define "SiteToSelect" ("NextSiteOnTrack" (- (pips) 1) from:(mapEntry "StartTrack" (mover))))
 
-(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
-
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
-
-(define "BearOff" 
-    (move Remove #1)
-)
+(define "BearOff" (move Remove #1))
 
 (define "PieceUnstacked" (= (state at:#1) 2) )
 (define "PieceFullStacked" (= (state at:#1) 0) )
@@ -36,30 +30,21 @@
 (game "Dubblets"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
+        ("TableBoard" 
             {
             (track "Track1" {0..5} P1 directed:True)
             (track "Track2" {12..17} P2 directed:True)
-            }
-            use:Vertex
+            }	
         )
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= "SiteToMoveOnTrack" Off)
+                (if ("IsOffBoard" ("NextSiteOnTrack" (pips)))
                     ("BearOff" (from))
                     (move 
                         (from) 
-                        (to 
-                            "SiteToMoveOnTrack" 
-                        )
+                        (to ("NextSiteOnTrack" (pips)))
                     )
                 )
             )		
@@ -77,9 +62,7 @@
         phases:{
         (phase "UnStacking" 
             (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
-                    next:
+                ("RollEachNewTurnMove"
                     (if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
                         (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
                             next:(forEach Site (sites Occupied by:Mover)
@@ -111,9 +94,7 @@
                                         (then 
                                             (and 
                                                 (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
-                                                (if (not (all DiceUsed))
-                                                    (moveAgain)
-                                                )
+                                                ("ReplayNotAllDiceUsed")
                                             )
                                         )
                                     )
@@ -123,9 +104,7 @@
                                         (then 
                                             (and 
                                                 ("UnstackFull")
-                                                (if (not (all DiceUsed))
-                                                    (moveAgain)
-                                                )
+                                                ("ReplayNotAllDiceUsed")
                                             )
                                         )
                                     )
@@ -134,11 +113,8 @@
                         )
                     )
                 )
-            )
-            (nextPhase Mover 
-                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
-                "BearingOff"
-            )
+            )    
+            (nextPhase Mover (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) "BearingOff")
         )
         (phase "BearingOff" 
             (play 
@@ -158,7 +134,7 @@
                         )
                         (forEach Piece top:True)
                     )
-                    (then (if (not (all DiceUsed)) (moveAgain)))
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )
             (end (if (no Pieces Mover) (result Mover Win)))
@@ -195,4 +171,3 @@
     })
     
 )
-

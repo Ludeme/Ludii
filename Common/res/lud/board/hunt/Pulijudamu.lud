@@ -15,9 +15,7 @@
             use:Vertex
         ) 
         (hand Each) 
-        (piece "Goat" P2
-            ("StepToEmpty")
-        )
+        (piece "Goat" P2 ("StepToEmpty"))
         (piece "Tiger" P1
             (or 
                 ("StepToEmpty")
@@ -51,9 +49,7 @@
             (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Playing")
         )
-        (phase "Playing"
-            (play (forEach Piece))
-        )
+        (phase "Playing" (play (forEach Piece)))
         }
         
         (end {

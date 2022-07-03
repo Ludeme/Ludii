@@ -1,0 +1,9 @@
+// Defines the most popular backgammon tracks in using the bar of the board.
+// @example ("BackgammonTracksWithBar")
+
+(define "BackgammonTracksWithBar"
+    {
+    (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
+    (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
+    } 
+)

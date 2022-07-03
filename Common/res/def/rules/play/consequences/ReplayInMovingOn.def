@@ -1,0 +1,9 @@
+// Move again if the last `to' position is on a specified region.
+// #1 = The region.
+// @example ("ReplayInMovingOn" (sites Top))
+
+(define "ReplayInMovingOn"
+    (if (is In (last To) #1) 
+        (moveAgain) 
+    ) 
+)

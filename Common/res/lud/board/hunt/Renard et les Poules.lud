@@ -30,21 +30,6 @@
     )
 )
 
-(define "HopCustomCapture"
-    (move Hop 
-        #1
-        (between 
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-    )
-)
-
-(define "StepCustomToEmpty"
-    (move Step #1 (to if:(is Empty (to))))
-)
-
 (define "HopCustomSequenceCapture" 
     (move Hop
         #1
@@ -93,13 +78,7 @@
 (game "Renard et les Poules"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (hand P1)
         (piece "Fox" P1 S
             (or 
@@ -107,9 +86,8 @@
                 <Fox:stepMove>
             ) 
         )
-        (piece "Hen" P2 N (move Step (directions {Forwards Rightward Leftward})(to if:(is Empty (to))))) 
-        }
-    )  
+        (piece "Hen" P2 N ("StepToEmpty" (directions {Forwards Rightward Leftward}))) 
+    })  
     (rules 
         (start { 
             (place "Fox1" (centrePoint))
@@ -188,11 +166,11 @@
     )  
     
     (item "One Single Orthogonal Capture"  
-        <("HopCustomCapture" (directions {N S E W}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+        <("HopCapture" (directions {N S E W}))> 
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
-            ("RememberSiteWithPossibleCapture" ("HopCustomCapture" (directions {N S E W}))) 
+            ("RememberSiteWithPossibleCapture" ("HopCapture" (directions {N S E W}))) 
             next:(forEach Piece
                 (then 
                     (if ("ShouldCapturedButMoved")
@@ -207,7 +185,7 @@
     
     (item "Multi Orthogonal Captures" 
         <("HopCustomSequenceCapture" (directions {N S E W}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
             ("RememberSiteWithPossibleMultiCapture" 
@@ -233,11 +211,11 @@
     )   
     
     (item "One Single Diagonal Capture And Orthogonal Move"  
-        <("HopCustomCapture" (directions {NE SE NW SW}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+        <("HopCapture" (directions {NE SE NW SW}))> 
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
-            ("RememberSiteWithPossibleCapture" ("HopCustomCapture" (directions {NE SE NW SW}))) 
+            ("RememberSiteWithPossibleCapture" ("HopCapture" (directions {NE SE NW SW}))) 
             next:(forEach Piece
                 (then 
                     (if ("ShouldCapturedButMoved")
@@ -252,7 +230,7 @@
     
     (item "Multi Diagonal Captures And Orthogonal Move" 
         <("HopCustomSequenceCapture" (directions {NE SE NW SW}))> 
-        <("StepCustomToEmpty" (directions {N S E W}))>
+        <("StepToEmpty" (directions {N S E W}))>
         <
         (do 
             ("RememberSiteWithPossibleMultiCapture" 
@@ -328,7 +306,6 @@
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
         (piece Families {"Abstract" "Themed"})
-        
         }
     )
     

@@ -10,9 +10,9 @@
             Leap 
             "KnightWalk" 
             (to 
-                if:(not (is Friend (who at:(to)))) 
+                if:(not ("IsFriendOn" (to)) ) 
                 (apply 
-                    (if (is Enemy (who at:(to)))
+                    (if ("IsEnemyOn" (to)) 
                         (remove 
                             (to) 
                             #2

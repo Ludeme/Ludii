@@ -1,18 +1,10 @@
 (game "Wolf and Sheep"  
     (players 2)  
-    (equipment 
-        { 
+    (equipment { 
         (board (square 8)) 
-        (piece "Sheep" P1 N 
-            (move 
-                Step 
-                (directions {FR FL}) 
-                (to if:(is Empty (to)))
-            )
-        ) 
+        (piece "Sheep" P1 N ("StepToEmpty" (directions {FR FL}))) 
         (piece "Wolf" P2 "StepDiagonalToEmpty")
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Wolf2" {"D8"})

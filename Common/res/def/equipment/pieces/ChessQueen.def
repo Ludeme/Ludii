@@ -9,9 +9,9 @@
         (move
             Slide 
             (to 
-                if:(is Enemy (who at:(to)))    
+                if:("IsEnemyOn" (to))   
                 (apply 
-                    (if (is Enemy (who at:(to)))
+                    (if ("IsEnemyOn" (to)) 
                         (remove 
                             (to) 
                             #2

@@ -2,10 +2,7 @@
     (players 2)  
     (equipment { 
         (board 
-            (merge 
-                (shift 0 -4 (square 5 diagonals:Alternating)) 
-                (rotate 180 (wedge 3))
-            ) 
+            (rotate 180 ("AlquerqueGraphWithBottomTriangle"))
             use:Vertex
         ) 
         (piece "Jaguar" P1

@@ -1,0 +1,15 @@
+// Defines a pachisi board.
+// @example ("PachisiBoard")
+
+(define "PachisiBoard"
+    (board 
+        (add
+            (hole
+                ("CrossGraph" 3 19)
+                (poly {{8 8} {8 11} {11 11} {11 8}})
+            )
+            cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
+        )
+        #1
+    )
+)
