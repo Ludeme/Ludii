@@ -49,8 +49,8 @@ public class MainFrame extends JFrame {
                 DocHandler.getInstance().close();
                 VisualEditorPanel.controller().close();
                 String header = "latency_nano,selected_index";
-                List<Long> latencies = editor_panel.getLatencies();
-                List<Integer> selectedCompletion = editor_panel.getSelectedCompletion();
+                List<Long> latencies = editor_panel.latencies();
+                List<Integer> selectedCompletion = editor_panel.selectedCompletion();
                 List<String> lines = new ArrayList<>();
 
                 for(int i = 0; i < latencies.size() && i < selectedCompletion.size(); i++) {

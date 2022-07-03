@@ -33,8 +33,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
-
 public class EditorPanel extends JPanel implements IGraphPanel
 {
 
@@ -50,8 +48,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
     private boolean zoomed = false;
     private boolean busy = false;
 
-    List<Symbol> symbols = Grammar.grammar().symbols();
-
     // flag to check if select button is active
     private boolean SELECTION_MODE = false;
     // flag to check if user performs selection
@@ -65,7 +61,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     private boolean autoplacement = false;
 
     // list of symbols that can be created without connection
-    private final List<Symbol> symbolsWithoutConnection;
+    public static List<Symbol> symbolsWithoutConnection;
 
     // window to add a new ludeme out of all possible ones
     private final AddArgumentPanel addLudemePanel;
@@ -111,7 +107,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         addMouseListener(clickListener);
         addMouseMotionListener(motionListener);
         addMouseWheelListener(wheelListener);
-        //addMouseWheelListener(wheelListener2);
 
         add(addLudemePanel);
         add(connectArgumentPanel);
@@ -160,7 +155,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         if(getBackground() != Handler.currentPalette().BACKGROUND_EDITOR())
             setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
 
-        Handler.currentBackground().paint(mainPanel.getPanel().getViewport().getViewRect(), getWidth(), getHeight(), g2);
+        Handler.currentBackground().paint(parentScrollPane().getViewport().getViewRect(), getWidth(), getHeight(), g2);
 
         // set color for edges
         g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
@@ -335,7 +330,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return subtree;
     }
 
-    public boolean isSELECTION_MODE()
+    public boolean isSelectionMode()
     {
         return SELECTION_MODE;
     }
@@ -456,11 +451,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
     }
 
     @Override
-    public void notifyTerminalInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, Object input) {
-        lnc.updateProvidedInputs();
-    }
-
-    @Override
     public void notifyInputsUpdated(LudemeNodeComponent lnc)
     {
         lnc.updateProvidedInputs();
@@ -498,21 +488,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
         inputField.notifyCollectionRemoved();
     }
 
-    @Override
-    public void notifyCollectionInputUpdated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex, Object input) {
-        // find parent inputfield
-        /*LInputField inputField = null;
-        for(LInputField ii : lnc.inputArea().currentInputFields)
-        {
-            if(ii.nodeArguments().contains(inputFieldArgument))
-            {
-                inputField = ii;
-                break;
-            }
-        }
-        if(elementIndex > 0) inputField = inputField.parent().children().get(elementIndex-1);
-        inputField.setUserInput(input);*/
-    }
 
     @Override
     public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause) {
@@ -575,6 +550,22 @@ public class EditorPanel extends JPanel implements IGraphPanel
         return this;
     }
 
+    /**
+     * Returns the AddArgumentPanel used to establish connections
+     */
+    @Override
+    public AddArgumentPanel addConnectionPanel() {
+        return null;
+    }
+
+    /**
+     * Returns the AddArgumentPanel used to create new nodes
+     */
+    @Override
+    public AddArgumentPanel addNodePanel() {
+        return null;
+    }
+
     @Override
     public JScrollPane parentScrollPane()
     {
@@ -596,40 +587,6 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         System.out.println("setting busy: " + b);
         busy = b;
-    }
-
-    @Override
-    public void drawGraph(DescriptionGraph graph)
-    {
-        busy = true;
-        if(DEBUG) System.out.println("\n[EP] Redrawing graph\n");
-        this.graph = graph;
-        removeAll();
-        nodeComponents.clear();
-        ch.clearEdges();
-        ch.setSelectedConnectionComponent(null);
-        List<LudemeNode> nodes = graph.getNodes();
-        for(LudemeNode node : nodes)
-        {
-            //add(new LudemeBlock(node, null, 300));
-            LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
-            nodeComponents.add(lc);
-            add(lc);
-            lc.revalidate();
-        }
-        for(LudemeNodeComponent lc : nodeComponents)
-        {
-            lc.updateProvidedInputs();
-            lc.updatePositions();
-        }
-
-        add(addLudemePanel);
-        add(connectArgumentPanel);
-
-        busy = false;
-
-        revalidate();
-        repaint();
     }
 
     @Override
@@ -945,11 +902,11 @@ public class EditorPanel extends JPanel implements IGraphPanel
         }
     };
 
-    public List<Long> getLatencies() {
+    public List<Long> latencies() {
         return latencies;
     }
 
-    public List<Integer> getSelectedCompletion() {
+    public List<Integer> selectedCompletion() {
         return selectedCompletion;
     }
 

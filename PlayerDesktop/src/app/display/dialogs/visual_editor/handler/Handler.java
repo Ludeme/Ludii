@@ -860,7 +860,7 @@ public class Handler
 
         if(x == -1 && y == -1)
         {
-            Point v = mainPanel.getPanel().getViewport().getViewPosition();
+            Point v = graphPanel.parentScrollPane().getViewport().getViewPosition();
             x_shift = v.x;
             y_shift = v.y;
         }

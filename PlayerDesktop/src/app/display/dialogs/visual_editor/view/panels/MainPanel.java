@@ -58,7 +58,7 @@ public class MainPanel extends JPanel {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (origin != null && !editor_panel.isSELECTION_MODE()) {
+                if (origin != null && !editor_panel.isSelectionMode()) {
                     JViewport viewPort = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, editor_panel);
                     if (viewPort != null) {
                         int deltaX = origin.x - e.getX();
