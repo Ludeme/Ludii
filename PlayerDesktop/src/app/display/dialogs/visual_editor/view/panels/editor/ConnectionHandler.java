@@ -1,10 +1,8 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeConnection;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -12,7 +10,6 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
-import javax.sound.midi.SysexMessage;
 import java.util.List;
 import java.awt.*;
 import java.awt.geom.Path2D;
@@ -47,9 +44,9 @@ public class ConnectionHandler
     public void paintConnections(Graphics2D g2)
     {
         // set color for edges
-        g2.setColor(DesignPalette.LUDEME_CONNECTION_EDGE);
+        g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
         // set stroke for edges
-        g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
+        g2.setStroke(Handler.currentPalette().LUDEME_EDGE_STROKE);
 
         for(LudemeConnection e : edges)
         {

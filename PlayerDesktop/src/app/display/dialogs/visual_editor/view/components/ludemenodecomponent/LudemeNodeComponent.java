@@ -4,7 +4,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
@@ -197,7 +197,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public int width()
     {
-        return DesignPalette.NODE_WIDTH;
+        return Handler.currentPalette().NODE_WIDTH;
     }
 
     /**
@@ -465,11 +465,11 @@ public class LudemeNodeComponent extends JPanel
 
         setBackground(backgroundColour());
         if (selected)
-            setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED);
+            setBorder(Handler.currentPalette().LUDEME_NODE_BORDER_SELECTED());
         else if (markedUncompilable)
-            setBorder(DesignPalette.LUDEME_NODE_BORDER_UNCOMPILABLE);
+            setBorder(Handler.currentPalette().LUDEME_NODE_BORDER_UNCOMPILABLE());
         else
-            setBorder(DesignPalette.LUDEME_NODE_BORDER);
+            setBorder(Handler.currentPalette().LUDEME_NODE_BORDER());
 
     }
 
@@ -495,10 +495,10 @@ public class LudemeNodeComponent extends JPanel
     {
         switch(node().packageName())
         {
-            case "game.equipment": return DesignPalette.BACKGROUND_LUDEME_BODY_EQUIPMENT;
-            case "game.functions": return DesignPalette.BACKGROUND_LUDEME_BODY_FUNCTIONS;
-            case "game.rules": return DesignPalette.BACKGROUND_LUDEME_BODY_RULES;
-            default: return DesignPalette.BACKGROUND_LUDEME_BODY;
+            case "game.equipment": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_EQUIPMENT();
+            case "game.functions": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_FUNCTIONS();
+            case "game.rules": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_RULES();
+            default: return Handler.currentPalette().BACKGROUND_LUDEME_BODY();
         }
     }
 

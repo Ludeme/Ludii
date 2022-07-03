@@ -1,16 +1,11 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
-import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.view.DesignPalette;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 
 public class EditorPopupMenu extends JPopupMenu {
 
@@ -52,11 +47,11 @@ public class EditorPopupMenu extends JPopupMenu {
 
         int iconHeight = (int)(newLudeme.getPreferredSize().getHeight()*0.75);
 
-        ImageIcon newLudemeIcon = new ImageIcon(DesignPalette.ADD_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon newLudemeIcon = new ImageIcon(Handler.currentPalette().ADD_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
         newLudeme.setIcon(newLudemeIcon);
-        ImageIcon pasteIcon = new ImageIcon(DesignPalette.PASTE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon pasteIcon = new ImageIcon(Handler.currentPalette().PASTE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
         paste.setIcon(pasteIcon);
-        ImageIcon collapseIcon = new ImageIcon(DesignPalette.COLLAPSE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
+        ImageIcon collapseIcon = new ImageIcon(Handler.currentPalette().COLLAPSE_ICON.getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
         collapse.setIcon(collapseIcon);
 
         if(Handler.copyList().isEmpty()) paste.setEnabled(false);

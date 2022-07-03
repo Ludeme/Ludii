@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.editor.backgrounds;
 
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -10,10 +11,10 @@ public class CartesianGridBackground implements IBackground
     @Override
     public void paint(Rectangle viewRectangle, int width, int height, Graphics2D g2) {
 
-        int lineWidth = DesignPalette.BACKGROUND_LINE_WIDTH;
-        int frequency = DesignPalette.BACKGROUND_LINE_PADDING;
+        int lineWidth = Handler.currentPalette().BACKGROUND_LINE_WIDTH;
+        int frequency = Handler.currentPalette().BACKGROUND_LINE_PADDING;
 
-        g2.setColor(DesignPalette.BACKGROUND_VISUAL_HELPER);
+        g2.setColor(Handler.currentPalette().BACKGROUND_VISUAL_HELPER());
         g2.setStroke(new BasicStroke(lineWidth));
 
         // draw vertical lines

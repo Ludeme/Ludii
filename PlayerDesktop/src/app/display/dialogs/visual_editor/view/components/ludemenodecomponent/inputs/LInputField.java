@@ -3,7 +3,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -16,9 +16,6 @@ import java.awt.event.*;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import static app.display.dialogs.visual_editor.view.DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL;
-import static app.display.dialogs.visual_editor.view.DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL;
 
 /**
  * A component representing one or more NodeArguments
@@ -43,10 +40,10 @@ public class LInputField extends JComponent
     private final JLabel label = new JLabel();
     private final JLabel optionalLabel = new JLabel("(optional)");
     private final JLabel terminalOptionalLabel = new JLabel("+");
-    private LInputButton uncollapseButton = new LInputButton(DesignPalette.UNCOLLAPSE_ICON, DesignPalette.UNCOLLAPSE_ICON_HOVER);
-    private LInputButton addItemButton = new LInputButton(DesignPalette.COLLECTION_ICON_ACTIVE, DesignPalette.COLLECTION_ICON_HOVER);
-    private LInputButton removeItemButton = new LInputButton(DesignPalette.COLLECTION_REMOVE_ICON_ACTIVE, DesignPalette.COLLECTION_REMOVE_ICON_HOVER);
-    private LInputButton choiceButton = new LInputButton(DesignPalette.CHOICE_ICON_ACTIVE, DesignPalette.CHOICE_ICON_HOVER);
+    private LInputButton uncollapseButton = new LInputButton(Handler.currentPalette().UNCOLLAPSE_ICON, Handler.currentPalette().UNCOLLAPSE_ICON_HOVER);
+    private LInputButton addItemButton = new LInputButton(Handler.currentPalette().COLLECTION_ICON_ACTIVE, Handler.currentPalette().COLLECTION_ICON_HOVER);
+    private LInputButton removeItemButton = new LInputButton(Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE, Handler.currentPalette().COLLECTION_REMOVE_ICON_HOVER);
+    private LInputButton choiceButton = new LInputButton(Handler.currentPalette().CHOICE_ICON_ACTIVE, Handler.currentPalette().CHOICE_ICON_HOVER);
     private static float buttonWidthPercentage = 1f;
     private boolean active = true;
 
@@ -90,8 +87,8 @@ public class LInputField extends JComponent
      */
     private void loadButtons()
     {
-        optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
-        optionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+        optionalLabel.setFont(Handler.currentPalette().LUDEME_INPUT_FONT_ITALIC);
+        optionalLabel.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
         optionalLabel.setText("(optional)");
 
         if(terminalOptionalLabel.getMouseListeners().length == 0) terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
@@ -188,8 +185,8 @@ public class LInputField extends JComponent
             label.setText(nodeArgument.arg().actualParameterName());
         else
             label.setText(nodeArgument.arg().symbol().name());
-        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+        label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
+        label.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
 
         label.setToolTipText(nodeArgument(0).parameterDescription());
         optionalLabel.setToolTipText(nodeArgument(0).parameterDescription());
@@ -236,10 +233,10 @@ public class LInputField extends JComponent
         // add optional label
         if(optional()) add(optionalLabel);
         label.setText("Arguments");
-        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR);
+        label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
+        label.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
         add(label);
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
         connectionComponent = new LConnectionComponent(this, false);
         fieldComponent = connectionComponent;
         add(connectionComponent);
@@ -286,7 +283,7 @@ public class LInputField extends JComponent
 
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
         add(label);
         add(fieldComponent);
 
@@ -379,10 +376,10 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
             
-            add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
             add(addItemButton);
         }
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
 
         if(collapsed())
         {
@@ -448,10 +445,10 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
 
-            add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
             add(addItemButton);
         }
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
 
         if(collapsed())
         {
@@ -502,10 +499,10 @@ public class LInputField extends JComponent
             add(choiceButton);
         }*/
 
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
         add(removeItemButton);
 
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
 
         if(collapsed())
         {
@@ -552,7 +549,7 @@ public class LInputField extends JComponent
         }
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
         add(label);
         add(fieldComponent);
 
@@ -637,7 +634,7 @@ public class LInputField extends JComponent
             add(choiceButton);
         }*/
 
-        add(Box.createHorizontalStrut(INPUTFIELD_PADDING_LEFT_TERMINAL));
+        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
         add(removeItemButton);
 
         if(collapsed())
@@ -1260,7 +1257,7 @@ public class LInputField extends JComponent
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
 
     }
 

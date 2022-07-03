@@ -1,4 +1,6 @@
-package app.display.dialogs.visual_editor.view;
+package app.display.dialogs.visual_editor.view.designPalettes;
+
+import app.display.dialogs.visual_editor.handler.Handler;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,8 +17,6 @@ import java.util.Objects;
 
 public class DesignPalette
 {
-
-
     public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(1200,800);
 
     public static float SCALAR = 1f;
@@ -91,8 +91,9 @@ public class DesignPalette
         LUDEME_TITLE_FONT = new Font("Roboto Bold", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
         LUDEME_INPUT_FONT = new Font("Robot Regular", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
         LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-        LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
-        LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(DesignPalette.LUDEME_SELECTION_COLOR, NODE_BORDER_WIDTH);
+        LUDEME_NODE_BORDER = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
+        LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
+        LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
 
         INPUT_AREA_PADDING_BORDER = new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0);
         HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
@@ -102,33 +103,122 @@ public class DesignPalette
     // ~~ COLORS ~~ //
 
     // PANELS //
-    public static Color BACKGROUND_EDITOR = new Color(244,244,244);
-    public static Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
+    private static Color BACKGROUND_EDITOR = new Color(244,244,244);
+    private static Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
+    private static Color BACKGROUND_HEADER_PANEL = new Color(250,250,250);
 
     // LUDEME BLOCK //
         // fonts
-    public static Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
-    public static Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
-        // backgrounds
-    public static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
+    private static Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
+    private static Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
 
+
+        // backgrounds
+    private static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
 
          // there are 3 classes: game.equipment, game.functions, and game.rules
                     // game.rules: game.rules.play, game.rules.start, game.rules.end
                     // game.functions: .region, .ints, .graph, .floats, .dim, .booleans
 
-    public static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
-    public static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
-    public static Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
+    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
+    private static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
+    private static Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
+    private static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
+    private static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
+    private static Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
+
+    private static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
+    private static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
+    private static Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
+    private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
+    private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
 
 
-    public static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
-    public static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
-    public static Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
-        // fills
-    public static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
-    public static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
-    public static Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
+    public Color BACKGROUND_EDITOR()
+    {
+        return BACKGROUND_EDITOR;
+    }
+
+    public Color BACKGROUND_VISUAL_HELPER()
+    {
+        return BACKGROUND_VISUAL_HELPER;
+    }
+
+    public Color BACKGROUND_HEADER_PANEL()
+    {
+        return BACKGROUND_HEADER_PANEL;
+    }
+
+    public Color FONT_LUDEME_INPUTS_COLOR()
+    {
+        return FONT_LUDEME_INPUTS_COLOR;
+    }
+
+    public Color FONT_LUDEME_TITLE_COLOR()
+    {
+        return FONT_LUDEME_TITLE_COLOR;
+    }
+
+    public Color BACKGROUND_LUDEME_BODY()
+    {
+        return BACKGROUND_LUDEME_BODY;
+    }
+
+    public Color BACKGROUND_LUDEME_BODY_EQUIPMENT()
+    {
+        return BACKGROUND_LUDEME_BODY_EQUIPMENT;
+    }
+
+    public Color BACKGROUND_LUDEME_BODY_FUNCTIONS()
+    {
+        return BACKGROUND_LUDEME_BODY_FUNCTIONS;
+    }
+
+    public Color BACKGROUND_LUDEME_BODY_RULES()
+    {
+        return BACKGROUND_LUDEME_BODY_RULES;
+    }
+
+    public static Color LUDEME_BORDER_COLOR()
+    {
+        return LUDEME_BORDER_COLOR;
+    }
+
+    public static Color LUDEME_SELECTION_COLOR()
+    {
+        return LUDEME_SELECTION_COLOR;
+    }
+
+    public static Color LUDEME_UNCOMPILABLE_COLOR()
+    {
+        return LUDEME_UNCOMPILABLE_COLOR;
+    }
+
+    public Color LUDEME_CONNECTION_POINT()
+    {
+        return LUDEME_CONNECTION_POINT;
+    }
+
+    public Color LUDEME_CONNECTION_POINT_INACTIVE()
+    {
+        return LUDEME_CONNECTION_POINT_INACTIVE;
+    }
+
+    public Color LUDEME_CONNECTION_EDGE()
+    {
+        return LUDEME_CONNECTION_EDGE;
+    }
+
+
+    public Color COMPILABLE_COLOR()
+    {
+        return COMPILABLE_COLOR;
+    }
+
+    public Color NOT_COMPILABLE_COLOR()
+    {
+        return NOT_COMPILABLE_COLOR;
+    }
 
     // ~~ FONTS ~~ //
     public static void initializeFonts() {
@@ -146,10 +236,6 @@ public class DesignPalette
     // FRAME //
     public static final ImageIcon LUDII_ICON = new ImageIcon(DesignPalette.class.getResource("/ludii-logo-64x64.png"));
     // HEADER EDITORS //
-
-    public static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
-    public static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
-
     public static final ImageIcon COMPILABLE_ICON = getIcon("editor/play.png");
     public static final ImageIcon NOT_COMPILABLE_ICON = getIcon("editor/not_compilable.png");
 
@@ -204,11 +290,27 @@ public class DesignPalette
 
 
     // ~~ STROKES AND BORDERS ~~ //
-    public static BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-    public static Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR, NODE_BORDER_WIDTH);
-    public static Border LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(DesignPalette.LUDEME_SELECTION_COLOR, NODE_BORDER_WIDTH);
-    public static Border LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(DesignPalette.LUDEME_UNCOMPILABLE_COLOR, NODE_BORDER_WIDTH);
+    private static Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
+    private static Border LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
+    private static Border LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
 
+    public Border LUDEME_NODE_BORDER()
+    {
+        return LUDEME_NODE_BORDER;
+    }
+
+    public Border LUDEME_NODE_BORDER_SELECTED()
+    {
+        return LUDEME_NODE_BORDER_SELECTED;
+    }
+
+    public Border LUDEME_NODE_BORDER_UNCOMPILABLE()
+    {
+        return LUDEME_NODE_BORDER_UNCOMPILABLE;
+    }
+
+
+    public static BasicStroke LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     public static EmptyBorder INPUT_AREA_PADDING_BORDER = new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0);
     public static EmptyBorder HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
 

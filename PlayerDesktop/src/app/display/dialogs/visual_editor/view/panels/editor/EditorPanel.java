@@ -13,15 +13,12 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.TypeMatch;
 import app.display.dialogs.visual_editor.view.components.AddArgumentPanel;
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
-import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.DotGridBackground;
-import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.IBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGroupSelection;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
@@ -88,7 +85,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         setLayout(null);
         setPreferredSize(new Dimension(width, height));
-        setBackground(DesignPalette.BACKGROUND_EDITOR);
+        setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
 
         addMouseListener(clickListener);
         addMouseMotionListener(motionListener);
@@ -145,12 +142,17 @@ public class EditorPanel extends JPanel implements IGraphPanel
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        if(getBackground() != Handler.currentPalette().BACKGROUND_EDITOR())
+        {
+            setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
+        }
+
         Handler.currentBackground.paint(mainPanel.getPanel().getViewport().getViewRect(), getWidth(), getHeight(), g2);
 
         // set color for edges
-        g2.setColor(DesignPalette.LUDEME_CONNECTION_EDGE);
+        g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
         // set stroke for edges
-        g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
+        g2.setStroke(Handler.currentPalette().LUDEME_EDGE_STROKE);
 
         // draw new connection
         ch.drawNewConnection(g2, mousePosition);
@@ -862,18 +864,18 @@ public class EditorPanel extends JPanel implements IGraphPanel
             double amount = Math.pow(1.01, e.getScrollAmount());
             if(e.getWheelRotation() > 0)
             {
-                float scalar = (float) (Math.min(DesignPalette.SCALAR * amount, DesignPalette.MAX_SCALAR));
+                float scalar = (float) (Math.min(Handler.currentPalette().SCALAR * amount, Handler.currentPalette().MAX_SCALAR));
                 //float scalar = 0.95f;
                 //zoomScalar *= 1.05f;
-                DesignPalette.scale(1.02f);
+                Handler.currentPalette().scale(1.02f);
                 scaleNodes(0.98);
             }
             else
             {
-                float scalar = (float) (Math.max(DesignPalette.SCALAR / amount, DesignPalette.MIN_SCALAR));
+                float scalar = (float) (Math.max(Handler.currentPalette().SCALAR / amount, Handler.currentPalette().MIN_SCALAR));
                 //float scalar = 1.05f;
                 //zoomScalar *= 0.95f;
-                DesignPalette.scale(1.0f/1.02f);
+                Handler.currentPalette().scale(1.0f/1.02f);
                 scaleNodes(1.0/0.98);
             }
             //updateNodePositions();

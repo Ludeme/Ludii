@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -227,7 +228,7 @@ public class LConnectionComponent extends JComponent
      */
     private int radius()
     {
-        return (int)(INPUT_FIELD.label().getPreferredSize().height * 0.4 * (1.0/DesignPalette.SCALAR));
+        return (int)(INPUT_FIELD.label().getPreferredSize().height * 0.4 * (1.0/ Handler.currentPalette().SCALAR));
     }
 
     /**
@@ -257,22 +258,22 @@ public class LConnectionComponent extends JComponent
             // if fill = true, draw a filled circle. otherwise, the contour only
             if(fill)
             {
-                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
+                g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT());
                 g2.fillOval(x, y, radius()*2, radius()*2);
             }
             else
             {
                 if(!optional() && !LConnectionComponent.this.inputField().isHybrid())
                 {
-                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE);
+                    g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT_INACTIVE());
                 }
                 else
                 {
-                    g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT);
+                    g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT());
                 }
                 g2.fillOval(x, y, radius()*2, radius()*2);
                 // make white hole to create stroke effect
-                g2.setColor(DesignPalette.BACKGROUND_LUDEME_BODY);
+                g2.setColor(Handler.currentPalette().BACKGROUND_LUDEME_BODY());
                 g2.fillOval(x+radius()/2, y+radius()/2, radius(), radius());
 
             }

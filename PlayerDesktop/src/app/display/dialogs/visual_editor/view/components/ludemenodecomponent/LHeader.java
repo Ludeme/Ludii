@@ -2,7 +2,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
@@ -45,8 +45,8 @@ public class LHeader extends JComponent
         setLayout(new BorderLayout());
         // initialize title
         title = new JLabel(LNC.node().title());
-        title.setFont(DesignPalette.LUDEME_TITLE_FONT);
-        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
+        title.setFont(Handler.currentPalette().LUDEME_TITLE_FONT);
+        title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         // initialize connection component
         ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
@@ -56,12 +56,12 @@ public class LHeader extends JComponent
         JPanel connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
         if(ingoingConnectionComponent!=null) connectionAndTitle.add(ingoingConnectionComponent);
         // Empty space between the connection component and the label
-        connectionAndTitle.add(Box.createHorizontalStrut(DesignPalette.HEADER_TITLE_CONNECTION_SPACE));
+        connectionAndTitle.add(Box.createHorizontalStrut(Handler.currentPalette().HEADER_TITLE_CONNECTION_SPACE));
         connectionAndTitle.add(title);
         connectionAndTitle.setOpaque(false);
 
         // button for selecting the clause
-        JButton clauseBtn = new JButton(DesignPalette.DOWN_ICON);
+        JButton clauseBtn = new JButton(Handler.currentPalette().DOWN_ICON);
         clauseBtn.setFocusPainted(false);
         clauseBtn.setOpaque(false);
         clauseBtn.setContentAreaFilled(false);
@@ -92,7 +92,7 @@ public class LHeader extends JComponent
 
 
         // space between this and input area and top of LNC
-        setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0));
+        setBorder(new EmptyBorder(Handler.currentPalette().HEADER_PADDING_TOP,0,Handler.currentPalette().HEADER_PADDING_BOTTOM,0));
         setSize(getPreferredSize());
 
         setOpaque(false);
@@ -237,11 +237,11 @@ public class LHeader extends JComponent
         super.paintComponent(g);
 
         title.setText(LNC.node().title());
-        title.setFont(DesignPalette.LUDEME_TITLE_FONT);
-        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR);
+        title.setFont(Handler.currentPalette().LUDEME_TITLE_FONT);
+        title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         title.setToolTipText(ludemeNodeComponent().node().description());
 
-        setBorder(DesignPalette.HEADER_PADDING_BORDER);
+        setBorder(Handler.currentPalette().HEADER_PADDING_BORDER);
     }
 }

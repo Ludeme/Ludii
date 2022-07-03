@@ -9,6 +9,9 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.*;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
@@ -64,6 +67,26 @@ public class Handler
     public static final IBackground EmptyBackground = new EmptyBackground();
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
     public static IBackground currentBackground = DotGridBackground;
+
+    public static DesignPalette lightPalette = DesignPaletteLight.instance();
+    public static DesignPalette darkPalette = DesignPaletteDark.instance();
+
+    public static DesignPalette currentPalette = lightPalette;
+
+
+    public static void setPalette(DesignPalette palette)
+    {
+        currentPalette = palette;
+        for(IGraphPanel graphPanel : graphPanelMap.values())
+        {
+            graphPanel.repaint();
+        }
+    }
+
+    public static DesignPalette currentPalette()
+    {
+        return currentPalette;
+    }
 
     public static IBackground currentBackground()
     {

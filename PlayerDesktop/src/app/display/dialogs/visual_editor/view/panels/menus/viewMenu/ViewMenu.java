@@ -18,8 +18,8 @@ public class ViewMenu extends JMenu
         add(appearance);
         add(background);
 
-        menuBar.addJMenuItem(appearance, "Light", null);
-        menuBar.addJMenuItem(appearance, "Dark", null);
+        menuBar.addJMenuItem(appearance, "Light", light);
+        menuBar.addJMenuItem(appearance, "Dark", dark);
         menuBar.addJMenuItem(appearance, "High Contrast", null);
 
         menuBar.addJMenuItem(background, "Dot Grid", dotGrid);
@@ -30,4 +30,7 @@ public class ViewMenu extends JMenu
     ActionListener dotGrid = e -> Handler.setBackground(Handler.DotGridBackground);
     ActionListener cartesianGrid = e -> Handler.setBackground(Handler.CartesianGridBackground);
     ActionListener noGrid = e -> Handler.setBackground(Handler.EmptyBackground);
+
+    ActionListener light = e -> Handler.setPalette(Handler.lightPalette);
+    ActionListener dark = e -> Handler.setPalette(Handler.darkPalette);
 }

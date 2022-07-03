@@ -1,8 +1,9 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.view.DesignPalette;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -640,7 +641,7 @@ public class LInputArea extends JPanel
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBorder(DesignPalette.INPUT_AREA_PADDING_BORDER); // just space between this and bottom of LNC
+        setBorder(Handler.currentPalette().INPUT_AREA_PADDING_BORDER); // just space between this and bottom of LNC
     }
 
 

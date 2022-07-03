@@ -7,21 +7,30 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class HeaderPanel extends JPanel {
-    public HeaderPanel(){
+public class HeaderPanel extends JPanel
+{
+    public HeaderPanel()
+    {
         setLayout(new BorderLayout());
-        setBackground(Color.RED);
 
         add(new EditorPickerPanel(), BorderLayout.LINE_START);
         ToolsPanel toolsPanel = new ToolsPanel();
         Handler.toolsPanel = toolsPanel;
         add(toolsPanel, BorderLayout.LINE_END);
-
-        setBackground(Color.WHITE);
+        setOpaque(true);
+        setBackground(Handler.currentPalette().BACKGROUND_HEADER_PANEL());
 
         int preferredHeight = getPreferredSize().height;
         setPreferredSize(new Dimension(getPreferredSize().width, preferredHeight+20));
+    }
 
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        if(getBackground() != Handler.currentPalette().BACKGROUND_HEADER_PANEL())
+        {
+            setBackground(Handler.currentPalette().BACKGROUND_HEADER_PANEL());
+        }
     }
 
 }

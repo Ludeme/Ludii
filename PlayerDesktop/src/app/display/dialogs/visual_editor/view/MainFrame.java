@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.utils.CSVUtils;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
@@ -27,10 +28,10 @@ public class MainFrame extends JFrame {
     }
 
     private void initialize(EditorPanel editor_panel){
-        DesignPalette.initializeFonts();
+        Handler.currentPalette().initializeFonts();
         setTitle("Ludii Visual Editor");
-        setIconImage((DesignPalette.LUDII_ICON).getImage());
-        setSize(DesignPalette.DEFAULT_FRAME_SIZE);
+        setIconImage((Handler.currentPalette().LUDII_ICON).getImage());
+        setSize(Handler.currentPalette().DEFAULT_FRAME_SIZE);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
