@@ -9,7 +9,7 @@
         #1
         #2
         (between
-            if:(is Enemy (who at:(between)))
+            if:("IsEnemyOn" (between))
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
