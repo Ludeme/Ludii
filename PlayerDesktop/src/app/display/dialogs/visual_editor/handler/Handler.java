@@ -71,7 +71,7 @@ public class Handler
     public static DesignPalette lightPalette = DesignPaletteLight.instance();
     public static DesignPalette darkPalette = DesignPaletteDark.instance();
 
-    public static DesignPalette currentPalette = lightPalette;
+    public static DesignPalette currentPalette = darkPalette;
 
 
     public static void setPalette(DesignPalette palette)

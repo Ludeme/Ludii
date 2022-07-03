@@ -32,6 +32,7 @@ public class LHeader extends JComponent
     private LIngoingConnectionComponent ingoingConnectionComponent;
     /** Label for the title */
     private final JLabel title;
+    private JButton clauseBtn;
 
     /**
      * Constructor for a new LHeader
@@ -61,7 +62,7 @@ public class LHeader extends JComponent
         connectionAndTitle.setOpaque(false);
 
         // button for selecting the clause
-        JButton clauseBtn = new JButton(Handler.currentPalette().DOWN_ICON);
+        clauseBtn = new JButton(Handler.currentPalette().DOWN_ICON());
         clauseBtn.setFocusPainted(false);
         clauseBtn.setOpaque(false);
         clauseBtn.setContentAreaFilled(false);
@@ -87,8 +88,6 @@ public class LHeader extends JComponent
             add(constructorPanel, BorderLayout.LINE_END);
 
         }
-
-
 
 
         // space between this and input area and top of LNC
@@ -241,6 +240,9 @@ public class LHeader extends JComponent
         title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         title.setToolTipText(ludemeNodeComponent().node().description());
+
+        if(!clauseBtn.getIcon().equals(Handler.currentPalette().DOWN_ICON()))
+            clauseBtn.setIcon(Handler.currentPalette().DOWN_ICON());
 
         setBorder(Handler.currentPalette().HEADER_PADDING_BORDER);
     }

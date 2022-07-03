@@ -26,7 +26,7 @@ public class NodePopupMenu extends JPopupMenu {
         ImageIcon copyI = new ImageIcon(Handler.currentPalette().COPY_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
         ImageIcon duplicateI = new ImageIcon(Handler.currentPalette().DUPLICATE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
         ImageIcon deleteI = new ImageIcon(Handler.currentPalette().DELETE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
-        ImageIcon collapseI = new ImageIcon(Handler.currentPalette().COLLAPSE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon collapseI = new ImageIcon(Handler.currentPalette().COLLAPSE_ICON().getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
 
         copyBtn.setIcon(copyI);
         duplicate.setIcon(duplicateI);

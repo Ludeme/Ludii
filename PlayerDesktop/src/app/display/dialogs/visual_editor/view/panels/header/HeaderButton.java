@@ -10,18 +10,19 @@ import java.awt.event.MouseListener;
 
 public class HeaderButton extends JButton {
 
-    private final Color ACTIVE_COLOR = new Color(69, 69, 69);
-    private final Color INACTIVE_COLOR = new Color(165,165,165);
-    private final Color HOVER_COLOR = new Color(127,191,255);
+    public Color ACTIVE_COLOR;
+    public Color INACTIVE_COLOR;
+    public Color HOVER_COLOR;
 
-    private final ImageIcon ACTIVE_ICON;
-    private final ImageIcon INACTIVE_ICON;
-    private final ImageIcon HOVER_ICON;
+    public ImageIcon ACTIVE_ICON;
+    public ImageIcon INACTIVE_ICON;
+    public ImageIcon HOVER_ICON;
 
     private boolean selectable;
     private boolean active;
 
-    public HeaderButton(ImageIcon activeIcon, ImageIcon inactiveIcon, ImageIcon hoverIcon, String text, boolean active, boolean selectable){
+    public HeaderButton(ImageIcon activeIcon, ImageIcon inactiveIcon, ImageIcon hoverIcon, String text, boolean active, boolean selectable)
+    {
         super(text);
         this.active = active;
         this.selectable = selectable;
@@ -30,14 +31,15 @@ public class HeaderButton extends JButton {
         this.INACTIVE_ICON = inactiveIcon;
         this.HOVER_ICON = hoverIcon;
 
+        this.ACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_ACTIVE_COLOR();
+        this.INACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_INACTIVE_COLOR();
+        this.HOVER_COLOR = Handler.currentPalette().HEADER_BUTTON_HOVER_COLOR();
+
         if(active)
-        {
             setActive();
-        }
         else
-        {
             setInactive();
-        }
+
         setFont(new Font("Roboto Bold", Font.PLAIN, 12));
 
         // make transparent
@@ -48,6 +50,15 @@ public class HeaderButton extends JButton {
         setBorderPainted(false);
 
         addMouseListener(hoverMouseListener);
+    }
+
+
+    public void updateDP()
+    {
+        if(active)
+            setActive();
+        else
+            setInactive();
     }
 
     @Override

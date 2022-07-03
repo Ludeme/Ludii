@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.designPalettes;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.net.URL;
 
 public class DesignPaletteDark extends DesignPalette
 {
@@ -192,5 +193,114 @@ public class DesignPaletteDark extends DesignPalette
         return LUDEME_NODE_BORDER_UNCOMPILABLE;
     }
 
+
+    public ImageIcon GAME_EDITOR_ACTIVE()
+    {
+        return super.GAME_EDITOR_INACTIVE();
+    }
+
+    public ImageIcon GAME_EDITOR_INACTIVE()
+    {
+        return super.GAME_EDITOR_ACTIVE();
+    }
+
+    public ImageIcon DEFINE_EDITOR_ACTIVE()
+    {
+        return super.DEFINE_EDITOR_INACTIVE();
+    }
+
+    public ImageIcon DEFINE_EDITOR_INACTIVE()
+    {
+        return super.DEFINE_EDITOR_ACTIVE();
+    }
+
+
+    public ImageIcon TEXT_EDITOR_ACTIVE()
+    {
+        return super.TEXT_EDITOR_INACTIVE();
+    }
+
+    public ImageIcon TEXT_EDITOR_INACTIVE()
+    {
+        return super.TEXT_EDITOR_ACTIVE();
+    }
+
+    public ImageIcon UNDO_ACTIVE()
+    {
+        return super.UNDO_INACTIVE();
+    }
+
+    public ImageIcon UNDO_INACTIVE()
+    {
+        return super.UNDO_ACTIVE();
+    }
+
+    public ImageIcon REDO_ACTIVE()
+    {
+        return super.REDO_INACTIVE();
+    }
+
+    public ImageIcon REDO_INACTIVE()
+    {
+        return super.REDO_ACTIVE();
+    }
+    public Color HEADER_BUTTON_ACTIVE_COLOR()
+    {
+        return super.HEADER_BUTTON_INACTIVE_COLOR();
+    }
+
+    public Color HEADER_BUTTON_INACTIVE_COLOR()
+    {
+        return super.HEADER_BUTTON_ACTIVE_COLOR();
+    }
+
+
+    // LUDEME BLOCK //
+    private static final ImageIcon CHOICE_ICON_ACTIVE = getIcon("node/dark/active/choice.png");
+    private static final ImageIcon COLLECTION_ICON_ACTIVE = getIcon("node/dark/active/collection_add.png");
+    private static final ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/dark/active/collection_remove.png");
+    private static final ImageIcon DOWN_ICON = getIcon("node/dark/active/down.png");
+    private static final ImageIcon UNCOLLAPSE_ICON = getIcon("node/dark/active/uncollapse.png");
+
+    private static final ImageIcon COLLAPSE_ICON = getIcon("node/dark/active/collapse.png");
+
+    public ImageIcon CHOICE_ICON_ACTIVE()
+    {
+        return CHOICE_ICON_ACTIVE;
+    }
+
+    public ImageIcon COLLECTION_ICON_ACTIVE()
+    {
+        return COLLECTION_ICON_ACTIVE;
+    }
+    public ImageIcon COLLECTION_REMOVE_ICON_ACTIVE()
+    {
+        return COLLECTION_REMOVE_ICON_ACTIVE;
+    }
+
+    public ImageIcon DOWN_ICON()
+    {
+        return DOWN_ICON;
+    }
+
+    public ImageIcon COLLAPSE_ICON()
+    {
+        return COLLAPSE_ICON;
+    }
+
+    public ImageIcon UNCOLLAPSE_ICON()
+    {
+        return UNCOLLAPSE_ICON;
+    }
+
+    private static URL getIconURL(String path)
+    {
+        return DesignPalette.class.getResource("/visual_editor/"+path);
+    }
+
+    private static ImageIcon getIcon(String path)
+    {
+        return new ImageIcon(getIconURL(path));
+    }
 
 }

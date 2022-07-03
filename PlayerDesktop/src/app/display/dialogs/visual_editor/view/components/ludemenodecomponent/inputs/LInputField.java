@@ -42,10 +42,10 @@ public class LInputField extends JComponent
     private final JLabel label = new JLabel();
     private final JLabel optionalLabel = new JLabel("(optional)");
     private final JLabel terminalOptionalLabel = new JLabel("+");
-    private LInputButton uncollapseButton = new LInputButton(Handler.currentPalette().UNCOLLAPSE_ICON, Handler.currentPalette().UNCOLLAPSE_ICON_HOVER);
-    private LInputButton addItemButton = new LInputButton(Handler.currentPalette().COLLECTION_ICON_ACTIVE, Handler.currentPalette().COLLECTION_ICON_HOVER);
-    private LInputButton removeItemButton = new LInputButton(Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE, Handler.currentPalette().COLLECTION_REMOVE_ICON_HOVER);
-    private LInputButton choiceButton = new LInputButton(Handler.currentPalette().CHOICE_ICON_ACTIVE, Handler.currentPalette().CHOICE_ICON_HOVER);
+    private LInputButton uncollapseButton = new LInputButton(Handler.currentPalette().UNCOLLAPSE_ICON(), Handler.currentPalette().UNCOLLAPSE_ICON_HOVER());
+    private LInputButton addItemButton = new LInputButton(Handler.currentPalette().COLLECTION_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_ICON_HOVER());
+    private LInputButton removeItemButton = new LInputButton(Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_REMOVE_ICON_HOVER());
+    private LInputButton choiceButton = new LInputButton(Handler.currentPalette().CHOICE_ICON_ACTIVE(), Handler.currentPalette().CHOICE_ICON_HOVER());
     private static float buttonWidthPercentage = 1f;
     private boolean active = true;
 
@@ -1230,6 +1230,26 @@ public class LInputField extends JComponent
         label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
         if(fieldComponent != null && fieldComponent.getBackground() != Handler.currentPalette().INPUT_FIELD_BACKGROUND() && !(fieldComponent instanceof JComboBox)) // JComboBox background does not work
             loadFieldComponentColours();
+
+        if(addItemButton.ACTIVE_COLOR != Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR())
+        {
+            System.out.println("repainting");
+            addItemButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
+            addItemButton.ACTIVE_ICON = Handler.currentPalette().COLLECTION_ICON_ACTIVE();
+            addItemButton.updateDP();
+
+            removeItemButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
+            removeItemButton.ACTIVE_ICON = Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE();
+            removeItemButton.updateDP();
+
+            choiceButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
+            choiceButton.ACTIVE_ICON = Handler.currentPalette().CHOICE_ICON_ACTIVE();
+            choiceButton.updateDP();
+
+            uncollapseButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
+            uncollapseButton.ACTIVE_ICON = Handler.currentPalette().UNCOLLAPSE_ICON();
+            uncollapseButton.updateDP();
+        }
 
     }
 

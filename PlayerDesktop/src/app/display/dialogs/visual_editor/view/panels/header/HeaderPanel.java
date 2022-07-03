@@ -4,17 +4,18 @@ import app.display.dialogs.visual_editor.handler.Handler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class HeaderPanel extends JPanel
 {
+
+    EditorPickerPanel editorPickerPanel;
+    ToolsPanel toolsPanel;
     public HeaderPanel()
     {
         setLayout(new BorderLayout());
-
-        add(new EditorPickerPanel(), BorderLayout.LINE_START);
-        ToolsPanel toolsPanel = new ToolsPanel();
+        editorPickerPanel = new EditorPickerPanel();
+        add(editorPickerPanel, BorderLayout.LINE_START);
+        toolsPanel = new ToolsPanel();
         Handler.toolsPanel = toolsPanel;
         add(toolsPanel, BorderLayout.LINE_END);
         setOpaque(true);
@@ -30,6 +31,8 @@ public class HeaderPanel extends JPanel
         if(getBackground() != Handler.currentPalette().BACKGROUND_HEADER_PANEL())
         {
             setBackground(Handler.currentPalette().BACKGROUND_HEADER_PANEL());
+            editorPickerPanel.repaint();
+            toolsPanel.repaint();
         }
     }
 

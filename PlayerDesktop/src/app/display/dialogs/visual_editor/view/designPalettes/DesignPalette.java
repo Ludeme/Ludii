@@ -266,48 +266,223 @@ public class DesignPalette
     public static final ImageIcon COMPILABLE_ICON = getIcon("editor/play.png");
     public static final ImageIcon NOT_COMPILABLE_ICON = getIcon("editor/not_compilable.png");
 
-    public static final ImageIcon GAME_EDITOR_ACTIVE = getIcon("editor/active/game_editor.png");
-    public static final ImageIcon GAME_EDITOR_INACTIVE = getIcon("editor/inactive/game_editor.png");
-    public static final ImageIcon GAME_EDITOR_HOVER = getIcon("editor/hover/game_editor.png");
+    private static final ImageIcon GAME_EDITOR_ACTIVE = getIcon("editor/active/game_editor.png");
+    private static final ImageIcon GAME_EDITOR_INACTIVE = getIcon("editor/inactive/game_editor.png");
+    private static final ImageIcon GAME_EDITOR_HOVER = getIcon("editor/hover/game_editor.png");
 
-    public static final ImageIcon DEFINE_EDITOR_ACTIVE = getIcon("editor/active/define_editor.png");
-    public static final ImageIcon DEFINE_EDITOR_INACTIVE = getIcon("editor/inactive/define_editor.png");
-    public static final ImageIcon DEFINE_EDITOR_HOVER = getIcon("editor/hover/define_editor.png");
+    private static final ImageIcon DEFINE_EDITOR_ACTIVE = getIcon("editor/active/define_editor.png");
+    private static final ImageIcon DEFINE_EDITOR_INACTIVE = getIcon("editor/inactive/define_editor.png");
+    private static final ImageIcon DEFINE_EDITOR_HOVER = getIcon("editor/hover/define_editor.png");
 
-    public static final ImageIcon TEXT_EDITOR_ACTIVE = getIcon("editor/active/text_editor.png");
-    public static final ImageIcon TEXT_EDITOR_INACTIVE = getIcon("editor/inactive/text_editor.png");
-    public static final ImageIcon TEXT_EDITOR_HOVER = getIcon("editor/hover/text_editor.png");
+    private static final ImageIcon TEXT_EDITOR_ACTIVE = getIcon("editor/active/text_editor.png");
+    private static final ImageIcon TEXT_EDITOR_INACTIVE = getIcon("editor/inactive/text_editor.png");
+    private static final ImageIcon TEXT_EDITOR_HOVER = getIcon("editor/hover/text_editor.png");
     // HEADER TOOLS //
-    public static final ImageIcon SELECT_ACTIVE = getIcon("editor/active/select.png");
-    public static final ImageIcon SELECT_INACTIVE = getIcon("editor/inactive/select.png");
-    public static final ImageIcon SELECT_HOVER = getIcon("editor/hover/select.png");
+    private static final ImageIcon SELECT_ACTIVE = getIcon("editor/active/select.png");
+    private static final ImageIcon SELECT_INACTIVE = getIcon("editor/inactive/select.png");
+    private static final ImageIcon SELECT_HOVER = getIcon("editor/hover/select.png");
 
-    public static final ImageIcon UNDO_ACTIVE = getIcon("editor/active/undo.png");
-    public static final ImageIcon UNDO_INACTIVE = getIcon("editor/inactive/undo.png");
-    public static final ImageIcon UNDO_HOVER = getIcon("editor/hover/undo.png");
+    private static final ImageIcon UNDO_ACTIVE = getIcon("editor/active/undo.png");
+    private static final ImageIcon UNDO_INACTIVE = getIcon("editor/inactive/undo.png");
+    private static final ImageIcon UNDO_HOVER = getIcon("editor/hover/undo.png");
 
-    public static final ImageIcon REDO_ACTIVE = getIcon("editor/active/redo.png");
-    public static final ImageIcon REDO_INACTIVE = getIcon("editor/inactive/redo.png");
-    public static final ImageIcon REDO_HOVER =getIcon("editor/hover/redo.png");
+    private static final ImageIcon REDO_ACTIVE = getIcon("editor/active/redo.png");
+    private static final ImageIcon REDO_INACTIVE = getIcon("editor/inactive/redo.png");
+    private static final ImageIcon REDO_HOVER =getIcon("editor/hover/redo.png");
+
+    public ImageIcon GAME_EDITOR_ACTIVE()
+    {
+        return GAME_EDITOR_ACTIVE;
+    }
+
+    public ImageIcon GAME_EDITOR_INACTIVE()
+    {
+        return GAME_EDITOR_INACTIVE;
+    }
+
+    public ImageIcon GAME_EDITOR_HOVER()
+    {
+        return GAME_EDITOR_HOVER;
+    }
+
+    public ImageIcon DEFINE_EDITOR_ACTIVE()
+    {
+        return DEFINE_EDITOR_ACTIVE;
+    }
+
+    public ImageIcon DEFINE_EDITOR_INACTIVE()
+    {
+        return DEFINE_EDITOR_INACTIVE;
+    }
+
+    public ImageIcon DEFINE_EDITOR_HOVER()
+    {
+        return DEFINE_EDITOR_HOVER;
+    }
+
+    public ImageIcon TEXT_EDITOR_ACTIVE()
+    {
+        return TEXT_EDITOR_ACTIVE;
+    }
+
+    public ImageIcon TEXT_EDITOR_INACTIVE()
+    {
+        return TEXT_EDITOR_INACTIVE;
+    }
+
+    public ImageIcon TEXT_EDITOR_HOVER()
+    {
+        return TEXT_EDITOR_HOVER;
+    }
+
+    public ImageIcon SELECT_ACTIVE()
+    {
+        return SELECT_ACTIVE;
+    }
+
+    public ImageIcon SELECT_INACTIVE()
+    {
+        return SELECT_INACTIVE;
+    }
+
+    public ImageIcon SELECT_HOVER()
+    {
+        return SELECT_HOVER;
+    }
+
+    public ImageIcon UNDO_ACTIVE()
+    {
+        return UNDO_ACTIVE;
+    }
+
+    public ImageIcon UNDO_INACTIVE()
+    {
+        return UNDO_INACTIVE;
+    }
+
+    public ImageIcon UNDO_HOVER()
+    {
+        return UNDO_HOVER;
+    }
+
+    public ImageIcon REDO_ACTIVE()
+    {
+        return REDO_ACTIVE;
+    }
+
+    public ImageIcon REDO_INACTIVE()
+    {
+        return REDO_INACTIVE;
+    }
+
+    public ImageIcon REDO_HOVER()
+    {
+        return REDO_HOVER;
+    }
+
+    private static Color HEADER_BUTTON_ACTIVE_COLOR = new Color(69, 69, 69);
+    private static Color HEADER_BUTTON_INACTIVE_COLOR = new Color(165,165,165);
+    private static Color HEADER_BUTTON_HOVER_COLOR = new Color(127,191,255);
+
+    public Color HEADER_BUTTON_ACTIVE_COLOR()
+    {
+        return HEADER_BUTTON_ACTIVE_COLOR;
+    }
+
+    public Color HEADER_BUTTON_INACTIVE_COLOR()
+    {
+        return HEADER_BUTTON_INACTIVE_COLOR;
+    }
+
+    public Color HEADER_BUTTON_HOVER_COLOR()
+    {
+        return HEADER_BUTTON_HOVER_COLOR;
+    }
 
     // LUDEME BLOCK //
-    public static final ImageIcon CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
-    public static final ImageIcon CHOICE_ICON_HOVER = getIcon("node/hover/choice.png");
-    public static final ImageIcon COLLECTION_ICON_ACTIVE = getIcon("node/active/collection_add.png");
-    public static final ImageIcon COLLECTION_ICON_HOVER = getIcon("node/hover/collection_add.png");
-    public static final ImageIcon COLLECTION_REMOVE_ICON_HOVER = getIcon("node/hover/collection_remove.png");
-    public static final ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
-    public static final ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
-    public static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
-    public static final ImageIcon DOWN_ICON = getIcon("node/active/down.png");
+    private static final ImageIcon CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
+    private static final ImageIcon CHOICE_ICON_HOVER = getIcon("node/hover/choice.png");
+    private static final ImageIcon COLLECTION_ICON_ACTIVE = getIcon("node/active/collection_add.png");
+    private static final ImageIcon COLLECTION_ICON_HOVER = getIcon("node/hover/collection_add.png");
+    private static final ImageIcon COLLECTION_REMOVE_ICON_HOVER = getIcon("node/hover/collection_remove.png");
+    private static final ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
+    private static final ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
+    private static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
+    private static final ImageIcon DOWN_ICON = getIcon("node/active/down.png");
 
     //public static final ImageIcon COLLAPSE_ICON = getIcon("node/active/collapse.png");
     // static final ImageIcon COLLAPSE_ICON_HOVER = getIcon("node/hover/collapse.png");
 
-    public static final ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
+    private static final ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
     public static final ImageIcon UNCOLLAPSE_ICON_HOVER = getIcon("node/hover/uncollapse.png");
 
-    public static final ImageIcon COLLAPSE_ICON = getIcon("popup/collapse.png");
+    private static final ImageIcon COLLAPSE_ICON = getIcon("popup/collapse.png");
+
+    public ImageIcon CHOICE_ICON_ACTIVE()
+    {
+        return CHOICE_ICON_ACTIVE;
+    }
+
+    public ImageIcon CHOICE_ICON_HOVER()
+    {
+        return CHOICE_ICON_HOVER;
+    }
+
+    public ImageIcon COLLECTION_ICON_ACTIVE()
+    {
+        return COLLECTION_ICON_ACTIVE;
+    }
+
+    public ImageIcon COLLECTION_ICON_HOVER()
+    {
+        return COLLECTION_ICON_HOVER;
+    }
+
+    public ImageIcon COLLECTION_REMOVE_ICON_ACTIVE()
+    {
+        return COLLECTION_REMOVE_ICON_ACTIVE;
+    }
+
+    public ImageIcon COLLECTION_REMOVE_ICON_HOVER()
+    {
+        return COLLECTION_REMOVE_ICON_HOVER;
+    }
+
+    public ImageIcon OPTIONAL_ICON_ACTIVE()
+    {
+        return OPTIONAL_ICON_ACTIVE;
+    }
+
+    public ImageIcon OPTIONAL_ICON_HOVER()
+    {
+        return OPTIONAL_ICON_HOVER;
+    }
+
+    public ImageIcon DOWN_ICON()
+    {
+        return DOWN_ICON;
+    }
+
+    public ImageIcon COLLAPSE_ICON()
+    {
+        return COLLAPSE_ICON;
+    }
+
+    public ImageIcon UNCOLLAPSE_ICON()
+    {
+        return UNCOLLAPSE_ICON;
+    }
+
+    public ImageIcon COLLAPSE_ICON_HOVER()
+    {
+        return COLLAPSE_ICON;
+    }
+
+    public ImageIcon UNCOLLAPSE_ICON_HOVER()
+    {
+        return UNCOLLAPSE_ICON_HOVER;
+    }
+
     public static final ImageIcon DELETE_ICON = getIcon("popup/delete.png");
     public static final ImageIcon COPY_ICON = getIcon("popup/copy.png");
     public static final ImageIcon PASTE_ICON = getIcon("popup/paste.png");

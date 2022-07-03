@@ -10,10 +10,10 @@ import java.util.Stack;
 
 public class ToolsPanel extends JPanel {
 
-    private final HeaderButton selectBtn = new HeaderButton(Handler.currentPalette().SELECT_ACTIVE, Handler.currentPalette().SELECT_INACTIVE, Handler.currentPalette().SELECT_HOVER, "Select", false, true);
+    private final HeaderButton selectBtn = new HeaderButton(Handler.currentPalette().SELECT_ACTIVE(), Handler.currentPalette().SELECT_INACTIVE(), Handler.currentPalette().SELECT_HOVER(), "Select", false, true);
 
-    private final HeaderButton undoBtn = new HeaderButton(Handler.currentPalette().UNDO_ACTIVE, Handler.currentPalette().UNDO_INACTIVE, Handler.currentPalette().UNDO_HOVER, "Undo", false, false);
-    private final HeaderButton redoBtn = new HeaderButton(Handler.currentPalette().REDO_ACTIVE, Handler.currentPalette().REDO_INACTIVE, Handler.currentPalette().REDO_HOVER, "Redo", false, false);
+    private final HeaderButton undoBtn = new HeaderButton(Handler.currentPalette().UNDO_ACTIVE(), Handler.currentPalette().UNDO_INACTIVE(), Handler.currentPalette().UNDO_HOVER(), "Undo", false, false);
+    private final HeaderButton redoBtn = new HeaderButton(Handler.currentPalette().REDO_ACTIVE(), Handler.currentPalette().REDO_INACTIVE(), Handler.currentPalette().REDO_HOVER(), "Redo", false, false);
     public final PlayButton play = new PlayButton();
 
     public ToolsPanel() {
@@ -52,6 +52,40 @@ public class ToolsPanel extends JPanel {
         selectBtn.setInactive();
         selectBtn.repaint();
         selectBtn.revalidate();
+    }
+
+    @Override
+    public void repaint()
+    {
+        super.repaint();
+        if(selectBtn == null)
+            return;
+        if(selectBtn.ACTIVE_COLOR != Handler.currentPalette().HEADER_BUTTON_ACTIVE_COLOR())
+        {
+            selectBtn.ACTIVE_ICON = Handler.currentPalette().SELECT_ACTIVE();
+            selectBtn.INACTIVE_ICON = Handler.currentPalette().SELECT_INACTIVE();
+            selectBtn.HOVER_ICON = Handler.currentPalette().SELECT_HOVER();
+            selectBtn.ACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_ACTIVE_COLOR();
+            selectBtn.INACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_INACTIVE_COLOR();
+            selectBtn.HOVER_COLOR = Handler.currentPalette().HEADER_BUTTON_HOVER_COLOR();
+            selectBtn.updateDP();
+
+            undoBtn.ACTIVE_ICON = Handler.currentPalette().UNDO_ACTIVE();
+            undoBtn.INACTIVE_ICON = Handler.currentPalette().UNDO_INACTIVE();
+            undoBtn.HOVER_ICON = Handler.currentPalette().UNDO_HOVER();
+            undoBtn.ACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_ACTIVE_COLOR();
+            undoBtn.INACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_INACTIVE_COLOR();
+            undoBtn.HOVER_COLOR = Handler.currentPalette().HEADER_BUTTON_HOVER_COLOR();
+            undoBtn.updateDP();
+
+            redoBtn.ACTIVE_ICON = Handler.currentPalette().REDO_ACTIVE();
+            redoBtn.INACTIVE_ICON = Handler.currentPalette().REDO_INACTIVE();
+            redoBtn.HOVER_ICON = Handler.currentPalette().REDO_HOVER();
+            redoBtn.ACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_ACTIVE_COLOR();
+            redoBtn.INACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_INACTIVE_COLOR();
+            redoBtn.HOVER_COLOR = Handler.currentPalette().HEADER_BUTTON_HOVER_COLOR();
+            redoBtn.updateDP();
+        }
     }
 
 }

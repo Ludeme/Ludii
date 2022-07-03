@@ -12,14 +12,15 @@ import java.awt.event.MouseListener;
 
 public class LInputButton extends JButton {
 
-    private final Color ACTIVE_COLOR;
-    private final Color HOVER_COLOR = new Color(127,191,255);
+    public Color ACTIVE_COLOR;
+    private Color HOVER_COLOR = new Color(127,191,255);
 
-    private ImageIcon ACTIVE_ICON;
+    public ImageIcon ACTIVE_ICON;
     private ImageIcon HOVER_ICON;
     private boolean active = true;
 
-    public LInputButton(ImageIcon activeIcon, ImageIcon hoverIcon){
+    public LInputButton(ImageIcon activeIcon, ImageIcon hoverIcon)
+    {
         super(activeIcon);
         this.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
         this.ACTIVE_ICON = activeIcon;
@@ -35,7 +36,12 @@ public class LInputButton extends JButton {
         setBorderPainted(false);
 
         addMouseListener(hoverMouseListener);
+    }
 
+    public void updateDP()
+    {
+        if(active)
+            setActive();
     }
 
     public void setActive(){
