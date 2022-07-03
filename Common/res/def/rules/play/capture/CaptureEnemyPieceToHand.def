@@ -2,8 +2,8 @@
 // @example ("CaptureEnemyPieceToHand")
 
 (define "CaptureEnemyPieceToHand"
-	    (apply 
-	            if:("IsEnemyOn" (to)) 
-	            (fromTo (from (to)) (to (handSite Next)))
-	        ) 
+    (apply 
+        if:("IsEnemyOn" (to)) 
+        (fromTo (from (to)) (to (handSite Next)))
+    ) 
 )
