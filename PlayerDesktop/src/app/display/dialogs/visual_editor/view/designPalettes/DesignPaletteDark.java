@@ -21,34 +21,34 @@ public class DesignPaletteDark extends DesignPalette
     // ~~ COLORS ~~ //
 
     // PANELS //
-    private static Color BACKGROUND_EDITOR = new Color(16,16,16);
-    private static Color BACKGROUND_VISUAL_HELPER = new Color(78,78,78);
-    private static Color BACKGROUND_HEADER_PANEL = new Color(21,21,21);
+    private static Color BACKGROUND_EDITOR = new Color(36,41,46);
+    private static Color BACKGROUND_VISUAL_HELPER = new Color(66,66,66);
+    private static Color BACKGROUND_HEADER_PANEL = new Color(47,53,58);
 
 
     // LUDEME BLOCK //
     // fonts
-    private static Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
-    private static Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
+    private static Color FONT_LUDEME_INPUTS_COLOR = new Color(146,146,146);
+    private static Color FONT_LUDEME_TITLE_COLOR = new Color(146,146,146);
 
 
     // backgrounds
-    private static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
+    private static Color BACKGROUND_LUDEME_BODY = new Color(44,50,56);
 
     // there are 3 classes: game.equipment, game.functions, and game.rules
     // game.rules: game.rules.play, game.rules.start, game.rules.end
     // game.functions: .region, .ints, .graph, .floats, .dim, .booleans
 
-    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
-    private static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
-    private static Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
-    private static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
-    private static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
-    private static Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
+    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(51, 36, 45);
+    private static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(44, 56, 56);
+    private static Color BACKGROUND_LUDEME_BODY_RULES = new Color(47, 44, 56);
+    private static Color LUDEME_BORDER_COLOR = new Color(87,87,87);
+    private static Color LUDEME_SELECTION_COLOR = new Color(106, 129, 151);
+    private static Color LUDEME_UNCOMPILABLE_COLOR = new Color(172,57,57);
 
-    private static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
-    private static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
-    private static Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
+    private static Color LUDEME_CONNECTION_POINT = new Color(106, 129, 151);
+    private static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(172,57,57);
+    private static Color LUDEME_CONNECTION_EDGE = new Color(106, 129, 151);
     private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
     private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
 

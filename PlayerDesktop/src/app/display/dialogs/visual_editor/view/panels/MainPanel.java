@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.view.panels;
 
-import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
@@ -17,14 +16,19 @@ public class MainPanel extends JPanel {
     private JScrollPane panel;
     private EditorPanel editor_panel;
 
-    public MainPanel(EditorPanel editor_panel){
+    public MainPanel(EditorPanel editor_panel)
+    {
         setLayout(new BorderLayout());
 
         add(new HeaderPanel(), BorderLayout.NORTH);
         this.editor_panel = editor_panel;
         panel = new JScrollPane(editor_panel);
-        //panel.getVerticalScrollBar().setValue(editor_panel.getHeight()/2);
-        //panel.getHorizontalScrollBar().setValue(editor_panel.getWidth()/2);
+
+
+        panel.getVerticalScrollBar().setOpaque(true);
+        panel.getHorizontalScrollBar().setOpaque(true);
+        panel.getHorizontalScrollBar().setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
+        panel.getHorizontalScrollBar().setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
 
         JPanel splitPanel = new JPanel();
         splitPanel.setLayout(new BorderLayout());
@@ -102,6 +106,16 @@ public class MainPanel extends JPanel {
         editor_panel.addMouseMotionListener(ma);
 
         //add(options_panel, BorderLayout.EAST);
+    }
+
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        if(panel.getVerticalScrollBar().getBackground() != Handler.currentPalette().BACKGROUND_EDITOR())
+        {
+            panel.getVerticalScrollBar().setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
+            panel.getHorizontalScrollBar().setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
+        }
     }
 
     public JScrollPane getPanel() {
