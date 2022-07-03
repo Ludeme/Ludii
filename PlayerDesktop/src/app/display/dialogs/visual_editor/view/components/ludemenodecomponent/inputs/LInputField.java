@@ -1228,7 +1228,7 @@ public class LInputField extends JComponent
         super.paintComponent(g);
 
         label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
-        if(fieldComponent != null && fieldComponent.getBackground() != Handler.currentPalette().INPUT_FIELD_BACKGROUND())
+        if(fieldComponent != null && fieldComponent.getBackground() != Handler.currentPalette().INPUT_FIELD_BACKGROUND() && !(fieldComponent instanceof JComboBox)) // JComboBox background does not work
             loadFieldComponentColours();
 
     }
