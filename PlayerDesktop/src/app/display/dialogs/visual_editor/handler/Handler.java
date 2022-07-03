@@ -14,7 +14,7 @@ import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameEditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.DotGridBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.EmptyBackground;
@@ -39,7 +39,7 @@ public class Handler
     public static DescriptionGraph gameDescriptionGraph;
 
     // Single EditorPanel
-    public static EditorPanel gameEditorPanel;
+    public static GameEditorPanel gameEditorPanel;
 
     // Single ToolsPanel
     public static ToolsPanel toolsPanel;
