@@ -23,6 +23,8 @@
     ) 
 )
 
+(define "MoveTo" ("NextSiteOnTrack" ("CountPips")))
+
 //------------------------------------------------------------------------------
 
 (game "20 Squares"
@@ -43,20 +45,20 @@
         (regions "Replay" (sites {"A1" "A3" "D2" "H2" "L2"} ))
         
         (piece "UrPiece" Each
-            (if ("IsEndTrack" ("NextSiteOnTrack" ("CountPips")))
+            (if ("IsEndTrack" ("MoveTo"))
                 "RemoveAPiece"
-                (if (not ("IsOffBoard" ("NextSiteOnTrack" ("CountPips"))))  	 			
+                (if ("IsNotOffBoard" ("MoveTo"))	 			
                     (if (or
-                            (is In ("NextSiteOnTrack" ("CountPips")) (sites Empty))
+                            (is In ("MoveTo") (sites Empty))
                             (and 
-                                (not (is Friend (who at:("NextSiteOnTrack" ("CountPips"))))) 
-                                (not (is In ("NextSiteOnTrack" ("CountPips")) (sites "Replay")))
+                                (not (is Friend (who at:("MoveTo")))) 
+                                (not (is In ("MoveTo") (sites "Replay")))
                             )
                         )
                         (move 
                             (from) 
                             (to 
-                                ("NextSiteOnTrack" ("CountPips")) 
+                            	("MoveTo")
                                 "CaptureEnemyPiece"
                             )
                             (then 

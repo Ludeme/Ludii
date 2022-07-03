@@ -1,6 +1,6 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(mapEntry (count Pips))))
+(define "MoveTo" ("NextSiteOnTrack" (mapEntry (count Pips))))
 
-(define "RemovePiece" (move Remove (from) ) )
+(define "RemovePiece" (move Remove (from)))
 
 //------------------------------------------------------------------------------
 
@@ -13,11 +13,13 @@
         (regions "Replay" {14 24 43 53})
         
         (piece "Marker" Each
-            (if (= "SiteToMoveOnTrack" (trackSite EndSite))
+            (if (= "MoveTo" (trackSite EndSite))
                 "RemovePiece"
-                (if (not (= "SiteToMoveOnTrack" Off))  	 			
-                    (if (is In "SiteToMoveOnTrack" (sites Empty))
-                        (move (from) (to "SiteToMoveOnTrack")
+                (if ("IsNotOffBoard" "MoveTo")  	 			
+                    (if (is Empty "MoveTo")
+                        (move 
+                        	(from) 
+                        	(to "MoveTo")
                             (then 
                                 (if (is In (last To) (sites "Replay")) 
                                     (moveAgain) 
@@ -33,14 +35,12 @@
         (map { (pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) } )
     })  
     (rules 
-        (start 
-            {
+        (start {
             (place "Marker1" (handSite P1) count:5)
             (place "Marker2" (handSite P2) count:5)
-            }
-        )
+         })
         
-        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))))
+        (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
@@ -57,6 +57,12 @@
 
 (rulesets { 
     
+    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
+            {
+            "Variant/Carnarvon and Carter"
+            }
+        )
+	
     (ruleset "Ruleset/Labyrinth (Incomplete)" {
         
     })
@@ -88,12 +94,6 @@
     (ruleset "Ruleset/Parallel Connections (Incomplete)" {
         
     })
-    
-    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
-        {
-        "Variant/Carnarvon and Carter"
-        }
-    )
     
     (ruleset "Ruleset/Labyrinth (Reconstructed)" {
         
