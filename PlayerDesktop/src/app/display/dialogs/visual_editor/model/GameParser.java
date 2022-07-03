@@ -2,22 +2,16 @@ package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.recs.display.ProgressBar;
-import app.display.dialogs.visual_editor.view.MainFrame;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import compiler.Arg;
 import compiler.ArgClass;
 import grammar.Grammar;
-import main.Constants;
 import main.grammar.*;
 import main.options.UserSelections;
 import other.GameLoader;
 
-import javax.swing.*;
 import java.io.*;
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -101,7 +95,7 @@ public class GameParser
         rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
         // #8 constructing a graph from call tree
         constructGraph(callTree.args().get(0), 0, null, -1, null, graphPanel.graph());
-        Handler.editorPanel.updateGraph();
+        Handler.gameEditorPanel.updateGraph();
         progressBar.updateProgress(8);
     }
 

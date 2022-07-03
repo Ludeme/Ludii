@@ -3,16 +3,11 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
-import game.functions.ints.state.What;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
@@ -131,7 +126,7 @@ public class LayoutHandler
         }
         else
         {
-            Handler.editorPanel.syncNodePositions();
+            Handler.gameEditorPanel.syncNodePositions();
         }
 
     }

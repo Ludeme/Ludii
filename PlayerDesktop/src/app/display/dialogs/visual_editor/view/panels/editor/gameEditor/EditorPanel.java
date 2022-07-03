@@ -1,4 +1,4 @@
-package app.display.dialogs.visual_editor.view.panels.editor;
+package app.display.dialogs.visual_editor.view.panels.editor.gameEditor;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
@@ -18,6 +18,8 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorPopupMenu;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGroupSelection;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
@@ -88,7 +90,7 @@ public class EditorPanel extends JPanel implements IGraphPanel
         setPreferredSize(new Dimension(width, height));
 
         Handler.gameDescriptionGraph = graph;
-        Handler.editorPanel = this;
+        Handler.gameEditorPanel = this;
         Handler.currentGraphPanel = this;
         Handler.addGraphPanel(graph, this);
 

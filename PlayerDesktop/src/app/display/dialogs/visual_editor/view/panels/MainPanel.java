@@ -2,7 +2,7 @@ package app.display.dialogs.visual_editor.view.panels;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
-import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 

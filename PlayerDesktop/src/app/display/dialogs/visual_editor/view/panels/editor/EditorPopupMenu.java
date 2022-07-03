@@ -13,8 +13,6 @@ public class EditorPopupMenu extends JPopupMenu {
         JMenuItem newLudeme = new JMenuItem("New Ludeme");
         JMenuItem paste = new JMenuItem("Paste");
 
-
-
         paste.addActionListener(e -> {
             Handler.paste(graphPanel.graph(), x, y);
             // deselect all previously selected nodes
@@ -33,12 +31,7 @@ public class EditorPopupMenu extends JPopupMenu {
             graphPanel.getLayoutHandler().executeLayout();
         });
 
-        // settings.addActionListener(e -> {
-        //     LayoutSettingsPanel.getSettingsFrame(graphPanel);
-        // });
-
         lmMenu.add(compact);
-        // lmMenu.add(settings);
 
         JMenuItem collapse = new JMenuItem("Collapse");
         collapse.addActionListener(e -> {

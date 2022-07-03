@@ -5,9 +5,8 @@ import app.display.dialogs.visual_editor.VisualEditorPanel;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.utils.CSVUtils;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
 
 import javax.swing.*;

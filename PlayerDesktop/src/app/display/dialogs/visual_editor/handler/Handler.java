@@ -14,7 +14,7 @@ import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.EditorPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.DotGridBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.EmptyBackground;
@@ -39,7 +39,7 @@ public class Handler
     public static DescriptionGraph gameDescriptionGraph;
 
     // Single EditorPanel
-    public static EditorPanel editorPanel;
+    public static EditorPanel gameEditorPanel;
 
     // Single ToolsPanel
     public static ToolsPanel toolsPanel;
@@ -114,7 +114,7 @@ public class Handler
     {
         if(!recordUserActions) return new Object[]{null, null, null};
         Object[] output = new Object[3];
-        List<LudemeNode> unsatisfiedNodes = isComplete(editorPanel.graph());
+        List<LudemeNode> unsatisfiedNodes = isComplete(gameEditorPanel.graph());
         if(!unsatisfiedNodes.isEmpty())
         {
             List<String> errors = new ArrayList<>();
@@ -140,7 +140,7 @@ public class Handler
             return output;
         }
 
-        Description d = editorPanel.graph().description();
+        Description d = gameEditorPanel.graph().description();
         Report r = new Report();
         try
         {
@@ -182,11 +182,11 @@ public class Handler
 
     public static void markUncompilable()
     {
-        List<LudemeNode> unsatisfiedNodes = isComplete(editorPanel.graph());
+        List<LudemeNode> unsatisfiedNodes = isComplete(gameEditorPanel.graph());
         List<LudemeNodeComponent> lncs = new ArrayList<>();
         for(LudemeNode node : unsatisfiedNodes)
-            lncs.add(editorPanel.nodeComponent(node));
-        editorPanel.notifyUncompilable(lncs);
+            lncs.add(gameEditorPanel.nodeComponent(node));
+        gameEditorPanel.notifyUncompilable(lncs);
     }
 
     public static boolean play()
@@ -1093,14 +1093,14 @@ public class Handler
 
     public static void activateSelectionMode()
     {
-        editorPanel.enterSelectionMode();
+        gameEditorPanel.enterSelectionMode();
     }
 
     public static void deactivateSelectionMode()
     {
-        editorPanel.exitSelectionMode();
+        gameEditorPanel.exitSelectionMode();
         toolsPanel.deactivateSelection();
-        editorPanel.repaint();
+        gameEditorPanel.repaint();
     }
 
     public static void turnOffSelectionBtn()
@@ -1160,12 +1160,13 @@ public class Handler
 
     public static void selectNode(LudemeNodeComponent node)
     {
-        editorPanel.addNodeToSelections(node);
-        editorPanel.repaint();
-        editorPanel.revalidate();
+        gameEditorPanel.addNodeToSelections(node);
+        gameEditorPanel.repaint();
+        gameEditorPanel.revalidate();
     }
 
-    public static void setAutoplacement(boolean var) {editorPanel.setAutoplacement(var);}
+    public static void setAutoplacement(boolean var) {
+        gameEditorPanel.setAutoplacement(var);}
 
     public static List<LudemeNode> copyList()
     {
@@ -1179,7 +1180,7 @@ public class Handler
 
     public static void updateNodePositions()
     {
-        editorPanel.updateNodePositions();
+        gameEditorPanel.updateNodePositions();
     }
 
     public static Dimension getViewPortSize()
