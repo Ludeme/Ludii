@@ -685,11 +685,16 @@ public class EditorPanel extends JPanel implements IGraphPanel
     {
         LudemeNode node = lnc.node();
         if(ch.getSelectedConnectionComponent() != null)
-            if(ch.getSelectedConnectionComponent().inputField().nodeArgument(0).collection2D() && !lnc.ingoingConnectionComponent().isFilled())
-                if(lnc.node().creatorArgument().arg().equals(ch.getSelectedConnectionComponent().inputField().nodeArgument(0).arg()))
+        {
+            if (ch.getSelectedConnectionComponent().inputField().nodeArgument(0).collection2D() && !lnc.ingoingConnectionComponent().isFilled())
+            {
+                if (lnc.node().creatorArgument().arg().equals(ch.getSelectedConnectionComponent().inputField().nodeArgument(0).arg()))
                     ch.finishNewConnection(lnc);
+            }
             else if(ch.getSelectedConnectionComponent().possibleSymbolInputs().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
                 ch.finishNewConnection(lnc);
+        }
+
     }
 
     @Override
