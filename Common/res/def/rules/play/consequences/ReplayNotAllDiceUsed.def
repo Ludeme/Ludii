@@ -1,0 +1,8 @@
+// Move again if all the dice are not used when using the ludeme (forEach Die ...).
+// @example ("ReplayNotAllDiceUsed")
+
+(define "ReplayNotAllDiceUsed"
+        (if (not (all DiceUsed))
+            (moveAgain)
+        )
+)
