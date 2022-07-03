@@ -31,13 +31,14 @@ public class LayoutSettingsPanel extends JPanel
     private final JButton fixNodes;
     private final JButton unfixNodes;
 
-    private LayoutSettingsPanel(IGraphPanel graphPanel)
+
+    private LayoutSettingsPanel()
     {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         selectedComponent = new JLabel("Selection: Empty");
 
-        lh = graphPanel.getLayoutHandler();
+        lh = Handler.currentGraphPanel.getLayoutHandler();
 
         dSl = new JSlider(0, 100);
         oSl = new JSlider(0, 100);
@@ -61,18 +62,18 @@ public class LayoutSettingsPanel extends JPanel
 
         redraw.addActionListener(e -> {
             lh.evaluateGraphWeights();
-            executeDFSLayout(graphPanel);
-            graphPanel.deselectEverything();
+            executeDFSLayout(Handler.currentGraphPanel);
+            Handler.currentGraphPanel.deselectEverything();
         });
 
         alignX.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, graphPanel);
+            NodePlacementRoutines.alignNodes(Handler.currentGraphPanel.selectedNodes(), NodePlacementRoutines.X_AXIS, Handler.currentGraphPanel);
             // graphPanel.updateNodePositions();
             // graphPanel.deselectEverything();
         });
 
         alignY.addActionListener(e -> {
-            NodePlacementRoutines.alignNodes(graphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS, graphPanel);
+            NodePlacementRoutines.alignNodes(Handler.currentGraphPanel.selectedNodes(), NodePlacementRoutines.Y_AXIS, Handler.currentGraphPanel);
             // graphPanel.updateNodePositions();
             // graphPanel.deselectEverything();
         });
@@ -85,7 +86,7 @@ public class LayoutSettingsPanel extends JPanel
             if (changeListen)
             {
                 updateWeights();
-                executeDFSLayout(graphPanel);
+                executeDFSLayout(Handler.currentGraphPanel);
             }
         };
 
@@ -120,16 +121,16 @@ public class LayoutSettingsPanel extends JPanel
         // # Adding fix buttons
 
         fixNodes.addActionListener(e -> {
-            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(true);
+            Handler.currentGraphPanel.graph().getNode(Handler.currentGraphPanel.graph().selectedRoot()).setFixed(true);
             fixNodes.setEnabled(false);
             unfixNodes.setEnabled(true);
-            graphPanel.repaint();
+            Handler.currentGraphPanel.repaint();
         });
         unfixNodes.addActionListener(e -> {
-            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(false);
+            Handler.currentGraphPanel.graph().getNode(Handler.currentGraphPanel.graph().selectedRoot()).setFixed(false);
             fixNodes.setEnabled(true);
             unfixNodes.setEnabled(false);
-            graphPanel.repaint();
+            Handler.currentGraphPanel.repaint();
         });
 
         Box buttonFixBox = Box.createVerticalBox();
@@ -165,7 +166,7 @@ public class LayoutSettingsPanel extends JPanel
 
     public static LayoutSettingsPanel getLayoutSettingsPanel()
     {
-        if (lsPanel == null) lsPanel = new LayoutSettingsPanel(Handler.gameGraphPanel);
+        if (lsPanel == null) lsPanel = new LayoutSettingsPanel();
         return lsPanel;
     }
 
@@ -199,11 +200,11 @@ public class LayoutSettingsPanel extends JPanel
         else selectedComponent.setText("Selected: "+node);
     }
 
-    public static void getSettingsFrame(IGraphPanel graphPanel)
+    public static void getSettingsFrame()
     {
         JFrame frame = new JFrame("Layout Settings");
         frame.setSize(300, 400);
-        frame.add(new LayoutSettingsPanel(graphPanel));
+        frame.add(new LayoutSettingsPanel());
         frame.setVisible(true);
         frame.setResizable(false);
     }

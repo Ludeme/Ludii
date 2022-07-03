@@ -1091,14 +1091,14 @@ public class Handler
 
     public static void activateSelectionMode()
     {
-        gameGraphPanel.enterSelectionMode();
+        currentGraphPanel.enterSelectionMode();
     }
 
     public static void deactivateSelectionMode()
     {
-        gameGraphPanel.exitSelectionMode();
+        currentGraphPanel.exitSelectionMode();
         toolsPanel.deactivateSelection();
-        gameGraphPanel.repaint();
+        currentGraphPanel.repaint();
     }
 
     public static void turnOffSelectionBtn()
@@ -1158,13 +1158,12 @@ public class Handler
 
     public static void selectNode(LudemeNodeComponent node)
     {
-        gameGraphPanel.addNodeToSelections(node);
-        gameGraphPanel.repaint();
-        gameGraphPanel.revalidate();
+        currentGraphPanel.addNodeToSelections(node);
+        currentGraphPanel.repaint();
     }
 
     public static void setAutoplacement(boolean var) {
-        gameGraphPanel.setAutoplacement(var);}
+        currentGraphPanel.setAutoplacement(var);}
 
     public static List<LudemeNode> copyList()
     {
@@ -1178,7 +1177,7 @@ public class Handler
 
     public static void updateNodePositions()
     {
-        gameGraphPanel.updateNodePositions();
+        currentGraphPanel.updateNodePositions();
     }
 
     public static Dimension getViewPortSize()

@@ -139,7 +139,7 @@ public class NodePopupMenu extends JPopupMenu {
             message += "Width: " + nodeComponent.width() + "\n";
             message += "Height: " + nodeComponent.getHeight() + "\n";
 
-            JOptionPane.showMessageDialog((GameGraphPanel) graphPanel, message);
+            JOptionPane.showMessageDialog(graphPanel.panel(), message);
         });
 
         JMenuItem help = new JMenuItem("Help");

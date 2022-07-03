@@ -43,6 +43,7 @@ public class VisualEditorPanel extends JPanel
         ACTIVE_EDITOR = gameEditor;
         add(ACTIVE_EDITOR, BorderLayout.CENTER);
         repaint();
+        revalidate();
         Handler.updateCurrentGraphPanel(gameEditor.graphPanel());
     }
 
@@ -52,6 +53,7 @@ public class VisualEditorPanel extends JPanel
         ACTIVE_EDITOR = defineEditor;
         add(ACTIVE_EDITOR, BorderLayout.CENTER);
         repaint();
+        revalidate();
         Handler.updateCurrentGraphPanel(defineEditor.currentGraphPanel());
     }
 

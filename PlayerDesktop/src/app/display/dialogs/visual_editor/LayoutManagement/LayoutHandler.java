@@ -126,7 +126,7 @@ public class LayoutHandler
         }
         else
         {
-            Handler.gameGraphPanel.syncNodePositions();
+            Handler.currentGraphPanel.syncNodePositions();
         }
 
     }
