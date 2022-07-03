@@ -15,6 +15,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGroupSelection;
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
@@ -71,8 +72,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
     private boolean AUTOPLACEMENT = false;
 
     // latencies for user testing code completion (Filip)
-    private List<Long> latencies = new ArrayList<>();
-    private List<Integer> selectedCompletion = new ArrayList<>();
+    private final List<Long> latencies = new ArrayList<>();
+    private final List<Integer> selectedCompletion = new ArrayList<>();
 
 
     public GraphPanel(int width, int height)
@@ -80,7 +81,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         setLayout(null);
         setPreferredSize(new Dimension(width, height));
         Handler.addGraphPanel(GRAPH, this);
-        this.symbolsWithoutConnection = symbolsWithoutConnection();
+        GraphPanel.symbolsWithoutConnection = symbolsWithoutConnection();
         this.addLudemePanel = new AddArgumentPanel(symbolsWithoutConnection, this, false);
         // window to add a new ludeme as an input
         this.connectArgumentPanel = new AddArgumentPanel(symbolsWithoutConnection, this, true);
@@ -151,7 +152,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
     private LInputField findInputField(LudemeNodeComponent lnc, NodeArgument inputFieldArgument)
     {
-        LInputField inputField = null;
         for(LInputField ii : lnc.inputArea().currentInputFields)
             if(ii.nodeArguments().contains(inputFieldArgument))
                 return ii;
@@ -569,7 +569,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         revalidate();
     }
 
-    public void showCurrentlyAvailableLudemes(int x, int y)
+    public void showCurrentlyAvailableLudemes()
     {
         // get game description up to current point
         int upUntilIndex = CONNECTION_HANDLER.getSelectedConnectionComponent().inputField().nodeArguments().get(0).index();
@@ -743,7 +743,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         // set color for edges
         g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
         // set stroke for edges
-        g2.setStroke(Handler.currentPalette().LUDEME_EDGE_STROKE);
+        g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
         // draw new connection
         CONNECTION_HANDLER.drawNewConnection(g2, mousePosition);
         // draw existing connections
@@ -796,7 +796,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
                     else if(CONNECTION_HANDLER.getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
                         Handler.addNode(GRAPH, CONNECTION_HANDLER.getSelectedConnectionComponent().possibleSymbolInputs().get(0), CONNECTION_HANDLER.getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
                     else if(!connectArgumentPanel.isVisible() && CONNECTION_HANDLER.getSelectedConnectionComponent().possibleSymbolInputs().size() > 1)
-                        showCurrentlyAvailableLudemes(e.getX(), e.getY());
+                        showCurrentlyAvailableLudemes();
                     if(LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
                         lm.executeLayout();
                 }
@@ -908,8 +908,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
     MouseWheelListener wheelListener = new MouseAdapter()
     {
         @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
-            double amount = Math.pow(1.01, e.getScrollAmount());
+        public void mouseWheelMoved(MouseWheelEvent e)
+        {
             if(e.getWheelRotation() > 0)
             {
                 Handler.currentPalette().scale(1.02f);

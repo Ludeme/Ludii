@@ -68,7 +68,7 @@ public class DesignPalette
     public static int BACKGROUND_LINE_PADDING = (int) (DEFAULT_BACKGROUND_LINE_PADDING * SCALAR);
 
 
-    public static void scale(float scalar)
+    public void scale(float scalar)
     {
         SCALAR *= scalar;
         SCALAR = (float) Math.min(2.0, Math.max(0.85, SCALAR));
@@ -103,7 +103,7 @@ public class DesignPalette
     // ~~ COLORS ~~ //
 
     // PANELS //
-    private static Color BACKGROUND_EDITOR = new Color(244,244,244);
+    private static final Color BACKGROUND_EDITOR = new Color(244,244,244);
     private static Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
     private static Color BACKGROUND_HEADER_PANEL = new Color(250,250,250);
 
