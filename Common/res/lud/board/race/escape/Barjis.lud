@@ -42,7 +42,7 @@
                     (to 
                         ("NextSiteOnTrack" ("ThrowValue"))
                         if:(or 
-                        	(is Empty (to))
+                            (is Empty (to))
                             (and 
                                 ("IsEnemyOn" (to))
                                 (not (is In (to) (sites "SafeSites")))	
@@ -67,7 +67,7 @@
         (start (place "Pawn" "Hand" count:4))
         (play 
             ("RollMove" 
-            	(or 
+                (or 
                     (forEach Piece) 
                     (if (and ("IsSpecialThrow") (is Occupied (handSite Mover)))
                         ("EnterAPiece")
