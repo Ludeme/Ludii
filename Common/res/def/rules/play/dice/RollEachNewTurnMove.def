@@ -1,0 +1,11 @@
+// Roll dice at each new turn before to compute the legal moves.
+// #1 = The legal moves.
+// #2 = The consequences.
+// @example ("RollEachNewTurnMove" (forEach Piece))
+
+(define "RollEachNewTurnMove"
+    (do (if ("NewTurn") (roll))
+        next:#1
+        #2
+    )
+)
