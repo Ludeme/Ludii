@@ -1233,7 +1233,6 @@ public class LInputField extends JComponent
 
         if(addItemButton.ACTIVE_COLOR != Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR())
         {
-            System.out.println("repainting");
             addItemButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
             addItemButton.ACTIVE_ICON = Handler.currentPalette().COLLECTION_ICON_ACTIVE();
             addItemButton.updateDP();
