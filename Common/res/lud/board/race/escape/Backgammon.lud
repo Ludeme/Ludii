@@ -8,35 +8,20 @@
     )
 )
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            ("IsEnemyOn" (to)) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not ("IsEnemyOn" (to)))
-    )
+(define "NotEnemyOrOnlyOne" 
+	(if (not ("IsEnemyOn" (to)))
+		True
+		("IsEmptyOrSingletonStack" (to))
+	)
 )
 
-(define "BarEmpty" (= (what at:"Bar") 0))
+(define "BarEmpty" (is Empty "Bar"))
 
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
 
 (define "Bar" (mapEntry (mover)))
 
-(define "AllPieceInHome" 
-    ("NoSites" 
-        (difference 
-            (sites Occupied by:Mover) 
-            (sites Mover)
-        )
-    )
-)
+(define "AllPieceInHome" ("AllOwnedPiecesIn" (sites Mover)))
 
 (define "RemoveAPiece" 
     (move
