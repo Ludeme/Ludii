@@ -5,7 +5,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.NodeHelp;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameEditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -139,7 +139,7 @@ public class NodePopupMenu extends JPopupMenu {
             message += "Width: " + nodeComponent.width() + "\n";
             message += "Height: " + nodeComponent.getHeight() + "\n";
 
-            JOptionPane.showMessageDialog((GameEditorPanel) graphPanel, message);
+            JOptionPane.showMessageDialog((GameGraphPanel) graphPanel, message);
         });
 
         JMenuItem help = new JMenuItem("Help");

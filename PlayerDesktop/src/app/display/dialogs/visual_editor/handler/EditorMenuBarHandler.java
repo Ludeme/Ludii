@@ -43,7 +43,7 @@ public class EditorMenuBarHandler
             File file = new File(path);
             ProgressBar progressBar = new ProgressBar("Loading game from file",
                     "Loading game from file", 8);
-            StartGraphParsingThread(file, Handler.gameEditorPanel, progressBar);
+            StartGraphParsingThread(file, Handler.gameGraphPanel, progressBar);
         }
     }
 
@@ -55,7 +55,7 @@ public class EditorMenuBarHandler
             @Override
             protected Object doInBackground()
             {
-                GameParser.ParseFileToGraph(file, Handler.gameEditorPanel, progressBar);
+                GameParser.ParseFileToGraph(file, Handler.gameGraphPanel, progressBar);
                 return null;
             }
 

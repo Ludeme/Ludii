@@ -6,7 +6,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.utils.CSVUtils;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameEditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
 
 import javax.swing.*;
@@ -19,13 +19,13 @@ public class MainFrame extends JFrame {
 
     private MainPanel main_panel;
 
-    public MainFrame(GameEditorPanel editor_panel)
+    public MainFrame(GameGraphPanel editor_panel)
     {
         initialize(editor_panel);
         editor_panel.requestFocus();
     }
 
-    private void initialize(GameEditorPanel editor_panel){
+    private void initialize(GameGraphPanel editor_panel){
         Handler.currentPalette().initializeFonts();
         setTitle("Ludii Visual Editor");
         setIconImage((Handler.currentPalette().LUDII_ICON).getImage());

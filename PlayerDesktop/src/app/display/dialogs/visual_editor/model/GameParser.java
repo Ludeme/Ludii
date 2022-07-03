@@ -95,7 +95,7 @@ public class GameParser
         rootClass.compile(clsRoot, (-1), new Report(), callTree, hasCompiled);
         // #8 constructing a graph from call tree
         constructGraph(callTree.args().get(0), 0, null, -1, null, graphPanel.graph());
-        Handler.gameEditorPanel.updateGraph();
+        Handler.gameGraphPanel.updateGraph();
         progressBar.updateProgress(8);
     }
 

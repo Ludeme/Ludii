@@ -8,14 +8,14 @@ import grammar.Grammar;
 import main.grammar.Clause;
 
 import javax.swing.*;
-public class GameEditorPanel extends GraphPanel
+public class GameGraphPanel extends GraphPanel
 {
 
-    public GameEditorPanel(int width, int height)
+    public GameGraphPanel(int width, int height)
     {
         super(width, height);
         Handler.gameDescriptionGraph = graph();
-        Handler.gameEditorPanel = this;
+        Handler.gameGraphPanel = this;
         Handler.currentGraphPanel = this;
         Handler.addGraphPanel(graph(), this);
     }

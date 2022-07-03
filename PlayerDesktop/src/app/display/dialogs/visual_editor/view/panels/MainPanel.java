@@ -2,7 +2,7 @@ package app.display.dialogs.visual_editor.view.panels;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameEditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.header.HeaderPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 
@@ -14,9 +14,9 @@ public class MainPanel extends JPanel {
 
     //JPanel editor_panel = new EditorPanel(5000, 5000);
     private JScrollPane panel;
-    private GameEditorPanel editor_panel;
+    private GameGraphPanel editor_panel;
 
-    public MainPanel(GameEditorPanel editor_panel)
+    public MainPanel(GameGraphPanel editor_panel)
     {
         setLayout(new BorderLayout());
 

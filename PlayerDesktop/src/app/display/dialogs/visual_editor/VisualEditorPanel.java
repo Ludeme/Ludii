@@ -5,7 +5,7 @@ import javax.swing.*;
 import app.PlayerApp;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
 import app.display.dialogs.visual_editor.view.MainFrame;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameEditorPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 
 //-----------------------------------------------------------------------------
 
@@ -36,12 +36,12 @@ public class VisualEditorPanel
 		catch(Exception ignored){}
 
 		controller = new NGramController(5);
-		editPanel = new GameEditorPanel(10000,10000);
+		editPanel = new GameGraphPanel(10000,10000);
 		MainFrame f = new MainFrame(editPanel);
 		f.requestFocus();
 	}
 
-	private static GameEditorPanel editPanel;
+	private static GameGraphPanel editPanel;
 	private static NGramController controller;
 
 
