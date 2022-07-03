@@ -22,7 +22,7 @@
                     (move 
                         (from) 
                         (to 
-                        	("NextSiteOnTrack" (pips)) 
+                            ("NextSiteOnTrack" (pips)) 
                             if:"StackSizeLessThan2"
                             (apply (if ("IsEnemyOn" (to)) (remove (to))))
                         )
@@ -42,7 +42,7 @@
         (phase "UnStacking" 
             (play 
                 ("RollEachNewTurnMove"
-                		(forEach Die 
+                    (forEach Die 
                         if:("DieNotUsed")
                         (if ("PieceStacked" "SiteToSelect")
                             (move Select (from ("SiteToSelect"))
@@ -62,7 +62,7 @@
         (phase "BearingOff"
             (play 
                 ("RollEachNewTurnMove"
-                	(forEach Piece top:True)
+                    (forEach Piece top:True)
                     (then (if (and (not (was Pass)) (not (all DiceUsed))) (moveAgain)))
                 )
             )
