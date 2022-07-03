@@ -443,7 +443,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
      * @param connect
      */
     @Override
-    public void addLudemeNodeComponent(LudemeNode node, boolean connect) {
+    public void addLudemeNodeComponent(LudemeNode node, boolean connect)
+    {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         addLudemePanel.setVisible(false);
         connectArgumentPanel.setVisible(false);
@@ -500,7 +501,15 @@ public class GraphPanel extends JPanel implements IGraphPanel
     @Override
     public LudemeNodeComponent nodeComponent(LudemeNode node)
     {
-        return NODE_COMPONENTS_BY_ID.get(node.id());
+        LudemeNodeComponent lnc = NODE_COMPONENTS_BY_ID.get(node.id());
+        if(lnc != null)
+            return lnc;
+
+        for(LudemeNodeComponent ln : NODE_COMPONENTS)
+            if(ln.node() == node)
+                return ln;
+
+        return null;
     }
 
     /**

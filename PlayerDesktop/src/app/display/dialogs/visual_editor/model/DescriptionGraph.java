@@ -1,15 +1,13 @@
 package app.display.dialogs.visual_editor.model;
 
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import main.grammar.Description;
 import main.grammar.Symbol;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Graph of LudemeNode objects
@@ -25,20 +23,31 @@ public class DescriptionGraph implements iGraph {
     private final List<Integer> connectedComponentRoots = new ArrayList<>();
     private int selectedRoot = -1;
     private boolean isDefine = false;
-
+    private String title;
     LudemeNode ROOT;
 
 
     public DescriptionGraph()
     {
     }
-    public DescriptionGraph(boolean isDefine)
+    public DescriptionGraph(String title, boolean isDefine)
     {
+        this.title = title;
         this.isDefine = isDefine;
     }
 
     public DescriptionGraph(LudemeNode root){
         this.ROOT = root;
+    }
+
+    public String title()
+    {
+        return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
     }
 
     public Description description()
@@ -203,6 +212,19 @@ public class DescriptionGraph implements iGraph {
     public boolean isDefine()
     {
         return isDefine;
+    }
+
+    public LudemeNode defineNode()
+    {
+        assert isDefine;
+        LudemeNode lnRoot = (LudemeNode) getRoot();
+        if(!lnRoot.isSatisfied())
+            return null;
+        Map<LudemeNode, List<NodeArgument>> parameters = Handler.defineParameters(this);
+        List<NodeArgument> parameterNAs = new ArrayList<>();
+        for(List<NodeArgument> lna : parameters.values()) parameterNAs.addAll(lna);
+        Symbol symbol = new Symbol(Symbol.LudemeType.Ludeme, lnRoot.providedInputsMap().values().iterator().next().toString(), lnRoot.providedInputsMap().values().iterator().next().toString(), null);
+        return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(1), parameterNAs, lnRoot.x(), lnRoot.y(), true);
     }
 
 }

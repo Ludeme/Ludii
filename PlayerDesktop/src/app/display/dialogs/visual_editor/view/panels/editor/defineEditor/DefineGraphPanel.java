@@ -1,23 +1,28 @@
 package app.display.dialogs.visual_editor.view.panels.editor.defineEditor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.panels.editor.GraphPanel;
-import grammar.Grammar;
-import main.grammar.Clause;
 
 import javax.swing.*;
 
 public class DefineGraphPanel extends GraphPanel
 {
 
-    private String name;
+    private final DescriptionGraph GRAPH;
 
     public DefineGraphPanel(String name, int width, int height)
     {
         super(width, height);
-        this.name = name;
+        this.GRAPH = new DescriptionGraph(name, true);
         Handler.addGraphPanel(graph(), this);
+    }
+
+    @Override
+    public DescriptionGraph graph()
+    {
+        return GRAPH;
     }
 
     public void initialize(JScrollPane scrollPane)

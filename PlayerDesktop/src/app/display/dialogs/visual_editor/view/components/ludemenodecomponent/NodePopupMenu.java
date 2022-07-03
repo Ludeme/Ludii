@@ -133,9 +133,10 @@ public class NodePopupMenu extends JPopupMenu {
             message += "Package: " + node.packageName() + "\n";
             message += "Provided Inputs: " + (node.providedInputsMap().values()) + "\n";
             message += "Fields: " + nodeComponent.inputArea().currentInputFields + "\n";
-            //message += "Inactive C: (" + + nodeComponent.inputArea().inactiveClauses.size() + ") " + nodeComponent.inputArea().inactiveClauses + "\n";
-            message += "Width: " + nodeComponent.width() + "\n";
-            message += "Height: " + nodeComponent.getHeight() + "\n";
+            message += "Unsatisfied : " + Handler.isComplete(graphPanel.graph()) + "\n";
+
+            if(graphPanel.graph().isDefine()) message += "Parameters: " + Handler.defineParameters(graphPanel.graph()) + "\n";
+
 
             JOptionPane.showMessageDialog(graphPanel.panel(), message);
         });
@@ -144,5 +145,11 @@ public class NodePopupMenu extends JPopupMenu {
         help.addActionListener(e -> new NodeHelp(nodeComponent.node()));
         add(observe);
         add(help);
+
+        JMenuItem test = new JMenuItem("test");
+        test.addActionListener(e -> Handler.addNode(graphPanel.graph(), graphPanel.graph().defineNode()));
+        add(test);
+
+
     }
 }

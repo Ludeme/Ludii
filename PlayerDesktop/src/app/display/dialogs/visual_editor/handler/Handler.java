@@ -78,6 +78,8 @@ public class Handler
     public static final int SENSITIVITY_COLLECTION_REMOVAL = 4;
     public static final int SENSITIVITY_REMOVAL = 6;
 
+    public static final Symbol PARAMETER_SYMBOL = new Symbol(Symbol.LudemeType.Ludeme, "PARAMETER", "PARAMETER", null);
+
 
     public static void updateCurrentGraphPanel(IGraphPanel graphPanel)
     {
@@ -231,10 +233,30 @@ public class Handler
         List<LudemeNode> unsatisfiedNodes = new ArrayList<>();
         for(LudemeNode ln : graph.getNodes())
             if((graph.getRoot() == ln || ln.parentNode()!=null) && !ln.isSatisfied())
-            {
                 unsatisfiedNodes.add(ln);
-            }
         return unsatisfiedNodes;
+    }
+
+    public static Map<LudemeNode, List<NodeArgument>> defineParameters(DescriptionGraph graph)
+    {
+        assert graph.isDefine();
+        LinkedHashMap<LudemeNode, List<NodeArgument>> parameters = new LinkedHashMap<>();
+        for(LudemeNode ln : graph.getNodes())
+            if(graph.getRoot() != ln && connectedToRoot(graph, ln))
+            {
+                List<NodeArgument> args = ln.unfilledRequiredArguments();
+                if(!args.isEmpty())
+                    parameters.put(ln, args);
+            }
+        return parameters;
+    }
+
+    private static boolean connectedToRoot(DescriptionGraph graph, LudemeNode node)
+    {
+        LudemeNode n = node;
+        while(n.parentNode() != null)
+            n = n.parentNode();
+        return n == graph.getRoot();
     }
 
     /**
@@ -572,7 +594,7 @@ public class Handler
             if(lnc.isMarkedUncompilable())
                 lnc.markUncompilable(false);
         }
-        if(liveCompile && isConnectedToRoot(graph, node)) compile();
+        if(!graph.isDefine() && liveCompile && isConnectedToRoot(graph, node)) compile();
     }
 
     private static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)

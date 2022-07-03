@@ -66,6 +66,7 @@ public class LudemeNode implements iGNode
     private List<NodeArgument> currentNodeArguments;
     /** Whether this node is a 1D Collection-supply for a 2D-Collection */
     private boolean is1DCollectionNode = false;
+    private boolean isDefineRoot = false;
 
 
     /**
@@ -196,12 +197,20 @@ public class LudemeNode implements iGNode
         this.helpInformation = DocumentationReader.instance().help(SYMBOL);
     }
 
+    /**
+     * Creates a Define-Graph Root LudemeNode
+     * @param x
+     * @param y
+     * @param viableDefineRoots
+     * @param isDefine
+     */
     public LudemeNode(int x, int y, List<Symbol> viableDefineRoots, boolean isDefine)
     {
         assert isDefine;
         Symbol s = new Symbol(Symbol.LudemeType.Ludeme, "Define","define",null);
         List<ClauseArg> args = new ArrayList<>();
-        args.add(new ClauseArg(Grammar.grammar().symbolsWithPartialKeyword("string").get(0), "Name of Define", null, false, 0, 0));
+        //args.add(new ClauseArg(Grammar.grammar().symbolsWithPartialKeyword("string").get(0), "Name", null, false, 0, 0));
+        //Clause c = new Clause(s, args, true);
         Clause c = new Clause(s, args, true);
         System.out.println();
 
@@ -218,7 +227,7 @@ public class LudemeNode implements iGNode
         PACKAGE_NAME = "game";
         nodeArguments = new HashMap<>();
         List<NodeArgument> nas = new ArrayList<>();
-        nas.add(new NodeArgument(c, args.get(0)));
+        //nas.add(new NodeArgument(c, args.get(0)));
         nas.add(new NodeArgument(s, c, viableDefineRoots));
         nodeArguments.put(c, nas);
         currentNodeArguments = nas;
@@ -226,6 +235,28 @@ public class LudemeNode implements iGNode
         for(NodeArgument na : currentNodeArguments)
             providedInputsMap.put(na, null);
 
+        isDefineRoot = true;
+    }
+
+    public LudemeNode(Symbol symbol, NodeArgument macroNA, List<NodeArgument> nodeArguments, int x, int y, boolean isDefine)
+    {
+        assert isDefine;
+        this.ID = LAST_ID++;
+        this.SYMBOL = symbol;
+        this.x = x;
+        this.y = y;
+        this.CLAUSES = new ArrayList<>();
+        Clause c = new Clause(symbol, new ArrayList<>(), true);
+        CLAUSES.add(c);
+        selectedClause = c;
+        this.helpInformation = null;
+        PACKAGE_NAME = "game";
+        this.nodeArguments = new LinkedHashMap<>();
+        this.nodeArguments.put(c, nodeArguments);
+        this.currentNodeArguments = nodeArguments;
+        providedInputsMap = new LinkedHashMap<>();
+        for(NodeArgument na : currentNodeArguments)
+            providedInputsMap.put(na, null);
 
     }
 
@@ -428,6 +459,17 @@ public class LudemeNode implements iGNode
                         return false;
         }
         return true;
+    }
+
+    public List<NodeArgument> unfilledRequiredArguments()
+    {
+        List<NodeArgument> arguments = new ArrayList<>();
+        for(NodeArgument na : providedInputsMap.keySet())
+            if(!na.optional() && providedInputsMap.get(na) == null)
+                arguments.add(na);
+            else if(!na.optional() && providedInputsMap.get(na).equals(" "))
+                arguments.add(na);
+        return arguments;
     }
 
     public LinkedHashMap<Symbol, List<Clause>> symbolClauseMap()
@@ -1000,6 +1042,11 @@ public class LudemeNode implements iGNode
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    public boolean isDefineRoot()
+    {
+        return isDefineRoot;
     }
 
     @Override
