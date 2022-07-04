@@ -226,7 +226,7 @@ public class LInputArea extends JPanel
         for(NodeArgument nodeArgument : inputField.nodeArguments())
         {
             for(Symbol s : nodeArgument.possibleSymbolInputsExpanded())
-                if(s.equals(lnc.node().symbol()) || s.returnType().equals(lnc.node().symbol()))
+                if(s.equals(lnc.node().symbol()) || s.returnType().equals(lnc.node().symbol()) || (lnc.node().isDefineNode() && s.equals(lnc.node().macroNode().symbol())))
                 {
                     providedNodeArgument = nodeArgument;
                     break;

@@ -446,8 +446,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     public void addLudemeNodeComponent(LudemeNode node, boolean connect)
     {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
-        addLudemePanel.setVisible(false);
-        connectArgumentPanel.setVisible(false);
+        hideAllAddArgumentPanels();
         NODE_COMPONENTS.add(lc);
         NODE_COMPONENTS_BY_ID.put(node.id(), lc);
         add(lc);
@@ -664,6 +663,11 @@ public class GraphPanel extends JPanel implements IGraphPanel
         repaint();
     }
 
+    public Point mousePosition()
+    {
+        return mousePosition;
+    }
+
     /**
      * Notifies the panel that the user clicked on a node
      *
@@ -673,14 +677,17 @@ public class GraphPanel extends JPanel implements IGraphPanel
     public void clickedOnNode(LudemeNodeComponent lnc)
     {
         LudemeNode node = lnc.node();
-        if(connectionHandler().getSelectedConnectionComponent() != null)
+        LConnectionComponent selectedConnectionComponent = connectionHandler().getSelectedConnectionComponent();
+        if(selectedConnectionComponent != null)
         {
-            if (connectionHandler().getSelectedConnectionComponent().inputField().nodeArgument(0).collection2D() && !lnc.ingoingConnectionComponent().isFilled())
+            if (selectedConnectionComponent.inputField().nodeArgument(0).collection2D() && !lnc.ingoingConnectionComponent().isFilled())
             {
-                if (lnc.node().creatorArgument().arg().equals(connectionHandler().getSelectedConnectionComponent().inputField().nodeArgument(0).arg()))
+                if (lnc.node().creatorArgument().arg().equals(selectedConnectionComponent.inputField().nodeArgument(0).arg()))
                     connectionHandler().finishNewConnection(lnc);
             }
-            else if(connectionHandler().getSelectedConnectionComponent().possibleSymbolInputs().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
+            else if(selectedConnectionComponent.possibleSymbolInputs().contains(node.symbol()) && !lnc.ingoingConnectionComponent().isFilled())
+                connectionHandler().finishNewConnection(lnc);
+            else if(node.isDefineNode() && selectedConnectionComponent.possibleSymbolInputs().contains(node.macroNode().symbol()))
                 connectionHandler().finishNewConnection(lnc);
         }
     }
@@ -820,6 +827,13 @@ public class GraphPanel extends JPanel implements IGraphPanel
     }
 
 
+    public void hideAllAddArgumentPanels()
+    {
+        connectArgumentPanel.setVisible(false);
+        addLudemePanel.setVisible(false);
+    }
+
+
     // LISTENERS
 
     MouseListener clickListener = new MouseAdapter()
@@ -837,8 +851,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
             if(connectArgumentPanel.isVisible())
                 connectionHandler().cancelNewConnection();
-            addLudemePanel.setVisible(false);
-            connectArgumentPanel.setVisible(false);
+            hideAllAddArgumentPanels();
             if(e.getButton() == MouseEvent.BUTTON1)
             {
                 // user is drawing a new connection

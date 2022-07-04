@@ -248,7 +248,8 @@ public class DescriptionGraph implements iGraph {
             title = t;
             symbol = new Symbol(Symbol.LudemeType.Ludeme, t, t, null);
         }
-        return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(1), parameterNAs, lnRoot.x(), lnRoot.y(), true);
+        LudemeNode macroNode = (LudemeNode) lnRoot.providedInputsMap().get(lnRoot.currentNodeArguments().get(1));
+        return new LudemeNode(symbol, macroNode, this, parameterNAs, lnRoot.x(), lnRoot.y(), true);
     }
 
 }

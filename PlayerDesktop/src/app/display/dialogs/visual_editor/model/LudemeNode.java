@@ -10,6 +10,7 @@ import app.display.dialogs.visual_editor.documentation.HelpInformation;
 import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
+import main.grammar.Description;
 import main.grammar.Symbol;
 
 import java.util.*;
@@ -68,6 +69,9 @@ public class LudemeNode implements iGNode
     /** Whether this node is a 1D Collection-supply for a 2D-Collection */
     private boolean is1DCollectionNode = false;
     private boolean isDefineRoot = false;
+    private DescriptionGraph defineGraph;
+    private boolean isDefineNode = false;
+    private LudemeNode macroNode = null;
 
 
     /**
@@ -238,7 +242,7 @@ public class LudemeNode implements iGNode
         isDefineRoot = true;
     }
 
-    public LudemeNode(Symbol symbol, NodeArgument macroNA, List<NodeArgument> nodeArguments, int x, int y, boolean isDefine)
+    public LudemeNode(Symbol symbol, LudemeNode macroNode, DescriptionGraph defineGraph, List<NodeArgument> nodeArguments, int x, int y, boolean isDefine)
     {
         assert isDefine;
         this.ID = LAST_ID++;
@@ -246,6 +250,7 @@ public class LudemeNode implements iGNode
         this.x = x;
         this.y = y;
         this.CLAUSES = new ArrayList<>();
+        this.defineGraph = defineGraph;
         Clause c = new Clause(symbol, new ArrayList<>(), true);
         CLAUSES.add(c);
         selectedClause = c;
@@ -257,9 +262,9 @@ public class LudemeNode implements iGNode
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments)
             providedInputsMap.put(na, null);
-
+        isDefineNode = true;
+        this.macroNode = macroNode;
     }
-
 
     /**
      *
@@ -780,8 +785,11 @@ public class LudemeNode implements iGNode
     {
         return toLud(false);
     }
-    public String toLud(boolean isDefine)
+    public String toLud(boolean isDefinePanel)
     {
+
+        if(isDefineNode)
+            return toLudDefineNode();
 
         if(is1DCollectionNode())
         {
@@ -817,7 +825,7 @@ public class LudemeNode implements iGNode
             Object input = providedInputsMap().get(arg);
             if(input == null)
             {
-                if(!arg.optional() && isDefine)
+                if(!arg.optional() && isDefinePanel)
                 {
                     if(arg.arg().label() != null)
                         sb.append(arg.arg().label()).append(":<PARAMETER>");
@@ -830,20 +838,10 @@ public class LudemeNode implements iGNode
             if(arg.arg().label() != null)
                 sb.append(arg.arg().label()).append(":");
             if(input instanceof LudemeNode)
-                sb.append(((LudemeNode) input).toLud(isDefine));
+                sb.append(((LudemeNode) input).toLud(isDefinePanel));
             else if(input instanceof Object[])
             {
-                sb.append("{ ");
-                for(Object obj : (Object[]) input)
-                {
-                    if(obj == null)
-                        continue;
-                    if(obj instanceof LudemeNode)
-                        sb.append(((LudemeNode)obj).toLud(isDefine));
-                    else
-                        sb.append(obj).append(" ");
-                }
-                sb.append("}");
+                sb.append(collectionToLud((Object[]) input,isDefinePanel));
             }
             else if(input instanceof String)
                 sb.append("\"").append(input).append("\"");
@@ -851,6 +849,51 @@ public class LudemeNode implements iGNode
                 sb.append(input);
         }
         sb.append(")");
+        return sb.toString();
+    }
+
+    public String toLudDefineNode()
+    {
+        String rawLud = defineGraph.toLud();
+        // fill parameters
+        int currentI = 1;
+        while(rawLud.contains("#"+currentI))
+        {
+            Object input = providedInputsMap().get(currentNodeArguments.get(currentI-1));
+            String replacement = "";
+            if(input instanceof LudemeNode)
+                replacement = ((LudemeNode)input).toLud();
+            else if(input instanceof Object[])
+                replacement = collectionToLud((Object[])input, false);
+            else if(input instanceof String)
+                replacement = "\"" + input + "\"";
+            else if(input!=null)
+                replacement = input.toString();
+            rawLud = rawLud.replaceFirst("#"+currentI, replacement);
+            currentI++;
+        }
+        // cut define fragments
+        rawLud = rawLud.substring(1, rawLud.length()-1);
+        rawLud = rawLud.substring(rawLud.indexOf("("));
+        return rawLud;
+    }
+
+    public String collectionToLud(Object[] collection, boolean isDefinePanel)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{ ");
+        for(Object obj : collection)
+        {
+            if(obj == null)
+                continue;
+            if(obj instanceof LudemeNode)
+                sb.append(((LudemeNode)obj).toLud(isDefinePanel));
+            else if(obj instanceof String)
+                sb.append("\"").append(obj).append("\"");
+            else
+                sb.append(obj).append(" ");
+        }
+        sb.append("}");
         return sb.toString();
     }
 
@@ -1063,6 +1106,16 @@ public class LudemeNode implements iGNode
     public boolean isDefineRoot()
     {
         return isDefineRoot;
+    }
+
+    public boolean isDefineNode()
+    {
+        return isDefineNode;
+    }
+
+    public LudemeNode macroNode()
+    {
+        return macroNode;
     }
 
     @Override

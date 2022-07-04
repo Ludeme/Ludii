@@ -150,10 +150,5 @@ public class NodePopupMenu extends JPopupMenu {
         add(observe);
         add(help);
 
-        JMenuItem test = new JMenuItem("test");
-        test.addActionListener(e -> Handler.addNode(graphPanel.graph(), graphPanel.graph().defineNode()));
-        add(test);
-
-
     }
 }

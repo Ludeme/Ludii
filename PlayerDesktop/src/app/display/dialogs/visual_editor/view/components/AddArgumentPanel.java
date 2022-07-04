@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.components;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.recs.utils.ReadableSymbol;
 import app.display.dialogs.visual_editor.documentation.DocumentationReader;
@@ -52,10 +53,18 @@ public class AddArgumentPanel extends JPanel
     private LInputField initiator;
     private List<ReadableSymbol> currentSymbols;
 
+    private boolean addsDefines = false;
+
     public AddArgumentPanel(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect)
+    {
+        this(symbolList, graphPanel, connect, false);
+    }
+
+    public AddArgumentPanel(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect, boolean addsDefines)
     {
         this.graphPanel = graphPanel;
         this.connect = connect;
+        this.addsDefines = addsDefines;
 
         list.addMouseListener(mouseListener);
 
@@ -70,6 +79,28 @@ public class AddArgumentPanel extends JPanel
         // remove duplicates
         symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
         currentSymbols = new ArrayList<>();
+        searchField.setText("");
+        listModel.clear();
+        for(Symbol symbol : symbolList)
+        {
+            ReadableSymbol rs = new ReadableSymbol(symbol);
+            listModel.addElement(rs);
+            currentSymbols.add(rs);
+        }
+        drawComponents();
+    }
+
+    private List<LudemeNode> defineNodes;
+
+    // for defines
+    public void updateList(List<Symbol> symbolList, List<LudemeNode> nodes)
+    {
+        this.initiator = initiator;
+        this.defineNodes = nodes;
+        // remove duplicates
+        symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());
+        currentSymbols = new ArrayList<>();
+        searchField.setText("");
         listModel.clear();
         for(Symbol symbol : symbolList)
         {
@@ -112,8 +143,21 @@ public class AddArgumentPanel extends JPanel
 
             Symbol s = listModel.getElementAt(index).getSymbol();
 
+            // if adds define
+            if(addsDefines)
+            {
+                // find corresponding node
+                for(LudemeNode n : defineNodes)
+                    if(n.symbol() == s)
+                    {
+                        n.setX(getLocation().x);
+                        n.setY(getLocation().y);
+                        Handler.addNode(graphPanel.graph(), n);
+                        break;
+                    }
+            }
             // if the symbol is a terminal, do not create a new node. Instead create a new InputField
-            if(s.ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(s))
+            else if(s.ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(s))
             {
                 // get the node that we are adding an argument to
                 LudemeNodeComponent lnc = graphPanel.connectionHandler().getSelectedConnectionComponent().lnc();
