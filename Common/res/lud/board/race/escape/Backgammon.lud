@@ -84,7 +84,7 @@
 (game "Backgammon"  
     (players 2)  
     (equipment { 
-        ("BackgammonBoard" "BackgammonTracksWithBar") 
+        ("BackgammonBoard" ("BackgammonTracksWithBar" End)) 
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home

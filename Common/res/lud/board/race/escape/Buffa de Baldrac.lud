@@ -7,7 +7,7 @@
 (game "Buffa de Baldrac"
     (players 2)
     (equipment {
-        ("TableBoard" "TableTracksOpposite")
+        ("TableBoard" ("TableTracksOpposite" End))
         (dice d:6 num:3)
         (piece "Disc" Each
             (or
