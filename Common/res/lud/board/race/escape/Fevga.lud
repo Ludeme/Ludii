@@ -10,7 +10,7 @@
     (and { 
         ("DieNotUsed") 
         ("IsNotOffBoard" ("NextSiteFrom" (from))) 
-        (not ("IsEndTrack" ("NextSiteFrom" (from)))) 
+        ("IsNotEndTrack" ("NextSiteFrom" (from)))
     })		
 )
 
