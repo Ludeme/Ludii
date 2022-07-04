@@ -34,12 +34,7 @@
 (game "Jacquet"  
     (players 2)  
     (equipment { 
-        ("BackgammonBoard"
-            {
-            (track "Track1" {6 13..18 20..25 12..7 5..0} P1 directed:True)
-            (track "Track2" {19 12..7 5..0 13..18 20..25} P2 directed:True)
-            } 
-        ) 
+        ("BackgammonBoard" "BackgammonTracksSameDirectionOppositeCornersWithBars") 
         (dice num:2)
         (piece "Disc" Each) 
         (map {(pair 1 6 ) (pair 2 19)}) // Bar
