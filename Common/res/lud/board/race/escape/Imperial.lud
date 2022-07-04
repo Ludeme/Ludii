@@ -33,7 +33,7 @@
         
         (play 
             ("RollEachNewTurnMove"
-            	(forEach Die
+                (forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)

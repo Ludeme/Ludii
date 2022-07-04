@@ -101,7 +101,7 @@
         
         (play 
             ("RollEachNewTurnMove"
-            	(if "AllPieceInHome"
+                (if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 
                         if:("DieNotUsed")

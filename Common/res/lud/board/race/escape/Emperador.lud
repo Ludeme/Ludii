@@ -34,7 +34,7 @@
                             (from) 
                             (to 
                                 "SiteToMoveOnTrack" 
-                            	("HittingCapture" (handSite (who at:(to))))
+                                ("HittingCapture" (handSite (who at:(to))))
                             )
                         )
                     )
@@ -49,7 +49,7 @@
         })
         (play
             ("RollEachNewTurnMove"
-            	(or 
+                (or 
                     (forEach Piece top:True) 
                     (forEach Piece container:(mover) top:True)
                     (then ("ReplayNotAllDiceUsed"))
