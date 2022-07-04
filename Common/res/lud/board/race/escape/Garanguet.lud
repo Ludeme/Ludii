@@ -95,15 +95,7 @@
     )	
 )
 
-(define "CaptureToBar"
-        (apply 
-                if:("IsEnemyAt" (to)) 
-                (fromTo 
-                    (from (to)) 
-                    (to ("Bar" (next)))
-                )
-            )
-)
+(define "CaptureToBar" ("HittingCapture" ("Bar" (next))))
 
 (define "Move"
 		(forEach Site

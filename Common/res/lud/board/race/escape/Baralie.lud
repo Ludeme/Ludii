@@ -19,13 +19,7 @@
                 (from (site))
                 (to #1
                     if:("NoEnemyOrOnlyOne" (to))
-                    (apply 
-                        if:("IsEnemyAt" (to))  
-                        (fromTo 
-                            (from (to)) 
-                            (to ("Bar"))
-                        )
-                    )
+                    ("HittingCapture" ("Bar")) 
                 )
             )
         )

@@ -5,14 +5,7 @@
         (from (handSite Mover))
         (to (centrePoint)
             if:(not ("IsFriendAt" (to)))
-            (apply 
-                (if ("IsEnemyAt" (to))
-                    (fromTo 
-                        (from (to))
-                        (to (handSite (who at:(to))))
-                    )
-                )
-            )		
+            ("HittingCapture" (handSite (who at:(to)))) 
         )
     )
 )
@@ -48,14 +41,7 @@
                                 (not (is In (to) (sites "SafeSites")))	
                             )
                         )
-                        (apply 
-                            (if ("IsEnemyAt" (to))
-                                (fromTo 
-                                    (from (to))
-                                    (to (handSite (who at:(to))))
-                                )
-                            )
-                        )
+                        ("HittingCapture" (handSite (who at:(to)))) 
                     )
                 )	
             )

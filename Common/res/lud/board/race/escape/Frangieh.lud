@@ -1,12 +1,4 @@
-(define "IfEnemyBlotIt"    
-    (apply 
-        if:("IsEnemyAt" (to)) 
-        (fromTo 
-            (from (to)) 
-            (to (mapEntry (next)))
-        )
-    )
-)
+(define "IfEnemyBlotIt" ("HittingCapture" (mapEntry (next)))) 
 
 (define "BarEmpty" (is Empty "Bar"))
 

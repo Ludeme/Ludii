@@ -22,14 +22,7 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
-                            (apply 
-                                (if ("IsEnemyAt" (to))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (handSite Next))
-                                    )
-                                )
-                            )
+                            ("HittingCapture" (handSite Next))
                         )
                     )
                     (then ("ReplayNotAllDiceUsed"))
