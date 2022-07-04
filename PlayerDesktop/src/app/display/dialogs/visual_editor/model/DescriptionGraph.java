@@ -207,8 +207,24 @@ public class DescriptionGraph implements iGraph {
         this.allLudemeNodes.remove(ludemeNode);
     }
 
-    public String toLud() {
-        return ROOT.toLud();
+    public String toLud()
+    {
+        if(!isDefine)
+            return ROOT.toLud();
+        else
+            return defineLud();
+    }
+
+    private String defineLud()
+    {
+        String lud = ((LudemeNode) getRoot()).toLud(true);
+        int count = 1;
+        while(lud.contains("<PARAMETER>"))
+        {
+            lud = lud.replaceFirst("<PARAMETER>","#"+Integer.toString(count));
+            count++;
+        }
+        return lud;
     }
 
     public boolean isDefine()
@@ -225,9 +241,13 @@ public class DescriptionGraph implements iGraph {
         Map<LudemeNode, List<NodeArgument>> parameters = Handler.defineParameters(this);
         List<NodeArgument> parameterNAs = new ArrayList<>();
         for(List<NodeArgument> lna : parameters.values()) parameterNAs.addAll(lna);
-        //Symbol symbol = new Symbol(Symbol.LudemeType.Ludeme, lnRoot.providedInputsMap().values().iterator().next().toString(), lnRoot.providedInputsMap().values().iterator().next().toString(), null);
-        //return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(1), parameterNAs, lnRoot.x(), lnRoot.y(), true);
-        return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(0), parameterNAs, lnRoot.x(), lnRoot.y(), true);
+        String t = lnRoot.providedInputsMap().values().iterator().next().toString();
+        if(!t.equals(title))
+        {
+            title = t;
+            symbol = new Symbol(Symbol.LudemeType.Ludeme, t, t, null);
+        }
+        return new LudemeNode(symbol, lnRoot.currentNodeArguments().get(1), parameterNAs, lnRoot.x(), lnRoot.y(), true);
     }
 
 }

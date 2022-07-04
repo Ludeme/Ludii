@@ -699,6 +699,7 @@ public class LInputField extends JComponent
         if(nodeArgument.terminalDropdown())
         {
             JComboBox<Symbol> dropdown = new JComboBox<>();
+            if(inputArea().LNC().isPartOfDefine()) dropdown.addItem(Handler.PARAMETER_SYMBOL);
             for(Symbol symbol : nodeArgument.constantInputs())
             {
                 dropdown.addItem(symbol);
@@ -728,6 +729,7 @@ public class LInputField extends JComponent
         if(arg.symbol().token().equals("boolean"))
         {
             JComboBox<Symbol> dropdown = new JComboBox<>();
+            if(inputArea().LNC().isPartOfDefine()) dropdown.addItem(Handler.PARAMETER_SYMBOL);
             dropdown.addItem(new Symbol(Symbol.LudemeType.Constant, "True", "True", null));
             dropdown.addItem(new Symbol(Symbol.LudemeType.Constant, "False", "False", null));
             return dropdown;

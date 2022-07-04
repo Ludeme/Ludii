@@ -144,6 +144,11 @@ public class LudemeNodeComponent extends JPanel
         inputArea.updateProvidedInputs();
     }
 
+    public boolean isPartOfDefine()
+    {
+        return graphPanel().graph().isDefine();
+    }
+
     /**
      * Updates the component's dimensions
      */

@@ -134,8 +134,12 @@ public class NodePopupMenu extends JPopupMenu {
             message += "Provided Inputs: " + (node.providedInputsMap().values()) + "\n";
             message += "Fields: " + nodeComponent.inputArea().currentInputFields + "\n";
             message += "Unsatisfied : " + Handler.isComplete(graphPanel.graph()) + "\n";
+            message += ".lud : " + graphPanel.graph().toLud() + "\n";
+            message += ".lud 2 : " + node.toLud(true) + "\n";
+
 
             if(graphPanel.graph().isDefine()) message += "Parameters: " + Handler.defineParameters(graphPanel.graph()) + "\n";
+
 
 
             JOptionPane.showMessageDialog(graphPanel.panel(), message);

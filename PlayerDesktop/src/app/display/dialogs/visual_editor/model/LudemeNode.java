@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.model;
 
 
 import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Preprocessing;
 import app.display.dialogs.visual_editor.documentation.DocumentationReader;
@@ -209,8 +210,7 @@ public class LudemeNode implements iGNode
         assert isDefine;
         Symbol s = new Symbol(Symbol.LudemeType.Ludeme, "Define","define",null);
         List<ClauseArg> args = new ArrayList<>();
-        //args.add(new ClauseArg(Grammar.grammar().symbolsWithPartialKeyword("string").get(0), "Name", null, false, 0, 0));
-        //Clause c = new Clause(s, args, true);
+        args.add(new ClauseArg(Grammar.grammar().symbolsWithPartialKeyword("string").get(0), "Name", null, false, 0, 0));
         Clause c = new Clause(s, args, true);
         System.out.println();
 
@@ -227,7 +227,7 @@ public class LudemeNode implements iGNode
         PACKAGE_NAME = "game";
         nodeArguments = new HashMap<>();
         List<NodeArgument> nas = new ArrayList<>();
-        //nas.add(new NodeArgument(c, args.get(0)));
+        nas.add(new NodeArgument(c, args.get(0)));
         nas.add(new NodeArgument(s, c, viableDefineRoots));
         nodeArguments.put(c, nas);
         currentNodeArguments = nas;
@@ -252,7 +252,7 @@ public class LudemeNode implements iGNode
         this.helpInformation = null;
         PACKAGE_NAME = "game";
         this.nodeArguments = new LinkedHashMap<>();
-        this.nodeArguments.put(c, nodeArguments);
+        this.nodeArguments.put(CLAUSES.get(0), nodeArguments);
         this.currentNodeArguments = nodeArguments;
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments)
@@ -465,7 +465,9 @@ public class LudemeNode implements iGNode
     {
         List<NodeArgument> arguments = new ArrayList<>();
         for(NodeArgument na : providedInputsMap.keySet())
-            if(!na.optional() && providedInputsMap.get(na) == null)
+            if(providedInputsMap.get(na) == Handler.PARAMETER_SYMBOL)
+                arguments.add(na);
+            else if(!na.optional() && providedInputsMap.get(na) == null)
                 arguments.add(na);
             else if(!na.optional() && providedInputsMap.get(na).equals(" "))
                 arguments.add(na);
@@ -776,6 +778,10 @@ public class LudemeNode implements iGNode
 
     public String toLud()
     {
+        return toLud(false);
+    }
+    public String toLud(boolean isDefine)
+    {
 
         if(is1DCollectionNode())
         {
@@ -809,12 +815,22 @@ public class LudemeNode implements iGNode
         for (NodeArgument arg : providedInputsMap().keySet())
         {
             Object input = providedInputsMap().get(arg);
-            if(input == null) continue;
+            if(input == null)
+            {
+                if(!arg.optional() && isDefine)
+                {
+                    if(arg.arg().label() != null)
+                        sb.append(arg.arg().label()).append(":<PARAMETER>");
+                    else
+                        sb.append(" <PARAMETER> ");
+                }
+                continue;
+            }
             sb.append(" ");
             if(arg.arg().label() != null)
                 sb.append(arg.arg().label()).append(":");
             if(input instanceof LudemeNode)
-                sb.append(((LudemeNode) input).toLud());
+                sb.append(((LudemeNode) input).toLud(isDefine));
             else if(input instanceof Object[])
             {
                 sb.append("{ ");
@@ -823,7 +839,7 @@ public class LudemeNode implements iGNode
                     if(obj == null)
                         continue;
                     if(obj instanceof LudemeNode)
-                        sb.append(((LudemeNode)obj).toLud());
+                        sb.append(((LudemeNode)obj).toLud(isDefine));
                     else
                         sb.append(obj).append(" ");
                 }

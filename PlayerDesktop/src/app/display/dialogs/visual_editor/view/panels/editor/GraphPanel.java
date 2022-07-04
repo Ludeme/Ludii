@@ -39,8 +39,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
     // The parent JScrollPane
     private JScrollPane parentScrollPane;
     // The node components in this panel
-    private final List<LudemeNodeComponent> NODE_COMPONENTS = new ArrayList<>();
-    private final Map<Integer, LudemeNodeComponent> NODE_COMPONENTS_BY_ID = new HashMap<>();
+    private List<LudemeNodeComponent> NODE_COMPONENTS = new ArrayList<>();
+    private Map<Integer, LudemeNodeComponent> NODE_COMPONENTS_BY_ID = new HashMap<>();
     // The last position of the mouse
     private Point mousePosition;
     // The LayoutHandler
