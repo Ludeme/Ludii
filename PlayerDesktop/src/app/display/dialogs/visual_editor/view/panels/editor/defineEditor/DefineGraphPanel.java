@@ -36,6 +36,7 @@ public class DefineGraphPanel extends GraphPanel
 
         Handler.recordUserActions = false;
         Handler.addNode(graph(), defineRoot);
+        Handler.updateInput(graph(), defineRoot, defineRoot.currentNodeArguments().get(0), graph().title());
         Handler.recordUserActions = true;
 
     }

@@ -241,6 +241,7 @@ public class DescriptionGraph implements iGraph {
         Map<LudemeNode, List<NodeArgument>> parameters = Handler.defineParameters(this);
         List<NodeArgument> parameterNAs = new ArrayList<>();
         for(List<NodeArgument> lna : parameters.values()) parameterNAs.addAll(lna);
+        System.out.println(lnRoot.providedInputsMap().values());
         String t = lnRoot.providedInputsMap().values().iterator().next().toString();
         if(!t.equals(title))
         {

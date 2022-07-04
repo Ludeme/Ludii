@@ -15,6 +15,7 @@ import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.MainPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.DotGridBackground;
@@ -80,12 +81,25 @@ public class Handler
 
     public static final Symbol PARAMETER_SYMBOL = new Symbol(Symbol.LudemeType.Ludeme, "PARAMETER", "PARAMETER", null);
 
+    public static List<DefineGraphPanel> DEFINE_GRAPH_PANELS = new ArrayList<>();
 
     public static void updateCurrentGraphPanel(IGraphPanel graphPanel)
     {
         currentGraphPanel = graphPanel;
     }
 
+
+    public static List<LudemeNode> defineNodes()
+    {
+        List<LudemeNode> list = new ArrayList<>();
+        for(DefineGraphPanel dgp : DEFINE_GRAPH_PANELS)
+        {
+            LudemeNode defineNode = dgp.graph().defineNode();
+            if(defineNode != null)
+                list.add(defineNode);
+        }
+        return list;
+    }
 
     public static void setPalette(DesignPalette palette)
     {
@@ -550,8 +564,11 @@ public class Handler
      */
     public static void addGraphPanel(DescriptionGraph graph, IGraphPanel graphPanel)
     {
-        if(!graphPanelMap.containsKey(graph)) {
+        if(!graphPanelMap.containsKey(graph))
+        {
             graphPanelMap.put(graph, graphPanel);
+            if(graphPanel.isDefineGraph())
+                DEFINE_GRAPH_PANELS.add((DefineGraphPanel) graphPanel);
         }
     }
 
