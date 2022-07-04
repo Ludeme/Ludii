@@ -101,7 +101,7 @@
         })
         
         (play 
-            ("ReplayNotAllDiceUsed"
+            ("RollEachNewTurnMove"
             	(if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 
