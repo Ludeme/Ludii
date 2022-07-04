@@ -1,21 +1,4 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
 
 (define "AllPiecesInLastQuadrant"
     (no Pieces Mover in:(union (sites Hand Mover) (difference (sites Board) (sites Mover "FinalQuadrant"))))
@@ -50,24 +33,12 @@
                         (from (from))
                         (to
                             ("NextSiteFrom" (from))
-                            if:("NotEnemyOrOnlyOne")
-                            (apply 
-                                (if (is Enemy (who at:(to)))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (handSite (who at:(to))))
-                                    )
-                                )
-                            )
+                            if:("NoEnemyOrOnlyOne" (to))
+                            ("CaptureEnemyPieceToHand")
                         )
                     )
                 )
-                (then 
-                    (if 
-                        (not (all DiceUsed)) 
-                        (moveAgain)
-                    )
-                )
+                (then ("ReplayNotAllDiceUsed"))
             )		
         )
         (map "Entry" {(pair P1 0) (pair P2 6) (pair P3 12) (pair P4 18)})
@@ -85,9 +56,8 @@
             (place Stack "Marker4" (handSite P4) count:12)
         })
         (play 
-            (do 
-                (if (not "SameTurn") (roll))
-                next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
+            ("RollEachNewTurnMove"
+            	(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
             )
         )
         (end (if (no Pieces Mover) (result Mover Win)))
@@ -124,8 +94,6 @@
         (stackType 4 Count)
         (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.02)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.5)
-        
     })
     
 )
-
