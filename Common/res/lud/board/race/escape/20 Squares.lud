@@ -44,7 +44,7 @@
                     (if (or
                             (is Empty ("MoveTo"))
                             (and 
-                                (not ("IsFriendOn" ("MoveTo"))) 
+                                (not ("IsFriendAt" ("MoveTo"))) 
                                 (not (is In ("MoveTo") (sites "Replay")))
                             )
                         )

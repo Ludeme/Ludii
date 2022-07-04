@@ -4,9 +4,9 @@
     (move
         (from (handSite Mover))
         (to (centrePoint)
-            if:(not ("IsFriendOn" (to)))
+            if:(not ("IsFriendAt" (to)))
             (apply 
-                (if ("IsEnemyOn" (to))
+                (if ("IsEnemyAt" (to))
                     (fromTo 
                         (from (to))
                         (to (handSite (who at:(to))))
@@ -44,12 +44,12 @@
                         if:(or 
                             (is Empty (to))
                             (and 
-                                ("IsEnemyOn" (to))
+                                ("IsEnemyAt" (to))
                                 (not (is In (to) (sites "SafeSites")))	
                             )
                         )
                         (apply 
-                            (if ("IsEnemyOn" (to))
+                            (if ("IsEnemyAt" (to))
                                 (fromTo 
                                     (from (to))
                                     (to (handSite (who at:(to))))

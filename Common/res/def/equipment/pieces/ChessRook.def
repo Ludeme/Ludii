@@ -10,9 +10,9 @@
             Slide 
             Orthogonal
             (to 
-                if:("IsEnemyOn" (to))    
+                if:("IsEnemyAt" (to))    
                 (apply 
-                    (if ("IsEnemyOn" (to)) 
+                    (if ("IsEnemyAt" (to)) 
                         (remove 
                             (to) 
                             #2

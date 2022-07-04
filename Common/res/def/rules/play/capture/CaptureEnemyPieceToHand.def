@@ -3,7 +3,7 @@
 
 (define "CaptureEnemyPieceToHand"
     (apply 
-        if:("IsEnemyOn" (to)) 
+        if:("IsEnemyAt" (to)) 
         (fromTo (from (to)) (to (handSite (who at:(to)))))
     ) 
 )

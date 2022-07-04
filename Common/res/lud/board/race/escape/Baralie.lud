@@ -20,7 +20,7 @@
                 (to #1
                     if:("NoEnemyOrOnlyOne" (to))
                     (apply 
-                        if:("IsEnemyOn" (to))  
+                        if:("IsEnemyAt" (to))  
                         (fromTo 
                             (from (to)) 
                             (to ("Bar"))

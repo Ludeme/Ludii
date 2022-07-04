@@ -24,7 +24,7 @@
                         (to 
                             ("NextSiteOnTrack" (pips)) 
                             if:"StackSizeLessThan2"
-                            (apply (if ("IsEnemyOn" (to)) (remove (to))))
+                            (apply (if ("IsEnemyAt" (to)) (remove (to))))
                         )
                     )
                 )

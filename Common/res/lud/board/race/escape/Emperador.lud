@@ -22,11 +22,11 @@
                     (if (or {
                             (is Empty ("SiteToMoveOnTrack"))
                             (and 
-                                ("IsFriendOn" "SiteToMoveOnTrack")
+                                ("IsFriendAt" "SiteToMoveOnTrack")
                                 (if (is In (to) (sites Mover "StartingQuadrant" )) (not ("IsSingletonStack" "SiteToMoveOnTrack")) True)
                             )
                             (and 
-                                ("IsEnemyOn" "SiteToMoveOnTrack")
+                                ("IsEnemyAt" "SiteToMoveOnTrack")
                                 ("IsSingletonStack" "SiteToMoveOnTrack")
                             )
                         })

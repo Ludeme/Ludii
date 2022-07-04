@@ -1,6 +1,6 @@
 (define "IfEnemyBlotIt"    
     (apply 
-        if:("IsEnemyOn" (to)) 
+        if:("IsEnemyAt" (to)) 
         (fromTo 
             (from (to)) 
             (to (mapEntry (next)))
@@ -74,7 +74,7 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        ("IsFriendOn" (site)) 
+        ("IsFriendAt" (site)) 
         (< ("NextSiteOnTrack" (pips) from:(site)) 0)
     )
 )

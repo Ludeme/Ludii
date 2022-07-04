@@ -17,7 +17,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:("IsEnemyOn" (to)) 
+        if:("IsEnemyAt" (to)) 
         (fromTo (from (to)) (to (handSite (who at:(to)))))
     ) 
 )
@@ -29,7 +29,7 @@
             (if (or
                     (is Empty ("NextSiteOnTrack" #1))
                     (and 
-                        ("IsEnemyOn" ("NextSiteOnTrack" #1))
+                        ("IsEnemyAt" ("NextSiteOnTrack" #1))
                         (not (is In ("NextSiteOnTrack" #1) (sites "SafeSites")))
                     )
                 )

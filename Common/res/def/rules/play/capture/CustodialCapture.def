@@ -8,10 +8,10 @@
         (from (last To))
         #1
         (between 
-            if:("IsEnemyOn" (between))
+            if:("IsEnemyAt" (between))
             (apply (remove (between)))
         )
-        (to if:("IsFriendOn" (to)))
+        (to if:("IsFriendAt" (to)))
         #2
     )
 )

@@ -9,9 +9,9 @@
         (move
             Step 
             (to 
-                if:(not ("IsFriendOn" (to)) ) 
+                if:(not ("IsFriendAt" (to)) ) 
                 (apply 
-                    (if ("IsEnemyOn" (to)) 
+                    (if ("IsEnemyAt" (to)) 
                         (remove 
                             (to) 
                             #2

@@ -54,7 +54,7 @@
         (then
             (forEach Level (last To) FromTop
                 (if (and 
-                        ("IsEnemyOn" (last To) level:(level))
+                        ("IsEnemyAt" (last To) level:(level))
                         (= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
                     )
                     (fromTo 

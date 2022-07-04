@@ -23,7 +23,7 @@
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
                             (apply 
-                                (if ("IsEnemyOn" (to))
+                                (if ("IsEnemyAt" (to))
                                     (fromTo 
                                         (from (to))
                                         (to (handSite Next))
