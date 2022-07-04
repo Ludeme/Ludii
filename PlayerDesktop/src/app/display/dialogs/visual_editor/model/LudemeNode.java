@@ -859,7 +859,11 @@ public class LudemeNode implements iGNode
         int currentI = 1;
         while(rawLud.contains("#"+currentI))
         {
-            Object input = providedInputsMap().get(currentNodeArguments.get(currentI-1));
+            Object input;
+            if(currentI-1 >= currentNodeArguments.size())
+                input = null;
+            else
+                input = providedInputsMap().get(currentNodeArguments.get(currentI-1));
             String replacement = "";
             if(input instanceof LudemeNode)
                 replacement = ((LudemeNode)input).toLud();
@@ -869,6 +873,17 @@ public class LudemeNode implements iGNode
                 replacement = "\"" + input + "\"";
             else if(input!=null)
                 replacement = input.toString();
+            // remove label if any input = null
+            int indexOfCross = rawLud.indexOf("#");
+            if(input == null & rawLud.charAt(indexOfCross-1) == ':')
+            {
+                // find last space before :
+                int indexSpace = indexOfCross-2;
+                while(rawLud.charAt(indexSpace) != ' ')
+                    indexSpace--;
+                String label = rawLud.substring(indexSpace, indexOfCross-1);
+                rawLud = rawLud.replace(label+":#"+currentI, "#"+currentI);
+            }
             rawLud = rawLud.replaceFirst("#"+currentI, replacement);
             currentI++;
         }
