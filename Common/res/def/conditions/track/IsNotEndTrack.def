@@ -1,0 +1,7 @@
+// Checks if a site returned by a track is not the ending site of the track. 
+// #1 = The site.
+// @example ("IsNotEndTrack" ("NextSiteOnTrack" 3))
+
+(define "IsNotEndTrack"
+    (!= #1 End)
+)
