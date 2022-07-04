@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.panels.editor.tabPanels;
 
+import app.display.dialogs.visual_editor.LayoutManagement.DFSBoxDrawing;
 import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
@@ -41,13 +42,15 @@ public class LayoutSettingsPanel extends JPanel
 
         lh = Handler.currentGraphPanel.getLayoutHandler();
 
-        dSl = new JSlider(0, 100);
         oSl = new JSlider(0, 100);
+        dSl = new JSlider(0, 100);
         sSl = new JSlider(0, 100);
         cSl = new JSlider(0, 100);
 
-        JLabel distanceText = new JLabel("Distance: " + getSliderValue(dSl));
+        updateSliderValues(DFSBoxDrawing.defaultO(), DFSBoxDrawing.defaultD(), DFSBoxDrawing.defaultS());
+
         JLabel offsetText = new JLabel("Offset: " + getSliderValue(oSl));
+        JLabel distanceText = new JLabel("Distance: " + getSliderValue(dSl));
         JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
         JLabel compactnessText = new JLabel("Compactness: " + getSliderValue(cSl));
 
@@ -80,8 +83,8 @@ public class LayoutSettingsPanel extends JPanel
         });
 
         ChangeListener sliderUpdateListener = e -> {
-            distanceText.setText("Distance: " + getSliderValue(dSl));
             offsetText.setText("Offset: " + getSliderValue(oSl));
+            distanceText.setText("Distance: " + getSliderValue(dSl));
             spreadText.setText("Spread: " + getSliderValue(sSl));
             compactnessText.setText("Compactness: " + getSliderValue(cSl));
             if (changeListen)
@@ -98,10 +101,10 @@ public class LayoutSettingsPanel extends JPanel
 
         // # Adding sliders #
         add(selectedComponent);
-        add(distanceText);
-        add(dSl);
         add(offsetText);
         add(oSl);
+        add(distanceText);
+        add(dSl);
         add(spreadText);
         add(sSl);
         add(compactnessText);
@@ -174,16 +177,16 @@ public class LayoutSettingsPanel extends JPanel
     private void updateWeights()
     {
         lh.updateCompactness(getSliderValue(cSl));
-        lh.updateDFSWeights(getSliderValue(oSl)/2.0,
-                getSliderValue(dSl)/2.0,
-                getSliderValue(sSl)/2.0);
+        lh.updateDFSWeights(getSliderValue(oSl),
+                getSliderValue(dSl),
+                getSliderValue(sSl));
     }
 
-    public void updateSliderValues(double d, double o, double s)
+    public void updateSliderValues(double o, double d, double s)
     {
         changeListen = false;
+        oSl.setValue((int)(o * 100));
         dSl.setValue((int)(d * 100));
-        oSl.setValue((int)(o * 2 * 100));
         sSl.setValue((int)(s * 100));
         changeListen = true;
     }

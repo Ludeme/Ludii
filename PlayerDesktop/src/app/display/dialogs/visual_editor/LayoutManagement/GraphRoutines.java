@@ -1,10 +1,8 @@
 package app.display.dialogs.visual_editor.LayoutManagement;
 
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import java.awt.*;
 import java.util.*;
@@ -21,7 +19,9 @@ public final class GraphRoutines
     /**
      * Tuning constants for metric evaluation
      */
-    public static final double VISUAL_CONSTANT = 2500;
+    private static final double NODES_MAX_DIST = 300;
+
+    private static final double NODES_MAX_SPREAD = 400;
 
     /**
      * Update of depth for graph nodes by BFS traversal
@@ -78,11 +78,11 @@ public final class GraphRoutines
      * @param root starting from a root
      * @return layout metrics
      */
-    public static double[] treeDOS(iGraph graph, int root)
+    public static double[] computeLayoutMetrics(iGraph graph, int root)
     {
-        double[] DOS_MAP = new double[3];
-        HashMap<Integer, List<Double>> layerDist = new HashMap<>();
+        double[] odsWeights = new double[3];
         HashMap<Integer, List<Double>> layerOffset = new HashMap<>();
+        HashMap<Integer, List<Double>> layerDist = new HashMap<>();
         HashMap<Integer, List<Double>> layerSpread = new HashMap<>();
 
         List<Integer> Q = new ArrayList<>();
@@ -98,34 +98,44 @@ public final class GraphRoutines
                 // DOS
                 List<Integer> children = graph.getNode(n).children();
                 int N = children.size();
-                double xDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().x()).sum() / N) - node.pos().x();
-                double yDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().y()).sum() / N) - node.pos().y();
+                double xDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().x()).sum() / N) - (node.pos().x()+node.width());
 
                 int depth = graph.getNode(children.get(0)).depth();
-                double D = (Math.max(0, Math.min(xDiffMean, VISUAL_CONSTANT))) / (2*VISUAL_CONSTANT);
-                double O = (Math.max(-VISUAL_CONSTANT,Math.min(yDiffMean, VISUAL_CONSTANT)) + VISUAL_CONSTANT) / (4*VISUAL_CONSTANT);
+                double D = (Math.max(0, Math.min(xDiffMean, NODES_MAX_DIST))) / (NODES_MAX_DIST);
+                double O;
+                if (children.size() == 1) O = 0.5;
+                else
+                {
+                    iGNode f = graph.getNode(children.get(0));
+                    iGNode l = graph.getNode(children.get(children.size()-1));
+                    O = (node.pos().y() - f.pos().y()) / Math.abs(l.pos().y() - f.pos().y());
+                    O = Math.max(0.0, Math.min(1.0, O));
+                }
 
                 double Smean = 0;
                 // order children by Y coordinate
                 children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().y() - graph.getNode(o2).pos().y()));
                 for (int i = 0; i < children.size() - 1; i++)
                 {
-                    Smean += abs(graph.getNode(children.get(i)).pos().y() - graph.getNode(children.get(i+1)).pos().y());
+                    iGNode upperNode = graph.getNode(children.get(i));
+                    iGNode lowerNode = graph.getNode(children.get(i+1));
+                    Smean += abs(upperNode.pos().y()+upperNode.height() - lowerNode.pos().y());
                 }
-                double S = Math.max(0, Math.min(Smean, VISUAL_CONSTANT)) / (2*VISUAL_CONSTANT);
+                double S = Math.max(0, Math.min(Smean, NODES_MAX_SPREAD)) / (NODES_MAX_SPREAD);
 
-                addWeight(depth, D, layerDist); // H
-                addWeight(depth, O, layerOffset); // V
-                addWeight(depth, S, layerSpread); // S
+                addWeight(depth, D, layerDist);
+                addWeight(depth, O, layerOffset);
+                addWeight(depth, S, layerSpread);
 
                 // Add children to the Q
                 Q.addAll(children);
             }
         }
-        DOS_MAP[0] = getAvgWeight(layerDist);
-        DOS_MAP[1] = getAvgWeight(layerOffset);
-        DOS_MAP[2] = getAvgWeight(layerSpread);
-        return DOS_MAP;
+        odsWeights[0] = getAvgWeight(layerOffset);
+        odsWeights[1] = getAvgWeight(layerDist);
+        // TODO: replace with a constant; value of 2.0 gives more significance...
+        odsWeights[2] = getAvgWeight(layerSpread) * 2.0;
+        return odsWeights;
     }
 
     private static void addWeight(int d, double w, HashMap<Integer, List<Double>> weightMap)
@@ -137,19 +147,20 @@ public final class GraphRoutines
     private static double getAvgWeight(HashMap<Integer, List<Double>> weightMap)
     {
         List<Integer> keys = new ArrayList<>(weightMap.keySet());
+        double layerWeight = 1.0;
         double avg = 0.0;
-        for (Integer key : keys)
+        for (int i = 0; i < keys.size(); i++)
         {
-            double localAvg = 0.0;
-            int k = key;
+            if (keys.size() - i > 1) layerWeight /= 2.0;
+
+            double layerAvg = 0.0;
+            int k = keys.get(i);
             List<Double> list = weightMap.get(k);
             for (Double aDouble : list)
-            {
-                localAvg += aDouble;
-            }
-            localAvg /= list.size();
-            // TODO: take a weighted average such that higher layers have more significance
-            avg += localAvg;
+                layerAvg += aDouble;
+            layerAvg /= list.size();
+
+            avg += layerAvg*layerWeight;
         }
         return avg / keys.size();
     }
@@ -191,8 +202,6 @@ public final class GraphRoutines
      */
     public static Rectangle getSubtreeArea(iGraph graph, int root)
     {
-        List<iGNode> nodeList = new ArrayList<>();
-
         int ltX = (int) graph.getNode(root).pos().x();
         int ltY = (int) graph.getNode(root).pos().y();
         int rbX = (int) graph.getNode(root).pos().x();

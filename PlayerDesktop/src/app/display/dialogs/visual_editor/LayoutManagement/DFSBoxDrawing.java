@@ -19,14 +19,12 @@ public class DFSBoxDrawing
 {
     private final iGraph graph;
     private int freeY;
-    private final double wY;
-    private final double wX;
 
-    private double[] DOS_MAP;
+    private double[] odsMetrics;
 
-    private final double DEFAULT_DISTANCE = 0.1;
-    private final double DEFAULT_OFFSET = 0.1;
-    private final double DEFAULT_SPREAD = 0.1;
+    private static final double DEFAULT_DISTANCE = 0.1;
+    private static final double DEFAULT_OFFSET = 0.1;
+    private static final double DEFAULT_SPREAD = 0.1;
     private double compactness = 0.5;
 
     private final int PADDING_X = 10;
@@ -37,18 +35,12 @@ public class DFSBoxDrawing
     /**
      *
      * @param graph graph
-     * @param wX maximum inner-subtree distance
-     * @param wY maximum inner-subtree spread
      */
-    public DFSBoxDrawing(iGraph graph, double wY, double wX)
+    public DFSBoxDrawing(iGraph graph)
     {
         this.graph = graph;
         freeY = 0;
-
-        this.wX = wX;
-        this.wY = wY;
-
-        DOS_MAP = new double[3];
+        odsMetrics = new double[3];
         initWeights();
     }
 
@@ -57,9 +49,9 @@ public class DFSBoxDrawing
      */
     private void initWeights()
     {
-        DOS_MAP[0] = DEFAULT_SPREAD;
-        DOS_MAP[1] = DEFAULT_OFFSET;
-        DOS_MAP[2] = DEFAULT_DISTANCE;
+        odsMetrics[0] = DEFAULT_OFFSET;
+        odsMetrics[1] = DEFAULT_DISTANCE;
+        odsMetrics[2] = DEFAULT_SPREAD;
     }
 
     /**
@@ -80,12 +72,12 @@ public class DFSBoxDrawing
             {
                 freeY += (graph.getNode(nodeId).pos().y() - GraphRoutines.getSubtreeArea(graph, nodeId).y);
                 piInit = new Vector2D(freeX, freeY);
-                freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
+                freeY += graph.getNode(nodeId).height() * (odsMetrics[2]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
                 translateByRoot(graph, nodeId, piInit);
             }
             else
             {
-                freeY += graph.getNode(nodeId).height() * wX * (DOS_MAP[0]) + graph.getNode(nodeId).height() + PADDING_X;
+                freeY += graph.getNode(nodeId).height() * (odsMetrics[2]) + graph.getNode(nodeId).height() + PADDING_X;
             }
             // update node position
             graph.getNode(nodeId).setPos(piInit);
@@ -97,7 +89,7 @@ public class DFSBoxDrawing
             iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
 
             nodeCh.forEach((s) -> {
-                initPlacement(s, (int) (freeX + graph.getNode(s).width() * wY * DOS_MAP[2]) + graph.getNode(s).width() + PADDING_X);
+                initPlacement(s, (int) (freeX + graph.getNode(s).width() * odsMetrics[1]) + graph.getNode(s).width() + PADDING_X);
                 // freeX + getNodeDepth(graph, s)*graph.getNode(s).getWidth()*wX
 
 
@@ -122,7 +114,7 @@ public class DFSBoxDrawing
             double X0 = nFirst.pos().y();
             double X1 = nLast.pos().y();
 
-            double wOffset = DOS_MAP[1];
+            double wOffset = odsMetrics[0];
             double yCoord;
 
             yCoord = (X1 - X0) * wOffset + X0;
@@ -241,6 +233,7 @@ public class DFSBoxDrawing
             for (int j = 1; j < P.size(); j++)
             {
                 int nid = P.get(j);
+                // TODO: can improve compactness
                 if (gup.containsKey(nid)) {minDist = Math.min(minDist, gup.get(nid));}
             }
             for (int j = 1; j < P.size(); j++)
@@ -265,9 +258,9 @@ public class DFSBoxDrawing
      */
     public void updateWeights(Double offset, Double distance, Double spread)
     {
-        DOS_MAP[0] = spread;
-        DOS_MAP[1] = offset;
-        DOS_MAP[2] = distance;
+        odsMetrics[0] = offset;
+        odsMetrics[1] = distance;
+        odsMetrics[2] = spread;
     }
 
     /**
@@ -276,7 +269,7 @@ public class DFSBoxDrawing
      */
     public void updateWeights(double[] weights)
     {
-        DOS_MAP = weights.clone();
+        odsMetrics = weights.clone();
     }
 
     /**
@@ -300,5 +293,11 @@ public class DFSBoxDrawing
         compactBox(root);
         translateByRoot(graph, root, oPos);
     }
+
+    public static double defaultO() { return DEFAULT_OFFSET; }
+
+    public static double defaultD() { return DEFAULT_DISTANCE; }
+
+    public static double defaultS() { return DEFAULT_SPREAD; }
 
 }

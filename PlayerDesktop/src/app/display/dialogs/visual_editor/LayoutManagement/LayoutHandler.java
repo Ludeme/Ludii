@@ -8,6 +8,7 @@ import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSett
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.updateNodeDepth;
@@ -24,7 +25,7 @@ public class LayoutHandler
     public LayoutHandler(iGraph graph)
     {
         this.graph = graph;
-        layout = new DFSBoxDrawing(graph, 4.0, 4.0);
+        layout = new DFSBoxDrawing(graph);
     }
 
     // ################
@@ -34,17 +35,12 @@ public class LayoutHandler
         layout.updateWeights(offset, distance, spread);
     }
 
-    public void updateDFSWeights(double[] weights)
-    {
-        layout.updateWeights(weights);
-    }
-
     public void evaluateGraphWeights()
     {
-        // TODO: improve functionality
-        //double[] weights = GraphRoutines.treeDOS(graph, root);
-        //Handler.lsPanel.updateSliderValues(weights[0], weights[1], weights[2]);
-        //updateDFSWeights(weights);
+        double[] weights = GraphRoutines.computeLayoutMetrics(graph, graph.getRoot().id());
+        System.out.println(Arrays.toString(weights));
+        layout.updateWeights(weights);
+        LayoutSettingsPanel.getLayoutSettingsPanel().updateSliderValues(weights[0], weights[1], weights[2]);
     }
 
     // ################
