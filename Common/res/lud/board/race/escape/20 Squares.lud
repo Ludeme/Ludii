@@ -52,7 +52,7 @@
                             (from) 
                             (to 
                                 ("MoveTo")
-                                ("CaptureEnemyPieceToHand")
+                                ("HittingCapture" (handSite (who at:(to))))
                             )
                             (then ("ReplayInMovingOn" (sites "Replay")))
                         )

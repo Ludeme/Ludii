@@ -34,7 +34,7 @@
                         (to
                             ("NextSiteFrom" (from))
                             if:("NoEnemyOrOnlyOne" (to))
-                            ("CaptureEnemyPieceToHand")
+                            ("HittingCapture" (handSite (who at:(to))))
                         )
                     )
                 )
