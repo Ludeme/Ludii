@@ -32,6 +32,7 @@ public class DefineGraphPanel extends GraphPanel
         // Create a "define" root node
         LudemeNode defineRoot = new LudemeNode(scrollPane.getViewport().getViewRect().x + (int)(scrollPane.getViewport().getViewRect().getWidth()/2),
                 scrollPane.getViewport().getViewRect().y + (int)(scrollPane.getViewport().getViewRect().getHeight()/2), GraphPanel.symbolsWithoutConnection, true);
+        defineRoot.setProvidedInput(defineRoot.currentNodeArguments().get(0),graph().title());
 
         Handler.recordUserActions = false;
         Handler.addNode(graph(), defineRoot);
