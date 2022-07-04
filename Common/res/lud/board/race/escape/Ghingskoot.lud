@@ -1,55 +1,29 @@
 (define "SiteToMoveOnSelectedTrack" 
     (if (= (state at:(from)) 2)
-        (trackSite Move "TrackCCW" steps:("ThrowValue"))
-        (trackSite Move "TrackCW" steps:("ThrowValue"))
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
+        ("NextSiteOnTrack" ("ThrowValue")"TrackCW")
     )
 )
 
-(define "SiteToMoveOnTrackCW" (trackSite Move "TrackCW" steps:("ThrowValue")))
-(define "SiteToMoveOnTrackCCW" (trackSite Move "TrackCCW" steps:("ThrowValue")))
+(define "SiteToMoveOnTrackCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCW"))
+(define "SiteToMoveOnTrackCCW" ("NextSiteOnTrack" ("ThrowValue")"TrackCCW"))
 
-(define "ThrowValue" 
-    (if (= (count Pips) 4)
-        4
-        (if (= (count Pips) 6)
-            6
-            (if (= (count Pips) 14)
-                14
-                (if (= (count Pips) 15)
-                    15
-                    (if (= (count Pips) 0)
-                        10
-                        (if (= (count Pips) 39)
-                            5
-                            (if (or { 
-                                    (= (count Pips) 10) (= (count Pips) 18) (= (count Pips) 19) 
-                                    (= (count Pips) 20) (= (count Pips) 21) (= (count Pips) 29)
-                                })
-                                2
-                                3
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to)))
+        if:("IsEnemyAt" (to))
         (and (set State at:(to) 0) (fromTo (from (to)) (to (handSite Next))) )
     ) 
 )
 
-(define "RemoveAPiece" (move Remove (from) ) )
+(define "RemoveAPiece" (move Remove (from)))
 
 (define "MoveOn" 
-    (if (= #1 End)
+    (if ("IsEndTrack" #1)
         "RemoveAPiece"
-        (if (!= #1 Off) 	 			
-            (if (or (is Enemy (who at:#1)) (is In #1 (sites Empty)))
+        (if ("IsNotOffBoard" #1) 	 			
+            (if (not ("IsFriendAt" #1))
                 (move 
                     (from)
                     (to 
@@ -79,7 +53,7 @@
 (define "PieceCanEnterOnlyIfNoPieceOnArc" 
     (and 
         (= (from) (handSite Mover)) 
-        (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "Arc"))))
+        (all Sites (sites Mover "Arc") if:(!= (who at:(site)) Mover))
     )
 )
 
@@ -140,10 +114,14 @@
             )
         )
         (hand Each)
+        (map "Throw" {
+        	(pair 0 10) (pair 39 5) (pair 24 3) (pair 25 3) (pair 35 3) (pair 33 3)
+        	(pair 10 2) (pair 18 2) (pair 19 2) (pair 20 2) (pair 21 2) (pair 29 2)
+        })
     })
     (rules 
         (start (place "Marker" "Hand" count:<Num:piece>))
-        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))) )
+        (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
@@ -225,7 +203,6 @@
         (show Edges Hidden)
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (no DicePips)
-        
     })
     
     (ai
