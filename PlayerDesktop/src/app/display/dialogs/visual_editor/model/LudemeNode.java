@@ -828,7 +828,7 @@ public class LudemeNode implements iGNode
                 if(!arg.optional() && isDefinePanel)
                 {
                     if(arg.arg().label() != null)
-                        sb.append(arg.arg().label()).append(":<PARAMETER>");
+                        sb.append(" ").append(arg.arg().label()).append(":<PARAMETER>");
                     else
                         sb.append(" <PARAMETER> ");
                 }
@@ -887,7 +887,7 @@ public class LudemeNode implements iGNode
             if(obj == null)
                 continue;
             if(obj instanceof LudemeNode)
-                sb.append(((LudemeNode)obj).toLud(isDefinePanel));
+                sb.append(((LudemeNode)obj).toLud(isDefinePanel)).append(" ");
             else if(obj instanceof String)
                 sb.append("\"").append(obj).append("\"");
             else
