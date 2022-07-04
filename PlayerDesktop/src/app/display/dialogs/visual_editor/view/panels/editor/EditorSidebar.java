@@ -5,6 +5,10 @@ import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSett
 
 import javax.swing.*;
 
+/**
+ * Sidebar panel of visual editor
+ * @author nic0gin
+ */
 public class EditorSidebar extends JTabbedPane
 {
 

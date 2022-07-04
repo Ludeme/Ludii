@@ -15,7 +15,6 @@ import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.u
 /**
  * @author nic0gin
  */
-
 public class LayoutHandler
 {
 
@@ -37,7 +36,7 @@ public class LayoutHandler
 
     public void updateDFSWeights(double[] weights)
     {
-        layout.updateAllWeights(weights);
+        layout.updateWeights(weights);
     }
 
     public void evaluateGraphWeights()

@@ -12,9 +12,14 @@ import main.options.UserSelections;
 import other.GameLoader;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Class handles parsing of compilable *.lud game description into visual format
+ * @author nic0gin
+ */
 public class GameParser
 {
 
@@ -53,7 +58,7 @@ public class GameParser
         {
             String line;
             while ((line = rdr.readLine()) != null)
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
         }
         catch (final IOException e)
         {
@@ -168,10 +173,11 @@ public class GameParser
                 int i = 0;
                 // clause argument cursor
                 int j = 0;
-                Object input = null;
+                Object input;
                 while (i < ln.providedInputsMap().size())
                 {
                     // check if input for orGroup was produced
+                    assert currentClause != null;
                     if (currentClause.args().get(j).orGroup() == orGroupFinished)
                     {
                         j++;
@@ -230,11 +236,14 @@ public class GameParser
         path = path.substring(path.indexOf("/lud/"));
 
         InputStream in = GameLoader.class.getResourceAsStream(path);
-        try (final BufferedReader rdr = new BufferedReader(new InputStreamReader(in, "UTF-8")))
-        {
-            String line;
-            while ((line = rdr.readLine()) != null)
-                sb.append(line + "\n");
+        try {
+            assert in != null;
+            try (final BufferedReader rdr = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8)))
+            {
+                String line;
+                while ((line = rdr.readLine()) != null)
+                    sb.append(line).append("\n");
+            }
         }
         catch (final IOException e)
         {

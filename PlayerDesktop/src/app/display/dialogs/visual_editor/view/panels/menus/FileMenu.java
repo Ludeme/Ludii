@@ -1,7 +1,8 @@
-package app.display.dialogs.visual_editor.handler;
+package app.display.dialogs.visual_editor.view.panels.menus;
 
 import app.DesktopApp;
 import app.display.dialogs.GameLoaderDialog;
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.GameParser;
 import app.display.dialogs.visual_editor.recs.display.ProgressBar;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -13,10 +14,34 @@ import java.io.File;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class EditorMenuBarHandler
+/**
+ * File menu for visual editor
+ * @author nic0gin
+ */
+public class FileMenu extends JMenu
 {
 
-    public static void openDescriptionFile()
+    public FileMenu(EditorMenuBar menuBar)
+    {
+        super("File");
+        // adding file menu items
+        menuBar.addJMenuItem(this, "New", null);
+        menuBar.addJMenuItem(this, "Open...", e -> openDescriptionFile());
+        menuBar.addJMenuItem(this, "Open recent", null);
+        menuBar.addJMenuItem(this, "Close file", null);
+
+        add(new JSeparator());
+
+        menuBar.addJMenuItem(this, "Save", null);
+        menuBar.addJMenuItem(this, "Save as...", null);
+        menuBar.addJMenuItem(this, "Compile", null);
+
+        add(new JSeparator());
+
+        menuBar.addJMenuItem(this, "Exit", null);
+    }
+
+    private void openDescriptionFile()
     {
         // reused code from class GameLoading method loadGameFromMemory
         final String[] choices = FileHandling.listGames();
@@ -47,7 +72,7 @@ public class EditorMenuBarHandler
         }
     }
 
-    private static void StartGraphParsingThread(File file, IGraphPanel panel, ProgressBar progressBar)
+    private void StartGraphParsingThread(File file, IGraphPanel panel, ProgressBar progressBar)
     {
 
         SwingWorker swingWorker = new SwingWorker()
@@ -70,5 +95,4 @@ public class EditorMenuBarHandler
 
         swingWorker.execute();
     }
-
 }

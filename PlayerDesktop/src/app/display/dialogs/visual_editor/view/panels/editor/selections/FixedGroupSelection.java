@@ -2,6 +2,10 @@ package app.display.dialogs.visual_editor.view.panels.editor.selections;
 
 import java.awt.*;
 
+/**
+ * Functionality for drawing selection box around grouped nodes
+ * @author nic0gin
+ */
 public class FixedGroupSelection
 {
 

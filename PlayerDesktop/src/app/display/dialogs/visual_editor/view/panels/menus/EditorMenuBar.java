@@ -1,30 +1,17 @@
 package app.display.dialogs.visual_editor.view.panels.menus;
 
-import app.display.dialogs.visual_editor.handler.EditorMenuBarHandler;
 import app.display.dialogs.visual_editor.view.panels.menus.viewMenu.ViewMenu;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Menu bar of visual editor
+ * @author nic0gin
+ */
 public class EditorMenuBar extends JMenuBar {
 
     public EditorMenuBar() {
-        JMenu file = new JMenu("File"); // operations with file being edited
-        // adding file menu items
-        addJMenuItem(file, "New", null);
-        addJMenuItem(file, "Open...", new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                EditorMenuBarHandler.openDescriptionFile();
-            }
-        });
-        addJMenuItem(file, "Open recent", null);
-        addJMenuItem(file, "Close file", null);
-        addJMenuItem(file, "Save", null);
-        addJMenuItem(file, "Save as...", null);
-        addJMenuItem(file, "Compile", null);
-        addJMenuItem(file, "Exit", null);
 
         JMenu settings = new JMenu("Settings"); // adjust editor settings e.g. font size, colors ect.
         // adding settings menu items
@@ -36,7 +23,7 @@ public class EditorMenuBar extends JMenuBar {
         addJMenuItem(about, "Learn more about the editor", null); // opens research paper
         addJMenuItem(about, "Learn more about DLP", null);
 
-        add(file);
+        add(new FileMenu(this));
         add(new EditMenu(this));
         add(new ViewMenu(this));
         //add(settings);

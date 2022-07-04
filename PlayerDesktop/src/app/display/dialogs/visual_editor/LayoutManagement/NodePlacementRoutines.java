@@ -14,6 +14,10 @@ import java.util.List;
 import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.getNodeDepth;
 import static java.lang.Math.abs;
 
+/**
+ * Provide methods for node placement
+ * @author nic0gin
+ */
 public final class NodePlacementRoutines
 {
 

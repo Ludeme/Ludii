@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Provides functionality for smooth animation between changes of graph layouts
+ * @author nic0gin
+ */
 public class GraphAnimator
 {
 
@@ -59,10 +63,8 @@ public class GraphAnimator
             });
         }
 
-        nodePosIncrements.forEach((k,v) -> {
-            k.setPos(new Vector2D(nodeInitPositions.get(k).x()+v.x()*updateCounter,
-                    nodeInitPositions.get(k).y()+v.y()*updateCounter));
-                });
+        nodePosIncrements.forEach((k,v) -> k.setPos(new Vector2D(nodeInitPositions.get(k).x()+v.x()*updateCounter,
+                nodeInitPositions.get(k).y()+v.y()*updateCounter)));
         updateCounter++;
         Handler.currentGraphPanel.syncNodePositions();
 

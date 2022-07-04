@@ -11,6 +11,7 @@ import java.awt.*;
 
 /**
  * Class for the single instance of the Layout Settings Panel
+ * @author nic0gin
  */
 public class LayoutSettingsPanel extends JPanel
 {

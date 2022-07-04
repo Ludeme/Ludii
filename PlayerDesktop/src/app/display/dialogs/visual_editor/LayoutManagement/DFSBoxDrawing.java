@@ -3,8 +3,6 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
-import game.util.graph.Graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +12,7 @@ import java.util.stream.Collectors;
 import static app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines.translateByRoot;
 
 /**
- * By Y. Miyadera et al (1998) https://doi.org/10.1016/s0020-0190(98)00068-4
+ * Layout drawing methods
  * @author nic0gin
  */
 public class DFSBoxDrawing
@@ -34,7 +32,7 @@ public class DFSBoxDrawing
     private final int PADDING_X = 10;
     private final int PADDING_Y = 10;
 
-    public static final int MIN_NODE_GAP = 50;
+    public static final int MIN_NODE_GAP = 20;
 
     /**
      *
@@ -54,6 +52,9 @@ public class DFSBoxDrawing
         initWeights();
     }
 
+    /**
+     * Initialize layout metrics with default values
+     */
     private void initWeights()
     {
         DOS_MAP[0] = DEFAULT_SPREAD;
@@ -61,6 +62,13 @@ public class DFSBoxDrawing
         DOS_MAP[2] = DEFAULT_DISTANCE;
     }
 
+    /**
+     * Main arrangement procedure. Based on the depth-search box layout algorithm by Miyadera et al., 1998.
+     * Miyadera, Y., Anzai, K., Unno, H., and Yaku, T. (1998). Depth-first layout
+     * algorithm for trees. Inf. Process. Lett., 66(4):187–194.
+     * @param nodeId root node of tree/sub-tree to arrange
+     * @param freeX initial x position
+     */
     private void initPlacement(int nodeId, int freeX)
     {
         if (graph.getNode(nodeId).children() == null ||
@@ -125,6 +133,12 @@ public class DFSBoxDrawing
         }
     }
 
+    /**
+     * Compaction procedure. Based on the paper by Hasan et al., 2003.
+     * Hasan, M., Rahman, M. S., and Nishizeki, T. (2003). A linear algorithm for
+     * compact box-drawings of trees. Networks, 42(3):160–164.
+     * @param root root node of tree/sub-tree to arrange
+     */
     private void compactBox(int root)
     {
         // 1. Find all paths
@@ -243,6 +257,12 @@ public class DFSBoxDrawing
         }
     }
 
+    /**
+     * Update layout metrics. Values should be between 0.0 and 1.0
+     * @param offset relative offset of subtrees with respect to their root
+     * @param distance relative distance between subtrees and their root
+     * @param spread inner distance between nodes in a subtree
+     */
     public void updateWeights(Double offset, Double distance, Double spread)
     {
         DOS_MAP[0] = spread;
@@ -250,16 +270,28 @@ public class DFSBoxDrawing
         DOS_MAP[2] = distance;
     }
 
+    /**
+     * Update layout metrics
+     * @param weights array of O,D,S metrics
+     */
+    public void updateWeights(double[] weights)
+    {
+        DOS_MAP = weights.clone();
+    }
+
+    /**
+     * Update layout metric for graph compactness.
+     * @param compactness value if between 0.0 and 1.0
+     */
     public void setCompactness(double compactness)
     {
         this.compactness = compactness;
     }
 
-    public void updateAllWeights(double[] weights)
-    {
-        DOS_MAP = weights.clone();
-    }
-
+    /**
+     * Application of layout arrangement procedures.
+     * @param root root node of tree/sub-tree to arrange
+     */
     public void applyLayout(int root)
     {
         freeY = 0;

@@ -154,6 +154,13 @@ public final class GraphRoutines
         return avg / keys.size();
     }
 
+    /**
+     * A method for finding all paths in a tree graph starting from specified node
+     * @param paths list of paths to be filled in
+     * @param graph graph in operation
+     * @param root starting node
+     * @param pprime helper parameter for recursion; provide empty list at the beginning
+     */
     public static void findAllPaths(ArrayList<List<Integer>> paths, iGraph graph, int root, List<Integer> pprime)
     {
         // current node
@@ -176,6 +183,12 @@ public final class GraphRoutines
         });
     }
 
+    /**
+     * Method to compute the rectangular area around subtree of specified root
+     * @param graph graph in operation
+     * @param root starting root
+     * @return Rectangle object
+     */
     public static Rectangle getSubtreeArea(iGraph graph, int root)
     {
         List<iGNode> nodeList = new ArrayList<>();
