@@ -43,8 +43,17 @@ public class ToolsPanel extends JPanel {
     public void updateUndoRedoBtns(Stack<IUserAction> performedActions, Stack<IUserAction> undoneActions)
     {
         undoBtn.setEnabled(!performedActions.isEmpty());
-
         redoBtn.setEnabled(!undoneActions.isEmpty());
+
+        if(!performedActions.isEmpty())
+            undoBtn.setToolTipText(performedActions.peek().actionType().toString());
+        else
+            undoBtn.setToolTipText(null);
+
+        if(!undoneActions.isEmpty())
+            redoBtn.setToolTipText(undoneActions.peek().actionType().toString());
+        else
+            redoBtn.setToolTipText(null);
     }
 
     public void deactivateSelection()
