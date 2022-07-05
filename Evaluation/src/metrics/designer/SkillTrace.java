@@ -21,7 +21,7 @@ import search.mcts.MCTS;
  * Skill trace of the game.
  * NOTE. that this metric doesn't work with stored trials, and must instead generate new trials each time.
  * 
- * @author matthew.stephenson
+ * @author matthew.stephenson and Dennis Soemers
  */
 public class SkillTrace extends Metric
 {
@@ -89,7 +89,7 @@ public class SkillTrace extends Metric
 
 				while (!trial.over())
 				{
-					final int mover = context.state().mover();
+					final int mover = context.state().playerToAgent(context.state().mover());
 					final int numIterations;
 					if (mover == strongAgentIdx)
 						numIterations = weakIterationValue * 2;
