@@ -27,8 +27,10 @@ import search.mcts.MCTS;
 public class SkillTrace extends Metric
 {
 	
+	// Number of matches (iteration count doubles each time)
 	private final int numMatches = 10;
 	
+	// Number of trials per match
 	private final int numTrialsPerMatch = 100;
 
 	//-------------------------------------------------------------------------
