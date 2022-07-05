@@ -123,14 +123,20 @@ public final class GraphRoutines
                 }
                 // compute S
                 double Smean = 0;
-                // order children by Y coordinate
-                children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().y() - graph.getNode(o2).pos().y()));
-                for (int i = 0; i < children.size()-1; i++)
+                double S;
+                if (children.size() == 1)
                 {
-                    Smean += abs(computeNodeVerticalDistance(children.get(i), children.get(i+1), graph));
+                    S = 0.5;
                 }
-                Smean /= children.size()-1;
-                double S = Math.max(0, Math.min(Smean, NODES_MAX_SPREAD)) / (NODES_MAX_SPREAD);
+                else
+                {
+                    // order children by Y coordinate
+                    children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().y() - graph.getNode(o2).pos().y()));
+                    for (int i = 0; i < children.size()-1; i++)
+                        Smean += abs(computeNodeVerticalDistance(children.get(i), children.get(i+1), graph));
+                    Smean /= children.size()-1;
+                    S = Math.max(0, Math.min(Smean, NODES_MAX_SPREAD)) / (NODES_MAX_SPREAD);
+                }
 
                 addWeight(depth, D, layerDist);
                 addWeight(depth, O, layerOffset);
