@@ -7,7 +7,6 @@ import java.util.stream.IntStream;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import main.Constants;
 import main.math.LinearRegression;
 import metrics.Evaluation;
 import metrics.Metric;
@@ -18,7 +17,7 @@ import utils.experiments.ResultsSummary;
 
 /**
  * Skill trace of the game.
- * NOTE. that this cannot currently work with stored trials, and must instead recompute its own trials each time.
+ * NOTE. that this metric doesn't work with stored trials, and must instead generate new trials each time.
  * 
  * @author matthew.stephenson
  */
@@ -37,9 +36,9 @@ public class SkillTrace extends Metric
 		super
 		(
 			"Skill trace", 
-			"Skill trace of the game..", 
+			"Skill trace of the game.", 
 			0.0, 
-			Constants.INFINITY,
+			1.0,
 			null
 		);
 	}
