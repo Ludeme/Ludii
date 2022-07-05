@@ -97,8 +97,8 @@
         })
         
         (play 
-                ("RollEachNewTurnMove"
-                        (if "AllPieceInHome"
+            ("RollEachNewTurnMove"
+                (if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 
                         if:("DieNotUsed")
@@ -120,7 +120,7 @@
                     )
                     (max Distance "Track" Mover
                         (forEach Piece top:True   
-                                (then ("ReplayNotAllDiceUsed"))
+                            (then ("ReplayNotAllDiceUsed"))
                         )
                     )
                 )

@@ -42,11 +42,11 @@
 (define "CanEscape" ("IsEndTrack" ("NextSiteFrom" (site))))
 
 (define "NotEmptyAndNotOffTheBoard" 
-	    (and 
-	        (is Occupied (site)) 
-	        ("IsNotOffBoard" ("NextSiteFrom" (site)))
-	    )
-	)
+    (and 
+        (is Occupied (site)) 
+        ("IsNotOffBoard" ("NextSiteFrom" (site)))
+    )
+)
 
 (define "SetScoreOf" 
     (score
@@ -91,8 +91,8 @@
         })
         
         (play 
-                ("RollEachNewTurnMove"
-                        (if "AllPieceInHome"
+            ("RollEachNewTurnMove"
+                (if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 
                         if:("DieNotUsed")

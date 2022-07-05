@@ -3,7 +3,7 @@
 (define "DieValue" (face 28))
 
 (define "AllPiecesInFinalQuadrant"
-	(all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover "FinalQuadrant")))
+    (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover "FinalQuadrant")))
 )
 
 (define "EnterPieces"
@@ -18,36 +18,36 @@
                     if:(is Empty (to))
                 )
             )
-
+            
             (then ("ReplayNotAllDiceUsed"))
         )
     )
 )
 
 (define "CommonMove"
-        (if ("IsEndTrack" ("NextSiteFrom" (from) #1))
-            (if ("AllPiecesInFinalQuadrant")
-                (move Remove (from))
+    (if ("IsEndTrack" ("NextSiteFrom" (from) #1))
+        (if ("AllPiecesInFinalQuadrant")
+            (move Remove (from))
+        )
+        (move 
+            (from (from))
+            (to 
+                ("NextSiteFrom" (from) #1)
+                if:(and {
+                    ("NoEnemyOrOnlyOne" (to))
+                    (if (not (is In (to) (sites Mover "StartingSide")))
+                        True
+                        (> 2 (size Stack at:(to)))
+                    )
+                    (if (not (is In (to) (sites Mover "AfterPenultimate")))
+                        True
+                        (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
+                    )
+                })
+                ("HittingCapture" (handSite Next))
             )
-            (move 
-                (from (from))
-                (to 
-                    ("NextSiteFrom" (from) #1)
-                    if:(and {
-                        ("NoEnemyOrOnlyOne" (to))
-                        (if (not (is In (to) (sites Mover "StartingSide")))
-                            True
-                            (> 2 (size Stack at:(to)))
-                        )
-                        (if (not (is In (to) (sites Mover "AfterPenultimate")))
-                            True
-                            (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
-                        )
-                    })
-                    ("HittingCapture" (handSite Next))
-                )
-            )
-        )		
+        )
+    )		
 )
 
 (define "Move" 
@@ -76,7 +76,7 @@
 (define "PlayMove" 
     (if (>= 0 (value Player Mover))
         ("RollEachNewTurnMove"
-        	(if (all DiceEqual)
+            (if (all DiceEqual)
                 (or
                     ("SpecialEnterPieces" ("DieValue"))
                     (forEach Piece ("SpecialMove" ("DieValue")) top:True)
