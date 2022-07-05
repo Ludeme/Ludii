@@ -1,14 +1,6 @@
-(define "ThrowValue" 
-    (if (= 4 (count Pips))
-        20
-        (if (= 2 (count Pips))
-            2
-            0
-        )
-    )
-)
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "SiteToMove" 
     (if (= (from) (handSite Mover))
@@ -21,9 +13,7 @@
     ("SiteToMoveOnTrack" from:(where "Hyena" Shared) (* 2 ("ThrowValue")))
 )
 
-(define "HyenaPlayer" 
-    (var)
-)
+(define "HyenaPlayer" (var))
 
 (define "SetHyenaPlayer" 
     (and
@@ -44,10 +34,10 @@
         (hand Each)
         (hand Shared)
         (piece "Marker" Each
-            (if (= Off ("SiteToMove"))
+            (if ("IsOffBoard" ("SiteToMove"))
                 (move Remove (from) level:(level)
                     (then 
-                        (if (= Off (where "Hyena" Shared))
+                        (if ("IsOffBoard" (where "Hyena" Shared))
                             ("SetHyenaPlayer")
                         )
                     )
@@ -60,17 +50,18 @@
             )		
         )
         (piece "Hyena" Shared)
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
+        (map "Throw" { (pair 0 0) (pair 1 0) (pair 2 2) (pair 3 0) (pair 4 20) })
     })
     (rules 
         (start 
             (place "Marker" "Hand")
         )
         (play 
-            (do (roll) 
-                next:(if (< 0 ("ThrowValue"))
+            ("RollMove"
+            	(if (< 0 ("ThrowValue"))
                     (if (= ("HyenaPlayer") (id Mover))
-                        (if (= Off ("SiteHyenaToMove"))
+                        (if ("IsOffBoard" ("SiteHyenaToMove"))
                             (move Remove (where "Hyena" Shared) 
                                 (then
                                     (forEach Site (sites Board)
@@ -106,13 +97,13 @@
                 if:(and {
                     (> ("HyenaPlayer") 0) 
                     (!= (player) ("HyenaPlayer"))
-                    (= Off (where "Hyena" Shared))
+                    ("IsOffBoard" (where "Hyena" Shared))
                 }) 
                 (result Player Loss)
             )
             
             (if 
-                (and (= (id Mover) ("HyenaPlayer")) (= Off (where "Hyena" Shared))) 
+                (and (= (id Mover) ("HyenaPlayer")) ("IsOffBoard" (where "Hyena" Shared))) 
                 (result Mover Win)
             )
             (forEach Player
