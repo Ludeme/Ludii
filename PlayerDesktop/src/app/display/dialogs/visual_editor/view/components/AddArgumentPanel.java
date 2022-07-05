@@ -160,7 +160,7 @@ public class AddArgumentPanel extends JPanel
             else if(s.ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(s))
             {
                 // get the node that we are adding an argument to
-                LudemeNodeComponent lnc = graphPanel.connectionHandler().getSelectedConnectionComponent().lnc();
+                LudemeNodeComponent lnc = graphPanel.connectionHandler().selectedComponent().lnc();
                 lnc.addTerminal(s);
                 graphPanel.connectionHandler().cancelNewConnection();
                 setVisible(false);

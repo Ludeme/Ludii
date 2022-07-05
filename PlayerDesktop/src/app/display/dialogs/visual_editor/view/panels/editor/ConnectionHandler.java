@@ -7,6 +7,7 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.Lud
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import java.util.List;
@@ -28,44 +29,10 @@ public class ConnectionHandler
     /** The currently selected LudemeNodeComponent's Connection Component */
     private LConnectionComponent selectedConnectionComponent;
 
-    private static final boolean DEBUG = true;
-
     public ConnectionHandler(IGraphPanel graphPanel)
     {
         this.graphPanel = graphPanel;
         this.edges = new ArrayList<>();
-    }
-
-    /**
-     * Paints the edges
-     * @param g2
-     */
-    public void paintConnections(Graphics2D g2)
-    {
-        // set color for edges
-        g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
-        // set stroke for edges
-        g2.setStroke(Handler.currentPalette().LUDEME_EDGE_STROKE);
-
-        for(LudemeConnection e : edges)
-        {
-            if(!(e.outgoingNode().visible() && e.ingoingNode().visible()))
-            {
-                continue;
-            }
-
-            ImmutablePoint inputPoint = e.getInputPosition();
-            ImmutablePoint targetPoint = e.getTargetPosition();
-
-            int cp_x = inputPoint.x + Math.abs((inputPoint.x-targetPoint.x)/2);
-            int cp1_y = inputPoint.y;
-            int cp2_y = targetPoint.y;
-
-            Path2D p2d = new Path2D.Double();
-            p2d.moveTo(inputPoint.x, inputPoint.y);
-            p2d.curveTo(cp_x, cp1_y, cp_x, cp2_y, targetPoint.x, targetPoint.y);
-            g2.draw(p2d);
-        }
     }
 
     /**
@@ -74,7 +41,6 @@ public class ConnectionHandler
      */
     public void startNewConnection(LConnectionComponent source)
     {
-        if(DEBUG) System.out.println("[EP] Start connection: " + source.connectionPointPosition() + " , " + source.possibleSymbolInputs());
         // if a previous connection component was selected, deselect it
         cancelNewConnection();
         // set the selected connection component
@@ -94,7 +60,7 @@ public class ConnectionHandler
     }
 
     /**
-     * Ends the currently created connection
+     * Finalises the currently created connection
      * @param target the LudemeNodeComponent to connect to
      */
     public void finishNewConnection(LudemeNodeComponent target)
@@ -110,9 +76,6 @@ public class ConnectionHandler
      */
     public void addConnection(LConnectionComponent source, LIngoingConnectionComponent target)
     {
-
-        if(DEBUG) System.out.println("adding connection from " + source.inputField() + " to " + target.getHeader().title().getText());
-
         // update the positions of the connection components
         source.updatePosition();
         target.updatePosition();
@@ -123,20 +86,22 @@ public class ConnectionHandler
             source.fill(false);
             source = source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField()).connectionComponent();
         }
+        // Otherwise notify the InputArea about the added connection
         else
         {
             source.lnc().inputArea().addedConnection(target.getHeader().ludemeNodeComponent(), source.inputField());
         }
 
-        // update creator argument
-        target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source.inputField().nodeArgument(0)); // TODO
+        // update creator argument of the target node
+        target.getHeader().ludemeNodeComponent().node().setCreatorArgument(source.inputField().nodeArgument(0));
 
-        // update the positions of the connection components
+        // update the positions of the source connection component again (for the case that the InputField was merged)
         source.updatePosition();
-        target.updatePosition();
+
         // fill the connection components
         source.fill(true);
         target.setFill(true);
+
         // update the connection in the source
         source.setConnectedTo(target.getHeader().ludemeNodeComponent());
         target.setInputField(source.inputField());
@@ -145,70 +110,69 @@ public class ConnectionHandler
         LudemeConnection connection = new LudemeConnection(source, target);
         edges.add(connection);
 
-        // Update the provided input in the description graph
-        // differentiate between an inputed provided to a collection and otherwise
-
+        // Update the provided input via the Handler
+        // differentiate between an input provided to a collection and otherwise
         if(source.inputField().nodeArgument(0).collection())
-        {
-            LudemeNode sourceNode = source.lnc().node();
-            int collectionElementIndex = 0;
-            if(source.inputField().parent() != null) collectionElementIndex = source.inputField().parent().children().indexOf(source.inputField())+1;
-            Handler.updateCollectionInput(graphPanel.graph(), sourceNode, source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), collectionElementIndex);
-        }
+            Handler.updateCollectionInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node(), source.inputField().elementIndex());
         else
-        {
-            if(DEBUG) System.out.println("[EP] Adding connection: " + source.lnc().node().symbol().name() + " , " + target.getHeader().ludemeNodeComponent().node().symbol().name() + " at index " + source.inputField().inputIndexFirst());
-            // update creator argument
-            System.out.println("\u001B[32m"+"Calling from EP 241"+"\u001B[0m");
-            //Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().inputIndexFirst(), target.getHeader().ludemeNodeComponent().node());
             Handler.updateInput(graphPanel.graph(), source.lnc().node(), source.inputField().nodeArgument(0), target.getHeader().ludemeNodeComponent().node());
-        }
         
         graphPanel.repaint();
     }
 
-    public void removeAllConnections(LudemeNode node) {
+    /**
+     * Removes all connections of a node
+     * @param node
+     */
+    public void removeAllConnections(LudemeNode node)
+    {
         removeAllConnections(node, true);
     }
 
+    /**
+     * Removes all connections of a node
+     * @param node
+     * @param onlyOutgoingConnections Whether only outgoing connections of the given node should be removed
+     */
     public void removeAllConnections(LudemeNode node, boolean onlyOutgoingConnections)
     {
 
         for(LudemeConnection e : new ArrayList<>(edges))
         {
-            if(e.outgoingNode() != node && !(!onlyOutgoingConnections && e.ingoingNode() == node)) continue;
+            if(e.outgoingNode() != node && !(!onlyOutgoingConnections && e.ingoingNode() == node))
+            {
+                continue;
+            }
 
             edges.remove(e);
+
             LudemeNodeComponent source = e.getConnectionComponent().inputField().inputArea().LNC();
-            int collectionElementIndex = -1;
-            if(e.getConnectionComponent().inputField().parent() != null)
-                collectionElementIndex = e.getConnectionComponent().inputField().parent().children().indexOf(e.getConnectionComponent().inputField())+1;
             source.inputArea().removedConnection(e.getConnectionComponent().inputField());
+
             e.getIngoingConnectionComponent().setFill(false); // the node source was connected to is not connected anymore
             e.getConnectionComponent().fill(false); // the node source is not connected anymore
+
+            // notify handler (different for collection and non-collection inputs)
             if(e.getConnectionComponent().inputField().nodeArgument(0).collection())
-            {
-                if(collectionElementIndex == -1) collectionElementIndex = 0;
-                Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null, collectionElementIndex);
-            }
+                Handler.updateCollectionInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null, e.getConnectionComponent().inputField().elementIndex());
             else
-            {
                 Handler.updateInput(graphPanel.graph(), source.node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
-            }
         }
 
         graphPanel.repaint();
     }
 
-    // removes all outgoing conenctions of the node's ("node") connection component "connection"
+    /**
+     * removes all outgoing connections of a given node's connection component
+     * @param node
+     * @param connection
+     */
     public void removeConnection(LudemeNode node, LConnectionComponent connection)
     {
-        // TODO if(connection.lnc().dynamic()) connection.lnc().inputArea().removedConnectionDynamic(node, connection.inputField());
         for(LudemeConnection e : new ArrayList<>(edges))
         {
             if(e.getConnectionComponent().equals(connection))
             {
-                System.out.println("[CH] removing connection from " + node.symbol().name() + " to " + e.ingoingNode().symbol().name());
                 edges.remove(e);
                 if(e.ingoingNode().creatorArgument() != null && e.ingoingNode().creatorArgument().collection())
                 {
@@ -231,7 +195,7 @@ public class ConnectionHandler
                 }
                 else
                     Handler.removeEdge(graphPanel.graph(), node, e.ingoingNode(), false);
-                // TODO: Below should happen in notifyEdgeRemoved()
+
                 e.getIngoingConnectionComponent().setFill(false); // header
                 e.getConnectionComponent().fill(false); // input
                 e.getConnectionComponent().setConnectedTo(null);
@@ -248,8 +212,6 @@ public class ConnectionHandler
                 }
                 else
                 {
-                    System.out.println("\u001B[32m"+"Calling from EP 342"+"\u001B[0m");
-                    //Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().inputIndexFirst(), null);
                     Handler.updateInput(graphPanel.graph(), e.getConnectionComponent().lnc().node(), e.getConnectionComponent().inputField().nodeArgument(0), null);
                 }
             }
@@ -257,34 +219,64 @@ public class ConnectionHandler
         graphPanel.repaint();
     }
 
-    public void paintNewConnection(Graphics2D g2, Point mousePosition)
-    {
-        ImmutablePoint connection_point = selectedConnectionComponent.connectionPointPosition();
-        Path2D p2d = new Path2D.Double();
-
-        int cp_x = connection_point.x + Math.abs((connection_point.x-mousePosition.x)/2);
-        p2d.moveTo(connection_point.x, connection_point.y);
-        p2d.curveTo(cp_x, connection_point.y, cp_x, mousePosition.y, mousePosition.x, mousePosition.y);
-        g2.draw(p2d);
-    }
-
+    /**
+     * Draws an edge between an argument field and the mouse pointer (while establishing a connection)
+     * @param g2
+     * @param mousePosition
+     */
     public void drawNewConnection(Graphics2D g2, Point mousePosition)
     {
-        if(selectedConnectionComponent != null && mousePosition != null) paintNewConnection(g2, mousePosition);
+        if(selectedConnectionComponent != null && mousePosition != null)
+        {
+            ImmutablePoint connection_point = selectedConnectionComponent.connectionPointPosition();
+            Path2D p2d = new Path2D.Double();
+
+            int cp_x = connection_point.x + Math.abs((connection_point.x-mousePosition.x)/2);
+            p2d.moveTo(connection_point.x, connection_point.y);
+            p2d.curveTo(cp_x, connection_point.y, cp_x, mousePosition.y, mousePosition.x, mousePosition.y);
+            g2.draw(p2d);
+        }
     }
 
-    public LConnectionComponent getSelectedConnectionComponent()
+    /**
+     *
+     * @return The currently selected LConnectionComponent
+     */
+    public LConnectionComponent selectedComponent()
     {
         return selectedConnectionComponent;
     }
 
-    public void setSelectedConnectionComponent(LConnectionComponent selectedConnectionComponent)
+    /**
+     * Paints the edges
+     * @param g2
+     */
+    public void paintConnections(Graphics2D g2)
     {
-        this.selectedConnectionComponent = selectedConnectionComponent;
+        // set color for edges
+        g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
+        // set stroke for edges
+        g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
+
+        for(LudemeConnection e : edges)
+        {
+            if(!(e.outgoingNode().visible() && e.ingoingNode().visible()))
+            {
+                continue;
+            }
+
+            ImmutablePoint inputPoint = e.getInputPosition();
+            ImmutablePoint targetPoint = e.getTargetPosition();
+
+            int cp_x = inputPoint.x + Math.abs((inputPoint.x-targetPoint.x)/2);
+            int cp1_y = inputPoint.y;
+            int cp2_y = targetPoint.y;
+
+            Path2D p2d = new Path2D.Double();
+            p2d.moveTo(inputPoint.x, inputPoint.y);
+            p2d.curveTo(cp_x, cp1_y, cp_x, cp2_y, targetPoint.x, targetPoint.y);
+            g2.draw(p2d);
+        }
     }
 
-    public void clearEdges()
-    {
-        edges.clear();
-    }
 }

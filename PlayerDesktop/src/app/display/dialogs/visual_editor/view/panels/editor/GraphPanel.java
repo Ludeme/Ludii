@@ -622,19 +622,19 @@ public class GraphPanel extends JPanel implements IGraphPanel
     public void showCurrentlyAvailableLudemes()
     {
         // get game description up to current point
-        int upUntilIndex = connectionHandler().getSelectedConnectionComponent().inputField().nodeArguments().get(0).index();
-        for(NodeArgument ii : connectionHandler().getSelectedConnectionComponent().inputField().nodeArguments())
+        int upUntilIndex = connectionHandler().selectedComponent().inputField().nodeArguments().get(0).index();
+        for(NodeArgument ii : connectionHandler().selectedComponent().inputField().nodeArguments())
             if(ii.index() < upUntilIndex)
                 upUntilIndex = ii.index();
         long start = System.nanoTime();
-        List<Symbol> possibleSymbols = connectionHandler().getSelectedConnectionComponent().possibleSymbolInputs();
-        String gameDescription = connectionHandler().getSelectedConnectionComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().getSelectedConnectionComponent().inputField().nodeArguments());
+        List<Symbol> possibleSymbols = connectionHandler().selectedComponent().possibleSymbolInputs();
+        String gameDescription = connectionHandler().selectedComponent().inputField().inputArea().LNC().node().toLudCodeCompletion(connectionHandler().selectedComponent().inputField().nodeArguments());
         List<Symbol> typeMatched = TypeMatch.getInstance().typematch(gameDescription, StartVisualEditor.controller(),possibleSymbols);
         long finish = System.nanoTime();
         long latency = finish - start;
         latencies.add(latency);
 
-        connectArgumentPanel.updateList(connectionHandler().getSelectedConnectionComponent().inputField(), typeMatched);
+        connectArgumentPanel.updateList(connectionHandler().selectedComponent().inputField(), typeMatched);
         connectArgumentPanel.setVisible(true);
         connectArgumentPanel.setLocation(mousePosition);
         connectArgumentPanel.searchField.requestFocus();
@@ -671,7 +671,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     public void clickedOnNode(LudemeNodeComponent lnc)
     {
         LudemeNode node = lnc.node();
-        LConnectionComponent selectedConnectionComponent = connectionHandler().getSelectedConnectionComponent();
+        LConnectionComponent selectedConnectionComponent = connectionHandler().selectedComponent();
         if(selectedConnectionComponent != null)
         {
             if (selectedConnectionComponent.inputField().nodeArgument(0).collection2D() && !lnc.ingoingConnectionComponent().isFilled())
@@ -840,15 +840,15 @@ public class GraphPanel extends JPanel implements IGraphPanel
             if(e.getButton() == MouseEvent.BUTTON1)
             {
                 // user is drawing a new connection
-                if(connectionHandler().getSelectedConnectionComponent() != null)
+                if(connectionHandler().selectedComponent() != null)
                 {
                     // if its a 2D collection, connect to a 1D collection equivalent
-                    if(connectionHandler().getSelectedConnectionComponent().inputField().nodeArgument(0).collection2D())
-                        Handler.addNode(graph(), connectionHandler().getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY());
+                    if(connectionHandler().selectedComponent().inputField().nodeArgument(0).collection2D())
+                        Handler.addNode(graph(), connectionHandler().selectedComponent().inputField().nodeArgument(0), e.getX(), e.getY());
                         // if user has no chocie for next ludeme -> automatically add required ludeme
-                    else if(connectionHandler().getSelectedConnectionComponent().possibleSymbolInputs().size() == 1)
-                        Handler.addNode(graph(), connectionHandler().getSelectedConnectionComponent().possibleSymbolInputs().get(0), connectionHandler().getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
-                    else if(!connectArgumentPanel.isVisible() && connectionHandler().getSelectedConnectionComponent().possibleSymbolInputs().size() > 1)
+                    else if(connectionHandler().selectedComponent().possibleSymbolInputs().size() == 1)
+                        Handler.addNode(graph(), connectionHandler().selectedComponent().possibleSymbolInputs().get(0), connectionHandler().selectedComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
+                    else if(!connectArgumentPanel.isVisible() && connectionHandler().selectedComponent().possibleSymbolInputs().size() > 1)
                         showCurrentlyAvailableLudemes();
                     if(LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
                         lm.executeLayout();
@@ -864,7 +864,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
             else
             {
                 // user is selecting a connection -> cancel new connection
-                if(connectionHandler().getSelectedConnectionComponent() != null)
+                if(connectionHandler().selectedComponent() != null)
                     connectionHandler().cancelNewConnection();
             }
 
@@ -930,7 +930,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         {
             super.mouseMoved(e);
             mousePosition = e.getPoint();
-            if (SELECTION_MODE || connectionHandler().getSelectedConnectionComponent() != null)
+            if (SELECTION_MODE || connectionHandler().selectedComponent() != null)
                 repaint();
         }
 

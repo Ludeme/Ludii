@@ -4,7 +4,6 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
@@ -96,7 +95,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public void addTerminal(Symbol symbol)
     {
-        inputArea.addedConnection(symbol, graphPanel().connectionHandler().getSelectedConnectionComponent().inputField());
+        inputArea.addedConnection(symbol, graphPanel().connectionHandler().selectedComponent().inputField());
         revalidate();
         repaint();
     }

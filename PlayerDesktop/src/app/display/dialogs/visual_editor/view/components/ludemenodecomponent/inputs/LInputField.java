@@ -861,7 +861,10 @@ public class LInputField extends JComponent
 
     public int elementIndex()
     {
-        if(nodeArgument(0).collection() && parent() == null) return 0;
+        if(!nodeArgument(0).collection())
+            return -1;
+        if(nodeArgument(0).collection() && parent() == null)
+            return 0;
         return parent().children.indexOf(this)+1;
     }
 
