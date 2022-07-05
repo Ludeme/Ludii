@@ -36,9 +36,6 @@ public class NodeArgument
     private final List<Symbol> possibleSymbolInputs;
     private String parameterDescription = null;
 
-    public final ClauseArg originalArg;
-    public final List<ClauseArg> originalArgs = new ArrayList<>();
-
     /**
      * Constructor for NodeInput
      * @param clause the clause this NodeArgument is part of
@@ -46,7 +43,6 @@ public class NodeArgument
      */
     public NodeArgument(Clause clause, ClauseArg arg)
     {
-        this.originalArg = arg;
         this.CLAUSE = clause;
         this.INDEX = clause.args().indexOf(arg);
 
@@ -89,8 +85,6 @@ public class NodeArgument
                         args.add(newArg);
                         break;
                     }
-
-        originalArgs.addAll(this.args);
 
         // if contains a choice between a 1d collection or not, keep the 1d collection and remove the other
         if(this.args.size() == 2)
@@ -148,7 +142,6 @@ public class NodeArgument
         args = new ArrayList<>();
         args.add(new ClauseArg(clause.symbol(), null, null, false, 0, 0));
         args.get(0).setNesting(clause.args().get(0).nesting());
-        originalArg = null;
         INDEX = 0;
         this.possibleArguments = new ArrayList<>();
         possibleSymbolInputs = new ArrayList<>();
@@ -162,7 +155,6 @@ public class NodeArgument
     {
         CLAUSE = clause;
         args = new ArrayList<>();
-        originalArg = null;
         INDEX = 1;
 
         ClauseArg ca = new ClauseArg(symbol, "Macro", null, false, 0, 0);
@@ -370,15 +362,6 @@ public class NodeArgument
     public boolean choice()
     {
         return size() > 1;
-    }
-
-    /**
-     *
-     * @return the ludemeType of the first ClauseArg in the list
-     */
-    public Symbol.LudemeType ludemeType()
-    {
-        return arg().symbol().ludemeType();
     }
 
     public void setActiveChoiceArg(ClauseArg activeArg)

@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.model;
 
-import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.recs.display.ProgressBar;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;

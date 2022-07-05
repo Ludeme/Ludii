@@ -6,7 +6,6 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import game.rules.meta.no.No;
 
 import java.util.*;
 
@@ -120,14 +119,6 @@ public class RemovedNodesAction implements IUserAction
     @Override
     public DescriptionGraph graph() {
         return graph;
-    }
-
-    /**
-     * @return Whether the action was undone
-     */
-    @Override
-    public boolean isUndone() {
-        return isUndone;
     }
 
 

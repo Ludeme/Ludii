@@ -262,7 +262,7 @@ public class DesignPalette
     // ~~ ICONS ~~ //
 
     // FRAME //
-    public static final ImageIcon LUDII_ICON = new ImageIcon(DesignPalette.class.getResource("/ludii-logo-64x64.png"));
+    public static final ImageIcon LUDII_ICON = new ImageIcon(Objects.requireNonNull(DesignPalette.class.getResource("/ludii-logo-64x64.png")));
     // HEADER EDITORS //
     public static final ImageIcon COMPILABLE_ICON = getIcon("editor/play.png");
     public static final ImageIcon NOT_COMPILABLE_ICON = getIcon("editor/not_compilable.png");
@@ -530,7 +530,7 @@ public class DesignPalette
         String extension = ".ttf";
         try
         {
-            File dir = new File(DesignPalette.class.getResource("/fonts/"+folderName).toURI());
+            File dir = new File(Objects.requireNonNull(DesignPalette.class.getResource("/fonts/" + folderName)).toURI());
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             for (File file : Objects.requireNonNull(dir.listFiles()))
             {

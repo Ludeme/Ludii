@@ -50,7 +50,7 @@ public class LHeader extends JComponent
         title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         // initialize connection component
-        ingoingConnectionComponent = new LIngoingConnectionComponent(this, ((int)(title.getHeight()*0.4)), false);
+        ingoingConnectionComponent = new LIngoingConnectionComponent(this, false);
         // root nodes have no ingoing connection
         if(LNC.graphPanel().graph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
         // Panel containing the label and the connection component
@@ -81,9 +81,7 @@ public class LHeader extends JComponent
         if(LN.clauses() != null && LN.clauses().size() > 1) {
             JPopupMenu popup = constructClausePopup();
 
-            clauseBtn.addActionListener(e -> {
-                popup.show(clauseBtn, 0, clauseBtn.getHeight());
-            });
+            clauseBtn.addActionListener(e -> popup.show(clauseBtn, 0, clauseBtn.getHeight()));
 
             add(constructorPanel, BorderLayout.LINE_END);
 

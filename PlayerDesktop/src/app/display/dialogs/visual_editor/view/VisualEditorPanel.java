@@ -18,12 +18,9 @@ public class VisualEditorPanel extends JPanel
     private final DefineEditor defineEditor = new DefineEditor();
     // Whether the game, define, text, ... editor is currently active/selected
     private JPanel ACTIVE_EDITOR = gameEditor;
-    // Layout Sidebar
-    private final EditorSidebar layoutSidebar = EditorSidebar.getEditorSidebar();
-    private final VisualEditorFrame visualEditorFrame;
+
     public VisualEditorPanel(VisualEditorFrame visualEditorFrame)
     {
-        this.visualEditorFrame = visualEditorFrame;
         Handler.visualEditorPanel = this;
 
         setLayout(new BorderLayout());
@@ -31,6 +28,8 @@ public class VisualEditorPanel extends JPanel
         add(new HeaderPanel(this), BorderLayout.NORTH);
 
         add(ACTIVE_EDITOR, BorderLayout.CENTER);
+        // Layout Sidebar
+        EditorSidebar layoutSidebar = EditorSidebar.getEditorSidebar();
         add(layoutSidebar, BorderLayout.EAST);
 
         setFocusable(true);

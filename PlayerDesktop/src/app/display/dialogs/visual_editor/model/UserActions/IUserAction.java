@@ -46,12 +46,6 @@ public interface IUserAction
     DescriptionGraph graph();
 
     /**
-     *
-     * @return Whether the action was undone
-     */
-    boolean isUndone();
-
-    /**
      * Undoes the action
      */
     void undo();

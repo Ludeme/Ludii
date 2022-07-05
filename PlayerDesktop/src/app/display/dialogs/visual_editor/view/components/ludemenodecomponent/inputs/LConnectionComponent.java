@@ -216,7 +216,7 @@ public class LConnectionComponent extends JComponent
     class ConnectionPointComponent extends JComponent
     {
         public boolean fill;
-        public int x,y;
+        public int x,y = 0;
 
         public ConnectionPointComponent(boolean fill)
         {

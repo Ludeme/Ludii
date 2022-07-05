@@ -23,20 +23,14 @@ public class EditorPopupMenu extends JPopupMenu {
         JMenuItem compact = new JMenuItem("Arrange graph");
         // JMenuItem settings = new JMenuItem("Layout Settings");
 
-        newLudeme.addActionListener(e -> {
-            graphPanel.showAllAvailableLudemes(getX(), getY());
-        });
+        newLudeme.addActionListener(e -> graphPanel.showAllAvailableLudemes(getX(), getY()));
 
-        compact.addActionListener(e -> {
-            graphPanel.getLayoutHandler().executeLayout();
-        });
+        compact.addActionListener(e -> graphPanel.getLayoutHandler().executeLayout());
 
         lmMenu.add(compact);
 
         JMenuItem collapse = new JMenuItem("Collapse");
-        collapse.addActionListener(e -> {
-            Handler.collapse(graphPanel.graph());
-        });
+        collapse.addActionListener(e -> Handler.collapse(graphPanel.graph()));
 
         int iconHeight = (int)(newLudeme.getPreferredSize().getHeight()*0.75);
 
@@ -66,14 +60,10 @@ public class EditorPopupMenu extends JPopupMenu {
         add(collapse);
 
         JMenuItem fix = new JMenuItem("Fix group");
-        fix.addActionListener(e -> {
-            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(true);
-        });
+        fix.addActionListener(e -> graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(true));
 
         JMenuItem unfix = new JMenuItem("Unfix group");
-        unfix.addActionListener(e -> {
-            graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(false);
-        });
+        unfix.addActionListener(e -> graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).setFixed(false));
 
         if (graphPanel.graph().selectedRoot() != -1 &&
                 graphPanel.graph().getNode(graphPanel.graph().selectedRoot()).fixed())
@@ -89,9 +79,7 @@ public class EditorPopupMenu extends JPopupMenu {
 
 
         JMenuItem undo = new JMenuItem("Undo");
-        undo.addActionListener(e -> {
-            Handler.undo();
-        });
+        undo.addActionListener(e -> Handler.undo());
         add(undo);
 
         JMenuItem redo = new JMenuItem("Redo");

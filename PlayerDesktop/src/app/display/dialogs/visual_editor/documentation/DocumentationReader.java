@@ -4,9 +4,7 @@ import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
-import main.grammar.ebnf.EBNF;
 import main.grammar.ebnf.EBNFClause;
-import main.grammar.ebnf.EBNFClauseArg;
 
 import java.io.*;
 import java.util.*;
@@ -37,7 +35,6 @@ public class DocumentationReader
         {
             throw new RuntimeException(e);
         }
-        System.out.println();
     }
 
     public static void readDoc() throws IOException
@@ -47,7 +44,6 @@ public class DocumentationReader
 
         HelpInformation currentHelpInfo = null;
         Clause currentClause = null;
-        List<Symbol> subclasses = new ArrayList<>();
 
         String line;
         while ((line = reader.readLine()) != null)
@@ -58,20 +54,6 @@ public class DocumentationReader
                 Symbol symbol = findSymbol(symbolString);
                 currentClause = null;
 
-                if(currentHelpInfo != null && !subclasses.isEmpty())
-                {
-                    for(Symbol s : subclasses)
-                    {
-                        HelpInformation hi = new HelpInformation(s);
-                        hi.setDescription(currentHelpInfo.description());
-                        hi.setRemark(currentHelpInfo.remark());
-                        hi.setCtor(currentHelpInfo.ctors());
-                        hi.setExamples(currentHelpInfo.examples());
-                        hi.setParameters(currentHelpInfo.parameters());
-                        documentation.put(s, hi);
-                    }
-                    subclasses.clear();
-                }
                 currentHelpInfo = new HelpInformation(symbol);
                 documentation.put(symbol, currentHelpInfo);
             }
@@ -79,12 +61,6 @@ public class DocumentationReader
             {
                 String descriptionString = line.substring(14);
                 currentHelpInfo.setDescription(descriptionString);
-            }
-            else if(line.startsWith("SUBCLASS:"))
-            {
-                if(true)
-                    continue;
-                subclasses.add(findSymbol(line.substring(10)));
             }
             else if(line.startsWith("NEW CTOR"))
             {
@@ -114,20 +90,6 @@ public class DocumentationReader
             {
                 String remarkString = line.substring(9);
                 currentHelpInfo.setRemark(remarkString);
-            }
-        }
-
-        if(currentHelpInfo != null && !subclasses.isEmpty())
-        {
-            for(Symbol s : subclasses)
-            {
-                HelpInformation hi = new HelpInformation(s);
-                hi.setDescription(currentHelpInfo.description());
-                hi.setRemark(currentHelpInfo.remark());
-                hi.setCtor(currentHelpInfo.ctors());
-                hi.setExamples(currentHelpInfo.examples());
-                hi.setParameters(currentHelpInfo.parameters());
-                documentation.put(s, hi);
             }
         }
 
@@ -201,8 +163,8 @@ public class DocumentationReader
     {
         int currentGroup = 0;
         int lastGroup = 0;
-        String st = "";
-        st += "("+c.symbol().token()+" ";
+        StringBuilder st = new StringBuilder();
+        st.append("(").append(c.symbol().token()).append(" ");
         if(c.args() != null)
             for(ClauseArg cArg : c.args())
             {
@@ -211,30 +173,30 @@ public class DocumentationReader
                     if(currentGroup != cArg.orGroup())
                     {
                         if(currentGroup > 0)
-                            st += ") ";
-                        st += "(";
+                            st.append(") ");
+                        st.append("(");
                         currentGroup = cArg.orGroup();
                     }
                     else
-                        st += "|";
+                        st.append("|");
                 }
                 if(cArg.orGroup() == 0 && currentGroup > 0)
                 {
-                    st += ")";
+                    st.append(")");
                     currentGroup = 0;
                 }
-                st += " " + cArg + " ";
+                st.append(" ").append(cArg).append(" ");
                 lastGroup = cArg.orGroup();
             }
         if(lastGroup > 0)
-            st += ")";
-        st += ")";
-        st = st.replaceAll("\\s+", " ");
-        st = st.replaceAll("\\( ", "(");
-        st = st.replaceAll(" \\)", ")");
-        st = st.replaceAll("<int>","int");
-        st = st.replaceAll("<ints>","ints");
-        return st;
+            st.append(")");
+        st.append(")");
+        st = new StringBuilder(st.toString().replaceAll("\\s+", " "));
+        st = new StringBuilder(st.toString().replaceAll("\\( ", "("));
+        st = new StringBuilder(st.toString().replaceAll(" \\)", ")"));
+        st = new StringBuilder(st.toString().replaceAll("<int>", "int"));
+        st = new StringBuilder(st.toString().replaceAll("<ints>", "ints"));
+        return st.toString();
     }
 
     private static ClauseArg findClauseArg(Clause c, String string)
@@ -302,7 +264,7 @@ public class DocumentationReader
                 while(splitlist.contains("[REMOVE]"))
                     splitlist.remove("[REMOVE]");
             }
-            split = splitlist.toArray(new String[splitlist.size()]);
+            split = splitlist.toArray(new String[0]);
         }
 
         int index = Arrays.asList(split).indexOf(string);

@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -189,22 +188,34 @@ public class LInputArea extends JPanel
                 assert inputField != null;
                 inputField.setUserInput(providedInput);
                 if(providedInput instanceof LudemeNode)
-                    if(((LudemeNode) providedInput).collapsed())
+                {
+                    if (((LudemeNode) providedInput).collapsed())
+                    {
                         inputField.notifyCollapsed();
+                    }
+                }
                 else if(providedInput instanceof Object[])
                     for(int i = 0; i < ((Object[]) providedInput).length; i++)
                     {
                         Object o = ((Object[])providedInput)[i];
                         if(!(o instanceof LudemeNode))
+                        {
                             continue;
+                        }
                         LudemeNode ln = (LudemeNode) o;
                         if(!ln.collapsed())
+                        {
                             continue;
+                        }
                         // find according input field to notify it about the collapse
                         if(i == 0)
+                        {
                             inputField.notifyCollapsed();
+                        }
                         else
+                        {
                             inputField.children().get(i-1).notifyCollapsed();
+                        }
                     }
             }
         }

@@ -98,9 +98,7 @@ public class NodePopupMenu extends JPopupMenu {
             }
         });
 
-        collapse.addActionListener(e -> {
-            Handler.collapseNode(graphPanel.graph(), nodeComponent.node(), true);
-        });
+        collapse.addActionListener(e -> Handler.collapseNode(graphPanel.graph(), nodeComponent.node(), true));
 
         delete.addActionListener(e -> {
             // TODO: maybe a handler for that?

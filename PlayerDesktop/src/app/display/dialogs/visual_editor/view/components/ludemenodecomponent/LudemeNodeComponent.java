@@ -218,15 +218,6 @@ public class LudemeNodeComponent extends JPanel
     }
 
     /**
-     *
-     * @return the position of the node component
-     */
-    public ImmutablePoint position()
-    {
-        return position;
-    }
-
-    /**
      * Sets the node to be selected/unselected
      * @param selected Whether the node is selected
      */
@@ -300,12 +291,9 @@ public class LudemeNodeComponent extends JPanel
      *
      * @return whether this node is visible
      */
-    public boolean visible(){
+    public boolean visible()
+    {
         return node().visible();
-    }
-
-    public void setCollapsed(boolean collapsed) {
-        node().setCollapsed(collapsed);
     }
 
     public void markUncompilable(boolean uncompilable)

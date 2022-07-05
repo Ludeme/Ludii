@@ -15,7 +15,7 @@ public class LIngoingConnectionComponent extends JComponent {
     private final ConnectionPointComponent connectionPointComponent;
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
 
-    public LIngoingConnectionComponent(LHeader header, int radius, boolean fill){
+    public LIngoingConnectionComponent(LHeader header, boolean fill){
         this.lHeader = header;
         int height = lHeader.title().getSize().height;
         RADIUS = (int) (lHeader.title().getSize().height * 0.4);
@@ -94,7 +94,7 @@ public class LIngoingConnectionComponent extends JComponent {
     class ConnectionPointComponent extends JComponent
     {
         public boolean fill;
-        public int x,y;
+        public int x,y = 0;
 
         public ConnectionPointComponent(boolean fill)
         {

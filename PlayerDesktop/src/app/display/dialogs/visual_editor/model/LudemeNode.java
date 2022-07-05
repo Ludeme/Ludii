@@ -830,14 +830,12 @@ public class LudemeNode implements iGNode
                 return "{ } ";
             StringBuilder b = new StringBuilder();
             b.append("{");
-            for(int i = 0; i < collection.length; i++)
-            {
-                Object in = collection[i];
-                if(in == null)
+            for (Object in : collection) {
+                if (in == null)
                     continue;
-                if(in instanceof String)
-                    b.append("\"" + in + "\"");
-                else if(in instanceof LudemeNode)
+                if (in instanceof String)
+                    b.append("\"").append(in).append("\"");
+                else if (in instanceof LudemeNode)
                     b.append(((LudemeNode) in).toLud());
                 else
                     b.append(in);
