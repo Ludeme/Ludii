@@ -21,6 +21,9 @@ import java.util.regex.Pattern;
 public class FileMenu extends JMenu
 {
 
+    /**
+     * Constructor
+     */
     public FileMenu(EditorMenuBar menuBar)
     {
         super("File");
@@ -67,7 +70,7 @@ public class FileMenu extends JMenu
 
             File file = new File(path);
             ProgressBar progressBar = new ProgressBar("Loading game from file",
-                    "Loading game from file", 8);
+                    null, 8);
             StartGraphParsingThread(file, Handler.gameGraphPanel, progressBar);
         }
     }

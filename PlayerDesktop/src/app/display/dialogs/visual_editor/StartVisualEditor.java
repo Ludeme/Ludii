@@ -4,9 +4,7 @@ import javax.swing.*;
 
 import app.PlayerApp;
 import app.display.dialogs.visual_editor.recs.codecompletion.controller.NGramController;
-import app.display.dialogs.visual_editor.view.MainFrame;
 import app.display.dialogs.visual_editor.view.VisualEditorFrame;
-import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 
 //-----------------------------------------------------------------------------
 

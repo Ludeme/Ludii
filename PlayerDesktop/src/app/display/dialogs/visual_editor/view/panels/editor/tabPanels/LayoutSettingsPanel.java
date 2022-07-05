@@ -6,8 +6,10 @@ import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
@@ -55,14 +57,14 @@ public class LayoutSettingsPanel extends JPanel
         JLabel spreadText = new JLabel("Spread: " + Math.round(getSliderValue(sSl)/GraphRoutines.odsTuning()[2]*100)/100.0);
         JLabel compactnessText = new JLabel("Compactness: " + getSliderValue(cSl));
 
-        Dimension buttonDim = new Dimension(150, 20);
+        Dimension buttonDim = new Dimension(175, 20);
         JButton redraw = createButton("Arrange graph", buttonDim);
         JButton alignX = createButton("Align vertically", buttonDim);
         JButton alignY = createButton("Align horizontally", buttonDim);
 
-        fixNodes = createButton("Fix subtree", buttonDim);
+        fixNodes = createButton("Group subtree", buttonDim);
         fixNodes.setEnabled(false);
-        unfixNodes = createButton("Unfix subtree", buttonDim);
+        unfixNodes = createButton("Ungroup subtree", buttonDim);
         unfixNodes.setEnabled(false);
 
         redraw.addActionListener(e -> {
@@ -100,16 +102,22 @@ public class LayoutSettingsPanel extends JPanel
         sSl.addChangeListener(sliderUpdateListener);
         cSl.addChangeListener(sliderUpdateListener);
 
-        // # Adding sliders #
         add(selectedComponent);
-        add(offsetText);
-        add(oSl);
-        add(distanceText);
-        add(dSl);
-        add(spreadText);
-        add(sSl);
-        add(compactnessText);
-        add(cSl);
+
+        // # Adding sliders #
+
+        Box sliderBox = Box.createVerticalBox();
+
+        sliderBox.add(offsetText);
+        sliderBox.add(oSl);
+        sliderBox.add(distanceText);
+        sliderBox.add(dSl);
+        sliderBox.add(spreadText);
+        sliderBox.add(sSl);
+        sliderBox.add(compactnessText);
+        sliderBox.add(cSl);
+
+        add(sliderBox);
 
         // # Adding buttons #
         Box buttonBox = Box.createVerticalBox();
@@ -119,9 +127,13 @@ public class LayoutSettingsPanel extends JPanel
         add(buttonBox);
 
         // # Adding check boxes #
-        add(autoPlacement);
-        animatePlacement.setSelected(true);
-        add(animatePlacement);
+        autoPlacement.addChangeListener(e -> Handler.autoplacement = ((JCheckBox) e.getSource()).isSelected());
+        autoPlacement.setSelected(Handler.autoplacement);
+        //add(autoPlacement);
+
+        animatePlacement.addChangeListener(e -> Handler.animation = ((JCheckBox) e.getSource()).isSelected());
+        animatePlacement.setSelected(Handler.animation);
+        //add(animatePlacement);
 
         // # Adding fix buttons
 
@@ -142,6 +154,19 @@ public class LayoutSettingsPanel extends JPanel
         addAButton(fixNodes, buttonFixBox);
         addAButton(unfixNodes, buttonFixBox);
         add(buttonFixBox);
+
+        JButton closeLayoutTab = createButton("Close Layout Settings", buttonDim);
+        closeLayoutTab.addActionListener(e -> EditorSidebar.getEditorSidebar().setSidebarVisible(false));
+        Box closeBox = Box.createVerticalBox();
+        addAButton(closeLayoutTab, closeBox);
+        add(closeBox);
+    }
+
+    private Box getSplitterBox()
+    {
+        Box splitterBox = Box.createHorizontalBox();
+        splitterBox.add(new JSeparator());
+        return splitterBox;
     }
 
     private static void addAButton(JButton button, Container container)
@@ -214,10 +239,6 @@ public class LayoutSettingsPanel extends JPanel
         frame.setResizable(false);
     }
 
-    public boolean isAutoPlacementOn() {return autoPlacement.isSelected();}
-
-    public boolean isAnimatePlacementOn() {return animatePlacement.isSelected();}
-
     public void enableFixButton() { fixNodes.setEnabled(true); }
 
     public void disableFixButton() { fixNodes.setEnabled(false); }
@@ -226,4 +247,7 @@ public class LayoutSettingsPanel extends JPanel
 
     public void disableUnfixButton() { unfixNodes.setEnabled(false); }
 
+    public JCheckBox animatePlacement() {return animatePlacement;}
+
+    public JCheckBox autoPlacement() {return autoPlacement;}
 }

@@ -26,6 +26,7 @@ public class EditorMenuBar extends JMenuBar {
         add(new FileMenu(this));
         add(new EditMenu(this));
         add(new ViewMenu(this));
+        add(new TreeLayoutMenu(this));
         //add(settings);
         add(new RunMenu(this));
         add(about);

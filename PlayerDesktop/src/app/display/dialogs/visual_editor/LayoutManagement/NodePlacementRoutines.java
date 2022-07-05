@@ -54,12 +54,11 @@ public final class NodePlacementRoutines
 
     public static void alignNodes(List<iGNode> nodes, int axis, IGraphPanel graphPanel)
     {
-        boolean animate = LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn();
-        if (nodes.isEmpty() || ( animate &&
+        if (nodes.isEmpty() || ( Handler.animation &&
                 GraphAnimator.getGraphAnimator().updateCounter() != 0)) return;
 
         // preserve initial node positions
-        if (animate) GraphAnimator.getGraphAnimator().preserveInitPositions(nodes);
+        if (Handler.animation) GraphAnimator.getGraphAnimator().preserveInitPositions(nodes);
 
         // find min posX and posY in a list
         double posX = nodes.get(0).pos().x();
@@ -85,9 +84,9 @@ public final class NodePlacementRoutines
         }
 
         // preserve final
-        if (animate) GraphAnimator.getGraphAnimator().preserveFinalPositions();
+        if (Handler.animation) GraphAnimator.getGraphAnimator().preserveFinalPositions();
 
-        if (animate && GraphAnimator.getGraphAnimator().updateCounter() == 0)
+        if (Handler.animation && GraphAnimator.getGraphAnimator().updateCounter() == 0)
         {
             Timer animationTimer = new Timer(3, e -> {
                 if (GraphAnimator.getGraphAnimator().animateGraphNodes())

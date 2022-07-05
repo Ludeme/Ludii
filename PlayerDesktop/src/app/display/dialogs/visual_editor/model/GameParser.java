@@ -160,8 +160,8 @@ public class GameParser
                 }
 
                 // creating ludeme node from call class
-                LudemeNode ln = new LudemeNode(ludemeSymbol, NodePlacementRoutines.DEFAULT_X_POS,
-                        NodePlacementRoutines.DEFAULT_Y_POS);
+                LudemeNode ln = new LudemeNode(ludemeSymbol, Handler.gameGraphPanel.parentScrollPane().getViewport().getViewRect().x,
+                        Handler.gameGraphPanel.parentScrollPane().getViewport().getViewRect().y);
                 ln.setCreatorArgument(creatorArgument);
                 Handler.addNode(graph, ln);
                 // setting up current clause constructor
