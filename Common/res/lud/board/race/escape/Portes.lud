@@ -1,57 +1,18 @@
-(define "IfEnemyBlotIt"    
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo 
-            (from (to)) 
-            (to (mapEntry (next)))
-        )
-    )
-)
+(define "BarEmpty" (is Empty "Bar"))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
-
-(define "BarEmpty" (= (what at:"Bar") 0))
-
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
 
 (define "Bar" (mapEntry (mover)))
 
-(define "DieNotUsed" (!= (pips) 0))
+(define "AllPieceInHome" ("AllOwnedPiecesIn" (sites Mover)))
 
-(define "AllPieceInHome" 
-    ("NoSites" 
-        (difference 
-            (sites Occupied by:Mover) 
-            (sites Mover)
-        )
-    )
-)
-
-(define "RemoveAPiece" 
-    (move
-        Remove
-        (site)
-    )		
-)
+(define "RemoveAPiece" (move Remove (site)))
 
 (define "DieNotUsedAndNoEscapeAndNotOffTheTrack" 
     (and { 
         ("DieNotUsed") 
-        (!= ("NextSiteFrom" (from)) Off) 
-        (!= ("NextSiteFrom" (from)) End) 
+        ("IsNotOffBoard" ("NextSiteFrom" (from))) 
+        ("IsNotEndTrack" ("NextSiteFrom" (from))) 
     })		
 )
 
@@ -60,8 +21,8 @@
         (from #1)
         (to 
             ("NextSiteFrom" #1) 
-            if:("NotEnemyOrOnlyOne") 
-            ("IfEnemyBlotIt")
+            if:("NoEnemyOrOnlyOne" (to)) 
+            ("HittingCapture" (mapEntry Next))
         )
     )
 )
@@ -78,14 +39,14 @@
 
 (define "NumPiece" (size Stack in:(sites Occupied by:#1)))
 
-(define "CanEscape" (= ("NextSiteFrom" (site)) End))
+(define "CanEscape" ("IsEndTrack" ("NextSiteFrom" (site))))
 
 (define "NotEmptyAndNotOffTheBoard" 
-    (and 
-        (!= (what at:(site)) 0) 
-        (!= ("NextSiteFrom" (site)) Off)
-    )
-)
+	    (and 
+	        (is Occupied (site)) 
+	        ("IsNotOffBoard" ("NextSiteFrom" (site)))
+	    )
+	)
 
 (define "SetScoreOf" 
     (score
@@ -103,7 +64,7 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        (is Friend (who at:(site))) 
+        ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )
@@ -113,19 +74,13 @@
 (game "Portes"  
     (players 2)  
     (equipment { 
-        (board (rectangle 2 13)
-            {
-            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
-            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" ("BackgammonTracksWithBar" End)) 
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home
         (map {(pair 1 6 ) (pair 2 19)}) // Bar
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
-    } )
+    })
     
     (rules
         (start { 
@@ -136,9 +91,8 @@
         })
         
         (play 
-            (do 
-                (if (not "SameTurn") (roll))
-                next:(if "AllPieceInHome"
+                ("RollEachNewTurnMove"
+                        (if "AllPieceInHome"
                     (forEach Die 
                         replayDouble:True 
                         if:("DieNotUsed")
@@ -155,11 +109,7 @@
                                     "RemoveAPiece"
                                 )
                             )
-                            (then 
-                                (if (not (all DiceUsed))
-                                    (moveAgain)
-                                )
-                            )
+                            (then ("ReplayNotAllDiceUsed"))
                         )
                     )
                     (max Distance "Track" Mover
