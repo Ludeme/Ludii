@@ -33,7 +33,7 @@ public class SkillTrace extends Metric
 	// Number of trials per match
 	private final int numTrialsPerMatch = 10;
 	
-	// A hard time limit in seconds, after which any future trials are aborted.
+	// A hard time limit in seconds, after which any future trials are aborted
 	private final int hardTimeLimit = 300;
 
 	//-------------------------------------------------------------------------
