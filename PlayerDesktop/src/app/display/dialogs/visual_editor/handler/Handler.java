@@ -14,7 +14,6 @@ import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.MainPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
@@ -48,7 +47,6 @@ public class Handler
 
     public static LayoutSettingsPanel lsPanel;
 
-    public static MainPanel mainPanel;
     public static VisualEditorPanel visualEditorPanel;
 
     private static final Map<IGraphPanel, Stack<IUserAction>> performedUserActionsMap = new HashMap<>();
@@ -1129,9 +1127,6 @@ public class Handler
 
     public static String getLudString(DescriptionGraph graph){
         return graph.toLud();
-    }
-    public static void setMainPanel(MainPanel mainPanel) {
-        Handler.mainPanel = mainPanel;
     }
 
     public static void activateSelectionMode()
