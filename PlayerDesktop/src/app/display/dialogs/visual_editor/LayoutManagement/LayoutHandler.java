@@ -20,12 +20,12 @@ public class LayoutHandler
 {
 
     private final iGraph graph;
-    private final DFSBoxDrawing layout;
+    private final DFBoxDrawing layout;
 
     public LayoutHandler(iGraph graph)
     {
         this.graph = graph;
-        layout = new DFSBoxDrawing(graph);
+        layout = new DFBoxDrawing(graph);
     }
 
     // ################

@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.editor.tabPanels;
 
-import app.display.dialogs.visual_editor.LayoutManagement.DFSBoxDrawing;
+import app.display.dialogs.visual_editor.LayoutManagement.DFBoxDrawing;
+import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
 import app.display.dialogs.visual_editor.handler.Handler;
@@ -42,16 +43,16 @@ public class LayoutSettingsPanel extends JPanel
 
         lh = Handler.currentGraphPanel.getLayoutHandler();
 
-        oSl = new JSlider(0, 100);
-        dSl = new JSlider(0, 100);
-        sSl = new JSlider(0, 100);
+        oSl = new JSlider(0, (int) (100 * GraphRoutines.odsTuning()[0]));
+        dSl = new JSlider(0, (int) (100 * GraphRoutines.odsTuning()[1]));
+        sSl = new JSlider(0, (int) (100 * GraphRoutines.odsTuning()[2]));
         cSl = new JSlider(0, 100);
 
-        updateSliderValues(DFSBoxDrawing.defaultO(), DFSBoxDrawing.defaultD(), DFSBoxDrawing.defaultS());
+        updateSliderValues(DFBoxDrawing.defaultO(), DFBoxDrawing.defaultD(), DFBoxDrawing.defaultS());
 
         JLabel offsetText = new JLabel("Offset: " + getSliderValue(oSl));
-        JLabel distanceText = new JLabel("Distance: " + getSliderValue(dSl));
-        JLabel spreadText = new JLabel("Spread: " + getSliderValue(sSl));
+        JLabel distanceText = new JLabel("Distance: " + Math.round(getSliderValue(dSl)/GraphRoutines.odsTuning()[1]*100)/100.0);
+        JLabel spreadText = new JLabel("Spread: " + Math.round(getSliderValue(sSl)/GraphRoutines.odsTuning()[2]*100)/100.0);
         JLabel compactnessText = new JLabel("Compactness: " + getSliderValue(cSl));
 
         Dimension buttonDim = new Dimension(150, 20);

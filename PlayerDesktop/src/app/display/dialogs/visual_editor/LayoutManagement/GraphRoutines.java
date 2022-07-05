@@ -19,9 +19,11 @@ public final class GraphRoutines
     /**
      * Tuning constants for metric evaluation
      */
-    private static final double NODES_MAX_DIST = 300;
+    private static final double NODES_MAX_DIST = 900;
 
-    private static final double NODES_MAX_SPREAD = 400;
+    private static final double NODES_MAX_SPREAD = 500;
+
+    private static final double[] ODS_TUNING = new double[] {1.0, 1.25, 5.5};
 
     /**
      * Update of depth for graph nodes by BFS traversal
@@ -95,15 +97,23 @@ public final class GraphRoutines
             // if node is a parent: find its configurations
             if (!node.children().isEmpty())
             {
-                // DOS
                 List<Integer> children = graph.getNode(n).children();
-                int N = children.size();
-                double xDiffMean = (children.stream().mapToDouble(id -> graph.getNode(id).pos().x()).sum() / N) - (node.pos().x()+node.width());
-
                 int depth = graph.getNode(children.get(0)).depth();
+                // compute D
+                double xDiffMean = 0.0;
+                for (Integer child: children)
+                {
+                    xDiffMean += Math.abs(computeNodeHorizontalDistance(n, child, graph));
+                }
+                xDiffMean /= children.size();
+                System.out.println("Dist: "+xDiffMean);
                 double D = (Math.max(0, Math.min(xDiffMean, NODES_MAX_DIST))) / (NODES_MAX_DIST);
+                // compute O
                 double O;
-                if (children.size() == 1) O = 0.5;
+                if (children.size() == 1)
+                {
+                    O = 0.5;
+                }
                 else
                 {
                     iGNode f = graph.getNode(children.get(0));
@@ -111,16 +121,15 @@ public final class GraphRoutines
                     O = (node.pos().y() - f.pos().y()) / Math.abs(l.pos().y() - f.pos().y());
                     O = Math.max(0.0, Math.min(1.0, O));
                 }
-
+                // compute S
                 double Smean = 0;
                 // order children by Y coordinate
                 children.sort((o1, o2) -> (int) (graph.getNode(o1).pos().y() - graph.getNode(o2).pos().y()));
-                for (int i = 0; i < children.size() - 1; i++)
+                for (int i = 0; i < children.size()-1; i++)
                 {
-                    iGNode upperNode = graph.getNode(children.get(i));
-                    iGNode lowerNode = graph.getNode(children.get(i+1));
-                    Smean += abs(upperNode.pos().y()+upperNode.height() - lowerNode.pos().y());
+                    Smean += abs(computeNodeVerticalDistance(children.get(i), children.get(i+1), graph));
                 }
+                Smean /= children.size()-1;
                 double S = Math.max(0, Math.min(Smean, NODES_MAX_SPREAD)) / (NODES_MAX_SPREAD);
 
                 addWeight(depth, D, layerDist);
@@ -131,10 +140,9 @@ public final class GraphRoutines
                 Q.addAll(children);
             }
         }
-        odsWeights[0] = getAvgWeight(layerOffset);
-        odsWeights[1] = getAvgWeight(layerDist);
-        // TODO: replace with a constant; value of 2.0 gives more significance...
-        odsWeights[2] = getAvgWeight(layerSpread) * 2.0;
+        odsWeights[0] = getAvgWeight(layerOffset) * ODS_TUNING[0];
+        odsWeights[1] = getAvgWeight(layerDist) * ODS_TUNING[1];
+        odsWeights[2] = getAvgWeight(layerSpread) * ODS_TUNING[2];
         return odsWeights;
     }
 
@@ -223,4 +231,37 @@ public final class GraphRoutines
         return new Rectangle(ltX, ltY, rbX-ltX, rbY-ltY);
     }
 
+    /**
+     * Compute vertical distance between two nodes
+     * @param upper id of upper node
+     * @param lower id of lower node
+     * @param graph graph in operation
+     * @return distance
+     */
+    public static int computeNodeVerticalDistance(int upper, int lower, iGraph graph)
+    {
+        iGNode u = graph.getNode(upper);
+        iGNode l = graph.getNode(lower);
+        return (int) (u.pos().y()+u.height() - l.pos().y());
+    }
+
+    /**
+     * Compute horizontal distance between two nodes
+     * @param left id of left node
+     * @param right id of right node
+     * @param graph graph in operation
+     * @return distance
+     */
+    public static int computeNodeHorizontalDistance(int left, int right, iGraph graph)
+    {
+        iGNode l = graph.getNode(left);
+        iGNode r = graph.getNode(right);
+        return (int) (r.pos().x()-(l.pos().x()+l.width()));
+    }
+
+    /**
+     * Tuning constants for layout metrics
+     * @return array of tuning constants in order o,d,s
+     */
+    public static double[] odsTuning() {return ODS_TUNING;}
 }

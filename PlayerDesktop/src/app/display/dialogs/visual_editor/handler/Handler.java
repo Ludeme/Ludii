@@ -51,8 +51,8 @@ public class Handler
     public static MainPanel mainPanel;
     public static VisualEditorPanel visualEditorPanel;
 
-    private static Map<IGraphPanel, Stack<IUserAction>> performedUserActionsMap = new HashMap<>();
-    private static Map<IGraphPanel, Stack<IUserAction>> undoneUserActionsMap = new HashMap<>();
+    private static final Map<IGraphPanel, Stack<IUserAction>> performedUserActionsMap = new HashMap<>();
+    private static final Map<IGraphPanel, Stack<IUserAction>> undoneUserActionsMap = new HashMap<>();
     private static Stack<IUserAction> currentPerformedUserActions;
     private static Stack<IUserAction> currentUndoneUserActions;
     public static IUserAction currentUndoAction;
@@ -148,12 +148,12 @@ public class Handler
         if(!unsatisfiedNodes.isEmpty())
         {
             List<String> errors = new ArrayList<>();
-            String errorMessage = "Nodes are missing required arguments:\n";
+            StringBuilder errorMessage = new StringBuilder("Nodes are missing required arguments:\n");
             for(LudemeNode node : unsatisfiedNodes)
             {
-                errorMessage += node.title() + ", \n";
+                errorMessage.append(node.title()).append(", \n");
             }
-            errors.add(errorMessage);
+            errors.add(errorMessage.toString());
             output[1] = errors;
             output[2] = unsatisfiedNodes;
             if(liveCompile)
@@ -165,7 +165,7 @@ public class Handler
             if(openDialog)
             {
                 Handler.markUncompilable();
-                JOptionPane.showMessageDialog(null, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorMessage.toString(), "Couldn't compile", JOptionPane.ERROR_MESSAGE);
             }
             return output;
         }
@@ -176,10 +176,10 @@ public class Handler
         {
             if (StartVisualEditor.app != null)
             {
-                output[0] = (Game) compiler.Compiler.compile(d, StartVisualEditor.app.manager().settingsManager().userSelections(), r, false);
+                output[0] = compiler.Compiler.compile(d, StartVisualEditor.app.manager().settingsManager().userSelections(), r, false);
             }
             else
-                output[0] = (Game) compiler.Compiler.compile(d, new UserSelections(new ArrayList<String>()), r, false);
+                output[0] = compiler.Compiler.compile(d, new UserSelections(new ArrayList<>()), r, false);
         }
         catch(Exception ex)
         {
@@ -725,14 +725,9 @@ public class Handler
             }
         }
 
-        for(int i = 0; i < elementIndex; i++)
-        {
-            newCollection[i] = oldCollection[i];
-        }
-        for(int i = elementIndex + 1; i < oldCollection.length; i++)
-        {
-            newCollection[i - 1] = oldCollection[i];
-        }
+        System.arraycopy(oldCollection, 0, newCollection, 0, elementIndex);
+        if (oldCollection.length - (elementIndex + 1) >= 0)
+            System.arraycopy(oldCollection, elementIndex + 1, newCollection, elementIndex + 1 - 1, oldCollection.length - (elementIndex + 1));
 
         if(lastActionEquals(action))
             Handler.recordUserActions = false;
@@ -746,7 +741,7 @@ public class Handler
     }
 
 
-    private static List<LudemeNode> currentCopy = new ArrayList<LudemeNode>(); // current copy
+    private static List<LudemeNode> currentCopy = new ArrayList<>(); // current copy
 
     public static void copy()
     {
@@ -1049,10 +1044,7 @@ public class Handler
         List<LudemeNode> toExpand = new ArrayList<>();
         for(LudemeNode node : selectedNodes)
         {
-            for(LudemeNode child : node.childrenNodes())
-            {
-                toExpand.add(child);
-            }
+            toExpand.addAll(node.childrenNodes());
         }
 
         System.out.println("[HANDLER] expand(graph) Expanding " + toExpand.size() + " nodes");
@@ -1208,9 +1200,6 @@ public class Handler
         currentGraphPanel.addNodeToSelections(node);
         currentGraphPanel.repaint();
     }
-
-    public static void setAutoplacement(boolean var) {
-        currentGraphPanel.setAutoplacement(var);}
 
     public static List<LudemeNode> copyList()
     {

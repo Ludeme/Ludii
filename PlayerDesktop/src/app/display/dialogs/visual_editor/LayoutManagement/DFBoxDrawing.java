@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 import static app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines.translateByRoot;
 
 /**
- * Layout drawing methods
+ * Layout drawing method
  * @author nic0gin
  */
-public class DFSBoxDrawing
+public class DFBoxDrawing
 {
     private final iGraph graph;
     private int freeY;
@@ -28,15 +28,14 @@ public class DFSBoxDrawing
     private double compactness = 0.5;
 
     private final int PADDING_X = 10;
-    private final int PADDING_Y = 10;
 
     public static final int MIN_NODE_GAP = 20;
 
     /**
-     *
+     * Constructor
      * @param graph graph
      */
-    public DFSBoxDrawing(iGraph graph)
+    public DFBoxDrawing(iGraph graph)
     {
         this.graph = graph;
         freeY = 0;
@@ -142,6 +141,12 @@ public class DFSBoxDrawing
         moveNodeUpward(paths, Gup, graph);
     }
 
+    /**
+     * Finds upward visibility graph
+     * @param paths paths of graph
+     * @param graph graph in operation
+     * @return hashmap where keys correspond to node ids and value to their minimum distance from upper node
+     */
     private HashMap<Integer, Integer> findUpwardVisibilityGraph(List<List<Integer>> paths, iGraph graph)
     {
         // Initialize
@@ -215,12 +220,25 @@ public class DFSBoxDrawing
         return Gup;
     }
 
+    /**
+     * Helper method to add new min distance to upward visibility graph
+     * @param gup upward visibility graph - hashmap where key is node id and value is minimum distance to upper node
+     * @param p current path
+     * @param k local id on path for current node
+     * @param nodeDist distance from current node to upper node
+     */
     private void addMinDistToGup(HashMap<Integer, Integer> gup, List<Integer> p, int k, int nodeDist)
     {
         if (gup.containsKey(p.get(k))) gup.put(p.get(k), Math.min(gup.get(p.get(k)), nodeDist));
         else gup.put(p.get(k), nodeDist);
     }
 
+    /**
+     * Move nodes upward according to upward visibility graph
+     * @param paths paths of tree/subtree
+     * @param gup upward visibility graph - hashmap where key is node id and value is minimum distance to upper node
+     * @param graph graph in operation
+     */
     private void moveNodeUpward(List<List<Integer>> paths, HashMap<Integer, Integer> gup, iGraph graph)
     {
         List<Integer> subTree = new ArrayList<>();
@@ -294,10 +312,19 @@ public class DFSBoxDrawing
         translateByRoot(graph, root, oPos);
     }
 
+    /**
+     * Default offset metric
+     */
     public static double defaultO() { return DEFAULT_OFFSET; }
 
+    /**
+     * Default distance metric
+     */
     public static double defaultD() { return DEFAULT_DISTANCE; }
 
+    /**
+     * Default spread metric
+     */
     public static double defaultS() { return DEFAULT_SPREAD; }
 
 }
