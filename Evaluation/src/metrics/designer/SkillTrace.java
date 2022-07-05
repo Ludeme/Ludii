@@ -80,7 +80,8 @@ public class SkillTrace extends Metric
 		final double[] xAxis = IntStream.range(0, strongAIResults.size()).asDoubleStream().toArray();
 		final double[] yAxis = strongAIResults.stream().mapToDouble(Double::doubleValue).toArray();
 		final LinearRegression linearRegression = new LinearRegression(xAxis, yAxis);
-		final double yValueNextStep = linearRegression.predict(numMatches+1);
+		double yValueNextStep = linearRegression.predict(numMatches+1);
+		yValueNextStep = Math.max(Math.min(yValueNextStep, 1.0), 0.0);
 		
 		final double skillTrace = yValueNextStep + (1-yValueNextStep)*areaEstimate;
 		
