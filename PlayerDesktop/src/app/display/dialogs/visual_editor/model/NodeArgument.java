@@ -26,6 +26,8 @@ public class NodeArgument
     private final Clause CLAUSE;
     /** The list of ClauseArgs this NodeArgument encompasses */
     private final List<ClauseArg> args;
+    /** Arguments prior to expanding */
+    public final List<ClauseArg> originalArgs = new ArrayList<>();
     /** The index of the ClauseArg in the Clause */
     private final int INDEX;
     /** List of possible Arguments as Input */
@@ -86,6 +88,8 @@ public class NodeArgument
                         break;
                     }
 
+        originalArgs.addAll(this.args);
+
         // if contains a choice between a 1d collection or not, keep the 1d collection and remove the other
         if(this.args.size() == 2)
             if(args.get(0).symbol().equals(args.get(1).symbol()))
@@ -117,15 +121,16 @@ public class NodeArgument
             computePossibleArguments(ca);
 
         Set<Symbol> possibleArguments = new HashSet<>();
-        for(PossibleArgument pa : this.possibleArguments) possibleArguments.addAll(expandPossibleArgument(pa));
-        for(ClauseArg a : args()) if(terminalDropdown(a)) possibleArguments.add(a.symbol());
+        for(PossibleArgument pa : this.possibleArguments)
+            possibleArguments.addAll(expandPossibleArgument(pa));
+        for(ClauseArg a : args())
+            if(terminalDropdown(a))
+                possibleArguments.add(a.symbol());
 
         Set<Symbol> possibleSymbols = new HashSet<>();
         for(Symbol s : possibleArguments)
-        {
-            if(s.ludemeType().equals(Symbol.LudemeType.Constant)) continue;
-            possibleSymbols.add(s);
-        }
+            if(!s.ludemeType().equals(Symbol.LudemeType.Constant))
+                possibleSymbols.add(s);
 
         possibleSymbolInputs = new ArrayList<>(possibleSymbols);
         parameterDescription = readHelp();
