@@ -14,9 +14,6 @@ public enum ComponentStyleType implements MetadataItem
 	/** Style for pieces. */
 	Piece,
 	
-	/** Style for text/numbers. */
-	Text,
-	
 	/** Style for tiles (components that fill a cell and may have marked paths). */ 
 	Tile,
 	

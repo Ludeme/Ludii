@@ -31,12 +31,6 @@ public class PieceStyle extends BaseComponentStyle
 		super(bridge, component);
 	}
 	
-	public PieceStyle(final Bridge bridge, final Component component, final boolean drawStringVisuals) 
-	{
-		super(bridge, component);
-		this.drawStringVisuals = drawStringVisuals;
-	}
-	
 	//----------------------------------------------------------------------------
 	
 	@Override

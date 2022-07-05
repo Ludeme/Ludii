@@ -156,9 +156,7 @@ public class ViewControllerFactory
 		switch(type)
 		{
 		case Piece:
-			return new PieceStyle(bridge, component, false);
-		case Text:
-			return new PieceStyle(bridge, component, true);
+			return new PieceStyle(bridge, component);
 		case Card:
 			return new CardStyle(bridge, component);
 		case Die:
