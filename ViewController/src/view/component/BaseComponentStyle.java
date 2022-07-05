@@ -1,6 +1,7 @@
 package view.component;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
@@ -22,6 +23,7 @@ import metadata.graphics.util.ValueDisplayInfo;
 import metadata.graphics.util.colour.ColourRoutines;
 import other.context.Context;
 import util.HiddenUtil;
+import util.StringUtil;
 
 /**
  * Base style for drawing components.
@@ -280,13 +282,13 @@ public abstract class BaseComponentStyle implements ComponentStyle
  		 	final double offsetX = backgroundImageInfo.offestX();
  		 	final double offsetY = backgroundImageInfo.offestY();
  		 	
-// 		 	if (backgroundPath == null && backgroundName.length() > 0)
-// 			{
-// 				final Font valueFont = new Font("Arial", Font.BOLD, (int) (backgroundScale));
-// 				g2d.setColor(backgroundColour);
-// 				g2d.setFont(valueFont);
-// 				StringUtil.drawStringAtPoint(g2d, backgroundName, null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
-// 			}
+ 		 	if (backgroundPath == null && backgroundName.length() > 0)
+ 			{
+ 				final Font valueFont = new Font("Arial", Font.BOLD, (int) (backgroundScale));
+ 				g2d.setColor(backgroundColour);
+ 				g2d.setFont(valueFont);
+ 				StringUtil.drawStringAtPoint(g2d, backgroundName, null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
+ 			}
  		 	
  		 	if (backgroundColour == null)
  		 		backgroundColour = bridge.settingsColour().playerColour(context, component.owner());
