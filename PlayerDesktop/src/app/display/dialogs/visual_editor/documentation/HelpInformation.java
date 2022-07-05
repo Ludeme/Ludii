@@ -11,10 +11,9 @@ public class HelpInformation
 
     private final Symbol symbol;
     private String description;
-    private HashMap<Clause, String> ctor = new HashMap<>(); // syntax
-    private HashMap<Clause, String> examples = new HashMap<>(); // examples
-    private HashMap<ClauseArg, String> parameters = new HashMap<>(); // arguments
-    private String remark;
+    private final HashMap<Clause, String> ctor = new HashMap<>(); // syntax
+    private final HashMap<Clause, String> examples = new HashMap<>(); // examples
+    private final HashMap<ClauseArg, String> parameters = new HashMap<>(); // arguments
 
     public HelpInformation(Symbol symbol)
     {
@@ -56,21 +55,6 @@ public class HelpInformation
         return description;
     }
 
-    public String remark()
-    {
-        return remark;
-    }
-
-    public HashMap<Clause, String> ctors()
-    {
-        return ctor;
-    }
-
-    public HashMap<Clause, String> examples()
-    {
-        return examples;
-    }
-
     public String parameter(ClauseArg arg)
     {
         return parameters.get(arg);
@@ -79,21 +63,6 @@ public class HelpInformation
     public HashMap<ClauseArg, String> parameters()
     {
         return parameters;
-    }
-
-    public void setCtor(HashMap<Clause, String> ctor)
-    {
-        this.ctor = ctor;
-    }
-
-    public void setExamples(HashMap<Clause, String> examples)
-    {
-        this.examples = examples;
-    }
-
-    public void setParameters(HashMap<ClauseArg, String> parameters)
-    {
-        this.parameters = parameters;
     }
 
 }

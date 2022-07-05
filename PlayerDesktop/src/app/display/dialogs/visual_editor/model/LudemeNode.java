@@ -621,17 +621,6 @@ public class LudemeNode implements iGNode
 
     /**
      *
-     * @return the list of siblings of this node
-     */
-    @Override
-    public List<Integer> siblings()
-    {
-        // TODO implement
-        return null;
-    }
-
-    /**
-     *
      * @return the position of this node in the graph
      */
     @Override

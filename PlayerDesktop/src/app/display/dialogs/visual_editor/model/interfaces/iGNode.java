@@ -17,8 +17,6 @@ public interface iGNode {
 
     List<Integer> children();
 
-    List<Integer> siblings();
-
     Vector2D pos();
 
     void setPos(Vector2D pos);
