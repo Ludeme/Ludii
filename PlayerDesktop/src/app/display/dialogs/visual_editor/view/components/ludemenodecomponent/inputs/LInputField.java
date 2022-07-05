@@ -29,7 +29,7 @@ public class LInputField extends JComponent
     /** LInputAreaNew that this LInputFieldNew is associated with */
     private final LInputArea LIA;
     /** NodeArguments that this LInputField is associated with */
-    private List<NodeArgument> nodeArguments;
+    private final List<NodeArgument> nodeArguments;
     /** The JComponent the user interacts with to provide input */
     private JComponent fieldComponent;
     /** If the LInputField is not terminal, it has a connection point which is used to connect to other Nodes */
@@ -37,16 +37,16 @@ public class LInputField extends JComponent
     /** If the LInputField is part of a collection (its element), the root/first element of that collection is the parent */
     private LInputField parent = null;
     /** If the LInputField is the root of a collection, store its elements/children in a list */
-    private List<LInputField> children = new ArrayList<>();
+    private final List<LInputField> children = new ArrayList<>();
     /** Label of the InputField */
     private final JLabel label = new JLabel();
     private final JLabel optionalLabel = new JLabel("(optional)");
     private final JLabel terminalOptionalLabel = new JLabel("+");
-    private LInputButton uncollapseButton = new LInputButton(Handler.currentPalette().UNCOLLAPSE_ICON(), Handler.currentPalette().UNCOLLAPSE_ICON_HOVER());
-    private LInputButton addItemButton = new LInputButton(Handler.currentPalette().COLLECTION_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_ICON_HOVER());
-    private LInputButton removeItemButton = new LInputButton(Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_REMOVE_ICON_HOVER());
-    private LInputButton choiceButton = new LInputButton(Handler.currentPalette().CHOICE_ICON_ACTIVE(), Handler.currentPalette().CHOICE_ICON_HOVER());
-    private static float buttonWidthPercentage = 1f;
+    private final LInputButton expandButton = new LInputButton(Handler.currentPalette().UNCOLLAPSE_ICON(), Handler.currentPalette().UNCOLLAPSE_ICON_HOVER());
+    private final LInputButton addItemButton = new LInputButton(Handler.currentPalette().COLLECTION_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_ICON_HOVER());
+    private final LInputButton removeItemButton = new LInputButton(Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_REMOVE_ICON_HOVER());
+    private final LInputButton choiceButton = new LInputButton(Handler.currentPalette().CHOICE_ICON_ACTIVE(), Handler.currentPalette().CHOICE_ICON_HOVER());
+    private static final float buttonWidthPercentage = 1f;
     private boolean active = true;
 
     /**
@@ -60,15 +60,11 @@ public class LInputField extends JComponent
         this.nodeArguments = nodeArguments;
 
         loadButtons();
-
-        if(nodeArguments.size() == 1)
-            construct(nodeArguments.get(0));
-        else
-            construct(nodeArguments);
+        construct();
     }
 
     /**
-     * Constructor for a input field which is part of a collection
+     * Constructor for an input field which is part of a collection
      * @param parentCollectionInputField Parent InputField of collection
      */
     public LInputField(LInputField parentCollectionInputField)
@@ -89,15 +85,16 @@ public class LInputField extends JComponent
      */
     private void loadButtons()
     {
-        optionalLabel.setFont(Handler.currentPalette().LUDEME_INPUT_FONT_ITALIC);
+        optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
         optionalLabel.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
         optionalLabel.setText("(optional)");
 
-        if(terminalOptionalLabel.getMouseListeners().length == 0) terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
+        if(terminalOptionalLabel.getMouseListeners().length == 0)
+            terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
 
-        uncollapseButton.setSize(uncollapseButton.getPreferredSize());
-        uncollapseButton.setActive();
-        uncollapseButton.addActionListener(uncollapseButtonListener);
+        expandButton.setSize(expandButton.getPreferredSize());
+        expandButton.setActive();
+        expandButton.addActionListener(expandButtonListener);
 
         addItemButton.addActionListener(addItemButtonListener);
         removeItemButton.addActionListener(removeItemButtonListener);
@@ -105,8 +102,9 @@ public class LInputField extends JComponent
         choiceButton.addActionListener(choiceButtonListener);
     }
 
-    private final ActionListener uncollapseButtonListener = e -> {
-        remove(uncollapseButton);
+    private final ActionListener expandButtonListener = e ->
+    {
+        remove(expandButton);
         add(connectionComponent);
         Handler.collapseNode(inputArea().LNC().graphPanel().graph(), connectionComponent().connectedTo().node(), false);
     };
@@ -126,9 +124,11 @@ public class LInputField extends JComponent
                 // ask user for confirmation
                 if(children.size()+1 >= Handler.SENSITIVITY_COLLECTION_REMOVAL)
                 {
-                    int userChoice = JOptionPane.showConfirmDialog(null, "When changing the argument " + Integer.toString(children.size()+1) + " collection elements will be reset.", "Remove nodes", JOptionPane.OK_CANCEL_OPTION);
+                    int userChoice = JOptionPane.showConfirmDialog(null, "When changing the argument " + (children.size() + 1) + " collection elements will be reset.", "Remove nodes", JOptionPane.OK_CANCEL_OPTION);
                     if(userChoice != JOptionPane.OK_OPTION)
+                    {
                         return;
+                    }
                 }
 
                 inputArea().LNC().graphPanel().setBusy(true);
@@ -177,9 +177,7 @@ public class LInputField extends JComponent
     private void removeChildrenEdge(LInputField child)
     {
         if(child.connectionComponent != null && child.connectionComponent.connectedTo() != null)
-        {
             Handler.removeEdge(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), child.connectionComponent.connectedTo().node(), child.elementIndex());
-        }
     }
 
     /**
@@ -195,7 +193,7 @@ public class LInputField extends JComponent
             label.setText(nodeArgument.arg().actualParameterName());
         else
             label.setText(nodeArgument.arg().symbol().name());
-        label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
+        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
 
         label.setToolTipText(nodeArgument(0).parameterDescription());
@@ -206,47 +204,42 @@ public class LInputField extends JComponent
 
         // If collection
         if(parent != null)
-        {
             constructCollection(parent);
-        }
         else if(nodeArgument.collection2D())
-        {
             constructNonTerminal(nodeArgument);
-        }
         else if(nodeArgument.canBePredefined())
-        {
             constructHybrid(nodeArgument);
-        }
         else if(nodeArgument.isTerminal())
-        {
             // If the selected NodeArgument is a terminal NodeArgument stemming from a merged input field (i.e. optional or dynamic)
             // (nodeArguments.get(0).separateNode())
             // Add an option to remove this argument again
             constructTerminal(nodeArgument, nodeArgument.optional());
-        }
         else
-        {
             constructNonTerminal(nodeArgument);
-        }
 
     }
 
     /**
      * Construct the input field for a list of node arguments (optional or dynamic)
-     * @param nodeArguments list of node arguments
      */
-    private void construct(List<NodeArgument> nodeArguments)
+    private void construct()
     {
+        if(nodeArguments.size() == 1)
+        {
+            construct(nodeArgument(0));
+            return;
+        }
         // reset the component
         removeAll();
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         // add optional label
-        if(optional()) add(optionalLabel);
+        if(optional())
+            add(optionalLabel);
         label.setText("Arguments");
-        label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
+        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         label.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
         add(label);
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
         connectionComponent = new LConnectionComponent(this, false);
         fieldComponent = connectionComponent;
         add(connectionComponent);
@@ -269,7 +262,7 @@ public class LInputField extends JComponent
 
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
         add(label);
         add(fieldComponent);
 
@@ -299,8 +292,10 @@ public class LInputField extends JComponent
         if(removable)
         {
             add(terminalOptionalLabel);
-            if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null) notifyActivated();
-            //if(inputArea().LNC().node().providedInputs()[inputIndexFirst()] != null) activate();
+            if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null)
+            {
+                notifyActivated();
+            }
             else
             {
                 fieldComponent.setEnabled(false);
@@ -315,9 +310,14 @@ public class LInputField extends JComponent
             {
                 Object[] inputArray = (Object[]) input;
                 int elementIndex = 0;
-                if(parent != null) elementIndex = parent.children.indexOf(this) + 1;
+                if(parent != null)
+                {
+                    elementIndex = parent.children.indexOf(this) + 1;
+                }
                 if(inputArray[elementIndex] != null)
+                {
                     setUserInput(inputArray[elementIndex]);
+                }
             }
             else
             {
@@ -343,22 +343,34 @@ public class LInputField extends JComponent
 
         if(fieldComponent instanceof JTextField)
         {
-            for(KeyListener listener : fieldComponent.getKeyListeners().clone()) fieldComponent.removeKeyListener(listener);
+            for(KeyListener listener : fieldComponent.getKeyListeners().clone())
+            {
+                fieldComponent.removeKeyListener(listener);
+            }
             fieldComponent.addKeyListener(userInputListener_keyListener);
         }
         else if(fieldComponent instanceof JSpinner)
         {
-            for(ChangeListener listener : ((JSpinner)fieldComponent).getChangeListeners().clone()) ((JSpinner) fieldComponent).removeChangeListener(listener);
+            for(ChangeListener listener : ((JSpinner)fieldComponent).getChangeListeners().clone())
+            {
+                ((JSpinner) fieldComponent).removeChangeListener(listener);
+            }
             ((JSpinner) fieldComponent).addChangeListener(userInputListener_change);
         }
         else if(fieldComponent instanceof JComboBox)
         {
-            for(ActionListener listener : ((JComboBox)fieldComponent).getActionListeners().clone()) ((JComboBox) fieldComponent).removeActionListener(listener);
-            ((JComboBox) fieldComponent).addActionListener(userInputListener_dropdown);
+            for(ActionListener listener : ((JComboBox<?>)fieldComponent).getActionListeners().clone())
+            {
+                ((JComboBox<?>) fieldComponent).removeActionListener(listener);
+            }
+            ((JComboBox<?>) fieldComponent).addActionListener(userInputListener_dropdown);
         }
         else
         {
-            for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone()) fieldComponent.removePropertyChangeListener(listener);
+            for(PropertyChangeListener listener : fieldComponent.getPropertyChangeListeners().clone())
+            {
+                fieldComponent.removePropertyChangeListener(listener);
+            }
             fieldComponent.addPropertyChangeListener(userInputListener_propertyChange);
         }
 
@@ -369,7 +381,9 @@ public class LInputField extends JComponent
     private void loadFieldComponentColours()
     {
         if(fieldComponent == connectionComponent)
+        {
             return;
+        }
         if(fieldComponent instanceof JTextField)
         {
             fieldComponent.setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
@@ -378,13 +392,13 @@ public class LInputField extends JComponent
         else if(fieldComponent instanceof JSpinner)
         {
 
-            ((JFormattedTextField) ((JSpinner) fieldComponent).getEditor().getComponent(0)).setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
-            ((JFormattedTextField) ((JSpinner) fieldComponent).getEditor().getComponent(0)).setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+            ((JSpinner) fieldComponent).getEditor().getComponent(0).setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
+            ((JSpinner) fieldComponent).getEditor().getComponent(0).setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
         }
         else if(fieldComponent instanceof JComboBox)
         {
-            ((JComboBox) fieldComponent).getEditor().getEditorComponent().setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
-            ((JComboBox) fieldComponent).getEditor().getEditorComponent().setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+            ((JComboBox<?>) fieldComponent).getEditor().getEditorComponent().setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
+            ((JComboBox<?>) fieldComponent).getEditor().getEditorComponent().setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
         }
         else
         {
@@ -408,7 +422,8 @@ public class LInputField extends JComponent
 
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
-        if(nodeArgument.optional()) add(optionalLabel);
+        if(nodeArgument.optional())
+            add(optionalLabel);
         add(label);
 
         if(nodeArgument.choice())
@@ -423,17 +438,17 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
             
-            add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
             add(addItemButton);
         }
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
 
         if(collapsed())
         {
-            uncollapseButton.setActive();
-            uncollapseButton.setPreferredSize(buttonSize());
-            uncollapseButton.setSize(uncollapseButton.getPreferredSize());
-            add(uncollapseButton);
+            expandButton.setActive();
+            expandButton.setPreferredSize(buttonSize());
+            expandButton.setSize(expandButton.getPreferredSize());
+            add(expandButton);
         }
         else
         {
@@ -469,17 +484,17 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
 
-            add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
             add(addItemButton);
         }
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
 
         if(collapsed())
         {
-            uncollapseButton.setActive();
-            uncollapseButton.setPreferredSize(buttonSize());
-            uncollapseButton.setSize(uncollapseButton.getPreferredSize());
-            add(uncollapseButton);
+            expandButton.setActive();
+            expandButton.setPreferredSize(buttonSize());
+            expandButton.setSize(expandButton.getPreferredSize());
+            add(expandButton);
         }
         else
         {
@@ -516,24 +531,17 @@ public class LInputField extends JComponent
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
 
-        /*if(nodeArgument.choice())
-        {
-            choiceButton.setPreferredSize(buttonSize());
-            choiceButton.setSize(choiceButton.getPreferredSize());
-            add(choiceButton);
-        }*/
-
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
         add(removeItemButton);
 
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
 
         if(collapsed())
         {
-            uncollapseButton.setActive();
-            uncollapseButton.setPreferredSize(buttonSize());
-            uncollapseButton.setSize(uncollapseButton.getPreferredSize());
-            add(uncollapseButton);
+            expandButton.setActive();
+            expandButton.setPreferredSize(buttonSize());
+            expandButton.setSize(expandButton.getPreferredSize());
+            add(expandButton);
         }
 
         add(connectionComponent);
@@ -550,18 +558,9 @@ public class LInputField extends JComponent
         initializeFieldComponent();
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL)); // padding to the left
         add(label);
         add(fieldComponent);
-
-        /*if(nodeArgument.choice())
-        {
-            choiceButton.setPreferredSize(buttonSize());
-            choiceButton.setSize(choiceButton.getPreferredSize());
-            fieldComponent.setPreferredSize(new Dimension(fieldComponent.getPreferredSize().width-choiceButton.getPreferredSize().width, fieldComponent.getPreferredSize().height));
-            fieldComponent.setSize(fieldComponent.getPreferredSize());
-            add(choiceButton);
-        }*/
 
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
@@ -605,22 +604,16 @@ public class LInputField extends JComponent
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
 
-        /*if(nodeArgument.choice())
-        {
-            choiceButton.setPreferredSize(buttonSize());
-            choiceButton.setSize(choiceButton.getPreferredSize());
-            add(choiceButton);
-        }*/
 
-        add(Box.createHorizontalStrut(Handler.currentPalette().INPUTFIELD_PADDING_LEFT_TERMINAL));
+        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
         add(removeItemButton);
 
         if(collapsed())
         {
-            uncollapseButton.setActive();
-            uncollapseButton.setPreferredSize(buttonSize());
-            uncollapseButton.setSize(uncollapseButton.getPreferredSize());
-            add(uncollapseButton);
+            expandButton.setActive();
+            expandButton.setPreferredSize(buttonSize());
+            expandButton.setSize(expandButton.getPreferredSize());
+            add(expandButton);
         }
         else
         {
@@ -633,33 +626,7 @@ public class LInputField extends JComponent
      */
     public void addCollectionItem()
     {
-        /*LInputField last; // get last children/element of collection
-        if(children.isEmpty()) last = this;
-        else last = children.get(children.size()-1);
-        inputArea().addInputFieldBelow(new LInputField(this), last); // add children field below last element
-         */
         Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
-        if(true) return;
-        // update provided inputs in handler
-        if(isTerminal())
-        {
-            //inputArea().drawInputFields();
-            notifyCollectionAdded();
-            return;
-        }
-        if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) instanceof Object[])
-        {
-            Object[] collection = (Object[]) inputArea().LNC().node().providedInputsMap().get(nodeArgument(0));
-            if(collection.length < children.size() + 1)
-            {
-                Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
-            }
-        }
-        if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) == null)
-        {
-            Handler.addCollectionElement(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0));
-        }
-        //inputArea().drawInputFields();
     }
 
     public void notifyCollectionAdded()
@@ -681,7 +648,6 @@ public class LInputField extends JComponent
 
     public void notifyCollectionRemoved()
     {
-        System.out.println("notified about removal");
         inputArea().LNC().inputArea().removeInputField(this);
         parent.children.remove(this);
         inputArea().drawInputFields();
@@ -699,18 +665,15 @@ public class LInputField extends JComponent
         if(nodeArgument.terminalDropdown())
         {
             JComboBox<Symbol> dropdown = new JComboBox<>();
-            if(inputArea().LNC().isPartOfDefine()) dropdown.addItem(Handler.PARAMETER_SYMBOL);
+            if(inputArea().LNC().isPartOfDefine())
+                dropdown.addItem(Handler.PARAMETER_SYMBOL);
             for(Symbol symbol : nodeArgument.constantInputs())
-            {
                 dropdown.addItem(symbol);
-            }
             return dropdown;
         }
         // A TextField
         if(arg.symbol().name().equals("String"))
-        {
             return new JTextField();
-        }
         // A Integer Spinner
         if(arg.symbol().name().equals("Integer") || arg.symbol().name().equals("int") || arg.symbol().token().equals("dim"))
         {
@@ -750,21 +713,6 @@ public class LInputField extends JComponent
     }
 
     /**
-     * Adds a NodeArgument to the list of NodeArguments
-     * @param nodeArgument
-     */
-    public void addNodeArgument(NodeArgument nodeArgument)
-    {
-        if(nodeArguments().contains(nodeArgument)) return;
-        if(nodeArgument.size() == 1)
-        {
-            nodeArguments.add(nodeArgument);
-            reconstruct();
-        }
-        else nodeArguments.add(nodeArgument);
-    }
-
-    /**
      * Reconstructs the InputField
      * Used when the NodeArgument list changes from merged to single or vice versa
      */
@@ -773,7 +721,7 @@ public class LInputField extends JComponent
         if(nodeArguments.size() == 1)
             construct(nodeArguments.get(0));
         else
-            construct(nodeArguments);
+            construct();
     }
 
     /**
@@ -904,19 +852,16 @@ public class LInputField extends JComponent
         }
     };
 
-    MouseAdapter terminalOptionalLabelListener = new MouseAdapter() {
+    MouseAdapter terminalOptionalLabelListener = new MouseAdapter()
+    {
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(MouseEvent e)
+        {
             super.mouseClicked(e);
-            System.out.println("Clicked");
             if(isActive())
-            {
                 deactivate();
-            }
             else
-            {
                 activate();
-            }
         }
     };
 
@@ -926,66 +871,80 @@ public class LInputField extends JComponent
      */
     public void setUserInput(Object input)
     {
-        if(input == null) return;
-        if(nodeArguments.size() > 1) {
-            // TODO: My words: "Incorrect use here", but I do not remember why
-        }
+        if(input == null)
+            return;
 
         if(nodeArgument(0).collection() && input instanceof Object[])
         {
             IGraphPanel graphPanel = inputArea().LNC().graphPanel();
             Object[] inputs = (Object[]) input;
             for(int i = 1; i < inputs.length; i++)
-            {
                 addCollectionItem();
-            }
+
             for(int i = 0; i < inputs.length; i++)
             {
                 Object input_i = inputs[i];
-                if(input_i == null) continue;
+                if(input_i == null)
+                {
+                    continue;
+                }
                 if(input_i instanceof LudemeNode)
                 {
                     // get correct collection component
                     LConnectionComponent connectionComponentChild;
                     if (i == 0)
+                    {
                         connectionComponentChild = connectionComponent;
+                    }
                     else
+                    {
                         connectionComponentChild = children.get(i-1).connectionComponent();
-                    //Handler.addEdge(graphPanel.graph(), connectionComponentChild.inputField().inputArea().LNC().node(), (LudemeNode) input_i, connectionComponentChild.inputField().inputIndexFirst());
+                    }
                     Handler.addEdge(graphPanel.graph(), connectionComponentChild.inputField().inputArea().LNC().node(), (LudemeNode) input_i, connectionComponentChild.inputField().nodeArgument(0));
-                    //graphPanel.connectionHandler().addConnection(connectionComponentChild, graphPanel.nodeComponent(((LudemeNode)input_i)).ingoingConnectionComponent());
                 }
                 else
                 {
                     if (i == 0)
+                    {
                         setUserInput(input_i);
+                    }
                     else
+                    {
                         children().get(i-1).setUserInput(input_i);
+                    }
                 }
             }
         }
         else if(fieldComponent == connectionComponent)
         {
             // then its ludeme input
-            //Handler.addEdge(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), (LudemeNode) input, inputIndexFirst());
             Handler.addEdge(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), (LudemeNode) input, nodeArgument(0));
-            //IGraphPanel graphPanel = inputArea().LNC().graphPanel();
-            //graphPanel.connectionHandler().addConnection(connectionComponent, graphPanel.nodeComponent((LudemeNode) input).ingoingConnectionComponent());
-            if(((LudemeNode) input).collapsed()) notifyCollapsed();
+            if(((LudemeNode) input).collapsed())
+            {
+                notifyCollapsed();
+            }
         }
-        else {
-            System.out.println("else: " + input);
+        else
+        {
             if (fieldComponent instanceof JTextField)
-                if(input instanceof String)
+            {
+                if (input instanceof String)
+                {
                     ((JTextField) fieldComponent).setText((String) input);
+                }
                 else
+                {
                     ((JTextField) fieldComponent).setText("");
-            if (fieldComponent instanceof JSpinner)
-                if(input instanceof Integer)
-                    ((JSpinner) fieldComponent).setValue(input);
-            if (fieldComponent instanceof JComboBox)
-                if(input instanceof Symbol)
-                    ((JComboBox<?>) fieldComponent).setSelectedItem(input);
+                }
+            }
+            if (fieldComponent instanceof JSpinner && input instanceof Integer)
+            {
+                ((JSpinner) fieldComponent).setValue(input);
+            }
+            if (fieldComponent instanceof JComboBox && input instanceof Symbol)
+            {
+                ((JComboBox<?>) fieldComponent).setSelectedItem(input);
+            }
         }
     }
 
@@ -1043,7 +1002,7 @@ public class LInputField extends JComponent
         if(fieldComponent instanceof JSpinner)
             return ((JSpinner)fieldComponent).getValue();
         if(fieldComponent instanceof JComboBox)
-            return ((JComboBox)fieldComponent).getSelectedItem();
+            return ((JComboBox<?>)fieldComponent).getSelectedItem();
 
         return null;
     }
@@ -1061,9 +1020,12 @@ public class LInputField extends JComponent
 
     private Dimension buttonSize()
     {
-        if(label != null && !label.getText().equals((""))) return new Dimension((int) (label().getPreferredSize().height*buttonWidthPercentage), (int) (label().getPreferredSize().height*buttonWidthPercentage));
-        if(fieldComponent != null) return new Dimension((int) (fieldComponent.getPreferredSize().height*buttonWidthPercentage), (int) (fieldComponent.getPreferredSize().height*buttonWidthPercentage));
-        else if(connectionComponent != null) return new Dimension((int) (connectionComponent.getSize().width*buttonWidthPercentage), (int) (connectionComponent.getSize().height*buttonWidthPercentage));
+        if(label != null && !label.getText().equals(("")))
+            return new Dimension((int) (label().getPreferredSize().height*buttonWidthPercentage), (int) (label().getPreferredSize().height*buttonWidthPercentage));
+        if(fieldComponent != null)
+            return new Dimension((int) (fieldComponent.getPreferredSize().height*buttonWidthPercentage), (int) (fieldComponent.getPreferredSize().height*buttonWidthPercentage));
+        else if(connectionComponent != null)
+            return new Dimension((int) (connectionComponent.getSize().width*buttonWidthPercentage), (int) (connectionComponent.getSize().height*buttonWidthPercentage));
         else return null;
     }
 
@@ -1073,7 +1035,8 @@ public class LInputField extends JComponent
      */
     public boolean isTerminal()
     {
-        if(isMerged()) return false; // merged input fields cannot be terminals
+        if(isMerged())
+            return false; // merged input fields cannot be terminals
         return nodeArgument(0).isTerminal();
     }
 
@@ -1117,9 +1080,8 @@ public class LInputField extends JComponent
     public boolean optional()
     {
         for(NodeArgument nodeArgument : nodeArguments)
-        {
-            if(!nodeArgument.optional()) return false;
-        }
+            if(!nodeArgument.optional())
+                return false;
         return true;
     }
 
@@ -1153,22 +1115,12 @@ public class LInputField extends JComponent
 
     /**
      *
-     * @return the index of the first node argument
-     */
-    public int inputIndexFirst()
-    {
-        return nodeArgument(0).index();
-    }
-
-    /**
-     *
      * @return list of all node argument indices
      */
     public List<Integer> inputIndices() {
         List<Integer> indices = new ArrayList<>();
-        for (NodeArgument nodeArgument : nodeArguments) {
+        for (NodeArgument nodeArgument : nodeArguments)
             indices.add(nodeArgument.index());
-        }
         return indices;
     }
 
@@ -1178,14 +1130,13 @@ public class LInputField extends JComponent
      */
     public List<Symbol> possibleSymbolInputs()
     {
-        // TODO [FLAG] remove below
-        if(isTerminal()) return null;
-        if(!isMerged()) return nodeArgument(0).possibleSymbolInputsExpanded();
+        if(isTerminal())
+            return null;
+        if(!isMerged())
+            return nodeArgument(0).possibleSymbolInputsExpanded();
         List<Symbol> possibleSymbolInputs = new ArrayList<>();
         for(NodeArgument nodeArgument : nodeArguments)
-        {
             possibleSymbolInputs.addAll(nodeArgument.possibleSymbolInputsExpanded());
-        }
         return possibleSymbolInputs;
     }
 
@@ -1218,8 +1169,10 @@ public class LInputField extends JComponent
 
     private boolean collapsed()
     {
-        if(connectionComponent().connectedTo() == null) return false;
-        return connectionComponent().connectedTo().node().collapsed();
+        if(connectionComponent().connectedTo() == null)
+            return false;
+        return
+                connectionComponent().connectedTo().node().collapsed();
     }
 
     /**
@@ -1237,10 +1190,11 @@ public class LInputField extends JComponent
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
 
-        label.setFont(Handler.currentPalette().LUDEME_INPUT_FONT);
+        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         if(fieldComponent != null && fieldComponent.getBackground() != Handler.currentPalette().INPUT_FIELD_BACKGROUND() && !(fieldComponent instanceof JComboBox)) // JComboBox background does not work
             loadFieldComponentColours();
 
@@ -1258,9 +1212,9 @@ public class LInputField extends JComponent
             choiceButton.ACTIVE_ICON = Handler.currentPalette().CHOICE_ICON_ACTIVE();
             choiceButton.updateDP();
 
-            uncollapseButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
-            uncollapseButton.ACTIVE_ICON = Handler.currentPalette().UNCOLLAPSE_ICON();
-            uncollapseButton.updateDP();
+            expandButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
+            expandButton.ACTIVE_ICON = Handler.currentPalette().UNCOLLAPSE_ICON();
+            expandButton.updateDP();
         }
 
     }
