@@ -328,13 +328,13 @@ public abstract class BaseComponentStyle implements ComponentStyle
  		 	final double offsetX = foregroundImageInfo.offestX();
  		 	final double offsetY = foregroundImageInfo.offestY();
  		 	
-// 		 	if (foregroundPath == null && foregroundName.length() > 0)
-// 			{
-// 				final Font valueFont = new Font("Arial", Font.BOLD, (int) (foregroundScale));
-// 				g2d.setColor(foregroundColour);
-// 				g2d.setFont(valueFont);
-// 				StringUtil.drawStringAtPoint(g2d, foregroundName, null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
-// 			}
+ 		 	if (foregroundPath == null && foregroundName.length() > 0)
+ 			{
+ 				final Font valueFont = new Font("Arial", Font.BOLD, (int) (foregroundScale));
+ 				g2d.setColor(foregroundColour);
+ 				g2d.setFont(valueFont);
+ 				StringUtil.drawStringAtPoint(g2d, foregroundName, null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
+ 			}
  		 	
  		 	if (foregroundColour == null)
  		 		foregroundColour = bridge.settingsColour().playerColour(context, component.owner());
