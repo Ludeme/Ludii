@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 

@@ -1,10 +1,10 @@
 package app.display.dialogs.visual_editor.view.components;
 
+import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.recs.utils.ReadableSymbol;
-import app.display.dialogs.visual_editor.documentation.DocumentationReader;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
@@ -12,15 +12,15 @@ import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddArgumentPanel extends JPanel
 {

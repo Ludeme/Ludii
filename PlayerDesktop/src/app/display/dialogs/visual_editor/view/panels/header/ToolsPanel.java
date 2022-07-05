@@ -2,10 +2,8 @@ package app.display.dialogs.visual_editor.view.panels.header;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.UserActions.IUserAction;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Stack;
 
 public class ToolsPanel extends JPanel {

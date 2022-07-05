@@ -4,7 +4,6 @@ import app.display.dialogs.visual_editor.handler.Handler;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 public class EditMenu extends JMenu
 {

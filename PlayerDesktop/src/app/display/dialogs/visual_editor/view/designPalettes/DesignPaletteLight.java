@@ -2,7 +2,6 @@ package app.display.dialogs.visual_editor.view.designPalettes;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class DesignPaletteLight extends DesignPalette

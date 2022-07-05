@@ -2,14 +2,13 @@ package app.display.dialogs.visual_editor.view.panels.editor.tabPanels;
 
 import app.display.dialogs.visual_editor.LayoutManagement.DFBoxDrawing;
 import app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines;
-import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.LayoutManagement.LayoutHandler;
+import app.display.dialogs.visual_editor.LayoutManagement.NodePlacementRoutines;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 

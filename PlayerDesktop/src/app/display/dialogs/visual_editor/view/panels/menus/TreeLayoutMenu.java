@@ -5,8 +5,6 @@ import app.display.dialogs.visual_editor.view.panels.editor.EditorSidebar;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TreeLayoutMenu extends JMenu
 {

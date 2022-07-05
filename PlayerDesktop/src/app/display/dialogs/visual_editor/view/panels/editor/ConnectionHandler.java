@@ -10,10 +10,10 @@ import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inp
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
-import java.util.List;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles connections between LudemeNodeComponents on a iGraphPanel

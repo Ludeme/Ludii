@@ -1,18 +1,17 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import main.grammar.Symbol;
 
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 /**
  * Represents an outgoing connection from a LudemeNodeComponent.
