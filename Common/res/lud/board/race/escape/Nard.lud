@@ -59,8 +59,8 @@
             (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 12 count:2)
         })
         (play 
-                ("RollEachNewTurnMove"
-                    	(priority {
+            ("RollEachNewTurnMove"
+                (priority {
                     ("EnterPieces")
                     (if (is Empty (mapEntry "Bar" Mover)) (max Distance (forEach Piece top:True)))
                 })

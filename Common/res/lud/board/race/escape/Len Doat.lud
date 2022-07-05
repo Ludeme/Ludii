@@ -42,7 +42,7 @@
 (define "ThrowMove" 
     (if ("HasToThrow")
         ("RollMove"
-        	(if ("IfMoveAgain")
+            (if ("IfMoveAgain")
                 (do (set Value Mover (count Pips)) next:("Move"))
                 (move Pass (then (set Value Mover (count Pips))))
             )
@@ -76,7 +76,7 @@
                 (if ("IsNotOffBoard" "SiteToMoveOnTrack")  	 			
                     (if (if
                             (not ("IsEnemyAt" "SiteToMoveOnTrack"))
-                    		True
+                            True
                             (not (is In "SiteToMoveOnTrack" (sites "Protect")))
                         )
                         (move 

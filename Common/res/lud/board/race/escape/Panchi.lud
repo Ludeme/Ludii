@@ -67,7 +67,7 @@
                 "RemoveAPiece"
                 (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
                     (if (if (not ("IsEnemyAt" "SiteToMoveOnTrack"))
-                    		True
+                            True
                             (not (is In "SiteToMoveOnTrack" (sites "Protect")))
                         )
                         (move 
@@ -93,7 +93,7 @@
         })
         (play 
             ("RollMove"
-            	(if (can Move ("Move"))
+                (if (can Move ("Move"))
                     ("Move")
                     (move Pass 
                         (then (if ("SpecialThrow") (moveAgain)))

@@ -44,7 +44,7 @@
                             (from)
                             (to 
                                 "SiteToMoveOnTrack" 
-                            	("HittingCapture" (mapEntry "Entry" Next))
+                                ("HittingCapture" (mapEntry "Entry" Next))
                             )
                         )
                     )
@@ -61,7 +61,7 @@
         (start (place "Marker" "Hand" count:3))
         (play 
             ("RollMove"
-            	(if 
+                (if 
                     (and (is In (count Pips) (sites "SpecialDiceValues")) (not ("HandEmpty" Mover)))
                     (or
                         (move 

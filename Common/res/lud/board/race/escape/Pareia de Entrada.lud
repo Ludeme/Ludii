@@ -20,7 +20,7 @@
                             (from) 
                             (to 
                                 "SiteToMoveOnTrack" 
-                            	("HittingCapture" (handSite Next))
+                                ("HittingCapture" (handSite Next))
                             )
                         )
                     )
@@ -38,7 +38,7 @@
                 next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True)
                     (then 
                         (and
-                        	("ReplayNotAllDiceUsed")
+                            ("ReplayNotAllDiceUsed")
                             (if (and (all DiceUsed) (all DiceEqual)) (and (set Pending) (moveAgain)))
                         )
                     )

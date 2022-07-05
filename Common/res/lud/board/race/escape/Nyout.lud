@@ -83,7 +83,7 @@
         (phase "Throwing" 
             (play 
                 ("RollMove"
-                	(move Pass (then (remember Value "Throws" ("ThrowValue"))))
+                    (move Pass (then (remember Value "Throws" ("ThrowValue"))))
                     (then (moveAgain))
                 )
             )
@@ -100,7 +100,7 @@
         )
         }
         
-        (end (if (no Pieces TeamMover) (result TeamMover Win)))
+        (end ("EscapeTeamWin"))
     )
 ) 
 

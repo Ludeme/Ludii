@@ -15,7 +15,7 @@
         (and
             (if 
                 (not (is In (to) (sites Mover))) 
-            	True
+                True
                 (is Empty (to))
             )
             (not ("IsEnemyAt" (to)))
@@ -53,7 +53,7 @@
         
         (play 
             ("RollEachNewTurnMove"
-            	(forEach Die
+                (forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)

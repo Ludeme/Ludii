@@ -85,7 +85,7 @@
         })
         (play ("RollEachNewTurnMove" (forEach Piece)))
         (end {
-        	("EscapeWin")
+            ("EscapeWin")
             (if (is Triggered "StartQuadrantFull" P1) (result P2 Win))
             (if (is Triggered "StartQuadrantFull" P2) (result P1 Win))
             (if (and ("NewTurn") (no Moves Mover)) (result Mover Loss))

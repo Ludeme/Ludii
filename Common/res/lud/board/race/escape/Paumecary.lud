@@ -22,7 +22,7 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
-                        	("HittingCapture" (handSite Next))
+                            ("HittingCapture" (handSite Next))
                         )
                     )
                     (then ("ReplayNotAllDiceUsed"))
@@ -49,7 +49,7 @@
         })
         (play 
             ("RollEachNewTurnMove"
-            	(or (forEach Piece) (forEach Piece container:(mover)))
+                (or (forEach Piece) (forEach Piece container:(mover)))
             )
         )
         (end ("EscapeWin"))

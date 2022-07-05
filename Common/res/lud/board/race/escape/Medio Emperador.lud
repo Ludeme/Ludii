@@ -22,7 +22,7 @@
                             (from) 
                             (to 
                                 "SiteToMoveOnTrack" 
-                            	("HittingCapture" (handSite Next))
+                                ("HittingCapture" (handSite Next))
                             )
                         )
                     )
@@ -37,7 +37,7 @@
         })
         (play
             ("RollEachNewTurnMove"
-            	(or 
+                (or 
                     (forEach Piece top:True) 
                     (forEach Piece container:(mover) top:True)
                     (then ("ReplayNotAllDiceUsed"))
@@ -45,7 +45,7 @@
             )
         )
         (end {
-        	("EscapeWin")
+            ("EscapeWin")
             (if (and (no Moves P1) (no Moves P2)) (result Mover Draw))
         })
     )

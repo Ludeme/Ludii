@@ -17,7 +17,7 @@
                         (from) 
                         (to 
                             "SiteToMoveOnTrack" 
-                        	("HittingCapture" (handSite Next))
+                            ("HittingCapture" (handSite Next))
                         )
                     )
                 )
@@ -32,7 +32,7 @@
         })
         (play
             ("RollEachNewTurnMove"
-            	(or 
+                (or 
                     (forEach Piece top:True) 
                     (forEach Piece container:(mover) top:True)
                     (then ("ReplayNotAllDiceUsed"))

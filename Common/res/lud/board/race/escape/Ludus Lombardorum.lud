@@ -7,21 +7,21 @@
 (define "Bar" (mapEntry (mover)))
 
 (define "NotEnemyOrOnlyOne"   
-	    (or 
-	        (and 
-	            ("IsEnemyAt" (to)) 
-	            ("IsSingletonStack" (to))
-	        ) 
-	        (and
-	            (if 
-	                (not (is In (to) (sites Mover))) 
-	            	True
-	                (is Empty (to))
-	            )
-	            (not ("IsEnemyAt" (to)))
-	        )
-	    )
-	)
+    (or 
+        (and 
+            ("IsEnemyAt" (to)) 
+            ("IsSingletonStack" (to))
+        ) 
+        (and
+            (if 
+                (not (is In (to) (sites Mover))) 
+                True
+                (is Empty (to))
+            )
+            (not ("IsEnemyAt" (to)))
+        )
+    )
+)
 
 (define "AllPieceEscaped" (no Pieces Mover))
 
@@ -52,8 +52,8 @@
         })
         
         (play 
-                ("RollEachNewTurnMove"
-                    	(forEach Die
+            ("RollEachNewTurnMove"
+                (forEach Die
                     if:("DieNotUsed")
                     (forEach Site
                         (sites Occupied by:Mover)

@@ -59,7 +59,7 @@
         )
         (play 
             ("RollMove"
-            	(if (< 0 ("ThrowValue"))
+                (if (< 0 ("ThrowValue"))
                     (if (= ("HyenaPlayer") (id Mover))
                         (if ("IsOffBoard" ("SiteHyenaToMove"))
                             (move Remove (where "Hyena" Shared) 

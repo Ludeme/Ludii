@@ -96,7 +96,7 @@
             (nextPhase Mover (all Sites (sites Occupied by:Mover) if:(not ("PieceUnstacked" (site)))) "BearingOff")
         )
         (phase "BearingOff" 
-        	(play 
+            (play 
                 (do 
                     (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
                     next:(forEach Piece top:True)

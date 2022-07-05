@@ -1,7 +1,7 @@
 (define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "AllPiecesInFinalQuadrant"
-	(all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover "FinalQuadrant")))
+    (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover "FinalQuadrant")))
 )
 
 (define "EnterPieces"
@@ -75,7 +75,7 @@
         })
         (play 
             ("RollEachNewTurnMove"
-            	(or
+                (or
                     ("EnterPieces")
                     (forEach Piece top:True)
                 )

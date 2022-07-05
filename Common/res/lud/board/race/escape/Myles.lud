@@ -11,19 +11,19 @@
 (define "CanEscape" ("IsOffBoard" #1))
 
 (define "Move"
-		(forEach Site
-                (sites Occupied by:Mover)
-                (if ("CanEscape" #1) 
-                    ("RemoveAPiece")
-                    (move 
-                        (from (site))
-                        (to #1
-                            if:("NoEnemyOrOnlyOne" (to))
-                            ("HittingCapture" ("Bar"))
-                        )
-                    )
+    (forEach Site
+        (sites Occupied by:Mover)
+        (if ("CanEscape" #1) 
+            ("RemoveAPiece")
+            (move 
+                (from (site))
+                (to #1
+                    if:("NoEnemyOrOnlyOne" (to))
+                    ("HittingCapture" ("Bar"))
                 )
-            )	
+            )
+        )
+    )	
 )
 
 //-----------------------------------------------------------------------------
@@ -52,7 +52,7 @@
         
         (play 
             ("RollEachNewTurnMove"
-            	(if (all DiceUsed)
+                (if (all DiceUsed)
                     ("Move" ("NextSiteFromDist6" (site)))
                     (forEach Die
                         if:("DieNotUsed")
