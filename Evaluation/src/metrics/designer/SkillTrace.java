@@ -19,7 +19,8 @@ import search.mcts.MCTS;
 
 /**
  * Skill trace of the game.
- * NOTE. that this metric doesn't work with stored trials, and must instead generate new trials each time.
+ * NOTE. This metric doesn't work with stored trials, and must instead generate new trials each time.
+ * NOTE. Only works for 2-player games and those supported by UCT
  * 
  * @author matthew.stephenson and Dennis Soemers
  */
@@ -81,9 +82,7 @@ public class SkillTrace extends Metric
 				game.start(context);
 				
 				for (int p = 1; p <= game.players().count(); ++p)
-				{
 					ais.get(p).initAI(game, p);
-				}
 
 				final Model model = context.model();
 
@@ -114,7 +113,7 @@ public class SkillTrace extends Metric
 			weakIterationValue *= 2;
 		}
 		
-		// Predcit next step y value.
+		// Predict next step y value.
 		final double[] xAxis = IntStream.range(0, strongAIResults.size()).asDoubleStream().toArray();
 		final double[] yAxis = strongAIResults.stream().mapToDouble(Double::doubleValue).toArray();
 		final LinearRegression linearRegression = new LinearRegression(xAxis, yAxis);
