@@ -10,7 +10,6 @@ import app.display.dialogs.visual_editor.documentation.HelpInformation;
 import grammar.Grammar;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
-import main.grammar.Description;
 import main.grammar.Symbol;
 
 import java.util.*;
@@ -28,11 +27,11 @@ public class LudemeNode implements iGNode
     /** ID of this node */
     private final int ID;
     /** Symbol/Ludeme this node represents */
-    private final Symbol SYMBOL;
+    private Symbol symbol;
     /** The Node Argument which created this node */
     private NodeArgument NODE_ARGUMENT_CREATOR;
     /** List of clauses this symbol encompasses */
-    private List<Clause> CLAUSES;
+    private List<Clause> clauses;
     /** Currently selected Clause by the user */
     private final LinkedHashMap<Symbol, List<Clause>> SYMBOL_CLAUSE_MAP = new LinkedHashMap<>(); // for each clause the symbols it contains
     private Clause selectedClause = null;
@@ -63,7 +62,7 @@ public class LudemeNode implements iGNode
      */
     private final String PACKAGE_NAME;
     /** HashMap of NodeArguments keyed by the clause they correspond to */
-    private final HashMap<Clause, List<NodeArgument>> nodeArguments;
+    private HashMap<Clause, List<NodeArgument>> nodeArguments;
     /** List of NodeArguments for the current Clause of the associated LudemeNodeComponent */
     private List<NodeArgument> currentNodeArguments;
     /** Whether this node is a 1D Collection-supply for a 2D-Collection */
@@ -108,23 +107,23 @@ public class LudemeNode implements iGNode
     public LudemeNode(Symbol symbol, NodeArgument argument, HashMap<Clause, List<NodeArgument>> nodeArguments, int x, int y)
     {
         this.ID = LAST_ID++;
-        this.SYMBOL = symbol;
+        this.symbol = symbol;
         this.NODE_ARGUMENT_CREATOR = argument;
         if(symbol.rule() == null)
-            this.CLAUSES = new ArrayList<>();
+            this.clauses = new ArrayList<>();
         else
-            this.CLAUSES = symbol.rule().rhs();
+            this.clauses = symbol.rule().rhs();
         this.x = x;
         this.y = y;
         this.width = 100; // width and height are hard-coded for now, are updated later
         this.height = 100;
 
         // Expand clauses if possible
-        if(CLAUSES != null)
+        if(clauses != null)
         {
             expandClauses();
-            if(CLAUSES.size() > 0)
-                this.selectedClause = CLAUSES.get(0);
+            if(clauses.size() > 0)
+                this.selectedClause = clauses.get(0);
         }
 
         // Create a NodeArgument for each ClauseArg, if not provided as parameter
@@ -146,7 +145,7 @@ public class LudemeNode implements iGNode
 
 
         // Create a map of symbols and their corresponding clauses, used in the pick-a-constructor menu to group clauses by symbols
-        for(Clause c : CLAUSES)
+        for(Clause c : clauses)
             if(SYMBOL_CLAUSE_MAP.containsKey(c.symbol()))
                 SYMBOL_CLAUSE_MAP.get(c.symbol()).add(c);
             else
@@ -156,7 +155,7 @@ public class LudemeNode implements iGNode
                 SYMBOL_CLAUSE_MAP.put(c.symbol(), l);
             }
 
-        this.helpInformation = DocumentationReader.instance().help(SYMBOL);
+        this.helpInformation = DocumentationReader.instance().help(this.symbol);
     }
 
     /**
@@ -175,17 +174,17 @@ public class LudemeNode implements iGNode
         this.height = 100;
 
         NodeArgument na1DCollection = na2DCollection.collection1DEquivalent(na2DCollection.args().get(0));
-        this.SYMBOL = na1DCollection.arg().symbol();
-        this.CLAUSES = new ArrayList<>();
+        this.symbol = na1DCollection.arg().symbol();
+        this.clauses = new ArrayList<>();
         List<ClauseArg> clauseArgs = new ArrayList<>();
         clauseArgs.add(na1DCollection.arg());
-        this.CLAUSES.add(new Clause(this.SYMBOL, clauseArgs, false));
+        this.clauses.add(new Clause(this.symbol, clauseArgs, false));
         // Expand clauses if possible
-        if(CLAUSES != null)
+        if(clauses != null)
         {
             expandClauses();
-            if(CLAUSES.size() > 0)
-                this.selectedClause = CLAUSES.get(0);
+            if(clauses.size() > 0)
+                this.selectedClause = clauses.get(0);
         }
 
         this.NODE_ARGUMENT_CREATOR = na2DCollection;
@@ -199,7 +198,7 @@ public class LudemeNode implements iGNode
 
         // package name
         this.PACKAGE_NAME = initPackageName();
-        this.helpInformation = DocumentationReader.instance().help(SYMBOL);
+        this.helpInformation = DocumentationReader.instance().help(symbol);
     }
 
     /**
@@ -222,9 +221,9 @@ public class LudemeNode implements iGNode
         this.ID = LAST_ID++;
         this.x = x;
         this.y = y;
-        this.SYMBOL = s;
-        this.CLAUSES = new ArrayList<>();
-        CLAUSES.add(c);
+        this.symbol = s;
+        this.clauses = new ArrayList<>();
+        clauses.add(c);
         selectedClause = c;
 
         helpInformation = null;
@@ -242,28 +241,60 @@ public class LudemeNode implements iGNode
         isDefineRoot = true;
     }
 
-    public LudemeNode(Symbol symbol, LudemeNode macroNode, DescriptionGraph defineGraph, List<NodeArgument> nodeArguments, int x, int y, boolean isDefine)
+    public LudemeNode(Symbol symbol, LudemeNode macroNode, DescriptionGraph defineGraph, List<NodeArgument> requiredParameters, int x, int y, boolean isDefine)
     {
         assert isDefine;
         this.ID = LAST_ID++;
-        this.SYMBOL = symbol;
+        this.symbol = symbol;
         this.x = x;
         this.y = y;
-        this.CLAUSES = new ArrayList<>();
+        this.clauses = new ArrayList<>();
         this.defineGraph = defineGraph;
         Clause c = new Clause(symbol, new ArrayList<>(), true);
-        CLAUSES.add(c);
+        clauses.add(c);
         selectedClause = c;
         this.helpInformation = null;
         PACKAGE_NAME = "game";
         this.nodeArguments = new LinkedHashMap<>();
-        this.nodeArguments.put(CLAUSES.get(0), nodeArguments);
-        this.currentNodeArguments = nodeArguments;
+        this.nodeArguments.put(clauses.get(0), requiredParameters);
+        this.currentNodeArguments = requiredParameters;
         providedInputsMap = new LinkedHashMap<>();
         for(NodeArgument na : currentNodeArguments)
             providedInputsMap.put(na, null);
         isDefineNode = true;
         this.macroNode = macroNode;
+    }
+
+    public void updateDefineNode(Symbol symbol, LudemeNode macroNode, List<NodeArgument> requiredParameters)
+    {
+        assert isDefineNode();
+        Symbol oldSymbol = symbol();
+        if(symbol != symbol())
+        {
+            this.symbol = symbol;
+            this.clauses.remove(0);
+            Clause c = new Clause(symbol, new ArrayList<>(), true);
+            this.clauses.add(c);
+            this.selectedClause = c;
+        }
+        if(!requiredParameters.equals(currentNodeArguments))
+        {
+            this.nodeArguments.put(clauses.get(0), requiredParameters);
+            this.currentNodeArguments = requiredParameters;
+            LinkedHashMap<NodeArgument, Object> newInputMap = new LinkedHashMap<>();
+            for(NodeArgument na : requiredParameters)
+                newInputMap.put(na, providedInputsMap.get(na));
+            this.providedInputsMap = newInputMap;
+            for(NodeArgument na : currentNodeArguments)
+                providedInputsMap.put(na, null);
+        }
+        if(macroNode() != macroNode)
+            this.macroNode = macroNode;
+    }
+
+    public boolean defineNodeChanged(Symbol symbol, LudemeNode macroNode, List<NodeArgument> nodeArguments)
+    {
+        return !(symbol() == symbol && macroNode() == macroNode && currentNodeArguments.equals(nodeArguments));
     }
 
     /**
@@ -273,9 +304,9 @@ public class LudemeNode implements iGNode
     private String initPackageName()
     {
         String packageName = "game";
-        if(SYMBOL.cls().getPackage() != null)
+        if(symbol.cls().getPackage() != null)
         {
-            String[] splitPackage = SYMBOL.cls().getPackage().getName().split("\\.");
+            String[] splitPackage = symbol.cls().getPackage().getName().split("\\.");
             if(splitPackage.length == 1)
                 packageName = splitPackage[0];
             else
@@ -291,7 +322,7 @@ public class LudemeNode implements iGNode
      */
     public Symbol symbol()
     {
-        return SYMBOL;
+        return symbol;
     }
 
     /**
@@ -318,12 +349,12 @@ public class LudemeNode implements iGNode
     private void expandClauses()
     {
         List<Clause> newClauses = new ArrayList<>();
-        for(Clause clause : CLAUSES)
+        for(Clause clause : clauses)
             if(clause.symbol() != symbol())
                 newClauses.addAll(expandClauses(clause.symbol()));
             else
                 newClauses.add(clause);
-        CLAUSES = newClauses;
+        clauses = newClauses;
     }
 
     private List<Clause> expandClauses(Symbol s)
@@ -347,7 +378,7 @@ public class LudemeNode implements iGNode
      */
     public List<Clause> clauses()
     {
-        return CLAUSES;
+        return clauses;
     }
 
     /**
@@ -890,6 +921,7 @@ public class LudemeNode implements iGNode
         // cut define fragments
         rawLud = rawLud.substring(1, rawLud.length()-1);
         rawLud = rawLud.substring(rawLud.indexOf("("));
+        rawLud = rawLud.replaceAll("\\s+"," ");
         return rawLud;
     }
 
