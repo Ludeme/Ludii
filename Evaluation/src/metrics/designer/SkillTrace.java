@@ -27,9 +27,9 @@ import search.mcts.MCTS;
 public class SkillTrace extends Metric
 {
 	
-	private final int numMatches = 8;
+	private final int numMatches = 10;
 	
-	private final int numTrialsPerMatch = 10;
+	private final int numTrialsPerMatch = 100;
 
 	//-------------------------------------------------------------------------
 
