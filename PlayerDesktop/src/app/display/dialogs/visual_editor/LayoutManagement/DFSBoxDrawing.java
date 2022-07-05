@@ -3,7 +3,6 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;

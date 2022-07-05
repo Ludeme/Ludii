@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.model;
 
 import app.display.dialogs.editor.SuggestionInstance;
-import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Context;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
 
 import java.util.List;

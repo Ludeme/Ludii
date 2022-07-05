@@ -11,11 +11,13 @@ import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class NodePopupMenu extends JPopupMenu {
-    public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel) {
+public class NodePopupMenu extends JPopupMenu 
+{
+	private static final long serialVersionUID = 1L;
+
+	public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel) {
         JMenuItem delete = new JMenuItem("Delete");
         JMenuItem dynamic = new JMenuItem("(Un)Set Dynamic");
         JMenuItem observe = new JMenuItem("Observe");

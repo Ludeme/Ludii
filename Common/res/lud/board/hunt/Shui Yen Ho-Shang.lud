@@ -13,13 +13,7 @@
             (move Step 
                 (to if:(is Empty (to)))
                 (then 
-                    (intervene 
-                        (from (last To))
-                        (to 
-                            if:(is Enemy (who at:(to)))
-                            (apply (remove (to)))
-                        )
-                    )
+                    ("InterveneCapture")
                 )
             )
         )
@@ -55,9 +49,6 @@
         }
     )
     
-    (graphics {
-        
-    })
     (ai
         "Shui Yen Ho-Shang_ai"
     )

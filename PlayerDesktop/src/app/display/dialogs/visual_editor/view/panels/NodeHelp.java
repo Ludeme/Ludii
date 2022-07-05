@@ -15,8 +15,9 @@ import java.util.HashMap;
 
 public class NodeHelp extends JDialog
 {
+	private static final long serialVersionUID = 1L;
 
-    private LudemeNode node;
+	private LudemeNode node;
     private JLabel parameterDescriptions = new JLabel();
 
     public NodeHelp(LudemeNode node)

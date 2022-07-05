@@ -24,16 +24,7 @@
 (game "Rimau-Rimau (One Tiger)"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
-            use:Vertex
-        )
+        ("AlquerqueBoardWithBottomAndTopTriangles")
         (hand Each) 
         (piece "Tiger" P1 
             (or {
@@ -48,10 +39,9 @@
             (place "human2" (expand (sites Centre)))
             (place "human2" (handSite P2) count:15)
             (place "Tiger1" (handSite P1))
-        } )
+        })
         
         phases:{
-        
         (phase "PlacementTiger" P1
             (play (move (from (handSite P1)) (to (sites {"C3" "C7"})) (then (moveAgain))))
             (nextPhase Mover "MoveHuman")
@@ -79,10 +69,7 @@
                     (to (sites Empty))
                 ) 
             )
-            (nextPhase 
-                ("HandEmpty" P2) 
-                "Movement"
-            )
+            (nextPhase ("HandEmpty" P2) "Movement")
         )
         
         (phase "Movement"
@@ -116,7 +103,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

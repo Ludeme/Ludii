@@ -1,35 +1,23 @@
 // The capturing piece goes to the hand and have to enter again, because nothing is specified for capturing pieces which have to go back to the starting point if opponent pieces are already there.
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+(define "SiteToMoveOnTrackAtOne" ("NextSiteOnTrack" 1))
+(define "SiteToMoveOnTrackAtTwo" ("NextSiteOnTrack" 2))
+(define "SiteToMoveOnTrackAtThree" ("NextSiteOnTrack" 3))
+(define "SiteToMoveOnTrackAtFour" ("NextSiteOnTrack" 4))
+(define "SiteToMoveOnTrackAtFive" ("NextSiteOnTrack" 5))
+(define "SiteToMoveOnTrackAtSix" ("NextSiteOnTrack" 6))
 
-(define "SiteToMoveOnTrackAtOne" (trackSite Move steps:1))
-(define "SiteToMoveOnTrackAtTwo" (trackSite Move steps:2))
-(define "SiteToMoveOnTrackAtThree" (trackSite Move steps:3))
-(define "SiteToMoveOnTrackAtFour" (trackSite Move steps:4))
-(define "SiteToMoveOnTrackAtFive" (trackSite Move steps:5))
-(define "SiteToMoveOnTrackAtSix" (trackSite Move steps:6))
-
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (handSite Next)))
-    ) 
-)
+(define "RemoveAPiece" (move Remove (from)))
 
 (define "PieceMove" 
-    (if (= #1 Off)
+    (if ("IsOffBoard" #1)
         "RemoveAPiece"
-        (if (or
-                (not (is Enemy (who at:#1)))
-                (= 1 (size Stack at:#1))
-            )
+        (if ("NoEnemyOrOnlyOne" #1)
             (move 
                 (from) 
                 (to 
                     #1 
-                    "CaptureEnemyPiece" 
+                    ("HittingCapture" (handSite (who at:(to)))) 
                 )
             )
         )
@@ -43,36 +31,22 @@
     )
 )
 
-(define "DieNotUsed" (!= (pips) 0))
-
 //------------------------------------------------------------------------------
 
 (game "Cab e Quinal"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
-            {
-            (track "Track1" {24 0..5 6..11 23..18 17..12} P1 directed:True)
-            (track "Track2" {25 0..5 6..11 23..18 17..12} P2 directed:True)
-            }
-            use:Vertex
-        )
+        ("TableBoard" "TableTracksSameDirectionWithHands")
         (dice d:6 num:<Dice:num>)
         (hand Each)
         (piece "Disc" Each <Dice:move>)
     })
     (rules 
         <Start:rules>
+        
         (play
-            (do 
-                (if (not "SameTurn") (roll)) 
-                next:(or 
+            ("RollEachNewTurnMove"
+                (or 
                     (forEach Piece top:True) 
                     (forEach Piece container:(mover) top:True)
                     (then 
@@ -86,8 +60,9 @@
                 )
             )
         )
+        
         (end {
-            (if (no Pieces Mover) (result Mover Win))
+        	("EscapeWin")
             (if (and (no Moves P1) (no Moves P2)) (result Mover Draw))
         })
     )
@@ -123,7 +98,7 @@
     (item "2 Dice with determinist third die" <2> 
         <
         (or 
-            ("UseDie" ("PieceMove" "SiteToMoveOnTrack"))
+            ("UseDie" ("PieceMove" ("NextSiteOnTrack" (pips))))
             (if (= (value Player Mover) Undefined)
                 (or {
                     ("PieceMove" "SiteToMoveOnTrackAtOne")
@@ -140,7 +115,7 @@
         >
     "The game involves 2 dice and the value of the third one is selected by the player.")
     (item "3 Dice" <3> 
-        <("UseDie" ("PieceMove" "SiteToMoveOnTrack"))>
+        <("UseDie" ("PieceMove" ("NextSiteOnTrack" (pips))))>
     "The game involves 3 dice.")*
     }
 )

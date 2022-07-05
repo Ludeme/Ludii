@@ -44,15 +44,12 @@
         (hand P1)
         (piece "Ox" P1 (or ("HopDiagonalCapture") "StepOrthogonalToEmpty" ) )
         (piece "Tiger" P2 (or ("HopOrthogonalCapture") "StepOrthogonalToEmpty" )) 
-        }
-    )  
+    })  
     (rules 
-        (start
-            { 
+        (start { 
             (place "Ox1" (handSite P1) count:12)
             (place "Tiger2" (sites Corners))
-            }
-        )
+        })
         
         phases:{ 
         (phase "Placement" P1 
@@ -120,7 +117,6 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
-        
     })
     
     (ai

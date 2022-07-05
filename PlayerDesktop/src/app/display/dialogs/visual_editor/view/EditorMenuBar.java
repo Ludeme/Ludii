@@ -3,9 +3,11 @@ package app.display.dialogs.visual_editor.view;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
-public class EditorMenuBar extends JMenuBar {
+public class EditorMenuBar extends JMenuBar 
+{
+	private static final long serialVersionUID = 1L;
 
-    public EditorMenuBar() {
+	public EditorMenuBar() {
         JMenu file = new JMenu("File"); // operations with file being edited
         // adding file menu items
         addJMenuItem(file, "New", null);

@@ -1,0 +1,9 @@
+// Returns the next site on a track.
+// #1 = The number of steps.
+// #2 = From site [(from)].
+// #3 = Which track [First track of the mover].
+// @example ("NextSiteOnTrack" 3)
+
+(define "NextSiteOnTrack"
+    (trackSite Move #2 #3 steps:#1)
+)

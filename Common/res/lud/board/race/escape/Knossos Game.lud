@@ -8,23 +8,18 @@
     )
 )
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:("ThrowValue")))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue") #1))
 
 (define "RemoveAPiece" (move Remove (from)))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (handSite Next)))
-    ) 
-)
+(define "CaptureEnemyPiece" ("HittingCapture" (handSite Next)))
 
 (define "MoveOnTrack"
-    (if (= ("SiteToMoveOnTrack" #1) End)
+    (if ("IsEndTrack" ("SiteToMoveOnTrack" #1))
         "RemoveAPiece"
         (if (and 
-                (!= ("SiteToMoveOnTrack" #1) Off) 
-                (not (is Friend (who at:("SiteToMoveOnTrack" #1))))
+                ("IsNotOffBoard" ("SiteToMoveOnTrack" #1)) 
+                (not ("IsFriendAt" ("SiteToMoveOnTrack" #1)))
             )
             (move 
                 (from) 
@@ -66,7 +61,7 @@
             }
             use:Vertex
         )
-        (dice d:2 from:0 num:2)
+        ("StickDice" 2)
         (piece "RoundPawn" Each
             (or {
                 ("MoveOnTrack" "TrackBottom1")	
@@ -78,7 +73,7 @@
                     ("MoveOnTrack" "TrackTop2")
                 )
                 (if (and {
-                        (not (is Friend (who at:("SiteAfterBridge"))))
+                        (not ("IsFriendAt" ("SiteAfterBridge")))
                         (= 3 ("ThrowValue"))
                         (not (is In (from) (sites "TopSites")))
                     }) 
@@ -103,8 +98,8 @@
     (rules 
         (start (place "RoundPawn" "Hand" count:2))
         (play 
-            (do (roll) 
-                next:(or 
+            ("RollMove"
+            	(or 
                     (forEach Piece) 
                     (forEach Piece container:(mover))
                 )

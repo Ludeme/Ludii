@@ -76,8 +76,8 @@
                 next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
             )
         )
-        
-        (end (if (no Pieces Mover) (result Mover Win)))
+
+        (end ("EscapeWin"))
     )
 )
 

@@ -50,7 +50,7 @@
         
         (play (do (roll) next:(if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

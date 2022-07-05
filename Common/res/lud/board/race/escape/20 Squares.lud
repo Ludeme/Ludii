@@ -1,11 +1,11 @@
 (define "CountPips"
-    (if (= 0 (face 23) )
+    (if (= 0 (face 23))
         (face 22)	
-        (if (= 1 (face 22) )
+        (if (= 1 (face 22))
             (+ (face 22) 5)
-            (if (= 2 (face 22) )
+            (if (= 2 (face 22))
                 (+ (face 22) 6)
-                (if (= 3 (face 22) )
+                (if (= 3 (face 22))
                     (+ (face 22) 7)
                     (+ (face 22) 10)
                 )
@@ -14,23 +14,15 @@
     )
 )
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("CountPips")))
+(define "RemoveAPiece" (move Remove (from)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (handSite Next)))
-    ) 
-)
+(define "MoveTo" ("NextSiteOnTrack" ("CountPips")))
 
 //------------------------------------------------------------------------------
 
 (game "20 Squares"
     (players 2)  
-    (equipment 
-        { 
+    (equipment { 
         (board 
             (merge 
                 (rectangle 3 4) 
@@ -46,36 +38,30 @@
         (regions "Replay" (sites {"A1" "A3" "D2" "H2" "L2"} ))
         
         (piece "UrPiece" Each
-            (if (= "SiteToMoveOnTrack" End)
+            (if ("IsEndTrack" ("MoveTo"))
                 "RemoveAPiece"
-                (if (not (= "SiteToMoveOnTrack" Off))  	 			
+                (if ("IsNotOffBoard" ("MoveTo"))	 			
                     (if (or
-                            (is In "SiteToMoveOnTrack" (sites Empty))
+                            (is Empty ("MoveTo"))
                             (and 
-                                (not (is Friend (who at:"SiteToMoveOnTrack"))) 
-                                (not (is In "SiteToMoveOnTrack" (sites "Replay")))
+                                (not ("IsFriendAt" ("MoveTo"))) 
+                                (not (is In ("MoveTo") (sites "Replay")))
                             )
                         )
                         (move 
                             (from) 
                             (to 
-                                "SiteToMoveOnTrack" 
-                                "CaptureEnemyPiece"
+                                ("MoveTo")
+                                ("HittingCapture" (handSite (who at:(to))))
                             )
-                            (then 
-                                (if 
-                                    (is In (last To) (sites "Replay")) 
-                                    (moveAgain) 
-                                ) 
-                            )
+                            (then ("ReplayInMovingOn" (sites "Replay")))
                         )
                     )
                 )
             )
         ) 
         
-        }
-    )  
+    })  
     
     (rules 
         (start { 	
@@ -83,9 +69,9 @@
             (place "UrPiece2" (handSite P2) count:7)
         })	
         
-        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))) )
+        (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

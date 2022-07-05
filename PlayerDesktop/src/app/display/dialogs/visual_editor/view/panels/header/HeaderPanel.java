@@ -4,8 +4,6 @@ import app.display.dialogs.visual_editor.handler.Handler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class HeaderPanel extends JPanel {
     public HeaderPanel(){

@@ -65,8 +65,8 @@
                 next:(if (!= 0 ("ThrowValue")) (forEach Piece) (move Pass))
             )
         )
-        
-        (end (if (no Pieces Mover) (result Mover Win)))
+
+        (end ("EscapeWin"))
     )
 )
 

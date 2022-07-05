@@ -1,7 +1,5 @@
 package app.display.dialogs.visual_editor.view.panels.editor.selections;
 
-import game.util.graph.Graph;
-
 import java.awt.*;
 
 /**

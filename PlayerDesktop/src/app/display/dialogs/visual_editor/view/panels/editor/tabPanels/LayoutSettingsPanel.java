@@ -14,7 +14,9 @@ import java.awt.*;
  */
 public class LayoutSettingsPanel extends JPanel
 {
-    private final JSlider dSl;
+ 	private static final long serialVersionUID = 1L;
+
+ 	private final JSlider dSl;
     private final JSlider oSl;
     private final JSlider sSl;
     private final JSlider cSl;

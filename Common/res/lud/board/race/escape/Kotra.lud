@@ -1,24 +1,7 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "AllPiecesInFinalQuadrant"
-    (no Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant")))
+	(all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover "FinalQuadrant")))
 )
 
 (define "EnterPieces"
@@ -34,11 +17,7 @@
                 )
             )
             
-            (then 
-                (if (not (all DiceUsed))
-                    (moveAgain)
-                )
-            )
+            (then ("ReplayNotAllDiceUsed"))
         )
     )
 )
@@ -48,25 +27,13 @@
 (game "Kotra"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
-            {
-            (track "Track1" {11..0 12..23 End} P1 directed:True)
-            (track "Track2" {12..23 11..0 End} P2 directed:True)
-            }
-            use:Vertex
-        )
+        ("TableBoard" ("TableTracksSameDirectionOppositeCorners" End))
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
                 replayDouble:True 
                 if:("DieNotUsed")
-                (if (= End ("NextSiteFrom" (from) (pips)))
+                (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
                     )
@@ -75,7 +42,7 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:(and {
-                                ("NotEnemyOrOnlyOne")
+                                ("NoEnemyOrOnlyOne" (to))
                                 (if (not (is In (to) (sites Mover "StartingSide")))
                                     True
                                     (> 2 (size Stack at:(to)))
@@ -85,22 +52,11 @@
                                     (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
                                 )
                             })
-                            (apply 
-                                (if (is Enemy (who at:(to)))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (handSite Next))
-                                    )
-                                )
-                            )
+                            ("HittingCapture" (handSite Next))
                         )
                     )
                 )
-                (then 
-                    (if (not (all DiceUsed))
-                        (moveAgain)
-                    )
-                )
+                (then ("ReplayNotAllDiceUsed"))
             )		
         )
         (hand Each)
@@ -118,8 +74,8 @@
             (place Stack "Disc2" 12 count:15)
         })
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(or
+            ("RollEachNewTurnMove"
+            	(or
                     ("EnterPieces")
                     (forEach Piece top:True)
                 )
@@ -128,7 +84,7 @@
                 )
             )		
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -158,4 +114,3 @@
     })
     
 )
-

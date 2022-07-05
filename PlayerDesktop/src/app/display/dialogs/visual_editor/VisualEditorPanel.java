@@ -1,15 +1,5 @@
 package app.display.dialogs.visual_editor;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.GeneralPath;
-
 import javax.swing.*;
 
 import app.PlayerApp;
