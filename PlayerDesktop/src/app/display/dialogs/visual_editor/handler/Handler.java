@@ -30,10 +30,11 @@ import main.grammar.Report;
 import main.grammar.Symbol;
 import main.options.UserSelections;
 
-import javax.swing.*;
 import java.util.*;
-import java.awt.*;
 import java.util.List;
+import javax.swing.*;
+import java.awt.*;
+
 
 public class Handler
 {
@@ -201,7 +202,7 @@ public class Handler
         if(output[0] == null && openDialog)
         {
             java.util.List<String> errors = (List<String>) output[1];
-            String errorMessage = "";
+            String errorMessage;
             if (errors.isEmpty())
                 errorMessage = "Could not create \"game\" ludeme from description.";
             else
@@ -426,17 +427,13 @@ public class Handler
 
     public static void remove(DescriptionGraph graph)
     {
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
         List<LudemeNode> selectedNodes = selectedNodes(graph);
-        if(selectedNodes.isEmpty()) return;
+        if(selectedNodes.isEmpty())
+            return;
         if(selectedNodes.size() == 1)
-        {
             removeNode(graph, selectedNodes.get(0));
-        }
         else
-        {
             removeNodes(graph, selectedNodes);
-        }
     }
 
     /**
@@ -757,74 +754,24 @@ public class Handler
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         List<LudemeNode> toCopy = new ArrayList<>();
         for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
-        {
-            if(graph.getRoot() == lnc.node()) continue;
-            toCopy.add(lnc.node());
-        }
-        copy(graph, toCopy);
+            if(graph.getRoot() != lnc.node())
+                toCopy.add(lnc.node());
+        copy(toCopy);
     }
 
-    public static void copy(DescriptionGraph graph, List<LudemeNode> nodes)
+    public static void copy(List<LudemeNode> nodes)
     {
-        if(nodes.isEmpty()) return;
+        if(nodes.isEmpty())
+            return;
         if(DEBUG) System.out.println("[HANDLER] copy(graph, nodes) Copying " + nodes.size() + " nodes");
         currentCopy.clear();
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-
-        HashMap<LudemeNode, LudemeNode> copiedNodes = new HashMap<>(); // <original, copy>
-
-        // create copies
-        for(LudemeNode node : nodes) copiedNodes.put(node, node.copy());
-        // fill inputs (connections and collections)
-        for(LudemeNode node : nodes) {
-            LudemeNode copy = copiedNodes.get(node);
-            // iterate each original node's provided inputs
-            for (NodeArgument arg : node.providedInputsMap().keySet()) {
-                Object input = node.providedInputsMap().get(arg);
-                // input is a node
-                if (input instanceof LudemeNode) {
-                    LudemeNode inputNode = (LudemeNode) input;
-                    // if input node is in the list of nodes to copy, copy it
-                    if (nodes.contains(inputNode)) {
-                        LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
-                        copy.setProvidedInput(arg, inputNodeCopy);
-                        copy.addChildren(inputNodeCopy);
-                        inputNodeCopy.setParent(copy);
-                    }
-                }
-                // input is a collection
-                else if (input instanceof Object[])
-                {
-                    Object[] inputCollection = (Object[]) input;
-                    Object[] inputCollectionCopy = new Object[inputCollection.length];
-                    for (int i = 0; i < inputCollection.length; i++) {
-                        // if input element is a node
-                        if (inputCollection[i] instanceof LudemeNode)
-                        {
-                            LudemeNode inputNode = (LudemeNode) inputCollection[i];
-                            // if input node is in the list of nodes to copy, copy it
-                            if (nodes.contains(inputNode))
-                            {
-                                LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
-                                inputCollectionCopy[i] = inputNodeCopy;
-                                copy.addChildren(inputNodeCopy);
-                                inputNodeCopy.setParent(copy);
-                            }
-                        }
-                    }
-                    copy.setProvidedInput(arg, inputCollectionCopy);
-                }
-            }
-        }
-        // store copied nodes
-        currentCopy = new ArrayList<>(copiedNodes.values());
+        currentCopy = copyTemporarily( nodes);
     }
 
-    public static List<LudemeNode> copyTemporarily(DescriptionGraph graph, List<LudemeNode> nodes)
+    public static List<LudemeNode> copyTemporarily(List<LudemeNode> nodes)
     {
         if(nodes.isEmpty()) return new ArrayList<>();
         if(DEBUG) System.out.println("[HANDLER] copy(graph, nodes) Copying " + nodes.size() + " nodes");
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
 
         HashMap<LudemeNode, LudemeNode> copiedNodes = new HashMap<>(); // <original, copy>
 
@@ -884,7 +831,7 @@ public class Handler
         LudemeNode leftMostNode = nodes.get(0);
         for(LudemeNode node : nodes) if(node.x() < leftMostNode.x()) leftMostNode = node;
         int y = leftMostNode.y() + leftMostNode.height();
-        paste(graph, copyTemporarily(graph, nodes), leftMostNode.x(), y);
+        paste(graph, copyTemporarily(nodes), leftMostNode.x(), y);
     }
 
     public static void duplicate(DescriptionGraph graph)
@@ -986,17 +933,16 @@ public class Handler
         // old copy
         List<LudemeNode> oldCopy = new ArrayList<>(currentCopy);
         currentCopy.clear();
-        copy(graph, oldCopy);
+        copy(oldCopy);
         paste(graph, oldCopy, x, y);
     }
     /**
      *
-     * @param graph graph in operation
      * @param node node in operation
      * @param x x coordinate
      * @param y y coordinate
      */
-    public static void updatePosition(DescriptionGraph graph, LudemeNode node, int x, int y)
+    public static void updatePosition(LudemeNode node, int x, int y)
     {
         node.setPos(x, y);
     }
@@ -1008,7 +954,6 @@ public class Handler
 
     public static void collapse(DescriptionGraph graph)
     {
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
         List<LudemeNode> selectedNodes = selectedNodes(graph);
         if(selectedNodes.isEmpty()) return;
         if(selectedNodes.size() == 1)
@@ -1114,21 +1059,6 @@ public class Handler
             Handler.recordUserActions = true;
     }
 
-    private static Set<LudemeNode> subtree(LudemeNode node)
-    {
-        Set<LudemeNode> subtree = new HashSet<>();
-        subtree.add(node);
-        for(LudemeNode child : node.childrenNodes())
-        {
-            subtree.addAll(subtree(child));
-        }
-        return subtree;
-    }
-
-    public static String getLudString(DescriptionGraph graph){
-        return graph.toLud();
-    }
-
     public static void activateSelectionMode()
     {
         currentGraphPanel.enterSelectionMode();
@@ -1205,16 +1135,6 @@ public class Handler
     public static List<LudemeNode> copyList()
     {
         return currentCopy;
-    }
-
-    public static void setCopyList(List<LudemeNode> copyList)
-    {
-        Handler.currentCopy = copyList;
-    }
-
-    public static void updateNodePositions()
-    {
-        currentGraphPanel.updateNodePositions();
     }
 
     public static Dimension getViewPortSize()
