@@ -34,8 +34,9 @@ import static app.display.dialogs.visual_editor.handler.Handler.mainPanel;
 
 public class EditorPanel extends JPanel implements IGraphPanel
 {
+	private static final long serialVersionUID = 1L;
 
-    private DescriptionGraph graph = new DescriptionGraph();
+	private DescriptionGraph graph = new DescriptionGraph();
     private final List<LudemeNodeComponent> nodeComponents = new ArrayList<>();
     private Point mousePosition;
 

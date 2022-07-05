@@ -12,19 +12,19 @@ public interface iModelLibrary {
      * If it didn't exist before it is created.
      * Adds it to the model locations. Also in the documents.txt
      * @param N
-     * @return
+     * @return Model of size N.
      */
     NGram getModel(int N);
 
     /**
-     * Returns all model locations
-     * @return
+     * Returns all model locations.
+     * @return Model locations.
      */
     List<String> allModelLocations();
 
     /**
-     * Returns the amount of models stored currently
-     * @return
+     * Returns the amount of models stored currently.
+     * @return Amount of models stored.
      */
     int getAmountModels();
 }

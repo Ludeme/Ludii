@@ -5,7 +5,6 @@ import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.*;
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller.iController;
 import app.display.dialogs.visual_editor.recs.utils.*;
-import main.grammar.Symbol;
 
 import java.io.File;
 import java.util.List;

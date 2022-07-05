@@ -6,8 +6,6 @@ import app.display.dialogs.visual_editor.view.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Stack;
 
 public class ToolsPanel extends JPanel {

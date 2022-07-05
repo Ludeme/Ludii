@@ -14,9 +14,11 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame 
+{
+	private static final long serialVersionUID = 1L;
 
-    private MainPanel main_panel;
+	private MainPanel main_panel;
 
     public MainFrame(EditorPanel editor_panel){
 

@@ -4,7 +4,6 @@ package app.display.dialogs.visual_editor.LayoutManagement;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
-import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
 import java.util.*;
 

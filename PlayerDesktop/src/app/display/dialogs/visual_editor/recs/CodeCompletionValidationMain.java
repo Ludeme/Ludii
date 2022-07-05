@@ -3,11 +3,8 @@ package app.display.dialogs.visual_editor.recs;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
-import app.display.dialogs.visual_editor.recs.utils.FileUtils;
 import app.display.dialogs.visual_editor.recs.validation.controller.ValidationController;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 public class CodeCompletionValidationMain {

@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.getNodeDepth;
-import static java.lang.Math.abs;
-
 public final class NodePlacementRoutines
 {
 

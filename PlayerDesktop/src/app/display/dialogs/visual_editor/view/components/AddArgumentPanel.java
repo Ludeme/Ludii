@@ -23,7 +23,9 @@ import java.awt.event.MouseEvent;
 
 public class AddArgumentPanel extends JPanel
 {
-    DefaultListModel<ReadableSymbol> listModel = new DefaultListModel();
+	private static final long serialVersionUID = 1L;
+
+	DefaultListModel<ReadableSymbol> listModel = new DefaultListModel();
     JList list = new JList(listModel)
     {
         @Override

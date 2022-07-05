@@ -21,13 +21,11 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.WindowConstants;
 
 import agentPrediction.external.AgentPredictionExternal;
 import agentPrediction.internal.AgentPredictionInternal;
