@@ -20,7 +20,7 @@ import search.mcts.MCTS;
 /**
  * Skill trace of the game.
  * NOTE. This metric doesn't work with stored trials, and must instead generate new trials each time.
- * NOTE. Only works for 2-player games and those supported by UCT
+ * NOTE. Only works games that are supported by UCT
  * 
  * @author matthew.stephenson and Dennis Soemers
  */
@@ -108,6 +108,9 @@ public class SkillTrace extends Metric
 			}
 			
 			strongAIAvgResult /= numTrialsPerMatch;
+			System.out.println("----");
+			System.out.println(matchCount);
+			System.out.println(strongAIAvgResult);
 			strongAIResults.add(strongAIAvgResult);
 			areaEstimate += Math.pow(Math.max(strongAIAvgResult, 0.0), 2);
 			weakIterationValue *= 2;
