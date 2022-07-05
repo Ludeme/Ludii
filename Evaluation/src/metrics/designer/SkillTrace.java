@@ -28,10 +28,13 @@ public class SkillTrace extends Metric
 {
 	
 	// Number of matches (iteration count doubles each time)
-	private final int numMatches = 10;
+	private final int numMatches = 8;
 	
 	// Number of trials per match
-	private final int numTrialsPerMatch = 100;
+	private final int numTrialsPerMatch = 10;
+	
+	// A hard time limit in seconds, after which any future trials are aborted.
+	private final int hardTimeLimit = 300;
 
 	//-------------------------------------------------------------------------
 
@@ -63,6 +66,7 @@ public class SkillTrace extends Metric
 	{
 		final List<Double> strongAIResults = new ArrayList<>();
 		double areaEstimate = 0.0;
+		final long startTime = System.currentTimeMillis();
 		
 		final List<AI> ais = new ArrayList<AI>(game.players().count() + 1);
 		ais.add(null);
@@ -74,7 +78,7 @@ public class SkillTrace extends Metric
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
 		
-		int weakIterationValue = 1;
+		int weakIterationValue = 2;
 		for (int matchCount = 1; matchCount <= numMatches; matchCount++)
 		{
 			double strongAIAvgResult = 0.0;
@@ -107,15 +111,28 @@ public class SkillTrace extends Metric
 				++strongAgentIdx;
 				if (strongAgentIdx > game.players().count())
 					strongAgentIdx = 1;
+				
+				// Check the current time, and if we have elapsed the limit then abort.
+				if (System.currentTimeMillis() > (startTime + hardTimeLimit*1000))
+					break;
+			}
+			
+			// If we didn't finish all trials in time, then ignore the match results
+			if (System.currentTimeMillis() > (startTime + hardTimeLimit*1000))
+			{
+				System.out.println("Aborting after " + String.valueOf(matchCount-1) + " matches.");
+				break;
 			}
 			
 			strongAIAvgResult /= numTrialsPerMatch;
-			System.out.println("----");
-			System.out.println(matchCount);
-			System.out.println(strongAIAvgResult);
 			strongAIResults.add(strongAIAvgResult);
 			areaEstimate += Math.pow(Math.max(strongAIAvgResult, 0.0), 2);
 			weakIterationValue *= 2;
+			
+			// Print match results in console
+			System.out.println("-----");
+			System.out.println(matchCount);
+			System.out.println(strongAIAvgResult);
 		}
 		
 		// Predict next step y value.
