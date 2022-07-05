@@ -8,7 +8,6 @@ import app.display.dialogs.visual_editor.model.Edge;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.*;
-import app.display.dialogs.visual_editor.view.VisualEditorPanel;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
@@ -39,55 +38,91 @@ import java.awt.*;
 public class Handler
 {
 
-    // Single EditorPanel
-    public static GameGraphPanel gameGraphPanel;
-
-    // Single ToolsPanel
+    // Additional Panels of the Frame
+    /** ToolsPanel, including undo, redo and play buttons */
     public static ToolsPanel toolsPanel;
-
+    /** Panel for layout settings */
     public static LayoutSettingsPanel lsPanel;
 
-    public static VisualEditorPanel visualEditorPanel;
 
+    // Graph Panels
+    /** Main Game Editor Graph Panel */
+    public static GameGraphPanel gameGraphPanel;
+    /** Define Graph Panels */
+    public static final List<DefineGraphPanel> defineGraphPanels = new ArrayList<>();
+    /** Currently selected Graph Panel */
+    public static IGraphPanel currentGraphPanel;
+    /** Map of Graph Panels keyed by their DescriptionGraph */
+    private static final HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
+
+
+    // Defines
+    /** The Input Symbol indicating the Parameter of a Define */
+    public static final Symbol PARAMETER_SYMBOL = new Symbol(Symbol.LudemeType.Ludeme, "PARAMETER", "PARAMETER", null);
+    /** Map of a list of added define ludeme nodes keyed by their Define Graph */
+    private static final Map<DescriptionGraph, List<LudemeNode>> defineLudemeNodes = new HashMap<>();
+    /** Map of Graph Panels keyed by a define node which is part of the graph */
+    private static final Map<LudemeNode, DescriptionGraph> defineNodeToGraphMap = new HashMap<>();
+
+
+    // Undo and Redo functionality
+    /** List of UserActions that were performed, keyed by the GraphPanel they were performed on */
     private static final Map<IGraphPanel, Stack<IUserAction>> performedUserActionsMap = new HashMap<>();
-    private static final Map<IGraphPanel, Stack<IUserAction>> undoneUserActionsMap = new HashMap<>();
+    /** List of UserActions that were undone, keyed by the GraphPanel they were undone on */
+    private static final Map<IGraphPanel, Stack<IUserAction>> undoneUserActionsMap    = new HashMap<>();
+    /** List of UserActions on the current graph panel */
     private static Stack<IUserAction> currentPerformedUserActions;
+    /** List of undone UserActions on the current graph panel */
     private static Stack<IUserAction> currentUndoneUserActions;
-    public static IUserAction currentUndoAction;
-    public static IUserAction currentRedoAction;
+    /** The Action that is currently being undone */
+    private static IUserAction currentUndoAction;
+    /** The Action that is currently being redone */
+    private static IUserAction currentRedoAction;
+    /** Whether the Handler should record User Actions (store them) */
     public static boolean recordUserActions = true;
 
-    private static final HashMap<DescriptionGraph, IGraphPanel> graphPanelMap = new HashMap<>();
-    public static IGraphPanel currentGraphPanel;
 
-    private static final boolean DEBUG = true;
-
+    // Compiling
+    /** The last compile */
     public static Object[] lastCompile;
-
+    /** Whether the game should be compiled after each change */
     public static boolean liveCompile = true;
 
-    public static boolean animation = true;
 
+    // Sensitivity to changes
+    /** When X nodes are removed at once, ask the user for confirmation */
+    public static final int SENSITIVITY_REMOVAL = 6;
+    /** When X collection elements are removed at once, ask the user for confirmation */
+    public static final int SENSITIVITY_COLLECTION_REMOVAL = 4;
+
+
+    // Layout Settings
+    /** Whether the layout-settings sidebar is visible */
+    public static final boolean sidebarVisible = true;
+    /** Whether layout-arrangement animations are enabled */
+    public static boolean animation = true;
+    /** Whether nodes should be placed arranged automatically */
     public static boolean autoplacement = false;
 
-    public static final boolean sidebarVisible = true;
 
+    // Appearance Settings
+    /** Backgrounds: Dot Grid, Cartesian Grid, and no Grid */
     public static final IBackground DotGridBackground = new DotGridBackground();
     public static final IBackground EmptyBackground = new EmptyBackground();
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
+    /** Currently active Background */
     private static IBackground currentBackground = DotGridBackground;
-
+    /** Design Palettes for the Colour Scheme: Light & Dark */
     public static final DesignPalette lightPalette = DesignPaletteLight.instance();
     public static final DesignPalette darkPalette = DesignPaletteDark.instance();
+    /** Currently active DesignPalette */
+    private static DesignPalette currentPalette = lightPalette;
 
-    public static DesignPalette currentPalette = lightPalette;
 
-    public static final int SENSITIVITY_COLLECTION_REMOVAL = 4;
-    public static final int SENSITIVITY_REMOVAL = 6;
+    /** Whether there is any output to the console*/
+    private static final boolean DEBUG = true;
 
-    public static final Symbol PARAMETER_SYMBOL = new Symbol(Symbol.LudemeType.Ludeme, "PARAMETER", "PARAMETER", null);
 
-    public static final List<DefineGraphPanel> DEFINE_GRAPH_PANELS = new ArrayList<>();
 
     public static void updateCurrentGraphPanel(IGraphPanel graphPanel)
     {
@@ -102,7 +137,7 @@ public class Handler
     public static List<LudemeNode> defineNodes()
     {
         List<LudemeNode> list = new ArrayList<>();
-        for(DefineGraphPanel dgp : DEFINE_GRAPH_PANELS)
+        for(DefineGraphPanel dgp : defineGraphPanels)
         {
             LudemeNode defineNode = dgp.graph().defineNode();
             if(defineNode != null)
@@ -276,12 +311,57 @@ public class Handler
         return parameters;
     }
 
+    /**
+     *
+     * @param graph
+     * @param node
+     * @return Whether a node is part of the subgraph of the root node
+     */
     private static boolean connectedToRoot(DescriptionGraph graph, LudemeNode node)
     {
         LudemeNode n = node;
         while(n.parentNode() != null)
             n = n.parentNode();
         return n == graph.getRoot();
+    }
+
+    /**
+     * Updates all define nodes' symbol. Called when the title was changed.
+     * The effect of this is that the title of the affected define nodes is changed.
+     * @param graph The modified define graph
+     * @param symbol The new symbol
+     */
+    public static void updateDefineNodes(DescriptionGraph graph, Symbol symbol)
+    {
+        if(DEBUG) System.out.println("[HANDLER] Title of Define Node changed to " + symbol.name());
+        // Get List of define nodes
+        List<LudemeNode> defineNodes = defineLudemeNodes.get(graph);
+        if(defineNodes == null)
+            return;
+        for(LudemeNode ln : defineNodes)
+        {
+            // Update symbol
+            ln.updateDefineNode(symbol);
+            // Update component
+            // get graph panel
+            IGraphPanel gp = graphPanelMap.get(defineNodeToGraphMap.get(ln));
+            // get component and update component
+            gp.nodeComponent(ln).repaint();
+        }
+
+    }
+
+    /**
+     * Updates all define nodes' list of required parameters. Called when the parameters were changed.
+     *     1) currentNodeArguments field in LudemeNode updated
+     *     2) Remove invalid collections
+     *     3) Add/Remove input fields according to new list
+     * @param graph
+     * @param parameters
+     */
+    public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters)
+    {
+
     }
 
     /**
@@ -305,6 +385,13 @@ public class Handler
         if(DEBUG) System.out.println("[HANDLER] addNode(graph. node, connect) Adding node: " + node.title());
         if(graph.getNodes().isEmpty()) graph.setRoot(node);
         graph.addNode(node);
+        // if added node is a define node, store this node in the map
+        if(node.isDefineNode())
+        {
+            List<LudemeNode> defineNodes = defineLudemeNodes.computeIfAbsent(node.defineGraph(), k -> new ArrayList<>());
+            defineNodes.add(node);
+            defineNodeToGraphMap.put(node, graph);
+        }
         // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         addAction(new AddedNodeAction(graphPanel, node));
@@ -348,8 +435,16 @@ public class Handler
      */
     public static void removeNode(DescriptionGraph graph, LudemeNode node)
     {
-        if(graph.getRoot() == node) return;
+        if(graph.getRoot() == node)
+            return;
         if(DEBUG) System.out.println("[HANDLER] removeNode(graph, node) -> Removing node: " + node.title());
+
+        // remove node from map if a define node
+        if(node.isDefineNode())
+        {
+            defineLudemeNodes.get(node.defineGraph()).remove(node);
+            defineNodeToGraphMap.remove(node);
+        }
 
         IUserAction action = new RemovedNodeAction(graphPanelMap.get(graph), node);
         addAction(action);
@@ -375,15 +470,16 @@ public class Handler
             List<Object> inputs = new ArrayList<>(node.parentNode().providedInputsMap().values());
             int index2 = inputs.indexOf(node);
             if(index2>=0 && !(node.parentNode().providedInputsMap().get(args.get(index2)) instanceof Object[]))
-                Handler.updateInput(graph, node.parentNode(), args.get(index2), null); // TODO: what about collection?
+            {
+                Handler.updateInput(graph, node.parentNode(), args.get(index2), null);
+            }
         }
-        // remove edge
-        // TODO: ConenctionHandler
-        graph.removeEdge(node.id());
-        // notify graph panel
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
-        if(lastActionEquals(action)) Handler.recordUserActions = true;
+        if(lastActionEquals(action))
+        {
+            Handler.recordUserActions = true;
+        }
     }
 
     /**
@@ -574,7 +670,7 @@ public class Handler
         {
             graphPanelMap.put(graph, graphPanel);
             if(graphPanel.isDefineGraph())
-                DEFINE_GRAPH_PANELS.add((DefineGraphPanel) graphPanel);
+                defineGraphPanels.add((DefineGraphPanel) graphPanel);
             performedUserActionsMap.put(graphPanel, new Stack<>());
             undoneUserActionsMap.put(graphPanel, new Stack<>());
         }
@@ -590,6 +686,7 @@ public class Handler
     public static void updateInput(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, Object input)
     {
         if(DEBUG) System.out.println("[HANDLER] updateInput(graph, node, nodeArgument, input) -> Updating input: " + node.title() + ", " + nodeArgument + " -> " + input);
+
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         if(input instanceof LudemeNode)
         {
@@ -598,7 +695,9 @@ public class Handler
             if(lastAction instanceof AddedNodeAction)
             {
                 if(!(((AddedNodeAction) lastAction).addedNode() == input && ((AddedNodeAction) lastAction).addedNode().creatorArgument() == nodeArgument))
+                {
                     addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
+                }
             }
             else
                 addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
@@ -607,7 +706,9 @@ public class Handler
         {
             Object oldInput = node.providedInputsMap().get(nodeArgument);
             if(oldInput instanceof LudemeNode)
+            {
                 addAction(new RemovedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) oldInput, nodeArgument));
+            }
         }
         // if the input is null but was a node before, remove the child from the parent
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
@@ -617,9 +718,16 @@ public class Handler
         {
             LudemeNodeComponent lnc = graphPanel.nodeComponent(node);
             if(lnc.isMarkedUncompilable())
+            {
                 lnc.markUncompilable(false);
+            }
         }
-        if(!graph.isDefine() && liveCompile && isConnectedToRoot(graph, node)) compile();
+        // if its a define graph, notify the graph about that
+        if(graph.isDefine())
+            graph.notifyDefineChanged(nodeArgument, input);
+
+        if(!graph.isDefine() && liveCompile && isConnectedToRoot(graph, node))
+            compile();
     }
 
     private static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)

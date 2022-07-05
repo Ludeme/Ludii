@@ -265,10 +265,22 @@ public class LudemeNode implements iGNode
         this.macroNode = macroNode;
     }
 
+    public void updateDefineNode(Symbol symbol)
+    {
+        assert isDefineNode();
+        List<NodeArgument> oldArgs = nodeArguments.get(selectedClause());
+        this.symbol = symbol;
+        this.clauses.remove(0);
+        Clause c = new Clause(symbol, new ArrayList<>(), true);
+        this.clauses.add(c);
+        this.selectedClause = c;
+        nodeArguments.clear();
+        nodeArguments.put(c, oldArgs);
+    }
+
     public void updateDefineNode(Symbol symbol, LudemeNode macroNode, List<NodeArgument> requiredParameters)
     {
         assert isDefineNode();
-        Symbol oldSymbol = symbol();
         if(symbol != symbol())
         {
             this.symbol = symbol;
@@ -324,6 +336,7 @@ public class LudemeNode implements iGNode
     {
         return symbol;
     }
+
 
     /**
      *
@@ -1120,6 +1133,12 @@ public class LudemeNode implements iGNode
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    public DescriptionGraph defineGraph()
+    {
+        assert isDefineNode() || isDefineRoot();
+        return defineGraph;
     }
 
     public boolean isDefineRoot()

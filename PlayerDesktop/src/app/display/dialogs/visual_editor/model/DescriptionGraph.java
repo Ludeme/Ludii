@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.model;
 
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import main.grammar.Description;
@@ -280,8 +281,8 @@ public class DescriptionGraph implements iGraph
             this.title = title;
             // update the symbol
             this.defineSymbol = new Symbol(Symbol.LudemeType.Ludeme, title, title, null);
-            // TODO: Notify about change
-            System.out.println("[NOTIFY] Title changed");
+            // notify handler
+            Handler.updateDefineNodes(this, defineSymbol);
         }
     }
 
@@ -321,6 +322,7 @@ public class DescriptionGraph implements iGraph
         if(defineMacroNode != computeDefineMacroNode())
         {
             defineMacroNode = computeDefineMacroNode();
+            updateParameters(computeDefineParameters());
             System.out.println("[NOTIFY] Macro node changed to " + defineMacroNode.title());
             // TODO: Notify
         }
@@ -328,6 +330,8 @@ public class DescriptionGraph implements iGraph
 
     public List<NodeArgument> parameters()
     {
+        if(defineParameters == null)
+            defineParameters = computeDefineParameters();
         return defineParameters;
     }
 
@@ -355,12 +359,14 @@ public class DescriptionGraph implements iGraph
      * Returns which NodeArguments were added/removed from the parameters (of a define node)
      * @return An array of two List<NodeArgument>. The first list contains newly added NodeArguments, the second list contains removed NodeArguments.
      */
-    public Object[] changedParameters(List<NodeArgument> parameters)
+    public Object[] updateParameters(List<NodeArgument> parameters)
     {
         assert isDefine;
         if(this.defineParameters.isEmpty())
         {
             this.defineParameters = parameters;
+            System.out.println("[NOTIFY] Parameters changed");
+            // TODO: Notify about change
             return new Object[]{new ArrayList<>(), new ArrayList<>()};
         }
         List<NodeArgument> added = new ArrayList<>();
@@ -383,6 +389,28 @@ public class DescriptionGraph implements iGraph
         return new Object[]{added, removed};
     }
 
+    private NodeArgument titleNodeArgument()
+    {
+        return rootLudemeNode().currentNodeArguments().get(0);
+    }
+
+    private NodeArgument macroNodeArgument()
+    {
+        return rootLudemeNode().currentNodeArguments().get(1);
+
+    }
+
+    public void notifyDefineChanged(NodeArgument nodeArgument, Object input)
+    {
+        // check what changed
+        if(nodeArgument == titleNodeArgument() && !input.equals(""))
+            setTitle((String) input);
+        else if(nodeArgument == macroNodeArgument())
+            updateMacroNode();
+        else if(!parameters().contains(nodeArgument))
+            updateParameters(computeDefineParameters());
+    }
+
     /**
      *
      * @return The node of the define, used in other graphs
@@ -390,9 +418,8 @@ public class DescriptionGraph implements iGraph
     public LudemeNode defineNode()
     {
         assert isDefine;
-        if(defineNode == null)
-            defineNode = new LudemeNode(defineSymbol, defineMacroNode(), this, parameters(), rootLudemeNode().x(), rootLudemeNode().y(), true);
-        return defineNode;
+        if(defineMacroNode() == null || parameters() == null)
+            return null;
+        return new LudemeNode(defineSymbol, defineMacroNode(), this, parameters(), rootLudemeNode().x(), rootLudemeNode().y(), true);
     }
-
 }

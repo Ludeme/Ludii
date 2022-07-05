@@ -21,8 +21,6 @@ public class VisualEditorPanel extends JPanel
 
     public VisualEditorPanel()
     {
-        Handler.visualEditorPanel = this;
-
         setLayout(new BorderLayout());
 
         add(new HeaderPanel(this), BorderLayout.NORTH);

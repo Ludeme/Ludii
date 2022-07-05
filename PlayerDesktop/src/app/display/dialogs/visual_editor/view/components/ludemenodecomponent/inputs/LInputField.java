@@ -477,8 +477,6 @@ public class LInputField extends JComponent
             add(choiceButton);
         }
 
-        System.out.println("HYBRID: " + nodeArgument + ", is collection: " + nodeArgument.collection());
-
         if(nodeArgument.collection())
         {
             addItemButton.setPreferredSize(buttonSize());
