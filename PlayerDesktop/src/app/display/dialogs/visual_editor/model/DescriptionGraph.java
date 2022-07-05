@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.model;
 
 
-import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import main.grammar.Description;
@@ -9,7 +8,6 @@ import main.grammar.Symbol;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
 
 /**
@@ -212,7 +210,7 @@ public class DescriptionGraph implements iGraph
 
     public LudemeNode rootLudemeNode()
     {
-        return (LudemeNode) ROOT;
+        return ROOT;
     }
 
     public void remove(LudemeNode ludemeNode)
