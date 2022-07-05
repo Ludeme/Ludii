@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.model;
 
 import main.grammar.Clause;
-import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
 import java.util.ArrayList;

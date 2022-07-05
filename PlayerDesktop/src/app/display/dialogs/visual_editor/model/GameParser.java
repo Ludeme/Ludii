@@ -1,22 +1,20 @@
 package app.display.dialogs.visual_editor.model;
 
 import app.display.dialogs.visual_editor.handler.Handler;
-import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.MainFrame;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
 import compiler.Arg;
 import compiler.ArgClass;
-import grammar.Grammar;
 import main.Constants;
 import main.grammar.*;
 import main.options.UserSelections;
 import other.GameLoader;
 
-import javax.swing.*;
 import java.io.*;
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import javax.swing.JFrame;
 
 public class GameParser
 {

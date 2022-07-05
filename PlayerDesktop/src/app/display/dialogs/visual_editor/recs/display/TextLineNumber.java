@@ -1,7 +1,6 @@
 package app.display.dialogs.visual_editor.recs.display;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.beans.*;
 import java.util.HashMap;
 import javax.swing.*;

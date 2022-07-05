@@ -1,6 +1,5 @@
 package app.display.dialogs.visual_editor.view.panels;
 
-import app.display.dialogs.visual_editor.LayoutManagement.Vector2D;
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.EditorPanel;
@@ -11,9 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel 
+{
+	private static final long serialVersionUID = 1L;
 
-    //JPanel editor_panel = new EditorPanel(5000, 5000);
+	//JPanel editor_panel = new EditorPanel(5000, 5000);
     private JScrollPane panel;
     private EditorPanel editor_panel;
 
