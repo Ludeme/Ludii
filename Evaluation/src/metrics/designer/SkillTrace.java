@@ -11,8 +11,10 @@ import main.math.LinearRegression;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.AI;
+import other.context.Context;
+import other.model.Model;
 import other.trial.Trial;
-import utils.AIFactory;
+import search.mcts.MCTS;
 import utils.experiments.ResultsSummary;
 
 /**
@@ -25,6 +27,8 @@ public class SkillTrace extends Metric
 {
 	
 	private final int numMatches = 8;
+	
+	private final int numTrialsPerMatch = 10;
 
 	//-------------------------------------------------------------------------
 
@@ -57,17 +61,59 @@ public class SkillTrace extends Metric
 		final List<Double> strongAIResults = new ArrayList<>();
 		double areaEstimate = 0.0;
 		
+		final List<AI> ais = new ArrayList<AI>(game.players().count() + 1);
+		ais.add(null);
+		for (int p = 1; p <= game.players().count(); ++p)
+		{
+			ais.add(MCTS.createUCT());
+		}
+		
+		final Trial trial = new Trial(game);
+		final Context context = new Context(game, trial);
+		
 		int weakIterationValue = 1;
 		for (int matchCount = 1; matchCount <= numMatches; matchCount++)
 		{
-			final AI weakerAI = AIFactory.createAI("UCT");	// THIS SHOULD MAKE A UCT BASED ON weakIterationValue
-			final AI strongerAI = AIFactory.createAI("UCT");	// THIS SHOULD MAKE A UCT BASED ON weakIterationValue*2
-			
 			// DENNIS CAN YOU MODIFY THIS
+			int strongAgentIdx = 1;
+			
+			// TODO I REALLY DOUBT YOU WANT TO USE agentStrings or ResultsSummary at all, 
+			// just get utility of player played by strong agent directly
 			final List<String> agentStrings = new ArrayList<>();
-			agentStrings.add(weakerAI.name());
-			agentStrings.add(strongerAI.name());
+			agentStrings.add("Weak");
+			agentStrings.add("Strong");
 			final ResultsSummary results = new ResultsSummary(game, agentStrings);
+			
+			for (int i = 0; i < numTrialsPerMatch; ++i)
+			{
+				game.start(context);
+				
+				for (int p = 1; p <= game.players().count(); ++p)
+				{
+					ais.get(p).initAI(game, p);
+				}
+
+				final Model model = context.model();
+
+				while (!trial.over())
+				{
+					final int mover = context.state().mover();
+					final int numIterations;
+					if (mover == strongAgentIdx)
+						numIterations = weakIterationValue * 2;
+					else
+						numIterations = weakIterationValue;
+					
+					model.startNewStep(context, ais, Double.MAX_VALUE, numIterations, Integer.MAX_VALUE, 0.0);
+				}
+				
+				// TODO record the utility of the strong agent here
+				
+				// Change which player is controlled by the strong agent
+				++strongAgentIdx;
+				if (strongAgentIdx > game.players().count())
+					strongAgentIdx = 1;
+			}
 			
 			final double strongAIResult = 0.5;
 			strongAIResults.add(strongAIResult);
