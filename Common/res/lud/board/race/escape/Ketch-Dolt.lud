@@ -72,7 +72,7 @@
         (end {
             (if (is Triggered "ShouldCapture" P1) (result P1 Loss))
             (if (is Triggered "ShouldCapture" P2) (result P2 Loss))
-            (if (no Pieces Mover) (result Mover Win))
+            ("EscapeWin")
         })
     )
 )

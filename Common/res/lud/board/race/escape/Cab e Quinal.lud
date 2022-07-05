@@ -62,7 +62,7 @@
         )
         
         (end {
-            (if (no Pieces Mover) (result Mover Win))
+        	("EscapeWin")
             (if (and (no Moves P1) (no Moves P2)) (result Mover Draw))
         })
     )

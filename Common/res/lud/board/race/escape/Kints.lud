@@ -78,7 +78,7 @@
     (rules 
         (start (place "Marker" "Hand" count:<Num:piece>))
         (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

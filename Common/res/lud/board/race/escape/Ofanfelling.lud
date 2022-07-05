@@ -111,7 +111,7 @@
                     (then (if (or (not (all DiceUsed)) (all DiceEqual)) (moveAgain)))
                 )
             )
-            (end (if (no Pieces Mover) (result Mover Win)))
+            (end ("EscapeWin"))
         )
         }
     )

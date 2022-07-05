@@ -17,7 +17,7 @@
             (place Stack "Disc2" 13 count:15)
         })
         (play (do (roll) next:[#]))
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

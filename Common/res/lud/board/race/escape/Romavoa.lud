@@ -120,7 +120,7 @@
             (place Stack "Marker2" (handSite P2) count:2)
         })
         (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))))
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
