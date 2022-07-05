@@ -1,26 +1,9 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "DieValue" (face 28))
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
-
 (define "AllPiecesInFinalQuadrant"
-    (no Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant")))
+	(all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover "FinalQuadrant")))
 )
 
 (define "EnterPieces"
@@ -35,30 +18,23 @@
                     if:(is Empty (to))
                 )
             )
-            
-            (then 
-                (if (not (all DiceUsed))
-                    (moveAgain)
-                )
-            )
+
+            (then ("ReplayNotAllDiceUsed"))
         )
     )
 )
 
-(define "Move" 
-    (forEach Die
-        replayDouble:True 
-        if:("DieNotUsed")
-        (if (= End ("NextSiteFrom" (from) (pips)))
+(define "CommonMove"
+        (if ("IsEndTrack" ("NextSiteFrom" (from) #1))
             (if ("AllPiecesInFinalQuadrant")
                 (move Remove (from))
             )
             (move 
                 (from (from))
                 (to 
-                    ("NextSiteFrom" (from) (pips))
+                    ("NextSiteFrom" (from) #1)
                     if:(and {
-                        ("NotEnemyOrOnlyOne")
+                        ("NoEnemyOrOnlyOne" (to))
                         (if (not (is In (to) (sites Mover "StartingSide")))
                             True
                             (> 2 (size Stack at:(to)))
@@ -68,57 +44,22 @@
                             (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
                         )
                     })
-                    (apply 
-                        (if (is Enemy (who at:(to)))
-                            (fromTo 
-                                (from (to))
-                                (to (handSite Next))
-                            )
-                        )
-                    )
+                    ("HittingCapture" (handSite Next))
                 )
             )
-        )
-        (then 
-            (if (not (all DiceUsed))
-                (moveAgain)
-            )
-        )
+        )		
+)
+
+(define "Move" 
+    (forEach Die
+        replayDouble:True 
+        if:("DieNotUsed")
+        ("CommonMove" (pips))
+        (then ("ReplayNotAllDiceUsed"))
     )		
 )
 
-(define "SpecialMove" 
-    (if (= End ("NextSiteFrom" (from) #1))
-        (if ("AllPiecesInFinalQuadrant")
-            (move Remove (from))
-        )
-        (move 
-            (from (from))
-            (to 
-                ("NextSiteFrom" (from) #1)
-                if:(and {
-                    ("NotEnemyOrOnlyOne")
-                    (if (not (is In (to) (sites Mover "StartingSide")))
-                        True
-                        (> 2 (size Stack at:(to)))
-                    )
-                    (if (not (is In (to) (sites Mover "AfterPenultimate")))
-                        True
-                        (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
-                    )
-                })
-                (apply 
-                    (if (is Enemy (who at:(to)))
-                        (fromTo 
-                            (from (to))
-                            (to (handSite Next))
-                        )
-                    )
-                )
-            )
-        )
-    )		
-)
+(define "SpecialMove" ("CommonMove" #1))
 
 (define "SpecialEnterPieces"
     (if (is Occupied (handSite Mover))
@@ -134,8 +75,8 @@
 
 (define "PlayMove" 
     (if (>= 0 (value Player Mover))
-        (do (if (not "SameTurn") (roll))
-            next:(if (all DiceEqual)
+        ("RollEachNewTurnMove"
+        	(if (all DiceEqual)
                 (or
                     ("SpecialEnterPieces" ("DieValue"))
                     (forEach Piece ("SpecialMove" ("DieValue")) top:True)
@@ -208,12 +149,11 @@
 (game "Piprjall"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        ("BackgammonBoard"
             {
             (track "Track1" {25..20 18..13 0..5 7..12 End} P1 directed:True)
             (track "Track2" {0..5 7..12 25..20 18..13 End} P2 directed:True)
             }
-            use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each ("Move")) 
@@ -273,4 +213,3 @@
     })
     
 )
-
