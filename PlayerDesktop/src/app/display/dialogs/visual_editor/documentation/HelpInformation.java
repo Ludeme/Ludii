@@ -14,6 +14,7 @@ public class HelpInformation
     private final HashMap<Clause, String> ctor = new HashMap<>(); // syntax
     private final HashMap<Clause, String> examples = new HashMap<>(); // examples
     private final HashMap<ClauseArg, String> parameters = new HashMap<>(); // arguments
+    private String remark = "";
 
     public HelpInformation(Symbol symbol)
     {
