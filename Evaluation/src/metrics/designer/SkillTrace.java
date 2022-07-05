@@ -11,11 +11,11 @@ import main.math.LinearRegression;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.AI;
+import other.RankUtils;
 import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
 import search.mcts.MCTS;
-import utils.experiments.ResultsSummary;
 
 /**
  * Skill trace of the game.
@@ -74,16 +74,8 @@ public class SkillTrace extends Metric
 		int weakIterationValue = 1;
 		for (int matchCount = 1; matchCount <= numMatches; matchCount++)
 		{
-			// DENNIS CAN YOU MODIFY THIS
+			double strongAIAvgResult = 0.0;
 			int strongAgentIdx = 1;
-			
-			// TODO I REALLY DOUBT YOU WANT TO USE agentStrings or ResultsSummary at all, 
-			// just get utility of player played by strong agent directly
-			final List<String> agentStrings = new ArrayList<>();
-			agentStrings.add("Weak");
-			agentStrings.add("Strong");
-			final ResultsSummary results = new ResultsSummary(game, agentStrings);
-			
 			for (int i = 0; i < numTrialsPerMatch; ++i)
 			{
 				game.start(context);
@@ -107,7 +99,8 @@ public class SkillTrace extends Metric
 					model.startNewStep(context, ais, Double.MAX_VALUE, numIterations, Integer.MAX_VALUE, 0.0);
 				}
 				
-				// TODO record the utility of the strong agent here
+				// Record the utility of the strong agent
+				strongAIAvgResult += RankUtils.agentUtilities(context)[strongAgentIdx];
 				
 				// Change which player is controlled by the strong agent
 				++strongAgentIdx;
@@ -115,9 +108,9 @@ public class SkillTrace extends Metric
 					strongAgentIdx = 1;
 			}
 			
-			final double strongAIResult = 0.5;
-			strongAIResults.add(strongAIResult);
-			areaEstimate += Math.pow(Math.max(strongAIResult, 0.0), 2);
+			strongAIAvgResult /= numTrialsPerMatch;
+			strongAIResults.add(strongAIAvgResult);
+			areaEstimate += Math.pow(Math.max(strongAIAvgResult, 0.0), 2);
 			weakIterationValue *= 2;
 		}
 		
