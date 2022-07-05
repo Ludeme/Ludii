@@ -12,15 +12,13 @@ import java.awt.event.*;
 public class MainPanel extends JPanel {
 
     //JPanel editor_panel = new EditorPanel(5000, 5000);
-    private JScrollPane panel;
-    private GameGraphPanel editor_panel;
+    private final JScrollPane panel;
 
     public MainPanel(GameGraphPanel editor_panel)
     {
         setLayout(new BorderLayout());
 
         add(new HeaderPanel(null), BorderLayout.NORTH);
-        this.editor_panel = editor_panel;
         panel = new JScrollPane(editor_panel);
 
         Rectangle rect = panel.getViewport().getViewRect();
@@ -37,7 +35,7 @@ public class MainPanel extends JPanel {
         JPanel splitPanel = new JPanel();
         splitPanel.setLayout(new BorderLayout());
         splitPanel.add(panel, BorderLayout.CENTER);
-        splitPanel.add(new EditorSidebar(), BorderLayout.EAST);
+        splitPanel.add(EditorSidebar.getEditorSidebar(), BorderLayout.EAST);
         add(splitPanel, BorderLayout.CENTER);
 
         editor_panel.initialize(panel);

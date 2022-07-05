@@ -22,19 +22,36 @@ public class LayoutHandler
     private final iGraph graph;
     private final DFBoxDrawing layout;
 
+    /**
+     * Constructor
+     * @param graph graph layout of which should be handled
+     */
     public LayoutHandler(iGraph graph)
     {
         this.graph = graph;
         layout = new DFBoxDrawing(graph);
     }
 
-    // ################
+    /**
+     * Update compactness value of layout
+     * @param sliderValue value between 0.0 and 1.0
+     */
+    public void updateCompactness(double sliderValue)
+    {
+        layout.setCompactness(sliderValue);
+    }
 
+    /**
+     * Explicitly update layout metrics
+     */
     public void updateDFSWeights(double offset, double distance, double spread)
     {
         layout.updateWeights(offset, distance, spread);
     }
 
+    /**
+     * Implicitly update layout metrics i.e. evaluate user's placement
+     */
     public void evaluateGraphWeights()
     {
         double[] weights = GraphRoutines.computeLayoutMetrics(graph, graph.getRoot().id());
@@ -43,12 +60,12 @@ public class LayoutHandler
         LayoutSettingsPanel.getLayoutSettingsPanel().updateSliderValues(weights[0], weights[1], weights[2]);
     }
 
-    // ################
-
+    /**
+     * Arranges layout of all components of graph
+     */
     public void executeLayout()
     {
         if (GraphAnimator.getGraphAnimator().updateCounter() != 0) return;
-        boolean animate = LayoutSettingsPanel.getLayoutSettingsPanel().isAnimatePlacementOn();
 
         // determine graph components to be updated
         List<Integer> roots;
@@ -77,7 +94,8 @@ public class LayoutHandler
             if (i > 0)
             {
                 Rectangle rect = GraphRoutines.getSubtreeArea(graph, roots.get(i-1));
-                transPos = new Vector2D(NodePlacementRoutines.DEFAULT_X_POS,
+                transPos = new Vector2D(
+                        Handler.gameGraphPanel.parentScrollPane().getViewport().getViewRect().x+NodePlacementRoutines.DEFAULT_X_POS,
                         rect.y+rect.height+NodePlacementRoutines.DEFAULT_Y_POS);
             }
 
@@ -85,30 +103,30 @@ public class LayoutHandler
             if (!graph.getNode(root).children().isEmpty())
             {
                 // preserve initial positions of subtree
-                if (animate) GraphAnimator.getGraphAnimator().preserveInitPositions(graph, root);
+                if (Handler.animation) GraphAnimator.getGraphAnimator().preserveInitPositions(graph, root);
                 // update depth of subtree
                 updateNodeDepth(graph, root);
                 // rearrange subtree layout with standard procedure
                 layout.applyLayout(root);
                 if (i > 0) NodePlacementRoutines.translateByRoot(graph, root, transPos);
                 // preserve final position
-                if (animate) GraphAnimator.getGraphAnimator().preserveFinalPositions();
+                if (Handler.animation) GraphAnimator.getGraphAnimator().preserveFinalPositions();
             }
             else
             {
                 iGNode rNode = graph.getNode(root);
                 // preserve initial position of single node
-                if (animate) GraphAnimator.getGraphAnimator().nodeInitPositions().put(rNode, rNode.pos());
+                if (Handler.animation) GraphAnimator.getGraphAnimator().nodeInitPositions().put(rNode, rNode.pos());
                 if (i > 0) NodePlacementRoutines.translateByRoot(graph, root, transPos);
                 // preserve final position of single node
-                if (animate) GraphAnimator.getGraphAnimator().nodeFinalPosition().put(rNode, rNode.pos());
+                if (Handler.animation) GraphAnimator.getGraphAnimator().nodeFinalPosition().put(rNode, rNode.pos());
             }
         }
 
 
 
         // display updated positions either through animation or single jump
-        if (animate)
+        if (Handler.animation)
         {
             // animate change
             Timer animationTimer = new Timer(3, e -> {
@@ -124,11 +142,6 @@ public class LayoutHandler
             Handler.currentGraphPanel.syncNodePositions();
         }
 
-    }
-
-    public void updateCompactness(double sliderValue)
-    {
-        layout.setCompactness(sliderValue);
     }
 
 }

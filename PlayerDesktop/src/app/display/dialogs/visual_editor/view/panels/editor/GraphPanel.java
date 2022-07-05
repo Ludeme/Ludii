@@ -173,8 +173,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         remove(lnc);
         connectionHandler().removeAllConnections(lnc.node(), false);
         repaint();
-        if (LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
-            lm.executeLayout();
+        if (Handler.autoplacement) lm.executeLayout();
     }
 
     /**
@@ -850,8 +849,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
                         Handler.addNode(graph(), connectionHandler().getSelectedConnectionComponent().possibleSymbolInputs().get(0), connectionHandler().getSelectedConnectionComponent().inputField().nodeArgument(0), e.getX(), e.getY(), true);
                     else if(!connectArgumentPanel.isVisible() && connectionHandler().getSelectedConnectionComponent().possibleSymbolInputs().size() > 1)
                         showCurrentlyAvailableLudemes();
-                    if(LayoutSettingsPanel.getLayoutSettingsPanel().isAutoPlacementOn())
-                        lm.executeLayout();
+                    if(Handler.autoplacement) lm.executeLayout();
                 }
 
                 // When selection was performed user can clear it out by clicking on blank area

@@ -68,6 +68,12 @@ public class Handler
 
     public static boolean liveCompile = true;
 
+    public static boolean animation = true;
+
+    public static boolean autoplacement = false;
+
+    public static boolean sidebarVisible = true;
+
     public static final IBackground DotGridBackground = new DotGridBackground();
     public static final IBackground EmptyBackground = new EmptyBackground();
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
