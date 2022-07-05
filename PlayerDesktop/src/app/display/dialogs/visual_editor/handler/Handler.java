@@ -130,7 +130,7 @@ public class Handler
     private static DesignPalette currentPalette = lightPalette;
 
 
-    /** Whether there is any output to the console*/
+    /** Whether there is any output to the console */
     private static final boolean DEBUG = true;
 
 
@@ -723,7 +723,6 @@ public class Handler
     }
 
 
-
     // ~~~~~~~  Defines  ~~~~~~~
 
     /**
@@ -777,10 +776,12 @@ public class Handler
      *     3) Add/Remove input fields according to new list
      * @param graph
      * @param parameters
+     * @param newParameters
+     * @param oldParameters
      */
-    public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters)
+    public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters, List<NodeArgument> newParameters, List<NodeArgument> oldParameters)
     {
-
+        if(DEBUG) System.out.println("[HANDLER] Parameters of Define Node changed. Added " + newParameters.size() + ", removed " + oldParameters.size() + ", total: " + parameters.size());
     }
 
 
@@ -1520,7 +1521,7 @@ public class Handler
         node.setPos(x, y);
     }
 
-    
+
     public static Dimension getViewPortSize()
     {
         return currentGraphPanel.parentScrollPane().getViewport().getSize();

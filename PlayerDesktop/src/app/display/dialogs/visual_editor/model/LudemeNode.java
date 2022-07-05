@@ -265,6 +265,11 @@ public class LudemeNode implements iGNode
         this.macroNode = macroNode;
     }
 
+    /**
+     * Updates the symbol of a define node.
+     * Called when the define name was modified.
+     * @param symbol
+     */
     public void updateDefineNode(Symbol symbol)
     {
         assert isDefineNode();
@@ -278,28 +283,31 @@ public class LudemeNode implements iGNode
         nodeArguments.put(c, oldArgs);
     }
 
-    public void updateDefineNode(Symbol symbol, LudemeNode macroNode, List<NodeArgument> requiredParameters)
+    /**
+     * Updates the required parameters of a define node.
+     * @param parameters
+     */
+    public void updateDefineNode(List<NodeArgument> parameters)
     {
         assert isDefineNode();
-        if(symbol != symbol())
-        {
-            this.symbol = symbol;
-            this.clauses.remove(0);
-            Clause c = new Clause(symbol, new ArrayList<>(), true);
-            this.clauses.add(c);
-            this.selectedClause = c;
-        }
-        if(!requiredParameters.equals(currentNodeArguments))
-        {
-            this.nodeArguments.put(clauses.get(0), requiredParameters);
-            this.currentNodeArguments = requiredParameters;
-            LinkedHashMap<NodeArgument, Object> newInputMap = new LinkedHashMap<>();
-            for(NodeArgument na : requiredParameters)
-                newInputMap.put(na, providedInputsMap.get(na));
-            this.providedInputsMap = newInputMap;
-            for(NodeArgument na : currentNodeArguments)
-                providedInputsMap.put(na, null);
-        }
+        this.nodeArguments.put(clauses.get(0), parameters);
+        this.currentNodeArguments = parameters;
+
+        LinkedHashMap<NodeArgument, Object> newInputMap = new LinkedHashMap<>();
+        for(NodeArgument na : parameters)
+            newInputMap.put(na, providedInputsMap.get(na));
+
+        this.providedInputsMap = newInputMap;
+
+        for(NodeArgument na : currentNodeArguments)
+            providedInputsMap.put(na, null);
+    }
+
+
+
+    public void updateDefineNode(Symbol symbol, LudemeNode macroNode, List<NodeArgument> requiredParameters)
+    {
+
         if(macroNode() != macroNode)
             this.macroNode = macroNode;
     }

@@ -356,19 +356,12 @@ public class DescriptionGraph implements iGraph
 
     /**
      * Updates the current parameters of the define.
-     * Returns which NodeArguments were added/removed from the parameters (of a define node)
-     * @return An array of two List<NodeArgument>. The first list contains newly added NodeArguments, the second list contains removed NodeArguments.
+     * computes which NodeArguments were added/removed from the parameters (of a define node)
      */
-    public Object[] updateParameters(List<NodeArgument> parameters)
+    public void updateParameters(List<NodeArgument> parameters)
     {
         assert isDefine;
-        if(this.defineParameters.isEmpty())
-        {
-            this.defineParameters = parameters;
-            System.out.println("[NOTIFY] Parameters changed");
-            // TODO: Notify about change
-            return new Object[]{new ArrayList<>(), new ArrayList<>()};
-        }
+
         List<NodeArgument> added = new ArrayList<>();
         List<NodeArgument> removed = new ArrayList<>(this.defineParameters);
 
@@ -379,14 +372,7 @@ public class DescriptionGraph implements iGraph
                 removed.remove(na);
 
         this.defineParameters = parameters;
-
-        if(!added.isEmpty() || !removed.isEmpty())
-        {
-            System.out.println("[NOTIFY] Parameters changed");
-            // TODO: Notify about change
-        }
-
-        return new Object[]{added, removed};
+        Handler.updateDefineNodes(this, parameters, added, removed);
     }
 
     private NodeArgument titleNodeArgument()
@@ -407,7 +393,7 @@ public class DescriptionGraph implements iGraph
             setTitle((String) input);
         else if(nodeArgument == macroNodeArgument())
             updateMacroNode();
-        else if(!parameters().contains(nodeArgument))
+        else
             updateParameters(computeDefineParameters());
     }
 
