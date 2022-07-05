@@ -1,13 +1,8 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
+(define "RemoveAPiece" (move Remove (from)))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (handSite (who at:(to)))))
-    ) 
-)
+(define "CaptureEnemyPiece" ("HittingCapture" (handSite (who at:(to))))) 
 
 //------------------------------------------------------------------------------
 
@@ -35,17 +30,16 @@
             (track "Track1" "71,0,E5,N5,E,N,W,S,E5,N,WSW,SW,End" P1 directed:True)
             (track "Track2" "72,11,W6,N5,W,N,E,S,W6,N,WSW,SW,End" P2 directed:True)
             <Player:trackP3P4>
-            }
-        )
+        })
         (piece "Paddle" Each
-            (if (= "SiteToMoveOnTrack" End)
+            (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
-                (if (!= "SiteToMoveOnTrack" Off) 	 			
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
                     (if (or {
-                            (is In "SiteToMoveOnTrack" (sites Empty))
-                            (is Friend (who at:"SiteToMoveOnTrack"))
+                            (is Empty "SiteToMoveOnTrack")
+                            ("IsFriendAt" "SiteToMoveOnTrack")
                             (and 
-                                (is Enemy (who at:"SiteToMoveOnTrack"))
+                                ("IsEnemyAt" "SiteToMoveOnTrack")
                                 (not (is In "SiteToMoveOnTrack" (sites "Protect")))
                             )
                         })
@@ -60,7 +54,7 @@
                 )
             )
         )
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (hand Each)
         (regions "Protect" (sites {5 17 19 27 41 57 46 62 63 34 35 51 52}))
     })
@@ -71,9 +65,8 @@
             <Player:startP3P4>
         })
         (play 
-            (do 
-                (roll) 
-                next:(or (forEach Piece) (forEach Piece container:(mover) top:True))
+            ("RollMove"
+            	(or (forEach Piece) (forEach Piece container:(mover) top:True))
             )
         )
         (end {
