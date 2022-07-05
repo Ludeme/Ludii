@@ -1,47 +1,16 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue")))
 
-(define "ThrowValue" 
-    (if (= (count Pips) 4)
-        4
-        (if (= (count Pips) 6)
-            6
-            (if (= (count Pips) 14)
-                14
-                (if (= (count Pips) 15)
-                    15
-                    (if (= (count Pips) 0)
-                        10
-                        (if (= (count Pips) 39)
-                            5
-                            (if (or { 
-                                    (= (count Pips) 10) (= (count Pips) 18) (= (count Pips) 19) 
-                                    (= (count Pips) 20) (= (count Pips) 21) (= (count Pips) 29)
-                                })
-                                2
-                                3
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to)))
-        (fromTo (from (to)) (to (handSite Next))) 
-    ) 
-)
+(define "CaptureEnemyPiece" ("HittingCapture" (handSite Next)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
+(define "RemoveAPiece" (move Remove (from)))
 
 (define "Movement" 
-    (if (= ("SiteToMoveOnTrack") End)
+    (if ("IsEndTrack" ("SiteToMoveOnTrack"))
         "RemoveAPiece"
-        (if (!= ("SiteToMoveOnTrack") Off) 	 			
-            (if (or (is Enemy (who at:("SiteToMoveOnTrack"))) (is In ("SiteToMoveOnTrack") (sites Empty)))
+        (if ("IsNotOffBoard" ("SiteToMoveOnTrack")) 	 			
+            (if (not ("IsFriendAt" ("SiteToMoveOnTrack")))
                 (move 
                     (from)
                     (to 
@@ -58,7 +27,7 @@
 (define "PieceCanEnterOnlyIfNoPieceOnArc" 
     (and 
         (= (from) (handSite Mover)) 
-        (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "Arc"))))
+        (all Sites (sites Occupied by:Mover) if:(not (is In (site) (sites Mover "Arc"))))
     )
 )
 
@@ -101,10 +70,14 @@
             )
         )
         (hand Each)
+        (map "Throw" {
+            (pair 0 10) (pair 39 5) (pair 24 3) (pair 25 3) (pair 35 3) (pair 33 3)
+            (pair 10 2) (pair 18 2) (pair 19 2) (pair 20 2) (pair 21 2) (pair 29 2)
+        })
     })
     (rules 
         (start (place "Marker" "Hand" count:<Num:piece>))
-        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))) )
+        (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
@@ -156,7 +129,6 @@
         (piece Rename piece:"Die3" "KintsDice3")
         (piece Rename piece:"Die4" "KintsDice4")
         (piece Style "Die" NativeAmericanDice)
-        
     })
     
     (ai
