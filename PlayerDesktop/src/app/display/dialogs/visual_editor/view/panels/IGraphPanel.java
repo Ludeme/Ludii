@@ -91,8 +91,6 @@ public interface IGraphPanel {
     void selectAllNodes();
     /** Unselects all nodes */
     void deselectEverything();
-    /** */
-    void setAutoplacement(boolean autoplacement);
     /** Displays all available ludemes that may be created */
     void showAllAvailableLudemes(int x, int y);
     /** Notifies the panel that the user clicked on a node */

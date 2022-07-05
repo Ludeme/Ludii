@@ -39,8 +39,8 @@ public class GraphPanel extends JPanel implements IGraphPanel
     // The parent JScrollPane
     private JScrollPane parentScrollPane;
     // The node components in this panel
-    private List<LudemeNodeComponent> NODE_COMPONENTS = new ArrayList<>();
-    private Map<Integer, LudemeNodeComponent> NODE_COMPONENTS_BY_ID = new HashMap<>();
+    private final List<LudemeNodeComponent> NODE_COMPONENTS = new ArrayList<>();
+    private final Map<Integer, LudemeNodeComponent> NODE_COMPONENTS_BY_ID = new HashMap<>();
     // The last position of the mouse
     private Point mousePosition;
     // The LayoutHandler
@@ -68,8 +68,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
     private boolean SELECTED = false;
     // list of selected nodes
     private List<LudemeNodeComponent> selectedLnc = new ArrayList<>();
-    //
-    private boolean AUTOPLACEMENT = false;
 
     // latencies for user testing code completion (Filip)
     private final List<Long> latencies = new ArrayList<>();
@@ -91,8 +89,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
     /**
      * Initializes the graph panel.
-     *
-     * @param parentScrollPane
      */
     @Override
     public void initialize(JScrollPane parentScrollPane)
@@ -119,7 +115,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
         return false;
     }
 
-    private MouseAdapter panelDragListener = new MouseAdapter()
+    private final MouseAdapter panelDragListener = new MouseAdapter()
     {
 
         private Point origin;
@@ -649,7 +645,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
     /**
      * Displays all available ludemes that may be created
-     *
+     * //TODO: why do you need x and y here?
      * @param x
      * @param y
      */
@@ -670,8 +666,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
     /**
      * Notifies the panel that the user clicked on a node
-     *
-     * @param lnc
      */
     @Override
     public void clickedOnNode(LudemeNodeComponent lnc)
@@ -758,15 +752,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
         SELECTED = false;
         repaint();
         revalidate();
-    }
-
-    /**
-     * @param autoplacement
-     */
-    @Override
-    public void setAutoplacement(boolean autoplacement)
-    {
-        this.AUTOPLACEMENT = autoplacement;
     }
 
     /**
@@ -1021,6 +1006,9 @@ public class GraphPanel extends JPanel implements IGraphPanel
         }
     };
 
+    /**
+     * Iterate through nodes on a panel and scale their positions for zooming in/out
+     */
     private void scaleNodes(double scalar)
     {
         graph().getNodes().forEach(ludemeNode -> {
@@ -1029,15 +1017,29 @@ public class GraphPanel extends JPanel implements IGraphPanel
         });
     }
 
+    /**
+     * Scale coordinates of single node.
+     * Usage of integer coordinates by java swing graphical components introduces rounding errors that may degrade scaling.
+     * @param pos position to be scaled
+     * @param scalar scalar
+     * @param W screen width
+     * @param H screen height
+     * @return scaled position
+     */
     private Vector2D getScaledCoords(Vector2D pos, double scalar, double W, double H)
     {
-        double xp = pos.x()-W/2;
-        double yp = (pos.y()-H/2)*-1;
+        // account for changed viewport
+        int viewportX = parentScrollPane.getViewport().getViewRect().x;
+        int viewportY = parentScrollPane.getViewport().getViewRect().y;
+        // translate into cartesian coordinates
+        double xp = pos.x()-viewportX-W/2;
+        double yp = (pos.y()-viewportY-H/2)*-1;
+        // scale
         xp*=scalar;
         yp*=scalar;
-        return new Vector2D(xp+W/2, -1*yp+H/2);
+        // return translated back to java swing scaled coordinates
+        return new Vector2D(xp+viewportX+W/2, -1*yp+H/2+viewportY);
     }
-
 
     public void addSelectionIndex(int index)
     {
