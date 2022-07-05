@@ -95,7 +95,7 @@ public class SkillTrace extends Metric
 					else
 						numIterations = weakIterationValue;
 					
-					model.startNewStep(context, ais, Double.MAX_VALUE, numIterations, Integer.MAX_VALUE, 0.0);
+					model.startNewStep(context, ais, Double.MAX_VALUE, numIterations * game.moves(context).count(), Integer.MAX_VALUE, 0.0);
 				}
 				
 				// Record the utility of the strong agent
