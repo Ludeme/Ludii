@@ -135,9 +135,6 @@ public class NodePopupMenu extends JPopupMenu {
             message += ".lud 2 : " + node.toLud(true) + "\n";
 
 
-            if(graphPanel.graph().isDefine()) message += "Parameters: " + Handler.defineParameters(graphPanel.graph()) + "\n";
-
-
 
             JOptionPane.showMessageDialog(graphPanel.panel(), message);
         });

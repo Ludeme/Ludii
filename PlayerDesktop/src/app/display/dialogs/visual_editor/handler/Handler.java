@@ -35,16 +35,15 @@ import javax.swing.*;
 import java.awt.*;
 
 
+/**
+ * Handler for the visual editor.
+ * Handles all user actions and updates the view accordingly.
+ * @author Filipp Dokienko
+ */
+
+
 public class Handler
 {
-
-    // Additional Panels of the Frame
-    /** ToolsPanel, including undo, redo and play buttons */
-    public static ToolsPanel toolsPanel;
-    /** Panel for layout settings */
-    public static LayoutSettingsPanel lsPanel;
-
-
     // Graph Panels
     /** Main Game Editor Graph Panel */
     public static GameGraphPanel gameGraphPanel;
@@ -82,6 +81,11 @@ public class Handler
     public static boolean recordUserActions = true;
 
 
+    // Copied nodes
+    /** List of currently copied nodes */
+    private static List<LudemeNode> clipboard = new ArrayList<>();
+
+
     // Compiling
     /** The last compile */
     public static Object[] lastCompile;
@@ -94,6 +98,13 @@ public class Handler
     public static final int SENSITIVITY_REMOVAL = 6;
     /** When X collection elements are removed at once, ask the user for confirmation */
     public static final int SENSITIVITY_COLLECTION_REMOVAL = 4;
+
+
+    // Additional Panels of the Frame
+    /** ToolsPanel, including undo, redo and play buttons */
+    public static ToolsPanel toolsPanel;
+    /** Panel for layout settings */
+    public static LayoutSettingsPanel lsPanel;
 
 
     // Layout Settings
@@ -123,7 +134,31 @@ public class Handler
     private static final boolean DEBUG = true;
 
 
+    // ~~~~~~~  Graph Panels  ~~~~~~~
 
+    /**
+     * Assigns a IGraphPanel to a DescriptionGraph
+     * @param graph graph to be assigned
+     * @param graphPanel graph panel
+     */
+    public static void addGraphPanel(DescriptionGraph graph, IGraphPanel graphPanel)
+    {
+        if(!graphPanelMap.containsKey(graph))
+        {
+            graphPanelMap.put(graph, graphPanel);
+            if(graphPanel.isDefineGraph())
+            {
+                defineGraphPanels.add((DefineGraphPanel) graphPanel);
+            }
+            performedUserActionsMap.put(graphPanel, new Stack<>());
+            undoneUserActionsMap.put(graphPanel, new Stack<>());
+        }
+    }
+
+    /**
+     * Updates the current active graph panel
+     * @param graphPanel graph panel to be set as active
+     */
     public static void updateCurrentGraphPanel(IGraphPanel graphPanel)
     {
         currentGraphPanel = graphPanel;
@@ -133,236 +168,7 @@ public class Handler
             toolsPanel.updateUndoRedoBtns(currentPerformedUserActions, currentUndoneUserActions);
     }
 
-
-    public static List<LudemeNode> defineNodes()
-    {
-        List<LudemeNode> list = new ArrayList<>();
-        for(DefineGraphPanel dgp : defineGraphPanels)
-        {
-            LudemeNode defineNode = dgp.graph().defineNode();
-            if(defineNode != null)
-                list.add(defineNode);
-        }
-        return list;
-    }
-
-    public static void setPalette(DesignPalette palette)
-    {
-        currentPalette = palette;
-        for(IGraphPanel graphPanel : graphPanelMap.values())
-        {
-            graphPanel.repaint();
-        }
-    }
-
-    public static DesignPalette currentPalette()
-    {
-        return currentPalette;
-    }
-
-    public static IBackground currentBackground()
-    {
-        return currentBackground;
-    }
-
-    public static void setBackground(IBackground background)
-    {
-        currentBackground = background;
-        for(IGraphPanel graphPanel : graphPanelMap.values())
-            graphPanel.repaint();
-    }
-
-
-    public static Object[] compile()
-    {
-        return compile(false);
-    }
-
-    // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
-    public static Object[] compile(boolean openDialog)
-    {
-        if(!recordUserActions)
-            return new Object[]{null, null, null};
-        Object[] output = new Object[3];
-        List<LudemeNode> unsatisfiedNodes = isComplete(gameGraphPanel.graph());
-        if(!unsatisfiedNodes.isEmpty())
-        {
-            List<String> errors = new ArrayList<>();
-            StringBuilder errorMessage = new StringBuilder("Nodes are missing required arguments:\n");
-            for(LudemeNode node : unsatisfiedNodes)
-            {
-                errorMessage.append(node.title()).append(", \n");
-            }
-            errors.add(errorMessage.toString());
-            output[1] = errors;
-            output[2] = unsatisfiedNodes;
-            if(liveCompile)
-            {
-                lastCompile = output;
-                if(toolsPanel != null)
-                {
-                    toolsPanel.play.updateCompilable(output);
-                }
-            }
-            if(openDialog)
-            {
-                Handler.markUncompilable();
-                JOptionPane.showMessageDialog(null, errorMessage.toString(), "Couldn't compile", JOptionPane.ERROR_MESSAGE);
-            }
-            return output;
-        }
-
-        Description d = gameGraphPanel.graph().description();
-        Report r = new Report();
-        try
-        {
-            if (StartVisualEditor.app != null)
-            {
-                output[0] = compiler.Compiler.compile(d, StartVisualEditor.app.manager().settingsManager().userSelections(), r, false);
-            }
-            else
-                output[0] = compiler.Compiler.compile(d, new UserSelections(new ArrayList<>()), r, false);
-        }
-        catch(Exception ex)
-        {
-            System.out.println("Couldnt compile");
-            System.out.println(r.errors());
-        }
-
-        output[1] = r.errors();
-        if(liveCompile)
-        {
-            lastCompile = output;
-            if(toolsPanel != null)
-                toolsPanel.play.updateCompilable(output);
-        }
-        if(output[0] == null && openDialog)
-        {
-            java.util.List<String> errors = (List<String>) output[1];
-            String errorMessage;
-            if (errors.isEmpty())
-                errorMessage = "Could not create \"game\" ludeme from description.";
-            else
-            {
-                errorMessage = errors.toString();
-                errorMessage = errorMessage.substring(1, errorMessage.length() - 1);
-            }
-            JOptionPane.showMessageDialog(null, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
-        }
-        return output;
-    }
-
-    public static void markUncompilable()
-    {
-        List<LudemeNode> unsatisfiedNodes = isComplete(gameGraphPanel.graph());
-        List<LudemeNodeComponent> lncs = new ArrayList<>();
-        for(LudemeNode node : unsatisfiedNodes)
-            lncs.add(gameGraphPanel.nodeComponent(node));
-        gameGraphPanel.notifyUncompilable(lncs);
-    }
-
-    public static void play()
-    {
-        Object[] output = lastCompile;
-        // first compile
-        if(lastCompile == null)
-            output = compile();
-        if(output[0] == null)
-            return;
-        Game game = (Game) output[0];
-        // load game
-        loadGame(game, StartVisualEditor.app);
-    }
-
-    public static void play(Game game)
-    {
-        // load game
-        loadGame(game, StartVisualEditor.app);
-    }
-
-    public static void loadGame(Game game, PlayerApp app)
-    {
-        app.manager().ref().setGame(app.manager(), game);
-        GameUtil.startGame(app);
-        app.restartGame();
-        DesktopApp.frame().requestFocus();
-    }
-
-    public static List<LudemeNode> isComplete(DescriptionGraph graph)
-    {
-        List<LudemeNode> unsatisfiedNodes = new ArrayList<>();
-        for(LudemeNode ln : graph.getNodes())
-            if((graph.getRoot() == ln || ln.parentNode()!=null) && !ln.isSatisfied())
-                unsatisfiedNodes.add(ln);
-        return unsatisfiedNodes;
-    }
-
-    public static Map<LudemeNode, List<NodeArgument>> defineParameters(DescriptionGraph graph)
-    {
-        assert graph.isDefine();
-        LinkedHashMap<LudemeNode, List<NodeArgument>> parameters = new LinkedHashMap<>();
-        for(LudemeNode ln : graph.getNodes())
-            if(graph.getRoot() != ln && connectedToRoot(graph, ln))
-            {
-                List<NodeArgument> args = ln.unfilledRequiredArguments();
-                if(!args.isEmpty())
-                    parameters.put(ln, args);
-            }
-        return parameters;
-    }
-
-    /**
-     *
-     * @param graph
-     * @param node
-     * @return Whether a node is part of the subgraph of the root node
-     */
-    private static boolean connectedToRoot(DescriptionGraph graph, LudemeNode node)
-    {
-        LudemeNode n = node;
-        while(n.parentNode() != null)
-            n = n.parentNode();
-        return n == graph.getRoot();
-    }
-
-    /**
-     * Updates all define nodes' symbol. Called when the title was changed.
-     * The effect of this is that the title of the affected define nodes is changed.
-     * @param graph The modified define graph
-     * @param symbol The new symbol
-     */
-    public static void updateDefineNodes(DescriptionGraph graph, Symbol symbol)
-    {
-        if(DEBUG) System.out.println("[HANDLER] Title of Define Node changed to " + symbol.name());
-        // Get List of define nodes
-        List<LudemeNode> defineNodes = defineLudemeNodes.get(graph);
-        if(defineNodes == null)
-            return;
-        for(LudemeNode ln : defineNodes)
-        {
-            // Update symbol
-            ln.updateDefineNode(symbol);
-            // Update component
-            // get graph panel
-            IGraphPanel gp = graphPanelMap.get(defineNodeToGraphMap.get(ln));
-            // get component and update component
-            gp.nodeComponent(ln).repaint();
-        }
-
-    }
-
-    /**
-     * Updates all define nodes' list of required parameters. Called when the parameters were changed.
-     *     1) currentNodeArguments field in LudemeNode updated
-     *     2) Remove invalid collections
-     *     3) Add/Remove input fields according to new list
-     * @param graph
-     * @param parameters
-     */
-    public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters)
-    {
-
-    }
+    // ~~~~~~~  Changes to the graph  ~~~~~~~
 
     /**
      * Adds a node to the graph
@@ -421,6 +227,13 @@ public class Handler
         return node;
     }
 
+    /**
+     * Adds a 1D Collection Node to the graph, which is a node that can be connected to a 2D Collection Input
+     * @param graph Graph to add the node to
+     * @param nodeArgument2DCollection The NodeArgument which created this node (must be 2D collection)
+     * @param x The x-position of the node
+     * @param y The y-position of the node
+     */
     public static void addNode(DescriptionGraph graph, NodeArgument nodeArgument2DCollection, int x, int y)
     {
         LudemeNode node = new LudemeNode(nodeArgument2DCollection, x, y);
@@ -477,9 +290,7 @@ public class Handler
         IGraphPanel graphPanel = graphPanelMap.get(graph);
         graphPanel.notifyNodeRemoved(graphPanel.nodeComponent(node));
         if(lastActionEquals(action))
-        {
             Handler.recordUserActions = true;
-        }
     }
 
     /**
@@ -496,30 +307,44 @@ public class Handler
         {
             int userChoice = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove " + nodes.size() + " nodes?", "Remove nodes", JOptionPane.YES_NO_OPTION);
             if(userChoice != JOptionPane.YES_OPTION)
+            {
                 return;
+            }
         }
 
         // remove root node and already deleted nodes
         for(LudemeNode node : new ArrayList<>(nodes))
+        {
             if(graph.getRoot() == node)
             {
                 nodes.remove(node);
                 break;
+            }
         }
 
         IUserAction action = new RemovedNodesAction(graphPanelMap.get(graph), nodes);
         addAction(action);
 
-        if(lastActionEquals(action)) Handler.recordUserActions = false;
-        for(LudemeNode n : nodes) removeNode(graph, n);
-        if(lastActionEquals(action)) Handler.recordUserActions = true;
+        if(lastActionEquals(action))
+            Handler.recordUserActions = false;
+        for(LudemeNode n : nodes)
+            removeNode(graph, n);
+        if(lastActionEquals(action))
+            Handler.recordUserActions = true;
     }
 
+    /**
+     * Removes currently selected nodes from the currently selected graph
+     */
     public static void remove()
     {
         remove(currentGraphPanel.graph());
     }
 
+    /**
+     * Removes currently selected nodes from the given graph
+     * @param graph Graph to remove nodes from
+     */
     public static void remove(DescriptionGraph graph)
     {
         List<LudemeNode> selectedNodes = selectedNodes(graph);
@@ -531,6 +356,131 @@ public class Handler
             removeNodes(graph, selectedNodes);
     }
 
+
+    // ~~~~~~~  Changes to the nodes  ~~~~~~~
+
+    /**
+     * Updates the selected clause of a node
+     * @param graph Graph to update the node in
+     * @param node Node to update
+     * @param c Clause to update to
+     */
+    public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c)
+    {
+        Clause oldClause = node.selectedClause();
+        if(oldClause == c)
+            return;
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        IUserAction action = new ChangedClauseAction(graphPanel, node, oldClause, c);
+        addAction(action);
+        // remove all edges from the node
+        for(Object input : node.providedInputsMap().values())
+        {
+            if(input instanceof LudemeNode)
+            {
+                if(lastActionEquals(action))
+                {
+                    Handler.recordUserActions = false;
+                    removeEdge(graph, node, (LudemeNode) input);
+                    Handler.recordUserActions = true;
+                }
+            }
+        }
+
+        if(c.args() == null)
+            node.setSelectedClause(c.symbol().rule().rhs().get(0));
+        else
+            node.setSelectedClause(c);
+
+        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node));
+    }
+
+
+    /**
+     * Adds an empty collection input to collection of a node
+     * @param graph The graph that contains the node.
+     * @param node  The node to update.
+     * @param nodeArgument The argument of the node to update, which is a collection.
+     */
+    public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument)
+    {
+        if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + nodeArgument);
+
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+
+        Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
+
+        if(oldCollection == null)
+        {
+            IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, 1, null);
+            addAction(action);
+            if(lastActionEquals(action))
+            {
+                Handler.recordUserActions = false;
+            }
+            updateInput(graph, node, nodeArgument, new Object[2]);
+            if(lastActionEquals(action))
+            {
+                Handler.recordUserActions = true;
+            }
+            graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, 1);
+            return;
+        }
+        Object[] newCollection = new Object[oldCollection.length + 1];
+        System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
+        IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, oldCollection.length, null);
+        addAction(action);
+        if(lastActionEquals(action))
+            Handler.recordUserActions = false;
+        updateInput(graph, node, nodeArgument, newCollection);
+        if(lastActionEquals(action))
+            Handler.recordUserActions = true;
+
+        graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, newCollection.length - 1);
+    }
+
+    /**
+     * if a collection element was removed, update the provided input array
+     * @param graph
+     * @param node
+     * @param nodeArgument
+     * @param elementIndex Index of collection element
+     */
+    public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, int elementIndex)
+    {
+        if(DEBUG) System.out.println("[HANDLER] removeCollectionElement(graph, node, nodeArgument, elementIndex) Removing collection element of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex);
+        Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
+        if(oldCollection == null)
+            return;
+
+        // get input
+        Object input = oldCollection[elementIndex];
+
+        IUserAction action = new RemovedCollectionAction(graphPanelMap.get(graph), node, nodeArgument, elementIndex, input);
+        addAction(action);
+
+        Object[] newCollection = new Object[oldCollection.length - 1];
+
+        if(currentUndoAction instanceof AddedCollectionAction)
+            if(((AddedCollectionAction) currentUndoAction).isUpdated(node, nodeArgument, elementIndex))
+                ((AddedCollectionAction) currentUndoAction).setInput(input);
+
+        System.arraycopy(oldCollection, 0, newCollection, 0, elementIndex);
+        if (oldCollection.length - (elementIndex + 1) >= 0)
+            System.arraycopy(oldCollection, elementIndex + 1, newCollection, elementIndex + 1 - 1, oldCollection.length - (elementIndex + 1));
+
+        if(lastActionEquals(action))
+            Handler.recordUserActions = false;
+        updateInput(graph, node, nodeArgument, newCollection);
+        if(input instanceof LudemeNode)
+            removeEdge(graph, node, (LudemeNode) input, elementIndex);
+        if(lastActionEquals(action))
+            Handler.recordUserActions = true;
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.notifyCollectionRemoved(graphPanel.nodeComponent(node), nodeArgument, elementIndex);
+    }
+
+
     /**
      * Adds and edge between two nodes.
      * @param graph The graph that contains the nodes.
@@ -540,7 +490,9 @@ public class Handler
      */
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument){
         // check whether the edge already exists
-        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
+        for(Edge e : graph.getEdgeList())
+            if(e.getNodeA() == from.id() && e.getNodeB() == to.id())
+                return;
         if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument) -> Adding edge: " + from.title() + " -> " + to.title());
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
@@ -562,7 +514,9 @@ public class Handler
      */
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument, int elementIndex){
         // check whether the edge already exists
-        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
+        for(Edge e : graph.getEdgeList())
+            if(e.getNodeA() == from.id() && e.getNodeB() == to.id())
+                return;
         if(DEBUG) System.out.println("[HANDLER] addEdge(graph, form, to, nodeArgument, elementIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", elementIndex: " + elementIndex);
         graph.addEdge(from.id(), to.id());
         // here form is the parent node
@@ -571,9 +525,7 @@ public class Handler
 
         // if the edge is part of a collection, adjust the collection size
         while(from.providedInputsMap().get(nodeArgument) == null || elementIndex+1>((Object[])from.providedInputsMap().get(nodeArgument)).length)
-        {
             addCollectionElement(graph, from, nodeArgument);
-        }
 
         // notify graph panel to draw edge
         IGraphPanel graphPanel = graphPanelMap.get(graph);
@@ -589,7 +541,9 @@ public class Handler
      */
     public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int inputFieldIndex){
         // check whether the edge already exists
-        for(Edge e : graph.getEdgeList()) if(e.getNodeA() == from.id() && e.getNodeB() == to.id()) return;
+        for(Edge e : graph.getEdgeList())
+            if(e.getNodeA() == from.id() && e.getNodeB() == to.id())
+                return;
 
         if(DEBUG) System.out.println("[HANDLER] nodeArgument(graph, form, to, inputFieldIndex) -> Adding edge: " + from.title() + " -> " + to.title() + ", inputFieldIndex: " + inputFieldIndex);
 
@@ -603,25 +557,55 @@ public class Handler
         graphPanel.notifyEdgeAdded(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to), inputFieldIndex);
     }
 
+
+    /**
+     * Removes an edge between two nodes.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     */
     public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
         removeEdge(graph, from, to, true);
     }
 
+    /**
+     * Removes an edge between two nodes.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     * @param notify Whether the graph panel should be notified about the removal of the edge
+     */
     public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, boolean notify){
         if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to) -> Removing edge: " + from.title() + " -> " + to.title());
         graph.removeEdge(from.id(), to.id());
         from.removeChildren(to);
         to.setParent(null);
-        if(notify) {
+        if(notify)
+        {
             IGraphPanel graphPanel = graphPanelMap.get(graph);
             graphPanel.notifyEdgeRemoved(graphPanel.nodeComponent(from), graphPanel.nodeComponent(to));
         }
     }
 
+    /**
+     * Removes an edge between two nodes of a given collection element index.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     * @param elementIndex The index of the element in the collection
+     */
     public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex){
         removeEdge(graph, from, to, elementIndex, true);
     }
 
+    /**
+     * Removes an edge between two nodes of a given collection element index.
+     * @param graph The graph that contains the nodes.
+     * @param from The node that the edge starts from.
+     * @param to The node that the edge ends at.
+     * @param elementIndex The index of the element in the collection
+     * @param notify Whether the graph panel should be notified about the removal of the edge
+     */
     public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex, boolean notify){
         if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to, elementIndex) -> Removing edge: " + from.title() + " -> " + to.title());
         graph.removeEdge(from.id(), to.id());
@@ -634,47 +618,29 @@ public class Handler
         }
     }
 
-    /**
-     * Updates the current clause of a node.
-     */
-    public static void updateCurrentClause(DescriptionGraph graph, LudemeNode node, Clause c)
-    {
-        Clause oldClause = node.selectedClause();
-        if(oldClause == c) return;
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        IUserAction action = new ChangedClauseAction(graphPanel, node, oldClause, c);
-        addAction(action);
-        // remove all edges from the node
-        for(Object input : node.providedInputsMap().values())
-            if(input instanceof LudemeNode)
-            {
-                if(lastActionEquals(action))
-                {
-                    Handler.recordUserActions = false;
-                    removeEdge(graph, node, (LudemeNode) input);
-                    Handler.recordUserActions = true;
-                }
-            }
-        if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
-        else node.setSelectedClause(c);
-        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node));}
 
     /**
-     * Assigns a IGraphPanel to a DescriptionGraph
-     * @param graph graph to be assigned
-     * @param graphPanel graph panel
+     * An optional terminal argument was activated/deactivated
+     * @param graph
+     * @param node
+     * @param argument
+     * @param activate
      */
-    public static void addGraphPanel(DescriptionGraph graph, IGraphPanel graphPanel)
+    public static void activateOptionalTerminalField(DescriptionGraph graph, LudemeNode node, NodeArgument argument, boolean activate)
     {
-        if(!graphPanelMap.containsKey(graph))
-        {
-            graphPanelMap.put(graph, graphPanel);
-            if(graphPanel.isDefineGraph())
-                defineGraphPanels.add((DefineGraphPanel) graphPanel);
-            performedUserActionsMap.put(graphPanel, new Stack<>());
-            undoneUserActionsMap.put(graphPanel, new Stack<>());
-        }
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        IUserAction action = new ActivateOptionalTerminalAction(graphPanel, node, argument, activate);
+
+        addAction(action);
+        if(lastActionEquals(action))
+            Handler.recordUserActions = false;
+        graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, activate);
+        if(lastActionEquals(action))
+            Handler.recordUserActions = true;
     }
+
+
+    // ~~~~~~~  Node Input Updates  ~~~~~~~
 
     /**
      * Updates the input of a node.
@@ -700,7 +666,9 @@ public class Handler
                 }
             }
             else
+            {
                 addAction(new AddedConnectionAction(graphPanel, node, (LudemeNode) input, nodeArgument));
+            }
         }
         if(input == null)
         {
@@ -730,55 +698,6 @@ public class Handler
             compile();
     }
 
-    private static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)
-    {
-        LudemeNode last = node;
-        while(last.parentNode() != null)
-            last = last.parentNode();
-        return last == graph.getRoot();
-    }
-
-    /**
-     * Adds an empty collection input to collection of a node
-     * @param graph The graph that contains the node.
-     * @param node  The node to update.
-     * @param nodeArgument The argument of the node to update, which is a collection.
-     */
-    public static void addCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument)
-    {
-        if(DEBUG) System.out.println("[HANDLER] addCollectionElement(graph, node, nodeArgument) Adding collection element of " + node.title() + ", " + nodeArgument);
-
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-
-        Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
-
-        if(oldCollection == null)
-        {
-            IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, 1, null);
-            addAction(action);
-            if(lastActionEquals(action))
-                Handler.recordUserActions = false;
-            updateInput(graph, node, nodeArgument, new Object[2]);
-            if(lastActionEquals(action))
-                Handler.recordUserActions = true;
-            graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, 1);
-            return;
-        }
-        Object[] newCollection = new Object[oldCollection.length + 1];
-        System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
-        IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, oldCollection.length, null);
-        addAction(action);
-        if(lastActionEquals(action))
-            Handler.recordUserActions = false;
-        updateInput(graph, node, nodeArgument, newCollection);
-        if(lastActionEquals(action))
-            Handler.recordUserActions = true;
-
-        graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), nodeArgument, newCollection.length - 1);
-    }
-
-
-
     /**
      * Updates the input of a collection field
      * @param graph
@@ -791,71 +710,318 @@ public class Handler
     {
         if(DEBUG) System.out.println("[HANDLER] updateCollectionInput(graph, node, nodeArgument, input, elementIndex) Updating collection input of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex + " to " + input);
         if(node.providedInputsMap().get(nodeArgument) == null)
-        {
             node.setProvidedInput(nodeArgument, new Object[1]);
-        }
 
-        if(input == null && node.providedInputsMap().get(nodeArgument) instanceof Object[] && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) return;
+        if(input == null && node.providedInputsMap().get(nodeArgument) instanceof Object[] && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length)
+            return;
 
-        while(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length) addCollectionElement(graph, node, nodeArgument);
+        while(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length)
+            addCollectionElement(graph, node, nodeArgument);
         Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
         in[elementIndex] = input;
         Handler.updateInput(graph, node, nodeArgument, in);
     }
 
 
+
+    // ~~~~~~~  Defines  ~~~~~~~
+
     /**
-     * if a collection element was removed, update the provided input array
-     * @param graph
-     * @param node
-     * @param nodeArgument
-     * @param elementIndex Index of collection element
+     *
+     * @return A list of define ludeme nodes
      */
-    public static void removeCollectionElement(DescriptionGraph graph, LudemeNode node, NodeArgument nodeArgument, int elementIndex)
+    public static List<LudemeNode> defineNodes()
     {
-        if(DEBUG) System.out.println("[HANDLER] removeCollectionElement(graph, node, nodeArgument, elementIndex) Removing collection element of " + node.title() + ", " + nodeArgument + ", elementIndex: " + elementIndex);
-        Object[] oldCollection = (Object[]) node.providedInputsMap().get(nodeArgument);
-        if(oldCollection == null) return;
-
-        // get input
-        Object input = oldCollection[elementIndex];
-
-        IUserAction action = new RemovedCollectionAction(graphPanelMap.get(graph), node, nodeArgument, elementIndex, input);
-        addAction(action);
-
-        Object[] newCollection = new Object[oldCollection.length - 1];
-
-        if(currentUndoAction instanceof AddedCollectionAction)
+        List<LudemeNode> list = new ArrayList<>();
+        for(DefineGraphPanel dgp : defineGraphPanels)
         {
-            if(((AddedCollectionAction) currentUndoAction).isUpdated(node, nodeArgument, elementIndex))
+            LudemeNode defineNode = dgp.graph().defineNode();
+            if(defineNode != null)
             {
-                ((AddedCollectionAction) currentUndoAction).setInput(input);
+                list.add(defineNode);
             }
         }
+        return list;
+    }
 
-        System.arraycopy(oldCollection, 0, newCollection, 0, elementIndex);
-        if (oldCollection.length - (elementIndex + 1) >= 0)
-            System.arraycopy(oldCollection, elementIndex + 1, newCollection, elementIndex + 1 - 1, oldCollection.length - (elementIndex + 1));
+    /**
+     * Updates all define nodes' symbol. Called when the title was changed.
+     * The effect of this is that the title of the affected define nodes is changed.
+     * @param graph The modified define graph
+     * @param symbol The new symbol
+     */
+    public static void updateDefineNodes(DescriptionGraph graph, Symbol symbol)
+    {
+        if(DEBUG) System.out.println("[HANDLER] Title of Define Node changed to " + symbol.name());
+        // Get List of define nodes
+        List<LudemeNode> defineNodes = defineLudemeNodes.get(graph);
+        if(defineNodes == null)
+            return;
+        for(LudemeNode ln : defineNodes)
+        {
+            // Update symbol
+            ln.updateDefineNode(symbol);
+            // Update component
+            // get graph panel
+            IGraphPanel gp = graphPanelMap.get(defineNodeToGraphMap.get(ln));
+            // get component and update component
+            gp.nodeComponent(ln).repaint();
+        }
 
-        if(lastActionEquals(action))
-            Handler.recordUserActions = false;
-        updateInput(graph, node, nodeArgument, newCollection);
-        if(input instanceof LudemeNode)
-            removeEdge(graph, node, (LudemeNode) input, elementIndex);
-        if(lastActionEquals(action))
-            Handler.recordUserActions = true;
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.notifyCollectionRemoved(graphPanel.nodeComponent(node), nodeArgument, elementIndex);
+    }
+
+    /**
+     * Updates all define nodes' list of required parameters. Called when the parameters were changed.
+     *     1) currentNodeArguments field in LudemeNode updated
+     *     2) Remove invalid collections
+     *     3) Add/Remove input fields according to new list
+     * @param graph
+     * @param parameters
+     */
+    public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters)
+    {
+
     }
 
 
-    private static List<LudemeNode> currentCopy = new ArrayList<>(); // current copy
+    // ~~~~~~~  Compiling  ~~~~~~~
 
+    /**
+     * Attempts to compile the graph.
+     * @return Array with 3 elements: Game (or null), List of Error Messages, List of unsatisfied nodes.
+     */
+    public static Object[] compile()
+    {
+        return compile(false);
+    }
+
+    /**
+     * Attempts to compile the graph.
+     * @param openDialog Whether a dialog displaying the errors should be opened.
+     * @return Array with 3 elements: Game (or null), List of Error Messages, List of unsatisfied nodes.
+     */
+    public static Object[] compile(boolean openDialog)
+    {
+        if(!recordUserActions)
+            return new Object[]{null, null, null};
+        Object[] output = new Object[3];
+        List<LudemeNode> unsatisfiedNodes = isComplete(gameGraphPanel.graph());
+        if(!unsatisfiedNodes.isEmpty())
+        {
+            List<String> errors = new ArrayList<>();
+            StringBuilder errorMessage = new StringBuilder("Nodes are missing required arguments:\n");
+            for(LudemeNode node : unsatisfiedNodes)
+            {
+                errorMessage.append(node.title()).append(", \n");
+            }
+            errors.add(errorMessage.toString());
+            output[1] = errors;
+            output[2] = unsatisfiedNodes;
+            if(liveCompile)
+            {
+                lastCompile = output;
+                if(toolsPanel != null)
+                {
+                    toolsPanel.play.updateCompilable(output);
+                }
+            }
+            if(openDialog)
+            {
+                Handler.markUncompilable();
+                JOptionPane.showMessageDialog(null, errorMessage.toString(), "Couldn't compile", JOptionPane.ERROR_MESSAGE);
+            }
+            return output;
+        }
+
+        Description d = gameGraphPanel.graph().description();
+        Report r = new Report();
+        try
+        {
+            if (StartVisualEditor.app != null)
+            {
+                output[0] = compiler.Compiler.compile(d, StartVisualEditor.app.manager().settingsManager().userSelections(), r, false);
+            }
+            else
+            {
+                output[0] = compiler.Compiler.compile(d, new UserSelections(new ArrayList<>()), r, false);
+            }
+        }
+        catch(Exception ignored)
+        {}
+
+        output[1] = r.errors();
+        if(liveCompile)
+        {
+            lastCompile = output;
+            if(toolsPanel != null)
+            {
+                toolsPanel.play.updateCompilable(output);
+            }
+        }
+        if(output[0] == null && openDialog)
+        {
+            java.util.List<String> errors = (List<String>) output[1];
+            String errorMessage;
+            if (errors.isEmpty())
+            {
+                errorMessage = "Could not create \"game\" ludeme from description.";
+            }
+            else
+            {
+                errorMessage = errors.toString();
+                errorMessage = errorMessage.substring(1, errorMessage.length() - 1);
+            }
+            JOptionPane.showMessageDialog(null, errorMessage, "Couldn't compile", JOptionPane.ERROR_MESSAGE);
+        }
+        return output;
+    }
+
+    /**
+     * Marks uncompilable nodes in the graph.
+     */
+    public static void markUncompilable()
+    {
+        List<LudemeNode> unsatisfiedNodes = isComplete(gameGraphPanel.graph());
+        List<LudemeNodeComponent> lncs = new ArrayList<>();
+        for(LudemeNode node : unsatisfiedNodes)
+            lncs.add(gameGraphPanel.nodeComponent(node));
+        gameGraphPanel.notifyUncompilable(lncs);
+    }
+
+    /**
+     * Executes the game
+     */
+    public static void play()
+    {
+        Object[] output = lastCompile;
+        // first compile
+        if(lastCompile == null)
+            output = compile();
+        if(output[0] == null)
+            return;
+        Game game = (Game) output[0];
+        // load game
+        loadGame(game, StartVisualEditor.app);
+    }
+
+    /**
+     * Executes a given game
+     * @param game
+     */
+    public static void play(Game game)
+    {
+        loadGame(game, StartVisualEditor.app);
+    }
+
+    /**
+     * Loads the game into the game engine.
+     * @param game
+     * @param app
+     */
+    public static void loadGame(Game game, PlayerApp app)
+    {
+        app.manager().ref().setGame(app.manager(), game);
+        GameUtil.startGame(app);
+        app.restartGame();
+        DesktopApp.frame().requestFocus();
+    }
+
+
+    // ~~~~~~~  Selecting Nodes  ~~~~~~~
+
+    /**
+     *
+     * @param graph
+     * @return The selected nodes of a graph
+     */
+    public static List<LudemeNode> selectedNodes(DescriptionGraph graph)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        List<LudemeNode> nodes = new ArrayList<>();
+        for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
+            nodes.add(lnc.node());
+        return nodes;
+    }
+
+    /**
+     * Selects all nodes of the current graph.
+     */
+    public static void selectAll()
+    {
+        selectAll(currentGraphPanel.graph());
+    }
+
+    /**
+     * Unselects all nodes of the current graph.
+     */
+    public static void unselectAll()
+    {
+        currentGraphPanel.deselectEverything();
+    }
+
+    /**
+     * Selects all nodes of a graph.
+     * @param graph
+     */
+    public static void selectAll(DescriptionGraph graph)
+    {
+        IGraphPanel graphPanel = graphPanelMap.get(graph);
+        graphPanel.selectAllNodes();
+    }
+
+    /**
+     * Selects a node
+     * @param node
+     */
+    public static void selectNode(LudemeNodeComponent node)
+    {
+        currentGraphPanel.addNodeToSelections(node);
+        currentGraphPanel.repaint();
+    }
+
+    /**
+     * Activates the selection mode
+     */
+    public static void activateSelectionMode()
+    {
+        currentGraphPanel.enterSelectionMode();
+    }
+
+    /**
+     * Deactivates the selection mode
+     */
+    public static void deactivateSelectionMode()
+    {
+        currentGraphPanel.exitSelectionMode();
+        toolsPanel.deactivateSelection();
+        currentGraphPanel.repaint();
+    }
+
+    /**
+     * Turns off the selection button in the tools panel.
+     */
+    public static void turnOffSelectionBtn()
+    {
+        toolsPanel.deactivateSelection();
+        toolsPanel.repaint();
+        toolsPanel.revalidate();
+    }
+
+
+    // ~~~~~~~  Copying Nodes  ~~~~~~~
+
+    /**
+     * Copies the selected nodes of the currently active graph panel.
+     */
     public static void copy()
     {
         copy(currentGraphPanel.graph());
     }
 
+    /**
+     * Copies the selected nodes of the given graph.
+     * @param graph
+     */
     public static void copy(DescriptionGraph graph)
     {
         IGraphPanel graphPanel = graphPanelMap.get(graph);
@@ -866,35 +1032,50 @@ public class Handler
         copy(toCopy);
     }
 
+    /**
+     * Copies the given nodes.
+     * @param nodes
+     */
     public static void copy(List<LudemeNode> nodes)
     {
         if(nodes.isEmpty())
             return;
         if(DEBUG) System.out.println("[HANDLER] copy(graph, nodes) Copying " + nodes.size() + " nodes");
-        currentCopy.clear();
-        currentCopy = copyTemporarily( nodes);
+        clipboard.clear();
+        clipboard = copyTemporarily( nodes);
     }
 
+    /**
+     * Copies the given nodes and returns a list of the copied nodes.
+     * @param nodes
+     * @return
+     */
     public static List<LudemeNode> copyTemporarily(List<LudemeNode> nodes)
     {
-        if(nodes.isEmpty()) return new ArrayList<>();
+        if(nodes.isEmpty())
+            return new ArrayList<>();
         if(DEBUG) System.out.println("[HANDLER] copy(graph, nodes) Copying " + nodes.size() + " nodes");
 
         HashMap<LudemeNode, LudemeNode> copiedNodes = new HashMap<>(); // <original, copy>
 
         // create copies
-        for(LudemeNode node : nodes) copiedNodes.put(node, node.copy());
+        for(LudemeNode node : nodes)
+            copiedNodes.put(node, node.copy());
         // fill inputs (connections and collections)
-        for(LudemeNode node : nodes) {
+        for(LudemeNode node : nodes)
+        {
             LudemeNode copy = copiedNodes.get(node);
             // iterate each original node's provided inputs
-            for (NodeArgument arg : node.providedInputsMap().keySet()) {
+            for (NodeArgument arg : node.providedInputsMap().keySet())
+            {
                 Object input = node.providedInputsMap().get(arg);
                 // input is a node
-                if (input instanceof LudemeNode) {
+                if (input instanceof LudemeNode)
+                {
                     LudemeNode inputNode = (LudemeNode) input;
                     // if input node is in the list of nodes to copy, copy it
-                    if (nodes.contains(inputNode)) {
+                    if (nodes.contains(inputNode))
+                    {
                         LudemeNode inputNodeCopy = copiedNodes.get(inputNode);
                         copy.setProvidedInput(arg, inputNodeCopy);
                         copy.addChildren(inputNodeCopy);
@@ -906,7 +1087,8 @@ public class Handler
                 {
                     Object[] inputCollection = (Object[]) input;
                     Object[] inputCollectionCopy = new Object[inputCollection.length];
-                    for (int i = 0; i < inputCollection.length; i++) {
+                    for (int i = 0; i < inputCollection.length; i++)
+                    {
                         // if input element is a node
                         if (inputCollection[i] instanceof LudemeNode)
                         {
@@ -929,29 +1111,52 @@ public class Handler
         return new ArrayList<>(copiedNodes.values());
     }
 
-    public static void duplicate(DescriptionGraph graph, List<LudemeNode> nodes)
+    /**
+     *
+     * @return List of currently copied nodes
+     */
+    public static List<LudemeNode> clipboard()
     {
-        // remove root node
-        nodes.remove(graph.getRoot());
-        if(nodes.isEmpty()) return;
-        // get left most node
-        LudemeNode leftMostNode = nodes.get(0);
-        for(LudemeNode node : nodes) if(node.x() < leftMostNode.x()) leftMostNode = node;
-        int y = leftMostNode.y() + leftMostNode.height();
-        paste(graph, copyTemporarily(nodes), leftMostNode.x(), y);
+        return clipboard;
     }
 
-    public static void duplicate(DescriptionGraph graph)
+
+    // ~~~~~~~  Pasting Nodes  ~~~~~~~
+
+    /**
+     * Pastes nodes copied to the clipboard
+     * @param x x-coordinate of the paste location
+     * @param y y-coordinate of the paste location
+     */
+    public static void paste(int x, int y)
     {
-        List<LudemeNode> nodes = selectedNodes(graph);
-        duplicate(graph, nodes);
+        paste(currentGraphPanel.graph(), x, y);
     }
 
-    public static void duplicate()
+    /**
+     * Pastes nodes copied to the clipboard to the given graph
+     * @param graph
+     * @param x
+     * @param y
+     */
+    public static void paste(DescriptionGraph graph, int x, int y)
     {
-        duplicate(currentGraphPanel.graph());
+        if(clipboard.isEmpty())
+            return;
+        // old copy
+        List<LudemeNode> oldCopy = new ArrayList<>(clipboard);
+        clipboard.clear();
+        copy(oldCopy);
+        paste(graph, oldCopy, x, y);
     }
 
+    /**
+     * Pastes a list of nodes
+     * @param graph
+     * @param nodes
+     * @param x x-coordinate of the first node
+     * @param y y-coordinate of the first node
+     */
     public static void paste(DescriptionGraph graph, List<LudemeNode> nodes, int x, int y)
     {
         if(DEBUG) System.out.println("[HANDLER] paste(graph, x, y) Pasting " + nodes.size() + " nodes");
@@ -960,9 +1165,8 @@ public class Handler
         // find left-most node
         LudemeNode leftMostNode = nodes.get(0);
         for(LudemeNode node : nodes)
-        {
-            if(node.x() < leftMostNode.x()) leftMostNode = node;
-        }
+            if(node.x() < leftMostNode.x())
+                leftMostNode = node;
 
         int x_shift, y_shift;
 
@@ -1014,7 +1218,10 @@ public class Handler
                                 addEdge(graph, parent, inputNode, argument, i);
                             }
                         }
-                        else if(i>0) addCollectionElement(graph, parent, argument);
+                        else if(i>0)
+                        {
+                            addCollectionElement(graph, parent, argument);
+                        }
                     }
                     if(parent.providedInputsMap().get(argument) == placeholder)
                     {
@@ -1029,113 +1236,91 @@ public class Handler
         addAction(action);
     }
 
-    public static void paste(int x, int y)
-    {
-        paste(currentGraphPanel.graph(), x, y);
-    }
 
-    public static void paste(DescriptionGraph graph, int x, int y)
-    {
-        if(currentCopy.isEmpty()) return;
-        // old copy
-        List<LudemeNode> oldCopy = new ArrayList<>(currentCopy);
-        currentCopy.clear();
-        copy(oldCopy);
-        paste(graph, oldCopy, x, y);
-    }
+    // ~~~~~~~  Duplicating Nodes  ~~~~~~~
+
     /**
-     *
-     * @param node node in operation
-     * @param x x coordinate
-     * @param y y coordinate
+     * Duplicates the currently selected nodes of the currently active graph
      */
-    public static void updatePosition(LudemeNode node, int x, int y)
+    public static void duplicate()
     {
-        node.setPos(x, y);
+        duplicate(currentGraphPanel.graph());
     }
 
+    /**
+     * Duplicates the currently selected nodes
+     * @param graph
+     */
+    public static void duplicate(DescriptionGraph graph)
+    {
+        List<LudemeNode> nodes = selectedNodes(graph);
+        duplicate(graph, nodes);
+    }
+
+    /**
+     * Duplicates a list of nodes
+     * @param graph
+     * @param nodes
+     */
+    public static void duplicate(DescriptionGraph graph, List<LudemeNode> nodes)
+    {
+        // remove root node
+        nodes.remove(graph.getRoot());
+        if(nodes.isEmpty())
+            return;
+        // get left most node
+        LudemeNode leftMostNode = nodes.get(0);
+        for(LudemeNode node : nodes)
+            if(node.x() < leftMostNode.x())
+                leftMostNode = node;
+        int y = leftMostNode.y() + leftMostNode.height();
+        paste(graph, copyTemporarily(nodes), leftMostNode.x(), y);
+    }
+
+
+    // ~~~~~~~  Collapsing and Expanding Nodes  ~~~~~~~
+
+    /**
+     * Collapses the currently selected nodes of the currently active graph
+     */
     public static void collapse()
     {
         collapse(currentGraphPanel.graph());
     }
 
+    /**
+     * Collapses the currently selected nodes of a given graph
+     * @param graph
+     */
     public static void collapse(DescriptionGraph graph)
     {
         List<LudemeNode> selectedNodes = selectedNodes(graph);
-        if(selectedNodes.isEmpty()) return;
+        if(selectedNodes.isEmpty())
+            return;
         if(selectedNodes.size() == 1)
         {
-            if(selectedNodes.get(0).parentNode() != null) collapseNode(graph, selectedNodes.get(0), true);
+            if(selectedNodes.get(0).parentNode() != null)
+            {
+                collapseNode(graph, selectedNodes.get(0), true);
+            }
             return;
         }
         List<LudemeNode> roots = new ArrayList<>();
         for(LudemeNode node : selectedNodes)
-        {
-            if(node.parentNode() == null) roots.add(node);
-            else if(!selectedNodes.contains(node.parentNode())) roots.add(node.parentNode());
-        }
+            if(node.parentNode() == null)
+                roots.add(node);
+            else if(!selectedNodes.contains(node.parentNode()))
+                roots.add(node.parentNode());
+
         // find all subtree root's children
         List<LudemeNode> toCollapse = new ArrayList<>();
         for(LudemeNode node : selectedNodes)
-        {
-            if(roots.contains(node.parentNode())) toCollapse.add(node);
-        }
-        System.out.println("[HANDLER] collapse(graph) Collapsing " + toCollapse.size() + " nodes");
+            if(roots.contains(node.parentNode()))
+                toCollapse.add(node);
+
         for(LudemeNode node : toCollapse)
-        {
             collapseNode(graph, node, true);
-        }
         graphPanelMap.get(graph).deselectEverything();
-    }
-
-
-    public static void expand()
-    {
-        expand(currentGraphPanel.graph());
-    }
-    public static void expand(DescriptionGraph graph)
-    {
-        List<LudemeNode> selectedNodes = selectedNodes(graph);
-        // find all subtree root
-        List<LudemeNode> toExpand = new ArrayList<>();
-        for(LudemeNode node : selectedNodes)
-        {
-            toExpand.addAll(node.childrenNodes());
-        }
-
-        System.out.println("[HANDLER] expand(graph) Expanding " + toExpand.size() + " nodes");
-
-        for (LudemeNode node : toExpand) {
-            collapseNode(graph, node, false);
-        }
-        graphPanelMap.get(graph).deselectEverything();
-    }
-
-    public static List<LudemeNode> selectedNodes(DescriptionGraph graph)
-    {
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        List<LudemeNode> nodes = new ArrayList<>();
-        for(LudemeNodeComponent lnc : graphPanel.selectedLnc())
-        {
-            nodes.add(lnc.node());
-        }
-        return nodes;
-    }
-
-    public static void selectAll()
-    {
-        selectAll(currentGraphPanel.graph());
-    }
-
-    public static void unselectAll()
-    {
-        currentGraphPanel.deselectEverything();
-    }
-
-    public static void selectAll(DescriptionGraph graph)
-    {
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        graphPanel.selectAllNodes();
     }
 
     /**
@@ -1153,47 +1338,41 @@ public class Handler
         graphPanel.notifyCollapsed(graphPanel.nodeComponent(node), collapse);
     }
 
-    public static void activateOptionalTerminalField(DescriptionGraph graph, LudemeNode node, NodeArgument argument, boolean activate)
+    /**
+     * Expands the currently selected nodes
+     */
+    public static void expand()
     {
-        IGraphPanel graphPanel = graphPanelMap.get(graph);
-        IUserAction action = new ActivateOptionalTerminalAction(graphPanel, node, argument, activate);
-
-        addAction(action);
-        if(lastActionEquals(action))
-            Handler.recordUserActions = false;
-        graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, activate);
-        if(lastActionEquals(action))
-            Handler.recordUserActions = true;
+        expand(currentGraphPanel.graph());
     }
 
-    public static void activateSelectionMode()
+    /*
+     * Expands the currently selected nodes of a given graph
+     */
+    public static void expand(DescriptionGraph graph)
     {
-        currentGraphPanel.enterSelectionMode();
+        List<LudemeNode> selectedNodes = selectedNodes(graph);
+        // find all subtree root
+        List<LudemeNode> toExpand = new ArrayList<>();
+        for(LudemeNode node : selectedNodes)
+            toExpand.addAll(node.childrenNodes());
+
+        for (LudemeNode node : toExpand)
+            collapseNode(graph, node, false);
+
+        graphPanelMap.get(graph).deselectEverything();
     }
 
-    public static void deactivateSelectionMode()
-    {
-        currentGraphPanel.exitSelectionMode();
-        toolsPanel.deactivateSelection();
-        currentGraphPanel.repaint();
-    }
 
-    public static void turnOffSelectionBtn()
-    {
-        toolsPanel.deactivateSelection();
-        toolsPanel.repaint();
-        toolsPanel.revalidate();
-    }
+    // ~~~~~~~  Undo and Redo  ~~~~~~~
 
-    private static boolean lastActionEquals(IUserAction action)
-    {
-        if(currentPerformedUserActions.isEmpty()) return false;
-        return currentPerformedUserActions.peek() == action;
-    }
-
+    /**
+     * Undoes the last action
+     */
     public static void undo()
     {
-        if(currentPerformedUserActions.isEmpty()) return;
+        if(currentPerformedUserActions.isEmpty())
+            return;
         currentUndoAction = currentPerformedUserActions.pop();
         if(DEBUG) System.out.println("[HANDLER] undo() Undoing " + currentUndoAction.actionType());
         currentUndoneUserActions.add(currentUndoAction);
@@ -1203,13 +1382,18 @@ public class Handler
         Handler.recordUserActions = true;
         if(DEBUG) System.out.println("[HANDLER] undo() Completed " + currentUndoAction.actionType());
         toolsPanel.updateUndoRedoBtns(currentPerformedUserActions, currentUndoneUserActions);
-        if(liveCompile) compile();
+        if(liveCompile)
+            compile();
         currentUndoAction = null;
     }
 
+    /**
+     * Redoes the last undone action
+     */
     public static void redo()
     {
-        if(currentUndoneUserActions.isEmpty()) return;
+        if(currentUndoneUserActions.isEmpty())
+            return;
         currentRedoAction = currentUndoneUserActions.pop();
         if(DEBUG) System.out.println("[HANDLER] redo() Redoing " + currentRedoAction.actionType());
         currentPerformedUserActions.add(currentRedoAction);
@@ -1219,31 +1403,124 @@ public class Handler
         Handler.recordUserActions = true;
         if(DEBUG) System.out.println("[HANDLER] redo() Completed " + currentRedoAction.actionType());
         toolsPanel.updateUndoRedoBtns(currentPerformedUserActions, currentUndoneUserActions);
-        if(liveCompile) compile();
+        if(liveCompile)
+            compile();
         currentRedoAction = null;
     }
 
+    /**
+     * Adds an action to the undo stack
+     * @param action
+     */
     private static void addAction(IUserAction action)
     {
-        if(!recordUserActions) return;
+        if(!recordUserActions)
+            return;
         if(DEBUG) System.out.println("Adding action: " + action.actionType());
         currentPerformedUserActions.add(action);
         currentUndoneUserActions = new Stack<>();
         toolsPanel.updateUndoRedoBtns(currentPerformedUserActions, currentUndoneUserActions);
     }
 
-
-    public static void selectNode(LudemeNodeComponent node)
+    /**
+     *
+     * @param action
+     * @return Whether the last action equals a given user action
+     */
+    private static boolean lastActionEquals(IUserAction action)
     {
-        currentGraphPanel.addNodeToSelections(node);
-        currentGraphPanel.repaint();
+        if(currentPerformedUserActions.isEmpty())
+            return false;
+        return currentPerformedUserActions.peek() == action;
     }
 
-    public static List<LudemeNode> copyList()
+
+    // ~~~~~~~  Appearance  ~~~~~~~
+
+    /**
+     * Sets the current active design palette
+     * @param palette
+     */
+    public static void setPalette(DesignPalette palette)
     {
-        return currentCopy;
+        currentPalette = palette;
+        for(IGraphPanel graphPanel : graphPanelMap.values())
+            graphPanel.repaint();
     }
 
+    /**
+     *
+     * @return The currently active design palette
+     */
+    public static DesignPalette currentPalette()
+    {
+        return currentPalette;
+    }
+
+    /**
+     * Sets the background
+     * @param background
+     */
+    public static void setBackground(IBackground background)
+    {
+        currentBackground = background;
+        for(IGraphPanel graphPanel : graphPanelMap.values())
+            graphPanel.repaint();
+    }
+
+    /**
+     *
+     * @return The current background
+     */
+    public static IBackground currentBackground()
+    {
+        return currentBackground;
+    }
+
+
+    // ~~~~~~~  Utility  ~~~~~~~
+
+    /**
+     * If the graph is complete (all required inputs filled)
+     * @param graph
+     * @return
+     */
+    public static List<LudemeNode> isComplete(DescriptionGraph graph)
+    {
+        List<LudemeNode> unsatisfiedNodes = new ArrayList<>();
+        for(LudemeNode ln : graph.getNodes())
+            if((graph.getRoot() == ln || ln.parentNode()!=null) && !ln.isSatisfied())
+                unsatisfiedNodes.add(ln);
+        return unsatisfiedNodes;
+    }
+
+
+    /**
+     * Whether a node has a path to the root
+     * @param graph
+     * @param node
+     * @return
+     */
+    private static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)
+    {
+        LudemeNode last = node;
+        while(last.parentNode() != null)
+            last = last.parentNode();
+        return last == graph.getRoot();
+    }
+
+    /**
+     * Updates the position of a node
+     * @param node node in operation
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    public static void updatePosition(LudemeNode node, int x, int y)
+    {
+        node.setPos(x, y);
+    }
+
+    
     public static Dimension getViewPortSize()
     {
         return currentGraphPanel.parentScrollPane().getViewport().getSize();
