@@ -19,11 +19,11 @@ public final class GraphRoutines
     /**
      * Tuning constants for metric evaluation
      */
-    private static final double NODES_MAX_DIST = 900;
+    private static final double NODES_MAX_DIST = 260;
 
-    private static final double NODES_MAX_SPREAD = 500;
+    private static final double NODES_MAX_SPREAD = 300;
 
-    private static final double[] ODS_TUNING = new double[] {1.0, 1.25, 5.5};
+    private static final double[] ODS_TUNING = new double[] {1.0, 1.0, 1.0};
 
     /**
      * Update of depth for graph nodes by BFS traversal
@@ -106,7 +106,7 @@ public final class GraphRoutines
                     xDiffMean += Math.abs(computeNodeHorizontalDistance(n, child, graph));
                 }
                 xDiffMean /= children.size();
-                System.out.println("Dist: "+xDiffMean);
+                System.out.println("xDiff: "+xDiffMean);
                 double D = (Math.max(0, Math.min(xDiffMean, NODES_MAX_DIST))) / (NODES_MAX_DIST);
                 // compute O
                 double O;
@@ -118,7 +118,7 @@ public final class GraphRoutines
                 {
                     iGNode f = graph.getNode(children.get(0));
                     iGNode l = graph.getNode(children.get(children.size()-1));
-                    O = (node.pos().y() - f.pos().y()) / Math.abs(l.pos().y() - f.pos().y());
+                    O = ((node.pos().y()+node.height()/2.0) - f.pos().y()) / Math.abs(l.pos().y() - f.pos().y());
                     O = Math.max(0.0, Math.min(1.0, O));
                 }
                 // compute S
