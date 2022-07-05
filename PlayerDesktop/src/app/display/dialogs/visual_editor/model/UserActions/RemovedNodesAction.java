@@ -22,8 +22,6 @@ public class RemovedNodesAction implements IUserAction
     private final HashMap<LudemeNode, LinkedHashMap<NodeArgument, Object[]>> copiedCollectionNodeIds = new HashMap<>();
     private final HashMap<Integer, LudemeNode> nodeId = new HashMap<>();
 
-    private boolean isUndone = false;
-
     public RemovedNodesAction(IGraphPanel graphPanel, List<LudemeNode> removedNodes)
     {
         this.graphPanel = graphPanel;
@@ -125,9 +123,7 @@ public class RemovedNodesAction implements IUserAction
     private void addAllNodes(List<LudemeNode> nodes)
     {
         for(LudemeNode node : nodes)
-        {
             Handler.addNode(graph, node);
-        }
     }
 
     private void assignParent(LudemeNode node)
@@ -161,14 +157,20 @@ public class RemovedNodesAction implements IUserAction
     private void assignInputs(LudemeNode node)
     {
         LinkedHashMap<NodeArgument, Object> inputs = copiedInputs.get(node);
-        for(NodeArgument arg : inputs.keySet()) {
+        for(NodeArgument arg : inputs.keySet())
+        {
             Object input = inputs.get(arg);
-            if(input == null) continue;
-            if(input instanceof LudemeNode) continue;
+            if(input == null || input instanceof LudemeNode)
+            {
+                continue;
+            }
             else if(input instanceof Object[])
             {
                 //Handler.updateInput(graph, removedNode, arg, input);
-                for(int i = 1; i < ((Object[])input).length; i++) graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), arg, i);
+                for(int i = 1; i < ((Object[])input).length; i++)
+                {
+                    graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), arg, i);
+                }
                 boolean isLudemeCollection = false;
                 for(Object o : (Object[])input)
                 {
@@ -182,12 +184,19 @@ public class RemovedNodesAction implements IUserAction
                 Object[] cid = collectionIds.get(arg);
                 for(int i = 0; i < cid.length; i++)
                 {
-                    if(isLudemeCollection) {
-                        if(cid[i] == null) continue;
+                    if(isLudemeCollection)
+                    {
+                        if(cid[i] == null)
+                        {
+                            continue;
+                        }
                         Handler.updateCollectionInput(graph, node, arg, nodeId.get((Integer)cid[i]), i);
                         Handler.addEdge(graph, node, nodeId.get((Integer) cid[i]), arg, i);
                     }
-                    else Handler.updateCollectionInput(graph, node, arg, ((Object[]) input)[i], i);
+                    else
+                    {
+                        Handler.updateCollectionInput(graph, node, arg, ((Object[]) input)[i], i);
+                    }
                 }
             }
             else Handler.updateInput(graph, node, arg, input);
@@ -195,10 +204,13 @@ public class RemovedNodesAction implements IUserAction
         }
     }
 
-    public void undo() {
+    public void undo()
+    {
         addAllNodes(removedNodesSorted);
-        for(LudemeNode n : removedNodesSorted) assignParent(n);
-        for(LudemeNode n : removedNodesSorted) assignInputs(n);
+        for(LudemeNode n : removedNodesSorted)
+            assignParent(n);
+        for(LudemeNode n : removedNodesSorted)
+            assignInputs(n);
 
         // add last edges to non-removed components
         //if(removedNodes.get(0).parentNode() != null) Handler.addEdge(graph, removedNodes.get(0).parentNode(),removedNodes.get(0), removedNodes.get(0).creatorArgument());
@@ -208,12 +220,8 @@ public class RemovedNodesAction implements IUserAction
 
         List<LudemeNodeComponent> lncs = new ArrayList<>();
         for(LudemeNode n : removedNodesSorted)
-        {
             lncs.add(graphPanel.nodeComponent(n));
-        }
         graphPanel.updateCollapsed(lncs);
-
-        isUndone = false;
     }
     /**
      * Redoes the action

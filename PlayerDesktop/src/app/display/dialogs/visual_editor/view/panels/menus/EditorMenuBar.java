@@ -55,13 +55,5 @@ public class EditorMenuBar extends JMenuBar {
         menu.add(jMenuItem);
     }
 
-    public void addJCheckBoxMenuItem(JMenu menu, String itemName, boolean selected, ActionListener actionListener, KeyStroke keyStroke)
-    {
-        JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem(itemName);
-        jMenuItem.addActionListener(actionListener);
-        jMenuItem.setSelected(selected);
-        jMenuItem.setAccelerator(keyStroke);
-        menu.add(jMenuItem);
-    }
 }
 

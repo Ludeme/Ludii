@@ -20,18 +20,17 @@ public class AddedCollectionAction implements IUserAction
     private final NodeArgument nodeArgument;
     private final int elementIndex;
     private Object collectionInput;
-    private boolean isUndone = false;
 
     /**
      * Constructor.
+     *
      * @param graphPanel
      * @param affectedNode
      * @param nodeArgument The argument that is provided by the collection.
      * @param elementIndex The index of the added element to the collection
-     * @param parentIndex (InputField-)Index of the collection root
-     * @param input The input that was added to the collection (null for non-terminal)
+     * @param input        The input that was added to the collection (null for non-terminal)
      */
-    public AddedCollectionAction(IGraphPanel graphPanel, LudemeNode affectedNode, NodeArgument nodeArgument, int parentIndex, int elementIndex, Object input)
+    public AddedCollectionAction(IGraphPanel graphPanel, LudemeNode affectedNode, NodeArgument nodeArgument, int elementIndex, Object input)
     {
         this.graphPanel = graphPanel;
         this.graph = graphPanel.graph();
@@ -81,7 +80,6 @@ public class AddedCollectionAction implements IUserAction
     @Override
     public void undo() {
         Handler.removeCollectionElement(graph, affectedNode,nodeArgument, elementIndex);
-        isUndone = false;
     }
 
     /**
@@ -95,6 +93,5 @@ public class AddedCollectionAction implements IUserAction
             System.out.println("INPUT:: " + collectionInput + ", " + elementIndex);
             Handler.updateCollectionInput(graph, affectedNode, nodeArgument, collectionInput, elementIndex);
         }
-        isUndone = true;
     }
 }

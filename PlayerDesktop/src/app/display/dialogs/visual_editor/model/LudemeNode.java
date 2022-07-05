@@ -722,21 +722,6 @@ public class LudemeNode implements iGNode
     }
 
     /**
-     *
-     * @return The depth of this node computed manually
-     */
-    public int depthManual()
-    {
-        int depth = 0;
-        LudemeNode current = this;
-        while(current.parentNode() != null){
-            depth++;
-            current = current.parentNode();
-        }
-        return depth;
-    }
-
-    /**
      * Set the position of this node
      * @param x the x coordinate to set
      * @param y the y coordinate to set

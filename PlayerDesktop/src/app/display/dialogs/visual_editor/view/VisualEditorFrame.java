@@ -31,7 +31,7 @@ public class VisualEditorFrame extends JFrame
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        VisualEditorPanel panel = new VisualEditorPanel(this);
+        VisualEditorPanel panel = new VisualEditorPanel();
         add(panel);
 
         addWindowListener(new WindowAdapter()

@@ -16,7 +16,6 @@ public class CollapsedAction implements IUserAction
     private final DescriptionGraph graph;
     private final LudemeNode collapsedNode;
     private final boolean collapsed;
-    private boolean isUndone = false;
 
     /**
      * Constructor.
@@ -61,7 +60,6 @@ public class CollapsedAction implements IUserAction
     @Override
     public void undo() {
         Handler.collapseNode(graph, collapsedNode, !collapsed);
-        isUndone = false;
     }
 
     /**
@@ -70,6 +68,5 @@ public class CollapsedAction implements IUserAction
     @Override
     public void redo() {
         Handler.collapseNode(graph, collapsedNode, collapsed);
-        isUndone = true;
     }
 }

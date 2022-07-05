@@ -94,7 +94,8 @@ public class LIngoingConnectionComponent extends JComponent {
     class ConnectionPointComponent extends JComponent
     {
         public boolean fill;
-        public int x,y = 0;
+        private final int x = 0;
+        private final int y = 0;
 
         public ConnectionPointComponent(boolean fill)
         {

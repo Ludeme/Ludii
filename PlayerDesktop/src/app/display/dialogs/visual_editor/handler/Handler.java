@@ -646,7 +646,7 @@ public class Handler
 
         if(oldCollection == null)
         {
-            IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, -404, 1, null);
+            IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, 1, null);
             addAction(action);
             if(lastActionEquals(action))
                 Handler.recordUserActions = false;
@@ -658,7 +658,7 @@ public class Handler
         }
         Object[] newCollection = new Object[oldCollection.length + 1];
         System.arraycopy(oldCollection, 0, newCollection, 0, oldCollection.length);
-        IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, -404, oldCollection.length, null);
+        IUserAction action = new AddedCollectionAction(graphPanel, node, nodeArgument, oldCollection.length, null);
         addAction(action);
         if(lastActionEquals(action))
             Handler.recordUserActions = false;

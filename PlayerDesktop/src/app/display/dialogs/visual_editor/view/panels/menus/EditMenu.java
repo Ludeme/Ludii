@@ -25,27 +25,27 @@ public class EditMenu extends JMenu
         menuBar.addJMenuItem(this, "Expand All", expandAll);
     }
 
-    ActionListener undo = e -> Handler.undo();
+    final ActionListener undo = e -> Handler.undo();
 
-    ActionListener redo = e -> Handler.redo();
+    final ActionListener redo = e -> Handler.redo();
 
-    ActionListener copy = e -> Handler.copy();
+    final ActionListener copy = e -> Handler.copy();
 
-    ActionListener paste = e -> Handler.paste(-1, -1);
+    final ActionListener paste = e -> Handler.paste(-1, -1);
 
-    ActionListener duplicate = e -> Handler.duplicate();
+    final ActionListener duplicate = e -> Handler.duplicate();
 
-    ActionListener delete = e -> Handler.remove();
+    final ActionListener delete = e -> Handler.remove();
 
-    ActionListener selectAll = e -> Handler.selectAll();
+    final ActionListener selectAll = e -> Handler.selectAll();
 
-    ActionListener unselectAll = e -> Handler.unselectAll();
+    final ActionListener unselectAll = e -> Handler.unselectAll();
 
-    ActionListener collapse = e -> Handler.collapse();
+    final ActionListener collapse = e -> Handler.collapse();
 
-    ActionListener expand = e -> Handler.expand();
+    final ActionListener expand = e -> Handler.expand();
 
-    ActionListener expandAll = e -> {
+    final ActionListener expandAll = e -> {
         Handler.selectAll();
         Handler.expand();
     };

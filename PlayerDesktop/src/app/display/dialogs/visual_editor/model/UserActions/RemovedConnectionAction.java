@@ -19,8 +19,6 @@ public class RemovedConnectionAction implements IUserAction
     private final LudemeNode from;
     private final LudemeNode to;
     private final NodeArgument nodeArgument;
-    //private final int index;
-    private boolean isUndone = false;
 
     public RemovedConnectionAction(IGraphPanel graphPanel, LudemeNode from, LudemeNode to, NodeArgument nodeArgument)
     {
@@ -63,7 +61,6 @@ public class RemovedConnectionAction implements IUserAction
     public void undo() {
         Handler.addEdge(graph, from, to, nodeArgument);
         Handler.updateInput(graph, from, nodeArgument, to);
-        isUndone = true;
     }
 
     /**
@@ -73,6 +70,5 @@ public class RemovedConnectionAction implements IUserAction
     public void redo() {
         Handler.removeEdge(graph, from, to);
         Handler.updateInput(graph, from, nodeArgument, null);
-        isUndone = true;
     }
 }

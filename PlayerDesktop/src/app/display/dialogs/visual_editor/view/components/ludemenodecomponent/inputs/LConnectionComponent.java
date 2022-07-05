@@ -29,8 +29,6 @@ public class LConnectionComponent extends JComponent
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
     /** The LudemeNodeComponent this ConnectionComponent is connected to */
     private LudemeNodeComponent connectedTo;
-    /** Whether the node this ConnectionComponent is connected to is collapsed */
-    private final boolean connectionIsCollapsed = false;
     /** Whether this ConnectionComponent is filled (connected) */
     private boolean isFilled;
 
@@ -216,7 +214,8 @@ public class LConnectionComponent extends JComponent
     class ConnectionPointComponent extends JComponent
     {
         public boolean fill;
-        public int x,y = 0;
+        private final int x = 0;
+        private final int y = 0;
 
         public ConnectionPointComponent(boolean fill)
         {

@@ -19,7 +19,7 @@ public class VisualEditorPanel extends JPanel
     // Whether the game, define, text, ... editor is currently active/selected
     private JPanel ACTIVE_EDITOR = gameEditor;
 
-    public VisualEditorPanel(VisualEditorFrame visualEditorFrame)
+    public VisualEditorPanel()
     {
         Handler.visualEditorPanel = this;
 

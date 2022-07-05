@@ -4,15 +4,10 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.model.interfaces.iGraph;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
-import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static app.display.dialogs.visual_editor.LayoutManagement.GraphRoutines.getNodeDepth;
-import static java.lang.Math.abs;
 
 /**
  * Provide methods for node placement

@@ -16,7 +16,6 @@ public class ActivateOptionalTerminalAction implements IUserAction
     private final LudemeNode node;
     private final NodeArgument argument;
     private final boolean wasActivated;
-    private boolean isUndone = false;
 
     public ActivateOptionalTerminalAction(IGraphPanel graphPanel, LudemeNode node, NodeArgument argument, boolean wasActivated)
     {
@@ -57,7 +56,6 @@ public class ActivateOptionalTerminalAction implements IUserAction
     @Override
     public void undo() {
         graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, !wasActivated);
-        isUndone = false;
     }
 
     /**
@@ -66,6 +64,5 @@ public class ActivateOptionalTerminalAction implements IUserAction
     @Override
     public void redo() {
         graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, wasActivated);
-        isUndone = true;
     }
 }

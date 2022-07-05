@@ -22,7 +22,6 @@ public class RemovedNodeAction implements IUserAction
     private final IGraphPanel graphPanel;
     private final DescriptionGraph graph;
     private final LudemeNode removedNode;
-    private boolean isUndone = false;
     private final LudemeNode parent; // remembers the parent of the node
     private final LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was removed
     private int collectionIndex = -1; // If the node was removed from a collection, this is the index of the node in the collection
@@ -144,7 +143,6 @@ public class RemovedNodeAction implements IUserAction
         lncs.add(graphPanel.nodeComponent(removedNode));
         graphPanel.updateCollapsed(lncs);
 
-        isUndone = false;
     }
 
     /**
@@ -154,7 +152,6 @@ public class RemovedNodeAction implements IUserAction
     public void redo() {
         Handler.removeNode(graph, removedNode);
         graphPanel().repaint();
-        isUndone = true;
     }
 
     @Override

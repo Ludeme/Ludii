@@ -15,7 +15,6 @@ public class RemovedCollectionAction implements IUserAction
     private final NodeArgument nodeArgument;
     private final int elementIndex;
     private final Object collectionInput;
-    private boolean isUndone = false;
 
     public RemovedCollectionAction(IGraphPanel graphPanel, LudemeNode affectedNode, NodeArgument nodeArgument, int elementIndex, Object input)
     {
@@ -63,7 +62,6 @@ public class RemovedCollectionAction implements IUserAction
             if(collectionInput instanceof LudemeNode) Handler.addEdge(graph, affectedNode, (LudemeNode) collectionInput, nodeArgument, elementIndex);
             Handler.updateCollectionInput(graph, affectedNode, nodeArgument, collectionInput, elementIndex);
         }
-        isUndone = false;
     }
 
     /**
@@ -76,6 +74,5 @@ public class RemovedCollectionAction implements IUserAction
         {
             System.out.println("INPUT:: " + collectionInput + ", " + elementIndex);
             if(collectionInput instanceof LudemeNode) Handler.removeEdge(graph, affectedNode, (LudemeNode) collectionInput, elementIndex);}
-        isUndone = true;
     }
 }
