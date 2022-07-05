@@ -819,20 +819,20 @@ public class LInputField extends JComponent
     /**
      * Listens for changes to a terminal component and updates the model accordingly
      */
-    PropertyChangeListener userInputListener_propertyChange = evt -> updateUserInputs();
+    final PropertyChangeListener userInputListener_propertyChange = evt -> updateUserInputs();
 
-    ChangeListener userInputListener_change = evt ->
+    final ChangeListener userInputListener_change = evt ->
     {
         ((JFormattedTextField) ((JSpinner) fieldComponent).getEditor().getComponent(0)).setValue(((JSpinner) fieldComponent).getValue());
         updateUserInputs();
     };
 
-    ActionListener userInputListener_dropdown = evt -> updateUserInputs();
+    final ActionListener userInputListener_dropdown = evt -> updateUserInputs();
 
     /**
      * Listens for changes via keys to a terminal component and updates the model accordingly
      */
-    KeyListener userInputListener_keyListener = new KeyListener()
+    final KeyListener userInputListener_keyListener = new KeyListener()
     {
         @Override
         public void keyTyped(KeyEvent e)
@@ -852,7 +852,7 @@ public class LInputField extends JComponent
         }
     };
 
-    MouseAdapter terminalOptionalLabelListener = new MouseAdapter()
+    final MouseAdapter terminalOptionalLabelListener = new MouseAdapter()
     {
         @Override
         public void mouseClicked(MouseEvent e)

@@ -8,17 +8,13 @@ import javax.swing.*;
 public class EditorPickerPanel extends JPanel
 {
 
-    private HeaderButton gameEditorBtn;
-    private HeaderButton defineEditorBtn;
-    private HeaderButton textEditorBtn;
-
-    private VisualEditorPanel visualEditorPanel;
+    private final HeaderButton gameEditorBtn;
+    private final HeaderButton defineEditorBtn;
+    private final HeaderButton textEditorBtn;
 
     public EditorPickerPanel(VisualEditorPanel visualEditorPanel)
     {
         super();
-
-        this.visualEditorPanel = visualEditorPanel;
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 

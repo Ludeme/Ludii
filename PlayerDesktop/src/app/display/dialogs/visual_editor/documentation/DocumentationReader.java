@@ -20,10 +20,10 @@ public class DocumentationReader
 {
     private static DocumentationReader instance = null;
     private static File helpFile = null;
-    private static HashMap<Symbol, HelpInformation> documentation = new HashMap<>();
-    private static Grammar grammar = Grammar.grammar();
+    private static final HashMap<Symbol, HelpInformation> documentation = new HashMap<>();
+    private static final Grammar grammar = Grammar.grammar();
 
-    private static HashMap<Clause, EBNFClause> clauseMap = new HashMap<>();
+    private static final HashMap<Clause, EBNFClause> clauseMap = new HashMap<>();
 
 
     public static void main(String[] args)
@@ -223,7 +223,7 @@ public class DocumentationReader
                     st += ")";
                     currentGroup = 0;
                 }
-                st += " " + cArg.toString() + " ";
+                st += " " + cArg + " ";
                 lastGroup = cArg.orGroup();
             }
         if(lastGroup > 0)

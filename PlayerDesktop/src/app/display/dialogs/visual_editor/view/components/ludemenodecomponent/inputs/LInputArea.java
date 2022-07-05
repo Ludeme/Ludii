@@ -458,7 +458,10 @@ public class LInputArea extends JPanel
                     List<LInputField> block = new ArrayList<>();
                     // find first element
                     LInputField e = inputFieldAbove;
-                    if(e == null) e = inputField;
+                    if(e == null)
+                    {
+                        e = inputField;
+                    }
                     while(inputFieldAbove!=null && !inputFieldAbove.isMerged() && inputFieldAbove.nodeArgument(0).arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()) && inputFieldAbove.nodeArgument(0).collection() == inputField.nodeArgument(0).collection())
                     {
                         e = inputFieldAbove;
@@ -477,7 +480,9 @@ public class LInputArea extends JPanel
                     for(LInputField lif : block)
                     {
                         if(lif == inputField)
+                        {
                             continue;
+                        }
                         if(!isArgumentProvided(lif.nodeArgument(0)))
                         {
                             newMerged = mergeInputFields(new LInputField[]{lif, inputField});
@@ -493,23 +498,31 @@ public class LInputArea extends JPanel
                     {
                         // check whether one of those contains the symbol already
                         for(NodeArgument na : lif_a_block.nodeArguments())
+                        {
                             if(na.arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()))
                             {
                                 canBeMergedIntoBelow = false;
                                 break;
                             }
+                        }
                         if(canBeMergedIntoBelow)
                             for (NodeArgument na : lif_b_block.nodeArguments())
+                            {
                                 if (na.arg().symbol().equals(inputField.nodeArgument(0).arg().symbol()))
                                 {
                                     canBeMergedIntoAbove = false;
                                     break;
                                 }
+                            }
                     }
                     if(canBeMergedIntoBelow)
+                    {
                         mergeInputFields(new LInputField[]{newMerged, lif_b_block});
+                    }
                     else if(canBeMergedIntoAbove)
+                    {
                         mergeInputFields(new LInputField[]{lif_a_block, newMerged});
+                    }
 
                     drawInputFields();
                     setOpaque(false);
@@ -517,25 +530,27 @@ public class LInputArea extends JPanel
                     return true;
                 }
                 else
+                {
                     return false;
+                }
             }
 
             // if can be merged into both, combine the three inputfields into one
             if(canBeMergedIntoAbove && canBeMergedIntoBelow)
+            {
                 mergeInputFields(new LInputField[]{inputFieldAbove, inputField, inputFieldBelow});
+            }
             // if can be merged into above, merge into above
             else if(canBeMergedIntoAbove)
+            {
                 mergeInputFields(new LInputField[]{inputFieldAbove, inputField});
+            }
             // if can be merged into below, merge into below
             else
+            {
                 mergeInputFields(new LInputField[]{inputField, inputFieldBelow});
+            }
         }
-
-        // if the field is a choice, update its label
-        /*if(inputField.choice())
-        {
-            inputField.setLabelText("Choice");
-        }*/
 
         drawInputFields();
         setOpaque(false);

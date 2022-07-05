@@ -17,8 +17,6 @@ public class VisualEditorFrame extends JFrame
     private static final String TITLE = "Ludii Visual Editor";
     private static final Dimension DEFAULT_FRAME_SIZE = DesignPalette.DEFAULT_FRAME_SIZE;
     private static final ImageIcon FRAME_ICON = DesignPalette.LUDII_ICON;
-    private final VisualEditorPanel panel;
-    private final EditorMenuBar menuBar = new EditorMenuBar();
 
 
     public VisualEditorFrame()
@@ -33,7 +31,7 @@ public class VisualEditorFrame extends JFrame
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        panel = new VisualEditorPanel(this);
+        VisualEditorPanel panel = new VisualEditorPanel(this);
         add(panel);
 
         addWindowListener(new WindowAdapter()
@@ -64,6 +62,7 @@ public class VisualEditorFrame extends JFrame
             }
         });
 
+        EditorMenuBar menuBar = new EditorMenuBar();
         setJMenuBar(menuBar);
         setVisible(true);
     }

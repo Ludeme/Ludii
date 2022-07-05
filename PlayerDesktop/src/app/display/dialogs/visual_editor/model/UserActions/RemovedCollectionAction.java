@@ -14,7 +14,7 @@ public class RemovedCollectionAction implements IUserAction
     private final LudemeNode affectedNode;
     private final NodeArgument nodeArgument;
     private final int elementIndex;
-    private Object collectionInput;
+    private final Object collectionInput;
     private boolean isUndone = false;
 
     public RemovedCollectionAction(IGraphPanel graphPanel, LudemeNode affectedNode, NodeArgument nodeArgument, int elementIndex, Object input)

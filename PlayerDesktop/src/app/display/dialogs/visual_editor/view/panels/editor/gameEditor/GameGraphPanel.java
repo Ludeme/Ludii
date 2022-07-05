@@ -16,7 +16,7 @@ import java.util.List;
 public class GameGraphPanel extends GraphPanel
 {
 
-    private AddArgumentPanel addDefinePanel = new AddArgumentPanel(new ArrayList<>(), this, false, true);
+    private final AddArgumentPanel addDefinePanel = new AddArgumentPanel(new ArrayList<>(), this, false, true);
     public GameGraphPanel(int width, int height)
     {
         super(width, height);

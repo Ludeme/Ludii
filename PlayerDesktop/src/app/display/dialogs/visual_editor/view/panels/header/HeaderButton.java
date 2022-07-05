@@ -18,7 +18,7 @@ public class HeaderButton extends JButton {
     public ImageIcon INACTIVE_ICON;
     public ImageIcon HOVER_ICON;
 
-    private boolean selectable;
+    private final boolean selectable;
     private boolean active;
     private boolean clickListenerOn = true;
 
@@ -98,7 +98,7 @@ public class HeaderButton extends JButton {
         repaint();
     }
 
-    MouseListener hoverMouseListener = new MouseAdapter()
+    final MouseListener hoverMouseListener = new MouseAdapter()
     {
         @Override
         public void mouseClicked(MouseEvent e)

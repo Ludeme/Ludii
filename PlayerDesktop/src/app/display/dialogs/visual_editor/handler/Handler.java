@@ -71,15 +71,15 @@ public class Handler
 
     public static boolean autoplacement = false;
 
-    public static boolean sidebarVisible = true;
+    public static final boolean sidebarVisible = true;
 
     public static final IBackground DotGridBackground = new DotGridBackground();
     public static final IBackground EmptyBackground = new EmptyBackground();
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
     private static IBackground currentBackground = DotGridBackground;
 
-    public static DesignPalette lightPalette = DesignPaletteLight.instance();
-    public static DesignPalette darkPalette = DesignPaletteDark.instance();
+    public static final DesignPalette lightPalette = DesignPaletteLight.instance();
+    public static final DesignPalette darkPalette = DesignPaletteDark.instance();
 
     public static DesignPalette currentPalette = lightPalette;
 
@@ -88,7 +88,7 @@ public class Handler
 
     public static final Symbol PARAMETER_SYMBOL = new Symbol(Symbol.LudemeType.Ludeme, "PARAMETER", "PARAMETER", null);
 
-    public static List<DefineGraphPanel> DEFINE_GRAPH_PANELS = new ArrayList<>();
+    public static final List<DefineGraphPanel> DEFINE_GRAPH_PANELS = new ArrayList<>();
 
     public static void updateCurrentGraphPanel(IGraphPanel graphPanel)
     {
@@ -224,25 +224,23 @@ public class Handler
         gameGraphPanel.notifyUncompilable(lncs);
     }
 
-    public static boolean play()
+    public static void play()
     {
         Object[] output = lastCompile;
         // first compile
         if(lastCompile == null)
             output = compile();
         if(output[0] == null)
-            return false;
+            return;
         Game game = (Game) output[0];
         // load game
         loadGame(game, StartVisualEditor.app);
-        return true;
     }
 
-    public static boolean play(Game game)
+    public static void play(Game game)
     {
         // load game
         loadGame(game, StartVisualEditor.app);
-        return true;
     }
 
     public static void loadGame(Game game, PlayerApp app)
@@ -334,11 +332,10 @@ public class Handler
         return node;
     }
 
-    public static LudemeNode addNode(DescriptionGraph graph, NodeArgument nodeArgument2DCollection, int x, int y)
+    public static void addNode(DescriptionGraph graph, NodeArgument nodeArgument2DCollection, int x, int y)
     {
         LudemeNode node = new LudemeNode(nodeArgument2DCollection, x, y);
         addNode(graph, node, true);
-        return node;
     }
 
 

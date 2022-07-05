@@ -21,34 +21,34 @@ public class DesignPaletteLight extends DesignPalette
     // ~~ COLORS ~~ //
 
     // PANELS //
-    private static Color BACKGROUND_EDITOR = new Color(244,244,244);
-    private static Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
-    private static Color BACKGROUND_HEADER_PANEL = new Color(250,250,250);
+    private static final Color BACKGROUND_EDITOR = new Color(244,244,244);
+    private static final Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
+    private static final Color BACKGROUND_HEADER_PANEL = new Color(250,250,250);
 
 
     // LUDEME BLOCK //
     // fonts
-    private static Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
-    private static Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
+    private static final Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
+    private static final Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
 
 
     // backgrounds
-    private static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
+    private static final Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
 
     // there are 3 classes: game.equipment, game.functions, and game.rules
     // game.rules: game.rules.play, game.rules.start, game.rules.end
     // game.functions: .region, .ints, .graph, .floats, .dim, .booleans
 
-    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
-    private static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
-    private static Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
-    private static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
-    private static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
-    private static Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
+    private static final Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
+    private static final Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
+    private static final Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
+    private static final Color LUDEME_BORDER_COLOR = new Color(233,233,233);
+    private static final Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
+    private static final Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
 
-    private static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
-    private static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
-    private static Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
+    private static final Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
+    private static final Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
+    private static final Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
     private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
     private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
 
@@ -169,9 +169,9 @@ public class DesignPaletteLight extends DesignPalette
 
 
     // ~~ STROKES AND BORDERS ~~ //
-    private static Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
-    private static Border LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
-    private static Border LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
+    private static final Border LUDEME_NODE_BORDER = BorderFactory.createLineBorder(LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
+    private static final Border LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
+    private static final Border LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
 
     @Override
     public Border LUDEME_NODE_BORDER()

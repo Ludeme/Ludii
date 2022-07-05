@@ -10,10 +10,10 @@ public class LudemeConnection {
     private final LIngoingConnectionComponent INGOING_CONNECTION_COMPONENT;
 
     private static int ID_COUNT = 0;
-    private int ID = ID_COUNT++;
+    private final int ID = ID_COUNT++;
 
-    private ImmutablePoint inputPoint;
-    private ImmutablePoint targetPoint;
+    private final ImmutablePoint inputPoint;
+    private final ImmutablePoint targetPoint;
 
     public LudemeConnection(LConnectionComponent connectionComponent, LIngoingConnectionComponent ingoingConnectionComponent){
         this.CONNECTION_COMPONENT = connectionComponent;

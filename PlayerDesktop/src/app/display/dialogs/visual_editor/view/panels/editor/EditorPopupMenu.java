@@ -47,11 +47,9 @@ public class EditorPopupMenu extends JPopupMenu {
         ImageIcon collapseIcon = new ImageIcon(Handler.currentPalette().COLLAPSE_ICON().getImage().getScaledInstance(iconHeight, iconHeight, Image.SCALE_SMOOTH));
         collapse.setIcon(collapseIcon);
 
-        if(Handler.copyList().isEmpty()) paste.setEnabled(false);
-        else paste.setEnabled(true);
+        paste.setEnabled(!Handler.copyList().isEmpty());
 
-        if(Handler.selectedNodes(graphPanel.graph()).isEmpty()) collapse.setEnabled(false);
-        else collapse.setEnabled(true);
+        collapse.setEnabled(!Handler.selectedNodes(graphPanel.graph()).isEmpty());
 
         add(newLudeme);
 

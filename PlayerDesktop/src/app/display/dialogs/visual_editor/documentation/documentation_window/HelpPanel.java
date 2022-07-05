@@ -15,14 +15,14 @@ public class HelpPanel extends JPanel
 {
 
     private final HelpInformation hi;
-    private JLabel nameLabel;
-    private JLabel description;
+    private final JLabel nameLabel;
+    private final JLabel description;
     private JLabel constructorLabel;
-    private Component nameDescriptionSpace;
-    private Component descriptionConstructorSpace;
-    private Component constructorConstructorsSpace;
+    private final Component nameDescriptionSpace;
+    private final Component descriptionConstructorSpace;
+    private final Component constructorConstructorsSpace;
 
-    java.util.List<ExpandableConstructorPanel> ecps = new ArrayList<>();
+    final java.util.List<ExpandableConstructorPanel> ecps = new ArrayList<>();
 
     private final DocumentationFrame df;
 

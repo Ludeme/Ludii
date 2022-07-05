@@ -24,8 +24,8 @@ import java.util.List;
 
 public class AddArgumentPanel extends JPanel
 {
-    DefaultListModel<ReadableSymbol> listModel = new DefaultListModel();
-    JList list = new JList(listModel)
+    final DefaultListModel<ReadableSymbol> listModel = new DefaultListModel();
+    final JList list = new JList(listModel)
     {
         @Override
         public String getToolTipText(MouseEvent e)
@@ -35,7 +35,7 @@ public class AddArgumentPanel extends JPanel
                 return null;
             String description = null;
             try{
-                description = DocumentationReader.instance().documentation().get((((ReadableSymbol)listModel.getElementAt(index)).getSymbol())).description();
+                description = DocumentationReader.instance().documentation().get((listModel.getElementAt(index).getSymbol())).description();
             } catch(Exception ignored) {}
             return description;
         }
@@ -46,10 +46,10 @@ public class AddArgumentPanel extends JPanel
             return new Point(e.getX() + 10, e.getY() + 10);
         }
     };
-    JScrollPane scrollableList = new JScrollPane(list);
-    public JTextField searchField = new JTextField();
-    IGraphPanel graphPanel;
-    boolean connect;
+    final JScrollPane scrollableList = new JScrollPane(list);
+    public final JTextField searchField = new JTextField();
+    final IGraphPanel graphPanel;
+    final boolean connect;
     private LInputField initiator;
     private List<ReadableSymbol> currentSymbols;
 
@@ -66,10 +66,90 @@ public class AddArgumentPanel extends JPanel
         this.connect = connect;
         this.addsDefines = addsDefines;
 
+        // plus one because we want the position, but indices start at 0. For Code Completion Log
+        // if adds define
+        // find corresponding node
+        // if the symbol is a terminal, do not create a new node. Instead create a new InputField
+        // get the node that we are adding an argument to
+        // otherwise if its a ludeme, create a new node
+        // Find the matching NodeArgument of the initiator InputField for the chosen symbol, if initiator is not null
+        MouseListener mouseListener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int index = list.locationToIndex(e.getPoint());
+                if (index == -1)
+                    return;
+
+                graphPanel.addSelectionIndex(index + 1); // plus one because we want the position, but indices start at 0. For Code Completion Log
+
+                Symbol s = listModel.getElementAt(index).getSymbol();
+
+                // if adds define
+                if (addsDefines) {
+                    // find corresponding node
+                    for (LudemeNode n : defineNodes)
+                        if (n.symbol() == s) {
+                            n.setX(getLocation().x);
+                            n.setY(getLocation().y);
+                            Handler.addNode(graphPanel.graph(), n);
+                            break;
+                        }
+                }
+                // if the symbol is a terminal, do not create a new node. Instead create a new InputField
+                else if (s.ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(s)) {
+                    // get the node that we are adding an argument to
+                    LudemeNodeComponent lnc = graphPanel.connectionHandler().selectedComponent().lnc();
+                    lnc.addTerminal(s);
+                    graphPanel.connectionHandler().cancelNewConnection();
+                    setVisible(false);
+                }
+                // otherwise if its a ludeme, create a new node
+                else {
+                    // Find the matching NodeArgument of the initiator InputField for the chosen symbol, if initiator is not null
+                    if (initiator != null) {
+                        NodeArgument match = null;
+                        for (NodeArgument na : initiator.nodeArguments())
+                            if (na.possibleSymbolInputsExpanded().contains(s)) {
+                                match = na;
+                                break;
+                            }
+                        System.out.println(match);
+                        Handler.addNode(graphPanel.graph(), s, match, getLocation().x, getLocation().y, connect);
+                    } else {
+                        Handler.addNode(graphPanel.graph(), s, null, getLocation().x, getLocation().y, connect);
+                    }
+                }
+                searchField.setText("");
+                scrollableList.getVerticalScrollBar().setValue(0);
+                setVisible(false);
+            }
+        };
         list.addMouseListener(mouseListener);
 
         updateList(null, symbolList);
 
+        DocumentListener searchListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                listModel.clear();
+                for (ReadableSymbol rs : currentSymbols) {
+                    if (rs.getSymbol().name().toLowerCase().contains(searchField.getText().toLowerCase()) || rs.getSymbol().token().toLowerCase().contains(searchField.getText().toLowerCase())
+                            || rs.getSymbol().grammarLabel().toLowerCase().contains(searchField.getText().toLowerCase()))
+                        listModel.addElement(rs);
+                }
+                repaint();
+            }
+        };
         searchField.getDocument().addDocumentListener(searchListener);
     }
 
@@ -131,67 +211,6 @@ public class AddArgumentPanel extends JPanel
     }
 
 
-    private MouseListener mouseListener = new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-            int index = list.locationToIndex(e.getPoint());
-            if(index == -1)
-                return;
-
-            graphPanel.addSelectionIndex(index+1); // plus one because we want the position, but indices start at 0. For Code Completion Log
-
-            Symbol s = listModel.getElementAt(index).getSymbol();
-
-            // if adds define
-            if(addsDefines)
-            {
-                // find corresponding node
-                for(LudemeNode n : defineNodes)
-                    if(n.symbol() == s)
-                    {
-                        n.setX(getLocation().x);
-                        n.setY(getLocation().y);
-                        Handler.addNode(graphPanel.graph(), n);
-                        break;
-                    }
-            }
-            // if the symbol is a terminal, do not create a new node. Instead create a new InputField
-            else if(s.ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(s))
-            {
-                // get the node that we are adding an argument to
-                LudemeNodeComponent lnc = graphPanel.connectionHandler().selectedComponent().lnc();
-                lnc.addTerminal(s);
-                graphPanel.connectionHandler().cancelNewConnection();
-                setVisible(false);
-            }
-            // otherwise if its a ludeme, create a new node
-            else
-            {
-                // Find the matching NodeArgument of the initiator InputField for the chosen symbol, if initiator is not null
-                if(initiator != null)
-                {
-                    NodeArgument match = null;
-                    for (NodeArgument na : initiator.nodeArguments())
-                        if (na.possibleSymbolInputsExpanded().contains(s))
-                        {
-                            match = na;
-                            break;
-                        }
-                    System.out.println(match);
-                    Handler.addNode(graphPanel.graph(), s, match, getLocation().x, getLocation().y, connect);
-                }
-                else
-                {
-                    Handler.addNode(graphPanel.graph(), s, null, getLocation().x, getLocation().y, connect);
-                }
-            }
-            searchField.setText("");
-            scrollableList.getVerticalScrollBar().setValue(0);
-            setVisible(false);
-        }
-    };
-
     private boolean isConstantTerminal(Symbol s)
     {
         if(s.rule() == null) return false;
@@ -206,33 +225,5 @@ public class AddArgumentPanel extends JPanel
         }
         return true;
     }
-
-    private DocumentListener searchListener = new DocumentListener()
-    {
-        @Override
-        public void insertUpdate(DocumentEvent e)
-        {
-            changedUpdate(e);
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e)
-        {
-            changedUpdate(e);
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e)
-        {
-            listModel.clear();
-            for(ReadableSymbol rs : currentSymbols)
-            {
-                if(rs.getSymbol().name().toLowerCase().contains(searchField.getText().toLowerCase()) || rs.getSymbol().token().toLowerCase().contains(searchField.getText().toLowerCase())
-                        || rs.getSymbol().grammarLabel().toLowerCase().contains(searchField.getText().toLowerCase()))
-                    listModel.addElement(rs);
-            }
-            repaint();
-        }
-    };
 
 }

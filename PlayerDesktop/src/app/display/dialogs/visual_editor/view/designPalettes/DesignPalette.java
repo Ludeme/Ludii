@@ -61,7 +61,7 @@ public class DesignPalette
     private static final int DEFAULT_BACKGROUND_DOT_DIAMETER = 4;
     private static final int DEFAULT_BACKGROUND_LINE_WIDTH = 1;
     public static int BACKGROUND_DOT_DIAMETER = (int) (DEFAULT_BACKGROUND_DOT_DIAMETER * SCALAR);
-    public static int BACKGROUND_LINE_WIDTH = DEFAULT_BACKGROUND_LINE_WIDTH;
+    public static final int BACKGROUND_LINE_WIDTH = DEFAULT_BACKGROUND_LINE_WIDTH;
 
     private static final int DEFAULT_BACKGROUND_DOT_PADDING = 25;
     private static final int DEFAULT_BACKGROUND_LINE_PADDING = 25;
@@ -105,32 +105,32 @@ public class DesignPalette
 
     // PANELS //
     private static final Color BACKGROUND_EDITOR = new Color(244,244,244);
-    private static Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
-    private static Color BACKGROUND_HEADER_PANEL = new Color(250,250,250);
+    private static final Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
+    private static final Color BACKGROUND_HEADER_PANEL = new Color(250,250,250);
 
     // LUDEME BLOCK //
         // fonts
-    private static Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
-    private static Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
+    private static final Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
+    private static final Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
 
 
         // backgrounds
-    private static Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
+    private static final Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
 
          // there are 3 classes: game.equipment, game.functions, and game.rules
                     // game.rules: game.rules.play, game.rules.start, game.rules.end
                     // game.functions: .region, .ints, .graph, .floats, .dim, .booleans
 
-    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
-    private static Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
-    private static Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
-    private static Color LUDEME_BORDER_COLOR = new Color(233,233,233);
-    private static Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
-    private static Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
+    private static final Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
+    private static final Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
+    private static final Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
+    private static final Color LUDEME_BORDER_COLOR = new Color(233,233,233);
+    private static final Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
+    private static final Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
 
-    private static Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
-    private static Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
-    private static Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
+    private static final Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
+    private static final Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
+    private static final Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
     private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
     private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
 
@@ -257,7 +257,7 @@ public class DesignPalette
     // LUDEME BLOCK //
     public static Font LUDEME_TITLE_FONT = new Font("Roboto Bold", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
     public static Font LUDEME_INPUT_FONT = new Font("Robot Regular", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
-    public static Font LUDEME_INPUT_FONT_ITALIC = new Font("Roboto Italic", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
+    public static final Font LUDEME_INPUT_FONT_ITALIC = new Font("Roboto Italic", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
 
     // ~~ ICONS ~~ //
 
@@ -381,9 +381,9 @@ public class DesignPalette
         return REDO_HOVER;
     }
 
-    private static Color HEADER_BUTTON_ACTIVE_COLOR = new Color(69, 69, 69);
-    private static Color HEADER_BUTTON_INACTIVE_COLOR = new Color(165,165,165);
-    private static Color HEADER_BUTTON_HOVER_COLOR = new Color(127,191,255);
+    private static final Color HEADER_BUTTON_ACTIVE_COLOR = new Color(69, 69, 69);
+    private static final Color HEADER_BUTTON_INACTIVE_COLOR = new Color(165,165,165);
+    private static final Color HEADER_BUTTON_HOVER_COLOR = new Color(127,191,255);
 
     public Color HEADER_BUTTON_ACTIVE_COLOR()
     {
@@ -410,9 +410,6 @@ public class DesignPalette
     private static final ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
     private static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
     private static final ImageIcon DOWN_ICON = getIcon("node/active/down.png");
-
-    //public static final ImageIcon COLLAPSE_ICON = getIcon("node/active/collapse.png");
-    // static final ImageIcon COLLAPSE_ICON_HOVER = getIcon("node/hover/collapse.png");
 
     private static final ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
     public static final ImageIcon UNCOLLAPSE_ICON_HOVER = getIcon("node/hover/uncollapse.png");

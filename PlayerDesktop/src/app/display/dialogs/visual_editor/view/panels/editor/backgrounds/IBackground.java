@@ -4,5 +4,5 @@ import java.awt.*;
 
 public interface IBackground
 {
-    public void paint(Rectangle viewRectangle, int width, int height, Graphics2D g2);
+    void paint(Rectangle viewRectangle, int width, int height, Graphics2D g2);
 }

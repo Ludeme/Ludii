@@ -18,10 +18,10 @@ public class RemovedNodesAction implements IUserAction
     private final List<LudemeNode> removedNodesSorted;
 
 
-    private HashMap<LudemeNode, LinkedHashMap<NodeArgument, Object>> copiedInputs = new HashMap<>();
-    private HashMap<LudemeNode, LinkedHashMap<NodeArgument, Integer>> copiedNodeInputIds = new HashMap<>();
-    private HashMap<LudemeNode, LinkedHashMap<NodeArgument, Object[]>> copiedCollectionNodeIds = new HashMap<>();
-    private HashMap<Integer, LudemeNode> nodeId = new HashMap<>();
+    private final HashMap<LudemeNode, LinkedHashMap<NodeArgument, Object>> copiedInputs = new HashMap<>();
+    private final HashMap<LudemeNode, LinkedHashMap<NodeArgument, Integer>> copiedNodeInputIds = new HashMap<>();
+    private final HashMap<LudemeNode, LinkedHashMap<NodeArgument, Object[]>> copiedCollectionNodeIds = new HashMap<>();
+    private final HashMap<Integer, LudemeNode> nodeId = new HashMap<>();
 
     private boolean isUndone = false;
 

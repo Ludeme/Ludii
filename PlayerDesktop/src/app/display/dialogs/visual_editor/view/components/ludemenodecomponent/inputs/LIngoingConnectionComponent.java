@@ -9,16 +9,15 @@ import java.awt.*;
 
 public class LIngoingConnectionComponent extends JComponent {
 
-    private LHeader lHeader;
+    private final LHeader lHeader;
     private boolean fill;
-    private int height;
     private int RADIUS;
-    private ConnectionPointComponent connectionPointComponent;
+    private final ConnectionPointComponent connectionPointComponent;
     private ImmutablePoint connectionPointPosition = new ImmutablePoint(0, 0);
 
-    public LIngoingConnectionComponent(LHeader header, int height, int radius, boolean fill){
+    public LIngoingConnectionComponent(LHeader header, int radius, boolean fill){
         this.lHeader = header;
-        height = lHeader.title().getSize().height;
+        int height = lHeader.title().getSize().height;
         RADIUS = (int) (lHeader.title().getSize().height * 0.4);
         this.fill = fill;
 
@@ -39,9 +38,9 @@ public class LIngoingConnectionComponent extends JComponent {
         }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
-        height = lHeader.title().getSize().height;
         RADIUS = (int) (lHeader.title().getSize().height * 0.4);
     }
 
@@ -62,18 +61,19 @@ public class LIngoingConnectionComponent extends JComponent {
             int x = connectionPointComponent.getX() + this.getX() + this.getParent().getX() + this.getParent().getParent().getX() + this.getParent().getParent().getParent().getX() + RADIUS;
             int y = connectionPointComponent.getY() + this.getY() + this.getParent().getY() + this.getParent().getParent().getY() + this.getParent().getParent().getParent().getY() + RADIUS;
             Point p = new Point(x,y);
-            if(connectionPointPosition == null){
+            if(connectionPointPosition == null)
                 connectionPointPosition = new ImmutablePoint(p);
-            }
             connectionPointPosition.update(p);
         }
 
-        public ImmutablePoint getConnectionPointPosition(){
+        public ImmutablePoint getConnectionPointPosition()
+        {
             updatePosition();
             return connectionPointPosition;
         }
 
-        public void setFill(boolean fill){
+        public void setFill(boolean fill)
+        {
             this.fill = fill;
             connectionPointComponent.fill = fill;
             connectionPointComponent.repaint();
@@ -84,15 +84,20 @@ public class LIngoingConnectionComponent extends JComponent {
             return lHeader;
         }
 
-        public boolean isFilled(){ return fill; }
+        public boolean isFilled()
+        {
+            return fill;
+        }
 
 
 
-    class ConnectionPointComponent extends JComponent{
+    class ConnectionPointComponent extends JComponent
+    {
         public boolean fill;
         public int x,y;
 
-        public ConnectionPointComponent(boolean fill){
+        public ConnectionPointComponent(boolean fill)
+        {
             this.fill = fill;
             setSize(getRadius()*2,getRadius()*2);
             revalidate();
@@ -105,23 +110,20 @@ public class LIngoingConnectionComponent extends JComponent {
         }
 
         @Override
-        public void paintComponent(Graphics g) {
+        public void paintComponent(Graphics g)
+        {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             // if fill = true, draw a filled circle. otherwise, the contour only
-            if(fill) {
+            if(fill)
+            {
                 g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT());
                 g2.fillOval(x, y, getRadius()*2, getRadius()*2);
             }
-            else {
-                // fill a new oval with transparent colour (to make the filled out oval disappear)
-                /*g2.setColor(new Color(0,0,0,0));
-                g2.fillOval(x, y, radius*2, radius*2);
-                // draw unfilled oval
-                g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT);
-                g2.drawOval(x, y, radius*2, radius*2);*/
+            else
+            {
 
                 g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT_INACTIVE());
                 g2.fillOval(x, y, getRadius()*2, getRadius()*2);

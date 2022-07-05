@@ -820,7 +820,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
     // LISTENERS
 
-    MouseListener clickListener = new MouseAdapter()
+    final MouseListener clickListener = new MouseAdapter()
     {
         private void openPopupMenu(MouseEvent e)
         {
@@ -921,7 +921,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
 
     };
 
-    MouseMotionListener motionListener = new MouseAdapter()
+    final MouseMotionListener motionListener = new MouseAdapter()
     {
         @Override
         public void mouseMoved(MouseEvent e)
@@ -943,7 +943,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     };
 
     // key listener check if ctrl is pressed/released
-    KeyAdapter CTRL_listener = new KeyAdapter()
+    final KeyAdapter CTRL_listener = new KeyAdapter()
     {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -983,7 +983,7 @@ public class GraphPanel extends JPanel implements IGraphPanel
     4. translate (xs, ys) back: (xs+w/2, -1*ys+h/2)
      */
 
-    MouseWheelListener wheelListener = new MouseAdapter()
+    final MouseWheelListener wheelListener = new MouseAdapter()
     {
         @Override
         public void mouseWheelMoved(MouseWheelEvent e)

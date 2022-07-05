@@ -30,7 +30,7 @@ public class LConnectionComponent extends JComponent
     /** The LudemeNodeComponent this ConnectionComponent is connected to */
     private LudemeNodeComponent connectedTo;
     /** Whether the node this ConnectionComponent is connected to is collapsed */
-    private boolean connectionIsCollapsed = false;
+    private final boolean connectionIsCollapsed = false;
     /** Whether this ConnectionComponent is filled (connected) */
     private boolean isFilled;
 
@@ -53,34 +53,32 @@ public class LConnectionComponent extends JComponent
         add(connectionPointComponent);
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        addMouseListener(clickListener);
-
-        revalidate();
-        repaint();
-        setVisible(true);
-    }
-
-    /**
-     * Listener to create a connection when the user clicks on the circle
-     * or remove a connection when the user clicks on the circle again
-     */
-    private final MouseListener clickListener = new MouseAdapter()
-    {
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-            super.mouseClicked(e);
-            IGraphPanel graphPanel = lnc().graphPanel();
-            if(e.getButton() == MouseEvent.BUTTON1)
-            {
-                if(!filled())
-                {
-                    // Start drawing connection
-                    fill(!filled());
-                    graphPanel.connectionHandler().startNewConnection(LConnectionComponent.this);
-                }
-                else
-                {
+        /**
+         * Listener to create a connection when the user clicks on the circle
+         * or remove a connection when the user clicks on the circle again
+         */
+        // Start drawing connection
+        /*if(connectionIsCollapsed)
+                    {
+                        connectedTo.setCollapsed(false);
+                        connectedTo.setVisible(true);
+                        graphPanel.repaint();
+                        updatePosition();
+                        return;
+                    }*/
+        // if already connected: remove connection
+        // end drawing connection
+        MouseListener clickListener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                IGraphPanel graphPanel = lnc().graphPanel();
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    if (!filled()) {
+                        // Start drawing connection
+                        fill(!filled());
+                        graphPanel.connectionHandler().startNewConnection(LConnectionComponent.this);
+                    } else {
                     /*if(connectionIsCollapsed)
                     {
                         connectedTo.setCollapsed(false);
@@ -89,22 +87,25 @@ public class LConnectionComponent extends JComponent
                         updatePosition();
                         return;
                     }*/
-                    // if already connected: remove connection
-                    if(connectedTo != null)
-                    {
-                        graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.lnc().node(), LConnectionComponent.this);
-                        setConnectedTo(null);
-                    }
-                    else
-                    {
-                        // end drawing connection
-                        fill(!filled());
-                        graphPanel.connectionHandler().cancelNewConnection();
+                        // if already connected: remove connection
+                        if (connectedTo != null) {
+                            graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.lnc().node(), LConnectionComponent.this);
+                            setConnectedTo(null);
+                        } else {
+                            // end drawing connection
+                            fill(!filled());
+                            graphPanel.connectionHandler().cancelNewConnection();
+                        }
                     }
                 }
             }
-        }
-    };
+        };
+        addMouseListener(clickListener);
+
+        revalidate();
+        repaint();
+        setVisible(true);
+    }
 
     /**
      * Updates the position of the ConnectionPointComponent
@@ -112,16 +113,6 @@ public class LConnectionComponent extends JComponent
      */
     public void updatePosition()
     {
-        // Update whether the node this ConnectionComponent is connected to is collapsed
-        /*if(connectedTo != null)
-        {
-            if(connectedTo.node().collapsed() != connectionIsCollapsed)
-            {
-                connectionIsCollapsed = connectedTo.node().collapsed();
-                connectionPointComponent.repaint();
-                connectionPointComponent.revalidate();
-            }
-        }*/
 
         // Update the position of the ConnectionPointComponent
         if(this.getParent() == null || this.getParent().getParent() == null || this.getParent().getParent().getParent() == null) return;

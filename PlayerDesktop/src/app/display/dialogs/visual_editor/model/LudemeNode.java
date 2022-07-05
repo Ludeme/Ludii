@@ -62,7 +62,7 @@ public class LudemeNode implements iGNode
      */
     private final String PACKAGE_NAME;
     /** HashMap of NodeArguments keyed by the clause they correspond to */
-    private HashMap<Clause, List<NodeArgument>> nodeArguments;
+    private final HashMap<Clause, List<NodeArgument>> nodeArguments;
     /** List of NodeArguments for the current Clause of the associated LudemeNodeComponent */
     private List<NodeArgument> currentNodeArguments;
     /** Whether this node is a 1D Collection-supply for a 2D-Collection */
@@ -840,7 +840,7 @@ public class LudemeNode implements iGNode
                 else if(in instanceof LudemeNode)
                     b.append(((LudemeNode) in).toLud());
                 else
-                    b.append(in.toString());
+                    b.append(in);
                 b.append(" ");
             }
             b.append("} ");

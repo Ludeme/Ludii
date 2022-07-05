@@ -11,14 +11,14 @@ import java.awt.*;
 
 public class DocumentationFrame extends JFrame
 {
-    private JTextField searchField = new JTextField();
+    private final JTextField searchField = new JTextField();
     private HelpPanel currentHelpPanel;
 
-    private Component searchNameSpace;
+    private final Component searchNameSpace;
     private Component nameDescriptionSpace;
     private Component descriptionConstructorSpace;
 
-    private List<Symbol> availableSymbols = new ArrayList<>();
+    private final List<Symbol> availableSymbols = new ArrayList<>();
 
     public static void main(String[] args)
     {

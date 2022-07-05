@@ -45,7 +45,7 @@ public class LudemeNodeComponent extends JPanel
     private boolean selected = false;
     private boolean doubleSelected = false;
     private boolean subtree = false;
-    private Rectangle subtreeArea = null;
+    private final Rectangle subtreeArea = null;
     /** Sub-Components of the node */
     private final LHeader header;
     private final LInputArea inputArea;
@@ -323,7 +323,7 @@ public class LudemeNodeComponent extends JPanel
      *  - When the node is dragged, the node is moved
      *  - When the node is selected and dragged, then all the selected nodes are moved according to the drag of this node
      */
-    MouseMotionListener dragListener = new MouseAdapter()
+    final MouseMotionListener dragListener = new MouseAdapter()
     {
 
         @Override
@@ -370,7 +370,7 @@ public class LudemeNodeComponent extends JPanel
      *          TODO: When double-clicking it multiple times -> Weird behaviour
      * - When currently connecting and this node is left-clicked, try to connect to this node
      */
-    MouseListener mouseListener = new MouseAdapter()
+    final MouseListener mouseListener = new MouseAdapter()
     {
         private void openPopupMenu(MouseEvent e){
             JPopupMenu popupMenu = new NodePopupMenu(LudemeNodeComponent.this, LudemeNodeComponent.this.graphPanel());
@@ -392,7 +392,7 @@ public class LudemeNodeComponent extends JPanel
             super.mousePressed(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
+            Handler.updatePosition(node(), getX(), getY());
             handleNodeComponentSelection(e);
         }
         // When released, update position
@@ -404,7 +404,7 @@ public class LudemeNodeComponent extends JPanel
             super.mouseReleased(e);
             LudemeNodeComponent.this.x = e.getX();
             LudemeNodeComponent.this.y = e.getY();
-            Handler.updatePosition(graphPanel().graph(), node(), getX(), getY());
+            Handler.updatePosition(node(), getX(), getY());
 
             if(e.getButton() == MouseEvent.BUTTON3){
                 // if(!selected) graphPanel().deselectEverything();

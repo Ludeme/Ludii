@@ -24,7 +24,7 @@ public class ChangedClauseAction implements IUserAction
     private final LudemeNode node;
     private final Clause previousClause;
     private final Clause currentClause;
-    private LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was modified
+    private final LinkedHashMap<NodeArgument, Object> removedData; // Inputs that were removed when the node was modified
     private boolean isUndone = false;
 
     /**

@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class NodeHelp extends JDialog
 {
 
-    private LudemeNode node;
-    private JLabel parameterDescriptions = new JLabel();
+    private final LudemeNode node;
+    private final JLabel parameterDescriptions = new JLabel();
 
     public NodeHelp(LudemeNode node)
     {

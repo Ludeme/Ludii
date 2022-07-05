@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class HelpInformation
 {
 
-    private Symbol symbol;
+    private final Symbol symbol;
     private String description;
     private HashMap<Clause, String> ctor = new HashMap<>(); // syntax
     private HashMap<Clause, String> examples = new HashMap<>(); // examples

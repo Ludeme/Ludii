@@ -11,11 +11,9 @@ public class HeaderPanel extends JPanel
 
     private final EditorPickerPanel editorPickerPanel;
     private final ToolsPanel toolsPanel;
-    private final VisualEditorPanel visualEditorPanel;
 
     public HeaderPanel(VisualEditorPanel visualEditorPanel)
     {
-        this.visualEditorPanel = visualEditorPanel;
         setLayout(new BorderLayout());
         editorPickerPanel = new EditorPickerPanel(visualEditorPanel);
         add(editorPickerPanel, BorderLayout.LINE_START);

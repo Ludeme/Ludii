@@ -15,7 +15,7 @@ public class CollapsedAction implements IUserAction
     private final IGraphPanel graphPanel;
     private final DescriptionGraph graph;
     private final LudemeNode collapsedNode;
-    private boolean collapsed;
+    private final boolean collapsed;
     private boolean isUndone = false;
 
     /**

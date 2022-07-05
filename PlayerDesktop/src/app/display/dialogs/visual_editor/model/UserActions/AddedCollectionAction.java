@@ -18,7 +18,6 @@ public class AddedCollectionAction implements IUserAction
     private final DescriptionGraph graph;
     private final LudemeNode affectedNode;
     private final NodeArgument nodeArgument;
-    private final int parentIndex;
     private final int elementIndex;
     private Object collectionInput;
     private boolean isUndone = false;
@@ -38,7 +37,6 @@ public class AddedCollectionAction implements IUserAction
         this.graph = graphPanel.graph();
         this.affectedNode = affectedNode;
         this.nodeArgument = nodeArgument;
-        this.parentIndex = parentIndex;
         this.elementIndex = elementIndex;
         this.collectionInput = input;
     }

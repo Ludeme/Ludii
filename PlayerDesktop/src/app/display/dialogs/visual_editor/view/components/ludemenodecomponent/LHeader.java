@@ -31,7 +31,7 @@ public class LHeader extends JComponent
     private LIngoingConnectionComponent ingoingConnectionComponent;
     /** Label for the title */
     private final JLabel title;
-    private JButton clauseBtn;
+    private final JButton clauseBtn;
 
     /**
      * Constructor for a new LHeader
@@ -49,7 +49,7 @@ public class LHeader extends JComponent
         title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         // initialize connection component
-        ingoingConnectionComponent = new LIngoingConnectionComponent(this, title.getHeight(), ((int)(title.getHeight()*0.4)), false);
+        ingoingConnectionComponent = new LIngoingConnectionComponent(this, ((int)(title.getHeight()*0.4)), false);
         // root nodes have no ingoing connection
         if(LNC.graphPanel().graph().getRoot() == LNC.node()) ingoingConnectionComponent = null;
         // Panel containing the label and the connection component
@@ -99,13 +99,7 @@ public class LHeader extends JComponent
         repaint();
         setVisible(true);
 
-
         title.setToolTipText(ludemeNodeComponent().node().description());
-
-        // get help
-        //HelpInformation help = DocumentationReader.instance().documentation().get(LN.symbol());
-        //if(help != null) setToolTipText(help.toHTML());
-
     }
 
     public JPopupMenu constructClausePopup()

@@ -81,7 +81,7 @@ public class NodePopupMenu extends JPopupMenu {
             // remove root node from copy list
             //copy.remove(graphPanel.graph().getRoot());
 
-            Handler.copy(graphPanel.graph(), copy);
+            Handler.copy(copy);
         });
 
         duplicate.addActionListener(e -> {

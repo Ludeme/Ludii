@@ -12,7 +12,7 @@ import java.awt.event.MouseListener;
 public class LInputButton extends JButton {
 
     public Color ACTIVE_COLOR;
-    private Color HOVER_COLOR = new Color(127,191,255);
+    private final Color HOVER_COLOR = new Color(127,191,255);
 
     public ImageIcon ACTIVE_ICON;
     private ImageIcon HOVER_ICON;
@@ -58,7 +58,7 @@ public class LInputButton extends JButton {
         repaint();
     }
 
-    MouseListener hoverMouseListener = new MouseAdapter() {
+    final MouseListener hoverMouseListener = new MouseAdapter() {
         public void mouseEntered(MouseEvent e) {
             setHover();
         }

@@ -1,14 +1,11 @@
 package app.display.dialogs.visual_editor.documentation.documentation_window;
 
-import app.display.dialogs.visual_editor.documentation.DocumentationReader;
-import app.display.dialogs.visual_editor.model.NodeArgument;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class ExpandableConstructorPanel extends JPanel
 {
@@ -16,7 +13,7 @@ public class ExpandableConstructorPanel extends JPanel
     private final HelpPanel hp;
     private final Clause clause;
 
-    private JPanel header;
+    private final JPanel header;
 
     JPanel body;
 

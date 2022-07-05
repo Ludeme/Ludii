@@ -13,7 +13,7 @@ public interface IUserAction
     /**
      * Describes the action that was performed
      */
-    public enum ActionType
+    enum ActionType
     {
         ADDED_NODE, // User added a new Ludeme
         REMOVED_NODE, // User removed a Ludeme
@@ -31,34 +31,34 @@ public interface IUserAction
      *
      * @return The type of the action
      */
-    public ActionType actionType();
+    ActionType actionType();
 
     /**
      *
      * @return The graph panel that was affected by the action
      */
-    public IGraphPanel graphPanel();
+    IGraphPanel graphPanel();
 
     /**
      *
      * @return The description graph that was affected by the action
      */
-    public DescriptionGraph graph();
+    DescriptionGraph graph();
 
     /**
      *
      * @return Whether the action was undone
      */
-    public boolean isUndone();
+    boolean isUndone();
 
     /**
      * Undoes the action
      */
-    public void undo();
+    void undo();
 
     /**
      * Redoes the action
      */
-    public void redo();
+    void redo();
 
 }
