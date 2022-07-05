@@ -64,6 +64,21 @@ public class LInputField extends JComponent
     }
 
     /**
+     * Constructor for a single input field
+     * @param LIA
+     * @param nodeArgument
+     */
+    public LInputField(LInputArea LIA, NodeArgument nodeArgument)
+    {
+        this.LIA = LIA;
+        this.nodeArguments = new ArrayList<>();
+        this.nodeArguments.add(nodeArgument);
+
+        loadButtons();
+        construct();
+    }
+
+    /**
      * Constructor for an input field which is part of a collection
      * @param parentCollectionInputField Parent InputField of collection
      */

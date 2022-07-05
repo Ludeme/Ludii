@@ -1,5 +1,6 @@
 package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs;
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
@@ -371,6 +372,70 @@ public class LInputArea extends JPanel
         currentInputFields.remove(index);
     }
 
+    public void updateCurrentInputFields(List<NodeArgument> newNodeArguments)
+    {
+        // first remove all inputfields no longer contained
+        for(LInputField inputField : new ArrayList<>(currentInputFields))
+        {
+            if(!newNodeArguments.containsAll(inputField.nodeArguments()))
+            {
+                // remove connection
+                Handler.recordUserActions = false;
+                Object input = inputField.getUserInput();
+                if(input instanceof LudemeNode)
+                {
+                    Handler.removeEdge(LNC().graphPanel().graph(), LNC().node(), ((LudemeNode) input));
+                }
+                else if(input != null)
+                {
+                    Handler.updateInput(LNC().graphPanel().graph(), LNC().node(), inputField.nodeArgument(0), null);
+                }
+                Handler.recordUserActions = true;
+                // remove inputfield
+                removeInputField(inputField);
+            }
+        }
+        // now add all inputfields that are new
+        for(int i = 0; i < newNodeArguments.size(); i++)
+        {
+            NodeArgument na = newNodeArguments.get(i);
+            // if exists, continue
+            if(containsNodeArgument(na))
+            {
+                continue;
+            }
+            // otherwise add it
+            LInputField newInputField = new LInputField(this, na);
+            addInputField(newInputField, i);
+        }
+        drawInputFields();
+    }
+
+    private boolean containsNodeArgument(NodeArgument na)
+    {
+        for(List<NodeArgument> lna : currentNodeArgumentsLists)
+            if(lna.contains(na))
+                return true;
+        return false;
+    }
+
+    private LInputField inputField(NodeArgument na)
+    {
+        for(LInputField lif : currentInputFields)
+            if(lif.nodeArguments().contains(na))
+                return lif;
+        return null;
+    }
+
+    public void addInputField(NodeArgument nodeArgument)
+    {
+
+    }
+
+    public void removeInputField(NodeArgument nodeArgument)
+    {
+
+    }
 
     /**
      * Adds a new InputField above another InputField
@@ -408,12 +473,10 @@ public class LInputArea extends JPanel
         List<NodeArgument> nodeArguments1 = new ArrayList<>();
         List<NodeArgument> nodeArguments2 = new ArrayList<>();
         for(NodeArgument nodeArgument : inputField.nodeArguments())
-        {
             if(nodeArgument.index() < inputFieldNew.nodeArguments().get(0).index())
                 nodeArguments1.add(nodeArgument);
             else if(nodeArgument.index() > inputFieldNew.nodeArguments().get(0).index())
                 nodeArguments2.add(nodeArgument);
-        }
         // Create the new InputFields
         LInputField inputField1 = new LInputField(this, nodeArguments1);
         LInputField inputField2 = new LInputField(this, nodeArguments2);
@@ -579,9 +642,7 @@ public class LInputArea extends JPanel
     {
         List<NodeArgument> nodeArguments = new ArrayList<>();
         for(LInputField inputField : inputFields)
-        {
             nodeArguments.addAll(inputField.nodeArguments());
-        }
         LInputField mergedInputField = new LInputField(this, nodeArguments);
         // Update the currentNodeArgumentsLists list and the currentInputFields map
         // add the new nodeArguments to the currentNodeArgumentsLists list
@@ -614,7 +675,8 @@ public class LInputArea extends JPanel
     private LInputField inputFieldAbove(LInputField inputField)
     {
         int index = inputFieldIndex(inputField)-1;
-        if(index < 0) return null;
+        if(index < 0)
+            return null;
         return currentInputFields.get(index);
     }
 
@@ -627,7 +689,8 @@ public class LInputArea extends JPanel
     {
         // this is inefficient, but the one below doesnt work. Maybe because the ArrayList is altered in the process before (but id stays the same!)
         int index = inputFieldIndex(inputField) + 1;
-        if(index >= currentInputFields.size()) return null;
+        if(index >= currentInputFields.size())
+            return null;
         return currentInputFields.get(index);
     }
 
@@ -637,12 +700,8 @@ public class LInputArea extends JPanel
     public void updateConnectionPointPositions()
     {
         for(LInputField inputField : currentInputFields)
-        {
             if(inputField.connectionComponent() != null)
-            {
                 inputField.connectionComponent().updatePosition();
-            }
-        }
     }
 
     /**

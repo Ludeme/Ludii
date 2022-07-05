@@ -488,7 +488,8 @@ public class Handler
      * @param to The node that the edge ends at.
      * @param nodeArgument The nodeArgument of the field
      */
-    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument){
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument)
+    {
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList())
             if(e.getNodeA() == from.id() && e.getNodeB() == to.id())
@@ -512,7 +513,8 @@ public class Handler
      * @param nodeArgument The nodeArgument of the field
      * @param elementIndex If the edge is part of a collection, the index of the element in the collection
      */
-    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument, int elementIndex){
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, NodeArgument nodeArgument, int elementIndex)
+    {
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList())
             if(e.getNodeA() == from.id() && e.getNodeB() == to.id())
@@ -539,7 +541,8 @@ public class Handler
      * @param to The node that the edge ends at.
      * @param inputFieldIndex The index of the inputfield where the connection stems from
      */
-    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int inputFieldIndex){
+    public static void addEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int inputFieldIndex)
+    {
         // check whether the edge already exists
         for(Edge e : graph.getEdgeList())
             if(e.getNodeA() == from.id() && e.getNodeB() == to.id())
@@ -564,7 +567,8 @@ public class Handler
      * @param from The node that the edge starts from.
      * @param to The node that the edge ends at.
      */
-    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to){
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to)
+    {
         removeEdge(graph, from, to, true);
     }
 
@@ -575,7 +579,8 @@ public class Handler
      * @param to The node that the edge ends at.
      * @param notify Whether the graph panel should be notified about the removal of the edge
      */
-    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, boolean notify){
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, boolean notify)
+    {
         if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to) -> Removing edge: " + from.title() + " -> " + to.title());
         graph.removeEdge(from.id(), to.id());
         from.removeChildren(to);
@@ -782,6 +787,21 @@ public class Handler
     public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters, List<NodeArgument> newParameters, List<NodeArgument> oldParameters)
     {
         if(DEBUG) System.out.println("[HANDLER] Parameters of Define Node changed. Added " + newParameters.size() + ", removed " + oldParameters.size() + ", total: " + parameters.size());
+        // Get List of define nodes
+        List<LudemeNode> defineNodes = defineLudemeNodes.get(graph);
+        if(defineNodes == null)
+            return;
+
+        for(LudemeNode ln : defineNodes)
+        {
+            // Update parameters
+            ln.updateDefineNode(parameters);
+            // Update component
+            // get graph panel
+            IGraphPanel gp = graphPanelMap.get(defineNodeToGraphMap.get(ln));
+            // get component and update component
+            gp.nodeComponent(ln).changedArguments(parameters);
+        }
     }
 
 

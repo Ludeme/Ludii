@@ -323,7 +323,7 @@ public class DescriptionGraph implements iGraph
         {
             defineMacroNode = computeDefineMacroNode();
             updateParameters(computeDefineParameters());
-            System.out.println("[NOTIFY] Macro node changed to " + defineMacroNode.title());
+            System.out.println("[NOTIFY] Macro node changed to " + defineMacroNode);
             // TODO: Notify
         }
     }

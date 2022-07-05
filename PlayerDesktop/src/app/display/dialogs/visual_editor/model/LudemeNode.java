@@ -307,7 +307,6 @@ public class LudemeNode implements iGNode
 
     public void updateDefineNode(Symbol symbol, LudemeNode macroNode, List<NodeArgument> requiredParameters)
     {
-
         if(macroNode() != macroNode)
             this.macroNode = macroNode;
     }

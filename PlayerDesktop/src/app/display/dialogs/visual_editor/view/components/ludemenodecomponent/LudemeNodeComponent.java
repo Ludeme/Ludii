@@ -498,6 +498,15 @@ public class LudemeNodeComponent extends JPanel
         }
     }
 
+    /**
+     * Updates the input area's input fields
+     * @param parameters
+     */
+    public void changedArguments(List<NodeArgument> parameters)
+    {
+        inputArea().updateCurrentInputFields(parameters);
+    }
+
 
     // FOR DYNAMIC CONSTRUCTOR
     /*
