@@ -1,22 +1,7 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 (define "SpecialThrows" (is In ("ThrowValue") (sites {4 5})))
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        #2
-        steps:#3
-    )
-)
 
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 (define "Move" 
     (or (forEach Piece top:True) (forEach Piece container:(mover) top:True))	
@@ -26,7 +11,7 @@
     (if (is In (from) (sites Track #2 #1))
         (forEach Value (values Remembered "Throws")
             (or
-                (if (= Off ("NextSiteFrom" (from) #1 (value)))
+                (if ("IsOffBoard" ("NextSiteFrom" (from) #1 (value)))
                     (do
                         (forget Value "Throws" (value))
                         next:(move Remove (from) level:(level))
@@ -35,10 +20,10 @@
                 (move
                     (from (from) level:(level))
                     (to ("NextSiteFrom" (from) #1 (value))
-                        if:"NotEnemyOrOnlyOne"	
+                        if:("NoEnemyOrOnlyOne" (to))	
                         (apply 
                             (and	
-                                (if (is Enemy (who at:(to)))
+                                (if ("IsEnemyAt" (to))
                                     (fromTo
                                         (from (to))
                                         (to (handSite (who at:(to))))
@@ -97,8 +82,8 @@
         phases:{
         (phase "Throwing" 
             (play 
-                (do (roll)
-                    next:(move Pass (then (remember Value "Throws" ("ThrowValue"))))
+                ("RollMove"
+                	(move Pass (then (remember Value "Throws" ("ThrowValue"))))
                     (then (moveAgain))
                 )
             )
