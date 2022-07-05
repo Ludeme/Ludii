@@ -1,36 +1,19 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "DoubleDieValue" (face 28))
 
 (define "MoveOppositeDice" 
     (forEach Value (values Remembered "Opposite")
-        (if (= Off ("NextSiteFrom" (from) (value)))
+        (if ("IsOffBoard" ("NextSiteFrom" (from) (value)))
             (move Remove (from))
             (move 
                 (from (from))
                 (to 
                     ("NextSiteFrom" (from) (value))
-                    if:("NotEnemyOrOnlyOne")
+                    if:("NoEnemyOrOnlyOne" (to))
                     (apply 
                         (and
-                            (if (is Enemy (who at:(to)))
+                            (if ("IsEnemyAt" (to))
                                 (fromTo 
                                     (from (to))
                                     (to (handSite Next))
@@ -60,33 +43,20 @@
 (game "Lange Puff"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {26 25..20 18..13 0..5 7..12} P1 directed:True)
-            (track "Track2" {27 25..20 18..13 0..5 7..12} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" "BackgammonTracksSameDirectionWithHands") 
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
                 replayDouble:(= 1 (value Player Mover))  
                 if:("DieNotUsed")
-                (if (= Off ("NextSiteFrom" (from) (pips)))
+                (if ("IsOffBoard" ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
                     (move 
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
-                            if:("NotEnemyOrOnlyOne")
-                            (apply 
-                                (if (is Enemy (who at:(to)))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (handSite Next))
-                                    )
-                                )
-                            )
+                            if:("NoEnemyOrOnlyOne" (to))
+                            ("HittingCapture" (handSite Next))
                         )
                     )
                 )
@@ -179,4 +149,3 @@
     })
     
 )
-
