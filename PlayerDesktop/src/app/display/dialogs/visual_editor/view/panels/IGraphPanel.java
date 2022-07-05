@@ -6,10 +6,8 @@ import app.display.dialogs.visual_editor.model.DescriptionGraph;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.interfaces.iGNode;
-import app.display.dialogs.visual_editor.view.components.AddArgumentPanel;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
-import main.grammar.Clause;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +18,6 @@ public interface IGraphPanel {
 
     // When Handler changes the graph
 
-    /** Initializes the graph panel. */
-    void initialize(JScrollPane parentScrollPane);
     /** Whether this panel is of a define graph. */
     boolean isDefineGraph();
     /** Notifies the panel that a node was added to the graph. */
@@ -47,23 +43,15 @@ public interface IGraphPanel {
     /*+ Notifies the panel that a node's collection element was removed */
     void notifyCollectionRemoved(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, int elementIndex);
     /** Notifies the panel that the node's selected clause was changed */
-    void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause);
+    void notifySelectedClauseChanged(LudemeNodeComponent lnc);
     /** Notifies the panel that a node's optional terminal input was activated/deactivated */
     void notifyTerminalActivated(LudemeNodeComponent lnc, NodeArgument inputFieldArgument, boolean activated);
     /** Notifies the panel about an updated collapsed-status of a list of nodes */
     void updateCollapsed(List<LudemeNodeComponent> lncs);
-    /** Notifies the panel which nodes are not compilable */
-    void notifyUncompilable(List<LudemeNodeComponent> lncs);
+
     /** Returns the ScrollPane this panel is in */
     JScrollPane parentScrollPane();
     JPanel panel();
-
-    /** Returns the AddArgumentPanel used to establish connections */
-    AddArgumentPanel addConnectionPanel();
-    /** Returns the AddArgumentPanel used to create new nodes */
-    AddArgumentPanel addNodePanel();
-    /** Creates a LudemeNodeComponent for a given node */
-    void addLudemeNodeComponent(LudemeNode node, boolean connect);
 
     /** Whether the graph is currently busy (e.g. a node is being added) */
     boolean isBusy();
@@ -99,8 +87,7 @@ public interface IGraphPanel {
     LayoutHandler getLayoutHandler();
     /** Updates the Graph (position of nodes, etc.) */
     void updateGraph();
-    /** Updates the position of the nodes */
-    void updateNodePositions();
+
     /** */
     void syncNodePositions();
     /** Repaints the graph */

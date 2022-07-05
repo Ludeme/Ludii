@@ -561,7 +561,7 @@ public class Handler
             }
         if(c.args() == null) node.setSelectedClause(c.symbol().rule().rhs().get(0));
         else node.setSelectedClause(c);
-        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node), c);}
+        graphPanel.notifySelectedClauseChanged(graphPanel.nodeComponent(node));}
 
     /**
      * Assigns a IGraphPanel to a DescriptionGraph

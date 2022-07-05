@@ -21,7 +21,6 @@ import app.display.dialogs.visual_editor.view.panels.editor.selections.FixedGrou
 import app.display.dialogs.visual_editor.view.panels.editor.selections.SelectionBox;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import grammar.Grammar;
-import main.grammar.Clause;
 import main.grammar.Symbol;
 
 import javax.swing.*;
@@ -90,7 +89,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
     /**
      * Initializes the graph panel.
      */
-    @Override
     public void initialize(JScrollPane parentScrollPane)
     {
         this.parentScrollPane = parentScrollPane;
@@ -332,10 +330,9 @@ public class GraphPanel extends JPanel implements IGraphPanel
      * Notifies the panel that the node's selected clause was changed
      *
      * @param lnc
-     * @param clause
      */
     @Override
-    public void notifySelectedClauseChanged(LudemeNodeComponent lnc, Clause clause)
+    public void notifySelectedClauseChanged(LudemeNodeComponent lnc)
     {
         lnc.inputArea().changedSelectedClause();
     }
@@ -382,7 +379,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
      *
      * @param lncs
      */
-    @Override
     public void notifyUncompilable(List<LudemeNodeComponent> lncs)
     {
         unmarkUncompilableNodes();
@@ -414,31 +410,12 @@ public class GraphPanel extends JPanel implements IGraphPanel
     }
 
     /**
-     * Returns the AddArgumentPanel used to establish connections
-     */
-    @Override
-    public AddArgumentPanel addConnectionPanel()
-    {
-        return connectArgumentPanel;
-    }
-
-    /**
-     * Returns the AddArgumentPanel used to create new nodes
-     */
-    @Override
-    public AddArgumentPanel addNodePanel()
-    {
-        return addLudemePanel;
-    }
-
-    /**
      * Creates a LudemeNodeComponent for a given node
      *
      * @param node
      * @param connect
      */
-    @Override
-    public void addLudemeNodeComponent(LudemeNode node, boolean connect)
+    private void addLudemeNodeComponent(LudemeNode node, boolean connect)
     {
         LudemeNodeComponent lc = new LudemeNodeComponent(node, this);
         hideAllAddArgumentPanels();
@@ -708,17 +685,6 @@ public class GraphPanel extends JPanel implements IGraphPanel
         }
         revalidate();
         repaint();
-    }
-
-    /**
-     * Updates the position of the nodes
-     */
-    @Override
-    public void updateNodePositions()
-    {
-        for (LudemeNodeComponent lc : NODE_COMPONENTS)
-            lc.updatePositions();
-        revalidate();
     }
 
     /**
