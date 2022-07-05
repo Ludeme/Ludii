@@ -1,39 +1,15 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 //------------------------------------------------------------------------------
 
 (game "Paumecary"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
+        ("TableBoard"
             {
             (track "Track1" {24..18 End} P1 directed:True)
             (track "Track2" {25 23..18 End} P2 directed:True)
             }
-            use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each
@@ -45,36 +21,21 @@
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
-                            if:("NotEnemyOrOnlyOne")
-                            (apply 
-                                (if (is Enemy (who at:(to)))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (handSite Next))
-                                    )
-                                )
-                            )
+                            if:("NoEnemyOrOnlyOne" (to))
+                        	("HittingCapture" (handSite Next))
                         )
                     )
-                    (then 
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )
-                    )
+                    (then ("ReplayNotAllDiceUsed"))
                 )
                 (if (is Empty (handSite Mover))
                     (forEach Die 
                         replayDouble:True 
                         if:(and
                             ("DieNotUsed")
-                            (= End ("NextSiteFrom" (from) (pips)))
+                            ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                         )
                         (move Remove (from))
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )		
@@ -87,9 +48,8 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
-            (do 
-                (if (not "SameTurn") (roll))
-                next:(or (forEach Piece) (forEach Piece container:(mover)))
+            ("RollEachNewTurnMove"
+            	(or (forEach Piece) (forEach Piece container:(mover)))
             )
         )
         (end ("EscapeWin"))
@@ -122,4 +82,3 @@
     })
     
 )
-
