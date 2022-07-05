@@ -20,7 +20,6 @@ public class GameGraphPanel extends GraphPanel
     public GameGraphPanel(int width, int height)
     {
         super(width, height);
-        Handler.gameDescriptionGraph = graph();
         Handler.gameGraphPanel = this;
         Handler.addGraphPanel(graph(), this);
         Handler.updateCurrentGraphPanel(this);

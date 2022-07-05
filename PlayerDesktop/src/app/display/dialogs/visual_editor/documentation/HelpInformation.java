@@ -61,19 +61,9 @@ public class HelpInformation
         return remark;
     }
 
-    public String ctor(Clause clause)
-    {
-        return ctor.get(clause);
-    }
-
     public HashMap<Clause, String> ctors()
     {
         return ctor;
-    }
-
-    public String example(Clause clause)
-    {
-        return examples.get(clause);
     }
 
     public HashMap<Clause, String> examples()

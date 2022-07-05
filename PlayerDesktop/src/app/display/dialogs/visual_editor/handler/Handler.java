@@ -38,7 +38,6 @@ import java.awt.*;
 
 public class Handler
 {
-    public static DescriptionGraph gameDescriptionGraph;
 
     // Single EditorPanel
     public static GameGraphPanel gameGraphPanel;
@@ -147,7 +146,8 @@ public class Handler
     // first element = Game (or null), second element = Error Messages, third element = List of Nodes that are not satisfied
     public static Object[] compile(boolean openDialog)
     {
-        if(!recordUserActions) return new Object[]{null, null, null};
+        if(!recordUserActions)
+            return new Object[]{null, null, null};
         Object[] output = new Object[3];
         List<LudemeNode> unsatisfiedNodes = isComplete(gameGraphPanel.graph());
         if(!unsatisfiedNodes.isEmpty())
@@ -165,7 +165,9 @@ public class Handler
             {
                 lastCompile = output;
                 if(toolsPanel != null)
+                {
                     toolsPanel.play.updateCompilable(output);
+                }
             }
             if(openDialog)
             {
