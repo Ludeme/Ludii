@@ -48,13 +48,8 @@ public class AddArgumentPanel extends JPanel
     };
     final JScrollPane scrollableList = new JScrollPane(list);
     public final JTextField searchField = new JTextField();
-    final IGraphPanel graphPanel;
-    final boolean connect;
     private LInputField initiator;
     private List<ReadableSymbol> currentSymbols;
-
-    private boolean addsDefines = false;
-
     public AddArgumentPanel(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect)
     {
         this(symbolList, graphPanel, connect, false);
@@ -62,20 +57,11 @@ public class AddArgumentPanel extends JPanel
 
     public AddArgumentPanel(List<Symbol> symbolList, IGraphPanel graphPanel, boolean connect, boolean addsDefines)
     {
-        this.graphPanel = graphPanel;
-        this.connect = connect;
-        this.addsDefines = addsDefines;
-
-        // plus one because we want the position, but indices start at 0. For Code Completion Log
-        // if adds define
-        // find corresponding node
-        // if the symbol is a terminal, do not create a new node. Instead create a new InputField
-        // get the node that we are adding an argument to
-        // otherwise if its a ludeme, create a new node
-        // Find the matching NodeArgument of the initiator InputField for the chosen symbol, if initiator is not null
-        MouseListener mouseListener = new MouseAdapter() {
+        MouseListener mouseListener = new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 int index = list.locationToIndex(e.getPoint());
                 if (index == -1)
                     return;
@@ -85,15 +71,19 @@ public class AddArgumentPanel extends JPanel
                 Symbol s = listModel.getElementAt(index).getSymbol();
 
                 // if adds define
-                if (addsDefines) {
+                if (addsDefines)
+                {
                     // find corresponding node
                     for (LudemeNode n : defineNodes)
-                        if (n.symbol() == s) {
+                    {
+                        if (n.symbol() == s)
+                        {
                             n.setX(getLocation().x);
                             n.setY(getLocation().y);
                             Handler.addNode(graphPanel.graph(), n);
                             break;
                         }
+                    }
                 }
                 // if the symbol is a terminal, do not create a new node. Instead create a new InputField
                 else if (s.ludemeType().equals(Symbol.LudemeType.Predefined) || isConstantTerminal(s)) {
@@ -104,18 +94,24 @@ public class AddArgumentPanel extends JPanel
                     setVisible(false);
                 }
                 // otherwise if its a ludeme, create a new node
-                else {
+                else
+                {
                     // Find the matching NodeArgument of the initiator InputField for the chosen symbol, if initiator is not null
-                    if (initiator != null) {
+                    if (initiator != null)
+                    {
                         NodeArgument match = null;
                         for (NodeArgument na : initiator.nodeArguments())
-                            if (na.possibleSymbolInputsExpanded().contains(s)) {
+                        {
+                            if (na.possibleSymbolInputsExpanded().contains(s))
+                            {
                                 match = na;
                                 break;
                             }
-                        System.out.println(match);
+                        }
                         Handler.addNode(graphPanel.graph(), s, match, getLocation().x, getLocation().y, connect);
-                    } else {
+                    }
+                    else
+                    {
                         Handler.addNode(graphPanel.graph(), s, null, getLocation().x, getLocation().y, connect);
                     }
                 }
@@ -128,21 +124,26 @@ public class AddArgumentPanel extends JPanel
 
         updateList(null, symbolList);
 
-        DocumentListener searchListener = new DocumentListener() {
+        DocumentListener searchListener = new DocumentListener()
+        {
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            public void insertUpdate(DocumentEvent e)
+            {
                 changedUpdate(e);
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(DocumentEvent e)
+            {
                 changedUpdate(e);
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(DocumentEvent e)
+            {
                 listModel.clear();
-                for (ReadableSymbol rs : currentSymbols) {
+                for (ReadableSymbol rs : currentSymbols)
+                {
                     if (rs.getSymbol().name().toLowerCase().contains(searchField.getText().toLowerCase()) || rs.getSymbol().token().toLowerCase().contains(searchField.getText().toLowerCase())
                             || rs.getSymbol().grammarLabel().toLowerCase().contains(searchField.getText().toLowerCase()))
                         listModel.addElement(rs);
@@ -175,7 +176,6 @@ public class AddArgumentPanel extends JPanel
     // for defines
     public void updateList(List<Symbol> symbolList, List<LudemeNode> nodes)
     {
-        this.initiator = initiator;
         this.defineNodes = nodes;
         // remove duplicates
         symbolList = symbolList.stream().distinct().collect(java.util.stream.Collectors.toList());

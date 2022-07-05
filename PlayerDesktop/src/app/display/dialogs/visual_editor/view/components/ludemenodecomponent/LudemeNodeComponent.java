@@ -7,6 +7,7 @@ import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputArea;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
 import main.grammar.Symbol;
@@ -204,7 +205,7 @@ public class LudemeNodeComponent extends JPanel
      */
     public int width()
     {
-        return Handler.currentPalette().NODE_WIDTH;
+        return DesignPalette.NODE_WIDTH;
     }
 
     /**

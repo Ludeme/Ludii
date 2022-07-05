@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LIngoingConnectionComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
@@ -56,7 +57,7 @@ public class LHeader extends JComponent
         JPanel connectionAndTitle = new JPanel(new FlowLayout(FlowLayout.LEFT));
         if(ingoingConnectionComponent!=null) connectionAndTitle.add(ingoingConnectionComponent);
         // Empty space between the connection component and the label
-        connectionAndTitle.add(Box.createHorizontalStrut(Handler.currentPalette().HEADER_TITLE_CONNECTION_SPACE));
+        connectionAndTitle.add(Box.createHorizontalStrut(DesignPalette.HEADER_TITLE_CONNECTION_SPACE));
         connectionAndTitle.add(title);
         connectionAndTitle.setOpaque(false);
 
@@ -90,7 +91,7 @@ public class LHeader extends JComponent
 
 
         // space between this and input area and top of LNC
-        setBorder(new EmptyBorder(Handler.currentPalette().HEADER_PADDING_TOP,0,Handler.currentPalette().HEADER_PADDING_BOTTOM,0));
+        setBorder(new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0, DesignPalette.HEADER_PADDING_BOTTOM,0));
         setSize(getPreferredSize());
 
         setOpaque(false);
@@ -229,7 +230,7 @@ public class LHeader extends JComponent
         super.paintComponent(g);
 
         title.setText(LNC.node().title());
-        title.setFont(Handler.currentPalette().LUDEME_TITLE_FONT);
+        title.setFont(DesignPalette.LUDEME_TITLE_FONT);
         title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         title.setToolTipText(ludemeNodeComponent().node().description());
@@ -237,6 +238,6 @@ public class LHeader extends JComponent
         if(!clauseBtn.getIcon().equals(Handler.currentPalette().DOWN_ICON()))
             clauseBtn.setIcon(Handler.currentPalette().DOWN_ICON());
 
-        setBorder(Handler.currentPalette().HEADER_PADDING_BORDER);
+        setBorder(DesignPalette.HEADER_PADDING_BORDER);
     }
 }

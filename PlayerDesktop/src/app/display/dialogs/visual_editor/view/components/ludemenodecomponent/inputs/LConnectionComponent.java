@@ -57,41 +57,30 @@ public class LConnectionComponent extends JComponent
          * Listener to create a connection when the user clicks on the circle
          * or remove a connection when the user clicks on the circle again
          */
-        // Start drawing connection
-        /*if(connectionIsCollapsed)
-                    {
-                        connectedTo.setCollapsed(false);
-                        connectedTo.setVisible(true);
-                        graphPanel.repaint();
-                        updatePosition();
-                        return;
-                    }*/
-        // if already connected: remove connection
-        // end drawing connection
-        MouseListener clickListener = new MouseAdapter() {
+        MouseListener clickListener = new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 super.mouseClicked(e);
                 IGraphPanel graphPanel = lnc().graphPanel();
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    if (!filled()) {
+                if (e.getButton() == MouseEvent.BUTTON1)
+                {
+                    if (!filled())
+                    {
                         // Start drawing connection
                         fill(!filled());
                         graphPanel.connectionHandler().startNewConnection(LConnectionComponent.this);
-                    } else {
-                    /*if(connectionIsCollapsed)
+                    }
+                    else
                     {
-                        connectedTo.setCollapsed(false);
-                        connectedTo.setVisible(true);
-                        graphPanel.repaint();
-                        updatePosition();
-                        return;
-                    }*/
                         // if already connected: remove connection
-                        if (connectedTo != null) {
+                        if (connectedTo != null)
+                        {
                             graphPanel.connectionHandler().removeConnection(LConnectionComponent.this.lnc().node(), LConnectionComponent.this);
                             setConnectedTo(null);
-                        } else {
+                        } else
+                        {
                             // end drawing connection
                             fill(!filled());
                             graphPanel.connectionHandler().cancelNewConnection();

@@ -4,6 +4,7 @@ import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
@@ -656,7 +657,7 @@ public class LInputArea extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        setBorder(Handler.currentPalette().INPUT_AREA_PADDING_BORDER); // just space between this and bottom of LNC
+        setBorder(DesignPalette.INPUT_AREA_PADDING_BORDER); // just space between this and bottom of LNC
     }
 
 
