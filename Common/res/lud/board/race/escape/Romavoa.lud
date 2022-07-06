@@ -27,7 +27,7 @@
                     )
                 )
             )
-            (if (= ("SiteToMoveOnTrack" ("ThrowValue")) End)
+            (if ("IsEndTrack" ("SiteToMoveOnTrack" ("ThrowValue")))
                 "RemoveAPiece"
                 (move 
                     (from (from) level:(level))

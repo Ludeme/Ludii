@@ -186,7 +186,11 @@
     (graphics {
         (show Edges Hidden)
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
-        (no DicePips)
+        (piece Rename piece:"Die1" "KintsDice1")
+        (piece Rename piece:"Die2" "KintsDice2")
+        (piece Rename piece:"Die3" "KintsDice3")
+        (piece Rename piece:"Die4" "KintsDice4")
+        (piece Style "Die" NativeAmericanDice)
     })
     
     (ai
