@@ -28,19 +28,6 @@
     )
 )
 
-(define "CaptureEnemyPiece" 
-    (apply
-        (if (is Enemy (who at:(to)))
-            (forEach Level (to) FromTop
-                (fromTo
-                    (from (to) level:(level))
-                    (to (handSite (who at:(to) level:(level))))
-                )
-            )
-        )
-    )
-)
-
 (define "RemoveAPiece" (move Remove (from) level:(level)) )
 
 (define "Movement" 
@@ -61,7 +48,7 @@
                         (from (from) level:(level))
                         (to 
                             ("SiteToMoveOnTrack" 1) 
-                            "CaptureEnemyPiece"
+                            ("HittingStackCapture" (handSite (who at:(to) level:(level))))
                         )
                     )
                 )
@@ -72,7 +59,7 @@
                     (from (from) level:(level))
                     (to 
                         ("SiteToMoveOnTrack" ("ThrowValue")) 
-                        "CaptureEnemyPiece"
+                        ("HittingStackCapture" (handSite (who at:(to) level:(level))))
                     )
                 )
             )

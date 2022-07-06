@@ -87,16 +87,7 @@
                         (to
                             ("SiteToMoveOnTrack" from:(from) (if (< 0 (var "EnteredPiece")) (- ("ThrowValue") 1) ("ThrowValue")))
                             if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
-                            (apply
-                                (if (is Enemy (who at:(to)))
-                                    (forEach Level (to) FromTop
-                                        (fromTo
-                                            (from (to) level:(level))
-                                            (to (handSite (who at:(to) level:(level))))
-                                        )
-                                    )
-                                )
-                            )
+                            ("HittingStackCapture" (handSite (who at:(to) level:(level))))
                         )
                         (then (set Var "EnteredPiece" 0))
                     )

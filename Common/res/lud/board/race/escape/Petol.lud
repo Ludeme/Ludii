@@ -90,16 +90,7 @@
                             (to
                                 ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                                 if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
-                                (apply
-                                    (if ("IsEnemyAt" (to))
-                                        (forEach Level (to) FromTop
-                                            (fromTo
-                                                (from (to) level:(level))
-                                                (to (handSite (who at:(to) level:(level))))
-                                            )
-                                        )
-                                    )
-                                )
+                                ("HittingStackCapture" (handSite (who at:(to) level:(level))))
                             )
                         )
                     )

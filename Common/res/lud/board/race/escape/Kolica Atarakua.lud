@@ -67,16 +67,7 @@
                     (to
                         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                         if:True
-                        (apply
-                            (if ("IsEnemyAt" (to))
-                                (forEach Level (to) FromTop
-                                    (fromTo
-                                        (from (to) level:(level))
-                                        (to (handSite (who at:(to) level:(level))))
-                                    )
-                                )
-                            )
-                        )
+                        ("HittingStackCapture" (handSite (who at:(to) level:(level))))
                     )
                     (then
                         (if (is In (last To) (sites "RemoveSites"))
