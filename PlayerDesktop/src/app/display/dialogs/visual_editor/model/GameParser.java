@@ -101,6 +101,11 @@ public class GameParser
         constructGraph(callTree.args().get(0), 0, null, -1, null, graphPanel.graph());
         Handler.gameGraphPanel.updateGraph();
         progressBar.updateProgress(8);
+        graphPanel.graph().getNodeList().forEach((k,v) ->
+        {
+            Handler.reconstruct(graphPanel, (LudemeNode) v);
+            Handler.updateInputs(graphPanel, (LudemeNode) v);
+        });
     }
 
     /**
@@ -118,6 +123,7 @@ public class GameParser
         {
             case Array:
                 // Apply method for the arguments of c
+                // TODO: update collection input
                 Object[] objects = new Object[cArgs.size()];
                 for (int i = 0; i < cArgs.size(); i++)
                 {
@@ -183,9 +189,11 @@ public class GameParser
                     }
                     else
                     {
+                        // adding inputs
                         Call call = cArgs.get(j);
                         input = constructGraph(call, d+1, ln, -1, ln.currentNodeArguments().get(i), graph);
-                        Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
+                        if (!(input instanceof LudemeNode || input instanceof Object[]))
+                            Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
 
                         if (currentClause.args().get(j).orGroup() > orGroup)
                         {
@@ -210,6 +218,7 @@ public class GameParser
                         j++;
                     }
                 }
+
                 // add edge to graph model
                 if (parent != null)
                 {
