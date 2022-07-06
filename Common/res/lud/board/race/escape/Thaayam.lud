@@ -190,7 +190,7 @@
             )
         )
         (piece "DoubleCounter" Each // The twin piece
-            (if (and (> (/ (value) 2) 0) (!= Off ("SiteToMoveOnTrack" (/ (value) 2))))
+            (if (and (> (/ (value) 2) 0) ("IsNotOffBoard" ("SiteToMoveOnTrack" (/ (value) 2))))
                 (move 
                     (from (from) level:(level))
                     (to ("SiteToMoveOnTrack" (/ (value) 2))
