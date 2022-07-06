@@ -2,7 +2,7 @@
 
 (define "EmptyButNotEnemyGoal" (difference (sites Empty) (sites Mover)))
 
-(define "OnAFriend" (between if:(is Friend (who at:(between)))))
+(define "OnAFriend" (between if:("IsFriendAt" (between))))
 
 (define "MoveAgainAfterJumpingFriend" (and (moveAgain) (set Pending)))
 
@@ -12,11 +12,10 @@
 
 (define "WasAKnight" (= (what at:(last To)) (id "Knight" Mover)))
 
-(define "OnAnEnemy" (between if:(is Enemy (who at:(between))) (apply (remove (between)))))
+(define "OnAnEnemy" (between if:("IsEnemyAt" (between)) (apply (remove (between)))))
 
 (define "Step" 
-    (move
-        Step
+    (move Step
         (to if:(if ("InTheGoal" (from))
                 (and 
                     (is Empty (to)) 
@@ -29,8 +28,7 @@
 )
 
 (define "Hop" 
-    (move 
-        Hop 
+    (move Hop 
         (from #1)
         #2
         (to if:(and (is In (to) "EmptyButNotEnemyGoal") (not (is Visited (to)))))
@@ -88,8 +86,7 @@
         
         (regions P1 (sites {"A6" "A7"})) 
         (regions P2 (sites {"P6" "P7"})) 
-        }
-    )  
+    })  
     (rules 
         (start {
             (place "Pawn1" {"F4" "F5" "F6" "F7" "F8" "F9" "G5" "G6" "G7" "G8"})
@@ -134,8 +131,7 @@
                     )
                     // If a piece can jump an enemy it has to.
                     (forEach Piece 
-                        (move 
-                            Hop 
+                        (move Hop 
                             "OnAnEnemy"
                             (to 
                                 if:(if 
