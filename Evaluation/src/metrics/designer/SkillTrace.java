@@ -79,7 +79,8 @@ public class SkillTrace extends Metric
 		final Context context = new Context(game, trial);
 		
 		int weakIterationValue = 2;
-		for (int matchCount = 1; matchCount <= numMatches; matchCount++)
+		int matchCount = 0;
+		for (/**/; matchCount < numMatches; matchCount++)
 		{
 			double strongAIAvgResult = 0.0;
 			int strongAgentIdx = 1;
@@ -120,19 +121,19 @@ public class SkillTrace extends Metric
 			// If we didn't finish all trials in time, then ignore the match results
 			if (System.currentTimeMillis() > (startTime + hardTimeLimit*1000))
 			{
-				System.out.println("Aborting after " + String.valueOf(matchCount-1) + " matches.");
+				System.out.println("Aborting after " + String.valueOf(matchCount) + " matches.");
 				break;
 			}
 			
 			strongAIAvgResult /= numTrialsPerMatch;
 			strongAIResults.add(strongAIAvgResult);
-			areaEstimate += Math.pow(Math.max(strongAIAvgResult, 0.0), 2);
+			areaEstimate += Math.max(strongAIAvgResult, 0.0);
 			weakIterationValue *= 2;
 			
 			// Print match results in console
 			System.out.println("-----");
-			System.out.println(matchCount);
-			System.out.println(strongAIAvgResult);
+			System.out.println("Match Index:" + matchCount);
+			System.out.println("Strong AI result:" + strongAIAvgResult);
 		}
 		
 		// Predict next step y value.
@@ -142,7 +143,11 @@ public class SkillTrace extends Metric
 		double yValueNextStep = linearRegression.predict(numMatches+1);
 		yValueNextStep = Math.max(Math.min(yValueNextStep, 1.0), 0.0);
 		
-		final double skillTrace = yValueNextStep + (1-yValueNextStep)*areaEstimate;
+		// No matches were able to be completed within the time limit.
+		if (matchCount == 0)
+			return 0.0;
+		
+		final double skillTrace = yValueNextStep + (1-yValueNextStep)*(areaEstimate/matchCount);
 		
 		return skillTrace;
 	}
