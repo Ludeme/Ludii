@@ -24,12 +24,7 @@
 (game "Shuanglu"
     (players 2)
     (equipment {
-        ("TableBoard"
-            {
-            (track "Track1" {24 11..0 12..23 End} P1 directed:True)
-            (track "Track2" {25 23..12 0..11 End} P2 directed:True)
-            }
-        )
+        ("TableBoard" ("TableTracksOppositeWithHands2" End))
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
