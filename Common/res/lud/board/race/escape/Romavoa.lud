@@ -28,7 +28,7 @@
     )
 )
 
-(define "RemoveAPiece" (move Remove (from) level:(level)) )
+(define "RemoveAPiece" (move Remove (from) level:(level)))
 
 (define "Movement" 
     (if (if 
@@ -42,7 +42,7 @@
         )
         (or
             (if (= 14 ("ThrowValue"))
-                (if (= ("SiteToMoveOnTrack" 1) End)
+                (if ("IsEndTrack" ("SiteToMoveOnTrack" 1))
                     "RemoveAPiece"
                     (move 
                         (from (from) level:(level))
@@ -72,27 +72,11 @@
 (game "Romavoa"
     (players 2)
     (equipment {
-        (board
-            (add
-                (merge {  
-                    (shift -1.25 -0.34 (rotate 30 (rectangle 6 1)))
-                    (rectangle 1 5)
-                    (rectangle 5 1)
-                    (shift 0 6 (rectangle 5 1))
-                    (shift 0 10 (rectangle 1 5))
-                    (shift 7 0 (rectangle 1 5))
-                    (shift 7 10 (rectangle 1 5))
-                    (shift 11 0 (rectangle 5 1))
-                    (shift 11 6 (rectangle 5 1))
-                    (shift 12.25 5.33 (rotate 30 (rectangle 6 1)))
-                })
-                edges:{{13 14} {22 28} {37 36} {9 23}}
-            )
+    	("KintsBoard"
             {
             (track "Track1" "46,5,SSE,N,E,S,W,NNW2,End" P1 directed:True)
             (track "Track2" "47,41,NNW,W,S,E,N,SSE2,End" P2 directed:True)
             }
-            use:Vertex
         )
         (regions "AllSites" (sites Board))
         (regions "LastSide" P1 (sites {6..9 23..27}))
