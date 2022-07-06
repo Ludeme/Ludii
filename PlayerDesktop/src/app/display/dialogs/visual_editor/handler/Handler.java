@@ -1614,7 +1614,7 @@ public class Handler
     }
 
 
-    public void reconstruct(IGraphPanel graph, LudemeNode node)
+    public static void reconstruct(IGraphPanel graph, LudemeNode node)
     {
         LudemeNodeComponent lnc = graph.nodeComponent(node);
         for(LInputField lif : lnc.inputArea().currentInputFields)
