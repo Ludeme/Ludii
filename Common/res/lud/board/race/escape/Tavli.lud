@@ -1,12 +1,10 @@
 (match "Tavli"
     (players 2)
-    (games 
-        {
+    (games {
         (subgame "Portes"  next:1 result:(score Mover))
         (subgame "Plakoto" next:2 result:(score Mover))
         (subgame "Fevga" next:0 result:(score Mover))
-        }
-    )
+    })
     (end { 
         (if (>= (matchScore P1) 5)  (result P1 Win))
         (if (>= (matchScore P2) 5)  (result P2 Win))
