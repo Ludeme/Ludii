@@ -12,12 +12,7 @@
             (place "Knight2" (sites P2))
         })
         (play (forEach Piece))
-        (end 
-            (if 
-                (= (sites Occupied by:Mover) (sites Next))
-                (result Mover Win)
-            )	
-        )
+        (end ("FillWin" (sites Next)))
     )
 )
 
