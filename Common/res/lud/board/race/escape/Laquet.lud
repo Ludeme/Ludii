@@ -1,36 +1,23 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "DieNotUsed" (!= (pips) 0))
+(define "RemoveAPiece" (move Remove (from)))
 
 //------------------------------------------------------------------------------
 
 (game "Laquet"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
-            (track "Track1" {11..6 5..0 12..17 18..23} directed:True)
-            use:Vertex
-        )
+        ("TableBoard" (track "Track1" {11..6 5..0 12..17 18..23} directed:True))
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= "SiteToMoveOnTrack" Off)
+                (if ("IsOffBoard" "SiteToMoveOnTrack")
                     "RemoveAPiece"
-                    (if (not (is Enemy (who at:"SiteToMoveOnTrack")))
+                    (if (not ("IsEnemyAt" "SiteToMoveOnTrack"))
                         (move 
                             (from) 
-                            (to 
-                                "SiteToMoveOnTrack" 
-                            )
+                            (to "SiteToMoveOnTrack")
                         )
                     )
                 )
@@ -51,17 +38,13 @@
                 next:(if (can Move (forEach Piece))
                     (forEach Piece 
                         top:True
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                     (move Pass (then (set Pending)))
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -89,4 +72,3 @@
     })
     
 )
-

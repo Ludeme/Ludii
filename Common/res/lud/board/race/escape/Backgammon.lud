@@ -1,12 +1,4 @@
-(define "IfEnemyBlotIt"    
-    (apply 
-        if:("IsEnemyOn" (to)) 
-        (fromTo 
-            (from (to)) 
-            (to (mapEntry (next)))
-        )
-    )
-)
+(define "IfEnemyBlotIt" ("HittingCapture" (mapEntry (next))))
 
 (define "BarEmpty" (is Empty "Bar"))
 
@@ -74,7 +66,7 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        ("IsFriendOn" (site)) 
+        ("IsFriendAt" (site)) 
         (< ("NextSiteOnTrack" (pips) from:(site)) 0)
     )
 )
@@ -84,7 +76,7 @@
 (game "Backgammon"  
     (players 2)  
     (equipment { 
-        ("BackgammonBoard" "BackgammonTracksWithBar") 
+        ("BackgammonBoard" ("BackgammonTracksWithBar" End)) 
         (dice num:2)
         (regions P1 { 20..25 }) // P1 Home
         (regions P2 { 7..12 })  // P2 Home
@@ -119,9 +111,7 @@
                                     "RemoveAPiece"
                                 )
                             )
-                            (then 
-                                ("ReplayNotAllDiceUsed")
-                            )
+                            (then ("ReplayNotAllDiceUsed"))
                         )
                     )
                     (max Distance "Track" Mover

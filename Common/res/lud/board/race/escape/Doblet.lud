@@ -12,7 +12,7 @@
 (game "Doblet"
     (players 2)
     (equipment {
-        ("TableBoard" "TableTracksOpposite")
+        ("TableBoard" ("TableTracksOpposite" End))
         (dice d:6 num:3)
         (piece "Disc" Each
             (forEach Die 
@@ -24,7 +24,7 @@
                         (to 
                             ("NextSiteOnTrack" (pips)) 
                             if:"StackSizeLessThan2"
-                            (apply (if ("IsEnemyOn" (to)) (remove (to))))
+                            (apply (if ("IsEnemyAt" (to)) (remove (to))))
                         )
                     )
                 )
@@ -69,7 +69,7 @@
         )
         }
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

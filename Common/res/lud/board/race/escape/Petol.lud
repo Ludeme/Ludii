@@ -5,7 +5,7 @@
         ("ThrowValue")
     )
 )
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 //------------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@
         )
         (dice d:2 facesByDie:{{0 1} {0 1} {0 15} {0 20}} num:4)
         (piece "Marker" Each
-            (if (= End ("SiteToMoveOnTrack" from:(from) 1))
+            (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) 1))
                 (if (or { 
                         (= 1 ("ThrowValue"))
                         (= 10 ("ThrowValue"))
@@ -61,7 +61,7 @@
                     })
                     (move Remove (from) level:(level))
                 )
-                (if (= End ("SiteToMoveOnTrack" from:(from) 2))
+                (if ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) 2))
                     (or
                         (if (or { 
                                 (= 2 ("ThrowValue"))
@@ -89,9 +89,9 @@
                             (from (from) level:(level))
                             (to
                                 ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-                                if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
+                                if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
                                 (apply
-                                    (if (is Enemy (who at:(to)))
+                                    (if ("IsEnemyAt" (to))
                                         (forEach Level (to) FromTop
                                             (fromTo
                                                 (from (to) level:(level))
@@ -115,8 +115,8 @@
     (rules 
         <Players:startRules>
         (play 
-            (do (roll) 
-                next:(or { 
+            ("RollMove"
+                (or { 
                     (if (and (is Occupied (handSite Mover)) (<= 10 ("ThrowValue")))
                         (move 
                             (from (handSite Mover))
@@ -148,7 +148,7 @@
                 })
             )
         )
-        (end (if (no Pieces TeamMover) (result TeamMover Win)))
+        (end ("EscapeTeamWin"))
     )
 )
 
@@ -310,4 +310,3 @@
     })
     
 )
-

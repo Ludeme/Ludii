@@ -11,8 +11,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodePopupMenu extends JPopupMenu {
-    public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel) {
+public class NodePopupMenu extends JPopupMenu 
+{
+	private static final long serialVersionUID = 1L;
+
+	public NodePopupMenu(LudemeNodeComponent nodeComponent, IGraphPanel graphPanel) {
         JMenuItem delete = new JMenuItem("Delete");
         JMenuItem observe = new JMenuItem("Observe");
         JMenuItem collapse = new JMenuItem("Collapse");

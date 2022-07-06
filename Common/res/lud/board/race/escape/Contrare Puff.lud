@@ -13,7 +13,7 @@
                     if:("NoEnemyOrOnlyOne" (to))
                     (apply 
                         (and
-                            (if ("IsEnemyOn" (to))
+                            (if ("IsEnemyAt" (to))
                                 (fromTo 
                                     (from (to))
                                     (to (handSite Next))
@@ -56,7 +56,7 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
-                            ("CaptureEnemyPieceToHand")
+                            ("HittingCapture" (handSite (who at:(to))))
                         )
                     )
                 )
@@ -120,7 +120,7 @@
             )
         )
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

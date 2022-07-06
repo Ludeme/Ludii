@@ -21,7 +21,9 @@ import java.util.List;
 
 public class LConnectionComponent extends JComponent
 {
-    /** InputField this ConnectionComponent is part of */
+	private static final long serialVersionUID = 1L;
+
+	/** InputField this ConnectionComponent is part of */
     private final LInputField INPUT_FIELD;
     /** ConnectionPointComponent of this ConnectionComponent (the graphic of the circle) */
     private final ConnectionPointComponent connectionPointComponent;

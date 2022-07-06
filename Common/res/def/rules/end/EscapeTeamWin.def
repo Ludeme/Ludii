@@ -1,0 +1,6 @@
+// Checks if the team has no pieces and makes it win. This ludemeplex can be used only in an ending condition.
+// @example ("EscapeTeamWin")
+
+(define "EscapeTeamWin"
+    (if (no Pieces TeamMover) (result TeamMover Win))
+)

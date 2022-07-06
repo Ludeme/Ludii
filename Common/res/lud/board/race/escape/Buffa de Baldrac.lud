@@ -7,7 +7,7 @@
 (game "Buffa de Baldrac"
     (players 2)
     (equipment {
-        ("TableBoard" "TableTracksOpposite")
+        ("TableBoard" ("TableTracksOpposite" End))
         (dice d:6 num:3)
         (piece "Disc" Each
             (or
@@ -22,14 +22,7 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:("NoEnemyOrOnlyOne" (to))
-                            (apply 
-                                (if ("IsEnemyOn" (to))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (handSite Next))
-                                    )
-                                )
-                            )
+                            ("HittingCapture" (handSite Next))
                         )
                     )
                     (then ("ReplayNotAllDiceUsed"))
@@ -84,7 +77,7 @@
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

@@ -267,15 +267,16 @@ public class BoardDesign extends ContainerDesign
 		
 		for (final MetadataImageInfo groundImageInfo : allGroundImages)
 		{
-			if (groundImageInfo.path() == null)
+			final Point drawPosn = boardStyle.screenPosn(new Point2D.Double(0.5, 0.5));
+			
+			if (groundImageInfo.path() == null && groundImageInfo.text() == null)
 			{
 				drawBoardOutline(g2d, groundImageInfo.scale(), groundImageInfo.offestX(), groundImageInfo.offestY(), 
 						groundImageInfo.mainColour(), groundImageInfo.secondaryColour(), groundImageInfo.rotation());
 			}
-			else
+			else if (groundImageInfo.path() != null)
 			{
 				final String fullPath = ImageUtil.getImageFullPath(groundImageInfo.path());
-				final Point drawPosn = boardStyle.screenPosn(new Point2D.Double(0.5, 0.5));
 				
 				Color edgeColour = colorSymbol();
 				Color fillColour = null;
@@ -300,6 +301,14 @@ public class BoardDesign extends ContainerDesign
 						);
 				
 				SVGtoImage.loadFromFilePath(g2d, fullPath, rect, edgeColour, fillColour, rotation);
+			}
+			else if (groundImageInfo.text() != null)
+			{
+				g2d.setColor(groundImageInfo.mainColour());
+				final int fontSize = (int) ((0.85 * boardStyle.cellRadius() * boardStyle.placement().width + 0.5) * groundImageInfo.scale());
+				final Font font = new Font("Arial", Font.PLAIN, fontSize);
+				g2d.setFont(font);
+				g2d.drawString(groundImageInfo.text(), drawPosn.x, drawPosn.y);
 			}
 		}
 	}
@@ -383,7 +392,7 @@ public class BoardDesign extends ContainerDesign
 			{
 				for (final MetadataImageInfo d : regionInfo)
 				{
-					if (d.siteType() == SiteType.Cell && d.site() == cell.index() && d.path() == null)
+					if (d.siteType() == SiteType.Cell && d.site() == cell.index() && d.path() == null && d.text() == null)
 					{
 						g2d.setColor(d.mainColour());
 						final int phase = !checkeredBoard ? 0 : topology().phaseByElementIndex(SiteType.Cell, cell.index());
@@ -600,7 +609,7 @@ public class BoardDesign extends ContainerDesign
 			{
 				for (final MetadataImageInfo d : regionInfo)
 				{
-					if (d.siteType() == SiteType.Vertex && d.site() == vertex.index() && d.path() == null)
+					if (d.siteType() == SiteType.Vertex && d.site() == vertex.index() && d.path() == null && d.text() == null)
 					{
 						g2d.setColor(d.mainColour());
 						break;
@@ -699,9 +708,9 @@ public class BoardDesign extends ContainerDesign
 	 */
 	protected void drawSymbols(final Graphics2D g2d, final Context context)
 	{		
-		// Draw lines
 		for (final MetadataImageInfo s : symbols)
 		{
+			// Draw lines
 			if (s.line() != null && s.line().length >= 2)
 			{
 				Color colour = s.mainColour();
@@ -738,12 +747,10 @@ public class BoardDesign extends ContainerDesign
 					g2d.draw(path);
 				}
 			}
-		}
-		
-		// Draw regular symbols (images)
-		for (final MetadataImageInfo s : symbols)
-		{
-			if (s.path() == null || s.site() == -1)
+			
+			// Draw regular symbols (images)
+	
+			if ((s.path() == null && s.text() == null) || s.site() == -1)
 				continue;
 			
 			TopologyElement e = null;
@@ -760,43 +767,43 @@ public class BoardDesign extends ContainerDesign
 			{
 				e = boardStyle.topology().vertices().get(s.site());
 			}
-			
-			final String fullPath = ImageUtil.getImageFullPath(s.path());
 			final Point drawPosn = boardStyle.screenPosn(e.centroid());
 			
-			Color edgeColour = colorSymbol();
-			Color fillColour = null;
-			
-			if (s.mainColour() != null)
-				fillColour = s.mainColour();
-			if (s.secondaryColour() != null)
-				edgeColour = s.secondaryColour();
-			
-			final int rotation = s.rotation();
-			
-			final int offsetX = (int) (s.offestX() * boardStyle.cellRadiusPixels() * 2);
-			final int offsetY = (int) (s.offestY() * boardStyle.cellRadiusPixels() * 2);
-			
-			final Rectangle2D rect = new Rectangle2D.Double
-					(
-						drawPosn.x + offsetX - s.scale() * boardStyle.cellRadiusPixels(), 
-						drawPosn.y + offsetY - s.scale() * boardStyle.cellRadiusPixels(), 
-						(int) (s.scale() * boardStyle.cellRadiusPixels() * 2), 
-						(int) (s.scale() * boardStyle.cellRadiusPixels() * 2)
-					);
-			
-			try
+			if (s.path() != null)
 			{
+				final String fullPath = ImageUtil.getImageFullPath(s.path());
+
+				Color edgeColour = colorSymbol();
+				Color fillColour = null;
+				
+				if (s.mainColour() != null)
+					fillColour = s.mainColour();
+				if (s.secondaryColour() != null)
+					edgeColour = s.secondaryColour();
+				
+				final int rotation = s.rotation();
+				
+				final int offsetX = (int) (s.offestX() * boardStyle.cellRadiusPixels() * 2);
+				final int offsetY = (int) (s.offestY() * boardStyle.cellRadiusPixels() * 2);
+				
+				final Rectangle2D rect = new Rectangle2D.Double
+						(
+							drawPosn.x + offsetX - s.scale() * boardStyle.cellRadiusPixels(), 
+							drawPosn.y + offsetY - s.scale() * boardStyle.cellRadiusPixels(), 
+							(int) (s.scale() * boardStyle.cellRadiusPixels() * 2), 
+							(int) (s.scale() * boardStyle.cellRadiusPixels() * 2)
+						);
+				
 				SVGtoImage.loadFromFilePath(g2d, fullPath, rect, edgeColour, fillColour, rotation);
 			}
-			catch (final Exception e2)
+			
+			if (s.text() != null)
 			{
-				// could not find a suitable image, will draw string instead.
-				g2d.setColor(Color.BLACK);
-				final int fontSize = (int) (0.85 * boardStyle.cellRadius() * boardStyle.placement().width + 0.5);
+				g2d.setColor(s.mainColour());
+				final int fontSize = (int) ((0.85 * boardStyle.cellRadius() * boardStyle.placement().width + 0.5) * s.scale());
 				final Font font = new Font("Arial", Font.PLAIN, fontSize);
 				g2d.setFont(font);
-				StringUtil.drawStringAtPoint(g2d, s.path(), e, drawPosn, true);
+				StringUtil.drawStringAtPoint(g2d, s.text(), e, drawPosn, true);
 			}
 		}
 		
@@ -841,7 +848,6 @@ public class BoardDesign extends ContainerDesign
 	{
 		symbols.clear();
 		symbolRegions.clear();
-	    symbols.addAll(context.game().metadata().graphics().drawSymbol(context));
 	    
 	    // all cells that the player wants to colour
 	    for (final List<MetadataImageInfo> regionInfo : context.game().metadata().graphics().regionsToFill(context))
@@ -888,6 +894,7 @@ public class BoardDesign extends ContainerDesign
 	    }
 
 	    symbols.addAll(context.game().metadata().graphics().drawLines(context));
+	    symbols.addAll(context.game().metadata().graphics().drawSymbol(context));
 	}
 	
 	//-------------------------------------------------------------------------

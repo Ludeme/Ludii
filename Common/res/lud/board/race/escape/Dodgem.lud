@@ -25,9 +25,7 @@
             (place "Car2" (difference (sites Bottom) (sites {"A1"})))
         })
         (play (forEach Piece))
-        (end 
-            (if (no Pieces Mover) (result Mover Win))
-        )
+        (end ("EscapeWin"))
     )
 )
 

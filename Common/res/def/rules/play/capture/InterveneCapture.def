@@ -8,7 +8,7 @@
         (from (last To))
         #1
         (to 
-            if:("IsEnemyOn" (to))
+            if:("IsEnemyAt" (to))
             (apply (remove (to)))
         )
         #2

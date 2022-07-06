@@ -17,7 +17,7 @@
                 (from) 
                 (to 
                     #1 
-                    "CaptureEnemyPieceToHand" 
+                    ("HittingCapture" (handSite (who at:(to)))) 
                 )
             )
         )
@@ -62,7 +62,7 @@
         )
         
         (end {
-            (if (no Pieces Mover) (result Mover Win))
+            ("EscapeWin")
             (if (and (no Moves P1) (no Moves P2)) (result Mover Draw))
         })
     )

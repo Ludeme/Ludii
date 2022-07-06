@@ -4,15 +4,8 @@
     (move
         (from (handSite Mover))
         (to (centrePoint)
-            if:(not ("IsFriendOn" (to)))
-            (apply 
-                (if ("IsEnemyOn" (to))
-                    (fromTo 
-                        (from (to))
-                        (to (handSite (who at:(to))))
-                    )
-                )
-            )		
+            if:(not ("IsFriendAt" (to)))
+            ("HittingCapture" (handSite (who at:(to)))) 
         )
     )
 )
@@ -44,18 +37,11 @@
                         if:(or 
                             (is Empty (to))
                             (and 
-                                ("IsEnemyOn" (to))
+                                ("IsEnemyAt" (to))
                                 (not (is In (to) (sites "SafeSites")))	
                             )
                         )
-                        (apply 
-                            (if ("IsEnemyOn" (to))
-                                (fromTo 
-                                    (from (to))
-                                    (to (handSite (who at:(to))))
-                                )
-                            )
-                        )
+                        ("HittingCapture" (handSite (who at:(to)))) 
                     )
                 )	
             )
@@ -76,7 +62,7 @@
             )
         )
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

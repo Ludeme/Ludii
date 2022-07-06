@@ -1,19 +1,11 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        #2
-        steps:#3
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
+(define "NextSiteFrom" ("NextSiteOnTrack" #3 from:#1 #2))
 
 (define "EnemySite" ("NextSiteFrom" (mapEntry "Start" #1) #2 (- (pips) 1)))
 
 (define "RemoveEnemyPiece"
     (if (is Mover P1)
-        (= 1 (size Stack at:("EnemySite" P2 "Track2")))
-        (= 1 (size Stack at:("EnemySite" P1 "Track1")))
+        ("IsSingletonStack" ("EnemySite" P2 "Track2"))
+        ("IsSingletonStack" ("EnemySite" P1 "Track1"))
     )
 )
 
@@ -22,13 +14,11 @@
 (game "Ketch-Dolt"
     (players 2)
     (equipment {
-        (board 
-            (rectangle 2 13) 
+        ("BackgammonBoard" 
             {
             (track "Track1" {26 12..7} P1 directed:True)
             (track "Track2" {27 25..20} P2 directed:True)
             } 
-            use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each
@@ -36,17 +26,13 @@
                 (if (is Empty (handSite Mover))
                     (forEach Die
                         if:("DieNotUsed")
-                        (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
+                        (if ("IsOffBoard" ("NextSiteFrom" (from) "Track" (pips)))
                             (do
                                 (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover))
                                 next:(move Remove (from))
                             )
                         )
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                 )
                 (forEach Die
@@ -66,11 +52,7 @@
                             )
                         )
                     )
-                    (then 
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )
-                    )
+                    (then ("ReplayNotAllDiceUsed"))
                 )		
             )
         )
@@ -83,15 +65,14 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
-            (do 
-                (if (not "SameTurn") (roll)) 
-                next:(or (forEach Piece) (forEach Piece container:(mover)))
+            ("RollEachNewTurnMove"
+                (or (forEach Piece) (forEach Piece container:(mover)))
             )
         )
         (end {
             (if (is Triggered "ShouldCapture" P1) (result P1 Loss))
             (if (is Triggered "ShouldCapture" P2) (result P2 Loss))
-            (if (no Pieces Mover) (result Mover Win))
+            ("EscapeWin")
         })
     )
 )
@@ -122,4 +103,3 @@
     })
     
 )
-

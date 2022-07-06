@@ -1,57 +1,27 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:(pips)
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" (pips) from:#1))
 
-(define "StartPos" 
-    (trackSite Move 
-        from:("Bar" (mover)) 
-        steps:1
-    )
-)
+(define "StartPos" ("NextSiteOnTrack" 1 from:("Bar" (mover))))
 
-(define "NextSiteFromDistDoubleDice" 
-    (trackSite Move 
-        from:#1 
-        steps:(/ (count Pips) 2)
-    )
-)
+(define "NextSiteFromDistDoubleDice" ("NextSiteOnTrack" (/ (count Pips) 2) from:#1))
 
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "RemoveAPiece" 
-    (move
-        Remove
-        (site) 
-    )		
-)
+(define "RemoveAPiece" (move Remove (site)))
 
 (define "AllPieceEscaped" (no Pieces Mover))
 
-(define "CanEscape" (= #1 Off))
+(define "CanEscape" ("IsOffBoard" #1))
 
 (define "PieceInOpponentQuadrantOrNoPieceInTheBoard" 
     (or {
-        (= 
-            (count Sites 
-                in:(intersection 
-                    (sites Occupied by:Mover) 
-                    (difference 
-                        (sites Board) 
-                        "StartPos"
-                    )
-                )
-            ) 
-            0
+        (all Sites
+            (difference 
+                (sites Board) 
+                "StartPos"
+            )
+            if:(!= (who at:(site)) (mover))
         )
-        (not (is Empty ("Bar" (mover))))
+        (is Occupied ("Bar" (mover)))
         (< (size Stack at:("StartPos")) 14)
-        (!= 
-            (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "OppositeQuadrant"))) 
-            0
-        ) 
+        (not (all Sites (sites Mover "OppositeQuadrant") if:(!= (who at:(site)) (mover))))
     })
 )
 
@@ -64,28 +34,9 @@
     )
 )
 
-(define "AllPieceInOpponentSide"
-    (= 0 
-        (count Sites 
-            in:(difference 
-                (sites Occupied by:Mover) 
-                (sites Mover "OppositeQuadrant")
-            )
-        )
-    )
-)
+(define "AllPieceInOpponentSide" ("AllOwnedPiecesIn" (sites Mover "OppositeQuadrant")))
 
 (define "Bar" (mapEntry #1))
-
-(define "NotEnemyOrOnlyOne"   
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
 
 (define "NumPiece" (size Stack in:(sites Occupied by:#1)))
 
@@ -121,13 +72,7 @@
 (game "Jacquet de Versailles"  
     (players 2)  
     (equipment { 
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {6 13..18 20..25 12..7 5..0} P1 directed:True)
-            (track "Track2" {19 12..7 5..0 13..18 20..25} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" "BackgammonTracksSameDirectionOppositeCornersWithBars") 
         (dice num:2)
         (piece "Disc" Each) 
         (map {(pair 1 6 ) (pair 2 19)}) // Bar
@@ -135,7 +80,7 @@
         (regions "Home" P2 { 12..7 }) // P2 Home (first quadrant)
         (regions "OppositeQuadrant" P1 { 0..5 }) // Opposite Quadrant of P1
         (regions "OppositeQuadrant" P2 { 20..25 }) // Opposite Quadrant of P2
-    } )
+    })
     
     (rules
         (start { 
@@ -145,9 +90,8 @@
         
         (play 
             (do
-                (do 
-                    (if (not "SameTurn") (roll))
-                    next:(if (all DiceEqual)
+                ("RollEachNewTurnMove"
+                    (if (all DiceEqual)
                         (forEach Site
                             (sites Occupied by:Mover)
                             (if (and ("CanEscape" ("NextSiteFromDistDoubleDice" (site))) ("AllPieceInOpponentSide"))
@@ -162,14 +106,8 @@
                                     (move 
                                         (from (site))
                                         (to ("NextSiteFromDistDoubleDice" (site))
-                                            if:("NotEnemyOrOnlyOne")
-                                            (apply 
-                                                if:(is Enemy (who at:(to))) 
-                                                (fromTo 
-                                                    (from (to)) 
-                                                    (to ("Bar" (next)))
-                                                )
-                                            )
+                                            if:("NoEnemyOrOnlyOne" (to))
+                                            ("HittingCapture" ("Bar" (next))) 
                                         )
                                     )
                                 )
@@ -192,25 +130,14 @@
                                         (move 
                                             (from (site))
                                             (to ("NextSiteFrom" (site))
-                                                if:("NotEnemyOrOnlyOne")
-                                                (apply 
-                                                    if:(is Enemy (who at:(to))) 
-                                                    (fromTo 
-                                                        (from (to)) 
-                                                        (to ("Bar" (next)))
-                                                    )
-                                                )
+                                                if:("NoEnemyOrOnlyOne" (to))
+                                                ("HittingCapture" ("Bar" (next))) 
                                             )
                                         )
                                     )
                                 )
                             )
-                            (then 
-                                (if 
-                                    (not (all DiceUsed)) 
-                                    (moveAgain)
-                                )
-                            )
+                            (then ("ReplayNotAllDiceUsed"))
                         )
                     )
                 )
@@ -223,7 +150,7 @@
                 (byScore { 
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
-                } )
+                })
             )
         })
     )

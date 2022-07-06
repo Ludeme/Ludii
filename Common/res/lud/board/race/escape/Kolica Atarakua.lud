@@ -27,7 +27,7 @@
     )
 )
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 //------------------------------------------------------------------------------
 
@@ -58,9 +58,9 @@
             }
             use:Vertex
         )
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (piece "Marker" Each
-            (if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+            (if ("IsOffBoard" ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
                 (move Remove (from) level:(level))
                 (move 
                     (from (from) level:(level))
@@ -68,7 +68,7 @@
                         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                         if:True
                         (apply
-                            (if (is Enemy (who at:(to)))
+                            (if ("IsEnemyAt" (to))
                                 (forEach Level (to) FromTop
                                     (fromTo
                                         (from (to) level:(level))
@@ -98,14 +98,14 @@
             (place Stack "Marker2" (handSite P2) count:4)
         })
         (play 
-            (do (roll) 
-                next:(or
+            ("RollMove"
+                (or
                     (forEach Piece)
                     (forEach Piece container:(mover))
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -141,4 +141,3 @@
     })
     
 )
-

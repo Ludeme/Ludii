@@ -4794,7 +4794,7 @@ NEW CTOR
 (features [{<featureSet>}])
 PARAM JAVADOC: [{<featureSet>}]: A sequence of multiple feature sets (typically each applying to a different player).
 EXAMPLE: (features { (featureSet P1 { (pair "rel:to=<{}>:pat=<els=[-{}]>" 1.0) }) (featureSet P2 { (pair "rel:to=<{}>:pat=<els=[-{}]>" -1.0) }) })
-REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70–75).
+REMARKS: The basic format of these features is described in: Browne, C., Soemers, D. J. N. J., and Piette, E. (2019). ``Strategic features for general games.'' In Proceedings of the 2nd Workshop on Knowledge Extraction from Games (KEG) (pp. 70ï¿½75).
 TYPE: metadata.ai.features.trees.FeatureTrees
 TYPE JAVADOC: Describes one or more sets of features (local, geometric patterns),   represented as decision / regression trees.
 NEW CTOR
@@ -5438,7 +5438,7 @@ PARAM JAVADOC: [<siteType>]: The GraphElementType for the specified sites [Verte
 PARAM JAVADOC: [<lineStyle>]: Line style [Thin].
 PARAM JAVADOC: [<colour>]: The colour of the line.
 PARAM JAVADOC: [scale:<float>]: The scale of the line.
-PARAM JAVADOC: [curve:{<float>}]: The control points for the line to create a Bézier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
+PARAM JAVADOC: [curve:{<float>}]: The control points for the line to create a Bï¿½zier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
 PARAM JAVADOC: [<curveType>]: Type of curve [Spline].
 EXAMPLE: (show Line { {1 0} {2 4} })
 NEW CTOR
@@ -5851,10 +5851,10 @@ DEFINE JAVADOC: Checks if a region has no sites. #1 = The region.
 DEFINE EXAMPLE: ("NoSites" (sites Empty))
 DEFINE: IsEnemyOn
 DEFINE JAVADOC: Checks if an enemy is on a site. #1 = The site. 
-DEFINE EXAMPLE: ("IsEnemyOn" (to))
+DEFINE EXAMPLE: ("IsEnemyAt" (to))
 DEFINE: IsFriendOn
 DEFINE JAVADOC: Checks if a friend is on a site. #1 = The site. 
-DEFINE EXAMPLE: ("IsFriendOn" (to))
+DEFINE EXAMPLE: ("IsFriendAt" (to))
 DEFINE: IsEmptyOrSingletonStack
 DEFINE JAVADOC: Checks if a stack has a size of 1 at a site. #1 = The site. 
 DEFINE EXAMPLE: ("IsEmptyOrSingletonStack" (to))

@@ -36,6 +36,9 @@ public class PieceBackground implements GraphicsItem
 	/** Background image to draw. */
 	private final String image;
 	
+	/** text to draw. */
+	private final String text;
+	
 	/** Fill colour of drawn image. */
 	private final Colour fillColour;
 	
@@ -69,6 +72,7 @@ public class PieceBackground implements GraphicsItem
 	 * @param state   	    State to match.
 	 * @param value  	 	Value to match.
 	 * @param image	        Name of the background image to draw.
+	 * @param text        	Text string to draw.
 	 * @param fillColour	Colour for the inner sections of the image. Default value is the fill colour of the component.
 	 * @param edgeColour	Colour for the edges of the image. Default value is the edge colour of the component.
 	 * @param scale			Scale for the drawn image relative to the cell size of the container [1.0].
@@ -85,7 +89,8 @@ public class PieceBackground implements GraphicsItem
 		@Opt @Name	final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
-		@Name final String image,
+		@Opt @Name final String image,
+		@Opt @Name final String text,
 		@Opt @Name final Colour fillColour,
 		@Opt @Name final Colour edgeColour,
 		@Opt @Name final Float scale,
@@ -102,6 +107,7 @@ public class PieceBackground implements GraphicsItem
 		this.state = state;
 		this.value = value;
 		this.image = image;
+		this.text = text;
 		this.fillColour = fillColour;
 		this.edgeColour = edgeColour;
 		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
@@ -160,6 +166,16 @@ public class PieceBackground implements GraphicsItem
 	public String image()
 	{
 		return image;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Text to draw.
+	 */
+	public String text()
+	{
+		return text;
 	}
 
 	//-------------------------------------------------------------------------

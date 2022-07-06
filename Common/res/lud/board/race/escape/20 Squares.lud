@@ -44,7 +44,7 @@
                     (if (or
                             (is Empty ("MoveTo"))
                             (and 
-                                (not ("IsFriendOn" ("MoveTo"))) 
+                                (not ("IsFriendAt" ("MoveTo"))) 
                                 (not (is In ("MoveTo") (sites "Replay")))
                             )
                         )
@@ -52,7 +52,7 @@
                             (from) 
                             (to 
                                 ("MoveTo")
-                                ("CaptureEnemyPieceToHand")
+                                ("HittingCapture" (handSite (who at:(to))))
                             )
                             (then ("ReplayInMovingOn" (sites "Replay")))
                         )
@@ -71,7 +71,7 @@
         
         (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

@@ -31,6 +31,11 @@ public class MetadataImageInfo
 	 * The path.
 	 */
 	private String path;
+	
+	/**
+	 * text string.
+	 */
+	private String text;
 
 	/**
 	 * The image scale along x-axis.
@@ -254,6 +259,34 @@ public class MetadataImageInfo
 	}
 	
 	/**
+	 * @param site            The site.
+	 * @param element         The type of the graph element.
+	 * @param path            The path.
+	 * @param text			  The text string.
+	 * @param scaleX          The scale of the image along x-axis.
+	 * @param scaleY          The scale of the image along y-axis.
+	 * @param mainColour      The main colour.
+	 * @param secondaryColour The secondary colour.
+	 * @param rotation        The rotation.
+	 * @param offsetX		  The offset to the right.
+	 * @param offsetY		  The offset downwards.
+	 */
+	public MetadataImageInfo(final int site, final SiteType element, final String path, final String text, final float scaleX, final float scaleY, final Color mainColour, final Color secondaryColour, final int rotation, final float offsetX, final float offsetY)
+	{
+		setSite(site);
+		setSiteType(element);
+		setPath(path);
+		setText(text);
+		setScaleX(scaleX);
+		setScaleY(scaleY);
+		setMainColour(mainColour);
+		setSecondaryColour(secondaryColour);
+		setRotation(rotation);
+		setOffestX(offsetX);
+		setOffestY(offsetY);
+	}
+	
+	/**
 	 * @param site              The site.
 	 * @param element           The type of the graph element.
 	 * @param boardGraphicsType The BoardGraphicsType.
@@ -349,6 +382,14 @@ public class MetadataImageInfo
 	{
 		return path;
 	}
+	
+	/**
+	 * @return The text.
+	 */
+	public String text() 
+	{
+		return text;
+	}
 
 	/**
 	 * @param path The path.
@@ -356,6 +397,14 @@ public class MetadataImageInfo
 	public void setPath(final String path) 
 	{
 		this.path = path;
+	}
+	
+	/**
+	 * @param path The text.
+	 */
+	public void setText(final String text) 
+	{
+		this.text = text;
 	}
 
 	/**

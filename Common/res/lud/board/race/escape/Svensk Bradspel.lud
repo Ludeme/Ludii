@@ -182,7 +182,7 @@
         )
         
         (end { 
-            (if (no Pieces Mover) (result Mover Win))
+            ("EscapeWin")
             (if  ("FiveOnThreeFinal" Mover) (result Mover Win))
             (if  ("ThreeOnFiveFinal" Mover) (result Mover Win))
             (if  ("SevenFiveThreeFinal" Mover) (result Mover Win))

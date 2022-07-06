@@ -94,6 +94,7 @@ public class Show implements GraphicsItem
 	 * 
 	 * @param showType          The type of data to show.
 	 * @param imageName         Name of the image to show.
+	 * @param imageName         Text string to show.
 	 * @param region            Draw image on all sites in this region.
 	 * @param roleType          Player whose index is to be matched (only for
 	 *                          Region).
@@ -120,7 +121,8 @@ public class Show implements GraphicsItem
 	public static GraphicsItem construct
 	(
 				   	   final ShowSymbolType showType, 
-		               final String imageName,
+		@Opt           final String imageName,
+		@Opt     @Name final String text,
 		@Opt           final String region,
 		@Opt           final RoleType roleType,
 		@Opt           final SiteType graphElementType,
@@ -141,7 +143,7 @@ public class Show implements GraphicsItem
 		switch (showType)
 		{
 		case Symbol:
-			return new ShowSymbol(imageName, region, roleType, graphElementType,sites,site,regionFunction,boardGraphicsType,fillColour,edgeColour,scale,scaleX,scaleY,rotation,offsetX,offsetY);
+			return new ShowSymbol(imageName, text, region, roleType, graphElementType,sites,site,regionFunction,boardGraphicsType,fillColour,edgeColour,scale,scaleX,scaleY,rotation,offsetX,offsetY);
 		default:
 			break;
 		}

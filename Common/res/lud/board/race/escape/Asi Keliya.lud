@@ -1,8 +1,6 @@
 (define "ValueYellowDice" (face 65))
 
-(define "Sohatara" 
-    (and (= ("ThrowValue") 3) (= 0 ("ValueYellowDice")))
-)
+(define "Sohatara" (and (= ("ThrowValue") 3) (= 0 ("ValueYellowDice"))))
 
 (define "ThrowValue" (count Pips))
 
@@ -15,12 +13,7 @@
 
 (define "RemoveAPiece" (move Remove (from)))
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:("IsEnemyOn" (to)) 
-        (fromTo (from (to)) (to (handSite (who at:(to)))))
-    ) 
-)
+(define "CaptureEnemyPiece" ("HittingCapture" (handSite (who at:(to)))))
 
 (define "Move" 
     (if ("IsEndTrack" ("NextSiteOnTrack" #1))
@@ -29,7 +22,7 @@
             (if (or
                     (is Empty ("NextSiteOnTrack" #1))
                     (and 
-                        ("IsEnemyOn" ("NextSiteOnTrack" #1))
+                        ("IsEnemyAt" ("NextSiteOnTrack" #1))
                         (not (is In ("NextSiteOnTrack" #1) (sites "SafeSites")))
                     )
                 )
@@ -125,7 +118,7 @@
                 )
             )
         )
-        (end  (if (no Pieces TeamMover) (result TeamMover Win)))
+        (end ("EscapeTeamWin"))
     )
 )
 
