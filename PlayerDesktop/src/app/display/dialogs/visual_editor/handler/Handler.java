@@ -13,6 +13,7 @@ import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
+import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineEditor;
 import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.gameEditor.GameGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.backgrounds.CartesianGridBackground;
@@ -101,6 +102,7 @@ public class Handler
 
 
     // Additional Panels of the Frame
+    public static DefineEditor defineEditor;
     /** ToolsPanel, including undo, redo and play buttons */
     public static ToolsPanel toolsPanel;
     /** Panel for layout settings */
@@ -146,13 +148,29 @@ public class Handler
         if(!graphPanelMap.containsKey(graph))
         {
             graphPanelMap.put(graph, graphPanel);
-            if(graphPanel.isDefineGraph())
-            {
+            if(graphPanel.isDefineGraph() && !defineGraphPanels.contains(graphPanel))
                 defineGraphPanels.add((DefineGraphPanel) graphPanel);
-            }
             performedUserActionsMap.put(graphPanel, new Stack<>());
             undoneUserActionsMap.put(graphPanel, new Stack<>());
         }
+    }
+
+    /**
+     * Removes a IGraphPanel from the map
+     * @param graphPanel
+     */
+    public static void removeGraphPanel(IGraphPanel graphPanel)
+    {
+        graphPanelMap.remove(graphPanel.graph());
+        if(graphPanel.isDefineGraph())
+            defineGraphPanels.remove(graphPanel);
+        performedUserActionsMap.remove(graphPanel);
+        undoneUserActionsMap.remove(graphPanel);
+
+        System.out.println("Removed graph panel: " + graphPanel.graph());
+        System.out.println("Remaining graph panels: " + defineGraphPanels.size());
+
+
     }
 
     /**
@@ -762,6 +780,7 @@ public class Handler
     public static void updateDefineNodes(DescriptionGraph graph, Symbol symbol)
     {
         if(DEBUG) System.out.println("[HANDLER] Title of Define Node changed to " + symbol.name());
+        defineEditor.updateName(symbol.name());
         // Get List of define nodes
         List<LudemeNode> defineNodes = defineLudemeNodes.get(graph);
         if(defineNodes == null)
@@ -821,8 +840,19 @@ public class Handler
             ln.updateDefineNode(macroNode);
             // remove ingoing connections
             if(ln.parentNode() != null)
+            {
                 removeEdge(defineNodeToGraphMap.get(ln), ln.parentNode(), ln);
+            }
         }
+    }
+
+    /**
+     * Removes a define
+     * @param graph
+     */
+    public static void removeDefine(DescriptionGraph graph)
+    {
+        defineEditor.removalGraph(graphPanelMap.get(graph));
     }
 
 
@@ -1567,4 +1597,5 @@ public class Handler
     {
         return currentGraphPanel.parentScrollPane().getViewport().getSize();
     }
+
 }

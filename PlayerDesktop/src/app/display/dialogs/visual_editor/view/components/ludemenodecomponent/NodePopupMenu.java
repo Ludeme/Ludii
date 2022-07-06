@@ -139,6 +139,16 @@ public class NodePopupMenu extends JPopupMenu {
             JOptionPane.showMessageDialog(graphPanel.panel(), message);
         });
 
+        if(nodeComponent.node().isDefineRoot())
+        {
+            JMenuItem removeDefine = new JMenuItem("Remove define");
+            removeDefine.addActionListener(e -> {
+                Handler.removeDefine(graphPanel.graph());
+            });
+            removeDefine.setIcon(deleteI);
+            add(removeDefine);
+        }
+
         JMenuItem help = new JMenuItem("Help");
         help.addActionListener(e -> new NodeHelp(nodeComponent.node()));
         add(observe);

@@ -124,6 +124,7 @@ public class DesignPalette
     private static final Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
     private static final Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
     private static final Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
+    private static final Color BACKGROUND_LUDEME_BODY_DEFINE = new Color(255, 222, 168);
     private static final Color LUDEME_BORDER_COLOR = new Color(233,233,233);
     private static final Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
     private static final Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
@@ -184,6 +185,11 @@ public class DesignPalette
     public Color BACKGROUND_LUDEME_BODY_RULES()
     {
         return BACKGROUND_LUDEME_BODY_RULES;
+    }
+
+    public Color BACKGROUND_LUDEME_BODY_DEFINE()
+    {
+        return BACKGROUND_LUDEME_BODY_DEFINE;
     }
 
     public static Color LUDEME_BORDER_COLOR()

@@ -494,6 +494,7 @@ public class LudemeNodeComponent extends JPanel
             case "game.equipment": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_EQUIPMENT();
             case "game.functions": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_FUNCTIONS();
             case "game.rules": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_RULES();
+            case "define": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_DEFINE();
             default: return Handler.currentPalette().BACKGROUND_LUDEME_BODY();
         }
     }

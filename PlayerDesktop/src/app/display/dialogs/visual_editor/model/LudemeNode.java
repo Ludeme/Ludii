@@ -254,7 +254,7 @@ public class LudemeNode implements iGNode
         clauses.add(c);
         selectedClause = c;
         this.helpInformation = null;
-        PACKAGE_NAME = "game";
+        PACKAGE_NAME = "define";
         this.nodeArguments = new LinkedHashMap<>();
         this.nodeArguments.put(clauses.get(0), requiredParameters);
         this.currentNodeArguments = requiredParameters;

@@ -1,38 +1,111 @@
 package app.display.dialogs.visual_editor.view.panels.editor.defineEditor;
 
+import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 import java.awt.*;
 
 public class DefineEditor extends JPanel
 {
-    private final JScrollPane SCROLL_PANE;
-    private final DefineGraphPanel GRAPH_PANEL;
+
+    private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private final Map<JScrollPane, DefineGraphPanel> defineGraphPanels = new HashMap<>();
+    private final Map<DefineGraphPanel, JScrollPane> defineScrollPanes = new HashMap<>();
+
 
     public DefineEditor()
     {
+        Handler.defineEditor = this;
         setLayout(new BorderLayout());
-        GRAPH_PANEL = new DefineGraphPanel("Test", 10000, 10000);
-        SCROLL_PANE = new JScrollPane(GRAPH_PANEL);
-        centerScrollPane(); // center scroll pane position
-        add(SCROLL_PANE, BorderLayout.CENTER);
-        GRAPH_PANEL.initialize(SCROLL_PANE);
+        add(tabbedPane, BorderLayout.CENTER);
+
+        tabbedPane.addTab(" + ", null, new JPanel(), "Add a new Define");
+
+        addNewPanel("New Define 1");
+
+        final JPopupMenu popupMenu = new JPopupMenu();
+        final JMenuItem addNewPanelMenuItem = new JMenuItem("Add New Define");
+        final JMenuItem removePanelMenuItem = new JMenuItem("Remove Selected Define");
+        addNewPanelMenuItem.addActionListener(e ->
+        {
+            addNewPanel("New Define " + (defineGraphPanels.size()+1));
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+        });
+        removePanelMenuItem.addActionListener(e ->
+                removePanel((JScrollPane) tabbedPane.getSelectedComponent()));
+        popupMenu.add(addNewPanelMenuItem);
+        popupMenu.add(removePanelMenuItem);
+
+        tabbedPane.setComponentPopupMenu(popupMenu);
+
+        tabbedPane.addChangeListener(e ->
+        {
+
+            // if clicked on + button:
+            if(tabbedPane.getSelectedIndex() == tabbedPane.indexOfTab(" + "))
+            {
+                addNewPanel("New Define " + (defineGraphPanels.size()+1));
+                tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+            }
+            // update current graph panel
+            IGraphPanel graphPanel = defineGraphPanels.get((JScrollPane) tabbedPane.getSelectedComponent());
+            Handler.updateCurrentGraphPanel(graphPanel);
+        });
+
         setVisible(true);
     }
 
-    private void centerScrollPane()
+    public void addNewPanel(String name)
     {
-        Rectangle rect = SCROLL_PANE.getViewport().getViewRect();
-        int centerX = (SCROLL_PANE.getViewport().getViewSize().width - rect.width) / 2;
-        int centerY = (SCROLL_PANE.getViewport().getViewSize().height - rect.height) / 2;
+        DefineGraphPanel graphPanel = new DefineGraphPanel(name, 10000, 10000);
+        JScrollPane scrollPane = new JScrollPane(graphPanel);
+        centerScrollPane(scrollPane);
+        graphPanel.initialize(scrollPane);
+        defineGraphPanels.put(scrollPane, graphPanel);
+        defineScrollPanes.put(graphPanel, scrollPane);
+        tabbedPane.addTab(name, scrollPane);
+        tabbedPane.setSelectedComponent(scrollPane);
+    }
 
-        SCROLL_PANE.getViewport().setViewPosition(new Point(centerX, centerY));
+    private void removePanel(JScrollPane scrollPane)
+    {
+        tabbedPane.remove(scrollPane);
+        Handler.removeGraphPanel(defineGraphPanels.get(scrollPane));
+        defineScrollPanes.remove(defineGraphPanels.get(scrollPane));
+        defineGraphPanels.remove(scrollPane);
+    }
+
+    public void removalGraph(IGraphPanel graphPanel)
+    {
+        removePanel(defineScrollPanes.get(graphPanel));
+    }
+
+    public void updateName(String name)
+    {
+        tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), name);
+    }
+
+    public JScrollPane currentScrollPane()
+    {
+        return (JScrollPane) tabbedPane.getSelectedComponent();
     }
 
     public IGraphPanel currentGraphPanel()
     {
-        return GRAPH_PANEL;
+        return defineGraphPanels.get(currentScrollPane());
+    }
+
+
+    private void centerScrollPane(JScrollPane scrollPane)
+    {
+        Rectangle rect = scrollPane.getViewport().getViewRect();
+        int centerX = (scrollPane.getViewport().getViewSize().width - rect.width) / 2;
+        int centerY = (scrollPane.getViewport().getViewSize().height - rect.height) / 2;
+
+        scrollPane.getViewport().setViewPosition(new Point(centerX, centerY));
     }
 
 
