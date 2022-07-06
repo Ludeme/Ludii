@@ -1,9 +1,8 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 (define "Throw4" (= ("ThrowValue") 4))
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-(define "AllPiecesInCenter"
-    (no Pieces Mover in:(difference (sites Board) (centrePoint)))
-)
+
+(define "AllPiecesInCenter" ("AllOwnedPiecesIn" (sites {(centrePoint)})))
 
 //------------------------------------------------------------------------------
 

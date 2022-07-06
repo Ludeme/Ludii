@@ -17,9 +17,7 @@
     )
 )
 
-(define "AllPiecesInFinalQuadrant"
-    (no Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant")))
-)
+(define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
 
 //------------------------------------------------------------------------------
 

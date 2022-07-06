@@ -2,9 +2,7 @@
 
 (define "DieValue" (face 28))
 
-(define "AllPiecesInFinalQuadrant"
-    (all Sites (sites Occupied by:Mover) if:(is In (site) (sites Mover "FinalQuadrant")))
-)
+(define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
 
 (define "EnterPieces"
     (if (is Occupied (handSite Mover))
