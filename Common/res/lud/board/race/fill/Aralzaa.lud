@@ -2,13 +2,7 @@
     (players 2)
     (equipment {
         (board (square 3))
-        (piece "Knight" Each 
-            (move
-                Leap
-                "KnightWalk"
-                (to if:(is Empty (to)))
-            )
-        )
+        (piece "Knight" Each ("LeapToEmpty" "KnightWalk"))
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })
@@ -18,12 +12,7 @@
             (place "Knight2" (sites P2))
         })
         (play (forEach Piece))
-        (end 
-            (if 
-                (= (sites Occupied by:Mover) (sites Next))
-                (result Mover Win)
-            )	
-        )
+        (end ("FillWin" (sites Next)))
     )
 )
 

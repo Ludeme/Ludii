@@ -1,5 +1,3 @@
-(define "RegionFilled" (= (sites (player (mapEntry (mover)))) (sites Occupied by:Mover)))
-
 (define "SizeStart" <Board:sizeHome>)
 
 //------------------------------------------------------------------------------
@@ -10,8 +8,7 @@
         (board (square <Board:size>)) 
         (piece "Counter" Each "StepToEmpty")
         <Players:home>
-        }
-    )  
+        })  
     (rules 
         (start { 
             <Players:start>
@@ -19,7 +16,7 @@
         
         (play (forEach Piece)) 
         
-        (end (if "RegionFilled" (result Mover Win))) 
+        (end ("FillWin" (sites (player (mapEntry (mover)))))) 
     )
 )
 

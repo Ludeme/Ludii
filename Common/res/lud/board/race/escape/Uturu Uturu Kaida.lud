@@ -1,6 +1,6 @@
 (define "ThrowValue" (mapEntry (count Pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "SiteToMove" 
     (if (= (from) (handSite Mover))
@@ -16,14 +16,12 @@
     (equipment {
         (board 
             (rectangle 2 <Board:size>)
-            {
             (track "Track" <Board:track> directed:True)
-            }
             use:Vertex
         )
         (hand Each)
         (piece "Horse" Each
-            (if (= Off ("SiteToMove"))
+            (if ("IsOffBoard" ("SiteToMove"))
                 (move Remove (from) level:(level))
                 (move
                     (from (from) level:(level))
@@ -32,24 +30,19 @@
                 )
             )
         )
-        (dice d:2 from:0 num:2)
+        ("StickDice" 2)
         (map {(pair 0 10) (pair 1 0) (pair 2 20)})
     })
     (rules 
         (start (place "Horse" "Hand"))
         (play 
-            (do (roll) 
-                next:(if (< 0 ("ThrowValue"))
+            ("RollMove"
+            	(if (< 0 ("ThrowValue"))
                     (or (forEach Piece) (forEach Piece container:(mover)))
                 )
             )
         )
-        (end 
-            (if 
-                (no Pieces Mover) 
-                (result Mover Win)
-            )
-        )
+        (end ("EscapeWin"))
     )
 )
 
@@ -119,6 +112,5 @@
         (piece Scale 0.5)
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.7)
         (stackType 0 Ground)
-        
     })
 )

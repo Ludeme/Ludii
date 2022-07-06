@@ -82,14 +82,13 @@
 (game "Tokkadille"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        ("BackgammonBoard"
             {
             (track "Track1" {12..7 5..0 13..18 20..25} P1 directed:True)
             (track "Track2" {25..20 18..13 0..5 7..12} P2 directed:True)
             (track "ReverseHuckeTrack1" {0..5 7} P1 directed:True)
             (track "ReverseHuckeTrack2" {13..18 20} P2 directed:True)
             } 
-            use:Vertex
         ) 
         (dice d:6 num:2)
         (piece "Disc" Each

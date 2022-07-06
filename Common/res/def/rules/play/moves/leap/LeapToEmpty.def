@@ -1,0 +1,12 @@
+// Defines a leap move to an empty site.
+// #1 = The walk.
+// #2 = The consequences.
+// @example ("LeapToEmpty" "KnightWalk")
+
+(define "LeapToEmpty"
+        (move Leap
+                #1
+                (to if:(is Empty (to)))
+                #2
+            )
+)

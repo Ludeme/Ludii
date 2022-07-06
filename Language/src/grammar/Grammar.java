@@ -1293,7 +1293,7 @@ public class Grammar
 					}
 				}
 				
-				final String actualParameterName = new String(label);
+				final String actualParameterName = label;
 				
 				if (!isNamed)
 					label = null;

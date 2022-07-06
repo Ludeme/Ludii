@@ -1,21 +1,4 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
-
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
 (define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
 
@@ -30,7 +13,7 @@
             (forEach Die
                 replayDouble:True 
                 if:("DieNotUsed")
-                (if (= End ("NextSiteFrom" (from) (pips)))
+                (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
                     )
@@ -39,28 +22,17 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:(and 
-                                ("NotEnemyOrOnlyOne")
+                                ("NoEnemyOrOnlyOne" (to))
                                 (if (not (is In (to) (sites Mover "StartingSide")))
                                     True
                                     (is Empty (to))
                                 )
                             )
-                            (apply 
-                                (if (is Enemy (who at:(to)))
-                                    (fromTo 
-                                        (from (to))
-                                        (to (mapEntry "Bar" Next))
-                                    )
-                                )
-                            )
+                            ("HittingCapture" (mapEntry "Bar" Next))
                         )
                     )
                 )
-                (then 
-                    (if (not (all DiceUsed))
-                        (moveAgain)
-                    )
-                )
+                (then ("ReplayNotAllDiceUsed"))
             )		
         )
         (regions "FinalQuadrant" P1 (sites {7..12}))
@@ -75,8 +47,8 @@
             (place Stack "Disc2" 0 count:15) 
         })
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(forEach Piece top:True)
+                ("RollEachNewTurnMove"
+                        (forEach Piece top:True)
             )		
         )
         
@@ -108,4 +80,3 @@
     })
     
 )
-

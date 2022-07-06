@@ -26,18 +26,12 @@
     )
 )
 
-(define "TrackMove" 
-    (trackSite Move 
-        #1
-        #2
-        steps:#3
-    )
-)
+(define "TrackMove" ("NextSiteOnTrack" #3 #1 #2))
 
 (define "Double1Move"
     (forEach Site (sites Occupied by:Mover top:False) 
         (forEach Level (site) 
-            (if (is Friend (who at:(site) level:(level)))
+            (if ("IsFriendAt" (site) level:(level))
                 (move Remove (site) level:(level))
             )
         )	
