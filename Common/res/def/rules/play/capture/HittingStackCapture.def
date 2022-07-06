@@ -2,14 +2,14 @@
 // @example ("HittingStackCapture" (handSite (who at:(to) level:(level))))
 
 (define "HittingStackCapture"
-	    (apply
-	            (if ("IsEnemyAt" (to))
-	                (forEach Level (to) FromTop
-	                    (fromTo
-	                        (from (to) level:(level))
-	                        (to #1)
-	                    )
-	                )
-	            )
-	        )
+    (apply
+        (if ("IsEnemyAt" (to))
+            (forEach Level (to) FromTop
+                (fromTo
+                    (from (to) level:(level))
+                    (to #1)
+                )
+            )
+        )
+    )
 )

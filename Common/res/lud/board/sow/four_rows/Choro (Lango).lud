@@ -204,7 +204,7 @@
                                         (if (and {
                                                 (is Occupied ("OppositePit" (to)))
                                                 (is In (to) (sites Mover "Inner"))
-                                            } )
+                                            })
                                             (and {
                                                 (fromTo
                                                     (from ("OppositePit" (to)))

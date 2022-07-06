@@ -20,7 +20,7 @@
         )
         ("StickDice" 4)
         (hand Each)
-        (regions "Replay" (sites {"A1" "A3" "D2" "G1" "G3"} ))
+        (regions "Replay" (sites {"A1" "A3" "D2" "G1" "G3"}))
         
         (piece "UrPiece" Each
             (if ("IsEndTrack" "SiteToMoveOnTrack")
@@ -93,7 +93,7 @@
                 (from)
                 (to 
                     "SiteToMoveOnTrack" 
-                	("HittingCapture" (handSite Next))
+                    ("HittingCapture" (handSite Next))
                 )
                 (then ("ReplayInMovingOn" (sites "Replay")))
             )

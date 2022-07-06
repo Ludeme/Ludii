@@ -14,7 +14,7 @@
         (start { 
             (place "Marker1" (difference (sites Outer) (expand (sites Bottom))))
             (place "Marker2" (ahead (centrePoint) N))
-        } )
+        })
         
         (play (forEach Piece)) 
         

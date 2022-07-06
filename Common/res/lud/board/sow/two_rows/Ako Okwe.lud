@@ -14,7 +14,7 @@
                     (and { (<= (count at:(to)) 9) (is Odd (count at:(to))) (>= "NumCaptureDone" <Capture:doneSoFar>) }) // Two or more captures done so far
                     (and (= "NumCaptureDone" Off) (= (count at:(to)) <Capture:numCounters>)) // No capture done so far.
                     <Capture:ruleSecondCapture> // Only one capture done so far.
-                } ) 
+                }) 
                 apply:(fromTo (from (to)) (to (mapEntry (mover))) count:(count at:(to)) 
                     // We update the number of capture done so far for that player.
                     (then (and 

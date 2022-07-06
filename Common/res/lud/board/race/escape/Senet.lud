@@ -286,7 +286,7 @@
         (phase "Opening"
             (play 
                 ("RollMove"
-                	(move Pass 
+                    (move Pass 
                         (then 
                             (if (= 1 ("Throw"))
                                 (and {
@@ -594,7 +594,7 @@
             (phase "Opening"
                 (play 
                     ("RollMove"
-                    	(move Pass 
+                        (move Pass 
                             (then 
                                 (if (is Mover P1) 
                                     (set Var (count Pips))
@@ -611,7 +611,7 @@
             (phase "Playing"
                 (play 
                     ("RollMove"
-                    	(priority
+                        (priority
                             (forEach Site 
                                 (sites "Symbols")
                                 (if (= (who at:(to)) (mover))
@@ -772,9 +772,9 @@
                 (if (= ("Throw") 2)
                     (or (is Empty 21) (is Empty 22))
                     (if (= ("Throw") 3)
-                        (or { (is Empty 21) (is Empty 22) (is Empty 23) } )
+                        (or { (is Empty 21) (is Empty 22) (is Empty 23) })
                         (if (= ("Throw") 4)
-                            (or { (is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24)} )
+                            (or { (is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24)})
                             (or { (is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24) (is Empty 25)})
                         )
                     )
@@ -880,7 +880,7 @@
         )
         
         (define "AllPieceInBottomRow" 
-        	(all Sites (sites Occupied by:Mover) if:(is In (site) (sites "BottomRow")))
+            (all Sites (sites Occupied by:Mover) if:(is In (site) (sites "BottomRow")))
         )
         
         (define "NumEnemyPiecesOnTopRow" 
@@ -979,7 +979,7 @@
             (phase "Opening"
                 (play 
                     ("RollMove"
-                    	(move Pass 
+                        (move Pass 
                             (then 
                                 (if (= 1 ("Throw"))
                                     (and {
@@ -999,7 +999,7 @@
             (phase "Playing"
                 (play 
                     ("RollMove"
-                    	(if (can Move (forEach Piece))
+                        (if (can Move (forEach Piece))
                             (forEach Piece (then (if (is In ("Throw") (sites {1 4 6})) (moveAgain))))
                             (move Pass (then (if (is In ("Throw") (sites {1 4 6})) (moveAgain))))
                         )

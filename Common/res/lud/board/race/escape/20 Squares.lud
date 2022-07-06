@@ -35,7 +35,7 @@
         )
         (dice facesByDie:{{1 2 3 4} {0 1}} num:2)
         (hand Each)
-        (regions "Replay" (sites {"A1" "A3" "D2" "H2" "L2"} ))
+        (regions "Replay" (sites {"A1" "A3" "D2" "H2" "L2"}))
         
         (piece "UrPiece" Each
             (if ("IsEndTrack" ("MoveTo"))

@@ -35,7 +35,7 @@
                     (sites P2 "Outer") 
                     (difference (sites P1 "Inner") (sites { <Board:thirdHoleInnerP1> <Board:rightMostInnerHoleP1>})) 
                     (difference (sites P2 "Inner") (sites { <Board:thirdHoleInnerP2> <Board:rightMostInnerHoleP2>}))
-                } ) 
+                }) 
             )
             (set Count 2 to:(sites { <Board:thirdHoleInnerP1> <Board:thirdHoleInnerP2>})) 
             

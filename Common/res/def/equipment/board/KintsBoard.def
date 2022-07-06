@@ -3,23 +3,23 @@
 // @example ("KintsBoard")
 
 (define "KintsBoard"
-        (board
-                (add
-                    (merge {  
-                        (shift -1.25 -0.34 (rotate 30 (rectangle 6 1)))
-                        (rectangle 1 5)
-                        (rectangle 5 1)
-                        (shift 0 6 (rectangle 5 1))
-                        (shift 0 10 (rectangle 1 5))
-                        (shift 7 0 (rectangle 1 5))
-                        (shift 7 10 (rectangle 1 5))
-                        (shift 11 0 (rectangle 5 1))
-                        (shift 11 6 (rectangle 5 1))
-                        (shift 12.25 5.33 (rotate 30 (rectangle 6 1)))
-                    })
-                    edges:{{13 14} {22 28} {37 36} {9 23}}
-                )
-                #1
-                use:Vertex
-            )
+    (board
+        (add
+            (merge {  
+                (shift -1.25 -0.34 (rotate 30 (rectangle 6 1)))
+                (rectangle 1 5)
+                (rectangle 5 1)
+                (shift 0 6 (rectangle 5 1))
+                (shift 0 10 (rectangle 1 5))
+                (shift 7 0 (rectangle 1 5))
+                (shift 7 10 (rectangle 1 5))
+                (shift 11 0 (rectangle 5 1))
+                (shift 11 6 (rectangle 5 1))
+                (shift 12.25 5.33 (rotate 30 (rectangle 6 1)))
+            })
+            edges:{{13 14} {22 28} {37 36} {9 23}}
+        )
+        #1
+        use:Vertex
+    )
 )

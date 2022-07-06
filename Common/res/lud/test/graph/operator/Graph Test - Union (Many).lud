@@ -1,7 +1,7 @@
 (game "Graph Test - Union (Many)"  
     (players 2)  
     (equipment { 
-        (board (union { (rectangle 6 2) (shift 2 2 (square 3)) (rectangle 2 6) } ) use:Vertex) 
+        (board (union { (rectangle 6 2) (shift 2 2 (square 3)) (rectangle 2 6) }) use:Vertex) 
         (piece "Disc" P1) 
         (piece "Cross" P2) 
     })  

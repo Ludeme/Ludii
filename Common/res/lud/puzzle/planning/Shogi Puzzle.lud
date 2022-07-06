@@ -229,7 +229,7 @@
                         "PlaceALance"
                         "PlaceAKnight" 
                         (forEach Piece) 
-                    } )
+                    })
                     ifAfterwards:(not ("KingCheck" Mover))
                 )
             )

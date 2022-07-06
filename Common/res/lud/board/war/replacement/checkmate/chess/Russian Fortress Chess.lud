@@ -337,7 +337,7 @@
             (if (and { (not (is Active P1)) (not (is Active P3)) (is Active P4) }) (result P4 Win))
             (if (and { (not (is Active P2)) (not (is Active P4)) (is Active P1) }) (result P1 Win))
             (if (and { (not (is Active P2)) (not (is Active P4)) (is Active P3) }) (result P3 Win))
-        } )
+        })
     )
 )
 

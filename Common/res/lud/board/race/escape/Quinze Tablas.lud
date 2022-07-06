@@ -63,8 +63,8 @@
             (place Stack "Disc2" 19 count:1)
         })
         (play 
-                ("RollEachNewTurnMove"
-                        (if ("BarEmpty")
+            ("RollEachNewTurnMove"
+                (if ("BarEmpty")
                     (forEach Piece top:True)
                     ("MoveAPieceIf" ("DieNotUsed") ("Bar"))
                     (then ("ReplayNotAllDiceUsed"))

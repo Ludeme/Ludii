@@ -11,7 +11,7 @@
             (satisfy  {
                 (all Different (sites Board))
                 (is Sum <Challenge:sum>)
-            } )
+            })
         )
         
         (end (if (is Solved) (result P1 Win)))

@@ -14,7 +14,7 @@
         (start { 
             (place "Marker1" (union {(sites Column 1) (difference (sites Column 3) (union (sites Centre) (expand (sites Top)))) (sites Column 5)}))
             (place "Marker2" (centrePoint))
-        } )
+        })
         
         (play (forEach Piece)) 
         

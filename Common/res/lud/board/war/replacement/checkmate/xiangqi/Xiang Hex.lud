@@ -133,8 +133,8 @@
             )
         )
         
-        (regions "PalaceP1" P1 { 0 1 2 4 7 8 12 } )
-        (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 } )
+        (regions "PalaceP1" P1 { 0 1 2 4 7 8 12 })
+        (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 })
         (regions "Home" P1 (forEach (sites Board) if:(< (site) 37)))
         (regions "Home" P2 (forEach (sites Board) if:(> (site) 41)))
     })  

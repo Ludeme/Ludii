@@ -92,7 +92,7 @@
         (start { 
             (place "Fox1" (centrePoint))
             (place "Hen2" (union {(expand (sites Bottom)) (sites Row 2) (sites {"A4" "G4" "A5" "G5"})}) )
-        } )
+        })
         
         phases:{
         (phase "FoxPhase" P1 

@@ -14,7 +14,7 @@
     (rules 
         (start { 
             (place "Human1" (centrePoint))
-            (place "Hen2" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ))
+            (place "Hen2" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) }))
         })
         
         (play (forEach Piece))

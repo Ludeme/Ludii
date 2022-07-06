@@ -167,7 +167,7 @@
                         ) 
                         ("PlacePiece") 
                         (forEach Piece) 
-                    } )
+                    })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                 )
             )

@@ -132,19 +132,19 @@
                 (byScore { 
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
-                } )
+                })
             )
             (if ("MotherCheckerP1Pinned")
                 (byScore { 
                     (score P1 0)
                     (score P2 2)
-                } )
+                })
             )
             (if ("MotherCheckerP2Pinned")
                 (byScore { 
                     (score P1 2)
                     (score P2 0)
-                } )
+                })
             )
         })
     )

@@ -180,8 +180,8 @@
                     (or
                         ("RangingJump"
                             Diagonal
-                            (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2")} )
-                            (sites {(id "King" Next) (id "Prince" Next)} ) 
+                            (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2")})
+                            (sites {(id "King" Next) (id "Prince" Next)}) 
                         )
                         ("SlideMove" Diagonal)
                     )
@@ -220,8 +220,8 @@
             (or
                 ("RangingJump"
                     Adjacent
-                    (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2")} )
-                    (sites {(id "King" Next) (id "Prince" Next)} ) 
+                    (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2")})
+                    (sites {(id "King" Next) (id "Prince" Next)}) 
                 )
                 ("SlideMove" Adjacent)
             )
@@ -231,8 +231,8 @@
             (or
                 ("RangingJump"
                     Diagonal
-                    (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "BishopGeneral1") (id "BishopGeneral2") (id "RookGeneral1") (id "RookGeneral2")} )
-                    (sites {(id "King" Next) (id "Prince" Next)} ) 
+                    (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "BishopGeneral1") (id "BishopGeneral2") (id "RookGeneral1") (id "RookGeneral2")})
+                    (sites {(id "King" Next) (id "Prince" Next)}) 
                 )
                 ("SlideMove" Diagonal)
                 "Promote"
@@ -243,8 +243,8 @@
             (or
                 ("RangingJump"
                     Orthogonal
-                    (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "BishopGeneral1") (id "BishopGeneral2") (id "RookGeneral1") (id "RookGeneral2")} )
-                    (sites {(id "King" Next) (id "Prince" Next)} ) 
+                    (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "BishopGeneral1") (id "BishopGeneral2") (id "RookGeneral1") (id "RookGeneral2")})
+                    (sites {(id "King" Next) (id "Prince" Next)}) 
                 )
                 ("SlideMove" Orthogonal)
                 "Promote"

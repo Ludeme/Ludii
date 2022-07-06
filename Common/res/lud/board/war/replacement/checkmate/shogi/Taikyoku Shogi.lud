@@ -342,7 +342,7 @@
                 Orthogonal 
                 (between if:(not (is In (what at:(between)) 
                             (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "RookGeneral1") (id "RookGeneral2")
-                    (id "BishopGeneral1") (id "BishopGeneral2") (id "ViolentDragon1") (id "ViolentDragon2") (id "FlyingCrocodile1") (id "FlyingCrocodile2")} )))
+                    (id "BishopGeneral1") (id "BishopGeneral2") (id "ViolentDragon1") (id "ViolentDragon2") (id "FlyingCrocodile1") (id "FlyingCrocodile2")})))
                     (apply (remove (between)))
                 )
                 (to 
@@ -565,7 +565,7 @@
                     Slide 
                     Diagonal 
                     (between if:(not (is In (what at:(between)) (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2") (id "RookGeneral1") (id "RookGeneral2")
-                        (id "BishopGeneral1") (id "BishopGeneral2") (id "ViolentDragon1") (id "ViolentDragon2") (id "FlyingCrocodile1") (id "FlyingCrocodile2")} )))
+                        (id "BishopGeneral1") (id "BishopGeneral2") (id "ViolentDragon1") (id "ViolentDragon2") (id "FlyingCrocodile1") (id "FlyingCrocodile2")})))
                         (apply (remove (between))) 
                     )
                     (to 
@@ -588,7 +588,7 @@
             (move
                 Slide 
                 (between 
-                    if:(not (is In (what at:(between)) (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2")} )))
+                    if:(not (is In (what at:(between)) (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2")})))
                     (apply (remove (between))) 
                 )
                 (to 
@@ -606,7 +606,7 @@
                     Slide
                     Diagonal
                     (between
-                        if:(not (is In (what at:(between)) (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2")} )))
+                        if:(not (is In (what at:(between)) (sites {(id "King1") (id "King2") (id "Prince1") (id "Prince2") (id "GreatGeneral1") (id "GreatGeneral2") (id "ViceGeneral1") (id "ViceGeneral2")})))
                         (apply (remove (between)))
                     )
                     (to 
