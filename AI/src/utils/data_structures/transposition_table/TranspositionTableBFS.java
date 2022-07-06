@@ -292,7 +292,7 @@ public class TranspositionTableBFS
 	 * An entry in a Transposition Table for Alpha-Beta. Every entry contains
 	 * two slots.
 	 *
-	 * @author Dennis Soemers
+	 * @author cyprien
 	 */
 	public static final class BFSTTEntry
 	{

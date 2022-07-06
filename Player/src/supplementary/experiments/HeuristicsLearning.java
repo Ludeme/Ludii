@@ -39,7 +39,7 @@ import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
-import search.minimax.BestFirstSearch;
+import search.minimax.UBFM;
 import utils.data_structures.transposition_table.TranspositionTableBFS;
 import utils.data_structures.transposition_table.TranspositionTableBFS.BFSTTData;
 //import weka.classifiers.Classifier;
@@ -57,12 +57,9 @@ import weka.classifiers.functions.LinearRegression;
  * @author cyprien
  *
  */
-
 public class HeuristicsLearning
 {
 	
-	private static final BestFirstSearch BestFirstSearch = null;
-
 	private final Boolean debugDisplays = true;
 	
 	/** Duration of the whole training in seconds: */
@@ -72,7 +69,7 @@ public class HeuristicsLearning
 	private final String gameName = "Breakthrough";
 	
 	/** Thinking time of the AI in seconds: */
-	private final float thinkingTime = 1f;
+	private final float thinkingTime = 0.3f;
 	
 	private final String trainDataFile = "training_data/training.arff";
 	private final String testDataFile = "training_data/testing.arff";
@@ -137,13 +134,16 @@ public class HeuristicsLearning
 		
 		final float weight = 1f;
 
-		//if (LineCompletionHeuristic.isApplicableToGame(game))
-		//	heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(weight), null));
+		if (CurrentMoverHeuristic.isApplicableToGame(game))
+			heuristicTerms.add(new CurrentMoverHeuristic(null, Float.valueOf(weight)));
 		
-		if (MobilitySimple.isApplicableToGame(game))
+		if (LineCompletionHeuristic.isApplicableToGame(game))
+			heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(weight), null));
+		
+		if (MobilityAdvanced.isApplicableToGame(game))
 			heuristicTerms.add(new MobilitySimple(null, Float.valueOf(weight)));
 		
-		if (Influence.isApplicableToGame(game))
+		if (InfluenceAdvanced.isApplicableToGame(game))
 			heuristicTerms.add(new Influence(null, Float.valueOf(weight)));
 		
 		if (OwnRegionsCount.isApplicableToGame(game))
@@ -178,7 +178,7 @@ public class HeuristicsLearning
 	
 		if (Material.isApplicableToGame(game))
 		{
-			heuristicTerms.add(new Material(null, Float.valueOf(weight), null, null));
+			//heuristicTerms.add(new Material(null, Float.valueOf(weight), null, null));
 			for (final Pair[] componentPairs : allComponentPairsCombinations)
 				heuristicTerms.add(new Material(null, Float.valueOf(weight), componentPairs, null));
 		}
@@ -274,7 +274,7 @@ public class HeuristicsLearning
 			}
 			
 			
-			final BestFirstSearch AI = new BestFirstSearch(heuristics);
+			final UBFM AI = new UBFM(heuristics);
 			AI.setIfFullPlayouts(true);
 			AI.savingSearchTreeDescription = false;
 			
@@ -346,6 +346,16 @@ public class HeuristicsLearning
 		//---------------------------------------------------------------------
 		// Saving weights in a file: (TODO)
 		
+		try
+		{
+		      FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/heuristic_weights_"+game.name()+".sav");
+		      myWriter.write(toString(heuristicWeights));
+		      myWriter.close();
+		} catch (IOException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		}
+		
 		
 	}
 	
@@ -370,7 +380,7 @@ public class HeuristicsLearning
 	 * Will use a recursive function to evaluate the visted nodes with minimax.
 	 * @param TT
 	 */
-	protected void generateTrainingSet (final BestFirstSearch AI, final Context initialContext)
+	protected void generateTrainingSet (final UBFM AI, final Context initialContext)
 	{
 		if (debugDisplays) System.out.println("\nGenerating training set for the linear regression:");
 		
@@ -402,15 +412,15 @@ public class HeuristicsLearning
 	 */
 	protected float fillTrainingData
 	(
-		final BestFirstSearch AI,
+		final UBFM AI,
 		final Context context
 	)
 	{
-		final float value;
+		float value;
 		
-		if (callNumber % 1000 == 0)
+		if (callNumber % 10000 == 0)
 		{
-			System.out.print(Integer.toString(callNumber)+"-");
+			System.out.print(Integer.toString(callNumber)+"...");
 			//System.out.println("Number of validate entries:"+Integer.toString(AI.transpositionTable.nbMarkedEntries()));
 			System.out.println();
 		}
@@ -497,6 +507,18 @@ public class HeuristicsLearning
 				value = 0;
 			}
 			
+			/** Actually we don't care and pick the value of of the TT (FIXME) */
+			//-----------------------------------------------------------------
+			final long zobrist = state.fullHash();
+			final BFSTTData tableData = AI.transpositionTable.retrieve(zobrist);
+			
+			if (tableData != null)
+				value = tableData.value;
+			else
+				value = 0f;
+			//-----------------------------------------------------------------
+			
+			
 			// Adding entry with heuristic value differences:
 			
 			final float[] trainingEntry = new float[allHeuristicTerms.length];
@@ -513,7 +535,13 @@ public class HeuristicsLearning
 				for (int i=0; i<allHeuristicTerms.length; i++)
 				{
 					if (i==1)
-						dataFileContent.append( String.format("%.2g,", value) );
+					{
+						final String valueEntry = String.format("%.2g", value);
+						
+						dataFileContent.append(valueEntry+" ".repeat(15-valueEntry.length())+",");
+						
+					}
+					
 					trainingEntry[i] = 0f;
 					for (int player = 1; player <= numPlayers; ++player)
 					{
@@ -523,7 +551,10 @@ public class HeuristicsLearning
 							trainingEntry[i] -= allHeuristicTerms[i].computeValue(context,player,-1)*oppScoreMultiplier;
 					}
 					
-					dataFileContent.append( String.format("%.8g,", trainingEntry[i]) );
+					final String entry = String.format("%.8g", trainingEntry[i]);
+					
+					dataFileContent.append(entry+" ".repeat(15-entry.length())+",");
+						
 				}
 				
 				dataFileContent.deleteCharAt(dataFileContent.length()-1);
@@ -535,5 +566,17 @@ public class HeuristicsLearning
 		}
 		
 		return value;
+	}
+	
+	protected String toString(final float[] weights)
+	{
+		final StringBuffer stringBuilder = new StringBuffer();
+		
+		for (int i=0; i<weights.length; i++)
+		{
+			stringBuilder.append(String.format("%.8g\n", weights[i]));
+		}
+		
+		return stringBuilder.toString();
 	}
 }

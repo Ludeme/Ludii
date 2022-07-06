@@ -54,11 +54,11 @@ import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
 import search.mcts.selection.UCB1Tuned;
 import search.minimax.AlphaBetaSearch;
-import search.minimax.HybridBFS;
-import search.minimax.LazyBFS;
+import search.minimax.HybridUBFM;
+import search.minimax.LazyUBFM;
 import search.minimax.BRSPlus;
-import search.minimax.BestFirstSearch;
-import search.minimax.BiasedBFS;
+import search.minimax.UBFM;
+import search.minimax.BiasedUBFM;
 
 /**
  * Can create AI agents based on strings / files
@@ -109,17 +109,17 @@ public class AIFactory
 		if (string.equalsIgnoreCase("Bob the Basic AI"))
 			return new MyBasicAI();
 		
-		if (string.equalsIgnoreCase("Best First Search"))
-			return new BestFirstSearch();
+		if (string.equalsIgnoreCase("UBFM"))
+			return new UBFM();
 
-		if (string.equalsIgnoreCase("Hybrid BFS"))
-			return new HybridBFS();
+		if (string.equalsIgnoreCase("Hybrid UBFM"))
+			return new HybridUBFM();
 
-		if (string.equalsIgnoreCase("Lazy BFS"))
-			return new LazyBFS();
+		if (string.equalsIgnoreCase("Lazy UBFM"))
+			return new LazyUBFM();
 		
-		if (string.equalsIgnoreCase("Biased BFS"))
-			return new BiasedBFS();
+		if (string.equalsIgnoreCase("Biased UBFM"))
+			return new BiasedUBFM();
 		
 		if (string.equalsIgnoreCase("UCT") || string.equalsIgnoreCase("MCTS"))
 			return MCTS.createUCT();
@@ -503,21 +503,21 @@ public class AIFactory
 		{
 			return new MyBasicAI();
 		}
-		else if (algName.equalsIgnoreCase("Lazy BFS"))
+		else if (algName.equalsIgnoreCase("Lazy UBFM"))
 		{
-			return new LazyBFS();
+			return new LazyUBFM();
 		}
-		else if (algName.equalsIgnoreCase("Hybrid BFS"))
+		else if (algName.equalsIgnoreCase("Hybrid UBFM"))
 		{
-			return new HybridBFS();
+			return new HybridUBFM();
 		}
-		else if (algName.equalsIgnoreCase("Biased BFS"))
+		else if (algName.equalsIgnoreCase("Biased UBFM"))
 		{
-			return new BiasedBFS();
+			return new BiasedUBFM();
 		}
-		else if (algName.equalsIgnoreCase("Best First Search"))
+		else if (algName.equalsIgnoreCase("UBFM"))
 		{
-			return BestFirstSearch.createBestFirstSearch();
+			return UBFM.createUBFM();
 		}
 		else if (algName.equalsIgnoreCase("Monte Carlo (flat)") || algName.equalsIgnoreCase("Flat MC"))
 		{

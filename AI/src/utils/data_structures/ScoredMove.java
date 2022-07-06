@@ -3,12 +3,10 @@ package utils.data_structures;
 import other.move.Move;
 
 /**
- * 
  * Simple wrapper for score + move, used for sorting moves based on scores.
  * Copied from the AB-Code, but put in an external class so that it can be used by Transposition Tables.
  * 
  * @author cyprien
- *
  */
 
 public class ScoredMove implements Comparable<ScoredMove>

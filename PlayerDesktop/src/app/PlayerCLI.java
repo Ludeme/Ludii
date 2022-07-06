@@ -8,6 +8,8 @@ import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
+import supplementary.experiments.EvaluateAllUBFMs;
+import supplementary.experiments.EvaluateUBFM;
 import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
@@ -68,7 +70,8 @@ public class PlayerCLI
 					"--tutorial-generation",
 					"--game-distance",
 					"--generate-feature-eval-scripts",
-					"--kilothon"
+					"--kilothon",
+					"--eval-ubfm"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -112,6 +115,8 @@ public class PlayerCLI
 			GenerateFeatureEvalScripts.main(passArgs);
 		else if (command.equalsIgnoreCase("--kilothon"))
 			Kilothon.main(passArgs);
+		else if (command.equalsIgnoreCase("--eval-ubfm"))
+			EvaluateAllUBFMs.main(passArgs);
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 

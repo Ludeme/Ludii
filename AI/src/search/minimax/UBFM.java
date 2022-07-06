@@ -13,46 +13,41 @@ import game.Game;
 import main.FileHandling;
 import main.collections.FVector;
 import main.collections.FastArrayList;
-import main.collections.Pair;
 import main.grammar.Report;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import metadata.ai.heuristics.terms.Material;
-import metadata.ai.heuristics.terms.MobilitySimple;
+import metadata.ai.heuristics.terms.MobilityAdvanced;
 import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
-import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
 import training.expert_iteration.ExItExperience;
 import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.ExItExperience.ExItExperienceState;
 import utils.data_structures.ScoredMove;
-//import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
-//import search.minimax.AlphaBetaSearch.ScoredMove;
 import utils.data_structures.transposition_table.TranspositionTableBFS;
 import utils.data_structures.transposition_table.TranspositionTableBFS.BFSTTData;
 
 /**
- * Implementation of best-first minimax search
- * (as described in Best-First MinimaxSearch:First Results by Richard E. Korf
-and David Maxwell Chickering (1993))
+ * Implementation of Unbounded Best-First Minimax
+ * (as described in Learning to Play Two-Player Perfect-Information Games
+without Knowledge by Quentin Cohen-Solal (2021))
+ * (chunks of code copied from AlphaBetaSearch, especially the variables initialisation)
  * 
  * @author cyprien
- * (chunks of code copied from AlphaBetaSearch, especially the variables initialisation)
  */
 
-public class BestFirstSearch extends ExpertPolicy
+public class UBFM extends ExpertPolicy
 {
 	
 	/** Boolean to active additional outputs for debugging */
 	public boolean debugDisplay = false;
 	
-	/** Set to true to store a description of the search tree in the file Internship/searchTree.sav */
-	public boolean savingSearchTreeDescription = true;
-	
-	public String saveAdress = "search_trees_raw/default.sav";
+	/** Set to true to store a description of the search tree in the treeSaveFile */
+	public boolean savingSearchTreeDescription = false;
+	public String treeSaveFile = "/home/cyprien/Documents/M1/Internship/search_trees_raw/default.sav"; //FIXME
 	
 	/** Set to true to activate a scouting phase with Alpha-Beta iterative deepening before the actual BFS algorithm */
 	protected boolean alphaBetaScouting = false; // won't work while bounds are not dealt with properly in minimax
@@ -61,10 +56,38 @@ public class BestFirstSearch extends ExpertPolicy
 	protected final double scoutingTimeProportion = 0.4;
 	
 	/** If true, each exploration will be continued up to the end of the tree. */
-	protected boolean fullPlayouts = true;
+	protected boolean fullPlayouts = false;
+	
+	/** Set to true to reset the TT after each move (usually only for tree search display) */
+	public boolean resetTTeachTurn = false;
+
+	/** Value of epsilon if a randomised policy is picked (default is epsilon-greedy) */
+	protected double selectionEpsilon = 0.2;
 	
 	//-------------------------------------------------------------------------
 	
+	/** A type for the selection policy */
+	public enum SelectionPolicy
+	{
+		BEST, // picks the move of the current principal path (the one with the best score)
+		SAFEST // variant to pick the move that was explored the most
+	}
+	
+	/** Selection policy used: */
+	protected SelectionPolicy selectionPolicy = SelectionPolicy.SAFEST;
+	
+	/** A type for the exploration policy */
+	public enum ExplorationPolicy
+	{
+		BEST, // always picks the move that seems the best
+		EPSILON_GREEDY, // with a probability epsilon, picks a uniformly random move, else picks the best
+		// to add: softmax
+	}
+	
+	/** Exploration policy used: */
+	protected ExplorationPolicy explorationPolicy = ExplorationPolicy.EPSILON_GREEDY;
+	
+	//-------------------------------------------------------------------------
 
 	/** Value we use to initialise alpha ("negative infinity", but not really) */
 	public static final float ALPHA_INIT = -1000000.f;
@@ -95,10 +118,10 @@ public class BestFirstSearch extends ExpertPolicy
 	//-------------------------------------------------------------------------
 
 	/** The maximum heuristic eval we have ever observed */
-	protected float maxHeuristicEval = 0.f;
+	protected float maxHeuristicEval = ALPHA_INIT;
 	
 	/** The minimum heuristic eval we have ever observed */
-	protected float minHeuristicEval = 0.f;
+	protected float minHeuristicEval = BETA_INIT;
 	
 	/** String to print to Analysis tab of the Ludii app */
 	protected String analysisReport = null;
@@ -118,26 +141,14 @@ public class BestFirstSearch extends ExpertPolicy
 	/** The number of players in the game we're currently playing */
 	protected int numPlayersInGame = 0;
 	
-	/** Remember if we proved a win in one of our searches */
-	protected boolean provedWin = false;
-	
 	/** Needed for visualisations */
 	protected float rootAlphaInit = ALPHA_INIT;
 	
 	/** Needed for visualisations */
 	protected float rootBetaInit = BETA_INIT;
 	
-	/** Sorted (hopefully cleverly) list of moves available in root node */
-	protected FastArrayList<Move> sortedRootMoves = null;
-	
-	/** If true at end of a search, it means we searched full tree (probably proved a draw) */
-	protected boolean searchedFullTree = false;
-	
-	/** Transposition Table (public because it is manipulated for the heuristic learning)*/
-	public TranspositionTableBFS transpositionTable = null;
-
-	/** Do we allow any search depth, or only odd, or only even? */
-	protected AllowedSearchDepths allowedSearchDepths = AllowedSearchDepths.Any;
+	/** Transposition Table */
+	protected TranspositionTableBFS transpositionTable = null;
 	
 	//-------------------------------------------------------------------------
 	
@@ -147,50 +158,14 @@ public class BestFirstSearch extends ExpertPolicy
 	/** Number of different states evaluated, for an analysis report */
 	protected int nbStatesEvaluated;
 	
-	/** Sorted (hopefully cleverly) list of moves indices available in root node */
-	protected int[] sortedRootMovesIndices;
-	
-	/** A type for the selection policy */
-	public enum SelectionPolicy
-	{
-		best, // picks the move of the current principal path
-		safest // variant to pick the move that was explored the most
-	}
-	
-	/** Selection policy used: */
-	protected SelectionPolicy selectionPolicy = SelectionPolicy.safest;
-	
-	/** A type for the exploration policy */
-	public enum ExplorationPolicy
-	{
-		best, // always picks the move that seems the best
-		epsilon_greedy, // with a probability epsilon, picks a uniformly random move, else picks the best
-		// to add: softmax
-	}
-	
-	/** Exploration policy used: */
-	protected ExplorationPolicy explorationPolicy = ExplorationPolicy.epsilon_greedy;
-	
-	/** Value of epsilon if epsilon_greedy policy is picked */
-	protected double epsilon = 0.2;
-	
-	/** Legal root moves from the root */
-	protected FastArrayList<Move> legalRootMoves;
-	
-	/** Number of times each move from the root was selected, for the _safest_ selection policy */
-	protected int[] nbVisitsRootMoves;
-	
 	/** Scores of the moves from the root, for the final decision of the move to play */
 	protected float[] rootMovesScores;
 	
 	/** numBitsPrimaryCode argument given when a TT is created (to avoid magic numbers in the code)*/
 	private final int numBitsPrimaryCodeForTT = 12;
 	
-	/** Indicates if the alpha-beta scouting phase is in process */
-	protected boolean currentlyScouting = false;
-	
 	/** An Alpha-Beta AI for the scouting */
-	protected AlphaBetaSearch alphaBetaSlave;
+	protected AlphaBetaSearch alphaBetaScout;
 	
 	//-------------------------------------------------------------------------
 	
@@ -200,18 +175,19 @@ public class BestFirstSearch extends ExpertPolicy
 	
 	protected int callsOfSelectAction = 0;
 	
-	/** We skip the first select action because it is usually not comparable to the others regarding available time */
+	/** We skip the first select action when registering values because it is usually not 
+	 * comparable to the others regarding available time */
 	boolean skippedFirstSelectAction = false;
 	
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Creates a standard best-first searcher.
-	 * @return Best-first search algorithm.
+	 * Creates a standard unbounded best-first minimax searcher.
+	 * @return UBFM agent
 	 */
-	public static BestFirstSearch createBestFirstSearch()
+	public static UBFM createUBFM()
 	{
-		return new BestFirstSearch();
+		return new UBFM();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -219,9 +195,9 @@ public class BestFirstSearch extends ExpertPolicy
 	/**
 	 * Constructor
 	 */
-	public BestFirstSearch()
+	public UBFM()
 	{
-		friendlyName = "BFS";
+		friendlyName = "UBFM";
 		heuristicsFromMetadata = true;
 	}
 	
@@ -231,7 +207,7 @@ public class BestFirstSearch extends ExpertPolicy
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public BestFirstSearch(final String heuristicsFilepath) throws FileNotFoundException, IOException
+	public UBFM(final String heuristicsFilepath) throws FileNotFoundException, IOException
 	{
 		final String heuristicsStr = FileHandling.loadTextContentsFromFile(heuristicsFilepath);
 		heuristicValueFunction = (Heuristics)compiler.Compiler.compileObject
@@ -241,67 +217,18 @@ public class BestFirstSearch extends ExpertPolicy
 											new Report()
 										);
 		heuristicsFromMetadata = false;
-		friendlyName = "BFS";
+		friendlyName = "UBFM";
 	}
 
 	/**
 	 * Constructor
 	 * @param heuristics
 	 */
-	public BestFirstSearch(final Heuristics heuristics)
+	public UBFM(final Heuristics heuristics)
 	{
 		heuristicValueFunction = heuristics;
 		heuristicsFromMetadata = false;
-		friendlyName = "BFS";
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	public void setSelectionPolicy(SelectionPolicy s)
-	{
-		selectionPolicy = s;
-	}
-	
-	public void setIfFullPlayouts(Boolean b)
-	{
-		fullPlayouts = b;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Wrapper for score + index, used for sorting moves indices based on scores.
-	 * 
-	 * @author cyprien
-	 */
-	protected class ScoredMoveIndex implements Comparable<ScoredMoveIndex>
-	{
-		/** The move */
-		public final int moveIndex;
-		/** The move's score */
-		public final float score;
-		
-		/**
-		 * Constructor
-		 * @param moveIndex
-		 * @param score
-		 */
-		public ScoredMoveIndex(final int moveIndex, final float score)
-		{
-			this.moveIndex = moveIndex;
-			this.score = score;
-		}
-		
-		public int compareTo(final ScoredMoveIndex other)
-		{
-			final float delta = other.score - score;
-			if (delta < 0.f)
-				return -1;
-			else if (delta > 0.f)
-				return 1;
-			else
-				return 0;
-		}
+		friendlyName = "UBFM";
 	}
 	
 	//-------------------------------------------------------------------------
@@ -316,10 +243,12 @@ public class BestFirstSearch extends ExpertPolicy
 		final int maxDepth
 	)
 	{
-		maxDepthReached = 1;
+		
+		maxDepthReached = 0;
 		nbStatesEvaluated = 0;
 		
-		if ((callsOfSelectAction==1)&&(!skippedFirstSelectAction))
+		// Ignoring the first call for the registered data:
+		if ((callsOfSelectAction == 1) && (!skippedFirstSelectAction))
 		{
 			callsOfSelectAction = 1;
 			callsOfMinimax = 0;
@@ -330,111 +259,104 @@ public class BestFirstSearch extends ExpertPolicy
 			callsOfSelectAction += 1;
 		}
 		
-		if ((transpositionTable != null)&&(!transpositionTable.isAllocated()))
+		
+		if ((transpositionTable != null) && (!transpositionTable.isAllocated()))
 			transpositionTable.allocate();
 		
-		if (maxSeconds > 0)
+		if (game.players().count() > 2) //FIXME: remove
+			throw new RuntimeException("BFS not implemented for more than 2 players");
+		
+		lastReturnedMove = BFSSelection(game, context, (maxSeconds >= 0) ? maxSeconds : Double.MAX_VALUE, maxIterations);
+
+		if (debugDisplay)
 		{
-			final long startTime = System.currentTimeMillis();
-			final long stopTime = startTime + (long) (maxSeconds * 1000);
-			
-			if (alphaBetaScouting)
-			{
-				final int initDepth = allowedSearchDepths == AllowedSearchDepths.Even ? 2 : 1;
-				final int depthLimit = maxDepth > 0 ? maxDepth : Integer.MAX_VALUE;
-
-				
-				if (alphaBetaSlave.transpositionTable != null)
-					alphaBetaSlave.transpositionTable.allocate();
-
-				// currentlyScouting = true;
-				/** AlphaBeta Iterative deepening is used to build a primary evaluation of the first moves in the TT */
-				//alphaBetaSlave.iterativeDeepening(game, context, maxSeconds*scoutingTimeProportion, depthLimit, initDepth);
-				//this.transpositionTable = alphaBetaSlave.transpositionTable;
-				//currentlyScouting = false;
-				
-			};
-
-			if (game.players().count() > 2)
-				throw new RuntimeException("BFS not implemented for more than 2 players");
-			
-			// First do BFS (paranoid if > 2 players)
-			lastReturnedMove = BFSSelection(game, context, maxSeconds, Integer.MAX_VALUE);
-			
-			// if (transpositionTable != null)
-			// deallocates the transposition table even if it is the one shared with an alpha beta AI
-			// transpositionTable.deallocate();
-
-			if (debugDisplay)
-			{
-				System.out.println("Nb of entries in the TT:"+transpositionTable.nbEntries());
-				transpositionTable.dispValueStats();
-			}
-			
-			return lastReturnedMove;
+			System.out.println("Nb of entries in the TT:"+transpositionTable.nbEntries());
+			transpositionTable.dispValueStats();
 		}
-		else
-		{
-			throw new RuntimeException("not ready to be used");
-			
-			// If given no time limit, we'll use the depth limit instead
-			//lastReturnedMove = BFSSelection(game, context, maxSeconds, maxDepth);
-			
-			//if (transpositionTable != null)
-			//	transpositionTable.deallocate();
-			
-			//return lastReturnedMove;
-		}
+		
+		return lastReturnedMove;
 	}
 	
-	private ScoredMove finalDecision(final BFSTTData tableData, boolean maximising)
+	/**
+	 * Decides the move to play from the root.
+	 * @param rootTableData
+	 * @param maximising
+	 * @return
+	 */
+	protected ScoredMove finalDecision(final BFSTTData rootTableData, boolean maximising)
 	{
 		switch (selectionPolicy)
 		{
-			case best:
-				return tableData.sortedScoredMoves.get(0);
-			case safest:
-				ScoredMove scoredMove;
+			case BEST:
+				return rootTableData.sortedScoredMoves.get(0);
 				
+			case SAFEST:
+				ScoredMove scoredMove;
 				if (debugDisplay) {
 					System.out.print("sortedScoredMoves:\n(");
-					for (int i=0; i<tableData.sortedScoredMoves.size();i++)
+					for (int i=0; i<rootTableData.sortedScoredMoves.size(); i++)
 					{
-						scoredMove = tableData.sortedScoredMoves.get(i);
+						scoredMove = rootTableData.sortedScoredMoves.get(i);
 						System.out.print(Integer.toString(i)+": score "+Float.toString(scoredMove.score)+" ("+Integer.toString(scoredMove.nbVisits)+"); ");
 					};
 					System.out.println(")");
 				};
 				
-				ScoredMove safestScoredMove = tableData.sortedScoredMoves.get(0);
-				for (int i=0; i<tableData.sortedScoredMoves.size();i++)
+				ScoredMove safestScoredMove = rootTableData.sortedScoredMoves.get(0);
+				for (int i=0; i<rootTableData.sortedScoredMoves.size(); i++)
 				{
-					scoredMove = tableData.sortedScoredMoves.get(i);
-					if ((scoredMove.nbVisits>safestScoredMove.nbVisits) || (scoredMove.nbVisits==safestScoredMove.nbVisits&&( (maximising&&scoredMove.score>safestScoredMove.score) || ((!maximising)&&scoredMove.score<safestScoredMove.score))))
+					scoredMove = rootTableData.sortedScoredMoves.get(i);
+					if
+					(
+						(scoredMove.nbVisits > safestScoredMove.nbVisits)
+						|| 
+						(
+							(scoredMove.nbVisits == safestScoredMove.nbVisits)
+							&& 
+							( 
+								(  maximising  && (scoredMove.score > safestScoredMove.score))
+								|| 
+								((!maximising) && (scoredMove.score < safestScoredMove.score))
+							)
+						)
+					)
 					{
 						safestScoredMove = scoredMove;
 					}
 				}
 				return safestScoredMove;
+				
 			default:
-				return tableData.sortedScoredMoves.get(0);
+				System.err.println("Error: selectionPolicy not implemented");
+				return rootTableData.sortedScoredMoves.get(0);
 		}
 	}
 	
+	/**
+	 * Performs the unbounded best-first search algorithm.
+	 * @param game
+	 * @param context
+	 * @param maxSeconds
+	 * @param iterationLimit
+	 * @return
+	 */
 	protected Move BFSSelection
 	(
-			final Game game,
-			final Context context,
-			final double maxSeconds,
-			final int depthLimit
+		final Game game,
+		final Context context,
+		final double maxSeconds,
+		final int depthLimit
 	)
 	{
 		final long startTime = System.currentTimeMillis();
 		long stopTime = (maxSeconds > 0.0) ? startTime + (long) (maxSeconds * 1000) : Long.MAX_VALUE;
-		
-		final int numPlayers = game.players().count();
+
 		currentRootMoves = new FastArrayList<Move>(game.moves(context).moves());
+		
 		final int numRootMoves = currentRootMoves.size();
+		final int maximisingPlayer = context.state().playerToAgent(context.state().mover());
+		final State state = context.state();
+		final int mover = state.playerToAgent(state.mover());
 		
 		if (numRootMoves == 1)
 		{
@@ -444,23 +366,12 @@ public class BestFirstSearch extends ExpertPolicy
 		}
 		
 		// Vector for visualisation purposes
-		rootValueEstimates = new FVector(currentRootMoves.size());
-		rootMovesScores = new float[currentRootMoves.size()];
-		
-		// Storing scores found for purpose of move ordering
-		//final FVector moveScores = new FVector(numRootMoves);
+		rootValueEstimates = new FVector(numRootMoves);
+		rootMovesScores = new float[numRootMoves];
 
-		final int maximisingPlayer = context.state().playerToAgent(context.state().mover());
-		final State state = context.state();
-		final int mover = state.playerToAgent(state.mover());
-		
-		if (numPlayers > 2)
-			throw new RuntimeException("BFS not implemented for more than 2 players");
-		
+		// For visualisation purpose:
 		rootAlphaInit = ALPHA_INIT;
 		rootBetaInit = BETA_INIT;
-		
-		// For visualisation purpose:
 		minHeuristicEval = rootBetaInit;
 		maxHeuristicEval = rootAlphaInit;
 		
@@ -468,50 +379,46 @@ public class BestFirstSearch extends ExpertPolicy
 		searchTreeOutput.setLength(0);
 		searchTreeOutput.append("[\n");
 		
-		nbVisitsRootMoves = new int[numRootMoves];
-		for (int i=0; i<numRootMoves; i++) {
-			nbVisitsRootMoves[i] = 0;
-		}
-		
-		// Calling the recursive minimaxBFS strategy:
-		long zobrist = context.state().fullHash();
-		
 		final Context contextCopy = copyContext(context);
-		
-		legalRootMoves = game.moves(contextCopy).moves();
-
-		zobrist = context.state().fullHash();
-		
-		List<Long> initialNodeLabel = new ArrayList<Long>();
-		initialNodeLabel.add(contextCopy.state().fullHash());
+		List<Long> initialnodeHashes = new ArrayList<Long>();
+		initialnodeHashes.add(contextCopy.state().fullHash());
 		if (savingSearchTreeDescription)
-			searchTreeOutput.append("("+stringOfNodeLabel(initialNodeLabel)+","+Float.toString(getContextValue(contextCopy,maximisingPlayer,initialNodeLabel,0))+","+Integer.toString((mover==maximisingPlayer)? 1:2)+"),\n");
+			searchTreeOutput.append("("+stringOfnodeHashes(initialnodeHashes)+","+Float.toString(getContextValue(contextCopy,maximisingPlayer,initialnodeHashes,0))+","+Integer.toString((mover==maximisingPlayer)? 1:2)+"),\n");
 		
-		while (System.currentTimeMillis() < stopTime && ( !wantsInterrupt))
+		boolean firstCall = true;
+		// TODO: add a counter of iterations
+		while (firstCall || (System.currentTimeMillis() < stopTime && ( !wantsInterrupt)))
 		{
-			
-			minimaxBFS(contextCopy,maximisingPlayer,stopTime,1,depthLimit,initialNodeLabel);
+			firstCall = false;
+			// Calling the recursive minimaxBFS:
+			minimaxBFS(contextCopy, maximisingPlayer, stopTime, 1, depthLimit, initialnodeHashes);
 		
 		};
 		
-		zobrist = context.state().fullHash();
-		final BFSTTData tableData = transpositionTable.retrieve(zobrist);
-		final ScoredMove finalChoice = finalDecision(tableData, mover==maximisingPlayer);
+		long zobrist = context.state().fullHash();
+		final BFSTTData rootTableData = transpositionTable.retrieve(zobrist);
+		final ScoredMove finalChoice = finalDecision(rootTableData, mover==maximisingPlayer);
 		
 		analysisReport = friendlyName + " (player " + maximisingPlayer + ") completed an analysis that reached at some point a depth of " + maxDepthReached + ":\n";
 		analysisReport += "best value observed: "+Float.toString(finalChoice.score)+",\n";
 		analysisReport += Integer.toString(nbStatesEvaluated)+" different states were evaluated";
 		analysisReport += "\n"+Integer.toString(callsOfMinimax)+" calls of minimax";
+		if ((maxSeconds > 0.) && (System.currentTimeMillis()<stopTime))
+			analysisReport += " (finished analysis early) ";
 		
-		
-		if ((maxSeconds > 0.)&&(System.currentTimeMillis()<stopTime))
-				analysisReport += " (finished analysis early) ";
+		if (resetTTeachTurn)
+		{
+			transpositionTable.deallocate();
+			if (debugDisplay)
+				System.out.println("deallocated");
+		}
 		
 		if (debugDisplay)
 		{
 			System.out.print("rootValueEstimates: (");
-			for (int i=0; i<currentRootMoves.size(); i++) {
-					System.out.print(rootValueEstimates.get(i)+".");
+			for (int i=0; i<currentRootMoves.size(); i++)
+			{
+				System.out.print(rootValueEstimates.get(i)+".");
 			}
 			System.out.println(")");
 		}
@@ -520,74 +427,50 @@ public class BestFirstSearch extends ExpertPolicy
 		searchTreeOutput.append("]");
 		if (savingSearchTreeDescription)
 		{
-			try {
-		      FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/"+saveAdress);
+			try
+			{
+		      FileWriter myWriter = new FileWriter(treeSaveFile);
 		      myWriter.write(searchTreeOutput.toString());
 		      myWriter.close();
-		      System.out.println("Successfully wrote to the file.");
+		      System.out.println("Successfully saved search tree in a file.");
 		    } catch (IOException e) {
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
 		    }
 		}
-		try {
-			FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/average_recursive_calls/"+this.getClass().getSimpleName()+".sav");
-			myWriter.write(Double.toString(((double) callsOfMinimax)/callsOfSelectAction));
-		    myWriter.close();
-		} catch (IOException e) {
-		      System.out.println("An error occurred.");
-		      e.printStackTrace();
-		}
+		
+//		// Saving the avergae number of recursive calls
+//		try {
+//			FileWriter myWriter = new FileWriter("/home/cyprien/Documents/M1/Internship/average_recursive_calls/"+this.getClass().getSimpleName()+".sav");
+//			myWriter.write(Double.toString(((double) callsOfMinimax)/callsOfSelectAction));
+//		    myWriter.close();
+//		} catch (IOException e) {
+//		      System.out.println("An error occurred.");
+//		      e.printStackTrace();
+//		}
 		
 		return finalChoice.move;
 	}
 	
-	protected FVector estimateMoveValues
-	(
-		final FastArrayList<Move> legalMoves,
-		final Context context,
-		final int maximisingPlayer,
-		final List<Long> nodeLabel,
-		final int depth
-	)
-	{
-		final int numLegalMoves = legalMoves.size();
-		final FVector moveScores = new FVector(numLegalMoves);
-		
-		final Game game = context.game();
-
-		final State state = context.state();
-		final int mover = state.playerToAgent(state.mover());
-		
-		for (int i = 0; i < numLegalMoves; ++i)
-		{			
-			final Move m = legalMoves.get(i);
-			final Context contextCopy = copyContext(context);
-			
-			game.apply(contextCopy, m);
-			
-			final State newState = contextCopy.state();
-			final int newMover = newState.mover();
-
-			nodeLabel.add(contextCopy.state().fullHash());
-			final float heuristicScore = getContextValue(contextCopy,maximisingPlayer,nodeLabel,depth);
-			nodeLabel.remove(nodeLabel.size()-1);
-			
-			moveScores.set(i,heuristicScore);
-			
-		};
-		
-		return moveScores;
-	}
-	
+	/**
+	 * Recursive strategy to evaluate the different options on a possible line of actions.
+	 * 
+	 * @param context
+	 * @param maximisingPlayer
+	 * @param stopTime
+	 * @param analysisDepth
+	 * @param depthLimit
+	 * @param nodeHashes
+	 * @return the score of the context
+	 */
 	protected Float minimaxBFS
 	(
 		final Context context,
 		final int maximisingPlayer,
 		final long stopTime,
 		final int analysisDepth,
-		final int depthLimit,
-		final List<Long> nodeLabel //used when we want to output the tree-search graph
+		final int depthLimit, //FIXME
+		final List<Long> nodeHashes //used when we want to output the tree-search graph
 	)
 	{
 		final Trial trial = context.trial();
@@ -599,37 +482,47 @@ public class BestFirstSearch extends ExpertPolicy
 		final int numLegalMoves = legalMoves.size();
 		
 		callsOfMinimax += 1;
-		// updating maxDepthReached
 		if (analysisDepth > maxDepthReached)
 			maxDepthReached = analysisDepth;
 		
-		/** First we check if the state is termninal (at least for maximizing player). 
-		 * If so we can just return the value of the value of the state for maximisingPlayer
+		/** 
+		 * First we check if the state is terminal (at least for maximising player). 
+		 * If so we can just return the value of the state for maximising player
 		 */
 		if (trial.over() || !context.active(maximisingPlayer))
-			return getContextValue(context,mover,nodeLabel,analysisDepth-1);
+			return getContextValue(context, mover, nodeHashes, analysisDepth-1);
 
+
+		List<ScoredMove> sortedScoredMoves = null;
 		final long zobrist = context.state().fullHash();
 		final BFSTTData tableData = transpositionTable.retrieve(zobrist);
-		List<ScoredMove> sortedScoredMoves = null;
 		if (tableData != null)
 			if (tableData.sortedScoredMoves != null)
 				sortedScoredMoves = new ArrayList<ScoredMove>(tableData.sortedScoredMoves);
 		
-		float outputScore = 666; // this value shoud always we replaced before it is read
-		Boolean firstExploration = false;
+		float outputScore = Float.NaN; // this value shoud always we replaced before it is read
 		
-		if (sortedScoredMoves == null) // we can suppose that it is an exact value in this case
+		if (sortedScoredMoves != null)
 		{
-			firstExploration = true;
-			
+			if (sortedScoredMoves.size() != numLegalMoves)
+			{
+				System.err.println("Error sortedScoredMoves.size() != numLegalMoves");
+				sortedScoredMoves = null;
+			}
+		}
+
+		boolean firstExploration = false;
+		if (sortedScoredMoves == null)
+		{
 			/** 
 			 * ------------------------------------------------------------------------------
 			 * In this case it is the first full analysis of this state.
 			 * Thus we compute a quick evaluation of all the possible moves to order them before exploration.
 			 * ------------------------------------------------------------------------------
 			*/
-			final FVector moveScores = estimateMoveValues(legalMoves,context,maximisingPlayer,nodeLabel,analysisDepth);
+			firstExploration = true;
+			
+			final FVector moveScores = estimateMoveValues(legalMoves, context, maximisingPlayer, nodeHashes, analysisDepth, stopTime);
 
 			// Create a shuffled version of list of moves indices (random tie-breaking)
 			final FastArrayList<ScoredMove> tempScoredMoves = new FastArrayList<ScoredMove>(numLegalMoves);
@@ -640,16 +533,14 @@ public class BestFirstSearch extends ExpertPolicy
 			sortedScoredMoves = new ArrayList<ScoredMove>(numLegalMoves);
 			for (int i = 0; i < numLegalMoves; ++i)
 			{
-				sortedScoredMoves.add( tempScoredMoves.removeSwap(ThreadLocalRandom.current().nextInt(tempScoredMoves.size())) );
+				sortedScoredMoves.add(tempScoredMoves.removeSwap(ThreadLocalRandom.current().nextInt(tempScoredMoves.size())));
 			}
 			if (mover == maximisingPlayer)
-				Collections.sort(sortedScoredMoves);
+				Collections.sort(sortedScoredMoves); //(the natural order of scored Move Indices is decreasing)
 			else
 				Collections.sort(sortedScoredMoves,Collections.reverseOrder());
-			// (the natural order of scored Move Indices is decreasing)
 			
 			outputScore = sortedScoredMoves.get(0).score;
-			
 		}
 		
 		if ((!firstExploration) || fullPlayouts)
@@ -661,17 +552,14 @@ public class BestFirstSearch extends ExpertPolicy
 			 * ------------------------------------------------------------------------------
 			*/
 			
-			final Context copyContext = copyContext(context); // could be replaced by a use of game.undo if it was reliable
-			
 			final int indexPicked;
-			
 			switch (explorationPolicy)
 			{
-			case best:
+			case BEST:
 				indexPicked = 0;
 				break;
-			case epsilon_greedy:
-				if (ThreadLocalRandom.current().nextDouble(1.)<epsilon)
+			case EPSILON_GREEDY:
+				if (ThreadLocalRandom.current().nextDouble(1.)<selectionEpsilon)
 					indexPicked = ThreadLocalRandom.current().nextInt(numLegalMoves);
 				else
 					indexPicked = 0;
@@ -680,26 +568,29 @@ public class BestFirstSearch extends ExpertPolicy
 				throw new RuntimeException("Unkown exploration policy");
 			}
 			
-			
 			final Move bestMove = sortedScoredMoves.get(indexPicked).move;
-			final int previousNbVisits = sortedScoredMoves.get(indexPicked).nbVisits;
+			final int previousNbVisits = sortedScoredMoves.get(indexPicked).nbVisits; //number of times this moves was already tried
 			
-			// if (analysisDepth==1)
-			//     System.out.println("Value of selected move at root : "+Float.toString(sortedScoredMoves.get(indexPicked).score));
-			
+			final Context copyContext = copyContext(context);
 			game.apply(copyContext, bestMove);
-
-			nodeLabel.add(copyContext.state().fullHash());
 			
-			final Float scoreOfMostPromisingMove = minimaxBFS(copyContext,maximisingPlayer,stopTime,analysisDepth+1,depthLimit,nodeLabel);			
+			nodeHashes.add(copyContext.state().fullHash());
 			
-			nodeLabel.remove(nodeLabel.size()-1);
+			/** Recursive call: */
+			final float scoreOfMostPromisingMove = minimaxBFS(copyContext, maximisingPlayer, stopTime, analysisDepth+1, depthLimit, nodeHashes);			
 			
-			// re-inserting the new value in the list of scored moves, last among moves of equal values			
-			int k = indexPicked;
+			nodeHashes.remove(nodeHashes.size()-1);
+			
+			// Re-inserting the new value in the list of scored moves, last among moves of equal values			
+			int k = indexPicked; //TODO: put this in a funtion
 			while ((k < numLegalMoves-1))
 			{
-				if ( ((sortedScoredMoves.get(k+1).score >= scoreOfMostPromisingMove)&&(mover==maximisingPlayer)) || ((sortedScoredMoves.get(k+1).score <= scoreOfMostPromisingMove)&&(mover!=maximisingPlayer)))
+				if
+				(
+					((sortedScoredMoves.get(k+1).score >= scoreOfMostPromisingMove) && (mover == maximisingPlayer))
+					||
+					((sortedScoredMoves.get(k+1).score <= scoreOfMostPromisingMove) && (mover!=maximisingPlayer))
+				)
 				{
 					sortedScoredMoves.set(k, sortedScoredMoves.get(k+1));
 					k += 1;
@@ -708,67 +599,116 @@ public class BestFirstSearch extends ExpertPolicy
 				{
 					if (k > 0)
 					{
-						if (( ((sortedScoredMoves.get(k-1).score < scoreOfMostPromisingMove)&&(mover==maximisingPlayer)) || ((sortedScoredMoves.get(k-1).score > scoreOfMostPromisingMove)&&(mover!=maximisingPlayer))))
+						if
+						(
+							((sortedScoredMoves.get(k-1).score < scoreOfMostPromisingMove) && (mover==maximisingPlayer))
+							||
+							((sortedScoredMoves.get(k-1).score > scoreOfMostPromisingMove) && (mover!=maximisingPlayer))
+						)
 						{
 							sortedScoredMoves.set(k, sortedScoredMoves.get(k-1));
 							k -= 1;
-							//System.out.println("bad move is actually not so bad");
 						}
-						else break;
+						else
+							break;
 					}
-					else break;
+					else
+						break;
 				}
-			};
-			sortedScoredMoves.set(k, new ScoredMove(bestMove,scoreOfMostPromisingMove,previousNbVisits+1));
+			}
+			sortedScoredMoves.set(k, new ScoredMove(bestMove, scoreOfMostPromisingMove, previousNbVisits+1));
 
 			outputScore = sortedScoredMoves.get(0).score;
-			/*
-			System.out.print("Sorted moves scores (maximising="+Boolean.toString(mover==maximisingPlayer)+"): ");
-			for (ScoredMove scoredMove : sortedScoredMoves)
-			{
-				System.out.print(Float.toString(scoredMove.score)+ ",");
-			}
-			System.out.println(")");
-
-			if (analysisDepth==1)
-				System.out.println("Value became "+Float.toString(outputScore)); */
-			
 		}
 		
-		if (analysisDepth==1) {
-			//rootValueEstimates.set(bestMoveIndex,(float) scoreToValueEst(bestScore, inAlpha, inBeta));
+		if (analysisDepth==1)
+		{
+			//rootValueEstimates.set(bestMoveIndex,(float) scoreToValueEst(bestScore, inAlpha, inBeta)); FIXME
 			estimatedRootScore = outputScore;
-		};
+		}
 		
-		// We can consider that this value for the node is more accurate than any previous value calculated
+		// Updating the transposition table at each call:
 		if (transpositionTable != null)
 			transpositionTable.store(null, zobrist, outputScore, analysisDepth-1, TranspositionTableBFS.EXACT_VALUE,sortedScoredMoves);
 
 		return outputScore;
 	}
+
+	/**
+	 * Compute scores for the moves in argument, by simulating the move and calling getContextValue.
+	 * 
+	 * @param legalMoves
+	 * @param context
+	 * @param maximisingPlayer
+	 * @param nodeHashes
+	 * @param depth
+	 * @param stopTime
+	 * @return a vector with the scores of the moves
+	 */
+	protected FVector estimateMoveValues
+	(
+		final FastArrayList<Move> legalMoves,
+		final Context context,
+		final int maximisingPlayer,
+		final List<Long> nodeHashes, //used when we want to output the tree-search graph
+		final int depth,
+		final long stopTime
+	)
+	{
+		final int numLegalMoves = legalMoves.size();
+		final Game game = context.game();
+		final State state = context.state();
+		final int mover = state.playerToAgent(state.mover());
+		
+		final FVector moveScores = new FVector(numLegalMoves);
+		
+		if (savingSearchTreeDescription)
+			getContextValue(context,maximisingPlayer,nodeHashes,depth-1); //to make sure we recorded the visit of the parent node
+		
+		for (int i = 0; i < numLegalMoves; ++i)
+		{			
+			final Move m = legalMoves.get(i);
+			final Context contextCopy = copyContext(context);
+			
+			game.apply(contextCopy, m);
+
+			nodeHashes.add(contextCopy.state().fullHash());
+			final float heuristicScore = getContextValue(contextCopy,maximisingPlayer,nodeHashes,depth);
+			nodeHashes.remove(nodeHashes.size()-1);
+			
+			moveScores.set(i,heuristicScore);
+
+			// If this process is taking to long we abort the process and give the worst possible score (+-1) to the moves not evaluated:
+			if (System.currentTimeMillis() >= stopTime || ( wantsInterrupt))
+			{
+				for (int j=i+1; j<numLegalMoves; j++)
+					moveScores.set(j,mover==maximisingPlayer? -BETA_INIT + 1 : BETA_INIT-1);
+				break;
+			}
+		};
+		
+		return moveScores;
+	}
 	
 	/** 
 	 * Method to evaluate a state, with heuristics if the state is not terminal.
-	 * Since the transposition tables can be used, the value returned is only exact if it is
-	 * in the bounds.
-	 * Note: if the bounds are infinite, the variable previousMover is not used.
+	 * 
 	 * @param context
 	 * @param maximisingPlayer
-	 * @param previousMover
-	 * @param nodeLabel
+	 * @param nodeHashes
+	 * @param depth
 	 * @return
 	 */
 	protected float getContextValue
 	(
 		final Context context,
 		final int maximisingPlayer,
-		final List<Long> nodeLabel,
+		final List<Long> nodeHashes,
 		final int depth // just used  to fill the depth field in the TT which is not important
 	)
 	{
 		boolean valueRetrievedFromMemory = false;
 		float heuristicScore = 0;
-		
 		final long zobrist = context.state().fullHash();
 		final State state = context.state();
 		final int newMover = state.playerToAgent(state.mover());
@@ -792,6 +732,7 @@ public class BestFirstSearch extends ExpertPolicy
 					break;
 				default:
 					// bounds are not used up to this point
+					System.err.println("INVALID TRANSPOSITION TABLE DATA: UNKNOWN");
 					break;
 				}
 			}
@@ -803,7 +744,6 @@ public class BestFirstSearch extends ExpertPolicy
 			{
 				// terminal node (at least for maximising player)
 				heuristicScore = (float) RankUtils.agentUtilities(context)[maximisingPlayer] * BETA_INIT;
-				//System.out.println("terminal node reached");
 			}
 			else {
 				heuristicScore = heuristicValueFunction().computeValue(
@@ -822,16 +762,15 @@ public class BestFirstSearch extends ExpertPolicy
 			if (context.state().playerToAgent(maximisingPlayer) != maximisingPlayer)
 				heuristicScore = -heuristicScore;
 			
+			// Every time a state is evaluated, we store the value in the transposition table (worth?)
 			if (transpositionTable != null)
-			{
 				transpositionTable.store(null, zobrist, heuristicScore, depth, TranspositionTableBFS.EXACT_VALUE, null);
-			}
 			
 			nbStatesEvaluated += 1;
 		};
 
 		if (savingSearchTreeDescription)
-			searchTreeOutput.append("("+stringOfNodeLabel(nodeLabel)+","+Float.toString(heuristicScore)+","+((newMover==maximisingPlayer)? 1:2)+"),\n");
+			searchTreeOutput.append("("+stringOfnodeHashes(nodeHashes)+","+Float.toString(heuristicScore)+","+((newMover==maximisingPlayer)? 1:2)+"),\n");
 		
 		minHeuristicEval = Math.min(minHeuristicEval, heuristicScore);
 		maxHeuristicEval = Math.max(maxHeuristicEval, heuristicScore);
@@ -882,17 +821,8 @@ public class BestFirstSearch extends ExpertPolicy
 	}
 	
 	/**
-	 * Converts a score into a value estimate in [-1, 1]. Useful for visualisations.
-	 * 
-	 * @param score
-	 * @param alpha 
-	 * @param beta 
-	 * @return Value estimate in [-1, 1] from unbounded (heuristic) score.
+	 * Initialising the AI (almost the same as with AlphaBeta)
 	 */
-	
-	/* We redefine the full method initAI just for using a new type of 
-	*TranspositionTable for now
-	FIXME: using a type union could avoid that*/
 	@Override
 	public void initAI(final Game game, final int playerID)
 	{
@@ -912,7 +842,7 @@ public class BestFirstSearch extends ExpertPolicy
 				// construct default heuristic
 				heuristicValueFunction = new Heuristics(new HeuristicTerm[]{
 						new Material(null, Float.valueOf(1.f), null, null),
-						new MobilitySimple(null, Float.valueOf(0.001f))
+						new MobilityAdvanced(null, Float.valueOf(0.001f))
 				});
 			}
 		}
@@ -930,7 +860,7 @@ public class BestFirstSearch extends ExpertPolicy
 		rootValueEstimates = null;
 		
 		// and these things for ExIt
-		lastSearchedRootContext = null;
+		lastSearchedRootContext = null; //always null, so useless?
 		lastReturnedMove = null;
 		
 		numPlayersInGame = game.players().count();
@@ -939,17 +869,15 @@ public class BestFirstSearch extends ExpertPolicy
 	
 		if (alphaBetaScouting)
 		{
-			alphaBetaSlave = new AlphaBetaSearch(heuristicValueFunction);
-			alphaBetaSlave.initAI(game, playerID);
+			alphaBetaScout = new AlphaBetaSearch(heuristicValueFunction);
+			alphaBetaScout.initAI(game, playerID);
 		}
-	
-	
 	}
 	
 	@Override
 	public boolean supportsGame(final Game game)
 	{
-		if (game.players().count() != 2)
+		if (game.players().count() > 2)
 			return false;
 		
 		if (game.isStochasticGame())
@@ -985,53 +913,15 @@ public class BestFirstSearch extends ExpertPolicy
 		if (currentRootMoves == null || rootValueEstimates == null)
 			return null;
 		
-		if (currentlyScouting)
-			return alphaBetaSlave.aiVisualisationData();
-		else
-		{		
-			final FVector aiDistribution = rootValueEstimates.copy();
-			aiDistribution.subtract(aiDistribution.min());
-		
-			return new AIVisualisationData(aiDistribution, rootValueEstimates, currentRootMoves);
-		}
+		final FVector aiDistribution = rootValueEstimates.copy();
+		aiDistribution.subtract(aiDistribution.min());
+	
+		return new AIVisualisationData(aiDistribution, rootValueEstimates, currentRootMoves);
 	}
 	
 	public Heuristics heuristicValueFunction() 
 	{
 		return heuristicValueFunction;
-	}
-	
-	public Integer indexOfSafestMove()
-	{
-		
-		/** Picks the safest move according to the following policy:
-		 * - if a move is a win, pick it
-		 * - picks a move that was visited a maximal number of times and that a loosing play	
-		 * - in case of equality, uses the score attributed to each moves as a tie breaker
-		* */
-		for (int i = 0; i < nbVisitsRootMoves.length; i++)
-		{
-			if (rootMovesScores[i]>=BETA_INIT-1) {
-				return i;
-			}
-		}
-		
-		int index = 0;
-		int value1 = nbVisitsRootMoves[index];
-		float value2 = rootMovesScores[index];
-		
-		for (int i = 0; i < nbVisitsRootMoves.length; i++)
-		{
-			if (nbVisitsRootMoves[i] >= value1)
-			{
-				if ((nbVisitsRootMoves[i]>value1)||(rootMovesScores[i]>value2)) {
-					index = i;
-					value1 = nbVisitsRootMoves[i];
-					value2 = rootMovesScores[i];
-				}
-			}
-		}
-		return index;
 	}
 	
 	// ------------------------------------------------------------------------
@@ -1081,31 +971,52 @@ public class BestFirstSearch extends ExpertPolicy
     	
     	return Arrays.asList(experience);
 	}
+
+	//-------------------------------------------------------------------------
 	
-	// ------------------------------------------------------------------------
-	
-	public static Integer indexOfMax( int[] array)
+	/**
+	 * Sets the selection policy used for the final decision of the move to play.
+	 * @param s
+	 */
+	public void setSelectionPolicy(final SelectionPolicy s)
 	{
-		
-		int index = 0;
-		int value = array[index];
-		
-		for (int i = 0; i < array.length; i++)
-		{
-			if (array[i] > value)
-			{
-				index = i;
-				value = array[i];
-			}
-		}
-		return index;
+		selectionPolicy = s;
 	}
 	
-	public static String stringOfNodeLabel( List<Long> nodeLabel)
+	/**
+	 * Sets if we want the AI to fully explore one path at each iteration of the algorithm (Descent BFS).
+	 * @param b
+	 */
+	public void setIfFullPlayouts(final boolean b)
+	{
+		fullPlayouts = b;
+	}
+	
+	/**
+	 * Sets the epsilon value (randomisation parameter) of the best first search.
+	 * @param value
+	 */
+	public void setSelectionEpsilon(final float value)
+	{
+		selectionEpsilon = value;
+	}
+	
+	/**
+	 * Sets if we want the Transposition Table to be reset at each call of selectAction.
+	 * @param value
+	 */
+	public void setTTReset(final boolean value)
+	{
+		resetTTeachTurn = value;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	public static String stringOfnodeHashes( List<Long> nodeHashes)
 	{
 		String res = "(";
 		
-		for (Long hash: nodeLabel)
+		for (Long hash: nodeHashes)
 		{
 			res += Long.toString(hash);
 			res += ",";
@@ -1113,6 +1024,5 @@ public class BestFirstSearch extends ExpertPolicy
 		res += ")";
 		
 		return res;
-		
 	}
 }

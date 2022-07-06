@@ -15,32 +15,45 @@ import other.move.Move;
 import other.state.State;
 import policies.softmax.SoftmaxFromMetadataSelection;
 import policies.softmax.SoftmaxPolicy;
+import utils.data_structures.ScoredIndex;
 
 /**
  * AI based on Unbounded Best-First Search, using trained action evaluations to complete the heuristic scores.
  * 
  * @author cyprien
- *
  */
 
-public class LazyBFS extends BestFirstSearch
+public class LazyUBFM extends UBFM
 {
 	
 	/** Weight of the action evaluation when linearly combined with the heuristic score */
-	private static float actionEvaluationWeight = 0.0f;
+	private static float actionEvaluationWeight = 0.1f;
 		
 	/** Set to true to record analyticData */
-	public boolean performAnalysis = true;
+	public boolean performAnalysis = false;
 
 	protected String dataSaveAdress = "analytic_data/default.sav";
 	
 	//-------------------------------------------------------------------------
 	
-	/** An epsilon parameter to give to the selection policy which hopefully is not chaging anything*/
+	/** An epsilon parameter to give to the selection policy */
 	private final float epsilon = 0f;
 
-	/** A learned policy to use in Selection phase */
-	protected SoftmaxPolicy learnedSelectionPolicy = null;
+	/** A learned policy to use in for the action evaluation */
+	protected SoftmaxPolicy learnedSelectionPolicy = null; 
+	
+	/** A boolean to know if it is the first turn the AI is playing on this game. If so, it will just use
+	 *  a basic BFS approach to have an idea of the heuristics range.*/
+	boolean firstTurn;
+	
+	/** Different fields to have an idea of how to combine action evaluations and heuristic scores properly */
+	float estimatedHeuristicScoresRange;
+	float maxActionLogit = Float.NEGATIVE_INFINITY;
+	float minActionLogit = Float.POSITIVE_INFINITY;
+	float estimatedActionLogitRange;
+	float actionLogitSum;
+	float actionLogitComputations;
+	float estimatedActionLogitMean;
 	
 	//-------------------------------------------------------------------------
 
@@ -59,20 +72,19 @@ public class LazyBFS extends BestFirstSearch
 	
 	//-------------------------------------------------------------------------
 	
-	public static LazyBFS createLazyBFS ()
+	public static LazyUBFM createLazyBFS ()
 	{
-		return new LazyBFS();
+		return new LazyUBFM();
 	}
 	
 	/**
 	 * Constructor:
 	 */
-	
-	public LazyBFS ()
+	public LazyUBFM ()
 	{
 		super();
 		setLearnedSelectionPolicy(new SoftmaxFromMetadataSelection(epsilon));
-		friendlyName = "Lazy BFS";
+		friendlyName = "Lazy UBFM";
 		
 		return;
 	}
@@ -112,6 +124,12 @@ public class LazyBFS extends BestFirstSearch
 			}
 		};
 		
+		firstTurn = false;
+		
+		estimatedHeuristicScoresRange = maxHeuristicEval - minHeuristicEval;
+		estimatedActionLogitRange = maxActionLogit - minActionLogit;
+		estimatedActionLogitMean = actionLogitSum/actionLogitComputations;
+		
 		return bestMove;
 	}
 	
@@ -121,9 +139,9 @@ public class LazyBFS extends BestFirstSearch
 		final FastArrayList<Move> legalMoves,
 		final Context context,
 		final int maximisingPlayer,
-		final float inAlpha,
-		final float inBeta,
-		final List<Long> nodeLabel
+		final List<Long> nodeHashes,
+		final int depth,
+		final long stopTime
 	)
 	{
 
@@ -131,11 +149,11 @@ public class LazyBFS extends BestFirstSearch
 		final int mover = state.playerToAgent(state.mover());
 		final Game game = context.game();
 		
-		final float heuristicScore = getContextValue(context,maximisingPlayer,mover,inAlpha,inBeta);
+		final float heuristicScore = getContextValue(context,maximisingPlayer,nodeHashes,mover);
 		
 		if (savingSearchTreeDescription)
 		{
-			searchTreeOutput.append("("+stringOfNodeLabel(nodeLabel)+","+Float.toString(heuristicScore)+","+((mover==maximisingPlayer)? 1:2)+"),\n");
+			searchTreeOutput.append("("+stringOfnodeHashes(nodeHashes)+","+Float.toString(heuristicScore)+","+((mover==maximisingPlayer)? 1:2)+"),\n");
 		}
 		
 		final int numLegalMoves = legalMoves.size();
@@ -147,10 +165,22 @@ public class LazyBFS extends BestFirstSearch
 			
 			final float actionValue = (float) learnedSelectionPolicy.computeLogit(context,m);
 			
+			actionLogitSum += actionValue;
+			actionLogitComputations += 1;
+			maxActionLogit = Math.max(actionValue, maxActionLogit);
+			minActionLogit = Math.min(actionValue,minActionLogit);
+			
 			moveScores.set(i,actionValue);
+			
+			if (System.currentTimeMillis() >= stopTime || ( wantsInterrupt))
+			{
+				for (int j=i+1; j<numLegalMoves; j++)
+					moveScores.set(j,mover==maximisingPlayer? -BETA_INIT + 1 : BETA_INIT-1);
+				break;
+			}
 		};
 		
-		if (performAnalysis)
+		if (performAnalysis&&!(wantsInterrupt||System.currentTimeMillis()>=stopTime))
 		{
 			final FVector moveHeuristicScores = new FVector(numLegalMoves);
 			
@@ -160,7 +190,7 @@ public class LazyBFS extends BestFirstSearch
 				
 				final Context contextCopy = copyContext(context);
 				game.apply(contextCopy, m);
-				final float nextHeuristicScore = getContextValue(contextCopy,maximisingPlayer,mover,inAlpha,inBeta);
+				final float nextHeuristicScore = getContextValue(contextCopy,maximisingPlayer,nodeHashes,mover);
 				
 				moveHeuristicScores.set(i,nextHeuristicScore);
 				
@@ -181,13 +211,13 @@ public class LazyBFS extends BestFirstSearch
 					sortedMoveIndices[i] = tempMovesListIndices.removeSwap(ThreadLocalRandom.current().nextInt(tempMovesListIndices.size()));
 				}
 				
-				final List<ScoredMoveIndex> evaluatedMoveIndices = new ArrayList<ScoredMoveIndex>(numLegalMoves);
-				final List<ScoredMoveIndex> scoredMoveIndices = new ArrayList<ScoredMoveIndex>(numLegalMoves);
+				final List<ScoredIndex> evaluatedMoveIndices = new ArrayList<ScoredIndex>(numLegalMoves);
+				final List<ScoredIndex> scoredMoveIndices = new ArrayList<ScoredIndex>(numLegalMoves);
 				
 				for (int i=0; i<numLegalMoves; i++)
 				{
-					evaluatedMoveIndices.add(new ScoredMoveIndex(i,moveScores.get(i)));
-					scoredMoveIndices.add(new ScoredMoveIndex(i,moveHeuristicScores.get(i)));
+					evaluatedMoveIndices.add(new ScoredIndex(i,moveScores.get(i)));
+					scoredMoveIndices.add(new ScoredIndex(i,moveHeuristicScores.get(i)));
 				}
 				
 				if (mover==maximisingPlayer)
@@ -204,12 +234,11 @@ public class LazyBFS extends BestFirstSearch
 				for (float rank1=0; rank1<numLegalMoves; rank1++)
 				{
 					// rank variables must be float for the calculations
-					
-					int i = scoredMoveIndices.get((int) rank1).moveIndex;
+					int i = scoredMoveIndices.get((int) rank1).index;
 					float rank2 = -1;
 					for (int j=0; j<numLegalMoves; j++)
 					{
-						if (evaluatedMoveIndices.get(j).moveIndex == i)
+						if (evaluatedMoveIndices.get(j).index == i)
 							rank2 = j;
 					}
 					assert rank2 != -1f;
@@ -226,17 +255,33 @@ public class LazyBFS extends BestFirstSearch
 				
 				rankingCorrelations.add(correlation);
 			}
-			
 		}
 		
-		int sign = (maximisingPlayer == mover)? 1 : -1 ;
-			
-		for (int i = 0; i < numLegalMoves; ++i)
+		if (firstTurn)
+			// Uses the classical BFS approach on the first turn.
+			return super.estimateMoveValues(legalMoves,context,maximisingPlayer,nodeHashes,depth,stopTime);
+		else
 		{
-			moveScores.set(i,moveScores.get(i)*actionEvaluationWeight*sign+heuristicScore);
-		}
+			int sign = (maximisingPlayer == mover)? 1 : -1 ;
+				
+			for (int i = 0; i < numLegalMoves; ++i)
+			{
+				final double r = Math.random();
+				
+				if (debugDisplay)
+					if (r<0.05)
+						System.out.printf("action score is %.6g and heuristicScore is %.6g ",moveScores.get(i),heuristicScore);
+				
+				// (*2 because the maximal gap is half of the range)
+				moveScores.set(i,(actionEvaluationWeight*(moveScores.get(i)-estimatedActionLogitMean)*sign*estimatedHeuristicScoresRange*2)/estimatedActionLogitRange+heuristicScore);
+				
+				if (debugDisplay)
+					if (r<0.05)
+						System.out.printf("-> eval is %.6g\n",moveScores.get(i));
+			}
 		
-		return moveScores;
+			return moveScores;
+		}
 	}
 	
 	private float normalise(float heuristicScore)
@@ -261,9 +306,9 @@ public class LazyBFS extends BestFirstSearch
 		
 		// Instantiate feature sets for selection policy
 		if (learnedSelectionPolicy != null)
-		{
 			learnedSelectionPolicy.initAI(game, playerID);
-		}
+		
+		firstTurn = true;
 		
 		return;
 	}
@@ -341,8 +386,18 @@ public class LazyBFS extends BestFirstSearch
 	 * Sets the learned policy to use in Selection phase
 	 * @param policy The policy.
 	 */
-	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
+	public void setLearnedSelectionPolicy( final SoftmaxPolicy policy )
 	{
 		learnedSelectionPolicy = policy;
 	}
+	
+	/**
+	 * Sets the weight of the action evaluation in the context evaluations.
+	 * @param value the weight
+	 */
+	public void setActionEvaluationWeight( final float value)
+	{
+		actionEvaluationWeight = value;
+	}
+
 }

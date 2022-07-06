@@ -19,9 +19,11 @@ import other.context.Context;
 import other.trial.Trial;
 //import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
-import search.minimax.HybridBFS;
-import search.minimax.BestFirstSearch;
-import search.minimax.BiasedBFS;
+import search.minimax.HybridUBFM;
+import search.minimax.LazyUBFM;
+import search.minimax.NaiveActionBasedSelection;
+import search.minimax.UBFM;
+import search.minimax.BiasedUBFM;
 import utils.RandomAI;
 
 /**
@@ -48,7 +50,7 @@ public class EvaluateUBFM
 	private static double thinkingTime = 1;
 	
 	/** Game played: */
-	private static final String gameName = "Breakthrough";
+	private static final String gameName = "Reversi";
 	
 	/** Name of the file in which the results will be written: */
 	private String outputFile = "comparison_output.sav";
@@ -102,13 +104,14 @@ public class EvaluateUBFM
 						{
 							try
 							{
-								final BestFirstSearch UBFM_AI = new BestFirstSearch();
-								UBFM_AI.setSelectionPolicy(BestFirstSearch.SelectionPolicy.safest);
+								final LazyUBFM UBFM_AI = new NaiveActionBasedSelection();
+								UBFM_AI.setSelectionPolicy(UBFM.SelectionPolicy.SAFEST);
 								//final AI UBFM_AI = new AlphaBetaSearch(heuristics);
 								final AI alphaBetaAI = new AlphaBetaSearch();
 								
 								UBFM_AI.debugDisplay = false;
 								UBFM_AI.savingSearchTreeDescription = false;
+								UBFM_AI.setActionEvaluationWeight(20f);
 								
 								final Float[] agentScores = new Float[]{0f,0f};
 								

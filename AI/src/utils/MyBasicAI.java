@@ -9,7 +9,7 @@ import other.move.Move;
 /**
  * AI player which always select the last proposed action
  * 
- * @author cmicheld
+ * @author cyprien
  */
 public class MyBasicAI extends AI
 {
