@@ -1205,7 +1205,7 @@ public class Handler
     {
         return clipboard;
     }
-^
+
 
     // ~~~~~~~  Pasting Nodes  ~~~~~~~
 
@@ -1622,6 +1622,12 @@ public class Handler
             lif.reconstruct();
         }
         lnc.inputArea().drawInputFields();
+    }
+
+    public static void updateInputs(IGraphPanel graph, LudemeNode node)
+    {
+        LudemeNodeComponent lnc = graph.nodeComponent(node);
+        lnc.inputArea().updateProvidedInputs();
     }
 
 }
