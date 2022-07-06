@@ -1,13 +1,6 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (handSite Next)))
-    ) 
-)
+(define "RemoveAPiece" (move Remove (from)))
 
 //------------------------------------------------------------------------------
 
@@ -30,9 +23,9 @@
         (regions "Replay" (sites {"A1" "A3" "D2" "G1" "G3"} ))
         
         (piece "UrPiece" Each
-            (if (= "SiteToMoveOnTrack" End)
+            (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
-                (if (!= "SiteToMoveOnTrack" Off) 	 			
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
                     <Rosette:move>
                 )
             )
@@ -42,13 +35,12 @@
     )  
     
     (rules 
-        (start 
-            { 	
+        (start { 	
             (place "UrPiece1" (handSite P1) count:7)
             (place "UrPiece2" (handSite P2) count:7)
         })	
         
-        (play (do (roll) next:(if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
+        (play ("RollMove" (if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
         
         (end ("EscapeWin"))
     )
@@ -91,9 +83,9 @@
     (item "Replay and Protect" 
         <
         (if (or
-                (is In "SiteToMoveOnTrack" (sites Empty))
+                (is Empty "SiteToMoveOnTrack")
                 (and 
-                    (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+                    (not ("IsFriendAt" "SiteToMoveOnTrack")) 
                     (not (is In "SiteToMoveOnTrack" (sites "Replay")))
                 )
             )
@@ -101,9 +93,9 @@
                 (from)
                 (to 
                     "SiteToMoveOnTrack" 
-                    "CaptureEnemyPiece"
+                	("HittingCapture" (handSite Next))
                 )
-                (then (if (is In (last To) (sites "Replay")) (moveAgain) ) )
+                (then ("ReplayInMovingOn" (sites "Replay")))
             )
         )
         >                          
@@ -111,12 +103,12 @@
     
     (item "Nothing Happen"    
         <
-        (if (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+        (if (not ("IsFriendAt" "SiteToMoveOnTrack"))
             (move 
                 (from)
                 (to 
                     "SiteToMoveOnTrack" 
-                    "CaptureEnemyPiece"
+                    ("HittingCapture" (handSite Next))
                 )
             )
         )
