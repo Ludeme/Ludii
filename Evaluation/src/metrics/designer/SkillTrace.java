@@ -132,7 +132,7 @@ public class SkillTrace extends Metric
 			
 			// Print match results in console
 			System.out.println("-----");
-			System.out.println("Match Index:" + matchCount);
+			System.out.println("Match Index:" + matchCount+1);
 			System.out.println("Strong AI result:" + strongAIAvgResult);
 		}
 		
