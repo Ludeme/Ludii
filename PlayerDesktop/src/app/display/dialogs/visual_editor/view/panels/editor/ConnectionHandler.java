@@ -45,6 +45,8 @@ public class ConnectionHandler
         cancelNewConnection();
         // set the selected connection component
         selectedConnectionComponent = source;
+        if(Handler.autoplacement)
+            ((GraphPanel)graphPanel).showCurrentlyAvailableLudemes();
     }
 
     /**

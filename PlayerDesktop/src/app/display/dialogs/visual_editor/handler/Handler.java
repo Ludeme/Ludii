@@ -9,6 +9,7 @@ import app.display.dialogs.visual_editor.model.LudemeNode;
 import app.display.dialogs.visual_editor.model.NodeArgument;
 import app.display.dialogs.visual_editor.model.UserActions.*;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
+import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
@@ -1204,7 +1205,7 @@ public class Handler
     {
         return clipboard;
     }
-
+^
 
     // ~~~~~~~  Pasting Nodes  ~~~~~~~
 
@@ -1610,6 +1611,17 @@ public class Handler
     public static Dimension getViewPortSize()
     {
         return currentGraphPanel.parentScrollPane().getViewport().getSize();
+    }
+
+
+    public void reconstruct(IGraphPanel graph, LudemeNode node)
+    {
+        LudemeNodeComponent lnc = graph.nodeComponent(node);
+        for(LInputField lif : lnc.inputArea().currentInputFields)
+        {
+            lif.reconstruct();
+        }
+        lnc.inputArea().drawInputFields();
     }
 
 }
