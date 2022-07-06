@@ -10,6 +10,7 @@ import main.FileHandling;
 import other.GameLoader;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -37,7 +38,7 @@ public class FileMenu extends JMenu
 
         menuBar.addJMenuItem(this, "Save", null);
         menuBar.addJMenuItem(this, "Save as...", null);
-        menuBar.addJMenuItem(this, "Compile", null);
+        menuBar.addJMenuItem(this, "Export as .lud", e -> exportAsLud());
 
         add(new JSeparator());
 
@@ -73,6 +74,15 @@ public class FileMenu extends JMenu
                     null, 8);
             StartGraphParsingThread(file, Handler.gameGraphPanel, progressBar);
         }
+    }
+
+    private void exportAsLud()
+    {
+        String lud = Handler.toLud();
+        // TODO: select where to export etc
+        System.out.println("\n\n## GAME DESCRIPTION .lud ###");
+        System.out.println(lud);
+        System.out.println("############################\n\n");
     }
 
     private void StartGraphParsingThread(File file, IGraphPanel panel, ProgressBar progressBar)

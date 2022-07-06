@@ -682,7 +682,11 @@ public class Handler
         if(input instanceof LudemeNode)
         {
             // if the input does not originate from a node creation, record the adding of the edge
-            IUserAction lastAction = currentPerformedUserActions.peek();
+            IUserAction lastAction = null;
+            if(!currentPerformedUserActions.isEmpty())
+            {
+                lastAction = currentPerformedUserActions.peek();
+            }
             if(lastAction instanceof AddedNodeAction)
             {
                 if(!(((AddedNodeAction) lastAction).addedNode() == input && ((AddedNodeAction) lastAction).addedNode().creatorArgument() == nodeArgument))
@@ -998,6 +1002,15 @@ public class Handler
         DesktopApp.frame().requestFocus();
     }
 
+    /**
+     *
+     * @return The .lud equivalent of the game graph
+     */
+    public static String toLud()
+    {
+        return gameGraphPanel.graph().toLud();
+    }
+
 
     // ~~~~~~~  Selecting Nodes  ~~~~~~~
 
@@ -1244,9 +1257,10 @@ public class Handler
 
         if(x == -1 && y == -1)
         {
-            Point v = graphPanel.parentScrollPane().getViewport().getViewPosition();
-            x_shift = v.x;
-            y_shift = v.y;
+            Rectangle v = graphPanel.parentScrollPane().getViewport().getViewRect();
+            x_shift = (int) (v.x - leftMostNode.x() + (v.getWidth()/2));
+            y_shift = (int) (v.y - leftMostNode.y() + (v.getHeight()/2));
+
         }
         else
         {

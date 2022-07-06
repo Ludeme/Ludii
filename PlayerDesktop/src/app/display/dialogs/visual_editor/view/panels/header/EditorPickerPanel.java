@@ -20,7 +20,7 @@ public class EditorPickerPanel extends JPanel
 
         gameEditorBtn = new HeaderButton(Handler.currentPalette().GAME_EDITOR_ACTIVE(), Handler.currentPalette().GAME_EDITOR_INACTIVE(), Handler.currentPalette().GAME_EDITOR_HOVER(), "Game Editor", true, true);
         defineEditorBtn = new HeaderButton(Handler.currentPalette().DEFINE_EDITOR_ACTIVE(), Handler.currentPalette().DEFINE_EDITOR_INACTIVE(), Handler.currentPalette().DEFINE_EDITOR_HOVER(), "Define Editor", false, true);
-        textEditorBtn = new HeaderButton(Handler.currentPalette().TEXT_EDITOR_ACTIVE(), Handler.currentPalette().TEXT_EDITOR_INACTIVE(), Handler.currentPalette().TEXT_EDITOR_HOVER(), "Text Editor", false, true);
+        textEditorBtn = new HeaderButton(Handler.currentPalette().TEXT_EDITOR_ACTIVE(), Handler.currentPalette().TEXT_EDITOR_INACTIVE(), Handler.currentPalette().TEXT_EDITOR_HOVER(), ".lud", false, true);
 
         gameEditorBtn.setClickListenerOn(false);
         defineEditorBtn.setClickListenerOn(false);
@@ -46,7 +46,15 @@ public class EditorPickerPanel extends JPanel
             textEditorBtn.setInactive();
         });
 
-        textEditorBtn.setEnabled(false);
+        textEditorBtn.addActionListener(e ->
+        {
+            if(textEditorBtn.isActive())
+                return;
+            visualEditorPanel.openTextEditor();
+            textEditorBtn.setActive();
+            gameEditorBtn.setInactive();
+            defineEditorBtn.setInactive();
+        });
 
         setOpaque(false);
 
