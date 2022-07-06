@@ -599,7 +599,8 @@ public class Handler
      * @param to The node that the edge ends at.
      * @param elementIndex The index of the element in the collection
      */
-    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex){
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex)
+    {
         removeEdge(graph, from, to, elementIndex, true);
     }
 
@@ -611,8 +612,9 @@ public class Handler
      * @param elementIndex The index of the element in the collection
      * @param notify Whether the graph panel should be notified about the removal of the edge
      */
-    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex, boolean notify){
-        if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to, elementIndex) -> Removing edge: " + from.title() + " -> " + to.title());
+    public static void removeEdge(DescriptionGraph graph, LudemeNode from, LudemeNode to, int elementIndex, boolean notify)
+    {
+        if(DEBUG) System.out.println("[HANDLER] removeEdge(graph, from, to, elementIndex) -> Removing edge: " + from.title() + " -> " + to.title() + " at index " + elementIndex);
         graph.removeEdge(from.id(), to.id());
         from.removeChildren(to);
         to.setParent(null);
@@ -720,6 +722,9 @@ public class Handler
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof Object[] && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length)
             return;
 
+        if(node.providedInputsMap().get(nodeArgument) == null)
+            return;
+
         while(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length)
             addCollectionElement(graph, node, nodeArgument);
         Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
@@ -781,12 +786,10 @@ public class Handler
      *     3) Add/Remove input fields according to new list
      * @param graph
      * @param parameters
-     * @param newParameters
-     * @param oldParameters
      */
-    public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters, List<NodeArgument> newParameters, List<NodeArgument> oldParameters)
+    public static void updateDefineNodes(DescriptionGraph graph, List<NodeArgument> parameters)
     {
-        if(DEBUG) System.out.println("[HANDLER] Parameters of Define Node changed. Added " + newParameters.size() + ", removed " + oldParameters.size() + ", total: " + parameters.size());
+        if(DEBUG) System.out.println("[HANDLER] Parameters of Define Node changed: " + parameters);
         // Get List of define nodes
         List<LudemeNode> defineNodes = defineLudemeNodes.get(graph);
         if(defineNodes == null)
@@ -801,6 +804,24 @@ public class Handler
             IGraphPanel gp = graphPanelMap.get(defineNodeToGraphMap.get(ln));
             // get component and update component
             gp.nodeComponent(ln).changedArguments(parameters);
+        }
+    }
+
+    public static void updateDefineNodes(DescriptionGraph graph, LudemeNode macroNode)
+    {
+        if(DEBUG) System.out.println("[HANDLER] Macro Node changed");
+        // Get List of define nodes
+        List<LudemeNode> defineNodes = defineLudemeNodes.get(graph);
+        if(defineNodes == null)
+            return;
+
+        for(LudemeNode ln : defineNodes)
+        {
+            // Update macro node
+            ln.updateDefineNode(macroNode);
+            // remove ingoing connections
+            if(ln.parentNode() != null)
+                removeEdge(defineNodeToGraphMap.get(ln), ln.parentNode(), ln);
         }
     }
 

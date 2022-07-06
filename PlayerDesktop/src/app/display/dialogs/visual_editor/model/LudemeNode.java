@@ -304,18 +304,10 @@ public class LudemeNode implements iGNode
     }
 
 
-
-    public void updateDefineNode(Symbol symbol, LudemeNode macroNode, List<NodeArgument> requiredParameters)
+    public void updateDefineNode(LudemeNode macroNode)
     {
-        if(macroNode() != macroNode)
-            this.macroNode = macroNode;
+        this.macroNode = macroNode;
     }
-
-    public boolean defineNodeChanged(Symbol symbol, LudemeNode macroNode, List<NodeArgument> nodeArguments)
-    {
-        return !(symbol() == symbol && macroNode() == macroNode && currentNodeArguments.equals(nodeArguments));
-    }
-
     /**
      *
      * @return The package name this symbol/node belongs to
@@ -381,14 +373,12 @@ public class LudemeNode implements iGNode
     {
         List<Clause> clauses = new ArrayList<>();
         for(Clause clause : s.rule().rhs())
-        {
             if(clauses.contains(clause) || this.clauses().contains(clause))
-                continue;
-            if(clause.symbol() == s)
+            {}
+            else if(clause.symbol() == s)
                 clauses.add(clause);
             else
                 clauses.addAll(expandClauses(clause.symbol()));
-        }
         return clauses;
     }
 
@@ -435,8 +425,6 @@ public class LudemeNode implements iGNode
     {
         if(providedInputsMap.containsKey(arg))
             providedInputsMap.put(arg, input);
-        else
-            System.out.println("Error: setProvidedInput called with invalid argument");
     }
 
 
@@ -489,7 +477,9 @@ public class LudemeNode implements iGNode
             {
                 currentChildren.remove(child);
                 if(child.parent.collapsed() || (child != this && child.collapsed))
+                {
                     continue;
+                }
                 child.setVisible(visible);
                 currentChildren.addAll(child.children);
             }
@@ -506,14 +496,12 @@ public class LudemeNode implements iGNode
     public boolean isSatisfied()
     {
         for(NodeArgument na : providedInputsMap.keySet())
-        {
             if(!na.optional() && providedInputsMap.get(na) == null)
                 return false;
             else if(!na.optional() && providedInputsMap.get(na) instanceof Object[])
                 for(Object o : (Object[])providedInputsMap.get(na))
                     if(o == null)
                         return false;
-        }
         return true;
     }
 
@@ -593,7 +581,8 @@ public class LudemeNode implements iGNode
     public List<NodeArgument> currentNodeArguments()
     {
         currentNodeArguments = nodeArguments.get(selectedClause());
-        if(currentNodeArguments == null) currentNodeArguments = new ArrayList<>();
+        if(currentNodeArguments == null)
+            currentNodeArguments = new ArrayList<>();
         return currentNodeArguments;
     }
 
@@ -777,13 +766,8 @@ public class LudemeNode implements iGNode
             childrenOrder.put(child, order);
             // placing child in correct order
             for (int i = this.children.size()-1; i > 0; i--)
-            {
                 if (childrenOrder.get(this.children.get(i-1)) > childrenOrder.get(this.children.get(i)))
-                {
-                    // swap i-1 and i
-                    Collections.swap(this.children, i-1, i);
-                }
-            }
+                    Collections.swap(this.children, i-1, i); // swap i-1 and i
         }
     }
 

@@ -323,8 +323,7 @@ public class DescriptionGraph implements iGraph
         {
             defineMacroNode = computeDefineMacroNode();
             updateParameters(computeDefineParameters());
-            System.out.println("[NOTIFY] Macro node changed to " + defineMacroNode);
-            // TODO: Notify
+            Handler.updateDefineNodes(this, defineMacroNode);
         }
     }
 
@@ -361,18 +360,8 @@ public class DescriptionGraph implements iGraph
     public void updateParameters(List<NodeArgument> parameters)
     {
         assert isDefine;
-
-        List<NodeArgument> added = new ArrayList<>();
-        List<NodeArgument> removed = new ArrayList<>(this.defineParameters);
-
-        for(NodeArgument na : parameters)
-            if(!parameters().contains(na))
-                added.add(na);
-            else
-                removed.remove(na);
-
         this.defineParameters = parameters;
-        Handler.updateDefineNodes(this, parameters, added, removed);
+        Handler.updateDefineNodes(this, parameters);
     }
 
     private NodeArgument titleNodeArgument()

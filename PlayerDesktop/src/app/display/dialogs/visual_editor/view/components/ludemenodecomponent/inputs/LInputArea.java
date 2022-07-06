@@ -11,6 +11,7 @@ import main.grammar.Symbol;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -368,6 +369,8 @@ public class LInputArea extends JPanel
     protected void removeInputField(LInputField inputField)
     {
         int index = inputFieldIndex(inputField);
+        if(inputField.parent() != null)
+            inputField.parent().children().remove(inputField);
         currentNodeArgumentsLists.remove(index);
         currentInputFields.remove(index);
     }
@@ -375,7 +378,9 @@ public class LInputArea extends JPanel
     public void updateCurrentInputFields(List<NodeArgument> newNodeArguments)
     {
         // first remove all inputfields no longer contained
-        for(LInputField inputField : new ArrayList<>(currentInputFields))
+        List<LInputField> reversedInputFields = new ArrayList<>(currentInputFields);
+        Collections.reverse(reversedInputFields);
+        for(LInputField inputField : reversedInputFields)
         {
             if(!newNodeArguments.containsAll(inputField.nodeArguments()))
             {
@@ -384,7 +389,15 @@ public class LInputArea extends JPanel
                 Object input = inputField.getUserInput();
                 if(input instanceof LudemeNode)
                 {
-                    Handler.removeEdge(LNC().graphPanel().graph(), LNC().node(), ((LudemeNode) input));
+                    if(inputField.nodeArgument(0).collection())
+                    {
+                        Handler.removeEdge(LNC().graphPanel().graph(), LNC().node(), ((LudemeNode) input), inputField.elementIndex(), true);
+                        //Handler.removeCollectionElement(LNC().graphPanel().graph(), LNC().node(), inputField.nodeArgument(0), inputField.elementIndex());
+                    }
+                    else
+                    {
+                        Handler.removeEdge(LNC().graphPanel().graph(), LNC().node(), ((LudemeNode) input));
+                    }
                 }
                 else if(input != null)
                 {
