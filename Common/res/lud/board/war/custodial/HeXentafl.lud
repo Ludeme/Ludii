@@ -105,7 +105,7 @@
         (play (forEach Piece))
         (end
             {
-            (if (is Within (id "Jarl1") in:(sites "Fortresses") ) (result P1 Win))
+            (if (is Within (id "Jarl1") in:(sites "Fortresses")) (result P1 Win))
             (if "JarlWasCaptured"  (result P2 Win))
             }
         )

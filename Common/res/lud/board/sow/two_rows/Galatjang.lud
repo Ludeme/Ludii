@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -90,7 +90,7 @@
                                 (if ("NoLegalMoves")
                                     (and 
                                         (forEach Site 
-                                            (difference (sites P1 "Home") (sites Empty) )
+                                            (difference (sites P1 "Home") (sites Empty))
                                             (fromTo (from (site)) (to (mapEntry P1)) count:(count at:(site)))
                                         )
                                         (forEach Site 

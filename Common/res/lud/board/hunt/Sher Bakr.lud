@@ -44,6 +44,7 @@
             (place Stack "Goat1" (centrePoint) count:4)
             (place Stack "Tiger2" 0)
         })
+        
         (play (forEach Piece top:True))
         
         (end {
@@ -73,7 +74,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
 )

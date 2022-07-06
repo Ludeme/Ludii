@@ -9,12 +9,12 @@
             use:Vertex
         )
         <Variant:pieceMoves>
-    } )  
+    })  
     (rules 
         (start { 
             (place "Marker1" (union {(sites Column 1) (difference (sites Column 3) (union (sites Centre) (expand (sites Top)))) (sites Column 5)}))
             (place "Marker2" (centrePoint))
-        } )
+        })
         
         (play (forEach Piece)) 
         
@@ -47,31 +47,18 @@
     (item "Murray"     
         <
         (piece "Marker" P1 
-            (move Step
-                (to if:(is Empty (to)))
+            ("StepToEmpty"
+                ~
                 (then 
-                    (custodial 
-                        (from (last To))
-                        (between 
-                            if:(is Enemy (who at:(between)))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Friend (who at:(to))))
-                    )
+                    ("CustodialCapture")
                 )
             )
         )
         (piece "Marker" P2 
-            (move Step 
-                (to if:(is Empty (to)))
+            ("StepToEmpty"
+                ~
                 (then 
-                    (intervene 
-                        (from (last To))
-                        (to 
-                            if:(is Enemy (who at:(to)))
-                            (apply (remove (to)))
-                        )
-                    )
+                    ("InterveneCapture")
                 )
             )
         ) 
@@ -123,7 +110,6 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

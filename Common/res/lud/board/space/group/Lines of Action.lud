@@ -50,9 +50,9 @@
         (play (forEach Piece))
         
         (end { 
-            (if (and (= 1 (count Groups if:(= (who at:(to)) P1))) (= 1 (count Groups if:(= (who at:(to)) P2)))) (result Mover <End:result>) ) 
-            (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win) ) 
-            (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win) ) 
+            (if (and (= 1 (count Groups if:(= (who at:(to)) P1))) (= 1 (count Groups if:(= (who at:(to)) P2)))) (result Mover <End:result>)) 
+            (if (= 1 (count Groups if:(= (who at:(to)) P1))) (result P1 Win)) 
+            (if (= 1 (count Groups if:(= (who at:(to)) P2))) (result P2 Win)) 
         })  
     )
 )

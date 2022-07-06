@@ -14,7 +14,7 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@
                             ) 
                         )
                     )
-                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
                 )
                 (priority {
                     (max Moves

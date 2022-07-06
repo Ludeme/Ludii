@@ -10,7 +10,7 @@
         (board 
             (merge 
                 { 
-                (shift  2 2 (square 5 diagonals:Alternating) ) 
+                (shift  2 2 (square 5 diagonals:Alternating)) 
                 (shift  2 0 (wedge 3)) 
                 (shift  5 3 (rotate  90 (wedge 3))) 
                 (shift  2 6 (rotate 180 (wedge 3))) 
@@ -36,7 +36,7 @@
     (rules 
         (start { 
             (place "Marker1" (sites {"H3" "F6" "G6" "H6" "I6" "J6" "L6" "H8" "I8" "J8"}))
-            (place "Marker2" (sites {"H10" "I10" "J10" "F12" "H12" "I12" "J12" "L12" "J15"}) )
+            (place "Marker2" (sites {"H10" "I10" "J10" "F12" "H12" "I12" "J12" "L12" "J15"}))
         })
         
         (play (forEach Piece))

@@ -1,11 +1,10 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips)))
 
 //------------------------------------------------------------------------------
 
 (game "Had"
     (players 2)  
-    (equipment 
-        { 
+    (equipment { 
         (board (rectangle 3 14) 
             {    
             (track "Track1" "0,E,N1,W,N1,E" P1 directed:True)
@@ -14,11 +13,8 @@
         )
         (dice d:4 num:2)
         (piece "Marker" Each 
-            (if (= ("SiteToMoveOnTrack") Off)
-                (move
-                    Remove
-                    (from) 
-                )
+            (if ("IsOffBoard" ("SiteToMoveOnTrack"))
+                (move Remove (from))
                 (move 
                     (from) 
                     (to 
@@ -28,23 +24,15 @@
                 )
             )
         ) 
-        }
-    )  
+    })  
     
     (rules 
-        (start 
-            { 	
+        (start { 	
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
-            }
-        )	
+        })	
         
-        (play 
-            (do 
-                (roll) 
-                next:(forEach Piece)
-            )
-        )
+        (play ("RollMove" (forEach Piece)))
         
         (end 
             (if 

@@ -1,6 +1,6 @@
-(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
+(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
-(define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
+(define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
 (define "EmptyAndNotVisited"     							  
     (and 
@@ -27,7 +27,7 @@
     )
 ) 
 
-(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
+(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
 
 (define "RegionFilled" (= (sites (player (mapEntry (mover)))) (sites Occupied by:Mover)))
 
@@ -81,7 +81,7 @@
         ) 
         }
         
-        (end (if "RegionFilled" (result Mover Win) ) )
+        (end (if "RegionFilled" (result Mover Win)) )
     )
 )
 

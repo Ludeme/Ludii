@@ -48,7 +48,7 @@
 (define "EnterAPiece" 
     (move
         (from (handSite Mover))
-        (to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1) ))
+        (to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1)))
     )
 )
 

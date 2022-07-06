@@ -36,7 +36,7 @@
 )
 
 (define "CanNotMove"
-    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King_noCross" #1)))) )
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King_noCross" #1)))))
 )
 
 (define "RemovePiecesIfCheckmate"

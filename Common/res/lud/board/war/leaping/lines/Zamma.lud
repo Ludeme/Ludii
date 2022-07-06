@@ -37,7 +37,7 @@
 
 (define "HasCaptured"  (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
-(define "DidNotCaptured"  (= (value Player Prev) 1) )
+(define "DidNotCaptured"  (= (value Player Prev) 1))
 (define "RememberSiteWithPossibleCapture"  
     (set Pending 
         (sites From
@@ -117,8 +117,8 @@
     
     (rules 
         (start { 
-            (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
-            (place "Disc2" (forEach (sites Board) if:(> (site) (centrePoint)) ))
+            (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint))))
+            (place "Disc2" (forEach (sites Board) if:(> (site) (centrePoint))))
         })
         
         (play 

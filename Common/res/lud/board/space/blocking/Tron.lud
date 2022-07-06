@@ -34,7 +34,7 @@
         
         (play (forEach Piece))
         
-        (end (if (is Triggered "Collision" Mover) (result Next Win) ) )
+        (end (if (is Triggered "Collision" Mover) (result Next Win)) )
     )
 )
 

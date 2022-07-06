@@ -15,22 +15,14 @@
     (players 2)  
     (equipment { 
         (board (square 6) use:Vertex)
-        (piece "Pawn" P1)
-        (piece "Pawn" P2)
-        (piece "Counter" P1)
-        (piece "Counter" P2)
-        (piece "Jarl" P1)
-        (piece "Jarl" P2)
-        (hand Shared size:6)
+        (piece "Marker" P1)
+        (piece "Marker" P2)
+        (hand Shared size:2)
     })  
     (rules 
         (start {
-            (place "Pawn1" (handSite Shared 0))
-            (place "Pawn2" (handSite Shared 1))
-            (place "Counter1" (handSite Shared 2))
-            (place "Counter2" (handSite Shared 3))
-            (place "Jarl1" (handSite Shared 4))
-            (place "Jarl2" (handSite Shared 5))
+            (place "Marker1" (handSite Shared 0))
+            (place "Marker2" (handSite Shared 1))
         })
         (play 
             (or {
@@ -99,12 +91,7 @@
 (metadata 
     
     (graphics {
-        (piece Colour "Pawn1" fillColour:(colour White))
-        (piece Colour "Pawn2" fillColour:(colour Red))
-        (piece Colour "Counter1" fillColour:(colour White))
-        (piece Colour "Counter2" fillColour:(colour Red))
-        (piece Colour "Jarl1" fillColour:(colour White))
-        (piece Colour "Jarl2" fillColour:(colour Red))
+        (piece Scale "Marker" 0.7)
         (board Colour InnerEdges (colour 17 103 177))
         (board Colour OuterEdges (colour 17 103 177))
     })

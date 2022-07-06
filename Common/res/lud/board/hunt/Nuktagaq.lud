@@ -3,22 +3,19 @@
     (equipment { 
         (board 
             (remove
-                (merge 
-                    (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                    (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-                )
+                ("CrossGraph" 3 7 diagonals:Alternating)
                 edges:{{17 10} {9 10} {10 11}}
             )
             use:Vertex
         )
         (hand P1)
-        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty" ) )
+        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
     })  
     (rules 
         (start { 
             (place "Marker2" (difference (expand (sites Top) steps:4) (union (sites Row 2) (sites Centre))))
-            (place "Marker1" (sites Direction from:(sites Centre) S included:True distance:1) ) 
+            (place "Marker1" (sites Direction from:(sites Centre) S included:True distance:1)) 
         })
         
         (play (forEach Piece))
@@ -49,7 +46,6 @@
     
     (graphics {
         (board Style Graph)
-        
         }
     )
     

@@ -1,0 +1,8 @@
+// Checks if an enemy is on a site. 
+// #1 = The site.
+// #2 = The level [the topest].
+// @example ("IsEnemyAt" (to))
+
+(define "IsEnemyAt"
+    (is Enemy (who at:#1 #2))
+)

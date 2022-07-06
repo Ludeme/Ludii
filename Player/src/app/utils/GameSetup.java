@@ -54,8 +54,6 @@ public class GameSetup
 			app.reportError(e.getMessage());
 		}
 		
-		app.settingsPlayer().setTestsPassed(false);
-		
 		// Try to make Java run GC in case previous game occupied a lot of memory
 		System.gc();
 	}

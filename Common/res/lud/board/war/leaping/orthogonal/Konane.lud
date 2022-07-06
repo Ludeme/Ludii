@@ -24,8 +24,8 @@
     })  
     (rules 
         (start { 
-            (place "Marker1" (sites Phase 1) )
-            (place "Marker2" (sites Phase 0) )
+            (place "Marker1" (sites Phase 1))
+            (place "Marker2" (sites Phase 0))
         })
         
         phases:{ 
@@ -59,7 +59,7 @@
                         ("HopSequence" (last To) SameDirection)
                         (move Pass)
                     )
-                    (forEach Piece "Marker" ("HopSequence" (from) Orthogonal) ) 
+                    (forEach Piece "Marker" ("HopSequence" (from) Orthogonal)) 
                 )
             )
         )

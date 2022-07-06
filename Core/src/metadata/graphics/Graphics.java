@@ -508,6 +508,7 @@ public class Graphics implements Serializable
 													-1, 
 													null, 
 													pieceBackground.image(), 
+													pieceBackground.text(),
 													scaleX, 
 													scaleY,
 													fillColour,
@@ -586,6 +587,7 @@ public class Graphics implements Serializable
 													-1, 
 													null, 
 													pieceForeground.image(), 
+													pieceForeground.text(),
 													scaleX, 
 													scaleY,
 													fillColour,
@@ -870,11 +872,13 @@ public class Graphics implements Serializable
 		
 		final ArrayList<MetadataImageInfo> allSymbols = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
+		{
 			if (graphicsItem instanceof ShowSymbol)
 			{
 				final ShowSymbol showSymbol = (ShowSymbol)graphicsItem;
 				final RoleType roleType = showSymbol.roleType();
 				final String imageName = showSymbol.imageName();
+				final String text = showSymbol.text();
 				final int rotation = showSymbol.rotation();
 				final float offsetX = showSymbol.getOffsetX();
 				final float offsetY = showSymbol.getOffsetY();
@@ -913,7 +917,7 @@ public class Graphics implements Serializable
 					for (final Integer site : sites)
 					{	
 						if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
-							allSymbols.add(new MetadataImageInfo(site.intValue(), graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+							allSymbols.add(new MetadataImageInfo(site.intValue(), graphElementType, imageName, text, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 						else
 							addError("Failed to add symbol " + imageName + " at site " + site.intValue() + " with graphElementType " + graphElementType);
 					}	
@@ -925,7 +929,7 @@ public class Graphics implements Serializable
 						for (final Integer site : regionSites)
 						{
 							if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
-								allSymbols.add(new MetadataImageInfo(site.intValue(),graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+								allSymbols.add(new MetadataImageInfo(site.intValue(),graphElementType, imageName, text, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 							else
 								addError("Failed to add symbol " + imageName + " at region site " + site.intValue() + " with graphElementType " + graphElementType);	
 						}
@@ -937,13 +941,14 @@ public class Graphics implements Serializable
 					for(final int site : regionFunction.eval(context).sites())
 					{
 						if (context.game().board().topology().getGraphElements(graphElementType).size() > site)
-							allSymbols.add(new MetadataImageInfo(site, graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+							allSymbols.add(new MetadataImageInfo(site, graphElementType, imageName, text, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 						else
 							addError("Failed to add symbol " + imageName + " at region site " + site + " with graphElementType " + graphElementType);
 
 					}
 				}
 			}
+		}
 
 		return allSymbols;
 	}

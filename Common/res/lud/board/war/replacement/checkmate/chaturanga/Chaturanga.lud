@@ -18,7 +18,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 //------------------------------------------------------------------------------
@@ -79,8 +79,8 @@
                 )
             )
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })  
     (rules 
         (start { 
@@ -105,7 +105,7 @@
                 (result Mover Win)
             ) 
             (if (no Moves Mover) (result Mover Win)) 
-            (if (= (count Pieces Next) 1) (result Mover Win) ) 
+            (if (= (count Pieces Next) 1) (result Mover Win)) 
         })
     )
 )
@@ -115,11 +115,11 @@
 (option "Play Rules" <Elephant> args:{ <move> }
     {
     (item "Elephant Move is Orthogonal Jump"             
-        <(move Hop Orthogonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))) )>   
+        <(move Hop Orthogonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))>   
         "The elephants can jump only orthogonally."
     )
     (item "Elephant Move is Diagonal Jump"             
-        <(move Hop Diagonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))) )>    
+        <(move Hop Diagonal (between if:True) (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))>    
         "The elephants can jump only diagonally."
     ) 
     (item "Elephant Move is like a Silver in Shogi"             

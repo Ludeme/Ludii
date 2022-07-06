@@ -2,15 +2,15 @@
 
 (define "EmptyButNotEnemyGoal" (difference (sites Empty) (sites Mover)))
 
-(define "OnAFriend" (between if:(is Friend (who at:(between)))) )
+(define "OnAFriend" (between if:(is Friend (who at:(between)))))
 
-(define "MoveAgainAfterJumpingFriend" (and (moveAgain) (set Pending)) )
+(define "MoveAgainAfterJumpingFriend" (and (moveAgain) (set Pending)))
 
-(define "MoveAgainAfterJumpingEnemy" (moveAgain) )
+(define "MoveAgainAfterJumpingEnemy" (moveAgain))
 
-(define "WasJumpingAFriend" (is Pending) )
+(define "WasJumpingAFriend" (is Pending))
 
-(define "WasAKnight" (= (what at:(last To)) (id "Knight" Mover)) )
+(define "WasAKnight" (= (what at:(last To)) (id "Knight" Mover)))
 
 (define "OnAnEnemy" (between if:(is Enemy (who at:(between))) (apply (remove (between)))))
 

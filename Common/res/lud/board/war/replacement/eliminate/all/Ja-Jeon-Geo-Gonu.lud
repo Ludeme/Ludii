@@ -42,7 +42,7 @@
     (rules 
         (start { <Start> })
         (play (forEach Piece)) 
-        (end (if (no Pieces Next) (result Mover Win)) )
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
@@ -83,7 +83,7 @@
         }
     )
     
-    (graphics (board Style Surakarta) )
+    (graphics (board Style Surakarta))
     
     (ai 
         "Ja-Jeon-Geo-Gonu_ai"

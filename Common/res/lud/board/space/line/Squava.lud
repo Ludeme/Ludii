@@ -6,7 +6,7 @@
         }
     )  
     (rules 
-        (meta (swap) )
+        (meta (swap))
         (play (move Add (to (sites Empty))))
         (end {
             (if (is Line 4) (result Mover Win))

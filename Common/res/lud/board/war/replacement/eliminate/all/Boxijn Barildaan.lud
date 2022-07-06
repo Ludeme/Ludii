@@ -14,7 +14,7 @@
             (apply (if (is Enemy (who at:(to))) (remove (to))))
         )
         (then 
-            (if (= 2 (count Sites in:(forEach  (sites Board) if:(= 1 (state at:(site))) )))
+            (if (= 2 (count Sites in:(forEach  (sites Board) if:(= 1 (state at:(site))))))
                 (forEach Site (sites Board) (if (= 1 (state at:(site))) (set State at:(site) 0)))
                 (and
                     (set State at:(last From) 1)

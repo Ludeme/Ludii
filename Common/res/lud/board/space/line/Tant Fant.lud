@@ -1,4 +1,4 @@
-(define "NotAllPieceInHome" (not ("NoSites" (difference (sites Occupied by:Mover) (sites Mover)))) )
+(define "NotAllPieceInHome" (not ("NoSites" (difference (sites Occupied by:Mover) (sites Mover)))))
 
 //------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@
             (place "Marker1" (sites P1)) 
             (place "Marker2" (sites P2)) 
         })
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end 
             (if 

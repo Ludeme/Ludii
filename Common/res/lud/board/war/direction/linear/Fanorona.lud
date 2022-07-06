@@ -119,8 +119,8 @@
     
     (rules 
         (start { 
-            (place "Marker1" (union { <Board:startP1>} ) )
-            (place "Marker2" (union { <Board:startP2>} ) )
+            (place "Marker1" (union { <Board:startP1>}))
+            (place "Marker2" (union { <Board:startP2>}))
         })
         
         (play
@@ -152,8 +152,8 @@
 (option "Version" <Board> args:{ <size> <startP1> <startP2> }
     {
     (item "Telo"  <3 3> <(union (sites Bottom) (sites {"C2"}))> <(union (sites {"A2"}) (sites Top))>                                                      "The game is played on a 3x3 board")   
-    (item "Dimy"  <5 5> <(union (expand (sites Bottom) ) (sites {"A3" "D3"}))> <(union (sites {"B3" "E3"}) (expand (sites Top) ))>                        "The game is played on a 5x5 board")   
-    (item "Tsivy" <5 9> <(union (expand (sites Bottom) ) (sites {"B3" "D3" "G3" "I3"}))> <(union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top) ) )>   "The game is played on a 5x9 board")**   
+    (item "Dimy"  <5 5> <(union (expand (sites Bottom)) (sites {"A3" "D3"}))> <(union (sites {"B3" "E3"}) (expand (sites Top)))>                        "The game is played on a 5x5 board")   
+    (item "Tsivy" <5 9> <(union (expand (sites Bottom)) (sites {"B3" "D3" "G3" "I3"}))> <(union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top)) )>   "The game is played on a 5x9 board")**   
 })
 
 //------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next (forEach Piece))))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next (forEach Piece))))))
 )
 
 (define "KingInTheInitialPlace"
@@ -215,8 +215,8 @@
         (map "King" {(pair 1 "E1") (pair 2 "E9")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A9")})
         (map "RookRight" {(pair 1 "I1") (pair 2 "I9")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
     )  
     (rules 

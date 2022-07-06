@@ -24,11 +24,11 @@
     
     (rules 
         (start {
-            (place "Counter1" (sites {"A1" "C2" "A3"}) )
-            (place "Counter2" (sites {"C1" "A2" "C3"}) )
+            (place "Counter1" (sites {"A1" "C2" "A3"}))
+            (place "Counter2" (sites {"C1" "A2" "C3"}))
         })
         
-        (play (forEach Piece) ) 
+        (play (forEach Piece)) 
         
         (end ("NoMoves" Loss))  
     )

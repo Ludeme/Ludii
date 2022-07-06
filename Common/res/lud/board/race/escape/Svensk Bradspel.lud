@@ -1,40 +1,21 @@
-(define "NextSiteFrom" 
-    (trackSite Move 
-        from:#1 
-        steps:#2
-    )
-)
+(define "NextSiteFrom" ("NextSiteOnTrack" #2 from:#1))
 
-(define "DieNotUsed" (!= (pips) 0))
-
-(define "NotEnemyOrOnlyOne"    
-    (or 
-        (and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        ) 
-        (not (is Enemy (who at:(to))))
-    )
-)
-
-(define "AllPiecesInFinalQuadrant"
-    (no Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant")))
-)
+(define "AllPiecesInFinalQuadrant" ("AllOwnedPiecesIn" (sites Mover "FinalQuadrant")))
 
 (define "FiveOnThreeFinal" 
     (if (is Mover P1)
         (and {
-            (is Friend (who at:10))
-            (is Friend (who at:11))
-            (is Friend (who at:12))
+            ("IsFriendAt" 10)
+            ("IsFriendAt" 11)
+            ("IsFriendAt" 12)
             (= 5 (size Stack at:10))
             (= 5 (size Stack at:11))
             (= 5 (size Stack at:12))
         })
         (and {
-            (is Friend (who at:13))
-            (is Friend (who at:14))
-            (is Friend (who at:15))
+            ("IsFriendAt" 13)
+            ("IsFriendAt" 14)
+            ("IsFriendAt" 15)
             (= 5 (size Stack at:13))
             (= 5 (size Stack at:14))
             (= 5 (size Stack at:15))
@@ -45,11 +26,11 @@
 (define "ThreeOnFiveFinal" 
     (if (is Mover P1)
         (and {
-            (is Friend (who at:8))
-            (is Friend (who at:9))
-            (is Friend (who at:10))
-            (is Friend (who at:11))
-            (is Friend (who at:12))
+            ("IsFriendAt" 8)
+            ("IsFriendAt" 9)
+            ("IsFriendAt" 10)
+            ("IsFriendAt" 11)
+            ("IsFriendAt" 12)
             (= 3 (size Stack at:8))
             (= 3 (size Stack at:9))
             (= 3 (size Stack at:10))
@@ -57,11 +38,11 @@
             (= 3 (size Stack at:12))
         })
         (and {
-            (is Friend (who at:13))
-            (is Friend (who at:14))
-            (is Friend (who at:15))
-            (is Friend (who at:17))
-            (is Friend (who at:18))
+            ("IsFriendAt" 13)
+            ("IsFriendAt" 14)
+            ("IsFriendAt" 15)
+            ("IsFriendAt" 17)
+            ("IsFriendAt" 18)
             (= 3 (size Stack at:13))
             (= 3 (size Stack at:14))
             (= 3 (size Stack at:15))
@@ -74,17 +55,17 @@
 (define "SevenFiveThreeFinal" 
     (if (is Mover P1)
         (and {
-            (is Friend (who at:10))
-            (is Friend (who at:11))
-            (is Friend (who at:12))
+            ("IsFriendAt" 10)
+            ("IsFriendAt" 11)
+            ("IsFriendAt" 12)
             (= 3 (size Stack at:10))
             (= 5 (size Stack at:11))
             (= 7 (size Stack at:12))
         })
         (and {
-            (is Friend (who at:13))
-            (is Friend (who at:14))
-            (is Friend (who at:15))
+            ("IsFriendAt" 13)
+            ("IsFriendAt" 14)
+            ("IsFriendAt" 15)
             (= 7 (size Stack at:13))
             (= 5 (size Stack at:14))
             (= 3 (size Stack at:15))
@@ -95,11 +76,11 @@
 (define "FifteenFinal" 
     (if (is Mover P1)
         (and 
-            (is Friend (who at:12))
+            ("IsFriendAt" 12)
             (= 15 (size Stack at:12))
         )
         (and 
-            (is Friend (who at:13))
+            ("IsFriendAt" 13)
             (= 15 (size Stack at:13))
         )
     )
@@ -110,19 +91,13 @@
 (game "Svensk Bradspel"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {6 25..20 18..13 0..5 7..12 End} P1 directed:True)
-            (track "Track2" {19 0..5 7..12 25..20 18..13 End} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" ("BackgammonTracksSameDirectionOppositeCornersWithBars2" End)) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
                 replayDouble:True 
                 if:("DieNotUsed")
-                (if (= End ("NextSiteFrom" (from) (pips)))
+                (if ("IsEndTrack" ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
                         (move Remove (from))
                     )
@@ -131,14 +106,14 @@
                         (to 
                             ("NextSiteFrom" (from) (pips))
                             if:(and 
-                                ("NotEnemyOrOnlyOne")
+                                ("NoEnemyOrOnlyOne" (to))
                                 (if (not (is In (to) (sites Mover "StartingSide")))
                                     True
                                     (if (= (value Player Mover) 1) True (is Empty (to)))
                                 )
                             )
                             (apply 
-                                (if (is Enemy (who at:(to)))
+                                (if ("IsEnemyAt" (to))
                                     (fromTo 
                                         (from (to))
                                         (to (mapEntry "Bar" Next))
@@ -150,9 +125,7 @@
                 )
                 (then 
                     (and
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )
+                        ("ReplayNotAllDiceUsed")
                         (if (and
                                 (= (last To) (mapEntry "12thPoint" Mover))
                                 (!= 1 (value Player Mover))
@@ -176,13 +149,13 @@
             (place Stack "Disc2" 0 count:15) 
         })
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(forEach Piece top:True)
+            ("RollEachNewTurnMove"
+                (forEach Piece top:True)
             )		
         )
         
         (end { 
-            (if (no Pieces Mover) (result Mover Win))
+            ("EscapeWin")
             (if  ("FiveOnThreeFinal" Mover) (result Mover Win))
             (if  ("ThreeOnFiveFinal" Mover) (result Mover Win))
             (if  ("SevenFiveThreeFinal" Mover) (result Mover Win))
@@ -215,4 +188,3 @@
     })
     
 )
-

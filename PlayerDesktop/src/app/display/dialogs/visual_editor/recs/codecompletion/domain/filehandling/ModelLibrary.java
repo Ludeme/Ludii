@@ -6,12 +6,10 @@ import app.display.dialogs.visual_editor.recs.display.ProgressBar;
 import app.display.dialogs.visual_editor.recs.interfaces.codecompletion.domain.filehandling.iModelLibrary;
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author filreh

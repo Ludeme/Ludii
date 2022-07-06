@@ -1,5 +1,5 @@
 (define "Columns" <Board:size>)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
@@ -27,7 +27,7 @@
     (rules 
         
         (start {
-            (set Count 6 to:(sites Track) ) 
+            (set Count 6 to:(sites Track)) 
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
         

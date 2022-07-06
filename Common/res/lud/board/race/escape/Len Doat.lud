@@ -1,12 +1,12 @@
 (define "ThrowValue" (value Player Mover))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue")))
 
-(define "RemoveAPiece" (move Remove (from) ) )
+(define "RemoveAPiece" (move Remove (from)))
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to)))
+        if:("IsEnemyAt" (to))
         (fromTo 
             (from (to)) 
             (to (handSite Next))
@@ -15,13 +15,11 @@
     ) 
 )
 
-(define "HasToThrow" 
-    (< ("ThrowValue") 0)
-)
+(define "HasToThrow" (< ("ThrowValue") 0))
 
 (define "StopTurnIfNoMoveAgain" (if (!= (value Player Mover) -2) (set Value Mover -1)))
 (define "ThrowAgainAndPlay" (and (moveAgain) (set Value Mover -2)))
-(define "IfMoveAgain" (= (value Player Mover) -2) )
+(define "IfMoveAgain" (= (value Player Mover) -2))
 
 (define "Move" 
     (if (and (= "ThrowValue" 1) (not ("HandEmpty" Mover)))
@@ -43,9 +41,8 @@
 
 (define "ThrowMove" 
     (if ("HasToThrow")
-        (do 
-            (roll) 
-            next:(if ("IfMoveAgain")
+        ("RollMove"
+            (if ("IfMoveAgain")
                 (do (set Value Mover (count Pips)) next:("Move"))
                 (move Pass (then (set Value Mover (count Pips))))
             )
@@ -71,18 +68,16 @@
             (track "Track2" "39,W,S,E,45,E,N,W,15,E,N,W,14,W,S,E,44,W,S1,E,End" P2 directed:True)
             }
         )
-        (dice d:2 from:0 num:5)
+        ("StickDice" 5)
         (hand Each)
         (piece "Marker" Each
-            (if (= "SiteToMoveOnTrack" End)
+            (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
-                (if (not (= "SiteToMoveOnTrack" Off))  	 			
-                    (if (or
-                            (not (is Enemy (who at:"SiteToMoveOnTrack"))) 
-                            (and 
-                                (is Enemy (who at:"SiteToMoveOnTrack")) 
-                                (not (is In "SiteToMoveOnTrack" (sites "Protect")))
-                            )
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack")  	 			
+                    (if (if
+                            (not ("IsEnemyAt" "SiteToMoveOnTrack"))
+                            True
+                            (not (is In "SiteToMoveOnTrack" (sites "Protect")))
                         )
                         (move 
                             (from) 
@@ -102,12 +97,10 @@
             )
         )
         (map "EntrySite" {(pair P1 (coord "F2")) (pair P2 (coord "E5"))})
-        (regions "Protect" (sites {"A1" "A3" "A4" "A6" "J1" "J3" "J4" "J6"} ))
+        (regions "Protect" (sites {"A1" "A3" "A4" "A6" "J1" "J3" "J4" "J6"}))
     })
     (rules 
-        (start {
-            (place "Marker" "Hand" count:3)
-        })
+        (start (place "Marker" "Hand" count:3))
         (play 
             (if (can Move ("ThrowMove"))
                 ("ThrowMove")
@@ -124,7 +117,7 @@
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

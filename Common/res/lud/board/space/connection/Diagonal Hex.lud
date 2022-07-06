@@ -5,13 +5,13 @@
             (<Board:type> <BoardSize>)
         ) 
         (piece "Marker" Each)
-        (regions P1 { <Board:regionsP1> } )
-        (regions P2 { <Board:regionsP2> } )
+        (regions P1 { <Board:regionsP1> })
+        (regions P2 { <Board:regionsP2> })
         }
     )  
     (rules 
         <Meta:rule>
-        (play (move Add (to (sites Empty))) )
+        (play (move Add (to (sites Empty))))
         (end (if (is Connected <Connection:type> Mover) (result Mover <Result>))) 
     )
 )
@@ -52,7 +52,7 @@
 
 (option "Swap Rules" <Meta> args:{ <rule>}
     {
-    (item "On"  <(meta (swap) )>  "The game uses the swap rule.")*   
+    (item "On"  <(meta (swap))>  "The game uses the swap rule.")*   
     (item "Off" <> "The game does not use the swap rule.")   
 })
 

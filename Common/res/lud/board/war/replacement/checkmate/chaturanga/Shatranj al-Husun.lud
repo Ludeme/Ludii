@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CaptureToPiece"
@@ -122,10 +122,10 @@
                 )
             )		
         )
-        (regions "Promotion" P1 (sites Row 10) )
-        (regions "Promotion" P2 (sites Row 1) )
-        (regions "OppositeExtraSquares" P1 (sites Top) )
-        (regions "OppositeExtraSquares" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Row 10))
+        (regions "Promotion" P2 (sites Row 1))
+        (regions "OppositeExtraSquares" P1 (sites Top))
+        (regions "OppositeExtraSquares" P2 (sites Bottom))
     })
     (rules 
         (start {

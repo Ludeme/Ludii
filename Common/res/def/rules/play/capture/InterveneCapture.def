@@ -1,0 +1,16 @@
+// Defines an intervene capture in all the directions specified (by default Adjacent). The enemy piece is removed.
+// #1 = Directions of the capture.
+// #2 = The consequences.
+// @example ("InterveneCapture")
+
+(define "InterveneCapture"
+    (intervene 
+        (from (last To))
+        #1
+        (to 
+            if:("IsEnemyAt" (to))
+            (apply (remove (to)))
+        )
+        #2
+    )
+)

@@ -492,9 +492,9 @@
 
 (define "BoardUsed" <BoardShape:gridType> )
 
-(define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) )) // use:Edge))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) )) // use:Edge))
-(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) )) //use:Edge))
+(define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)))) // use:Edge))
+(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)))) // use:Edge))
+(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>))) //use:Edge))
 
 (option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored>} 
     {

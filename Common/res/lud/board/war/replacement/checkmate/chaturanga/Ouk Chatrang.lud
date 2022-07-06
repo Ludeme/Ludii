@@ -31,7 +31,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 (game "Ouk Chatrang"
     (players {(player N) (player S)})  
     (equipment {
-        (board (square 8) )
+        (board (square 8))
         (hand Each size:5)
         (piece "King_noCross" Each 
             (or
@@ -137,8 +137,8 @@
                 "RememberPieceHasMoved"
             )		
         )
-        (regions "Promotion" P1 (sites Row 5) )
-        (regions "Promotion" P2 (sites Row 2) )
+        (regions "Promotion" P1 (sites Row 5))
+        (regions "Promotion" P2 (sites Row 2))
     })
     (rules 
         (start {   

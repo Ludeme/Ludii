@@ -1,7 +1,7 @@
 (game "Gol Ekuish"  
     (players 2)  
     (equipment { 
-        (board (concentric {1 6 6 6 6 6 6 6} ) use:Vertex)
+        (board (concentric {1 6 6 6 6 6 6 6}) use:Vertex)
         (piece "Counter" Each 
             (or 
                 ("HopRotationalCapture")
@@ -13,7 +13,7 @@
     (rules 
         (start {
             (place "Counter1" (sites {2..4 8..10 14..16 20..22 26..28 32..34 38..40})  )
-            (place "Counter2" (sites {1 7 13 19 25 31 37 5 6 11 12 17 18 23 24 29 30 35 36 41 42}) )
+            (place "Counter2" (sites {1 7 13 19 25 31 37 5 6 11 12 17 18 23 24 29 30 35 36 41 42}))
         })
         
         (play (forEach Piece))

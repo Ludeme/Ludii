@@ -104,7 +104,7 @@
                     (from (handSite Mover)) 
                     (to
                         Vertex 
-                        (difference (sites Empty Vertex) (sites Outer) )
+                        (difference (sites Empty Vertex) (sites Outer))
                     )
                     (then 
                         (moveAgain)
@@ -121,12 +121,12 @@
                         (from (handSite Mover)) 
                         (to
                             Vertex 
-                            (difference (sites Around (last To) Orthogonal if:(is Empty (to))) (sites Outer) )
+                            (difference (sites Around (last To) Orthogonal if:(is Empty (to))) (sites Outer))
                         )
                         (then 
                             (forEach
                                 Site
-                                (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)) )  )))
+                                (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)))  )))
                                 (remove Cell (site))
                             )
                         )
@@ -142,7 +142,7 @@
                             (and
                                 (forEach
                                     Site
-                                    (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)) )  )))
+                                    (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)))  )))
                                     (remove Cell (site))
                                 )
                                 (moveAgain)

@@ -40,7 +40,7 @@
         (map "Store" {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
     })  
     (rules 
-        (start (set Count 4 to:(union (sites Bottom) (sites Top)) ) )
+        (start (set Count 4 to:(union (sites Bottom) (sites Top))) )
         
         phases:{
         <Variant:opening>
@@ -252,7 +252,7 @@
                 )
             )
             
-            (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2)) ) "Sowing")
+            (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
         )
         >  
     "The opening rules of the variant Alternate Opening 1.")
@@ -345,7 +345,7 @@
                 )
             )
             
-            (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2)) ) "Sowing")
+            (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
         )
         >  
     "The opening rules of the variant Alternate Opening 2.") 
@@ -447,7 +447,7 @@
                 )
             )
             
-            (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2)) ) "Sowing")
+            (nextPhase (and (is Empty (mapEntry "Store" P1)) (is Empty (mapEntry "Store" P2))) "Sowing")
         )
         >  
     "The opening rules of the variant Alternate Opening 3.") 

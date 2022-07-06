@@ -30,7 +30,7 @@
                     ("PlaceLance" Next)
                     ("PlaceKnight" Next) 
                     (forEach Piece Next) 
-                } )
+                })
                 ifAfterwards:(not ("IsInCheck" "Osho" Next))
             ) 
         )
@@ -40,7 +40,7 @@
 (define "OnePawnPerColumn" 
     (= 
         (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
-        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (union (sites Direction from:(to) N) (sites Direction from:(to) S)) ))
+        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (union (sites Direction from:(to) N) (sites Direction from:(to) S))))
     )
 )
 
@@ -299,7 +299,7 @@
                         ("PlaceLance" Mover)
                         ("PlaceKnight" Mover) 
                         (forEach Piece) 
-                    } )
+                    })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                 )
             )

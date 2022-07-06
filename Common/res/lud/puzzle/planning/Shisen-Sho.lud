@@ -8,7 +8,7 @@
                         (step
                             Orthogonal
                             (to 
-                                if:(is In (to) (sites Empty) )
+                                if:(is In (to) (sites Empty))
                             )
                         ) 
                         from:(from) 
@@ -20,7 +20,7 @@
             )
             if: 
             (and
-                (= (what at:(from)) (what at:(to)) )
+                (= (what at:(from)) (what at:(to)))
                 (not (= (from) (to)))
             )
             (apply 
@@ -103,7 +103,7 @@
             } count:<Size:numTiles>) 
         })
         (play "Move")
-        (end (if (no Pieces All) (result P1 Win) ) )  
+        (end (if (no Pieces All) (result P1 Win)) )  
     )
 )
 

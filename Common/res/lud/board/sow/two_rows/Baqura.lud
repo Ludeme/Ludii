@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In #1 (sites P1)) (+ #1 "Columns") (- #1 "Columns") ) )
+(define "OppositePit" (if (is In #1 (sites P1)) (+ #1 "Columns") (- #1 "Columns")) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -23,8 +23,8 @@
     (rules 
         
         (start {
-            (set Count 36 at:(handSite P1) ) 
-            (set Count 36 at:(handSite P2) ) 
+            (set Count 36 at:(handSite P1)) 
+            (set Count 36 at:(handSite P2)) 
         })
         
         phases:{

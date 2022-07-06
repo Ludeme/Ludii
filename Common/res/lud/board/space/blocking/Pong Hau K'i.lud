@@ -30,7 +30,7 @@
     {
     (item "Placed"     
         <{(place "Disc1" {2 3}) (place "Disc2" {0 1})}> 
-        <(play (forEach Piece) )> 
+        <(play (forEach Piece))> 
         "The piece are already placed on the board."
     )*
     
@@ -48,7 +48,7 @@
         )  
         
         (phase "Movement" 
-            (play (forEach Piece) )
+            (play (forEach Piece))
         )
         }>   
         "The pieces have to place before to play."

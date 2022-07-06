@@ -61,7 +61,7 @@
                     )
                     (then
                         (if (not ("ActivatedPiece" (last To)))
-                            ("ActivePiece" (last To) )
+                            ("ActivePiece" (last To))
                         )
                     )
                 )
@@ -80,7 +80,7 @@
                     (then
                         (and
                             (if (not ("ActivatedPiece" (last To)))
-                                ("ActivePiece" (last To) )
+                                ("ActivePiece" (last To))
                             )
                             (if (> (var) 0)
                                 (and

@@ -18,7 +18,7 @@
 )
 (define "P1PlayACard" ("PlayACard" P1 0 #1 #2))
 (define "P2PlayACard" ("PlayACard" P2 1 #1 #2))
-(define "MaskedCards" (set Masked (union (sites Hand P1) (sites Hand P2)) stack:True) )
+(define "MaskedCards" (set Masked (union (sites Hand P1) (sites Hand P2)) stack:True))
 (define "MakeTopCardP1Visible" (then (set Visible 0 level:(topLevel at:0))))
 (define "MakeTopCardP2Visible" (then (set Visible 1 level:(topLevel at:1))))
 (define "TakeCards" 

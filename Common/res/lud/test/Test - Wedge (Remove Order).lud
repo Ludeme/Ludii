@@ -39,7 +39,7 @@
         (start {
             (place "Tiger1" (handSite P1) count:5)
             (place "Sheep2" (handSite P2) count:15)
-        } )
+        })
         
         phases:{
         (phase "Placement"
@@ -53,7 +53,7 @@
         )
         
         (phase "Movement"
-            (play (forEach Piece) )
+            (play (forEach Piece))
             (end {
                 ("NoMoves" Loss)
                 (if (no Pieces P2)  (result P1 Win))

@@ -10,7 +10,7 @@
                     (do 
                         (move 
                             (from (sites Occupied by:Next container:"Hand" component:"Fuhyo" )) 
-                            (to (difference (sites Empty) (sites Next "Promotion") )
+                            (to (difference (sites Empty) (sites Next "Promotion"))
                                 if:("OnePawnPerColumn" Next)
                             ) 
                         ) 
@@ -43,7 +43,7 @@
 )
 
 (define "InPromotionZone"
-    (is In #1 (sites Mover "Promotion") )	
+    (is In #1 (sites Mover "Promotion"))	
 )
 
 (define "Promote"
@@ -62,7 +62,7 @@
 (define "CanPromote"
     (then 
         (if 
-            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From)) ) 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
         ) 
     )
@@ -126,8 +126,8 @@
         // Promoted Bishop
         (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         (map "Where" { 
             (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
             (pair (id "Ginsho" P1) (handSite P2 1)) (pair (id "Ginsho" P2) (handSite P1 1)) 
@@ -181,7 +181,7 @@
                         (do 
                             (move 
                                 (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo" )) 
-                                (to (difference (sites Empty) (sites Mover "Promotion") )
+                                (to (difference (sites Empty) (sites Mover "Promotion"))
                                     if:("OnePawnPerColumn" Mover)
                                 ) 
                             ) 

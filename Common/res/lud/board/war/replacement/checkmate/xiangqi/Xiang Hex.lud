@@ -1,12 +1,12 @@
 (define "JiangSameColumnWithNoPieceBetween"
-    (if (= (column of:(where "Jiang" P1) ) (column of:(where "Jiang" P2) ))
+    (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
         (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
         True
     )
 )
 
 (define "EnemyCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Jiang" Next))) ))
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Jiang" Next)))))
 )
 
 (define "StepMoveOnThePalace" 
@@ -15,10 +15,10 @@
         #1 
         (to 
             if:(and 
-                (is In (to) (sites Mover "Palace") ) 
+                (is In (to) (sites Mover "Palace")) 
                 (not (is Friend (who at:(to))))
             ) 
-            (apply (remove (to) ))
+            (apply (remove (to)))
         )
     ) 
 )
@@ -44,13 +44,13 @@
                 (between 
                     (exact 2) 
                     if:(and { 
-                        (is In (between) (sites Mover "Home") ) 
+                        (is In (between) (sites Mover "Home")) 
                         (is Empty (between)) 
                     })
                 )
                 (to 
                     if:(is Enemy (who at:(to))) 
-                    (apply (remove (to) ))
+                    (apply (remove (to)))
                 ) 
             )
         ) 
@@ -89,7 +89,7 @@
                 Orthogonal 
                 (to 
                     if:(is Enemy (who at:(to))) 
-                    (apply (remove (to) ) )
+                    (apply (remove (to)) )
                 )
             )
         )
@@ -110,7 +110,7 @@
                         if:(is Empty (to)) 
                         (apply 
                             if:(is Enemy (who at:(to))) 
-                            (remove (to) )
+                            (remove (to))
                         )
                     )  
                 ) 
@@ -133,8 +133,8 @@
             )
         )
         
-        (regions "PalaceP1" P1 { 0 1 2 4 7 8 12 } )
-        (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 } )
+        (regions "PalaceP1" P1 { 0 1 2 4 7 8 12 })
+        (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 })
         (regions "Home" P1 (forEach (sites Board) if:(< (site) 37)))
         (regions "Home" P2 (forEach (sites Board) if:(> (site) 41)))
     })  

@@ -27,12 +27,10 @@
         )
         }
         
-        (end
-            {
-            (if (and (no Moves P1) (is Mover P1)) (result P2 Win) )
-            (if (= 0 (count Sites in:(forEach (sites Occupied by:P2) if:(< (row of:(site)) (row of:(where "Leopard" P1)) ) ))) (result P1 Win))
-            }
-        ) 
+        (end {
+            (if (and (no Moves P1) (is Mover P1)) (result P2 Win))
+            (if (= 0 (count Sites in:(forEach (sites Occupied by:P2) if:(< (row of:(site)) (row of:(where "Leopard" P1))) ))) (result P1 Win))
+        }) 
     )	
 )
 

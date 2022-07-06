@@ -90,6 +90,7 @@ public class Evaluation
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
+		//dialogMetrics.add(new SkillTrace());
 	}
 	
 	//-------------------------------------------------------------------------

@@ -1,0 +1,10 @@
+// Defines backgammon tracks following the same direction for each player in using the hands of the players.
+// #1 = An optional End site.
+// @example ("BackgammonTracksSameDirectionWithHands")
+
+(define "BackgammonTracksSameDirectionWithHands"
+    {
+    (track "Track1" {26 25..20 18..13 0..5 7..12 #1} P1 directed:True)
+    (track "Track2" {27 25..20 18..13 0..5 7..12 #1} P2 directed:True)
+    }  
+)

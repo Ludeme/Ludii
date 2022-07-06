@@ -17,7 +17,7 @@
     )
 )
 
-(define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece))))) ))
+(define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece)))))))
 
 (define "KingMove"
     (move Step

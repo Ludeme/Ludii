@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites P1)) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is In (to) (sites P1)) (+ (to) "Columns") (- (to) "Columns")) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -23,7 +23,7 @@
     )  
     (rules 
         
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)) )
         
         (play 
             (move

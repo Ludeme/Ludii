@@ -3,12 +3,12 @@
     (equipment { 
         (board 
             (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
+                (shift 0 2 (rectangle 3 7 diagonals:Alternating))
+                (shift 2 0 (rectangle 7 3 diagonals:Alternating)) 
             )
             use:Vertex
         )
-        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty" ) )
+        (piece "Marker" P1 (or ("HopCapture") "StepToEmpty" ))
         (piece "Marker" P2 "StepToEmpty") 
     })  
     (rules 

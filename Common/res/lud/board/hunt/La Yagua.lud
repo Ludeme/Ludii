@@ -3,18 +3,14 @@
     (equipment { 
         (board 
             (add
-                (merge 
-                    (rotate 180 (wedge 3))
-                    (shift 0 -4 (square 5 diagonals:Alternating)) 
-                )
-                edges:{{1 5} {5 3}}
+                (rotate 180 ("AlquerqueGraphWithBottomTriangle"))
+                edges:{{27 29} {29 25}}
             )
             use:Vertex
         ) 
-        (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty") )
+        (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty"))
         (piece "Dog" P2 "StepToEmpty") 
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Dog2" (union (expand (sites Bottom) steps:1) (sites {"A3" "E3"})))

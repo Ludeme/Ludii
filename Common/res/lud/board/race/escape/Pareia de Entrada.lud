@@ -1,53 +1,26 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (handSite Next)))
-    ) 
-)
-
-(define "DieNotUsed" (!= (pips) 0))
+(define "RemoveAPiece" (move Remove (from)))
 
 //------------------------------------------------------------------------------
 
 (game "Pareia de Entrada"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
-            {
-            (track "Track1" {24 0..5 6..11 23..18 17..12} P1 directed:True)
-            (track "Track2" {25 0..5 6..11 23..18 17..12} P2 directed:True)
-            }
-            use:Vertex
-        )
+        ("TableBoard" "TableTracksSameDirectionWithHands")
         (dice d:6 num:<Dice:num>)
         (hand Each)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= "SiteToMoveOnTrack" Off)
+                (if ("IsOffBoard" "SiteToMoveOnTrack")
                     "RemoveAPiece"
-                    (if (or
-                            (not (is Enemy (who at:"SiteToMoveOnTrack")))
-                            (and 
-                                (is Enemy (who at:"SiteToMoveOnTrack"))
-                                (= 1 (size Stack at:"SiteToMoveOnTrack"))
-                            )
-                        )
+                    (if ("NoEnemyOrOnlyOne" "SiteToMoveOnTrack")
                         (move 
                             (from) 
                             (to 
                                 "SiteToMoveOnTrack" 
-                                "CaptureEnemyPiece"
+                                ("HittingCapture" (handSite Next))
                             )
                         )
                     )
@@ -65,16 +38,14 @@
                 next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True)
                     (then 
                         (and
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
+                            ("ReplayNotAllDiceUsed")
                             (if (and (all DiceUsed) (all DiceEqual)) (and (set Pending) (moveAgain)))
                         )
                     )
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -124,4 +95,3 @@
     })
     
 )
-

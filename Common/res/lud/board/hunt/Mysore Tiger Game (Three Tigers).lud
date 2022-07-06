@@ -15,17 +15,14 @@
             use:Vertex
         ) 
         (hand Each) 
-        (piece "Human" P2
-            ("StepToEmpty")
-        )
+        (piece "Human" P2 ("StepToEmpty"))
         (piece "Tiger" P1
             (or 
                 ("StepToEmpty")
                 ("HopCapture")
             )
         )
-        }
-    )  
+    })  
     (rules 
         (start {
             (place "Human2" (handSite P2) count:17)
@@ -76,7 +73,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

@@ -1,7 +1,7 @@
 (game "Pretwa"  
     (players 2)  
     (equipment { 
-        (board (concentric {1 6 6 6} ) use:Vertex)
+        (board (concentric {1 6 6 6}) use:Vertex)
         (piece "Counter" Each 
             (or 
                 ("HopRotationalSequenceCapture") 
@@ -13,7 +13,7 @@
     (rules 
         (start {
             (place "Counter1" (sites {2..4 8..10 14..16})  )
-            (place "Counter2" (sites {1 6 5 7 12 11 13 18 17}) )
+            (place "Counter2" (sites {1 6 5 7 12 11 13 18 17}))
         })
         
         (play 

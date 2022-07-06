@@ -12,8 +12,8 @@
     
     (rules 
         (start { 
-            (place "Counter1" (union (difference (expand (sites Bottom) steps:2) (sites {"E5" "G5" "I5"}) ) (sites {"B2" "B4" "D2" "D4" "F2" "F4" "H2" "H4"}) ))
-            (place "Counter2" (union (difference (expand (sites Top) steps:2) (sites {"E5" "A5" "C5"}) ) (sites {"B6" "B8" "D6" "D8" "F6" "F8" "H6" "H8"}) ))
+            (place "Counter1" (union (difference (expand (sites Bottom) steps:2) (sites {"E5" "G5" "I5"})) (sites {"B2" "B4" "D2" "D4" "F2" "F4" "H2" "H4"})))
+            (place "Counter2" (union (difference (expand (sites Top) steps:2) (sites {"E5" "A5" "C5"})) (sites {"B6" "B8" "D6" "D8" "F6" "F8" "H6" "H8"})))
         })
         
         (play (forEach Piece))

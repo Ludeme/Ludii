@@ -118,7 +118,7 @@
         (regions "Home" P2 { 7..12 }) 
         (map {(pair 1 12) (pair 2 25)}) // The starting positions of each player.
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
-    } )
+    })
     
     (rules
         (start { 
@@ -169,7 +169,7 @@
                 (byScore { 
                     ("SetScoreOf" P1 P2)
                     ("SetScoreOf" P2 P1)
-                } )
+                })
             )
         )
     )

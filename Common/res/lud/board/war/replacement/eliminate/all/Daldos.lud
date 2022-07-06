@@ -31,8 +31,8 @@
         (board 
             (merge {
                 (rectangle 1 16)
-                (shift -1 1 (rectangle 1 17) )
-                (shift 0 2 (rectangle 1 16) )
+                (shift -1 1 (rectangle 1 17))
+                (shift 0 2 (rectangle 1 16))
             })
             {
             (track "Track1" {0..15 32..16 33..48 32..16} loop:True P1)

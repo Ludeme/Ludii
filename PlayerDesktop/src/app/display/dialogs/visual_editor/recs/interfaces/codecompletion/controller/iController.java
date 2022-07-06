@@ -1,9 +1,7 @@
 package app.display.dialogs.visual_editor.recs.interfaces.codecompletion.controller;
 
-import app.display.dialogs.visual_editor.recs.codecompletion.Ludeme;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.Instance;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.model.NGram;
-import main.grammar.Symbol;
 
 import java.util.List;
 

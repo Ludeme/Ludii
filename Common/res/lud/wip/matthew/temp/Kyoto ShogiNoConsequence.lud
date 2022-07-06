@@ -10,7 +10,7 @@
 )
 
 (define "NextCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Osho" Next)))))
 )
 
 (define "PlacePiece" 
@@ -167,7 +167,7 @@
                         ) 
                         ("PlacePiece") 
                         (forEach Piece) 
-                    } )
+                    })
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
                 )
             )

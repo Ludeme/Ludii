@@ -4,12 +4,12 @@
         (from #1)
         Diagonal
         (between if:(is Enemy (who at:(between))))
-        (to if:(and (is Empty (to)) (not (is Visited (to))) ))
+        (to if:(and (is Empty (to)) (not (is Visited (to)))))
         #2		
     )
 ) 
 
-(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
+(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
 
 (define "GoalOfP1Filled" 
     (and {

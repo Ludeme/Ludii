@@ -1,13 +1,6 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (count Pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to))) 
-        (fromTo (from (to)) (to (mapEntry "Entry" Next)))
-    ) 
-)
+(define "RemoveAPiece" (move Remove (from)))
 
 //------------------------------------------------------------------------------
 
@@ -37,13 +30,13 @@
             }
         )
         (piece "Marker" Each
-            (if (= "SiteToMoveOnTrack" End)
+            (if ("IsEndTrack" "SiteToMoveOnTrack")
                 "RemoveAPiece"
-                (if (!= "SiteToMoveOnTrack" Off) 	 			
+                (if ("IsNotOffBoard" "SiteToMoveOnTrack") 	 			
                     (if (or
-                            (is In "SiteToMoveOnTrack" (sites Empty))
+                            (is Empty "SiteToMoveOnTrack")
                             (and 
-                                (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+                                (not ("IsFriendAt" "SiteToMoveOnTrack")) 
                                 (not (is In "SiteToMoveOnTrack" (sites "Protect")))
                             )
                         )
@@ -51,34 +44,31 @@
                             (from)
                             (to 
                                 "SiteToMoveOnTrack" 
-                                "CaptureEnemyPiece"
+                                ("HittingCapture" (mapEntry "Entry" Next))
                             )
                         )
                     )
                 )
             )
         )
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (hand Each)
         (regions "Protect" (sites {27 19 12 10 1}))
         (regions "SpecialDiceValues" (sites {1 5 6})) 
         (map "Entry" { (pair P1 23) (pair P2 31)})
     })
     (rules
-        (start 
-            (place "Marker" "Hand" count:3)
-        )
+        (start (place "Marker" "Hand" count:3))
         (play 
-            (do 
-                (roll) 
-                next:(if 
+            ("RollMove"
+                (if 
                     (and (is In (count Pips) (sites "SpecialDiceValues")) (not ("HandEmpty" Mover)))
                     (or
                         (move 
                             (from (handSite Mover)) 
                             (to 
                                 (mapEntry "Entry" Mover) 
-                                if:(not (is Enemy (who at:(to))))
+                                if:(not ("IsEnemyAt" (to)))
                             )
                         )
                         (forEach Piece)
@@ -88,7 +78,7 @@
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

@@ -1,3 +1,7 @@
+(define "StepMove" ("StepToEmpty" (directions { Forward Leftward Rightward })))
+
+//------------------------------------------------------------------------------
+
 (game "Dodgem"
     (players 2)
     (equipment {
@@ -5,13 +9,13 @@
         (piece "Car" P1 E 
             (if (is In (from) (sites Right))
                 (move Remove (from))
-                (move Step (directions { Forward Leftward Rightward }) (to if:(is Empty (to))))
+                ("StepMove")
             )
         )
         (piece "Car" P2 N 
             (if (is In (from) (sites Top))
                 (move Remove (from))
-                (move Step (directions { Forward Leftward Rightward }) (to if:(is Empty (to))))
+                ("StepMove")
             )
         )
     })
@@ -21,9 +25,7 @@
             (place "Car2" (difference (sites Bottom) (sites {"A1"})))
         })
         (play (forEach Piece))
-        (end 
-            (if (no Pieces Mover) (result Mover Win))
-        )
+        (end ("EscapeWin"))
     )
 )
 

@@ -144,7 +144,7 @@
                 (then 
                     (if (is Line 3 if:("CheckLineRightSubGame"))  // add a piece in the supergame                                    
                         (add 
-                            (piece (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")) )
+                            (piece (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")))
                             (to (mapEntry "SubToSuper" (last To)))
                         )
                     )

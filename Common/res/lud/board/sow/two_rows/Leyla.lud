@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
 
 (define "APlayerCanNotMove"
     (and (not (is Next Mover))
@@ -29,7 +29,7 @@
     })  
     (rules 
         
-        (start (set Count 4 to:(sites Track) ))
+        (start (set Count 4 to:(sites Track)))
         
         phases:{
         (phase "Sowing"

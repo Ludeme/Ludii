@@ -105,7 +105,7 @@
                                             )
                                             (remove (to) level:(level))
                                             (add (piece ("PawnPiece" (who at:(to) level:(level)))) (to (centrePoint)))
-                                        } )
+                                        })
                                     )
                                 )
                             )
@@ -156,7 +156,7 @@
             )
         )
         
-        (end  (if (no Pieces TeamMover) (result TeamMover Win)))
+        (end ("EscapeTeamWin"))
     )
 )
 

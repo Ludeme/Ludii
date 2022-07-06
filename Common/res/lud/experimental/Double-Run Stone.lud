@@ -167,12 +167,12 @@
 (define "HexLimp" (trim (tri Limping (- <BoardSize:smallSide> 1))))
 (define "TriSquare" (tiling T33434 (- <BoardSize:smallSide> 2)))
 (define "HexHex" (tri Hexagon <BoardSize:smallSide>))
-(define "Icosahedron" (add (remove (tri Limping 4) vertices:{0 1 3 4 5 6 7 8 9 10 11 13 15 17 18 19 20 23 24 25 26 27 31 32 34 35 36 37 39 40 42 43 44 45 46 47}) edges:{ {0 1} {0 2} {0 3} {0 9} {0 10} {1 2} {1 4} {1 6} {6 11} {7 11} {8 11} {1 9} {2 3} {3 5} {3 8} {3 10} {6 9} {8 10} {9 10} {9 11} {10 11} } ))
+(define "Icosahedron" (add (remove (tri Limping 4) vertices:{0 1 3 4 5 6 7 8 9 10 11 13 15 17 18 19 20 23 24 25 26 27 31 32 34 35 36 37 39 40 42 43 44 45 46 47}) edges:{ {0 1} {0 2} {0 3} {0 9} {0 10} {1 2} {1 4} {1 6} {6 11} {7 11} {8 11} {1 9} {2 3} {3 5} {3 8} {3 10} {6 9} {8 10} {9 10} {9 11} {10 11} }))
 
 (define "Stalemate" 
     (if 
         (no Moves Mover)
-        (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0)) ))  
+        (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0))))  
         (move Pass (then (set Score Mover (count Pieces Mover in:(sites Board)))))
 ))
 //-----------------------------------------------

@@ -10,8 +10,8 @@
     )  
     (rules 
         (start { 
-            (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
-            (place "Disc2" (forEach (sites Board) if:(> (site) (centrePoint)) ))
+            (place "Disc1" (forEach (sites Board) if:(< (site) (centrePoint))))
+            (place "Disc2" (forEach (sites Board) if:(> (site) (centrePoint))))
         })
         (play [#])
         (end [#])

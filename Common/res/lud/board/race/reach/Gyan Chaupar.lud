@@ -7,7 +7,7 @@
             Each 
             (move 
                 (from (from) level:(level)) 
-                (to (mapEntry (trackSite Move steps:(count Pips) ) ) )
+                (to (mapEntry (trackSite Move steps:(count Pips)) ))
             )
         )
         (dice num:1)
@@ -19,9 +19,9 @@
     })  
     
     (rules 
-        (start (place Stack items:{"Pawn4" "Pawn3" "Pawn2" "Pawn1"} coord:"A1") )	
+        (start (place Stack items:{"Pawn4" "Pawn3" "Pawn2" "Pawn1"} coord:"A1"))	
         
-        (play (do (roll) next:(forEach Piece) ) )
+        (play (do (roll) next:(forEach Piece)) )
         
         (end (if (= (last To) (trackSite EndSite)) (result Mover Win)))  
     )

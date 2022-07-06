@@ -18,7 +18,7 @@
 )
 
 (define "CanNotMove"
-    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King" #1)))) )
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player #2))) ifAfterwards:(not ("IsInCheck" "King" #1)))))
 )
 
 (define "RemoveKingIfCheckmate"
@@ -267,10 +267,10 @@
         (regions "ExtraSquare" P2 (expand origin:191 steps:3))
         (regions "ExtraSquare" P3 (expand origin:174 steps:3))
         (regions "ExtraSquare" P4 (expand origin:0 steps:3))
-        (regions "Promotion" P1 (union (sites {"E3".."L3"}) (sites Bottom) ))
-        (regions "Promotion" P2 (union (sites {"C5".."C12"}) (sites Left) ))
-        (regions "Promotion" P3 (union (sites {"E14".."L14"}) (sites Top) ))
-        (regions "Promotion" P4 (union (sites {"N5".."N12"}) (sites Right) ))
+        (regions "Promotion" P1 (union (sites {"E3".."L3"}) (sites Bottom)))
+        (regions "Promotion" P2 (union (sites {"C5".."C12"}) (sites Left)))
+        (regions "Promotion" P3 (union (sites {"E14".."L14"}) (sites Top)))
+        (regions "Promotion" P4 (union (sites {"N5".."N12"}) (sites Right)))
     })
     (rules 
         (start {
@@ -337,7 +337,7 @@
             (if (and { (not (is Active P1)) (not (is Active P3)) (is Active P4) }) (result P4 Win))
             (if (and { (not (is Active P2)) (not (is Active P4)) (is Active P1) }) (result P1 Win))
             (if (and { (not (is Active P2)) (not (is Active P4)) (is Active P3) }) (result P3 Win))
-        } )
+        })
     )
 )
 

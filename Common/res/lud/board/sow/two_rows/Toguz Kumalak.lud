@@ -1,6 +1,6 @@
 (define "Columns" 9)
 
-(define "OppositePit" (if (is Mover P1) (- (to) "Columns") (+ (to) "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (- (to) "Columns") (+ (to) "Columns")) )
 
 (define "Tuz" (value Player #1))
 
@@ -28,7 +28,7 @@
     })  
     (rules 
         
-        (start (set Count 9 to:(sites Track)) )
+        (start (set Count 9 to:(sites Track)))
         
         (play 
             (move

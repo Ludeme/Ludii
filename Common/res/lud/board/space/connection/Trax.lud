@@ -2,9 +2,9 @@
 
 (define "PathLength" (/ "NumTiles" 4))
 
-(define "PositionOfTileX" (from (handSite Shared)) )
+(define "PositionOfTileX" (from (handSite Shared)))
 
-(define "PositionOfTileCurved" (from (handSite Shared 1)) )
+(define "PositionOfTileCurved" (from (handSite Shared 1)))
 
 (define "AnotherConnectedTile" (sites Around (sites Occupied by:All) Orthogonal if:(is Empty (to))))
 

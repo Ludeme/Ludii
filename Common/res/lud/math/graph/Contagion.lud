@@ -35,7 +35,7 @@
     })  
     
     (rules 
-        (start (set Score P2 (* (count Rows) (count Columns)) ))
+        (start (set Score P2 (* (count Rows) (count Columns))))
         
         phases:{
         (phase "InitContagion" P1 

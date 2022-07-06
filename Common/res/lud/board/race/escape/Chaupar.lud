@@ -10,9 +10,6 @@
     })
 )
 
-(define "TrackMove" (trackSite Move #1 #2 steps:#3))
-(define "DieNotUsed" (!= (pips) 0))
-
 (define "CountPieceTypeInStack"
     (count Pieces of:#1 in:(sites {#2}))
 )
@@ -30,10 +27,10 @@
         (if (and { (= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
             (move 
                 (from (from) level:(level))
-                (to ("TrackMove" from:(from) #1 (* 2 ("Die1"))))
+                (to ("NextSiteOnTrack" (* 2 ("Die1")) from:(from) #1))
                 (then 
                     (forEach Level (last From) FromTop
-                        (if (= (mover) (who at:(last From) level:(level)))
+                        (if (is Mover (who at:(last From) level:(level)))
                             (fromTo 
                                 (from (last From) level:(level))
                                 (to (last To))
@@ -45,23 +42,19 @@
         )
         (forEach Die
             if:("DieNotUsed")	
-            (if (= End ("TrackMove" from:(from) #1 (pips)))
+            (if ("IsEndTrack" ("NextSiteOnTrack" (pips) from:(from) #1))
                 (move Remove (from) level:(level))
                 (move 
                     (from (from) level:(level))
-                    (to ("TrackMove" from:(from) #1 (pips)))
+                    (to ("NextSiteOnTrack" (pips) from:(from) #1))
                 )
             )
-            (then
-                (if (not (all DiceUsed)) 
-                    (moveAgain)
-                )
-            )
+            (then ("ReplayNotAllDiceUsed"))
         )
         (then
             (forEach Level (last To) FromTop
                 (if (and 
-                        (is Enemy (who at:(last To) level:(level)))
+                        ("IsEnemyAt" (last To) level:(level))
                         (= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
                     )
                     (fromTo 
@@ -95,17 +88,7 @@
 (game "Chaupar"  
     (players 4)  
     (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+        ("PachisiBoard" 
             {
             (track "Track1" "61,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N7,End" P1 directed:True)
             (track "Track2" "21,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End"  P2 directed:True)
@@ -116,7 +99,7 @@
         (dice d:4 faces:{1 2 5 6} num:3)
         (map "Start" {(pair P1 61) (pair P2 21) (pair P3 88) (pair P4 32)})
         (piece "Pawn" Each ("PieceMove" "Track"))
-    } )  
+    })  
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -129,13 +112,9 @@
             (place Stack "Pawn4" (sites {33 32 49 50}))
         })
         
-        (play 
-            (do (if (not ("SameTurn")) (roll))
-                next:("Move")
-            )
-        )
+        (play ("RollEachNewTurnMove" ("Move")))
         
-        (end  (if (no Pieces TeamMover) (result TeamMover Win)))
+        (end ("EscapeTeamWin"))
     )
 )
 

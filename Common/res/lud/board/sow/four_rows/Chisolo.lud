@@ -1,6 +1,6 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "InitOneSeed" <Board:InitOneSeed>)
 (define "InitTwoSeed" <Board:InitTwoSeeds>)
@@ -22,9 +22,9 @@
         (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
-        (regions "FourLeftInner" P1 (sites {<Board:LeftInnerHolesP1>}) )           // P1 four left inner holes
-        (regions "FourLeftInner" P2 (sites {<Board:LeftInnerHolesP2>}) )           // P2 four left inner holes
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
+        (regions "FourLeftInner" P1 (sites {<Board:LeftInnerHolesP1>}))           // P1 four left inner holes
+        (regions "FourLeftInner" P2 (sites {<Board:LeftInnerHolesP2>}))           // P2 four left inner holes
         (piece "Seed" Shared)
         (hand Each)
     })  
@@ -155,9 +155,9 @@
     (item "Natatu"  
         <
         (start {
-            (set Count 3 to:(difference (union (sites P1 "Home") (sites P2 "Home") ) (union (sites P1 "FourLeftInner") (sites P2 "FourLeftInner") )) )
-            (set Count 1 to:(sites {"InitOneSeed"}) )
-            (set Count 2 to:(sites {"InitTwoSeed"}) )
+            (set Count 3 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (sites P1 "FourLeftInner") (sites P2 "FourLeftInner"))))
+            (set Count 1 to:(sites {"InitOneSeed"}))
+            (set Count 2 to:(sites {"InitTwoSeed"}))
         })
         >  
     "Starting positions of the Natatu ruleset.")*  
@@ -165,7 +165,7 @@
     (item "Nambidi"  
         <
         (start 
-            (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ))
+            (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")))
         )
         >  
     "Starting positions of the Nambidi ruleset.") 
@@ -173,7 +173,7 @@
     (item "Namudilakunze"  
         <
         (start 
-            (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home") ) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right))) ) )
+            (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right)))) )
         )
         >  
     "Starting positions of the Namudilakunze ruleset.") 
@@ -181,7 +181,7 @@
     (item "One counter"  
         <
         (start 
-            (set Count 1 to:(union (sites P1 "Home") (sites P2 "Home") ))
+            (set Count 1 to:(union (sites P1 "Home") (sites P2 "Home")))
         )
         >  
     "Starting positions of the One counter ruleset.") 

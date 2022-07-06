@@ -145,6 +145,7 @@ public class Piece implements GraphicsItem
 	 * @param pieceName  Base piece name to match.
 	 * @param container Container index to match.
 	 * @param image      Name of the image to draw.
+	 * @param text        	Text string to draw.
 	 * @param state  	 State to match.
 	 * @param value  	 Value to match.
 	 * @param fillColour Colour for the inner sections of the image. Default value
@@ -175,7 +176,8 @@ public class Piece implements GraphicsItem
 		@Opt @Name final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
-			 @Name final String image,
+		@Opt @Name final String image,
+		@Opt @Name final String text,
 		@Opt @Name final Colour fillColour,
 		@Opt @Name final Colour edgeColour,
 		@Opt @Name final Float scale,
@@ -189,9 +191,9 @@ public class Piece implements GraphicsItem
 		switch (pieceType)
 		{
 		case Background:
-			return new PieceBackground(roleType, pieceName, container, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
+			return new PieceBackground(roleType, pieceName, container, state, value, image, text, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 		case Foreground:
-			return new PieceForeground(roleType, pieceName, container, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
+			return new PieceForeground(roleType, pieceName, container, state, value, image, text, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 		default:
 			break;
 		}

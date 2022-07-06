@@ -88,9 +88,9 @@
     (rules 
         
         (start { 
-            (set Count 4 to:(union (sites P1)  (sites P2)) ) 
-            (set Count 5 at:(mapEntry 1) ) 
-            (set Count 5 at:(mapEntry 2) )
+            (set Count 4 to:(union (sites P1)  (sites P2))) 
+            (set Count 5 at:(mapEntry 1)) 
+            (set Count 5 at:(mapEntry 2))
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })

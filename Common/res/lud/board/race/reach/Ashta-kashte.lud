@@ -83,12 +83,12 @@
                     )
                 })
                 (then 
-                    (if ("Grace") (moveAgain) )
+                    (if ("Grace") (moveAgain))
                 )
             )		
         )
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 //------------------------------------------------------------------------------

@@ -9,7 +9,6 @@ import app.display.dialogs.visual_editor.model.interfaces.iGNode;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.panels.editor.ConnectionHandler;
 import main.grammar.Clause;
-import main.grammar.Symbol;
 
 import javax.swing.*;
 import java.util.List;

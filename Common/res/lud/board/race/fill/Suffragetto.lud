@@ -36,7 +36,7 @@
 // #2 - to region
 (define "MoveStep"
     (move 	// standard move without capture
-        (from (from) if:(is In (from) #1) )
+        (from (from) if:(is In (from) #1))
         (to (intersection {(sites Around (from)) (sites Empty) #2 }))
     )
 )

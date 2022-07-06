@@ -1,6 +1,6 @@
 (define "SiteToMoveOnTrack" (trackSite Move from:#1 steps:(pips)))
 
-(define "RemoveAPiece" (move Select (from #1) (then (if (= (count at:(last To)) 1) (remove (last To)) (set Count at:(last To) (- (count at:(last To)) 1))))) )
+(define "RemoveAPiece" (move Select (from #1) (then (if (= (count at:(last To)) 1) (remove (last To)) (set Count at:(last To) (- (count at:(last To)) 1))))))
 
 (define "PieceMove" 
     (forEach Die 
@@ -85,7 +85,7 @@
             )
         )
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

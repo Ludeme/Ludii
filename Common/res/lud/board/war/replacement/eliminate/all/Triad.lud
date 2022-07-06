@@ -69,7 +69,7 @@
                     (to (sites Empty))
                     (then (set NextPlayer (player "Candidate")))
                 )
-                (max Captures (forEach Piece) )
+                (max Captures (forEach Piece))
             )
         )
         (end
@@ -122,8 +122,8 @@
         (player Colour P3 (colour Red))
         (board Checkered)
         (board Colour Phase0 (colour 52 255 130))
-        (board Colour Phase1 (colour 29 203 255) )
-        (board Colour Phase2 (colour 255 166 166) )
+        (board Colour Phase1 (colour 29 203 255))
+        (board Colour Phase2 (colour 255 166 166))
     })
     
     (ai

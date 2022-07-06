@@ -3,7 +3,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("KingCheck" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("KingCheck" Next)))))
 )
 
 (define "KingInTheInitialPlace"
@@ -196,8 +196,8 @@
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })  
     (rules 
         (start { 
@@ -244,7 +244,7 @@
                 }) 
                 (result P1 Win)
             ) 
-            (if (or (no Moves Next) (and (= <challenge:limit> (count Turns)) (not (is Mover Next)))) (result P1 Loss) )
+            (if (or (no Moves Next) (and (= <challenge:limit> (count Turns)) (not (is Mover Next)))) (result P1 Loss))
         }) 
     )
 )

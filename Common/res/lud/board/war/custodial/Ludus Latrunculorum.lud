@@ -59,7 +59,7 @@
         (define "Rescue" 
             ("Custodial"
                 (from (between)) 
-                if:(and (= (what at:(between)) (mover) ) ("IsAlligatus" (between)))
+                if:(and (= (what at:(between)) (mover)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
                 (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
             )
@@ -69,7 +69,7 @@
         (define "Released"
             ("Custodial"
                 (from (last From)) 	
-                if:(and (= (what at:(between)) (next) ) ("IsAlligatus" (between)))
+                if:(and (= (what at:(between)) (next)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
                 (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
             )
@@ -124,7 +124,7 @@
         (rules
             ("NoRepetition")
             
-            (start (place "Vagi" "Hand" count:16) )
+            (start (place "Vagi" "Hand" count:16))
             
             phases:{
             (phase "Placement" 
@@ -228,7 +228,7 @@
         (define "Rescue" 
             ("Custodial"
                 (from (between)) 
-                if:(and (= (what at:(between)) (mover) ) ("IsAlligatus" (between)))
+                if:(and (= (what at:(between)) (mover)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
                 (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
             )
@@ -238,7 +238,7 @@
         (define "Released"
             ("Custodial"
                 (from (last From)) 	
-                if:(and (= (what at:(between)) (next) ) ("IsAlligatus" (between)))
+                if:(and (= (what at:(between)) (next)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
                 (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
             )
@@ -311,7 +311,7 @@
         (rules
             ("NoRepetition")
             
-            (start (place "Vagi" "Hand" count:16) )
+            (start (place "Vagi" "Hand" count:16))
             
             phases:{
             (phase "Agreement" 
@@ -442,7 +442,7 @@
         (define "Rescue" 
             ("Custodial"
                 (from (between)) 
-                if:(and (= (what at:(between)) (mover) ) ("IsAlligatus" (between)))
+                if:(and (= (what at:(between)) (mover)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
                 (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
             )
@@ -453,7 +453,7 @@
             (or
                 ("Custodial"
                     (from (last From)) 	
-                    if:(and (= (what at:(between)) (next) ) ("IsAlligatus" (between)))
+                    if:(and (= (what at:(between)) (next)) ("IsAlligatus" (between)))
                     (apply ("Flip")) 
                     (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
                 )
@@ -461,7 +461,7 @@
                     (from (last From)) 
                     Orthogonal 
                     (between 
-                        if:(and { (is In (between) (sites Corners))(= (what at:(between)) (next) ) ("IsAlligatus" (between)) })
+                        if:(and { (is In (between) (sites Corners))(= (what at:(between)) (next)) ("IsAlligatus" (between)) })
                         (apply ("Flip")) 
                     ) 
                     (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
@@ -519,7 +519,7 @@
         (rules
             (meta (no Repeat))
             
-            (start (place "Vagi" "Hand" count:20) )
+            (start (place "Vagi" "Hand" count:20))
             
             phases:{
             (phase "Placement" 
@@ -626,7 +626,7 @@
         (rules
             (meta (no Repeat))
             
-            (start (place "Vagi" "Hand" count:20) )
+            (start (place "Vagi" "Hand" count:20))
             
             phases:{
             (phase "Placement" 
@@ -682,7 +682,7 @@
         })
         (rules 
             ("NoRepetition")
-            (start { (place "Counter1" (expand (sites Bottom) )) (place "Counter2" (expand (sites Top) )) })
+            (start { (place "Counter1" (expand (sites Bottom))) (place "Counter2" (expand (sites Top))) })
             (play (forEach Piece))
             (end (if (no Pieces Next) (result Mover Win))) 
         )
@@ -925,7 +925,7 @@
             ("NoRepetition")
             (start { 
                 (place "Counter1" (handSite P1) count:16) (place "Counter2" (handSite P2) count:16) 
-                (place "Dux1" (handSite P1 1) ) (place "Dux2" (handSite P2 1)) 
+                (place "Dux1" (handSite P1 1)) (place "Dux2" (handSite P2 1)) 
             })
             
             phases:{
@@ -1012,7 +1012,7 @@
             ("NoRepetition")
             (start { 
                 (place "Counter1" (handSite P1) count:16) (place "Counter2" (handSite P2) count:16) 
-                (place "Dux1" (handSite P1 1) ) (place "Dux2" (handSite P2 1)) 
+                (place "Dux1" (handSite P1 1)) (place "Dux2" (handSite P2 1)) 
             })
             
             phases:{

@@ -1,13 +1,11 @@
-(define "DieNotUsed" (!= (pips) 0))
+(define "SiteToSelect" ("NextSiteOnTrack" (- (pips) 1) from:(mapEntry "StartTrack" (mover))))
 
-(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (pips)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+(define "RemoveAPiece" (move Remove (from)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "PieceUnstacked" (= (state at:#1) 1) )
-(define "PieceStacked" (= (state at:#1) 0) )
+(define "PieceUnstacked" (= (state at:#1) 1))
+(define "PieceStacked" (= (state at:#1) 0))
 
 (define "Unstack" 
     (forEach Level (last To)
@@ -26,24 +24,21 @@
 (game "Ofanfelling"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
+        ("BackgammonBoard"
             {
             (track "Track1" {7..12} P1 directed:True)
             (track "Track2" {18..13} P2 directed:True)
             }
-            use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= "SiteToMoveOnTrack" Off)
+                (if ("IsOffBoard" "SiteToMoveOnTrack")
                     "RemoveAPiece"
                     (move 
                         (from) 
-                        (to 
-                            "SiteToMoveOnTrack" 
-                        )
+                        (to "SiteToMoveOnTrack")
                     )
                 )
             )
@@ -65,12 +60,10 @@
                         (if ("PieceStacked" "SiteToSelect")
                             (move Select (from ("SiteToSelect"))
                                 (then 
-                                    (and {
+                                    (and
                                         ("Unstack")
-                                        (if (not (all DiceUsed))
-                                            (moveAgain)
-                                        )
-                                    })
+                                        ("ReplayNotAllDiceUsed")
+                                    )
                                 )
                             )
                         )
@@ -78,7 +71,7 @@
                     (then (if (all DiceEqual) (and (set Pending) (moveAgain))))
                 )
             )
-            (nextPhase Mover (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) "Stacking")
+            (nextPhase Mover (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) "Stacking")
         )
         (phase "Stacking" (play 
                 (do 
@@ -89,12 +82,10 @@
                         (if ("PieceUnstacked" "SiteToSelect")
                             (move Select (from ("SiteToSelect"))
                                 (then 
-                                    (and {
+                                    (and 
                                         ("Stack")
-                                        (if (not (all DiceUsed))
-                                            (moveAgain)
-                                        )
-                                    })
+                                        ("ReplayNotAllDiceUsed")
+                                    )
                                 )
                             )
                         )
@@ -102,16 +93,17 @@
                     (then (if (all DiceEqual) (and (set Pending) (moveAgain))))
                 )
             )
-            (nextPhase Mover (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceUnstacked" (site))))) "BearingOff")
+            (nextPhase Mover (all Sites (sites Occupied by:Mover) if:(not ("PieceUnstacked" (site)))) "BearingOff")
         )
-        (phase "BearingOff" (play 
+        (phase "BearingOff" 
+            (play 
                 (do 
                     (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
                     next:(forEach Piece top:True)
                     (then (if (or (not (all DiceUsed)) (all DiceEqual)) (moveAgain)))
                 )
             )
-            (end (if (no Pieces Mover) (result Mover Win)))
+            (end ("EscapeWin"))
         )
         }
     )
@@ -142,4 +134,3 @@
     })
     
 )
-

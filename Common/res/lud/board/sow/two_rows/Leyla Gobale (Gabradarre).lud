@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
 (define "PlayableSites" (sites (values Remembered "Playable")))
 
 (define "APlayerCanNotMove"
@@ -44,7 +44,7 @@
         
         (start {
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
-            (set Count 5 to:(sites Track) ) 
+            (set Count 5 to:(sites Track)) 
         })
         
         phases:{

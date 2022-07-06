@@ -1,0 +1,6 @@
+// Checks if the mover has no pieces and makes it win. This ludemeplex can be used only in an ending condition.
+// @example ("EscapeWin")
+
+(define "EscapeWin"
+    (if (no Pieces Mover) (result Mover Win))
+)

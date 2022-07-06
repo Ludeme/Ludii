@@ -58,7 +58,7 @@
 (define "RestrictedSpotsHuman" (sites "Mountain"))
 
 (define "HumanMoveSpots"
-    (difference (union (sites Empty) (sites Occupied by:Mover container:"Board")) (union ("ForbiddenSpotsHuman") ("RestrictedSpotsHuman")) )
+    (difference (union (sites Empty) (sites Occupied by:Mover container:"Board")) (union ("ForbiddenSpotsHuman") ("RestrictedSpotsHuman")))
 )
 
 (define "RestrictedHumanMoveSpots"
@@ -67,9 +67,9 @@
 
 // Vehicle
 
-(define "ForbiddenSpotsVehicle" (union (sites "Mountain") (sites "DeepWater")) )
+(define "ForbiddenSpotsVehicle" (union (sites "Mountain") (sites "DeepWater")))
 
-(define "RestrictedSpotsVehicle" (union (sites "Forest") (sites "ShallowWater")) )
+(define "RestrictedSpotsVehicle" (union (sites "Forest") (sites "ShallowWater")))
 
 (define "VehicleMoveSpots"
     (difference (union (sites Empty) (sites Occupied by:Mover container:"Board")) (union ("ForbiddenSpotsVehicle") ("RestrictedSpotsVehicle")))
@@ -90,7 +90,7 @@
 (define "ForbiddenSpotsBoat" 
     (union 
         (sites "Mountain") 
-        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater")) ) 
+        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater"))) 
     )
 )
 
@@ -239,7 +239,7 @@
         ("DamageMultiply" (* (value Piece at:(#1)) 4) #1 )									// Planes are never affected by terrain									
         (if (and
                 (is In (#2) "HumanSites")
-                (is In (#1) (sites Occupied by:All component:"Shooter") )					// Shooter does double damage against humans
+                (is In (#1) (sites Occupied by:All component:"Shooter"))					// Shooter does double damage against humans
             )
             (if (is In (#2) (sites "Forest"))
                 ("DamageMultiply" (* (value Piece at:(#1)) 6) #1 )							// (Shooter does 150% damage against humans in forests)
@@ -260,7 +260,7 @@
 )
 
 (define "DamageMultiply"
-    (max (/ (* #1 (mapEntry "DamageMultiplier" (what at:(#2))) ) 100) 1)
+    (max (/ (* #1 (mapEntry "DamageMultiplier" (what at:(#2)))) 100) 1)
 )
 
 //------------------------------------------------------------------------------
@@ -297,7 +297,7 @@
             (from)
             if:(and
                 (> (state at:(from)) 0)
-                (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))) )
+                (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))))
             )
         )
         (to 
@@ -315,7 +315,7 @@
                 )
                 (set Value at:(last To) 
                     (max 
-                        (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From)) ))
+                        (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From))))
                         0
                     )
                 )
@@ -335,7 +335,7 @@
         (and {
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) ("PlainSites"))
                 )
                 (move
@@ -347,7 +347,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "Mountain"))
                 )
                 (move
@@ -359,7 +359,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "Forest"))
                 )
                 (move
@@ -371,7 +371,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "DeepWater"))
                 )
                 (move
@@ -383,7 +383,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "ShallowWater"))
                 )
                 (move
@@ -395,7 +395,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "Corn"))
                 )
                 (move
@@ -407,7 +407,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "Deer"))
                 )
                 (move
@@ -419,7 +419,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "Fishes"))
                 )
                 (move
@@ -431,7 +431,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "WildHorses"))
                 )
                 (move
@@ -443,7 +443,7 @@
             )
             (if 
                 (and
-                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))) )
+                    (= (state at:(site)) (mapEntry "Movement" (what at:(site))))
                     (is In (site) (sites "Nuclear"))
                 )
                 (move
@@ -542,7 +542,7 @@
 )
 
 (define "EnemyBuildingSites"
-    (union (sites Occupied by:Enemy container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}) (sites Occupied by:Neutral container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}) )
+    (union (sites Occupied by:Enemy container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}) (sites Occupied by:Neutral container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}))
 )
 
 (define "AircraftSites"
@@ -860,7 +860,7 @@
                                 })
                             )
                             (forEach Site (sites Occupied by:Mover components:{"Town" "Base" "Factory" "Dock" "Airport"})
-                                (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10) ))
+                                (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10)))
                             )
                         })
                     )
@@ -1185,7 +1185,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
-        (piece Background image:"square" fillColour:(colour 255 255 255 1) edgeColour:(colour 255 255 255 1) )
+        (piece Background image:"square" fillColour:(colour 255 255 255 1) edgeColour:(colour 255 255 255 1))
         (show Piece Value Top offsetImage:true valueOutline:true)
         
         <Scenario:pieceFlip>

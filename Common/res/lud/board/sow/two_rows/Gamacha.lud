@@ -2,7 +2,7 @@
 
 (define "NextHoleFrom" (trackSite Move from:#1 #2))
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 

@@ -16,7 +16,7 @@
 (option "Tiling Type" <Board> args:{ <type> }
     {
     (item "3x4" <(tiling P4_442 3 4)>    "")  
-    (item "Poly" <(tiling P4_442 (poly {{0 0} {0 6} {3 6} {9 0}}) )>    "")  
+    (item "Poly" <(tiling P4_442 (poly {{0 0} {0 6} {3 6} {9 0}}))>    "")  
     (item "Dual, 3x4" <(dual (tiling P_4_442 3 4))>  "")  
 })
 

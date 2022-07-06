@@ -1,10 +1,10 @@
 (define "Columns" <Row:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
 
-(define "OppositeMiddlePit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
+(define "OppositeMiddlePit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3)) ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3))) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -45,11 +45,11 @@
     )  
     (rules 
         
-        (start (set Count 2 to:(sites Board)) )
+        (start (set Count 2 to:(sites Board)))
         
         (play 
             (or {
-                (if (or (= (value Player Mover) 1) (<= (value Player Mover) 0) )
+                (if (or (= (value Player Mover) 1) (<= (value Player Mover) 0))
                     (move
                         Select
                         (from 
@@ -100,7 +100,7 @@
                         )
                     )
                 )
-                (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0) )
+                (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0))
                     (move
                         Select
                         (from 

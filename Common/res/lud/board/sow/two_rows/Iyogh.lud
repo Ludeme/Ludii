@@ -2,7 +2,7 @@
 
 (define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
 
-(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns") ) )
+(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns")) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -33,7 +33,7 @@
     })  
     (rules 
         
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)) )
         
         phases:{
         (phase "Opening"

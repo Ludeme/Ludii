@@ -17,7 +17,7 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 (define "PlayRules"
     (if "SameTurn"
@@ -34,7 +34,7 @@
                     ) 
                 )
             )
-            (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+            (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
         )
         (priority {
             (max Moves
@@ -88,7 +88,7 @@
                     ) 
                 )
             )
-            (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+            (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
         )
         (max Moves
             (or 
@@ -168,7 +168,7 @@
 
 (define "HasCaptured"  (set Value Mover 0))
 (define "HasNotCaptured" (set Value Mover 1))
-(define "DidNotCaptured"  (= (value Player Prev) 1) )
+(define "DidNotCaptured"  (= (value Player Prev) 1))
 (define "RememberSiteWithPossibleCapture"  
     (set Pending 
         (sites From
@@ -217,8 +217,8 @@
     
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1) ) )
+            (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1)  ))
+            (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1)) )
         })
         
         (play 

@@ -18,7 +18,7 @@
                         (last To)
                         (then 
                             (if 
-                                (not (is Empty (last To) )) 
+                                (not (is Empty (last To))) 
                                 (moveAgain) 
                             ) 
                         ) 
@@ -30,14 +30,14 @@
                     (sites Occupied by:Neutral)
                     (then 
                         (if 
-                            (not (is Empty (last To) )) 
+                            (not (is Empty (last To))) 
                             (moveAgain) 
                         ) 
                     ) 
                 )
             )
         ) 
-        (end (if (no Moves Next) (result <Result> Win) ) )
+        (end (if (no Moves Next) (result <Result> Win)) )
     )
 )
 

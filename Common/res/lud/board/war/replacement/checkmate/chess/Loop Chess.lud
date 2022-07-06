@@ -4,7 +4,7 @@
                 (or { 
                     (forEach Piece Next)
                     (move (from (sites Occupied by:Next container:"Hand" components:{"Rook" "Bishop" "Knight" "Queen"})) (to (sites Empty)))
-                    (move (from (sites Occupied by:Next container:"Hand" component:"Pawn" )) (to (difference (sites Empty) (sites "LastRanks") )))
+                    (move (from (sites Occupied by:Next container:"Hand" component:"Pawn" )) (to (difference (sites Empty) (sites "LastRanks"))))
                     }
                 )
                 ifAfterwards:(not ("IsInCheck" "King" Next))
@@ -204,14 +204,14 @@
             ) 
         )
         
-        (map "where" { (pair 2 64) (pair 1 70) (pair 4 65) (pair 3 71) (pair 6 66) (pair 5 72) (pair 8 67) (pair 7 73) (pair 10 68) (pair 9 74) (pair 12 69) (pair 11 75)} )
+        (map "where" { (pair 2 64) (pair 1 70) (pair 4 65) (pair 3 71) (pair 6 66) (pair 5 72) (pair 8 67) (pair 7 73) (pair 10 68) (pair 9 74) (pair 12 69) (pair 11 75)})
         (map "captured" { (pair 1 2) (pair 2 1) (pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11)})
         (map "King" {(pair 1 "E1") (pair 2 "E8")})
         (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
         (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
-        (regions "LastRanks" (union (sites Top) (sites Bottom) ))
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "LastRanks" (union (sites Top) (sites Bottom)))
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         
         (hand Each size:6)
         }
@@ -233,7 +233,7 @@
                     (or 
                         {
                         (move (from (sites Occupied by:Mover container:"Hand" components:{"Rook" "Bishop" "Knight" "Queen"})) (to (sites Empty)))
-                        (move (from (sites Occupied by:Mover container:"Hand" component:"Pawn" )) (to (difference (sites Empty) (sites "LastRanks") )))
+                        (move (from (sites Occupied by:Mover container:"Hand" component:"Pawn" )) (to (difference (sites Empty) (sites "LastRanks"))))
                         (forEach Piece)
                         (if (and {
                                 "KingInTheInitialPlace" 

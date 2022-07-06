@@ -12,11 +12,11 @@
     )
 )
 
-(define "ThreeSlideInARow" (= (counter) 5) )
+(define "ThreeSlideInARow" (= (counter) 5))
 
-(define "SurroundedOver" (is Triggered "Surrounded" #1) )
+(define "SurroundedOver" (is Triggered "Surrounded" #1))
 
-(define "SurroundedMySelf" ("NoSites" (sites Around (last To) if:(is Empty (to))) ))
+(define "SurroundedMySelf" ("NoSites" (sites Around (last To) if:(is Empty (to)))))
 
 //------------------------------------------------------------------------------
 
@@ -47,8 +47,8 @@
         (end {
             (if "ThreeSlideInARow" (result Mover Draw))
             (if "SurroundedMySelf" (result Next Win))
-            (if ("SurroundedOver" P1) (result P2 Win) ) 
-            (if ("SurroundedOver" P2) (result P1 Win) ) 
+            (if ("SurroundedOver" P1) (result P2 Win)) 
+            (if ("SurroundedOver" P2) (result P1 Win)) 
         })  
     )
 )

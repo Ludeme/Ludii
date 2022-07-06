@@ -11,7 +11,7 @@
     ) 
 )
 
-(define "ReachedTarget" (is In (last To) (sites Mover)) )
+(define "ReachedTarget" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -28,8 +28,8 @@
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)) )
             }
         )
         
@@ -38,7 +38,7 @@
                 (or
                     ("HopMan" (last To)
                         (then 
-                            (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+                            (if (can Move ("HopMan" (last To))) (moveAgain)) 
                         ) 
                     )
                     (move Pass)
@@ -47,7 +47,7 @@
                     (forEach Piece "Counter" 
                         ("HopMan" (from)
                             (then 
-                                (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+                                (if (can Move ("HopMan" (last To))) (moveAgain)) 
                             )
                         ) 
                     )

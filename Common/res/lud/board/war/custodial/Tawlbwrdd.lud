@@ -11,7 +11,7 @@
     )
 )
 
-(define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+(define "CaptureJarl" (apply (trigger "Surrounded" P2)))
 
 (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
 
@@ -53,14 +53,14 @@
                 Slide
                 Orthogonal 
                 (between if:"EmptyButNotCentreOrFortress")
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             ) 
         ) 
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             ) 
         ) 
         }
@@ -78,7 +78,7 @@
         
         (end
             {
-            (if (is Within (id "Jarl2") in:(sites Outer) ) (result P2 Win))
+            (if (is Within (id "Jarl2") in:(sites Outer)) (result P2 Win))
             (if "JarlWasCaptured"  (result P1 Win))
             }
         )

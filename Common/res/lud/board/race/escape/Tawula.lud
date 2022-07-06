@@ -1,13 +1,11 @@
-(define "SiteToEnter" (trackSite Move from:(mapEntry "StartTrack" Mover) steps:(pips)))
-(define "SiteToEnterCapturePiece" (trackSite Move from:("BarSite" Mover) steps:(pips)))
+(define "SiteToEnter" ("NextSiteOnTrack" (pips) from:(mapEntry "StartTrack" Mover)))
+(define "SiteToEnterCapturePiece" ("NextSiteOnTrack" (pips) from:("BarSite" Mover)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "DieNotUsed" (!= (pips) 0))
+(define "RemoveAPiece" (move Remove (from)))
 
 (define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
 
-(define "BarEmpty" (= (what at:("BarSite" #1)) 0))
+(define "BarEmpty" (is Empty ("BarSite" #1)))
 
 (define "BarSite" (mapEntry "Bar" #1))
 
@@ -19,15 +17,15 @@
 )
 
 (define "CaptureEnemyPiece" 
-    (if (is Enemy (who at:(to))) 
+    (if ("IsEnemyAt" (to)) 
         (move (from (to)) (to ("BarSite" Next)))
     )
 )
 
 (define "OneEnemyPiece" 
     (and
-        (= (size Stack at:(to)) 1)
-        (is Enemy (who at:(to)))
+        ("IsSingletonStack" (to))
+        ("IsEnemyAt" (to))
     )	
 )
 
@@ -35,7 +33,7 @@
     (and
         (not (is In (to) (sites Mover "OnePieceMax")))
         (or
-            (is Friend (who at:(to)))
+            ("IsFriendAt" (to))
             (is Empty (to)) 
         )
     )	
@@ -46,13 +44,7 @@
 (game "Tawula"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {6 25..20 18..13 0..5 7..12} P1 directed:True)
-            (track "Track2" {19 0..5 7..12 25..20 18..13} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" "BackgammonTracksSameDirectionOppositeCornersWithBars2")
         (dice d:6 num:2)
         (piece "Disc" Each
             (if (or 
@@ -64,7 +56,7 @@
                 )
                 (forEach Die 
                     if:("DieNotUsed")
-                    (if (= "SiteToMoveOnTrack" Off)
+                    (if ("IsOffBoard" "SiteToMoveOnTrack")
                         "RemoveAPiece"
                         (move 
                             (from) 
@@ -77,9 +69,7 @@
                                     )
                                     ("OneEnemyPiece")
                                 )
-                                (apply 
-                                    ("CaptureEnemyPiece")
-                                )
+                                (apply ("CaptureEnemyPiece"))
                             )
                         )
                     )
@@ -100,9 +90,8 @@
             (place Stack "Disc2" (handSite P2) count:13)
         })
         (play 
-            (do 
-                (if (not "SameTurn") (roll)) 
-                next:(or  
+                ("RollEachNewTurnMove"
+                        (or  
                     (if ("BarEmpty" Mover)
                         // Move a piece
                         (forEach Piece top:True) 
@@ -120,9 +109,7 @@
                                         )
                                         ("OneEnemyPiece")
                                     )
-                                    (apply 
-                                        ("CaptureEnemyPiece")
-                                    )
+                                    (apply ("CaptureEnemyPiece"))
                                 )
                             )
                         )
@@ -139,22 +126,16 @@
                                         (is Empty (to))
                                         ("OneEnemyPiece")
                                     )
-                                    (apply 
-                                        ("CaptureEnemyPiece")
-                                    )
+                                    (apply ("CaptureEnemyPiece"))
                                 )
                             )
                         )
                     )
-                    (then
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )		
-                    )
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )
         )
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 
@@ -185,4 +166,3 @@
     })
     
 )
-

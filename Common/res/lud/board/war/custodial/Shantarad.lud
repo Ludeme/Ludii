@@ -77,7 +77,7 @@
                         (to (difference (sites Empty) (centrePoint))) 
                         (then 
                             (if 
-                                (or (= (count Moves) 24) (not "SameTurn") )
+                                (or (= (count Moves) 24) (not "SameTurn"))
                                 (moveAgain)
                             )
                         )
@@ -96,10 +96,10 @@
                         (to if:(and 
                                 (is Empty (to)) 
                                 (or {
-                                    (and (is Enemy (who at:(ahead (to) W))) (is Friend (who at:(ahead (ahead (to) W) W))) )  
-                                    (and (is Enemy (who at:(ahead (to) E))) (is Friend (who at:(ahead (ahead (to) E) E))) )  
-                                    (and (is Enemy (who at:(ahead (to) N))) (is Friend (who at:(ahead (ahead (to) N) N))) )  
-                                    (and (is Enemy (who at:(ahead (to) S))) (is Friend (who at:(ahead (ahead (to) S) S))) )  
+                                    (and (is Enemy (who at:(ahead (to) W))) (is Friend (who at:(ahead (ahead (to) W) W))))  
+                                    (and (is Enemy (who at:(ahead (to) E))) (is Friend (who at:(ahead (ahead (to) E) E))))  
+                                    (and (is Enemy (who at:(ahead (to) N))) (is Friend (who at:(ahead (ahead (to) N) N))))  
+                                    (and (is Enemy (who at:(ahead (to) S))) (is Friend (who at:(ahead (ahead (to) S) S))))  
                                 }) 
                             )
                         )

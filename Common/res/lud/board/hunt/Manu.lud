@@ -1,20 +1,14 @@
 (game "Manu"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge 
-                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
-                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
-            )
-            use:Vertex
-        )
+        ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (hand P1)
-        (piece "Stick" P1 (or ("HopCapture") "StepToEmpty" ) )
+        (piece "Stick" P1 (or ("HopCapture") "StepToEmpty"))
         (piece "Marker" P2 "StepToEmpty") 
     })  
     (rules 
         (start { 
-            (place "Marker2" (union (expand (sites Bottom)) (sites Row 2) ) )
+            (place "Marker2" (union (expand (sites Bottom)) (sites Row 2)) )
             (place "Stick1" (handSite P1))
         })
         
@@ -59,7 +53,6 @@
         (board Style Graph)
         (player Colour P1 (colour VeryDarkGrey))
         (player Colour P2 (colour White))
-        
         }
     )
     

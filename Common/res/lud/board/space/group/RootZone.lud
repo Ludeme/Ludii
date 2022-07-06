@@ -79,7 +79,7 @@
 
 (define "ScoreUpdate"
     (if 
-        (> (* 2 (size Group at:(last To))) (score Mover) )
+        (> (* 2 (size Group at:(last To))) (score Mover))
         (if 
             (> (* 2 (size Group at:(last To))) (score Next))
             (set Score Mover (+ 1 (* 2 (size Group at:(last To)))))

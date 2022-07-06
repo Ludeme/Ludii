@@ -14,7 +14,7 @@
                     ("PlacePiece" Next) 
                     (forEach Piece Next) 
                 ) 
-    ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
+    ifAfterwards:(not ("IsInCheck" "Osho" Next)))))
 )
 
 (define "PlacePiece" 

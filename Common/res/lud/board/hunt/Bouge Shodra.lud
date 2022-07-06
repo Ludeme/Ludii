@@ -17,7 +17,7 @@
             )
         )
     })
-
+    
     (rules
         (start {
             (place "Bull2" (sites {"C3" "C7"}))
@@ -41,7 +41,7 @@
 //------------------------------------------------------------------------------
 
 (metadata
-
+    
     (info
         {
         (description "Bouge Shodra is played by the Tuvinian people of Siberia. Though it falls under our classification as a hunt game, the game actually represents the herding of bulls into pens.")
@@ -55,12 +55,12 @@
         (origin  "This game was played in Siberia, from around 1905 to 1995.")
         }
     )
-
+    
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
     })
-
+    
     (ai
         "Bouge Shodra_ai"
     )

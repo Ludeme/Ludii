@@ -1,0 +1,9 @@
+// Defines the capture of an enemy piece returning to a site. This ludemeplex can be used only as an effect.
+// @example ("HittingCapture" (handSite (who at:(to))))
+
+(define "HittingCapture"
+    (apply 
+        if:("IsEnemyAt" (to)) 
+        (fromTo (from (to)) (to #1))
+    ) 
+)

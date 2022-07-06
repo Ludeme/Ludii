@@ -15,14 +15,7 @@
 (game "Merimueng-rimueng"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-            }) 
-            use:Vertex
-        )
+        ("AlquerqueBoardWithBottomAndTopTriangles")
         (hand P2) 
         (piece "Tiger" P1 
             (or {
@@ -37,7 +30,7 @@
             (place "Sheep2" (difference (expand (sites Centre)) (centrePoint)))
             (place Stack "Sheep2" (handSite P2) count:15)
             (place Stack "Tiger1" (sites Centre) counts:{2})
-        } )
+        })
         
         phases:{
         (phase "Movement"
@@ -99,7 +92,6 @@
         (show Edges Diagonal Hidden)
         (stackType 1 Count)
         (stackType 2 Count)
-        
     })
     
 )

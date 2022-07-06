@@ -18,7 +18,7 @@
             (play (move (from (handSite P1)) (to (sites Empty)) (then (if (< 16 (count Cell at:(handSite P1))) (moveAgain))))) 
             (nextPhase Mover ("HandEmpty" Mover) "Playing") 
         )
-        (phase "Playing" (play (forEach Piece)) )
+        (phase "Playing" (play (forEach Piece)))
         }
         
         (end {

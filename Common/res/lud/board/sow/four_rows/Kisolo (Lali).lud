@@ -1,4 +1,4 @@
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -19,7 +19,7 @@
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
         (hand Each)
         }
@@ -27,7 +27,7 @@
     (rules 
         
         (start 
-            (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner") ) )
+            (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner")) )
         )
         
         (play 

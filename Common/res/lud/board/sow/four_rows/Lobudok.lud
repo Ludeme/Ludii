@@ -1,6 +1,6 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
@@ -18,9 +18,9 @@
         (regions "Home" P1 (sites Track "Track1"))                              // P1 home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner home
         (regions "SideHoles" P1 (intersection (sites Track "Track1") (union (sites Left) (sites Right))))  // P1 sides holes
-        (regions "SideHoles" P2 (intersection (sites Track "Track2") (union (sites Right) (sites Left) ))) // P2 sides holes
+        (regions "SideHoles" P2 (intersection (sites Track "Track2") (union (sites Right) (sites Left)))) // P2 sides holes
         (piece "Seed" Shared)
         (hand Each)
         }
@@ -28,9 +28,9 @@
     (rules 
         
         (start {
-            (set Count 1 to:(sites {2 5 13 10 29 26 18 21} )) 
-            (set Count 8 to:(sites {15 16 8 23} )) 
-            (set Count 6 to:(sites {6 9 22 25} )) 
+            (set Count 1 to:(sites {2 5 13 10 29 26 18 21})) 
+            (set Count 8 to:(sites {15 16 8 23})) 
+            (set Count 6 to:(sites {6 9 22 25})) 
         })
         
         (play
@@ -40,7 +40,7 @@
                         (if 
                             (is Mover Prev) 
                             "PlayFromLastHole" 
-                            (difference (sites Mover "Home") (sites Mover "SideHoles") )
+                            (difference (sites Mover "Home") (sites Mover "SideHoles"))
                         ) 
                         if:(> (count at:(from)) 1)
                     )
@@ -85,7 +85,7 @@
                 (if 
                     (if (= 1 (value Player Mover))
                         True
-                        (all Sites (difference (sites Mover "Home") (sites Mover "SideHoles") ) if:(<= (count at:(site)) 1))
+                        (all Sites (difference (sites Mover "Home") (sites Mover "SideHoles")) if:(<= (count at:(site)) 1))
                     )
                     (move Select
                         (from 

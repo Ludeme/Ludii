@@ -1,46 +1,30 @@
-(define "DieNotUsed" (!= (pips) 0))
+(define "SiteToSelect" ("NextSiteOnTrack" (- (pips) 1) from:(mapEntry "StartTrack" (mover))))
 
-(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
+(define "RemoveAPiece" (move Remove (from)))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
-
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "PieceStacked" (= (state at:#1) 1) )
+(define "PieceStacked" (= (state at:#1) 1))
 (define "Unstack" (set State at:(last To) 0))
 
-(define "StackSizeLessThan2" (< (size Stack at:"SiteToMoveOnTrack") 2))
+(define "StackSizeLessThan2" (< (size Stack at:("NextSiteOnTrack" (pips))) 2))
 
 //------------------------------------------------------------------------------
 
 (game "Doblet"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
-            })
-            {
-            (track "Track1" {0..5 6..11 23..18 17..12 End} P1 directed:True)
-            (track "Track2" {12..17 18..23 11..6 5..0 End} P2 directed:True)
-            }
-            use:Vertex
-        )
+        ("TableBoard" ("TableTracksOpposite" End))
         (dice d:6 num:3)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= "SiteToMoveOnTrack" End)
+                (if ("IsEndTrack" ("NextSiteOnTrack" (pips)))
                     "RemoveAPiece"
                     (move 
                         (from) 
                         (to 
-                            "SiteToMoveOnTrack" 
+                            ("NextSiteOnTrack" (pips)) 
                             if:"StackSizeLessThan2"
-                            (apply (if (is Enemy (who at:(to))) (remove (to))))
+                            (apply (if ("IsEnemyAt" (to)) (remove (to))))
                         )
                     )
                 )
@@ -57,9 +41,7 @@
         phases:{
         (phase "UnStacking" 
             (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
-                    next:
+                ("RollEachNewTurnMove"
                     (forEach Die 
                         if:("DieNotUsed")
                         (if ("PieceStacked" "SiteToSelect")
@@ -67,9 +49,7 @@
                                 (then 
                                     (and {
                                         ("Unstack")
-                                        (if (not (all DiceUsed))
-                                            (moveAgain)
-                                        )
+                                        ("ReplayNotAllDiceUsed")
                                     })
                                 )
                             )
@@ -77,20 +57,19 @@
                     )
                 )
             )
-            (nextPhase Mover (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) "BearingOff")
+            (nextPhase Mover (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) "BearingOff")
         )
         (phase "BearingOff"
             (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
-                    next:(forEach Piece top:True)
+                ("RollEachNewTurnMove"
+                    (forEach Piece top:True)
                     (then (if (and (not (was Pass)) (not (all DiceUsed))) (moveAgain)))
                 )
             )
         )
         }
         
-        (end (if (no Pieces Mover) (result Mover Win)))
+        (end ("EscapeWin"))
     )
 )
 

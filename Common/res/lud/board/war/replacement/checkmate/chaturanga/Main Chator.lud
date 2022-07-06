@@ -20,7 +20,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "SitesNextToKing" (sites {"C1" "E1" "D8" "F8"}))
@@ -38,7 +38,7 @@
 (game "Main Chator"
     (players {(player N) (player S)})  
     (equipment {
-        (board (square 8) )
+        (board (square 8))
         (piece "King_noCross"
             (or
                 (move
@@ -182,8 +182,8 @@
                 ) 
             )
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
         (start {   

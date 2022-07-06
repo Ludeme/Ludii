@@ -489,7 +489,7 @@
                 (is In (to) (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "Bishop"})) 	
             )
             (apply
-                if:(and (not (is In (to) (sites "TownRegion"))) (is In (to) (sites Occupied by:Enemy container:"Board")) )
+                if:(and (not (is In (to) (sites "TownRegion"))) (is In (to) (sites Occupied by:Enemy container:"Board")))
                 (remove (to))
             )
         )
@@ -518,7 +518,7 @@
                 (is In (to) (sites Occupied by:Enemy container:"Board" components:{"TinSoldier" "RiderOutline" "Bishop"})) 	
             )
             (apply
-                if:(and (not (is In (to) (sites "TownRegion"))) (is In (to) (sites Occupied by:Enemy container:"Board")) )
+                if:(and (not (is In (to) (sites "TownRegion"))) (is In (to) (sites Occupied by:Enemy container:"Board")))
                 (remove (to))
             )
         )
@@ -747,7 +747,7 @@
                     (remove (site))
                 )
             )
-        } ) 
+        }) 
         (pass)
     )
 )
@@ -1000,7 +1000,7 @@
         (phase "Movement" 
             (play 
                 (or
-                    (forEach Piece (then (and {(set State at:(last To) 0) (moveAgain)})) )
+                    (forEach Piece (then (and {(set State at:(last To) 0) (moveAgain)})))
                     (move Pass
                         (then
                             (and {
@@ -1022,7 +1022,7 @@
         (phase "Actions" 
             (play 
                 (or
-                    (forEach Piece (then (and {(set State at:(last To) 0) (set State at:(last From) 0) (moveAgain)})) )
+                    (forEach Piece (then (and {(set State at:(last To) 0) (set State at:(last From) 0) (moveAgain)})))
                     (move Pass
                         (then 
                             (and {

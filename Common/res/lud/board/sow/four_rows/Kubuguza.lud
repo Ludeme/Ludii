@@ -1,6 +1,6 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
 (define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,7 @@
         (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))          // P2 inner Home
         (regions "HolesCW" P1 (sites {15 8 1 6}))
         (regions "HolesCW" P2 (sites {16 23 25 30}))
         (piece "Seed" Shared)
@@ -29,7 +29,7 @@
     (rules 
         
         (start 
-            (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner") ) )
+            (set Count 3 to:(union (sites P1 "Inner") (sites P2 "Inner")) )
         )
         
         (play 

@@ -30,7 +30,7 @@
     })  
     (rules 
         
-        (start (set Count <Start:numSeeds> to:(sites Track) ) )
+        (start (set Count <Start:numSeeds> to:(sites Track)) )
         
         (play 
             (if (<= <Start:usingHogon> (count at:(mapEntry "Hogon" Mover)))
@@ -75,8 +75,8 @@
         )
         
         (end {
-            (if ("NoOwnedHoleWithMoreThanOneSeed" P1) (result P2 Win) )
-            (if ("NoOwnedHoleWithMoreThanOneSeed" P2) (result P1 Win) )
+            (if ("NoOwnedHoleWithMoreThanOneSeed" P1) (result P2 Win))
+            (if ("NoOwnedHoleWithMoreThanOneSeed" P2) (result P1 Win))
         })
     )
 )

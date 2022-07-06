@@ -13,13 +13,9 @@
     )
 )
 
-(define "StartPos" 
-    (mapEntry "Start" (mover))
-)
+(define "StartPos" (mapEntry "Start" (mover)))
 
-(define "OppositeStartPos" 
-    (mapEntry "OppositeStart" (mover))
-)
+(define "OppositeStartPos" (mapEntry "OppositeStart" (mover)))
 
 (define "HasToThrowAgain" (is Pending))
 
@@ -31,10 +27,10 @@
     )
 )
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
 
 (define "NoPieceInTheBoard" 
-    (= 0 (count Sites in:(intersection (sites Board) (sites Occupied by:Mover))))
+    (all Sites (sites Occupied by:Mover) if:(not (is In (site) (sites Board))))
 )
 
 (define "CounterPlayer" 
@@ -51,14 +47,13 @@
 )
 
 (define "AllPieceInCentre" 
-    (= 0 (count Sites in:(difference (sites Occupied by:Mover) (sites Centre) )))
+		(all Sites (sites Occupied by:Mover) if:(is In (site) (sites Centre)))
 )
 
 (define "Move" 
     (if (or (not "SameTurn") ("HasToThrowAgain")) 
-        (do 
-            (roll)
-            next:(move Pass 
+        ("RollMove"
+                (move Pass 
                 (then 
                     (and {
                         (if 
@@ -143,7 +138,7 @@
         )
         (piece "Counter" Each
             (or
-                (if (!= Off ("SiteToMoveOnTrack" (value)))
+                (if ("IsNotOffBoard" ("SiteToMoveOnTrack" (value)))
                     (move 
                         (from (from) level:(level))
                         (to ("SiteToMoveOnTrack" (value))
@@ -152,7 +147,7 @@
                                 (and
                                     (if 
                                         (and {
-                                            (is Enemy (who at:(to)))
+                                            ("IsEnemyAt" (to))
                                             (= (value Piece at:(to)) 1) // If that's a counter
                                             (not (is In (to) (sites "MarkedCells")))
                                         })
@@ -195,7 +190,7 @@
             )
         )
         (piece "DoubleCounter" Each // The twin piece
-            (if (and (> (/ (value) 2) 0) (!= Off ("SiteToMoveOnTrack" (/ (value) 2))))
+            (if (and (> (/ (value) 2) 0) ("IsNotOffBoard" ("SiteToMoveOnTrack" (/ (value) 2))))
                 (move 
                     (from (from) level:(level))
                     (to ("SiteToMoveOnTrack" (/ (value) 2))
@@ -204,7 +199,7 @@
                             (and
                                 (if 
                                     (and {
-                                        (is Enemy (who at:(to)))
+                                        ("IsEnemyAt" (to))
                                         (= (value Piece at:(to)) 2) // If that's a twin
                                         (not (is In (to) (sites "MarkedCells")))
                                     })
@@ -240,7 +235,7 @@
                 )
             )
         ) 
-        (dice d:2 from:0 num:4)
+        ("StickDice" 4)
         (map "Start" {(pair P1 2) (pair P2 14) (pair P3 22) (pair P4 10)})
         (map "OppositeStart" {(pair P1 22) (pair P2 10) (pair P3 2) (pair P4 14)})
     })
@@ -258,9 +253,7 @@
             )
         )
         
-        (end 
-            (if (no Pieces Mover) (result Mover Win))
-        )
+        (end ("EscapeWin"))
     )
 )
 

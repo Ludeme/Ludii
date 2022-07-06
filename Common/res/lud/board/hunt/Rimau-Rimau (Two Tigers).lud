@@ -1,16 +1,7 @@
 (game "Rimau-Rimau (Two Tigers)"  
     (players 2)  
     (equipment { 
-        (board 
-            (merge 
-                { 
-                (shift 0 2 (square 5 diagonals:Alternating) ) 
-                (wedge 3) 
-                (shift 0 6 (rotate 180 (wedge 3))) 
-                } 
-            ) 
-            use:Vertex
-        )
+        ("AlquerqueBoardWithBottomAndTopTriangles")
         (hand Each) 
         (piece "Tiger" P1 
             (or {
@@ -36,7 +27,7 @@
             (place "human2" (difference (expand (sites Centre)) (centrePoint)))
             (place "human2" (handSite P2) count:16)
             (place "Tiger1" (handSite P1) count:2)
-        } )
+        })
         > 
         <
         phases:{
@@ -76,7 +67,7 @@
         )
         
         (phase "Movement"
-            (play (forEach Piece) )
+            (play (forEach Piece))
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (no Pieces P2)  (result P1 Win))
@@ -91,7 +82,7 @@
             (place "human2" (difference (expand (sites Centre)) (centrePoint)))
             (place "human2" (handSite P2) count:15)
             (place "Tiger1" (centrePoint) count:2)
-        } )
+        })
         > 
         <
         phases:{
@@ -109,7 +100,7 @@
         )
         
         (phase "Movement"
-            (play (forEach Piece) )
+            (play (forEach Piece))
             (end {
                 (if (no Moves P1) (result P2 Win))
                 (if (no Pieces P2)  (result P1 Win))
@@ -159,7 +150,6 @@
     (graphics {
         (piece Families {"Abstract" "Themed"})
         (show Edges Diagonal Hidden)
-        
     })
     
     (ai

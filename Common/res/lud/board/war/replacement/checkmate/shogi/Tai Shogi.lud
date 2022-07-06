@@ -497,9 +497,9 @@
             )
         )
         
-        (piece "WhiteHorse" Each ("SlideMove" (directions {Forwards Backward})) )
+        (piece "WhiteHorse" Each ("SlideMove" (directions {Forwards Backward})))
         
-        (piece "Whale" Each ("SlideMove" (directions {Forward Backwards})) )
+        (piece "Whale" Each ("SlideMove" (directions {Forward Backwards})))
         
         (piece "StandardBearer" Each
             (or 
@@ -757,13 +757,13 @@
             )			
         )
         
-        (piece "ViolentOx" Each ("SlideMove" Orthogonal (between (max 2)) ))
+        (piece "ViolentOx" Each ("SlideMove" Orthogonal (between (max 2))))
         
-        (piece "FlyingDragon" Each ("SlideMove" Diagonal (between (max 2)) ))
+        (piece "FlyingDragon" Each ("SlideMove" Diagonal (between (max 2))))
         
-        (piece "OldRat" Each ("SlideMove" (directions {Backward FR FL}) (between (max 2)) ))
+        (piece "OldRat" Each ("SlideMove" (directions {Backward FR FL}) (between (max 2))))
         
-        (piece "EnchantedBadger" Each ("SlideMove" (directions {Forward Rightward Leftward}) (between (max 2)) ))
+        (piece "EnchantedBadger" Each ("SlideMove" (directions {Forward Rightward Leftward}) (between (max 2))))
         
         (piece "FlyingHorse" Each
             (or 
@@ -814,7 +814,7 @@
             )		
         )
         
-        (piece "ReverseChariot" Each ("SlideMove" (directions {Backward Forward}) ))
+        (piece "ReverseChariot" Each ("SlideMove" (directions {Backward Forward})))
         
         (piece "PoisonSnake" Each
             (or 
@@ -858,31 +858,31 @@
             )		
         )
         
-        (piece "DrunkenElephant" Each ("StepMove" (difference Adjacent Backward) ))
+        (piece "DrunkenElephant" Each ("StepMove" (difference Adjacent Backward)))
         
-        (piece "NeighborKing" Each ("StepMove" (difference Adjacent Backward) ))
+        (piece "NeighborKing" Each ("StepMove" (difference Adjacent Backward)))
         
-        (piece "BlindTiger" Each ("StepMove" (difference Adjacent Forward) ))
+        (piece "BlindTiger" Each ("StepMove" (difference Adjacent Forward)))
         
-        (piece "FreeTiger" Each ("SlideMove" (difference Adjacent Forward) ))
+        (piece "FreeTiger" Each ("SlideMove" (difference Adjacent Forward)))
         
-        (piece "BlindMonkey" Each ("StepMove" (directions {Rightwards Leftwards}) ))
+        (piece "BlindMonkey" Each ("StepMove" (directions {Rightwards Leftwards})))
         
-        (piece "FerociousLeopard" Each ("StepMove" (directions {Backwards Forwards}) ))
+        (piece "FerociousLeopard" Each ("StepMove" (directions {Backwards Forwards})))
         
-        (piece "FreeLeopard" Each ("SlideMove" (directions {Backwards Forwards}) ))
+        (piece "FreeLeopard" Each ("SlideMove" (directions {Backwards Forwards})))
         
-        (piece "RecliningDragon" Each ("StepMove" (directions {Backwards Forward Rightward Leftward}) ))
+        (piece "RecliningDragon" Each ("StepMove" (directions {Backwards Forward Rightward Leftward})))
         
-        (piece "FreeDragon" Each ("SlideMove" (directions {Backwards Forward Rightward Leftward}) ))
+        (piece "FreeDragon" Each ("SlideMove" (directions {Backwards Forward Rightward Leftward})))
         
-        (piece "ChineseCock" Each ("StepMove" (directions {Backward FR FL Rightward Leftward}) ))
+        (piece "ChineseCock" Each ("StepMove" (directions {Backward FR FL Rightward Leftward})))
         
-        (piece "OldMonkey" Each ("StepMove" (directions {Backwards FR FL}) ))
+        (piece "OldMonkey" Each ("StepMove" (directions {Backwards FR FL})))
         
-        (piece "EvilWolf" Each ("StepMove" (directions {Forwards Rightward Leftward}) ))
+        (piece "EvilWolf" Each ("StepMove" (directions {Forwards Rightward Leftward})))
         
-        (piece "FreeWolf" Each ("SlideMove" (directions {Forwards Rightward Leftward}) ))
+        (piece "FreeWolf" Each ("SlideMove" (directions {Forwards Rightward Leftward})))
         
         (piece "AngryBoar" Each ("StepMove" Orthogonal ))
         
@@ -890,31 +890,31 @@
         
         (piece "FreeCat" Each ("SlideMove" Diagonal ))
         
-        (piece "CoiledSerpent" Each ("StepMove" (directions {Forward Backwards}) ))
+        (piece "CoiledSerpent" Each ("StepMove" (directions {Forward Backwards})))
         
-        (piece "FreeSerpent" Each ("SlideMove" (directions {Forward Backwards}) ))
+        (piece "FreeSerpent" Each ("SlideMove" (directions {Forward Backwards})))
         
-        (piece "DarkSpirit" Each ("StepMove" (directions {Rightward FR FL BR}) ))
+        (piece "DarkSpirit" Each ("StepMove" (directions {Rightward FR FL BR})))
         
-        (piece "Deva" Each ("StepMove" (directions {Leftward FR FL BL}) ))
+        (piece "Deva" Each ("StepMove" (directions {Leftward FR FL BL})))
         
-        (piece "RightGeneral" Each ("StepMove" (difference Adjacent Rightward) ))
+        (piece "RightGeneral" Each ("StepMove" (difference Adjacent Rightward)))
         
-        (piece "LeftGeneral" Each ("StepMove" (difference Adjacent Leftward) ))
+        (piece "LeftGeneral" Each ("StepMove" (difference Adjacent Leftward)))
         
-        (piece "GoldGeneral" Each ("StepMove" (directions {Forwards Rightward Leftward Backward}) ))
+        (piece "GoldGeneral" Each ("StepMove" (directions {Forwards Rightward Leftward Backward})))
         
         (piece "FreeGold" Each ("SlideMove" (directions {Forwards Rightward Leftward Backward})  ))
         
-        (piece "SilverGeneral" Each ("StepMove" (directions {Forwards BR BL}) ))
+        (piece "SilverGeneral" Each ("StepMove" (directions {Forwards BR BL})))
         
-        (piece "FreeSilver" Each ("SlideMove" (directions {Forwards BR BL}) ))
+        (piece "FreeSilver" Each ("SlideMove" (directions {Forwards BR BL})))
         
-        (piece "CopperGeneral" Each ("StepMove" (directions {Forwards Backward}) ))
+        (piece "CopperGeneral" Each ("StepMove" (directions {Forwards Backward})))
         
         (piece "FreeCopper" Each ("SlideMove" (directions {Forwards Backward})  ))
         
-        (piece "TileGeneral" Each ("StepMove" (directions {FR FL Backward}) ))
+        (piece "TileGeneral" Each ("StepMove" (directions {FR FL Backward})))
         
         (piece "FreeTile" Each ("SlideMove" (directions {FR FL Backward})  ))
         
@@ -922,19 +922,19 @@
         
         (piece "FreeIron" Each ("SlideMove" Forwards ))
         
-        (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) (between (max 2)) ))
+        (piece "WoodGeneral" Each ("SlideMove" (directions {FR FL}) (between (max 2))))
         
-        (piece "StoneGeneral" Each ("StepMove" (directions {FR FL}) ))
+        (piece "StoneGeneral" Each ("StepMove" (directions {FR FL})))
         
         (piece "FreeStone" Each ("SlideMove" (directions {FR FL})  ))
         
-        (piece "EarthGeneral" Each ("StepMove" (directions {Forward Backward}) ))
+        (piece "EarthGeneral" Each ("StepMove" (directions {Forward Backward})))
         
-        (piece "GoBetween" Each ("StepMove" (directions {Forward Backward}) ))
+        (piece "GoBetween" Each ("StepMove" (directions {Forward Backward})))
         
-        (piece "FreeEarth" Each ("SlideMove" (directions {Forward Backward}) ))
+        (piece "FreeEarth" Each ("SlideMove" (directions {Forward Backward})))
         
-        (piece "FreeGoer" Each ("SlideMove" (directions {Forward Backward}) ))
+        (piece "FreeGoer" Each ("SlideMove" (directions {Forward Backward})))
         
         (piece "Knight" Each ("ForwardKnightMove"))
         
@@ -952,7 +952,7 @@
             )
         )
         
-        (piece "RamsHeadSoldier" Each ("SlideMove" (directions {FR FL}) ))
+        (piece "RamsHeadSoldier" Each ("SlideMove" (directions {FR FL})))
         
         (piece "Lance" Each ("SlideMove" Forward ))
         

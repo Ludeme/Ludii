@@ -18,7 +18,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 //------------------------------------------------------------------------------
@@ -93,8 +93,8 @@
                 )
             )
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })  
     (rules 
         (start { 
@@ -119,7 +119,7 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (= (count Pieces Next) 1) (result Mover Win) ) 
+            (if (= (count Pieces Next) 1) (result Mover Win)) 
             (if (no Moves Next) (result Mover Win)) 
         })
     )

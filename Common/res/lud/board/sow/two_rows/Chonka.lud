@@ -1,5 +1,5 @@
 (define "Columns" 7)
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "GoalNumCapturedCounters"
     (/ (* 7 (- (count Sites in:(sites Board)) 2)) 2)
@@ -25,7 +25,7 @@
     (rules 
         
         (start { 
-            (set Count 7 to:(union (sites P1)  (sites P2)) ) 
+            (set Count 7 to:(union (sites P1)  (sites P2))) 
         })
         
         (play 

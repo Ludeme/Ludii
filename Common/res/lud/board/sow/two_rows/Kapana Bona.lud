@@ -16,7 +16,7 @@
     (rules 
         
         (start 
-            (set Count 8 to:(sites Track) ) 
+            (set Count 8 to:(sites Track)) 
         )
         
         (play 
@@ -49,7 +49,7 @@
         )
         
         (end
-            (if (= 0 (count Sites in:(forEach (sites Board) if:(< 1 (count at:(site))))) ) 
+            (if (= 0 (count Sites in:(forEach (sites Board) if:(< 1 (count at:(site)))))) 
                 (byScore {
                     (score P1 ("PiecesOwnedBy" P1)) 
                     (score P2 ("PiecesOwnedBy" P2))

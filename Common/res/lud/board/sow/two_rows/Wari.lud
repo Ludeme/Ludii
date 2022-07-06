@@ -1,4 +1,4 @@
-(define "PiecesOwnedBy" (count at:(mapEntry #1)) )
+(define "PiecesOwnedBy" (count at:(mapEntry #1)))
 
 //------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@
     )  
     (rules 
         
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)) )
         
         (play
             (move Select

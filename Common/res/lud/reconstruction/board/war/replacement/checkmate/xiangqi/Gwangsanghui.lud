@@ -46,8 +46,8 @@
     (equipment {
         (board (rectangle 14 15) use:Vertex) 
         (piece "Disc" Each)
-        (regions "PalaceP1" P1 { 15..17 30..32 45..47 21..23 36..38 51..53 27..29 42..44 57..59 150..152 165..167 180..182 156..158 171..173 186..188 162..164 177..179 192..194 } )
-        (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 } )
+        (regions "PalaceP1" P1 { 15..17 30..32 45..47 21..23 36..38 51..53 27..29 42..44 57..59 150..152 165..167 180..182 156..158 171..173 186..188 162..164 177..179 192..194 })
+        (regions "PalaceP2" P2 { 66 70 71 74 76 77 78 })
         (regions "BeforePalace" P1 (expand (sites Bottom) steps:9))
         (regions "BeforePalace" P2 (expand (sites Top) steps:9))
         (regions "BeforeBehindPalace" P1 (expand (sites Bottom) steps:12))

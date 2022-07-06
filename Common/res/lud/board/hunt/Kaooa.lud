@@ -6,7 +6,7 @@
             use:Vertex
         )
         (hand Each) 
-        (piece "Marker" P1 (or ("HopSequenceCapture") "StepToEmpty") ) 
+        (piece "Marker" P1 (or ("HopSequenceCapture") "StepToEmpty")) 
         (piece "Marker" P2 "StepToEmpty") 
     })  
     (rules 
@@ -27,8 +27,8 @@
         )
         
         (phase "Movement"
-            (play (forEach Piece) )
-            (end ("NoMoves" Loss) )
+            (play (forEach Piece))
+            (end ("NoMoves" Loss))
         )
         }
     )

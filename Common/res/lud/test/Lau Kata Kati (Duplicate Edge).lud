@@ -20,7 +20,7 @@
     (rules 
         (start {
             (place "Counter1" (expand (sites Bottom) steps:2)  )
-            (place "Counter2" (expand (sites Top) steps:2) )
+            (place "Counter2" (expand (sites Top) steps:2))
         })
         
         (play (forEach Piece))

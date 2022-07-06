@@ -18,7 +18,7 @@
     (rules 
         
         (start {
-            (set Count <Board:init> to:(sites Track) ) 
+            (set Count <Board:init> to:(sites Track)) 
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
         

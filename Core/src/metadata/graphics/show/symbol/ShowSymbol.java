@@ -30,6 +30,9 @@ public class ShowSymbol implements GraphicsItem
 	/** Image to draw. */
 	private final String imageName;
 	
+	/** text to draw. */
+	private final String text;
+	
 	/** Region to add the image onto. */
 	private final String region;
 	
@@ -76,6 +79,7 @@ public class ShowSymbol implements GraphicsItem
 
 	/**
 	 * @param imageName         Name of the image to draw.
+	 * @param text        		Text string to show.
 	 * @param region            Draw image on all sites in this region.
 	 * @param graphElementType  The GraphElementType for the specified sites [Default board type].
 	 * @param sites             Draw image on all specified sites.
@@ -99,7 +103,8 @@ public class ShowSymbol implements GraphicsItem
 	 */
 	public ShowSymbol
 	(
-		               final String imageName,
+		@Opt           final String imageName,
+		@Opt     @Name final String text,
 		@Opt           final String region,
 		@Opt           final RoleType roleType,
 		@Opt           final SiteType graphElementType,
@@ -127,6 +132,7 @@ public class ShowSymbol implements GraphicsItem
 			throw new IllegalArgumentException("Only one of @Or should be different to null");
 		
 		this.imageName = imageName;
+		this.text = text;
 		this.region = region;
 		this.graphElementType = graphElementType;
 		this.sites = ((sites != null) ? sites : ((site != null) ? (new Integer[]{ site }) : null));
@@ -174,6 +180,16 @@ public class ShowSymbol implements GraphicsItem
 	public String imageName()
 	{
 		return imageName;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Text to draw.
+	 */
+	public String text()
+	{
+		return text;
 	}
 	
 	//-------------------------------------------------------------------------

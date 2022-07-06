@@ -1,8 +1,8 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3)) ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3))) )
 
 //------------------------------------------------------------------------------
 
@@ -19,18 +19,18 @@
         (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))          // P2 inner Home
         (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))    // P1 outer Home
-        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner") ))   // P2 outer Home
-        (regions "HalfRightInner" P1 (sites {<Board:HalfRightInnerP1>}) )                 // P1 half right inner row
-        (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}) )                 // P2 half right inner row
+        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner")))   // P2 outer Home
+        (regions "HalfRightInner" P1 (sites {<Board:HalfRightInnerP1>}))                 // P1 half right inner row
+        (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}))                 // P2 half right inner row
         (piece "Seed" Shared)
         (hand Each)
     })  
     (rules 
         
         (start 
-            (set Count 2 to:(union { (sites P1 "Outer") (sites P2 "Outer") (sites P1 "HalfRightInner")  (sites P2 "HalfRightInner") }) ) 
+            (set Count 2 to:(union { (sites P1 "Outer") (sites P2 "Outer") (sites P1 "HalfRightInner")  (sites P2 "HalfRightInner") })) 
         )
         
         phases:{

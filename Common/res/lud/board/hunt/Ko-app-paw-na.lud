@@ -3,8 +3,8 @@
     (equipment { 
         (board (square 5) use:Vertex)
         (piece "Rabbit" P1 "StepToEmpty") 
-        (piece "Counter" P2 (or "HopCapture" "StepToEmpty") )
-        (regions P1 (union (expand (sites Top) ) (sites {"A3" "E3"})))
+        (piece "Counter" P2 (or "HopCapture" "StepToEmpty"))
+        (regions P1 (union (expand (sites Top)) (sites {"A3" "E3"})))
     })  
     (rules 
         (start { 
