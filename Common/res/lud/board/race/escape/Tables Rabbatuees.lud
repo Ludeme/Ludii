@@ -11,9 +11,9 @@
     ) 
 )
 
-(define "PieceUnstacked" (= (state at:#1) 2) )
-(define "PieceFullStacked" (= (state at:#1) 0) )
-(define "PieceHalfStacked" (= (state at:#1) 1) )
+(define "PieceUnstacked" (= (state at:#1) 2))
+(define "PieceFullStacked" (= (state at:#1) 0))
+(define "PieceHalfStacked" (= (state at:#1) 1))
 
 (define "PieceStacked" 
     (or
@@ -42,9 +42,9 @@
         (board 
             (merge {
                 (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6) )
-                (shift 0 6 (rectangle 1 6) )
-                (shift 7 6 (rectangle 1 6) )
+                (shift 7 0 (rectangle 1 6))
+                (shift 0 6 (rectangle 1 6))
+                (shift 7 6 (rectangle 1 6))
             })
             {
             (track "Track1" {0..5} P1 directed:True)

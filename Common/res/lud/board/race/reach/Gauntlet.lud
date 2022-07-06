@@ -46,9 +46,9 @@
         
         (regions "RunnerGoal" P1 (difference (sites Top) (sites Corners)))
         (regions "RunnerGoalRed" Neutral (intersection
-        (difference (sites Top) (sites Corners)) (sites Phase 0)) )
+        (difference (sites Top) (sites Corners)) (sites Phase 0)))
         (regions "RunnerGoalPink" Neutral (intersection
-        (difference (sites Top) (sites Corners)) (sites Phase 1)) )
+        (difference (sites Top) (sites Corners)) (sites Phase 1)))
         }
     )  
     

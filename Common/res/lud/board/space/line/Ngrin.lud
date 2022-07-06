@@ -6,7 +6,7 @@
     })  
     (rules 
         phases:{
-        (phase "Opening" (play (move Add (to (centrePoint)))) (nextPhase "Playing") )
+        (phase "Opening" (play (move Add (to (centrePoint)))) (nextPhase "Playing"))
         (phase "Playing" (play (move Add (to (sites Empty)))))
         }
         (end (if (is Line 3) (result Mover Win)))

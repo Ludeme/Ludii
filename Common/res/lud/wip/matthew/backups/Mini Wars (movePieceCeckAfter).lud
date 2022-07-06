@@ -63,7 +63,7 @@
 (define "ForbiddenSpotsHuman" (union {(sites "Mountain") (sites "DeepWater") }))
 
 (define "HumanMoveSpots"
-    (difference (union (sites Empty) (sites (values Remembered "Occupied Mover"))) ("ForbiddenSpotsHuman") )
+    (difference (union (sites Empty) (sites (values Remembered "Occupied Mover"))) ("ForbiddenSpotsHuman"))
 )
 
 (define "ForbiddenSpotsVehicle" (union {(sites "Mountain") (sites "ShallowWater") (sites "DeepWater") }))
@@ -79,7 +79,7 @@
 (define "ForbiddenSpotsBoat" 
     (union 
         (sites "Mountain") 
-        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater")) ) 
+        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater"))) 
     )
 )
 
@@ -218,7 +218,7 @@
                 ("DamageMultiply" (* (value Piece at:(#1)) 4) #1 )								// Planes are never affected by terrain									
                 (if (and
                         (is In (#2) "HumanSites")
-                        (is In (#1) (sites Occupied by:All component:"Shooter") )					// Shooter does double damage against humans
+                        (is In (#1) (sites Occupied by:All component:"Shooter"))					// Shooter does double damage against humans
                     )
                     (if (is In (#2) (sites "Forest"))
                         ("DamageMultiply" (* (value Piece at:(#1)) 6) #1 )							// (Shooter does 150% damage against humans in forests)
@@ -243,7 +243,7 @@
 )
 
 (define "DamageMultiply"
-    (max (/ (* #1 (mapEntry "DamageMultiplier" (what at:(#2))) ) 100) 1)
+    (max (/ (* #1 (mapEntry "DamageMultiplier" (what at:(#2)))) 100) 1)
 )
 
 //------------------------------------------------------------------------------
@@ -253,7 +253,7 @@
     (if (= (value Piece at:(last To)) 0)
         (and {
             (take Control of:All by:Mover at:(last To))
-            (set Value at:(last To) (/ (mapEntry "MaxHealth" (what at:(last To))) 2) )
+            (set Value at:(last To) (/ (mapEntry "MaxHealth" (what at:(last To))) 2))
         })
         (set Value at:(last To) (value Piece at:(last To)))
     )  
@@ -296,7 +296,7 @@
         )
         (if (> (who at:(#2)) 0) ("GetDoctrineValue" (who at:(#2)) 8) 4)
         (if #3 ("GetDoctrineValue" (who at:(#1)) 10) ("GetDoctrineValue" (who at:(#1)) 9))
-        (value Random (range ("GetDoctrineValue" (who at:(#1)) 11) ("GetDoctrineValue" (who at:(#1)) 12) ))
+        (value Random (range ("GetDoctrineValue" (who at:(#1)) 11) ("GetDoctrineValue" (who at:(#1)) 12)))
     })
 )
 
@@ -310,7 +310,7 @@
             (from)
             if:(and
                 (> (state at:(from)) 0)
-                (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))) )
+                (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))))
             )
         )
         (to 
@@ -328,7 +328,7 @@
                 )
                 (set Value at:(last To) 
                     (max 
-                        (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From)) ))
+                        (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From))))
                         1
                     )
                 )
@@ -408,7 +408,7 @@
 )
 
 (define "EnemyBuildingSites"
-    (union (sites (values Remembered "Building Enemy")) (sites (values Remembered "Building Neutral")) )
+    (union (sites (values Remembered "Building Enemy")) (sites (values Remembered "Building Neutral")))
 )
 
 (define "AircraftSites"
@@ -802,10 +802,10 @@
                             )
                             (set Score 
                                 Mover
-                                (+ (* (count Sites in:(sites Occupied by:Mover component:"Town")) 10) (score Mover) )
+                                (+ (* (count Sites in:(sites Occupied by:Mover component:"Town")) 10) (score Mover))
                             )
                             (forEach Site (sites Occupied by:Next components:{"Town" "Base" "Factory" "Dock" "Airport"})
-                                (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10) ))
+                                (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10)))
                             )
                         })
                     )
@@ -1823,7 +1823,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
-        (piece Background image:"square" fillColour:(colour 255 255 255 1) edgeColour:(colour 255 255 255 1) )
+        (piece Background image:"square" fillColour:(colour 255 255 255 1) edgeColour:(colour 255 255 255 1))
         (show Piece Value true true)
         (piece ExtendName P2 "Flip")
         

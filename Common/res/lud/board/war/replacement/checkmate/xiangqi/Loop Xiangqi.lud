@@ -1,5 +1,5 @@
 (define "JiangSameColumnWithNoPieceBetween"
-    (if (= (column of:(where "Jiang" P1) ) (column of:(where "Jiang" P2) ))
+    (if (= (column of:(where "Jiang" P1)) (column of:(where "Jiang" P2)))
         (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
         True
     )
@@ -11,11 +11,11 @@
                 (or { 
                     (forEach Piece Next)
                     (move (from (sites Occupied by:Next container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
-                    (move (from (sites Occupied by:Next container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Next "PalaceShi") )))
-                    (move (from (sites Occupied by:Next container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Next "Home") )))
+                    (move (from (sites Occupied by:Next container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Next "PalaceShi"))))
+                    (move (from (sites Occupied by:Next container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Next "Home"))))
                     }
                 )
-    ifAfterwards:(not ("IsInCheck" "Jiang" Next))) ))
+    ifAfterwards:(not ("IsInCheck" "Jiang" Next)))))
 )
 
 (define "StepMoveOnThePalace" 
@@ -24,7 +24,7 @@
         #1 
         (to 
             if:(and 
-                (is In (to) (sites Mover "Palace") ) 
+                (is In (to) (sites Mover "Palace")) 
                 (not (is Friend (who at:(to))))
             ) 
             (apply 
@@ -56,7 +56,7 @@
                 (between 
                     (exact 2) 
                     if:(and { 
-                        (is In (between) (sites Mover "Home") ) 
+                        (is In (between) (sites Mover "Home")) 
                         (is Empty (between)) 
                     })
                 )
@@ -177,8 +177,8 @@
         
         (regions "PalaceP1" P1 { 3..5 12..14 21..23 })
         (regions "PalaceP2" P2 { 66..68 75..77 84..86 })
-        (regions "Home" P1 (expand (sites Bottom) steps:4) )
-        (regions "Home" P2 (expand (sites Top) steps:4) )
+        (regions "Home" P1 (expand (sites Bottom) steps:4))
+        (regions "Home" P2 (expand (sites Top) steps:4))
         (map "where" { (pair 2 90) (pair 1 96) (pair 4 91) (pair 3 97) (pair 6 92) (pair 5 98) (pair 8 93) (pair 7 99) (pair 10 94) (pair 9 100) (pair 12 95) (pair 11 101)})        
         (map "captured" { (pair 1 2) (pair 2 1) (pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11)})
         
@@ -199,8 +199,8 @@
                     {
                     (forEach Piece) 
                     (move (from (sites Occupied by:Mover container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
-                    (move (from (sites Occupied by:Mover container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Mover "PalaceShi") )))  
-                    (move (from (sites Occupied by:Mover container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Mover "Home") )))
+                    (move (from (sites Occupied by:Mover container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Mover "PalaceShi"))))  
+                    (move (from (sites Occupied by:Mover container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Mover "Home"))))
                 })
                 ifAfterwards:(and 
                     ("JiangSameColumnWithNoPieceBetween")

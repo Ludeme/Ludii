@@ -1,5 +1,5 @@
 (define "NextCannotMove"
-    (not (can Move (do (or ("PlaceAPiece" Next Mover) (forEach Piece Next)) ifAfterwards:(not ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece)))) )))
+    (not (can Move (do (or ("PlaceAPiece" Next Mover) (forEach Piece Next)) ifAfterwards:(not ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece)))))))
 )
 
 (define "CapturePiece"
@@ -14,7 +14,7 @@
 )
 
 (define "InPromotionZone"
-    (is In #1 (sites Mover "Promotion") )	
+    (is In #1 (sites Mover "Promotion"))	
 )
 
 (define "Promote"
@@ -33,7 +33,7 @@
 (define "CanPromote"
     (then 
         (if 
-            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From)) ) 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
             (moveAgain) 
         ) 
     )
@@ -66,7 +66,7 @@
         (do 
             (move 
                 (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo" )) 
-                (to (difference (sites Empty) (sites #1 "Promotion") )) 
+                (to (difference (sites Empty) (sites #1 "Promotion"))) 
             ) 
             ifAfterwards:(not ("IsInCheck" "Osho" #2 (forEach Piece #1)))
         )
@@ -117,8 +117,8 @@
         // Promoted Bishop
         (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         (map "Where" { 
             (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
             (pair (id "Ginsho" P1) (handSite P2 1)) (pair (id "Ginsho" P2) (handSite P1 1)) 

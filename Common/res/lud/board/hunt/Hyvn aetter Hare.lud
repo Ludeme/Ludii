@@ -44,7 +44,7 @@
         
         (phase "Movement"
             (play (forEach Piece))
-            (end ("NoMoves" Loss) )
+            (end ("NoMoves" Loss))
         )
         }
         >
@@ -98,7 +98,7 @@
             (play (forEach Piece))
         )
         }
-        (end ("NoMoves" Loss) ) 
+        (end ("NoMoves" Loss)) 
         > 
         "The First player can move after placing his piece."
     ) 

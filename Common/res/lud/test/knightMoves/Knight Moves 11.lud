@@ -1,6 +1,6 @@
 // Description of the knight move with a fromTo move between the position of the knight and a L walk (no leap move).
 
-(define "RegionReached" (is In (last To) (sites Mover)) )
+(define "RegionReached" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -24,12 +24,12 @@
     (rules 
         (start
             { 
-            (place "Knight1" (expand (sites Bottom)) )
-            (place "Knight2" (expand (sites Top)) )
+            (place "Knight1" (expand (sites Bottom)))
+            (place "Knight2" (expand (sites Top)))
             }
         )
         
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
     )

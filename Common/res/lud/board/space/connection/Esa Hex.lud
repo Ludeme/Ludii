@@ -57,7 +57,7 @@
 })
 
 (option "Swap Rules" <Meta> args:{ <rule>} {
-    (item "On"  <(meta (swap) )>  "The game uses the swap rule.")   
+    (item "On"  <(meta (swap))>  "The game uses the swap rule.")   
     (item "Off" <> "The game does not use the swap rule.")*   
 })
 

@@ -14,7 +14,7 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -31,8 +31,8 @@
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (intersection (sites Right) (sites Bottom)) steps:8 Orthogonal) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1) ) )
+            (place "Counter1" (difference (expand (intersection (sites Right) (sites Bottom)) steps:8 Orthogonal) (sites Phase 1)  ))
+            (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1)) )
             }
         )
         
@@ -51,7 +51,7 @@
                             ) 
                         )
                     )
-                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
                 )
                 (priority {
                     (max Moves

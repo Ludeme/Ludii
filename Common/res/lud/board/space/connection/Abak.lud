@@ -37,7 +37,7 @@
         phases:
         {
         (phase "Placement"
-            (play (move Add (to (intersection (sites "CentreRing") (sites Empty)))) )
+            (play (move Add (to (intersection (sites "CentreRing") (sites Empty)))))
             (nextPhase (= (count Pieces All) <Players>) "Movement")
         )
         

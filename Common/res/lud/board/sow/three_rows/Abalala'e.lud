@@ -1,11 +1,11 @@
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
-(define "StoreLastPitSowed" (set Pending (to)) )
-(define "LastPitSowed" (sites Pending) )
+(define "StoreLastPitSowed" (set Pending (to)))
+(define "LastPitSowed" (sites Pending))
 (define "PlayFromLastHole" (if (is Pending) ("LastPitSowed") (sites {(last To afterConsequence:True)})))
 (define "HasCaptured" (is Pending))
 (define "Columns" 6)
-(define "NextRowPit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "OppositePit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "NextRowPit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
 
 //------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@
     )  
     (rules 
         
-        (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
+        (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home")) ))
         
         (play 
             (move

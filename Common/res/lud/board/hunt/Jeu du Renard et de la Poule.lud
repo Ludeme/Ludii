@@ -3,13 +3,13 @@
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
         (hand P1)
-        (piece "Fox" P1 (or ("HopSequenceCapture") "StepToEmpty" ) )
+        (piece "Fox" P1 (or ("HopSequenceCapture") "StepToEmpty" ))
         (piece "Hen" P2 N "StepForwardsToEmpty") 
     })  
     (rules 
         (start { 
             (place "Fox1" (handSite P1))
-            (place "Hen2" (union (expand (sites Bottom)) (sites Row 2) ) )
+            (place "Hen2" (union (expand (sites Bottom)) (sites Row 2)) )
         })
         
         phases:{ 

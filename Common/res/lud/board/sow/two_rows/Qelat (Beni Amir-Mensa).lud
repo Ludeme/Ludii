@@ -19,7 +19,7 @@
         (regions "Right" P2 (intersection (expand (sites Left) steps:2) (sites Top)))     // P2 home right
     })  
     (rules 
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(sites Track)) )
         
         (play 
             (or 

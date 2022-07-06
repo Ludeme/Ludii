@@ -62,7 +62,7 @@
     (rules 
         
         (start { 
-            (set Count 3 to:(sites Track) )
+            (set Count 3 to:(sites Track))
             (set RememberValue "OwnedP1" (union (sites Bottom) (intersection (sites Row 1) (expand (sites Right) steps:2))))
             (set RememberValue "OwnedP2" (union (sites Top) (intersection (sites Row 1) (expand (sites Left) steps:2))))
         })

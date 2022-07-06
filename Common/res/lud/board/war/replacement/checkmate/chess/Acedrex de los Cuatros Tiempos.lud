@@ -1,9 +1,9 @@
 (define "EmptyorNext"
-    (or (is Empty (to)) (= ("RightPlayer") (who at:(to))) ) 
+    (or (is Empty (to)) (= ("RightPlayer") (who at:(to)))) 
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "CapturePiece" 

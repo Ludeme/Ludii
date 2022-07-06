@@ -125,7 +125,7 @@
         (forEach Piece 
             (or
                 ("MoveWholeStack" True) 
-                ("MoveStackPart" (< 1 (size Stack at:(from))) ) 
+                ("MoveStackPart" (< 1 (size Stack at:(from)))) 
             )
             Mover 
             top:True
@@ -249,12 +249,12 @@
 (define "Capture"
     (or {
         (forEach Piece 
-            ("MoveWholeStack" (is In (from) (sites (values Remembered))) ) 
+            ("MoveWholeStack" (is In (from) (sites (values Remembered)))) 
             Next 
             top:True
         )
         (forEach Piece 
-            ("MoveStackPart" (is In (from) (sites (values Remembered))) ) 
+            ("MoveStackPart" (is In (from) (sites (values Remembered)))) 
             Next 
             top:True
         )

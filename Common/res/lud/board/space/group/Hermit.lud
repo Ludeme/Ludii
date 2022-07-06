@@ -35,9 +35,9 @@
                 )
                 ifAfterwards:
                 (or {
-                    (= 1 (size Group at:(last To) Orthogonal) )
-                    (= 3 (size Group at:(last To) Orthogonal) )
-                    (= 5 (size Group at:(last To) Orthogonal) )
+                    (= 1 (size Group at:(last To) Orthogonal))
+                    (= 3 (size Group at:(last To) Orthogonal))
+                    (= 5 (size Group at:(last To) Orthogonal))
                     }
                 )
                 (then
@@ -50,10 +50,10 @@
                 {
                 (if (> ("CombinedGroupCounts" if:(= (who at:(to)) P1))
                         ("CombinedGroupCounts" if:(= (who at:(to)) P2))
-                ) (result P1 Win) )
+                ) (result P1 Win))
                 (if (< ("CombinedGroupCounts" if:(= (who at:(to)) P1))
                         ("CombinedGroupCounts" if:(= (who at:(to)) P2))
-                ) (result P2 Win) )
+                ) (result P2 Win))
                 }
                 (result Mover Win)
             )  

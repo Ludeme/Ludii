@@ -112,10 +112,10 @@
         >
         <
         (and {
-            (if (= (what at:(to)) (id "Commander" P1) ) (and ("CaptureCommandeOf" P1) (take Control of:P1 by:Mover))) 
-            (if (= (what at:(to)) (id "Commander" P2) ) (and ("CaptureCommandeOf" P2) (take Control of:P2 by:Mover))) 
-            (if (= (what at:(to)) (id "Commander" P3) ) (and ("CaptureCommandeOf" P3) (take Control of:P3 by:Mover))) 
-            (if (= (what at:(to)) (id "Commander" P4) ) (and ("CaptureCommandeOf" P4) (take Control of:P4 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P1)) (and ("CaptureCommandeOf" P1) (take Control of:P1 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P2)) (and ("CaptureCommandeOf" P2) (take Control of:P2 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P3)) (and ("CaptureCommandeOf" P3) (take Control of:P3 by:Mover))) 
+            (if (= (what at:(to)) (id "Commander" P4)) (and ("CaptureCommandeOf" P4) (take Control of:P4 by:Mover))) 
             (remove (to)) 
         })
         >
@@ -171,10 +171,10 @@
         >
         <
         (and {
-            (if (= (what at:(to)) (id "Commander" P1) ) ("CaptureCommandeOf" P1)) 
-            (if (= (what at:(to)) (id "Commander" P2) ) ("CaptureCommandeOf" P2))
-            (if (= (what at:(to)) (id "Commander" P3) ) ("CaptureCommandeOf" P3)) 
-            (if (= (what at:(to)) (id "Commander" P4) ) ("CaptureCommandeOf" P4)) 
+            (if (= (what at:(to)) (id "Commander" P1)) ("CaptureCommandeOf" P1)) 
+            (if (= (what at:(to)) (id "Commander" P2)) ("CaptureCommandeOf" P2))
+            (if (= (what at:(to)) (id "Commander" P3)) ("CaptureCommandeOf" P3)) 
+            (if (= (what at:(to)) (id "Commander" P4)) ("CaptureCommandeOf" P4)) 
             (remove (to)) 
         })
         >

@@ -123,8 +123,8 @@
     
     (rules 
         (start { 
-            (place "Marker1" (union (expand (sites Bottom) ) (sites {"B3" "D3" "G3" "I3"})) )
-            (place "Marker2" (union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top) ) ) )
+            (place "Marker1" (union (expand (sites Bottom)) (sites {"B3" "D3" "G3" "I3"})))
+            (place "Marker2" (union (sites {"A3" "C3" "F3" "H3"}) (expand (sites Top)) ))
         })
         
         phases:{

@@ -7,8 +7,8 @@
     
     (rules 
         (start { 
-            (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) }) )
-            (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) }) )
+            (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) }))
+            (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) }))
         })
         
         <Play>
@@ -61,8 +61,8 @@
         <
         (define "HasCaptured"  (set Value Mover 0))
         (define "HasNotCaptured" (set Value Mover 1))
-        (define "DidNotCaptured"  (= (value Player Prev) 1) )
-        (define "HasHuffed"  (= (last To) (last From)) )
+        (define "DidNotCaptured"  (= (value Player Prev) 1))
+        (define "HasHuffed"  (= (last To) (last From)))
         
         (define "HopCounter" 
             (move

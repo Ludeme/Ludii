@@ -23,8 +23,8 @@
     })
     (rules 
         (start { 
-            (place "Marker1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
-            (place "Marker2" (forEach (sites Board) if:(and (> (site) (centrePoint)) (< (site) (* "BoardSize" "BoardSize")) )))
+            (place "Marker1" (forEach (sites Board) if:(< (site) (centrePoint))))
+            (place "Marker2" (forEach (sites Board) if:(and (> (site) (centrePoint)) (< (site) (* "BoardSize" "BoardSize")))))
         })
         (play 
             (if "SameTurn"

@@ -4,8 +4,8 @@
 
 (define "RemoveAPiece" (move Remove (from)))
 
-(define "PieceUnstacked" (= (state at:#1) 1) )
-(define "PieceStacked" (= (state at:#1) 0) )
+(define "PieceUnstacked" (= (state at:#1) 1))
+(define "PieceStacked" (= (state at:#1) 0))
 
 (define "Unstack" 
     (forEach Level (last To)

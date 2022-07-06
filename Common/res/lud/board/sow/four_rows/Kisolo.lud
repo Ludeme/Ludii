@@ -2,11 +2,11 @@
 
 (define "EmptyOuterRow" (= 0 (count in:(sites #1 "Outer"))))
 
-(define "InnerPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns") ) )
+(define "InnerPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns")) )
 
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
 
 (define "InnerPitsWithPossibleCapture"
     (forEach (difference (sites Mover "Inner") (sites Empty))
@@ -33,9 +33,9 @@
         (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))          // P2 inner Home
         (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))    // P1 outer Home
-        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner") ))   // P2 outer Home
+        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner")))   // P2 outer Home
         (piece "Seed" Shared)
         }
     )  
@@ -126,19 +126,19 @@
 (option "Start Rules" <Start> args:{<rules>}
     {
     (item "3 Seeds per hole" 
-        <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer") ) )>   
+        <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer")) )>   
         "At the initial state 3 seeds are in each outer hole."
     )**
     (item "Starting Position 1" 
         <
-        (set Count 15 to:(sites {"G1" "A4"}) )  
-        (set Count 1 to:(sites {"F2" "D2" "B2" "A1" "C1" "E1" "B3" "D3" "F3" "G4" "E4" "C4"}) )  
+        (set Count 15 to:(sites {"G1" "A4"}))  
+        (set Count 1 to:(sites {"F2" "D2" "B2" "A1" "C1" "E1" "B3" "D3" "F3" "G4" "E4" "C4"}))  
         >   
     "The game start with a special starting position.")
     (item "Starting Position 2" 
         <
-        (set Count 9 to:(sites {"A1" "G4" "A4" "G1"}) )  
-        (set Count 1 to:(sites {"F2" "D2" "B2" "B3" "D3" "F3"}) ) 
+        (set Count 9 to:(sites {"A1" "G4" "A4" "G1"}))  
+        (set Count 1 to:(sites {"F2" "D2" "B2" "B3" "D3" "F3"})) 
         >   
     "The game start with a special starting position.")
     }

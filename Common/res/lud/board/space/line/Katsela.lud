@@ -14,11 +14,11 @@
         (start (place "Marker" "Hand" count:3))
         phases:{
         (phase "Opening" 
-            (play (move (from (handSite Mover)) (to (centrePoint))) )
+            (play (move (from (handSite Mover)) (to (centrePoint))))
             (nextPhase "Placing") 
         )
         (phase "Placing" 
-            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase Mover ("HandEmpty" Mover) "Moving")
         )
         (phase "Moving" 

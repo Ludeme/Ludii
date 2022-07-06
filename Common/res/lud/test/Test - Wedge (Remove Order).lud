@@ -53,7 +53,7 @@
         )
         
         (phase "Movement"
-            (play (forEach Piece) )
+            (play (forEach Piece))
             (end {
                 ("NoMoves" Loss)
                 (if (no Pieces P2)  (result P1 Win))

@@ -10,7 +10,7 @@
             (satisfy  {
                 (not (is Line 3 Orthogonal))
                 (is Unique)
-                (is Sum (/ (count Rows) 2) )
+                (is Sum (/ (count Rows) 2))
             })
         )
         (end (if (is Solved) (result P1 Win)))

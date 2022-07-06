@@ -18,8 +18,8 @@
                 apply:(fromTo (from (to)) (to (mapEntry (mover))) count:(count at:(to)) 
                     // We update the number of capture done so far for that player.
                     (then (and 
-                            (if (= "NumCaptureDone" 1) (set Value Mover 2) ) 
-                            (if (= "NumCaptureDone" Off) (set Value Mover 1) )
+                            (if (= "NumCaptureDone" 1) (set Value Mover 2)) 
+                            (if (= "NumCaptureDone" Off) (set Value Mover 1))
                         ) 
                     )
                 )
@@ -50,9 +50,9 @@
     )  
     (rules 
         
-        (start (set Count 10 to:(sites Track) ) )
+        (start (set Count 10 to:(sites Track)) )
         
-        (play (or ("Sow" "TrackCW") ("Sow" "TrackCCW") ) )
+        (play (or ("Sow" "TrackCW") ("Sow" "TrackCCW")) )
         
         (end
             (if (no Moves Mover) 

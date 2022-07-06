@@ -51,7 +51,7 @@
 )
 
 (define "AllPieceInCentre" 
-    (= 0 (count Sites in:(difference (sites Occupied by:Mover) (sites Centre) )))
+    (= 0 (count Sites in:(difference (sites Occupied by:Mover) (sites Centre))))
 )
 
 (define "Move" 

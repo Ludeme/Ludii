@@ -1,12 +1,12 @@
 (define "Columns" <Board:size>)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
 
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
-(define "NextHole" (if (is Mover P1) (trackSite Move from:(to) "Track1" steps:1) (trackSite Move from:(to) "Track2" steps:1) ))
+(define "NextHole" (if (is Mover P1) (trackSite Move from:(to) "Track1" steps:1) (trackSite Move from:(to) "Track2" steps:1)))
 
 (define "PlayFromNextHole" (sites {(value Pending)}))
 
@@ -29,7 +29,7 @@
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (regions "Outer" P1 (sites Bottom))                                     // P1 outer Home
         (regions "Outer" P2 (sites Top))                                        // P1 outer Home
         (regions "InnerInit" P1 <Board:innerInitP1>)                              // Inner holes with seeds at the initial state
@@ -40,7 +40,7 @@
     )  
     (rules 
         
-        (start (set Count 2 to:(union {(sites P1 "Outer") (sites P1 "InnerInit") (sites P2 "Outer") (sites P2 "InnerInit")}) ) )
+        (start (set Count 2 to:(union {(sites P1 "Outer") (sites P1 "InnerInit") (sites P2 "Outer") (sites P2 "InnerInit")})) )
         
         (play 
             (move

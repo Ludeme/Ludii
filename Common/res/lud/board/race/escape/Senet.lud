@@ -551,7 +551,7 @@
         (define "NotAFriendOrNotOnSymbols"  
             (if (is In ("SiteToMoveOnTrack" #1) (sites "Symbols"))
                 (is Empty ("SiteToMoveOnTrack" #1))
-                (not ("IsFriendAt" ("SiteToMoveOnTrack" #1) ))
+                (not ("IsFriendAt" ("SiteToMoveOnTrack" #1)))
             )
         )
         

@@ -109,7 +109,7 @@
                 (then 
                     (if (is Line 3)  // add a piece in the supergame                                    
                         (add 
-                            (what (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")) )
+                            (what (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")))
                             (to (mapEntry "SubToSuper" (last To)))
                         )
                     )

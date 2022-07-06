@@ -1,5 +1,5 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
 (define "Stores" (sites {(mapEntry P1) (mapEntry P2)}))

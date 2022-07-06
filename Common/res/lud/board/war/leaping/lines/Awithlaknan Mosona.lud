@@ -23,8 +23,8 @@
     
     (rules 
         (start {
-            (place "Counter1" (union (sites Bottom) (sites Direction from:(centrePoint) W) ) )
-            (place "Counter2" (union (sites Direction from:(centrePoint) E) (sites Top) ) )
+            (place "Counter1" (union (sites Bottom) (sites Direction from:(centrePoint) W)) )
+            (place "Counter2" (union (sites Direction from:(centrePoint) E) (sites Top)) )
         })
         (play (forEach Piece))
         (end ("NoMoves" Loss))

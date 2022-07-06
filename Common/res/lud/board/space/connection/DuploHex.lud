@@ -37,7 +37,7 @@
             (place "Ring2" (handSite P2 1) count:25)
         })
         phases:{
-        (phase "Placement" (play (move (from (sites Hand P1)) (to (sites Empty)) (then (moveAgain)))) (nextPhase "Game") )
+        (phase "Placement" (play (move (from (sites Hand P1)) (to (sites Empty)) (then (moveAgain)))) (nextPhase "Game"))
         (phase "Game"
             (play 
                 (if (is Odd (count Moves))

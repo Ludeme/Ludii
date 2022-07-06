@@ -48,7 +48,7 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@
                     (max Moves
                         ("HopMan" (last To)
                             (then 
-                                (if (can Move ("HopMan" (last To)) ) 
+                                (if (can Move ("HopMan" (last To))) 
                                     (moveAgain)
                                     (if "JumpToPromotionZone" 
                                         (move Promote (last To) (piece "DoubleCounter") Mover)
@@ -92,7 +92,7 @@
                             (forEach Piece "Counter" 
                                 ("HopMan" (from)
                                     (then 
-                                        (if (can Move ("HopMan" (last To)) ) 
+                                        (if (can Move ("HopMan" (last To))) 
                                             (moveAgain) 
                                             (if "JumpToPromotionZone" 
                                                 (move Promote (last To) (piece "DoubleCounter") Mover)

@@ -40,8 +40,8 @@
     
     (rules 
         (start { 
-            (place "Counter1" (forEach (sites Board) if:(> (site) (centrePoint)) ))
-            (place "Counter2" (forEach (sites Board) if:(< (site) (centrePoint)) ))
+            (place "Counter1" (forEach (sites Board) if:(> (site) (centrePoint))))
+            (place "Counter2" (forEach (sites Board) if:(< (site) (centrePoint))))
         })
         (play (forEach Piece)) 
         (end (if (no Moves Mover) (result Next Win))) 

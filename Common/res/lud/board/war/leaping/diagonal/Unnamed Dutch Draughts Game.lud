@@ -53,7 +53,7 @@
 
 (define "IsQueen" (= (what at:(last To)) (id "DoubleCounter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -71,10 +71,10 @@
     
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1))  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:3) (union (sites Top) (sites Phase 1) )) )
-            (place "DoubleCounter1" (difference (sites Bottom) (sites Phase 1) ))
-            (place "DoubleCounter2" (difference (sites Top) (sites Phase 1) ))
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1))  ))
+            (place "Counter2" (difference (expand (sites Top) steps:3) (union (sites Top) (sites Phase 1))))
+            (place "DoubleCounter1" (difference (sites Bottom) (sites Phase 1)))
+            (place "DoubleCounter2" (difference (sites Top) (sites Phase 1)))
         })
         
         (play 
@@ -93,8 +93,8 @@
                         )
                     )
                     (if ("IsQueen")
-                        (max Moves ("HopDoubleCounter" (from (last To)) before:(count Rows) after:(count Rows) at:EndOfTurn) )
-                        (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                        (max Moves ("HopDoubleCounter" (from (last To)) before:(count Rows) after:(count Rows) at:EndOfTurn))
+                        (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
                     )
                 )
                 (priority {

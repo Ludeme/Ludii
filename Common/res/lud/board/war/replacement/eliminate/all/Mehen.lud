@@ -34,7 +34,7 @@
 (define "AdvanceOn"
     (if (!= ("SiteToMoveOnTrack" #1) Off)  	 			
         (if (is In ("SiteToMoveOnTrack" #1) (sites Empty))
-            (move (from) (to ("SiteToMoveOnTrack" #1) ))
+            (move (from) (to ("SiteToMoveOnTrack" #1)))
         )
     )
 )
@@ -45,7 +45,7 @@
             (!= ("SiteToMoveOnTrackForLion" #1) End) 
         )			
         (if  (not (is Friend (who at:(trackSite Move #1  steps:(mul (count Pips) 2)))))
-            (move (from) (to (trackSite Move #1 steps:(mul (count Pips) 2)) ))
+            (move (from) (to (trackSite Move #1 steps:(mul (count Pips) 2))))
         )
     )
 )

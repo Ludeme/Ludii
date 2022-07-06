@@ -1,6 +1,6 @@
-(define "HaveRemainingSticks" (not ("HandEmpty" Mover)) )
+(define "HaveRemainingSticks" (not ("HandEmpty" Mover)))
 
-(define "LessThanFourSticksOnBoard" (< (count Sites in:(sites Occupied by:Mover container:"Board")) 4) )
+(define "LessThanFourSticksOnBoard" (< (count Sites in:(sites Occupied by:Mover container:"Board")) 4))
 
 (define "ReplaceStick" 
     (move 

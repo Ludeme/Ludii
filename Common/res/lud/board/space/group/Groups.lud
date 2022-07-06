@@ -25,7 +25,7 @@
         
         (play (forEach Piece))
         
-        (end (if (= 1 (count Groups Orthogonal if:(= (who at:(to)) (mover)))) (result Mover Win) ) )  
+        (end (if (= 1 (count Groups Orthogonal if:(= (who at:(to)) (mover)))) (result Mover Win)) )  
     )
 )
 

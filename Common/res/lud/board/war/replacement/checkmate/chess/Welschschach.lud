@@ -12,7 +12,7 @@
         (directions {FR FL}) 
         (to 
             if:(and (is Enemy (who at:(to))) 
-                (if (not (is In (to) (sites Next "Promotion")) )
+                (if (not (is In (to) (sites Next "Promotion")))
                     True
                     (!= (what at:(to)) (id "Pawn" Next))
                 )
@@ -32,7 +32,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "SpecialStartingPawns" (sites {"A2" "D2" "H2" "A7" "H7" "E7"}))
@@ -42,11 +42,11 @@
 (game "Welschschach"
     (players {(player N) (player S)})  
     (equipment {
-        (board (square 8) )
+        (board (square 8))
         (piece "King_noCross"
             (move Step
                 (to if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -59,7 +59,7 @@
             (move Step
                 Diagonal
                 (to if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -72,7 +72,7 @@
             (move Hop Diagonal 
                 (between if:True) 
                 (to if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -87,7 +87,7 @@
                 "KnightWalk" 
                 (to 
                     if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -102,7 +102,7 @@
                 Orthogonal
                 (to 
                     if:(and (not (is Friend (who at:(to))))
-                        (if (not (is In (to) (sites Next "Promotion")) )
+                        (if (not (is In (to) (sites Next "Promotion")))
                             True
                             (!= (what at:(to)) (id "Pawn" Next))
                         )
@@ -129,8 +129,8 @@
                 )
             )
         ) 
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
     })
     (rules 
         (start {   
@@ -150,7 +150,7 @@
                             (move Hop Diagonal 
                                 (between (exact 1) if:True) 
                                 (to if:(and (not (is Friend (who at:(to))))
-                                        (if (not (is In (to) (sites Next "Promotion")) )
+                                        (if (not (is In (to) (sites Next "Promotion")))
                                             True
                                             (!= (what at:(to)) (id "Pawn" Next))
                                         )

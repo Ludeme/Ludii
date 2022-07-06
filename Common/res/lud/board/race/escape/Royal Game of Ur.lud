@@ -40,7 +40,7 @@
             (place "UrPiece2" (handSite P2) count:7)
         })	
         
-        (play ("RollMove" (if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
+        (play ("RollMove" (if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover))))))
         
         (end ("EscapeWin"))
     )

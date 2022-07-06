@@ -1,5 +1,5 @@
 (define "NextCanNotMoveToProtect"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" #1 Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" #1 Next)))))
 )
 
 (define "CaptureToPiece"
@@ -41,7 +41,7 @@
 )
 
 (define "PromotedPiece" 
-    (if (and (is In (last To) (sites Corners)) (!= 2 (count Pieces Mover "Boat")) )
+    (if (and (is In (last To) (sites Corners)) (!= 2 (count Pieces Mover "Boat")))
         (id "Boat" Mover)
         (if (and (or (= (column of:(last To)) 1) (= (column of:(last To)) 6)) (!= 2 (count Pieces Mover "Knight")))
             (id "Knight" Mover)
@@ -162,7 +162,7 @@
                 ) 
             ) 
         )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P2 (sites Bottom))
     })  
     (rules 
         (start { 

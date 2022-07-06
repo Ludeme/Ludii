@@ -1,6 +1,6 @@
 (define "Columns" 8)
 (define "NoPiecesInInner" (no Pieces All in:(sites #1 "Inner")))
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
 (define "Sowing"
     (sow
         #1
@@ -87,7 +87,7 @@
         (start {
             (set Count 24 at:(handSite P1))
             (set Count 24 at:(handSite P2))
-            (set Count 1 to:(union (sites Row 1) (sites Row 2) ) ) 
+            (set Count 1 to:(union (sites Row 1) (sites Row 2)) ) 
         })
         
         phases:{

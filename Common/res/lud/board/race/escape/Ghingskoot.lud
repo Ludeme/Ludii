@@ -13,7 +13,7 @@
 (define "CaptureEnemyPiece" 
     (apply 
         if:("IsEnemyAt" (to))
-        (and (set State at:(to) 0) (fromTo (from (to)) (to (handSite Next))) )
+        (and (set State at:(to) 0) (fromTo (from (to)) (to (handSite Next))))
     ) 
 )
 

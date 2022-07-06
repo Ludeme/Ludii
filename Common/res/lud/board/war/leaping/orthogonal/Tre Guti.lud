@@ -25,7 +25,7 @@
         
         phases:{
         (phase "Placement"
-            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (play (move (from (handSite Mover)) (to (sites Empty))))
             (nextPhase ("HandEmpty" P2) "Movement")
         )
         

@@ -2,7 +2,7 @@
 
 (define "RemoveAPiece" (move Remove (from)))
 
-(define "PieceStacked" (= (state at:#1) 1) )
+(define "PieceStacked" (= (state at:#1) 1))
 (define "Unstack" (set State at:(last To) 0))
 
 (define "StackSizeLessThan2" (< (size Stack at:("NextSiteOnTrack" (pips))) 2))

@@ -36,7 +36,7 @@
         (if 
             (can Move 
                 (or 
-                    ("DiagonalHopCaptureCounter" (from (last To)) ) 
+                    ("DiagonalHopCaptureCounter" (from (last To))) 
                     ("OrthogonalHopCaptureCounter" (from (last To)))
                 )
             )
@@ -78,8 +78,8 @@
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 0)  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 0) ) )
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 0)  ))
+            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 0)) )
             }
         )
         

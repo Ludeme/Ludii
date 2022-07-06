@@ -17,7 +17,7 @@
     )
 )
 
-(define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece))))) ))
+(define "NextCanNotMove" (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next (forEach Piece)))))))
 
 (define "KingMove"
     (move Step
@@ -105,9 +105,9 @@
                 )
             )		
         )
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
-        (regions "PromotionMarked" (sites {"A1" "D1" "E1" "H1" "A8" "D8" "E8" "H8"}) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+        (regions "PromotionMarked" (sites {"A1" "D1" "E1" "H1" "A8" "D8" "E8" "H8"}))
     })
     
     (rules 
@@ -135,8 +135,8 @@
                 )
                 (result Mover Win)
             ) 
-            (if (= (value Player P1) 64) (result P1 Win) ) 
-            (if (= (value Player P2) 64) (result P2 Win) ) 
+            (if (= (value Player P1) 64) (result P1 Win)) 
+            (if (= (value Player P2) 64) (result P2 Win)) 
         })
     )
 )

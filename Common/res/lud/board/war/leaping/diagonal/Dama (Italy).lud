@@ -14,7 +14,7 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -32,8 +32,8 @@
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ))
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1)) )
             }
         )
         
@@ -45,7 +45,7 @@
                             (then 
                                 (if "JumpToPromotionZone" 
                                     (move Promote (last To) (piece "DoubleCounter") Mover)
-                                    (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+                                    (if (can Move ("HopMan" (last To))) (moveAgain)) 
                                 ) 
                             ) 
                         )
@@ -55,13 +55,13 @@
                 (priority {
                     (max Moves
                         (priority {
-                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture") )
+                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
                             (forEach Piece "Counter" 
                                 ("HopMan" (from) 
                                     (then 
                                         (if "JumpToPromotionZone"
                                             (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                            (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
+                                            (if (can Move ("HopMan" (last To))) (moveAgain)) 
                                         ) 
                                     ) 
                                 ) 

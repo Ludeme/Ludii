@@ -2,7 +2,7 @@
     (players {(player N) (player S)})  
     (equipment { 
         ("CrossBoard" 3 7 use:Vertex diagonals:Alternating)
-        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty" ) )
+        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty" ))
         (piece "Hen" P2 ("StepToEmpty" (directions {Rightward Leftward Forwards}))) 
     })  
     (rules 

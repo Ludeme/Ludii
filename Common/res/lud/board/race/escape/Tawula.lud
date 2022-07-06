@@ -1,7 +1,7 @@
 (define "SiteToEnter" (trackSite Move from:(mapEntry "StartTrack" Mover) steps:(pips)))
 (define "SiteToEnterCapturePiece" (trackSite Move from:("BarSite" Mover) steps:(pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
+(define "RemoveAPiece" (move Remove (from)) )
 
 (define "DieNotUsed" (!= (pips) 0))
 

@@ -1,6 +1,6 @@
 (define "Rows" 4)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Rows") (- (to) "Rows") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Rows" 2)) (- (to) (* "Rows" 2)) ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Rows") (- (to) "Rows")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Rows" 2)) (- (to) (* "Rows" 2))) )
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1 "Home"))))
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "NextSite" (trackSite Move from:#1 #2 steps:#3))
@@ -21,7 +21,7 @@
         (regions "Home" P1 (sites Track "TrackExtendedCCW1")) // P1 Home
         (regions "Home" P2 (sites Track "TrackExtendedCCW2")) // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
         <Board:stores>
     })
     (rules

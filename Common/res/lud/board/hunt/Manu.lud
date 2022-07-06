@@ -8,7 +8,7 @@
     })  
     (rules 
         (start { 
-            (place "Marker2" (union (expand (sites Bottom)) (sites Row 2) ) )
+            (place "Marker2" (union (expand (sites Bottom)) (sites Row 2)) )
             (place "Stick1" (handSite P1))
         })
         

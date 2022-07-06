@@ -22,7 +22,7 @@
         (piece "Seed" Shared)
     })
     (rules
-        (start (set Count 10 to:(sites Track) ) )
+        (start (set Count 10 to:(sites Track)) )
         (play 
             (forEach Site 
                 (forEach (sites Mover) if:(< 1 (count at:(site))))

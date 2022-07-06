@@ -72,7 +72,7 @@
     })
     (rules
         
-        (meta (swap) )
+        (meta (swap))
         (play 
             (move Add (to Vertex (sites Empty Vertex) if:(is In (to) (sites "Holes")))
                 (then 

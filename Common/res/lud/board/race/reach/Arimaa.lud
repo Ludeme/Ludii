@@ -11,7 +11,7 @@
     ) 
 )
 
-(define "Frozen" (not "NotFrozen") )
+(define "Frozen" (not "NotFrozen"))
 
 (define "NotProtectedBy" 
     ("NoSites" 
@@ -76,7 +76,7 @@
 (define "PushThePiece" 
     (move 
         (from (handSite Mover)) 
-        (to (sites Around (last To) Orthogonal if:(and (!= (last From) (to)) (is Empty (to)) ) )) // Any empty site around but not the previous position of the piece pushing.
+        (to (sites Around (last To) Orthogonal if:(and (!= (last From) (to)) (is Empty (to))) )) // Any empty site around but not the previous position of the piece pushing.
         (then 
             (and
                 "AllPieceInATrapAreRemoved"
@@ -173,7 +173,7 @@
                 (move 
                     (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P1.
                     (to (intersection (sites Mover "Home") (sites Empty))) 
-                    (then (if (not ("HandEmpty" P1)) (moveAgain) )) 
+                    (then (if (not ("HandEmpty" P1)) (moveAgain))) 
                 ) 
             ) 
             (nextPhase ("HandEmpty" P1) "PlacementP2")

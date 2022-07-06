@@ -34,7 +34,7 @@
             (if (or 
                     (= (trackSite Move steps:(count Pips)) ("Goal")) 
                     (and 
-                        (is In (count Pips) (sites "Grace") ) 
+                        (is In (count Pips) (sites "Grace")) 
                         (= (from) (mapEntry "PreviousGoal" (mover)))
                     )
                 ) 
@@ -124,7 +124,7 @@
                         (forEach Piece)
                         (if (and 
                                 (!= (what at:(handSite (mover))) 0) 
-                                (is In (count Pips) (sites "Grace") ) 
+                                (is In (count Pips) (sites "Grace")) 
                             )
                             (move
                                 (from 
@@ -138,7 +138,7 @@
                         }
                         (then 
                             (if 
-                                (is In (count Pips) (sites "Grace") ) 
+                                (is In (count Pips) (sites "Grace")) 
                                 (moveAgain)
                             ) 
                         ) 

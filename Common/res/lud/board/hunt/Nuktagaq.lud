@@ -15,7 +15,7 @@
     (rules 
         (start { 
             (place "Marker2" (difference (expand (sites Top) steps:4) (union (sites Row 2) (sites Centre))))
-            (place "Marker1" (sites Direction from:(sites Centre) S included:True distance:1) ) 
+            (place "Marker1" (sites Direction from:(sites Centre) S included:True distance:1)) 
         })
         
         (play (forEach Piece))

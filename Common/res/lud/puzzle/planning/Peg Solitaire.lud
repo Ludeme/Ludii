@@ -17,11 +17,11 @@
     )  
     (rules 
         (start { 
-            (place "Marker" (difference (sites Board) (sites <Variant:noPieceSite>) ) )
+            (place "Marker" (difference (sites Board) (sites <Variant:noPieceSite>)) )
         })
         
         (play (forEach Piece))
-        (end (if <Variant:end> (result P1 Win) ) )  
+        (end (if <Variant:end> (result P1 Win)) )  
     )
 )
 

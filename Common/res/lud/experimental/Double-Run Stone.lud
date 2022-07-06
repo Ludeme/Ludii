@@ -172,7 +172,7 @@
 (define "Stalemate" 
     (if 
         (no Moves Mover)
-        (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0)) ))  
+        (move Pass (then (forEach Site (sites State 1) (set State at:(site) 0))))  
         (move Pass (then (set Score Mover (count Pieces Mover in:(sites Board)))))
 ))
 //-----------------------------------------------

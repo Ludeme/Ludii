@@ -51,7 +51,7 @@
 (define "ForbiddenSpotsHuman" (union {(sites "Mountain") (sites "DeepWater") }))
 
 (define "HumanMoveSpots"
-    (difference (union (sites Empty) (sites Occupied by:Mover container:"Board")) ("ForbiddenSpotsHuman") )
+    (difference (union (sites Empty) (sites Occupied by:Mover container:"Board")) ("ForbiddenSpotsHuman"))
 )
 
 (define "ForbiddenSpotsVehicle" (union {(sites "Mountain") (sites "ShallowWater") (sites "DeepWater") }))
@@ -67,7 +67,7 @@
 (define "ForbiddenSpotsBoat" 
     (union 
         (sites "Mountain") 
-        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater")) ) 
+        (difference (sites Board) (union (sites "ShallowWater") (sites "DeepWater"))) 
     )
 )
 
@@ -206,7 +206,7 @@
                 ("DamageMultiply" (* (value Piece at:(#1)) 4) #1 )								// Planes are never affected by terrain									
                 (if (and
                         (is In (#2) "HumanSites")
-                        (is In (#1) (sites Occupied by:All component:"Shooter") )					// Shooter does double damage against humans
+                        (is In (#1) (sites Occupied by:All component:"Shooter"))					// Shooter does double damage against humans
                     )
                     (if (is In (#2) (sites "Forest"))
                         ("DamageMultiply" (* (value Piece at:(#1)) 6) #1 )							// (Shooter does 150% damage against humans in forests)
@@ -231,7 +231,7 @@
 )
 
 (define "DamageMultiply"
-    (max (/ (* #1 (mapEntry "DamageMultiplier" (what at:(#2))) ) 100) 1)
+    (max (/ (* #1 (mapEntry "DamageMultiplier" (what at:(#2)))) 100) 1)
 )
 
 //------------------------------------------------------------------------------
@@ -241,7 +241,7 @@
     (if (= (value Piece at:(last To)) 0)
         (and {
             (take Control of:All by:Mover at:(last To))
-            (set Value at:(last To) (/ (mapEntry "MaxHealth" (what at:(last To))) 2) )
+            (set Value at:(last To) (/ (mapEntry "MaxHealth" (what at:(last To))) 2))
         })
         (set Value at:(last To) (value Piece at:(last To)))
     )  
@@ -284,7 +284,7 @@
         )
         (if (> (who at:(#2)) 0) ("GetDoctrineValue" (who at:(#2)) 8) 4)
         (if #3 ("GetDoctrineValue" (who at:(#1)) 10) ("GetDoctrineValue" (who at:(#1)) 9))
-        (value Random (range ("GetDoctrineValue" (who at:(#1)) 11) ("GetDoctrineValue" (who at:(#1)) 12) ))
+        (value Random (range ("GetDoctrineValue" (who at:(#1)) 11) ("GetDoctrineValue" (who at:(#1)) 12)))
     })
 )
 
@@ -298,7 +298,7 @@
             (from)
             if:(and
                 (> (state at:(from)) 0)
-                (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))) )
+                (< (value Piece at:(from)) (mapEntry "MaxHealth" (what at:(from))))
             )
         )
         (to 
@@ -316,7 +316,7 @@
                 )
                 (set Value at:(last To) 
                     (max 
-                        (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From)) ))
+                        (- (value Piece at:(last To)) (- (mapEntry "MaxHealth" (what at:(last From))) (value Piece at:(last From))))
                         1
                     )
                 )
@@ -395,7 +395,7 @@
 )
 
 (define "EnemyBuildingSites"
-    (union (sites Occupied by:Enemy container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}) (sites Occupied by:Neutral container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}) )
+    (union (sites Occupied by:Enemy container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}) (sites Occupied by:Neutral container:"Board" components:{"Town" "Dock" "Base" "Factory" "Airport"}))
 )
 
 (define "AircraftSites"
@@ -729,10 +729,10 @@
                             )
                             (set Score 
                                 Mover
-                                (+ (* (count Sites in:(sites Occupied by:Mover component:"Town")) 10) (score Mover) )
+                                (+ (* (count Sites in:(sites Occupied by:Mover component:"Town")) 10) (score Mover))
                             )
                             (forEach Site (sites Occupied by:Next components:{"Town" "Base" "Factory" "Dock" "Airport"})
-                                (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10) ))
+                                (set Value at:(site) (min (mapEntry "MaxHealth" (what at:(site))) (+ (value Piece at:(site)) 10)))
                             )
                         })
                     )
@@ -1621,7 +1621,7 @@
         
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
         (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
-        (sites "River1")}) )) num:1))
+        (sites "River1")}))) num:1))
         (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
         (sites "River1") (sites "River2")}))) num:1))
         (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
@@ -1640,10 +1640,10 @@
         
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
         
-        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
+        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:5))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:8))     
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:8))     
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -1741,7 +1741,7 @@
         
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
         (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
-        (sites "River1")}) )) num:1))
+        (sites "River1")}))) num:1))
         (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
         (sites "River1") (sites "River2")}))) num:1))
         (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
@@ -1760,10 +1760,10 @@
         
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
         
-        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
+        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:5))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:8))     
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:8))     
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -1861,7 +1861,7 @@
         
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
         (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
-        (sites "River1")}) )) num:1))
+        (sites "River1")}))) num:1))
         (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
         (sites "River1") (sites "River2")}))) num:1))
         (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
@@ -1887,7 +1887,7 @@
         
         (regions "Riverx1" (sites Random (difference (sites Board) (union (sites "SitesAroundBuildings") (sites "FirstRiverArea"))) num:1))
         (regions "Riverx2" (sites Random (intersection (expand (sites "Riverx1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
-        (sites "Riverx1")}) )) num:1))
+        (sites "Riverx1")}))) num:1))
         (regions "Riverx3" (sites Random (intersection (expand (sites "Riverx2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
         (sites "Riverx1") (sites "Riverx2")}))) num:1))
         (regions "Riverx4" (sites Random (intersection (expand (sites "Riverx3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
@@ -1907,10 +1907,10 @@
         
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
         
-        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
+        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Side NW) (sites Side NE) (sites Side SW) (sites Side SE)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:14))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:20))     
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:20))     
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -2008,7 +2008,7 @@
         
         (regions "River1" (sites Random (difference (union (sites Top) (sites Bottom)) (sites "SitesAroundBuildings")) num:1))
         (regions "River2" (sites Random (intersection (expand (sites "River1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
-        (sites "River1")}) )) num:1))
+        (sites "River1")}))) num:1))
         (regions "River3" (sites Random (intersection (expand (sites "River2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
         (sites "River1") (sites "River2")}))) num:1))
         (regions "River4" (sites Random (intersection (expand (sites "River3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") 
@@ -2034,7 +2034,7 @@
         
         (regions "Riverx1" (sites Random (difference (sites Board) (union (sites "SitesAroundBuildings") (sites "FirstRiverArea"))) num:1))
         (regions "Riverx2" (sites Random (intersection (expand (sites "Riverx1") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
-        (sites "Riverx1")}) )) num:1))
+        (sites "Riverx1")}))) num:1))
         (regions "Riverx3" (sites Random (intersection (expand (sites "Riverx2") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
         (sites "Riverx1") (sites "Riverx2")}))) num:1))
         (regions "Riverx4" (sites Random (intersection (expand (sites "Riverx3") Orthogonal) (difference (sites Board) (union {(sites "SitesAroundBuildings") (sites "FirstRiverArea")
@@ -2054,10 +2054,10 @@
         
         (regions "ShallowWater" (difference (expand (sites "DeepWater")) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks")})))
         
-        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")}) ))
+        (regions "MountainArea" (difference (expand (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})) (union {(sites "Buildings") (sites "DeepWater") (sites "Docks") (sites "ShallowWater")})))
         (regions "Mountain" (sites Random (sites "MountainArea") num:14))
         
-        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")}) ) num:20))     
+        (regions "Forest" (sites Random (difference (sites Board) (union {(sites "ShallowWater") (sites "DeepWater") (sites "Mountain") (sites "Docks") (sites "Buildings")})) num:20))     
         > 
         <
         (place "Base1" (sites "BaseP1") state:8 value:100) 
@@ -2437,7 +2437,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (board Colour Symbols (colour Black))
-        (piece Background image:"square" fillColour:(colour 255 255 255 1) edgeColour:(colour 255 255 255 1) )
+        (piece Background image:"square" fillColour:(colour 255 255 255 1) edgeColour:(colour 255 255 255 1))
         (show Piece Value Top offsetImage:true valueOutline:true)
         
         <Scenario:pieceFlip>

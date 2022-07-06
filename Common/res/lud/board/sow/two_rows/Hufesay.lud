@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -59,7 +59,7 @@
     (rules 
         
         (start {
-            (set Count 4 to:(sites Track) ) 
+            (set Count 4 to:(sites Track)) 
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })

@@ -12,8 +12,8 @@
     
     (rules 
         (start { 
-            (place "Marker1" (forEach (sites Board) if:(< (site) (centrePoint)) ))
-            (place "Marker2" (forEach (sites Board) if:(> (site) (centrePoint)) ))
+            (place "Marker1" (forEach (sites Board) if:(< (site) (centrePoint))))
+            (place "Marker2" (forEach (sites Board) if:(> (site) (centrePoint))))
         })
         
         (play (forEach Piece)) 

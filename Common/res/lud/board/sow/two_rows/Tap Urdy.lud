@@ -42,9 +42,9 @@
                 )
                 (then 
                     (sow  
-                        apply:(if (and (!= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1) )
+                        apply:(if (and (!= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1))
                             (moveAgain)
-                            (if (and (= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1) )
+                            (if (and (= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1))
                                 (fromTo 
                                     (from ("NextHoleFrom" (to) steps:2)) 
                                     (to (handSite (mover))) 

@@ -4,11 +4,11 @@
 
 (define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
 
-(define "RemoveAPiece" (move Remove (from) ) )
+(define "RemoveAPiece" (move Remove (from)) )
 
-(define "PieceUnstacked" (= (state at:#1) 2) )
-(define "PieceFullStacked" (= (state at:#1) 0) )
-(define "PieceHalfStacked" (= (state at:#1) 1) )
+(define "PieceUnstacked" (= (state at:#1) 2))
+(define "PieceFullStacked" (= (state at:#1) 0))
+(define "PieceHalfStacked" (= (state at:#1) 1))
 (define "PieceStacked" 
     (or
         ("PieceFullStacked" #1) 

@@ -33,7 +33,7 @@
     }) 
 )
 
-(define "RegionReached" (not (= (count Sites in:(sites Occupied by:Mover) ) (count Sites in:(difference (sites Occupied by:Mover) (sites Next))))) )
+(define "RegionReached" (not (= (count Sites in:(sites Occupied by:Mover)) (count Sites in:(difference (sites Occupied by:Mover) (sites Next))))))
 
 //------------------------------------------------------------------------------
 

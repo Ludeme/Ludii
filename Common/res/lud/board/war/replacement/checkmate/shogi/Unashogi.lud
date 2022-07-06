@@ -108,7 +108,7 @@
     (move
         Step
         #1
-        (to if:(and (not (is Friend (who at:(to)))) (or (not (is Enemy (who at:(to)))) (= (count Pieces Mover "Osho" in:(sites Board)) 1)) ) "CapturePiece") 
+        (to if:(and (not (is Friend (who at:(to)))) (or (not (is Enemy (who at:(to)))) (= (count Pieces Mover "Osho" in:(sites Board)) 1))) "CapturePiece") 
         #2 
     )   	
 )

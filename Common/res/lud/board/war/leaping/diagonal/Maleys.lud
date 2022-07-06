@@ -71,7 +71,7 @@
         (if 
             (can Move 
                 (or 
-                    ("DiagonalHopCaptureDoubleCounter" (from (last To)) ) 
+                    ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
                     ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
                 )
             )
@@ -100,7 +100,7 @@
                 (if 
                     (can Move 
                         (or 
-                            ("DiagonalHopCaptureDoubleCounter" (from (last To)) ) 
+                            ("DiagonalHopCaptureDoubleCounter" (from (last To))) 
                             ("OrthogonalHopCaptureDoubleCounter" (from (last To)))
                         )
                     )
@@ -110,7 +110,7 @@
             (if 
                 (can Move 
                     (or 
-                        ("DiagonalHopCaptureCounter" (from (last To)) ) 
+                        ("DiagonalHopCaptureCounter" (from (last To))) 
                         ("OrthogonalHopCaptureCounter" (from (last To)))
                     )
                 )
@@ -139,7 +139,7 @@
 )
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -157,8 +157,8 @@
     (rules 
         (start
             { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1) ) )
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1)  ))
+            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)) )
             }
         )
         

@@ -1,6 +1,6 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2))) )
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
@@ -18,7 +18,7 @@
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top)))   // P2 inner Home
         (piece "Seed" Shared)
         (map "SecondRightOuter" {(pair P1 14) (pair P2 17)})
         (map "RightOuter" {(pair P1 15) (pair P2 16)})

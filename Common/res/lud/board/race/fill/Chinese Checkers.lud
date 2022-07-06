@@ -1,6 +1,6 @@
-(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))) )
+(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
-(define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
+(define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
 (define "EmptyAndNotVisited"     							  
     (and 
@@ -27,7 +27,7 @@
     )
 ) 
 
-(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
+(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain)))))
 
 (define "RegionFilled" (= (sites (player (mapEntry (mover)))) (sites Occupied by:Mover)))
 
@@ -77,7 +77,7 @@
         ) 
         }
         
-        (end  (if "RegionFilled" (result Mover Win) ))
+        (end  (if "RegionFilled" (result Mover Win)))
     )
 )
 
@@ -93,8 +93,8 @@
         >
         <
         (start { 
-            (place "Marker1" (sites P1) )
-            (place "Marker2" (sites P2) )
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
         })
         >
         "Two players occupy home regions on opposite sides, four home regions are empty."
@@ -121,8 +121,8 @@
         >
         <
         (start { 
-            (place "Marker1" (sites P1) )
-            (place "Marker2" (sites P2) )
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
         })
         >
         "Two players occupy three regions each, alternating around board, i.e. all six home regions start full."
@@ -141,9 +141,9 @@
         >
         <
         (start { 
-            (place "Marker1" (sites P1) )
-            (place "Marker2" (sites P2) )
-            (place "Marker3" (sites P3) )
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
+            (place "Marker3" (sites P3))
         })
         >
         "Three players occupy home regions equally spaced around board, three home regions are empty."
@@ -160,10 +160,10 @@
         >
         <
         (start { 
-            (place "Marker1" (sites P1) )
-            (place "Marker2" (sites P2) )
-            (place "Marker3" (sites P3) )
-            (place "Marker4" (sites P4) )
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
+            (place "Marker3" (sites P3))
+            (place "Marker4" (sites P4))
         })
         >
         "Four players occupy home regions, two opposite home regions are empty."
@@ -182,11 +182,11 @@
         >
         <
         (start { 
-            (place "Marker1" (sites P1) )
-            (place "Marker2" (sites P2) )
-            (place "Marker3" (sites P3) )
-            (place "Marker4" (sites P4) )
-            (place "Marker5" (sites P5) )
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
+            (place "Marker3" (sites P3))
+            (place "Marker4" (sites P4))
+            (place "Marker5" (sites P5))
         })
         >
         "Five players occupy home regions, one is empty."
@@ -205,12 +205,12 @@
         >
         <
         (start { 
-            (place "Marker1" (sites P1) )
-            (place "Marker2" (sites P2) )
-            (place "Marker3" (sites P3) )
-            (place "Marker4" (sites P4) )
-            (place "Marker5" (sites P5) )
-            (place "Marker6" (sites P6) )
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
+            (place "Marker3" (sites P3))
+            (place "Marker4" (sites P4))
+            (place "Marker5" (sites P5))
+            (place "Marker6" (sites P6))
         })
         >
         "Six players occupy home regions (standard game)."

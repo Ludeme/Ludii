@@ -27,7 +27,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInOmnicheck" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInOmnicheck" Next)))))
 )
 
 //----------------------- Castling -------------------------------------------------------
@@ -201,7 +201,7 @@
     )
 )
 
-(define "PawnDirections" (directions { FL FR }) )
+(define "PawnDirections" (directions { FL FR }))
 
 //----------------------- Core -------------------------------------------------------
 
@@ -213,7 +213,7 @@
         (piece "Pawn" P1 
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    ("PawnDoubleMove" Forward (between if:(is Empty (between))) )
+                    ("PawnDoubleMove" Forward (between if:(is Empty (between))))
                 )
                 ("PawnMove" Forward ) 
                 ("PawnCapture" ("PawnDirections"))
@@ -224,7 +224,7 @@
         (piece "Hoplite" P2
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
-                    ("PawnDoubleMove" ("PawnDirections") )
+                    ("PawnDoubleMove" ("PawnDirections"))
                 )
                 ("PawnMove" ("PawnDirections")) 
                 ("PawnCapture" Forward)
@@ -281,8 +281,8 @@
             ("SlideMove")
         )
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
     )  
     (rules 

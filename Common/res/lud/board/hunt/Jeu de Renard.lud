@@ -14,12 +14,12 @@
     (rules 
         (start { 
             (place "Fox1" (handSite P1))
-            (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0) ) )
+            (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0)) )
         })
         
         phases:{
         (phase "Placement" P1
-            (play (move (from (handSite Mover)) (to (difference (sites Empty) (sites Phase 0) ))) )
+            (play (move (from (handSite Mover)) (to (difference (sites Empty) (sites Phase 0)))))
             (nextPhase "Movement")
         )
         
@@ -27,8 +27,8 @@
         }
         
         (end {
-            (if (no Moves P1) (result P2 Win) )
-            (if (no Pieces P2) (result P1 Win) )
+            (if (no Moves P1) (result P2 Win))
+            (if (no Pieces P2) (result P1 Win))
         }) 
     )
 )

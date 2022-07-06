@@ -1,6 +1,6 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
     )  
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ) )
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")) ))
         
         phases:{
         (phase "Opening" 

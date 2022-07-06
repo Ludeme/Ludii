@@ -15,7 +15,7 @@
                 ("HopCapture"
                     (from (from))
                     Adjacent
-                    (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                    (then (if (can Move ("HopCapture" (from (last To)))) (moveAgain))) 
                 )
                 ("StepToEmpty")
             )
@@ -33,7 +33,7 @@
                     ("HopCapture"
                         (from (last To))
                         Adjacent
-                        (then (if (can Move ("HopCapture" (from (last To))) ) (moveAgain) )) 
+                        (then (if (can Move ("HopCapture" (from (last To)))) (moveAgain))) 
                     )
                     (move Pass)
                 )

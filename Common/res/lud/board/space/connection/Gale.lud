@@ -11,8 +11,8 @@
     (rules 
         (start 
             {
-            (place "Square1" (forEach (sites Board) if:(and (is Even (column of:(site))) (is Odd (row of:(site))) )))
-            (place "Square2" (forEach (sites Board) if:(and (is Even (row of:(site))) (is Odd (column of:(site))) )))
+            (place "Square1" (forEach (sites Board) if:(and (is Even (column of:(site))) (is Odd (row of:(site))))))
+            (place "Square2" (forEach (sites Board) if:(and (is Even (row of:(site))) (is Odd (column of:(site))))))
             }
         )
         (play (move Add (to (sites Empty))))

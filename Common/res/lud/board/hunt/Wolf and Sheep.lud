@@ -14,8 +14,8 @@
         (play (forEach Piece))
         
         (end {
-            (if (and (no Moves P2) (is Mover P2)) (result P1 Win) )
-            (if (is In (where "Wolf" P2) (sites Bottom)) (result P2 Win) )
+            (if (and (no Moves P2) (is Mover P2)) (result P1 Win))
+            (if (is In (where "Wolf" P2) (sites Bottom)) (result P2 Win))
         })  
     )
 )

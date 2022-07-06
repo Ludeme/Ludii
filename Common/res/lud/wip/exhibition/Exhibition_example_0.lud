@@ -10,7 +10,7 @@
         })
         (play 
             (move Select
-                (from Cell (forEach (sites Board Cell) if:(is Occupied Cell (site))) ) 
+                (from Cell (forEach (sites Board Cell) if:(is Occupied Cell (site)))) 
             )
         )
         (end (if (is Line 9999) (result Mover Win)))

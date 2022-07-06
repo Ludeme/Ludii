@@ -20,7 +20,7 @@
                                     (remove (last To))
                                     (if 
                                         (and
-                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To))) ) 
+                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
                                         )
                                         (moveAgain)
@@ -35,7 +35,7 @@
                                 (and
                                     (remove (last To))
                                     (if  (and
-                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To))) ) 
+                                            (is Occupied (ahead (last To) (directions Cell from:(last From) to:(last To)))) 
                                             (!= (last To) (ahead (last To) (directions Cell from:(last From) to:(last To))))
                                         )
                                         (moveAgain)

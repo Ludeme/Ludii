@@ -1,5 +1,5 @@
 (define "Columns" 6)
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
@@ -17,7 +17,7 @@
         (hand Each)
     })  
     (rules 
-        (start (set Count 8 to:(sites Track) ) )
+        (start (set Count 8 to:(sites Track)) )
         
         phases:{
         

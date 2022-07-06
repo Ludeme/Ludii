@@ -19,7 +19,7 @@
 
 (define "StopTurnIfNoMoveAgain" (if (!= (value Player Mover) -2) (set Value Mover -1)))
 (define "ThrowAgainAndPlay" (and (moveAgain) (set Value Mover -2)))
-(define "IfMoveAgain" (= (value Player Mover) -2) )
+(define "IfMoveAgain" (= (value Player Mover) -2))
 
 (define "Move" 
     (if (and (= "ThrowValue" 1) (not ("HandEmpty" Mover)))

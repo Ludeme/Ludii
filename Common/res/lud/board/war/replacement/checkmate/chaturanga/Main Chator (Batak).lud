@@ -29,7 +29,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "SitesNextToKing" (sites {"C1" "E1" "D8" "F8"}))
@@ -45,7 +45,7 @@
 (game "Main Chator (Batak)"
     (players {(player N) (player S)})  
     (equipment {
-        (board (square 8) )
+        (board (square 8))
         (piece "King_noCross"
             (or
                 (move

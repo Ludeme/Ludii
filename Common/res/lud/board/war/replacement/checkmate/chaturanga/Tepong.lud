@@ -9,7 +9,7 @@
 (define "CaptureForwardDiagonal"
     (move
         Step 
-        (if (= 1 (state at:(from))) (directions {BR BL}) (directions {FR FL}) )
+        (if (= 1 (state at:(from))) (directions {BR BL}) (directions {FR FL}))
         (to 
             if:(is Enemy (who at:(to))) 
             (apply (remove (to)))
@@ -27,7 +27,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))))
 )
 
 (define "SitesNextToKing" (sites {"C1" "E1" "D8" "F8"}))

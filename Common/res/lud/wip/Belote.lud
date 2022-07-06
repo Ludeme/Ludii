@@ -38,7 +38,7 @@
             (play 
                 (or 
                     (if (<= (count Turns) (count Players)) 
-                        (set TrumpSuit (card Suit at:(handSite All)) ) 
+                        (set TrumpSuit (card Suit at:(handSite All))) 
                         (set TrumpSuit
                             (difference 
                                 {1 2 3 4} // Need to be improved with a IntArrayFunction in entry... But compiler breaks for it...

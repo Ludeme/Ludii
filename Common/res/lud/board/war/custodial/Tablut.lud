@@ -1,6 +1,6 @@
 (define "Castle" (centrePoint))
 (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
-(define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+(define "CaptureJarl" (apply (trigger "Surrounded" P2)))
 (define "FriendOrCentre" (or (is Friend (who at:(to))) (= (to) ("Castle"))))
 (define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
 (define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
@@ -44,7 +44,7 @@
                 Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             ) 
         ) 
         
@@ -53,7 +53,7 @@
                 Slide
                 Orthogonal 
                 (between if:(and (!= (between) ("Castle")) (is Empty (between))))
-                (then ("Custodial" "Thrall1") ) 
+                (then ("Custodial" "Thrall1")) 
             )
         )
         
@@ -74,7 +74,7 @@
         (play (forEach Piece)) 
         
         (end {
-            (if (is In (where "Jarl" P2) (sites Outer) ) (result P2 Win))
+            (if (is In (where "Jarl" P2) (sites Outer)) (result P2 Win))
             (if "JarlWasCaptured" (result P1 Win))
         })
     )

@@ -1,7 +1,7 @@
 (define "Columns" 8)
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
-(define "OuterOppositePit" (if (is Mover P1) (+ #1 (* 2 ("Columns"))) (- #1 (* ("Columns") 2)) ) )
-(define "CorrespondingOuterPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OuterOppositePit" (if (is Mover P1) (+ #1 (* 2 ("Columns"))) (- #1 (* ("Columns") 2))) )
+(define "CorrespondingOuterPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns")) )
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "HolesWithPossibleCapture" 
     (forEach #1
@@ -30,7 +30,7 @@
         (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))   // P2 inner Home
         (regions "Outer" P1 (sites Bottom))                                        // P1 outer Home
         (regions "Outer" P2 (sites Top))                                           // P2 outer Home
         (regions "FourLeftMost" P1 (intersection (expand (sites Left)) (expand (sites Bottom)))) // P1 four left most
@@ -41,7 +41,7 @@
     })  
     (rules 
         
-        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home")) ))
         
         phases:{
         (phase "OuterPhase"
@@ -128,7 +128,7 @@
                                     (< 0 (count at:(from)))
                                     (< 1 (count at:(from)))
                                 )
-                                (is In (from) (sites Mover "FourLeftMost") )
+                                (is In (from) (sites Mover "FourLeftMost"))
                                 (is In ("NextHole" (from) "TrackCW" (count at:(from))) (sites Mover "Inner"))
                                 (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                             })

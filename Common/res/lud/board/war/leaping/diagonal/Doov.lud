@@ -14,7 +14,7 @@
 
 (define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
 
-(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+(define "JumpToPromotionZone" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -30,8 +30,8 @@
     })  
     (rules 
         (start { 
-            (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (sites Top)) (sites Phase 1) ) )
+            (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1)  ))
+            (place "Counter2" (difference (expand (sites Top)) (sites Phase 1)) )
         })
         
         (play 
@@ -44,7 +44,7 @@
                             ) 
                         ) 
                     )
-                    (forEach Piece "DoubleCounter" ("HopDiagonalCapture") )
+                    (forEach Piece "DoubleCounter" ("HopDiagonalCapture"))
                 )
                 
                 (or  

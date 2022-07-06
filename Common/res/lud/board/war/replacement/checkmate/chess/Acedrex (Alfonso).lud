@@ -25,7 +25,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))))
 )
 
 (define "DoubleStep"
@@ -121,8 +121,8 @@
             )		
         )
         
-        (regions "Promotion" P1 (sites Top) )
-        (regions "Promotion" P2 (sites Bottom) )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
         }
     )
     

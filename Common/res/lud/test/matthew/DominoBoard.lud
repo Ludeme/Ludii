@@ -36,8 +36,8 @@
             )
         )
         (end {
-            (if ("HandEmpty" Mover) (result Mover Win) ) 
-            (if (all Passed) (result Mover Draw) ) 
+            (if ("HandEmpty" Mover) (result Mover Win)) 
+            (if (all Passed) (result Mover Draw)) 
         })  
     )
 )

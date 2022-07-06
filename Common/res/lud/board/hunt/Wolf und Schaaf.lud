@@ -42,8 +42,8 @@
         }
         
         (end {
-            (if (and (no Moves P1) (is Mover P1)) (result P2 Win) )
-            (if ("WolfBeyondSheepRow") (result P1 Win) )
+            (if (and (no Moves P1) (is Mover P1)) (result P2 Win))
+            (if ("WolfBeyondSheepRow") (result P1 Win))
         })  
     )
 )

@@ -8,7 +8,7 @@
     })  
     (rules 
         <Meta:rule>
-        (play (move Add (to (sites Empty))) )
+        (play (move Add (to (sites Empty))))
         (end (if (is Connected Mover) (result Mover <Result>))) 
     )
 )
@@ -36,7 +36,7 @@
 })
 
 (option "Swap Rules" <Meta> args:{ <rule>} {
-    (item "On"  <(meta (swap) )>  "The game uses the swap rule.")*   
+    (item "On"  <(meta (swap))>  "The game uses the swap rule.")*   
     (item "Off" <> "The game does not use the swap rule.")   
 })
 

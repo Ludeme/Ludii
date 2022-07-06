@@ -1,6 +1,6 @@
 // Description of the knight move with sites at 3 orthogonal steps in looking only the sites around at distance 2 in any direction.
 
-(define "RegionReached" (is In (last To) (sites Mover)) )
+(define "RegionReached" (is In (last To) (sites Mover)))
 
 //------------------------------------------------------------------------------
 
@@ -31,12 +31,12 @@
     (rules 
         (start
             { 
-            (place "Knight1" (expand (sites Bottom)) )
-            (place "Knight2" (expand (sites Top)) )
+            (place "Knight1" (expand (sites Bottom)))
+            (place "Knight2" (expand (sites Top)))
             }
         )
         
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
     )

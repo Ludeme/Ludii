@@ -8,7 +8,7 @@
     ("NoSites" (intersection (sites Occupied by:Shared on:Edge) ("EdgeInCommon" #1 #2)))
 )
 
-(define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover)) ))
+(define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover))))
 
 (define "SizePath" 
     (count Steps

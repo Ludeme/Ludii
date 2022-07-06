@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next ("CastingAndMovingPieces"))))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next ("CastingAndMovingPieces"))))))
 )
 
 (define "HasNeverMoved"
@@ -38,7 +38,7 @@
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
-        (not (is Threatened (id "King" Mover) at:(to) (forEach Piece)) )
+        (not (is Threatened (id "King" Mover) at:(to) (forEach Piece)))
     )   
 )
 
@@ -279,7 +279,7 @@
                     (or 
                         (if ("AuthorisedToLaunch")
                             (move Select
-                                (from (sites Occupied by:Mover component:"NuclearBomb") if:(not (is Threatened (id "NuclearBomb" Mover) at:(from) (forEach Piece)) ))
+                                (from (sites Occupied by:Mover component:"NuclearBomb") if:(not (is Threatened (id "NuclearBomb" Mover) at:(from) (forEach Piece))))
                                 (to (sites Board))
                                 (then
                                     (and

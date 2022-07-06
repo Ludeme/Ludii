@@ -13,8 +13,8 @@
             (and 
                 (= (state at:(last To)) 0) 
                 (or 
-                    (is In (last To) (sites Mover "Promotion") ) 
-                    (is In (last From) (sites Mover "Promotion") ) 
+                    (is In (last To) (sites Mover "Promotion")) 
+                    (is In (last From) (sites Mover "Promotion")) 
                 ) 
             )  
             (moveAgain) 

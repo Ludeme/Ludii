@@ -1,6 +1,6 @@
 // Description of the knight move in using the indices of the board and a filter if the site is really around the knight.
 
-(define "RegionReached" (is In (last To) (sites Mover)) )
+(define "RegionReached" (is In (last To) (sites Mover)))
 
 (define "RightIndexSite" 
     (or {
@@ -43,12 +43,12 @@
     (rules 
         (start
             { 
-            (place "Knight1" (expand (sites Bottom)) )
-            (place "Knight2" (expand (sites Top)) )
+            (place "Knight1" (expand (sites Bottom)))
+            (place "Knight2" (expand (sites Top)))
             }
         )
         
-        (play (forEach Piece) )
+        (play (forEach Piece))
         
         (end (if "RegionReached" (result Mover Win)))
     )
