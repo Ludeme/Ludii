@@ -290,6 +290,7 @@ public class LInputField extends JComponent
             fieldComponent.setPreferredSize(new Dimension(fieldComponent.getPreferredSize().width-choiceButton.getPreferredSize().width, fieldComponent.getPreferredSize().height));
             fieldComponent.setSize(fieldComponent.getPreferredSize());
             add(choiceButton);
+            adjustFieldComponentSize(choiceButton);
         }
 
 
@@ -297,16 +298,13 @@ public class LInputField extends JComponent
         {
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
-
-            // resize terminal field accordingly to fit
-            fieldComponent.setPreferredSize(new Dimension(fieldComponent.getPreferredSize().width-addItemButton.getPreferredSize().width, fieldComponent.getPreferredSize().height));
-            fieldComponent.setSize(fieldComponent.getPreferredSize());
-
             add(addItemButton);
+            adjustFieldComponentSize(addItemButton);
         }
         if(removable)
         {
             add(terminalOptionalLabel);
+            adjustFieldComponentSize(terminalOptionalLabel);
             if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null)
             {
                 notifyActivated();
@@ -490,6 +488,7 @@ public class LInputField extends JComponent
             choiceButton.setPreferredSize(buttonSize());
             choiceButton.setSize(choiceButton.getPreferredSize());
             add(choiceButton);
+            adjustFieldComponentSize(choiceButton);
         }
 
         if(nodeArgument.collection())
@@ -497,10 +496,9 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
 
-            add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
             add(addItemButton);
+            adjustFieldComponentSize(addItemButton);
         }
-        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
 
         if(collapsed())
         {
@@ -508,11 +506,19 @@ public class LInputField extends JComponent
             expandButton.setPreferredSize(buttonSize());
             expandButton.setSize(expandButton.getPreferredSize());
             add(expandButton);
+            adjustFieldComponentSize(expandButton);
         }
         else
         {
             add(connectionComponent);
+            adjustFieldComponentSize(connectionComponent);
         }
+    }
+
+    private void adjustFieldComponentSize(Component otherComponent)
+    {
+        fieldComponent.setPreferredSize(new Dimension(fieldComponent.getPreferredSize().width - otherComponent.getPreferredSize().width, fieldComponent.getPreferredSize().height));
+        fieldComponent.setSize(fieldComponent.getPreferredSize());
     }
 
     /**
@@ -577,10 +583,8 @@ public class LInputField extends JComponent
 
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
-        fieldComponent.setPreferredSize(new Dimension(fieldComponent.getPreferredSize().width-removeItemButton.getPreferredSize().width, fieldComponent.getPreferredSize().height));
-        fieldComponent.setSize(fieldComponent.getPreferredSize());
-
         add(removeItemButton);
+        adjustFieldComponentSize(removeItemButton);
 
         if(input != null)
         {
@@ -617,9 +621,8 @@ public class LInputField extends JComponent
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
 
-
-        add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
         add(removeItemButton);
+        adjustFieldComponentSize(removeItemButton);
 
         if(collapsed())
         {
@@ -627,10 +630,12 @@ public class LInputField extends JComponent
             expandButton.setPreferredSize(buttonSize());
             expandButton.setSize(expandButton.getPreferredSize());
             add(expandButton);
+            adjustFieldComponentSize(expandButton);
         }
         else
         {
             add(connectionComponent);
+            adjustFieldComponentSize(connectionComponent);
         }
     }
 
@@ -808,7 +813,7 @@ public class LInputField extends JComponent
         inputArea().removedConnection(LInputField.this);
 
         boolean hasChildren = children.size() > 0;
-        for(LInputField child : children)
+        for(LInputField child : new ArrayList<>(children))
             inputArea().removeInputField(child);
 
         // notify handler
