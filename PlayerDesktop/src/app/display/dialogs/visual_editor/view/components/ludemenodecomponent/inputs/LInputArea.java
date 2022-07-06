@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -377,12 +378,12 @@ public class LInputArea extends JPanel
 
     public void updateCurrentInputFields(List<NodeArgument> newNodeArguments)
     {
-        // first remove all inputfields no longer contained
+        // first remove all inputfields no longer contained (to first remove collection children, and then parent)
         List<LInputField> reversedInputFields = new ArrayList<>(currentInputFields);
         Collections.reverse(reversedInputFields);
         for(LInputField inputField : reversedInputFields)
         {
-            if(!newNodeArguments.containsAll(inputField.nodeArguments()))
+            if(!new HashSet<>(newNodeArguments).containsAll(inputField.nodeArguments()))
             {
                 // remove connection
                 Handler.recordUserActions = false;
@@ -392,7 +393,6 @@ public class LInputArea extends JPanel
                     if(inputField.nodeArgument(0).collection())
                     {
                         Handler.removeEdge(LNC().graphPanel().graph(), LNC().node(), ((LudemeNode) input), inputField.elementIndex(), true);
-                        //Handler.removeCollectionElement(LNC().graphPanel().graph(), LNC().node(), inputField.nodeArgument(0), inputField.elementIndex());
                     }
                     else
                     {
