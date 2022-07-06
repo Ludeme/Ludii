@@ -477,6 +477,9 @@ public class LInputField extends JComponent
 
     public void constructHybrid(NodeArgument nodeArgument)
     {
+
+        Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
+
         // create connection component
         if(connectionComponent == null)
             connectionComponent = new LConnectionComponent(this, false);
@@ -519,7 +522,37 @@ public class LInputField extends JComponent
             add(connectionComponent);
             adjustFieldComponentSize(connectionComponent);
         }
+
+        if(input != null)
+        {
+            if(nodeArgument.collection())
+            {
+                Object[] inputArray = (Object[]) input;
+                int elementIndex = 0;
+                if(parent != null)
+                {
+                    elementIndex = parent.children.indexOf(this) + 1;
+                }
+                if(inputArray[elementIndex] != null)
+                {
+                    setUserInput(inputArray[elementIndex]);
+                }
+            }
+            else
+            {
+                setUserInput(input);
+            }
+        }
+
+        if(input == null && nodeArgument.optional())
+        {
+            fieldComponent.setEnabled(false);
+            addItemButton.setEnabled(false);
+            active = false;
+        }
+
     }
+
 
     private void adjustFieldComponentSize(Component otherComponent)
     {
@@ -960,9 +993,12 @@ public class LInputField extends JComponent
                     ((JTextField) fieldComponent).setText("");
                 }
             }
-            if (fieldComponent instanceof JSpinner && input instanceof Integer)
+            if (fieldComponent instanceof JSpinner)
             {
-                ((JSpinner) fieldComponent).setValue(input);
+                if(input instanceof Integer)
+                {
+                    ((JSpinner) fieldComponent).setValue(input);
+                }
             }
             if (fieldComponent instanceof JComboBox && input instanceof Symbol)
             {
