@@ -1,0 +1,15 @@
+// Defines the capture of a stack with an enemy piece at the top returning to a site. This ludemeplex can be used only as an effect.
+// @example ("HittingStackCapture" (handSite (who at:(to))))
+
+(define "HittingStackCapture"
+	    (apply
+	            (if ("IsEnemyAt" (to))
+	                (forEach Level (to) FromTop
+	                    (fromTo
+	                        (from (to) level:(level))
+	                        (to #1)
+	                    )
+	                )
+	            )
+	        )
+)
