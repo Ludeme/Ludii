@@ -451,7 +451,7 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
             
-            add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
+            add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
             add(addItemButton);
         }
         add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL)); // padding to the right, distance between label and connection component
@@ -466,6 +466,12 @@ public class LInputField extends JComponent
         else
         {
             add(connectionComponent);
+        }
+        if(nodeArgument.optional() && nodeArgument.collection())
+        {
+            add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
+            add(terminalOptionalLabel);
+            adjustFieldComponentSize(terminalOptionalLabel);
         }
     }
 
@@ -545,7 +551,6 @@ public class LInputField extends JComponent
         fieldComponent = connectionComponent; // user interacts with the connection component
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
-        if(nodeArgument.optional()) add(optionalLabel);
         add(label);
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
