@@ -1,32 +1,6 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
 
-(define "ThrowValue" 
-    (if (= (count Pips) 4)
-        4
-        (if (= (count Pips) 6)
-            6
-            (if (= (count Pips) 14)
-                14
-                (if (= (count Pips) 15)
-                    15
-                    (if (= (count Pips) 0)
-                        10
-                        (if (= (count Pips) 39)
-                            5
-                            (if (or { 
-                                    (= (count Pips) 10) (= (count Pips) 18) (= (count Pips) 19) 
-                                    (= (count Pips) 20) (= (count Pips) 21) (= (count Pips) 29)
-                                })
-                                2
-                                3
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "RemoveAPiece" (move Remove (from) level:(level)))
 
@@ -84,13 +58,17 @@
         (dice d:2 facesByDie:{{0 4} {0 6} {0 14} {0 15}} num:4)
         (piece "Marker" Each ("Movement"))
         (hand Each)
+        (map "Throw" {
+            (pair 0 10) (pair 39 5) (pair 24 3) (pair 25 3) (pair 35 3) (pair 33 3)
+            (pair 10 2) (pair 18 2) (pair 19 2) (pair 20 2) (pair 21 2) (pair 29 2)
+        })
     })
     (rules 
         (start {
             (place Stack "Marker1" (handSite P1) count:2)
             (place Stack "Marker2" (handSite P2) count:2)
         })
-        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))))
+        (play ("RollMove" (or (forEach Piece) (forEach Piece container:(mover)))))
         (end ("EscapeWin"))
     )
 )
