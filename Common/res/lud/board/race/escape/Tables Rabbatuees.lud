@@ -1,8 +1,6 @@
-(define "DieNotUsed" (!= (pips) 0))
+(define "SiteToSelect" ("NextSiteOnTrack" (- (pips) 1) from:(mapEntry "StartTrack" (mover))))
 
-(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
-
-(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" (pips)))
 
 (define "BearOff" 
     (move 
@@ -39,24 +37,17 @@
 (game "Tables Rabbatuees"
     (players 2)
     (equipment {
-        (board 
-            (merge {
-                (rectangle 1 6) 
-                (shift 7 0 (rectangle 1 6))
-                (shift 0 6 (rectangle 1 6))
-                (shift 7 6 (rectangle 1 6))
-            })
+        ("TableBoard"
             {
             (track "Track1" {0..5} P1 directed:True)
             (track "Track2" {12..17} P2 directed:True)
             }
-            use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (if (= "SiteToMoveOnTrack" Off)
+                (if ("IsOffBoard" "SiteToMoveOnTrack")
                     ("BearOff" (from))
                     (move 
                         (from) 
@@ -80,9 +71,7 @@
         phases:{
         (phase "UnStacking" 
             (play 
-                (do 
-                    (if (not "SameTurn") (roll)) 
-                    next:
+                ("RollEachNewTurnMove"
                     (if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
                         (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
                             next:(forEach Site (sites Occupied by:Mover)
@@ -114,9 +103,7 @@
                                         (then 
                                             (and 
                                                 (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
-                                                (if (not (all DiceUsed))
-                                                    (moveAgain)
-                                                )
+                                                ("ReplayNotAllDiceUsed")
                                             )
                                         )
                                     )
@@ -126,9 +113,7 @@
                                         (then 
                                             (and 
                                                 ("UnstackFull")
-                                                (if (not (all DiceUsed))
-                                                    (moveAgain)
-                                                )
+                                                ("ReplayNotAllDiceUsed")
                                             )
                                         )
                                     )
@@ -139,15 +124,14 @@
                 )
             )
             (nextPhase Mover 
-                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
+                (all Sites (sites Occupied by:Mover) if:(not ("PieceStacked" (site)))) 
                 "BearingOff"
             )
         )
         (phase "BearingOff" 
             (play 
-                (do 
-                    (if (not "SameTurn") (roll))
-                    next:(if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
+                ("RollEachNewTurnMove"
+                    (if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
                         (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
                             next:(forEach Site (sites Occupied by:Mover)
                                 ("BearOff" (site))
@@ -161,7 +145,7 @@
                         )
                         (forEach Piece top:True)
                     )
-                    (then (if (not (all DiceUsed)) (moveAgain)))
+                    (then ("ReplayNotAllDiceUsed"))
                 )
             )
             (nextPhase Mover 
@@ -171,9 +155,8 @@
         )
         (phase "Placing" 
             (play 
-                (do 
-                    (if (not "SameTurn") (roll))
-                    next:(if (not (is Empty (handSite Mover)))
+                ("RollEachNewTurnMove"
+                    (if (not (is Empty (handSite Mover)))
                         (forEach Die 
                             if:("DieNotUsed")
                             (if (if (< (pips) 4) (< (size Stack at:"SiteToSelect") 2) (< (size Stack at:"SiteToSelect") 3))
@@ -184,9 +167,7 @@
                             )
                             (then
                                 (and
-                                    (if (not (all DiceUsed))
-                                        (moveAgain)
-                                    )
+                                    ("ReplayNotAllDiceUsed")
                                     (if (!= 0 (state at:(last To)))
                                         (set State at:(last To) 0)
                                     )
@@ -231,4 +212,3 @@
     })
     
 )
-

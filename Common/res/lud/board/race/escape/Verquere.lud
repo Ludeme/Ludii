@@ -24,13 +24,7 @@
 (game "Verquere"
     (players 2)
     (equipment {
-        (board (rectangle 2 13) 
-            {
-            (track "Track1" {6 25..20 18..13 0..5 7..12 End} P1 directed:True)
-            (track "Track2" {19 0..5 7..12 25..20 18..13 End} P2 directed:True)
-            } 
-            use:Vertex
-        ) 
+        ("BackgammonBoard" ("BackgammonTracksSameDirectionOppositeCornersWithBars2" End)) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die

@@ -76,11 +76,11 @@
 (define "FifteenFinal" 
     (if (is Mover P1)
         (and 
-                ("IsFriendAt" 12)
+            ("IsFriendAt" 12)
             (= 15 (size Stack at:12))
         )
         (and 
-                ("IsFriendAt" 13)
+            ("IsFriendAt" 13)
             (= 15 (size Stack at:13))
         )
     )
@@ -125,7 +125,7 @@
                 )
                 (then 
                     (and
-                    	("ReplayNotAllDiceUsed")
+                        ("ReplayNotAllDiceUsed")
                         (if (and
                                 (= (last To) (mapEntry "12thPoint" Mover))
                                 (!= 1 (value Player Mover))
@@ -149,8 +149,8 @@
             (place Stack "Disc2" 0 count:15) 
         })
         (play 
-                ("RollEachNewTurnMove"
-                		(forEach Piece top:True)
+            ("RollEachNewTurnMove"
+                (forEach Piece top:True)
             )		
         )
         
