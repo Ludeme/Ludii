@@ -15,7 +15,7 @@
                     (sites Around 
                         (sites To (hop Orthogonal (between if:True) (to if:True))) 
                         Orthogonal
-                        if:(not (is Friend (who at:(to))))
+                        if:(not ("IsFriendAt" (to)))
                     )
                     if:(= 2 (count Steps (from) (to)))
                 )

@@ -17,7 +17,7 @@
         (between 
             before:(count Rows) 
             after:(count Rows)
-            if:(and (is Enemy (who at:(between))) (is In (between) ("LargeDiagonals"))) 
+            if:(and ("IsEnemyAt" (between)) (is In (between) ("LargeDiagonals"))) 
             (apply (remove (between)))
         )
         (to if:(and (is Empty (to)) (is In (to) ("LargeDiagonals"))))
@@ -48,7 +48,7 @@
                 (move Hop 
                     (difference Adjacent Backwards)
                     (between 
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))
@@ -70,7 +70,7 @@
                 (move Hop 
                     Adjacent
                     (between 
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))

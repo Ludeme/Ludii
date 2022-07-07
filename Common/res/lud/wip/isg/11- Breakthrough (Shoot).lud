@@ -2,14 +2,14 @@
     (not
         (all Sites
             (sites Around (from) All)
-            if:(not (is Enemy (who at:(site))))
+            if:(not ("IsEnemyAt" (site)))
         )		
     )
 )
 
 (define "Leap"
     (move Leap { {F F R F} {F F L F} }
-        (to if:(not (is Friend (who at:(to)))) (apply (remove (to))))
+        (to if:(not ("IsFriendAt" (to))) (apply (remove (to))))
     )		
 )
 
@@ -18,7 +18,7 @@
     (move Step (directions {FR FL} of:All) 
         (to if:(or 
                 (is Empty (to)) 
-                (is Enemy (who at:(to)))
+                ("IsEnemyAt" (to))
             ) 
             (apply (remove (to)))
         )

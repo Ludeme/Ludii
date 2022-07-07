@@ -13,7 +13,7 @@
 (define "MiddleSites" (difference (sites Board) (union (sites Top) (sites Bottom))))
 
 (define "CaptureMove"
-    (if (is Enemy (who at:(to)))
+    (if ("IsEnemyAt" (to))
         (remove (to))
     )
 )
@@ -54,7 +54,7 @@
                     (to 
                         ("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
                         if:(if (is In (to) ("MiddleSites"))
-                            (or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
+                            (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
                             (is Empty (to))
                         )
                         (apply ("CaptureMove"))
@@ -72,7 +72,7 @@
                     (to 
                         ("SiteToMoveOnTrack" "Track" 1)	
                         if:(if (is In (to) ("MiddleSites"))
-                            (or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
+                            (or (is Empty (to)) (and ("IsEnemyAt" (to)) ("PieceCanBeCapture")))
                             (is Empty (to))
                         )
                         (apply ("CaptureMove"))
@@ -110,7 +110,7 @@
                 (to 
                     ("SiteToMoveOnTrack" "GoBackTrack" ("ThrowValue"))	
                     if:(if (is In (to) ("MiddleSites"))
-                        (not (is Friend (who at:(to))))
+                        (not ("IsFriendAt" (to)))
                         (is Empty (to))
                     )
                     (apply ("CaptureMove"))
@@ -127,7 +127,7 @@
                     (to 
                         ("SiteToMoveOnTrack" "LoopTrack" ("ThrowValue"))	
                         if:(if (is In (to) ("MiddleSites"))
-                            (not (is Friend (who at:(to))))
+                            (not ("IsFriendAt" (to)))
                             (is Empty (to))
                         )
                         (apply ("CaptureMove"))

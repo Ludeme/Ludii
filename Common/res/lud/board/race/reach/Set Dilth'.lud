@@ -10,7 +10,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (fromTo (from (to)) (to (mapEntry "Start" (who at:(to)))))
     ) 
 )
@@ -25,7 +25,7 @@
         )
         (then
             (forEach Site (sites Track Mover "Track" from:("NextSite" (last From) "Track") to:(last To))
-                (if (is Enemy (who at:(site)))
+                (if ("IsEnemyAt" (site))
                     (forEach Level (site)
                         (move
                             (from (site) level:(level))

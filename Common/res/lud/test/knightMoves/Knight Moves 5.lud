@@ -17,7 +17,7 @@
                             (sites Around (from)) 
                         )
                         if:(and { 
-                            (not (is Friend (who at:(site))))
+                            (not ("IsFriendAt" (site)))
                             (= 3 (count Steps Orthogonal (from) (site)))
                         })
                     )

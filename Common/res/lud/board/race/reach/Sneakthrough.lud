@@ -4,7 +4,7 @@
         (move
             Step 
             Forward 
-            (to if:(and (is Enemy (who at:(to))) (is Hidden at:(to) to:Mover)))
+            (to if:(and ("IsEnemyAt" (to)) (is Hidden at:(to) to:Mover)))
             (then 
                 (fromTo 
                     (from (last To)) 
@@ -27,7 +27,7 @@
         (move
             Step
             (directions {FR FL}) 
-            (to if:(is Enemy (who at:(to))) (apply (remove (to)))) 
+            (to if:("IsEnemyAt" (to)) (apply (remove (to)))) 
             (then (set Hidden at:(last To) to:Next))
         )
     }) 

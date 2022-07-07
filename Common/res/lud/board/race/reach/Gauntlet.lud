@@ -10,7 +10,7 @@
         (between 
             if:(and 
                 (not (is In (between) (sites ToClear))) 
-                (is Enemy (who at:(between)))
+                ("IsEnemyAt" (between))
             )
             (apply (remove (between) at:EndOfTurn))
         ) 
@@ -28,7 +28,7 @@
     (move Hop 
         #1
         (between 
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))

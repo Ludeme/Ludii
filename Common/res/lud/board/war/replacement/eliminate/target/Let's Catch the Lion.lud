@@ -1,6 +1,6 @@
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (if (= (what at:(to)) (id "Lion" Next))
                 (remove (to))
                 (add 
@@ -16,7 +16,7 @@
     (move
         Step
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
     )   	
 )

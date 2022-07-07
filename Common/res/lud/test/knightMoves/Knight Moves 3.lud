@@ -13,7 +13,7 @@
                 (from)
                 (to 
                     (difference
-                        (sites Around (sites Around (from)) if:(not (is Friend (who at:(to)))))
+                        (sites Around (sites Around (from)) if:(not ("IsFriendAt" (to))))
                         (sites To (slide (between if:True)))
                     )
                 )

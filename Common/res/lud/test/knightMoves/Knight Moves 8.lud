@@ -24,14 +24,14 @@
                                         (from (to)) 
                                         Orthogonal
                                         (if (and 
-                                                (not (is Friend (who at:(to))))
+                                                (not ("IsFriendAt" (to)))
                                                 (= 2 (count Steps (from) (to)))
                                             )
                                             (move 
                                                 (from) 
                                                 (to 
                                                     (apply 
-                                                        if:(is Enemy (who at:(to)))
+                                                        if:("IsEnemyAt" (to))
                                                         (remove (to))
                                                     )
                                                 )

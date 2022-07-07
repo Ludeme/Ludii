@@ -3,7 +3,7 @@
         (from #1)	 
         Orthogonal
         (between (range 1 3) if:(is Empty (between)))
-        (to if:(is Enemy (who at:(to))) #2)
+        (to if:("IsEnemyAt" (to)) #2)
     ) 	
 )
 
@@ -16,7 +16,7 @@
             (intersection
                 (sites To
                     (if (= 1 (value Piece at:(from)))
-                        (step Orthogonal (to if:(not (is Friend (who at:(to))))))
+                        (step Orthogonal (to if:(not ("IsFriendAt" (to)))))
                         (forEach Site
                             (sites To ("SlideStep" ~  (apply if:(is Empty (to)))))
                             ("SlideStep" (site))
@@ -25,7 +25,7 @@
                 )
                 (sites Distance Orthogonal from:(from) (exact (value Piece at:(from))))
             )
-            if:(not (is Friend (who at:(to)))) 
+            if:(not ("IsFriendAt" (to))) 
             (apply 
                 (set Value at:(from) (value Random (range 1 #1)))
             ) 

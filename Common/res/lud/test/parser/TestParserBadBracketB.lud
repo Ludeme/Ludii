@@ -74,7 +74,7 @@
             (step 
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply (remove (to)))
                 )
             )
@@ -88,8 +88,8 @@
                 Orthogonal 
                 (to 
                     if:(or
-                        (is Enemy (who at:(to))) 
-                        (is Friend (who at:(to)))
+                        ("IsEnemyAt" (to)) 
+                        ("IsFriendAt" (to))
                     )  
                     (apply (remove (to)))
                 )

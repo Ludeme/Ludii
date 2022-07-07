@@ -16,7 +16,7 @@
     (move
         Hop 
         #1 
-        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))
         (to if:(and 
                 (is In (from) (sites Occupied by:Mover)) 
                 (is Empty (to))
@@ -29,7 +29,7 @@
                     (hop 
                         (from (last To)) 
                         #1 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))     	
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to))))     	
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -73,7 +73,7 @@
                         Hop 
                         (from (last To)) 
                         (directions {FR FL}) 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -87,7 +87,7 @@
                                         (hop 
                                             (from (last To)) 
                                             (directions {FR FL}) 
-                                            (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 		
+                                            (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 		
                                             (to if:(and 
                                                     (is In (from) (sites Occupied by:Mover)) 
                                                     (is Empty (to))
@@ -105,7 +105,7 @@
                         Hop
                         (from (last To)) 
                         Diagonal 
-                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                         (to if:(and 
                                 (is In (from) (sites Occupied by:Mover)) 
                                 (is Empty (to))
@@ -118,7 +118,7 @@
                                     (hop 
                                         (from (last To))  
                                         Diagonal 
-                                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                                        (between if:("IsEnemyAt" (between)) (apply (fromTo (from (between)) (to)))) 
                                         (to if:(and 
                                                 (is In (from) (sites Occupied by:Mover)) 
                                                 (is Empty (to))

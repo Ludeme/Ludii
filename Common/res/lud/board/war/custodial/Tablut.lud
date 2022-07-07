@@ -1,7 +1,7 @@
 (define "Castle" (centrePoint))
 (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
 (define "CaptureJarl" (apply (trigger "Surrounded" P2)))
-(define "FriendOrCentre" (or (is Friend (who at:(to))) (= (to) ("Castle"))))
+(define "FriendOrCentre" (or ("IsFriendAt" (to)) (= (to) ("Castle"))))
 (define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
 (define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
 
@@ -103,7 +103,7 @@
                 if:"JarlButNotTheExpandedCentre" 
                 "CaptureJarl" 
             )
-            (to if:(is Friend (who at:(to))))
+            (to if:("IsFriendAt" (to)))
         )>
         "The king is captured if the enemy flanks him, except on the castle where he should be surrounded."
     )*

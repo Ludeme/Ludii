@@ -7,7 +7,7 @@
                 Hop
                 Orthogonal 
                 (between 
-                    if:(is Friend (who at:(between))) 
+                    if:("IsFriendAt" (between)) 
                     (apply (remove (between)))
                 )
                 (to if:(is Empty (to)))

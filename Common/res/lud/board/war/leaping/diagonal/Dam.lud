@@ -8,7 +8,7 @@
         #2
         (between 
             before:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -21,7 +21,7 @@
                             before:(count Rows)
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between)))
                         )

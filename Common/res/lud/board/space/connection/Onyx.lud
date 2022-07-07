@@ -27,7 +27,7 @@
     (count Sites 
         in:(forEach 
             (sites Around (site)) 
-            if:(is Enemy (who at:(site)))
+            if:("IsEnemyAt" (site))
         )
     )
 )
@@ -38,7 +38,7 @@
             (sites Around (site)) 
             if:(and 
                 (is In (site) (sites Around (last To))) 
-                (is Enemy (who at:(site)))
+                ("IsEnemyAt" (site))
             )
         )
     )
@@ -84,7 +84,7 @@
                             (remove
                                 (forEach 
                                     (sites Around (site)) 
-                                    if:(is Enemy (who at:(site)))
+                                    if:("IsEnemyAt" (site))
                                 )
                             )
                         )

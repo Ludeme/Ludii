@@ -22,7 +22,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             ("CaptureToPieceAndAddScore")
         )
     )
@@ -64,7 +64,7 @@
                 Hop 
                 Diagonal 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore"
                 )
             )
@@ -74,7 +74,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore"
                 ) 
             )
@@ -85,7 +85,7 @@
                 Orthogonal 
                 (between if:(is Empty (between))) 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPieceAndAddScore" 
                 )
             )
@@ -94,7 +94,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndAddScore" 
                 )
             )

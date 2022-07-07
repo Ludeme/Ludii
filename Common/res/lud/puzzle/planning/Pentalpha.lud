@@ -9,7 +9,7 @@
         (piece "Marker" P1
             (move Hop 
                 (between 
-                    if:(is Friend (who at:(between)))
+                    if:("IsFriendAt" (between))
                     (apply (remove (between)))
                 )
                 (to if:(is Empty (to)))
@@ -33,7 +33,7 @@
                     (if (= (from) (last To))
                         (move Hop 
                             (between 
-                                if:(or (is Friend (who at:(between))) (is Empty (between)))
+                                if:(or ("IsFriendAt" (between)) (is Empty (between)))
                             )
                             (to if:(is Empty (to)))
                         )

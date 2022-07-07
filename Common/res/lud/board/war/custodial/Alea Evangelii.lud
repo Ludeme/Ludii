@@ -9,7 +9,7 @@
         )
         (to 
             if:(or {
-                (is Friend (who at:(to))) 
+                ("IsFriendAt" (to)) 
                 (is In (to) (sites "Fortresses")) 
                 (and 
                     (is In (to) (sites Centre)) 
@@ -33,7 +33,7 @@
 
 (define "AFriendOrTheCentre" 
     (or 
-        (is Friend (who at:(to))) 
+        ("IsFriendAt" (to)) 
         (is In (to) (sites Centre))
     )
 )
@@ -75,7 +75,7 @@
                                 if:"JarlButNotTheExpandedCentre" 
                                 "CaptureJarl"
                             )
-                            (to if:(is Friend (who at:(to)))) 
+                            (to if:("IsFriendAt" (to))) 
                         )
                     })
                 )

@@ -16,7 +16,7 @@
                             (from (last To))
                             (between 
                                 (range 1 (count Rows))
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply
                                     (and
                                         (remove (between))
@@ -27,7 +27,7 @@
                                     )
                                 )
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )

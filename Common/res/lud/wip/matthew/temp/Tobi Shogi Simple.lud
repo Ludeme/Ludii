@@ -12,7 +12,7 @@
                 (move Hop 
                     (directions {Forward Rightward Leftward})
                     (between 
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))

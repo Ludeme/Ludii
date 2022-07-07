@@ -4,7 +4,7 @@
         (from #1) 
         (directions {FR FL})  
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 
@@ -19,7 +19,7 @@
         (between 
             before:(count Rows) 
             after:(count Rows)
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -33,7 +33,7 @@
                             after:(count Rows)
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between)))
                         )

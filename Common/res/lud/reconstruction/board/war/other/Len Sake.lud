@@ -32,9 +32,9 @@
             (move
                 (from (from) level:(level))
                 (to ("NextSiteFrom" (from))
-                    if:(or (not (is Enemy (who at:(to)))) (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to)))))
+                    if:(or (not ("IsEnemyAt" (to))) (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to)))))
                     (apply 
-                        (if (is Enemy (who at:(to))) (remove (to)))	
+                        (if ("IsEnemyAt" (to)) (remove (to)))	
                     )
                 )
             )

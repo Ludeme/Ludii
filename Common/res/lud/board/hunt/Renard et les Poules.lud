@@ -35,7 +35,7 @@
         #1
         #2
         (between 
-            if:(is Enemy (who at:(between))) 
+            if:("IsEnemyAt" (between)) 
             (apply (remove (between) #3))
         )
         (to if:(is Empty (to)))
@@ -47,7 +47,7 @@
                         (between 
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between) #3))
                         )

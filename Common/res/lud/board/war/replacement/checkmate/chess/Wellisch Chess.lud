@@ -26,7 +26,7 @@
 
 (define "IsToEmptyOrEnemy"
     (or "IsToEmpty"
-        (is Enemy (who at:(to)))
+        ("IsEnemyAt" (to))
     )
 )
 
@@ -80,7 +80,7 @@
     (move
         Slide
         #1
-        (to if:(is Enemy (who at:(to)))
+        (to if:("IsEnemyAt" (to))
             (apply "GrabToPieceAndResetCounter")
         )
         #2
@@ -94,7 +94,7 @@
         #1
         (to if:"IsToEmptyOrEnemy"
             (apply
-                (if (is Enemy (who at:(to)))
+                (if ("IsEnemyAt" (to))
                     "GrabToPieceAndResetCounter"
                 )
             )
@@ -200,7 +200,7 @@
     (move
         Step
         #1
-        (to if:(is Enemy (who at:(to)))
+        (to if:("IsEnemyAt" (to))
             (apply ("GrabToPiece" ~))
         )
     )

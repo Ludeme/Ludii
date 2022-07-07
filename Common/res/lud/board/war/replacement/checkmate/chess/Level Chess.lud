@@ -21,7 +21,7 @@
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove 
                 (to) 
                 (then (set Counter))
@@ -128,7 +128,7 @@
         Step 
         (directions {FR FL}) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         )
     )
@@ -199,7 +199,7 @@
                     Slide 
                     Orthogonal 
                     (to 
-                        if:(or (is Enemy (who at:(to))) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not (is Friend (who at:(to))))))
+                        if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
                         "CaptureToPieceAndResetCounter"
                     ) 
                     "RememberPieceHasMoved"
@@ -211,7 +211,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPieceAndResetCounter"
                     ) 
                     "RememberPieceHasMoved"
@@ -224,7 +224,7 @@
                     Slide 
                     Diagonal 
                     (to 
-                        if:(or (is Enemy (who at:(to))) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not (is Friend (who at:(to))))))
+                        if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
                         "CaptureToPieceAndResetCounter"
                     ) 
                 )
@@ -239,7 +239,7 @@
                             (forEach 
                                 (sites Board)
                                 if:(and { 
-                                    (not (is Friend (who at:(site))))
+                                    (not ("IsFriendAt" (site)))
                                     (= 3 (count Steps Orthogonal (from) (site)))
                                 })
                             )
@@ -255,7 +255,7 @@
                 (move
                     Slide 
                     (to 
-                        if:(or (is Enemy (who at:(to))) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not (is Friend (who at:(to))))))
+                        if:(or ("IsEnemyAt" (to)) (and (< ("GetSiteLevel" (from)) ("GetSiteLevel" (to))) (not ("IsFriendAt" (to)))))
                         "CaptureToPieceAndResetCounter"
                     ) 
                 ) 

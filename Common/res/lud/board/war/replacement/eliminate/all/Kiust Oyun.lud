@@ -3,7 +3,7 @@
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 (define "MiddleSites" (difference (sites Board) (union (sites Left) (sites Right))))
 (define "CaptureMove"
-    (if (is Enemy (who at:(to)))
+    (if ("IsEnemyAt" (to))
         (remove (to))
     )
 )
@@ -18,7 +18,7 @@
             (to 
                 ("SiteToMoveOnTrack" "LoopTrack" ("ThrowValue"))	
                 if:(and {
-                    (if (is Enemy (who at:(to)))
+                    (if ("IsEnemyAt" (to))
                         (= 2 ("ThrowValue"))
                         (is Empty (to))
                     )
@@ -26,9 +26,9 @@
                         (= 1 (var "Kiust"))
                         True
                     )
-                    (if (or (and (= 2 ("ThrowValue")) (is Enemy (who at:(to)))) (= 3 ("ThrowValue")))
+                    (if (or (and (= 2 ("ThrowValue")) ("IsEnemyAt" (to))) (= 3 ("ThrowValue")))
                         True
-                        (all Sites (sites Track from:("NextHole" (from) "LoopTrack" 1) to:("NextHole" (from) "LoopTrack" (- ("ThrowValue") 1))) if:(not (is Enemy (who at:(site)))))
+                        (all Sites (sites Track from:("NextHole" (from) "LoopTrack" 1) to:("NextHole" (from) "LoopTrack" (- ("ThrowValue") 1))) if:(not ("IsEnemyAt" (site))))
                     )
                 })
                 (apply ("CaptureMove"))
@@ -40,7 +40,7 @@
                 ("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
                 if:(and {
                     (if (is In (to) ("MiddleSites"))
-                        (if (is Enemy (who at:(to)))
+                        (if ("IsEnemyAt" (to))
                             (= 2 ("ThrowValue"))
                             (is Empty (to))
                         )
@@ -50,9 +50,9 @@
                         (= 1 (var "Kiust"))
                         True
                     )
-                    (if (or (and (= 2 ("ThrowValue")) (is Enemy (who at:(to)))) (= 3 ("ThrowValue")))
+                    (if (or (and (= 2 ("ThrowValue")) ("IsEnemyAt" (to))) (= 3 ("ThrowValue")))
                         True
-                        (all Sites (sites Track from:("NextHole" (from) "Track" 1) to:("NextHole" (from) "Track" (- ("ThrowValue") 1))) if:(not (is Enemy (who at:(site)))))
+                        (all Sites (sites Track from:("NextHole" (from) "Track" 1) to:("NextHole" (from) "Track" (- ("ThrowValue") 1))) if:(not ("IsEnemyAt" (site))))
                     )
                 })
                 (apply ("CaptureMove"))

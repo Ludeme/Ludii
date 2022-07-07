@@ -4,7 +4,7 @@
 
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
@@ -43,7 +43,7 @@
     (move
         Slide 
         #1 
-        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
     )   	
 )
@@ -52,7 +52,7 @@
     (move
         Step 
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
     )   	
 )

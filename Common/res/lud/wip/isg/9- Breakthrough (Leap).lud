@@ -1,6 +1,6 @@
 (define "Leap"
     (move Leap { {F F R F} {F F L F} }
-        (to if:(not (is Friend (who at:(to)))) (apply (remove (to))))
+        (to if:(not ("IsFriendAt" (to))) (apply (remove (to))))
     )		
 )
 

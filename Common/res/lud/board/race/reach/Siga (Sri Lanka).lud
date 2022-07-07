@@ -28,7 +28,7 @@
                     ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                     if:True
                     (apply
-                        (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                        (if (and (not (is In (to) (sites "SafeSites"))) ("IsEnemyAt" (to)))
                             (and
                                 (forEach Level (to) FromTop
                                     (fromTo

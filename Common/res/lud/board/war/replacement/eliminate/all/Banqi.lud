@@ -28,7 +28,7 @@
                 (and 
                     {
                     (not (is Hidden What at:(to) to:Mover)) 
-                    (is Enemy (who at:(to)))
+                    ("IsEnemyAt" (to))
                     (or
                         ("ZuMovingOnJiang")
                         (and

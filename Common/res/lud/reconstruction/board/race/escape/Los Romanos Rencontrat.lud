@@ -35,15 +35,15 @@
                     if:(if (is In (to) (sites Next))
                         (or 
                             (is Empty (to))
-                            (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
+                            (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
                         )
                         (or 
-                            (not (is Enemy (who at:(to)))) 
-                            (and (is Enemy (who at:(to))) (= 1 (size Stack at:(to))))
+                            (not ("IsEnemyAt" (to))) 
+                            (and ("IsEnemyAt" (to)) (= 1 (size Stack at:(to))))
                         )
                     )
                     (apply 
-                        (if (is Enemy (who at:(to))) 
+                        (if ("IsEnemyAt" (to)) 
                             (fromTo
                                 (from (to))
                                 (to (mapEntry Next))

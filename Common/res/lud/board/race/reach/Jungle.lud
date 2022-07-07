@@ -23,7 +23,7 @@
         ) 
         (to if:(and { 
                 (not (is In (to) (sites "Water"))) 
-                (not (is Friend (who at:(to)))) 
+                (not ("IsFriendAt" (to))) 
                 (<= (state at:(to)) (state at:(from))) 
             })
         )  

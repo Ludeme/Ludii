@@ -1,16 +1,16 @@
 (define "SlideForward" (move Slide Forward))
 (define "SlideDiagonalForward" 
     (move Slide (directions {FR FL} of:All) 
-        (to if:(is Enemy (who at:(to)))
+        (to if:("IsEnemyAt" (to))
             (apply (remove (to)))
         )
     )		
 )
 (define "Jump" 
     (move Hop (directions {Forwards Rightward Leftward} of:All) 
-        (between if:(is Friend (who at:(between))))
+        (between if:("IsFriendAt" (between)))
         (to 
-            if:(or (is Empty (to)) (is Enemy (who at:(to)))) 
+            if:(or (is Empty (to)) ("IsEnemyAt" (to))) 
             (apply (remove (to)))
         )
     )		

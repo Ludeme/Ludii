@@ -25,10 +25,10 @@
         (to 
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
-                (not (is Friend (who at:(to))))
+                (not ("IsFriendAt" (to)))
             ) 
             (apply 
-                if:(is Enemy (who at:(to)))
+                if:("IsEnemyAt" (to))
                 (add 
                     (piece (mapEntry "captured" (what at:(to)))) 
                     (to Cell (mapEntry "where" (what at:(to))))
@@ -61,10 +61,10 @@
                     })
                 )
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply 
                         (if 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -85,12 +85,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL} of:All) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (add 
                                                 (piece (mapEntry "captured" (what at:(to)))) 
                                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -111,10 +111,10 @@
                 Slide
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     (apply 
                         (if 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -140,7 +140,7 @@
                     (to 
                         if:(is Empty (to)) 
                         (apply 
-                            if:(is Enemy (who at:(to))) 
+                            if:("IsEnemyAt" (to)) 
                             (add 
                                 (piece (mapEntry "captured" (what at:(to)))) 
                                 (to Cell (mapEntry "where" (what at:(to))))
@@ -162,7 +162,7 @@
                 ) 
                 (to 
                     (apply 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (add 
                             (piece (mapEntry "captured" (what at:(to)))) 
                             (to Cell (mapEntry "where" (what at:(to))))

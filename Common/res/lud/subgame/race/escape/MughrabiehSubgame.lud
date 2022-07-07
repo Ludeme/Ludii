@@ -1,5 +1,5 @@
 (define "NotAnEnemy"    
-    (not (is Enemy (who at:(to))))
+    (not ("IsEnemyAt" (to)))
 )
 
 (define "NextSiteFrom" 
@@ -81,7 +81,7 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        (is Friend (who at:(site))) 
+        ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )

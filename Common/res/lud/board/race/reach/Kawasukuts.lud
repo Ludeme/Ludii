@@ -31,7 +31,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (fromTo (from (to)) (to (value Piece at:(to))))
     ) 
 )
@@ -40,7 +40,7 @@
     (if (!= #1 Off)
         (if (or
                 (is In #1 (sites Empty))
-                (is Enemy (who at:#1))
+                ("IsEnemyAt" #1)
             )
             (move 
                 (from (from) level:(level))

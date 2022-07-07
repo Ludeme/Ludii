@@ -7,7 +7,7 @@
             #1
             (between #2) 
             (to 
-                if:(is Enemy (who at:(to))) 
+                if:("IsEnemyAt" (to)) 
                 (apply "RemovePiece")
             )
         )
@@ -21,7 +21,7 @@
             Step
             #1 
             (to 
-                if:(not (is Friend (who at:(to)))) 
+                if:(not ("IsFriendAt" (to))) 
                 (apply "RemovePiece")
             )
             #2

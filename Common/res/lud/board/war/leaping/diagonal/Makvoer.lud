@@ -17,7 +17,7 @@
                         (between 
                             before:1
                             after:2
-                            if:(is Enemy (who at:(between)))
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         ) 
                         (to if:(is Empty (to))) 
@@ -39,7 +39,7 @@
                     (between 
                         before:(count Rows) 
                         after:(count Rows)
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))

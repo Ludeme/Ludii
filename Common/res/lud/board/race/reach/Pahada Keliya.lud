@@ -97,7 +97,7 @@
                                 )
                             )
                             (apply
-                                (if (is Enemy (who at:(to)))
+                                (if ("IsEnemyAt" (to))
                                     (forEach Level (to) FromTop
                                         (and {
                                             (if (= 1 (state at:(to) level:(level)))

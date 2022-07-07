@@ -4,7 +4,7 @@
         (from #1) 
         #2 
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
         ) 
         (to if:(is Empty (to))) 
@@ -20,7 +20,7 @@
         (between 
             #2
             #3
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
         )
         (to if:(is Empty (to)))
@@ -35,7 +35,7 @@
                             #3
                             if:(and 
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                         )
                         (to if:(is Empty (to)))
@@ -127,7 +127,7 @@
                         (forEach Piece
                             (if ("IsSoldier" (from))
                                 (move Step Orthogonal
-                                    (to if:(and (is Friend (who at:(to))) (= 2 (size Stack at:(to)))))
+                                    (to if:(and ("IsFriendAt" (to)) (= 2 (size Stack at:(to)))))
                                     stack:True
                                 )
                             )
@@ -164,7 +164,7 @@
                                         (move Step Orthogonal (to if:(is Empty (to))) stack:True)
                                         (if ("DoesNotHaveThreeGeneral")
                                             (move Step Orthogonal
-                                                (to if:(and (is Friend (who at:(to))) (= 1 (size Stack at:(to)))))
+                                                (to if:(and ("IsFriendAt" (to)) (= 1 (size Stack at:(to)))))
                                                 stack:True
                                             )
                                         )

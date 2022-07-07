@@ -4,7 +4,7 @@
         (from #1) 
         (directions {FR FL}) 
         (between 
-            if:(and (is Enemy (who at:(between))) (!= (what at:(last To)) (id "DoubleCounter" Next)))
+            if:(and ("IsEnemyAt" (between)) (!= (what at:(last To)) (id "DoubleCounter" Next)))
             (apply (remove (between)))
         ) 
         (to if:(is Empty (to))) 

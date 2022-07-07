@@ -22,7 +22,7 @@
     (then
         (forEach Site
             ("VertexJumped" (last From) (last To))
-            (if (is Enemy (who at:(site)))
+            (if ("IsEnemyAt" (site))
                 (remove (site)
                     (then (if (can Move "CaptureJump") (moveAgain)))
                 )
@@ -35,7 +35,7 @@
     (!= 0 
         (count Sites in:(forEach 
                 ("VertexJumped" (site) (from))
-                if:(is Enemy (who at:(site)))
+                if:("IsEnemyAt" (site))
             )
         )
     )
@@ -56,7 +56,7 @@
         (then
             (forEach Site
                 ("VertexJumped" (last From) (last To))
-                (if (is Enemy (who at:(site)))
+                (if ("IsEnemyAt" (site))
                     (remove (site) #1)
                 )
             )

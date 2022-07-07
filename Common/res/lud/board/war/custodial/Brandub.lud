@@ -9,7 +9,7 @@
         )
         (to 
             if:(or {
-                (is Friend (who at:(to))) 
+                ("IsFriendAt" (to)) 
                 (is In (to) (sites "Fortresses")) 
                 "EmptyCentre"
             })
@@ -23,9 +23,9 @@
 
 (define "CentreOrFortress" (is In (to) (union (sites Centre) (sites "Fortresses"))))
 
-(define "FriendOrFortress" (or (is Friend (who at:(to))) (is In (to) (sites "Fortresses"))))
+(define "FriendOrFortress" (or ("IsFriendAt" (to)) (is In (to) (sites "Fortresses"))))
 
-(define "FriendOrCentre" (or (is Friend (who at:(to))) (is In (to) (sites Centre))))
+(define "FriendOrCentre" (or ("IsFriendAt" (to)) (is In (to) (sites Centre))))
 
 (define "EmptyCentre" (and (is In (to) (sites Centre)) (is Empty (to))))
 

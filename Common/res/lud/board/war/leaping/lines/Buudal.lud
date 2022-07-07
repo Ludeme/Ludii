@@ -10,7 +10,7 @@
             (move Hop 
                 (between 
                     if:True
-                    (apply (if (is Enemy (who at:(between))) (remove (between))))
+                    (apply (if ("IsEnemyAt" (between)) (remove (between))))
                 )
                 (to if:(is Empty (to)))
             )

@@ -6,9 +6,9 @@
             (or {
                 (move Slide
                     (to 
-                        if:(is Enemy (who at:(to))) // Capturing Queen Move and Capturing Baby Monkey Move
+                        if:("IsEnemyAt" (to)) // Capturing Queen Move and Capturing Baby Monkey Move
                         (apply 
-                            if:(is Enemy (who at:(to)))
+                            if:("IsEnemyAt" (to))
                             (remove (to) count:(size Stack at:(to)))
                         )
                     )

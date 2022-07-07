@@ -39,7 +39,7 @@
                 ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                 if:True
                 (apply
-                    (if (is Enemy (who at:(to)))
+                    (if ("IsEnemyAt" (to))
                         (and
                             (fromTo
                                 (from (to))

@@ -9,7 +9,7 @@
         (to 
             if:(and 
                 (is In (to) (sites Mover "Palace")) 
-                (not (is Friend (who at:(to))))
+                (not ("IsFriendAt" (to)))
             ) 
             (apply (remove (to)))
         )
@@ -62,7 +62,7 @@
 (define "NotAFriendAndNotNextPo" 
     (and 
         (!= (what at:(to)) (id "Po" Next)) 
-        (not (is Friend (who at:(to))))
+        (not ("IsFriendAt" (to)))
     )
 )
 
@@ -71,7 +71,7 @@
         Step
         (directions {Forward Rightward Leftward}) 
         (to 
-            if:(not (is Friend (who at:(to))))
+            if:(not ("IsFriendAt" (to)))
             (apply (remove (to))) 
         )
     )
@@ -101,12 +101,12 @@
                             (from (to)) 
                             (directions {FR FL} of:All)
                             (between (exact 2) if:(is Empty (between)))
-                            (if (not (is Friend (who at:(to))))
+                            (if (not ("IsFriendAt" (to)))
                                 (move 
                                     (from)
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (remove (to))
                                         )
                                     )
@@ -128,12 +128,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL} of:All) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (remove (to))
                                         )
                                     )
@@ -151,7 +151,7 @@
                     Slide
                     Orthogonal 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         (apply (remove (to)))
                     )
                 )
@@ -170,7 +170,7 @@
                             )
                         )
                         (to 
-                            if:(is Enemy (who at:(to))) 
+                            if:("IsEnemyAt" (to)) 
                             (apply (remove (to))) 
                         )
                     )

@@ -5,7 +5,7 @@
         (from #1) 
         Diagonal 
         (between 
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between)))
             (apply (remove (between) at:EndOfTurn))
         ) 
         (to if:(is Empty (to))) 
@@ -25,7 +25,7 @@
             before:(count Rows)
             (range 1 9)
             after:(count Rows)
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between)))) 
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -40,7 +40,7 @@
                             after:(count Rows)
                             if:(and
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between)))
                         )
@@ -61,7 +61,7 @@
             before:(count Rows)
             (range 1 9)
             after:(count Rows)
-            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between)))) 
+            if:(and (not (is In (between) (sites ToClear))) ("IsEnemyAt" (between))) 
             (apply (remove (between)))
         )
         (to if:(is Empty (to)))
@@ -76,7 +76,7 @@
                             after:(count Rows)
                             if:(and
                                 (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
+                                ("IsEnemyAt" (between))
                             )
                             (apply (remove (between)))
                         )

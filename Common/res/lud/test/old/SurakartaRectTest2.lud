@@ -8,7 +8,7 @@
             )
         ) 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply if:False (remove (to)))
         )
         (then (set Counter))

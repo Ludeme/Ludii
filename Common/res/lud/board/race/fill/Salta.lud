@@ -2,7 +2,7 @@
     (move Hop 
         (from #1)
         Diagonal
-        (between if:(is Enemy (who at:(between))))
+        (between if:("IsEnemyAt" (between)))
         (to if:("IsEmptyAndNotVisited" (to)))
         #2		
     )

@@ -38,7 +38,7 @@
                         )
                         if:(and 
                             (is Related Diagonal (from) (to))
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                         )
                     )
                 )
@@ -66,7 +66,7 @@
                 Slide 
                 Rotational
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     "CaptureToPiece"
                 ) 
             )		
@@ -81,14 +81,14 @@
                             (from (to)) 
                             Diagonal
                             (if (and 
-                                    (not (is Friend (who at:(to)))) 
+                                    (not ("IsFriendAt" (to))) 
                                     (= 3 (count Steps Orthogonal (from) (to)))
                                 )
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (remove (to))
                                         )
                                     )
@@ -105,11 +105,11 @@
                 (to
                     (sites Around (sites Around (from) Diagonal) Diagonal)
                     if:(and 
-                        (not (is Friend (who at:(to)))) 
+                        (not ("IsFriendAt" (to))) 
                         (< 2 (count Steps Orthogonal (from) (to)))
                     )
                     (apply 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (remove (to))
                     )
                 )
@@ -120,7 +120,7 @@
                 Step 
                 Diagonal
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )		
@@ -129,7 +129,7 @@
             (move
                 Step 
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPiece" 
                 )
             )		

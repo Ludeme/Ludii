@@ -29,7 +29,7 @@
                     (move Step (to if:(is Empty (to))))
                     (move Hop
                         Rotational
-                        (between if:(is Enemy (who at:(between)))
+                        (between if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to))
@@ -40,7 +40,7 @@
                     (move Step (to if:(and ("TowardCentre") (is Empty (to)))))
                     (move Hop
                         Rotational
-                        (between if:(is Enemy (who at:(between)))
+                        (between if:("IsEnemyAt" (between))
                             (apply (remove (between)))		
                         )
                         (to if:(and ("TowardCentre") (is Empty (to))))
@@ -50,13 +50,13 @@
                                         (hop
                                             (from (last To))
                                             Rotational
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))
                                         )
                                         (hop
                                             (from (last To))
                                             Rotational
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(and ("TowardCentre") (is Empty (to))))
                                         )
                                     )
@@ -85,7 +85,7 @@
                             (from (last To))
                             Rotational
                             (between 
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
                             (to if:(is Empty (to)))
@@ -94,7 +94,7 @@
                             (from (last To))
                             Rotational
                             (between 
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
                             (to if:(and ("TowardCentre") (is Empty (to))))

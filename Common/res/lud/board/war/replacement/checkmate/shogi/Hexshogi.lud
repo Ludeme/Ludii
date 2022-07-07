@@ -1,6 +1,6 @@
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
@@ -99,7 +99,7 @@
     (move
         Slide
         #1 
-        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        (to if:("IsEnemyAt" (to)) "CapturePiece")
         #2 
     )   	
 )
@@ -108,7 +108,7 @@
     (move
         Step
         #1
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
         #2 
     )   	
 )
@@ -118,7 +118,7 @@
         Leap
         { {F} {F L F} {F R F} {L F} {R F} {L L F} {R R F} {L L L F}}
         rotations:False
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
     )   	
 )
 
@@ -127,7 +127,7 @@
         Leap
         { {F} {F L F} {F R F} {L F L F} {R F R F} {L L F L F} {R R F R F}}
         rotations:False
-        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        (to if:(not ("IsFriendAt" (to))) "CapturePiece") 
     )   	
 )
 
@@ -173,9 +173,9 @@
                 "KnightWalk"
                 rotations:False
                 (to 
-                    if: (not (is Friend (who at:(to)))) 
+                    if: (not ("IsFriendAt" (to))) 
                     (apply 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (add 
                             (piece (mapEntry "Captured" (what at:(to)))) 
                             (to (mapEntry "Where" (what at:(to))))

@@ -1,6 +1,6 @@
 (define "CaptureToPieceAndCheckVictory"
     (apply
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
@@ -17,7 +17,7 @@
                 Leap 
                 "KnightWalk"
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     "CaptureToPieceAndCheckVictory"
                 ) 
             )

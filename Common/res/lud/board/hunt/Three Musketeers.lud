@@ -3,7 +3,7 @@
     (equipment {
         (board (square 5))
         (piece "Musketeer" P1 
-            (move Step Orthogonal (to if:(is Enemy (who at:(to))) (apply (remove (to)))))
+            (move Step Orthogonal (to if:("IsEnemyAt" (to)) (apply (remove (to)))))
         )
         (piece "Enemy" P2 ("StepOrthogonalToEmpty"))
     })

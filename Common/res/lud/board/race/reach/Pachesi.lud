@@ -36,9 +36,9 @@
                         (from (from) level:(level))
                         (to
                             ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-                            if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
+                            if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
                             (apply
-                                (if (is Enemy (who at:(to)))
+                                (if ("IsEnemyAt" (to))
                                     (forEach Level (to) FromTop
                                         (fromTo
                                             (from (to) level:(level))

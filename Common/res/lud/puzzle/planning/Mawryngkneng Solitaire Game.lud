@@ -2,7 +2,7 @@
     (move
         Hop
         (from) 
-        (between if:(is Friend (who at:(between)))) 
+        (between if:("IsFriendAt" (between))) 
         (to if:(is Empty (to))) 
     ) 
 )

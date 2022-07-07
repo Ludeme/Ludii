@@ -30,7 +30,7 @@
 
 (define "RemoveEnemyPiece"
     (to 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (apply (remove (to)))
     )
 )

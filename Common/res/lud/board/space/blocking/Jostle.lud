@@ -5,9 +5,9 @@
             to:(sites Around #1 Orthogonal)
             (if (= (from) (to))
                 0
-                (if (is Friend (who at:(to))) 
+                (if ("IsFriendAt" (to)) 
                     1 
-                    (if (is Enemy (who at:(to)))
+                    (if ("IsEnemyAt" (to))
                         -1 
                         0
                     )

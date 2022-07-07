@@ -16,7 +16,7 @@
                         (sites Distance from:(from) (exact 2))
                         if:(and 
                             (!= (phase of:(from)) (phase of:(site)))
-                            (or (is Empty (site)) (is Enemy (who at:(site))))
+                            (or (is Empty (site)) ("IsEnemyAt" (site)))
                         )
                     )
                 )

@@ -31,7 +31,7 @@
                     (custodial 
                         (from (last To)) 
                         (between 
-                            if:(is Enemy (who at:(between))) 
+                            if:("IsEnemyAt" (between)) 
                             (apply
                                 (and
                                     (remove (between))
@@ -39,7 +39,7 @@
                                 )
                             )
                         )
-                        (to if:(is Friend (who at:(to)))) 
+                        (to if:("IsFriendAt" (to))) 
                     )
                 )
             )

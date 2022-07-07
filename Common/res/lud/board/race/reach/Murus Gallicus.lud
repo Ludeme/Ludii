@@ -39,7 +39,7 @@
             )  
         )
         (to 
-            if:(and (is Enemy (who at:(to))) ((= (size Stack at:(to)) 1))  )
+            if:(and ("IsEnemyAt" (to)) ((= (size Stack at:(to)) 1))  )
             (apply  (remove (to)))   // This removes the only enemy piece in the 'to' cell.
         )
         stack:True
@@ -64,7 +64,7 @@
             )  
         )
         (to 
-            if:(and (is Enemy (who at:(to))) ((= (size Stack at:(to)) 3))  )
+            if:(and ("IsEnemyAt" (to)) ((= (size Stack at:(to)) 3))  )
             (apply  (remove (to)))   // This removes one enemy piece in the 'to' cell.
         )
         stack:True
@@ -95,7 +95,7 @@
         (between (range 1 2) if:True)
         (to if:
             (and
-                (not (is Enemy (who at:(to))))  
+                (not ("IsEnemyAt" (to)))  
                 (not (is Mover (who at:(to))))  
             )
         )
@@ -114,7 +114,7 @@
         (difference All Backwards)
         (between (range 1 2) if:True)
         (to if:
-            (is Enemy (who at:(to)))  
+            ("IsEnemyAt" (to))  
         )
         (then
             (and
@@ -208,7 +208,7 @@
             (and 
                 {
                 (is In (last To) (sites Mover)) 
-                (not (is Enemy (who at:(last To))))
+                (not ("IsEnemyAt" (last To)))
                 (is Mover (who at:(last To)))
                 } 
             )

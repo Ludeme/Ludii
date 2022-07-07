@@ -6,7 +6,7 @@
 
 (define "CaptureMove"
     (apply 
-        if:(is Enemy (who at:(to)))
+        if:("IsEnemyAt" (to))
         (and
             (remove (to))
             (if (= (what at:(to)) (id "Ambush" Next))
@@ -29,7 +29,7 @@
 
 (define "CaptureMoveCannon"
     (apply
-        if:(and (is Enemy (who at:(to))) (!= (id "Pao" Next) (what at:(between))))
+        if:(and ("IsEnemyAt" (to)) (!= (id "Pao" Next) (what at:(between))))
         (and
             (remove (to))
             (if (= (what at:(to)) (id "Ambush" Next))
@@ -72,7 +72,7 @@
                             (from (to)) 
                             (directions {FR FL} of:All) 
                             (between (exact 2) if:(is Empty (between)))
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
@@ -92,7 +92,7 @@
                 Slide
                 Orthogonal 
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
                 )
             )		
@@ -128,7 +128,7 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL} of:All) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
@@ -151,7 +151,7 @@
                     if:(and (is Empty (between)) (is In (between) (sites Mover "BeforePalace")))
                 )
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
                 )
             )			
@@ -166,7 +166,7 @@
                     if:(and (is Empty (between)) (is In (between) (sites Mover "BeforeBehindPalace")))
                 )
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
                 )
             )			
@@ -181,7 +181,7 @@
                     if:(and (is Empty (between)) (is In (between) (sites Mover "RankPalace")))
                 )
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
                 )
             )		
@@ -194,7 +194,7 @@
                 Diagonal 
                 (between (exact 2) if:(is Empty (between)))
                 (to 
-                    if:(is Enemy (who at:(to))) 
+                    if:("IsEnemyAt" (to)) 
                     ("CaptureMoveSlide")
                 )
             )			
@@ -240,7 +240,7 @@
                 Step
                 (directions {Forward Rightward Leftward})
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     ("CaptureMove")
                 )
             )		
@@ -252,7 +252,7 @@
                 Step
                 (directions {Forward FR FL Rightward Leftward} of:All)
                 (to 
-                    if:(not (is Friend (who at:(to)))) 
+                    if:(not ("IsFriendAt" (to))) 
                     ("CaptureMove")
                 )
             )			

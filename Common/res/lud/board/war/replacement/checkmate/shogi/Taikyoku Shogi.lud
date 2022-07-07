@@ -19,7 +19,7 @@
         #1
         #2 
         (to 
-            if:(is Enemy (who at:(to))) 
+            if:("IsEnemyAt" (to)) 
             (apply (remove (to)))
         ) 
         #3
@@ -31,8 +31,8 @@
         Step
         #1
         (to 
-            if:(not (is Friend (who at:(to)))) 
-            (apply (if (is Enemy (who at:(to))) (remove (to))))
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
         ) 
         #2 
     )
@@ -46,8 +46,8 @@
             if:True
         )
         (to 
-            if:(not (is Friend (who at:(to)))) 
-            (apply (if (is Enemy (who at:(to))) (remove (to))))
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
         ) 
         #2 
     )
@@ -64,8 +64,8 @@
             if:True
         )
         (to 
-            if:(not (is Friend (who at:(to)))) 
-            (apply (if (is Enemy (who at:(to))) (remove (to))))
+            if:(not ("IsFriendAt" (to))) 
+            (apply (if ("IsEnemyAt" (to)) (remove (to))))
         ) 
         #5 
     )
@@ -129,7 +129,7 @@
                     Slide 
                     Orthogonal 
                     (to 
-                        if:(is Enemy (who at:(to))) 
+                        if:("IsEnemyAt" (to)) 
                         (apply 
                             if:(and 
                                 (if (is Odd (row of:(from))) 
@@ -329,7 +329,7 @@
                 )
                 (to 
                     (apply 
-                        if:(not (is Friend (who at:(to))))
+                        if:(not ("IsFriendAt" (to)))
                         (remove (to))
                     )
                 )
@@ -347,7 +347,7 @@
                 )
                 (to 
                     (apply 
-                        if:(not (is Friend (who at:(to))))
+                        if:(not ("IsFriendAt" (to)))
                         (remove (to))
                     )
                 )
@@ -470,12 +470,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL}) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (remove (to))
                                         )
                                     )
@@ -543,7 +543,7 @@
         )
         (piece "Lion" Each (or {
                 ("SlideMove" ~ (between (max 2)))
-                (move Leap "KnightWalk" (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))
+                (move Leap "KnightWalk" (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))
                 ("HopMove")
                 }
                 "Promote"
@@ -570,7 +570,7 @@
                     )
                     (to 
                         (apply 
-                            if:(not (is Friend (who at:(to))))
+                            if:(not ("IsFriendAt" (to)))
                             (remove (to))
                         )
                     )
@@ -593,7 +593,7 @@
                 )
                 (to 
                     (apply 
-                        if:(not (is Friend (who at:(to))))
+                        if:(not ("IsFriendAt" (to)))
                         (remove (to))
                     )
                 )
@@ -611,7 +611,7 @@
                     )
                     (to 
                         (apply 
-                            if:(not (is Friend (who at:(to))))
+                            if:(not ("IsFriendAt" (to)))
                             (remove (to))
                         )
                     )
@@ -798,7 +798,7 @@
                     Slide 
                     Orthogonal 
                     (to 
-                        if:(is Enemy (who at:(to)))
+                        if:("IsEnemyAt" (to))
                         (apply 
                             if:(and 
                                 (if 
@@ -1315,7 +1315,7 @@
                         })
                         
                         (apply 
-                            if:(not (is Friend (who at:(to))))
+                            if:(not ("IsFriendAt" (to)))
                             (remove (to))
                         )
                     )
@@ -1369,7 +1369,7 @@
         )
         (piece "FuriousFiend" Each (or {
                 ("SlideMove" ~ (between (max 3)))
-                (move Leap "KnightWalk" (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))
+                (move Leap "KnightWalk" (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))
                 ("HopMove")	
             })
         )
@@ -1415,7 +1415,7 @@
         (piece "TeachingKing" Each ("HopMoveWithRange" ~ ~ (range 1 3) after:35))
         (piece "BuddhistSpirit" Each (or {
                 ("SlideMove")
-                (move Leap "KnightWalk" (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))
+                (move Leap "KnightWalk" (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))
                 ("HopMove")	
             })
         )
@@ -1462,7 +1462,7 @@
         (piece "VenomousWolf" Each ("StepMove"))
         (piece "HeavenlyHorse" Each (or {
                 ("SlideMove" Forward)
-                (move Leap "KnightWalk" (to if:(not (is Friend (who at:(to)))) (apply (remove (to)))))
+                (move Leap "KnightWalk" (to if:(not ("IsFriendAt" (to))) (apply (remove (to)))))
             })
         )
         (piece "RaidingFalcon" Each (or 
@@ -1515,7 +1515,7 @@
                     (to 
                         if:(or 
                             (is Empty (to)) 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                         ) 
                         (apply (remove (to)))
                     ) 

@@ -31,7 +31,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (and (fromTo (from (to)) (to "Goal")) (set Value (player (who at:(to))) Off))
     ) 
 )
@@ -41,7 +41,7 @@
         (if (or
                 (is In #1 (sites Empty))
                 (and 
-                    (is Enemy (who at:#1))
+                    ("IsEnemyAt" #1)
                     (or 
                         (= (value Player Mover) (value Player (who at:#1))) 
                         (= (value Player Mover) Off)

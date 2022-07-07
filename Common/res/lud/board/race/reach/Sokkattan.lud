@@ -11,7 +11,7 @@
             (from (from) level:(level))
             (to
                 ("SiteToMoveOnTrack" from:(from) #1)
-                if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
+                if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
                 ("HittingStackCapture" (handSite (who at:(to) level:(level))))
             )
         )

@@ -10,13 +10,13 @@
         #1
         (between 
             (max ("RemainingMove"))
-            if:(not (is Enemy (who at:(between))))
+            if:(not ("IsEnemyAt" (between)))
         )
         (to
-            if:(is Enemy (who at:(to)))
+            if:("IsEnemyAt" (to))
             (apply
-                if:(not (is Friend (who at:(to))))
-                (if (is Enemy (who at:(to)))
+                if:(not ("IsFriendAt" (to)))
+                (if ("IsEnemyAt" (to))
                     (remove (to)
                         (then (set Value Next (+ (value Player Next) 1)))
                     )

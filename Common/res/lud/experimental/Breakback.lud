@@ -14,7 +14,7 @@
                     (directions {FR FL}) 
                     (to if:(or 
                             (is Empty (to)) 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                         ) 
                         (apply (remove (to)))
                     )

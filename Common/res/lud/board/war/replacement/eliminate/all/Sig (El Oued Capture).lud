@@ -10,7 +10,7 @@
     )
 )
 (define "CaptureMove"
-    (if (is Enemy (who at:(to)))
+    (if ("IsEnemyAt" (to))
         (remove (to))
     )
 )
@@ -26,7 +26,7 @@
         )
         (to 
             ("SiteToMoveOnTrack" 1)
-            if:(not (is Friend (who at:(to))))
+            if:(not ("IsFriendAt" (to)))
             (apply "CaptureMove")
         )
         (then
@@ -52,7 +52,7 @@
         )
         (to 
             ("SiteToMoveOnTrack" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue")))
-            if:(not (is Friend (who at:(to))))
+            if:(not ("IsFriendAt" (to)))
             (apply "CaptureMove")
         )
     )	

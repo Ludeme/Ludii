@@ -11,7 +11,7 @@
                 Leap
                 "KnightWalk"
                 forward:True 
-                (to if:(not (is Friend (who at:(to)))) (apply (remove (to))))
+                (to if:(not ("IsFriendAt" (to))) (apply (remove (to))))
             )
         )
         (regions P1 (sites Top))

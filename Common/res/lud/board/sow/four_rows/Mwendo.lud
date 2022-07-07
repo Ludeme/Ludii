@@ -70,7 +70,7 @@
                 (move
                     (from ("RightMost"))
                     (to 
-                        (trackSite FirstSite from:(from) if:(is Enemy (who at:(to))))
+                        (trackSite FirstSite from:(from) if:("IsEnemyAt" (to)))
                         (apply
                             (and
                                 (remove (to) count:(count at:(to)))

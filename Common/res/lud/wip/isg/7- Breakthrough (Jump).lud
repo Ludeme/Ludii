@@ -3,7 +3,7 @@
     (move Step (directions {FR FL} of:All) 
         (to if:(or 
                 (is Empty (to)) 
-                (is Enemy (who at:(to)))
+                ("IsEnemyAt" (to))
             ) 
             (apply (remove (to)))
         )
@@ -11,9 +11,9 @@
 )
 (define "Jump" 
     (move Hop (directions {Forwards Rightward Leftward} of:All) 
-        (between if:(is Friend (who at:(between))))
+        (between if:("IsFriendAt" (between)))
         (to 
-            if:(or (is Empty (to)) (is Enemy (who at:(to)))) 
+            if:(or (is Empty (to)) ("IsEnemyAt" (to))) 
             (apply (remove (to)))
         )
     )		

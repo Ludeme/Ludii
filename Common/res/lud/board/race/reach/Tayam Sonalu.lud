@@ -50,7 +50,7 @@
                         ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                         if:True
                         (apply
-                            (if (is Enemy (who at:(to)))
+                            (if ("IsEnemyAt" (to))
                                 (if (= 1 (size Stack at:(to)))
                                     (forEach Level (to) FromTop
                                         (fromTo

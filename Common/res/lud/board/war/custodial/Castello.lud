@@ -31,7 +31,7 @@
             (between 
                 if:(if (< (counter) (- "NumMaxCapture" 1)) 
                     "NotEmptyAndNoCastle" 
-                    (is Friend (who at:(between)))
+                    ("IsFriendAt" (between))
                 )
                 "CaptureEnemyPiece"
             ) 
@@ -49,7 +49,7 @@
             if:(if 
                 (< (counter) "NumMaxCapture") 
                 "NotEmptyAndNoCastle" 
-                (is Friend (who at:(between)))
+                ("IsFriendAt" (between))
             ) 
             "CaptureEnemyPiece"
         )
@@ -72,7 +72,7 @@
             if:(= (what at:(between)) (id "Castle0")) 
             (apply (fromTo (from (between)) (to #1)))
         )
-        (to if:(is Friend (who at:(to))))
+        (to if:("IsFriendAt" (to)))
         except:1 
     )	
 )

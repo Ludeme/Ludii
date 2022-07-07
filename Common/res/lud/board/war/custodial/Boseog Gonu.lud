@@ -49,7 +49,7 @@
                     (from (last To)) 
                     (between 
                         (max 1) 
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(= (what at:(to)) (what at:(last To)))) 
@@ -71,7 +71,7 @@
                     Axial 
                     (between 
                         (max 1) 
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(= (what at:(to)) (what at:(last To)))) 
@@ -91,7 +91,7 @@
                     Axial 
                     (between 
                         (max 1) 
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(= (what at:(to)) (what at:(last To)))) 

@@ -49,7 +49,7 @@
                 (move 
                     Hop
                     Orthogonal
-                    (between if:(is Enemy (who at:(between))))
+                    (between if:("IsEnemyAt" (between)))
                     (to if:(and {
                             (is Empty (to))
                             ("NoEdgeBetweenCells" (from) (between))

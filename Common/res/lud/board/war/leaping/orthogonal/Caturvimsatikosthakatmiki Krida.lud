@@ -8,7 +8,7 @@
                     Orthogonal
                     (between 
                         if:(and 
-                            (is Enemy (who at:(between))) 
+                            ("IsEnemyAt" (between)) 
                             (not (is In (between) (union (sites Bottom) (sites Top))))
                         )
                         (apply (remove (between)))

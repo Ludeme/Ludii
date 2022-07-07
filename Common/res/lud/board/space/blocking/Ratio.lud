@@ -405,7 +405,7 @@
                 (or
                     (move Step Adjacent  (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -417,7 +417,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {Forwards Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -485,7 +485,7 @@
                 (or
                     (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -495,7 +495,7 @@
                                     (hop 
                                         (from (last To))
                                         Adjacent
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))	
                                     )
                                 )
@@ -510,7 +510,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {Forwards Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -547,7 +547,7 @@
                         (move Hop 
                             (from (last To))
                             Adjacent
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)) (apply (remove (between))))	
                             (then
                                 (if 
@@ -555,7 +555,7 @@
                                         (hop 
                                             (from (last To))
                                             Adjacent
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))	
                                         )
                                     )
@@ -604,7 +604,7 @@
                 (or
                     (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -614,7 +614,7 @@
                                     (hop 
                                         (from (last To))
                                         Adjacent
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))	
                                     )
                                 )
@@ -629,7 +629,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {BR BL Forwards Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -666,7 +666,7 @@
                         (move Hop 
                             (from (last To))
                             Adjacent
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)) (apply (remove (between))))	
                             (then
                                 (if 
@@ -674,7 +674,7 @@
                                         (hop 
                                             (from (last To))
                                             Adjacent
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))	
                                         )
                                     )
@@ -723,7 +723,7 @@
                 (or
                     (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -733,7 +733,7 @@
                                     (hop 
                                         (from (last To))
                                         Adjacent
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))	
                                     )
                                 )
@@ -748,7 +748,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {Forwards Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -785,7 +785,7 @@
                         (move Hop 
                             (from (last To))
                             Adjacent
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)) (apply (remove (between))))	
                             (then
                                 (if 
@@ -793,7 +793,7 @@
                                         (hop 
                                             (from (last To))
                                             Adjacent
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))	
                                         )
                                     )
@@ -842,7 +842,7 @@
                 (or
                     (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -852,7 +852,7 @@
                                     (hop 
                                         (from (last To))
                                         Adjacent
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))	
                                     )
                                 )
@@ -867,7 +867,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {BR BL FL FR Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -904,7 +904,7 @@
                         (move Hop 
                             (from (last To))
                             Adjacent
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)) (apply (remove (between))))	
                             (then
                                 (if 
@@ -912,7 +912,7 @@
                                         (hop 
                                             (from (last To))
                                             Adjacent
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))	
                                         )
                                     )
@@ -961,7 +961,7 @@
                 (or
                     (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -971,7 +971,7 @@
                                     (hop 
                                         (from (last To))
                                         Adjacent
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))	
                                     )
                                 )
@@ -986,7 +986,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {BR BL FL FR Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -1023,7 +1023,7 @@
                         (move Hop 
                             (from (last To))
                             Adjacent
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)) (apply (remove (between))))	
                             (then
                                 (if 
@@ -1031,7 +1031,7 @@
                                         (hop 
                                             (from (last To))
                                             Adjacent
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))	
                                         )
                                     )
@@ -1080,7 +1080,7 @@
                 (or
                     (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -1090,7 +1090,7 @@
                                     (hop 
                                         (from (last To))
                                         Adjacent
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))	
                                     )
                                 )
@@ -1105,7 +1105,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {Forward Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -1142,7 +1142,7 @@
                         (move Hop 
                             (from (last To))
                             Adjacent
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)) (apply (remove (between))))	
                             (then
                                 (if 
@@ -1150,7 +1150,7 @@
                                         (hop 
                                             (from (last To))
                                             Adjacent
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))	
                                         )
                                     )
@@ -1193,7 +1193,7 @@
                 (or
                     (move Step Adjacent (to if:(is Empty (to))))
                     (move Hop Adjacent
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -1203,7 +1203,7 @@
                                     (hop 
                                         (from (last To))
                                         Adjacent
-                                        (between if:(is Enemy (who at:(between))))
+                                        (between if:("IsEnemyAt" (between)))
                                         (to if:(is Empty (to)))	
                                     )
                                 )
@@ -1218,7 +1218,7 @@
                     (move Step (directions {Forwards Rightward Leftward}) (to if:(is Empty (to))))
                     (move Hop 
                         (directions {Forward Rightward Leftward})
-                        (between if:(is Enemy (who at:(between))))
+                        (between if:("IsEnemyAt" (between)))
                         (to if:(is Empty (to))
                             (apply (remove (between)))
                         )
@@ -1255,7 +1255,7 @@
                         (move Hop 
                             (from (last To))
                             Adjacent
-                            (between if:(is Enemy (who at:(between))))
+                            (between if:("IsEnemyAt" (between)))
                             (to if:(is Empty (to)) (apply (remove (between))))	
                             (then
                                 (if 
@@ -1263,7 +1263,7 @@
                                         (hop 
                                             (from (last To))
                                             Adjacent
-                                            (between if:(is Enemy (who at:(between))))
+                                            (between if:("IsEnemyAt" (between)))
                                             (to if:(is Empty (to)))	
                                         )
                                     )

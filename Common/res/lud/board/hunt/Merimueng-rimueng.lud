@@ -20,7 +20,7 @@
         (piece "Tiger" P1 
             (or {
                 ("StepToEmpty")
-                ("BigHop" (is Enemy (who at:(between)))) 
+                ("BigHop" ("IsEnemyAt" (between))) 
             })
         ) 
         (piece "Sheep" P2 "StepToEmpty") 

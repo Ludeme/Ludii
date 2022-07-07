@@ -9,14 +9,14 @@
                     Orthogonal
                     (between 
                         (range 1 (count Rows))
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to 
                         if:(or 
                             (and 
                                 (is In (to) (sites Outer)) 
-                                (is Enemy (who at:(to)))
+                                ("IsEnemyAt" (to))
                             ) 
                             (is Empty (to))
                         )

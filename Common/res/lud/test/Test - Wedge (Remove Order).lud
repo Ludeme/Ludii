@@ -29,8 +29,8 @@
             (or {
                 ("HopCapture") 
                 ("StepToEmpty")
-                ("BigHop" 3 (and (!= (row of:(between)) (row of:(from))) (is Enemy (who at:(between)))))
-                ("BigHop" 4 (is Enemy (who at:(between)))) 
+                ("BigHop" 3 (and (!= (row of:(between)) (row of:(from))) ("IsEnemyAt" (between))))
+                ("BigHop" 4 ("IsEnemyAt" (between))) 
             })
         ) 
         (piece "Sheep" P2 "StepToEmpty") 

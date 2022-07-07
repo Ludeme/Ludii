@@ -57,7 +57,7 @@
 
 (define "Capture" 
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (and
                 (if (and 
                         
@@ -196,7 +196,7 @@
                             Step
                             Orthogonal 
                             (to 
-                                if:(not (is Friend (who at:(to)))) 
+                                if:(not ("IsFriendAt" (to))) 
                                 "Capture"
                             )
                         )
@@ -214,7 +214,7 @@
                                 (from)
                                 (to 
                                     (sites LineOfSight Piece at:(from) Orthogonal)
-                                    if:(is Enemy (who at:(to)))
+                                    if:("IsEnemyAt" (to))
                                 )
                                 (then   
                                     (and

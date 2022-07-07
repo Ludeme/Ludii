@@ -25,7 +25,7 @@
         (end 
             (if 
                 (and
-                    (all Sites (difference (sites Next) (sites Occupied by:Mover)) if:(not (is Friend (who at:(site))))) 
+                    (all Sites (difference (sites Next) (sites Occupied by:Mover)) if:(not ("IsFriendAt" (site)))) 
                     (not (no Pieces Mover))
                 )
                 (result Mover Win)

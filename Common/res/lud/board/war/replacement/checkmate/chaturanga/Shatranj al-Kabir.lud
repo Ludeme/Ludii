@@ -4,14 +4,14 @@
 
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (remove (to))
         )
     ) 
 )
 
 (define "EnemyNotImmumned" 
-    (and (is Enemy (who at:(to)))
+    (and ("IsEnemyAt" (to))
         (not 
             (and { 
                 (= (what at:(to)) (id "Pawn" Next))
@@ -139,7 +139,7 @@
                 (move
                     Step 
                     (to 
-                        if:(not (is Friend (who at:(to)))) 
+                        if:(not ("IsFriendAt" (to))) 
                         "CaptureToPiece"
                     ) 
                 )

@@ -1,5 +1,5 @@
 (define "NotAnEnemy"    
-    (not (is Enemy (who at:(to))))
+    (not ("IsEnemyAt" (to)))
 )
 
 (define "NextSiteFrom" 

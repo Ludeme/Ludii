@@ -27,7 +27,7 @@
                         if:(or 
                             (is Empty (to))
                             (and 
-                                (is Enemy (who at:(to)))
+                                ("IsEnemyAt" (to))
                                 (or 
                                     (is Empty (ahead (to) "LastDirection"))
                                     (= (ahead (to) "LastDirection") (to))
@@ -35,7 +35,7 @@
                             )
                         )
                         (apply
-                            (if (is Enemy (who at:(to)))
+                            (if ("IsEnemyAt" (to))
                                 (if (= (ahead (to) "LastDirection") (to))
                                     (remove (to))
                                     (fromTo 

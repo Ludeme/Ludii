@@ -10,10 +10,10 @@
                         Orthogonal
                         (between
                             (max 1)
-                            if:(is Enemy (who at:(between)))
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
-                        (to if:(is Friend (who at:(to))))
+                        (to if:("IsFriendAt" (to)))
                     )
                 )
             )

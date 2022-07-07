@@ -6,7 +6,7 @@
             (move Hop
                 (between
                     if:(is Occupied (between))
-                    (apply (if (is Enemy (who at:(between))) (remove (between))))
+                    (apply (if ("IsEnemyAt" (between)) (remove (between))))
                 )
                 (to if:(is Empty (to)))
             )

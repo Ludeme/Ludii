@@ -1,6 +1,6 @@
 (define "CapturePiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if ("IsEnemyAt" (to))
             (add 
                 (piece (mapEntry "Captured" (what at:(to)))) 
                 (to (mapEntry "Where" (what at:(to))))
@@ -99,7 +99,7 @@
     (move
         Slide
         #1 
-        (to if:(and (is Enemy (who at:(to))) (= (count Pieces Mover "Osho" in:(sites Board)) 1)) "CapturePiece")
+        (to if:(and ("IsEnemyAt" (to)) (= (count Pieces Mover "Osho" in:(sites Board)) 1)) "CapturePiece")
         #2 
     )   	
 )
@@ -108,7 +108,7 @@
     (move
         Step
         #1
-        (to if:(and (not (is Friend (who at:(to)))) (or (not (is Enemy (who at:(to)))) (= (count Pieces Mover "Osho" in:(sites Board)) 1))) "CapturePiece") 
+        (to if:(and (not ("IsFriendAt" (to))) (or (not ("IsEnemyAt" (to))) (= (count Pieces Mover "Osho" in:(sites Board)) 1))) "CapturePiece") 
         #2 
     )   	
 )
@@ -160,12 +160,12 @@
                         (forEach Direction 
                             (from (to)) 
                             (directions {FR FL}) 
-                            (if (not (is Friend (who at:(to)))) 
+                            (if (not ("IsFriendAt" (to))) 
                                 (move 
                                     (from) 
                                     (to 
                                         (apply 
-                                            if:(is Enemy (who at:(to)))
+                                            if:("IsEnemyAt" (to))
                                             (add 
                                                 (piece (mapEntry "Captured" (what at:(to)))) 
                                                 (to (mapEntry "Where" (what at:(to))))

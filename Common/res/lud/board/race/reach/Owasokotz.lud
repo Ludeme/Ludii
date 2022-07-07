@@ -41,7 +41,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (fromTo (from (to)) (to "EastDoor"))
     ) 
 )
@@ -129,7 +129,7 @@
     )   
     (item "ReachEastDoor" 
         <"CaptureEnemyPiece"> 
-        <(or (is Enemy (who at:#1)) (is Empty #1))> 
+        <(or ("IsEnemyAt" #1) (is Empty #1))> 
         <(and (not (was Pass)) ("ReachEastDoor"))>
     "The goal is to reach the east door and capture is allowed.")  
 })

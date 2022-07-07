@@ -1,10 +1,10 @@
 (define "NotEnemyOrOnlyOne"    
     (or 
         (and 
-            (is Enemy (who at:(to))) 
+            ("IsEnemyAt" (to)) 
             (= (topLevel at:(to)) 0)
         ) 
-        (not (is Enemy (who at:(to))))
+        (not ("IsEnemyAt" (to)))
     )
 )
 
@@ -81,7 +81,7 @@
 
 (define "HaveAPieceAndCanEscape" 
     (and 
-        (is Friend (who at:(site))) 
+        ("IsFriendAt" (site)) 
         (< (trackSite Move from:(site) steps:(pips)) 0)
     )
 )

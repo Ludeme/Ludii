@@ -7,7 +7,7 @@
             if:(= (what at:(between)) (id #1))
             (apply (remove (between))) 
         )
-        (to if:(is Friend (who at:(to))))
+        (to if:("IsFriendAt" (to)))
     )
 )
 
@@ -45,7 +45,7 @@
                             )
                             (to 
                                 if:(or 
-                                    (is Friend (who at:(to))) 
+                                    ("IsFriendAt" (to)) 
                                     (is In (to) (sites Centre))
                                 )
                             )

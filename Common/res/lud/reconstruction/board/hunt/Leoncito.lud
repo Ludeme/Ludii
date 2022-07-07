@@ -7,7 +7,7 @@
             (or
                 (move Step Orthogonal (to if:(is (to) Empty)))		
                 (move Hop Orthogonal 
-                    (between if:(is Enemy (who at:(between))))
+                    (between if:("IsEnemyAt" (between)))
                     (to if:(is (to) Empty))
                 )
             )

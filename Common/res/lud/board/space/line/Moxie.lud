@@ -11,13 +11,13 @@
             (if (is Prev Mover)
                 (move Hop 
                     (from (last To))
-                    (between if:(is Enemy (who at:(between)))) 
+                    (between if:("IsEnemyAt" (between))) 
                     (to if:(is Empty (to)) (apply (remove (between))))
                     (then
                         (if (can Move 
                                 (hop 
                                     (from (last To))
-                                    (between if:(is Enemy (who at:(between)))) 
+                                    (between if:("IsEnemyAt" (between))) 
                                     (to if:(is Empty (to)) (apply (remove (between))))
                                 )
                             )
@@ -28,13 +28,13 @@
                 (priority {
                     (forEach Piece 
                         (move Hop 
-                            (between if:(is Enemy (who at:(between)))) 
+                            (between if:("IsEnemyAt" (between))) 
                             (to if:(is Empty (to)) (apply (remove (between))))
                             (then
                                 (if (can Move 
                                         (hop 
                                             (from (last To))
-                                            (between if:(is Enemy (who at:(between)))) 
+                                            (between if:("IsEnemyAt" (between))) 
                                             (to if:(is Empty (to)) (apply (remove (between))))
                                         )
                                     )

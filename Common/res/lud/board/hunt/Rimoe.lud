@@ -56,7 +56,7 @@
             Hop 
             (between 
                 (range 1 9)
-                if:(is Enemy (who at:(between)))
+                if:("IsEnemyAt" (between))
                 (apply (remove (between)))
             )
             (to 

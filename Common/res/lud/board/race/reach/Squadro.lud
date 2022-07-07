@@ -99,7 +99,7 @@
                     (from (last To))
                     (between 
                         (range 1 (count Columns)) 
-                        if:(is Enemy (who at:(between)))
+                        if:("IsEnemyAt" (between))
                         (apply
                             (fromTo
                                 (from (between))

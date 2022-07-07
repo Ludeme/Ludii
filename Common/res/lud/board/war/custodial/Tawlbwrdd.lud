@@ -19,7 +19,7 @@
     (and (not (is In (between) (union (sites Centre) (sites "Fortresses")))) (is Empty (between)))
 )
 
-(define "FriendOrCentreOrFortress" (or (is Friend (who at:(to))) (is In (to) (union (sites Centre) (sites "Fortresses")))))
+(define "FriendOrCentreOrFortress" (or ("IsFriendAt" (to)) (is In (to) (union (sites Centre) (sites "Fortresses")))))
 
 //------------------------------------------------------------------------------
 

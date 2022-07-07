@@ -6,7 +6,7 @@
             #1
             (apply (remove (between)))
         )
-        (to if:(is Friend (who at:(to)))) 
+        (to if:("IsFriendAt" (to))) 
         #2
     )
 )

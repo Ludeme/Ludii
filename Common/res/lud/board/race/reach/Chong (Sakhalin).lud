@@ -38,7 +38,7 @@
                     if:(or {
                         (is Empty (to))
                         (and 
-                            (is Enemy (who at:(to)))
+                            ("IsEnemyAt" (to))
                             (if (not ("IsPieceAt" "King" Next (to)))
                                 True
                                 (= 1 (abs (- (to) (from))))
@@ -60,7 +60,7 @@
                                 if:(or {
                                     (is Empty (to))
                                     (and 
-                                        (is Enemy (who at:(to)))
+                                        ("IsEnemyAt" (to))
                                         (if (not ("IsPieceAt" "King" Next (to)))
                                             True
                                             (= 1 (abs (- (to) (from))))

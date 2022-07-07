@@ -4,10 +4,10 @@
         Orthogonal
         (between 
             (max 1) 
-            if:(and (!= (between) ("Throne")) (is Enemy (who at:(between))))
+            if:(and (!= (between) ("Throne")) ("IsEnemyAt" (between)))
             (apply (remove (between)))
         )
-        (to if:(is Friend (who at:(to)))) 
+        (to if:("IsFriendAt" (to))) 
     )
 )
 
@@ -38,13 +38,13 @@
         (between 
             if:(and {
                 (is In (between) (sites "Fortresses")) 
-                (is Enemy (who at:(between)))
+                ("IsEnemyAt" (between))
                 ("PiecesSurroundingAreNotAdjacent")
                 }
             )
             (apply (remove (between)))
         )
-        (to if:(is Friend (who at:(to))))
+        (to if:("IsFriendAt" (to)))
         except:1
     )
 )
@@ -62,7 +62,7 @@
             )
             (apply (remove (between)))
         )
-        (to if:(is Friend (who at:(to))))
+        (to if:("IsFriendAt" (to)))
         except:3
     )
 )

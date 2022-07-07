@@ -102,19 +102,19 @@
                                     (not (is In (to) (sites "Castle")))
                                     (and
                                         (is In (to) (sites "Castle"))
-                                        (not (is Enemy (who at:(to)))) 
+                                        (not ("IsEnemyAt" (to))) 
                                     )
                                 )
                                 (not 
                                     (and 
-                                        (is Enemy (who at:(to))) 
+                                        ("IsEnemyAt" (to)) 
                                         (> (count at:(to)) 1)
                                     )
                                 )
                             )
                             (apply 
                                 if:(and 
-                                    (is Enemy (who at:(to))) 
+                                    ("IsEnemyAt" (to)) 
                                     (= (count at:(to)) 1)
                                 )
                                 (and

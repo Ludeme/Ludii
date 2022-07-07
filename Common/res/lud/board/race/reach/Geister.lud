@@ -64,9 +64,9 @@
                             Step
                             Orthogonal 
                             (to 
-                                if:(not (is Friend (who at:(to)))) 
+                                if:(not ("IsFriendAt" (to))) 
                                 (apply 
-                                    (if (is Enemy (who at:(to)))
+                                    (if ("IsEnemyAt" (to))
                                         (add 
                                             (piece (what at:(to))) 
                                             (to (mapEntry "Where" (what at:(to))))

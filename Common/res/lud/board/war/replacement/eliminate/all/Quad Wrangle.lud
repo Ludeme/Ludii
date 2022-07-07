@@ -7,7 +7,7 @@
                 (then
                     (forEach Site
                         (sites Around (last To))
-                        (if (is Enemy (who at:(site)))
+                        (if ("IsEnemyAt" (site))
                             (and
                                 (remove (site))
                                 (add (piece (id "Ball" Mover)) (to (site)))
@@ -31,7 +31,7 @@
                     (then
                         (forEach Site
                             (sites Around (last To))
-                            (if (is Enemy (who at:(site)))
+                            (if ("IsEnemyAt" (site))
                                 (and
                                     (remove (site))
                                     (add (piece (id "Ball" Mover)) (to (site)))

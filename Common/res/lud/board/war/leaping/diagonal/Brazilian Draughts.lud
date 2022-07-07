@@ -6,7 +6,7 @@
         (between 
             if:(and 
                 (not (is In (between) (sites ToClear))) 
-                (is Enemy (who at:(between)))
+                ("IsEnemyAt" (between))
             )
             (apply (remove (between) at:EndOfTurn))
         ) 

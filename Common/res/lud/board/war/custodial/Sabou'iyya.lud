@@ -1,26 +1,26 @@
 (define "IsConfigurationToCustodialAgain" 
-    (and 
-        (is Empty (to)) 
-        (or {
-            (and
-                (is Enemy (who at:(ahead (to) W)))
-                (is Friend (who at:(ahead (to) steps:2 W)))
-            )
-            (and
-                (is Enemy (who at:(ahead (to) E)))
-                (is Friend (who at:(ahead (to) steps:2 E)))
-            )
-            (and
-                (is Enemy (who at:(ahead (to) N)))
-                (is Friend (who at:(ahead (to) steps:2 N)))
-            )
-            (and
-                (is Enemy (who at:(ahead (to) S)))
-                (is Friend (who at:(ahead (to) steps:2 S)))
-            )
-        })
-    )	
-)
+	    (and 
+	        (is Empty (to)) 
+	        (or {
+	            (and
+	                ("IsEnemyAt" (ahead (to) W))
+	                ("IsFriendAt" (ahead (to) steps:2 W))
+	            )
+	            (and
+	                ("IsEnemyAt" (ahead (to) E))
+	                ("IsFriendAt" (ahead (to) steps:2 E))
+	            )
+	            (and
+	                ("IsEnemyAt" (ahead (to) N))
+	                ("IsFriendAt" (ahead (to) steps:2 N))
+	            )
+	            (and
+	                ("IsEnemyAt" (ahead (to) S))
+	                ("IsFriendAt" (ahead (to) steps:2 S))
+	            )
+	        })
+	    )	
+	)
 
 (define "CanCaptureAgain"
     (can Move
@@ -46,10 +46,10 @@
                         Orthogonal
                         (between
                             (max 1)
-                            if:(is Enemy (who at:(between)))
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
-                        (to if:(is Friend (who at:(to))))
+                        (to if:("IsFriendAt" (to)))
                         (then
                             (if ("CanCaptureAgain")	
                                 (moveAgain)
@@ -100,10 +100,10 @@
                                     Orthogonal
                                     (between
                                         (max 1)
-                                        if:(is Enemy (who at:(between)))
+                                        if:("IsEnemyAt" (between))
                                         (apply (remove (between)))
                                     )
-                                    (to if:(is Friend (who at:(to))))
+                                    (to if:("IsFriendAt" (to)))
                                     (then
                                         (if ("CanCaptureAgain")	
                                             (moveAgain)

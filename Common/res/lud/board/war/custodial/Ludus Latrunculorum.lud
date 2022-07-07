@@ -51,7 +51,7 @@
                         ("Rescue")
                     )
                 )
-                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
             )
         )
         
@@ -61,7 +61,7 @@
                 (from (between)) 
                 if:(and (= (what at:(between)) (mover)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
-                (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsEnemyAt" (to)) ("IsVagi" (to))))
             )
         )
         
@@ -71,7 +71,7 @@
                 (from (last From)) 	
                 if:(and (= (what at:(between)) (next)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
-                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
             )
         )
         
@@ -206,7 +206,7 @@
                         ("Rescue")
                     )
                 )
-                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
             )
         )
         
@@ -219,7 +219,7 @@
                     (apply 
                         (set State at:(between) 1)
                     )
-                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                    (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
                 )
             )
         )
@@ -230,7 +230,7 @@
                 (from (between)) 
                 if:(and (= (what at:(between)) (mover)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
-                (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsEnemyAt" (to)) ("IsVagi" (to))))
             )
         )
         
@@ -240,7 +240,7 @@
                 (from (last From)) 	
                 if:(and (= (what at:(between)) (next)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
-                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
             )
         )
         
@@ -416,7 +416,7 @@
                         )
                     )
                 ) 
-                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
             )	
         )
         
@@ -432,7 +432,7 @@
                             ("Rescue")
                         )
                     )
-                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                    (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
                 )
                 ("SurroundOnCorners")
             )
@@ -444,7 +444,7 @@
                 (from (between)) 
                 if:(and (= (what at:(between)) (mover)) ("IsAlligatus" (between)))
                 (apply ("Flip")) 
-                (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
+                (to if:(and ("IsEnemyAt" (to)) ("IsVagi" (to))))
             )
         )
         
@@ -455,7 +455,7 @@
                     (from (last From)) 	
                     if:(and (= (what at:(between)) (next)) ("IsAlligatus" (between)))
                     (apply ("Flip")) 
-                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                    (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
                 )
                 (surround 
                     (from (last From)) 
@@ -464,7 +464,7 @@
                         if:(and {(is In (between) (sites Corners))(= (what at:(between)) (next)) ("IsAlligatus" (between)) })
                         (apply ("Flip")) 
                     ) 
-                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                    (to if:(and ("IsFriendAt" (to)) ("IsVagi" (to))))
                 )
             )
         )
@@ -475,7 +475,7 @@
                 Hop
                 #1
                 Orthogonal 
-                (between if:(or (is Friend (who at:(between))) (and ("IsAlligatus" (between)) (is Enemy (who at:(between))))))
+                (between if:(or ("IsFriendAt" (between)) (and ("IsAlligatus" (between)) ("IsEnemyAt" (between)))))
                 (to 
                     if:(and  
                         (is Empty (to)) 
@@ -598,7 +598,7 @@
                     if:(and (is In (between) (sites Corners))  (= (what at:(between)) (next))) 
                     (apply (remove (between)))
                 ) 
-                (to if:(is Friend (who at:(to))))
+                (to if:("IsFriendAt" (to)))
             )	
         )
         
@@ -609,7 +609,7 @@
                     (from (last To))	
                     if:(= (what at:(between)) (next))
                     (apply (remove (between)))
-                    (to if:(is Friend (who at:(to))))
+                    (to if:("IsFriendAt" (to)))
                 )
                 ("SurroundOnCorners")
             )
@@ -671,10 +671,10 @@
                             Orthogonal
                             (between 
                                 (max 1) 
-                                if:(is Enemy (who at:(between))) 
+                                if:("IsEnemyAt" (between)) 
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to)))) 
+                            (to if:("IsFriendAt" (to))) 
                         ) 
                     ) 
                 ) 
@@ -706,16 +706,16 @@
                                 (from (last To)) 
                                 (between 
                                     (max 1) 
-                                    if:(is Enemy (who at:(between))) 
+                                    if:("IsEnemyAt" (between)) 
                                     (apply (remove (between)))
                                 )
-                                (to if:(is Friend (who at:(to)))) 
+                                (to if:("IsFriendAt" (to))) 
                             ) 
                         ) 
                     ) 
                     (move Hop 
                         (between 
-                            if:(is Enemy (who at:(between))) 
+                            if:("IsEnemyAt" (between)) 
                         )
                         (to if:(is Empty (to)))
                         (then 
@@ -723,10 +723,10 @@
                                 (from (last To)) 
                                 (between 
                                     (max 1) 
-                                    if:(is Enemy (who at:(between))) 
+                                    if:("IsEnemyAt" (between)) 
                                     (apply (remove (between)))
                                 )
-                                (to if:(is Friend (who at:(to)))) 
+                                (to if:("IsFriendAt" (to))) 
                             ) 
                         ) 
                     )
@@ -759,7 +759,7 @@
                     if:(= (what at:(between)) (id "Counter" Next)) 
                     (apply (remove (between)))
                 )
-                (to if:(is Friend (who at:(to)))) 
+                (to if:("IsFriendAt" (to))) 
             )	
         )
         
@@ -774,7 +774,7 @@
                     ) 
                     (apply (remove (between)))
                 ) 
-                (to if:(is Friend (who at:(to)))) 
+                (to if:("IsFriendAt" (to))) 
             )	
         )
         
@@ -832,7 +832,7 @@
                     if:(= (what at:(between)) (id "Counter" Next)) 
                     (apply (remove (between)))
                 )
-                (to if:(is Friend (who at:(to)))) 
+                (to if:("IsFriendAt" (to))) 
             )	
         )
         
@@ -847,7 +847,7 @@
                     ) 
                     (apply (remove (between)))
                 ) 
-                (to if:(is Friend (who at:(to)))) 
+                (to if:("IsFriendAt" (to))) 
             )	
         )
         
@@ -899,13 +899,13 @@
             (custodial 
                 (from (last To)) 
                 Orthogonal 
-                (between (max 1) if:(is Enemy (who at:(between))) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
-                (to if:(or (is Friend (who at:(to))) (is In (to) (sites Corners))))
+                (between (max 1) if:("IsEnemyAt" (between)) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
+                (to if:(or ("IsFriendAt" (to)) (is In (to) (sites Corners))))
             )	
         )
         
         (define "StepMove" (move Step #1 Orthogonal (to if:(is Empty (to))) #2))
-        (define "HopMove" (move Hop #1 Orthogonal (between if:(is Enemy (who at:(between)))) (to if:(is Empty (to))) #2))
+        (define "HopMove" (move Hop #1 Orthogonal (between if:("IsEnemyAt" (between))) (to if:(is Empty (to))) #2))
         
         (equipment { 
             (board (rectangle 8 7)) 
@@ -986,13 +986,13 @@
             (custodial 
                 (from (last To)) 
                 Orthogonal 
-                (between (max 1) if:(is Enemy (who at:(between))) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
-                (to if:(or (is Friend (who at:(to))) (is In (to) (sites Corners))))
+                (between (max 1) if:("IsEnemyAt" (between)) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
+                (to if:(or ("IsFriendAt" (to)) (is In (to) (sites Corners))))
             )	
         )
         
         (define "StepMove" (move Step #1 Orthogonal (to if:(is Empty (to))) #2))
-        (define "HopMove" (move Hop #1 Orthogonal (between if:(is Enemy (who at:(between)))) (to if:(is Empty (to))) #2))
+        (define "HopMove" (move Hop #1 Orthogonal (between if:("IsEnemyAt" (between))) (to if:(is Empty (to))) #2))
         
         (equipment { 
             (board (square 8)) 
@@ -1079,10 +1079,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1129,10 +1129,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1179,10 +1179,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1229,10 +1229,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1279,10 +1279,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1329,10 +1329,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1379,10 +1379,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1429,10 +1429,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1479,10 +1479,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1529,10 +1529,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1579,10 +1579,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1629,10 +1629,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1679,10 +1679,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1729,10 +1729,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1779,10 +1779,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1829,10 +1829,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1879,10 +1879,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1929,10 +1929,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -1977,10 +1977,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )
@@ -2027,10 +2027,10 @@
                             Orthogonal
                             (between
                                 (max 1)
-                                if:(is Enemy (who at:(between)))
+                                if:("IsEnemyAt" (between))
                                 (apply (remove (between)))
                             )
-                            (to if:(is Friend (who at:(to))))
+                            (to if:("IsFriendAt" (to)))
                         )
                     )
                 )

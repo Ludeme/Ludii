@@ -10,7 +10,7 @@
                 (move Step (directions {Forward Rightward Leftward}) (to if:(is Empty (to))))
                 (move Hop (directions {Forward Rightward Leftward}) 
                     (between
-                        if:(is Enemy (who at:(between))) 
+                        if:("IsEnemyAt" (between)) 
                         (apply (remove (between)))
                     )
                     (to if:(is Empty (to)))
@@ -20,7 +20,7 @@
                                     (from (last To)) 
                                     (directions {Forward Rightward Leftward})
                                     (between 
-                                        if:(is Enemy (who at:(between)))
+                                        if:("IsEnemyAt" (between))
                                     )
                                     (to if:(is Empty (to)))
                                 )
@@ -44,7 +44,7 @@
                         (from (last To)) 
                         (directions {Forward Rightward Leftward})
                         (between 
-                            if:(is Enemy (who at:(between)))
+                            if:("IsEnemyAt" (between))
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
@@ -54,7 +54,7 @@
                                         (from (last To)) 
                                         (directions {Forward Rightward Leftward})
                                         (between 
-                                            if:(is Enemy (who at:(between)))
+                                            if:("IsEnemyAt" (between))
                                         )
                                         (to if:(is Empty (to)))
                                     )
