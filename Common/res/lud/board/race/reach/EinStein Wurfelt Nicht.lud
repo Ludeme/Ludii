@@ -19,9 +19,9 @@
 
 (define "GoalReached" 
     (all Sites 
-            (sites Mover "Goal") 
-            if:(is In (site) (sites Occupied by:Mover))
-        )
+        (sites Mover "Goal") 
+        if:(is In (site) (sites Occupied by:Mover))
+    )
 )
 
 (define "MoveForwards" 
@@ -86,7 +86,7 @@
         (phase "Movement" 	        
             (play 
                 ("RollMove"
-                	(if ("PieceIsOnTheBoard")
+                    (if ("PieceIsOnTheBoard")
                         ("MoveAPieceOf" ("SameValue"))
                         ("MoveAPieceOf" ("ValueCloseToOne"))
                     )

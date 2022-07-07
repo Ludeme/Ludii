@@ -174,8 +174,8 @@
         })
         
         (play 
-               ("RollEachNewTurnMove"
-                        (if (can Move ("Move"))
+            ("RollEachNewTurnMove"
+                (if (can Move ("Move"))
                     ("Move") 
                     (move Pass 
                         (then (and
