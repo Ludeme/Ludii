@@ -10,7 +10,7 @@
 
 (define "WasJumpingAFriend" (is Pending))
 
-(define "WasAKnight" (= (what at:(last To)) (id "Knight" Mover)))
+(define "WasAKnight" ("IsPieceAt" "Knight" Mover (last To)))
 
 (define "OnAnEnemy" (between if:("IsEnemyAt" (between)) (apply (remove (between)))))
 

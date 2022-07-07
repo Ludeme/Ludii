@@ -26,7 +26,7 @@
                 ) 
                 (move
                     Hop
-                    (between if:(= (what at:(between)) (id "Disc0"))) 
+                    (between if:("IsPieceAt" "Disc0" Neutral (between)))
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
                 )
@@ -42,14 +42,14 @@
                 ) 
                 (move
                     Hop
-                    (between if:(= (what at:(between)) (id "Disc0"))) 
+                    (between if:("IsPieceAt" "Disc0" Neutral (between))) 
                     (to if:(is Empty (to))) 
                     (then "LetADiscOnTheFromLocation")
                 )
                 (move
                     Step
                     (to 
-                        if:(= (what at:(to)) (id "Seal1")) 
+                        if:("IsPieceAt" "Seal1" P1 (to))
                         (apply (remove (to)))
                     )
                     (then 
@@ -80,7 +80,7 @@
                     (not (can Move 
                             (forEach Piece "Bear" 
                                 (step 
-                                    (to if:(= (what at:(to)) (id "Seal1")))
+                                    (to if:("IsPieceAt" "Seal1" P1 (to)))
                                 )
                             )
                     ))
