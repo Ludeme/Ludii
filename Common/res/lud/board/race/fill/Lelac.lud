@@ -18,20 +18,16 @@
     (rules
         (start (set Count 1 to:(sites Board)))
         (play
-            (do (roll)
-                next:(move 
+            ("RollMove"
+            	(move 
                     (from 
-                        (if (is Prev Mover)
+                        (if ("NewTurn")
                             (sites {(last From)})
                             (forEach (sites Mover) if:(is Occupied (site)))
                         )
                     )
-                    (to
-                        ("NextHoleFrom" (from) (count Pips))	
-                    )
-                    (then
-                        (if (is Occupied (last From)) (moveAgain))
-                    )
+                    (to ("NextHoleFrom" (from) (count Pips)))
+                    (then (if (is Occupied (last From)) (moveAgain)))
                 )
             )
         )
