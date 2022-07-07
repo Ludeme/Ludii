@@ -408,7 +408,7 @@
                 (from (last To)) 
                 Orthogonal 
                 (between 
-                    if:(and { (is In (between) (sites Corners))  (= (what at:(between)) (next)) ("IsVagi" (between)) }) 
+                    if:(and {(is In (between) (sites Corners))  (= (what at:(between)) (next)) ("IsVagi" (between)) }) 
                     (apply 
                         (and
                             ("Flip")
@@ -461,7 +461,7 @@
                     (from (last From)) 
                     Orthogonal 
                     (between 
-                        if:(and { (is In (between) (sites Corners))(= (what at:(between)) (next)) ("IsAlligatus" (between)) })
+                        if:(and {(is In (between) (sites Corners))(= (what at:(between)) (next)) ("IsAlligatus" (between)) })
                         (apply ("Flip")) 
                     ) 
                     (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
@@ -682,7 +682,7 @@
         })
         (rules 
             ("NoRepetition")
-            (start { (place "Counter1" (expand (sites Bottom))) (place "Counter2" (expand (sites Top))) })
+            (start {(place "Counter1" (expand (sites Bottom))) (place "Counter2" (expand (sites Top))) })
             (play (forEach Piece))
             (end (if (no Pieces Next) (result Mover Win))) 
         )

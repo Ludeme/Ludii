@@ -32,7 +32,7 @@
         (start
             { 
             (place "Counter1" (difference (expand (intersection (sites Right) (sites Bottom)) steps:8 Orthogonal) (sites Phase 1)  ))
-            (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1)) )
+            (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1)))
             }
         )
         

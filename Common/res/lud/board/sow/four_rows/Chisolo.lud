@@ -1,6 +1,6 @@
 (define "Columns" <Board:rowSize>)
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "InitOneSeed" <Board:InitOneSeed>)
 (define "InitTwoSeed" <Board:InitTwoSeeds>)
@@ -173,7 +173,7 @@
     (item "Namudilakunze"  
         <
         (start 
-            (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right)))) )
+            (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home")) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right)))))
         )
         >  
     "Starting positions of the Namudilakunze ruleset.") 

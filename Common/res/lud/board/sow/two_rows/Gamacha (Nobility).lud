@@ -2,7 +2,7 @@
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "NoFreeSeed" 
     (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
@@ -32,7 +32,7 @@
     )  
     (rules 
         
-        (start (set Count 4 to:(sites Track)) )
+        (start (set Count 4 to:(sites Track)))
         
         (play 
             (move Select
@@ -59,7 +59,7 @@
                             (if (< 1 (count at:(to)))
                                 (and
                                     (moveAgain)
-                                    (if (and { (is In (to) (sites Next)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
+                                    (if (and {(is In (to) (sites Next)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
                                         (set State at:(to) (mover))
                                     )
                                 )

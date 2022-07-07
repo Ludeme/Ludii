@@ -46,8 +46,8 @@
     })
     (rules
         (start {
-            (place "Ball1" (difference (union { (sites Side NW) (sites Side NE) (expand (sites Side N))}) (union (sites Left) (sites Right))))
-            (place "Ball2" (difference (union { (sites Side SW) (sites Side SE) (expand (sites Side S))}) (union (sites Left) (sites Right))))
+            (place "Ball1" (difference (union {(sites Side NW) (sites Side NE) (expand (sites Side N))}) (union (sites Left) (sites Right))))
+            (place "Ball2" (difference (union {(sites Side SW) (sites Side SE) (expand (sites Side S))}) (union (sites Left) (sites Right))))
         })
         (play
             (if (is Prev Mover)

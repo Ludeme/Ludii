@@ -2,7 +2,7 @@
 
 (define "PlayFromLastHole" (last To afterConsequence:True))
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
@@ -23,7 +23,7 @@
     )  
     (rules 
         
-        (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})) )
+        (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})))
         
         phases:{
         

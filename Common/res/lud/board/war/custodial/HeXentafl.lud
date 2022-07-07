@@ -86,7 +86,7 @@
         (piece "Thrall" P2 
             (move Slide 
                 (between if:(and (!= (between) ("Throne")) (is Empty (between))))
-                (then (and { ("SurroundThrone") ("SurroundCorners") ("Custodial") }))
+                (then (and {("SurroundThrone") ("SurroundCorners") ("Custodial") }))
             )
         )
         (piece "Jarl" P1 

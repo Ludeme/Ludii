@@ -190,9 +190,9 @@
         // Promoted Silver
         (piece "Narigin" Each "GoldMove")
         // Promoted Rook
-        (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)) )
+        (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
         // Promoted Bishop
-        (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)) )
+        (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
         // Promoted Knight
         (piece "Narikei" Each "GoldMove")
         // Promoted Lance
@@ -200,13 +200,13 @@
         
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Bottom))
-        (regions "TwoFurthestRankP1" P1 (expand (sites Top)) )
-        (regions "TwoFurthestRankP2" P2 (expand (sites Bottom)) )
+        (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
+        (regions "TwoFurthestRankP2" P2 (expand (sites Bottom)))
         (regions "Promotion" P1 (expand (sites Top) steps:2))
         (regions "Promotion" P2 (expand (sites Bottom) steps:2))
-        (map "where" { (pair 3 88) (pair 4 81) (pair 5 89) (pair 6 82) (pair 7 90) (pair 8 83) (pair 9 91) (pair 10 84) (pair 11 92) (pair 12 85) (pair 13 93) (pair 14 86) (pair 15 94) (pair 16 87) (pair 17 88) (pair 18 81) (pair 19 89) (pair 20 82) (pair 21 90) (pair 22 83) (pair 23 91) (pair 24 84) (pair 25 92) (pair 26 85) (pair 27 93) (pair 28 86)})
-        (map "captured" { (pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11) (pair 13 14) (pair 14 13) (pair 15 16) (pair 16 15) (pair 17 4) (pair 18 3) (pair 19 6) (pair 20 5) (pair 21 8) (pair 22 7) (pair 23 10) (pair 24 9) (pair 25 12) (pair 26 11) (pair 27 14) (pair 28 13)})
-        (map "promoted" { (pair 3 17) (pair 4 18) (pair 5 19) (pair 6 20) (pair 7 21) (pair 8 22) (pair 9 23) (pair 10 24) (pair 11 25) (pair 12 26) (pair 13 27) (pair 14 28)})
+        (map "where" {(pair 3 88) (pair 4 81) (pair 5 89) (pair 6 82) (pair 7 90) (pair 8 83) (pair 9 91) (pair 10 84) (pair 11 92) (pair 12 85) (pair 13 93) (pair 14 86) (pair 15 94) (pair 16 87) (pair 17 88) (pair 18 81) (pair 19 89) (pair 20 82) (pair 21 90) (pair 22 83) (pair 23 91) (pair 24 84) (pair 25 92) (pair 26 85) (pair 27 93) (pair 28 86)})
+        (map "captured" {(pair 3 4) (pair 4 3) (pair 5 6) (pair 6 5) (pair 7 8) (pair 8 7) (pair 9 10) (pair 10 9) (pair 11 12) (pair 12 11) (pair 13 14) (pair 14 13) (pair 15 16) (pair 16 15) (pair 17 4) (pair 18 3) (pair 19 6) (pair 20 5) (pair 21 8) (pair 22 7) (pair 23 10) (pair 24 9) (pair 25 12) (pair 26 11) (pair 27 14) (pair 28 13)})
+        (map "promoted" {(pair 3 17) (pair 4 18) (pair 5 19) (pair 6 20) (pair 7 21) (pair 8 22) (pair 9 23) (pair 10 24) (pair 11 25) (pair 12 26) (pair 13 27) (pair 14 28)})
         
         (hand Each size:7)
     })

@@ -1,6 +1,6 @@
 (define "Columns" <Row:size>)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
-(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "NoPiece" (= (count in:(sites Player)) 0))
 (define "PreviousHole" (trackSite Move from:(from) "TrackCW" steps:1))
 

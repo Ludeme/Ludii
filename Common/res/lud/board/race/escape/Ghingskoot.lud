@@ -80,7 +80,7 @@
         (regions "AllSitesDifferentThanArc" 
             (difference 
                 (sites Board) 
-                (union { (sites P1 "Arc") (sites P2 "Arc") (sites {0 32})})
+                (union {(sites P1 "Arc") (sites P2 "Arc") (sites {0 32})})
             )
         )
         (dice d:2 facesByDie:{{0 4} {0 6} {0 14} {0 15}} num:4)

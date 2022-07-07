@@ -1,4 +1,4 @@
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -27,7 +27,7 @@
     (rules 
         
         (start 
-            (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner")) )
+            (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner")))
         )
         
         (play 

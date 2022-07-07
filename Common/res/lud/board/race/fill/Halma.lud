@@ -39,9 +39,9 @@
         
         phases:{
         (phase "Movement"  
-        	(play 
+            (play 
                 (forEach Piece 
-                	(or 
+                    (or 
                         ("HopSequence" (from)) 
                         (move Step
                             (to 
@@ -60,7 +60,7 @@
             (nextPhase (is Mover (next)) "MultiJump")
         ) 
         (phase "MultiJump" 
-        	(play 
+            (play 
                 (or 
                     ("HopSequence" (last To)) 
                     (move Pass)
@@ -69,8 +69,8 @@
             (nextPhase (not (is Mover (next))) "Movement")
         ) 
         }
-
-    (end ("FillWin" (sites (player (mapEntry (mover)))))) 
+        
+        (end ("FillWin" (sites (player (mapEntry (mover)))))) 
     )
 )
 

@@ -245,9 +245,9 @@
         })
         >
         <
-        (if (or { (is Mover P1) (is Mover P3) (is Mover P5) })
-            (or { (forEach Piece P1) (forEach Piece P3) (forEach Piece P5)})
-            (or { (forEach Piece P2) (forEach Piece P4) (forEach Piece P6)})
+        (if (or {(is Mover P1) (is Mover P3) (is Mover P5) })
+            (or {(forEach Piece P1) (forEach Piece P3) (forEach Piece P5)})
+            (or {(forEach Piece P2) (forEach Piece P4) (forEach Piece P6)})
         )
         >
     "The game is played with 6 players.")*   

@@ -21,8 +21,8 @@
     
     (rules 
         (start {
-            (place "Counter1" (union (expand (sites Bottom)) (sites Row 2)) )
-            (place "Counter2" (union (expand (sites Top)) (sites Row 4)) )
+            (place "Counter1" (union (expand (sites Bottom)) (sites Row 2)))
+            (place "Counter2" (union (expand (sites Top)) (sites Row 4)))
         })
         
         (play (forEach Piece))

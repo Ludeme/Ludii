@@ -1,6 +1,6 @@
 (define "Columns" 12)
 
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "LastHole" (last To afterConsequence:True))
 
@@ -28,7 +28,7 @@
         }
     )  
     (rules 
-        (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})) )
+        (start (set Count 3 to:(sites {1 2 4 5 7 8 10 11 22 21 19 18 16 15 13 12})))
         
         phases:{
         

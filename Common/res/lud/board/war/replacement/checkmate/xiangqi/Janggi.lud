@@ -152,7 +152,7 @@
                     Orthogonal 
                     (to 
                         if:(is Enemy (who at:(to))) 
-                        (apply (remove (to)) )
+                        (apply (remove (to)))
                     )
                 )
                 
@@ -171,7 +171,7 @@
                         )
                         (to 
                             if:(is Enemy (who at:(to))) 
-                            (apply (remove (to)) ) 
+                            (apply (remove (to))) 
                         )
                     )
                 )

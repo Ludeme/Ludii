@@ -34,7 +34,7 @@
                 (move Select
                     (from 
                         (if (is Mover Prev)
-                            (sites { (var "Replay") })
+                            (sites {(var "Replay") })
                             (sites Mover)
                         )
                         if:(is Occupied (from))

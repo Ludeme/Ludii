@@ -18,7 +18,7 @@
         )
         (dice d:2 from:0 num:4)
         (hand Each)
-        (map "DieValue" { (pair 4 8) })
+        (map "DieValue" {(pair 4 8) })
         <Version:map>
         (regions "Protect" (sites {"A1" "A4" "A5" "A8" "D1" "D4" "D5" "D8" "E1" "E4" "E5" "E8" "H1" "H4" "H5" "H8"}))
         
@@ -115,8 +115,8 @@
         })
         >
         <
-        (map "Entry" { (pair P1 "D1") (pair P2 "E8")})
-        (map "Exit" { (pair P1 "E3") (pair P2 "D6")})
+        (map "Entry" {(pair P1 "D1") (pair P2 "E8")})
+        (map "Exit" {(pair P1 "E3") (pair P2 "D6")})
         >
         "The version of the game played with 2 players."
     )*   
@@ -131,8 +131,8 @@
         })
         >
         <
-        (map "Entry" { (pair P1 "D1") (pair P2 "E8") (pair P3 "H4") (pair P4 "A5")})
-        (map "Exit" { (pair P1 "E3") (pair P2 "D6") (pair P3 "F5") (pair P4 "C4")})
+        (map "Entry" {(pair P1 "D1") (pair P2 "E8") (pair P3 "H4") (pair P4 "A5")})
+        (map "Exit" {(pair P1 "E3") (pair P2 "D6") (pair P3 "F5") (pair P4 "C4")})
         >
         "The version of the game played with 4 players."
     ) 

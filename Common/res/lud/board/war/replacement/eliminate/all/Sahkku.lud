@@ -9,15 +9,15 @@
     (if (and ("Sahkku" ("Die1") 1) (all DiceEqual))
         3
         (if (or {
-                (and { (not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) ("Sahkku" ("Die3"))})
-                (and { ("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
-                (and { ("Sahkku" ("Die1")) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
+                (and {(not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) ("Sahkku" ("Die3"))})
+                (and {("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
+                (and {("Sahkku" ("Die1")) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
             })
             2
             (if (or {
-                    (and { (not ("Sahkku" ("Die1"))) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
-                    (and { ("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) (not ("Sahkku" ("Die3")))})
-                    (and { (not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
+                    (and {(not ("Sahkku" ("Die1"))) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
+                    (and {("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) (not ("Sahkku" ("Die3")))})
+                    (and {(not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
                 })
                 1
                 0	

@@ -752,7 +752,7 @@
         
         (define "HasEnteredAPieceOrNewTurn" (or ("HasEnteredAPiece") (and (!= (last From) (handSite Mover)) (or ("HasAnAdditionalThrow") ("NewTurn")))))
         
-        (define "CanEnterAPiece" (and { (or ("HasAnAdditionalThrow") ("NewTurn")) (not ("HandEmpty" Mover)) (= ("Throw") 1) }))
+        (define "CanEnterAPiece" (and {(or ("HasAnAdditionalThrow") ("NewTurn")) (not ("HandEmpty" Mover)) (= ("Throw") 1) }))
         
         (define "AutoCaptureLastPiece" 
             (move (from (last To)) (to (handSite Mover)) 
@@ -772,10 +772,10 @@
                 (if (= ("Throw") 2)
                     (or (is Empty 21) (is Empty 22))
                     (if (= ("Throw") 3)
-                        (or { (is Empty 21) (is Empty 22) (is Empty 23) })
+                        (or {(is Empty 21) (is Empty 22) (is Empty 23) })
                         (if (= ("Throw") 4)
-                            (or { (is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24)})
-                            (or { (is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24) (is Empty 25)})
+                            (or {(is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24)})
+                            (or {(is Empty 21) (is Empty 22) (is Empty 23) (is Empty 24) (is Empty 25)})
                         )
                     )
                 )
@@ -789,7 +789,7 @@
             
             (play 
                 (do 
-                    (if (or { (= (last From) (handSite Mover)) ("NewTurn") ("HasAnAdditionalThrow") })
+                    (if (or {(= (last From) (handSite Mover)) ("NewTurn") ("HasAnAdditionalThrow") })
                         (roll) 
                     )
                     next:(or 
@@ -833,7 +833,7 @@
                 (is Empty ("SiteToMoveOnTrack" #1))
                 (and {
                     ("IsEnemyAt" ("SiteToMoveOnTrack" #1))
-                    (not (is In ("SiteToMoveOnTrack" #1) (union { (sites "Ankh Waset") (sites "Neferu") (sites "Baw") (sites "Two Men") }))) 
+                    (not (is In ("SiteToMoveOnTrack" #1) (union {(sites "Ankh Waset") (sites "Neferu") (sites "Baw") (sites "Two Men") }))) 
                     (and (not (is Line 2 W through:("SiteToMoveOnTrack" #1))) (not (is Line 2 E through:("SiteToMoveOnTrack" #1))))
                 })
             )

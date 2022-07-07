@@ -19,8 +19,8 @@
 (option "Players" <Version> args:{<numPlayers> <playRules>}
     {
     (item "2 Players" <2> <(meta (swap)) (play (move Add (to (sites Empty))))>                                    "The version of game with 2 players.")**
-    (item "3 Players" <3> <(play (priority { (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) (move Add (to (sites Empty))) }))>  "The version of game with 3 players.")
-    (item "4 Players" <4> <(play (priority { (move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) (move Add (to (sites Empty))) }))>  "The version of game with 4 players.")
+    (item "3 Players" <3> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) (move Add (to (sites Empty))) }))>  "The version of game with 3 players.")
+    (item "4 Players" <4> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty)))) (sites Winning Next (add (to (sites Empty))))))) (move Add (to (sites Empty))) }))>  "The version of game with 4 players.")
     }
 )
 

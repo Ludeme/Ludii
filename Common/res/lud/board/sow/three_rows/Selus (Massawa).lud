@@ -80,7 +80,7 @@
                                             )
                                             (set State at:(to) (state at:(to)))
                                         })
-                                        (if (and { (< 2 (count Turns)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
+                                        (if (and {(< 2 (count Turns)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
                                             (set State at:(to) (mover))	
                                             (moveAgain)
                                         )

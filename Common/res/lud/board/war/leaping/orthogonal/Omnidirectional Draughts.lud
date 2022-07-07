@@ -32,8 +32,8 @@
     (rules 
         
         (start {
-            (place "Counter1" (expand (sites Bottom) steps: (- (/ <Board> 2) 2)) ) 
-            (place "Counter2" (expand (sites Top) steps: (- (/ <Board> 2) 2)) )              
+            (place "Counter1" (expand (sites Bottom) steps: (- (/ <Board> 2) 2))) 
+            (place "Counter2" (expand (sites Top) steps: (- (/ <Board> 2) 2)))              
         })
         
         (play 

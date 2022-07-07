@@ -1,6 +1,6 @@
 (define "Columns" 10)
 
-(define "OppositePit" (if (is In (to) (sites P1 "Home")) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is In (to) (sites P1 "Home")) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -63,7 +63,7 @@
     )  
     (rules 
         
-        (start (set Count 4 to:(sites Track)) )
+        (start (set Count 4 to:(sites Track)))
         
         phases:{
         (phase "Rightmost" 			  	

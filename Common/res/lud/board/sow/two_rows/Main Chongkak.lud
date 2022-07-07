@@ -1,6 +1,6 @@
 (define "Columns" <Board:size>)
 (define "PlayableSites" (sites (values Remembered "Playable")))
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
 (define "OneRowIsEmpty"
     (or

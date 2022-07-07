@@ -49,7 +49,7 @@
                     (move Select
                         (from
                             (if (is Mover Prev)
-                                (sites { (var "Replay")})
+                                (sites {(var "Replay")})
                                 ("OwnedHoles")
                             )
                             if:(is Occupied (from))

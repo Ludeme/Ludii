@@ -30,7 +30,7 @@
                     (sow
                         if:(and 
                             (is In (count at:(to)) (sites {2 4 6})) 
-                            (is In (to) (union (sites Next) (sites { (mapEntry "RightHole" (mover))})))
+                            (is In (to) (union (sites Next) (sites {(mapEntry "RightHole" (mover))})))
                         )
                         apply:(fromTo 
                             (from (to)) 

@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "CorrespondingHolesHaveSeeds"
     (all Sites (sites Bottom)
@@ -84,7 +84,7 @@
                         (from 
                             (if 
                                 (and (not (is Pending)) (is Mover Prev))
-                                (sites { (var "Replay") })
+                                (sites {(var "Replay") })
                                 (sites Mover) 
                             ) 
                             if:(is Occupied (from))

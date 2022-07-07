@@ -8,7 +8,7 @@
         (between if:(is Occupied (between)))
         (to 
             if:(and
-            	("IsEmptyAndNotVisited" (to))
+                ("IsEmptyAndNotVisited" (to))
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
@@ -39,7 +39,7 @@
         (phase "Movement"  
             (play 
                 (forEach Piece 
-                	(or 
+                    (or 
                         ("HopSequence" (from)) 
                         (move Step
                             (to 

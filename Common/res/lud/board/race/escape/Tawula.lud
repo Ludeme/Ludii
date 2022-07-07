@@ -90,8 +90,8 @@
             (place Stack "Disc2" (handSite P2) count:13)
         })
         (play 
-                ("RollEachNewTurnMove"
-                        (or  
+            ("RollEachNewTurnMove"
+                (or  
                     (if ("BarEmpty" Mover)
                         // Move a piece
                         (forEach Piece top:True) 

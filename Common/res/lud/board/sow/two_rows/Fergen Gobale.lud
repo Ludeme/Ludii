@@ -1,4 +1,4 @@
-(define "OppositePit" (if (is Mover P1) (+ (to) 3) (- (to) 3)) )
+(define "OppositePit" (if (is Mover P1) (+ (to) 3) (- (to) 3)))
 (define "PlayableSites" (sites (values Remembered "Playable")))
 (define "LeftMostEmpty" 
     (trackSite FirstSite 
@@ -71,7 +71,7 @@
                                 (sites {(var "Replay")})
                                 (sites Mover "Home")
                             )
-                            if:(and { (= 0 (state at:(from))) (is In (from) ("PlayableSites")) (is Occupied (from)) })
+                            if:(and {(= 0 (state at:(from))) (is In (from) ("PlayableSites")) (is Occupied (from)) })
                         )
                         (then
                             (sow

@@ -14,7 +14,7 @@
     (rules 
         (start { 
             (place "Fox1" (handSite P1))
-            (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0)) )
+            (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0)))
         })
         
         phases:{

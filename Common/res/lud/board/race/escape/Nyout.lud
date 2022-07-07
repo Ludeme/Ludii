@@ -212,8 +212,8 @@
     
     (graphics {
         (show Edges Hidden)
-        (show Symbol "disc" Vertex (difference (sites Board) (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)})) fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
-        (show Symbol "disc" Vertex (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)}) fillColour:(colour White) edgeColour:(colour Black) scale:0.8)
+        (show Symbol "disc" Vertex (difference (sites Board) (union {(sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)})) fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
+        (show Symbol "disc" Vertex (union {(sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)}) fillColour:(colour White) edgeColour:(colour Black) scale:0.8)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (stackType Count)
     })

@@ -76,7 +76,7 @@
 (define "PushThePiece" 
     (move 
         (from (handSite Mover)) 
-        (to (sites Around (last To) Orthogonal if:(and (!= (last From) (to)) (is Empty (to))) )) // Any empty site around but not the previous position of the piece pushing.
+        (to (sites Around (last To) Orthogonal if:(and (!= (last From) (to)) (is Empty (to))))) // Any empty site around but not the previous position of the piece pushing.
         (then 
             (and
                 "AllPieceInATrapAreRemoved"

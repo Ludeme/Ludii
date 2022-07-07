@@ -20,7 +20,7 @@
     )  
     (rules 
         
-        (start (set Count <Players:init> to:(sites Track)) )
+        (start (set Count <Players:init> to:(sites Track)))
         
         <Players:Play>
         
@@ -245,9 +245,9 @@
         <
         (end
             (if (or { 
-                    (and { (no Moves P1) (no Moves P2) (no Moves P3)})
-                    (and { (no Moves P1) (no Moves P3) (no Moves P4)})
-                    (and { (no Moves P2) (no Moves P3) (no Moves P4)})
+                    (and {(no Moves P1) (no Moves P2) (no Moves P3)})
+                    (and {(no Moves P1) (no Moves P3) (no Moves P4)})
+                    (and {(no Moves P2) (no Moves P3) (no Moves P4)})
                 })
                 (byScore {
                     (score P1 ("PiecesHandOwnedBy" P1)) 

@@ -1,5 +1,5 @@
 (define "PossibleSquareFrom" (and (!= (site) (ahead (site) #1)) (!= (site) (ahead (site) #2))))
-(define "SquareFrom" (sites { (site) (ahead (site) #1) (ahead (site) #2) (ahead (ahead (site) #1) #2)}))
+(define "SquareFrom" (sites {(site) (ahead (site) #1) (ahead (site) #2) (ahead (ahead (site) #1) #2)}))
 
 (define "PossibleSquareFromBottomLeft" ("PossibleSquareFrom" N E))
 (define "SquareFromBottomLeft" ("SquareFrom" N E))

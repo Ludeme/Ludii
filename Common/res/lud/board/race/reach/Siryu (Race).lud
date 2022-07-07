@@ -32,7 +32,7 @@
 (define "PrepareLastStep" 
     (if (and {
             ("Sir") 
-            (is In (from) (sites { ("Step3") ("Medina") ("Cairo")}))
+            (is In (from) (sites {("Step3") ("Medina") ("Cairo")}))
             (< (state at:(from) level:(level)) 2)
         })
         (move 

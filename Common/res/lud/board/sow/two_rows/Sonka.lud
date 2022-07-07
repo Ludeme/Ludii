@@ -1,7 +1,7 @@
 // Game modelled without the simultaneous play.
 
 (define "Columns" 5)
-(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "PlayFromLastHole" (sites {("NextSite" from:(last To afterConsequence:True))}))
 (define "NextSite" 
     (if (= (trackSite Move #1 steps:1) (mapEntry Mover))
@@ -29,7 +29,7 @@
         }
     )  
     (rules 
-        (start (set Count 6 to:(union (sites Bottom) (sites Top)) ))
+        (start (set Count 6 to:(union (sites Bottom) (sites Top))))
         
         phases:{
         (phase "Sowing"

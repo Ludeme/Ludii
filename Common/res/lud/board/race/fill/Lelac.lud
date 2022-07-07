@@ -19,9 +19,9 @@
         (start (set Count 1 to:(sites Board)))
         (play
             ("RollMove"
-            	(move 
+                (move 
                     (from 
-                        (if ("NewTurn")
+                        (if ("SameTurn")
                             (sites {(last From)})
                             (forEach (sites Mover) if:(is Occupied (site)))
                         )

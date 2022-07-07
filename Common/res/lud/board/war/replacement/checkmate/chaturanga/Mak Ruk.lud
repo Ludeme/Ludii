@@ -132,7 +132,7 @@
                 (result Mover Win)
             ) 
             (if (no Moves Next) (result Mover Draw)) 
-            (if (and { (= (count Pieces Next) 1) (= (count Pieces Mover) 2) (!= Off (where "Ferz_noCross" Mover))})
+            (if (and {(= (count Pieces Next) 1) (= (count Pieces Mover) 2) (!= Off (where "Ferz_noCross" Mover))})
                 (result Mover Draw)
             )
             }

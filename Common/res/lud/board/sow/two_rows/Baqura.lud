@@ -1,6 +1,6 @@
 (define "Columns" 6)
 
-(define "OppositePit" (if (is In #1 (sites P1)) (+ #1 "Columns") (- #1 "Columns")) )
+(define "OppositePit" (if (is In #1 (sites P1)) (+ #1 "Columns") (- #1 "Columns")))
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
@@ -70,7 +70,7 @@
                                         ) 
                                     )
                                 )
-                                backtracking:(and { (is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
+                                backtracking:(and {(is In (to) (sites Mover)) (> (count at:(to)) 1) (is Even (count at:(to))) })
                             )
                         )
                     )

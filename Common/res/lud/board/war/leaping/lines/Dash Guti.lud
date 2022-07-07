@@ -24,8 +24,8 @@
     
     (rules 
         (start {
-            (place "Counter1" (union { (sites Row 0) (sites Row 1) (sites Row 2) (intersection (sites Row 3) (sites Left))}))
-            (place "Counter2" (union { (sites Row 6) (sites Row 5) (sites Row 4) (intersection (sites Row 3) (sites Right))}))
+            (place "Counter1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (intersection (sites Row 3) (sites Left))}))
+            (place "Counter2" (union {(sites Row 6) (sites Row 5) (sites Row 4) (intersection (sites Row 3) (sites Right))}))
         })
         
         (play (forEach Piece))
