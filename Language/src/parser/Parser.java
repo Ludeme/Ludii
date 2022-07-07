@@ -120,7 +120,7 @@ public class Parser
 			try
 			{
 				//report.clear();
-				Expander.expand(description, userSelections, report, isVerbose);				
+				Expander.expand(description, userSelections, report, null, isVerbose);				
 				if (report.isError())
 				{
 //					System.out.println("Errors while expanding (A):");
