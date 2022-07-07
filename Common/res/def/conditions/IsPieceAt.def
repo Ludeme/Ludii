@@ -1,0 +1,9 @@
+// Checks if a piece #1 owned by #2 is at a site #3.
+// #1 = The name of the piece.
+// #2 = The owner of the piece.
+// #3 = The site.
+// @example ("IsPieceAt" "Ball" Shared 32)
+
+(define "IsPieceAt"
+	(= (what at:#3) (id #1 #2))
+)
