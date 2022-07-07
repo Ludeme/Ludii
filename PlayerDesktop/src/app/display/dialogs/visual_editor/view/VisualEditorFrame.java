@@ -21,9 +21,6 @@ public class VisualEditorFrame extends JFrame
 
     public VisualEditorFrame()
     {
-        // load fonts
-        DesignPalette.initializeFonts();
-
         // set frame properties
         setTitle(TITLE);
         setIconImage(FRAME_ICON.getImage());

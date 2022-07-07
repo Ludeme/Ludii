@@ -253,17 +253,10 @@ public class DesignPalette
         return INPUT_FIELD_FOREGROUND;
     }
 
-
-    // ~~ FONTS ~~ //
-    public static void initializeFonts() {
-        // load fonts
-        registerAllFonts("Roboto");
-    }
-
     // LUDEME BLOCK //
-    public static Font LUDEME_TITLE_FONT = new Font("Roboto Bold", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
-    public static Font LUDEME_INPUT_FONT = new Font("Robot Regular", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
-    public static final Font LUDEME_INPUT_FONT_ITALIC = new Font("Roboto Italic", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
+    public static Font LUDEME_TITLE_FONT = new Font("Arial", Font.PLAIN,  LUDEME_TITLE_FONT_SIZE);
+    public static Font LUDEME_INPUT_FONT = new Font("Arial", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
+    public static final Font LUDEME_INPUT_FONT_ITALIC = new Font("Arial", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
 
     // ~~ ICONS ~~ //
 
@@ -529,28 +522,6 @@ public class DesignPalette
     private static ImageIcon getIcon(String path)
     {
         return new ImageIcon(getIconURL(path));
-    }
-
-    private static void registerAllFonts(String folderName)
-    {
-        String extension = ".ttf";
-        try
-        {
-            File dir = new File(Objects.requireNonNull(DesignPalette.class.getResource("/fonts/" + folderName)).toURI());
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            for (File file : Objects.requireNonNull(dir.listFiles()))
-            {
-                if (file.getName().endsWith(extension))
-                {
-                    System.out.println("Registering font: " + file.getName());
-                    ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,file));
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
 }
