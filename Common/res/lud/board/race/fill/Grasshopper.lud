@@ -2,20 +2,13 @@
 
 (define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover))))))
 
-(define "EmptyAndNotVisited"     							  
-    (and 
-        (is Empty (to)) 
-        (not (is Visited (to))) 
-    ) 
-)
-
 (define "Hop" 
     (move Hop
         (from #1)
         (between if:(not (is Empty (between))))
         (to 
             if:(and
-                "EmptyAndNotVisited"
+            	("IsEmptyAndNotVisited" (to))
                 (or
                     (not ("FromIsOnTheRegionToFill" #1))
                     ("ToIsOnTheRegionToFill" (to)) 
