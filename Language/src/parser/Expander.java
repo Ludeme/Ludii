@@ -921,14 +921,17 @@ public class Expander
 			if (report.isError())
 				return null;
 			
-			// Add this expression to the relevant DefineInstances record
-			DefineInstances defIn = defineInstances.get(define.tag());
-			if (defIn == null)
+			if (defineInstances != null)
 			{
-				defIn = new DefineInstances(define);
-				defineInstances.put(define.tag(), defIn);
+				// Add this expression to the relevant DefineInstances record
+				DefineInstances defIn = defineInstances.get(define.tag());
+				if (defIn == null)
+				{
+					defIn = new DefineInstances(define);
+					defineInstances.put(define.tag(), defIn);
+				}
+				defIn.addInstance(new String(exprn));
 			}
-			defIn.addInstance(new String(exprn));
 			
 			// Do the expansion
 			str = str.substring(0, c) + exprn + str.substring(cc+1);
