@@ -120,13 +120,23 @@ public class Parser
 			try
 			{
 				//report.clear();
-				Expander.expand(description, userSelections, report, null, isVerbose);				
+				
+				final Map<String, DefineInstances> defineInstances = new HashMap<String, DefineInstances>();
+				
+				Expander.expand(description, userSelections, report, defineInstances, isVerbose);				
 				if (report.isError())
 				{
 //					System.out.println("Errors while expanding (A):");
 //					for (final String error : report.errors())
 //						System.out.println("* " + error);
 					return false;  // failed to expand -- return error
+				}
+				
+				if (defineInstances != null && isVerbose)
+				{
+					System.out.println("Define instances:");
+					for (final DefineInstances defIn : defineInstances.values())
+						System.out.println(defIn + "\n");
 				}
 			}
 			catch (final Exception e)

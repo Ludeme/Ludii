@@ -50,9 +50,9 @@ public class DefineInstances
 	{
 		final StringBuilder sb = new StringBuilder();
 		
-		sb.append(define.toString() + ":");
+		sb.append("~~~~~~~~~~~~~~~~~~~~\nDefine: " + define);
 		for (final String instance : instances)
-			sb.append(" { \"" +  instance + "\" }");
+			sb.append("\nInstance: " +  instance);
 			
 		return sb.toString();
 	}

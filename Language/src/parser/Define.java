@@ -9,6 +9,7 @@ public class Define
 	private final String tag;
 	private String expression;  // expression may be modified if recursive defines
 	private final boolean parameterised;
+	private final boolean isKnown;  // whether is a known define from Common/res/def
 	
 	//---------------------------------------------------- --------------------
 
@@ -16,10 +17,11 @@ public class Define
 	 * @param tag
 	 * @param expression
 	 */
-	public Define(final String tag, final String expression)
+	public Define(final String tag, final String expression, final boolean isKnown)
 	{
 		this.tag = new String(tag);
 		this.expression = new String(expression);
+		this.isKnown = isKnown;
 		
 		parameterised = expression.contains("#");
 	}
@@ -58,6 +60,14 @@ public class Define
 	public boolean parameterised()
 	{
 		return parameterised;
+	}
+	
+	/**
+	 * @return Whether this is a known define from Common/res/def.
+	 */
+	public boolean isKnown()
+	{
+		return isKnown;
 	}
 	
 	//---------------------------------------------------- --------------------

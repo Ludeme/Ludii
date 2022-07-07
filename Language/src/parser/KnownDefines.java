@@ -197,7 +197,7 @@ public class KnownDefines
 			e.printStackTrace();
 		}
 		
-		final Define define = Expander.interpretDefine(sb.toString(), null, report);
+		final Define define = Expander.interpretDefine(sb.toString(), null, report, true);
 		return define;
 	}
 		
