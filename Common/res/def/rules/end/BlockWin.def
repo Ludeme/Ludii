@@ -1,0 +1,6 @@
+// If the next player can not move, the mover is winning. This ludemeplex can be used only in an ending condition.
+// @example ("BlockWin")
+
+(define "BlockWin"
+		(if (no Moves Next) (result Mover Win))
+)
