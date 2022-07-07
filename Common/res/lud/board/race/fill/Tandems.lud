@@ -44,7 +44,7 @@
             (place "Pawn2" (sites Top))
         })
         (play
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (forEach Site (difference (sites Occupied by:Mover) (last To))
                     (move Step 
                         (from (site))

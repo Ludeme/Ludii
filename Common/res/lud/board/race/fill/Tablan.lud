@@ -4,14 +4,14 @@
 
 (define "ThrowToActivate" (= 2 ("ThrowValue" )))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
 
 (define "ActivatedPiece" (= (state at:#1) 1))
 
 (define "ActivePiece" (set State at:#1 1))
 
 (define "CaptureMove"
-    (if (is Enemy (who at:(to)))
+    (if ("IsEnemyAt" (to))
         (remove (to))
     )
 )
@@ -19,11 +19,11 @@
 (define "PlayedHalfThrow" (= 1 (var)))
 
 (define "PiecesOwnedOnEnemyHomedBy"
-    (count Sites in:(intersection (sites #1 "Home") (sites Occupied by:#2)))
+    (count Sites in:(forEach (sites #1 "Home") if:(= (who at:(site)) #2)))
 )
 
 (define "NumPieceNotInEnemyHome"
-    (count Sites in:(difference (sites Occupied by:#1) (sites #2 "Home")))
+    (count Sites in:(forEach (sites Occupied by:#1) if:(not (is In (site) (sites #2 "Home")))))
 )
 
 //------------------------------------------------------------------------------
@@ -52,7 +52,7 @@
                             )
                             (to 
                                 ("SiteToMoveOnTrack" ("ThrowValue"))
-                                if:(not (is Friend (who at:(to))))
+                                if:(not ("IsFriendAt" (to)))
                                 (apply "CaptureMove")
                             )
                             (then
@@ -72,7 +72,7 @@
                         )
                         (to 
                             ("SiteToMoveOnTrack" (/ ("ThrowValue") 2))
-                            if:(not (is Friend (who at:(to))))
+                            if:(not ("IsFriendAt" (to)))
                             (apply "CaptureMove")
                         )
                         (then
@@ -150,8 +150,6 @@
         (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (piece Scale "Stick" 0.5)
-        
     })
     
 )
-
