@@ -71,12 +71,12 @@ public class DFBoxDrawing
             {
                 freeY += (graph.getNode(nodeId).pos().y() - GraphRoutines.getSubtreeArea(graph, nodeId).y);
                 piInit = new Vector2D(freeX, freeY);
-                freeY += graph.getNode(nodeId).height() * (odsMetrics[2]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
+                freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2]) + GraphRoutines.getSubtreeArea(graph, nodeId).height + PADDING_X;
                 translateByRoot(graph, nodeId, piInit);
             }
             else
             {
-                freeY += graph.getNode(nodeId).height() * (odsMetrics[2]) + graph.getNode(nodeId).height() + PADDING_X;
+                freeY += GraphRoutines.nodesMaxSpread() * (odsMetrics[2]) + graph.getNode(nodeId).height() + PADDING_X;
             }
             // update node position
             graph.getNode(nodeId).setPos(piInit);
@@ -88,7 +88,7 @@ public class DFBoxDrawing
             iGNode nLast = graph.getNode(nodeCh.get(nodeCh.size()-1));
 
             nodeCh.forEach((s) -> {
-                initPlacement(s, (int) (freeX + graph.getNode(s).width() * odsMetrics[1]) + graph.getNode(s).width() + PADDING_X);
+                initPlacement(s, (int) (freeX + GraphRoutines.nodesMaxDist() * odsMetrics[1]) + graph.getNode(s).width() + PADDING_X);
                 // freeX + getNodeDepth(graph, s)*graph.getNode(s).getWidth()*wX
 
 

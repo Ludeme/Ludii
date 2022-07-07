@@ -177,12 +177,13 @@ public class GameParser
                 // node argument cursor
                 int i = 0;
                 // clause argument cursor
-                int j = 0;
+                assert currentClause != null;
+                // check for the constructor name extension
+                int j = currentClause.args().get(0).symbol().ludemeType().equals(Symbol.LudemeType.Constant) ? 1 : 0;
                 Object input;
                 while (i < ln.providedInputsMap().size())
                 {
                     // check if input for orGroup was produced
-                    assert currentClause != null;
                     if (currentClause.args().get(j).orGroup() == orGroupFinished)
                     {
                         j++;
@@ -192,6 +193,7 @@ public class GameParser
                         // adding inputs
                         Call call = cArgs.get(j);
                         input = constructGraph(call, d+1, ln, -1, ln.currentNodeArguments().get(i), graph);
+                        // update terminal input
                         if (!(input instanceof LudemeNode || input instanceof Object[]))
                             Handler.updateInput(graph, ln, ln.currentNodeArguments().get(i), input);
 

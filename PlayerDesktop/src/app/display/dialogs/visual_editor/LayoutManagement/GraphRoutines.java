@@ -19,9 +19,9 @@ public final class GraphRoutines
     /**
      * Tuning constants for metric evaluation
      */
-    private static final double NODES_MAX_DIST = 260;
+    private static final double NODES_MAX_DIST = 300;
 
-    private static final double NODES_MAX_SPREAD = 300;
+    private static final double NODES_MAX_SPREAD = 400;
 
     private static final double[] ODS_TUNING = new double[] {1.0, 1.0, 1.0};
 
@@ -106,19 +106,18 @@ public final class GraphRoutines
                     xDiffMean += Math.abs(computeNodeHorizontalDistance(n, child, graph));
                 }
                 xDiffMean /= children.size();
-                System.out.println("xDiff: "+xDiffMean);
                 double D = (Math.max(0, Math.min(xDiffMean, NODES_MAX_DIST))) / (NODES_MAX_DIST);
                 // compute O
                 double O;
                 if (children.size() == 1)
                 {
-                    O = 0.5;
+                    O = DFBoxDrawing.defaultO();
                 }
                 else
                 {
                     iGNode f = graph.getNode(children.get(0));
                     iGNode l = graph.getNode(children.get(children.size()-1));
-                    O = ((node.pos().y()+node.height()/2.0) - f.pos().y()) / Math.abs(l.pos().y() - f.pos().y());
+                    O = ((node.pos().y()+node.height()/2.0) - f.pos().y()) / Math.abs(l.pos().y()+l.height() - f.pos().y());
                     O = Math.max(0.0, Math.min(1.0, O));
                 }
                 // compute S
@@ -126,7 +125,7 @@ public final class GraphRoutines
                 double S;
                 if (children.size() == 1)
                 {
-                    S = 0.5;
+                    S = DFBoxDrawing.defaultS();
                 }
                 else
                 {
@@ -146,9 +145,19 @@ public final class GraphRoutines
                 Q.addAll(children);
             }
         }
-        odsWeights[0] = getAvgWeight(layerOffset) * ODS_TUNING[0];
-        odsWeights[1] = getAvgWeight(layerDist) * ODS_TUNING[1];
-        odsWeights[2] = getAvgWeight(layerSpread) * ODS_TUNING[2];
+
+        if (graph.getNode(root).children().isEmpty())
+        {
+            odsWeights[0] = DFBoxDrawing.defaultO();
+            odsWeights[1] = DFBoxDrawing.defaultD();
+            odsWeights[2] = DFBoxDrawing.defaultS();
+        }
+        else
+        {
+            odsWeights[0] = getAvgWeight(layerOffset) * ODS_TUNING[0];
+            odsWeights[1] = getAvgWeight(layerDist) * ODS_TUNING[1];
+            odsWeights[2] = getAvgWeight(layerSpread) * ODS_TUNING[2];
+        }
         return odsWeights;
     }
 
@@ -270,4 +279,12 @@ public final class GraphRoutines
      * @return array of tuning constants in order o,d,s
      */
     public static double[] odsTuning() {return ODS_TUNING;}
+
+    public static double nodesMaxDist() {
+        return NODES_MAX_DIST;
+    }
+
+    public static double nodesMaxSpread() {
+        return NODES_MAX_SPREAD;
+    }
 }
