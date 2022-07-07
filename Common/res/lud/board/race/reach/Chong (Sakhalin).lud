@@ -1,8 +1,6 @@
-(define "DieNotUsed" (!= (pips) 0))
-
 (define "SumPips" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 
 (define "NumDiceAtOne" 
     (+ {
@@ -15,7 +13,7 @@
 
 (define "CaptureEnemyPiece" 
     (apply 
-        if:(is Enemy (who at:(to))) 
+        if:("IsEnemyAt" (to)) 
         (remove (to))
     ) 
 )
@@ -41,7 +39,7 @@
                         (is Empty (to))
                         (and 
                             (is Enemy (who at:(to)))
-                            (if (!= (what at:(to)) (id "King" Next))
+                            (if (not ("IsPieceAt" "King" Next (to)))
                                 True
                                 (= 1 (abs (- (to) (from))))
                             )
@@ -63,7 +61,7 @@
                                     (is Empty (to))
                                     (and 
                                         (is Enemy (who at:(to)))
-                                        (if (!= (what at:(to)) (id "King" Next))
+                                        (if (not ("IsPieceAt" "King" Next (to)))
                                             True
                                             (= 1 (abs (- (to) (from))))
                                         )
@@ -75,10 +73,7 @@
                     )
                     (firstMoveOnTrack "Track" Mover
                         (if (and (> (site) (from)) (is Mover (who at:(site))))
-                            (move Swap Pieces
-                                (from)
-                                (site)
-                            )
+                            (move Swap Pieces (from) (site))
                         )
                     )
                 )
@@ -95,9 +90,8 @@
         phases:{
         (phase "Opening"
             (play 
-                (do 
-                    (roll) 
-                    next:(if (!= 0 ("NumDiceAtOne"))
+                ("RollMove"
+                	(if (!= 0 ("NumDiceAtOne"))
                         (if (is Mover P1)
                             (if (is Mover (who at:(- (where "King" Mover) ("NumDiceAtOne"))))
                                 (move Swap Pieces (where "King" Mover) (- (where "King" Mover) ("NumDiceAtOne")))
@@ -121,16 +115,11 @@
         )
         (phase "Playing"
             (play
-                (do
-                    (if (not "SameTurn") (roll))
-                    next:(forEach Die
+                ("RollEachNewTurnMove"
+                	(forEach Die
                         if:("DieNotUsed")
                         (forEach Piece)
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
+                        (then ("ReplayNotAllDiceUsed"))
                     )
                 )
             )

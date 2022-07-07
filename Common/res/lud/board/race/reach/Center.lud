@@ -1,17 +1,14 @@
 (game "Center"  
     (players 2) 
-    (equipment 
-        { 
+    (equipment { 
         <Board> 
         (piece "Marker" Each)
-        }
-    )
+    })
     
     (rules 
         <Pie>
         (play 
-            (move 
-                Add
+            (move Add
                 (to 
                     (sites Empty)
                     if:(<=
