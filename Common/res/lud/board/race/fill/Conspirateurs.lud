@@ -52,7 +52,7 @@
             (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
         )
         (phase "Movement"  
-        	(play 
+            (play 
                 (if "SameTurn"
                     (or 
                         ("HopSequence" (last To)) 

@@ -3,7 +3,7 @@
 )
 
 (define "KickerIsA" 
-    (and (= (what at:#2) (id #1 Mover)) (is In (where "Ball" Shared) (sites Around #2 #3)))
+    (and ("IsPieceAt" #1 Mover #2) (is In (where "Ball" Shared) (sites Around #2 #3)))
 )
 
 (define "InBottomOrTop"
@@ -100,7 +100,7 @@
         })
         
         (play 
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (if ("KickBallAgainWithoutMoving")
                         (forEach Site (sites Around (where "Ball" Shared)) ("KickTheBall" (site))
