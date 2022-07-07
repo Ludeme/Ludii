@@ -48,29 +48,23 @@
         <Version:start>	
         
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(if "SameTurn"
+                ("RollEachNewTurnMove"
+                        (if "SameTurn"
                     (or
                         (forEach Piece 
                             (if (= (from) (mapEntry "Exit" Mover))
                                 (move Remove (from))
-                                (if (!= "MoveToNextSiteOnTrack" Off)  			
+                                (if ("IsNotOffBoard" "MoveToNextSiteOnTrack")  			
                                     (if 
                                         (if (is In "MoveToNextSiteOnTrack" (sites "Protect"))
-                                            (not (is Enemy (who at:"MoveToNextSiteOnTrack")))
+                                            (not ("IsEnemyAt" "MoveToNextSiteOnTrack"))
                                             True
                                         )
                                         (move 
                                             (from) 
                                             (to 
                                                 "MoveToNextSiteOnTrack"
-                                                (apply 
-                                                    if:(is Enemy (who at:(to))) 
-                                                    (fromTo 
-                                                        (from (to)) 
-                                                        (to (handSite (who at:(to))))
-                                                    )
-                                                )
+                                                ("HittingCapture" (handSite (who at:(to))))
                                             )
                                         )
                                     )
@@ -83,7 +77,7 @@
                                 (from (handSite Mover)) 
                                 (to 
                                     (mapEntry "Entry" Mover) 
-                                    if:(not (is Enemy (who at:(to))))
+                                    if:(not ("IsEnemyAt" (to)))
                                 )
                             )
                         )
