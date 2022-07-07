@@ -1,0 +1,11 @@
+// If the mover is reaching a space of a region with his last movement, a player is winning. This ludemeplex can be used only in an ending condition.
+// #1 = The region to reach.
+// #2 = The player to win.
+// @example ("ReachWin" (sites Top) P1)
+
+(define "ReachWin"
+		(if
+                (is In (last To) #1)
+                (result #2 Win)
+            )
+)
