@@ -52,17 +52,19 @@ public class Expander
 	 * userDescription has already been set. Post: Result is stored in
 	 * gameDescription.
 	 * 
-	 * @param description    The description.
-	 * @param userSelections The user selections.
-	 * @param report         The report.
-	 * @param isVerbose      True if this is verbose.
+	 * @param description     The description.
+	 * @param userSelections  The user selections.
+	 * @param report          The report.
+	 * @param defineInstances Optional list of define instances (for visual editor).
+	 * @param isVerbose       True if this is verbose.
 	 */
 	public static void expand
 	(
-		final Description     description,
-		final UserSelections  userSelections,
-		final Report 		  report,
-		final boolean         isVerbose
+		final Description     		description,
+		final UserSelections  		userSelections,
+		final Report 		  		report,
+		final List<DefineInstances> defineInstances,
+		final boolean         		isVerbose
 	)
 	{
 		if (isVerbose)
@@ -107,7 +109,7 @@ public class Expander
 //		System.out.println("Options expanded:\n" + description.optionsExpanded());
 		
 		// Continue expanding defines for full description
-		str = expandDefines(str, report);
+		str = expandDefines(str, report, defineInstances);
 		if (report.isError())
 			return;
 		
@@ -263,7 +265,6 @@ public class Expander
 				//report.addError(msg);
 				System.out.println(msg);
 			}
-			
 			c++;
 		}
 	}
@@ -313,7 +314,6 @@ public class Expander
 				return null;
 			}
 		}
-	
 		return str;
 	}
 
@@ -372,7 +372,6 @@ public class Expander
 					return null;
 			}
 		}
-		
 		return str;
 	}
 
@@ -431,7 +430,6 @@ public class Expander
 
 			str = str.substring(0, c) + str.substring(cc);  // remove from source string
 		}
-		
 		return str;
 	}
 	
@@ -524,7 +522,6 @@ public class Expander
 			final int index = 0;  //count++ % numArgs;
 			str = str.substring(0, c) + option.arguments().get(index).expression() + str.substring(c + marker.length());
 		}
-		
 		return str;
 	}
 
@@ -625,7 +622,6 @@ public class Expander
 			}
 			str = str.substring(0, c) + str.substring(cc);  // remove this extra set of rulesets
 		}
-		
 		return str;
 	}
 	
@@ -637,7 +633,8 @@ public class Expander
 	private static String expandDefines
 	(
 		final String strIn,
-		final Report report
+		final Report report, 
+		final List<DefineInstances> defineInstances
 	)
 	{
 		// Load game AI metadata define (if any)
@@ -650,7 +647,7 @@ public class Expander
 		String str = strIn;
 		while (true)
 		{
-			final String strDef = expandDefinesPass(str, knownAIDefine, report);
+			final String strDef = expandDefinesPass(str, knownAIDefine, report, defineInstances);
 			if (report.isError())
 				return null;
 			
@@ -676,7 +673,8 @@ public class Expander
 	(
 		final String strIn, 
 		final Define knownAIDefine,
-		final Report report
+		final Report report, 
+		final List<DefineInstances> defineInstances
 	)
 	{
 		final List<Define> defines = new ArrayList<>();

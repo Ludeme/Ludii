@@ -157,7 +157,7 @@ public class Generator
 		final Report report = new Report();
 		final Description description = new Description(ludeme);
 		
-		Expander.expand(description, new UserSelections(new ArrayList<String>()), report, false);
+		Expander.expand(description, new UserSelections(new ArrayList<String>()), report, null, false);
 		
 		if (report.isError())
 			return ludeme;
