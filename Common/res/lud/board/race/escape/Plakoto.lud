@@ -66,15 +66,15 @@
 
 (define "MotherCheckerP1Pinned" 
     (and 
-        (= (id "Disc1") (what at:12 level:0)) 
-        (= (id "Disc2") (what at:12 level:1))
+        ("IsPieceAt" "Disc1" P1 12 level:0)
+        ("IsPieceAt" "Disc2" P2 12 level:1)
     )
 ) 
 
 (define "MotherCheckerP2Pinned" 
     (and 
-        (= (id "Disc2") (what at:25 level:0)) 
-        (= (id "Disc1") (what at:25 level:1))
+            ("IsPieceAt" "Disc2" P2 25 level:0)
+            ("IsPieceAt" "Disc1" P1 25 level:1)
     )
 )
 

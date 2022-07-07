@@ -7,7 +7,7 @@
 (define "AllPawnsInInnerRing"
     (all Sites 
         (difference (sites Around (sites Centre)) (sites Centre))
-        if:(= (id "Pawn" Mover) (what at:(site)))
+        if:("IsPieceAt" "Pawn" Mover (site))
     )	
 )
 
@@ -85,11 +85,11 @@
             (if ("AllPawnsInInnerRing")
                 {
                 (if 
-                    (= (id "Queen" Mover) (what at:(centrePoint)))
+                    ("IsPieceAt" "Queen" Mover (centrePoint))
                     (result Mover Win)
                 )
                 (if 
-                    (!= (id "Queen" Mover) (what at:(centrePoint)))
+                    (not ("IsPieceAt" "Queen" Mover (centrePoint)))
                     (result Mover Loss)
                 )
                 }
