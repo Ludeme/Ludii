@@ -5844,6 +5844,9 @@ DEFINE EXAMPLE: ("DieNotUsed")
 DEFINE: HandEmpty
 DEFINE JAVADOC: Checks if all the sites in a specific hand are empty. #1 = The owner of the hand, can be a RoleType or the index of the owner. 
 DEFINE EXAMPLE: ("HandEmpty" Mover)
+DEFINE: IsEmptyAndNotVisited
+DEFINE JAVADOC: Checks if a site is empty and not visited so far in the same turn. #1 = The site. 
+DEFINE EXAMPLE: ("IsEmptyAndNotVisited" (to))
 DEFINE: IsInCheck
 DEFINE JAVADOC: Checks if a specific piece is threatened by any other enemy piece. #1 = The name of the piece (without the number). #2 = The roleType of the owner of the piece. #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used. 
 DEFINE EXAMPLE: ("IsInCheck" "Osho" Next)
@@ -5923,6 +5926,30 @@ DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
 DEFINE: ThreeMenMorrisBoardWithLeftAndRightTriangles
 DEFINE JAVADOC: Defines a Three Men's Morris board with two triangle extensions at the left and right. 
 DEFINE EXAMPLE: ("ThreeMenMorrisBoard")
+DEFINE: AlquerqueGraph
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals. 
+DEFINE EXAMPLE: ("AlquerqueGraph" 5 5)
+DEFINE: AlquerqueGraphWithBottomAndTopTriangles
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with a triangle extension at the bottom and another at the top. 
+DEFINE EXAMPLE: ("AlquerqueGraphWithBottomAndTopTriangles")
+DEFINE: AlquerqueGraphWithBottomTriangle
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with a triangle extension at the bottom. 
+DEFINE EXAMPLE: ("AlquerqueGraphWithBottomTriangle")
+DEFINE: AlquerqueGraphWithFourTriangles
+DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with four triangle extension on each side. 
+DEFINE EXAMPLE: ("AlquerqueGraphWithFourTriangles")
+DEFINE: CrossGraph
+DEFINE JAVADOC: Defines a regular cross graph tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The type of the diagonals of each tiling. 
+DEFINE EXAMPLE: ("CrossGraph" 3 7 diagonals:Alternating)
+DEFINE: HoundsAndJackalsGraph
+DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals graph. 
+DEFINE EXAMPLE: ("HoundsAndJackalsGraph")
+DEFINE: LascaGraph
+DEFINE JAVADOC: Defines the original Lasca graph. 
+DEFINE EXAMPLE: ("LascaGraph")
+DEFINE: ThreeMenMorrisGraphWithLeftAndRightTriangles
+DEFINE JAVADOC: Defines a Three Men's Morris graph with two triangle extensions at the left and right. 
+DEFINE EXAMPLE: ("ThreeMenMorrisGraphWithLeftAndRightTriangles")
 DEFINE: BackgammonTracks
 DEFINE JAVADOC: Defines the most popular backgammon tracks. #1 = An optional End site. 
 DEFINE EXAMPLE: ("BackgammonTracks")
@@ -5968,30 +5995,6 @@ DEFINE EXAMPLE: ("TableTracksSameDirectionWithHands")
 DEFINE: StickDice
 DEFINE JAVADOC: Defines a specified number of D2 dice with values 0 and 1. 
 DEFINE EXAMPLE: ("StickDice" 4)
-DEFINE: AlquerqueGraph
-DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals. 
-DEFINE EXAMPLE: ("AlquerqueGraph" 5 5)
-DEFINE: AlquerqueGraphWithBottomAndTopTriangles
-DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with a triangle extension at the bottom and another at the top. 
-DEFINE EXAMPLE: ("AlquerqueGraphWithBottomAndTopTriangles")
-DEFINE: AlquerqueGraphWithBottomTriangle
-DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with a triangle extension at the bottom. 
-DEFINE EXAMPLE: ("AlquerqueGraphWithBottomTriangle")
-DEFINE: AlquerqueGraphWithFourTriangles
-DEFINE JAVADOC: Defines a rectangular graph with Alquerque-style alternating diagonals with four triangle extension on each side. 
-DEFINE EXAMPLE: ("AlquerqueGraphWithFourTriangles")
-DEFINE: CrossGraph
-DEFINE JAVADOC: Defines a regular cross graph tilled by squares (example: Pachisi). #1 = The dimension of an arm of the cross. #2 = The full dimension of the board. #3 = The type of the diagonals of each tiling. 
-DEFINE EXAMPLE: ("CrossGraph" 3 7 diagonals:Alternating)
-DEFINE: HoundsAndJackalsGraph
-DEFINE JAVADOC: Defines the standard 58 Holes or Hounds & Jackals graph. 
-DEFINE EXAMPLE: ("HoundsAndJackalsGraph")
-DEFINE: LascaGraph
-DEFINE JAVADOC: Defines the original Lasca graph. 
-DEFINE EXAMPLE: ("LascaGraph")
-DEFINE: ThreeMenMorrisGraphWithLeftAndRightTriangles
-DEFINE JAVADOC: Defines a Three Men's Morris graph with two triangle extensions at the left and right. 
-DEFINE EXAMPLE: ("ThreeMenMorrisGraphWithLeftAndRightTriangles")
 DEFINE: ChessBishop
 DEFINE JAVADOC: Defines a piece moving like a bishop in Chess. #1 = The name of the piece. #2 = Consequences of the capture effect. #3 = The consequences of the moves. 
 DEFINE EXAMPLE: ("ChessBishop" "Bishop")
