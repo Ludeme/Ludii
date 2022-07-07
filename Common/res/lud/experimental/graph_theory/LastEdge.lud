@@ -14,9 +14,8 @@
         (play          
             <Version:play>
         )
-        (end                     
-            (if (no Moves Next) (result Mover Win))           
-        )
+
+        (end ("BlockWin"))
     )
 )
 

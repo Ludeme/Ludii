@@ -16,7 +16,7 @@
                 (move Add (piece "Square0") (to (sites Empty)))
             )
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end ("BlockWin"))
     )
 )
 

@@ -194,7 +194,7 @@
         
         (end {
             (if (and ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece))) ("NextCannotMove")) (result Mover Win)) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
         })
     )
 )

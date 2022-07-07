@@ -19,7 +19,7 @@
             (place "Counter2" (union {(sites {"A3" "B3"}) (expand (sites Top)) }))
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win))) // "The player who has more pieces at the end of the game wins." What is the end of the game ???
+        (end ("BlockWin"))
     )
 )
 

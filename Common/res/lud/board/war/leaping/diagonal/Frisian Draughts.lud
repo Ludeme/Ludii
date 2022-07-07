@@ -265,7 +265,7 @@
         )
         
         (end {
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
             (if (= 7 (value Player Mover)) (result Mover Draw))
         })
         

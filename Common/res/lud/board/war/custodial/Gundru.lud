@@ -42,7 +42,7 @@
             (place "Marker2" (union (sites Bottom) (difference (sites Left) (sites Top))))
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end ("BlockWin"))
     )
 )
 

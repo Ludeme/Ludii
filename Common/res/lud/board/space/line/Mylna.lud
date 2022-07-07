@@ -62,7 +62,7 @@
         }
         (end {
             (if (<= (count Pieces Next) 2) (result Mover Win))
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
         })
     )
 )

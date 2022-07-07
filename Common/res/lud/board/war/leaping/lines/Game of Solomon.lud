@@ -62,7 +62,7 @@
         )
         
         (end {
-            (if (no Moves Next) (result Mover Win))
+            ("BlockWin")
             (if 
                 (and {
                     (= 1 (count Pieces P1)) 

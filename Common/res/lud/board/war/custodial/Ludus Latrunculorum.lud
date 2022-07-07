@@ -740,7 +740,7 @@
                 (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1))) 
             })
             (play (forEach Piece))
-            (end (if (no Moves Next) (result Mover Win))) 
+            (end ("BlockWin"))
         )
         >
         "Rules highly speculative and made by E. Falkener."
@@ -813,7 +813,7 @@
                 (place "Dux1" coord:"F1") (place "Dux2" coord:"F10")
             })
             (play (forEach Piece))
-            (end (if (no Moves Next) (result Mover Win))) 
+            (end ("BlockWin"))
         )
         >
         "Ruleset suggested by Kowalski played on a 10x11 board."
@@ -885,7 +885,7 @@
                 (place "Dux1" coord:"G2") (place "Dux2" coord:"F7")
             })
             (play (forEach Piece))
-            (end (if (no Moves Next) (result Mover Win))) 
+            (end ("BlockWin"))
         )
         >
         "Ruleset suggested by Kowalski played on a 8x12 board."

@@ -256,7 +256,7 @@
                 (result Mover Win)
             ) 
             (if (= 1 (count Pieces Next)) (result Mover Win)) 
-            (if (no Moves Next) (result Mover Win)) 
+            ("BlockWin")
         })
     )
 )
