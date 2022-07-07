@@ -1,26 +1,26 @@
 (define "IsConfigurationToCustodialAgain" 
-	    (and 
-	        (is Empty (to)) 
-	        (or {
-	            (and
-	                ("IsEnemyAt" (ahead (to) W))
-	                ("IsFriendAt" (ahead (to) steps:2 W))
-	            )
-	            (and
-	                ("IsEnemyAt" (ahead (to) E))
-	                ("IsFriendAt" (ahead (to) steps:2 E))
-	            )
-	            (and
-	                ("IsEnemyAt" (ahead (to) N))
-	                ("IsFriendAt" (ahead (to) steps:2 N))
-	            )
-	            (and
-	                ("IsEnemyAt" (ahead (to) S))
-	                ("IsFriendAt" (ahead (to) steps:2 S))
-	            )
-	        })
-	    )	
-	)
+    (and 
+        (is Empty (to)) 
+        (or {
+            (and
+                ("IsEnemyAt" (ahead (to) W))
+                ("IsFriendAt" (ahead (to) steps:2 W))
+            )
+            (and
+                ("IsEnemyAt" (ahead (to) E))
+                ("IsFriendAt" (ahead (to) steps:2 E))
+            )
+            (and
+                ("IsEnemyAt" (ahead (to) N))
+                ("IsFriendAt" (ahead (to) steps:2 N))
+            )
+            (and
+                ("IsEnemyAt" (ahead (to) S))
+                ("IsFriendAt" (ahead (to) steps:2 S))
+            )
+        })
+    )	
+)
 
 (define "CanCaptureAgain"
     (can Move
@@ -119,7 +119,7 @@
             )	
         )
         }
-    (end ("BlockWin"))
+        (end ("BlockWin"))
     )	
 )
 
