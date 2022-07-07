@@ -3,11 +3,7 @@
     (equipment { 
         (board 
             (add
-                (merge { 
-                    (shift 0 2 (square 5 diagonals:Alternating)) 
-                    (wedge 3) 
-                    (shift 0 6 (rotate 180 (wedge 3))) 
-                }) 
+                ("AlquerqueGraphWithBottomAndTopTriangles") 
                 edges:{{5 1} {1 7} {7 3} {3 9} {13 9} {7 13} {11 5} {15 11} {11 17} {7 11} {17 13} {13 19} {23 19} {23 17} {17 21} {15 21}}
             )
             use:Vertex
