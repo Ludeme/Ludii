@@ -42,14 +42,14 @@
             )
         ) 
         
-        })  
+    })  
     
     (rules 
         <Version:start>	
         
         (play 
-                ("RollEachNewTurnMove"
-                        (if "SameTurn"
+            ("RollEachNewTurnMove"
+                (if "SameTurn"
                     (or
                         (forEach Piece 
                             (if (= (from) (mapEntry "Exit" Mover))

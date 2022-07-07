@@ -91,7 +91,7 @@
         (phase "Opening"
             (play 
                 ("RollMove"
-                	(if (!= 0 ("NumDiceAtOne"))
+                    (if (!= 0 ("NumDiceAtOne"))
                         (if (is Mover P1)
                             (if (is Mover (who at:(- (where "King" Mover) ("NumDiceAtOne"))))
                                 (move Swap Pieces (where "King" Mover) (- (where "King" Mover) ("NumDiceAtOne")))
@@ -116,7 +116,7 @@
         (phase "Playing"
             (play
                 ("RollEachNewTurnMove"
-                	(forEach Die
+                    (forEach Die
                         if:("DieNotUsed")
                         (forEach Piece)
                         (then ("ReplayNotAllDiceUsed"))

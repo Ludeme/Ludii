@@ -66,7 +66,7 @@
         })
         (play 
             ("RollMove"
-            	(or {
+                (or {
                     (forEach Piece)
                     (move Pass)
                     (if (and ("Grace") (!= 0 (who at:(handSite Mover))))
