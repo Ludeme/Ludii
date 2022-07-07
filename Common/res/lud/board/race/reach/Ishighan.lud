@@ -1,18 +1,18 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 (define "NotThrow0" (!= ("ThrowValue") 0))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
-(define "HyenaOnTrack" (trackSite Move from:("WhereHyena") #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
+(define "HyenaOnTrack" ("NextSiteOnTrack" #2 from:("WhereHyena") #1))
 (define "HyenaPhaseDone" (or 
         (= ("WhereHyena") ("Center"))
         (and {
-            (!= 0 (what at:("Center")))
+            (is Occupied ("Center"))
             (>= 1 (count Sites in:(difference (sites Occupied by:All) ("WhereHyena"))))
-            (= 1 (size Stack at:("WhereHyena")))
+            ("IsSingletonStack" ("WhereHyena"))
         })
     )
 )
 
-(define "WhereHyena" (if (!= Off (where "Hyena" Neutral)) (where "Hyena" Neutral) (handSite P1)))
+(define "WhereHyena" (if ("IsNotOffBoard" (where "Hyena" Neutral)) (where "Hyena" Neutral) (handSite P1)))
 (define "LevelHyena" (where Level "Hyena" Neutral at:("WhereHyena")))
 
 (define "Center" 0)
@@ -35,8 +35,7 @@
                         (forEach Level (site) FromTop
                             (fromTo 
                                 (from (site) level:(level))
-                                (to 
-                                    (last To)
+                                (to (last To)
                                     (apply 
                                         (if (and 
                                                 (= 0 (state at:(site) level:(level)))
@@ -70,7 +69,7 @@
         ("StickDice" 4)
         (map "Throw" {(pair 0 20) (pair 1 5) (pair 2 0) (pair 3 9) (pair 4 80)})
         (piece "Stick" Each
-            (if (= Off ("SiteToMoveOnTrack" "Track" ("ThrowValue")))
+            (if ("IsOffBoard" ("SiteToMoveOnTrack" "Track" ("ThrowValue")))
                 (move
                     (from (from) level:(level))
                     (to 0)
@@ -117,8 +116,8 @@
         })
         
         (play 
-            (do (roll) 
-                next:(if (= ("Center") (where "Stick" Mover))
+            ("RollMove"
+            	(if (= ("Center") (where "Stick" Mover))
                     (if ("NotThrow0") 
                         ("MoveHyena")
                         (move Pass 

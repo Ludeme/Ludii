@@ -1,6 +1,5 @@
 (define "StepMove"
-    (move
-        Step 
+    (move Step 
         Orthogonal 
         (to 
             if:(and 
@@ -13,12 +12,11 @@
 )
 
 (define "HopTheWater"
-    (move
-        Hop 
+    (move Hop 
         #1 
         (between 
             #2 
-            if:(is In (between) (difference (sites "Water") (sites Occupied by:All))) 
+            if:(is In (between) (forEach (sites "Water") if:(is Empty (site)))) 
             (apply (remove (between)))
         ) 
         (to if:(and { 
@@ -33,8 +31,6 @@
 (define "LosePower" (set State at:(last To) 0))
 
 (define "RestoredPower" (set State at:(last To) (mapEntry (what at:(last To)))))
-
-(define "GoalReached" (is In (last To) (sites Next)))
 
 //------------------------------------------------------------------------------
 
@@ -63,8 +59,7 @@
         (piece "Wolf" Each "StepMove")  
         (piece "Cat" Each "StepMove")  
         (piece "Rat" Each 
-            (move
-                Step 
+            (move Step 
                 Orthogonal 
                 (to 
                     if:(and 
@@ -74,7 +69,7 @@
                             // A rat can capture an elephant if it is not in the water first.
                             (and 
                                 (not (is In (from) (sites "Water"))) 
-                                (= (what at:(to)) (id "Elephant" Next))
+                                ("IsPieceAt" "Elephant" Next (to))
                             )
                         ) 
                     ) 
@@ -121,7 +116,7 @@
             )
         )
         
-        (end (if "GoalReached" (result Mover Win)))
+        (end ("ReachWin" (sites Next) Mover))
     )
 )
 

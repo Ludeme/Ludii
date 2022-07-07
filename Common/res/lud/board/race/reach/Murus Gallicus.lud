@@ -3,17 +3,16 @@
 //  Move a tower (2-stack) in any direction into the two nearest cells if the
 // destination cells are empty or contain a mover/own singleton (1-stack).
 (define "MoveTower"
-    (move
-        Hop
+    (move Hop
         (from if:(and (is Mover (who at:(from)))
-                ((= (size Stack at:(from)) 2))
+                (= (size Stack at:(from)) 2)
             )  
         )
         (between  if:(or 
                 (is Empty (between))
                 (and 
                     (is Mover (who at:(between)))
-                    ((< (size Stack at:(between)) <Stack:limit>)) 
+                    (< (size Stack at:(between)) <Stack:limit>) 
                 )  
             ) 
             (apply (fromTo (from) (to (between))))
@@ -22,7 +21,7 @@
         (to if:(or 
                 (is Empty (to))
                 (and (is Mover (who at:(to)))
-                    ((< (size Stack at:(to)) <Stack:limit>))
+                    (< (size Stack at:(to)) <Stack:limit>)
                 )  
             ) 
         )
@@ -32,15 +31,14 @@
 
 // Sacrifice a tower piece in order to remove an adjacent enemy wall/singleton piece.
 (define "SacrificeCaptureWall"
-    (move
-        Step
+    (move Step
         (from if:(and (is Mover (who at:(from)))
-                ((= (size Stack at:(from)) 2))
+                (= (size Stack at:(from)) 2)
             )  
         )
         (to 
-            if:(and ("IsEnemyAt" (to)) ((= (size Stack at:(to)) 1))  )
-            (apply  (remove (to)))   // This removes the only enemy piece in the 'to' cell.
+            if:(and ("IsEnemyAt" (to)) ("IsSingletonStack" (to)))
+            (apply (remove (to)))   // This removes the only enemy piece in the 'to' cell.
         )
         stack:True
         (then
@@ -57,27 +55,25 @@
 // Sacrifice a tower piece or two in order to remove one or two enemy stones 
 // from a 3-stack/catapult.
 (define "SacrificeCaptureCatapult"
-    (move
-        Step
+    (move Step
         (from if:(and (is Mover (who at:(from)))
-                ((= (size Stack at:(from)) 2))
+                (= (size Stack at:(from)) 2)
             )  
         )
         (to 
-            if:(and ("IsEnemyAt" (to)) ((= (size Stack at:(to)) 3))  )
-            (apply  (remove (to)))   // This removes one enemy piece in the 'to' cell.
+            if:(and ("IsEnemyAt" (to)) (= (size Stack at:(to)) 3))
+            (apply (remove (to)))   // This removes one enemy piece in the 'to' cell.
         )
         stack:True
         (then
-            (and  {
+            (and {
                 (fromTo
                     (from (last To))
                     (to (last From))
                 )
                 (remove (last To)) 
                 (moveAgain) 
-                }      
-            ) 
+           }) 
         )
     )
 )
@@ -85,10 +81,9 @@
 // Throw a stone left, diagonally left, straight ahead, diagonally right, or right two or three cells regardless
 // of what is between the 3-stack and the target EMPTY cell.
 (define "ThrowStonetoEmpty"
-    (move
-        Hop
+    (move Hop
         (from if:(and (is Mover (who at:(from)))
-                ((= (size Stack at:(from)) 3))
+                (= (size Stack at:(from)) 3)
             )   
         )                                       
         (difference All Backwards)
@@ -105,10 +100,9 @@
 // Throw a stone left, diagonally left, straight ahead, diagonally right, or right two or three cells regardless
 // of what is between the 3-stack and the target ENEMY-OCCUPIED  cell.
 (define "ThrowStonetoEnemy"
-    (move
-        Hop
+    (move Hop
         (from if:(and (is Mover (who at:(from)))
-                ((= (size Stack at:(from)) 3))
+                (= (size Stack at:(from)) 3)
             )   
         )                                       
         (difference All Backwards)
@@ -144,7 +138,7 @@
         }) 
         
         (play
-            (if (is Prev Mover)
+            (if ("SameTurn")
                 (or
                     (move
                         (from (last From))
@@ -285,7 +279,6 @@ Goal: A player wins by reaching any cell of his or her opponent's home row and t
     (board Colour OuterEdges (colour 0 0 0))
     (board Colour Phase0 (colour "#FCFCE1"))
     (board Colour Phase1 (colour "#FCFCE1"))
-    
     (player Colour P1 (colour HumanLight))
     (player Colour P2 (colour Brown))
 })        

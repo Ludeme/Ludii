@@ -5,17 +5,7 @@
 (game "Pachisi"  
     (players 4)  
     (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+        ("PachisiBoard"
             {
             (track "Track1" "97,68,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,55,N8" P1 directed:True)
             (track "Track2" "98,46,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,34,W8" P2 directed:True)
@@ -24,7 +14,7 @@
             }
         )
         (hand Each) 
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (map "Die" {(pair 0 25) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5) (pair 6 6)})
         (map "Entry" {(pair 1 68) (pair 2 46) (pair 3 81) (pair 4 4)})
         (map "PreviousGoal" {(pair 1 9) (pair 2 27) (pair 3 52) (pair 4 26)})
@@ -32,46 +22,38 @@
         (regions "Grace" {0 1 6})
         (piece "Pawn" Each
             (if (or 
-                    (= (trackSite Move steps:(count Pips)) ("Goal")) 
+                    (= ("NextSiteOnTrack" (count Pips)) ("Goal")) 
                     (and 
                         (is In (count Pips) (sites "Grace")) 
                         (= (from) (mapEntry "PreviousGoal" (mover)))
                     )
                 ) 
-                (move 
-                    Select 
+                (move Select 
                     (from) 
                     (to ("Goal")) 
                     (then (remove (last From)))
                 )
                 (if (and 
-                        (not (= (trackSite Move steps:(mapEntry "Die" (count Pips))) ("Goal"))) 
-                        (not (= (trackSite Move steps:(mapEntry "Die" (count Pips))) Off)) 
+                        (not (= ("NextSiteOnTrack" (mapEntry "Die" (count Pips))) ("Goal"))) 
+                        (not ("IsOffBoard" ("NextSiteOnTrack" (mapEntry "Die" (count Pips))))) 
                     )
                     (move 
                         (from (from) level:(level)) 
                         (to 
-                            (trackSite Move steps:(mapEntry "Die" (count Pips))) 
+                            ("NextSiteOnTrack" (mapEntry "Die" (count Pips))) 
                             (apply if:(or 
                                     (not 
                                         (is In 
-                                            (trackSite Move steps:(mapEntry "Die" (count Pips))) 
+                                            ("NextSiteOnTrack" (mapEntry "Die" (count Pips))) 
                                             (sites "castle")
                                         )
                                     ) 
                                     (and 
                                         (is In 
-                                            (trackSite Move steps:(mapEntry "Die" (count Pips))) 
+                                            ("NextSiteOnTrack" (mapEntry "Die" (count Pips))) 
                                             (sites "Castle")
                                         )
-                                        (is Friend 
-                                            (who 
-                                                at:(trackSite 
-                                                    Move 
-                                                    steps:(mapEntry "Die" (count Pips))
-                                                )
-                                            )
-                                        )
+                                        ("IsFriendAt" ("NextSiteOnTrack" (mapEntry "Die" (count Pips))))
                                     )
                                 ) 
                                 (if 
@@ -87,8 +69,7 @@
                 )
             )
         )
-        }
-    )  
+    })  
     (rules 
         (start {
             (place Stack "Pawn1" (handSite P1) count:4)
@@ -102,14 +83,12 @@
         phases:{
         (phase "firstTurn" 
             (play 
-                (do 
-                    (roll) 
-                    next:(move
+                ("RollMove"
+                	(move
                         (from (handSite (mover))) 
                         (to 
-                            (trackSite Move 
+                            ("NextSiteOnTrack" (mapEntry "Die" (count Pips))
                                 from:(handSite (mover)) 
-                                steps:(mapEntry "Die" (count Pips))
                             )
                         )
                     ) 
@@ -118,12 +97,12 @@
             (nextPhase (> (count Moves) 3) "Movement")
         )
         (phase "Movement" 
-            (play (do (roll)
-                    next:(or
+            (play ("RollMove"
+            		(or
                         {
                         (forEach Piece)
                         (if (and 
-                                (!= (what at:(handSite (mover))) 0) 
+                                (is Occupied (handSite (mover))) 
                                 (is In (count Pips) (sites "Grace")) 
                             )
                             (move

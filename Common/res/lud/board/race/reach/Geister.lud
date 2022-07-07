@@ -18,8 +18,7 @@
             (pair (id "GhostGood" P1) (handSite P1)) (pair (id "GhostEvil" P1) (handSite P1 1)) 
             (pair (id "GhostGood" P2) (handSite P2)) (pair (id "GhostEvil" P2) (handSite P2 1)) 
         })
-        }
-    )  
+    })  
     
     (rules 
         (start { 
@@ -36,9 +35,9 @@
                 (move 
                     (from (sites Occupied by:Mover container:(mover))) 
                     (to 
-                        (intersection 
+                        (forEach 
                             (sites Mover "Home") 
-                            (sites Empty)
+                            if:(is Empty (site))
                         )
                     ) 
                     (then 
@@ -60,8 +59,7 @@
             (play
                 (forEach Piece {"GhostGood" "GhostEvil"} 
                     (or
-                        (move
-                            Step
+                        (move Step
                             Orthogonal 
                             (to 
                                 if:(not ("IsFriendAt" (to))) 
@@ -102,7 +100,6 @@
             })
         )
         }
-        
     )
 )
 

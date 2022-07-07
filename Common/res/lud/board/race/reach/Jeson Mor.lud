@@ -13,8 +13,7 @@
     (equipment { 
         (board (square 9)) 
         (piece "Knight" Each 
-            (move
-                Leap 
+            (move Leap 
                 "KnightWalk"
                 (to 
                     if:(not ("IsFriendAt" (to))) 

@@ -1,16 +1,6 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
-
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:("IsEnemyAt" (to)) 
-        (fromTo 
-            (from (to))
-            (to ("StartingPoint" (who at:(to))))
-        )
-    ) 
-)
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" ("ThrowValue")))
 
 (define "Goal" 12)
 
@@ -32,14 +22,14 @@
             <Player:trackP4>
             }
         )
-        (dice d:2 from:0 num:<Num:dice>)
+        ("StickDice" <Num:dice>)
         (piece "Paddle" Each
-            (if (!= "SiteToMoveOnTrack" Off)
+            (if ("IsNotOffBoard" "SiteToMoveOnTrack")
                 (move 
                     (from (from) level:(level))
                     (to 
                         "SiteToMoveOnTrack" 
-                        "CaptureEnemyPiece"
+                    	("HittingCapture" ("StartingPoint" (who at:(to))))
                     )
                 )
                 (then 
@@ -50,8 +40,7 @@
             )		
         )
         (map {(pair 1 "C1") (pair 2 "C5") (pair 3 "E3") (pair 4 "A3")})
-        }
-    )  
+    })  
     (rules 
         (start {
             (place Stack "Paddle1" ("StartingPoint" 1) count:"NumInitPiece")
@@ -61,8 +50,8 @@
         })
         
         (play 
-            (do (roll) 
-                next:(if (!= 0 ("ThrowValue")) (forEach Piece) (move Pass))
+            ("RollMove"
+            	(if (!= 0 ("ThrowValue")) (forEach Piece) (move Pass))
             )
         )
         
