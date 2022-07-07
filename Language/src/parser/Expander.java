@@ -60,11 +60,11 @@ public class Expander
 	 */
 	public static void expand
 	(
-		final Description     		description,
-		final UserSelections  		userSelections,
-		final Report 		  		report,
-		final List<DefineInstances> defineInstances,
-		final boolean         		isVerbose
+		final Description    	description,
+		final UserSelections  	userSelections,
+		final Report 		  	report,
+		final Map<String, DefineInstances> defineInstances,
+		final boolean         	isVerbose
 	)
 	{
 		if (isVerbose)
@@ -634,7 +634,7 @@ public class Expander
 	(
 		final String strIn,
 		final Report report, 
-		final List<DefineInstances> defineInstances
+		final Map<String, DefineInstances> defineInstances
 	)
 	{
 		// Load game AI metadata define (if any)
@@ -674,7 +674,7 @@ public class Expander
 		final String strIn, 
 		final Define knownAIDefine,
 		final Report report, 
-		final List<DefineInstances> defineInstances
+		final Map<String, DefineInstances> defineInstances
 	)
 	{
 		final List<Define> defines = new ArrayList<>();
@@ -701,7 +701,7 @@ public class Expander
 				{	
 					if (str.contains(def.tag()))
 					{
-						str = expandDefine(str, def, didExpand, report);
+						str = expandDefine(str, def, didExpand, report, defineInstances);
 						if (report.isError())
 							return null;
 					}
@@ -719,7 +719,7 @@ public class Expander
 					final Define def = entry.getValue();
 					if (str.contains(def.tag()))
 					{
-						str = expandDefine(str, def, didExpand, report);
+						str = expandDefine(str, def, didExpand, report, defineInstances);
 						if (report.isError())
 							return null;
 					}
@@ -734,7 +734,7 @@ public class Expander
 				if (str.contains(knownAIDefine.tag()))
 				{
 					didExpand[0] = false;
-					str = expandDefine(str, knownAIDefine, didExpand, report);
+					str = expandDefine(str, knownAIDefine, didExpand, report, defineInstances);
 					if (report.isError())
 						return null;
 			
@@ -764,7 +764,7 @@ public class Expander
 		String str = new String(strIn);
 		while (str.contains("(define "))
 		{		
-			final Define define = interpretDefine(str, extent, report);
+			final Define define = interpretDefine(str, extent, report, false);
 			if (report.isError())
 				return null;
 				
@@ -791,7 +791,8 @@ public class Expander
 	(
 		final String str, 
 		final int[] extent, 
-		final Report report
+		final Report report, 
+		final boolean isKnown
 	)
 	{
 		// 1. Remove opening and closing brackets
@@ -842,7 +843,7 @@ public class Expander
 	
 		desc = desc.substring(c+1).trim();
 	
-		final Define define = new Define(key, desc);
+		final Define define = new Define(key, desc, isKnown);
 		
 		//System.out.println("Define is: " + define);
 		
@@ -858,7 +859,8 @@ public class Expander
 		final String    strIn, 
 		final Define    define, 
 		final boolean[] didExpand,
-		final Report report
+		final Report report, 
+		final Map<String, DefineInstances> defineInstances
 	)
 	{
 		String str = new String(strIn);
@@ -918,6 +920,15 @@ public class Expander
 			final String exprn = expandDefineArgs(define, args, report);
 			if (report.isError())
 				return null;
+			
+			// Add this expression to the relevant DefineInstances record
+			DefineInstances defIn = defineInstances.get(define.tag());
+			if (defIn == null)
+			{
+				defIn = new DefineInstances(define);
+				defineInstances.put(define.tag(), defIn);
+			}
+			defIn.addInstance(new String(exprn));
 			
 			// Do the expansion
 			str = str.substring(0, c) + exprn + str.substring(cc+1);
@@ -1170,7 +1181,7 @@ public class Expander
 			if (!aiName.equals(gameName))
 			{
 				report.addWarning("Define '" + aiName + "_ai' found in AI metadata; use '" + gameName + "_ai' or remove it.");
-				return Expander.interpretDefine("(define \"" + aiName + "_ai\")", null, report);
+				return Expander.interpretDefine("(define \"" + aiName + "_ai\")", null, report, true);
 			}
 		}
 	
@@ -1239,7 +1250,7 @@ public class Expander
 		
  		if (knownAIDefine == null)
  		{
- 			knownAIDefine = Expander.interpretDefine("(define \"" + gameName + "_ai\")", null, report);
+ 			knownAIDefine = Expander.interpretDefine("(define \"" + gameName + "_ai\")", null, report, false);
  			report.addWarning("Failed to load AI define specified in metadata; reverting to default AI.");
  		}
  		
