@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #2 #1))
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {12 25 11 6})))
 (define "Bange" (= ("ThrowValue") 25))
 (define "Dust" (= ("ThrowValue") 11))
@@ -47,28 +47,18 @@
 (game "Bargese"  
     (players 2)  
     (equipment { 
-        (board 
-            (add
-                (hole
-                    (merge 
-                        (shift 0 8 (rectangle 3 19)) 
-                        (shift 8 0 (rectangle 19 3))
-                    )
-                    (poly {{8 8} {8 11} {11 11} {11 8}})
-                )
-                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
-            )
+        ("PachisiBoard" 
             {
             (track "Track1" "26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P1 directed:True)
             (track "Track2" "27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P2 directed:True)
             }
         )
         (hand Each) 
-        (dice d:2 from:0 num:6)
+        ("StickDice" 6)
         (piece "Pawn" Each
             (if (and {
                     (>= 0 (var "EnteredPiece"))
-                    (= End ("SiteToMoveOnTrack" from:(from) 1)) 
+                    ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) 1)) 
                     (or ("Bange") ("Dust"))
                 })
                 (move Remove (from) level:(level)
@@ -76,7 +66,7 @@
                 )
                 (if (and 
                         (>= 0 (var "EnteredPiece"))
-                        (= End ("SiteToMoveOnTrack" from:(from) 2)) 
+                        ("IsEndTrack" ("SiteToMoveOnTrack" from:(from) 2)) 
                     )
                     (move
                         (from (from))
@@ -86,7 +76,7 @@
                         (from (from) level:(level))
                         (to
                             ("SiteToMoveOnTrack" from:(from) (if (< 0 (var "EnteredPiece")) (- ("ThrowValue") 1) ("ThrowValue")))
-                            if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
+                            if:(not (and (is In (to) (sites "SafeSites")) ("IsEnemyAt" (to))))
                             ("HittingStackCapture" (handSite (who at:(to) level:(level))))
                         )
                         (then (set Var "EnteredPiece" 0))
