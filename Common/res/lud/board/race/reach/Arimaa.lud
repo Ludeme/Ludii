@@ -4,7 +4,7 @@
             (from) 
             Orthogonal 
             if:(and 
-                (is Enemy (who at:(to))) 
+                ("IsEnemyAt" (to)) 
                 (> (value Piece at:(to)) (value Piece at:(from))) 
             )
         )
@@ -31,14 +31,13 @@
     (and { 
         "NotMyLastMove"
         (not ("NoSites" (sites Around (to) Orthogonal if:(is Empty (to))))) // Not if the to location is orthogonally surrounded 
-        (is Enemy (who at:(to))) // if on the to location, an enemy is there
+        ("IsEnemyAt" (to)) // if on the to location, an enemy is there
         (< (value Piece at:(to)) (value Piece at:(from))) // Only if the from value is higher to the to value
     })
 )
 
 (define "PieceMove" 
-    (move
-        Step
+    (move Step
         #1 
         (to if:(and (or 
                     "NotFrozen"
@@ -71,7 +70,7 @@
     )
 )
 
-(define "HasToPushAPiece" (!= (what at:(handSite Mover)) 0))
+(define "HasToPushAPiece" (is Occupied (handSite Mover)))
 
 (define "PushThePiece" 
     (move 
@@ -96,7 +95,7 @@
                 (last From) 
                 Orthogonal 
                 if:(and 
-                    (is Enemy (who at:(to))) // An enemy piece.
+                    ("IsEnemyAt" (to)) // An enemy piece.
                     (if (and (is In (last To) (sites "Traps")) (is Pending))
                         (< (value Piece at:(to)) (value Pending)) // With a lower value of mine.
                         (< (value Piece at:(to)) (value Piece at:(last To))) // With a lower value of mine.
@@ -127,7 +126,7 @@
 (define "NoRabbit" 
     (if 
         (and 
-            (!= (what at:(handSite #2)) (id "Rabbit" #1)) 
+            (not ("IsPieceAt" "Rabbit" #1 (handSite #2))) 
             ("NoSites" (sites Occupied by:#1 component:"Rabbit"))
         ) 
         (result #2 #3)
@@ -167,12 +166,11 @@
         })
         
         phases:{
-        
         (phase "PlacementP1"
             (play 
                 (move 
                     (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P1.
-                    (to (intersection (sites Mover "Home") (sites Empty))) 
+                    (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
                     (then (if (not ("HandEmpty" P1)) (moveAgain))) 
                 ) 
             ) 
@@ -183,7 +181,7 @@
             (play 
                 (move 
                     (from (sites Occupied by:Mover container:(mover)))  // pieces in the hand of P2.
-                    (to (intersection (sites Mover "Home") (sites Empty))) 
+                    (to (forEach (sites Mover "Home") if:(is Empty (site)))) 
                     (then (if ("HandEmpty" P2) (remember State) (moveAgain))) 
                 ) 
             ) 
