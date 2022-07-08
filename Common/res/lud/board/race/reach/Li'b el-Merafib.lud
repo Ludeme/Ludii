@@ -302,7 +302,7 @@
         })
         (play 
             ("RollMove"
-            	(if (and (= ("InitSite") (where "Stick" Mover)) (!= 0 (state at:(where "Stick" Mover) level:(where Level "Stick" Mover at:(where "Stick" Mover)))))
+                (if (and (= ("InitSite") (where "Stick" Mover)) (!= 0 (state at:(where "Stick" Mover) level:(where Level "Stick" Mover at:(where "Stick" Mover)))))
                     ("MoveHyena")
                     (forEach Piece)
                 )

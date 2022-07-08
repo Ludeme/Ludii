@@ -198,7 +198,7 @@
         (start <Player:start>)
         (play 
             ("RollMove"
-            	(if (> (var) 0)
+                (if (> (var) 0)
                     ("MoveGhoula")
                     (if (or (= (where "Stick" Mover) ("FinalSite")) (!= 0 ("ThrowValue"))) (forEach Piece))
                 )

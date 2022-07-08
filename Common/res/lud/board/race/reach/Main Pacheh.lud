@@ -28,7 +28,7 @@
                         (from (from) level:(level))
                         (to 
                             "SiteToMoveOnTrack" 
-                        	("HittingCapture" (mapEntry "StartingPoint" (who at:(to))))
+                            ("HittingCapture" (mapEntry "StartingPoint" (who at:(to))))
                         )
                     )
                 )
@@ -52,7 +52,7 @@
         })
         (play 
             ("RollMove"
-            	(if (can Move (forEach Piece))
+                (if (can Move (forEach Piece))
                     (forEach Piece (then (if (= ("ThrowValue") 8) (moveAgain))))
                     (move Pass (then (if (= ("ThrowValue") 8) (moveAgain))))
                 )

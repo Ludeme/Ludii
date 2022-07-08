@@ -106,7 +106,7 @@
         })
         (play 
             ("RollMove"
-            	(if (or (is Mover P1) (is Mover P2))
+                (if (or (is Mover P1) (is Mover P2))
                     (forEach Piece P1)
                     (forEach Piece P3)
                 )

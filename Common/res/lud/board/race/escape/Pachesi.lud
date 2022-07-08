@@ -47,7 +47,7 @@
         
         (play 
             ("RollMove"
-            	(or
+                (or
                     (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
                         (move
                             (from (handSite Mover))

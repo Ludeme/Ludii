@@ -84,7 +84,7 @@
         (phase "firstTurn" 
             (play 
                 ("RollMove"
-                	(move
+                    (move
                         (from (handSite (mover))) 
                         (to 
                             ("NextSiteOnTrack" (mapEntry "Die" (count Pips))
@@ -98,7 +98,7 @@
         )
         (phase "Movement" 
             (play ("RollMove"
-            		(or
+                    (or
                         {
                         (forEach Piece)
                         (if (and 

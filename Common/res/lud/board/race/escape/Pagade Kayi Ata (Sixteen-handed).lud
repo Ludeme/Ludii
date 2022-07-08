@@ -155,7 +155,7 @@
             (if ("CanThrowAgain")
                 (move Select (from (sites "DiceHand")) (then (and (roll) (moveAgain))))
                 ("RollEachNewTurnMove"
-                	(forEach Die 
+                    (forEach Die 
                         combined:True 
                         replayDouble:True 
                         (or

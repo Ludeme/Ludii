@@ -117,7 +117,7 @@
         
         (play 
             ("RollMove"
-            	(if (= ("Center") (where "Stick" Mover))
+                (if (= ("Center") (where "Stick" Mover))
                     (if ("NotThrow0") 
                         ("MoveHyena")
                         (move Pass 

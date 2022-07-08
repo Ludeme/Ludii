@@ -51,7 +51,7 @@
         
         (play 
             ("RollMove"
-            	(forEach Piece)
+                (forEach Piece)
                 (then 
                     (if (and (< (value Player Mover) 2) ("IsSpecialThrow"))
                         (and (moveAgain) (set Value Mover (+ 1 (value Player Mover))))
