@@ -511,9 +511,9 @@ public class LudemeNode implements iGNode
         for(NodeArgument na : providedInputsMap.keySet())
             if(providedInputsMap.get(na) == Handler.PARAMETER_SYMBOL)
                 arguments.add(na);
-            else if(!na.optional() && providedInputsMap.get(na) == null)
+            else if(!na.optional() && providedInputsMap.get(na) == null) //  ! If optional inputs should be included as parameter, remove "!na.optional() &&"
                 arguments.add(na);
-            else if(!na.optional() && providedInputsMap.get(na).equals(" "))
+            else if(providedInputsMap.get(na) != null && (providedInputsMap.get(na).equals("") || providedInputsMap.get(na).equals("<PARAMETER>")))
                 arguments.add(na);
         return arguments;
     }

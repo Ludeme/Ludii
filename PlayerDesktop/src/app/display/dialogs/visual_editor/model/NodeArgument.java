@@ -392,20 +392,7 @@ public class NodeArgument
         return hi.parameter(arg());
     }
 
-    /**
-     *
-     * @param o
-     * @return whether this NodeArgument is equal to another
-     */
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof NodeArgument)
-        {
-            NodeArgument other = (NodeArgument) o;
-            return other.clause().equals(clause()) && other.args().equals(args());
-        }
-        return false;
-    }
+ 
 
     @Override
     public String toString()

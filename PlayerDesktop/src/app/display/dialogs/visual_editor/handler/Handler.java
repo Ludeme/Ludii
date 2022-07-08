@@ -1588,7 +1588,7 @@ public class Handler
      * @param node
      * @return
      */
-    private static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)
+    public static boolean isConnectedToRoot(DescriptionGraph graph, LudemeNode node)
     {
         LudemeNode last = node;
         while(last.parentNode() != null)

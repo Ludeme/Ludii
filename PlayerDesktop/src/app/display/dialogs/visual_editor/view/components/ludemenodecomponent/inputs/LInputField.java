@@ -473,7 +473,16 @@ public class LInputField extends JComponent
         {
             add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
             add(terminalOptionalLabel);
-            //adjustFieldComponentSize(terminalOptionalLabel);
+            if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null)
+            {
+                notifyActivated();
+            }
+            else
+            {
+                fieldComponent.setEnabled(false);
+                label.setEnabled(false);
+                terminalOptionalLabel.setText("+");
+            }
         }
     }
 
@@ -522,7 +531,20 @@ public class LInputField extends JComponent
         else
         {
             add(connectionComponent);
-            //adjustFieldComponentSize(connectionComponent);
+            if(nodeArgument.optional())
+            {
+                add(terminalOptionalLabel);
+                if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null)
+                {
+                    notifyActivated();
+                }
+                else
+                {
+                    fieldComponent.setEnabled(false);
+                    label.setEnabled(false);
+                    terminalOptionalLabel.setText("+");
+                }
+            }
         }
 
         updateTerminalComponentSize();
@@ -736,7 +758,14 @@ public class LInputField extends JComponent
         }
         // A TextField
         if(arg.symbol().name().equals("String"))
-            return new JTextField();
+        {
+            JTextField field = new JTextField();
+            if(inputArea().LNC().isPartOfDefine() && !inputArea().LNC().node().isDefineRoot())
+            {
+                field.setText("<PARAMETER>");
+            }
+            return field;
+        }
         // A Integer Spinner
         if(arg.symbol().name().equals("Integer") || arg.symbol().name().equals("int") || arg.symbol().token().equals("dim"))
         {

@@ -348,7 +348,8 @@ public class DescriptionGraph implements iGraph
             return parameters;
 
         for(LudemeNode node : allLudemeNodes)
-            parameters.addAll(node.unfilledRequiredArguments());
+            if(Handler.isConnectedToRoot(this, node))
+                parameters.addAll(node.unfilledRequiredArguments());
 
         return parameters;
     }
