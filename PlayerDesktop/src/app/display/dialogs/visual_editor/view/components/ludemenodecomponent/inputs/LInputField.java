@@ -104,6 +104,8 @@ public class LInputField extends JComponent
         optionalLabel.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
         optionalLabel.setText("(optional)");
 
+        terminalOptionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT);
+
         if(terminalOptionalLabel.getMouseListeners().length == 0)
             terminalOptionalLabel.addMouseListener(terminalOptionalLabelListener);
 
@@ -247,6 +249,7 @@ public class LInputField extends JComponent
         // reset the component
         removeAll();
         setLayout(new FlowLayout(FlowLayout.RIGHT));
+
         // add optional label
         if(optional())
             add(optionalLabel);
@@ -272,7 +275,7 @@ public class LInputField extends JComponent
         Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
-        updateUserInputs();
+        if(input == null) updateUserInputs();
         initializeFieldComponent();
 
 
@@ -318,6 +321,7 @@ public class LInputField extends JComponent
         }
 
         updateTerminalComponentSize();
+        adjustFieldComponentSize(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
 
         if(input != null)
         {
@@ -496,7 +500,7 @@ public class LInputField extends JComponent
             connectionComponent = new LConnectionComponent(this, false);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
-        updateUserInputs();
+        if(input == null) updateUserInputs();
         initializeFieldComponent();
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -637,7 +641,7 @@ public class LInputField extends JComponent
         Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
-        updateUserInputs();
+        if(input == null) updateUserInputs();
         initializeFieldComponent();
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -648,7 +652,9 @@ public class LInputField extends JComponent
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
         add(removeItemButton);
-        //adjustFieldComponentSize(removeItemButton);
+
+        updateTerminalComponentSize();
+        adjustFieldComponentSize(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_LEFT_TERMINAL));
 
         if(input != null)
         {
@@ -670,12 +676,14 @@ public class LInputField extends JComponent
 
     public void constructHybridCollection(NodeArgument nodeArgument)
     {
+        Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
+
         // create connection component
         if(connectionComponent == null)
             connectionComponent = new LConnectionComponent(this, false);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
-        updateUserInputs();
+        if(input == null) updateUserInputs();
         initializeFieldComponent();
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -821,7 +829,6 @@ public class LInputField extends JComponent
      */
     public void notifyCollapsed()
     {
-        System.out.println("The connection of " + this + " was collapsed!");
         reconstruct();
     }
 
@@ -844,7 +851,7 @@ public class LInputField extends JComponent
         fieldComponent.repaint();
         label.setEnabled(true);
         addItemButton.setEnabled(true);
-        terminalOptionalLabel.setText("X");
+        terminalOptionalLabel.setText("x");
         if(!nodeArgument(0).collection())
         {
             Handler.updateInput(inputArea().LNC().graphPanel().graph(), inputArea().LNC().node(), nodeArgument(0), getUserInput());
@@ -1036,7 +1043,7 @@ public class LInputField extends JComponent
                     ((JSpinner) fieldComponent).setValue(input);
                 }
             }
-            if (fieldComponent instanceof JComboBox && input instanceof Symbol)
+            if (fieldComponent instanceof JComboBox<?> && input instanceof Symbol)
             {
                 ((JComboBox<?>) fieldComponent).setSelectedItem(input);
             }
@@ -1121,7 +1128,7 @@ public class LInputField extends JComponent
         if(nodeArgument(0).collection() && parent() == null && fieldComponent != connectionComponent) adjustFieldComponentSize(addItemButton);
         if(nodeArgument(0).choice()) adjustFieldComponentSize(choiceButton);
         if(nodeArgument(0).optional() && fieldComponent == connectionComponent) adjustFieldComponentSize(optionalLabel);
-        else if(nodeArgument(0).optional()) adjustFieldComponentSize(terminalOptionalLabel);
+        if(nodeArgument(0).optional()) adjustFieldComponentSize(terminalOptionalLabel);
         if(collapsed()) adjustFieldComponentSize(expandButton);
         if(isHybrid()) adjustFieldComponentSize(connectionComponent);
     }
@@ -1305,6 +1312,8 @@ public class LInputField extends JComponent
 
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
         optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
+        terminalOptionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT);
+
 
         if(fieldComponent != null && fieldComponent != connectionComponent)
             updateTerminalComponentSize();

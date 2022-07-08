@@ -24,19 +24,19 @@ public class DesignPalette
     public static final float MAX_SCALAR = 2.5f;
     public static final float MIN_SCALAR = 0.3f;
 
-    private static final int DEFAULT_NODE_WIDTH = 250;
+    private static final int DEFAULT_NODE_WIDTH = 200; // small: 195, default: 200, bigger: 250 big: 250
     public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
 
-    private static final int DEFAULT_TERMINAL_INPUT_HEIGHT = 20;
+    private static final int DEFAULT_TERMINAL_INPUT_HEIGHT = 20; // small: 17, default, bigger: 20, big: 24
     public static int TERMINAL_INPUT_HEIGHT = (int) (DEFAULT_TERMINAL_INPUT_HEIGHT * SCALAR);
 
-    private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 13;
+    private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 13; // small: 10, default, bigger: 13, big: 16
     private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
 
-    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 15;
+    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 15; // small: 10, default, bigger 15, big: 18
     private static int LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
 
-    private static final int DEFAULT_INPUTAREA_PADDING_BOTTOM = 10;
+    private static final int DEFAULT_INPUTAREA_PADDING_BOTTOM = 12;
     public static int INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * SCALAR);
 
     private static final int DEFAULT_HEADER_PADDING_BOTTOM = 3;
@@ -102,6 +102,7 @@ public class DesignPalette
 
         INPUT_AREA_PADDING_BORDER = new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0);
         HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
+
     }
 
 
