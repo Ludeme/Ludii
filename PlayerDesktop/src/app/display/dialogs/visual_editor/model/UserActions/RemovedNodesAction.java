@@ -147,7 +147,7 @@ public class RemovedNodesAction implements IUserAction
                 if(Arrays.asList(ids.get(arg)).contains(node.id()))
                 {
                     node.setParent(ln);
-                    Handler.addEdge(graph, ln, node, arg);
+                    //Handler.addEdge(graph, ln, node, arg);
                     return;
                 }
             }
@@ -169,7 +169,7 @@ public class RemovedNodesAction implements IUserAction
                 //Handler.updateInput(graph, removedNode, arg, input);
                 for(int i = 1; i < ((Object[])input).length; i++)
                 {
-                    graphPanel.notifyCollectionAdded(graphPanel.nodeComponent(node), arg, i);
+                    Handler.addCollectionElement(graph, node, arg);
                 }
                 boolean isLudemeCollection = false;
                 for(Object o : (Object[])input)

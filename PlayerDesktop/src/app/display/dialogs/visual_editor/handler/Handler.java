@@ -124,8 +124,8 @@ public class Handler
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
     /** Currently active Background */
     private static IBackground currentBackground = DotGridBackground;
-    /** The Design Palette */
-    public static DesignPalette designPalette = DesignPalette.instance();
+    /** Instanstantiate the DesignPalette */
+    private static final DesignPalette designPalette = DesignPalette.instance();
 
 
     /** Whether there is any output to the console */
@@ -283,6 +283,7 @@ public class Handler
             int elementIndex = Arrays.asList(collectionInput).indexOf(node);
             ((RemovedNodeAction) currentPerformedUserActions.peek()).setCollectionIndex(elementIndex);
         }
+
 
         // Remove the node from the graph
         graph.removeNode(node);
@@ -701,12 +702,13 @@ public class Handler
             if(oldInput instanceof LudemeNode)
             {
                 addAction(new RemovedConnectionAction(graphPanelMap.get(graph), node, (LudemeNode) oldInput, nodeArgument));
+                //node.removeChildren((LudemeNode) oldInput);
+                removeEdge(graph, node, (LudemeNode) oldInput, false);
             }
         }
-        // if the input is null but was a node before, remove the child from the parent
-        if(input == null && node.providedInputsMap().get(nodeArgument) instanceof LudemeNode)
-            node.removeChildren((LudemeNode) node.providedInputsMap().get(nodeArgument));
+
         node.setProvidedInput(nodeArgument, input);
+
         if(node.isSatisfied() && graphPanel.nodeComponent(node) != null)
         {
             LudemeNodeComponent lnc = graphPanel.nodeComponent(node);
@@ -740,12 +742,18 @@ public class Handler
         if(input == null && node.providedInputsMap().get(nodeArgument) instanceof Object[] && elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length)
             return;
 
+        Object oldInput = node.providedInputsMap().get(nodeArgument);
+        if(oldInput instanceof Object[] && input == null && ((Object[])(oldInput)).length > elementIndex && ((Object[])oldInput)[elementIndex] instanceof LudemeNode)
+        {
+            Handler.removeEdge(graph, node, (LudemeNode) ((Object[])(oldInput))[elementIndex], elementIndex, false);
+        }
+
         if(node.providedInputsMap().get(nodeArgument) == null)
             return;
 
         while(elementIndex >= ((Object[])(node.providedInputsMap().get(nodeArgument))).length)
             addCollectionElement(graph, node, nodeArgument);
-        Object[] in = (Object[]) node.providedInputsMap().get(nodeArgument);
+        Object[] in = (Object[]) oldInput;
         in[elementIndex] = input;
         Handler.updateInput(graph, node, nodeArgument, in);
     }
@@ -1535,14 +1543,6 @@ public class Handler
         return DesignPalette.palettes();
     }
 
-    /**
-     *
-     * @return The currently active design palette
-     */
-    public static String currentPalette()
-    {
-        return designPalette.name();
-    }
     /**
      * Sets the background
      * @param background
