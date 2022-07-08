@@ -1,5 +1,5 @@
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
-(define "PlayFromLastHole" (last To afterConsequence:True))
+(define "LastHoleSowed" (last To afterConsequence:True))
 (define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
 (define "CaptureMove"
     (and
@@ -77,7 +77,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                (sites {("NextHoleFrom" "PlayFromLastHole" "TrackCCW" steps:1) })
+                                (sites {("NextHoleFrom" "LastHoleSowed" "TrackCCW" steps:1) })
                                 (sites Mover) 
                             ) 
                             if:(is Occupied (from))
@@ -110,7 +110,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                (sites {("NextHoleFrom" "PlayFromLastHole" "TrackCW" steps:1) })
+                                (sites {("NextHoleFrom" "LastHoleSowed" "TrackCW" steps:1) })
                                 (sites Mover) 
                             ) 
                             if:(is Occupied (from))

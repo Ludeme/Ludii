@@ -1,6 +1,6 @@
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
-(define "PlayFromLastHole" (sites {(var "To")}))
+(define "LastHoleSowed" (sites {(var "To")}))
 
 //------------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            ("PlayFromLastHole") 
+                            ("LastHoleSowed") 
                             (sites Mover) 
                         )  
                         if:(< 0 (count at:(from)))
@@ -91,7 +91,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            ("PlayFromLastHole") 
+                            ("LastHoleSowed") 
                             (sites Mover) 
                         )  
                         if:(< 0 (count at:(from)))

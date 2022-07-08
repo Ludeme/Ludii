@@ -1,7 +1,5 @@
 (define "Columns" 8)
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
 
 //------------------------------------------------------------------------------
@@ -32,8 +30,8 @@
                 Select
                 (from 
                     (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        ("SameTurn") 
+                        "LastHoleSowed" 
                         (sites Mover "Home") 
                     ) 
                     if:(> (count at:(from)) 0)

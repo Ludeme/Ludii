@@ -1,7 +1,5 @@
 (define "Columns" 6)
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
 (define "NoFreeSeed" 
@@ -38,7 +36,7 @@
             (move Select
                 (from 
                     (if (is Mover Prev)
-                        ("PlayFromLastHole") 
+                        ("LastHoleSowed") 
                         (sites Mover) 
                     )
                     if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))

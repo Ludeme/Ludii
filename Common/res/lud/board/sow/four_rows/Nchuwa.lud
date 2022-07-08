@@ -15,8 +15,6 @@
 
 (define "NextSite" (trackSite Move #1 steps:1))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 //------------------------------------------------------------------------------
 
 (game "Nchuwa"  
@@ -103,7 +101,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(> (count at:(from)) 0)

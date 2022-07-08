@@ -8,7 +8,6 @@
     )
 )
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "HoleOnLeft"
     (if (is Mover P1)
         (ahead (site) W)
@@ -93,7 +92,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(is Occupied (from))
@@ -137,7 +136,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(if (< 1 (count at:(from)))

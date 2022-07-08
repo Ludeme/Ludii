@@ -9,8 +9,6 @@
     )
 )
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 
 (define "NoPieceOnBoard" (no Pieces All in:(union (sites P1) (sites P2))))

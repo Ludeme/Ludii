@@ -1,5 +1,3 @@
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "OwnedHoles" 
     (if (is Mover P1)
         (sites (values Remembered "OwnedP1"))
@@ -67,7 +65,7 @@
                     (move Select
                         (from 
                             (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
-                                ("PlayFromLastHole") 
+                                ("LastHoleSowed") 
                                 ("OwnedHoles") 
                             )
                             if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))

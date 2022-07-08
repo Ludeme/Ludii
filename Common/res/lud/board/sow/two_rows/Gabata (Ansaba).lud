@@ -6,8 +6,6 @@
 
 (define "NextHoleFrom" (trackSite Move from:#1 #2))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "OneRowIsEmpty"
     (or 
         (no Pieces All in:(sites P1))
@@ -58,7 +56,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover) 
                             ) 
                             if:(> (count at:(from)) 0)

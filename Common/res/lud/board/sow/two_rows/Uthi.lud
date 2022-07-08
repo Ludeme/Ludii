@@ -1,7 +1,6 @@
 (define "Columns" 8)
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "Capture" 
     (if (and (= 1 (var "GoInOpponentRow")) (is In (to) (sites Mover)))
@@ -163,7 +162,7 @@
                             (from 
                                 (if 
                                     (is Mover Prev) 
-                                    "PlayFromLastHole" 
+                                    "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 
                                 if:(> (count at:(from)) 0)
@@ -196,7 +195,7 @@
                             (from 
                                 (if 
                                     (is Mover Prev) 
-                                    "PlayFromLastHole" 
+                                    "LastHoleSowed" 
                                     (sites Mover) 
                                 ) 
                                 if:(> (count at:(from)) 0)

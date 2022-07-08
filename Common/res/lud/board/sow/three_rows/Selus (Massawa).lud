@@ -18,8 +18,6 @@
     (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
 )
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "SitesMarkedBy" 
     (forEach (sites Board) if:(= #1 (state at:(site))))
 )
@@ -56,7 +54,7 @@
                     (move Select
                         (from 
                             (if (and (not (is Pending)) (is Mover Prev))
-                                ("PlayFromLastHole") 
+                                ("LastHoleSowed") 
                                 ("OwnedHoles") 
                             )
                             if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))

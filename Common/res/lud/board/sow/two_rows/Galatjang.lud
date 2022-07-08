@@ -2,8 +2,6 @@
 
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "CaptureEnoughSeed" (> 7 (count in:(difference (sites Board) (mapEntry Mover)))))
 
 (define "PlayableSites" 
@@ -63,7 +61,7 @@
                     (from 
                         (if 
                             (and (not (is Pending)) (is Mover Prev)) 
-                            ("PlayFromLastHole") 
+                            ("LastHoleSowed") 
                             ("PlayableSites") 
                         ) 
                         if:(> (count at:(from)) 0)

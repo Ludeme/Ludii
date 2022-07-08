@@ -4,7 +4,7 @@
 
 (define "NextNextHole" (trackSite Move from:(to) steps:2))
 
-(define "PlayFromLastHole" (sites {(value Pending)}))
+(define "LastHoleSowed" (sites {(value Pending)}))
 
 //------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@
                 (from 
                     (if 
                         (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)

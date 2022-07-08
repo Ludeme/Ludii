@@ -2,7 +2,6 @@
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "NoPiece" (= (count in:(sites Player)) 0))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 (define "AllSitesNoMoreThanOne"
     (all Sites (sites Mover "Home") if:(>= 1 (count at:(site))))
@@ -48,7 +47,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole"
+                            "LastHoleSowed"
                             (sites Mover "Home") 
                         ) 
                         if:(> (count at:(from)) 1)

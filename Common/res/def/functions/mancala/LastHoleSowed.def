@@ -1,0 +1,4 @@
+// Returns a region of one site corresponding to the last `to' position after applying the consequences. In the mancala games, this site is the last hole in which a seed was sowed. 
+// @example ("LastHoleSowed")
+
+(define "LastHoleSowed" (sites {(last To afterConsequence:True)}))

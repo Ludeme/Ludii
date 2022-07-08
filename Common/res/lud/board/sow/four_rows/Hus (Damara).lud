@@ -4,8 +4,6 @@
 
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "NextHole" (trackSite Move from:(to) "Track" steps:1))
 
 (define "PlayFromNextHole" (sites {(value Pending)}))
@@ -53,7 +51,7 @@
                 Select
                 (from 
                     (if (is Mover Prev) 
-                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "PlayFromLastHole" ) 
+                        (if "MoveAgainAfterCapture" "PlayFromNextHole" "LastHoleSowed" ) 
                         (sites Mover "Home") 
                     ) 
                     if:(> (count at:(from)) <Sow:numSeed>)

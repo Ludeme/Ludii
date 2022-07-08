@@ -1,6 +1,5 @@
 (define "Columns" 6)
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "CaptureAsInOware" 
     (and 
         (is In #1 (sites Next)) 
@@ -35,7 +34,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover)
                             ) 
                             if:(< 0 (count at:(from)))

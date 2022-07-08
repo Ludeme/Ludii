@@ -6,7 +6,6 @@
     )
 )
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 //------------------------------------------------------------------------------
 
@@ -38,7 +37,7 @@
                     (move Select
                         (from
                             (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover "RightHome")
                             )
                             if:(> (count at:(from)) 0)
@@ -72,7 +71,7 @@
                     (move Select
                         (from
                             (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover "LeftHome")
                             )
                             if:(> (count at:(from)) 0)

@@ -1,5 +1,4 @@
 (define "Columns" 6)
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "OneHomeEmpty" 
     (or
         (all Sites (sites P1) if:(is Empty (site)))  
@@ -51,7 +50,7 @@
                     (move Select
                         (from 
                             (if (is Mover Prev)
-                                ("PlayFromLastHole") 
+                                ("LastHoleSowed") 
                                 (sites Mover) 
                             )
                             if:(< 0 (count at:(from)))

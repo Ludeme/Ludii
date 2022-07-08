@@ -6,7 +6,7 @@
 
 (define "NoPiece" (= (count in:(sites Player "Home")) 0))
 
-(define "PlayFromLastHole" (sites {(var)}))
+(define "LastHoleSowed" (sites {(var)}))
 
 (define "AHoleHasMoreThanOneCounter" 
     (!= 0 (count Sites in:(forEach (sites Mover) if:(< 1 (count at:(site))))))
@@ -52,7 +52,7 @@
                         (from 
                             (if 
                                 (is Mover Prev)
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
                             if:(if "AHoleHasMoreThanOneCounter"

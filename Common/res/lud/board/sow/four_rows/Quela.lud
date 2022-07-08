@@ -1,7 +1,6 @@
 (define "Columns" <Board:size>)
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "LeftMostCounters"
     (all Sites (difference (sites Mover "Home") (mapEntry "LeftMost" Mover))
         if:(> (count at:(mapEntry Mover)) (count at:(site)))
@@ -76,7 +75,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(or ("SameTurn") 
@@ -165,7 +164,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(is Occupied (from))

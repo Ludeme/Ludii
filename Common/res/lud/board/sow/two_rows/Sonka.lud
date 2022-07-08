@@ -2,7 +2,7 @@
 
 (define "Columns" 5)
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "PlayFromLastHole" (sites {("NextSite" from:(last To afterConsequence:True))}))
+(define "LastHoleSowed" (sites {("NextSite" from:(last To afterConsequence:True))}))
 (define "NextSite" 
     (if (= (trackSite Move #1 steps:1) (mapEntry Mover))
         (trackSite Move #1 steps:2)
@@ -38,7 +38,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(< 0 (count at:(from)))

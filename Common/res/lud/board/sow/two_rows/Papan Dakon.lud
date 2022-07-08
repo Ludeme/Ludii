@@ -1,7 +1,6 @@
 // Done without simultaneous move.
 (define "Columns" 7)
 (define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "RightMostEmpty" 
     (trackSite FirstSite 
         from:(mapEntry "RightMost" Mover)
@@ -43,7 +42,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover) 
                             ) 
                             if:(and (> (count at:(from)) 0) (is In (from) ("PlayableSites")))

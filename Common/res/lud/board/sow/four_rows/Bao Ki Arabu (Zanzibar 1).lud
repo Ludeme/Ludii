@@ -1,12 +1,10 @@
 (define "Columns" 8)
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "Sow" 
     (move Select
         (from 
             (if ("SameTurn") 
-                (if #1 "PlayFromLastHole") 
+                (if #1 "LastHoleSowed") 
                 (sites Mover "Home") 
             ) 
             if:(> (count at:(from)) 0)

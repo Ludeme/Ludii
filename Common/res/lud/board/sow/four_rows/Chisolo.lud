@@ -1,7 +1,6 @@
 (define "Columns" <Board:rowSize>)
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "InitOneSeed" <Board:InitOneSeed>)
 (define "InitTwoSeed" <Board:InitTwoSeeds>)
 
@@ -51,7 +50,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             ) 
                             if:(is Occupied (from))
@@ -86,7 +85,7 @@
                                 (from 
                                     (if 
                                         (is Mover Prev) 
-                                        "PlayFromLastHole" 
+                                        "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 
                                     if:(is Occupied (from))
@@ -109,7 +108,7 @@
                                 (from 
                                     (if 
                                         (is Mover Prev) 
-                                        "PlayFromLastHole" 
+                                        "LastHoleSowed" 
                                         (sites Mover "Home") 
                                     ) 
                                     if:(is Occupied (from))

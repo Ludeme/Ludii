@@ -6,8 +6,6 @@
 
 (define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 3)) (- #1 (* "Columns" 3))))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "NoPiece" (= (count in:(sites Player "Home")) 0))
 
 (define "OneSingePieceInTheMiddle" (and (= (count in:(sites Mover "Home")) 1) (= (count in:(sites Mover "Middle")) 1)))
@@ -55,7 +53,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
                             if:(> (count at:(from)) 0)
@@ -106,7 +104,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 ("OuterMostRowWithPieces") 
                             ) 
                             if:(> (count at:(from)) 0)

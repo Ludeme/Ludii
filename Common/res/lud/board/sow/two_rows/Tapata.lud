@@ -4,7 +4,7 @@
 
 (define "LastHole" (last To afterConsequence:True))
 
-(define "PlayFromLastHole" (sites {("LastHole")}))
+(define "LastHoleSowed" (sites {("LastHole")}))
 
 (define "NoPiece" (= (count in:(sites Player "Home")) 0))
 
@@ -59,7 +59,7 @@
                     (from 
                         (if 
                             (is Mover Prev) 
-                            "PlayFromLastHole" 
+                            "LastHoleSowed" 
                             (sites Mover "Home") 
                         ) 
                         if:(and

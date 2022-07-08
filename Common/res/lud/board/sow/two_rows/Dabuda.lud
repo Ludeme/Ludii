@@ -2,15 +2,13 @@
 
 (define "OppositePit" (if (is In (to) (sites P1 "Home")) (+ (to) "Columns") (- (to) "Columns")))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "Sow" 
     (move
         Select 
         (from 
             (if 
                 (is Mover Prev) 
-                "PlayFromLastHole" 
+                "LastHoleSowed" 
                 (sites Mover #1) 
             ) 
             if:(> (count at:(from)) 0)

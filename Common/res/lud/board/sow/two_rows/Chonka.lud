@@ -1,6 +1,5 @@
 (define "Columns" 7)
 (define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns")))
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "GoalNumCapturedCounters"
     (/ (* 7 (- (count Sites in:(sites Board)) 2)) 2)
 )
@@ -34,7 +33,7 @@
                 (from 
                     (if 
                         (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)

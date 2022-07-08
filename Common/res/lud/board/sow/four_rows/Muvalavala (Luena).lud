@@ -4,8 +4,6 @@
 
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PlayFrom" 
     (play 
         (move
@@ -13,7 +11,7 @@
             (from 
                 (if 
                     (is Mover Prev) 
-                    "PlayFromLastHole" 
+                    "LastHoleSowed" 
                     (sites Mover #1) 
                 ) 
                 if:(> (count at:(from)) 0)

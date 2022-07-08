@@ -2,8 +2,6 @@
 
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns")))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
 
 //------------------------------------------------------------------------------
@@ -34,7 +32,7 @@
                 (from 
                     (if 
                         (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)

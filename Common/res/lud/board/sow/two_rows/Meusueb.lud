@@ -2,8 +2,6 @@
 
 (define "PlayFromNextHole" (sites {("NextHoleFrom" (last From afterConsequence:True))}))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
 //------------------------------------------------------------------------------
@@ -30,7 +28,7 @@
                 (from 
                     (if 
                         "SameTurn" 
-                        (if (is Pending) "PlayFromNextHole" "PlayFromLastHole") 
+                        (if (is Pending) "PlayFromNextHole" "LastHoleSowed") 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)

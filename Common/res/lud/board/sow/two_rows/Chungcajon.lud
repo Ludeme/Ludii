@@ -1,7 +1,5 @@
 (define "PiecesOwnedBy" (count at:(mapEntry #1)))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "NotMoverStore" (!= (to) (mapEntry Mover)))
 
 //------------------------------------------------------------------------------
@@ -29,7 +27,7 @@
                 (from 
                     (if 
                         (is Mover Prev) 
-                        "PlayFromLastHole" 
+                        "LastHoleSowed" 
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)

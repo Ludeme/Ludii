@@ -4,8 +4,6 @@
 
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2))))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "MoveAgainAfterCapture" (and (is Pending) (is Mover Prev)))
 
 (define "StylizedMove" 
@@ -120,7 +118,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (if 
                                     (< (count Turns) 3) 
                                     "StylizedMove" 
@@ -136,7 +134,7 @@
                         (from 
                             (if 
                                 (is Mover Prev) 
-                                "PlayFromLastHole" 
+                                "LastHoleSowed" 
                                 (sites Mover "Home") 
                             )
                             if:(= (count at:(from)) 1)

@@ -4,8 +4,6 @@
 
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
-(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
-
 (define "OneRowIsEmpty" 
     (or
         (= 0 (count in:(sites P1)))
@@ -35,7 +33,7 @@
                 (from 
                     (if 
                         (is Mover Prev) 
-                        ("PlayFromLastHole") 
+                        ("LastHoleSowed") 
                         (sites Next) 
                     )  
                     if:(< 0 (count at:(from)))
