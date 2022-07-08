@@ -290,7 +290,7 @@ public class LInputField extends JComponent
             fieldComponent.setPreferredSize(new Dimension(fieldComponent.getPreferredSize().width-choiceButton.getPreferredSize().width, fieldComponent.getPreferredSize().height));
             fieldComponent.setSize(fieldComponent.getPreferredSize());
             add(choiceButton);
-            adjustFieldComponentSize(choiceButton);
+            //adjustFieldComponentSize(choiceButton);
         }
 
 
@@ -299,12 +299,12 @@ public class LInputField extends JComponent
             addItemButton.setPreferredSize(buttonSize());
             addItemButton.setSize(addItemButton.getPreferredSize());
             add(addItemButton);
-            adjustFieldComponentSize(addItemButton);
+            //adjustFieldComponentSize(addItemButton);
         }
         if(removable)
         {
             add(terminalOptionalLabel);
-            adjustFieldComponentSize(terminalOptionalLabel);
+            //adjustFieldComponentSize(terminalOptionalLabel);
             if(inputArea().LNC().node().providedInputsMap().get(nodeArgument(0)) != null)
             {
                 notifyActivated();
@@ -316,6 +316,8 @@ public class LInputField extends JComponent
                 terminalOptionalLabel.setText("+");
             }
         }
+
+        updateTerminalComponentSize();
 
         if(input != null)
         {
@@ -350,7 +352,7 @@ public class LInputField extends JComponent
     private void initializeFieldComponent()
     {
         // set size
-        fieldComponent.setPreferredSize(terminalComponentSize());
+        updateTerminalComponentSize();
 
         // add listeners to update provided inputs when modified
 
@@ -471,7 +473,7 @@ public class LInputField extends JComponent
         {
             add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
             add(terminalOptionalLabel);
-            adjustFieldComponentSize(terminalOptionalLabel);
+            //adjustFieldComponentSize(terminalOptionalLabel);
         }
     }
 
@@ -497,7 +499,7 @@ public class LInputField extends JComponent
             choiceButton.setPreferredSize(buttonSize());
             choiceButton.setSize(choiceButton.getPreferredSize());
             add(choiceButton);
-            adjustFieldComponentSize(choiceButton);
+            //adjustFieldComponentSize(choiceButton);
         }
 
         if(nodeArgument.collection())
@@ -506,7 +508,7 @@ public class LInputField extends JComponent
             addItemButton.setSize(addItemButton.getPreferredSize());
 
             add(addItemButton);
-            adjustFieldComponentSize(addItemButton);
+            //adjustFieldComponentSize(addItemButton);
         }
 
         if(collapsed())
@@ -515,13 +517,15 @@ public class LInputField extends JComponent
             expandButton.setPreferredSize(buttonSize());
             expandButton.setSize(expandButton.getPreferredSize());
             add(expandButton);
-            adjustFieldComponentSize(expandButton);
+            //adjustFieldComponentSize(expandButton);
         }
         else
         {
             add(connectionComponent);
-            adjustFieldComponentSize(connectionComponent);
+            //adjustFieldComponentSize(connectionComponent);
         }
+
+        updateTerminalComponentSize();
 
         if(input != null)
         {
@@ -622,7 +626,7 @@ public class LInputField extends JComponent
         removeItemButton.setPreferredSize(buttonSize());
         removeItemButton.setSize(removeItemButton.getPreferredSize());
         add(removeItemButton);
-        adjustFieldComponentSize(removeItemButton);
+        //adjustFieldComponentSize(removeItemButton);
 
         if(input != null)
         {
@@ -660,7 +664,7 @@ public class LInputField extends JComponent
         removeItemButton.setSize(removeItemButton.getPreferredSize());
 
         add(removeItemButton);
-        adjustFieldComponentSize(removeItemButton);
+        //adjustFieldComponentSize(removeItemButton);
 
         if(collapsed())
         {
@@ -668,13 +672,16 @@ public class LInputField extends JComponent
             expandButton.setPreferredSize(buttonSize());
             expandButton.setSize(expandButton.getPreferredSize());
             add(expandButton);
-            adjustFieldComponentSize(expandButton);
+            //adjustFieldComponentSize(expandButton);
         }
         else
         {
             add(connectionComponent);
-            adjustFieldComponentSize(connectionComponent);
+            //adjustFieldComponentSize(connectionComponent);
         }
+
+        updateTerminalComponentSize();
+
     }
 
     /**
@@ -1067,14 +1074,27 @@ public class LInputField extends JComponent
     }
 
     /**
-     *
-     * @return The preferred size of the terminal LInputField
+     * Updates the terminal component size
      */
-    private Dimension terminalComponentSize()
+    private void updateTerminalComponentSize()
     {
-        int width = (int) ((LIA.LNC().width()-label.getPreferredSize().width) * 0.8); // 80% of the empty width of the LInputArea
-        int height = fieldComponent.getPreferredSize().height;
-        return new Dimension(width, height);
+        fieldComponent.setPreferredSize(null);
+        fieldComponent.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        int preferredWidth = (int) ((DesignPalette.NODE_WIDTH-label.getWidth()) * 0.75);
+        fieldComponent.setPreferredSize(new Dimension(preferredWidth, fieldComponent.getPreferredSize().height));
+        fieldComponent.setSize(new Dimension(preferredWidth, fieldComponent.getPreferredSize().height));
+        if(fieldComponent instanceof JComboBox<?>)
+        {
+            fieldComponent.setPreferredSize(new Dimension(preferredWidth, DesignPalette.TERMINAL_INPUT_HEIGHT));
+            fieldComponent.setSize(new Dimension(preferredWidth, DesignPalette.TERMINAL_INPUT_HEIGHT));
+        }
+        if(parent!=null && fieldComponent != connectionComponent) adjustFieldComponentSize(removeItemButton);
+        if(nodeArgument(0).collection() && parent() == null && fieldComponent != connectionComponent) adjustFieldComponentSize(addItemButton);
+        if(nodeArgument(0).choice()) adjustFieldComponentSize(choiceButton);
+        if(nodeArgument(0).optional() && fieldComponent == connectionComponent) adjustFieldComponentSize(optionalLabel);
+        else if(nodeArgument(0).optional()) adjustFieldComponentSize(terminalOptionalLabel);
+        if(collapsed()) adjustFieldComponentSize(expandButton);
+        if(isHybrid()) adjustFieldComponentSize(connectionComponent);
     }
 
     private Dimension buttonSize()
@@ -1228,7 +1248,9 @@ public class LInputField extends JComponent
 
     private boolean collapsed()
     {
-        if(connectionComponent().connectedTo() == null)
+        if(connectionComponent() == null)
+            return false;
+        else if(connectionComponent().connectedTo() == null)
             return false;
         return
                 connectionComponent().connectedTo().node().collapsed();
@@ -1254,6 +1276,11 @@ public class LInputField extends JComponent
         super.paintComponent(g);
 
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
+
+        if(fieldComponent != null && fieldComponent != connectionComponent)
+            updateTerminalComponentSize();
+
         if(fieldComponent != null && fieldComponent.getBackground() != Handler.currentPalette().INPUT_FIELD_BACKGROUND() && !(fieldComponent instanceof JComboBox)) // JComboBox background does not work
             loadFieldComponentColours();
 

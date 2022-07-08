@@ -457,7 +457,7 @@ public class LudemeNodeComponent extends JPanel
         setSize(getPreferredSize());
 
         LN.setWidth(getWidth());
-        LN.setHeight(getHeight());
+        LN.setHeight(getPreferredSize().height);
 
         setBackground(backgroundColour());
         if (selected)

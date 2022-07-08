@@ -27,6 +27,9 @@ public class DesignPalette
     private static final int DEFAULT_NODE_WIDTH = 250;
     public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
 
+    private static final int DEFAULT_TERMINAL_INPUT_HEIGHT = 20;
+    public static int TERMINAL_INPUT_HEIGHT = (int) (DEFAULT_TERMINAL_INPUT_HEIGHT * SCALAR);
+
     private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 13;
     private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
 
@@ -74,6 +77,7 @@ public class DesignPalette
         SCALAR = (float) Math.min(2.0, Math.max(0.85, SCALAR));
         System.out.println("[SCALING] SCALAR: " + SCALAR);
         NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * (1.0/SCALAR));
+        TERMINAL_INPUT_HEIGHT = (int) (DEFAULT_TERMINAL_INPUT_HEIGHT * (1.0/SCALAR));
         LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
         LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * (1.0/SCALAR));
         INPUTAREA_PADDING_BOTTOM = (int) (DEFAULT_INPUTAREA_PADDING_BOTTOM * (1.0/SCALAR));
@@ -90,6 +94,7 @@ public class DesignPalette
 
         LUDEME_TITLE_FONT = new Font("Arial", Font.BOLD,  LUDEME_TITLE_FONT_SIZE);
         LUDEME_INPUT_FONT = new Font("Arial", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
+        LUDEME_INPUT_FONT_ITALIC = new Font("Arial", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
         LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         LUDEME_NODE_BORDER = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
         LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
@@ -255,7 +260,7 @@ public class DesignPalette
     // LUDEME BLOCK //
     public static Font LUDEME_TITLE_FONT = new Font("Arial", Font.BOLD,  LUDEME_TITLE_FONT_SIZE);
     public static Font LUDEME_INPUT_FONT = new Font("Arial", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
-    public static final Font LUDEME_INPUT_FONT_ITALIC = new Font("Arial", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
+    public static Font LUDEME_INPUT_FONT_ITALIC = new Font("Arial", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
 
     // ~~ ICONS ~~ //
 
