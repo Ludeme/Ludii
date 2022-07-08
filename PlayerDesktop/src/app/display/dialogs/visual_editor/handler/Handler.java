@@ -11,8 +11,6 @@ import app.display.dialogs.visual_editor.model.UserActions.*;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LudemeNodeComponent;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.inputs.LInputField;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteDark;
-import app.display.dialogs.visual_editor.view.designPalettes.DesignPaletteLight;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineEditor;
 import app.display.dialogs.visual_editor.view.panels.editor.defineEditor.DefineGraphPanel;
@@ -126,11 +124,8 @@ public class Handler
     public static final IBackground CartesianGridBackground = new CartesianGridBackground();
     /** Currently active Background */
     private static IBackground currentBackground = DotGridBackground;
-    /** Design Palettes for the Colour Scheme: Light & Dark */
-    public static final DesignPalette lightPalette = DesignPaletteLight.instance();
-    public static final DesignPalette darkPalette = DesignPaletteDark.instance();
-    /** Currently active DesignPalette */
-    private static DesignPalette currentPalette = lightPalette;
+    /** The Design Palette */
+    public static DesignPalette designPalette = DesignPalette.instance();
 
 
     /** Whether there is any output to the console */
@@ -1528,22 +1523,26 @@ public class Handler
      * Sets the current active design palette
      * @param palette
      */
-    public static void setPalette(DesignPalette palette)
+    public static void setPalette(String paletteName)
     {
-        currentPalette = palette;
+        DesignPalette.loadPalette(paletteName);
         for(IGraphPanel graphPanel : graphPanelMap.values())
             graphPanel.repaint();
+    }
+
+    public static List<String> palettes()
+    {
+        return DesignPalette.palettes();
     }
 
     /**
      *
      * @return The currently active design palette
      */
-    public static DesignPalette currentPalette()
+    public static String currentPalette()
     {
-        return currentPalette;
+        return designPalette.name();
     }
-
     /**
      * Sets the background
      * @param background

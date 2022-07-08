@@ -42,10 +42,10 @@ public class LInputField extends JComponent
     private final JLabel label = new JLabel();
     private final JLabel optionalLabel = new JLabel("(optional)");
     private final JLabel terminalOptionalLabel = new JLabel("+");
-    private final LInputButton expandButton = new LInputButton(Handler.currentPalette().UNCOLLAPSE_ICON(), Handler.currentPalette().UNCOLLAPSE_ICON_HOVER());
-    private final LInputButton addItemButton = new LInputButton(Handler.currentPalette().COLLECTION_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_ICON_HOVER());
-    private final LInputButton removeItemButton = new LInputButton(Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE(), Handler.currentPalette().COLLECTION_REMOVE_ICON_HOVER());
-    private final LInputButton choiceButton = new LInputButton(Handler.currentPalette().CHOICE_ICON_ACTIVE(), Handler.currentPalette().CHOICE_ICON_HOVER());
+    private final LInputButton expandButton = new LInputButton(DesignPalette.UNCOLLAPSE_ICON(), DesignPalette.UNCOLLAPSE_ICON_HOVER());
+    private final LInputButton addItemButton = new LInputButton(DesignPalette.COLLECTION_ICON_ACTIVE(), DesignPalette.COLLECTION_ICON_HOVER());
+    private final LInputButton removeItemButton = new LInputButton(DesignPalette.COLLECTION_REMOVE_ICON_ACTIVE(), DesignPalette.COLLECTION_REMOVE_ICON_HOVER());
+    private final LInputButton choiceButton = new LInputButton(DesignPalette.CHOICE_ICON_ACTIVE(), DesignPalette.CHOICE_ICON_HOVER());
     private static final float buttonWidthPercentage = 1f;
     private boolean active = true;
 
@@ -101,7 +101,7 @@ public class LInputField extends JComponent
     private void loadButtons()
     {
         optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
-        optionalLabel.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
+        optionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR());
         optionalLabel.setText("(optional)");
 
         terminalOptionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT);
@@ -211,7 +211,7 @@ public class LInputField extends JComponent
         else
             label.setText(nodeArgument.arg().symbol().name());
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        label.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
+        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR());
 
         label.setToolTipText(nodeArgument(0).parameterDescription());
         optionalLabel.setToolTipText(nodeArgument(0).parameterDescription());
@@ -255,7 +255,7 @@ public class LInputField extends JComponent
             add(optionalLabel);
         label.setText("Arguments");
         label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        label.setForeground(Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR());
+        label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR());
         add(label);
         add(Box.createHorizontalStrut(DesignPalette.INPUTFIELD_PADDING_RIGHT_NONTERMINAL));
         connectionComponent = new LConnectionComponent(this, false);
@@ -315,7 +315,6 @@ public class LInputField extends JComponent
             else
             {
                 fieldComponent.setEnabled(false);
-                label.setEnabled(false);
                 terminalOptionalLabel.setText("+");
             }
         }
@@ -405,26 +404,26 @@ public class LInputField extends JComponent
         }
         if(fieldComponent instanceof JTextField)
         {
-            fieldComponent.setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
-            fieldComponent.setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+            fieldComponent.setBackground(DesignPalette.INPUT_FIELD_BACKGROUND());
+            fieldComponent.setForeground(DesignPalette.INPUT_FIELD_FOREGROUND());
         }
         else if(fieldComponent instanceof JSpinner)
         {
 
-            ((JSpinner) fieldComponent).getEditor().getComponent(0).setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
-            ((JSpinner) fieldComponent).getEditor().getComponent(0).setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+            ((JSpinner) fieldComponent).getEditor().getComponent(0).setBackground(DesignPalette.INPUT_FIELD_BACKGROUND());
+            ((JSpinner) fieldComponent).getEditor().getComponent(0).setForeground(DesignPalette.INPUT_FIELD_FOREGROUND());
         }
         else if(fieldComponent instanceof JComboBox)
         {
-            ((JComboBox<?>) fieldComponent).getEditor().getEditorComponent().setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
-            ((JComboBox<?>) fieldComponent).getEditor().getEditorComponent().setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+            ((JComboBox<?>) fieldComponent).getEditor().getEditorComponent().setBackground(DesignPalette.INPUT_FIELD_BACKGROUND());
+            ((JComboBox<?>) fieldComponent).getEditor().getEditorComponent().setForeground(DesignPalette.INPUT_FIELD_FOREGROUND());
         }
         else
         {
-            fieldComponent.setBackground(Handler.currentPalette().INPUT_FIELD_BACKGROUND());
-            fieldComponent.setForeground(Handler.currentPalette().INPUT_FIELD_FOREGROUND());
+            fieldComponent.setBackground(DesignPalette.INPUT_FIELD_BACKGROUND());
+            fieldComponent.setForeground(DesignPalette.INPUT_FIELD_FOREGROUND());
         }
-        Border b = new LineBorder(Handler.currentPalette().INPUT_FIELD_BORDER_COLOUR(), 1);
+        Border b = new LineBorder(DesignPalette.INPUT_FIELD_BORDER_COLOUR(), 1);
         fieldComponent.setBorder(b);
     }
 
@@ -484,7 +483,6 @@ public class LInputField extends JComponent
             else
             {
                 fieldComponent.setEnabled(false);
-                label.setEnabled(false);
                 terminalOptionalLabel.setText("+");
             }
         }
@@ -545,7 +543,6 @@ public class LInputField extends JComponent
                 else
                 {
                     fieldComponent.setEnabled(false);
-                    label.setEnabled(false);
                     terminalOptionalLabel.setText("+");
                 }
             }
@@ -849,7 +846,6 @@ public class LInputField extends JComponent
         active = true;
         fieldComponent.setEnabled(true);
         fieldComponent.repaint();
-        label.setEnabled(true);
         addItemButton.setEnabled(true);
         terminalOptionalLabel.setText("x");
         if(!nodeArgument(0).collection())
@@ -888,7 +884,6 @@ public class LInputField extends JComponent
 
         fieldComponent.setEnabled(false);
         addItemButton.setEnabled(false);
-        label.setEnabled(false);
         terminalOptionalLabel.setText("+");
 
         inputArea().removedConnection(LInputField.this);
@@ -1310,33 +1305,45 @@ public class LInputField extends JComponent
     {
         super.paintComponent(g);
 
-        label.setFont(DesignPalette.LUDEME_INPUT_FONT);
-        optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
-        terminalOptionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT);
+
+
+        if(label.getForeground() != DesignPalette.FONT_LUDEME_INPUTS_COLOR())
+        {
+            label.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR());
+            optionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR());
+            terminalOptionalLabel.setForeground(DesignPalette.FONT_LUDEME_INPUTS_COLOR());
+        }
+
+        if(label.getFont() != DesignPalette.LUDEME_INPUT_FONT)
+        {
+            label.setFont(DesignPalette.LUDEME_INPUT_FONT);
+            optionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT_ITALIC);
+            terminalOptionalLabel.setFont(DesignPalette.LUDEME_INPUT_FONT);
+        }
 
 
         if(fieldComponent != null && fieldComponent != connectionComponent)
             updateTerminalComponentSize();
 
-        if(fieldComponent != null && fieldComponent.getBackground() != Handler.currentPalette().INPUT_FIELD_BACKGROUND() && !(fieldComponent instanceof JComboBox)) // JComboBox background does not work
+        if(fieldComponent != null && fieldComponent.getBackground() != DesignPalette.INPUT_FIELD_BACKGROUND() && !(fieldComponent instanceof JComboBox)) // JComboBox background does not work
             loadFieldComponentColours();
 
-        if(addItemButton.ACTIVE_COLOR != Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR())
+        if(addItemButton.ACTIVE_COLOR != DesignPalette.FONT_LUDEME_INPUTS_COLOR())
         {
-            addItemButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
-            addItemButton.ACTIVE_ICON = Handler.currentPalette().COLLECTION_ICON_ACTIVE();
+            addItemButton.ACTIVE_COLOR = DesignPalette.FONT_LUDEME_INPUTS_COLOR();
+            addItemButton.ACTIVE_ICON = DesignPalette.COLLECTION_ICON_ACTIVE();
             addItemButton.updateDP();
 
-            removeItemButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
-            removeItemButton.ACTIVE_ICON = Handler.currentPalette().COLLECTION_REMOVE_ICON_ACTIVE();
+            removeItemButton.ACTIVE_COLOR = DesignPalette.FONT_LUDEME_INPUTS_COLOR();
+            removeItemButton.ACTIVE_ICON = DesignPalette.COLLECTION_REMOVE_ICON_ACTIVE();
             removeItemButton.updateDP();
 
-            choiceButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
-            choiceButton.ACTIVE_ICON = Handler.currentPalette().CHOICE_ICON_ACTIVE();
+            choiceButton.ACTIVE_COLOR = DesignPalette.FONT_LUDEME_INPUTS_COLOR();
+            choiceButton.ACTIVE_ICON = DesignPalette.CHOICE_ICON_ACTIVE();
             choiceButton.updateDP();
 
-            expandButton.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
-            expandButton.ACTIVE_ICON = Handler.currentPalette().UNCOLLAPSE_ICON();
+            expandButton.ACTIVE_COLOR = DesignPalette.FONT_LUDEME_INPUTS_COLOR();
+            expandButton.ACTIVE_ICON = DesignPalette.UNCOLLAPSE_ICON();
             expandButton.updateDP();
         }
 

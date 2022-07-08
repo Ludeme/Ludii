@@ -2,6 +2,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +22,7 @@ public class LInputButton extends JButton {
     public LInputButton(ImageIcon activeIcon, ImageIcon hoverIcon)
     {
         super(activeIcon);
-        this.ACTIVE_COLOR = Handler.currentPalette().FONT_LUDEME_INPUTS_COLOR();
+        this.ACTIVE_COLOR = DesignPalette.FONT_LUDEME_INPUTS_COLOR();
         this.ACTIVE_ICON = activeIcon;
         this.HOVER_ICON = hoverIcon;
 

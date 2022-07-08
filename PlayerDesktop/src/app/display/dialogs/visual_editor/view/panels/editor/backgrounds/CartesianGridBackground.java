@@ -14,7 +14,7 @@ public class CartesianGridBackground implements IBackground
         int lineWidth = DesignPalette.BACKGROUND_LINE_WIDTH;
         int frequency = DesignPalette.BACKGROUND_LINE_PADDING;
 
-        g2.setColor(Handler.currentPalette().BACKGROUND_VISUAL_HELPER());
+        g2.setColor(DesignPalette.BACKGROUND_VISUAL_HELPER());
         g2.setStroke(new BasicStroke(lineWidth));
 
         // draw vertical lines

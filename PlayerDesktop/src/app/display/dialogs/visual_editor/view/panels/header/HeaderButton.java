@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,9 +33,9 @@ public class HeaderButton extends JButton {
         this.INACTIVE_ICON = inactiveIcon;
         this.HOVER_ICON = hoverIcon;
 
-        this.ACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_ACTIVE_COLOR();
-        this.INACTIVE_COLOR = Handler.currentPalette().HEADER_BUTTON_INACTIVE_COLOR();
-        this.HOVER_COLOR = Handler.currentPalette().HEADER_BUTTON_HOVER_COLOR();
+        this.ACTIVE_COLOR = DesignPalette.HEADER_BUTTON_ACTIVE_COLOR();
+        this.INACTIVE_COLOR = DesignPalette.HEADER_BUTTON_INACTIVE_COLOR();
+        this.HOVER_COLOR = DesignPalette.HEADER_BUTTON_HOVER_COLOR();
 
         if(active)
             setActive();

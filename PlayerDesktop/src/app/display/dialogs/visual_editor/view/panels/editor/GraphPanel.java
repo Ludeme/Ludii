@@ -746,14 +746,14 @@ public class GraphPanel extends JPanel implements IGraphPanel
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        if(getBackground() != Handler.currentPalette().BACKGROUND_EDITOR())
-            setBackground(Handler.currentPalette().BACKGROUND_EDITOR());
+        if(getBackground() != DesignPalette.BACKGROUND_EDITOR())
+            setBackground(DesignPalette.BACKGROUND_EDITOR());
 
         // draw background
         if(parentScrollPane!=null) Handler.currentBackground().paint(parentScrollPane().getViewport().getViewRect(), getWidth(), getHeight(), g2);
 
         // set color for edges
-        g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
+        g2.setColor(DesignPalette.LUDEME_CONNECTION_EDGE());
         // set stroke for edges
         g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
         // draw new connection
@@ -956,12 +956,12 @@ public class GraphPanel extends JPanel implements IGraphPanel
         {
             if(e.getWheelRotation() > 0)
             {
-                Handler.currentPalette().scale(1.02f);
+                DesignPalette.scale(1.02f);
                 scaleNodes(0.98);
             }
             else
             {
-                Handler.currentPalette().scale(1.0f/1.02f);
+                DesignPalette.scale(1.0f/1.02f);
                 scaleNodes(1.0/0.98);
             }
             //updateNodePositions();

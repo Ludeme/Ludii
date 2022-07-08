@@ -461,11 +461,11 @@ public class LudemeNodeComponent extends JPanel
 
         setBackground(backgroundColour());
         if (selected)
-            setBorder(Handler.currentPalette().LUDEME_NODE_BORDER_SELECTED());
+            setBorder(DesignPalette.LUDEME_NODE_BORDER_SELECTED());
         else if (markedUncompilable)
-            setBorder(Handler.currentPalette().LUDEME_NODE_BORDER_UNCOMPILABLE());
+            setBorder(DesignPalette.LUDEME_NODE_BORDER_UNCOMPILABLE());
         else
-            setBorder(Handler.currentPalette().LUDEME_NODE_BORDER());
+            setBorder(DesignPalette.LUDEME_NODE_BORDER());
 
     }
 
@@ -491,11 +491,11 @@ public class LudemeNodeComponent extends JPanel
     {
         switch(node().packageName())
         {
-            case "game.equipment": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_EQUIPMENT();
-            case "game.functions": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_FUNCTIONS();
-            case "game.rules": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_RULES();
-            case "define": return Handler.currentPalette().BACKGROUND_LUDEME_BODY_DEFINE();
-            default: return Handler.currentPalette().BACKGROUND_LUDEME_BODY();
+            case "game.equipment": return DesignPalette.BACKGROUND_LUDEME_BODY_EQUIPMENT();
+            case "game.functions": return DesignPalette.BACKGROUND_LUDEME_BODY_FUNCTIONS();
+            case "game.rules": return DesignPalette.BACKGROUND_LUDEME_BODY_RULES();
+            case "define": return DesignPalette.BACKGROUND_LUDEME_BODY_DEFINE();
+            default: return DesignPalette.BACKGROUND_LUDEME_BODY();
         }
     }
 

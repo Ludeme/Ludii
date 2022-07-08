@@ -256,7 +256,7 @@ public class ConnectionHandler
     public void paintConnections(Graphics2D g2)
     {
         // set color for edges
-        g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_EDGE());
+        g2.setColor(DesignPalette.LUDEME_CONNECTION_EDGE());
         // set stroke for edges
         g2.setStroke(DesignPalette.LUDEME_EDGE_STROKE);
 

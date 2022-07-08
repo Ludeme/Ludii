@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent.in
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.ImmutablePoint;
 import app.display.dialogs.visual_editor.view.components.ludemenodecomponent.LHeader;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 
 import javax.swing.*;
 import java.awt.*;
@@ -120,16 +121,16 @@ public class LIngoingConnectionComponent extends JComponent {
             // if fill = true, draw a filled circle. otherwise, the contour only
             if(fill)
             {
-                g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT());
+                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT());
                 g2.fillOval(x, y, getRadius()*2, getRadius()*2);
             }
             else
             {
 
-                g2.setColor(Handler.currentPalette().LUDEME_CONNECTION_POINT_INACTIVE());
+                g2.setColor(DesignPalette.LUDEME_CONNECTION_POINT_INACTIVE());
                 g2.fillOval(x, y, getRadius()*2, getRadius()*2);
                 // make white hole to create stroke effect
-                g2.setColor(Handler.currentPalette().BACKGROUND_LUDEME_BODY());
+                g2.setColor(DesignPalette.BACKGROUND_LUDEME_BODY());
                 g2.fillOval(x+getRadius()/2, y+getRadius()/2, getRadius(), getRadius());
 
             }

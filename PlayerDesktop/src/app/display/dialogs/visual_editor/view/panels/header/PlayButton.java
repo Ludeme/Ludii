@@ -1,6 +1,7 @@
 package app.display.dialogs.visual_editor.view.panels.header;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import game.Game;
 
 import javax.swing.*;
@@ -14,15 +15,15 @@ public class PlayButton extends JButton
     public PlayButton()
     {
         super("Play");
-        setIcon(Handler.currentPalette().COMPILABLE_ICON);
+        setIcon(DesignPalette.COMPILABLE_ICON);
         setFont(new Font("Roboto Bold", Font.PLAIN, 12));
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setFocusPainted(false);
         setOpaque(true);
         //setContentAreaFilled(false);
         setBorderPainted(false);
-        setBackground(Handler.currentPalette().COMPILABLE_COLOR());
-        setForeground(Handler.currentPalette().PLAY_BUTTON_FOREGROUND());
+        setBackground(DesignPalette.COMPILABLE_COLOR());
+        setForeground(DesignPalette.PLAY_BUTTON_FOREGROUND());
         // try to compile
         ActionListener actionListener = e ->
         {
@@ -65,18 +66,18 @@ public class PlayButton extends JButton
         super.paintComponent(g);
         if(compilable)
         {
-            if (getBackground() != Handler.currentPalette().COMPILABLE_COLOR())
+            if (getBackground() != DesignPalette.COMPILABLE_COLOR())
             {
-                setBackground(Handler.currentPalette().COMPILABLE_COLOR());
-                setForeground(Handler.currentPalette().PLAY_BUTTON_FOREGROUND());
+                setBackground(DesignPalette.COMPILABLE_COLOR());
+                setForeground(DesignPalette.PLAY_BUTTON_FOREGROUND());
             }
         }
         else
         {
-            if (getBackground() != Handler.currentPalette().NOT_COMPILABLE_COLOR())
+            if (getBackground() != DesignPalette.NOT_COMPILABLE_COLOR())
             {
-                setBackground(Handler.currentPalette().NOT_COMPILABLE_COLOR());
-                setForeground(Handler.currentPalette().PLAY_BUTTON_FOREGROUND());
+                setBackground(DesignPalette.NOT_COMPILABLE_COLOR());
+                setForeground(DesignPalette.PLAY_BUTTON_FOREGROUND());
             }
         }
 
@@ -85,15 +86,15 @@ public class PlayButton extends JButton
     public void setNotCompilable()
     {
         compilable = false;
-        setIcon(Handler.currentPalette().NOT_COMPILABLE_ICON);
-        setBackground(Handler.currentPalette().NOT_COMPILABLE_COLOR());
+        setIcon(DesignPalette.NOT_COMPILABLE_ICON);
+        setBackground(DesignPalette.NOT_COMPILABLE_COLOR());
     }
 
     public void setCompilable()
     {
         compilable = true;
-        setIcon(Handler.currentPalette().COMPILABLE_ICON);
-        setBackground(Handler.currentPalette().COMPILABLE_COLOR());
+        setIcon(DesignPalette.COMPILABLE_ICON);
+        setBackground(DesignPalette.COMPILABLE_COLOR());
     }
 
     public void updateCompilable(Object[] output)

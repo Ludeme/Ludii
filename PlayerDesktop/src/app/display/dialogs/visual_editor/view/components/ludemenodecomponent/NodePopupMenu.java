@@ -3,6 +3,7 @@ package app.display.dialogs.visual_editor.view.components.ludemenodecomponent;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.model.LudemeNode;
+import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
 import app.display.dialogs.visual_editor.view.panels.NodeHelp;
 
@@ -24,10 +25,10 @@ public class NodePopupMenu extends JPopupMenu
 
         int iconDiameter = (int)(copyBtn.getPreferredSize().getHeight()*0.75);
 
-        ImageIcon copyI = new ImageIcon(Handler.currentPalette().COPY_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
-        ImageIcon duplicateI = new ImageIcon(Handler.currentPalette().DUPLICATE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
-        ImageIcon deleteI = new ImageIcon(Handler.currentPalette().DELETE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
-        ImageIcon collapseI = new ImageIcon(Handler.currentPalette().COLLAPSE_ICON().getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon copyI = new ImageIcon(DesignPalette.COPY_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon duplicateI = new ImageIcon(DesignPalette.DUPLICATE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon deleteI = new ImageIcon(DesignPalette.DELETE_ICON.getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
+        ImageIcon collapseI = new ImageIcon(DesignPalette.COLLAPSE_ICON().getImage().getScaledInstance(iconDiameter, iconDiameter, Image.SCALE_SMOOTH));
 
         copyBtn.setIcon(copyI);
         duplicate.setIcon(duplicateI);

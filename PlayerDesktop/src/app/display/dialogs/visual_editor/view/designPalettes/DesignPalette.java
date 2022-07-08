@@ -1,12 +1,21 @@
 package app.display.dialogs.visual_editor.view.designPalettes;
 
 import app.display.dialogs.visual_editor.handler.Handler;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -16,6 +25,10 @@ import java.util.Objects;
 
 public class DesignPalette
 {
+
+    private static String name = "";
+    private static DesignPalette instance = null;
+
     public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(1200,800);
     public static final Dimension DEFAULT_GRAPHPANEL_SIZE = new Dimension(10000,10000);
 
@@ -24,16 +37,289 @@ public class DesignPalette
     public static final float MAX_SCALAR = 2.5f;
     public static final float MIN_SCALAR = 0.3f;
 
-    private static final int DEFAULT_NODE_WIDTH = 200; // small: 195, default: 200, bigger: 250 big: 250
+    private static final int DEFAULT_NODE_WIDTH = 220; // small: 200, default: 220, bigger: 250 big: 250
     public static int NODE_WIDTH = (int) (DEFAULT_NODE_WIDTH * SCALAR);
 
     private static final int DEFAULT_TERMINAL_INPUT_HEIGHT = 20; // small: 17, default, bigger: 20, big: 24
     public static int TERMINAL_INPUT_HEIGHT = (int) (DEFAULT_TERMINAL_INPUT_HEIGHT * SCALAR);
 
+
+
+    // COLOURS ================================================================
+
+    private static final String PALETTE_FILE_PATH = "/lve_palettes/";
+    private static final String DEFAULT_PALETTE_FILE_NAME = "Pastel";
+
+    // PANELS //
+    private static Color BACKGROUND_EDITOR;
+    private static Color BACKGROUND_VISUAL_HELPER;
+    private static Color BACKGROUND_HEADER_PANEL;
+
+    // NODE BACKGROUNDS //
+    private static Color BACKGROUND_LUDEME_BODY;
+    private static Color BACKGROUND_LUDEME_BODY_EQUIPMENT;
+    private static Color BACKGROUND_LUDEME_BODY_FUNCTIONS;
+    private static Color BACKGROUND_LUDEME_BODY_RULES;
+    private static Color BACKGROUND_LUDEME_BODY_DEFINE;
+
+    private static Color INPUT_FIELD_BACKGROUND;
+
+    // NODE BORDERS //
+    private static Color LUDEME_BORDER_COLOR;
+    private static Color LUDEME_SELECTION_COLOR;
+    private static Color LUDEME_UNCOMPILABLE_COLOR;
+    private static Color INPUT_FIELD_BORDER_COLOUR;
+
+    // CONNECTIONS
+    private static Color LUDEME_CONNECTION_POINT;
+    private static Color LUDEME_CONNECTION_POINT_INACTIVE;
+    private static Color LUDEME_CONNECTION_EDGE;
+
+    // FONTS
+    private static Color FONT_LUDEME_TITLE_COLOR;
+    private static Color FONT_LUDEME_INPUTS_COLOR;
+    private static Color INPUT_FIELD_FOREGROUND;
+
+
+    // PLAY BUTTON
+    private static Color PLAY_BUTTON_FOREGROUND ;
+    private static Color COMPILABLE_COLOR;
+    private static Color NOT_COMPILABLE_COLOR;
+
+
+    // TOOL PANEL
+    private static Color HEADER_BUTTON_ACTIVE_COLOR;
+    private static Color HEADER_BUTTON_INACTIVE_COLOR;
+    private static Color HEADER_BUTTON_HOVER_COLOR = new Color(127,191,255);
+
+
+
+    public DesignPalette()
+    {
+        loadPalette(DEFAULT_PALETTE_FILE_NAME);
+    }
+
+    public static DesignPalette instance()
+    {
+        if (instance == null)
+            instance = new DesignPalette();
+        return instance;
+    }
+
+    public static List<String> palettes()
+    {
+        List<String> names = new ArrayList<>();
+        try
+        {
+            File dir = new File(DesignPalette.class.getResource(PALETTE_FILE_PATH).toURI());
+            for (File file : dir.listFiles())
+            {
+                if(file.getName().endsWith(".json"))
+                {
+                    names.add(file.getName().replace(".json", ""));
+                }
+            }
+        }
+        catch (URISyntaxException e)
+        {
+            throw new RuntimeException(e);
+        }
+        return names;
+    }
+
+    public static void loadPalette(String paletteName)
+    {
+        System.out.println("Loading palette: " + paletteName);
+        // read json
+        JSONObject palette = readPaletteJSON(paletteName);
+        if(palette == null)
+        {
+            System.out.println("Palette not found");
+            return;
+        }
+        // set colours
+        setColours(palette.toMap());
+    }
+
+    private static JSONObject readPaletteJSON(String paletteName)
+    {
+        InputStream is = DesignPalette.class.getResourceAsStream(PALETTE_FILE_PATH + paletteName + ".json");
+        if(is == null)
+            return null;
+        JSONObject palette = new JSONObject(new JSONTokener(is));
+        return palette;
+    }
+
+    private static void setColours(Map<String, Object> palette)
+    {
+        for(Map.Entry<String, Object> entry : palette.entrySet())
+        {
+            String key = entry.getKey();
+            String value = (String) entry.getValue();
+
+            if(key.equals("name"))
+            {
+                name = value;
+            }
+            else if(key.equals("icons"))
+            {
+                setIcons(value);
+            }
+            else
+            {
+                setColour(key, Color.decode(value));
+            }
+        }
+    }
+
+    private static void setColour(String name, Color colour)
+    {
+        switch(name.toLowerCase())
+        {
+            case "editor_background":
+                BACKGROUND_EDITOR = colour;
+                break;
+            case "background_grid_colour":
+                BACKGROUND_VISUAL_HELPER = colour;
+                break;
+            case "header_background":
+                BACKGROUND_HEADER_PANEL = colour;
+                break;
+            case "default_node_background":
+                BACKGROUND_LUDEME_BODY = colour;
+                break;
+            case "rule_node_background":
+                BACKGROUND_LUDEME_BODY_RULES = colour;
+                break;
+            case "equipment_node_background":
+                BACKGROUND_LUDEME_BODY_EQUIPMENT = colour;
+                break;
+            case "functions_node_background":
+                BACKGROUND_LUDEME_BODY_FUNCTIONS = colour;
+                break;
+            case "define_node_background":
+                BACKGROUND_LUDEME_BODY_DEFINE = colour;
+                break;
+            case "input_field_background":
+                INPUT_FIELD_BACKGROUND = colour;
+                break;
+            case "connection_point_colour":
+                LUDEME_CONNECTION_POINT = colour;
+                break;
+            case "connection_point_inactive_colour":
+                LUDEME_CONNECTION_POINT_INACTIVE = colour;
+                break;
+            case "edge_colour":
+                LUDEME_CONNECTION_EDGE = colour;
+                break;
+            case "play_button_background":
+                COMPILABLE_COLOR = colour;
+                break;
+            case "uncompilable_button_background":
+                NOT_COMPILABLE_COLOR = colour;
+                break;
+            case "play_button_font":
+                PLAY_BUTTON_FOREGROUND = colour;
+                break;
+            case "node_border":
+                LUDEME_BORDER_COLOR = colour;
+                LUDEME_NODE_BORDER = BorderFactory.createLineBorder(LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
+                break;
+            case "node_selected_border":
+                LUDEME_SELECTION_COLOR = colour;
+                LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
+                break;
+            case "node_uncompilable_border":
+                LUDEME_UNCOMPILABLE_COLOR = colour;
+                LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
+                break;
+            case "node_title_font":
+                FONT_LUDEME_TITLE_COLOR = colour;
+                break;
+            case "node_body_font":
+                FONT_LUDEME_INPUTS_COLOR = colour;
+                break;
+            case "input_field_border":
+                INPUT_FIELD_BORDER_COLOUR = colour;
+                break;
+            case "input_field_font":
+                INPUT_FIELD_FOREGROUND = colour;
+                break;
+            case "tool_panel_active_font":
+                HEADER_BUTTON_ACTIVE_COLOR = colour;
+                break;
+            case "tool_panel_inactive_font":
+                HEADER_BUTTON_INACTIVE_COLOR = colour;
+                break;
+            default:
+                System.out.println("Colour not found : " + name);
+                break;
+        }
+    }
+
+    private static void setIcons(String style)
+    {
+        switch(style)
+        {
+            case "dark":
+                CHOICE_ICON_ACTIVE = getIcon("node/dark/active/choice.png");
+                COLLECTION_ICON_ACTIVE = getIcon("node/dark/active/collection_add.png");
+                COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/dark/active/collection_remove.png");
+                DOWN_ICON = getIcon("node/dark/active/down.png");
+                UNCOLLAPSE_ICON = getIcon("node/dark/active/uncollapse.png");
+                COLLAPSE_ICON = getIcon("node/dark/active/collapse.png");
+
+                GAME_EDITOR_INACTIVE = getIcon("editor/active/game_editor.png");
+                GAME_EDITOR_ACTIVE = getIcon("editor/inactive/game_editor.png");
+                DEFINE_EDITOR_INACTIVE = getIcon("editor/active/define_editor.png");
+                DEFINE_EDITOR_ACTIVE = getIcon("editor/inactive/define_editor.png");
+                TEXT_EDITOR_INACTIVE = getIcon("editor/active/text_editor.png");
+                TEXT_EDITOR_ACTIVE = getIcon("editor/inactive/text_editor.png");
+                SELECT_INACTIVE = getIcon("editor/active/select.png");
+                SELECT_ACTIVE = getIcon("editor/inactive/select.png");
+                UNDO_INACTIVE = getIcon("editor/active/undo.png");
+                UNDO_ACTIVE = getIcon("editor/inactive/undo.png");
+                REDO_INACTIVE = getIcon("editor/active/redo.png");
+                REDO_ACTIVE = getIcon("editor/inactive/redo.png");
+
+                break;
+            case "light": ;
+            default:
+                CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
+                COLLECTION_ICON_ACTIVE = getIcon("node/active/collection_add.png");
+                COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
+                DOWN_ICON = getIcon("node/active/down.png");
+                UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
+                COLLAPSE_ICON = getIcon("node/active/collapse.png");
+
+                GAME_EDITOR_ACTIVE = getIcon("editor/active/game_editor.png");
+                GAME_EDITOR_INACTIVE = getIcon("editor/inactive/game_editor.png");
+                DEFINE_EDITOR_ACTIVE = getIcon("editor/active/define_editor.png");
+                DEFINE_EDITOR_INACTIVE = getIcon("editor/inactive/define_editor.png");
+                TEXT_EDITOR_ACTIVE = getIcon("editor/active/text_editor.png");
+                TEXT_EDITOR_INACTIVE = getIcon("editor/inactive/text_editor.png");
+                SELECT_ACTIVE = getIcon("editor/active/select.png");
+                SELECT_INACTIVE = getIcon("editor/inactive/select.png");
+                UNDO_ACTIVE = getIcon("editor/active/undo.png");
+                UNDO_INACTIVE = getIcon("editor/inactive/undo.png");
+                REDO_ACTIVE = getIcon("editor/active/redo.png");
+                REDO_INACTIVE = getIcon("editor/inactive/redo.png");
+                break;
+        }
+    }
+
+    public String name()
+    {
+        return name;
+    }
+
+
+
+
     private static final int DEFAULT_LUDEME_INPUT_FONT_SIZE = 13; // small: 10, default, bigger: 13, big: 16
     private static int LUDEME_INPUT_FONT_SIZE = (int) (DEFAULT_LUDEME_INPUT_FONT_SIZE * (1.0/SCALAR));
 
-    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 15; // small: 10, default, bigger 15, big: 18
+    private static final int DEFAULT_LUDEME_TITLE_FONT_SIZE = 14; // small: 10, default, bigger 14, big: 18
     private static int LUDEME_TITLE_FONT_SIZE = (int) (DEFAULT_LUDEME_TITLE_FONT_SIZE * SCALAR);
 
     private static final int DEFAULT_INPUTAREA_PADDING_BOTTOM = 12;
@@ -71,7 +357,7 @@ public class DesignPalette
     public static int BACKGROUND_LINE_PADDING = (int) (DEFAULT_BACKGROUND_LINE_PADDING * SCALAR);
 
 
-    public void scale(float scalar)
+    public static void scale(float scalar)
     {
         SCALAR *= scalar;
         SCALAR = (float) Math.min(2.0, Math.max(0.85, SCALAR));
@@ -96,9 +382,9 @@ public class DesignPalette
         LUDEME_INPUT_FONT = new Font("Arial", Font.PLAIN, LUDEME_INPUT_FONT_SIZE);
         LUDEME_INPUT_FONT_ITALIC = new Font("Arial", Font.ITALIC, LUDEME_INPUT_FONT_SIZE);
         LUDEME_EDGE_STROKE = new BasicStroke(CONNECTION_STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-        LUDEME_NODE_BORDER = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
-        LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
-        LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(Handler.currentPalette().LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
+        LUDEME_NODE_BORDER = BorderFactory.createLineBorder(DesignPalette.LUDEME_BORDER_COLOR(), NODE_BORDER_WIDTH);
+        LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(DesignPalette.LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
+        LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(DesignPalette.LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
 
         INPUT_AREA_PADDING_BORDER = new EmptyBorder(0,0,DesignPalette.INPUTAREA_PADDING_BOTTOM,0);
         HEADER_PADDING_BORDER = new EmptyBorder(DesignPalette.HEADER_PADDING_TOP,0,DesignPalette.HEADER_PADDING_BOTTOM,0);
@@ -106,93 +392,52 @@ public class DesignPalette
     }
 
 
-    // ~~ COLORS ~~ //
-
-    // PANELS //
-    private static final Color BACKGROUND_EDITOR = new Color(244,244,244);
-    private static final Color BACKGROUND_VISUAL_HELPER = new Color(207,207,207);
-    private static final Color BACKGROUND_HEADER_PANEL = new Color(250,250,250);
-
-    // LUDEME BLOCK //
-        // fonts
-    private static final Color FONT_LUDEME_INPUTS_COLOR = new Color(123,123,123);
-    private static final Color FONT_LUDEME_TITLE_COLOR = new Color(29,29,29);
-
-
-        // backgrounds
-    private static final Color BACKGROUND_LUDEME_BODY = new Color(253,253,253);
-
-         // there are 3 classes: game.equipment, game.functions, and game.rules
-                    // game.rules: game.rules.play, game.rules.start, game.rules.end
-                    // game.functions: .region, .ints, .graph, .floats, .dim, .booleans
-
-    private static final Color BACKGROUND_LUDEME_BODY_EQUIPMENT = new Color(255, 249, 242);
-    private static final Color BACKGROUND_LUDEME_BODY_FUNCTIONS = new Color(242, 255, 254);
-    private static final Color BACKGROUND_LUDEME_BODY_RULES = new Color(253, 247, 255);
-    private static final Color BACKGROUND_LUDEME_BODY_DEFINE = new Color(255, 222, 168);
-    private static final Color LUDEME_BORDER_COLOR = new Color(233,233,233);
-    private static final Color LUDEME_SELECTION_COLOR = new Color(92, 150, 242);
-    private static final Color LUDEME_UNCOMPILABLE_COLOR = new Color(238,60,60);
-
-    private static final Color LUDEME_CONNECTION_POINT = new Color(127,191,255);//new Color(112,112,112);
-    private static final Color LUDEME_CONNECTION_POINT_INACTIVE = new Color(238,60,60);
-    private static final Color LUDEME_CONNECTION_EDGE = new Color(127,191,255);//new Color(112,112,112);
-    private static final Color COMPILABLE_COLOR = new Color(214, 234, 255);
-    private static final Color NOT_COMPILABLE_COLOR = new Color(255,214,214);
-
-    private static final Color PLAY_BUTTON_FOREGROUND = new Color(69,69,69);
-
-    private static final Color INPUT_FIELD_BACKGROUND = Color.WHITE;
-    private static final Color INPUT_FIELD_BORDER_COLOUR = new Color(176,176,176);
-    private static final Color INPUT_FIELD_FOREGROUND = new Color(51, 51, 51);
-
-
-    public Color BACKGROUND_EDITOR()
+    public static Color BACKGROUND_EDITOR()
     {
         return BACKGROUND_EDITOR;
     }
 
-    public Color BACKGROUND_VISUAL_HELPER()
+    public static Color BACKGROUND_VISUAL_HELPER()
     {
         return BACKGROUND_VISUAL_HELPER;
     }
 
-    public Color BACKGROUND_HEADER_PANEL()
+    public static Color BACKGROUND_HEADER_PANEL()
     {
         return BACKGROUND_HEADER_PANEL;
     }
 
-    public Color FONT_LUDEME_INPUTS_COLOR()
+    public static Color FONT_LUDEME_INPUTS_COLOR()
     {
         return FONT_LUDEME_INPUTS_COLOR;
     }
 
-    public Color FONT_LUDEME_TITLE_COLOR()
+    public static Color FONT_LUDEME_TITLE_COLOR()
     {
         return FONT_LUDEME_TITLE_COLOR;
     }
 
-    public Color BACKGROUND_LUDEME_BODY()
+    public static Color BACKGROUND_LUDEME_BODY()
     {
         return BACKGROUND_LUDEME_BODY;
     }
 
-    public Color BACKGROUND_LUDEME_BODY_EQUIPMENT()
+    public static Color BACKGROUND_LUDEME_BODY_EQUIPMENT()
     {
         return BACKGROUND_LUDEME_BODY_EQUIPMENT;
     }
 
-    public Color BACKGROUND_LUDEME_BODY_FUNCTIONS()
+    public static Color BACKGROUND_LUDEME_BODY_FUNCTIONS()
     {
         return BACKGROUND_LUDEME_BODY_FUNCTIONS;
     }
 
-    public Color BACKGROUND_LUDEME_BODY_RULES()
+    public static Color BACKGROUND_LUDEME_BODY_RULES()
     {
         return BACKGROUND_LUDEME_BODY_RULES;
     }
 
-    public Color BACKGROUND_LUDEME_BODY_DEFINE()
+    public static Color BACKGROUND_LUDEME_BODY_DEFINE()
     {
         return BACKGROUND_LUDEME_BODY_DEFINE;
     }
@@ -212,48 +457,48 @@ public class DesignPalette
         return LUDEME_UNCOMPILABLE_COLOR;
     }
 
-    public Color LUDEME_CONNECTION_POINT()
+    public static Color LUDEME_CONNECTION_POINT()
     {
         return LUDEME_CONNECTION_POINT;
     }
 
-    public Color LUDEME_CONNECTION_POINT_INACTIVE()
+    public static Color LUDEME_CONNECTION_POINT_INACTIVE()
     {
         return LUDEME_CONNECTION_POINT_INACTIVE;
     }
 
-    public Color LUDEME_CONNECTION_EDGE()
+    public static Color LUDEME_CONNECTION_EDGE()
     {
         return LUDEME_CONNECTION_EDGE;
     }
 
 
-    public Color COMPILABLE_COLOR()
+    public static Color COMPILABLE_COLOR()
     {
         return COMPILABLE_COLOR;
     }
 
-    public Color NOT_COMPILABLE_COLOR()
+    public static Color NOT_COMPILABLE_COLOR()
     {
         return NOT_COMPILABLE_COLOR;
     }
 
-    public Color PLAY_BUTTON_FOREGROUND()
+    public static Color PLAY_BUTTON_FOREGROUND()
     {
         return PLAY_BUTTON_FOREGROUND;
     }
 
-    public Color INPUT_FIELD_BACKGROUND()
+    public static Color INPUT_FIELD_BACKGROUND()
     {
         return INPUT_FIELD_BACKGROUND;
     }
 
-    public Color INPUT_FIELD_BORDER_COLOUR()
+    public static Color INPUT_FIELD_BORDER_COLOUR()
     {
         return INPUT_FIELD_BORDER_COLOUR;
     }
 
-    public Color INPUT_FIELD_FOREGROUND()
+    public static Color INPUT_FIELD_FOREGROUND()
     {
         return INPUT_FIELD_FOREGROUND;
     }
@@ -271,216 +516,212 @@ public class DesignPalette
     public static final ImageIcon COMPILABLE_ICON = getIcon("editor/play.png");
     public static final ImageIcon NOT_COMPILABLE_ICON = getIcon("editor/not_compilable.png");
 
-    private static final ImageIcon GAME_EDITOR_ACTIVE = getIcon("editor/active/game_editor.png");
-    private static final ImageIcon GAME_EDITOR_INACTIVE = getIcon("editor/inactive/game_editor.png");
+    private static ImageIcon GAME_EDITOR_ACTIVE = getIcon("editor/active/game_editor.png");
+    private static ImageIcon GAME_EDITOR_INACTIVE = getIcon("editor/inactive/game_editor.png");
     private static final ImageIcon GAME_EDITOR_HOVER = getIcon("editor/hover/game_editor.png");
 
-    private static final ImageIcon DEFINE_EDITOR_ACTIVE = getIcon("editor/active/define_editor.png");
-    private static final ImageIcon DEFINE_EDITOR_INACTIVE = getIcon("editor/inactive/define_editor.png");
+    private static ImageIcon DEFINE_EDITOR_ACTIVE = getIcon("editor/active/define_editor.png");
+    private static ImageIcon DEFINE_EDITOR_INACTIVE = getIcon("editor/inactive/define_editor.png");
     private static final ImageIcon DEFINE_EDITOR_HOVER = getIcon("editor/hover/define_editor.png");
 
-    private static final ImageIcon TEXT_EDITOR_ACTIVE = getIcon("editor/active/text_editor.png");
-    private static final ImageIcon TEXT_EDITOR_INACTIVE = getIcon("editor/inactive/text_editor.png");
+    private static ImageIcon TEXT_EDITOR_ACTIVE = getIcon("editor/active/text_editor.png");
+    private static ImageIcon TEXT_EDITOR_INACTIVE = getIcon("editor/inactive/text_editor.png");
     private static final ImageIcon TEXT_EDITOR_HOVER = getIcon("editor/hover/text_editor.png");
     // HEADER TOOLS //
-    private static final ImageIcon SELECT_ACTIVE = getIcon("editor/active/select.png");
-    private static final ImageIcon SELECT_INACTIVE = getIcon("editor/inactive/select.png");
+    private static ImageIcon SELECT_ACTIVE = getIcon("editor/active/select.png");
+    private static ImageIcon SELECT_INACTIVE = getIcon("editor/inactive/select.png");
     private static final ImageIcon SELECT_HOVER = getIcon("editor/hover/select.png");
 
-    private static final ImageIcon UNDO_ACTIVE = getIcon("editor/active/undo.png");
-    private static final ImageIcon UNDO_INACTIVE = getIcon("editor/inactive/undo.png");
+    private static ImageIcon UNDO_ACTIVE = getIcon("editor/active/undo.png");
+    private static ImageIcon UNDO_INACTIVE = getIcon("editor/inactive/undo.png");
     private static final ImageIcon UNDO_HOVER = getIcon("editor/hover/undo.png");
 
-    private static final ImageIcon REDO_ACTIVE = getIcon("editor/active/redo.png");
-    private static final ImageIcon REDO_INACTIVE = getIcon("editor/inactive/redo.png");
-    private static final ImageIcon REDO_HOVER =getIcon("editor/hover/redo.png");
+    private static ImageIcon REDO_ACTIVE = getIcon("editor/active/redo.png");
+    private static ImageIcon REDO_INACTIVE = getIcon("editor/inactive/redo.png");
+    private static final ImageIcon REDO_HOVER = getIcon("editor/hover/redo.png");
 
-    public ImageIcon GAME_EDITOR_ACTIVE()
+    public static ImageIcon GAME_EDITOR_ACTIVE()
     {
         return GAME_EDITOR_ACTIVE;
     }
 
-    public ImageIcon GAME_EDITOR_INACTIVE()
+    public static ImageIcon GAME_EDITOR_INACTIVE()
     {
         return GAME_EDITOR_INACTIVE;
     }
 
-    public ImageIcon GAME_EDITOR_HOVER()
+    public static ImageIcon GAME_EDITOR_HOVER()
     {
         return GAME_EDITOR_HOVER;
     }
 
-    public ImageIcon DEFINE_EDITOR_ACTIVE()
+    public static ImageIcon DEFINE_EDITOR_ACTIVE()
     {
         return DEFINE_EDITOR_ACTIVE;
     }
 
-    public ImageIcon DEFINE_EDITOR_INACTIVE()
+    public static ImageIcon DEFINE_EDITOR_INACTIVE()
     {
         return DEFINE_EDITOR_INACTIVE;
     }
 
-    public ImageIcon DEFINE_EDITOR_HOVER()
+    public static ImageIcon DEFINE_EDITOR_HOVER()
     {
         return DEFINE_EDITOR_HOVER;
     }
 
-    public ImageIcon TEXT_EDITOR_ACTIVE()
+    public static ImageIcon TEXT_EDITOR_ACTIVE()
     {
         return TEXT_EDITOR_ACTIVE;
     }
 
-    public ImageIcon TEXT_EDITOR_INACTIVE()
+    public static ImageIcon TEXT_EDITOR_INACTIVE()
     {
         return TEXT_EDITOR_INACTIVE;
     }
 
-    public ImageIcon TEXT_EDITOR_HOVER()
+    public static ImageIcon TEXT_EDITOR_HOVER()
     {
         return TEXT_EDITOR_HOVER;
     }
 
-    public ImageIcon SELECT_ACTIVE()
+    public static ImageIcon SELECT_ACTIVE()
     {
         return SELECT_ACTIVE;
     }
 
-    public ImageIcon SELECT_INACTIVE()
+    public static ImageIcon SELECT_INACTIVE()
     {
         return SELECT_INACTIVE;
     }
 
-    public ImageIcon SELECT_HOVER()
+    public static ImageIcon SELECT_HOVER()
     {
         return SELECT_HOVER;
     }
 
-    public ImageIcon UNDO_ACTIVE()
+    public static ImageIcon UNDO_ACTIVE()
     {
         return UNDO_ACTIVE;
     }
 
-    public ImageIcon UNDO_INACTIVE()
+    public static ImageIcon UNDO_INACTIVE()
     {
         return UNDO_INACTIVE;
     }
 
-    public ImageIcon UNDO_HOVER()
+    public static ImageIcon UNDO_HOVER()
     {
         return UNDO_HOVER;
     }
 
-    public ImageIcon REDO_ACTIVE()
+    public static ImageIcon REDO_ACTIVE()
     {
         return REDO_ACTIVE;
     }
 
-    public ImageIcon REDO_INACTIVE()
+    public static ImageIcon REDO_INACTIVE()
     {
         return REDO_INACTIVE;
     }
 
-    public ImageIcon REDO_HOVER()
+    public static ImageIcon REDO_HOVER()
     {
         return REDO_HOVER;
     }
 
-    private static final Color HEADER_BUTTON_ACTIVE_COLOR = new Color(69, 69, 69);
-    private static final Color HEADER_BUTTON_INACTIVE_COLOR = new Color(165,165,165);
-    private static final Color HEADER_BUTTON_HOVER_COLOR = new Color(127,191,255);
-
-    public Color HEADER_BUTTON_ACTIVE_COLOR()
+    public static Color HEADER_BUTTON_ACTIVE_COLOR()
     {
         return HEADER_BUTTON_ACTIVE_COLOR;
     }
 
-    public Color HEADER_BUTTON_INACTIVE_COLOR()
+    public static Color HEADER_BUTTON_INACTIVE_COLOR()
     {
         return HEADER_BUTTON_INACTIVE_COLOR;
     }
 
-    public Color HEADER_BUTTON_HOVER_COLOR()
+    public static Color HEADER_BUTTON_HOVER_COLOR()
     {
         return HEADER_BUTTON_HOVER_COLOR;
     }
 
     // LUDEME BLOCK //
-    private static final ImageIcon CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
-    private static final ImageIcon CHOICE_ICON_HOVER = getIcon("node/hover/choice.png");
-    private static final ImageIcon COLLECTION_ICON_ACTIVE = getIcon("node/active/collection_add.png");
-    private static final ImageIcon COLLECTION_ICON_HOVER = getIcon("node/hover/collection_add.png");
-    private static final ImageIcon COLLECTION_REMOVE_ICON_HOVER = getIcon("node/hover/collection_remove.png");
-    private static final ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
-    private static final ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
-    private static final ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
-    private static final ImageIcon DOWN_ICON = getIcon("node/active/down.png");
+    private static ImageIcon CHOICE_ICON_ACTIVE = getIcon("node/active/choice.png");
+    private static ImageIcon CHOICE_ICON_HOVER = getIcon("node/hover/choice.png");
+    private static ImageIcon COLLECTION_ICON_ACTIVE = getIcon("node/active/collection_add.png");
+    private static ImageIcon COLLECTION_ICON_HOVER = getIcon("node/hover/collection_add.png");
+    private static ImageIcon COLLECTION_REMOVE_ICON_HOVER = getIcon("node/hover/collection_remove.png");
+    private static ImageIcon COLLECTION_REMOVE_ICON_ACTIVE = getIcon("node/active/collection_remove.png");
+    private static ImageIcon OPTIONAL_ICON_ACTIVE =getIcon("node/active/optional.png");
+    private static ImageIcon OPTIONAL_ICON_HOVER = getIcon("node/hover/optional.png");
+    private static ImageIcon DOWN_ICON = getIcon("node/active/down.png");
 
-    private static final ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
-    public static final ImageIcon UNCOLLAPSE_ICON_HOVER = getIcon("node/hover/uncollapse.png");
+    private static ImageIcon UNCOLLAPSE_ICON = getIcon("node/active/uncollapse.png");
+    public static ImageIcon UNCOLLAPSE_ICON_HOVER = getIcon("node/hover/uncollapse.png");
 
-    private static final ImageIcon COLLAPSE_ICON = getIcon("popup/collapse.png");
+    private static ImageIcon COLLAPSE_ICON = getIcon("popup/collapse.png");
 
-    public ImageIcon CHOICE_ICON_ACTIVE()
+    public static ImageIcon CHOICE_ICON_ACTIVE()
     {
         return CHOICE_ICON_ACTIVE;
     }
 
-    public ImageIcon CHOICE_ICON_HOVER()
+    public static ImageIcon CHOICE_ICON_HOVER()
     {
         return CHOICE_ICON_HOVER;
     }
 
-    public ImageIcon COLLECTION_ICON_ACTIVE()
+    public static ImageIcon COLLECTION_ICON_ACTIVE()
     {
         return COLLECTION_ICON_ACTIVE;
     }
 
-    public ImageIcon COLLECTION_ICON_HOVER()
+    public static ImageIcon COLLECTION_ICON_HOVER()
     {
         return COLLECTION_ICON_HOVER;
     }
 
-    public ImageIcon COLLECTION_REMOVE_ICON_ACTIVE()
+    public static ImageIcon COLLECTION_REMOVE_ICON_ACTIVE()
     {
         return COLLECTION_REMOVE_ICON_ACTIVE;
     }
 
-    public ImageIcon COLLECTION_REMOVE_ICON_HOVER()
+    public static ImageIcon COLLECTION_REMOVE_ICON_HOVER()
     {
         return COLLECTION_REMOVE_ICON_HOVER;
     }
 
-    public ImageIcon OPTIONAL_ICON_ACTIVE()
+    public static ImageIcon OPTIONAL_ICON_ACTIVE()
     {
         return OPTIONAL_ICON_ACTIVE;
     }
 
-    public ImageIcon OPTIONAL_ICON_HOVER()
+    public static ImageIcon OPTIONAL_ICON_HOVER()
     {
         return OPTIONAL_ICON_HOVER;
     }
 
-    public ImageIcon DOWN_ICON()
+    public static ImageIcon DOWN_ICON()
     {
         return DOWN_ICON;
     }
 
-    public ImageIcon COLLAPSE_ICON()
+    public static ImageIcon COLLAPSE_ICON()
     {
         return COLLAPSE_ICON;
     }
 
-    public ImageIcon UNCOLLAPSE_ICON()
+    public static ImageIcon UNCOLLAPSE_ICON()
     {
         return UNCOLLAPSE_ICON;
     }
 
-    public ImageIcon COLLAPSE_ICON_HOVER()
+    public static ImageIcon COLLAPSE_ICON_HOVER()
     {
         return COLLAPSE_ICON;
     }
 
-    public ImageIcon UNCOLLAPSE_ICON_HOVER()
+    public static ImageIcon UNCOLLAPSE_ICON_HOVER()
     {
         return UNCOLLAPSE_ICON_HOVER;
     }
@@ -498,17 +739,17 @@ public class DesignPalette
     private static Border LUDEME_NODE_BORDER_SELECTED = BorderFactory.createLineBorder(LUDEME_SELECTION_COLOR(), NODE_BORDER_WIDTH);
     private static Border LUDEME_NODE_BORDER_UNCOMPILABLE = BorderFactory.createLineBorder(LUDEME_UNCOMPILABLE_COLOR(), NODE_BORDER_WIDTH);
 
-    public Border LUDEME_NODE_BORDER()
+    public static Border LUDEME_NODE_BORDER()
     {
         return LUDEME_NODE_BORDER;
     }
 
-    public Border LUDEME_NODE_BORDER_SELECTED()
+    public static Border LUDEME_NODE_BORDER_SELECTED()
     {
         return LUDEME_NODE_BORDER_SELECTED;
     }
 
-    public Border LUDEME_NODE_BORDER_UNCOMPILABLE()
+    public static Border LUDEME_NODE_BORDER_UNCOMPILABLE()
     {
         return LUDEME_NODE_BORDER_UNCOMPILABLE;
     }

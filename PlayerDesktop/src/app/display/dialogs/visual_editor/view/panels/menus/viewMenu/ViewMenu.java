@@ -5,6 +5,7 @@ import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ViewMenu extends JMenu
 {
@@ -18,9 +19,9 @@ public class ViewMenu extends JMenu
         add(appearance);
         add(background);
 
-        menuBar.addJMenuItem(appearance, "Light", light);
-        menuBar.addJMenuItem(appearance, "Dark", dark);
-        menuBar.addJMenuItem(appearance, "High Contrast", null);
+        List<String> paletteNames = Handler.palettes();
+        for (String paletteName : paletteNames)
+            menuBar.addJMenuItem(appearance, paletteName, e -> Handler.setPalette(paletteName));
 
         menuBar.addJMenuItem(background, "Dot Grid", dotGrid);
         menuBar.addJMenuItem(background, "Cartesian Grid", cartesianGrid);
@@ -30,7 +31,4 @@ public class ViewMenu extends JMenu
     final ActionListener dotGrid = e -> Handler.setBackground(Handler.DotGridBackground);
     final ActionListener cartesianGrid = e -> Handler.setBackground(Handler.CartesianGridBackground);
     final ActionListener noGrid = e -> Handler.setBackground(Handler.EmptyBackground);
-
-    final ActionListener light = e -> Handler.setPalette(Handler.lightPalette);
-    final ActionListener dark = e -> Handler.setPalette(Handler.darkPalette);
 }

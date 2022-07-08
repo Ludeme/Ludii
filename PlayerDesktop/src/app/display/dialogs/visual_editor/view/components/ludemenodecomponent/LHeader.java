@@ -47,7 +47,7 @@ public class LHeader extends JComponent
         // initialize title
         title = new JLabel(LNC.node().title());
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
-        title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
+        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         // initialize connection component
         ingoingConnectionComponent = new LIngoingConnectionComponent(this, false);
@@ -62,7 +62,7 @@ public class LHeader extends JComponent
         connectionAndTitle.setOpaque(false);
 
         // button for selecting the clause
-        clauseBtn = new JButton(Handler.currentPalette().DOWN_ICON());
+        clauseBtn = new JButton(DesignPalette.DOWN_ICON());
         clauseBtn.setFocusPainted(false);
         clauseBtn.setOpaque(false);
         clauseBtn.setContentAreaFilled(false);
@@ -161,6 +161,7 @@ public class LHeader extends JComponent
 
     private String clauseTitle(Clause c)
     {
+        /*
         if(c.args() == null || c.args().size() == 0)
             return c.toString();
         if(c.args().get(0).symbol().ludemeType().equals(Symbol.LudemeType.Constant))
@@ -173,7 +174,7 @@ public class LHeader extends JComponent
                 else
                     return s+=")";
             }
-        }
+        } */
         return c.toString();
     }
 
@@ -229,12 +230,12 @@ public class LHeader extends JComponent
 
         title.setText(LNC.node().title());
         title.setFont(DesignPalette.LUDEME_TITLE_FONT);
-        title.setForeground(Handler.currentPalette().FONT_LUDEME_TITLE_COLOR());
+        title.setForeground(DesignPalette.FONT_LUDEME_TITLE_COLOR());
         title.setSize(title.getPreferredSize());
         title.setToolTipText(ludemeNodeComponent().node().description());
 
-        if(!clauseBtn.getIcon().equals(Handler.currentPalette().DOWN_ICON()))
-            clauseBtn.setIcon(Handler.currentPalette().DOWN_ICON());
+        if(!clauseBtn.getIcon().equals(DesignPalette.DOWN_ICON()))
+            clauseBtn.setIcon(DesignPalette.DOWN_ICON());
 
         setBorder(DesignPalette.HEADER_PADDING_BORDER);
     }
