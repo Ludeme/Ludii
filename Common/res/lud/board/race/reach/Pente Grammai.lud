@@ -1,6 +1,6 @@
 (define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
 
-(define "EnterToBoard" (trackSite Move from:(handSite Mover) steps:(- (count Pips) 1)))
+(define "EnterToBoard" ("NextSiteOnTrack" (- (count Pips) 1) from:(handSite Mover)))
 
 (define "SacredLine" 10)
 
@@ -39,9 +39,8 @@
             (place Stack "Marker2" (handSite P2) count:5)
         })
         (play 
-            (do 
-                (roll) 
-                next:(priority {
+            ("RollMove"
+                (priority {
                     <Play:enterBoard>
                     (forEach Piece)
                     }
@@ -55,7 +54,7 @@
         )
         (end 
             (if 
-                (= 0 (count Sites in:(difference (sites Occupied by:Mover) "SacredLine" )))
+                (all Sites (sites Occupied by:Mover) if:(= (site) "SacredLine" ))
                 (result Mover Win)
             )
         )
@@ -73,7 +72,7 @@
         )
         >
         <
-        (if (and (!= (from) "SacredLine") (is In "SiteToMoveOnTrack" (sites Empty)))
+        (if (and (!= (from) "SacredLine") (is Empty "SiteToMoveOnTrack"))
             (move 
                 (from) 
                 (to "SiteToMoveOnTrack")
@@ -84,13 +83,13 @@
     )*   
     (item "Capture"    
         <
-        (if (and (not ("HandEmpty" Mover)) (or (is Enemy (who at:"EnterToBoard")) (is Empty ("EnterToBoard"))))
+        (if (and (not ("HandEmpty" Mover)) (or ("IsEnemyAt" "EnterToBoard") (is Empty ("EnterToBoard"))))
             (move 
                 (from (handSite Mover)) 
                 (to 
                     ("EnterToBoard")
                     (apply 
-                        if:(is Enemy (who at:"EnterToBoard"))
+                        if:("IsEnemyAt" "EnterToBoard")
                         (fromTo 
                             (from ("EnterToBoard"))
                             (to (handSite Next))
@@ -102,12 +101,12 @@
         )
         >
         <
-        (if (and (!= (from) "SacredLine") (or (is Enemy (who at:"SiteToMoveOnTrack")) (is In "SiteToMoveOnTrack" (sites Empty))))
+        (if (and (!= (from) "SacredLine") (or ("IsEnemyAt" "SiteToMoveOnTrack") (is Empty "SiteToMoveOnTrack")))
             (move 
                 (from) 
                 (to "SiteToMoveOnTrack"
                     (apply 
-                        if:(is Enemy (who at:"SiteToMoveOnTrack"))
+                        if:("IsEnemyAt" "SiteToMoveOnTrack")
                         (fromTo 
                             (from ("SiteToMoveOnTrack"))
                             (to (handSite Next))
@@ -174,7 +173,6 @@
     (graphics {
         (piece Scale "Marker" 0.3)
         (stackType Default 0.2)
-        
     })
     
 )

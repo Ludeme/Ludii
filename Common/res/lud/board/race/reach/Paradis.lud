@@ -1,5 +1,5 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "SiteToMoveOnTrack" ("NextSiteOnTrack" #1))
 
 //------------------------------------------------------------------------------
 
@@ -11,7 +11,7 @@
             <Player:tracks>
             use:Vertex
         )
-        (dice d:2 from:0 num:2)
+        ("StickDice" 2)
         (piece "Marker" Each
             (move
                 (from (from))
@@ -33,8 +33,8 @@
     (rules
         <Player:start>
         (play 
-            (do (roll)
-                next:(if (!= ("ThrowValue") 0) (forEach Piece))
+            ("RollMove"
+                (if (!= ("ThrowValue") 0) (forEach Piece))
             )
         )
         (end (if (= (score Mover) 3) (result Mover Win)))

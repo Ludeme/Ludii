@@ -5,7 +5,7 @@
 )
 
 (define "NoEdgeBetweenCells"
-    ("NoSites" (intersection (sites Occupied by:Shared on:Edge) ("EdgeInCommon" #1 #2)))
+    (all Sites (sites Occupied by:Shared on:Edge) if:(not (is In (site) ("EdgeInCommon" #1 #2))))
 )
 
 (define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover))))
@@ -36,8 +36,7 @@
         (board (square 9))
         (piece "Pawn" Each
             (or
-                (move
-                    Step
+                (move Step
                     Orthogonal
                     (to 
                         if:(and 
@@ -46,8 +45,7 @@
                         )
                     )
                 )
-                (move 
-                    Hop
+                (move Hop
                     Orthogonal
                     (between if:("IsEnemyAt" (between)))
                     (to if:(and {

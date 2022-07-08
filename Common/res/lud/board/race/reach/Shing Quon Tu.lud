@@ -32,7 +32,7 @@
                 )
                 (move 
                     (from (where "Pawn" Mover))
-                    (to (trackSite Move from:(where "Pawn" Mover) steps:1))
+                    (to ("NextSiteOnTrack" 1 from:(where "Pawn" Mover)))
                     (then
                         (and
                             (forget Value "Te" 1)
@@ -185,8 +185,8 @@
         phases:{
         (phase "Opening"
             (play
-                (do (roll)
-                    next:(or {
+                ("RollMove"
+                    (or {
                         (if (= 2 "NumDiceOne") 
                             (move 
                                 (from (handSite Mover))
@@ -329,8 +329,8 @@
                             )
                         )
                     )
-                    (do (roll)
-                        next:(move Pass)
+                    ("RollMove"
+                        (move Pass)
                         (then
                             (and {
                                 (moveAgain)

@@ -2,42 +2,31 @@
 
 (define "SiteToMoveOnSelectedTrack" 
     (if (= (value Player Mover) 2)
-        (trackSite Move "TrackCCW" steps:("ThrowValue"))
-        (trackSite Move "TrackCW" steps:("ThrowValue"))
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCCW")
+        ("NextSiteOnTrack" ("ThrowValue") "TrackCW")
     )
 )
 
-(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+(define "NextSite" ("NextSiteOnTrack" 1 from:#1 #2))
 
-(define "SiteToMoveOnTrackCW" (trackSite Move "TrackCW" steps:("ThrowValue")))
-(define "SiteToMoveOnTrackCCW" (trackSite Move "TrackCCW" steps:("ThrowValue")))
+(define "SiteToMoveOnTrackCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCW"))
+(define "SiteToMoveOnTrackCCW" ("NextSiteOnTrack" ("ThrowValue") "TrackCCW"))
 
-(define "SelectCW" 
-    (set Value Mover 1)
-)
+(define "SelectCW" (set Value Mover 1))
 
-(define "SelectCCW" 
-    (set Value Mover 2)
-)
+(define "SelectCCW" (set Value Mover 2))
 
 (define "RememberSelectedTrack"
     (then 
         (if 
-            (= (value Player Mover) Off) 
+            ("IsOffBoard" (value Player Mover)) 
             #1
         )
     )
 )
 
-(define "CaptureEnemyPiece" 
-    (apply 
-        if:("IsEnemyAt" (to)) 
-        (fromTo (from (to)) (to (value Piece at:(to))))
-    ) 
-)
-
 (define "MoveOn" 
-    (if (!= #1 Off)
+    (if ("IsNotOffBoard" #1)
         (if (or
                 (is In #1 (sites Empty))
                 ("IsEnemyAt" #1)
@@ -82,7 +71,7 @@
         )
         (regions "Gates" (sites {36..39}))
         (piece "Marker" Each
-            (if (= Off (value Player Mover))
+            (if ("IsOffBoard" (value Player Mover))
                 (or 
                     ("MoveOn" ("SiteToMoveOnTrackCW") ("RememberSelectedTrack" ("SelectCW")))
                     ("MoveOn" ("SiteToMoveOnTrackCCW") ("RememberSelectedTrack" ("SelectCCW")))
@@ -90,7 +79,7 @@
                 ("MoveOn" "SiteToMoveOnSelectedTrack")
             )
         )
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
         (map "ThrowDiceValue" {(pair 0 5) (pair 1 3) (pair 2 2) (pair 3 10)})
         (hand Each)
     })
@@ -109,9 +98,8 @@
         )
         (phase "Playing"
             (play 
-                (do 
-                    (roll) 
-                    next:(forEach Piece)
+                ("RollMove"
+                    (forEach Piece)
                 )
             )	
             (end 
@@ -148,7 +136,7 @@
 
 (option "Play Rules" <Play> args:{ <capture>}
     {
-    (item "Capture"    <"CaptureEnemyPiece"> "Captures are possible.")*   
+    (item "Capture"    <("HittingCapture" (value Piece at:(to)))> "Captures are possible.")*   
     (item "No Capture" <>   "No Capture.")  
 })
 
@@ -209,7 +197,6 @@
         (piece Foreground "Die" state:1 image:"star" fillColour:(colour White) scale:0.2)
         (stackType 0 Ground)
         (piece Scale "Marker" 0.5)
-        
     })
     
 )

@@ -4,11 +4,10 @@
     (move
         (from (sites Occupied by:#1))
         (to 
-            (trackSite Move #2 steps:("ThrowValue"))
+            ("NextSiteOnTrack" ("ThrowValue") #2)
             if:(not ("IsEnemyAt" (to)))
         )
     )
-    
 )
 
 //------------------------------------------------------------------------------
@@ -33,7 +32,7 @@
         (regions "AllSites" (sites Board))
         (piece "Stick" P1)
         (piece "Stick" P2)
-        (dice d:2 from:0 num:3)
+        ("StickDice" 3)
         (hand Each)
         (map "Throw" {(pair 0 5) (pair 1 3) (pair 2 2) (pair 3 10)})
     })
@@ -44,8 +43,8 @@
             <Player:teams>
         })
         (play 
-            (do (roll) 
-                next:(if (is In (mover) (players Team1))
+            ("RollMove"
+                (if (is In (mover) (players Team1))
                     ("Move" Team1 "TrackCW")
                     ("Move" Team2 "TrackCCW")
                 )
