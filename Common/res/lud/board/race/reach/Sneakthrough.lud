@@ -1,8 +1,7 @@
 (define "Moves" 
     (or {
         "StepForwardToEmpty" 
-        (move
-            Step 
+        (move Step 
             Forward 
             (to if:(and ("IsEnemyAt" (to)) (is Hidden at:(to) to:Mover)))
             (then 
@@ -19,13 +18,11 @@
                 )
             )
         ) 
-        (move
-            Step
+        (move Step
             (directions {FR FL}) 
             (to if:(is Empty (to)) (apply (remove (to))))
         )
-        (move
-            Step
+        (move Step
             (directions {FR FL}) 
             (to if:("IsEnemyAt" (to)) (apply (remove (to)))) 
             (then (set Hidden at:(last To) to:Next))
