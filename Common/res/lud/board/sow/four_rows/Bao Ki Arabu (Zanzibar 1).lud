@@ -3,11 +3,9 @@
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 (define "Sow" 
-    (move
-        Select
+    (move Select
         (from 
-            (if 
-                ("SameTurn") 
+            (if ("SameTurn") 
                 (if #1 "PlayFromLastHole") 
                 (sites Mover "Home") 
             ) 
@@ -70,12 +68,12 @@
     })  
     (rules 
         
-        (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home"))))
+        (start (set Count 3 to:(sites Board)))
         
         (play 
             (or
                 ("Sow" (is Pending) "TrackCW"  (and (moveAgain) (set Pending)))
-                ("Sow" (not (is Pending)) "TrackCCW"  (moveAgain))
+                ("Sow" (not (is Pending)) "TrackCCW" (moveAgain))
             )
         )
         

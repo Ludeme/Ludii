@@ -1,6 +1,5 @@
 (define "Columns" 8)
 (define "NoPiecesInInner" (no Pieces All in:(sites #1 "Inner")))
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
 (define "Sowing"
     (sow
         #1
@@ -74,10 +73,10 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions "Home" P1 (expand (sites Bottom)))                     // P1 home
-        (regions "Home" P2 (expand (sites Top)))                        // P2 home
+        (regions "Home" P1 (expand (sites Bottom)))            // P1 home
+        (regions "Home" P2 (expand (sites Top)))               // P2 home
         (regions "Inner" P1 (sites Row 1))                     // P1 home
-        (regions "Inner" P2 (sites Row 2))                        // P2 home
+        (regions "Inner" P2 (sites Row 2))                     // P2 home
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})

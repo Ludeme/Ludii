@@ -1,6 +1,5 @@
 (define "Columns" 8)
 (define "NoPiecesInInner" (no Pieces All in:(sites #1 "Inner")))
-(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns")))
 (define "NextHole" ("NextSiteOnTrack" #3 from:#1 #2))
 (define "Sowing"
     (sow
@@ -29,7 +28,7 @@
                         )
                     )
                 })
-                (if (< 1 (count at:( to)))
+                (if (< 1 (count at:(to)))
                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                         (and {
                             (moveAgain)
@@ -40,7 +39,7 @@
                     )
                 )
             )
-            (if (< 1 (count at:( to)))
+            (if (< 1 (count at:(to)))
                 (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                     (and {
                         (moveAgain)
